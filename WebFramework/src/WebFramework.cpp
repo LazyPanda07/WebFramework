@@ -5,6 +5,8 @@
 #pragma comment (lib, "Log.lib")
 #pragma comment (lib, "SocketStreams.lib")
 
+using namespace std;
+
 namespace framework
 {
 
