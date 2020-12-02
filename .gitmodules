@@ -1,0 +1,9 @@
+[submodule "HTTP"]
+	path = HTTP
+	url = https://github.com/LazyPanda07/HTTP.git
+[submodule "SocketStreams"]
+	path = SocketStreams
+	url = https://github.com/LazyPanda07/SocketStreams.git
+[submodule "Log"]
+	path = Log
+	url = https://github.com/LazyPanda07/Log.git
