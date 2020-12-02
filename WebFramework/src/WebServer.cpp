@@ -11,6 +11,7 @@ namespace framework
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
 		const string clientIp = getIpV4(addr);
+		string response;
 
 		while (true)
 		{
@@ -18,9 +19,20 @@ namespace framework
 			{
 				string HTTPRequest;
 
+				response.clear();
+
 				stream >> HTTPRequest;
 
-				stream << HTTPRequest;
+				if (HTTPRequest.find("HTTP") != string::npos)
+				{
+					manager.service(web::HTTPParser(HTTPRequest), response);
+
+					stream << response;
+				}
+				else
+				{
+					throw web::WebException();
+				}
 			}
 			catch (const web::WebException&)
 			{
@@ -28,11 +40,20 @@ namespace framework
 
 				break;
 			}
+			catch (const exceptions::ExecutorException&)
+			{
+
+			}
+			catch (const out_of_range&)
+			{
+				// 404
+			}
 		}
 	}
 
-	WebServer::WebServer(const string_view& port, DWORD timeout) :
-		BaseTCPServer(port, timeout, false)
+	WebServer::WebServer(ExecutorsManager&& manager, const string_view& port, DWORD timeout) :
+		BaseTCPServer(port, timeout, false),
+		manager(move(manager))
 	{
 
 	}
