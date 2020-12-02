@@ -58,7 +58,7 @@ namespace framework
 
 			if (contentLength == string_view::npos)
 			{
-				isFindEnd == findHeader.find(crlfcrlf) != string_view::npos;
+				isFindEnd = findHeader.find(crlfcrlf) != string_view::npos;
 			}
 			else
 			{
