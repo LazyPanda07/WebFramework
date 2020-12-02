@@ -87,9 +87,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\WebFramework.cpp" />
+    <ClCompile Include="src\WebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\WebFrameworkConstants.h" />
     <ClInclude Include="src\WebFramework.h" />
+    <ClInclude Include="src\WebServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">
