@@ -11,6 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SocketStreams", "SocketStre
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Log", "Log\Log.vcxproj", "{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseTCPServer", "BaseTCPServer\BaseTCPServer.vcxproj", "{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,16 +27,14 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Debug|x64.ActiveCfg = Debug|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Debug|x64.Build.0 = Debug|x64
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Debug|x86.ActiveCfg = Debug|Win32
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Debug|x86.Build.0 = Debug|Win32
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Debug|x86.ActiveCfg = Debug|x64
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Debug|x86.Build.0 = Debug|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.ActiveCfg = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.Build.0 = Release|x64
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x86.ActiveCfg = Release|Win32
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x86.Build.0 = Release|Win32
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x86.ActiveCfg = Debug|Win32
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.ActiveCfg = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.Build.0 = Release|x64
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x86.ActiveCfg = Release|Win32
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x86.Build.0 = Release|Win32
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x86.ActiveCfg = Release|x64
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.Debug|x64.ActiveCfg = Debug|x64
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.Debug|x64.Build.0 = Debug|x64
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.Debug|x86.ActiveCfg = Debug|Win32
@@ -69,9 +71,27 @@ Global
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.Release|x64.Build.0 = Release|x64
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.Release|x86.ActiveCfg = Release|Win32
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.Release|x86.Build.0 = Release|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Debug|x64.ActiveCfg = Debug|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Debug|x64.Build.0 = Debug|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Debug|x86.ActiveCfg = Debug|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Debug|x86.Build.0 = Debug|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionRelease|x64.ActiveCfg = ProductionRelease|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionRelease|x86.ActiveCfg = ProductionRelease|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionRelease|x86.Build.0 = ProductionRelease|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Release|x64.ActiveCfg = Release|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Release|x64.Build.0 = Release|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Release|x86.ActiveCfg = Release|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
+		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
+		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {155A7728-6396-43E2-9EFF-B3B350E831EA}

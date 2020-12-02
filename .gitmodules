@@ -7,3 +7,6 @@
 [submodule "Log"]
 	path = Log
 	url = https://github.com/LazyPanda07/Log.git
+[submodule "BaseTCPServer"]
+	path = BaseTCPServer
+	url = https://github.com/LazyPanda07/BaseTCPServer.git
