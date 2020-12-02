@@ -51,32 +51,37 @@ namespace framework
 
 			totalSize += lastPacket;
 
-			transform(data.begin(), data.begin() + totalSize, data.begin(), [](char c) { return tolower(c); });
-
 			string_view findHeader(data.data(), data.size());
-			size_t contentLength = findHeader.find(contentLengthHeader);
+			string_view::const_iterator contentLength = search
+			(
+				findHeader.begin(), findHeader.end(), contentLengthHeader.begin(), contentLengthHeader.end(),
+				[](const char& first, const char& second)
+				{
+					return tolower(first) == tolower(second);
+				}
+			);
 
-			if (contentLength == string_view::npos)
+			if (contentLength == findHeader.end())
 			{
 				isFindEnd = findHeader.find(crlfcrlf) != string_view::npos;
 			}
 			else
 			{
-				size_t endOfHTPP = findHeader.find(crlfcrlf);
+				size_t endOfHTTP = findHeader.find(crlfcrlf);
 
 				if (bodySize == -1)
 				{
-					size_t contentLengthHeaderPosition = contentLength + contentLengthHeader.size();
-					string_view contentLengthValue = findHeader.substr(contentLengthHeaderPosition, findHeader.find("\r\n", contentLength) - contentLengthHeaderPosition);
+					size_t contentLengthHeaderPosition = distance(findHeader.begin(), contentLength) + contentLengthHeader.size();
+					string_view contentLengthValue = findHeader.substr(contentLengthHeaderPosition, findHeader.find("\r\n", distance(findHeader.begin(), contentLength)) - contentLengthHeaderPosition);
 
 					from_chars(contentLengthValue.data(), contentLengthValue.data() + contentLengthValue.size(), bodySize);
 
 					data.resize(data.size() + bodySize);
 				}
 
-				if (endOfHTPP != string_view::npos)
+				if (endOfHTTP != string_view::npos)
 				{
-					isFindEnd = findHeader.size() == (endOfHTPP + crlfcrlf.size() + bodySize);
+					isFindEnd = findHeader.size() == (endOfHTTP + crlfcrlf.size() + bodySize);
 				}
 			}
 		}

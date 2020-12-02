@@ -46,6 +46,6 @@ namespace framework
 			throw exceptions::ExecutorException("BaseExecutorSubclass must be subclass of BaseExecutor");
 		}
 		
-		routes.insert(std::make_pair(route, std::make_unique<BaseExecutor>(std::forward<Args>(args)...)));
+		routes.insert(std::make_pair(route, std::make_unique<BaseExecutorSubclass>(std::forward<Args>(args)...)));
 	}
 }

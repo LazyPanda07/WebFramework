@@ -9,14 +9,15 @@ namespace framework
 		try
 		{
 			const string& method = request.getMethod();
+			const string& parameters = request.getParameters();
 
 			if (method == "GET")
 			{
-
+				routes.at(parameters)->doGet(move(request), response);
 			}
 			else if (method == "POST")
 			{
-
+				routes.at(parameters)->doPost(move(request), response);
 			}
 
 		}
