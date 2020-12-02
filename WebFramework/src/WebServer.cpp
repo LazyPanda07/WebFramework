@@ -1,5 +1,6 @@
 #include "WebServer.h"
 
+#include "HTTPNetwork.h"
 #include "BaseIOSocketStream.h"
 
 using namespace std;
@@ -8,7 +9,7 @@ namespace framework
 {
 	void WebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 	{
-		streams::IOSocketStream stream(clientSocket);
+		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
 		const string clientIp = getIpV4(addr);
 
 		while (true)

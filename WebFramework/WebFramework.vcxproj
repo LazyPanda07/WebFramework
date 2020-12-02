@@ -86,10 +86,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
     <ClCompile Include="src\WebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />
     <ClInclude Include="src\WebFramework.h" />
     <ClInclude Include="src\WebServer.h" />
