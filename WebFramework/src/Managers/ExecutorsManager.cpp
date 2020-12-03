@@ -9,7 +9,9 @@ namespace framework
 		try
 		{
 			const string& method = request.getMethod();
-			const string& parameters = request.getParameters();
+			string parameters = request.getParameters();
+
+			parameters.resize(parameters.rfind('/'));
 
 			if (method == "GET")
 			{
