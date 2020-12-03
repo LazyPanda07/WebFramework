@@ -9,7 +9,7 @@
 
 #include <stdexcept>
 
-#include "BaseExecutor.h"
+#include "Executors/BaseExecutor.h"
 
 namespace framework
 {
@@ -43,7 +43,7 @@ namespace framework
 	{
 		if constexpr (!std::is_base_of_v<BaseExecutor, BaseExecutorSubclass>)
 		{
-			throw exceptions::ExecutorException("BaseExecutorSubclass must be subclass of BaseExecutor");
+			throw exceptions::BaseExecutorException("BaseExecutorSubclass must be subclass of BaseExecutor");
 		}
 		
 		routes.insert(std::make_pair(route, std::make_unique<BaseExecutorSubclass>(std::forward<Args>(args)...)));

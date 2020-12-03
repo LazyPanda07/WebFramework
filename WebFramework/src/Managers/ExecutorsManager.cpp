@@ -19,15 +19,14 @@ namespace framework
 			{
 				routes.at(parameters)->doPost(move(request), response);
 			}
-
 		}
-		catch (const exceptions::ExecutorException&)
+		catch (const exceptions::BaseExecutorException&)
 		{
-
+			throw;
 		}
 		catch (const out_of_range&)
 		{
-
+			throw;
 		}
 	}
 }

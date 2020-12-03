@@ -8,3 +8,8 @@ inline const std::string contentLengthHeader = "Content-Length";
 inline const std::string crlfcrlf = "\r\n\r\n";
 
 inline constexpr int averageHTTPRequestSize = 1500;
+
+namespace exceptions
+{
+	inline const std::string notImplemented = "Not implemented";
+}

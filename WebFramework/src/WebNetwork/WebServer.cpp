@@ -2,6 +2,7 @@
 
 #include "HTTPNetwork.h"
 #include "BaseIOSocketStream.h"
+#include "Exceptions/NotImplementedException.h"
 
 using namespace std;
 
@@ -40,7 +41,11 @@ namespace framework
 
 				break;
 			}
-			catch (const exceptions::ExecutorException&)
+			catch (const exceptions::NotImplementedException&)
+			{
+				// 400
+			}
+			catch (const exceptions::BaseExecutorException&)
 			{
 
 			}

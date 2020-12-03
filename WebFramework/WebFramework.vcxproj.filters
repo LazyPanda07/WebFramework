@@ -18,19 +18,22 @@
     <ClCompile Include="src\WebFramework.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebServer.cpp">
+    <ClCompile Include="src\WebNetwork\WebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\HTTPNetwork.cpp">
+    <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseExecutor.cpp">
+    <ClCompile Include="src\Executors\BaseExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ExecutorException.cpp">
+    <ClCompile Include="src\Managers\ExecutorsManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ExecutorsManager.cpp">
+    <ClCompile Include="src\Exceptions\BaseExecutorException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions\NotImplementedException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,22 +41,25 @@
     <ClInclude Include="src\WebFramework.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebServer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\HTTPNetwork.h">
+    <ClInclude Include="src\WebNetwork\WebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseExecutor.h">
+    <ClInclude Include="src\WebNetwork\HTTPNetwork.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ExecutorException.h">
+    <ClInclude Include="src\Executors\BaseExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ExecutorsManager.h">
+    <ClInclude Include="src\Managers\ExecutorsManager.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\BaseExecutorException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\NotImplementedException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

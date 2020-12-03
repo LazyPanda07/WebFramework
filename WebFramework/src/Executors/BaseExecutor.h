@@ -1,7 +1,7 @@
 #pragma once
 
 #include "HTTPParser.h"
-#include "ExecutorException.h"
+#include "Exceptions/NotImplementedException.h"
 
 namespace framework
 {

@@ -60,7 +60,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)WebFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -76,7 +76,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)WebFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,21 +86,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\BaseExecutor.cpp" />
-    <ClCompile Include="src\ExecutorException.cpp" />
-    <ClCompile Include="src\ExecutorsManager.cpp" />
-    <ClCompile Include="src\HTTPNetwork.cpp" />
+    <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
+    <ClCompile Include="src\Executors\BaseExecutor.cpp" />
+    <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
+    <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
+    <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
-    <ClCompile Include="src\WebServer.cpp" />
+    <ClCompile Include="src\WebNetwork\WebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BaseExecutor.h" />
-    <ClInclude Include="src\ExecutorException.h" />
-    <ClInclude Include="src\ExecutorsManager.h" />
-    <ClInclude Include="src\HTTPNetwork.h" />
+    <ClInclude Include="src\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="src\Executors\BaseExecutor.h" />
+    <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
+    <ClInclude Include="src\Managers\ExecutorsManager.h" />
+    <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />
     <ClInclude Include="src\WebFramework.h" />
-    <ClInclude Include="src\WebServer.h" />
+    <ClInclude Include="src\WebNetwork\WebServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">
