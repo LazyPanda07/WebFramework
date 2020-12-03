@@ -22,11 +22,11 @@ namespace XMLSettingsTags
 	inline constexpr std::string_view startInitParamTag = "<init-param>";
 	inline constexpr std::string_view endInitParamTag = "</init-param>";
 
-	inline constexpr std::string_view startInitParamNameTag = "<param-name>";
-	inline constexpr std::string_view endInitParamNameTag = "</param-name>";
+	inline constexpr std::string_view startParamNameTag = "<param-name>";
+	inline constexpr std::string_view endParamNameTag = "</param-name>";
 
-	inline constexpr std::string_view startInitParamValueTag = "<param-value>";
-	inline constexpr std::string_view endInitParamValueTag = "</param-value>";
+	inline constexpr std::string_view startParamValueTag = "<param-value>";
+	inline constexpr std::string_view endParamValueTag = "</param-value>";
 
 	inline constexpr std::string_view startRouteTag = "<route>";
 	inline constexpr std::string_view endRouteTag = "</route>";

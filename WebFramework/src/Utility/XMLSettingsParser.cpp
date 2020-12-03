@@ -46,9 +46,9 @@ namespace framework
 					if (line.find(startExecutorTag) != string::npos)
 					{
 						startExecutor = true;
-					}
 
-					continue;
+						continue;
+					}
 
 					break;
 				}
@@ -71,21 +71,31 @@ namespace framework
 					if (line.find(startInitParamTag) != string::npos)
 					{
 						startInitParams = true;
-					}
 
-					continue;
+						continue;
+					}
 
 					break;
 				}
 
 				if (line.find(startRouteTag) != string::npos && line.find(endRouteTag) != string::npos)
 				{
-					route = string(line.begin() + line.find('>'), line.begin() + line.rfind('<'));
+					route = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
 				}
 
 				if (line.find(startExecutorNameTag) != string::npos && line.find(endExecutorNameTag) != string::npos)
 				{
-					executorName = string(line.begin() + line.find('>'), line.begin() + line.rfind('<'));
+					executorName = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
+				}
+
+				if (line.find(startParamNameTag) != string::npos && line.find(endParamNameTag) != string::npos)
+				{
+					paramName = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
+				}
+
+				if (line.find(startParamValueTag) != string::npos && line.find(endParamValueTag) != string::npos)
+				{
+					paramValue = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
 				}
 			}
 
