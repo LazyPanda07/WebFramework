@@ -11,7 +11,7 @@ namespace framework
 			const string& method = request.getMethod();
 			string parameters = request.getParameters();
 
-			parameters.resize(parameters.rfind('/'));
+			parameters.resize(parameters.rfind('/') + 1);
 
 			if (method == "GET")
 			{
