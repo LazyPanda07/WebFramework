@@ -90,6 +90,7 @@
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
+    <ClCompile Include="src\Utility\XMLSettingsParser.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
     <ClCompile Include="src\WebNetwork\WebServer.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="src\Executors\BaseExecutor.h" />
     <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
+    <ClInclude Include="src\Utility\XMLSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />
     <ClInclude Include="src\WebFramework.h" />
