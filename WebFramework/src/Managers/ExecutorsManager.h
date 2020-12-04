@@ -48,10 +48,7 @@ namespace framework
 	template<typename BaseExecutorSubclass, typename... Args>
 	void ExecutorsManager::addRoute(const std::string& route, Args&&... args)
 	{
-		if constexpr (!std::is_base_of_v<BaseExecutor, BaseExecutorSubclass>)
-		{
-			throw exceptions::BaseExecutorException("BaseExecutorSubclass must be subclass of BaseExecutor");	// make static_assert
-		}
+		static_assert(std::is_base_of_v<BaseExecutor, BaseExecutorSubclass>, "BaseExecutorSubclass must be subclass of BaseExecutor");
 		
 		routes.insert(std::make_pair(route, std::make_unique<BaseExecutorSubclass>(std::forward<Args>(args)...)));
 	}

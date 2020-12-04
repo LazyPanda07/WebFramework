@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "WebFrameworkConstants.h"
+#include "Exceptions/FileDoesNotExistException.h"
 
 using namespace std;
 
@@ -23,6 +24,11 @@ namespace framework
 			string paramName;
 			string paramValue;
 			ExecutorSettings executor;
+
+			if (!in.is_open())
+			{
+				throw exceptions::FileDoesNotExistException();
+			}
 
 			while (getline(in, line))
 			{
