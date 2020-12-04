@@ -4,6 +4,9 @@
 #include "BaseIOSocketStream.h"
 #include "Exceptions/NotImplementedException.h"
 
+#pragma push
+#pragma warning(disable: 6387)
+
 using namespace std;
 
 namespace framework
@@ -56,10 +59,31 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(ExecutorsManager&& manager, const string_view& port, DWORD timeout) :
-		BaseTCPServer(port, timeout, false),
-		manager(move(manager))
+	WebServer::WebServer(const utility::XMLSettingsParser& parser, const string_view& port, DWORD timeout) noexcept :
+		BaseTCPServer(port, timeout, false)
 	{
+		unordered_map<string, unique_ptr<BaseExecutor>> routes;
+		unordered_map<string, createBaseExecutorSubclassFunction> creator;
+		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
 
+		routes.reserve(settings.size());
+		creator.reserve(settings.size());
+
+		for (const auto& [i, j] : settings)
+		{
+			createBaseExecutorSubclassFunction function = reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(nullptr, ("create" + j.name + "Instance").data()));
+
+			if (!function)
+			{
+				throw 15;
+			}
+
+			routes[i] = unique_ptr<BaseExecutor>(function());
+			creator[j.name] = function;
+		}
+
+		manager.init(move(routes), move(creator), move(settings));
 	}
 }
+
+#pragma pop

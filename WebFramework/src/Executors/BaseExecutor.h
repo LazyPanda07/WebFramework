@@ -20,4 +20,11 @@ namespace framework
 
 		virtual ~BaseExecutor() = default;
 	};
+
+	using createBaseExecutorSubclassFunction = BaseExecutor* (*)();
 }
+
+#define CREATE_BASE_EXECUTOR_SUBCLASS_INSTANCE(subclassName) extern "C" __declspec(dllexport) framework::BaseExecutor* create##subclassName##Instance()	\
+																							  {	\
+																								return new subclassName();	\
+																							  }

@@ -33,9 +33,9 @@ namespace framework
 					{
 						startExecutor = false;
 
-						executor.route = move(route);
+						executor.name = move(executorName);
 
-						settings.insert(make_pair(move(executorName), move(executor)));
+						settings.insert(make_pair(move(route), move(executor)));
 
 						continue;
 					}

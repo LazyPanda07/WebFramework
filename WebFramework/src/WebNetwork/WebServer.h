@@ -3,6 +3,7 @@
 #include "BaseTCPServer.h"
 #include "WebFrameworkConstants.h"
 #include "Managers/ExecutorsManager.h"
+#include "Utility/XMLSettingsParser.h"
 
 namespace framework
 {
@@ -15,7 +16,7 @@ namespace framework
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
-		WebServer(ExecutorsManager&& manager, const std::string_view& port = HTTPPort, DWORD timeout = 0);
+		WebServer(const utility::XMLSettingsParser& parser, const std::string_view& port = HTTPPort, DWORD timeout = 0) noexcept;
 
 		~WebServer() = default;
 	};
