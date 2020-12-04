@@ -14,7 +14,7 @@ namespace ini
 	inline const std::string webServerSection = "WebServer";
 	inline const std::string webFrameworkSection = "WebFramework";
 
-	inline const std::string settingsPathKey = "settingPath";
+	inline const std::string settingsPathKey = "settingsPath";
 	inline const std::string portKey = "port";
 	inline const std::string timeoutKey = "timeout";
 }
@@ -22,6 +22,7 @@ namespace ini
 namespace exceptions
 {
 	inline const std::string notImplemented = "Not implemented";
+	inline const std::string fileDoesNotExist = "File does not exist";
 }
 
 namespace XMLSettingsTags

@@ -2,6 +2,7 @@
 
 #include "INIParser.h"
 #include "WebFrameworkConstants.h"
+#include "Exceptions/FileDoesNotExistException.h"
 
 #pragma comment (lib, "BaseTCPServer.lib")
 #pragma comment (lib, "HTTP.lib")
@@ -13,9 +14,14 @@ using namespace std;
 
 namespace framework
 {
-	WebFramework::WebFramework(const string& configurationINIFile)
+	WebFramework::WebFramework(const filesystem::path& configurationINIFile)
 	{
-		::utility::INIParser parser(static_cast<const string_view&>(configurationINIFile));
+		if (!filesystem::exists(configurationINIFile))
+		{
+			throw exceptions::FileDoesNotExistException();
+		}
+
+		::utility::INIParser parser(configurationINIFile);
 		const unordered_map<string, string>& webServerSettings = parser.getSection(ini::webServerSection);
 		const unordered_map<string, string>& webFrameworkSettigns = parser.getSection(ini::webFrameworkSection);
 
@@ -45,9 +51,13 @@ namespace framework
 		return result;
 	}
 
+	bool WebFramework::getServerState() const
+	{
+		return server->serverState();
+	}
+
 	void WebFramework::disconnectClient(const string& ip) const
 	{
 		server->pubDisconnect(ip);
 	}
-
 }

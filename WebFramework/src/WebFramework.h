@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "WebNetwork/WebServer.h"
 
 namespace framework
@@ -10,7 +12,7 @@ namespace framework
 		std::unique_ptr<WebServer> server;
 
 	public:
-		WebFramework(const std::string& configurationINIFile);
+		WebFramework(const std::filesystem::path& configurationINIFile);
 
 		void startServer();
 
@@ -19,6 +21,8 @@ namespace framework
 		std::vector<std::string> getClientsIp() const;
 
 		void disconnectClient(const std::string& ip) const;
+
+		bool getServerState() const;
 
 		~WebFramework() = default;
 	};
