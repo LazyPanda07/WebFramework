@@ -9,6 +9,16 @@ inline const std::string crlfcrlf = "\r\n\r\n";
 
 inline constexpr int averageHTTPRequestSize = 1500;
 
+namespace ini
+{
+	inline const std::string webServerSection = "WebServer";
+	inline const std::string webFrameworkSection = "WebFramework";
+
+	inline const std::string settingsPathKey = "settingPath";
+	inline const std::string portKey = "port";
+	inline const std::string timeoutKey = "timeout";
+}
+
 namespace exceptions
 {
 	inline const std::string notImplemented = "Not implemented";
