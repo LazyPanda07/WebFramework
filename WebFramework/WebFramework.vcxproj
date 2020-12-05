@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\FileDoesNotExistException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
@@ -97,6 +98,7 @@
     <ClCompile Include="src\WebNetwork\WebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\FileDoesNotExistException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="src\Executors\BaseExecutor.h" />

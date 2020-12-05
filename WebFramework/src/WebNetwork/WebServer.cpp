@@ -4,8 +4,9 @@
 #include "BaseIOSocketStream.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/CantFindFunctionException.h"
 
-#pragma push
+#pragma warning(push)
 #pragma warning(disable: 6387)
 
 using namespace std;
@@ -82,7 +83,12 @@ namespace framework
 
 			if (!function)
 			{
-				throw 15;
+				function = reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(nullptr, ("create" + j.name + "Instance").data()));
+
+				if (!function)
+				{
+					throw exceptions::CantFindFunctionException();
+				}
 			}
 
 			routes[i] = unique_ptr<BaseExecutor>(function());
@@ -93,4 +99,4 @@ namespace framework
 	}
 }
 
-#pragma pop
+#pragma warning(pop)

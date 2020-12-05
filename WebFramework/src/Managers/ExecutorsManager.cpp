@@ -19,7 +19,10 @@ namespace framework
 			string parameters = request.getParameters();
 			decltype(routes.find("")) executor;
 
-			parameters.resize(parameters.rfind('/') + 1);
+			if (parameters.find('?') != string::npos)
+			{
+				parameters.resize(parameters.find('?'));
+			}
 
 			{
 				lock_guard<mutex> scopeLock(checkExecutor);

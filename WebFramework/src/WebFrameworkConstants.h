@@ -26,6 +26,7 @@ namespace exceptions
 {
 	inline const std::string notImplemented = "Not implemented";
 	inline const std::string fileDoesNotExist = "File does not exist";
+	inline const std::string cantFindFunction = "Can't find createBaseExecutorSubclass function";
 }
 
 namespace XMLSettingsTags
