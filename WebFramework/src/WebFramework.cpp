@@ -25,7 +25,13 @@ namespace framework
 		const unordered_map<string, string>& webServerSettings = parser.getSection(ini::webServerSection);
 		const unordered_map<string, string>& webFrameworkSettigns = parser.getSection(ini::webFrameworkSection);
 
-		server = make_unique<WebServer>(utility::XMLSettingsParser(webFrameworkSettigns.at(ini::settingsPathKey)), webServerSettings.at(ini::portKey), stoi(webServerSettings.at(ini::timeoutKey)));
+		server = make_unique<WebServer>
+			(
+				utility::XMLSettingsParser(webFrameworkSettigns.at(ini::settingsPathKey)),
+				webServerSettings.at(ini::portKey),
+				stoi(webServerSettings.at(ini::timeoutKey)),
+				webFrameworkSettigns.at(ini::loadSourceKey)
+				);
 	}
 
 	void WebFramework::startServer()

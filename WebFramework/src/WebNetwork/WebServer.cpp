@@ -3,6 +3,7 @@
 #include "HTTPNetwork.h"
 #include "BaseIOSocketStream.h"
 #include "Exceptions/NotImplementedException.h"
+#include "Exceptions/FileDoesNotExistException.h"
 
 #pragma push
 #pragma warning(disable: 6387)
@@ -59,19 +60,25 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const utility::XMLSettingsParser& parser, const string_view& port, DWORD timeout) noexcept :
+	WebServer::WebServer(const utility::XMLSettingsParser& parser, const string_view& port, DWORD timeout, const string& pathToExecutable) noexcept :
 		BaseTCPServer(port, timeout, false)
 	{
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
+		HMODULE executable = LoadLibraryA(pathToExecutable == ini::defaultLoadSourceValue ? nullptr : pathToExecutable.data());
+
+		if (pathToExecutable != ini::defaultLoadSourceValue && !executable)
+		{
+			throw exceptions::FileDoesNotExistException();
+		}
 
 		routes.reserve(settings.size());
 		creator.reserve(settings.size());
 
 		for (const auto& [i, j] : settings)
 		{
-			createBaseExecutorSubclassFunction function = reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(nullptr, ("create" + j.name + "Instance").data()));
+			createBaseExecutorSubclassFunction function = reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(executable, ("create" + j.name + "Instance").data()));
 
 			if (!function)
 			{

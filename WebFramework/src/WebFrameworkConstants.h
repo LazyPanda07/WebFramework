@@ -17,6 +17,9 @@ namespace ini
 	inline const std::string settingsPathKey = "settingsPath";
 	inline const std::string portKey = "port";
 	inline const std::string timeoutKey = "timeout";
+	inline const std::string loadSourceKey = "loadSource";
+
+	inline const std::string defaultLoadSourceValue = "current";
 }
 
 namespace exceptions

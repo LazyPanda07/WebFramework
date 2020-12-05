@@ -2,6 +2,7 @@
 
 #include "HTTPParser.h"
 #include "Exceptions/NotImplementedException.h"
+#include "Utility/XMLSettingsParser.h"
 
 namespace framework
 {
@@ -10,7 +11,7 @@ namespace framework
 	public:
 		BaseExecutor() = default;
 
-		virtual void init() = 0;
+		virtual void init(const utility::XMLSettingsParser::ExecutorSettings& settings) = 0;
 
 		virtual void doPost(web::HTTPParser&& request, std::string& response);
 

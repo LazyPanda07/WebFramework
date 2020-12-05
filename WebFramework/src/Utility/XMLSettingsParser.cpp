@@ -11,6 +11,11 @@ namespace framework
 {
 	namespace utility
 	{
+		string XMLSettingsParser::parseInlineParameter(const string& xmlLine)
+		{
+			return string(xmlLine.begin() + xmlLine.find('>') + 1, xmlLine.begin() + xmlLine.rfind('<'));
+		}
+
 		XMLSettingsParser::XMLSettingsParser(const string& XMLSettings)
 		{
 			using namespace XMLSettingsTags;
@@ -86,22 +91,22 @@ namespace framework
 
 				if (line.find(startRouteTag) != string::npos && line.find(endRouteTag) != string::npos)
 				{
-					route = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
+					route = parseInlineParameter(line);
 				}
 
 				if (line.find(startExecutorNameTag) != string::npos && line.find(endExecutorNameTag) != string::npos)
 				{
-					executorName = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
+					executorName = parseInlineParameter(line);
 				}
 
 				if (line.find(startParamNameTag) != string::npos && line.find(endParamNameTag) != string::npos)
 				{
-					paramName = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
+					paramName = parseInlineParameter(line);
 				}
 
 				if (line.find(startParamValueTag) != string::npos && line.find(endParamValueTag) != string::npos)
 				{
-					paramValue = string(line.begin() + line.find('>') + 1, line.begin() + line.rfind('<'));
+					paramValue = parseInlineParameter(line);
 				}
 			}
 

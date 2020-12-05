@@ -19,6 +19,9 @@ namespace framework
 		private:
 			std::unordered_map<std::string, ExecutorSettings> settings;	//route - settings
 
+		private:
+			static std::string parseInlineParameter(const std::string& xmlLine);
+
 		public:
 			XMLSettingsParser(const std::string& XMLSettings);
 
