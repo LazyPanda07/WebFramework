@@ -27,6 +27,7 @@ namespace exceptions
 	inline const std::string notImplemented = "Not implemented";
 	inline const std::string fileDoesNotExist = "File does not exist";
 	inline const std::string cantFindFunction = "Can't find createBaseExecutorSubclass function";
+	inline const std::string missingLoadType = "Missing load type of executor";
 }
 
 namespace XMLSettingsTags
@@ -48,4 +49,13 @@ namespace XMLSettingsTags
 
 	inline constexpr std::string_view startExecutorNameTag = "<executor-name>";
 	inline constexpr std::string_view endExecutorNameTag = "</executor-name>";
+
+	inline constexpr std::string_view startLoadTypeTag = "<load-type>";
+	inline constexpr std::string_view endLoadTypeTag = "</load-type>";
+}
+
+namespace XMLSettingsValues
+{
+	inline const std::string initializationLoadTypeValue = "initialization";
+	inline const std::string dynamicLoadTypeValue = "dynamic";
 }

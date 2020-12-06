@@ -5,6 +5,7 @@
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindFunctionException.h"
+#include "Exceptions/MissingLoadTypeException.h"
 
 #pragma warning(push)
 #pragma warning(disable: 6387)
@@ -61,7 +62,7 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const utility::XMLSettingsParser& parser, const string_view& port, DWORD timeout, const string& pathToExecutable) noexcept :
+	WebServer::WebServer(const utility::XMLSettingsParser& parser, const string_view& port, DWORD timeout, const string& pathToExecutable) :
 		BaseTCPServer(port, timeout, false)
 	{
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
@@ -91,7 +92,24 @@ namespace framework
 				}
 			}
 
-			routes[i] = unique_ptr<BaseExecutor>(function());
+			switch (j.executorLoadType)
+			{
+			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
+				routes[i] = unique_ptr<BaseExecutor>(function());
+
+				break;
+
+			case utility::XMLSettingsParser::ExecutorSettings::loadType::dynamic:
+
+				break;
+
+			case utility::XMLSettingsParser::ExecutorSettings::loadType::none:
+				throw exceptions::MissingLoadTypeException();
+
+				break;
+			}
+
+			
 			creator[j.name] = function;
 		}
 

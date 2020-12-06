@@ -26,6 +26,7 @@ namespace framework
 			string line;
 			string executorName;
 			string route;
+			string loadType;
 			string paramName;
 			string paramValue;
 			ExecutorSettings executor;
@@ -45,6 +46,19 @@ namespace framework
 						startExecutor = false;
 
 						executor.name = move(executorName);
+
+						if (loadType == XMLSettingsValues::initializationLoadTypeValue)
+						{
+							executor.executorLoadType = ExecutorSettings::loadType::initialization;
+						}
+						else if (loadType == XMLSettingsValues::dynamicLoadTypeValue)
+						{
+							executor.executorLoadType = ExecutorSettings::loadType::dynamic;
+						}
+						else
+						{
+							executor.executorLoadType = ExecutorSettings::loadType::none;
+						}
 
 						settings.insert(make_pair(move(route), move(executor)));
 
@@ -107,6 +121,11 @@ namespace framework
 				if (line.find(startParamValueTag) != string::npos && line.find(endParamValueTag) != string::npos)
 				{
 					paramValue = parseInlineParameter(line);
+				}
+
+				if (line.find(startLoadTypeTag) != string::npos && line.find(endLoadTypeTag) != string::npos)
+				{
+					loadType = parseInlineParameter(line);
 				}
 			}
 

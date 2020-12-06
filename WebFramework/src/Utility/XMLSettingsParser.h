@@ -12,8 +12,16 @@ namespace framework
 		public:
 			struct ExecutorSettings
 			{
-				std::string name;
+				enum class loadType
+				{
+					initialization,
+					dynamic,
+					none
+				};
+
 				std::unordered_map<std::string, std::string> initParams;
+				std::string name;
+				loadType executorLoadType;
 			};
 
 		private:
