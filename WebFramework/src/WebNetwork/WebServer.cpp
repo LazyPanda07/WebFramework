@@ -32,7 +32,7 @@ namespace framework
 
 				if (HTTPRequest.find("HTTP") != string::npos)
 				{
-					manager.service(web::HTTPParser(HTTPRequest), response);
+					executorsManager.service(web::HTTPParser(HTTPRequest), response);
 
 					stream << response;
 				}
@@ -113,7 +113,7 @@ namespace framework
 			creator[j.name] = function;
 		}
 
-		manager.init(move(routes), move(creator), move(settings));
+		executorsManager.init(move(routes), move(creator), move(settings));
 	}
 }
 

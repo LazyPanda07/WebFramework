@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <chrono>
 
 inline constexpr std::string_view HTTPPort = "80";
 
@@ -8,6 +9,9 @@ inline const std::string contentLengthHeader = "Content-Length";
 inline const std::string crlfcrlf = "\r\n\r\n";
 
 inline constexpr int averageHTTPRequestSize = 1500;
+
+inline constexpr unsigned int sessionLifeTime = 10 * 60;
+inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
 
 namespace ini
 {

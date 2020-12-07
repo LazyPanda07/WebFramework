@@ -3,6 +3,7 @@
 #include "BaseTCPServer.h"
 #include "WebFrameworkConstants.h"
 #include "Managers/ExecutorsManager.h"
+#include "Managers/SessionsManager.h"
 #include "Utility/XMLSettingsParser.h"
 
 namespace framework
@@ -10,7 +11,8 @@ namespace framework
 	class WebServer : public web::BaseTCPServer
 	{
 	private:
-		ExecutorsManager manager;
+		ExecutorsManager executorsManager;
+		SessionsManager sessionsManager;
 
 	private:
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
