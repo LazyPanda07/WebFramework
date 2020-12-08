@@ -4,8 +4,7 @@ using namespace std;
 
 namespace framework
 {
-	HTTPRequest::HTTPRequest(web::HTTPParser&& parser, SessionsManager& session, const string& ip) :
-		parser(move(parser)),
+	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip) :
 		session(session),
 		ip(ip)
 	{
@@ -14,32 +13,32 @@ namespace framework
 
 	string HTTPRequest::getRawParameters() const
 	{
-		return parser.getParameters();
+		return parser->getParameters();
 	}
 
 	string HTTPRequest::getMethod() const
 	{
-		return parser.getMethod();
+		return parser->getMethod();
 	}
 
 	const unordered_map<string, string>& HTTPRequest::getKeyValueParameters() const
 	{
-		return parser.getKeyValueParameters();
+		return parser->getKeyValueParameters();
 	}
 
 	const string& HTTPRequest::getHTTPVersion() const
 	{
-		return parser.getHTTPVersion();
+		return parser->getHTTPVersion();
 	}
 
 	const unordered_map<string, string>& HTTPRequest::getHeaders() const
 	{
-		return parser.getHeaders();
+		return parser->getHeaders();
 	}
 
 	const string& HTTPRequest::getBody() const
 	{
-		return parser.getBody();
+		return parser->getBody();
 	}
 
 	void HTTPRequest::setAttribute(const string& name, const string& value)
@@ -60,5 +59,19 @@ namespace framework
 	void HTTPRequest::deleteAttribute(const string& name)
 	{
 		session.deleteAttribute(ip, name);
+	}
+
+	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)
+	{
+		string data;
+
+		if (data.find("HTTP") == string::npos)
+		{
+			throw web::WebException();
+		}
+
+		request.parser = make_unique<web::HTTPParser>(data);
+
+		return stream;
 	}
 }

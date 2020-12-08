@@ -2,18 +2,19 @@
 
 #include "HTTPParser.h"
 #include "Managers/SessionsManager.h"
+#include "BaseIOSocketStream.h"
 
 namespace framework
 {
 	class HTTPRequest
 	{
 	private:
-		web::HTTPParser parser;
+		std::unique_ptr<web::HTTPParser> parser;
 		SessionsManager& session;
 		const std::string ip;
 
 	public:
-		HTTPRequest(web::HTTPParser&& parser, SessionsManager& session, const std::string& ip);
+		HTTPRequest(SessionsManager& session, const std::string& ip);
 
 		std::string getRawParameters() const;
 
@@ -34,6 +35,8 @@ namespace framework
 		void deleteSession();
 
 		void deleteAttribute(const std::string& name);
+
+		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request);
 
 		~HTTPRequest() = default;
 	};

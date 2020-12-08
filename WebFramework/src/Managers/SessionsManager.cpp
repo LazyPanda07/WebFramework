@@ -10,7 +10,7 @@ namespace framework
 	{
 		lock_guard<mutex> guard(checkLock);
 		vector<pair<sessionTimePoint, string>> deleteVariants;
-		sessionTimePoint current = chrono::high_resolution_clock::now();
+		const sessionTimePoint current = chrono::high_resolution_clock::now();
 
 		for (const auto& i : timeIp)
 		{

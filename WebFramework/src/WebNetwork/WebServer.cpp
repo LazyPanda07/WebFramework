@@ -24,22 +24,15 @@ namespace framework
 		{
 			try
 			{
-				string HTTPRequest;
+				HTTPRequest request(sessionsManager, clientIp);
 
 				response.clear();
 
-				stream >> HTTPRequest;
+				stream >> request;
 
-				if (HTTPRequest.find("HTTP") != string::npos)
-				{
-					executorsManager.service(framework::HTTPRequest(web::HTTPParser(HTTPRequest), sessionsManager, clientIp), response);
+				executorsManager.service(move(request), response);
 
-					stream << response;
-				}
-				else
-				{
-					throw web::WebException();
-				}
+				stream << response;
 			}
 			catch (const web::WebException&)
 			{
@@ -109,7 +102,7 @@ namespace framework
 				break;
 			}
 
-			
+
 			creator[j.name] = function;
 		}
 
