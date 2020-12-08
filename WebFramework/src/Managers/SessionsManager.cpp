@@ -9,11 +9,12 @@ namespace framework
 	void SessionsManager::SessionTime::asyncCheck()
 	{
 		lock_guard<mutex> guard(checkLock);
-		vector<pair<unsigned int, string>> deleteVariants;
+		vector<pair<sessionTimePoint, string>> deleteVariants;
+		sessionTimePoint current = chrono::high_resolution_clock::now();
 
 		for (const auto& i : timeIp)
 		{
-			if (i.first >= sessionLifeTime)
+			if ((current - i.first).count() >= sessionLifeTime)
 			{
 				deleteVariants.push_back(i);
 			}
@@ -46,14 +47,18 @@ namespace framework
 
 	void SessionsManager::SessionTime::nextPeriod()
 	{
-		multimap<unsigned int, string, greater<unsigned int>> tem;
-		static unsigned int period = sessionCheckPeriod.count();
+		multimap<sessionTimePoint, string, greater_equal<sessionTimePoint>> tem;
+		const sessionTimePoint period = chrono::high_resolution_clock::now();
 
 		for (const auto& i : timeIp)
 		{
-			tem.insert(make_pair(i.first + period, i.second));
+			sessionTimePoint next = i.first;
 
-			ipTime[i.second] = i.first + period;
+			next += period - next;
+
+			ipTime[i.second] = next;
+
+			tem.insert(make_pair(move(next), i.second));
 		}
 
 		timeIp = move(tem);
@@ -83,10 +88,11 @@ namespace framework
 			timeIp.erase(target);
 		}
 
-		timeIp.insert(make_pair(0U, ip));
+		sessionTimePoint start = chrono::high_resolution_clock::now();
 
-		ipTime[ip] = 0U;
+		ipTime[ip] = start;
 
+		timeIp.insert(make_pair(move(start), ip));
 	}
 
 	SessionsManager::SessionsManager() :

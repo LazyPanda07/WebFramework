@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <mutex>
+#include <chrono>
 
 namespace framework
 {
@@ -12,9 +13,12 @@ namespace framework
 	private:
 		class SessionTime
 		{
+		public:
+			using sessionTimePoint = std::chrono::high_resolution_clock::time_point;
+
 		private:
-			std::multimap<unsigned int, std::string, std::greater<unsigned int>> timeIp;
-			std::unordered_map<std::string, unsigned int> ipTime;
+			std::multimap<sessionTimePoint, std::string, std::greater_equal<sessionTimePoint>> timeIp;
+			std::unordered_map<std::string, sessionTimePoint> ipTime;
 			std::mutex checkLock;
 			SessionsManager* userSessionSynchronization;
 

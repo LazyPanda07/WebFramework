@@ -13,7 +13,7 @@ inline const std::string crlfcrlf = "\r\n\r\n";
 
 inline constexpr int averageHTTPRequestSize = 1500;
 
-inline constexpr unsigned int sessionLifeTime = 10 * 60;
+inline constexpr auto sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
 inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
 
 namespace ini
