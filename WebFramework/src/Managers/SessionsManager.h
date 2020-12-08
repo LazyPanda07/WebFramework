@@ -17,7 +17,7 @@ namespace framework
 			using sessionTimePoint = std::chrono::high_resolution_clock::time_point;
 
 		private:
-			std::multimap<sessionTimePoint, std::string, std::greater_equal<sessionTimePoint>> timeIp;
+			std::multimap<sessionTimePoint, std::string, std::greater<sessionTimePoint>> timeIp;
 			std::unordered_map<std::string, sessionTimePoint> ipTime;
 			std::mutex checkLock;
 			SessionsManager* userSessionSynchronization;

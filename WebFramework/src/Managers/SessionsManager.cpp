@@ -47,7 +47,7 @@ namespace framework
 
 	void SessionsManager::SessionTime::nextPeriod()
 	{
-		multimap<sessionTimePoint, string, greater_equal<sessionTimePoint>> tem;
+		multimap<sessionTimePoint, string, greater<sessionTimePoint>> tem;
 		const sessionTimePoint period = chrono::high_resolution_clock::now();
 
 		for (const auto& i : timeIp)
