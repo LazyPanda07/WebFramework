@@ -47,6 +47,8 @@ namespace framework
 
 		void deleteSession(const std::string& ip);
 
+		void deleteAttribute(const std::string& ip, const std::string& name);
+
 		~SessionsManager() = default;
 	};
 }

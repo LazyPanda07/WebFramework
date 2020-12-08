@@ -32,7 +32,7 @@ namespace framework
 
 				if (HTTPRequest.find("HTTP") != string::npos)
 				{
-					executorsManager.service(web::HTTPParser(HTTPRequest), response);
+					executorsManager.service(framework::HTTPRequest(web::HTTPParser(HTTPRequest), sessionsManager, clientIp), response);
 
 					stream << response;
 				}

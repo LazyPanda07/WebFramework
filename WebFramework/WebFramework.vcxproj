@@ -97,6 +97,7 @@
     <ClCompile Include="src\Utility\XMLSettingsParser.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
+    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
     <ClCompile Include="src\WebNetwork\WebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +113,7 @@
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />
     <ClInclude Include="src\WebFramework.h" />
+    <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
     <ClInclude Include="src\WebNetwork\WebServer.h" />
   </ItemGroup>
   <ItemGroup>

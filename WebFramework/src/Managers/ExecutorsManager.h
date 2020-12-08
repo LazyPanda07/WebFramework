@@ -40,7 +40,7 @@ namespace framework
 		template<typename BaseExecutorSubclass, typename... Args>
 		void addRoute(const std::string& route, Args&&... args);
 
-		void service(web::HTTPParser&& request, std::string& response);
+		void service(HTTPRequest&& request, std::string& response);
 
 		~ExecutorsManager() = default;
 	};

@@ -13,12 +13,12 @@ namespace framework
 		this->settings = move(settings);
 	}
 
-	void ExecutorsManager::service(web::HTTPParser&& request, string& response)
+	void ExecutorsManager::service(HTTPRequest&& request, string& response)
 	{
 		try
 		{
 			const string& method = request.getMethod();
-			string parameters = request.getParameters();
+			string parameters = request.getRawParameters();
 			decltype(routes.find("")) executor;
 
 			if (parameters.find('?') != string::npos)
@@ -41,7 +41,7 @@ namespace framework
 
 			if (method == getRequest)
 			{
-				executor->second->doGet(move(request), response);
+				executor->second->doGet(move(request),  response);
 			}
 			else if (method == postRequest)
 			{

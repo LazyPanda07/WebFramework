@@ -115,4 +115,11 @@ namespace framework
 
 		userSession.erase(ip);
 	}
+
+	void SessionsManager::deleteAttribute(const string& ip, const string& name)
+	{
+		lock_guard guard(lock);
+
+		userSession[ip].erase(name);
+	}
 }
