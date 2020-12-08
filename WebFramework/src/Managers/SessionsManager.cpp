@@ -100,11 +100,15 @@ namespace framework
 		lock_guard<mutex> guard(lock);
 
 		userSession[ip][name] = value;
+
+		time.updateSessionTime(ip);
 	}
 
 	string SessionsManager::getAttribute(const string& ip, const string& name)
 	{
 		lock_guard guard(lock);
+
+		time.updateSessionTime(ip);
 
 		return userSession.at(ip).at(name);
 	}
