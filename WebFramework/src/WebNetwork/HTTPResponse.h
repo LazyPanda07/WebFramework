@@ -17,7 +17,6 @@ namespace framework
 	public:
 		HTTPResponse();
 
-		//assign without Content-Length header
 		HTTPResponse& operator = (const web::HTTPBuilder& builder);
 
 		void setHTTPVersion(const std::string& version);
