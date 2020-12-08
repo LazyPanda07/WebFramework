@@ -70,11 +70,6 @@ namespace framework
 
 		if (response.body.size())
 		{
-			response.builder.headers
-			(
-				contentLengthHeader, response.body.size()
-			);
-
 			result = response.builder.build(&response.body);
 		}
 		else
