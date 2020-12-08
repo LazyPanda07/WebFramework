@@ -65,6 +65,8 @@ namespace framework
 	{
 		string data;
 
+		stream >> data;
+
 		if (data.find("HTTP") == string::npos)
 		{
 			throw web::WebException();
