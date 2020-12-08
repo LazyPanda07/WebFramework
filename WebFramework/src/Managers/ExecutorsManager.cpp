@@ -13,7 +13,7 @@ namespace framework
 		this->settings = move(settings);
 	}
 
-	void ExecutorsManager::service(HTTPRequest&& request, string& response)
+	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response)
 	{
 		try
 		{

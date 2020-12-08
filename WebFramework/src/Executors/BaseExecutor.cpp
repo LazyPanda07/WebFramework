@@ -4,12 +4,12 @@ using namespace std;
 
 namespace framework
 {
-	void BaseExecutor::doPost(HTTPRequest&& request, string& response)
+	void BaseExecutor::doPost(HTTPRequest&& request, HTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException();
 	}
 
-	void BaseExecutor::doGet(HTTPRequest&& request, string& response)
+	void BaseExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException();
 	}

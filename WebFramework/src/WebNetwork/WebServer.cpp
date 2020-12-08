@@ -18,15 +18,13 @@ namespace framework
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
 		const string clientIp = getIpV4(addr);
-		string response;
 
 		while (true)
 		{
 			try
 			{
 				HTTPRequest request(sessionsManager, clientIp);
-
-				response.clear();
+				HTTPResponse response;
 
 				stream >> request;
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WebNetwork/HTTPRequest.h"
+#include "WebNetwork/HTTPResponse.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/XMLSettingsParser.h"
 
@@ -13,9 +14,9 @@ namespace framework
 
 		virtual void init(const utility::XMLSettingsParser::ExecutorSettings& settings) = 0;
 
-		virtual void doPost(HTTPRequest&& request, std::string& response);
+		virtual void doPost(HTTPRequest&& request, HTTPResponse& response);
 
-		virtual void doGet(HTTPRequest&& request, std::string& response);
+		virtual void doGet(HTTPRequest&& request, HTTPResponse& response);
 
 		virtual void destroy() = 0;
 
