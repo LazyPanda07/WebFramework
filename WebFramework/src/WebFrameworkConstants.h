@@ -5,6 +5,9 @@
 
 inline constexpr std::string_view HTTPPort = "80";
 
+inline const std::string getRequest = "GET";
+inline const std::string postRequest = "POST";
+
 inline const std::string contentLengthHeader = "Content-Length";
 inline const std::string crlfcrlf = "\r\n\r\n";
 

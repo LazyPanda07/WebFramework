@@ -1,5 +1,7 @@
 #include "ExecutorsManager.h"
 
+#include "WebFrameworkConstants.h"
+
 using namespace std;
 
 namespace framework
@@ -37,11 +39,11 @@ namespace framework
 				}
 			}
 
-			if (method == "GET")
+			if (method == getRequest)
 			{
 				executor->second->doGet(move(request), response);
 			}
-			else if (method == "POST")
+			else if (method == postRequest)
 			{
 				executor->second->doPost(move(request), response);
 			}
