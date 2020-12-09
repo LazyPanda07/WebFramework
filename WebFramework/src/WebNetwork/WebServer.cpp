@@ -18,6 +18,7 @@ namespace framework
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
 		const string clientIp = getIpV4(addr);
+		unique_ptr<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
 
 		while (true)
 		{
@@ -38,21 +39,27 @@ namespace framework
 
 				break;
 			}
-			catch (const exceptions::NotImplementedException&)
+			catch (const exceptions::NotImplementedException&)	// 400
 			{
-				// 400
+				
 			}
 			catch (const exceptions::BaseExecutorException&)
 			{
 
 			}
-			catch (const exceptions::FileDoesNotExistException&)
+			catch (const exceptions::FileDoesNotExistException&)	// 404
 			{
-				// 404
+				HTTPResponse response;
+				resources->notFoundError(response);
+
+				stream << response;
 			}
-			catch (const out_of_range&)
+			catch (const out_of_range&)	// 404
 			{
-				// 404
+				HTTPResponse response;
+				resources->notFoundError(response);
+
+				stream << response;
 			}
 		}
 	}

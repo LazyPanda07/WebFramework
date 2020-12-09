@@ -68,4 +68,9 @@ namespace framework
 			throw;
 		}
 	}
+
+	unique_ptr<ResourceExecutor>& ExecutorsManager::getResourceExecutor()
+	{
+		return resources;
+	}
 }

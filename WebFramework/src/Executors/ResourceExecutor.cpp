@@ -38,7 +38,11 @@ namespace framework
 	}
 
 	ResourceExecutor::ResourceExecutor(const filesystem::path& assets) :
+#ifdef WEB_FRAMEWORK_ASSETS
+		defaultAssets(WEB_FRAMEWORK_ASSETS),
+#else
 		defaultAssets(webFrameworkDefaultAssests),
+#endif // WEB_FRAMEWORK_ASSETS
 		assets(assets)
 	{
 
@@ -46,11 +50,6 @@ namespace framework
 
 	void ResourceExecutor::init(const utility::XMLSettingsParser::ExecutorSettings& settings)
 	{
-		if (!filesystem::exists(defaultAssets))
-		{
-			filesystem::create_directory(defaultAssets);
-		}
-
 		if (!filesystem::exists(assets))
 		{
 			filesystem::create_directory(assets);
@@ -65,6 +64,28 @@ namespace framework
 	void ResourceExecutor::doPost(HTTPRequest&& request, HTTPResponse& response)
 	{
 		this->sendAssetFile(move(request), response);
+	}
+
+	void ResourceExecutor::notFoundError(HTTPResponse& response)
+	{
+		filesystem::path notFoundHTML(defaultAssets);
+
+		notFoundHTML /= "Errors";
+		notFoundHTML /= "404.html";
+
+		ifstream errorHTML(notFoundHTML);
+		string result;
+		string tem;
+
+		while (getline(errorHTML,tem))
+		{
+			result += tem + "\n";
+		}
+
+		errorHTML.close();
+
+		response.setResponseCode(web::ResponseCodes::notFound);
+		response.addBody(result);
 	}
 
 	void ResourceExecutor::destroy()

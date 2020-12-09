@@ -24,6 +24,8 @@ namespace framework
 
 		void doPost(HTTPRequest&& request, HTTPResponse& response) override;
 
+		void notFoundError(HTTPResponse& response);
+
 		void destroy() override;
 
 		~ResourceExecutor() = default;

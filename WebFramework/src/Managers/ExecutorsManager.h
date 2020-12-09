@@ -44,6 +44,8 @@ namespace framework
 
 		void service(HTTPRequest&& request, HTTPResponse& response);
 
+		std::unique_ptr<ResourceExecutor>& getResourceExecutor();
+
 		~ExecutorsManager() = default;
 	};
 

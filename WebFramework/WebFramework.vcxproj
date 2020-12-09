@@ -57,7 +57,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)WebFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -136,6 +136,9 @@
     <ProjectReference Include="..\SocketStreams\SocketStreams.vcxproj">
       <Project>{8bb9f3bd-68f4-403a-acc6-f85c75f5d14f}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WebFrameworkAssets\Errors\404.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
