@@ -18,7 +18,7 @@ namespace framework
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
-		WebServer(const utility::XMLSettingsParser& parser, const std::string_view& port = HTTPPort, DWORD timeout = 0, const std::string& pathToExecutable = "");
+		WebServer(const utility::XMLSettingsParser& parser, const std::filesystem::path& assets, const std::string_view& port = HTTPPort, DWORD timeout = 0, const std::string& pathToExecutable = "");
 
 		~WebServer() = default;
 	};

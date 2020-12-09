@@ -6,11 +6,15 @@ using namespace std;
 
 namespace framework
 {
-	void ExecutorsManager::init(unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept
+	void ExecutorsManager::init(const filesystem::path& assets, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept
 	{
 		this->routes = move(routes);
 		this->creator = move(creator);
 		this->settings = move(settings);
+		
+		resources = make_unique<ResourceExecutor>(assets);
+
+		resources->init(utility::XMLSettingsParser::ExecutorSettings());
 	}
 
 	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response)
@@ -20,12 +24,14 @@ namespace framework
 			const string& method = request.getMethod();
 			string parameters = request.getRawParameters();
 			decltype(routes.find("")) executor;
+			bool fileRequest = parameters.find('.') != string::npos;
 
 			if (parameters.find('?') != string::npos)
 			{
 				parameters.resize(parameters.find('?'));
 			}
 
+			if(!fileRequest)
 			{
 				lock_guard<mutex> scopeLock(checkExecutor);
 
@@ -41,11 +47,11 @@ namespace framework
 
 			if (method == getRequest)
 			{
-				executor->second->doGet(move(request),  response);
+				fileRequest ? resources->doGet(move(request), response) : executor->second->doGet(move(request), response);
 			}
 			else if (method == postRequest)
 			{
-				executor->second->doPost(move(request), response);
+				fileRequest ? resources->doPost(move(request), response) : executor->second->doPost(move(request), response);
 			}
 		}
 		catch (const exceptions::BaseExecutorException&)

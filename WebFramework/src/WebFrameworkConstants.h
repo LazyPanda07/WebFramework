@@ -16,6 +16,8 @@ inline constexpr int averageHTTPRequestSize = 1500;
 inline constexpr auto sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
 inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
 
+inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";
+
 namespace ini
 {
 	inline const std::string webServerSection = "WebServer";
@@ -25,6 +27,7 @@ namespace ini
 	inline const std::string portKey = "port";
 	inline const std::string timeoutKey = "timeout";
 	inline const std::string loadSourceKey = "loadSource";
+	inline const std::string assetsPathKey = "assetsPath";
 
 	inline const std::string defaultLoadSourceValue = "current";
 }

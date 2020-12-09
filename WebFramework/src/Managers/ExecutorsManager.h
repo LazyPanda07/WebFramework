@@ -12,6 +12,7 @@
 
 #include "Executors/BaseExecutor.h"
 #include "Utility/XMLSettingsParser.h"
+#include "Executors/ResourceExecutor.h"
 
 namespace framework
 {
@@ -22,6 +23,7 @@ namespace framework
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes;	//route - executor
 		std::unordered_map<std::string, createBaseExecutorSubclassFunction> creator;	//executor name - create function
 		std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings> settings;	//route - executor settings
+		std::unique_ptr<ResourceExecutor> resources;
 
 	private:
 		ExecutorsManager(const ExecutorsManager&) = delete;
@@ -35,7 +37,7 @@ namespace framework
 	public:
 		ExecutorsManager() = default;
 
-		void init(std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
+		void init(const std::filesystem::path& assets, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
 
 		template<typename BaseExecutorSubclass, typename... Args>
 		void addRoute(const std::string& route, Args&&... args);

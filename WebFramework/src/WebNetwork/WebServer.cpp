@@ -53,7 +53,7 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const utility::XMLSettingsParser& parser, const string_view& port, DWORD timeout, const string& pathToExecutable) :
+	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, const string_view& port, DWORD timeout, const string& pathToExecutable) :
 		BaseTCPServer(port, timeout, false)
 	{
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
@@ -87,6 +87,7 @@ namespace framework
 			{
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
 				routes[i] = unique_ptr<BaseExecutor>(function());
+				routes[i]->init(j);
 
 				break;
 
@@ -100,11 +101,10 @@ namespace framework
 				break;
 			}
 
-
 			creator[j.name] = function;
 		}
 
-		executorsManager.init(move(routes), move(creator), move(settings));
+		executorsManager.init(assets, move(routes), move(creator), move(settings));
 	}
 }
 
