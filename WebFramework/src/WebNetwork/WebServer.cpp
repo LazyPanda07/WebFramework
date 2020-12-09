@@ -46,6 +46,10 @@ namespace framework
 			{
 
 			}
+			catch (const exceptions::FileDoesNotExistException&)
+			{
+				// 404
+			}
 			catch (const out_of_range&)
 			{
 				// 404

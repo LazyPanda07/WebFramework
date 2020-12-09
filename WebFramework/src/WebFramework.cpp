@@ -30,7 +30,7 @@ namespace framework
 			server = make_unique<WebServer>
 				(
 					utility::XMLSettingsParser(webFrameworkSettigns.at(ini::settingsPathKey)),
-					webServerSettings.at(ini::assetsPathKey),
+					webFrameworkSettigns.at(ini::assetsPathKey),
 					webServerSettings.at(ini::portKey),
 					stoi(webServerSettings.at(ini::timeoutKey)),
 					webFrameworkSettigns.at(ini::loadSourceKey)

@@ -1,6 +1,7 @@
 #include "ExecutorsManager.h"
 
 #include "WebFrameworkConstants.h"
+#include "Exceptions/FileDoesNotExistException.h"
 
 using namespace std;
 
@@ -55,6 +56,10 @@ namespace framework
 			}
 		}
 		catch (const exceptions::BaseExecutorException&)
+		{
+			throw;
+		}
+		catch (const exceptions::FileDoesNotExistException&)
 		{
 			throw;
 		}

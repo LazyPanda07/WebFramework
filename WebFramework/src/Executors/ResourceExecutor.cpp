@@ -12,12 +12,12 @@ namespace framework
 	void ResourceExecutor::sendAssetFile(HTTPRequest&& request, HTTPResponse& response)
 	{
 		string parameters = request.getRawParameters();
-		string fileName = parameters.substr(parameters.rfind('/'));
+		string fileName = parameters.substr(parameters.rfind('/')  + 1);
 		string result;
 
-		parameters.resize(parameters.rfind('/'));
+		parameters.resize(parameters.rfind('/') + 1);
 
-		filesystem::path filePath(assets.string() + parameters);
+		filesystem::path filePath(assets.string() + parameters + fileName);
 
 		if (!filesystem::exists(filePath))
 		{
