@@ -10,6 +10,14 @@ namespace framework
 	class BaseExecutor
 	{
 	public:
+		enum class executorType
+		{
+			stateful,
+			stateless,
+			none
+		};
+
+	public:
 		BaseExecutor() = default;
 
 		virtual void init(const utility::XMLSettingsParser::ExecutorSettings& settings) = 0;
@@ -19,6 +27,8 @@ namespace framework
 		virtual void doGet(HTTPRequest&& request, HTTPResponse& response);
 
 		virtual void destroy() = 0;
+
+		virtual executorType getType() const = 0;
 
 		virtual ~BaseExecutor() = default;
 	};

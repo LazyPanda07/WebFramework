@@ -2,11 +2,11 @@
 
 #include <filesystem>
 
-#include "BaseExecutor.h"
+#include "BaseStatelessExecutor.h"
 
 namespace framework
 {
-	class ResourceExecutor : public BaseExecutor
+	class ResourceExecutor : public BaseStatelessExecutor
 	{
 	private:
 		std::filesystem::path defaultAssets;
