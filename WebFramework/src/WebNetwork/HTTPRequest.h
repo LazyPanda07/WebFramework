@@ -38,6 +38,8 @@ namespace framework
 
 		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request);
 
+		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
+
 		~HTTPRequest() = default;
 	};
 }

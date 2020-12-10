@@ -11,8 +11,13 @@ namespace framework
 {
 	void ResourceExecutor::sendAssetFile(HTTPRequest&& request, HTTPResponse& response)
 	{
+		if (request.getKeyValueParameters().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
 		string parameters = request.getRawParameters();
-		string fileName = parameters.substr(parameters.rfind('/')  + 1);
+		string fileName = parameters.substr(parameters.rfind('/') + 1);
 		string result;
 
 		parameters.resize(parameters.rfind('/') + 1);
@@ -77,7 +82,7 @@ namespace framework
 		string result;
 		string tem;
 
-		while (getline(errorHTML,tem))
+		while (getline(errorHTML, tem))
 		{
 			result += tem + "\n";
 		}

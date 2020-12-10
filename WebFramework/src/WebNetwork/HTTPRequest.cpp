@@ -76,4 +76,21 @@ namespace framework
 
 		return stream;
 	}
+
+	ostream& operator << (ostream& stream, const HTTPRequest& request)
+	{
+		const web::HTTPParser& parser = *request.parser.get();
+		const unordered_map<string, string>& headers = parser.getHeaders();
+
+		stream << parser.getMethod() << " " << parser.getParameters() << " " << parser.getHTTPVersion() << endl;
+
+		for (const auto& [name, value] : headers)
+		{
+			stream << name << ": " << value << endl;
+		}
+
+		stream << endl << parser.getBody();
+
+		return stream;
+	}
 }
