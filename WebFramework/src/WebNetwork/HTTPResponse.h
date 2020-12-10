@@ -27,6 +27,8 @@ namespace framework
 
 		void addBody(const std::string& body);
 
+		void setDefault();
+
 		friend streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponse& response);
 
 		~HTTPResponse() = default;

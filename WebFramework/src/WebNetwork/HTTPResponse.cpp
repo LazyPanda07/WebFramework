@@ -58,6 +58,15 @@ namespace framework
 		this->body = body;
 	}
 
+	void HTTPResponse::setDefault()
+	{
+		builder.clear();
+
+		builder.responseCode(web::ResponseCodes::ok);
+
+		body.clear();
+	}
+
 	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponse& response)
 	{
 		string result;

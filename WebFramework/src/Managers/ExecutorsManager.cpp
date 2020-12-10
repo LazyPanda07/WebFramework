@@ -43,6 +43,7 @@ namespace framework
 					const utility::XMLSettingsParser::ExecutorSettings& executorSettings = settings.at(parameters);
 
 					routes[parameters] = unique_ptr<BaseExecutor>(creator[executorSettings.name]());
+					routes[parameters]->init(executorSettings);
 				}
 			}
 
