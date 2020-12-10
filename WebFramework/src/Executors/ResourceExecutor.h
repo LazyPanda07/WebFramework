@@ -9,14 +9,16 @@ namespace framework
 	class ResourceExecutor : public BaseStatelessExecutor
 	{
 	private:
-		std::filesystem::path defaultAssets;
-		std::filesystem::path assets;
+		const std::filesystem::path defaultAssets;
+		const std::filesystem::path assets;
+		std::unordered_map<std::string, std::string> cache;
+		bool isCaching;
 
 	private:
 		void sendAssetFile(HTTPRequest&& request, HTTPResponse& response);
 
 	public:
-		ResourceExecutor(const std::filesystem::path& assets);
+		ResourceExecutor(const std::filesystem::path& assets, bool isCaching);
 
 		void init(const utility::XMLSettingsParser::ExecutorSettings& settings) override;
 

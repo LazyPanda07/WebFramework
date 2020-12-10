@@ -20,6 +20,18 @@ namespace framework
 		string fileName = parameters.substr(parameters.rfind('/') + 1);
 		string result;
 
+		if (isCaching)
+		{
+			auto findFile = cache.find(parameters);
+
+			if (findFile != cache.end())
+			{
+				response.addBody(findFile->second);
+
+				return;
+			}
+		}
+
 		parameters.resize(parameters.rfind('/') + 1);
 
 		filesystem::path filePath(assets.string() + parameters + fileName);
@@ -39,16 +51,22 @@ namespace framework
 
 		file.close();
 
+		if (isCaching)
+		{
+			cache[request.getRawParameters()] = result;
+		}
+
 		response.addBody(result);
 	}
 
-	ResourceExecutor::ResourceExecutor(const filesystem::path& assets) :
+	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching) :
 #ifdef WEB_FRAMEWORK_ASSETS
 		defaultAssets(WEB_FRAMEWORK_ASSETS),
 #else
 		defaultAssets(webFrameworkDefaultAssests),
 #endif // WEB_FRAMEWORK_ASSETS
-		assets(assets)
+		assets(assets),
+		isCaching(isCaching)
 	{
 
 	}

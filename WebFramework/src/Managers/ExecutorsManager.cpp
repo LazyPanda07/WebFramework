@@ -22,13 +22,13 @@ namespace framework
 		return *this;
 	}
 
-	void ExecutorsManager::init(const filesystem::path& assets, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept
+	void ExecutorsManager::init(const filesystem::path& assets, bool isCaching, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept
 	{
 		this->routes = move(routes);
 		this->creator = move(creator);
 		this->settings = move(settings);
 
-		resources = make_unique<ResourceExecutor>(assets);
+		resources = make_unique<ResourceExecutor>(assets, isCaching);
 
 		resources->init(utility::XMLSettingsParser::ExecutorSettings());
 	}

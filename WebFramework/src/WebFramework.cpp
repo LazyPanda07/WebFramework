@@ -31,6 +31,7 @@ namespace framework
 				(
 					utility::XMLSettingsParser(webFrameworkSettigns.at(ini::settingsPathKey)),
 					webFrameworkSettigns.at(ini::assetsPathKey),
+					webFrameworkSettigns.at(ini::usingAssetsCacheKey) == "true" ? true : false,
 					webServerSettings.at(ini::portKey),
 					stoi(webServerSettings.at(ini::timeoutKey)),
 					webFrameworkSettigns.at(ini::loadSourceKey)

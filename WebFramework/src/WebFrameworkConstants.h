@@ -28,8 +28,10 @@ namespace ini
 	inline const std::string timeoutKey = "timeout";
 	inline const std::string loadSourceKey = "loadSource";
 	inline const std::string assetsPathKey = "assetsPath";
+	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
 
 	inline const std::string defaultLoadSourceValue = "current";
+	inline const std::string defaultUsingAssetsCache = "false";
 }
 
 namespace exceptions

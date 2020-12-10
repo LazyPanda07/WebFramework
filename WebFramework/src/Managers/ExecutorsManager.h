@@ -36,7 +36,7 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		void init(const std::filesystem::path& assets, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
+		void init(const std::filesystem::path& assets, bool isCaching, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
 
 		template<typename BaseExecutorSubclass, typename... Args>
 		void addRoute(const std::string& route, Args&&... args);
