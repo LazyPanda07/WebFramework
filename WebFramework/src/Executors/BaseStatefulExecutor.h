@@ -4,7 +4,7 @@
 
 namespace framework
 {
-	class BaseStatefulExecutor : public BaseExecutor
+	class WEB_FRAMEWORK_API BaseStatefulExecutor : public BaseExecutor
 	{
 	public:
 		BaseStatefulExecutor() = default;

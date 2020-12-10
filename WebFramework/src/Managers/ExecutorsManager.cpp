@@ -18,6 +18,8 @@ namespace framework
 		this->creator = move(other.creator);
 		this->settings = move(other.settings);
 		this->resources = move(other.resources);
+
+		return *this;
 	}
 
 	void ExecutorsManager::init(const filesystem::path& assets, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept

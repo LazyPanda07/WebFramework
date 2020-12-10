@@ -5,9 +5,15 @@
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/XMLSettingsParser.h"
 
+#ifdef EXECUTOR_FROM_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif // EXECUTOR_FROM_DLL
+
 namespace framework
 {
-	class BaseExecutor
+	class WEB_FRAMEWORK_API BaseExecutor
 	{
 	public:
 		enum class executorType
