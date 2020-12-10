@@ -40,6 +40,11 @@ namespace framework
 			{
 				data.erase(clientIp);
 
+				for (auto& i : statefulExecutors)
+				{
+					i.second->destroy();
+				}
+
 				break;
 			}
 			catch (const exceptions::NotImplementedException&)	// 400

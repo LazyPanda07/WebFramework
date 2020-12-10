@@ -69,3 +69,12 @@ namespace XMLSettingsValues
 	inline const std::string initializationLoadTypeValue = "initialization";
 	inline const std::string dynamicLoadTypeValue = "dynamic";
 }
+
+namespace WebFrameworkAssets
+{
+	inline constexpr std::string_view errorsFolder = "Errors";
+
+	inline constexpr std::string_view badRequest = "400.html";
+	inline constexpr std::string_view notFound = "404.html";
+	inline constexpr std::string_view internalServerError = "500.html";
+}

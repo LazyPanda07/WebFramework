@@ -75,8 +75,8 @@ namespace framework
 	{
 		filesystem::path notFoundHTML(defaultAssets);
 
-		notFoundHTML /= "Errors";
-		notFoundHTML /= "404.html";
+		notFoundHTML /= WebFrameworkAssets::errorsFolder;
+		notFoundHTML /= WebFrameworkAssets::notFound;
 
 		ifstream errorHTML(notFoundHTML);
 		string result;
@@ -98,8 +98,8 @@ namespace framework
 	{
 		filesystem::path badRequestHTML(defaultAssets);
 
-		badRequestHTML /= "Errors";
-		badRequestHTML /= "400.html";
+		badRequestHTML /= WebFrameworkAssets::errorsFolder;
+		badRequestHTML /= WebFrameworkAssets::badRequest;
 
 		ifstream errorHTML(badRequestHTML);
 		string result;
@@ -121,8 +121,8 @@ namespace framework
 	{
 		filesystem::path internalServerErrorHTML(defaultAssets);
 
-		internalServerErrorHTML /= "Errors";
-		internalServerErrorHTML /= "400.html";
+		internalServerErrorHTML /= WebFrameworkAssets::errorsFolder;
+		internalServerErrorHTML /= WebFrameworkAssets::internalServerError;
 
 		ifstream errorHTML(internalServerErrorHTML);
 		string result;
