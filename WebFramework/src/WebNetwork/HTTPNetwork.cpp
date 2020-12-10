@@ -51,7 +51,7 @@ namespace framework
 
 			totalSize += lastPacket;
 
-			string_view findHeader(data.data(), data.size());
+			string_view findHeader(data.data(), totalSize);
 			string_view::const_iterator contentLength = search
 			(
 				findHeader.begin(), findHeader.end(), contentLengthHeader.begin(), contentLengthHeader.end(),
@@ -71,7 +71,7 @@ namespace framework
 
 				if (bodySize == -1)
 				{
-					size_t contentLengthHeaderPosition = distance(findHeader.begin(), contentLength) + contentLengthHeader.size();
+					size_t contentLengthHeaderPosition = distance(findHeader.begin(), contentLength) + contentLengthHeader.size() + 2;
 					string_view contentLengthValue = findHeader.substr(contentLengthHeaderPosition, findHeader.find("\r\n", distance(findHeader.begin(), contentLength)) - contentLengthHeaderPosition);
 
 					from_chars(contentLengthValue.data(), contentLengthValue.data() + contentLengthValue.size(), bodySize);
