@@ -26,6 +26,10 @@ namespace framework
 
 		void notFoundError(HTTPResponse& response);
 
+		void badRequestError(HTTPResponse& response);
+
+		void internalServerError(HTTPResponse& response);
+
 		void destroy() override;
 
 		~ResourceExecutor() = default;

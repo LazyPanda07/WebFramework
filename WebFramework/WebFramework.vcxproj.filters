@@ -113,5 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\404.html" />
+    <None Include="WebFrameworkAssets\Errors\400.html" />
+    <None Include="WebFrameworkAssets\Errors\500.html" />
   </ItemGroup>
 </Project>

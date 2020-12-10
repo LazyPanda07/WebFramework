@@ -43,11 +43,9 @@ namespace framework
 			}
 			catch (const exceptions::NotImplementedException&)	// 400
 			{
-				
-			}
-			catch (const exceptions::BaseExecutorException&)
-			{
+				resources->badRequestError(response);
 
+				stream << response;
 			}
 			catch (const exceptions::FileDoesNotExistException&)	// 404
 			{
@@ -58,6 +56,18 @@ namespace framework
 			catch (const out_of_range&)	// 404
 			{
 				resources->notFoundError(response);
+
+				stream << response;
+			}
+			catch (const exceptions::BaseExecutorException&)	//500
+			{
+				resources->internalServerError(response);
+
+				stream << response;
+			}
+			catch (...)	//500
+			{
+				resources->internalServerError(response);
 
 				stream << response;
 			}

@@ -85,6 +85,53 @@ namespace framework
 		errorHTML.close();
 
 		response.setResponseCode(web::ResponseCodes::notFound);
+
+		response.addBody(result);
+	}
+
+	void ResourceExecutor::badRequestError(HTTPResponse& response)
+	{
+		filesystem::path badRequestHTML(defaultAssets);
+
+		badRequestHTML /= "Errors";
+		badRequestHTML /= "400.html";
+
+		ifstream errorHTML(badRequestHTML);
+		string result;
+		string tem;
+
+		while (getline(errorHTML, tem))
+		{
+			result += tem + "\n";
+		}
+
+		errorHTML.close();
+
+		response.setResponseCode(web::ResponseCodes::badRequest);
+
+		response.addBody(result);
+	}
+
+	void ResourceExecutor::internalServerError(HTTPResponse& response)
+	{
+		filesystem::path internalServerErrorHTML(defaultAssets);
+
+		internalServerErrorHTML /= "Errors";
+		internalServerErrorHTML /= "400.html";
+
+		ifstream errorHTML(internalServerErrorHTML);
+		string result;
+		string tem;
+
+		while (getline(errorHTML, tem))
+		{
+			result += tem + "\n";
+		}
+
+		errorHTML.close();
+
+		response.setResponseCode(web::ResponseCodes::internalServerError);
+
 		response.addBody(result);
 	}
 
