@@ -7,12 +7,25 @@ using namespace std;
 
 namespace framework
 {
+	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept
+	{
+		(*this) = move(other);
+	}
+
+	ExecutorsManager& ExecutorsManager::operator = (ExecutorsManager&& other) noexcept
+	{
+		this->routes = move(other.routes);
+		this->creator = move(other.creator);
+		this->settings = move(other.settings);
+		this->resources = move(other.resources);
+	}
+
 	void ExecutorsManager::init(const filesystem::path& assets, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept
 	{
 		this->routes = move(routes);
 		this->creator = move(creator);
 		this->settings = move(settings);
-		
+
 		resources = make_unique<ResourceExecutor>(assets);
 
 		resources->init(utility::XMLSettingsParser::ExecutorSettings());
@@ -32,7 +45,7 @@ namespace framework
 				parameters.resize(parameters.find('?'));
 			}
 
-			if(!fileRequest)
+			if (!fileRequest)
 			{
 				lock_guard<mutex> scopeLock(checkExecutor);
 

@@ -25,17 +25,16 @@ namespace framework
 		std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings> settings;	//route - executor settings
 		std::unique_ptr<ResourceExecutor> resources;
 
-	private:
+	public:
+		ExecutorsManager() = default;
+
 		ExecutorsManager(const ExecutorsManager&) = delete;
 
 		ExecutorsManager& operator = (const ExecutorsManager&) = delete;
 
-		ExecutorsManager(ExecutorsManager&&) noexcept = delete;
+		ExecutorsManager(ExecutorsManager&& other) noexcept;
 
-		ExecutorsManager& operator = (ExecutorsManager&&) noexcept = delete;
-
-	public:
-		ExecutorsManager() = default;
+		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
 		void init(const std::filesystem::path& assets, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
 
