@@ -11,7 +11,7 @@ namespace framework
 {
 	void ResourceExecutor::sendAssetFile(HTTPRequest&& request, HTTPResponse& response)
 	{
-		if (request.getKeyValueParameters().count("Referer"))
+		if (!request.getHeaders().count("Referer"))
 		{
 			throw exceptions::NotImplementedException();
 		}
