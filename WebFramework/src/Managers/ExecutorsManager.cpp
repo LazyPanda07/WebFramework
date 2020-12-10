@@ -33,7 +33,7 @@ namespace framework
 		resources->init(utility::XMLSettingsParser::ExecutorSettings());
 	}
 
-	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response)
+	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		try
 		{
@@ -49,17 +49,27 @@ namespace framework
 
 			if (!fileRequest)
 			{
-				lock_guard<mutex> scopeLock(checkExecutor);
+				executor = statefulExecutors.find(parameters);
 
-				executor = routes.find(parameters);
-
-				if (executor == routes.end())
+				if (executor == statefulExecutors.end())
 				{
-					const utility::XMLSettingsParser::ExecutorSettings& executorSettings = settings.at(parameters);
+					lock_guard<mutex> scopeLock(checkExecutor);
 
-					routes[parameters] = unique_ptr<BaseExecutor>(creator[executorSettings.name]());
-					routes[parameters]->init(executorSettings);
-				}
+					executor = routes.find(parameters);
+
+					if (executor == routes.end())
+					{
+						const utility::XMLSettingsParser::ExecutorSettings& executorSettings = settings.at(parameters);
+
+						executor = routes.insert(make_pair(move(parameters), unique_ptr<BaseExecutor>(creator[executorSettings.name]()))).first;
+						executor->second->init(executorSettings);
+
+						if (executor->second->getType() == BaseExecutor::executorType::stateful)
+						{
+							executor = statefulExecutors.insert(routes.extract(executor)).position;
+						}
+					}
+				}	
 			}
 
 			if (method == getRequest)

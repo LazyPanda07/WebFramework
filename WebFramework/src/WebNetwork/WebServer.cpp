@@ -19,6 +19,7 @@ namespace framework
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
 		const string clientIp = getIpV4(addr);
 		unique_ptr<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
+		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 
 		while (true)
@@ -31,7 +32,7 @@ namespace framework
 
 				stream >> request;
 
-				executorsManager.service(move(request), response);
+				executorsManager.service(move(request), response, statefulExecutors);
 
 				stream << response;
 			}

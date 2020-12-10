@@ -41,7 +41,7 @@ namespace framework
 		template<typename BaseExecutorSubclass, typename... Args>
 		void addRoute(const std::string& route, Args&&... args);
 
-		void service(HTTPRequest&& request, HTTPResponse& response);
+		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		std::unique_ptr<ResourceExecutor>& getResourceExecutor();
 
