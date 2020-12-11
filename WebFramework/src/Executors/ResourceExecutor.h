@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <shared_mutex>
 
 #include "BaseStatelessExecutor.h"
 
@@ -9,6 +10,7 @@ namespace framework
 	class ResourceExecutor : public BaseStatelessExecutor
 	{
 	private:
+		std::shared_mutex cacheMutex;
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
 		std::unordered_map<std::string, std::string> cache;

@@ -22,6 +22,8 @@ namespace framework
 
 		if (isCaching)
 		{
+			shared_lock<shared_mutex> shared(cacheMutex);
+
 			auto findFile = cache.find(parameters);
 
 			if (findFile != cache.end())
@@ -53,6 +55,8 @@ namespace framework
 
 		if (isCaching)
 		{
+			lock_guard<shared_mutex> insertLock(cacheMutex);
+
 			cache[request.getRawParameters()] = result;
 		}
 
