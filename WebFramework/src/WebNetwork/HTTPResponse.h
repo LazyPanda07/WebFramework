@@ -27,6 +27,8 @@ namespace framework
 
 		void addBody(const std::string& body);
 
+		void addCookie(const std::string& name, const std::string& value);
+
 		void setDefault();
 
 		friend streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponse& response);

@@ -58,6 +58,14 @@ namespace framework
 		this->body = body;
 	}
 
+	void HTTPResponse::addCookie(const std::string& name, const std::string& value)
+	{
+		builder.headers
+		(
+			"Set-Cookie", name + "=" + value
+		);
+	}
+
 	void HTTPResponse::setDefault()
 	{
 		builder.clear();
