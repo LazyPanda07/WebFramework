@@ -164,6 +164,7 @@
     <ClInclude Include="src\WebFramework.h" />
     <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
+    <ClInclude Include="src\WebNetwork\Interfaces\ISendFile.h" />
     <ClInclude Include="src\WebNetwork\WebServer.h" />
   </ItemGroup>
   <ItemGroup>

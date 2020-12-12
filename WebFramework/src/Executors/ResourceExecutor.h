@@ -4,10 +4,11 @@
 #include <shared_mutex>
 
 #include "BaseStatelessExecutor.h"
+#include "WebNetwork/Interfaces/ISendFile.h"
 
 namespace framework
 {
-	class ResourceExecutor : public BaseStatelessExecutor
+	class ResourceExecutor : interfaces::ISendFile, public BaseStatelessExecutor
 	{
 	private:
 		std::shared_mutex cacheMutex;
@@ -17,7 +18,7 @@ namespace framework
 		bool isCaching;
 
 	private:
-		void sendAssetFile(HTTPRequest&& request, HTTPResponse& response);
+		void sendFile(const std::string& filePath, HTTPResponse& response) override;
 
 	public:
 		ResourceExecutor(const std::filesystem::path& assets, bool isCaching);

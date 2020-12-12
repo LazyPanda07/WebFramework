@@ -9,22 +9,15 @@ using namespace std;
 
 namespace framework
 {
-	void ResourceExecutor::sendAssetFile(HTTPRequest&& request, HTTPResponse& response)
+	void ResourceExecutor::sendFile(const string& filePath, HTTPResponse& response)
 	{
-		if (!request.getHeaders().count("Referer"))
-		{
-			throw exceptions::NotImplementedException();
-		}
-
-		string parameters = request.getRawParameters();
-		string fileName = parameters.substr(parameters.rfind('/') + 1);
 		string result;
 
 		if (isCaching)
 		{
 			shared_lock<shared_mutex> shared(cacheMutex);
 
-			auto findFile = cache.find(parameters);
+			auto findFile = cache.find(filePath);
 
 			if (findFile != cache.end())
 			{
@@ -34,16 +27,14 @@ namespace framework
 			}
 		}
 
-		parameters.resize(parameters.rfind('/') + 1);
+		filesystem::path assetsFilePath(assets.string() + filePath);
 
-		filesystem::path filePath(assets.string() + parameters + fileName);
-
-		if (!filesystem::exists(filePath))
+		if (!filesystem::exists(assetsFilePath))
 		{
 			throw exceptions::FileDoesNotExistException();
 		}
 
-		ifstream file(filePath);
+		ifstream file(assetsFilePath);
 		string tem;
 
 		while (getline(file, tem))
@@ -57,7 +48,7 @@ namespace framework
 		{
 			lock_guard<shared_mutex> insertLock(cacheMutex);
 
-			cache[request.getRawParameters()] = result;
+			cache[filePath] = result;
 		}
 
 		response.addBody(result);
@@ -85,12 +76,22 @@ namespace framework
 
 	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)
 	{
-		this->sendAssetFile(move(request), response);
+		if (!request.getHeaders().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
+		this->sendFile(request.getRawParameters(), response);
 	}
 
 	void ResourceExecutor::doPost(HTTPRequest&& request, HTTPResponse& response)
 	{
-		this->sendAssetFile(move(request), response);
+		if (!request.getHeaders().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
+		this->sendFile(request.getRawParameters(), response);
 	}
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response)
