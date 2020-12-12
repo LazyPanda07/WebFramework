@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class ResourceExecutor : interfaces::ISendFile, public BaseStatelessExecutor
+	class ResourceExecutor : public interfaces::ISendFile, public BaseStatelessExecutor
 	{
 	private:
 		std::shared_mutex cacheMutex;
@@ -17,13 +17,12 @@ namespace framework
 		std::unordered_map<std::string, std::string> cache;
 		bool isCaching;
 
-	private:
-		void sendFile(const std::string& filePath, HTTPResponse& response) override;
-
 	public:
 		ResourceExecutor(const std::filesystem::path& assets, bool isCaching);
 
 		void init(const utility::XMLSettingsParser::ExecutorSettings& settings) override;
+
+		void sendFile(const std::string& filePath, HTTPResponse& response) override;
 
 		void doGet(HTTPRequest&& request, HTTPResponse& response) override;
 

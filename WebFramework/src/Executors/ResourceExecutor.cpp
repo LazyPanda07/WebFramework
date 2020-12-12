@@ -9,6 +9,26 @@ using namespace std;
 
 namespace framework
 {
+	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching) :
+#ifdef WEB_FRAMEWORK_ASSETS
+		defaultAssets(WEB_FRAMEWORK_ASSETS),
+#else
+		defaultAssets(webFrameworkDefaultAssests),
+#endif // WEB_FRAMEWORK_ASSETS
+		assets(assets),
+		isCaching(isCaching)
+	{
+
+	}
+
+	void ResourceExecutor::init(const utility::XMLSettingsParser::ExecutorSettings& settings)
+	{
+		if (!filesystem::exists(assets))
+		{
+			filesystem::create_directory(assets);
+		}
+	}
+
 	void ResourceExecutor::sendFile(const string& filePath, HTTPResponse& response)
 	{
 		string result;
@@ -52,26 +72,6 @@ namespace framework
 		}
 
 		response.addBody(result);
-	}
-
-	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching) :
-#ifdef WEB_FRAMEWORK_ASSETS
-		defaultAssets(WEB_FRAMEWORK_ASSETS),
-#else
-		defaultAssets(webFrameworkDefaultAssests),
-#endif // WEB_FRAMEWORK_ASSETS
-		assets(assets),
-		isCaching(isCaching)
-	{
-
-	}
-
-	void ResourceExecutor::init(const utility::XMLSettingsParser::ExecutorSettings& settings)
-	{
-		if (!filesystem::exists(assets))
-		{
-			filesystem::create_directory(assets);
-		}
 	}
 
 	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)

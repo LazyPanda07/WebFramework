@@ -2,6 +2,7 @@
 
 #include "HTTPParser.h"
 #include "Managers/SessionsManager.h"
+#include "Interfaces/ISendFile.h"
 #include "BaseIOSocketStream.h"
 
 namespace framework
@@ -12,9 +13,10 @@ namespace framework
 		std::unique_ptr<web::HTTPParser> parser;
 		SessionsManager& session;
 		const std::string ip;
+		interfaces::ISendFile& resources;
 
 	public:
-		HTTPRequest(SessionsManager& session, const std::string& ip);
+		HTTPRequest(SessionsManager& session, const std::string& ip, interfaces::ISendFile& resources);
 
 		std::string getRawParameters() const;
 
@@ -35,6 +37,8 @@ namespace framework
 		void deleteSession();
 
 		void deleteAttribute(const std::string& name);
+
+		void sendAssetFile(const std::string& filePath, HTTPResponse& response);
 
 		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request);
 

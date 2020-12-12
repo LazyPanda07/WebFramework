@@ -4,9 +4,10 @@ using namespace std;
 
 namespace framework
 {
-	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendFile& resources) :
 		session(session),
-		ip(ip)
+		ip(ip),
+		resources(resources)
 	{
 		
 	}
@@ -59,6 +60,11 @@ namespace framework
 	void HTTPRequest::deleteAttribute(const string& name)
 	{
 		session.deleteAttribute(ip, name);
+	}
+
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response)
+	{
+		resources.sendFile(filePath, response);
 	}
 
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)

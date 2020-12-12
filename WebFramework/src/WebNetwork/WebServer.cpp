@@ -26,7 +26,7 @@ namespace framework
 		{
 			try
 			{
-				HTTPRequest request(sessionsManager, clientIp);
+				HTTPRequest request(sessionsManager, clientIp, *resources);
 
 				response.setDefault();
 
