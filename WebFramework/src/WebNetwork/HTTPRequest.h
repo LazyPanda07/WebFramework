@@ -38,6 +38,7 @@ namespace framework
 
 		void deleteAttribute(const std::string& name);
 
+		//filePath must be with leading /
 		void sendAssetFile(const std::string& filePath, HTTPResponse& response);
 
 		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request);
