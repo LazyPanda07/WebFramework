@@ -32,6 +32,16 @@ namespace framework
 
 		virtual void doGet(HTTPRequest&& request, HTTPResponse& response);
 
+		virtual void doHead(HTTPRequest&& request, HTTPResponse& response);
+
+		virtual void doPut(HTTPRequest&& request, HTTPResponse& response);
+
+		virtual void doDelete(HTTPRequest&& request, HTTPResponse& response);
+
+		virtual void doOptions(HTTPRequest&& request, HTTPResponse& response);
+
+		virtual void doTrace(HTTPRequest&& request, HTTPResponse& response);
+
 		virtual void destroy() = 0;
 
 		virtual executorType getType() const = 0;
@@ -43,6 +53,6 @@ namespace framework
 }
 
 #define CREATE_BASE_EXECUTOR_SUBCLASS_INSTANCE(subclassName) extern "C" __declspec(dllexport) framework::BaseExecutor* create##subclassName##Instance()	\
-																							  {	\
-																								return new subclassName();	\
-																							  }
+{	\
+	return new subclassName();	\
+}

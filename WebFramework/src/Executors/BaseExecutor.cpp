@@ -13,4 +13,29 @@ namespace framework
 	{
 		throw exceptions::NotImplementedException();
 	}
+
+	void BaseExecutor::doHead(HTTPRequest&& request, HTTPResponse& response)
+	{
+		throw exceptions::NotImplementedException();
+	}
+
+	void BaseExecutor::doPut(HTTPRequest&& request, HTTPResponse& response)
+	{
+		throw exceptions::NotImplementedException();
+	}
+
+	void BaseExecutor::doDelete(HTTPRequest&& request, HTTPResponse& response)
+	{
+		throw exceptions::NotImplementedException();
+	}
+
+	void BaseExecutor::doOptions(HTTPRequest&& request, HTTPResponse& response)
+	{
+		throw exceptions::NotImplementedException();
+	}
+
+	void BaseExecutor::doTrace(HTTPRequest&& request, HTTPResponse& response)
+	{
+		throw exceptions::NotImplementedException();
+	}
 }
