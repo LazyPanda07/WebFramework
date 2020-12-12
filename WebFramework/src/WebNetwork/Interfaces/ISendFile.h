@@ -9,7 +9,7 @@ namespace framework
 		class ISendFile
 		{
 		public:
-			//filePath must be with leading /
+			//filePath must start with leading /
 			virtual void sendFile(const std::string& filePath, HTTPResponse& response) = 0;
 
 			virtual ~ISendFile() = default;
