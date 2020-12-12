@@ -114,7 +114,15 @@ namespace framework
 			{
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
 				routes[i] = unique_ptr<BaseExecutor>(function());
-				routes[i]->init(j);
+
+				if (routes[i]->getType() == BaseExecutor::executorType::stateful)
+				{
+					routes.erase(i);
+				}
+				else
+				{
+					routes[i]->init(j);
+				}
 
 				break;
 
