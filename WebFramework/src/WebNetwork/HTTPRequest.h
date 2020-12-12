@@ -38,6 +38,8 @@ namespace framework
 
 		void deleteAttribute(const std::string& name);
 
+		std::unordered_map<std::string, std::string> getCookies() const;
+
 		//filePath must start with leading /
 		void sendAssetFile(const std::string& filePath, HTTPResponse& response);
 

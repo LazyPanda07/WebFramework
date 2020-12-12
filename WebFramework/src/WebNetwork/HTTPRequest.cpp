@@ -62,6 +62,43 @@ namespace framework
 		session.deleteAttribute(ip, name);
 	}
 
+	unordered_map<string, string> HTTPRequest::getCookies() const
+	{
+		unordered_map<string, string> result;
+		
+		try
+		{
+			const string& cookies = parser->getHeaders().at("Cookie");
+			size_t offset = 0;
+
+			while (true)
+			{
+				size_t findKey = cookies.find('=', offset);
+				size_t findValue = cookies.find("; ", offset);
+				string::const_iterator startKey = cookies.begin() + offset;
+				string::const_iterator endKey = cookies.begin() + findKey;
+				string::const_iterator startValue = endKey + 1;
+				string::const_iterator endValue = findValue != string::npos ? (cookies.begin() + findValue) : (cookies.end());
+
+				result.insert(make_pair(string(startKey, endKey), string(startValue, endValue)));
+
+				if (findValue == string::npos)
+				{
+					break;
+				}
+
+				offset = findValue + 2;
+			}
+			
+		}
+		catch (const out_of_range&)
+		{
+			
+		}
+
+		return result;
+	}
+
 	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response)
 	{
 		resources.sendFile(filePath, response);
