@@ -9,7 +9,7 @@ namespace framework
 		class CantFindFunctionException : public BaseExecutorException
 		{
 		public:
-			CantFindFunctionException();
+			CantFindFunctionException(const std::string& createFunctionName);
 
 			~CantFindFunctionException() = default;
 		};

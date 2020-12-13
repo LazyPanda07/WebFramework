@@ -2,12 +2,14 @@
 
 #include "WebFrameworkConstants.h"
 
+using namespace std;
+
 namespace framework
 {
 	namespace exceptions
 	{
-		FileDoesNotExistException::FileDoesNotExistException() :
-			runtime_error(::exceptions::fileDoesNotExist)
+		FileDoesNotExistException::FileDoesNotExistException(const string& fileName) :
+			runtime_error(fileName + " " + ::exceptions::fileDoesNotExist)
 		{
 
 		}

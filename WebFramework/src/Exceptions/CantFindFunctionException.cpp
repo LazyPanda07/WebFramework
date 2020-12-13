@@ -2,12 +2,14 @@
 
 #include "WebFrameworkConstants.h"
 
+using namespace std;
+
 namespace framework
 {
 	namespace exceptions
 	{
-		CantFindFunctionException::CantFindFunctionException() :
-			BaseExecutorException(::exceptions::cantFindFunction)
+		CantFindFunctionException::CantFindFunctionException(const string& createFunctionName) :
+			BaseExecutorException(::exceptions::cantFindFunction + createFunctionName + " function")
 		{
 
 		}

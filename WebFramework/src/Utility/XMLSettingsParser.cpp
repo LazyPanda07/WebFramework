@@ -33,7 +33,7 @@ namespace framework
 
 			if (!in.is_open())
 			{
-				throw exceptions::FileDoesNotExistException();
+				throw exceptions::FileDoesNotExistException(XMLSettings);
 			}
 
 			while (getline(in, line))

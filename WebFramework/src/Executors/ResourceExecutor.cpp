@@ -51,7 +51,7 @@ namespace framework
 
 		if (!filesystem::exists(assetsFilePath))
 		{
-			throw exceptions::FileDoesNotExistException();
+			throw exceptions::FileDoesNotExistException(assetsFilePath.string());
 		}
 
 		ifstream file(assetsFilePath);

@@ -37,9 +37,9 @@ namespace ini
 namespace exceptions
 {
 	inline const std::string notImplemented = "Not implemented";
-	inline const std::string fileDoesNotExist = "File does not exist";
-	inline const std::string cantFindFunction = "Can't find createBaseExecutorSubclass function";
-	inline const std::string missingLoadType = "Missing load type of executor";
+	inline const std::string fileDoesNotExist = "file does not exist";
+	inline const std::string cantFindFunction = "Can't find ";
+	inline const std::string missingLoadType = "Missing load type of ";
 
 	inline const std::string cantFindSettingsPath = "Can't find settings path option";
 	inline const std::string cantFindAssetsPath = "Can't find assets path option";

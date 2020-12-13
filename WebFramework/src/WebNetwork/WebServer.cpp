@@ -90,7 +90,7 @@ namespace framework
 
 		if (pathToExecutable != ini::defaultLoadSourceValue && !executable)
 		{
-			throw exceptions::FileDoesNotExistException();
+			throw exceptions::FileDoesNotExistException(pathToExecutable);
 		}
 
 		routes.reserve(settings.size());
@@ -106,7 +106,7 @@ namespace framework
 
 				if (!function)
 				{
-					throw exceptions::CantFindFunctionException();
+					throw exceptions::CantFindFunctionException("create" + j.name + "Instance");
 				}
 			}
 
@@ -131,7 +131,7 @@ namespace framework
 				break;
 
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::none:
-				throw exceptions::MissingLoadTypeException();
+				throw exceptions::MissingLoadTypeException(j.name);
 
 				break;
 			}

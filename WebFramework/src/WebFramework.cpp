@@ -18,7 +18,7 @@ namespace framework
 	{
 		if (!filesystem::exists(configurationINIFile))
 		{
-			throw exceptions::FileDoesNotExistException();
+			throw exceptions::FileDoesNotExistException(configurationINIFile.string());
 		}
 
 		::utility::INIParser parser(configurationINIFile);

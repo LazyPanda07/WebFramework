@@ -9,7 +9,7 @@ namespace framework
 		class MissingLoadTypeException : public BaseExecutorException
 		{
 		public:
-			MissingLoadTypeException();
+			MissingLoadTypeException(const std::string& className);
 
 			~MissingLoadTypeException() = default;
 		};

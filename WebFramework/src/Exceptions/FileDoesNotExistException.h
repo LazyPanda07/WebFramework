@@ -9,7 +9,7 @@ namespace framework
 		class FileDoesNotExistException : public std::runtime_error
 		{
 		public:
-			FileDoesNotExistException();
+			FileDoesNotExistException(const std::string& fileName);
 
 			~FileDoesNotExistException() = default;
 		};
