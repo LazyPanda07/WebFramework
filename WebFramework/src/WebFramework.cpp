@@ -22,22 +22,67 @@ namespace framework
 		}
 
 		::utility::INIParser parser(configurationINIFile);
-		const unordered_map<string, string>& webServerSettings = parser.getSection(ini::webServerSection);
-		const unordered_map<string, string>& webFrameworkSettigns = parser.getSection(ini::webFrameworkSection);
+		const unordered_multimap<string, string>& webServerSettings = parser.getSection(ini::webServerSection);
+		const unordered_multimap<string, string>& webFrameworkSettings = parser.getSection(ini::webFrameworkSection);
 
 		try
 		{
+			auto settingsPath = webFrameworkSettings.equal_range(ini::settingsPathKey);
+			auto assetsPath = webFrameworkSettings.equal_range(ini::assetsPathKey);
+			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
+			auto loadSource = webFrameworkSettings.equal_range(ini::loadSourceKey);
+			auto port = webServerSettings.equal_range(ini::portKey);
+			auto timeout = webServerSettings.equal_range(ini::timeoutKey);
+
+			if (settingsPath.first == webFrameworkSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindSettingsPath);
+			}
+
+			if (assetsPath.first == webFrameworkSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindAssetsPath);
+			}
+
+			if (usingAssetsCache.first == webFrameworkSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindUsingAssetsCache);
+			}
+
+			if (loadSource.first == webFrameworkSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindLoadSource);
+			}
+
+			if (port.first == webServerSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindPort);
+			}
+
+			if (timeout.first == webServerSettings.end())
+			{
+				throw out_of_range(::exceptions::timeout);
+			}
+
 			server = make_unique<WebServer>
 				(
-					utility::XMLSettingsParser(webFrameworkSettigns.at(ini::settingsPathKey)),
-					webFrameworkSettigns.at(ini::assetsPathKey),
-					webFrameworkSettigns.at(ini::usingAssetsCacheKey) == "true" ? true : false,
-					webServerSettings.at(ini::portKey),
-					stoi(webServerSettings.at(ini::timeoutKey)),
-					webFrameworkSettigns.at(ini::loadSourceKey)
+					utility::XMLSettingsParser(settingsPath.first->second),
+					assetsPath.first->second,
+					usingAssetsCache.first->second == "true" ? true : false,
+					port.first->second,
+					stoi(timeout.first->second),
+					loadSource.first->second
 					);
 		}
 		catch (const exceptions::BaseExecutorException&)
+		{
+			throw;
+		}
+		catch (const out_of_range&)	//not found settings in unordered_multimap
+		{
+			throw;
+		}
+		catch (const invalid_argument&)	//stoi
 		{
 			throw;
 		}

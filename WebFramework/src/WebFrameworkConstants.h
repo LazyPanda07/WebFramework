@@ -40,6 +40,13 @@ namespace exceptions
 	inline const std::string fileDoesNotExist = "File does not exist";
 	inline const std::string cantFindFunction = "Can't find createBaseExecutorSubclass function";
 	inline const std::string missingLoadType = "Missing load type of executor";
+
+	inline const std::string cantFindSettingsPath = "Can't find settings path option";
+	inline const std::string cantFindAssetsPath = "Can't find assets path option";
+	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
+	inline const std::string cantFindLoadSource = "Can't find load source option";
+	inline const std::string cantFindPort = "Can't find port option";
+	inline const std::string timeout = "Can't find timeout option";
 }
 
 namespace XMLSettingsTags
