@@ -94,6 +94,56 @@ namespace framework
 		this->sendFile(request.getRawParameters(), response);
 	}
 
+	void ResourceExecutor::doHead(HTTPRequest&& request, HTTPResponse& response)
+	{
+		if (!request.getHeaders().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
+		this->sendFile(request.getRawParameters(), response);
+	}
+
+	void ResourceExecutor::doPut(HTTPRequest&& request, HTTPResponse& response)
+	{
+		if (!request.getHeaders().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
+		this->sendFile(request.getRawParameters(), response);
+	}
+
+	void ResourceExecutor::doDelete(HTTPRequest&& request, HTTPResponse& response)
+	{
+		if (!request.getHeaders().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
+		this->sendFile(request.getRawParameters(), response);
+	}
+
+	void ResourceExecutor::doOptions(HTTPRequest&& request, HTTPResponse& response)
+	{
+		if (!request.getHeaders().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
+		this->sendFile(request.getRawParameters(), response);
+	}
+
+	void ResourceExecutor::doTrace(HTTPRequest&& request, HTTPResponse& response)
+	{
+		if (!request.getHeaders().count("Referer"))
+		{
+			throw exceptions::NotImplementedException();
+		}
+
+		this->sendFile(request.getRawParameters(), response);
+	}
+
 	void ResourceExecutor::notFoundError(HTTPResponse& response)
 	{
 		filesystem::path notFoundHTML(defaultAssets);

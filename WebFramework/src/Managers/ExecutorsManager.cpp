@@ -80,6 +80,26 @@ namespace framework
 			{
 				fileRequest ? resources->doPost(move(request), response) : executor->second->doPost(move(request), response);
 			}
+			else if (method == headRequest)
+			{
+				fileRequest ? resources->doHead(move(request), response) : executor->second->doHead(move(request), response);
+			}
+			else if (method == putRequest)
+			{
+				fileRequest ? resources->doPut(move(request), response) : executor->second->doPut(move(request), response);
+			}
+			else if (method == deleteRequest)
+			{
+				fileRequest ? resources->doDelete(move(request), response) : executor->second->doDelete(move(request), response);
+			}
+			else if (method == optionsRequest)
+			{
+				fileRequest ? resources->doOptions(move(request), response) : executor->second->doOptions(move(request), response);
+			}
+			else if (method == traceRequest)
+			{
+				fileRequest ? resources->doTrace(move(request), response) : executor->second->doTrace(move(request), response);
+			}
 		}
 		catch (const exceptions::BaseExecutorException&)
 		{
