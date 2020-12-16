@@ -33,4 +33,9 @@
 
 # VS folders
 .vs/
+
+# Binaries
 bin/
+
+# Build executable
+!WebFrameworkBuilder.exe
