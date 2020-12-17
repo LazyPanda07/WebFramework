@@ -99,7 +99,9 @@ namespace framework
 				{
 					if (i == ini::defaultLoadSourceValue)
 					{
-						result.push_back(LoadLibraryA(nullptr));
+						result.push_back(nullptr);
+
+						continue;
 					}
 					else
 					{
