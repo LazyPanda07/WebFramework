@@ -66,6 +66,9 @@
     <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -123,6 +126,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\Interfaces\ISendFile.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\CantLoadSourceException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

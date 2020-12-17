@@ -45,6 +45,7 @@ namespace exceptions
 	inline const std::string fileDoesNotExist = "file does not exist";
 	inline const std::string cantFindFunction = "Can't find ";
 	inline const std::string missingLoadType = "Missing load type of ";
+	inline const std::string cantLoadSource = "Can't load ";
 
 	inline const std::string cantFindSettingsPath = "Can't find settings path option";
 	inline const std::string cantFindAssetsPath = "Can't find assets path option";

@@ -30,7 +30,7 @@ namespace framework
 			auto settingsPath = webFrameworkSettings.equal_range(ini::settingsPathKey);
 			auto assetsPath = webFrameworkSettings.equal_range(ini::assetsPathKey);
 			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
-			auto loadSource = webFrameworkSettings.equal_range(ini::loadSourceKey);
+			auto loadSourcesIterator = webFrameworkSettings.equal_range(ini::loadSourceKey);
 			auto port = webServerSettings.equal_range(ini::portKey);
 			auto timeout = webServerSettings.equal_range(ini::timeoutKey);
 
@@ -49,7 +49,7 @@ namespace framework
 				throw out_of_range(::exceptions::cantFindUsingAssetsCache);
 			}
 
-			if (loadSource.first == webFrameworkSettings.end())
+			if (loadSourcesIterator.first == webFrameworkSettings.end())
 			{
 				throw out_of_range(::exceptions::cantFindLoadSource);
 			}
@@ -64,6 +64,10 @@ namespace framework
 				throw out_of_range(::exceptions::timeout);
 			}
 
+			vector<string> loadSources;
+
+			transform(loadSourcesIterator.first, loadSourcesIterator.second, back_inserter(loadSources), [](const auto& i) { return i.second; });	//take values of loadSource array
+
 			server = make_unique<WebServer>
 				(
 					utility::XMLSettingsParser(settingsPath.first->second),
@@ -71,7 +75,7 @@ namespace framework
 					usingAssetsCache.first->second == "true" ? true : false,
 					port.first->second,
 					stoi(timeout.first->second),
-					loadSource.first->second
+					loadSources
 					);
 		}
 		catch (const exceptions::BaseExecutorException&)

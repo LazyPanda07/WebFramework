@@ -6,6 +6,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
+#include "Exceptions/CantLoadSourceException.h"
 
 #pragma warning(push)
 #pragma warning(disable: 6387)
@@ -80,34 +81,65 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, bool isCaching, const string_view& port, DWORD timeout, const string& pathToExecutable) :
+	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, bool isCaching, const string_view& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer(port, timeout, false)
 	{
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
-		HMODULE executable = LoadLibraryA(pathToExecutable == ini::defaultLoadSourceValue ? nullptr : pathToExecutable.data());
-
-		if (pathToExecutable != ini::defaultLoadSourceValue && !executable)
+		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
-			throw exceptions::FileDoesNotExistException(pathToExecutable);
-		}
+			vector<HMODULE> result;
+
+			result.reserve(pathToSources.size());
+
+			for (const auto& i : pathToSources)
+			{
+				if (!filesystem::exists(i))
+				{
+					if (i == ini::defaultLoadSourceValue)
+					{
+						result.push_back(LoadLibraryA(nullptr));
+					}
+					else
+					{
+						throw exceptions::FileDoesNotExistException(i);
+					}
+				}
+				else
+				{
+					result.push_back(LoadLibraryA(i.data()));
+				}
+
+				if (!result.back())
+				{
+					throw exceptions::CantLoadSourceException(i);
+				}
+			}
+
+			return result;
+		}();
 
 		routes.reserve(settings.size());
 		creator.reserve(settings.size());
 
 		for (const auto& [i, j] : settings)
 		{
-			createBaseExecutorSubclassFunction function = reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(executable, ("create" + j.name + "Instance").data()));
+			createBaseExecutorSubclassFunction function = nullptr;
+
+			for (const auto& source : sources)
+			{
+				function = reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(source, ("create" + j.name + "Instance").data()));
+
+				if (function)
+				{
+					break;
+				}
+			}
 
 			if (!function)
 			{
-				function = reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(nullptr, ("create" + j.name + "Instance").data()));
-
-				if (!function)
-				{
-					throw exceptions::CantFindFunctionException("create" + j.name + "Instance");
-				}
+				throw exceptions::CantFindFunctionException("create" + j.name + "Instance");
 			}
 
 			switch (j.executorLoadType)
