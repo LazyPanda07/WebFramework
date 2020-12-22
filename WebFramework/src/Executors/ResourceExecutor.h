@@ -28,16 +28,6 @@ namespace framework
 
 		void doPost(HTTPRequest&& request, HTTPResponse& response) override;
 
-		void doHead(HTTPRequest&& request, HTTPResponse& response) override;
-
-		void doPut(HTTPRequest&& request, HTTPResponse& response) override;
-
-		void doDelete(HTTPRequest&& request, HTTPResponse& response) override;
-
-		void doOptions(HTTPRequest&& request, HTTPResponse& response) override;
-
-		void doTrace(HTTPRequest&& request, HTTPResponse& response) override;
-
 		void notFoundError(HTTPResponse& response);
 
 		void badRequestError(HTTPResponse& response);
