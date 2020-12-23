@@ -28,5 +28,3 @@ CALL CopyHeaders.bat %debugFolder%
 CALL CopyLibs.bat %libsFolder% %debugFolder%libs
 
 COPY /Y web_framework_settings.ini %debugFolder%
-
-pause
