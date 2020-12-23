@@ -25,6 +25,8 @@ Global
 		DebugDLL|x86 = DebugDLL|x86
 		ProductionRelease|x64 = ProductionRelease|x64
 		ProductionRelease|x86 = ProductionRelease|x86
+		ProductionReleaseDLL|x64 = ProductionReleaseDLL|x64
+		ProductionReleaseDLL|x86 = ProductionReleaseDLL|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 		ReleaseDLL|x64 = ReleaseDLL|x64
@@ -41,6 +43,9 @@ Global
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.ActiveCfg = ProductionRelease|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x86.ActiveCfg = Debug|Win32
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x86.ActiveCfg = ProductionReleaseDLL|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.ActiveCfg = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.Build.0 = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x86.ActiveCfg = Release|x64
@@ -59,6 +64,10 @@ Global
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.ProductionRelease|x86.ActiveCfg = ProductionRelease|Win32
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.ProductionRelease|x86.Build.0 = ProductionRelease|Win32
+		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.ProductionReleaseDLL|x86.ActiveCfg = ProductionReleaseDLL|Win32
+		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.ProductionReleaseDLL|x86.Build.0 = ProductionReleaseDLL|Win32
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.Release|x64.ActiveCfg = Release|x64
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.Release|x64.Build.0 = Release|x64
 		{CD88B391-B7B9-47D5-AF8D-153FCB2B5A2B}.Release|x86.ActiveCfg = Release|Win32
@@ -79,6 +88,10 @@ Global
 		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
 		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.ProductionRelease|x86.ActiveCfg = ProductionRelease|Win32
 		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.ProductionRelease|x86.Build.0 = ProductionRelease|Win32
+		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.ProductionReleaseDLL|x86.ActiveCfg = ProductionReleaseDLL|Win32
+		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.ProductionReleaseDLL|x86.Build.0 = ProductionReleaseDLL|Win32
 		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.Release|x64.ActiveCfg = Release|x64
 		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.Release|x64.Build.0 = Release|x64
 		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F}.Release|x86.ActiveCfg = Release|Win32
@@ -99,6 +112,10 @@ Global
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.ProductionRelease|x86.ActiveCfg = ProductionRelease|Win32
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.ProductionRelease|x86.Build.0 = ProductionRelease|Win32
+		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.ProductionReleaseDLL|x86.ActiveCfg = ProductionReleaseDLL|Win32
+		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.ProductionReleaseDLL|x86.Build.0 = ProductionReleaseDLL|Win32
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.Release|x64.ActiveCfg = Release|x64
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.Release|x64.Build.0 = Release|x64
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1}.Release|x86.ActiveCfg = Release|Win32
@@ -119,6 +136,10 @@ Global
 		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
 		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionRelease|x86.ActiveCfg = ProductionRelease|Win32
 		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionRelease|x86.Build.0 = ProductionRelease|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionReleaseDLL|x86.ActiveCfg = ProductionReleaseDLL|Win32
+		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.ProductionReleaseDLL|x86.Build.0 = ProductionReleaseDLL|Win32
 		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Release|x64.ActiveCfg = Release|x64
 		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Release|x64.Build.0 = Release|x64
 		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13}.Release|x86.ActiveCfg = Release|Win32
@@ -139,6 +160,10 @@ Global
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ProductionRelease|x86.ActiveCfg = ProductionRelease|Win32
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ProductionRelease|x86.Build.0 = ProductionRelease|Win32
+		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ProductionReleaseDLL|x86.ActiveCfg = ProductionReleaseDLL|Win32
+		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ProductionReleaseDLL|x86.Build.0 = ProductionReleaseDLL|Win32
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.Release|x64.ActiveCfg = Release|x64
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.Release|x64.Build.0 = Release|x64
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.Release|x86.ActiveCfg = Release|Win32
