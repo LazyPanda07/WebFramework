@@ -39,3 +39,6 @@ bin/
 
 # Build executable
 !WebFrameworkBuilder.exe
+
+# Build folder
+build/
