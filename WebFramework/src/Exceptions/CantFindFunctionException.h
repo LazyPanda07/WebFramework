@@ -6,6 +6,9 @@ namespace framework
 {
 	namespace exceptions
 	{
+		/// <summary>
+		/// Can't find createBaseExecutorSubclassFunction for executor
+		/// </summary>
 		class CantFindFunctionException : public BaseExecutorException
 		{
 		public:

@@ -6,6 +6,9 @@ namespace framework
 {
 	namespace exceptions
 	{
+		/// <summary>
+		/// Missing loadType in .xml file of executor
+		/// </summary>
 		class MissingLoadTypeException : public BaseExecutorException
 		{
 		public:
