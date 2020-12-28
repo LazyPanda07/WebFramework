@@ -39,7 +39,7 @@ namespace framework
 	{
 		while (true)
 		{
-			asyncCheck();
+			this->asyncCheck();
 
 			this_thread::sleep_for(sessionCheckPeriod);
 		}
