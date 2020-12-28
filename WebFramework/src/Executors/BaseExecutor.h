@@ -20,6 +20,9 @@
 
 namespace framework
 {
+	/// <summary>
+	/// Base class for all executors
+	/// </summary>
 	class WEB_FRAMEWORK_API BaseExecutor
 	{
 	public:
