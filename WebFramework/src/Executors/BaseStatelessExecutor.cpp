@@ -6,4 +6,9 @@ namespace framework
 	{
 		return BaseExecutor::executorType::stateless;
 	}
+
+	void BaseStatelessExecutor::destroy()
+	{
+
+	}
 }

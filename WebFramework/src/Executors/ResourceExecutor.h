@@ -34,8 +34,6 @@ namespace framework
 
 		void internalServerError(HTTPResponse& response);
 
-		void destroy() override;
-
 		~ResourceExecutor() = default;
 	};
 }

@@ -11,6 +11,8 @@ namespace framework
 
 		virtual BaseExecutor::executorType getType() const final;
 
+		virtual void destroy() override final;
+
 		virtual ~BaseStatelessExecutor() = default;
 	};
 }
