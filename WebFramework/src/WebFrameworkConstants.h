@@ -3,7 +3,14 @@
 #include <string>
 #include <chrono>
 
+/// <summary>
+/// Default HTTP port
+/// </summary>
 inline constexpr std::string_view HTTPPort = "80";
+/// <summary>
+/// Default HTTPS port
+/// </summary>
+inline constexpr std::string_view HTTPSPort = "443";
 
 inline const std::string getRequest		= "GET";
 inline const std::string postRequest	= "POST";
@@ -18,7 +25,14 @@ inline const std::string crlfcrlf = "\r\n\r\n";
 
 inline constexpr int averageHTTPRequestSize = 1500;
 
+/// <summary>
+/// <para>Session life time for client session in nanoseconds</para>
+/// <para>If session stands equals or more this value, it must be deleted</para>
+/// </summary>
 inline constexpr auto sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
+/// <summary>
+/// Check session life time period in seconds
+/// </summary>
 inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
 
 inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";

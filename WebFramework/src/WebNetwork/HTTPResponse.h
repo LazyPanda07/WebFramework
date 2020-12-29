@@ -16,6 +16,10 @@ namespace framework
 		std::string body;
 
 	private:
+		/// <summary>
+		/// Added full date GMT to response
+		/// </summary>
+		/// <returns>date in following format 'day,' 'day of the month' 'name of the month' 'full year' 'hours:minutes:seconds' GMT</returns>
 		static std::string getFullDate();
 
 	public:
