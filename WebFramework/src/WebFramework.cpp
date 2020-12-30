@@ -3,6 +3,7 @@
 #include "INIParser.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Log.h"
 
 #pragma comment (lib, "BaseTCPServer.lib")
 #pragma comment (lib, "HTTP.lib")
@@ -24,6 +25,7 @@ namespace framework
 		::utility::INIParser parser(configurationINIFile);
 		const unordered_multimap<string, string>& webServerSettings = parser.getSection(ini::webServerSection);
 		const unordered_multimap<string, string>& webFrameworkSettings = parser.getSection(ini::webFrameworkSection);
+		const unordered_multimap<string, string>& loggingSettings = parser.getSection(ini::loggingSection);
 
 		try
 		{
@@ -33,6 +35,9 @@ namespace framework
 			auto loadSourcesIterator = webFrameworkSettings.equal_range(ini::loadSourceKey);
 			auto port = webServerSettings.equal_range(ini::portKey);
 			auto timeout = webServerSettings.equal_range(ini::timeoutKey);
+			auto usingLogging = loggingSettings.equal_range(ini::usingLoggingKey);
+			auto dateFormat = loggingSettings.equal_range(ini::dateFormatKey);
+			auto addNewLineAfterLog = loggingSettings.equal_range(ini::addNewLineAfterLogKey);
 
 			if (settingsPath.first == webFrameworkSettings.end())
 			{
@@ -61,7 +66,27 @@ namespace framework
 
 			if (timeout.first == webServerSettings.end())
 			{
-				throw out_of_range(::exceptions::timeout);
+				throw out_of_range(::exceptions::cantFindTimeout);
+			}
+
+			if (usingLogging.first != loggingSettings.end())
+			{
+				if (usingLogging.first->second == "true")
+				{
+					if (dateFormat.first == loggingSettings.end())
+					{
+						throw out_of_range(::exceptions::cantFindDateFormat);
+					}
+
+					if (addNewLineAfterLog.first == loggingSettings.end())
+					{
+						Log::init(Log::dateFormatFromString(dateFormat.first->second));
+					}
+					else
+					{
+						Log::init(Log::dateFormatFromString(dateFormat.first->second), addNewLineAfterLog.first->second == "true" ? true : false);
+					}
+				}
 			}
 
 			vector<string> loadSources;
@@ -86,7 +111,7 @@ namespace framework
 		{
 			throw;
 		}
-		catch (const invalid_argument&)	//stoi
+		catch (const invalid_argument&)	//stoi or wrong dateFormat
 		{
 			throw;
 		}

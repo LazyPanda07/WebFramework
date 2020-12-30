@@ -41,6 +41,7 @@ namespace ini
 {
 	inline const std::string webServerSection = "WebServer";
 	inline const std::string webFrameworkSection = "WebFramework";
+	inline const std::string loggingSection = "Logging";
 
 	inline const std::string settingsPathKey = "settingsPath";
 	inline const std::string portKey = "port";
@@ -48,6 +49,9 @@ namespace ini
 	inline const std::string loadSourceKey = "loadSource";
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
+	inline const std::string usingLoggingKey = "usingLogging";
+	inline const std::string dateFormatKey = "dateFormat";
+	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 
 	inline const std::string defaultLoadSourceValue = "current";
 	inline const std::string defaultUsingAssetsCache = "false";
@@ -65,8 +69,11 @@ namespace exceptions
 	inline const std::string cantFindAssetsPath = "Can't find assets path option";
 	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
 	inline const std::string cantFindLoadSource = "Can't find load source option";
+
 	inline const std::string cantFindPort = "Can't find port option";
-	inline const std::string timeout = "Can't find timeout option";
+	inline const std::string cantFindTimeout = "Can't find timeout option";
+
+	inline const std::string cantFindDateFormat = "Can't find date format option";
 }
 
 namespace XMLSettingsTags
