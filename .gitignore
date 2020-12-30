@@ -41,4 +41,7 @@ bin/
 !WebFrameworkBuilder.exe
 
 # Build folder
-build
+build/
+
+# Log files
+*.log

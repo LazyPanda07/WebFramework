@@ -3,7 +3,14 @@
 #include <string>
 #include <chrono>
 
+/// <summary>
+/// Default HTTP port
+/// </summary>
 inline constexpr std::string_view HTTPPort = "80";
+/// <summary>
+/// Default HTTPS port
+/// </summary>
+inline constexpr std::string_view HTTPSPort = "443";
 
 inline const std::string getRequest		= "GET";
 inline const std::string postRequest	= "POST";
@@ -18,7 +25,14 @@ inline const std::string crlfcrlf = "\r\n\r\n";
 
 inline constexpr int averageHTTPRequestSize = 1500;
 
+/// <summary>
+/// <para>Session life time for client session in nanoseconds</para>
+/// <para>If session stands equals or more this value, it must be deleted</para>
+/// </summary>
 inline constexpr auto sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
+/// <summary>
+/// Check session life time period in seconds
+/// </summary>
 inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
 
 inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";
@@ -27,6 +41,7 @@ namespace ini
 {
 	inline const std::string webServerSection = "WebServer";
 	inline const std::string webFrameworkSection = "WebFramework";
+	inline const std::string loggingSection = "Logging";
 
 	inline const std::string settingsPathKey = "settingsPath";
 	inline const std::string portKey = "port";
@@ -34,6 +49,9 @@ namespace ini
 	inline const std::string loadSourceKey = "loadSource";
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
+	inline const std::string usingLoggingKey = "usingLogging";
+	inline const std::string dateFormatKey = "dateFormat";
+	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 
 	inline const std::string defaultLoadSourceValue = "current";
 	inline const std::string defaultUsingAssetsCache = "false";
@@ -51,8 +69,11 @@ namespace exceptions
 	inline const std::string cantFindAssetsPath = "Can't find assets path option";
 	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
 	inline const std::string cantFindLoadSource = "Can't find load source option";
+
 	inline const std::string cantFindPort = "Can't find port option";
-	inline const std::string timeout = "Can't find timeout option";
+	inline const std::string cantFindTimeout = "Can't find timeout option";
+
+	inline const std::string cantFindDateFormat = "Can't find date format option";
 }
 
 namespace XMLSettingsTags

@@ -162,9 +162,4 @@ namespace framework
 
 		response.addBody(result);
 	}
-
-	void ResourceExecutor::destroy()
-	{
-
-	}
 }
