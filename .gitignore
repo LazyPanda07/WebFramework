@@ -42,3 +42,6 @@ bin/
 
 # Build folder
 build/
+
+# Log files
+*.log
