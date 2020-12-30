@@ -20,6 +20,9 @@ namespace framework
 		/// Construct WebFramework
 		/// </summary>
 		/// <param name="configurationINIFile">path to .ini configuration file</param>
+		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
+		/// <exception cref="std::out_of_range">Can't find some settings</exception>
+		/// <exception cref="std::invalid_argument">Wrong value for settings</exception>
 		WebFramework(const std::filesystem::path& configurationINIFile);
 
 		/// <summary>
