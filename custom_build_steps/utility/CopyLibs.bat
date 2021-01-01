@@ -3,10 +3,11 @@
 CD ..
 CD ..
 
-set sourcePath=%~1
-set destinationPath=%~2
+SET sourcePath=%~1
+SET destinationLibsPath=%~2
+SET destinationDLLsPath=%~3
 
-FOR /R %sourcePath% %%i in (*.lib) DO COPY %%i %destinationPath%
+FOR /R %sourcePath% %%i in (*.lib) DO COPY %%i %destinationLibsPath%
+FOR /R %sourcePath% %%i in (*.dll) DO COPY %%i %destinationDLLsPath%
 
-XCOPY /Y %sourcePath%*.lib %destinationPath%
-XCOPY /Y %sourcePath%WebFramework\WebFramework.pdb %destinationPath%
+XCOPY /Y %sourcePath%WebFramework\WebFramework.pdb %destinationLibsPath%

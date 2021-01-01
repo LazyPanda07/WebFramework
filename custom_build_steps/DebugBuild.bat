@@ -14,6 +14,7 @@ MKDIR Debug
 CD Debug
 
 MKDIR libs
+MKDIR dlls
 
 SET debugFolder=%CD%\
 
@@ -25,6 +26,6 @@ CD utility
 
 CALL CopyHeaders.bat %debugFolder%
 
-CALL CopyLibs.bat %libsFolder% %debugFolder%libs
+CALL CopyLibs.bat %libsFolder% %debugFolder%libs %debugFolder%dlls
 
 COPY /Y web_framework_settings.ini %debugFolder%

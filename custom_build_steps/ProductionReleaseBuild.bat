@@ -14,6 +14,7 @@ MKDIR ProductionRelease
 CD ProductionRelease
 
 MKDIR libs
+MKDIR dlls
 
 SET productionReleaseFolder=%CD%\
 
@@ -25,6 +26,6 @@ CD utility
 
 CALL CopyHeaders.bat %productionReleaseFolder%
 
-CALL CopyLibs.bat %libsFolder% %productionReleaseFolder%libs
+CALL CopyLibs.bat %libsFolder% %productionReleaseFolder%libs %productionReleaseFolder%dlls
 
 COPY /Y web_framework_settings.ini %productionReleaseFolder%

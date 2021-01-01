@@ -14,6 +14,7 @@ MKDIR Release
 CD Release
 
 MKDIR libs
+MKDIR dlls
 
 SET releaseFolder=%CD%\
 
@@ -25,6 +26,6 @@ CD utility
 
 CALL CopyHeaders.bat %releaseFolder%
 
-CALL CopyLibs.bat %libsFolder% %releaseFolder%libs
+CALL CopyLibs.bat %libsFolder% %releaseFolder%libs %releaseFolder%dlls
 
 COPY /Y web_framework_settings.ini %releaseFolder%

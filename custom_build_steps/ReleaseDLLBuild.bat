@@ -26,7 +26,7 @@ CD utility
 
 CALL CopyHeaders.bat %releaseDLLFolder%
 
-CALL CopyLibs.bat %libsFolder% %releaseDLLFolder%libs
+CALL CopyLibs.bat %libsFolder% %releaseDLLFolder%libs %releaseDLLFolder%dlls
 
 COPY /Y web_framework_settings.ini %releaseDLLFolder%
 COPY /Y %libsFolder%WebFramework\WebFramework.dll %releaseDLLFolder%\dlls

@@ -149,8 +149,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\DebugBuild.bat
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+$(SolutionDir)custom_build_steps\DebugBuild.bat</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -175,8 +175,8 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\DebugDLLBuild.bat
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+$(SolutionDir)custom_build_steps\DebugDLLBuild.bat</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -201,8 +201,8 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\ReleaseBuild.bat
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+$(SolutionDir)custom_build_steps\ReleaseBuild.bat</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -231,8 +231,8 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+$(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -257,9 +257,9 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-$(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
+$(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
@@ -286,9 +286,9 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-$(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
+$(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
