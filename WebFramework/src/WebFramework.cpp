@@ -10,6 +10,7 @@
 #pragma comment (lib, "Log.lib")
 #pragma comment (lib, "SocketStreams.lib")
 #pragma comment (lib, "INIParser.lib")
+#pragma comment (lib, "sqlite3.lib")
 
 using namespace std;
 

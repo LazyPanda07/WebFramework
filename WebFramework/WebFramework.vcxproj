@@ -149,11 +149,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\DebugBuild.bat</Command>
+      <Command>$(SolutionDir)custom_build_steps\DebugBuild.bat
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
     <ClCompile>
@@ -168,9 +172,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\DebugDLLBuild.bat</Command>
+      <Command>$(SolutionDir)custom_build_steps\DebugDLLBuild.bat
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -195,11 +201,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\ReleaseBuild.bat</Command>
+      <Command>$(SolutionDir)custom_build_steps\ReleaseBuild.bat
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
     <ClCompile>
@@ -218,9 +228,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command>$(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
+      <Command>$(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -246,9 +258,13 @@
     </Link>
     <CustomBuildStep>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-$(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
+$(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionReleaseDLL|x64'">
     <ClCompile>
@@ -267,12 +283,18 @@ $(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-$(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
+$(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
@@ -287,6 +309,8 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
+    <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
+    <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
     <ClCompile Include="src\Utility\XMLSettingsParser.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
@@ -307,6 +331,9 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
+    <ClInclude Include="src\SQLite3\sqlite3.h" />
+    <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
+    <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
     <ClInclude Include="src\Utility\XMLSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />
