@@ -61,11 +61,17 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <CustomBuildBeforeTargets>
+    </CustomBuildBeforeTargets>
+    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <CustomBuildBeforeTargets>
+    </CustomBuildBeforeTargets>
+    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProductionRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -86,6 +92,16 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+    </Lib>
+    <CustomBuildStep>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>output.txt</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -104,6 +120,16 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+    </Lib>
+    <CustomBuildStep>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>output.txt</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionRelease|x64'">
     <ClCompile>
@@ -123,9 +149,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E</Command>
+      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <Outputs>xcopy.txt</Outputs>
     </CustomBuildStep>
+    <Lib>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
@@ -140,6 +171,8 @@
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
+    <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
+    <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
     <ClCompile Include="src\Utility\XMLSettingsParser.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
@@ -160,6 +193,9 @@
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
+    <ClInclude Include="src\SQLite3\sqlite3.h" />
+    <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
+    <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
     <ClInclude Include="src\Utility\XMLSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />

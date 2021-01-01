@@ -45,3 +45,7 @@ build/
 
 # Log files
 *.log
+
+# SQLite binaries
+!sqlite3.lib
+!sqlite3.dll
