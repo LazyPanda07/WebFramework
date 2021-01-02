@@ -1,5 +1,7 @@
 #include "SQLiteDatabase.h"
 
+#pragma comment (lib, "sqlite3.lib")
+
 using namespace std;
 
 namespace framework
