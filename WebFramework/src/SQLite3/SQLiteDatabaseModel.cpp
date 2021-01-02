@@ -43,6 +43,21 @@ namespace framework
 
 		}
 
+		SQLiteDatabaseModel::SQLiteDatabaseModel(SQLiteDatabaseModel&& other) noexcept :
+			tableName(move(other.tableName)),
+			db(move(db))
+		{
+
+		}
+
+		SQLiteDatabaseModel& SQLiteDatabaseModel::operator = (SQLiteDatabaseModel&& other) noexcept
+		{
+			tableName = move(other.tableName);
+			db = move(other.db);
+
+			return *this;
+		}
+
 		string SQLiteDatabaseModel::rawQuery(const string& query)
 		{
 			sqlite3_stmt* result = nullptr;
@@ -73,7 +88,7 @@ namespace framework
 			return output;
 		}
 
-		void SQLiteDatabaseModel::createTableQuery(const unordered_map<string, string>& attributes)
+		void SQLiteDatabaseModel::createTableQuery(const vector<pair<string, string>>& attributes)
 		{
 			string fields = "(";
 
@@ -92,7 +107,7 @@ namespace framework
 			this->rawQuery("DROP TABLE IF EXISTS " + tableName);
 		}
 
-		void SQLiteDatabaseModel::recreateTableQuery(const unordered_map<string, string>& attributes)
+		void SQLiteDatabaseModel::recreateTableQuery(const vector<pair<string, string>>& attributes)
 		{
 			this->dropTableQuery();
 
