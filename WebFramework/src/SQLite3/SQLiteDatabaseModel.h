@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 
 #include "SQLiteDatabase.h"
@@ -9,42 +10,121 @@ namespace framework
 {
 	namespace sqlite
 	{
+		/// <summary>
+		/// Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase
+		/// </summary>
 		class SQLiteDatabaseModel
 		{
 		private:
-			const std::string tableName;
+			std::string tableName;
 			SQLiteDatabase db;
 
 		private:
+			/// <summary>
+			/// Check that string represent number
+			/// </summary>
+			/// <param name="source">attribute value</param>
+			/// <returns>true if source is correct number, false otherwise</returns>
 			static bool isNumber(const std::string& source);
 
 		public:
+			/// <summary>
+			/// Specify table for database
+			/// </summary>
+			/// <param name="tableName">name of table</param>
+			/// <param name="db">temporary database object</param>
 			SQLiteDatabaseModel(const std::string& tableName, SQLiteDatabase&& db);
 
+			/// <summary>
+			/// Can't copy model for specific table
+			/// </summary>
+			/// <param name="">other SQLiteDatabaseModel instance</param>
 			SQLiteDatabaseModel(const SQLiteDatabaseModel&) = delete;
 
+			/// <summary>
+			/// Can't copy model for specific table
+			/// </summary>
+			/// <param name="">other SQLiteDatabaseModel instance</param>
 			SQLiteDatabaseModel& operator = (const SQLiteDatabaseModel&) = delete;
 
-			SQLiteDatabaseModel(SQLiteDatabaseModel&&) noexcept = delete;
+			/// <summary>
+			/// Move another SQLiteDatabaseModel
+			/// </summary>
+			/// <param name="other">another SQLiteDatabaseModel instance</param>
+			SQLiteDatabaseModel(SQLiteDatabaseModel&& other) noexcept;
 
-			SQLiteDatabaseModel& operator = (SQLiteDatabaseModel&&) noexcept = delete;
+			/// <summary>
+			/// Move another SQLiteDatabaseModel
+			/// </summary>
+			/// <param name="other">another SQLiteDatabaseModel instance</param>
+			SQLiteDatabaseModel& operator = (SQLiteDatabaseModel&& other) noexcept;
 
+			/// <summary>
+			/// Raw SQL query
+			/// </summary>
+			/// <param name="query">SQL query</param>
+			/// <returns>result of SELECT query, empty string otherwise</returns>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			std::string rawQuery(const std::string& query);
 
-			void createTableQuery(const std::unordered_map<std::string, std::string>& attributes);
+			/// <summary>
+			/// Create table
+			/// </summary>
+			/// <param name="attributes">field name - field description</param>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
+			void createTableQuery(const std::vector<std::pair<std::string, std::string>>& attributes);
 
+			/// <summary>
+			/// Delete table
+			/// </summary>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			void dropTableQuery();
 
-			void recreateTableQuery(const std::unordered_map<std::string, std::string>& attributes);
+			/// <summary>
+			/// Delete and create table
+			/// </summary>
+			/// <param name="attributes">field name- field description</param>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
+			void recreateTableQuery(const std::vector<std::pair<std::string, std::string>>& attributes);
 
+			/// <summary>
+			/// INSERT row
+			/// </summary>
+			/// <param name="attributes">field name - field value</param>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			void insertQuery(const std::unordered_map<std::string, std::string>& attributes);
 
+			/// <summary>
+			/// UPDATE table
+			/// </summary>
+			/// <param name="attributes">new values</param>
+			/// <param name="fieldName">for condition</param>
+			/// <param name="fieldValue">for condition</param>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			void updateQuery(const std::unordered_map<std::string, std::string>& attributes, const std::string& fieldName, const std::string& fieldValue);
 
+			/// <summary>
+			/// Delete from table
+			/// </summary>
+			/// <param name="fieldName">for condition</param>
+			/// <param name="fieldValue">for condition</param>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			void deleteQuery(const std::string& fieldName, const std::string& fieldValue);
 
+			/// <summary>
+			/// SELECT all
+			/// </summary>
+			/// <returns>all rows from table</returns>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			std::string selectAllQuery();
 
+			/// <summary>
+			/// SELECT with condition
+			/// </summary>
+			/// <param name="fieldName">for condition</param>
+			/// <param name="fieldValue">for condition</param>
+			/// <returns>all rows that accept condition</returns>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			std::string selectByFieldQuery(const std::string& fieldName, const std::string& fieldValue);
 
 			~SQLiteDatabaseModel() = default;

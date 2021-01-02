@@ -8,22 +8,27 @@ namespace framework
 {
 	namespace sqlite
 	{
-		SQLiteDatabase::SQLiteDatabase(const string& dbName) :
-			dbName(dbName)
+		sqlite3* SQLiteDatabase::operator * ()
 		{
-			sqlite3_open(dbName.data(), &db);
+			return db;
 		}
 
-		SQLiteDatabase::SQLiteDatabase(SQLiteDatabase&& other) noexcept :
-			dbName(move(other.dbName)),
-			db(other.db)
+		SQLiteDatabase::SQLiteDatabase(const string& databaseName) :
+			databaseName(databaseName)
 		{
-			other.db = nullptr;
+			sqlite3_open(databaseName.data(), &db);
+		}
+
+		SQLiteDatabase::SQLiteDatabase(SQLiteDatabase&& other) noexcept
+		{
+			(*this) = move(other);
 		}
 
 		SQLiteDatabase& SQLiteDatabase::operator = (SQLiteDatabase&& other) noexcept
 		{
-			dbName = move(other.dbName);
+			this->close();
+
+			databaseName = move(other.databaseName);
 			db = other.db;
 
 			other.db = nullptr;
@@ -31,9 +36,9 @@ namespace framework
 			return *this;
 		}
 
-		sqlite3* SQLiteDatabase::operator * ()
+		const string& SQLiteDatabase::getDatabaseName() const
 		{
-			return db;
+			return databaseName;
 		}
 
 		void SQLiteDatabase::close()
@@ -43,7 +48,12 @@ namespace framework
 			db = nullptr;
 		}
 
-		bool SQLiteDatabase::isOpen()
+		bool SQLiteDatabase::isOpen() const
+		{
+			return db;
+		}
+
+		const sqlite3* const SQLiteDatabase::operator * () const
 		{
 			return db;
 		}
