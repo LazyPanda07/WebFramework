@@ -4,10 +4,23 @@ using namespace std;
 
 namespace framework
 {
-	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& resources) :
+	bool HTTPRequest::isWebFrameworkDynamicPages(const string& filePath)
+	{
+		size_t extension = filePath.find('.');
+
+		if (extension == string::npos)
+		{
+			return false;
+		}
+
+		return string_view(filePath.data() + extension) == ".wfdp";
+	}
+
+	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources) :
 		session(session),
 		ip(ip),
-		resources(resources)
+		staticResources(staticResources),
+		dynamicResources(dynamicResources)
 	{
 		
 	}
@@ -101,7 +114,14 @@ namespace framework
 
 	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response)
 	{
-		resources.sendFile(filePath, response);
+		if (isWebFrameworkDynamicPages(filePath))
+		{
+			dynamicResources.sendDynamicFile(filePath, response);
+		}
+		else
+		{
+			staticResources.sendStaticFile(filePath, response);
+		}
 	}
 
 	const string& HTTPRequest::getIpV4ClientAddress() const

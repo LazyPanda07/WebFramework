@@ -29,7 +29,7 @@ namespace framework
 		}
 	}
 
-	void ResourceExecutor::sendFile(const string& filePath, HTTPResponse& response)
+	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response)
 	{
 		string result;
 
@@ -74,6 +74,11 @@ namespace framework
 		response.addBody(result);
 	}
 
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response)
+	{
+
+	}
+
 	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)
 	{
 		if (!request.getHeaders().count("Referer"))
@@ -81,7 +86,7 @@ namespace framework
 			throw exceptions::NotImplementedException();
 		}
 
-		this->sendFile(request.getRawParameters(), response);
+		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
 	void ResourceExecutor::doPost(HTTPRequest&& request, HTTPResponse& response)
@@ -91,7 +96,7 @@ namespace framework
 			throw exceptions::NotImplementedException();
 		}
 
-		this->sendFile(request.getRawParameters(), response);
+		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response)

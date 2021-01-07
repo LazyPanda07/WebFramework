@@ -7,9 +7,9 @@ namespace framework
 	namespace interfaces
 	{
 		/// <summary>
-		/// Providing sendStaticFile method
+		/// Providing sendDynamicFile method
 		/// </summary>
-		class ISendStaticFile
+		class ISendDynamicFile
 		{
 		public:
 			/// <summary>
@@ -17,9 +17,9 @@ namespace framework
 			/// </summary>
 			/// <param name="filePath">must start with leading /</param>
 			/// <param name="response">with file</param>
-			virtual void sendStaticFile(const std::string& filePath, HTTPResponse& response) = 0;
+			virtual void sendDynamicFile(const std::string& filePath, HTTPResponse& response) = 0;
 
-			virtual ~ISendStaticFile() = default;
+			virtual ~ISendDynamicFile() = default;
 		};
 	}
 }

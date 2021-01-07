@@ -5,13 +5,14 @@
 
 #include "BaseStatelessExecutor.h"
 #include "WebNetwork/Interfaces/ISendStaticFile.h"
+#include "WebNetwork/Interfaces/ISendDynamicFile.h"
 
 namespace framework
 {
 	/// <summary>
 	/// Used for sending asset files
 	/// </summary>
-	class ResourceExecutor : public interfaces::ISendStaticFile, public BaseStatelessExecutor
+	class ResourceExecutor : public interfaces::ISendStaticFile, public interfaces::ISendDynamicFile, public BaseStatelessExecutor
 	{
 	private:
 		std::shared_mutex cacheMutex;
@@ -34,7 +35,14 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
-		void sendFile(const std::string& filePath, HTTPResponse& response) override;
+		void sendStaticFile(const std::string& filePath, HTTPResponse& response) override;
+
+		/// <summary>
+		/// Override from ISendDynamicFile interface
+		/// </summary>
+		/// <param name="filePath">path to file from assets folder</param>
+		/// <param name="response">used for sending file</param>
+		void sendDynamicFile(const std::string& filePath, HTTPResponse& response) override;
 
 		/// <summary>
 		/// Send file via GET request
