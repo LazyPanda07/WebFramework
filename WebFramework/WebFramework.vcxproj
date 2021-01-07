@@ -159,8 +159,10 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
+    <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
     <ClCompile Include="src\Exceptions\FileDoesNotExistException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
@@ -181,8 +183,10 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClCompile Include="src\WebNetwork\WebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
+    <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
     <ClInclude Include="src\Exceptions\FileDoesNotExistException.h" />
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
