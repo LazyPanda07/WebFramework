@@ -60,6 +60,13 @@ namespace framework
 		void addBody(const std::string& body);
 
 		/// <summary>
+		/// <para>Some data with HTTP response</para>
+		/// <para>Content-Length header setting automatically</para>
+		/// </summary>
+		/// <param name="body">data</param>
+		void addBody(std::string&& body) noexcept;
+
+		/// <summary>
 		/// Add cookie to HTTP response
 		/// </summary>
 		/// <param name="name">of cookie</param>

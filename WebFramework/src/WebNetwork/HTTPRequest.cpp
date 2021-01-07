@@ -104,6 +104,11 @@ namespace framework
 		resources.sendFile(filePath, response);
 	}
 
+	const string& HTTPRequest::getIpV4ClientAddress() const
+	{
+		return ip;
+	}
+
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)
 	{
 		string data;

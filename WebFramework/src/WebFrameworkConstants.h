@@ -74,6 +74,9 @@ namespace exceptions
 	inline const std::string cantFindTimeout = "Can't find timeout option";
 
 	inline const std::string cantFindDateFormat = "Can't find date format option";
+
+	inline const std::string variableDeclarationSyntaxError = "Wrong variable declaration";
+	inline const std::string sectionDeclarationSyntaxError = "Wrong section declaration";
 }
 
 namespace XMLSettingsTags

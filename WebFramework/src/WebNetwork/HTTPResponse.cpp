@@ -58,6 +58,11 @@ namespace framework
 		this->body = body;
 	}
 
+	void HTTPResponse::addBody(string&& body) noexcept
+	{
+		this->body = move(body);
+	}
+
 	void HTTPResponse::addCookie(const std::string& name, const std::string& value)
 	{
 		builder.headers

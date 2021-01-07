@@ -104,6 +104,12 @@ namespace framework
 		void sendAssetFile(const std::string& filePath, HTTPResponse& response);
 
 		/// <summary>
+		/// Getter for ip
+		/// </summary>
+		/// <returns>client's address</returns>
+		const std::string& getIpV4ClientAddress() const;
+
+		/// <summary>
 		/// Reading HTTP request from network
 		/// </summary>
 		/// <param name="stream">special class for taking data from network</param>
