@@ -77,6 +77,7 @@ namespace exceptions
 
 	inline const std::string variableDeclarationSyntaxError = "Wrong variable declaration";
 	inline const std::string sectionDeclarationSyntaxError = "Wrong section declaration";
+	inline const std::string missingSemicolonSyntaxError = "Missing semicolon";
 }
 
 namespace XMLSettingsTags

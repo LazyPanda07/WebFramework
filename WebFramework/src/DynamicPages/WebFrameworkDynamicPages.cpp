@@ -62,7 +62,7 @@ namespace framework
 
 		if (endLine == string::npos)
 		{
-			return result;
+			throw exceptions::DynamicPagesSyntaxException(::exceptions::missingSemicolonSyntaxError);
 		}
 
 		result.reserve(count(code.begin(), code.end(), ';'));
@@ -110,6 +110,8 @@ namespace framework
 				{
 					Log::warning("WebFrameworkDynamicPages execute exception: {}", e.what());
 				}
+
+				throw;
 			}
 		}
 
