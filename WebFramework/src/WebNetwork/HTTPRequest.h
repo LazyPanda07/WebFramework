@@ -2,7 +2,7 @@
 
 #include "HTTPParser.h"
 #include "Managers/SessionsManager.h"
-#include "Interfaces/ISendFile.h"
+#include "Interfaces/ISendStaticFile.h"
 #include "BaseIOSocketStream.h"
 
 namespace framework
@@ -18,7 +18,7 @@ namespace framework
 		std::unique_ptr<web::HTTPParser> parser;
 		SessionsManager& session;
 		const std::string ip;
-		interfaces::ISendFile& resources;
+		interfaces::ISendStaticFile& resources;
 
 	public:
 		/// <summary>
@@ -27,7 +27,7 @@ namespace framework
 		/// <param name="session">from WebServer</param>
 		/// <param name="ip">client's address</param>
 		/// <param name="resources">ResourceExecutor</param>
-		HTTPRequest(SessionsManager& session, const std::string& ip, interfaces::ISendFile& resources);
+		HTTPRequest(SessionsManager& session, const std::string& ip, interfaces::ISendStaticFile& resources);
 
 		/// <summary>
 		/// Parameters string from HTTP

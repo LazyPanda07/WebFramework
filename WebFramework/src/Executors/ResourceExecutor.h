@@ -4,14 +4,14 @@
 #include <shared_mutex>
 
 #include "BaseStatelessExecutor.h"
-#include "WebNetwork/Interfaces/ISendFile.h"
+#include "WebNetwork/Interfaces/ISendStaticFile.h"
 
 namespace framework
 {
 	/// <summary>
 	/// Used for sending asset files
 	/// </summary>
-	class ResourceExecutor : public interfaces::ISendFile, public BaseStatelessExecutor
+	class ResourceExecutor : public interfaces::ISendStaticFile, public BaseStatelessExecutor
 	{
 	private:
 		std::shared_mutex cacheMutex;
@@ -30,7 +30,7 @@ namespace framework
 		void init(const utility::XMLSettingsParser::ExecutorSettings& settings) override;
 
 		/// <summary>
-		/// Override from ISendFile interface
+		/// Override from ISendStaticFile interface
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>

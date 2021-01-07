@@ -4,7 +4,7 @@ using namespace std;
 
 namespace framework
 {
-	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendFile& resources) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& resources) :
 		session(session),
 		ip(ip),
 		resources(resources)

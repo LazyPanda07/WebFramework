@@ -9,7 +9,7 @@ namespace framework
 		/// <summary>
 		/// Providing sendFile method
 		/// </summary>
-		class ISendFile
+		class ISendStaticFile
 		{
 		public:
 			/// <summary>
@@ -19,7 +19,7 @@ namespace framework
 			/// <param name="response">with file</param>
 			virtual void sendFile(const std::string& filePath, HTTPResponse& response) = 0;
 
-			virtual ~ISendFile() = default;
+			virtual ~ISendStaticFile() = default;
 		};
 	}
 }
