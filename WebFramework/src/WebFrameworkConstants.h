@@ -37,6 +37,8 @@ inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
 
 inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";
 
+inline constexpr std::string_view webFrameworkDynamicPagesExtension = ".wfdp";
+
 namespace ini
 {
 	inline const std::string webServerSection = "WebServer";

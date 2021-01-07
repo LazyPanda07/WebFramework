@@ -1,5 +1,7 @@
 #include "HTTPRequest.h"
 
+#include "WebFrameworkConstants.h"
+
 using namespace std;
 
 namespace framework
@@ -13,7 +15,7 @@ namespace framework
 			return false;
 		}
 
-		return string_view(filePath.data() + extension) == ".wfdp";
+		return string_view(filePath.data() + extension) == webFrameworkDynamicPagesExtension;
 	}
 
 	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources) :

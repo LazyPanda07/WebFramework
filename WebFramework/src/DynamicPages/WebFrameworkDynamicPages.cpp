@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/DynamicPagesSyntaxException.h"
+#include "WebFrameworkDynamicPagesFunctions.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ namespace framework
 {
 	const unordered_map<string, function<string(const vector<string>&)>> WebFrameworkDynamicPages::dynamicPagesFunctions =
 	{
-		{ "print", [](const vector<string>& arguments) -> string { string result; for (const auto& i : arguments) { result += i + ' '; } result.pop_back(); return result; } }
+		{ "print", print }
 	};
 
 	WebFrameworkDynamicPages::executionUnit::executionUnit(string&& functionName, vector<string>&& arguments) noexcept :
