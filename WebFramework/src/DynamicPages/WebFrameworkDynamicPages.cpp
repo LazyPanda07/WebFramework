@@ -15,7 +15,8 @@ namespace framework
 {
 	const unordered_map<string, function<string(const vector<string>&)>> WebFrameworkDynamicPages::dynamicPagesFunctions =
 	{
-		{ "print", print }
+		{ "print", print },
+		{ "include", include }
 	};
 
 	WebFrameworkDynamicPages::executionUnit::executionUnit(string&& functionName, vector<string>&& arguments) noexcept :
