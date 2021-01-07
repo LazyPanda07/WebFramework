@@ -4,6 +4,7 @@
 #include <shared_mutex>
 
 #include "BaseStatelessExecutor.h"
+#include "DynamicPages/WebFrameworkDynamicPages.h"
 #include "WebNetwork/Interfaces/ISendStaticFile.h"
 #include "WebNetwork/Interfaces/ISendDynamicFile.h"
 
@@ -18,7 +19,9 @@ namespace framework
 		std::shared_mutex cacheMutex;
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
-		std::unordered_map<std::string, std::string> cache;
+		WebFrameworkDynamicPages dynamicPages;
+		std::unordered_map<std::string, std::string> staticCache;
+		std::unordered_map<std::string, std::string> dynamicCache;
 		bool isCaching;
 
 	public:
@@ -42,7 +45,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
-		void sendDynamicFile(const std::string& filePath, HTTPResponse& response) override;
+		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables) override;
 
 		/// <summary>
 		/// Send file via GET request

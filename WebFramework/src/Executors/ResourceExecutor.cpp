@@ -37,9 +37,9 @@ namespace framework
 		{
 			shared_lock<shared_mutex> shared(cacheMutex);
 
-			auto findFile = cache.find(filePath);
+			auto findFile = staticCache.find(filePath);
 
-			if (findFile != cache.end())
+			if (findFile != staticCache.end())
 			{
 				response.addBody(findFile->second);
 
@@ -68,15 +68,57 @@ namespace framework
 		{
 			lock_guard<shared_mutex> insertLock(cacheMutex);
 
-			cache[filePath] = result;
+			staticCache[filePath] = result;
 		}
 
 		response.addBody(result);
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response)
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
 	{
+		string result;
 
+		if (isCaching)
+		{
+			shared_lock<shared_mutex> shared(cacheMutex);
+
+			auto findFile = dynamicCache.find(filePath);
+
+			if (findFile != dynamicCache.end())
+			{
+				response.addBody(findFile->second);
+
+				return;
+			}
+		}
+
+		filesystem::path assetsFilePath(assets.string() + filePath);
+
+		if (!filesystem::exists(assetsFilePath))
+		{
+			throw exceptions::FileDoesNotExistException(assetsFilePath.string());
+		}
+
+		ifstream file(assetsFilePath);
+		string tem;
+
+		while (getline(file, tem))
+		{
+			result += tem + "\n";
+		}
+
+		file.close();
+
+		if (isCaching)
+		{
+			lock_guard<shared_mutex> insertLock(cacheMutex);
+
+			dynamicCache[filePath] = result;
+		}
+
+		dynamicPages.run(variables, result);
+
+		response.addBody(result);
 	}
 
 	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)

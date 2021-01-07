@@ -112,11 +112,11 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response)
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>* const variables)
 	{
-		if (isWebFrameworkDynamicPages(filePath))
+		if (isWebFrameworkDynamicPages(filePath) && variables)
 		{
-			dynamicResources.sendDynamicFile(filePath, response);
+			dynamicResources.sendDynamicFile(filePath, response, *variables);
 		}
 		else
 		{
