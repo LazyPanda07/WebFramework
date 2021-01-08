@@ -106,7 +106,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">must start with leading /</param>
 		/// <param name="response">with file</param>
-		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>* const variables = nullptr);
+		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unique_ptr<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
 
 		/// <summary>
 		/// Getter for ip

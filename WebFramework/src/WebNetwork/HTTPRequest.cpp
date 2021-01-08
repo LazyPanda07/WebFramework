@@ -24,7 +24,7 @@ namespace framework
 		staticResources(staticResources),
 		dynamicResources(dynamicResources)
 	{
-		
+
 	}
 
 	string HTTPRequest::getRawParameters() const
@@ -80,7 +80,7 @@ namespace framework
 	unordered_map<string, string> HTTPRequest::getCookies() const
 	{
 		unordered_map<string, string> result;
-		
+
 		try
 		{
 			const string& cookies = parser->getHeaders().at("Cookie");
@@ -104,17 +104,17 @@ namespace framework
 
 				offset = findValue + 2;
 			}
-			
+
 		}
 		catch (const out_of_range&)
 		{
-			
+
 		}
 
 		return result;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>* const variables)
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unique_ptr<unordered_map<string_view, string>>& variables)
 	{
 		if (isWebFrameworkDynamicPages(filePath) && variables)
 		{
