@@ -58,6 +58,10 @@ namespace framework
 		std::string execute(const std::vector<executionUnit>& codes);
 
 	public:
+		/// <summary>
+		/// Construct WebFrameworkDynamicPages
+		/// </summary>
+		/// <param name="pathToTemplates">path to templates folder</param>
 		WebFrameworkDynamicPages(const std::string& pathToTemplates);
 
 		/// <summary>

@@ -104,7 +104,7 @@ namespace framework
 			{
 				if (Log::isInitialized())
 				{
-					Log::warning("WebFrameworkDynamicPages execute exception: {}", e.what());
+					Log::error("WebFrameworkDynamicPages execute exception: {}", e.what());
 				}
 
 				throw;
@@ -145,6 +145,11 @@ namespace framework
 			source.replace(source.begin() + nextSectionStart, source.begin() + nextSectionEnd + 2, this->execute(preExecute(code)));
 
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
+		}
+
+		if (source.find("{%") != string::npos)
+		{
+			this->run(variables, source);
 		}
 	}
 
