@@ -25,7 +25,7 @@ namespace framework
 		bool isCaching;
 
 	public:
-		ResourceExecutor(const std::filesystem::path& assets, bool isCaching);
+		ResourceExecutor(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates);
 
 		/// <summary>
 		/// Create assets folder

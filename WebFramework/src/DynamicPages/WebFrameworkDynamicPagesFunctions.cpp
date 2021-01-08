@@ -23,15 +23,15 @@ namespace framework
 		return result;
 	}
 
-	string include(const vector<string>& arguments)
+	string include(const vector<string>& arguments, const string& pathToTemplates)
 	{
 		string result;
 		string tem;
-		const filesystem::path filePath(arguments[0]);
+		const filesystem::path filePath(pathToTemplates + '/' + arguments[0]);
 
 		if (!filesystem::exists(filePath))
 		{
-			throw exceptions::FileDoesNotExistException(arguments[0]);
+			throw exceptions::FileDoesNotExistException(filePath.string());
 		}
 
 		result.reserve(filesystem::file_size(filePath));

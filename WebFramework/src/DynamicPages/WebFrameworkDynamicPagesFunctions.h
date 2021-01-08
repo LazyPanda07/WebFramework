@@ -15,7 +15,7 @@ namespace framework
 	/// <summary>
 	/// Include another file
 	/// </summary>
-	/// <param name="arguments">take file path from arguments[0]</param>
+	/// <param name="arguments">take file name from arguments[0]</param>
 	/// <returns>all data from another file</returns>
-	std::string include(const std::vector<std::string>& arguments);
+	std::string include(const std::vector<std::string>& arguments, const std::string& pathToTemplates);
 }

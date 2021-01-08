@@ -25,7 +25,8 @@ namespace framework
 		};
 
 	private:
-		static const std::unordered_map<std::string, std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
+		std::unordered_map<std::string, std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
+		const std::string pathToTemplates;
 
 	private:
 		/// <summary>
@@ -57,7 +58,7 @@ namespace framework
 		std::string execute(const std::vector<executionUnit>& codes);
 
 	public:
-		WebFrameworkDynamicPages() = default;
+		WebFrameworkDynamicPages(const std::string& pathToTemplates);
 
 		/// <summary>
 		/// Run interpreter
@@ -65,6 +66,12 @@ namespace framework
 		/// <param name="variables">$key$ - value</param>
 		/// <param name="source">data string</param>
 		void run(const std::unordered_map<std::string_view, std::string>& variables, std::string& source);
+
+		/// <summary>
+		/// Getter for pathToTemplates
+		/// </summary>
+		/// <returns>pathToTemplates</returns>
+		const std::string& getPathToTemplates() const;
 
 		~WebFrameworkDynamicPages() = default;
 	};

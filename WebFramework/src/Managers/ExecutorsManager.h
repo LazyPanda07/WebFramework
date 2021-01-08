@@ -43,10 +43,11 @@ namespace framework
 		/// </summary>
 		/// <param name="assets">path to assets</param>
 		/// <param name="isCaching">is caching resource files</param>
+		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="routes">routes for all executors</param>
 		/// <param name="creator">functions that create executors</param>
 		/// <param name="settings">parsed .xml file</param>
-		void init(const std::filesystem::path& assets, bool isCaching, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
+		void init(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
 
 		/// <summary>
 		/// Process requests from server

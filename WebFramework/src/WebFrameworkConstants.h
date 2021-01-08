@@ -50,6 +50,7 @@ namespace ini
 	inline const std::string timeoutKey = "timeout";
 	inline const std::string loadSourceKey = "loadSource";
 	inline const std::string assetsPathKey = "assetsPath";
+	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
 	inline const std::string usingLoggingKey = "usingLogging";
 	inline const std::string dateFormatKey = "dateFormat";
@@ -69,6 +70,7 @@ namespace exceptions
 
 	inline const std::string cantFindSettingsPath = "Can't find settings path option";
 	inline const std::string cantFindAssetsPath = "Can't find assets path option";
+	inline const std::string cantFindTemplatesPath = "Can't find templates path option";
 	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
 	inline const std::string cantFindLoadSource = "Can't find load source option";
 

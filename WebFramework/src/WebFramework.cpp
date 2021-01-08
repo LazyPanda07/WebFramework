@@ -31,6 +31,7 @@ namespace framework
 		{
 			auto settingsPath = webFrameworkSettings.equal_range(ini::settingsPathKey);
 			auto assetsPath = webFrameworkSettings.equal_range(ini::assetsPathKey);
+			auto templatesPath = webFrameworkSettings.equal_range(ini::templatesPathKey);
 			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
 			auto loadSourcesIterator = webFrameworkSettings.equal_range(ini::loadSourceKey);
 			auto port = webServerSettings.equal_range(ini::portKey);
@@ -47,6 +48,11 @@ namespace framework
 			if (assetsPath.first == webFrameworkSettings.end())
 			{
 				throw out_of_range(::exceptions::cantFindAssetsPath);
+			}
+
+			if (templatesPath.first == webFrameworkSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindTemplatesPath);
 			}
 
 			if (usingAssetsCache.first == webFrameworkSettings.end())
@@ -97,6 +103,7 @@ namespace framework
 				(
 					utility::XMLSettingsParser(settingsPath.first->second),
 					assetsPath.first->second,
+					templatesPath.first->second,
 					usingAssetsCache.first->second == "true" ? true : false,
 					port.first->second,
 					stoi(timeout.first->second),

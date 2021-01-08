@@ -9,14 +9,15 @@ using namespace std;
 
 namespace framework
 {
-	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching) :
+	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching, const string& pathToTemplates) :
 #ifdef WEB_FRAMEWORK_ASSETS
 		defaultAssets(WEB_FRAMEWORK_ASSETS),
 #else
 		defaultAssets(webFrameworkDefaultAssests),
 #endif // WEB_FRAMEWORK_ASSETS
 		assets(assets),
-		isCaching(isCaching)
+		isCaching(isCaching),
+		dynamicPages(pathToTemplates)
 	{
 
 	}
@@ -26,6 +27,11 @@ namespace framework
 		if (!filesystem::exists(assets))
 		{
 			filesystem::create_directory(assets);
+		}
+
+		if (!filesystem::exists(dynamicPages.getPathToTemplates()))
+		{
+			filesystem::create_directory(dynamicPages.getPathToTemplates());
 		}
 	}
 

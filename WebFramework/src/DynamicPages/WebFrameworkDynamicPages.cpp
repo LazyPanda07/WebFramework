@@ -13,17 +13,11 @@ using namespace std;
 
 namespace framework
 {
-	const unordered_map<string, function<string(const vector<string>&)>> WebFrameworkDynamicPages::dynamicPagesFunctions =
-	{
-		{ "print", print },
-		{ "include", include }
-	};
-
 	WebFrameworkDynamicPages::executionUnit::executionUnit(string&& functionName, vector<string>&& arguments) noexcept :
 		functionName(move(functionName)),
 		arguments(move(arguments))
 	{
-
+		
 	}
 
 	void WebFrameworkDynamicPages::clear(string& code)
@@ -120,6 +114,13 @@ namespace framework
 		return result;
 	}
 
+	WebFrameworkDynamicPages::WebFrameworkDynamicPages(const string& pathToTemplates) :
+		pathToTemplates(pathToTemplates)
+	{
+		dynamicPagesFunctions.insert({ "print", print });
+		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates) });
+	}
+
 	void WebFrameworkDynamicPages::run(const unordered_map<string_view, string>& variables, string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
@@ -145,5 +146,10 @@ namespace framework
 
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
 		}
+	}
+
+	const string& WebFrameworkDynamicPages::getPathToTemplates() const
+	{
+		return pathToTemplates;
 	}
 }
