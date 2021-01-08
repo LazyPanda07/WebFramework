@@ -176,6 +176,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
+    <ClCompile Include="src\Utility\StringConversion.cpp" />
     <ClCompile Include="src\Utility\XMLSettingsParser.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
@@ -202,6 +203,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\SQLite3\sqlite3.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
+    <ClInclude Include="src\Utility\StringConversion.h" />
     <ClInclude Include="src\Utility\XMLSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />

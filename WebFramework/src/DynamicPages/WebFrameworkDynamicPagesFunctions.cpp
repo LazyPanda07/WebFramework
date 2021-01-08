@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Utility/StringConversion.h"
 
 using namespace std;
 
