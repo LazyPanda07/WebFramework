@@ -31,7 +31,7 @@ namespace framework
 			
 			tem.resize(static_cast<size_t>(size) - 1);
 
-			MultiByteToWideChar
+			if (!MultiByteToWideChar
 			(
 				sourceCodePage,
 				NULL,
@@ -39,7 +39,10 @@ namespace framework
 				-1,
 				tem.data(),
 				size
-			);
+			))
+			{
+				throw exceptions::StringConversionException();
+			}
 
 			size = WideCharToMultiByte
 			(
@@ -60,7 +63,7 @@ namespace framework
 
 			result.resize(static_cast<size_t>(size) - 1);
 
-			WideCharToMultiByte
+			if (!WideCharToMultiByte
 			(
 				CP_UTF8,
 				NULL,
@@ -70,7 +73,10 @@ namespace framework
 				size,
 				NULL,
 				NULL
-			);
+			))
+			{
+				throw exceptions::StringConversionException();
+			}
 
 			return result;
 		}
