@@ -38,6 +38,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
+		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		void sendStaticFile(const std::string& filePath, HTTPResponse& response) override;
 
 		/// <summary>
@@ -45,6 +46,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
+		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables) override;
 
 		/// <summary>
@@ -52,6 +54,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		void doGet(HTTPRequest&& request, HTTPResponse& response) override;
 
 		/// <summary>

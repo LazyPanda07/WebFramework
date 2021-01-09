@@ -42,6 +42,11 @@ namespace framework
 			static std::string parseInlineParameter(const std::string& xmlLine);
 
 		public:
+			/// <summary>
+			/// Construct XMLSettingsParser from .xml file
+			/// </summary>
+			/// <param name="XMLSettings">path to .xml settings file</param>
+			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 			XMLSettingsParser(const std::string& XMLSettings);
 
 			/// <summary>

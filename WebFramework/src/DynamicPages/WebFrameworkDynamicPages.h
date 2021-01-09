@@ -41,6 +41,7 @@ namespace framework
 		/// <param name="variables">name - value</param>
 		/// <param name="code">section with special syntax</param>
 		/// <returns>string after all variable replaces</returns>
+		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		static std::string insertVariables(const std::unordered_map<std::string_view, std::string>& variables, std::string code);
 
 		/// <summary>
@@ -48,6 +49,7 @@ namespace framework
 		/// </summary>
 		/// <param name="code">section with special syntax</param>
 		/// <returns>functions for calling</returns>
+		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		static std::vector<executionUnit> preExecute(const std::string& code);
 
 		/// <summary>
@@ -55,6 +57,7 @@ namespace framework
 		/// </summary>
 		/// <param name="codes">section with special syntax</param>
 		/// <returns>string after all replaces</returns>
+		/// /// <exception cref="std::exception"></exception>
 		std::string execute(const std::vector<executionUnit>& codes);
 
 	public:
@@ -69,6 +72,8 @@ namespace framework
 		/// </summary>
 		/// <param name="variables">$key$ - value</param>
 		/// <param name="source">data string</param>
+		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
+		/// <exception cref="std::exception"></exception>
 		void run(const std::unordered_map<std::string_view, std::string>& variables, std::string& source);
 
 		/// <summary>

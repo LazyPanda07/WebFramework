@@ -120,6 +120,7 @@ namespace framework
 		/// <param name="stream">special class for taking data from network</param>
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
+		/// <exception cref="web::WebException"></exception>
 		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request);
 
 		/// <summary>

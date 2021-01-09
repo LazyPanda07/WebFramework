@@ -37,6 +37,10 @@ namespace framework
 		/// <param name="port">default is 80 or 443</param>
 		/// <param name="timeout">wait for client connection in milliseconds</param>
 		/// <param name="pathToSources">paths to files with executors</param>
+		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
+		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
+		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
 		WebServer(const utility::XMLSettingsParser& parser, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string_view& port = HTTPPort, DWORD timeout = 0, const std::vector<std::string>& pathToSources = {});
 
 		~WebServer() = default;

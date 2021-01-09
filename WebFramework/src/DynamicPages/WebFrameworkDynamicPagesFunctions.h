@@ -17,5 +17,6 @@ namespace framework
 	/// </summary>
 	/// <param name="arguments">take file name from arguments[0]</param>
 	/// <returns>all data from another file</returns>
+	/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 	std::string include(const std::vector<std::string>& arguments, const std::string& pathToTemplates);
 }
