@@ -2,6 +2,8 @@
 
 #include <Windows.h>
 
+#include "Exceptions/StringConversionException.h"
+
 using namespace std;
 
 namespace framework
@@ -22,7 +24,12 @@ namespace framework
 				NULL
 			);
 			
-			tem.resize(size - 1);
+			if (!size)
+			{
+				throw exceptions::StringConversionException();
+			}
+			
+			tem.resize(static_cast<size_t>(size) - 1);
 
 			MultiByteToWideChar
 			(
@@ -46,7 +53,12 @@ namespace framework
 				NULL
 			);
 
-			result.resize(size - 1);
+			if (!size)
+			{
+				throw exceptions::StringConversionException();
+			}
+
+			result.resize(static_cast<size_t>(size) - 1);
 
 			WideCharToMultiByte
 			(

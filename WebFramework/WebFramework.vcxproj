@@ -167,6 +167,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClCompile Include="src\Exceptions\FileDoesNotExistException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
+    <ClCompile Include="src\Exceptions\StringConversionException.cpp" />
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
     <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
@@ -193,6 +194,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\Exceptions\FileDoesNotExistException.h" />
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="src\Exceptions\StringConversionException.h" />
     <ClInclude Include="src\Executors\BaseExecutor.h" />
     <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
