@@ -298,12 +298,14 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
+    <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
     <ClCompile Include="src\Exceptions\FileDoesNotExistException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
+    <ClCompile Include="src\Exceptions\StringConversionException.cpp" />
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
     <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
@@ -313,6 +315,7 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
+    <ClCompile Include="src\Utility\StringConversion.cpp" />
     <ClCompile Include="src\Utility\XMLSettingsParser.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
@@ -322,12 +325,14 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
+    <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
     <ClInclude Include="src\Exceptions\FileDoesNotExistException.h" />
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="src\Exceptions\StringConversionException.h" />
     <ClInclude Include="src\Executors\BaseExecutor.h" />
     <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
@@ -338,13 +343,15 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClInclude Include="src\SQLite3\sqlite3.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
+    <ClInclude Include="src\Utility\StringConversion.h" />
     <ClInclude Include="src\Utility\XMLSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />
     <ClInclude Include="src\WebFramework.h" />
     <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\ISendFile.h" />
+    <ClInclude Include="src\WebNetwork\Interfaces\ISendDynamicFile.h" />
+    <ClInclude Include="src\WebNetwork\Interfaces\ISendStaticFile.h" />
     <ClInclude Include="src\WebNetwork\WebServer.h" />
   </ItemGroup>
   <ItemGroup>

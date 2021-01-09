@@ -1,15 +1,30 @@
 #include "HTTPRequest.h"
 
+#include "WebFrameworkConstants.h"
+
 using namespace std;
 
 namespace framework
 {
-	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendFile& resources) :
+	bool HTTPRequest::isWebFrameworkDynamicPages(const string& filePath)
+	{
+		size_t extension = filePath.find('.');
+
+		if (extension == string::npos)
+		{
+			return false;
+		}
+
+		return string_view(filePath.data() + extension) == webFrameworkDynamicPagesExtension;
+	}
+
+	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources) :
 		session(session),
 		ip(ip),
-		resources(resources)
+		staticResources(staticResources),
+		dynamicResources(dynamicResources)
 	{
-		
+
 	}
 
 	string HTTPRequest::getRawParameters() const
@@ -65,7 +80,7 @@ namespace framework
 	unordered_map<string, string> HTTPRequest::getCookies() const
 	{
 		unordered_map<string, string> result;
-		
+
 		try
 		{
 			const string& cookies = parser->getHeaders().at("Cookie");
@@ -89,19 +104,26 @@ namespace framework
 
 				offset = findValue + 2;
 			}
-			
+
 		}
 		catch (const out_of_range&)
 		{
-			
+
 		}
 
 		return result;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response)
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unique_ptr<unordered_map<string_view, string>>& variables)
 	{
-		resources.sendFile(filePath, response);
+		if (isWebFrameworkDynamicPages(filePath) && variables)
+		{
+			dynamicResources.sendDynamicFile(filePath, response, *variables);
+		}
+		else
+		{
+			staticResources.sendStaticFile(filePath, response);
+		}
 	}
 
 	const string& HTTPRequest::getIpV4ClientAddress() const

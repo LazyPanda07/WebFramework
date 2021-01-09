@@ -1,15 +1,15 @@
 #pragma once
 
-#include "../HTTPResponse.h"
+#include "WebNetwork/HTTPResponse.h"
 
 namespace framework
 {
 	namespace interfaces
 	{
 		/// <summary>
-		/// Providing sendFile method
+		/// Providing sendStaticFile method
 		/// </summary>
-		class ISendFile
+		class ISendStaticFile
 		{
 		public:
 			/// <summary>
@@ -17,9 +17,9 @@ namespace framework
 			/// </summary>
 			/// <param name="filePath">must start with leading /</param>
 			/// <param name="response">with file</param>
-			virtual void sendFile(const std::string& filePath, HTTPResponse& response) = 0;
+			virtual void sendStaticFile(const std::string& filePath, HTTPResponse& response) = 0;
 
-			virtual ~ISendFile() = default;
+			virtual ~ISendStaticFile() = default;
 		};
 	}
 }

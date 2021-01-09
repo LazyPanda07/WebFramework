@@ -47,6 +47,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doPost(HTTPRequest&& request, HTTPResponse& response);
 
 		/// <summary>
@@ -54,6 +55,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doGet(HTTPRequest&& request, HTTPResponse& response);
 
 		/// <summary>
@@ -61,6 +63,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doHead(HTTPRequest&& request, HTTPResponse& response);
 
 		/// <summary>
@@ -68,6 +71,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doPut(HTTPRequest&& request, HTTPResponse& response);
 
 		/// <summary>
@@ -75,6 +79,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doDelete(HTTPRequest&& request, HTTPResponse& response);
 
 		/// <summary>
@@ -82,6 +87,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doOptions(HTTPRequest&& request, HTTPResponse& response);
 
 		/// <summary>
@@ -89,6 +95,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
+		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doTrace(HTTPRequest&& request, HTTPResponse& response);
 
 		/// <summary>

@@ -28,6 +28,7 @@ namespace framework
 		/// </summary>
 		/// <param name="data">output data from HTTP</param>
 		/// <returns>total receive bytes</returns>
+		/// <exception cref="web::WebException"></exception>
 		int receiveData(std::vector<char>& data) override;
 
 		~HTTPNetwork() = default;

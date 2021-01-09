@@ -37,6 +37,8 @@ inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
 
 inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";
 
+inline constexpr std::string_view webFrameworkDynamicPagesExtension = ".wfdp";
+
 namespace ini
 {
 	inline const std::string webServerSection = "WebServer";
@@ -48,6 +50,7 @@ namespace ini
 	inline const std::string timeoutKey = "timeout";
 	inline const std::string loadSourceKey = "loadSource";
 	inline const std::string assetsPathKey = "assetsPath";
+	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
 	inline const std::string usingLoggingKey = "usingLogging";
 	inline const std::string dateFormatKey = "dateFormat";
@@ -67,6 +70,7 @@ namespace exceptions
 
 	inline const std::string cantFindSettingsPath = "Can't find settings path option";
 	inline const std::string cantFindAssetsPath = "Can't find assets path option";
+	inline const std::string cantFindTemplatesPath = "Can't find templates path option";
 	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
 	inline const std::string cantFindLoadSource = "Can't find load source option";
 
@@ -77,6 +81,9 @@ namespace exceptions
 
 	inline const std::string variableDeclarationSyntaxError = "Wrong variable declaration";
 	inline const std::string sectionDeclarationSyntaxError = "Wrong section declaration";
+	inline const std::string missingSemicolonSyntaxError = "Missing semicolon";
+
+	inline const std::string stringConversionErrorCode = "String conversion error code ";
 }
 
 namespace XMLSettingsTags

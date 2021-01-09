@@ -43,10 +43,11 @@ namespace framework
 		/// </summary>
 		/// <param name="assets">path to assets</param>
 		/// <param name="isCaching">is caching resource files</param>
+		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="routes">routes for all executors</param>
 		/// <param name="creator">functions that create executors</param>
 		/// <param name="settings">parsed .xml file</param>
-		void init(const std::filesystem::path& assets, bool isCaching, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
+		void init(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings) noexcept;
 
 		/// <summary>
 		/// Process requests from server
@@ -54,6 +55,9 @@ namespace framework
 		/// <param name="request">from server</param>
 		/// <param name="response">for client</param>
 		/// <param name="statefulExecutors">all stateful executors for client</param>
+		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
+		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="std::out_of_range"></exception>
 		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		/// <summary>

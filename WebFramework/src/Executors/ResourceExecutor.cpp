@@ -9,14 +9,15 @@ using namespace std;
 
 namespace framework
 {
-	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching) :
+	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching, const string& pathToTemplates) :
 #ifdef WEB_FRAMEWORK_ASSETS
 		defaultAssets(WEB_FRAMEWORK_ASSETS),
 #else
 		defaultAssets(webFrameworkDefaultAssests),
 #endif // WEB_FRAMEWORK_ASSETS
 		assets(assets),
-		isCaching(isCaching)
+		isCaching(isCaching),
+		dynamicPages(pathToTemplates)
 	{
 
 	}
@@ -27,9 +28,14 @@ namespace framework
 		{
 			filesystem::create_directory(assets);
 		}
+
+		if (!filesystem::exists(dynamicPages.getPathToTemplates()))
+		{
+			filesystem::create_directory(dynamicPages.getPathToTemplates());
+		}
 	}
 
-	void ResourceExecutor::sendFile(const string& filePath, HTTPResponse& response)
+	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response)
 	{
 		string result;
 
@@ -37,9 +43,9 @@ namespace framework
 		{
 			shared_lock<shared_mutex> shared(cacheMutex);
 
-			auto findFile = cache.find(filePath);
+			auto findFile = staticCache.find(filePath);
 
-			if (findFile != cache.end())
+			if (findFile != staticCache.end())
 			{
 				response.addBody(findFile->second);
 
@@ -68,8 +74,55 @@ namespace framework
 		{
 			lock_guard<shared_mutex> insertLock(cacheMutex);
 
-			cache[filePath] = result;
+			staticCache[filePath] = result;
 		}
+
+		response.addBody(result);
+	}
+
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
+	{
+		string result;
+
+		if (isCaching)
+		{
+			shared_lock<shared_mutex> shared(cacheMutex);
+
+			auto findFile = dynamicCache.find(filePath);
+
+			if (findFile != dynamicCache.end())
+			{
+				response.addBody(findFile->second);
+
+				return;
+			}
+		}
+
+		filesystem::path assetsFilePath(assets.string() + filePath);
+
+		if (!filesystem::exists(assetsFilePath))
+		{
+			throw exceptions::FileDoesNotExistException(assetsFilePath.string());
+		}
+
+		ifstream file(assetsFilePath);
+		string tem;
+
+		while (getline(file, tem))
+		{
+			result += tem + "\n";
+		}
+
+		file.close();
+
+		if (isCaching)
+		{
+			lock_guard<shared_mutex> insertLock(cacheMutex);
+
+			dynamicCache[filePath] = result;
+		}
+
+		dynamicPages.run(variables, result);
 
 		response.addBody(result);
 	}
@@ -81,7 +134,7 @@ namespace framework
 			throw exceptions::NotImplementedException();
 		}
 
-		this->sendFile(request.getRawParameters(), response);
+		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
 	void ResourceExecutor::doPost(HTTPRequest&& request, HTTPResponse& response)
@@ -91,7 +144,7 @@ namespace framework
 			throw exceptions::NotImplementedException();
 		}
 
-		this->sendFile(request.getRawParameters(), response);
+		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response)

@@ -7,21 +7,17 @@
 #include "Log.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/DynamicPagesSyntaxException.h"
+#include "WebFrameworkDynamicPagesFunctions.h"
 
 using namespace std;
 
 namespace framework
 {
-	const unordered_map<string, function<string(const vector<string>&)>> WebFrameworkDynamicPages::dynamicPagesFunctions =
-	{
-		{ "print", [](const vector<string>& arguments) -> string { string result; for (const auto& i : arguments) { result += i + ' '; } result.pop_back(); return result; } }
-	};
-
 	WebFrameworkDynamicPages::executionUnit::executionUnit(string&& functionName, vector<string>&& arguments) noexcept :
 		functionName(move(functionName)),
 		arguments(move(arguments))
 	{
-
+		
 	}
 
 	void WebFrameworkDynamicPages::clear(string& code)
@@ -62,7 +58,7 @@ namespace framework
 
 		if (endLine == string::npos)
 		{
-			return result;
+			throw exceptions::DynamicPagesSyntaxException(::exceptions::missingSemicolonSyntaxError);
 		}
 
 		result.reserve(count(code.begin(), code.end(), ';'));
@@ -108,12 +104,21 @@ namespace framework
 			{
 				if (Log::isInitialized())
 				{
-					Log::warning("WebFrameworkDynamicPages execute exception: {}", e.what());
+					Log::error("WebFrameworkDynamicPages execute exception: {}", e.what());
 				}
+
+				throw;
 			}
 		}
 
 		return result;
+	}
+
+	WebFrameworkDynamicPages::WebFrameworkDynamicPages(const string& pathToTemplates) :
+		pathToTemplates(pathToTemplates)
+	{
+		dynamicPagesFunctions.insert({ "print", print });
+		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates) });
 	}
 
 	void WebFrameworkDynamicPages::run(const unordered_map<string_view, string>& variables, string& source)
@@ -141,5 +146,15 @@ namespace framework
 
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
 		}
+
+		if (source.find("{%") != string::npos)
+		{
+			this->run(variables, source);
+		}
+	}
+
+	const string& WebFrameworkDynamicPages::getPathToTemplates() const
+	{
+		return pathToTemplates;
 	}
 }
