@@ -44,6 +44,7 @@ namespace ini
 	inline const std::string webServerSection = "WebServer";
 	inline const std::string webFrameworkSection = "WebFramework";
 	inline const std::string loggingSection = "Logging";
+	inline const std::string webFrameworkLoadBalancerSection = "WebFrameworkLoadBalancer";
 
 	inline const std::string settingsPathKey = "settingsPath";
 	inline const std::string ipKey = "ip";
@@ -53,9 +54,12 @@ namespace ini
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
-	inline const std::string usingLoggingKey = "usingLogging";
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
+
+	inline const std::string usingLoggingKey = "usingLogging";
+
+	inline const std::string listOfServersKey = "listOfServers";
 
 	inline const std::string defaultLoadSourceValue = "current";
 	inline const std::string defaultUsingAssetsCache = "false";
