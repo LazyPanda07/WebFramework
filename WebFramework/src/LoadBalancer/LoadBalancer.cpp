@@ -12,20 +12,67 @@ using namespace std;
 
 namespace framework
 {
-	LoadBalancer::LoadBalancer(const filesystem::path& configurationINIFile)
+	namespace load_balancer
 	{
-		if (!filesystem::exists(configurationINIFile))
+		LoadBalancer::LoadBalancer(const filesystem::path& configurationINIFile)
 		{
-			throw exceptions::FileDoesNotExistException(configurationINIFile.string());
+			if (!filesystem::exists(configurationINIFile))
+			{
+				throw exceptions::FileDoesNotExistException(configurationINIFile.string());
+			}
+
+			::utility::INIParser parser(configurationINIFile);
+			const unordered_map<string, string>& webFrameworkLoadBalancerMapSettings = parser.getSectionMapData(ini::webFrameworkLoadBalancerSection, ini::listOfServersKey);
+			const unordered_multimap<string, string>& webFrameworkLoadBalancerDataSettings = parser.getSectionData(ini::webFrameworkLoadBalancerSection);
+
+			try
+			{
+				auto loadBalancerIp = webFrameworkLoadBalancerDataSettings.equal_range(ini::loadBalancerIpKey);
+				auto loadBalancerPort = webFrameworkLoadBalancerDataSettings.equal_range(ini::loadBalancerPortKey);
+				auto loadBalancerTimeout = webFrameworkLoadBalancerDataSettings.equal_range(ini::loadBalancerTimeoutKey);
+
+				if (loadBalancerIp.first == webFrameworkLoadBalancerDataSettings.end())
+				{
+					throw out_of_range(::exceptions::cantFindLoadBalancerIp);
+				}
+
+				if (loadBalancerPort.first == webFrameworkLoadBalancerDataSettings.end())
+				{
+					throw out_of_range(::exceptions::cantFindLoadBalancerPort);
+				}
+
+				if (loadBalancerTimeout.first == webFrameworkLoadBalancerDataSettings.end())
+				{
+					throw out_of_range(::exceptions::cantFindLoadBalancerTimeout);
+				}
+
+				loadBalancerServer = make_unique<LoadBalancerServer>(loadBalancerIp.first->second, loadBalancerPort.first->second, stoul(loadBalancerTimeout.first->second));
+			}
+			catch (const out_of_range&)	//not found settings in unordered_multimap
+			{
+				throw;
+			}
+
+			//TODO: connections to all servers
+			for (const auto& [ip, port] : webFrameworkLoadBalancerMapSettings)
+			{
+
+			}
 		}
 
-		::utility::INIParser parser(configurationINIFile);
-		const unordered_map<string, string>& webFrameworkLoadBalancerSettings = parser.getSectionMapData(ini::webFrameworkLoadBalancerSection, ini::listOfServersKey);
-
-		//TODO: connections to all servers
-		for (const auto& [ip, port] : webFrameworkLoadBalancerSettings)
+		void LoadBalancer::startLoadBalancer()
 		{
+			loadBalancerServer->start();
+		}
 
+		void LoadBalancer::stopLoadBalancerServer()
+		{
+			loadBalancerServer->stop();
+		}
+
+		bool LoadBalancer::getLoadBalancerState() const
+		{
+			return loadBalancerServer->serverState();
 		}
 	}
 }

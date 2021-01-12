@@ -93,6 +93,9 @@
     <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -183,6 +186,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\LoadBalancer\LoadBalancer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -60,6 +60,9 @@ namespace ini
 	inline const std::string usingLoggingKey = "usingLogging";
 
 	inline const std::string listOfServersKey = "listOfServers";
+	inline const std::string loadBalancerIpKey = "loadBalancerIp";
+	inline const std::string loadBalancerPortKey = "loadBalancerPort";
+	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
 
 	inline const std::string defaultLoadSourceValue = "current";
 	inline const std::string defaultUsingAssetsCache = "false";
@@ -90,6 +93,10 @@ namespace exceptions
 	inline const std::string missingSemicolonSyntaxError = "Missing semicolon";
 
 	inline const std::string stringConversionErrorCode = "String conversion error code ";
+
+	inline const std::string cantFindLoadBalancerIp = "Can't find load balancer ip option";
+	inline const std::string cantFindLoadBalancerPort = "Can't find load balancer port option";
+	inline const std::string cantFindLoadBalancerTimeout = "Can't find load balancer timeout option";
 }
 
 namespace XMLSettingsTags
