@@ -173,6 +173,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
+    <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
@@ -200,6 +201,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
     <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
+    <ClInclude Include="src\LoadBalancer\LoadBalancer.h" />
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
     <ClInclude Include="src\SQLite3\sqlite3.h" />

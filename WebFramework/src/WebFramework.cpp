@@ -23,9 +23,9 @@ namespace framework
 		}
 
 		::utility::INIParser parser(configurationINIFile);
-		const unordered_multimap<string, string>& webServerSettings = parser.getSection(ini::webServerSection);
-		const unordered_multimap<string, string>& webFrameworkSettings = parser.getSection(ini::webFrameworkSection);
-		const unordered_multimap<string, string>& loggingSettings = parser.getSection(ini::loggingSection);
+		const unordered_multimap<string, string>& webServerSettings = parser.getSectionData(ini::webServerSection);
+		const unordered_multimap<string, string>& webFrameworkSettings = parser.getSectionData(ini::webFrameworkSection);
+		const unordered_multimap<string, string>& loggingSettings = parser.getSectionData(ini::loggingSection);
 
 		try
 		{
