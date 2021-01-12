@@ -34,6 +34,7 @@ namespace framework
 			auto templatesPath = webFrameworkSettings.equal_range(ini::templatesPathKey);
 			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
 			auto loadSourcesIterator = webFrameworkSettings.equal_range(ini::loadSourceKey);
+			auto ip = webServerSettings.equal_range(ini::ipKey);
 			auto port = webServerSettings.equal_range(ini::portKey);
 			auto timeout = webServerSettings.equal_range(ini::timeoutKey);
 			auto usingLogging = loggingSettings.equal_range(ini::usingLoggingKey);
@@ -63,6 +64,11 @@ namespace framework
 			if (loadSourcesIterator.first == webFrameworkSettings.end())
 			{
 				throw out_of_range(::exceptions::cantFindLoadSource);
+			}
+
+			if (ip.first == webServerSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindIp);
 			}
 
 			if (port.first == webServerSettings.end())
@@ -105,6 +111,7 @@ namespace framework
 					assetsPath.first->second,
 					templatesPath.first->second,
 					usingAssetsCache.first->second == "true" ? true : false,
+					ip.first->second,
 					port.first->second,
 					stoi(timeout.first->second),
 					loadSources

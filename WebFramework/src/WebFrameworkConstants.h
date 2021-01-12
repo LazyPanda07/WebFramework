@@ -46,6 +46,7 @@ namespace ini
 	inline const std::string loggingSection = "Logging";
 
 	inline const std::string settingsPathKey = "settingsPath";
+	inline const std::string ipKey = "ip";
 	inline const std::string portKey = "port";
 	inline const std::string timeoutKey = "timeout";
 	inline const std::string loadSourceKey = "loadSource";
@@ -74,6 +75,7 @@ namespace exceptions
 	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
 	inline const std::string cantFindLoadSource = "Can't find load source option";
 
+	inline const std::string cantFindIp = "Can't find ip option";
 	inline const std::string cantFindPort = "Can't find port option";
 	inline const std::string cantFindTimeout = "Can't find timeout option";
 
