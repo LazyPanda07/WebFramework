@@ -76,6 +76,8 @@ namespace framework
 				catch (const web::WebException&)
 				{
 					this->disconnectUser(data);
+
+					break;
 				}
 			}
 		}
