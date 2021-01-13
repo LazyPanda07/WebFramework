@@ -17,6 +17,13 @@ namespace framework
 		HTTPNetwork(SOCKET clientSocket);
 
 		/// <summary>
+		/// Client side constructor
+		/// </summary>
+		/// <param name="ip">server address</param>
+		/// <param name="port">server listen socket port</param>
+		HTTPNetwork(const std::string& ip, const std::string& port);
+
+		/// <summary>
 		/// Default send function
 		/// </summary>
 		/// <param name="data">that sends through HTTP</param>

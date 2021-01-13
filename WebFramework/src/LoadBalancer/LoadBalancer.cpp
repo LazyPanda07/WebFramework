@@ -22,7 +22,6 @@ namespace framework
 			}
 
 			::utility::INIParser parser(configurationINIFile);
-			const unordered_map<string, string>& webFrameworkLoadBalancerMapSettings = parser.getSectionMapData(ini::webFrameworkLoadBalancerSection, ini::listOfServersKey);
 			const unordered_multimap<string, string>& webFrameworkLoadBalancerDataSettings = parser.getSectionData(ini::webFrameworkLoadBalancerSection);
 
 			try
@@ -46,17 +45,16 @@ namespace framework
 					throw out_of_range(::exceptions::cantFindLoadBalancerTimeout);
 				}
 
-				loadBalancerServer = make_unique<LoadBalancerServer>(loadBalancerIp.first->second, loadBalancerPort.first->second, stoul(loadBalancerTimeout.first->second));
+				loadBalancerServer = make_unique<LoadBalancerServer>(
+					loadBalancerIp.first->second,
+					loadBalancerPort.first->second,
+					stoul(loadBalancerTimeout.first->second),
+					parser.getSectionMapData(ini::webFrameworkLoadBalancerSection, ini::listOfServersKey)
+					);
 			}
 			catch (const out_of_range&)	//not found settings in unordered_multimap
 			{
 				throw;
-			}
-
-			//TODO: connections to all servers
-			for (const auto& [ip, port] : webFrameworkLoadBalancerMapSettings)
-			{
-
 			}
 		}
 

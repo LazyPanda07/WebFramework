@@ -209,6 +209,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\SQLite3\sqlite3.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
+    <ClInclude Include="src\Utility\PriorityQueue.h" />
     <ClInclude Include="src\Utility\StringConversion.h" />
     <ClInclude Include="src\Utility\XMLSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />
