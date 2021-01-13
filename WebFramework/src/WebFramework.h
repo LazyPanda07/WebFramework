@@ -51,7 +51,7 @@ namespace framework
 		/// <summary>
 		/// Is server running
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>is server running</returns>
 		bool getServerState() const;
 
 		~WebFramework() = default;

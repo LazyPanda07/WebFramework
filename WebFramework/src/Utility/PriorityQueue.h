@@ -6,6 +6,12 @@ namespace framework
 {
 	namespace utility
 	{
+		/// <summary>
+		/// Wrapper of std::priority_queue with find and erase methods
+		/// </summary>
+		/// <typeparam name="T">type of values to store</typeparam>
+		/// <typeparam name="ContainerT">type of container</typeparam>
+		/// <typeparam name="CompareT">type of compare class</typeparam>
 		template<typename T, typename ContainerT, typename CompareT>
 		class PriorityQueue : public std::priority_queue<T, ContainerT, CompareT>
 		{
@@ -15,8 +21,17 @@ namespace framework
 		public:
 			PriorityQueue() = default;
 
+			/// <summary>
+			/// Find value in PriorityQueue
+			/// </summary>
+			/// <param name="value">find value</param>
+			/// <returns>const_iterator to position with finded value or end</returns>
 			const_iterator find(const T& value);
 
+			/// <summary>
+			/// Erase value from PriorityQueue
+			/// </summary>
+			/// <param name="value">value to erase</param>
 			void erase(const T& value);
 
 			~PriorityQueue() = default;
