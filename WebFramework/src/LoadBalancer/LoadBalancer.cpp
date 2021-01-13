@@ -46,8 +46,8 @@ namespace framework
 				}
 
 				loadBalancerServer = make_unique<LoadBalancerServer>(
-					loadBalancerIp.first->second,
 					loadBalancerPort.first->second,
+					loadBalancerIp.first->second,
 					stoul(loadBalancerTimeout.first->second),
 					parser.getSectionMapData(ini::webFrameworkLoadBalancerSection, ini::listOfServersKey)
 					);
