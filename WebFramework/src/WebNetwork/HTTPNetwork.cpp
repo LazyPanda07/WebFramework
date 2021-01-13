@@ -15,6 +15,12 @@ namespace framework
 
 	}
 
+	HTTPNetwork::HTTPNetwork(const string& ip, const string& port) :
+		web::Network(ip, port)
+	{
+
+	}
+
 	int HTTPNetwork::sendData(const vector<char>& data)
 	{
 		try

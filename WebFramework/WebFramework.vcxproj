@@ -311,6 +311,8 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
+    <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp" />
+    <ClCompile Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
@@ -338,11 +340,14 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
     <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
+    <ClInclude Include="src\LoadBalancer\LoadBalancer.h" />
+    <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h" />
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
     <ClInclude Include="src\SQLite3\sqlite3.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
+    <ClInclude Include="src\Utility\PriorityQueue.h" />
     <ClInclude Include="src\Utility\StringConversion.h" />
     <ClInclude Include="src\Utility\XMLSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\HTTPNetwork.h" />

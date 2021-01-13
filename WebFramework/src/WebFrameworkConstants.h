@@ -44,17 +44,25 @@ namespace ini
 	inline const std::string webServerSection = "WebServer";
 	inline const std::string webFrameworkSection = "WebFramework";
 	inline const std::string loggingSection = "Logging";
+	inline const std::string webFrameworkLoadBalancerSection = "WebFrameworkLoadBalancer";
 
 	inline const std::string settingsPathKey = "settingsPath";
+	inline const std::string ipKey = "ip";
 	inline const std::string portKey = "port";
 	inline const std::string timeoutKey = "timeout";
 	inline const std::string loadSourceKey = "loadSource";
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
-	inline const std::string usingLoggingKey = "usingLogging";
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
+
+	inline const std::string usingLoggingKey = "usingLogging";
+
+	inline const std::string listOfServersKey = "listOfServers";
+	inline const std::string loadBalancerIpKey = "loadBalancerIp";
+	inline const std::string loadBalancerPortKey = "loadBalancerPort";
+	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
 
 	inline const std::string defaultLoadSourceValue = "current";
 	inline const std::string defaultUsingAssetsCache = "false";
@@ -74,6 +82,7 @@ namespace exceptions
 	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
 	inline const std::string cantFindLoadSource = "Can't find load source option";
 
+	inline const std::string cantFindIp = "Can't find ip option";
 	inline const std::string cantFindPort = "Can't find port option";
 	inline const std::string cantFindTimeout = "Can't find timeout option";
 
@@ -84,6 +93,10 @@ namespace exceptions
 	inline const std::string missingSemicolonSyntaxError = "Missing semicolon";
 
 	inline const std::string stringConversionErrorCode = "String conversion error code ";
+
+	inline const std::string cantFindLoadBalancerIp = "Can't find load balancer ip option";
+	inline const std::string cantFindLoadBalancerPort = "Can't find load balancer port option";
+	inline const std::string cantFindLoadBalancerTimeout = "Can't find load balancer timeout option";
 }
 
 namespace XMLSettingsTags
