@@ -3,13 +3,19 @@
 #include "HTTPBuilder.h"
 #include "BaseIOSocketStream.h"
 
+#ifdef EXECUTOR_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif // EXECUTOR_DLL
+
 namespace framework
 {
 	/// <summary>
 	/// <para>HTTPBuilder wrapper</para>
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class HTTPResponse
+	class WEB_FRAMEWORK_API HTTPResponse
 	{
 	private:
 		web::HTTPBuilder builder;

@@ -3,6 +3,12 @@
 #include <string>
 #include <unordered_map>
 
+#ifdef EXECUTOR_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif // EXECUTOR_DLL
+
 namespace framework
 {
 	namespace utility
@@ -10,13 +16,13 @@ namespace framework
 		/// <summary>
 		/// Parser for .xml settings file
 		/// </summary>
-		class XMLSettingsParser
+		class WEB_FRAMEWORK_API XMLSettingsParser
 		{
 		public:
 			/// <summary>
 			/// Settings for executor
 			/// </summary>
-			struct ExecutorSettings
+			struct WEB_FRAMEWORK_API ExecutorSettings
 			{
 				enum class loadType
 				{
