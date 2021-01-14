@@ -6,6 +6,12 @@
 #include "Interfaces/ISendDynamicFile.h"
 #include "BaseIOSocketStream.h"
 
+#ifdef EXECUTOR_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif // EXECUTOR_DLL
+
 namespace framework
 {
 	/// <summary>
@@ -13,7 +19,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class HTTPRequest
+	class WEB_FRAMEWORK_API HTTPRequest
 	{
 	private:
 		std::unique_ptr<web::HTTPParser> parser;
