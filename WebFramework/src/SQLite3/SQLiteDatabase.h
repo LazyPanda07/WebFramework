@@ -4,6 +4,12 @@
 
 #include "sqlite3.h"
 
+#ifdef SQLITE_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif // SQLITE_DLL
+
 namespace framework
 {
 	namespace sqlite
@@ -17,7 +23,7 @@ namespace framework
 		/// <para>Wrapper class for sqlite3 library</para>
 		/// <para>Providing connect to sqlite3 database</para>
 		/// </summary>
-		class SQLiteDatabase
+		class WEB_FRAMEWORK_API SQLiteDatabase
 		{
 		private:
 			std::string databaseName;

@@ -13,7 +13,7 @@ namespace framework
 		/// <summary>
 		/// Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase
 		/// </summary>
-		class SQLiteDatabaseModel
+		class WEB_FRAMEWORK_API SQLiteDatabaseModel
 		{
 		private:
 			std::string tableName;

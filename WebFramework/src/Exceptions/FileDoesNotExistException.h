@@ -2,6 +2,12 @@
 
 #include <stdexcept>
 
+#if defined(EXECUTOR_DLL) || defined(SQLITE_DLL) || defined(LOAD_BALANCER_DLL) || defined(CONVERSION_DLL)
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif
+
 namespace framework
 {
 	namespace exceptions
@@ -9,7 +15,7 @@ namespace framework
 		/// <summary>
 		/// Wrong file path
 		/// </summary>
-		class FileDoesNotExistException : public std::runtime_error
+		class WEB_FRAMEWORK_API FileDoesNotExistException : public std::runtime_error
 		{
 		public:
 			FileDoesNotExistException(const std::string& fileName);
