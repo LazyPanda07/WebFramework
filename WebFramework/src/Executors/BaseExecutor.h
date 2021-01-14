@@ -3,7 +3,7 @@
 * For example following link send request to "/test" path http://127.0.0.1/test
 * You can create and configure your class that would be processing this path
 * Base class for all executors
-* May be used for dll with #define EXECUTOR_FROM_DLL
+* May be used for dll with #define EXECUTOR_DLL
 */
 #pragma once
 
@@ -12,11 +12,11 @@
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/XMLSettingsParser.h"
 
-#ifdef EXECUTOR_FROM_DLL
+#ifdef EXECUTOR_DLL
 #define WEB_FRAMEWORK_API __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API
-#endif // EXECUTOR_FROM_DLL
+#endif // EXECUTOR_DLL
 
 namespace framework
 {

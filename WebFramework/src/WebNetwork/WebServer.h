@@ -22,8 +22,8 @@ namespace framework
 		/// <summary>
 		/// Called for every client
 		/// </summary>
-		/// <param name="clientSocket"></param>
-		/// <param name="addr"></param>
+		/// <param name="clientSocket">client's socket</param>
+		/// <param name="addr">client's address</param>
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
