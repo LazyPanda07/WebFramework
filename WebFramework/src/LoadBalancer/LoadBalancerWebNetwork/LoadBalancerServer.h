@@ -90,7 +90,7 @@ namespace framework
 			/// <param name="ip">server's address</param>
 			/// <param name="timeout">time to wait for connection</param>
 			/// <param name="allServers">list of all available servers</param>
-			LoadBalancerServer(const std::string& port, const std::string& ip, DWORD timeout, const std::unordered_map<std::string, std::string>& allServers);
+			LoadBalancerServer(const std::string& port, const std::string& ip, DWORD timeout, const std::unordered_multimap<std::string, std::string>& allServers);
 
 			~LoadBalancerServer() = default;
 		};
