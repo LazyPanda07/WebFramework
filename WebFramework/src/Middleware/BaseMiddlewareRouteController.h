@@ -2,6 +2,9 @@
 
 #include <vector>
 
+#include "HTTPParser.h"
+#include "Utility/baseConnectionData.h"
+
 namespace framework
 {
 	namespace middleware
@@ -9,12 +12,14 @@ namespace framework
 		class BaseMiddlewareRouteController
 		{
 		protected:
-
+			std::vector<utility::baseConnectionData> servers;
 
 		public:
-			BaseMiddlewareRouteController();
+			BaseMiddlewareRouteController(std::initializer_list<utility::baseConnectionData> servers);
 
+			BaseMiddlewareRouteController(const std::vector<utility::baseConnectionData>& servers);
 
+			virtual const utility::baseConnectionData& getServerConnectionData(const web::HTTPParser& httpMessage) = 0;
 
 			virtual ~BaseMiddlewareRouteController() = default;
 		};
