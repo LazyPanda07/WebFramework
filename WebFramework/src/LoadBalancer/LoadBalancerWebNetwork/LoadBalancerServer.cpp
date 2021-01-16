@@ -9,10 +9,10 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		LoadBalancerServer::connectionData LoadBalancerServer::chooseServer()
+		LoadBalancerServer::loadBalancerConnectionData LoadBalancerServer::chooseServer()
 		{
 			unique_lock<shared_mutex> lock(allServersMutex);
-			connectionData data = allServers.top();
+			loadBalancerConnectionData data = allServers.top();
 
 			allServers.pop();
 
@@ -25,29 +25,27 @@ namespace framework
 			return data;
 		}
 
-		void LoadBalancerServer::disconnectUser(const connectionData& data)
+		void LoadBalancerServer::disconnectUser(const loadBalancerConnectionData& data)
 		{
 			unique_lock<shared_mutex> lock(allServersMutex);
 
 			auto valueFromContainer = allServers.find(data);
-			connectionData valueToInsert(valueFromContainer->ip, valueFromContainer->port, valueFromContainer->connections - 1);
+			loadBalancerConnectionData valueToInsert(valueFromContainer->ip, valueFromContainer->port, valueFromContainer->connections - 1);
 
 			allServers.erase(*valueFromContainer);
 
 			allServers.push(move(valueToInsert));
 		}
 
-		LoadBalancerServer::connectionData::connectionData(const string& ip, const string& port, unsigned int connections) :
-			ip(ip),
-			port(port),
+		LoadBalancerServer::loadBalancerConnectionData::loadBalancerConnectionData(const string& ip, const string& port, unsigned int connections) :
+			baseConnectionData(ip, port),
 			connections(connections)
 		{
 
 		}
 
-		LoadBalancerServer::connectionData::connectionData(string&& ip, string&& port, unsigned int connections) noexcept :
-			ip(move(ip)),
-			port(move(port)),
+		LoadBalancerServer::loadBalancerConnectionData::loadBalancerConnectionData(string&& ip, string&& port, unsigned int connections) noexcept :
+			baseConnectionData(move(ip),move(port)),
 			connections(connections)
 		{
 
@@ -57,7 +55,7 @@ namespace framework
 		{
 			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
 			const string clientIp = getIpV4(addr);
-			connectionData data = this->chooseServer();
+			loadBalancerConnectionData data = this->chooseServer();
 			streams::IOSocketStream serverStream(new buffers::IOSocketBuffer(new HTTPNetwork(data.ip, data.port)));
 			
 			while (true)

@@ -6,6 +6,7 @@
 
 #include "BaseTCPServer.h"
 #include "Utility/PriorityQueue.h"
+#include "Utility/baseConnectionData.h"
 
 namespace framework
 {
@@ -20,19 +21,17 @@ namespace framework
 			/// <summary>
 			/// data for IOSocketStream connection
 			/// </summary>
-			struct connectionData
+			struct loadBalancerConnectionData : public utility::baseConnectionData
 			{
-				std::string ip;
-				std::string port;
 				unsigned int connections;
 
 				/// <summary>
-				/// Construct connectionData from LoadBalancerServer constructor or from disconnectUser method
+				/// Construct loadBalancerConnectionData from LoadBalancerServer constructor or from disconnectUser method
 				/// </summary>
 				/// <param name="ip">server's address</param>
 				/// <param name="port">server's port</param>
 				/// <param name="connections">current connections to server</param>
-				connectionData(const std::string& ip, const std::string& port, unsigned int connections = 0);
+				loadBalancerConnectionData(const std::string& ip, const std::string& port, unsigned int connections = 0);
 
 				/// <summary>
 				/// Move constructor
@@ -40,25 +39,27 @@ namespace framework
 				/// <param name="ip">server's address</param>
 				/// <param name="port">server's port</param>
 				/// <param name="connections">current connections to server</param>
-				connectionData(std::string&& ip, std::string&& port, unsigned int connections) noexcept;
+				loadBalancerConnectionData(std::string&& ip, std::string&& port, unsigned int connections) noexcept;
 
 				/// <summary>
 				/// Operators for PriorityQueue sorting
 				/// </summary>
-				/// <param name="other">another connectionData instance</param>
+				/// <param name="other">another loadBalancerConnectionData instance</param>
 				/// <returns>current instance is smaller than other instance</returns>
-				bool operator > (const connectionData& other) const;
+				bool operator > (const loadBalancerConnectionData& other) const;
 
 				/// <summary>
 				/// Operators for PriorityQueue find method
 				/// </summary>
-				/// <param name="other">another connectionData instance</param>
+				/// <param name="other">another loadBalancerConnectionData instance</param>
 				/// <returns>current instance is equals than other instance</returns>
-				bool operator == (const connectionData& other) const;
+				bool operator == (const loadBalancerConnectionData& other) const;
+
+				~loadBalancerConnectionData() = default;
 			};
 
 		private:
-			utility::PriorityQueue<connectionData, std::vector<connectionData>, std::greater<connectionData>> allServers;
+			utility::PriorityQueue<loadBalancerConnectionData, std::vector<loadBalancerConnectionData>, std::greater<loadBalancerConnectionData>> allServers;
 			std::shared_mutex allServersMutex;
 
 		private:
@@ -66,13 +67,13 @@ namespace framework
 			/// Choose server with smallest connections to connect to
 			/// </summary>
 			/// <returns>data for connection</returns>
-			connectionData chooseServer();
+			loadBalancerConnectionData chooseServer();
 
 			/// <summary>
 			/// Rearrange allServers after disconnection
 			/// </summary>
 			/// <param name="data">current server connection data with server</param>
-			void disconnectUser(const connectionData& data);
+			void disconnectUser(const loadBalancerConnectionData& data);
 
 		private:
 			/// <summary>
@@ -95,12 +96,12 @@ namespace framework
 			~LoadBalancerServer() = default;
 		};
 
-		inline bool LoadBalancerServer::connectionData::operator > (const LoadBalancerServer::connectionData& other) const
+		inline bool LoadBalancerServer::loadBalancerConnectionData::operator > (const LoadBalancerServer::loadBalancerConnectionData& other) const
 		{
 			return connections > other.connections;
 		}
 
-		inline bool LoadBalancerServer::connectionData::operator == (const LoadBalancerServer::connectionData& other) const
+		inline bool LoadBalancerServer::loadBalancerConnectionData::operator == (const LoadBalancerServer::loadBalancerConnectionData& other) const
 		{
 			return ip == other.ip &&
 				port == other.port;
