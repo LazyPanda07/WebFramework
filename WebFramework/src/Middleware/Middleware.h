@@ -9,7 +9,7 @@ namespace framework
 {
 	namespace middleware
 	{
-		class Middleware
+		class WEB_FRAMEWORK_API Middleware
 		{
 		private:
 			MiddlewareServer middlewareServer;

@@ -9,7 +9,7 @@ namespace framework
 {
 	namespace middleware
 	{
-		class BaseMiddlewareRouteController
+		class WEB_FRAMEWORK_API BaseMiddlewareRouteController
 		{
 		protected:
 			std::vector<utility::baseConnectionData> servers;
