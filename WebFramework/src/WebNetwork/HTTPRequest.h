@@ -1,16 +1,17 @@
 #pragma once
 
+#ifdef EXECUTOR_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#define HTTP_DLL
+#else
+#define WEB_FRAMEWORK_API
+#endif // EXECUTOR_DLL
+
 #include "HTTPParser.h"
 #include "Managers/SessionsManager.h"
 #include "Interfaces/ISendStaticFile.h"
 #include "Interfaces/ISendDynamicFile.h"
 #include "BaseIOSocketStream.h"
-
-#ifdef EXECUTOR_DLL
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // EXECUTOR_DLL
 
 namespace framework
 {
@@ -30,6 +31,17 @@ namespace framework
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
+
+	public:
+		/// <summary>
+		/// Send request and get response from another HTTP server
+		/// </summary>
+		/// <param name="ip">server's address</param>
+		/// <param name="port">server's port</param>
+		/// <param name="request">HTTP request</param>
+		/// <returns>response from another server</returns>
+		/// <exception cref="web::WebException"></exception>
+		static web::HTTPParser sendRequestToAnotherServer(const std::string& ip, const std::string& port, const std::string& request);
 
 	public:
 		/// <summary>
@@ -136,6 +148,8 @@ namespace framework
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
 		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
+	public:
+
 
 		~HTTPRequest() = default;
 	};
