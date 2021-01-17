@@ -13,10 +13,22 @@ namespace framework
 			BaseMiddlewareRouteController& controller;
 
 		private:
+			/// <summary>
+			/// Called for every client
+			/// </summary>
+			/// <param name="clientSocket">client's socket</param>
+			/// <param name="addr">client's address</param>
 			void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 		public:
-			MiddlewareServer(const std::string& port, const std::string& ip, DWORD timeout, const std::vector<utility::baseConnectionData>& servers, BaseMiddlewareRouteController& controller);
+			/// <summary>
+			/// Construct MiddlewareServer
+			/// </summary>
+			/// <param name="port">server's port</param>
+			/// <param name="ip">server's address</param>
+			/// <param name="timeout">time to wait for connections</param>
+			/// <param name="controller">subclass of BaseMiddlewareRouteController that overrides getServerConnectionData method</param>
+			MiddlewareServer(const std::string& port, const std::string& ip, DWORD timeout, BaseMiddlewareRouteController& controller);
 
 			~MiddlewareServer() = default;
 		};
