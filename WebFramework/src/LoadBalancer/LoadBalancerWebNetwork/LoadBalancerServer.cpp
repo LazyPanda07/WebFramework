@@ -80,7 +80,7 @@ namespace framework
 			}
 		}
 
-		LoadBalancerServer::LoadBalancerServer(const string& port, const string& ip, DWORD timeout, const unordered_multimap<string, string>& allServers) :
+		LoadBalancerServer::LoadBalancerServer(const string& ip, const string& port, DWORD timeout, const unordered_multimap<string, string>& allServers) :
 			BaseTCPServer(port, ip, timeout, false)
 		{
 			for (const auto& [key, value] : allServers)

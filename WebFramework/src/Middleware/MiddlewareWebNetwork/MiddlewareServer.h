@@ -24,11 +24,11 @@ namespace framework
 			/// <summary>
 			/// Construct MiddlewareServer
 			/// </summary>
-			/// <param name="port">server's port</param>
 			/// <param name="ip">server's address</param>
+			/// <param name="port">server's port</param>
 			/// <param name="timeout">time to wait for connections</param>
 			/// <param name="controller">subclass of BaseMiddlewareRouteController that overrides getServerConnectionData method</param>
-			MiddlewareServer(const std::string& port, const std::string& ip, DWORD timeout, BaseMiddlewareRouteController& controller);
+			MiddlewareServer(const std::string& ip, const std::string& port, DWORD timeout, BaseMiddlewareRouteController& controller);
 
 			~MiddlewareServer() = default;
 		};

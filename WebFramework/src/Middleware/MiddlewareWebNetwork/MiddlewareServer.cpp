@@ -38,7 +38,7 @@ namespace framework
 
 		}
 
-		MiddlewareServer::MiddlewareServer(const string& port, const string& ip, DWORD timeout, BaseMiddlewareRouteController& controller) :
+		MiddlewareServer::MiddlewareServer(const string& ip, const string& port, DWORD timeout, BaseMiddlewareRouteController& controller) :
 			BaseTCPServer(port, ip, timeout, false),
 			controller(controller)
 		{
