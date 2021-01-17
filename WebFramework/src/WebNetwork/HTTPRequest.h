@@ -33,6 +33,17 @@ namespace framework
 
 	public:
 		/// <summary>
+		/// Send request and get response from another HTTP server
+		/// </summary>
+		/// <param name="ip">server's address</param>
+		/// <param name="port">server's port</param>
+		/// <param name="request">HTTP request</param>
+		/// <returns>response from another server</returns>
+		/// <exception cref="web::WebException"></exception>
+		static web::HTTPParser sendRequestToAnotherServer(const std::string& ip, const std::string& port, const std::string& request);
+
+	public:
+		/// <summary>
 		/// Construct HTTPRequest
 		/// </summary>
 		/// <param name="session">from WebServer</param>
@@ -136,6 +147,8 @@ namespace framework
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
 		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
+	public:
+
 
 		~HTTPRequest() = default;
 	};

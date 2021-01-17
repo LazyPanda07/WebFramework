@@ -1,6 +1,7 @@
 #include "HTTPRequest.h"
 
 #include "WebFrameworkConstants.h"
+#include "HTTPNetwork.h"
 
 using namespace std;
 
@@ -16,6 +17,17 @@ namespace framework
 		}
 
 		return string_view(filePath.data() + extension) == webFrameworkDynamicPagesExtension;
+	}
+
+	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(const string& ip, const string& port, const string& request)
+	{
+		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(ip, port)));
+		string response;
+
+		stream << request;
+		stream >> response;
+
+		return web::HTTPParser(response);
 	}
 
 	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources) :
