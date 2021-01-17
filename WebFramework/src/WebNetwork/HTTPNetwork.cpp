@@ -21,6 +21,12 @@ namespace framework
 
 	}
 
+	HTTPNetwork::HTTPNetwork(const utility::baseConnectionData& data) :
+		HTTPNetwork(data.ip, data.port)
+	{
+
+	}
+
 	int HTTPNetwork::sendData(const vector<char>& data)
 	{
 		try

@@ -11,5 +11,20 @@ namespace framework
 		{
 
 		}
+
+		void Middleware::startMiddleware()
+		{
+			middlewareServer.start();
+		}
+
+		void Middleware::stopMiddleware()
+		{
+			middlewareServer.stop();
+		}
+
+		bool Middleware::middlewareState() const
+		{
+			return middlewareServer.serverState();
+		}
 	}
 }

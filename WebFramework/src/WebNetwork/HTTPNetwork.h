@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseNetwork.h"
+#include "Utility/baseConnectionData.h"
 
 namespace framework
 {
@@ -22,6 +23,12 @@ namespace framework
 		/// <param name="ip">server address</param>
 		/// <param name="port">server listen socket port</param>
 		HTTPNetwork(const std::string& ip, const std::string& port);
+
+		/// <summary>
+		/// Client side constructor
+		/// </summary>
+		/// <param name="data">struct with ip and port</param>
+		HTTPNetwork(const utility::baseConnectionData& data);
 
 		/// <summary>
 		/// Default send function

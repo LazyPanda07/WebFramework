@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "Utility/baseConnectionData.h"
 #include "BaseMiddlewareRouteController.h"
 #include "MiddlewareWebNetwork/MiddlewareServer.h"
 
@@ -17,6 +16,12 @@ namespace framework
 
 		public:
 			Middleware(const std::string& ip, const std::string& port, DWORD timeout, const std::vector<utility::baseConnectionData>& servers, BaseMiddlewareRouteController& controller);
+
+			void startMiddleware();
+
+			void stopMiddleware();
+
+			bool middlewareState() const;
 
 			~Middleware() = default;
 		};
