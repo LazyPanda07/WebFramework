@@ -1,7 +1,9 @@
 #pragma once
 
-#include <filesystem>
+#include <vector>
 
+#include "Utility/baseConnectionData.h"
+#include "BaseMiddlewareRouteController.h"
 #include "MiddlewareWebNetwork/MiddlewareServer.h"
 
 namespace framework
@@ -11,10 +13,10 @@ namespace framework
 		class Middleware
 		{
 		private:
-			std::unique_ptr<MiddlewareServer> middlewareServer;
+			MiddlewareServer middlewareServer;
 
 		public:
-			Middleware(const std::filesystem::path& configurationINIFile);
+			Middleware(const std::string& ip, const std::string& port, DWORD timeout, const std::vector<utility::baseConnectionData>& servers, BaseMiddlewareRouteController& controller);
 
 			~Middleware() = default;
 		};

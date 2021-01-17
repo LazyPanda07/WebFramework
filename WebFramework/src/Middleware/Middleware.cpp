@@ -6,7 +6,8 @@ namespace framework
 {
 	namespace middleware
 	{
-		Middleware::Middleware(const filesystem::path& configurationINIFile)
+		Middleware::Middleware(const string& ip, const string& port, DWORD timeout, const vector<utility::baseConnectionData>& servers, BaseMiddlewareRouteController& controller) :
+			middlewareServer(ip, port, timeout, servers, controller)
 		{
 
 		}
