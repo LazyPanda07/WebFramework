@@ -1,16 +1,17 @@
 #pragma once
 
+#ifdef EXECUTOR_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#define HTTP_DLL
+#else
+#define WEB_FRAMEWORK_API
+#endif // EXECUTOR_DLL
+
 #include "HTTPParser.h"
 #include "Managers/SessionsManager.h"
 #include "Interfaces/ISendStaticFile.h"
 #include "Interfaces/ISendDynamicFile.h"
 #include "BaseIOSocketStream.h"
-
-#ifdef EXECUTOR_DLL
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // EXECUTOR_DLL
 
 namespace framework
 {
