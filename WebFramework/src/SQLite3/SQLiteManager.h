@@ -55,7 +55,7 @@ namespace framework
 			}
 			else
 			{
-				allTables.emplace(std::make_pair(databaseName, std::unordered_map<std::string, std::string>()));
+				allTables.emplace(std::make_pair(databaseName, std::unordered_map<std::string, std::unique_ptr<SQLiteDatabaseModel>>()));
 
 				return allTables[databaseName].emplace(std::make_pair(tableName, std::make_unique<SQLiteDatabaseModelSubclass>(std::forward<Args>(args)...))).first->second;
 			}
