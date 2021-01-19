@@ -36,7 +36,7 @@ namespace framework
 		template<typename SQLiteDatabaseModelSubclass, typename... Args>
 		std::unique_ptr<SQLiteDatabaseModel>& SQLiteManager::get(const std::string& databaseName, const std::string& tableName, Args&&... args)
 		{
-			static_assert(!std::is_base_of_v<SQLiteDatabaseModel, SQLiteDatabaseModelSubclass>, "SQLiteDatabaseModelSubclass must be subclass of SQLiteDatabaseModel");
+			static_assert(std::is_base_of_v<SQLiteDatabaseModel, SQLiteDatabaseModelSubclass>, "SQLiteDatabaseModelSubclass must be subclass of SQLiteDatabaseModel");
 
 			auto database = allTables.find(databaseName);
 
@@ -55,14 +55,9 @@ namespace framework
 			}
 			else
 			{
-				return allTables.emplace
-				(
-					std::make_pair
-					(
-						databaseName,
-						std::make_pair(tableName, std::make_unique<SQLiteDatabaseModelSubclass>(std::forward<Args>(args)...))
-					)
-				).first->second[tableName];
+				allTables.emplace(std::make_pair(databaseName, std::unordered_map<std::string, std::string>()));
+
+				return allTables[databaseName].emplace(std::make_pair(tableName, std::make_unique<SQLiteDatabaseModelSubclass>(std::forward<Args>(args)...))).first->second;
 			}
 		}
 	}
