@@ -2,7 +2,7 @@
 
 #include <string>
 
-#ifdef CONVERSION_DLL
+#if defined(CONVERSION_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API extern "C" __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API

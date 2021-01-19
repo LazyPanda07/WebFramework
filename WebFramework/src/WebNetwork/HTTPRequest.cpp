@@ -30,11 +30,12 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database) :
 		session(session),
 		ip(ip),
 		staticResources(staticResources),
-		dynamicResources(dynamicResources)
+		dynamicResources(dynamicResources),
+		database(database)
 	{
 
 	}

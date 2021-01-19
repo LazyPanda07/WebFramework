@@ -2,7 +2,7 @@
 
 #include <string>
 
-#ifdef MIDDLEWARE_DLL
+#if defined(MIDDLEWARE_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API

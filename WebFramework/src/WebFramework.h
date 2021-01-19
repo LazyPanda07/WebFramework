@@ -4,7 +4,7 @@
 
 #include "WebNetwork/WebServer.h"
 
-#ifdef WEB_FRAMEWORK_DLL
+#if defined(WEB_FRAMEWORK_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API

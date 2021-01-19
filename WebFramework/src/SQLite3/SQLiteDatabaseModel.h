@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <shared_mutex>
 
 #include "SQLiteDatabase.h"
 
@@ -15,9 +16,17 @@ namespace framework
 		/// </summary>
 		class WEB_FRAMEWORK_API SQLiteDatabaseModel
 		{
+		public:
+			enum class queryType
+			{
+				read,
+				write
+			};
+
 		private:
 			std::string tableName;
 			SQLiteDatabase db;
+			std::shared_mutex readWriteMutex;
 
 		private:
 			/// <summary>
@@ -26,6 +35,14 @@ namespace framework
 			/// <param name="source">attribute value</param>
 			/// <returns>true if source is correct number, false otherwise</returns>
 			static bool isNumber(const std::string& source);
+
+		private:
+			/// <summary>
+			/// Execute raw query
+			/// </summary>
+			/// <param name="query">raw query</param>
+			/// <returns>execution result</returns>
+			std::string executeQuery(const std::string& query);
 
 		public:
 			/// <summary>
@@ -65,7 +82,8 @@ namespace framework
 			/// <param name="query">SQL query</param>
 			/// <returns>result of SELECT query, empty string otherwise</returns>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			std::string rawQuery(const std::string& query);
+			/// <exception cref="std::invalid_argument">wrong type</exception>
+			std::string rawQuery(const std::string& query, queryType type);
 
 			/// <summary>
 			/// Create table
@@ -126,6 +144,12 @@ namespace framework
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			std::string selectByFieldQuery(const std::string& fieldName, const std::string& fieldValue);
+
+			/// <summary>
+			/// Getter for tableName
+			/// </summary>
+			/// <returns></returns>
+			const std::string& getTableName() const;
 
 			~SQLiteDatabaseModel() = default;
 		};
