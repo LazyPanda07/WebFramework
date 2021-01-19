@@ -169,5 +169,10 @@ namespace framework
 		{
 			return this->rawQuery("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''));
 		}
+
+		const string& SQLiteDatabaseModel::getTableName() const
+		{
+			return tableName;
+		}
 	}
 }

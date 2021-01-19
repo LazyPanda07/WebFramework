@@ -127,6 +127,12 @@ namespace framework
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			std::string selectByFieldQuery(const std::string& fieldName, const std::string& fieldValue);
 
+			/// <summary>
+			/// Getter for tableName
+			/// </summary>
+			/// <returns></returns>
+			const std::string& getTableName() const;
+
 			~SQLiteDatabaseModel() = default;
 		};
 	}

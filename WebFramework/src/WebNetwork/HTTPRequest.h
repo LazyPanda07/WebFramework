@@ -8,7 +8,7 @@
 #endif // EXECUTOR_DLL
 
 #include "HTTPParser.h"
-#include "Managers/SessionsManager.h"
+#include "WebFrameworkManagers/SessionsManager.h"
 #include "Interfaces/ISendStaticFile.h"
 #include "Interfaces/ISendDynamicFile.h"
 #include "BaseIOSocketStream.h"

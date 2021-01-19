@@ -2,8 +2,8 @@
 
 #include "BaseTCPServer.h"
 #include "WebFrameworkConstants.h"
-#include "Managers/ExecutorsManager.h"
-#include "Managers/SessionsManager.h"
+#include "WebFrameworkManagers/ExecutorsManager.h"
+#include "WebFrameworkManagers/SessionsManager.h"
 #include "Utility/XMLSettingsParser.h"
 
 namespace framework
