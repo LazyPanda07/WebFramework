@@ -4,7 +4,7 @@
 
 #include "sqlite3.h"
 
-#ifdef SQLITE_DLL
+#if defined(SQLITE_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef EXECUTOR_DLL
+#if defined(EXECUTOR_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API __declspec(dllexport)
 #define HTTP_DLL
 #else
