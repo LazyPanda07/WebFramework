@@ -4,6 +4,7 @@
 #include "WebFrameworkConstants.h"
 #include "WebFrameworkManagers/ExecutorsManager.h"
 #include "WebFrameworkManagers/SessionsManager.h"
+#include "SQLite3/SQLiteManager.h"
 #include "Utility/XMLSettingsParser.h"
 
 namespace framework
@@ -17,6 +18,7 @@ namespace framework
 	private:
 		ExecutorsManager executorsManager;
 		SessionsManager sessionsManager;
+		sqlite::SQLiteManager databasesManager;
 
 	private:
 		/// <summary>

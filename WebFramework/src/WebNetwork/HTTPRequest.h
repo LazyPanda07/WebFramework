@@ -9,6 +9,7 @@
 
 #include "HTTPParser.h"
 #include "WebFrameworkManagers/SessionsManager.h"
+#include "SQLite3/SQLiteManager.h"
 #include "Interfaces/ISendStaticFile.h"
 #include "Interfaces/ISendDynamicFile.h"
 #include "BaseIOSocketStream.h"
@@ -28,6 +29,7 @@ namespace framework
 		const std::string ip;
 		interfaces::ISendStaticFile& staticResources;
 		interfaces::ISendDynamicFile& dynamicResources;
+		sqlite::SQLiteManager& database;
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
@@ -50,7 +52,7 @@ namespace framework
 		/// <param name="session">from WebServer</param>
 		/// <param name="ip">client's address</param>
 		/// <param name="resources">ResourceExecutor</param>
-		HTTPRequest(SessionsManager& session, const std::string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources);
+		HTTPRequest(SessionsManager& session, const std::string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database);
 
 		/// <summary>
 		/// Parameters string from HTTP
@@ -148,9 +150,25 @@ namespace framework
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
 		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
-	public:
 
+		/// <summary>
+		/// Get instance of SQLiteDatabaseModel subclass for database operations
+		/// </summary>
+		/// <typeparam name="SQLiteDatabaseModelSubclass">subclass of SQLiteDatabaseModel</typeparam>
+		/// <typeparam name="...Args">arguments for constructor if needs to create new instance</typeparam>
+		/// <param name="databaseName">name of database</param>
+		/// <param name="tableName">name of table</param>
+		/// <param name="...args">arguments for constructor if needs to create new instance</param>
+		/// <returns>instance of SQLiteDatabaseModel subclass</returns>
+		template<typename SQLiteDatabaseModelSubclass, typename... Args>
+		std::unique_ptr<sqlite::SQLiteDatabaseModel>& getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args);
 
 		~HTTPRequest() = default;
 	};
+
+	template<typename SQLiteDatabaseModelSubclass, typename... Args>
+	std::unique_ptr<sqlite::SQLiteDatabaseModel>& HTTPRequest::getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args)
+	{
+		return database.get<SQLiteDatabaseModelSubclass>(databaseName, tableName, std::forward<Args>(args)...);
+	}
 }
