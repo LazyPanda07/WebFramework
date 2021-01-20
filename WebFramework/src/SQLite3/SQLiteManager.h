@@ -10,7 +10,7 @@ namespace framework
 {
 	namespace sqlite
 	{
-		class WEB_FRAMEWORK_API SQLiteManager
+		class SQLiteManager
 		{
 		private:
 			std::unordered_map<std::string, std::unordered_map<std::string, std::unique_ptr<SQLiteDatabaseModel>>> allTables;	//database name - table name - SQLiteDatabaseModel subclass

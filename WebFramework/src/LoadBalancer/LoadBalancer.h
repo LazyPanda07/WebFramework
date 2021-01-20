@@ -4,12 +4,6 @@
 
 #include "LoadBalancerWebNetwork/LoadBalancerServer.h"
 
-#ifdef LOAD_BALANCER_DLL
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // LOAD_BALANCER_DLL
-
 namespace framework
 {
 	namespace load_balancer
@@ -18,7 +12,7 @@ namespace framework
 		/// <para>Main class of load balancer</para>
 		/// <para>All initializations go through this class</para>
 		/// </summary>
-		class WEB_FRAMEWORK_API LoadBalancer
+		class LoadBalancer
 		{
 		private:
 			std::unique_ptr<LoadBalancerServer> loadBalancerServer;

@@ -2,12 +2,6 @@
 
 #include <string>
 
-#if defined(MIDDLEWARE_DLL) || defined(ALL_DLL)
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // MIDDLEWARE_DLL
-
 namespace framework
 {
 	namespace utility
@@ -15,7 +9,7 @@ namespace framework
 		/// <summary>
 		/// Contains all data for connection to server
 		/// </summary>
-		struct WEB_FRAMEWORK_API baseConnectionData
+		struct baseConnectionData
 		{
 			std::string ip;
 			std::string port;
