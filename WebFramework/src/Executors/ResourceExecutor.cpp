@@ -92,7 +92,11 @@ namespace framework
 
 			if (findFile != dynamicCache.end())
 			{
-				response.addBody(findFile->second);
+				result = findFile->second;
+
+				dynamicPages.run(variables, result);
+
+				response.addBody(result);
 
 				return;
 			}
