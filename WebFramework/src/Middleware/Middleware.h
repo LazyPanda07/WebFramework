@@ -13,7 +13,7 @@ namespace framework
 		/// <para>Main class of Middleware servers</para>
 		/// <para>All initializations go through this class</para>
 		/// </summary>
-		class WEB_FRAMEWORK_API Middleware
+		class Middleware
 		{
 		private:
 			MiddlewareServer middlewareServer;

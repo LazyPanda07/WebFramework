@@ -12,7 +12,7 @@ namespace framework
 		/// <summary>
 		/// Specify server to connect with getServerConnectionData method
 		/// </summary>
-		class WEB_FRAMEWORK_API BaseMiddlewareRouteController
+		class BaseMiddlewareRouteController
 		{
 		protected:
 			std::vector<utility::baseConnectionData> servers;
