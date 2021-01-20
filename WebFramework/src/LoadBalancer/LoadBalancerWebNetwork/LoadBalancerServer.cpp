@@ -27,7 +27,7 @@ namespace framework
 
 		void LoadBalancerServer::disconnectUser(const loadBalancerConnectionData& data)
 		{
-			unique_lock<shared_mutex> lock(allServersMutex);
+			lock_guard<shared_mutex> lock(allServersMutex);
 
 			auto valueFromContainer = allServers.find(data);
 			loadBalancerConnectionData valueToInsert(valueFromContainer->ip, valueFromContainer->port, valueFromContainer->connections - 1);
