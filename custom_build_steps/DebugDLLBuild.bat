@@ -29,4 +29,5 @@ CALL CopyHeaders.bat %debugDLLFolder%
 CALL CopyLibs.bat %libsFolder% %debugDLLFolder%libs %debugDLLFolder%dlls
 
 COPY /Y web_framework_settings.ini %debugDLLFolder%
+COPY /Y load_balancer_settings.ini %debugDLLFolder%
 COPY /Y %libsFolder%WebFramework\WebFramework.dll %debugDLLFolder%\dlls

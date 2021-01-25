@@ -29,4 +29,5 @@ CALL CopyHeaders.bat %productionReleaseDLLFolder%
 CALL CopyLibs.bat %libsFolder% %productionReleaseDLLFolder%libs %productionReleaseDLLFolder%dlls
 
 COPY /Y web_framework_settings.ini %productionReleaseDLLFolder%
+COPY /Y load_balancer_settings.ini %productionReleaseDLLFolder%
 COPY /Y %libsFolder%WebFramework\WebFramework.dll %productionReleaseDLLFolder%\dlls

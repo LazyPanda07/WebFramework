@@ -29,3 +29,4 @@ CALL CopyHeaders.bat %productionReleaseFolder%
 CALL CopyLibs.bat %libsFolder% %productionReleaseFolder%libs %productionReleaseFolder%dlls
 
 COPY /Y web_framework_settings.ini %productionReleaseFolder%
+COPY /Y load_balancer_settings.ini %productionReleaseFolder%
