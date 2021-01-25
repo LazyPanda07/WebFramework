@@ -9,6 +9,35 @@ using namespace std;
 
 namespace framework
 {
+	void ResourceExecutor::loadHTMLErrorsData()
+	{
+		const filesystem::path allErrorsFolder(defaultAssets / WebFrameworkAssets::errorsFolder);
+		ifstream html(allErrorsFolder / WebFrameworkAssets::badRequest);
+		auto readFile = [](ifstream& html) -> string
+		{
+			string result;
+			string tem;
+
+			while (getline(html, tem))
+			{
+				result += tem + '\n';
+			}
+
+			return result;
+		};
+
+		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(html);
+		html.close();
+
+		html.open(allErrorsFolder / WebFrameworkAssets::notFound);
+		HTMLErrorsData[HTMLErrors::notFound404] = readFile(html);
+		html.close();
+
+		html.open(allErrorsFolder / WebFrameworkAssets::internalServerError);
+		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
+		html.close();
+	}
+
 	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching, const string& pathToTemplates) :
 #ifdef WEB_FRAMEWORK_ASSETS
 		defaultAssets(WEB_FRAMEWORK_ASSETS),
@@ -33,6 +62,8 @@ namespace framework
 		{
 			filesystem::create_directory(dynamicPages.getPathToTemplates());
 		}
+
+		this->loadHTMLErrorsData();
 	}
 
 	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response)
@@ -153,70 +184,22 @@ namespace framework
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response)
 	{
-		filesystem::path notFoundHTML(defaultAssets);
-
-		notFoundHTML /= WebFrameworkAssets::errorsFolder;
-		notFoundHTML /= WebFrameworkAssets::notFound;
-
-		ifstream errorHTML(notFoundHTML);
-		string result;
-		string tem;
-
-		while (getline(errorHTML, tem))
-		{
-			result += tem + "\n";
-		}
-
-		errorHTML.close();
-
 		response.setResponseCode(web::ResponseCodes::notFound);
 
-		response.addBody(result);
+		response.addBody(HTMLErrorsData[HTMLErrors::notFound404]);
 	}
 
 	void ResourceExecutor::badRequestError(HTTPResponse& response)
 	{
-		filesystem::path badRequestHTML(defaultAssets);
-
-		badRequestHTML /= WebFrameworkAssets::errorsFolder;
-		badRequestHTML /= WebFrameworkAssets::badRequest;
-
-		ifstream errorHTML(badRequestHTML);
-		string result;
-		string tem;
-
-		while (getline(errorHTML, tem))
-		{
-			result += tem + "\n";
-		}
-
-		errorHTML.close();
-
 		response.setResponseCode(web::ResponseCodes::badRequest);
 
-		response.addBody(result);
+		response.addBody(HTMLErrorsData[HTMLErrors::badRequest400]);
 	}
 
 	void ResourceExecutor::internalServerError(HTTPResponse& response)
 	{
-		filesystem::path internalServerErrorHTML(defaultAssets);
-
-		internalServerErrorHTML /= WebFrameworkAssets::errorsFolder;
-		internalServerErrorHTML /= WebFrameworkAssets::internalServerError;
-
-		ifstream errorHTML(internalServerErrorHTML);
-		string result;
-		string tem;
-
-		while (getline(errorHTML, tem))
-		{
-			result += tem + "\n";
-		}
-
-		errorHTML.close();
-
 		response.setResponseCode(web::ResponseCodes::internalServerError);
 
-		response.addBody(result);
+		response.addBody(HTMLErrorsData[HTMLErrors::internalServerError500]);
 	}
 }

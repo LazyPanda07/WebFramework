@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <filesystem>
 #include <shared_mutex>
 
@@ -16,13 +17,29 @@ namespace framework
 	class ResourceExecutor : public interfaces::ISendStaticFile, public interfaces::ISendDynamicFile, public BaseStatelessExecutor
 	{
 	private:
+		enum HTMLErrors
+		{
+			badRequest400,
+			notFound404,
+			internalServerError500,
+			HTMLErrorsSize
+		};
+
+	private:
 		std::shared_mutex cacheMutex;
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
 		WebFrameworkDynamicPages dynamicPages;
 		std::unordered_map<std::string, std::string> staticCache;
 		std::unordered_map<std::string, std::string> dynamicCache;
+		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		bool isCaching;
+
+	private:
+		/// <summary>
+		/// Load all htmls from WebFrameworkAssets/Errors
+		/// </summary>
+		void loadHTMLErrorsData();
 
 	public:
 		ResourceExecutor(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates);
