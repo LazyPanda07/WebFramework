@@ -12,6 +12,7 @@ XCOPY /Y /S WebFramework\src\*.h %destinationPath%
 
 XCOPY /Y /S BaseTCPServer\src\*.h %destinationPath%\WebNetwork
 XCOPY /Y /S HTTP\src\*.h %destinationPath%\WebNetwork
+XCOPY /Y /S HTTP\JSON\src\*.h %destinationPath%\WebNetwork
 XCOPY /Y /S SocketStreams\src\*.h %destinationPath%\WebNetwork
 
 CD custom_build_steps
