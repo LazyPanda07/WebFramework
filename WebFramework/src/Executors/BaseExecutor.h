@@ -12,7 +12,7 @@
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/XMLSettingsParser.h"
 
-#ifdef EXECUTOR_DLL
+#if defined(EXECUTOR_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API
