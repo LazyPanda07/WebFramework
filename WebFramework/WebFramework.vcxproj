@@ -310,37 +310,7 @@ $(SolutionDir)custom_build_steps\ReleaseBuild.bat</Command>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-$(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
-      <Outputs>output.txt</Outputs>
-    </CustomBuildStep>
-    <Lib>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
-    </Lib>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionReleaseDLL|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;EXECUTOR_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
