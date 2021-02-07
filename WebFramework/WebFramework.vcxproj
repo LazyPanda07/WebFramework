@@ -176,6 +176,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -232,6 +233,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -287,6 +289,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
@@ -376,6 +379,9 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </ProjectReference>
     <ProjectReference Include="..\HTTP\HTTP.vcxproj">
       <Project>{cd88b391-b7b9-47d5-af8d-153fcb2b5a2b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HTTP\JSON\JSON.vcxproj">
+      <Project>{f6b57139-d9f3-4b02-aa92-4e1f417649da}</Project>
     </ProjectReference>
     <ProjectReference Include="..\INIParser\INIParser.vcxproj">
       <Project>{ce5f5455-0e8a-49e8-be46-0a12ed898352}</Project>
