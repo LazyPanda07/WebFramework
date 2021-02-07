@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "INIParser", "INIParser\INIParser.vcxproj", "{CE5F5455-0E8A-49E8-BE46-0A12ED898352}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JSON", "HTTP\JSON\JSON.vcxproj", "{F6B57139-D9F3-4B02-AA92-4E1F417649DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -33,8 +35,8 @@ Global
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.DebugDLL|x64.Build.0 = DebugDLL|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.ActiveCfg = ProductionRelease|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.ActiveCfg = ProductionRelease|x64
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.Build.0 = ProductionRelease|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.ActiveCfg = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.Build.0 = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
@@ -99,6 +101,18 @@ Global
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.Release|x64.Build.0 = Release|x64
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.Debug|x64.ActiveCfg = Debug|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.Debug|x64.Build.0 = Debug|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.DebugDLL|x64.ActiveCfg = DebugDLL|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.DebugDLL|x64.Build.0 = DebugDLL|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.ProductionRelease|x64.ActiveCfg = ProductionRelease|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.Release|x64.ActiveCfg = Release|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.Release|x64.Build.0 = Release|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +123,7 @@ Global
 		{89755E92-D5A7-4FA6-B227-7DDC3BBA9AA1} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 		{D29045D5-A3E0-4B1F-BF3F-7A7395A22B13} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 		{CE5F5455-0E8A-49E8-BE46-0A12ED898352} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
+		{F6B57139-D9F3-4B02-AA92-4E1F417649DA} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {155A7728-6396-43E2-9EFF-B3B350E831EA}
