@@ -11,6 +11,11 @@ namespace framework
 	{
 		bool SQLiteDatabaseModel::isNumber(const string& source)
 		{
+			if (source.empty())
+			{
+				return false;
+			}
+
 			static constexpr string_view symbols = "0123456789-.";
 
 			if (all_of(source.begin(), source.end(), [](const char& c) { return find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
