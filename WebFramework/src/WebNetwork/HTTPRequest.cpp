@@ -144,6 +144,11 @@ namespace framework
 		return ip;
 	}
 
+	const json::JSONParser& HTTPRequest::getJSON() const
+	{
+		return parser->getJSON();
+	}
+
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)
 	{
 		string data;

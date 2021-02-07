@@ -58,6 +58,16 @@ namespace framework
 		this->body = body;
 	}
 
+	void HTTPResponse::addBody(const json::JSONBuilder& json)
+	{
+		builder.headers
+		(
+			"Content-Type", "application/json"
+		);
+
+		this->body = json.build();
+	}
+
 	void HTTPResponse::addBody(string&& body) noexcept
 	{
 		this->body = move(body);

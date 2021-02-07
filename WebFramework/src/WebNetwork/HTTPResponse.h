@@ -66,6 +66,13 @@ namespace framework
 		void addBody(const std::string& body);
 
 		/// <summary>
+		/// <para>Some JSON data with HTTP response</para>
+		/// <para>Content-Length and Content-Type headers setting automatically</para>
+		/// </summary>
+		/// <param name="json">JSON data</param>
+		void addBody(const json::JSONBuilder& json);
+
+		/// <summary>
 		/// <para>Some data with HTTP response</para>
 		/// <para>Content-Length header setting automatically</para>
 		/// </summary>

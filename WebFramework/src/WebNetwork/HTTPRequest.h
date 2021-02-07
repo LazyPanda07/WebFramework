@@ -135,6 +135,12 @@ namespace framework
 		const std::string& getIpV4ClientAddress() const;
 
 		/// <summary>
+		/// Getter for JSONParser
+		/// </summary>
+		/// <returns></returns>
+		const json::JSONParser& getJSON() const;
+
+		/// <summary>
 		/// Reading HTTP request from network
 		/// </summary>
 		/// <param name="stream">special class for taking data from network</param>
