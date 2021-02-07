@@ -35,8 +35,8 @@ Global
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.DebugDLL|x64.Build.0 = DebugDLL|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.ActiveCfg = ProductionRelease|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.ActiveCfg = ProductionRelease|x64
-		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.Build.0 = ProductionRelease|x64
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.ActiveCfg = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.Release|x64.Build.0 = Release|x64
 		{E66352D0-66C8-4BAE-85E4-4715D53FD651}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
