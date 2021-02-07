@@ -86,7 +86,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,7 +112,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,7 +140,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
