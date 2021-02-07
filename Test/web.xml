@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app>
+  <executor>
+    <executor-name>Test</executor-name>
+    <route>/</route>
+    <load-type>initialization</load-type>
+  </executor>
+</web-app>
