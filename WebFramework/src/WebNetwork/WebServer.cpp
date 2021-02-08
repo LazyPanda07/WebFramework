@@ -170,6 +170,12 @@ namespace framework
 
 					auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, unique_ptr<BaseExecutor>(function())));
 
+					auto node = settings.extract(i);
+
+					node.key() = routeParameters.back().baseRoute;
+
+					settings.insert(move(node));
+
 					if (success)
 					{
 						if (it->second->getType() == BaseExecutor::executorType::stateful)
