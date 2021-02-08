@@ -41,9 +41,11 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
+		string result = request.getRouteParameter<string>("first") + '/' + to_string(request.getRouteParameter<int64_t>("second")) + '/' + request.getRouteParameter<string>("third");
+
 		response.addBody
 		(
-			"<h1>Hello</h1>"
+			move(result)
 		);
 	}
 };
