@@ -16,7 +16,8 @@ namespace framework
 
 		public:
 			std::string baseRoute;
-			std::unordered_map<std::string, std::variant<std::string, int>> parameters;
+			std::unordered_map<std::string, std::variant<std::string, int64_t>> parameters;
+			std::vector<std::string> indices;
 
 			RouteParameters(const std::string& xmlRoute);
 
