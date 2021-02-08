@@ -87,7 +87,7 @@ namespace framework
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
-		vector<pair<utility::RouteParameters, unique_ptr<BaseExecutor>>> routesWithParameters;
+		vector<pair<utility::RouteParameters, unique_ptr<BaseExecutor>>> routeParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
 			vector<HMODULE> result;
@@ -166,7 +166,7 @@ namespace framework
 				}
 				else
 				{
-					routesWithParameters.emplace_back(make_pair(i, unique_ptr<BaseExecutor>(function())));
+					routeParameters.emplace_back(make_pair(i, unique_ptr<BaseExecutor>(function())));
 				}
 
 				break;
@@ -184,6 +184,6 @@ namespace framework
 			creator[j.name] = function;
 		}
 
-		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routesWithParameters));
+		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));
 	}
 }

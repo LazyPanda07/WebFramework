@@ -28,7 +28,7 @@ namespace framework
 		std::unordered_map<std::string, createBaseExecutorSubclassFunction> creator;	// executor name - create function
 		std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings> settings;	// route - executor settings
 		std::unique_ptr<ResourceExecutor> resources;
-		std::vector<std::pair<utility::RouteParameters, std::unique_ptr<BaseExecutor>>> routesWithParameters;	// route with parameters - executor
+		std::vector<std::pair<utility::RouteParameters, std::unique_ptr<BaseExecutor>>> routeParameters;	// route with parameters - executor
 
 	public:
 		ExecutorsManager() = default;
@@ -50,7 +50,7 @@ namespace framework
 		/// <param name="routes">routes for all executors</param>
 		/// <param name="creator">functions that create executors</param>
 		/// <param name="settings">parsed .xml file</param>
-		void init(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings, std::vector<std::pair<utility::RouteParameters, std::unique_ptr<BaseExecutor>>>&& routesWithParameters) noexcept;
+		void init(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings, std::vector<std::pair<utility::RouteParameters, std::unique_ptr<BaseExecutor>>>&& routeParameters) noexcept;
 
 		/// <summary>
 		/// Process requests from server
