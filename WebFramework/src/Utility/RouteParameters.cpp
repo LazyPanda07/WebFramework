@@ -17,11 +17,11 @@ namespace framework
 			{
 				if (xmlRoute[i] == '}')
 				{
-					if (parameter.find(stringType))
+					if (parameter.find(stringType) != string::npos)
 					{
 						parameters.insert(make_pair(parameter.substr(stringType.size()), string()));
 					}
-					else if (parameter.find(integerType))
+					else if (parameter.find(integerType) != string::npos)
 					{
 						parameters.insert(make_pair(parameter.substr(integerType.size()), int()));
 					}
