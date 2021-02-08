@@ -84,6 +84,11 @@ namespace framework
 
 							for (size_t i = it->baseRoute.size() + 1, j = 0; i < parameters.size(); i++)
 							{
+								if (i + 1 == parameters.size())
+								{
+									tem += parameters[i];
+								}
+
 								if (parameters[i] == '/' || i + 1 == parameters.size())
 								{
 									switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[j]].index()))
@@ -97,6 +102,8 @@ namespace framework
 										try
 										{
 											request.routeParameters[it->indices[j++]] = stoll(tem);
+
+											tem.clear();
 										}
 										catch (const invalid_argument&)
 										{
