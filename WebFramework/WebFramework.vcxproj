@@ -292,7 +292,7 @@ $(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 COPY /Y $(SolutionDir)bin\$(Configuration)-$(Platform)\JSON\JSON.dll $(Outdir)
-$(SolutionDir)custom_build_steps\ReleaseBuild.bat</Command>
+$(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
