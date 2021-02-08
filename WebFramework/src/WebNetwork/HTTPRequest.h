@@ -30,6 +30,7 @@ namespace framework
 		interfaces::ISendStaticFile& staticResources;
 		interfaces::ISendDynamicFile& dynamicResources;
 		sqlite::SQLiteManager& database;
+		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
@@ -57,14 +58,14 @@ namespace framework
 		/// <summary>
 		/// Parameters string from HTTP
 		/// </summary>
-		/// <returns>HTPP parameters</returns>
-		std::string getRawParameters() const;
+		/// <returns>HTTP parameters</returns>
+		const std::string& getRawParameters() const;
 
 		/// <summary>
 		/// HTTP request method
 		/// </summary>
 		/// <returns>HTTP method</returns>
-		std::string getMethod() const;
+		const std::string& getMethod() const;
 
 		/// <summary>
 		/// GET parameters
@@ -168,6 +169,8 @@ namespace framework
 		/// <returns>instance of SQLiteDatabaseModel subclass</returns>
 		template<typename SQLiteDatabaseModelSubclass, typename... Args>
 		std::unique_ptr<sqlite::SQLiteDatabaseModel>& getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args);
+
+		friend class ExecutorsManager;
 
 		~HTTPRequest() = default;
 	};

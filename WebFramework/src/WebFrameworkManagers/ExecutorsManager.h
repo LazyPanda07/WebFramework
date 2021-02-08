@@ -28,7 +28,7 @@ namespace framework
 		std::unordered_map<std::string, createBaseExecutorSubclassFunction> creator;	// executor name - create function
 		std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings> settings;	// route - executor settings
 		std::unique_ptr<ResourceExecutor> resources;
-		std::vector<utility::RouteParameters> routeParameters;	// route with parameters - executor
+		std::vector<utility::RouteParameters> routeParameters;	// base routes for parameterize executors
 
 	public:
 		ExecutorsManager() = default;

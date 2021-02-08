@@ -40,12 +40,12 @@ namespace framework
 
 	}
 
-	string HTTPRequest::getRawParameters() const
+	const string& HTTPRequest::getRawParameters() const
 	{
 		return parser->getParameters();
 	}
 
-	string HTTPRequest::getMethod() const
+	const string& HTTPRequest::getMethod() const
 	{
 		return parser->getMethod();
 	}

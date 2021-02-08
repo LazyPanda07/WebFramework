@@ -79,6 +79,20 @@ namespace framework
 								throw out_of_range("Executor does not exist");	// 404
 							}
 							
+							string tem;
+
+							for (size_t i = it->baseRoute.size(), j = 0; i < parameters.size(); i++)
+							{
+								if (parameters[i] == '/' || i + 1 == parameters.size())
+								{
+									request.routeParameters[it->indices[j++]] = move(tem);
+
+									continue;
+								}
+
+								tem += parameters[i];
+							}
+							
 							parameters = it->baseRoute;
 						}
 
