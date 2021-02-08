@@ -8,7 +8,7 @@ namespace framework
 {
 	void SessionsManager::SessionTime::asyncCheck()
 	{
-		lock_guard<mutex> guard(checkLock);
+		unique_lock<mutex> guard(checkLock);
 		vector<pair<sessionTimePoint, string>> deleteVariants;
 		const sessionTimePoint current = chrono::high_resolution_clock::now();
 
@@ -72,7 +72,7 @@ namespace framework
 
 	void SessionsManager::SessionTime::updateSessionTime(const string& ip)
 	{
-		lock_guard<mutex> guard(checkLock);
+		unique_lock<mutex> guard(checkLock);
 
 		auto findTime = ipTime.find(ip);
 
@@ -103,7 +103,7 @@ namespace framework
 
 	void SessionsManager::setAttribute(const string& ip, const string& name, const string& value)
 	{
-		lock_guard<mutex> guard(lock);
+		unique_lock<mutex> guard(lock);
 
 		userSession[ip][name] = value;
 
@@ -112,7 +112,7 @@ namespace framework
 
 	string SessionsManager::getAttribute(const string& ip, const string& name)
 	{
-		lock_guard guard(lock);
+		unique_lock guard(lock);
 
 		time.updateSessionTime(ip);
 
@@ -121,14 +121,14 @@ namespace framework
 
 	void SessionsManager::deleteSession(const string& ip)
 	{
-		lock_guard guard(lock);
+		unique_lock guard(lock);
 
 		userSession.erase(ip);
 	}
 
 	void SessionsManager::deleteAttribute(const string& ip, const string& name)
 	{
-		lock_guard guard(lock);
+		unique_lock guard(lock);
 
 		userSession[ip].erase(name);
 	}
