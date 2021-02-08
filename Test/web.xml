@@ -5,4 +5,9 @@
     <route>/</route>
     <load-type>initialization</load-type>
   </executor>
+  <executor>
+    <executor-name>Parameters</executor-name>
+    <route>/parameters/{first}/{second}</route>
+    <load-type>initialization</load-type>
+  </executor>
 </web-app>

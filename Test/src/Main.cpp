@@ -31,6 +31,25 @@ public:
 
 CREATE_BASE_EXECUTOR_SUBCLASS_INSTANCE(Test)
 
+class Parameters : public framework::BaseStatelessExecutor
+{
+public:
+	void init(const framework::utility::XMLSettingsParser::ExecutorSettings& settings) override
+	{
+
+	}
+
+	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
+	{
+		response.addBody
+		(
+			"<h1>Hello</h1>"
+		);
+	}
+};
+
+CREATE_BASE_EXECUTOR_SUBCLASS_INSTANCE(Parameters);
+
 int main(int argc, char** argv)
 {
 	try
