@@ -138,8 +138,18 @@ namespace framework
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>JSONParser</returns>
 		const json::JSONParser& getJSON() const;
+
+		/// <summary>
+		/// Getter for route parameters
+		/// </summary>
+		/// <typeparam name="T">can be int64_t or std::string</typeparam>
+		/// <param name="routeParameterName"><para>name of route parameter</para><para>T can be int64_t or std::string</para></param>
+		/// <returns>route parameter</returns>
+		/// <exception cref="std::out_of_range">can't find route parameter with this routeParameterName</exception>
+		template<typename T>
+		const T& getRouteParameter(const std::string& routeParameterName);
 
 		/// <summary>
 		/// Reading HTTP request from network

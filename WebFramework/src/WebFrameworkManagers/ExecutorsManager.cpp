@@ -86,7 +86,7 @@ namespace framework
 							{
 								if (parameters[i] == '/' || i + 1 == parameters.size())
 								{
-									switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[tem].index()))
+									switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[j]].index()))
 									{
 									case utility::RouteParameters::routeParametersType::stringTypeIndex:
 										request.routeParameters[it->indices[j++]] = move(tem);
