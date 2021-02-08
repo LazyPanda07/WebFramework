@@ -7,8 +7,8 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
+#include "Utility/RouteParameters.h"
 
-#pragma warning(push)
 #pragma warning(disable: 6387)
 
 using namespace std;
@@ -87,6 +87,7 @@ namespace framework
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
+		vector<pair<utility::RouteParameters, unique_ptr<BaseExecutor>>> routesWithParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
 			vector<HMODULE> result;
@@ -147,15 +148,25 @@ namespace framework
 			switch (j.executorLoadType)
 			{
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
-				routes[i] = unique_ptr<BaseExecutor>(function());
-
-				if (routes[i]->getType() == BaseExecutor::executorType::stateful)
+				if (i.find('{') == string::npos)
 				{
-					routes.erase(i);
+					auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(function())));
+
+					if (success)
+					{
+						if (it->second->getType() == BaseExecutor::executorType::stateful)
+						{
+							routes.erase(i);
+						}
+						else
+						{
+							it->second->init(j);
+						}
+					}
 				}
 				else
 				{
-					routes[i]->init(j);
+					routesWithParameters.emplace_back(make_pair(i, unique_ptr<BaseExecutor>(function())));
 				}
 
 				break;
@@ -173,8 +184,6 @@ namespace framework
 			creator[j.name] = function;
 		}
 
-		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings));
+		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routesWithParameters));
 	}
 }
-
-#pragma warning(pop)
