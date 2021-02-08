@@ -43,7 +43,8 @@ namespace framework
 
 		RouteParameters::RouteParameters(RouteParameters&& other) noexcept :
 			baseRoute(move(other.baseRoute)),
-			parameters(move(other.parameters))
+			parameters(move(other.parameters)),
+			indices(move(other.indices))
 		{
 
 		}

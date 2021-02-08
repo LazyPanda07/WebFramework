@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseExecutorException.h"
+#include "BadRequestException.h"
 
 namespace framework
 {
@@ -10,7 +10,7 @@ namespace framework
 		/// <para>Default exception for all HTTP methods in BaseExecutor</para>
 		/// <para>Server throws 400 error</para>
 		/// </summary>
-		class NotImplementedException : public BaseExecutorException
+		class NotImplementedException : public BadRequestException
 		{
 		public:
 			NotImplementedException();

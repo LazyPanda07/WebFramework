@@ -9,7 +9,7 @@ namespace framework
 	namespace exceptions
 	{
 		NotImplementedException::NotImplementedException() :
-			BaseExecutorException(::exceptions::notImplemented)
+			BadRequestException(::exceptions::notImplemented)
 		{
 
 		}
