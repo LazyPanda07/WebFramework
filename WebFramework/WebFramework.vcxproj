@@ -306,6 +306,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
   <ItemGroup>
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPagesFunctions.cpp" />
+    <ClCompile Include="src\Exceptions\BadRequestException.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
@@ -340,6 +341,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
   <ItemGroup>
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPagesFunctions.h" />
+    <ClInclude Include="src\Exceptions\BadRequestException.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />

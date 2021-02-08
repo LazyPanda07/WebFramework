@@ -111,6 +111,9 @@
     <ClCompile Include="src\Utility\RouteParameters.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Exceptions\BadRequestException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -225,6 +228,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\RouteParameters.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\BadRequestException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

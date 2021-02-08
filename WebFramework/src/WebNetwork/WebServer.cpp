@@ -7,6 +7,7 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
+#include "Exceptions/BadRequestException.h"
 #include "Utility/RouteParameters.h"
 
 #pragma warning(disable: 6387)
@@ -48,19 +49,13 @@ namespace framework
 
 				break;
 			}
-			catch (const exceptions::NotImplementedException&)	// 400
+			catch (const exceptions::BadRequestException&)	// 400
 			{
 				resources->badRequestError(response);
 
 				stream << response;
 			}
 			catch (const exceptions::FileDoesNotExistException&)	// 404
-			{
-				resources->notFoundError(response);
-
-				stream << response;
-			}
-			catch (const out_of_range&)	// 404
 			{
 				resources->notFoundError(response);
 

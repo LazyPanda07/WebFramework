@@ -98,6 +98,8 @@ namespace exceptions
 	inline const std::string cantFindLoadBalancerIp = "Can't find load balancer ip option";
 	inline const std::string cantFindLoadBalancerPort = "Can't find load balancer port option";
 	inline const std::string cantFindLoadBalancerTimeout = "Can't find load balancer timeout option";
+
+	inline const std::string badRequest = "Bad request from client";
 }
 
 namespace xml_settings_tags

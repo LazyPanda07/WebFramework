@@ -2,6 +2,7 @@
 
 #include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/BadRequestException.h"
 
 using namespace std;
 
@@ -66,33 +67,55 @@ namespace framework
 						{
 							auto it = find_if(routeParameters.begin(), routeParameters.end(),
 								[&parameters](const utility::RouteParameters& value) {return parameters.find(value.baseRoute) != string::npos; });
-							
+
 							if (it == routeParameters.end())
 							{
-								throw out_of_range("Executor does not exist");	// 404
+								throw exceptions::NotImplementedException(); // 404
 							}
-							
+
 							executorSettings = settings.find(it->baseRoute);
-							
+
 							if (executorSettings == settings.end())
 							{
-								throw out_of_range("Executor does not exist");	// 404
+								throw exceptions::NotImplementedException(); // 404
 							}
-							
+
 							string tem;
 
-							for (size_t i = it->baseRoute.size(), j = 0; i < parameters.size(); i++)
+							for (size_t i = it->baseRoute.size() + 1, j = 0; i < parameters.size(); i++)
 							{
 								if (parameters[i] == '/' || i + 1 == parameters.size())
 								{
-									request.routeParameters[it->indices[j++]] = move(tem);
+									switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[tem].index()))
+									{
+									case utility::RouteParameters::routeParametersType::stringTypeIndex:
+										request.routeParameters[it->indices[j++]] = move(tem);
+
+										break;
+
+									case utility::RouteParameters::routeParametersType::integerTypeIndex:
+										try
+										{
+											request.routeParameters[it->indices[j++]] = stoll(tem);
+										}
+										catch (const invalid_argument&)
+										{
+											throw exceptions::BadRequestException("Can't convert to int64_t"); // 400
+										}
+										catch (const out_of_range&)
+										{
+											throw exceptions::BadRequestException("Out of range of int64_t"); // 400
+										}
+
+										break;
+									}
 
 									continue;
 								}
 
 								tem += parameters[i];
 							}
-							
+
 							parameters = it->baseRoute;
 						}
 
