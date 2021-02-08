@@ -7,8 +7,9 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
+#include "Exceptions/BadRequestException.h"
+#include "Utility/RouteParameters.h"
 
-#pragma warning(push)
 #pragma warning(disable: 6387)
 
 using namespace std;
@@ -48,19 +49,13 @@ namespace framework
 
 				break;
 			}
-			catch (const exceptions::NotImplementedException&)	// 400
+			catch (const exceptions::BadRequestException&)	// 400
 			{
 				resources->badRequestError(response);
 
 				stream << response;
 			}
 			catch (const exceptions::FileDoesNotExistException&)	// 404
-			{
-				resources->notFoundError(response);
-
-				stream << response;
-			}
-			catch (const out_of_range&)	// 404
 			{
 				resources->notFoundError(response);
 
@@ -87,6 +82,7 @@ namespace framework
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
+		vector<utility::RouteParameters> routeParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
 			vector<HMODULE> result;
@@ -147,15 +143,45 @@ namespace framework
 			switch (j.executorLoadType)
 			{
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
-				routes[i] = unique_ptr<BaseExecutor>(function());
-
-				if (routes[i]->getType() == BaseExecutor::executorType::stateful)
+				if (i.find('{') == string::npos)
 				{
-					routes.erase(i);
+					auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(function())));
+
+					if (success)
+					{
+						if (it->second->getType() == BaseExecutor::executorType::stateful)
+						{
+							routes.erase(i);
+						}
+						else
+						{
+							it->second->init(j);
+						}
+					}
 				}
 				else
 				{
-					routes[i]->init(j);
+					routeParameters.push_back(i);
+
+					auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, unique_ptr<BaseExecutor>(function())));
+
+					auto node = settings.extract(i);
+
+					node.key() = routeParameters.back().baseRoute;
+
+					settings.insert(move(node));
+
+					if (success)
+					{
+						if (it->second->getType() == BaseExecutor::executorType::stateful)
+						{
+							routes.erase(routeParameters.back().baseRoute);
+						}
+						else
+						{
+							it->second->init(j);
+						}
+					}
 				}
 
 				break;
@@ -173,8 +199,6 @@ namespace framework
 			creator[j.name] = function;
 		}
 
-		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings));
+		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));
 	}
 }
-
-#pragma warning(pop)

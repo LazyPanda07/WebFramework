@@ -40,12 +40,12 @@ namespace framework
 
 	}
 
-	string HTTPRequest::getRawParameters() const
+	const string& HTTPRequest::getRawParameters() const
 	{
 		return parser->getParameters();
 	}
 
-	string HTTPRequest::getMethod() const
+	const string& HTTPRequest::getMethod() const
 	{
 		return parser->getMethod();
 	}
@@ -147,6 +147,18 @@ namespace framework
 	const json::JSONParser& HTTPRequest::getJSON() const
 	{
 		return parser->getJSON();
+	}
+
+	template<>
+	const string& HTTPRequest::getRouteParameter<string>(const string& routeParameterName)
+	{
+		return get<string>(routeParameters.at(routeParameterName));
+	}
+
+	template<>
+	const int64_t& HTTPRequest::getRouteParameter<int64_t>(const string& routeParameterName)
+	{
+		return get<int64_t>(routeParameters.at(routeParameterName));
 	}
 
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)
