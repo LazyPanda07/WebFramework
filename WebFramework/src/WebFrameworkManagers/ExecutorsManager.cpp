@@ -22,7 +22,7 @@ namespace framework
 		return *this;
 	}
 
-	void ExecutorsManager::init(const filesystem::path& assets, bool isCaching, const string& pathToTemplates, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings, vector<pair<utility::RouteParameters, unique_ptr<BaseExecutor>>>&& routeParameters) noexcept
+	void ExecutorsManager::init(const filesystem::path& assets, bool isCaching, const string& pathToTemplates, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
 	{
 		this->routes = move(routes);
 		this->creator = move(creator);
@@ -54,23 +54,43 @@ namespace framework
 
 				if (executor == statefulExecutors.end())
 				{
-					lock_guard<mutex> scopeLock(checkExecutor);
+					unique_lock<mutex> scopeLock(checkExecutor);
 
 					executor = routes.find(parameters);
 
 					if (executor == routes.end())
 					{
-						const utility::XMLSettingsParser::ExecutorSettings& executorSettings = settings.at(parameters);
+						auto executorSettings = settings.find(parameters);
 
-						executor = routes.insert(make_pair(move(parameters), unique_ptr<BaseExecutor>(creator[executorSettings.name]()))).first;
-						executor->second->init(executorSettings);
+						if (executorSettings == settings.end())
+						{
+							auto it = find_if(routeParameters.begin(), routeParameters.end(),
+								[&parameters](const utility::RouteParameters& value) {return parameters.find(value.baseRoute) != string::npos; });
+							
+							if (it == routeParameters.end())
+							{
+								throw out_of_range("Executor does not exist");	// 404
+							}
+							
+							executorSettings = settings.find(it->baseRoute);
+							
+							if (executorSettings == settings.end())
+							{
+								throw out_of_range("Executor does not exist");	// 404
+							}
+							
+							parameters = it->baseRoute;
+						}
+
+						executor = routes.insert(make_pair(move(parameters), unique_ptr<BaseExecutor>(creator[executorSettings->second.name]()))).first;
+						executor->second->init(executorSettings->second);
 
 						if (executor->second->getType() == BaseExecutor::executorType::stateful)
 						{
 							executor = statefulExecutors.insert(routes.extract(executor)).position;
 						}
 					}
-				}	
+				}
 			}
 
 			if (method == getRequest)

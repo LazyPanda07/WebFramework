@@ -103,7 +103,7 @@ namespace framework
 
 		if (isCaching)
 		{
-			lock_guard<shared_mutex> insertLock(cacheMutex);
+			unique_lock<shared_mutex> insertLock(cacheMutex);
 
 			staticCache[filePath] = result;
 		}
@@ -152,7 +152,7 @@ namespace framework
 
 		if (isCaching)
 		{
-			lock_guard<shared_mutex> insertLock(cacheMutex);
+			unique_lock<shared_mutex> insertLock(cacheMutex);
 
 			dynamicCache[filePath] = result;
 		}
