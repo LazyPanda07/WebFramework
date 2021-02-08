@@ -8,7 +8,6 @@
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
 
-#pragma warning(push)
 #pragma warning(disable: 6387)
 
 using namespace std;
@@ -81,12 +80,13 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, bool isUsingRouteParameters) :
 		BaseTCPServer(port, ip, timeout, false)
 	{
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
+		vector<pair<regex, unordered_map<string, unique_ptr<BaseExecutor>>::iterator>> routesWithParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
 			vector<HMODULE> result;
@@ -147,17 +147,23 @@ namespace framework
 			switch (j.executorLoadType)
 			{
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
-				routes[i] = unique_ptr<BaseExecutor>(function());
-
-				if (routes[i]->getType() == BaseExecutor::executorType::stateful)
+			{
+				auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(function())));
+				routesWithParameters.push_back(make_pair(regex(i + route_parameters::basePattern), it));
+				
+				if (success)
 				{
-					routes.erase(i);
+					if (it->second->getType() == BaseExecutor::executorType::stateful)
+					{
+						routes.erase(i);
+					}
+					else
+					{
+						it->second->init(j);
+					}
 				}
-				else
-				{
-					routes[i]->init(j);
-				}
-
+			}
+			
 				break;
 
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::dynamic:
@@ -173,8 +179,6 @@ namespace framework
 			creator[j.name] = function;
 		}
 
-		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings));
+		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routesWithParameters), isUsingRouteParameters);
 	}
 }
-
-#pragma warning(pop)

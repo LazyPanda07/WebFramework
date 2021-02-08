@@ -54,6 +54,7 @@ namespace ini
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
+	inline const std::string usingRouteParametersKey = "usingRouteParameters";
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 
@@ -65,7 +66,6 @@ namespace ini
 	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
 
 	inline const std::string defaultLoadSourceValue = "current";
-	inline const std::string defaultUsingAssetsCache = "false";
 }
 
 namespace exceptions
@@ -101,7 +101,7 @@ namespace exceptions
 	inline const std::string cantFindLoadBalancerTimeout = "Can't find load balancer timeout option";
 }
 
-namespace XMLSettingsTags
+namespace xml_settings_tags
 {
 	inline constexpr std::string_view startExecutorTag = "<executor>";
 	inline constexpr std::string_view endExecutorTag = "</executor>";
@@ -125,17 +125,23 @@ namespace XMLSettingsTags
 	inline constexpr std::string_view endLoadTypeTag = "</load-type>";
 }
 
-namespace XMLSettingsValues
+namespace xml_settings_values
 {
 	inline const std::string initializationLoadTypeValue = "initialization";
 	inline const std::string dynamicLoadTypeValue = "dynamic";
 }
 
-namespace WebFrameworkAssets
+namespace web_framework_assets
 {
 	inline constexpr std::string_view errorsFolder = "Errors";
 
 	inline constexpr std::string_view badRequest = "400.html";
 	inline constexpr std::string_view notFound = "404.html";
 	inline constexpr std::string_view internalServerError = "500.html";
+}
+
+namespace route_parameters
+{
+	inline const std::string basePattern = "/[a-ZA-Z0-9]*";
+	inline const std::string intPattern = "/[0-9]*";
 }

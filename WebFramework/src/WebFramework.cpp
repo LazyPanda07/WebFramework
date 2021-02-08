@@ -33,6 +33,7 @@ namespace framework
 			auto assetsPath = webFrameworkSettings.equal_range(ini::assetsPathKey);
 			auto templatesPath = webFrameworkSettings.equal_range(ini::templatesPathKey);
 			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
+			auto usingRouteParameters = webFrameworkSettings.equal_range(ini::usingRouteParametersKey);
 			auto loadSourcesIterator = webFrameworkSettings.equal_range(ini::loadSourceKey);
 			auto ip = webServerSettings.equal_range(ini::ipKey);
 			auto port = webServerSettings.equal_range(ini::portKey);
@@ -114,7 +115,8 @@ namespace framework
 					ip.first->second,
 					port.first->second,
 					stoi(timeout.first->second),
-					loadSources
+					loadSources,
+					usingAssetsCache.first == webFrameworkSettings.end() ? (usingAssetsCache.first->second == "true" ? true : false) : false
 					);
 		}
 		catch (const exceptions::BaseExecutorException&)

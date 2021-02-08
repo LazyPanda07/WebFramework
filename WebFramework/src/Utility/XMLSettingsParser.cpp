@@ -18,7 +18,7 @@ namespace framework
 
 		XMLSettingsParser::XMLSettingsParser(const string& XMLSettings)
 		{
-			using namespace XMLSettingsTags;
+			using namespace xml_settings_tags;
 
 			ifstream in(XMLSettings);
 			bool startExecutor = false;
@@ -47,11 +47,11 @@ namespace framework
 
 						executor.name = move(executorName);
 
-						if (loadType == XMLSettingsValues::initializationLoadTypeValue)
+						if (loadType == xml_settings_values::initializationLoadTypeValue)
 						{
 							executor.executorLoadType = ExecutorSettings::loadType::initialization;
 						}
-						else if (loadType == XMLSettingsValues::dynamicLoadTypeValue)
+						else if (loadType == xml_settings_values::dynamicLoadTypeValue)
 						{
 							executor.executorLoadType = ExecutorSettings::loadType::dynamic;
 						}

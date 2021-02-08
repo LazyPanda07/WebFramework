@@ -11,8 +11,8 @@ namespace framework
 {
 	void ResourceExecutor::loadHTMLErrorsData()
 	{
-		const filesystem::path allErrorsFolder(defaultAssets / WebFrameworkAssets::errorsFolder);
-		ifstream html(allErrorsFolder / WebFrameworkAssets::badRequest);
+		const filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
+		ifstream html(allErrorsFolder / web_framework_assets::badRequest);
 		auto readFile = [](ifstream& html) -> string
 		{
 			string result;
@@ -29,11 +29,11 @@ namespace framework
 		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(html);
 		html.close();
 
-		html.open(allErrorsFolder / WebFrameworkAssets::notFound);
+		html.open(allErrorsFolder / web_framework_assets::notFound);
 		HTMLErrorsData[HTMLErrors::notFound404] = readFile(html);
 		html.close();
 
-		html.open(allErrorsFolder / WebFrameworkAssets::internalServerError);
+		html.open(allErrorsFolder / web_framework_assets::internalServerError);
 		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
 		html.close();
 	}
