@@ -7,6 +7,7 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
+#include "Utility/RouteParameters.h"
 
 #pragma warning(disable: 6387)
 
@@ -80,13 +81,13 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, bool isUsingRouteParameters) :
+	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer(port, ip, timeout, false)
 	{
 		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
-		vector<pair<regex, unordered_map<string, unique_ptr<BaseExecutor>>::iterator>> routesWithParameters;
+		vector<pair<utility::RouteParameters, unique_ptr<BaseExecutor>>> routesWithParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
 			vector<HMODULE> result;
@@ -147,23 +148,27 @@ namespace framework
 			switch (j.executorLoadType)
 			{
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
-			{
-				auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(function())));
-				routesWithParameters.push_back(make_pair(regex(i + route_parameters::basePattern), it));
-				
-				if (success)
+				if (i.find('{') == string::npos)
 				{
-					if (it->second->getType() == BaseExecutor::executorType::stateful)
+					auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(function())));
+
+					if (success)
 					{
-						routes.erase(i);
-					}
-					else
-					{
-						it->second->init(j);
+						if (it->second->getType() == BaseExecutor::executorType::stateful)
+						{
+							routes.erase(i);
+						}
+						else
+						{
+							it->second->init(j);
+						}
 					}
 				}
-			}
-			
+				else
+				{
+					routesWithParameters.emplace_back(make_pair(i, unique_ptr<BaseExecutor>(function())));
+				}
+
 				break;
 
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::dynamic:
@@ -179,6 +184,6 @@ namespace framework
 			creator[j.name] = function;
 		}
 
-		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routesWithParameters), isUsingRouteParameters);
+		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routesWithParameters));
 	}
 }

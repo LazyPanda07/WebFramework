@@ -44,7 +44,7 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		WebServer(const utility::XMLSettingsParser& parser, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, bool isUsingRouteParameters);
+		WebServer(const utility::XMLSettingsParser& parser, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
 		~WebServer() = default;
 	};

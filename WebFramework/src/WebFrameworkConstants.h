@@ -54,7 +54,6 @@ namespace ini
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
-	inline const std::string usingRouteParametersKey = "usingRouteParameters";
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 

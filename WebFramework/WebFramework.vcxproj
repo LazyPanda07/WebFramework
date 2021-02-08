@@ -320,6 +320,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.cpp" />
+    <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\SessionsManager.cpp" />
     <ClCompile Include="src\Middleware\BaseMiddlewareRouteController.cpp" />
@@ -354,6 +355,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\LoadBalancer\LoadBalancer.h" />
     <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h" />
     <ClInclude Include="src\SQLite3\SQLiteManager.h" />
+    <ClInclude Include="src\Utility\RouteParameters.h" />
     <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h" />
     <ClInclude Include="src\WebFrameworkManagers\SessionsManager.h" />
     <ClInclude Include="src\Middleware\Middleware.h" />
