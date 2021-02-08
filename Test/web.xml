@@ -7,7 +7,7 @@
   </executor>
   <executor>
     <executor-name>Parameters</executor-name>
-    <route>/parameters/{first}/{second}</route>
+    <route>/parameters/{string:first}/{int:second}/{third}</route>
     <load-type>initialization</load-type>
   </executor>
 </web-app>
