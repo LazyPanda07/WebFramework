@@ -1,5 +1,12 @@
 #pragma once
 
+#if defined(LOAD_BALANCER_DLL) || defined(ALL_DLL)
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif // LOAD_BALANCER_DLL
+
+
 #include <filesystem>
 
 #include "LoadBalancerWebNetwork/LoadBalancerServer.h"
@@ -13,7 +20,7 @@ namespace framework
 		/// <para>Main class of load balancer</para>
 		/// <para>All initializations go through this class</para>
 		/// </summary>
-		class LoadBalancer
+		class WEB_FRAMEWORK_API LoadBalancer
 		{
 		private:
 			smartPointer<LoadBalancerServer> loadBalancerServer;

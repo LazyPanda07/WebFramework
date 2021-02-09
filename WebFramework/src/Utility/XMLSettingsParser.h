@@ -1,13 +1,15 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
-
 #if defined(EXECUTOR_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API
 #endif // EXECUTOR_DLL
+
+#include <string>
+#include <unordered_map>
+
+#include "WebFrameworkConstants.h"
 
 namespace framework
 {
