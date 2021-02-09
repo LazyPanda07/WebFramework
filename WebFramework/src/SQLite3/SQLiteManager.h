@@ -6,13 +6,11 @@
 
 #include "SQLiteDatabaseModel.h"
 
-#include "WebFrameworkConstants.h"
-
 namespace framework
 {
 	namespace sqlite
 	{
-		class SQLiteManager
+		class WEB_FRAMEWORK_API SQLiteManager
 		{
 		private:
 			std::unordered_map<std::string, std::unordered_map<std::string, smartPointer<SQLiteDatabaseModel>>> allTables;	//database name - table name - SQLiteDatabaseModel subclass
