@@ -1,7 +1,5 @@
 #include "BadRequestException.h"
 
-#include "WebFrameworkConstants.h"
-
 using namespace std;
 
 namespace framework

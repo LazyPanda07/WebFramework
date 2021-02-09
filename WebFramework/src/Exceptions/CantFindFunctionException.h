@@ -9,7 +9,7 @@ namespace framework
 		/// <summary>
 		/// Can't find createBaseExecutorSubclassFunction for executor
 		/// </summary>
-		class CantFindFunctionException : public BaseExecutorException
+		class WEB_FRAMEWORK_API CantFindFunctionException : public BaseExecutorException
 		{
 		public:
 			CantFindFunctionException(const std::string& createFunctionName);

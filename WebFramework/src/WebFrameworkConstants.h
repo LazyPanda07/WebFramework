@@ -4,7 +4,7 @@
 #include <chrono>
 #include <memory>
 
-#if defined(EXECUTOR_DLL) || defined(WEB_FRAMEWORK_DLL) || defined(MIDDLEWARE_DLL) || defined(LOAD_BALANCER_DLL) || defined(JSON_DLL)
+#if defined(EXECUTOR_DLL) || defined(WEB_FRAMEWORK_DLL) || defined(EXCEPTIONS_DLL) || defined(MIDDLEWARE_DLL) || defined(LOAD_BALANCER_DLL) || defined(JSON_DLL)
 template<typename T>
 using smartPointer = std::shared_ptr<T>;
 #else
