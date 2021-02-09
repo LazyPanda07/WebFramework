@@ -2,6 +2,15 @@
 
 #include <string>
 #include <chrono>
+#include <memory>
+
+#if defined(EXECUTOR_DLL) || defined(WEB_FRAMEWORK_DLL) || defined(MIDDLEWARE_DLL) || defined(LOAD_BALANCER_DLL) || defined(JSON_DLL)
+template<typename T>
+using smartPointer = std::shared_ptr<T>;
+#else
+template<typename T>
+using smartPointer = std::unique_ptr<T>;
+#endif
 
 /// <summary>
 /// Default HTTP port

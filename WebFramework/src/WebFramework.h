@@ -1,8 +1,15 @@
 #pragma once
 
+#ifdef WEB_FRAMEWORK_DLL
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#else
+#define WEB_FRAMEWORK_API
+#endif // WEB_FRAMEWORK_DLL
+
 #include <filesystem>
 
 #include "WebNetwork/WebServer.h"
+#include "WebFrameworkConstants.h"
 
 namespace framework
 {
@@ -10,10 +17,10 @@ namespace framework
 	/// <para>Main class of framework</para>
 	/// <para>All initializations go through this class</para>
 	/// </summary>
-	class WebFramework
+	class WEB_FRAMEWORK_API WebFramework
 	{
 	private:
-		std::unique_ptr<WebServer> server;
+		smartPointer<WebServer> server;
 
 	public:
 		/// <summary>
