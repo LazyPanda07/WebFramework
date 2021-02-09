@@ -23,7 +23,7 @@ namespace framework
 		return *this;
 	}
 
-	void ExecutorsManager::init(const filesystem::path& assets, bool isCaching, const string& pathToTemplates, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
+	void ExecutorsManager::init(const filesystem::path& assets, bool isCaching, const string& pathToTemplates, unordered_map<string, smartPointer<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::XMLSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
 	{
 		this->routes = move(routes);
 		this->creator = move(creator);
@@ -35,7 +35,7 @@ namespace framework
 		resources->init(utility::XMLSettingsParser::ExecutorSettings());
 	}
 
-	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, smartPointer<BaseExecutor>>& statefulExecutors)
 	{
 		try
 		{
@@ -126,7 +126,7 @@ namespace framework
 							parameters = it->baseRoute;
 						}
 
-						executor = routes.insert(make_pair(move(parameters), unique_ptr<BaseExecutor>(creator[executorSettings->second.name]()))).first;
+						executor = routes.insert(make_pair(move(parameters), smartPointer<BaseExecutor>(creator[executorSettings->second.name]()))).first;
 						executor->second->init(executorSettings->second);
 
 						if (executor->second->getType() == BaseExecutor::executorType::stateful)
@@ -180,7 +180,7 @@ namespace framework
 		}
 	}
 
-	unique_ptr<ResourceExecutor>& ExecutorsManager::getResourceExecutor()
+	smartPointer<ResourceExecutor>& ExecutorsManager::getResourceExecutor()
 	{
 		return resources;
 	}
