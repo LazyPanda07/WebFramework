@@ -20,8 +20,8 @@ namespace framework
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
 		const string clientIp = getIpV4(addr);
-		unique_ptr<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
-		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
+		smartPointer<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
+		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 
 		while (true)
@@ -79,7 +79,7 @@ namespace framework
 	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer(port, ip, timeout, false)
 	{
-		unordered_map<string, unique_ptr<BaseExecutor>> routes;
+		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
 		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
 		vector<utility::RouteParameters> routeParameters;
@@ -145,7 +145,7 @@ namespace framework
 			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
 				if (i.find('{') == string::npos)
 				{
-					auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(function())));
+					auto [it, success] = routes.emplace(make_pair(i, smartPointer<BaseExecutor>(function())));
 
 					if (success)
 					{
@@ -163,7 +163,7 @@ namespace framework
 				{
 					routeParameters.push_back(i);
 
-					auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, unique_ptr<BaseExecutor>(function())));
+					auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, smartPointer<BaseExecutor>(function())));
 
 					auto node = settings.extract(i);
 

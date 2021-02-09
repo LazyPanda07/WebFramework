@@ -1,12 +1,14 @@
 #pragma once
 
-#include <string>
-
 #if defined(CONVERSION_DLL) || defined(ALL_DLL)
 #define WEB_FRAMEWORK_API extern "C" __declspec(dllexport)
 #else
 #define WEB_FRAMEWORK_API
 #endif // CONVERSION_DLL
+
+#include <string>
+
+#include "WebFrameworkConstants.h"
 
 namespace framework
 {

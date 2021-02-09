@@ -24,7 +24,7 @@ namespace framework
 	class WEB_FRAMEWORK_API HTTPRequest
 	{
 	private:
-		std::unique_ptr<web::HTTPParser> parser;
+		smartPointer<web::HTTPParser> parser;
 		SessionsManager& session;
 		const std::string ip;
 		interfaces::ISendStaticFile& staticResources;
@@ -127,7 +127,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">must start with leading /</param>
 		/// <param name="response">with file</param>
-		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unique_ptr<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
+		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
 
 		/// <summary>
 		/// Getter for ip
@@ -178,7 +178,7 @@ namespace framework
 		/// <param name="...args">arguments for constructor if needs to create new instance</param>
 		/// <returns>instance of SQLiteDatabaseModel subclass</returns>
 		template<typename SQLiteDatabaseModelSubclass, typename... Args>
-		std::unique_ptr<sqlite::SQLiteDatabaseModel>& getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args);
+		smartPointer<sqlite::SQLiteDatabaseModel>& getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args);
 
 		friend class ExecutorsManager;
 
@@ -186,7 +186,7 @@ namespace framework
 	};
 
 	template<typename SQLiteDatabaseModelSubclass, typename... Args>
-	std::unique_ptr<sqlite::SQLiteDatabaseModel>& HTTPRequest::getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args)
+	smartPointer<sqlite::SQLiteDatabaseModel>& HTTPRequest::getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args)
 	{
 		return database.get<SQLiteDatabaseModelSubclass>(databaseName, tableName, std::forward<Args>(args)...);
 	}

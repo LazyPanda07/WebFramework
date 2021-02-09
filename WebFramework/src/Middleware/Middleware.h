@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "BaseMiddlewareRouteController.h"
 #include "MiddlewareWebNetwork/MiddlewareServer.h"
 
@@ -13,7 +11,7 @@ namespace framework
 		/// <para>Main class of Middleware servers</para>
 		/// <para>All initializations go through this class</para>
 		/// </summary>
-		class Middleware
+		class WEB_FRAMEWORK_API Middleware
 		{
 		private:
 			MiddlewareServer middlewareServer;

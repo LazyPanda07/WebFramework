@@ -6,7 +6,7 @@ namespace framework
 {
 	namespace exceptions
 	{
-		class BadRequestException : public BaseExecutorException
+		class WEB_FRAMEWORK_API BadRequestException : public BaseExecutorException
 		{
 		public:
 			BadRequestException(const std::string& additionalInformation = "");
