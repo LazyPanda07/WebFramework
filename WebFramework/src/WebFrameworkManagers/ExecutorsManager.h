@@ -24,10 +24,10 @@ namespace framework
 	{
 	private:
 		std::mutex checkExecutor;
-		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes;	// route - executor
+		std::unordered_map<std::string, smartPointer<BaseExecutor>> routes;	// route - executor
 		std::unordered_map<std::string, createBaseExecutorSubclassFunction> creator;	// executor name - create function
 		std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings> settings;	// route - executor settings
-		std::unique_ptr<ResourceExecutor> resources;
+		smartPointer<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters;	// base routes for parameterize executors
 
 	public:
@@ -50,7 +50,7 @@ namespace framework
 		/// <param name="routes">routes for all executors</param>
 		/// <param name="creator">functions that create executors</param>
 		/// <param name="settings">parsed .xml file</param>
-		void init(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings, std::vector<utility::RouteParameters>&& routeParameters) noexcept;
+		void init(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, smartPointer<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::XMLSettingsParser::ExecutorSettings>&& settings, std::vector<utility::RouteParameters>&& routeParameters) noexcept;
 
 		/// <summary>
 		/// Process requests from server
@@ -61,13 +61,13 @@ namespace framework
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="std::out_of_range"></exception>
-		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, smartPointer<BaseExecutor>>& statefulExecutors);
 
 		/// <summary>
 		/// Getter for ResourceExecutor
 		/// </summary>
 		/// <returns>ResourceExecutor</returns>
-		std::unique_ptr<ResourceExecutor>& getResourceExecutor();
+		smartPointer<ResourceExecutor>& getResourceExecutor();
 
 		~ExecutorsManager() = default;
 	};

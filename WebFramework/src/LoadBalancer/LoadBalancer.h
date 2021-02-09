@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include "LoadBalancerWebNetwork/LoadBalancerServer.h"
+#include "WebFrameworkConstants.h"
 
 namespace framework
 {
@@ -15,7 +16,7 @@ namespace framework
 		class LoadBalancer
 		{
 		private:
-			std::unique_ptr<LoadBalancerServer> loadBalancerServer;
+			smartPointer<LoadBalancerServer> loadBalancerServer;
 
 		public:
 			/// <summary>
