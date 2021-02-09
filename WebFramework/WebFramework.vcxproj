@@ -321,7 +321,7 @@ $(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-$(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
+$(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
