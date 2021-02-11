@@ -143,6 +143,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(SolutionDir)SHA256\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -191,7 +192,7 @@ $(SolutionDir)custom_build_steps\DebugDLLBuild.bat</Command>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);ALL_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(SolutionDir)SHA256\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -220,6 +221,7 @@ $(SolutionDir)custom_build_steps\DebugDLLBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(SolutionDir)SHA256\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -276,7 +278,7 @@ $(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);ALL_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(SolutionDir)SHA256\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -307,7 +309,7 @@ $(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(SolutionDir)SHA256\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -338,7 +340,7 @@ $(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);ALL_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)HTTP\JSON\src;$(SolutionDir)SHA256\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -452,6 +454,9 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     </ProjectReference>
     <ProjectReference Include="..\Log\Log.vcxproj">
       <Project>{89755e92-d5a7-4fa6-b227-7ddc3bba9aa1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SHA256\SHA256.vcxproj">
+      <Project>{91f7fb1e-1d8d-4544-99e2-23d409d666ab}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SocketStreams\SocketStreams.vcxproj">
       <Project>{8bb9f3bd-68f4-403a-acc6-f85c75f5d14f}</Project>
