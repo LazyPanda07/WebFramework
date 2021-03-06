@@ -76,12 +76,12 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const utility::XMLSettingsParser& parser, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+	WebServer::WebServer(const utility::JSONSettingsParser& parser, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer(port, ip, timeout, false)
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
-		unordered_map<string, utility::XMLSettingsParser::ExecutorSettings> settings = parser.getSettings();
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = parser.getSettings();
 		vector<utility::RouteParameters> routeParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
@@ -142,7 +142,7 @@ namespace framework
 
 			switch (j.executorLoadType)
 			{
-			case utility::XMLSettingsParser::ExecutorSettings::loadType::initialization:
+			case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
 				if (i.find('{') == string::npos)
 				{
 					auto [it, success] = routes.emplace(make_pair(i, smartPointer<BaseExecutor>(function())));
@@ -186,11 +186,11 @@ namespace framework
 
 				break;
 
-			case utility::XMLSettingsParser::ExecutorSettings::loadType::dynamic:
+			case utility::JSONSettingsParser::ExecutorSettings::loadType::dynamic:
 
 				break;
 
-			case utility::XMLSettingsParser::ExecutorSettings::loadType::none:
+			case utility::JSONSettingsParser::ExecutorSettings::loadType::none:
 				throw exceptions::MissingLoadTypeException(j.name);
 
 				break;

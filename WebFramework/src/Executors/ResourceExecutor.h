@@ -48,7 +48,7 @@ namespace framework
 		/// Create assets folder
 		/// </summary>
 		/// <param name="settings">not used</param>
-		void init(const utility::XMLSettingsParser::ExecutorSettings& settings) override;
+		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
 		/// <summary>
 		/// Override from ISendStaticFile interface

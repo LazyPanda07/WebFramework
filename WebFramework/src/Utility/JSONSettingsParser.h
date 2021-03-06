@@ -18,7 +18,7 @@ namespace framework
 		/// <summary>
 		/// Parser for .xml settings file
 		/// </summary>
-		class WEB_FRAMEWORK_API XMLSettingsParser
+		class WEB_FRAMEWORK_API JSONSettingsParser
 		{
 		public:
 			/// <summary>
@@ -51,11 +51,11 @@ namespace framework
 
 		public:
 			/// <summary>
-			/// Construct XMLSettingsParser from .xml file
+			/// Construct JSONSettingsParser from .xml file
 			/// </summary>
 			/// <param name="XMLSettings">path to .xml settings file</param>
 			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
-			XMLSettingsParser(const std::string& XMLSettings);
+			JSONSettingsParser(const std::string& XMLSettings);
 
 			/// <summary>
 			/// Get all settings from .xml
@@ -70,7 +70,7 @@ namespace framework
 			/// <returns></returns>
 			const ExecutorSettings& getExecutorSettings(const std::string& executorName) const;
 
-			~XMLSettingsParser() = default;
+			~JSONSettingsParser() = default;
 		};
 	}
 }
