@@ -206,6 +206,8 @@ namespace framework
 		routes.reserve(settings.size());
 		creator.reserve(settings.size());
 
+		vector<pair<string, string>> nodes;
+
 		for (const auto& [i, j] : settings)
 		{
 			createBaseExecutorSubclassFunction function = nullptr;
@@ -250,28 +252,21 @@ namespace framework
 
 					auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, smartPointer<BaseExecutor>(function())));
 
-					auto node = settings.extract(i);
-
-					node.key() = routeParameters.back().baseRoute;
-
-					settings.insert(move(node));
+					nodes.push_back(make_pair(i, routeParameters.back().baseRoute));
 
 					if (success)
 					{
-						if (it->second->getType() == BaseExecutor::executorType::stateful)
-						{
-							routes.erase(routeParameters.back().baseRoute);
-						}
-						else
-						{
-							it->second->init(j);
-						}
+						it->second->init(j);
 					}
 				}
 
 				break;
 
 			case utility::JSONSettingsParser::ExecutorSettings::loadType::dynamic:
+				if (i.find('{') == string::npos)
+				{
+					routeParameters.push_back(i);
+				}
 
 				break;
 
@@ -282,6 +277,15 @@ namespace framework
 			}
 
 			creator[j.name] = function;
+		}
+
+		for (auto&& [i, j] : nodes)
+		{
+			auto node = settings.extract(i);
+
+			node.key() = move(j);
+
+			settings.insert(move(node));
 		}
 
 		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));

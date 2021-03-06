@@ -6,16 +6,16 @@ namespace framework
 {
 	namespace utility
 	{
-		RouteParameters::RouteParameters(const string& xmlRoute)
+		RouteParameters::RouteParameters(const string& jsonRoute)
 		{
-			size_t startParameters = xmlRoute.find("/{");
+			size_t startParameters = jsonRoute.find("/{");
 			string parameter;
 
-			baseRoute = string(xmlRoute.begin(), xmlRoute.begin() + startParameters);
+			baseRoute = string(jsonRoute.begin(), jsonRoute.begin() + startParameters);
 
-			for (size_t i = startParameters + 2; i < xmlRoute.size(); i++)
+			for (size_t i = startParameters + 2; i < jsonRoute.size(); i++)
 			{
-				if (xmlRoute[i] == '}')
+				if (jsonRoute[i] == '}')
 				{
 					if (parameter.find(stringType) != string::npos)
 					{
@@ -37,7 +37,7 @@ namespace framework
 					continue;
 				}
 				
-				parameter += xmlRoute[i];
+				parameter += jsonRoute[i];
 			}
 		}
 
