@@ -6,9 +6,6 @@
 #define WEB_FRAMEWORK_API
 #endif // EXECUTOR_DLL
 
-#include <string>
-#include <unordered_map>
-
 #include "WebFrameworkConstants.h"
 #include "JSONParser.h"
 
@@ -17,7 +14,7 @@ namespace framework
 	namespace utility
 	{
 		/// <summary>
-		/// Parser for .xml settings file
+		/// Parser for .json settings file
 		/// </summary>
 		class WEB_FRAMEWORK_API JSONSettingsParser
 		{
@@ -34,7 +31,7 @@ namespace framework
 					none
 				};
 
-				json::utility::jsonParserStruct initParams;
+				json::utility::jsonParserStruct initParameters;
 				std::string name;
 				loadType executorLoadType;
 			};
@@ -42,24 +39,16 @@ namespace framework
 		private:
 			std::unordered_map<std::string, ExecutorSettings> settings;	//route - settings
 
-		private:
-			/// <summary>
-			/// Parse inline parameters https://github.com/LazyPanda07/WebFramework/wiki/WebFramework-markup
-			/// </summary>
-			/// <param name="xmlLine">parameter with tags</param>
-			/// <returns>parameter without tags</returns>
-			static std::string parseInlineParameter(const std::string& xmlLine);
-
 		public:
 			/// <summary>
-			/// Construct JSONSettingsParser from .xml file
+			/// Construct JSONSettingsParser from .json file
 			/// </summary>
-			/// <param name="XMLSettings">path to .xml settings file</param>
+			/// <param name="JSONSettings">path to .json settings file</param>
 			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
-			JSONSettingsParser(const std::string& XMLSettings);
+			JSONSettingsParser(const std::string& JSONSettings);
 
 			/// <summary>
-			/// Get all settings from .xml
+			/// Get all settings from .json
 			/// </summary>
 			/// <returns>route - settings as map</returns>
 			const std::unordered_map<std::string, ExecutorSettings>& getSettings() const;

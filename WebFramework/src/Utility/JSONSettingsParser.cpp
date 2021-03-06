@@ -10,23 +10,20 @@ namespace framework
 {
 	namespace utility
 	{
-		string JSONSettingsParser::parseInlineParameter(const string& xmlLine)
+		JSONSettingsParser::JSONSettingsParser(const string& JSONSettings)
 		{
-			return string(xmlLine.begin() + xmlLine.find('>') + 1, xmlLine.begin() + xmlLine.rfind('<'));
-		}
-
-		JSONSettingsParser::JSONSettingsParser(const string& XMLSettings)
-		{
-			ifstream in(XMLSettings);
+			ifstream in(JSONSettings);
 
 			if (!in.is_open())
 			{
-				throw exceptions::FileDoesNotExistException(XMLSettings);
+				throw exceptions::FileDoesNotExistException(JSONSettings);
 			}
 
 			json::JSONParser parser;
 
 			in >> parser;
+
+			in.close();
 
 			for (const auto& i : parser)
 			{
@@ -36,7 +33,7 @@ namespace framework
 
 				if (data.find("initParameters") != data.end())
 				{
-					executorSettings.initParams.data = move(get<json::utility::jJsonStruct>(data.at("initParameters"))->data);
+					executorSettings.initParameters.data = move(get<json::utility::jJsonStruct>(data.at("initParameters"))->data);
 				}
 
 				executorSettings.name = i->first;
