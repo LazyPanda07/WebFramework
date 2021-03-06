@@ -263,7 +263,7 @@ namespace framework
 				break;
 
 			case utility::JSONSettingsParser::ExecutorSettings::loadType::dynamic:
-				if (i.find('{') == string::npos)
+				if (i.find('{') != string::npos)
 				{
 					routeParameters.push_back(i);
 				}
