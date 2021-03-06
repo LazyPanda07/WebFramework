@@ -135,7 +135,7 @@ namespace xml_settings_tags
 	inline constexpr std::string_view endLoadTypeTag = "</load-type>";
 }
 
-namespace xml_settings_values
+namespace json_settings_values
 {
 	inline const std::string initializationLoadTypeValue = "initialization";
 	inline const std::string dynamicLoadTypeValue = "dynamic";

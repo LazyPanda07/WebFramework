@@ -10,6 +10,7 @@
 #include <unordered_map>
 
 #include "WebFrameworkConstants.h"
+#include "JSONParser.h"
 
 namespace framework
 {
@@ -33,7 +34,7 @@ namespace framework
 					none
 				};
 
-				std::unordered_map<std::string, std::string> initParams;
+				json::utility::jsonParserStruct initParams;
 				std::string name;
 				loadType executorLoadType;
 			};

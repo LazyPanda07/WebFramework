@@ -81,7 +81,8 @@ namespace framework
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = parser.getSettings();
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings;// = parser.getSettings();
+		const auto& tem = parser.getSettings();
 		vector<utility::RouteParameters> routeParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
 		{
@@ -117,6 +118,90 @@ namespace framework
 
 			return result;
 		}();
+
+		for (const auto& i : tem)
+		{
+			utility::JSONSettingsParser::ExecutorSettings executorSettings;
+
+			executorSettings.name = i.second.name;
+			executorSettings.executorLoadType = i.second.executorLoadType;
+
+			for (const auto& j : i.second.initParams.data)
+			{
+				switch (j.second.index())
+				{
+				case json::utility::jNull:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jNull>(j.second)));
+					break;
+
+				case json::utility::jString:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jString>(j.second)));
+					break;
+
+				case json::utility::jChar:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jChar>(j.second)));
+					break;
+
+				case json::utility::jUnsignedChar:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jUnsignedChar>(j.second)));
+					break;
+
+				case json::utility::jBool:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jBool>(j.second)));
+					break;
+
+				case json::utility::jInt64_t:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jInt64_t>(j.second)));
+					break;
+
+				case json::utility::jUint64_t:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jUint64_t>(j.second)));
+					break;
+
+				case json::utility::jDouble:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jDouble>(j.second)));
+					break;
+
+				case json::utility::jNullArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jNullArray>(j.second)));
+					break;
+
+				case json::utility::jStringArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jStringArray>(j.second)));
+					break;
+
+				case json::utility::jCharArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jCharArray>(j.second)));
+					break;
+
+				case json::utility::jUnsignedCharArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jUnsignedCharArray>(j.second)));
+					break;
+
+				case json::utility::jBoolArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jBoolArray>(j.second)));
+					break;
+
+				case json::utility::jInt64_tArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jInt64_tArray>(j.second)));
+					break;
+
+				case json::utility::jUint64_tArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jUint64_tArray>(j.second)));
+					break;
+
+				case json::utility::jDoubleArray:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jDoubleArray>(j.second)));
+					break;
+
+				case json::utility::jJsonStruct:
+					executorSettings.initParams.data.insert(make_pair(j.first, get<json::utility::jJsonStruct>(j.second).get()));
+					break;
+				}
+			}
+
+			settings.insert(make_pair(i.first, move(executorSettings)));
+		}
 
 		routes.reserve(settings.size());
 		creator.reserve(settings.size());

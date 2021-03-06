@@ -3,7 +3,6 @@
 #include <fstream>
 
 #include "Exceptions/FileDoesNotExistException.h"
-#include "JSONParser.h"
 
 using namespace std;
 
@@ -31,7 +30,27 @@ namespace framework
 
 			for (const auto& i : parser)
 			{
+				const auto& data = get<json::utility::jJsonStruct>(i->second)->data;
+				const string& loadType = get<json::utility::jString>(data.at("loadType"));
+				ExecutorSettings executorSettings;
+
+				if (data.find("initParameters") != data.end())
+				{
+					executorSettings.initParams.data = move(get<json::utility::jJsonStruct>(data.at("initParameters"))->data);
+				}
+
+				executorSettings.name = i->first;
 				
+				if (loadType == json_settings_values::initializationLoadTypeValue)
+				{
+					executorSettings.executorLoadType = ExecutorSettings::loadType::initialization;
+				}
+				else if (loadType == json_settings_values::dynamicLoadTypeValue)
+				{
+					executorSettings.executorLoadType = ExecutorSettings::loadType::dynamic;
+				}
+
+				settings.insert(make_pair(get<json::utility::jString>(data.at("route")), move(executorSettings)));
 			}
 		}
 
