@@ -266,6 +266,8 @@ namespace framework
 				if (i.find('{') != string::npos)
 				{
 					routeParameters.push_back(i);
+
+					nodes.push_back(make_pair(i, routeParameters.back().baseRoute));
 				}
 
 				break;
