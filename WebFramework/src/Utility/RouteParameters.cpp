@@ -13,6 +13,11 @@ namespace framework
 
 			baseRoute = string(jsonRoute.begin(), jsonRoute.begin() + startParameters);
 
+			if (baseRoute.empty())
+			{
+				baseRoute += '/';
+			}
+
 			for (size_t i = startParameters + 2; i < jsonRoute.size(); i++)
 			{
 				if (jsonRoute[i] == '}')
