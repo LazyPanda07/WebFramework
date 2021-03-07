@@ -16,7 +16,7 @@
 #include "WebNetwork/HTTPRequest.h"
 #include "WebNetwork/HTTPResponse.h"
 #include "Exceptions/NotImplementedException.h"
-#include "Utility/XMLSettingsParser.h"
+#include "Utility/JSONSettingsParser.h"
 #include "WebFrameworkConstants.h"
 
 namespace framework
@@ -41,7 +41,7 @@ namespace framework
 		/// Initializing executor before use
 		/// </summary>
 		/// <param name="settings">providing parameters from .xml to executor</param>
-		virtual void init(const utility::XMLSettingsParser::ExecutorSettings& settings) = 0;
+		virtual void init(const utility::JSONSettingsParser::ExecutorSettings& settings) = 0;
 
 		/// <summary>
 		/// Process POST request

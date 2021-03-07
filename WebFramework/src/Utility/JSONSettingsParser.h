@@ -6,19 +6,17 @@
 #define WEB_FRAMEWORK_API
 #endif // EXECUTOR_DLL
 
-#include <string>
-#include <unordered_map>
-
 #include "WebFrameworkConstants.h"
+#include "JSONParser.h"
 
 namespace framework
 {
 	namespace utility
 	{
 		/// <summary>
-		/// Parser for .xml settings file
+		/// Parser for .json settings file
 		/// </summary>
-		class WEB_FRAMEWORK_API XMLSettingsParser
+		class WEB_FRAMEWORK_API JSONSettingsParser
 		{
 		public:
 			/// <summary>
@@ -33,7 +31,7 @@ namespace framework
 					none
 				};
 
-				std::unordered_map<std::string, std::string> initParams;
+				json::utility::jsonParserStruct initParameters;
 				std::string name;
 				loadType executorLoadType;
 			};
@@ -41,24 +39,16 @@ namespace framework
 		private:
 			std::unordered_map<std::string, ExecutorSettings> settings;	//route - settings
 
-		private:
-			/// <summary>
-			/// Parse inline parameters https://github.com/LazyPanda07/WebFramework/wiki/WebFramework-markup
-			/// </summary>
-			/// <param name="xmlLine">parameter with tags</param>
-			/// <returns>parameter without tags</returns>
-			static std::string parseInlineParameter(const std::string& xmlLine);
-
 		public:
 			/// <summary>
-			/// Construct XMLSettingsParser from .xml file
+			/// Construct JSONSettingsParser from .json file
 			/// </summary>
-			/// <param name="XMLSettings">path to .xml settings file</param>
+			/// <param name="JSONSettings">path to .json settings file</param>
 			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
-			XMLSettingsParser(const std::string& XMLSettings);
+			JSONSettingsParser(const std::string& JSONSettings);
 
 			/// <summary>
-			/// Get all settings from .xml
+			/// Get all settings from .json
 			/// </summary>
 			/// <returns>route - settings as map</returns>
 			const std::unordered_map<std::string, ExecutorSettings>& getSettings() const;
@@ -70,7 +60,7 @@ namespace framework
 			/// <returns></returns>
 			const ExecutorSettings& getExecutorSettings(const std::string& executorName) const;
 
-			~XMLSettingsParser() = default;
+			~JSONSettingsParser() = default;
 		};
 	}
 }

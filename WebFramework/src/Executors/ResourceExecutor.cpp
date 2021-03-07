@@ -51,7 +51,7 @@ namespace framework
 
 	}
 
-	void ResourceExecutor::init(const utility::XMLSettingsParser::ExecutorSettings& settings)
+	void ResourceExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
 		if (!filesystem::exists(assets))
 		{

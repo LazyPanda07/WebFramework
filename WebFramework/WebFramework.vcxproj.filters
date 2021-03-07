@@ -33,7 +33,7 @@
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\XMLSettingsParser.cpp">
+    <ClCompile Include="src\Utility\JSONSettingsParser.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\FileDoesNotExistException.cpp">
@@ -137,7 +137,7 @@
     <ClInclude Include="src\Exceptions\NotImplementedException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\XMLSettingsParser.h">
+    <ClInclude Include="src\Utility\JSONSettingsParser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\FileDoesNotExistException.h">
