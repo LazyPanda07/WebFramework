@@ -20,7 +20,7 @@ namespace framework
 		class WEB_FRAMEWORK_API FileDoesNotExistException : public std::runtime_error
 		{
 		public:
-			FileDoesNotExistException(const std::string& fileName);
+			FileDoesNotExistException(const std::string& filename);
 
 			~FileDoesNotExistException() = default;
 		};
