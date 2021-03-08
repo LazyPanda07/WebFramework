@@ -146,9 +146,17 @@ namespace framework
 			std::string selectByFieldQuery(const std::string& fieldName, const std::string& fieldValue);
 
 			/// <summary>
+			/// SELECT with condition
+			/// </summary>
+			/// <param name="values">field name - field value</param>
+			/// <returns>all rows that accept condition</returns>
+			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
+			std::string selectByFieldQuery(const std::unordered_map<std::string, std::string>& attributes);
+
+			/// <summary>
 			/// Getter for tableName
 			/// </summary>
-			/// <returns></returns>
+			/// <returns>tableName</returns>
 			const std::string& getTableName() const;
 
 			~SQLiteDatabaseModel() = default;
