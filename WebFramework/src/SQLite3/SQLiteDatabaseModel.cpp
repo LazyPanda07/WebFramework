@@ -193,6 +193,21 @@ namespace framework
 			return this->rawQuery("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''), queryType::read);
 		}
 
+		string SQLiteDatabaseModel::selectByFieldQuery(const unordered_map<string, string>& attributes)
+		{
+			string query = "SELECT * FROM " + tableName + " WHERE ";
+
+			for (const auto& [fieldName, fieldValue] : attributes)
+			{
+				query += fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue) + ", ";
+			}
+
+			query.pop_back();
+			query.pop_back();
+
+			return this->rawQuery(query, queryType::read);
+		}
+
 		const string& SQLiteDatabaseModel::getTableName() const
 		{
 			return tableName;
