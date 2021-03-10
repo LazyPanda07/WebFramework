@@ -199,11 +199,10 @@ namespace framework
 
 			for (const auto& [fieldName, fieldValue] : attributes)
 			{
-				query += fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue) + ", ";
+				query += fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'') + " AND ";
 			}
 
-			query.pop_back();
-			query.pop_back();
+			query.resize(query.size() - 5);
 
 			return this->rawQuery(query, queryType::read);
 		}

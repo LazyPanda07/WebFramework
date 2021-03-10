@@ -30,12 +30,13 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr) :
 		session(session),
-		ip(ip),
+		serverReference(serverReference),
 		staticResources(staticResources),
 		dynamicResources(dynamicResources),
-		database(database)
+		database(database),
+		clientAddr(clientAddr)
 	{
 
 	}
@@ -72,22 +73,22 @@ namespace framework
 
 	void HTTPRequest::setAttribute(const string& name, const string& value)
 	{
-		session.setAttribute(ip, name, value);
+		session.setAttribute(this->getClientIpV4(), name, value);
 	}
 
 	string HTTPRequest::getAttribute(const string& name)
 	{
-		return session.getAttribute(ip, name);
+		return session.getAttribute(this->getClientIpV4(), name);
 	}
 
 	void HTTPRequest::deleteSession()
 	{
-		session.deleteSession(ip);
+		session.deleteSession(this->getClientIpV4());
 	}
 
 	void HTTPRequest::deleteAttribute(const string& name)
 	{
-		session.deleteAttribute(ip, name);
+		session.deleteAttribute(this->getClientIpV4(), name);
 	}
 
 	unordered_map<string, string> HTTPRequest::getCookies() const
@@ -139,14 +140,29 @@ namespace framework
 		}
 	}
 
-	const string& HTTPRequest::getIpV4ClientAddress() const
-	{
-		return ip;
-	}
-
 	const json::JSONParser& HTTPRequest::getJSON() const
 	{
 		return parser->getJSON();
+	}
+
+	string HTTPRequest::getClientIpV4() const
+	{
+		return serverReference.getClientIpV4(clientAddr);
+	}
+
+	string HTTPRequest::getServerIpV4() const
+	{
+		return serverReference.getServerIpV4();
+	}
+
+	uint16_t HTTPRequest::getClientPort() const
+	{
+		return serverReference.getClientPortV4(clientAddr);
+	}
+
+	uint16_t HTTPRequest::getServerPort() const
+	{
+		return serverReference.getServerPortV4();
 	}
 
 	template<>

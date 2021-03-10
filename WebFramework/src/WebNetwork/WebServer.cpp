@@ -19,7 +19,7 @@ namespace framework
 	void WebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
-		const string clientIp = getIpV4(addr);
+		const string clientIp = getClientIpV4(addr);
 		smartPointer<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
@@ -28,7 +28,7 @@ namespace framework
 		{
 			try
 			{
-				HTTPRequest request(sessionsManager, clientIp, *resources, *resources, databasesManager);
+				HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, addr);
 
 				response.setDefault();
 
