@@ -13,6 +13,7 @@
 #include "Interfaces/ISendStaticFile.h"
 #include "Interfaces/ISendDynamicFile.h"
 #include "BaseIOSocketStream.h"
+#include "BaseTCPServer.h"
 
 namespace framework
 {
@@ -26,10 +27,11 @@ namespace framework
 	private:
 		smartPointer<web::HTTPParser> parser;
 		SessionsManager& session;
-		const std::string ip;
+		const web::BaseTCPServer& serverReference;
 		interfaces::ISendStaticFile& staticResources;
 		interfaces::ISendDynamicFile& dynamicResources;
 		sqlite::SQLiteManager& database;
+		sockaddr& clientAddr;
 		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
 
 	private:
@@ -51,9 +53,9 @@ namespace framework
 		/// Construct HTTPRequest
 		/// </summary>
 		/// <param name="session">from WebServer</param>
-		/// <param name="ip">client's address</param>
+		/// <param name="serverReference">reference to WebServer</param>
 		/// <param name="resources">ResourceExecutor</param>
-		HTTPRequest(SessionsManager& session, const std::string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database);
+		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
 
 		/// <summary>
 		/// Parameters string from HTTP
@@ -130,16 +132,34 @@ namespace framework
 		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
 
 		/// <summary>
-		/// Getter for ip
-		/// </summary>
-		/// <returns>client's address</returns>
-		const std::string& getIpV4ClientAddress() const;
-
-		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
 		/// <returns>JSONParser</returns>
 		const json::JSONParser& getJSON() const;
+
+		/// <summary>
+		/// Get client's address
+		/// </summary>
+		/// <returns>client's address</returns>
+		std::string getClientIpV4() const;
+
+		/// <summary>
+		/// Get server's address
+		/// </summary>
+		/// <returns>server's address</returns>
+		std::string getServerIpV4() const;
+
+		/// <summary>
+		/// Get client's port
+		/// </summary>
+		/// <returns>client's port</returns>
+		uint16_t getClientPort() const;
+
+		/// <summary>
+		/// Get server's port
+		/// </summary>
+		/// <returns>server's port</returns>
+		uint16_t getServerPort() const;
 
 		/// <summary>
 		/// Getter for route parameters
