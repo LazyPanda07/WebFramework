@@ -68,6 +68,11 @@ namespace framework
 
 			sqlite3_finalize(result);
 
+			if (output.size())
+			{
+				output.pop_back();
+			}
+
 			return output;
 		}
 
