@@ -82,6 +82,14 @@ namespace framework
 		void addBody(std::string&& body) noexcept;
 
 		/// <summary>
+		/// <para>Some data with HTTP response</para>
+		/// <para>Content-Length header setting automatically</para>
+		/// </summary>
+		/// <param name="body">data</param>
+		/// <returns>reference to self</returns>
+		HTTPResponse& appendBody(const std::string& body);
+
+		/// <summary>
 		/// Add cookie to HTTP response
 		/// </summary>
 		/// <param name="name">of cookie</param>
@@ -94,11 +102,11 @@ namespace framework
 		void setDefault();
 
 		/// <summary>
-		/// Sending HTTPResponse to network
+		/// Sending HTTPResponse through network
 		/// </summary>
-		/// <param name="stream">special class for sending data to network</param>
+		/// <param name="stream">special class for sending data through network</param>
 		/// <param name="response">class instance</param>
-		/// <returns>self for builder pattern</returns>
+		/// <returns>reference to self</returns>
 		friend streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponse& response);
 
 		~HTTPResponse() = default;
