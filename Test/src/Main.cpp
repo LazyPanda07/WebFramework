@@ -7,25 +7,6 @@
 
 using namespace std;
 
-class Model : public framework::sqlite::SQLiteDatabaseModel
-{
-private:
-
-public:
-	Model() :
-		SQLiteDatabaseModel
-		(
-			"users",
-			framework::sqlite::SQLiteDatabase
-			(
-				"Database.sqlite3"
-			)
-		)
-	{
-		SQLiteDatabaseModel::createTableQuery({ { "id", "INTEGER PRIMARY KEY AUTOINCREMENT" }, { "login", "TEXT NOT NULL" } });
-	}
-};
-
 class Test : public framework::BaseStatelessExecutor
 {
 public:
@@ -36,24 +17,7 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
-		auto& model = request.getDatabaseModelInstance<Model>("Database.sqlite3", "users");
-
-		model->insertQuery({ { "login", "rofl" } });
-
-		framework::sqlite::utility::SQLiteResult result = model->selectAllQuery();
-
-		for (const auto& i : result)
-		{
-			for (const auto& j : i)
-			{
-				cout << "Column: " << j.first << '\t' << "Value: " << j.second << endl;
-			}
-		}
-
-		response.addBody
-		(
-			"<h1>Loaded</h1>"
-		);
+		
 	}
 };
 
