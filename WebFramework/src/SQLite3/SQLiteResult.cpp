@@ -14,6 +14,37 @@ namespace framework
 
 			}
 
+			SQLiteResult::SQLiteResult(const SQLiteResult& other) :
+				rows(other.rows)
+			{
+
+			}
+
+			SQLiteResult::SQLiteResult(SQLiteResult&& other) noexcept :
+				rows(move(other.rows))
+			{
+
+			}
+
+			SQLiteResult& SQLiteResult::operator = (const SQLiteResult& other)
+			{
+				rows = other.rows;
+
+				return *this;
+			}
+
+			SQLiteResult& SQLiteResult::operator = (SQLiteResult&& other) noexcept
+			{
+				rows = move(other.rows);
+
+				return *this;
+			}
+
+			void SQLiteResult::resize(size_t rowCount)
+			{
+				rows.resize(rowCount);
+			}
+
 			size_t SQLiteResult::size() const
 			{
 				return rows.size();

@@ -41,24 +41,28 @@ namespace framework
 			return false;
 		}
 
-		string SQLiteDatabaseModel::executeQuery(const string& query)
+		utility::SQLiteResult SQLiteDatabaseModel::executeQuery(const string& query)
 		{
 			sqlite3_stmt* result = nullptr;
-			string output;
 			int code;
 
 			sqlite3_prepare_v2(*db, query.data(), -1, &result, nullptr);
+
+			utility::SQLiteResult output(sqlite3_column_count(result));
 
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
 				for (size_t i = 0; i < sqlite3_column_count(result); i++)
 				{
-					output.append(reinterpret_cast<const char*>(sqlite3_column_text(result, i))).append(" ");
+					output[i].insert
+					(
+						make_pair
+						(
+							sqlite3_column_name(result, i),
+							reinterpret_cast<const char*>(sqlite3_column_text(result, i))
+						)
+					);
 				}
-
-				output.pop_back();
-
-				output += '\n';
 			}
 
 			if (code != SQLITE_DONE)
@@ -67,11 +71,6 @@ namespace framework
 			}
 
 			sqlite3_finalize(result);
-
-			if (output.size())
-			{
-				output.pop_back();
-			}
 
 			return output;
 		}
@@ -98,7 +97,7 @@ namespace framework
 			return *this;
 		}
 
-		string SQLiteDatabaseModel::rawQuery(const string& query, SQLiteDatabaseModel::queryType type)
+		utility::SQLiteResult SQLiteDatabaseModel::rawQuery(const string& query, SQLiteDatabaseModel::queryType type)
 		{
 			if (type == queryType::read)
 			{
@@ -188,17 +187,17 @@ namespace framework
 			this->rawQuery(query, queryType::write);
 		}
 
-		string SQLiteDatabaseModel::selectAllQuery()
+		utility::SQLiteResult SQLiteDatabaseModel::selectAllQuery()
 		{
 			return this->rawQuery("SELECT * FROM " + tableName, queryType::read);
 		}
 
-		string SQLiteDatabaseModel::selectByFieldQuery(const string& fieldName, const string& fieldValue)
+		utility::SQLiteResult SQLiteDatabaseModel::selectByFieldQuery(const string& fieldName, const string& fieldValue)
 		{
 			return this->rawQuery("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''), queryType::read);
 		}
 
-		string SQLiteDatabaseModel::selectByFieldQuery(const unordered_map<string, string>& attributes)
+		utility::SQLiteResult SQLiteDatabaseModel::selectByFieldQuery(const unordered_map<string, string>& attributes)
 		{
 			string query = "SELECT * FROM " + tableName + " WHERE ";
 

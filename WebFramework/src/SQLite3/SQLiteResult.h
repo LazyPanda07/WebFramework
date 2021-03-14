@@ -25,7 +25,19 @@ namespace framework
 				std::vector<std::unordered_map<std::string, std::string>> rows;
 
 			public:
+				SQLiteResult() = default;
+
 				SQLiteResult(size_t rowCount);
+
+				SQLiteResult(const SQLiteResult& other);
+
+				SQLiteResult(SQLiteResult&& other) noexcept;
+
+				SQLiteResult& operator = (const SQLiteResult& other);
+
+				SQLiteResult& operator = (SQLiteResult&& other) noexcept;
+
+				void resize(size_t rowCount);
 
 				size_t size() const;
 
