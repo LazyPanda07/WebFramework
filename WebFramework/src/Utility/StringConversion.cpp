@@ -81,7 +81,7 @@ namespace framework
 			return result;
 		}
 
-		string fromUTF8(const string& source, unsigned resultCodePage)
+		string fromUTF8(const string& source, unsigned int resultCodePage)
 		{
 			string result;
 			wstring tem;

@@ -30,7 +30,7 @@ namespace framework
 		/// <param name="resultCodePage">decoding code page</param>
 		/// <returns>string in resultCodePage encoding</returns>
 		/// <exception cref="framework::exceptions::StringConversion"></exception>
-		WEB_FRAMEWORK_API std::string fromUTF8(const std::string& source, unsigned resultCodePage);
+		WEB_FRAMEWORK_API std::string fromUTF8(const std::string& source, unsigned int resultCodePage);
 
 		/// <summary>
 		/// Encode string from CP1251 to UTF8
