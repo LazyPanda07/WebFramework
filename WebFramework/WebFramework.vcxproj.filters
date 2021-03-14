@@ -114,6 +114,9 @@
     <ClCompile Include="src\Exceptions\BadRequestException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\SQLite3\SQLiteResult.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -231,6 +234,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\BadRequestException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SQLite3\SQLiteResult.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

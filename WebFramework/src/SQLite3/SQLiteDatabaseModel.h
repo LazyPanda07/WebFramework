@@ -6,6 +6,7 @@
 #include <shared_mutex>
 
 #include "SQLiteDatabase.h"
+#include "SQLiteResult.h"
 
 namespace framework
 {
@@ -42,7 +43,7 @@ namespace framework
 			/// </summary>
 			/// <param name="query">raw query</param>
 			/// <returns>execution result</returns>
-			std::string executeQuery(const std::string& query);
+			utility::SQLiteResult executeQuery(const std::string& query);
 
 		public:
 			/// <summary>
@@ -83,7 +84,7 @@ namespace framework
 			/// <returns>result of SELECT query, empty string otherwise</returns>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			/// <exception cref="std::invalid_argument">wrong type</exception>
-			std::string rawQuery(const std::string& query, queryType type);
+			utility::SQLiteResult rawQuery(const std::string& query, queryType type);
 
 			/// <summary>
 			/// Create table
@@ -134,7 +135,7 @@ namespace framework
 			/// </summary>
 			/// <returns>all rows from table</returns>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			std::string selectAllQuery();
+			utility::SQLiteResult selectAllQuery();
 
 			/// <summary>
 			/// SELECT with condition
@@ -143,7 +144,7 @@ namespace framework
 			/// <param name="fieldValue">for condition</param>
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			std::string selectByFieldQuery(const std::string& fieldName, const std::string& fieldValue);
+			utility::SQLiteResult selectByFieldQuery(const std::string& fieldName, const std::string& fieldValue);
 
 			/// <summary>
 			/// SELECT with condition
@@ -151,7 +152,7 @@ namespace framework
 			/// <param name="values">field name - field value</param>
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			std::string selectByFieldQuery(const std::unordered_map<std::string, std::string>& attributes);
+			utility::SQLiteResult selectByFieldQuery(const std::unordered_map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// Getter for tableName
