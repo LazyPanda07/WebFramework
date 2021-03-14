@@ -24,6 +24,15 @@ namespace framework
 		WEB_FRAMEWORK_API std::string toUTF8(const std::string& source, unsigned int sourceCodePage);
 
 		/// <summary>
+		/// Decode string from UTF8
+		/// </summary>
+		/// <param name="source">string to convert</param>
+		/// <param name="resultCodePage">decoding code page</param>
+		/// <returns>string in resultCodePage encoding</returns>
+		/// <exception cref="framework::exceptions::StringConversion"></exception>
+		WEB_FRAMEWORK_API std::string fromUTF8(const std::string& source, unsigned resultCodePage);
+
+		/// <summary>
 		/// Encode string from CP1251 to UTF8
 		/// </summary>
 		/// <param name="source">string to convert</param>
