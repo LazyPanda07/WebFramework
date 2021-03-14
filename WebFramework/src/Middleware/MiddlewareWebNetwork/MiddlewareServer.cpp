@@ -12,7 +12,7 @@ namespace framework
 		void MiddlewareServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 		{
 			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
-			unique_ptr<streams::IOSocketStream> serverStream;
+			smartPointer<streams::IOSocketStream> serverStream;
 
 			while (true)
 			{

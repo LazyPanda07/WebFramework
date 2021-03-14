@@ -1,8 +1,19 @@
 #pragma once
 
+#if defined(DATABASES_DLL) || defined(ALL_DLL)
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#define SHA256_DLL
+#else
+#define WEB_FRAMEWORK_API
+#endif // DATABASES_DLL
+
+#undef max
+
 #include <string>
 
 #include "sqlite3.h"
+#include "SHA256.h"
+#include "WebFrameworkConstants.h"
 
 namespace framework
 {
@@ -17,7 +28,7 @@ namespace framework
 		/// <para>Wrapper class for sqlite3 library</para>
 		/// <para>Providing connect to sqlite3 database</para>
 		/// </summary>
-		class SQLiteDatabase
+		class WEB_FRAMEWORK_API SQLiteDatabase
 		{
 		private:
 			std::string databaseName;

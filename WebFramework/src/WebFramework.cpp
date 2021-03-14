@@ -107,7 +107,7 @@ namespace framework
 
 			server = make_unique<WebServer>
 				(
-					utility::XMLSettingsParser(settingsPath.first->second),
+					utility::JSONSettingsParser(settingsPath.first->second),
 					assetsPath.first->second,
 					templatesPath.first->second,
 					usingAssetsCache.first->second == "true" ? true : false,

@@ -25,7 +25,7 @@ namespace framework
 			std::unordered_map<std::string, std::variant<std::string, int64_t>> parameters;
 			std::vector<std::string> indices;
 
-			RouteParameters(const std::string& xmlRoute);
+			RouteParameters(const std::string& jsonRoute);
 
 			RouteParameters(RouteParameters&& other) noexcept;
 		};

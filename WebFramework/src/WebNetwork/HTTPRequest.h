@@ -13,6 +13,7 @@
 #include "Interfaces/ISendStaticFile.h"
 #include "Interfaces/ISendDynamicFile.h"
 #include "BaseIOSocketStream.h"
+#include "BaseTCPServer.h"
 
 namespace framework
 {
@@ -24,12 +25,13 @@ namespace framework
 	class WEB_FRAMEWORK_API HTTPRequest
 	{
 	private:
-		std::unique_ptr<web::HTTPParser> parser;
+		smartPointer<web::HTTPParser> parser;
 		SessionsManager& session;
-		const std::string ip;
+		const web::BaseTCPServer& serverReference;
 		interfaces::ISendStaticFile& staticResources;
 		interfaces::ISendDynamicFile& dynamicResources;
 		sqlite::SQLiteManager& database;
+		sockaddr& clientAddr;
 		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
 
 	private:
@@ -51,9 +53,9 @@ namespace framework
 		/// Construct HTTPRequest
 		/// </summary>
 		/// <param name="session">from WebServer</param>
-		/// <param name="ip">client's address</param>
+		/// <param name="serverReference">reference to WebServer</param>
 		/// <param name="resources">ResourceExecutor</param>
-		HTTPRequest(SessionsManager& session, const std::string& ip, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database);
+		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
 
 		/// <summary>
 		/// Parameters string from HTTP
@@ -127,19 +129,37 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">must start with leading /</param>
 		/// <param name="response">with file</param>
-		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unique_ptr<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
-
-		/// <summary>
-		/// Getter for ip
-		/// </summary>
-		/// <returns>client's address</returns>
-		const std::string& getIpV4ClientAddress() const;
+		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
 
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
 		/// <returns>JSONParser</returns>
 		const json::JSONParser& getJSON() const;
+
+		/// <summary>
+		/// Get client's address
+		/// </summary>
+		/// <returns>client's address</returns>
+		std::string getClientIpV4() const;
+
+		/// <summary>
+		/// Get server's address
+		/// </summary>
+		/// <returns>server's address</returns>
+		std::string getServerIpV4() const;
+
+		/// <summary>
+		/// Get client's port
+		/// </summary>
+		/// <returns>client's port</returns>
+		uint16_t getClientPort() const;
+
+		/// <summary>
+		/// Get server's port
+		/// </summary>
+		/// <returns>server's port</returns>
+		uint16_t getServerPort() const;
 
 		/// <summary>
 		/// Getter for route parameters
@@ -178,7 +198,7 @@ namespace framework
 		/// <param name="...args">arguments for constructor if needs to create new instance</param>
 		/// <returns>instance of SQLiteDatabaseModel subclass</returns>
 		template<typename SQLiteDatabaseModelSubclass, typename... Args>
-		std::unique_ptr<sqlite::SQLiteDatabaseModel>& getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args);
+		smartPointer<sqlite::SQLiteDatabaseModel>& getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args);
 
 		friend class ExecutorsManager;
 
@@ -186,7 +206,7 @@ namespace framework
 	};
 
 	template<typename SQLiteDatabaseModelSubclass, typename... Args>
-	std::unique_ptr<sqlite::SQLiteDatabaseModel>& HTTPRequest::getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args)
+	smartPointer<sqlite::SQLiteDatabaseModel>& HTTPRequest::getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args)
 	{
 		return database.get<SQLiteDatabaseModelSubclass>(databaseName, tableName, std::forward<Args>(args)...);
 	}

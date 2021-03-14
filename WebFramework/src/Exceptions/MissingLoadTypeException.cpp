@@ -1,7 +1,5 @@
 #include "MissingLoadTypeException.h"
 
-#include "WebFrameworkConstants.h"
-
 using namespace std;
 
 namespace framework

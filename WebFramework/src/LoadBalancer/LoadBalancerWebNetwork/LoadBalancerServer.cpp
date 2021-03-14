@@ -54,7 +54,7 @@ namespace framework
 		void LoadBalancerServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 		{
 			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
-			const string clientIp = getIpV4(addr);
+			const string clientIp = getClientIpV4(addr);
 			loadBalancerConnectionData data = this->chooseServer();
 			streams::IOSocketStream serverStream(new buffers::IOSocketBuffer(new HTTPNetwork(data.ip, data.port)));
 			

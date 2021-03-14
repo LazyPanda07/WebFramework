@@ -1,6 +1,7 @@
 #include "SQLiteDatabase.h"
 
 #pragma comment (lib, "sqlite3.lib")
+#pragma comment (lib, "SHA256.lib")
 
 using namespace std;
 
