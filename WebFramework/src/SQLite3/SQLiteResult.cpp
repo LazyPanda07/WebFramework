@@ -40,6 +40,11 @@ namespace framework
 				return *this;
 			}
 
+			void SQLiteResult::addRow()
+			{
+				rows.emplace_back();
+			}
+
 			void SQLiteResult::resize(size_t rowCount)
 			{
 				rows.resize(rowCount);
@@ -58,6 +63,26 @@ namespace framework
 			const unordered_map<string, string>& SQLiteResult::operator [] (size_t index) const
 			{
 				return rows[index];
+			}
+
+			unordered_map<string, string>& SQLiteResult::front()
+			{
+				return rows.front();
+			}
+
+			const unordered_map<string, string>& SQLiteResult::front() const
+			{
+				return rows.front();
+			}
+
+			unordered_map<string, string>& SQLiteResult::back()
+			{
+				return rows.back();
+			}
+
+			const unordered_map<string, string>& SQLiteResult::back() const
+			{
+				return rows.back();
 			}
 
 			SQLiteResult::const_iterator SQLiteResult::begin() const noexcept

@@ -44,17 +44,18 @@ namespace framework
 		utility::SQLiteResult SQLiteDatabaseModel::executeQuery(const string& query)
 		{
 			sqlite3_stmt* result = nullptr;
+			utility::SQLiteResult output;
 			int code;
 
 			sqlite3_prepare_v2(*db, query.data(), -1, &result, nullptr);
 
-			utility::SQLiteResult output(sqlite3_column_count(result));
-
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
+				output.addRow();
+
 				for (size_t i = 0; i < sqlite3_column_count(result); i++)
 				{
-					output[i].insert
+					output.back().insert
 					(
 						make_pair
 						(

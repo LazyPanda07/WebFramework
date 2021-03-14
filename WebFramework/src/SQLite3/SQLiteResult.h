@@ -37,6 +37,8 @@ namespace framework
 
 				SQLiteResult& operator = (SQLiteResult&& other) noexcept;
 
+				void addRow();
+
 				void resize(size_t rowCount);
 
 				size_t size() const;
@@ -44,6 +46,14 @@ namespace framework
 				std::unordered_map<std::string, std::string>& operator [] (size_t index);
 
 				const std::unordered_map<std::string, std::string>& operator [] (size_t index) const;
+
+				std::unordered_map<std::string, std::string>& front();
+
+				const std::unordered_map<std::string, std::string>& front() const;
+
+				std::unordered_map<std::string, std::string>& back ();
+
+				const std::unordered_map<std::string, std::string>& back () const;
 
 				const_iterator begin() const noexcept;
 
