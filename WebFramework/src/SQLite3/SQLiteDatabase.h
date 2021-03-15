@@ -7,13 +7,15 @@
 #define WEB_FRAMEWORK_API
 #endif // DATABASES_DLL
 
-#undef max
-
 #include <string>
 
 #include "sqlite3.h"
 #include "SHA256.h"
 #include "WebFrameworkConstants.h"
+
+#pragma push_macro("max")
+
+#undef max
 
 namespace framework
 {
@@ -47,7 +49,7 @@ namespace framework
 			/// </summary>
 			/// <param name="other"></param>
 			/// <returns></returns>
-			SQLiteDatabase(const std::string& databaName);
+			SQLiteDatabase(const std::string& databaseName);
 
 			/// <summary>
 			/// Move another database
@@ -101,3 +103,5 @@ namespace framework
 		};
 	}
 }
+
+#pragma pop_macro("max")
