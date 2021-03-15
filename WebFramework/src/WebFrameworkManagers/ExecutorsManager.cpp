@@ -82,7 +82,42 @@ namespace framework
 
 							string tem;
 
-							for (size_t i = it->baseRoute.size() + 1, j = 0; i < parameters.size(); i++)
+							size_t i = 0;
+							size_t startParameter = it->baseRoute.size();
+							size_t endParameter;
+
+							do
+							{
+								endParameter = parameters.find('/', startParameter);
+
+								switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[i]].index()))
+								{
+								case utility::RouteParameters::routeParametersType::stringTypeIndex:
+									request.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
+
+									break;
+
+								case utility::RouteParameters::routeParametersType::integerTypeIndex:
+									try
+									{
+										request.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
+									}
+									catch (const invalid_argument&)
+									{
+										throw exceptions::BadRequestException("Can't convert to int64_t"); // 400
+									}
+									catch (const out_of_range&)
+									{
+										throw exceptions::BadRequestException("Out of range of int64_t"); // 400
+									}
+
+									break;
+								}
+
+								startParameter = endParameter + 1;
+							} while (endParameter != string::npos);
+
+							/*for (size_t i = it->baseRoute.size() + 1, j = 0; i < parameters.size(); i++)
 							{
 								if (i + 1 == parameters.size())
 								{
@@ -121,7 +156,7 @@ namespace framework
 								}
 
 								tem += parameters[i];
-							}
+							}*/
 
 							parameters = it->baseRoute;
 						}
