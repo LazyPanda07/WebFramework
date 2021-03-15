@@ -80,10 +80,8 @@ namespace framework
 								throw exceptions::NotImplementedException(); // 404
 							}
 
-							string tem;
-
 							size_t i = 0;
-							size_t startParameter = it->baseRoute.size();
+							size_t startParameter = it->baseRoute.size() + 1;
 							size_t endParameter;
 
 							do
