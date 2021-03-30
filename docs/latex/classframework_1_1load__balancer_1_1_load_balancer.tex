@@ -1,0 +1,122 @@
+\hypertarget{classframework_1_1load__balancer_1_1_load_balancer}{}\doxysection{framework\+::load\+\_\+balancer\+::Load\+Balancer Class Reference}
+\label{classframework_1_1load__balancer_1_1_load_balancer}\index{framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}}
+
+
+Main class of load balancer  
+
+
+
+
+{\ttfamily \#include $<$Load\+Balancer.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_af41ede84dd53555cadb3afcccfb9af2e}{Load\+Balancer}} (const std\+::filesystem\+::path \&configuration\+INIFile)
+\begin{DoxyCompactList}\small\item\em Construct \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer}{Load\+Balancer}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_a393c96c7c0d81058010b39d3d2ae0f40}{start\+Load\+Balancer}} ()
+\begin{DoxyCompactList}\small\item\em Start \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_server}{Load\+Balancer\+Server}} server \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_acea6685f870ca0671d1d400691ffd802}{stop\+Load\+Balancer\+Server}} ()
+\begin{DoxyCompactList}\small\item\em Stop \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_server}{Load\+Balancer\+Server}} incoming connections \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_a6bf7878f95984ef7af7c48d28e1bad9c}{get\+Load\+Balancer\+State}} () const
+\begin{DoxyCompactList}\small\item\em Is server running \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_a33e392746c4ea2365c2de07853b3876e}{$\sim$\+Load\+Balancer}} ()=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main class of load balancer 
+
+All initializations go through this class
+
+Definition at line 23 of file Load\+Balancer.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1load__balancer_1_1_load_balancer_af41ede84dd53555cadb3afcccfb9af2e}\label{classframework_1_1load__balancer_1_1_load_balancer_af41ede84dd53555cadb3afcccfb9af2e}} 
+\index{framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}!LoadBalancer@{LoadBalancer}}
+\index{LoadBalancer@{LoadBalancer}!framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{LoadBalancer()}{LoadBalancer()}}
+{\footnotesize\ttfamily framework\+::load\+\_\+balancer\+::\+Load\+Balancer\+::\+Load\+Balancer (\begin{DoxyParamCaption}\item[{const std\+::filesystem\+::path \&}]{configuration\+INIFile }\end{DoxyParamCaption})}
+
+
+
+Construct \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer}{Load\+Balancer}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em configuration\+INIFile} & path to .ini configuration file\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & Can\textquotesingle{}t find some settings\\
+\hline
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_file_does_not_exist_exception}{framework\+::exceptions\+::\+File\+Does\+Not\+Exist\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 17 of file Load\+Balancer.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1load__balancer_1_1_load_balancer_a33e392746c4ea2365c2de07853b3876e}\label{classframework_1_1load__balancer_1_1_load_balancer_a33e392746c4ea2365c2de07853b3876e}} 
+\index{framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}!````~LoadBalancer@{$\sim$LoadBalancer}}
+\index{````~LoadBalancer@{$\sim$LoadBalancer}!framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{$\sim$LoadBalancer()}{~LoadBalancer()}}
+{\footnotesize\ttfamily framework\+::load\+\_\+balancer\+::\+Load\+Balancer\+::$\sim$\+Load\+Balancer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1load__balancer_1_1_load_balancer_a6bf7878f95984ef7af7c48d28e1bad9c}\label{classframework_1_1load__balancer_1_1_load_balancer_a6bf7878f95984ef7af7c48d28e1bad9c}} 
+\index{framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}!getLoadBalancerState@{getLoadBalancerState}}
+\index{getLoadBalancerState@{getLoadBalancerState}!framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{getLoadBalancerState()}{getLoadBalancerState()}}
+{\footnotesize\ttfamily bool framework\+::load\+\_\+balancer\+::\+Load\+Balancer\+::get\+Load\+Balancer\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Is server running 
+
+\begin{DoxyReturn}{Returns}
+is server running
+\end{DoxyReturn}
+
+
+Definition at line 71 of file Load\+Balancer.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1load__balancer_1_1_load_balancer_a393c96c7c0d81058010b39d3d2ae0f40}\label{classframework_1_1load__balancer_1_1_load_balancer_a393c96c7c0d81058010b39d3d2ae0f40}} 
+\index{framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}!startLoadBalancer@{startLoadBalancer}}
+\index{startLoadBalancer@{startLoadBalancer}!framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{startLoadBalancer()}{startLoadBalancer()}}
+{\footnotesize\ttfamily void framework\+::load\+\_\+balancer\+::\+Load\+Balancer\+::start\+Load\+Balancer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Start \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_server}{Load\+Balancer\+Server}} server 
+
+
+
+Definition at line 61 of file Load\+Balancer.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1load__balancer_1_1_load_balancer_acea6685f870ca0671d1d400691ffd802}\label{classframework_1_1load__balancer_1_1_load_balancer_acea6685f870ca0671d1d400691ffd802}} 
+\index{framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}!stopLoadBalancerServer@{stopLoadBalancerServer}}
+\index{stopLoadBalancerServer@{stopLoadBalancerServer}!framework::load\_balancer::LoadBalancer@{framework::load\_balancer::LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{stopLoadBalancerServer()}{stopLoadBalancerServer()}}
+{\footnotesize\ttfamily void framework\+::load\+\_\+balancer\+::\+Load\+Balancer\+::stop\+Load\+Balancer\+Server (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Stop \mbox{\hyperlink{classframework_1_1load__balancer_1_1_load_balancer_server}{Load\+Balancer\+Server}} incoming connections 
+
+
+
+Definition at line 66 of file Load\+Balancer.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Load\+Balancer/\mbox{\hyperlink{_load_balancer_8h}{Load\+Balancer.\+h}}\item 
+src/\+Load\+Balancer/\mbox{\hyperlink{_load_balancer_8cpp}{Load\+Balancer.\+cpp}}\end{DoxyCompactItemize}

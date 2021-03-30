@@ -8,7 +8,7 @@ namespace framework
 	namespace middleware
 	{
 		/// <summary>
-		/// <para>Main class of Middleware servers</para>
+		/// Main class of Middleware servers
 		/// <para>All initializations go through this class</para>
 		/// </summary>
 		class WEB_FRAMEWORK_API Middleware

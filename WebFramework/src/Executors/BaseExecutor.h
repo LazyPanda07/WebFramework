@@ -40,7 +40,7 @@ namespace framework
 		/// <summary>
 		/// Initializing executor before use
 		/// </summary>
-		/// <param name="settings">providing parameters from .xml to executor</param>
+		/// <param name="settings">providing parameters from .json to executor</param>
 		virtual void init(const utility::JSONSettingsParser::ExecutorSettings& settings) = 0;
 
 		/// <summary>

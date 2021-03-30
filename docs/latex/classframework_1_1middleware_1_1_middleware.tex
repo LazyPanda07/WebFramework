@@ -1,0 +1,121 @@
+\hypertarget{classframework_1_1middleware_1_1_middleware}{}\doxysection{framework\+::middleware\+::Middleware Class Reference}
+\label{classframework_1_1middleware_1_1_middleware}\index{framework::middleware::Middleware@{framework::middleware::Middleware}}
+
+
+Main class of \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware}{Middleware}} servers  
+
+
+
+
+{\ttfamily \#include $<$Middleware.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1middleware_1_1_middleware_aeb8970f9adb1da0594f0cc4605fd4dab}{Middleware}} (const std\+::string \&ip, const std\+::string \&port, DWORD timeout, \mbox{\hyperlink{classframework_1_1middleware_1_1_base_middleware_route_controller}{Base\+Middleware\+Route\+Controller}} \&controller)
+\begin{DoxyCompactList}\small\item\em Construct \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware}{Middleware}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware_a55d85a680df4ab9e53783d889b1f4d18}{start\+Middleware}} ()
+\begin{DoxyCompactList}\small\item\em Start Middlware\+Server \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware_aec944dc343e88c9a8aaf65c8a7d4bbf1}{stop\+Middleware}} ()
+\begin{DoxyCompactList}\small\item\em Stop Middlware\+Server incoming connections \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware_aab2b28c7fc5865d05a35b9f9e7e72918}{middleware\+State}} () const
+\begin{DoxyCompactList}\small\item\em Is server running \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classframework_1_1middleware_1_1_middleware_a77fc7b66d4f5d2a1fccfcf19fede107d}{$\sim$\+Middleware}} ()=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main class of \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware}{Middleware}} servers 
+
+All initializations go through this class
+
+Definition at line 14 of file Middleware.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1middleware_1_1_middleware_aeb8970f9adb1da0594f0cc4605fd4dab}\label{classframework_1_1middleware_1_1_middleware_aeb8970f9adb1da0594f0cc4605fd4dab}} 
+\index{framework::middleware::Middleware@{framework::middleware::Middleware}!Middleware@{Middleware}}
+\index{Middleware@{Middleware}!framework::middleware::Middleware@{framework::middleware::Middleware}}
+\doxysubsubsection{\texorpdfstring{Middleware()}{Middleware()}}
+{\footnotesize\ttfamily framework\+::middleware\+::\+Middleware\+::\+Middleware (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip,  }\item[{const std\+::string \&}]{port,  }\item[{DWORD}]{timeout,  }\item[{\mbox{\hyperlink{classframework_1_1middleware_1_1_base_middleware_route_controller}{Base\+Middleware\+Route\+Controller}} \&}]{controller }\end{DoxyParamCaption})}
+
+
+
+Construct \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware}{Middleware}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware}{Middleware}} server ip\\
+\hline
+{\em port} & \mbox{\hyperlink{classframework_1_1middleware_1_1_middleware}{Middleware}} server port\\
+\hline
+{\em timeout} & time to wait for connections\\
+\hline
+{\em controller} & subclass of \mbox{\hyperlink{classframework_1_1middleware_1_1_base_middleware_route_controller}{Base\+Middleware\+Route\+Controller}} that overrides get\+Server\+Connection\+Data method\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 9 of file Middleware.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1middleware_1_1_middleware_a77fc7b66d4f5d2a1fccfcf19fede107d}\label{classframework_1_1middleware_1_1_middleware_a77fc7b66d4f5d2a1fccfcf19fede107d}} 
+\index{framework::middleware::Middleware@{framework::middleware::Middleware}!````~Middleware@{$\sim$Middleware}}
+\index{````~Middleware@{$\sim$Middleware}!framework::middleware::Middleware@{framework::middleware::Middleware}}
+\doxysubsubsection{\texorpdfstring{$\sim$Middleware()}{~Middleware()}}
+{\footnotesize\ttfamily framework\+::middleware\+::\+Middleware\+::$\sim$\+Middleware (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1middleware_1_1_middleware_aab2b28c7fc5865d05a35b9f9e7e72918}\label{classframework_1_1middleware_1_1_middleware_aab2b28c7fc5865d05a35b9f9e7e72918}} 
+\index{framework::middleware::Middleware@{framework::middleware::Middleware}!middlewareState@{middlewareState}}
+\index{middlewareState@{middlewareState}!framework::middleware::Middleware@{framework::middleware::Middleware}}
+\doxysubsubsection{\texorpdfstring{middlewareState()}{middlewareState()}}
+{\footnotesize\ttfamily bool framework\+::middleware\+::\+Middleware\+::middleware\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Is server running 
+
+\begin{DoxyReturn}{Returns}
+is server running
+\end{DoxyReturn}
+
+
+Definition at line 25 of file Middleware.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1middleware_1_1_middleware_a55d85a680df4ab9e53783d889b1f4d18}\label{classframework_1_1middleware_1_1_middleware_a55d85a680df4ab9e53783d889b1f4d18}} 
+\index{framework::middleware::Middleware@{framework::middleware::Middleware}!startMiddleware@{startMiddleware}}
+\index{startMiddleware@{startMiddleware}!framework::middleware::Middleware@{framework::middleware::Middleware}}
+\doxysubsubsection{\texorpdfstring{startMiddleware()}{startMiddleware()}}
+{\footnotesize\ttfamily void framework\+::middleware\+::\+Middleware\+::start\+Middleware (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Start Middlware\+Server 
+
+
+
+Definition at line 15 of file Middleware.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1middleware_1_1_middleware_aec944dc343e88c9a8aaf65c8a7d4bbf1}\label{classframework_1_1middleware_1_1_middleware_aec944dc343e88c9a8aaf65c8a7d4bbf1}} 
+\index{framework::middleware::Middleware@{framework::middleware::Middleware}!stopMiddleware@{stopMiddleware}}
+\index{stopMiddleware@{stopMiddleware}!framework::middleware::Middleware@{framework::middleware::Middleware}}
+\doxysubsubsection{\texorpdfstring{stopMiddleware()}{stopMiddleware()}}
+{\footnotesize\ttfamily void framework\+::middleware\+::\+Middleware\+::stop\+Middleware (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Stop Middlware\+Server incoming connections 
+
+
+
+Definition at line 20 of file Middleware.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Middleware/\mbox{\hyperlink{_middleware_8h}{Middleware.\+h}}\item 
+src/\+Middleware/\mbox{\hyperlink{_middleware_8cpp}{Middleware.\+cpp}}\end{DoxyCompactItemize}
