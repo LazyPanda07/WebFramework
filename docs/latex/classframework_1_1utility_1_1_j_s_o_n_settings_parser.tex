@@ -1,0 +1,117 @@
+\hypertarget{classframework_1_1utility_1_1_j_s_o_n_settings_parser}{}\doxysection{framework\+::utility\+::JSONSettings\+Parser Class Reference}
+\label{classframework_1_1utility_1_1_j_s_o_n_settings_parser}\index{framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}}
+
+
+Parser for .json settings file  
+
+
+
+
+{\ttfamily \#include $<$JSONSettings\+Parser.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{Executor\+Settings}}
+\begin{DoxyCompactList}\small\item\em Settings for executor \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1utility_1_1_j_s_o_n_settings_parser_ac31d4d725a200ae83840c3455ad384ee}{JSONSettings\+Parser}} (const std\+::string \&JSONSettings)
+\begin{DoxyCompactList}\small\item\em Construct \mbox{\hyperlink{classframework_1_1utility_1_1_j_s_o_n_settings_parser}{JSONSettings\+Parser}} from .json file \end{DoxyCompactList}\item 
+const std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{Executor\+Settings}} $>$ \& \mbox{\hyperlink{classframework_1_1utility_1_1_j_s_o_n_settings_parser_a40618c3ddd699cc884b7a9ff8d547d99}{get\+Settings}} () const
+\begin{DoxyCompactList}\small\item\em Get all settings from .json \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{Executor\+Settings}} \& \mbox{\hyperlink{classframework_1_1utility_1_1_j_s_o_n_settings_parser_a615cdadab296902a1c5069a853ab52d2}{get\+Executor\+Settings}} (const std\+::string \&executor\+Name) const
+\begin{DoxyCompactList}\small\item\em Get settings for specific executor \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classframework_1_1utility_1_1_j_s_o_n_settings_parser_ac1669ed244ea41756771bf3cdcb462c3}{$\sim$\+JSONSettings\+Parser}} ()=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Parser for .json settings file 
+
+
+
+Definition at line 20 of file JSONSettings\+Parser.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1utility_1_1_j_s_o_n_settings_parser_ac31d4d725a200ae83840c3455ad384ee}\label{classframework_1_1utility_1_1_j_s_o_n_settings_parser_ac31d4d725a200ae83840c3455ad384ee}} 
+\index{framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}!JSONSettingsParser@{JSONSettingsParser}}
+\index{JSONSettingsParser@{JSONSettingsParser}!framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}}
+\doxysubsubsection{\texorpdfstring{JSONSettingsParser()}{JSONSettingsParser()}}
+{\footnotesize\ttfamily framework\+::utility\+::\+JSONSettings\+Parser\+::\+JSONSettings\+Parser (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{JSONSettings }\end{DoxyParamCaption})}
+
+
+
+Construct \mbox{\hyperlink{classframework_1_1utility_1_1_j_s_o_n_settings_parser}{JSONSettings\+Parser}} from .json file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em JSONSettings} & path to .json settings file\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_file_does_not_exist_exception}{framework\+::exceptions\+::\+File\+Does\+Not\+Exist\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 13 of file JSONSettings\+Parser.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1utility_1_1_j_s_o_n_settings_parser_ac1669ed244ea41756771bf3cdcb462c3}\label{classframework_1_1utility_1_1_j_s_o_n_settings_parser_ac1669ed244ea41756771bf3cdcb462c3}} 
+\index{framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}!````~JSONSettingsParser@{$\sim$JSONSettingsParser}}
+\index{````~JSONSettingsParser@{$\sim$JSONSettingsParser}!framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}}
+\doxysubsubsection{\texorpdfstring{$\sim$JSONSettingsParser()}{~JSONSettingsParser()}}
+{\footnotesize\ttfamily framework\+::utility\+::\+JSONSettings\+Parser\+::$\sim$\+JSONSettings\+Parser (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1utility_1_1_j_s_o_n_settings_parser_a615cdadab296902a1c5069a853ab52d2}\label{classframework_1_1utility_1_1_j_s_o_n_settings_parser_a615cdadab296902a1c5069a853ab52d2}} 
+\index{framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}!getExecutorSettings@{getExecutorSettings}}
+\index{getExecutorSettings@{getExecutorSettings}!framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}}
+\doxysubsubsection{\texorpdfstring{getExecutorSettings()}{getExecutorSettings()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{JSONSettings\+Parser\+::\+Executor\+Settings}} \& framework\+::utility\+::\+JSONSettings\+Parser\+::get\+Executor\+Settings (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{executor\+Name }\end{DoxyParamCaption}) const}
+
+
+
+Get settings for specific executor 
+
+
+\begin{DoxyParams}{Parameters}
+{\em executor\+Name} & executor class name\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 59 of file JSONSettings\+Parser.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1utility_1_1_j_s_o_n_settings_parser_a40618c3ddd699cc884b7a9ff8d547d99}\label{classframework_1_1utility_1_1_j_s_o_n_settings_parser_a40618c3ddd699cc884b7a9ff8d547d99}} 
+\index{framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}!getSettings@{getSettings}}
+\index{getSettings@{getSettings}!framework::utility::JSONSettingsParser@{framework::utility::JSONSettingsParser}}
+\doxysubsubsection{\texorpdfstring{getSettings()}{getSettings()}}
+{\footnotesize\ttfamily const unordered\+\_\+map$<$ string, \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{JSONSettings\+Parser\+::\+Executor\+Settings}} $>$ \& framework\+::utility\+::\+JSONSettings\+Parser\+::get\+Settings (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get all settings from .json 
+
+\begin{DoxyReturn}{Returns}
+route -\/ settings as map
+\end{DoxyReturn}
+
+
+Definition at line 54 of file JSONSettings\+Parser.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Utility/\mbox{\hyperlink{_j_s_o_n_settings_parser_8h}{JSONSettings\+Parser.\+h}}\item 
+src/\+Utility/\mbox{\hyperlink{_j_s_o_n_settings_parser_8cpp}{JSONSettings\+Parser.\+cpp}}\end{DoxyCompactItemize}

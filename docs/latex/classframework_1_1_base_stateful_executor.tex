@@ -1,0 +1,83 @@
+\hypertarget{classframework_1_1_base_stateful_executor}{}\doxysection{framework\+::Base\+Stateful\+Executor Class Reference}
+\label{classframework_1_1_base_stateful_executor}\index{framework::BaseStatefulExecutor@{framework::BaseStatefulExecutor}}
+
+
+Base class for executors with dynamically changes states  
+
+
+
+
+{\ttfamily \#include $<$Base\+Stateful\+Executor.\+h$>$}
+
+Inheritance diagram for framework\+::Base\+Stateful\+Executor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classframework_1_1_base_stateful_executor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1_base_stateful_executor_a726efe240c5923eaff51feb6e7058198}{Base\+Stateful\+Executor}} ()=default
+\item 
+virtual \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}{Base\+Executor\+::executor\+Type}} \mbox{\hyperlink{classframework_1_1_base_stateful_executor_a9750a80e5bbd839850040205157d3dd5}{get\+Type}} () const final
+\begin{DoxyCompactList}\small\item\em Get executor type \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{classframework_1_1_base_stateful_executor_a66aa915e825f9ca9bd3b34331430da93}{$\sim$\+Base\+Stateful\+Executor}} ()=default
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Base class for executors with dynamically changes states 
+
+This type of executors creating dynamically for each client
+
+Client can change states during connection, after disconnect destroy method called
+
+Definition at line 12 of file Base\+Stateful\+Executor.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1_base_stateful_executor_a726efe240c5923eaff51feb6e7058198}\label{classframework_1_1_base_stateful_executor_a726efe240c5923eaff51feb6e7058198}} 
+\index{framework::BaseStatefulExecutor@{framework::BaseStatefulExecutor}!BaseStatefulExecutor@{BaseStatefulExecutor}}
+\index{BaseStatefulExecutor@{BaseStatefulExecutor}!framework::BaseStatefulExecutor@{framework::BaseStatefulExecutor}}
+\doxysubsubsection{\texorpdfstring{BaseStatefulExecutor()}{BaseStatefulExecutor()}}
+{\footnotesize\ttfamily framework\+::\+Base\+Stateful\+Executor\+::\+Base\+Stateful\+Executor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{classframework_1_1_base_stateful_executor_a66aa915e825f9ca9bd3b34331430da93}\label{classframework_1_1_base_stateful_executor_a66aa915e825f9ca9bd3b34331430da93}} 
+\index{framework::BaseStatefulExecutor@{framework::BaseStatefulExecutor}!````~BaseStatefulExecutor@{$\sim$BaseStatefulExecutor}}
+\index{````~BaseStatefulExecutor@{$\sim$BaseStatefulExecutor}!framework::BaseStatefulExecutor@{framework::BaseStatefulExecutor}}
+\doxysubsubsection{\texorpdfstring{$\sim$BaseStatefulExecutor()}{~BaseStatefulExecutor()}}
+{\footnotesize\ttfamily virtual framework\+::\+Base\+Stateful\+Executor\+::$\sim$\+Base\+Stateful\+Executor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_base_stateful_executor_a9750a80e5bbd839850040205157d3dd5}\label{classframework_1_1_base_stateful_executor_a9750a80e5bbd839850040205157d3dd5}} 
+\index{framework::BaseStatefulExecutor@{framework::BaseStatefulExecutor}!getType@{getType}}
+\index{getType@{getType}!framework::BaseStatefulExecutor@{framework::BaseStatefulExecutor}}
+\doxysubsubsection{\texorpdfstring{getType()}{getType()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}{Base\+Executor\+::executor\+Type}} framework\+::\+Base\+Stateful\+Executor\+::get\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [virtual]}}
+
+
+
+Get executor type 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695}{executor\+Type\+::stateful}}
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classframework_1_1_base_executor_ad992a4a1027a0e2ebf263b56ce56fc23}{framework\+::\+Base\+Executor}}.
+
+
+
+Definition at line 7 of file Base\+Stateful\+Executor.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Executors/\mbox{\hyperlink{_base_stateful_executor_8h}{Base\+Stateful\+Executor.\+h}}\item 
+src/\+Executors/\mbox{\hyperlink{_base_stateful_executor_8cpp}{Base\+Stateful\+Executor.\+cpp}}\end{DoxyCompactItemize}

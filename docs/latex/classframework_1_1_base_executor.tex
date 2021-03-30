@@ -1,0 +1,362 @@
+\hypertarget{classframework_1_1_base_executor}{}\doxysection{framework\+::Base\+Executor Class Reference}
+\label{classframework_1_1_base_executor}\index{framework::BaseExecutor@{framework::BaseExecutor}}
+
+
+Base class for all executors  
+
+
+
+
+{\ttfamily \#include $<$Base\+Executor.\+h$>$}
+
+Inheritance diagram for framework\+::Base\+Executor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classframework_1_1_base_executor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}{executor\+Type}} \{ \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695}{stateful}}
+, \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c}{stateless}}
+, \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8}{none}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1_base_executor_aa78d0fadc69822d3454cbf59bf6990c9}{Base\+Executor}} ()=default
+\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_a00a736d350e31431363d63e4a1fa5ae7}{init}} (const \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{utility\+::\+JSONSettings\+Parser\+::\+Executor\+Settings}} \&settings)=0
+\begin{DoxyCompactList}\small\item\em Initializing executor before use \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_ac060082b5f9c120b70fcf21b929cb231}{do\+Post}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Process POST request \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_a32c6cc48e9211a66a757eabf54f9bdda}{do\+Get}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Process GET request \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_ac5e3150661396e746ee00a59b5a172c1}{do\+Head}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Process HEAD request \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_aba6237bc87f4e2b9b9842accf619b8e2}{do\+Put}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Process PUT request \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_a6cb0118d1dd538deb5207337487b129b}{do\+Delete}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Process DELETE request \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_a2415bc676c0595e445b6be41b56a11d9}{do\+Options}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Process OPTIONS request \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_a4b88c08ed78fdd8aaef234ddf0054015}{do\+Trace}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Process TRACE request \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classframework_1_1_base_executor_a6557b16a8471d0c6615d7bf1e09e5d1c}{destroy}} ()=0
+\item 
+virtual \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}{executor\+Type}} \mbox{\hyperlink{classframework_1_1_base_executor_ad992a4a1027a0e2ebf263b56ce56fc23}{get\+Type}} () const =0
+\item 
+virtual \mbox{\hyperlink{classframework_1_1_base_executor_ab9cff3af6fa6729e83667921acd358b9}{$\sim$\+Base\+Executor}} ()=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for all executors 
+
+
+
+Definition at line 27 of file Base\+Executor.\+h.
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}\label{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!executorType@{executorType}}
+\index{executorType@{executorType}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{executorType}{executorType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}{framework\+::\+Base\+Executor\+::executor\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{stateful@{stateful}!framework::BaseExecutor@{framework::BaseExecutor}}\index{framework::BaseExecutor@{framework::BaseExecutor}!stateful@{stateful}}}\mbox{\Hypertarget{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695}\label{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695}} 
+stateful&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{stateless@{stateless}!framework::BaseExecutor@{framework::BaseExecutor}}\index{framework::BaseExecutor@{framework::BaseExecutor}!stateless@{stateless}}}\mbox{\Hypertarget{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c}\label{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c}} 
+stateless&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{none@{none}!framework::BaseExecutor@{framework::BaseExecutor}}\index{framework::BaseExecutor@{framework::BaseExecutor}!none@{none}}}\mbox{\Hypertarget{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8}\label{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8}} 
+none&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 30 of file Base\+Executor.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1_base_executor_aa78d0fadc69822d3454cbf59bf6990c9}\label{classframework_1_1_base_executor_aa78d0fadc69822d3454cbf59bf6990c9}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!BaseExecutor@{BaseExecutor}}
+\index{BaseExecutor@{BaseExecutor}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{BaseExecutor()}{BaseExecutor()}}
+{\footnotesize\ttfamily framework\+::\+Base\+Executor\+::\+Base\+Executor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_ab9cff3af6fa6729e83667921acd358b9}\label{classframework_1_1_base_executor_ab9cff3af6fa6729e83667921acd358b9}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!````~BaseExecutor@{$\sim$BaseExecutor}}
+\index{````~BaseExecutor@{$\sim$BaseExecutor}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{$\sim$BaseExecutor()}{~BaseExecutor()}}
+{\footnotesize\ttfamily virtual framework\+::\+Base\+Executor\+::$\sim$\+Base\+Executor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_base_executor_a6557b16a8471d0c6615d7bf1e09e5d1c}\label{classframework_1_1_base_executor_a6557b16a8471d0c6615d7bf1e09e5d1c}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!destroy@{destroy}}
+\index{destroy@{destroy}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily virtual void framework\+::\+Base\+Executor\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+
+
+Destroy and unload executor
+
+Executors inherited from \mbox{\hyperlink{classframework_1_1_base_stateless_executor}{Base\+Stateless\+Executor}} no need this method
+
+Implemented in \mbox{\hyperlink{classframework_1_1_base_stateless_executor_aca62187ae7d0bfa111dfe3e6557721c5}{framework\+::\+Base\+Stateless\+Executor}}.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_a6cb0118d1dd538deb5207337487b129b}\label{classframework_1_1_base_executor_a6cb0118d1dd538deb5207337487b129b}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!doDelete@{doDelete}}
+\index{doDelete@{doDelete}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{doDelete()}{doDelete()}}
+{\footnotesize\ttfamily void framework\+::\+Base\+Executor\+::do\+Delete (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Process DELETE request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & special class for requests\\
+\hline
+{\em response} & special class for responses\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 27 of file Base\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_a32c6cc48e9211a66a757eabf54f9bdda}\label{classframework_1_1_base_executor_a32c6cc48e9211a66a757eabf54f9bdda}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!doGet@{doGet}}
+\index{doGet@{doGet}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{doGet()}{doGet()}}
+{\footnotesize\ttfamily void framework\+::\+Base\+Executor\+::do\+Get (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Process GET request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & special class for requests\\
+\hline
+{\em response} & special class for responses\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Reimplemented in \mbox{\hyperlink{classframework_1_1_resource_executor_a46ed4fe3ea33cdde372dee53e0108fac}{framework\+::\+Resource\+Executor}}.
+
+
+
+Definition at line 12 of file Base\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_ac5e3150661396e746ee00a59b5a172c1}\label{classframework_1_1_base_executor_ac5e3150661396e746ee00a59b5a172c1}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!doHead@{doHead}}
+\index{doHead@{doHead}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{doHead()}{doHead()}}
+{\footnotesize\ttfamily void framework\+::\+Base\+Executor\+::do\+Head (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Process HEAD request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & special class for requests\\
+\hline
+{\em response} & special class for responses\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 17 of file Base\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_a2415bc676c0595e445b6be41b56a11d9}\label{classframework_1_1_base_executor_a2415bc676c0595e445b6be41b56a11d9}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!doOptions@{doOptions}}
+\index{doOptions@{doOptions}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{doOptions()}{doOptions()}}
+{\footnotesize\ttfamily void framework\+::\+Base\+Executor\+::do\+Options (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Process OPTIONS request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & special class for requests\\
+\hline
+{\em response} & special class for responses\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 32 of file Base\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_ac060082b5f9c120b70fcf21b929cb231}\label{classframework_1_1_base_executor_ac060082b5f9c120b70fcf21b929cb231}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!doPost@{doPost}}
+\index{doPost@{doPost}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{doPost()}{doPost()}}
+{\footnotesize\ttfamily void framework\+::\+Base\+Executor\+::do\+Post (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Process POST request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & special class for requests\\
+\hline
+{\em response} & special class for responses\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Reimplemented in \mbox{\hyperlink{classframework_1_1_resource_executor_ab0fcab87495dc0c1c09f2605f35a8f20}{framework\+::\+Resource\+Executor}}.
+
+
+
+Definition at line 7 of file Base\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_aba6237bc87f4e2b9b9842accf619b8e2}\label{classframework_1_1_base_executor_aba6237bc87f4e2b9b9842accf619b8e2}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!doPut@{doPut}}
+\index{doPut@{doPut}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{doPut()}{doPut()}}
+{\footnotesize\ttfamily void framework\+::\+Base\+Executor\+::do\+Put (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Process PUT request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & special class for requests\\
+\hline
+{\em response} & special class for responses\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 22 of file Base\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_a4b88c08ed78fdd8aaef234ddf0054015}\label{classframework_1_1_base_executor_a4b88c08ed78fdd8aaef234ddf0054015}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!doTrace@{doTrace}}
+\index{doTrace@{doTrace}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{doTrace()}{doTrace()}}
+{\footnotesize\ttfamily void framework\+::\+Base\+Executor\+::do\+Trace (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Process TRACE request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & special class for requests\\
+\hline
+{\em response} & special class for responses\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 37 of file Base\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_ad992a4a1027a0e2ebf263b56ce56fc23}\label{classframework_1_1_base_executor_ad992a4a1027a0e2ebf263b56ce56fc23}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!getType@{getType}}
+\index{getType@{getType}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{getType()}{getType()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bf}{executor\+Type}} framework\+::\+Base\+Executor\+::get\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+
+
+By default all executors must be inherited from \mbox{\hyperlink{classframework_1_1_base_stateless_executor}{Base\+Stateless\+Executor}} or Base\+Statefull\+Executor
+
+\mbox{\hyperlink{classframework_1_1_base_stateless_executor}{Base\+Stateless\+Executor}} override this method by getting \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c}{executor\+Type\+::stateless}}
+
+\mbox{\hyperlink{classframework_1_1_base_stateful_executor}{Base\+Stateful\+Executor}} override this method by getting \mbox{\hyperlink{classframework_1_1_base_executor_a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695}{executor\+Type\+::stateful}}
+
+\mbox{\hyperlink{classframework_1_1_executors_manager}{Executors\+Manager}} can manage executors by getting type of executor\+Type enum class
+
+\begin{DoxyReturn}{Returns}
+stateful, stateless or none value
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classframework_1_1_base_stateless_executor_ab21a420bb65421ba0d5164d439efcd4a}{framework\+::\+Base\+Stateless\+Executor}}, and \mbox{\hyperlink{classframework_1_1_base_stateful_executor_a9750a80e5bbd839850040205157d3dd5}{framework\+::\+Base\+Stateful\+Executor}}.
+
+\mbox{\Hypertarget{classframework_1_1_base_executor_a00a736d350e31431363d63e4a1fa5ae7}\label{classframework_1_1_base_executor_a00a736d350e31431363d63e4a1fa5ae7}} 
+\index{framework::BaseExecutor@{framework::BaseExecutor}!init@{init}}
+\index{init@{init}!framework::BaseExecutor@{framework::BaseExecutor}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual void framework\+::\+Base\+Executor\+::init (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{utility\+::\+JSONSettings\+Parser\+::\+Executor\+Settings}} \&}]{settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Initializing executor before use 
+
+
+\begin{DoxyParams}{Parameters}
+{\em settings} & providing parameters from .json to executor\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classframework_1_1_resource_executor_a67dcc7f0aa09e4c3259bbf26ef9f8b5e}{framework\+::\+Resource\+Executor}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Executors/\mbox{\hyperlink{_base_executor_8h}{Base\+Executor.\+h}}\item 
+src/\+Executors/\mbox{\hyperlink{_base_executor_8cpp}{Base\+Executor.\+cpp}}\end{DoxyCompactItemize}

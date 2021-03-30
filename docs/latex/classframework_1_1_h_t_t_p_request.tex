@@ -1,0 +1,607 @@
+\hypertarget{classframework_1_1_h_t_t_p_request}{}\doxysection{framework\+::HTTPRequest Class Reference}
+\label{classframework_1_1_h_t_t_p_request}\index{framework::HTTPRequest@{framework::HTTPRequest}}
+
+
+Parsing HTTP request  
+
+
+
+
+{\ttfamily \#include $<$HTTPRequest.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a1bea18f9a56848ccf37f29e8ef64fe30}{HTTPRequest}} (\mbox{\hyperlink{classframework_1_1_sessions_manager}{Sessions\+Manager}} \&session, const web\+::\+Base\+TCPServer \&server\+Reference, \mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_static_file}{interfaces\+::\+ISend\+Static\+File}} \&static\+Resources, \mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_dynamic_file}{interfaces\+::\+ISend\+Dynamic\+File}} \&dynamic\+Resources, \mbox{\hyperlink{classframework_1_1sqlite_1_1_s_q_lite_manager}{sqlite\+::\+SQLite\+Manager}} \&database, sockaddr \&client\+Addr)
+\begin{DoxyCompactList}\small\item\em Construct \mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a66235136733458e8d392aa522502d7a0}{get\+Raw\+Parameters}} () const
+\begin{DoxyCompactList}\small\item\em Parameters string from HTTP \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a8889654fdfd4cac12f6ea844cf3a5521}{get\+Method}} () const
+\begin{DoxyCompactList}\small\item\em HTTP request method \end{DoxyCompactList}\item 
+const std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_aaeaa585ebefd1138941e4d197962d515}{get\+Key\+Value\+Parameters}} () const
+\begin{DoxyCompactList}\small\item\em GET parameters \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a44f8333d7e29526971c0202c685614d2}{get\+HTTPVersion}} () const
+\begin{DoxyCompactList}\small\item\em HTTP version \end{DoxyCompactList}\item 
+const std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_ae0b7f5ab5fe3a56a94667b8220c62609}{get\+Headers}} () const
+\begin{DoxyCompactList}\small\item\em All HTTP headers \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a2e7a1b3895052820d1e11f90d5152dce}{get\+Body}} () const
+\begin{DoxyCompactList}\small\item\em HTTP request body \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a46690b9fff334a4ee435d491b31dc18b}{set\+Attribute}} (const std\+::string \&name, const std\+::string \&value)
+\begin{DoxyCompactList}\small\item\em Session wrapper \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_ae9338bd301a24307f2d711b163ab8b53}{get\+Attribute}} (const std\+::string \&name)
+\begin{DoxyCompactList}\small\item\em Session wrapper \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_abaf4720cdb6e24ff2e69677b71496658}{delete\+Session}} ()
+\begin{DoxyCompactList}\small\item\em Session wrapper \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a09f892844c5fb7bc690374542730814d}{delete\+Attribute}} (const std\+::string \&name)
+\begin{DoxyCompactList}\small\item\em Session wrapper \end{DoxyCompactList}\item 
+std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a0faf91b7585442167d9abb7e8d23194b}{get\+Cookies}} () const
+\begin{DoxyCompactList}\small\item\em Client\textquotesingle{}s cookies \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_ae47fe32783387d8fa9a2670980ca8d7b}{send\+Asset\+File}} (const std\+::string \&file\+Path, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response, const \mbox{\hyperlink{_web_framework_constants_8h_a1b2e374e6f70a1c9c285bf07888b97ca}{smart\+Pointer}}$<$ std\+::unordered\+\_\+map$<$ std\+::string\+\_\+view, std\+::string $>$$>$ \&variables=nullptr)
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classframework_1_1_resource_executor}{Resource\+Executor}} wrapper \end{DoxyCompactList}\item 
+const json\+::\+JSONParser \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a54455bdedde69ca8e954d03933a5b5a6}{get\+JSON}} () const
+\begin{DoxyCompactList}\small\item\em Getter for JSONParser \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_ae286e5725e5775081b2f0a3a650d1527}{get\+Client\+Ip\+V4}} () const
+\begin{DoxyCompactList}\small\item\em Get client\textquotesingle{}s address \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_ab1e073cd453e75fe5b62a6f907e9728c}{get\+Server\+Ip\+V4}} () const
+\begin{DoxyCompactList}\small\item\em Get server\textquotesingle{}s address \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_ad2d745e251902e8f3792647239f8043d}{get\+Client\+Port}} () const
+\begin{DoxyCompactList}\small\item\em Get client\textquotesingle{}s port \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_af5227676f961f75d2d9507aade40dbc9}{get\+Server\+Port}} () const
+\begin{DoxyCompactList}\small\item\em Get server\textquotesingle{}s port \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\const T \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a4d2a5be29f9665dfc2d85145ba8523ca}{get\+Route\+Parameter}} (const std\+::string \&route\+Parameter\+Name)
+\begin{DoxyCompactList}\small\item\em Getter for route parameters \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename SQLite\+Database\+Model\+Subclass , typename... Args$>$ }\\\mbox{\hyperlink{_web_framework_constants_8h_a1b2e374e6f70a1c9c285bf07888b97ca}{smart\+Pointer}}$<$ \mbox{\hyperlink{classframework_1_1sqlite_1_1_s_q_lite_database_model}{sqlite\+::\+SQLite\+Database\+Model}} $>$ \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a4a65b194837f3eae43b30bcbc2b6e2be}{get\+Database\+Model\+Instance}} (const std\+::string \&database\+Name, const std\+::string \&table\+Name, Args \&\&... args)
+\begin{DoxyCompactList}\small\item\em Get instance of SQLite\+Database\+Model subclass for database operations \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a52b91828ab27c45d240353dd87ce66bf}{$\sim$\+HTTPRequest}} ()=default
+\item 
+template$<$$>$ const string \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a5279cec486b45bfeb3402c198dd1f2e5}{get\+Route\+Parameter}} (const string \&route\+Parameter\+Name)
+\item 
+template$<$$>$ const int64\+\_\+t \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a5acc6b9020cc07985417521a2a9ef4ec}{get\+Route\+Parameter}} (const string \&route\+Parameter\+Name)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static web\+::\+HTTPParser \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a74448326450075d85d77a3249e750ba4}{send\+Request\+To\+Another\+Server}} (const std\+::string \&ip, const std\+::string \&port, const std\+::string \&request)
+\begin{DoxyCompactList}\small\item\em Send request and get response from another HTTP server \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_ae628c1dde1035a5429c9b7cd526e7509}{Executors\+Manager}}
+\item 
+streams\+::\+IOSocket\+Stream \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_a59427d391d2da263cab43ae838c5c67f}{operator$>$$>$}} (streams\+::\+IOSocket\+Stream \&stream, \mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&request)
+\begin{DoxyCompactList}\small\item\em Reading HTTP request from network \end{DoxyCompactList}\item 
+std\+::ostream \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_request_aa3ceee616f60d4e54cdacb536d73bb09}{operator$<$$<$}} (std\+::ostream \&stream, const \mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&request)
+\begin{DoxyCompactList}\small\item\em Logging operator \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Parsing HTTP request 
+
+Accessing to sessions
+
+Overriding input stream operator for simplify HTTP request initializing
+
+Definition at line 25 of file HTTPRequest.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a1bea18f9a56848ccf37f29e8ef64fe30}\label{classframework_1_1_h_t_t_p_request_a1bea18f9a56848ccf37f29e8ef64fe30}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!HTTPRequest@{HTTPRequest}}
+\index{HTTPRequest@{HTTPRequest}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{HTTPRequest()}{HTTPRequest()}}
+{\footnotesize\ttfamily framework\+::\+HTTPRequest\+::\+HTTPRequest (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_sessions_manager}{Sessions\+Manager}} \&}]{session,  }\item[{const web\+::\+Base\+TCPServer \&}]{server\+Reference,  }\item[{\mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_static_file}{interfaces\+::\+ISend\+Static\+File}} \&}]{static\+Resources,  }\item[{\mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_dynamic_file}{interfaces\+::\+ISend\+Dynamic\+File}} \&}]{dynamic\+Resources,  }\item[{\mbox{\hyperlink{classframework_1_1sqlite_1_1_s_q_lite_manager}{sqlite\+::\+SQLite\+Manager}} \&}]{database,  }\item[{sockaddr \&}]{client\+Addr }\end{DoxyParamCaption})}
+
+
+
+Construct \mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & from \mbox{\hyperlink{classframework_1_1_web_server}{Web\+Server}}\\
+\hline
+{\em server\+Reference} & reference to \mbox{\hyperlink{classframework_1_1_web_server}{Web\+Server}}\\
+\hline
+{\em resources} & \mbox{\hyperlink{classframework_1_1_resource_executor}{Resource\+Executor}}\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 33 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a52b91828ab27c45d240353dd87ce66bf}\label{classframework_1_1_h_t_t_p_request_a52b91828ab27c45d240353dd87ce66bf}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!````~HTTPRequest@{$\sim$HTTPRequest}}
+\index{````~HTTPRequest@{$\sim$HTTPRequest}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{$\sim$HTTPRequest()}{~HTTPRequest()}}
+{\footnotesize\ttfamily framework\+::\+HTTPRequest\+::$\sim$\+HTTPRequest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a09f892844c5fb7bc690374542730814d}\label{classframework_1_1_h_t_t_p_request_a09f892844c5fb7bc690374542730814d}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!deleteAttribute@{deleteAttribute}}
+\index{deleteAttribute@{deleteAttribute}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{deleteAttribute()}{deleteAttribute()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPRequest\+::delete\+Attribute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})}
+
+
+
+Session wrapper 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 89 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_abaf4720cdb6e24ff2e69677b71496658}\label{classframework_1_1_h_t_t_p_request_abaf4720cdb6e24ff2e69677b71496658}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!deleteSession@{deleteSession}}
+\index{deleteSession@{deleteSession}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{deleteSession()}{deleteSession()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPRequest\+::delete\+Session (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Session wrapper 
+
+
+
+Definition at line 84 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_ae9338bd301a24307f2d711b163ab8b53}\label{classframework_1_1_h_t_t_p_request_ae9338bd301a24307f2d711b163ab8b53}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getAttribute@{getAttribute}}
+\index{getAttribute@{getAttribute}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getAttribute()}{getAttribute()}}
+{\footnotesize\ttfamily string framework\+::\+HTTPRequest\+::get\+Attribute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})}
+
+
+
+Session wrapper 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & attribute name\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+attribute value
+\end{DoxyReturn}
+
+
+Definition at line 79 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a2e7a1b3895052820d1e11f90d5152dce}\label{classframework_1_1_h_t_t_p_request_a2e7a1b3895052820d1e11f90d5152dce}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getBody@{getBody}}
+\index{getBody@{getBody}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getBody()}{getBody()}}
+{\footnotesize\ttfamily const string \& framework\+::\+HTTPRequest\+::get\+Body (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+HTTP request body 
+
+\begin{DoxyReturn}{Returns}
+HTTP request body
+\end{DoxyReturn}
+
+
+Definition at line 69 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_ae286e5725e5775081b2f0a3a650d1527}\label{classframework_1_1_h_t_t_p_request_ae286e5725e5775081b2f0a3a650d1527}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getClientIpV4@{getClientIpV4}}
+\index{getClientIpV4@{getClientIpV4}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getClientIpV4()}{getClientIpV4()}}
+{\footnotesize\ttfamily string framework\+::\+HTTPRequest\+::get\+Client\+Ip\+V4 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get client\textquotesingle{}s address 
+
+\begin{DoxyReturn}{Returns}
+client\textquotesingle{}s address
+\end{DoxyReturn}
+
+
+Definition at line 148 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_ad2d745e251902e8f3792647239f8043d}\label{classframework_1_1_h_t_t_p_request_ad2d745e251902e8f3792647239f8043d}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getClientPort@{getClientPort}}
+\index{getClientPort@{getClientPort}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getClientPort()}{getClientPort()}}
+{\footnotesize\ttfamily uint16\+\_\+t framework\+::\+HTTPRequest\+::get\+Client\+Port (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get client\textquotesingle{}s port 
+
+\begin{DoxyReturn}{Returns}
+client\textquotesingle{}s port
+\end{DoxyReturn}
+
+
+Definition at line 158 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a0faf91b7585442167d9abb7e8d23194b}\label{classframework_1_1_h_t_t_p_request_a0faf91b7585442167d9abb7e8d23194b}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getCookies@{getCookies}}
+\index{getCookies@{getCookies}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getCookies()}{getCookies()}}
+{\footnotesize\ttfamily unordered\+\_\+map$<$ string, string $>$ framework\+::\+HTTPRequest\+::get\+Cookies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Client\textquotesingle{}s cookies 
+
+\begin{DoxyReturn}{Returns}
+HTTP cookies as map
+\end{DoxyReturn}
+
+
+Definition at line 94 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a4a65b194837f3eae43b30bcbc2b6e2be}\label{classframework_1_1_h_t_t_p_request_a4a65b194837f3eae43b30bcbc2b6e2be}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getDatabaseModelInstance@{getDatabaseModelInstance}}
+\index{getDatabaseModelInstance@{getDatabaseModelInstance}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getDatabaseModelInstance()}{getDatabaseModelInstance()}}
+{\footnotesize\ttfamily template$<$typename SQLite\+Database\+Model\+Subclass , typename... Args$>$ \\
+\mbox{\hyperlink{_web_framework_constants_8h_a1b2e374e6f70a1c9c285bf07888b97ca}{smart\+Pointer}}$<$ \mbox{\hyperlink{classframework_1_1sqlite_1_1_s_q_lite_database_model}{sqlite\+::\+SQLite\+Database\+Model}} $>$ \& framework\+::\+HTTPRequest\+::get\+Database\+Model\+Instance (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{database\+Name,  }\item[{const std\+::string \&}]{table\+Name,  }\item[{Args \&\&...}]{args }\end{DoxyParamCaption})}
+
+
+
+Get instance of SQLite\+Database\+Model subclass for database operations 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em SQLite\+Database\+Model\+Subclass} & subclass of SQLite\+Database\+Model\\
+\hline
+{\em ...\+Args} & arguments for constructor if needs to create new instance\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em database\+Name} & name of database\\
+\hline
+{\em table\+Name} & name of table\\
+\hline
+{\em ...\+args} & arguments for constructor if needs to create new instance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+instance of SQLite\+Database\+Model subclass
+\end{DoxyReturn}
+
+
+Definition at line 209 of file HTTPRequest.\+h.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_ae0b7f5ab5fe3a56a94667b8220c62609}\label{classframework_1_1_h_t_t_p_request_ae0b7f5ab5fe3a56a94667b8220c62609}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getHeaders@{getHeaders}}
+\index{getHeaders@{getHeaders}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getHeaders()}{getHeaders()}}
+{\footnotesize\ttfamily const unordered\+\_\+map$<$ string, string $>$ \& framework\+::\+HTTPRequest\+::get\+Headers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+All HTTP headers 
+
+\begin{DoxyReturn}{Returns}
+HTTP headers as map
+\end{DoxyReturn}
+
+
+Definition at line 64 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a44f8333d7e29526971c0202c685614d2}\label{classframework_1_1_h_t_t_p_request_a44f8333d7e29526971c0202c685614d2}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getHTTPVersion@{getHTTPVersion}}
+\index{getHTTPVersion@{getHTTPVersion}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getHTTPVersion()}{getHTTPVersion()}}
+{\footnotesize\ttfamily const string \& framework\+::\+HTTPRequest\+::get\+HTTPVersion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+HTTP version 
+
+\begin{DoxyReturn}{Returns}
+HTTP version
+\end{DoxyReturn}
+
+
+Definition at line 59 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a54455bdedde69ca8e954d03933a5b5a6}\label{classframework_1_1_h_t_t_p_request_a54455bdedde69ca8e954d03933a5b5a6}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getJSON@{getJSON}}
+\index{getJSON@{getJSON}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getJSON()}{getJSON()}}
+{\footnotesize\ttfamily const json\+::\+JSONParser \& framework\+::\+HTTPRequest\+::get\+JSON (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Getter for JSONParser 
+
+\begin{DoxyReturn}{Returns}
+JSONParser
+\end{DoxyReturn}
+
+
+Definition at line 143 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_aaeaa585ebefd1138941e4d197962d515}\label{classframework_1_1_h_t_t_p_request_aaeaa585ebefd1138941e4d197962d515}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getKeyValueParameters@{getKeyValueParameters}}
+\index{getKeyValueParameters@{getKeyValueParameters}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getKeyValueParameters()}{getKeyValueParameters()}}
+{\footnotesize\ttfamily const unordered\+\_\+map$<$ string, string $>$ \& framework\+::\+HTTPRequest\+::get\+Key\+Value\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+GET parameters 
+
+\begin{DoxyReturn}{Returns}
+GET parameters as map
+\end{DoxyReturn}
+
+
+Definition at line 54 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a8889654fdfd4cac12f6ea844cf3a5521}\label{classframework_1_1_h_t_t_p_request_a8889654fdfd4cac12f6ea844cf3a5521}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getMethod@{getMethod}}
+\index{getMethod@{getMethod}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getMethod()}{getMethod()}}
+{\footnotesize\ttfamily const string \& framework\+::\+HTTPRequest\+::get\+Method (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+HTTP request method 
+
+\begin{DoxyReturn}{Returns}
+HTTP method
+\end{DoxyReturn}
+
+
+Definition at line 49 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a66235136733458e8d392aa522502d7a0}\label{classframework_1_1_h_t_t_p_request_a66235136733458e8d392aa522502d7a0}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getRawParameters@{getRawParameters}}
+\index{getRawParameters@{getRawParameters}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getRawParameters()}{getRawParameters()}}
+{\footnotesize\ttfamily const string \& framework\+::\+HTTPRequest\+::get\+Raw\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Parameters string from HTTP 
+
+\begin{DoxyReturn}{Returns}
+HTTP parameters
+\end{DoxyReturn}
+
+
+Definition at line 44 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a4d2a5be29f9665dfc2d85145ba8523ca}\label{classframework_1_1_h_t_t_p_request_a4d2a5be29f9665dfc2d85145ba8523ca}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getRouteParameter@{getRouteParameter}}
+\index{getRouteParameter@{getRouteParameter}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getRouteParameter()}{getRouteParameter()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T\& framework\+::\+HTTPRequest\+::get\+Route\+Parameter (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{route\+Parameter\+Name }\end{DoxyParamCaption})}
+
+
+
+Getter for route parameters 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & can be int64\+\_\+t or std\+::string\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em route\+Parameter\+Name} & name of route parameter
+
+T can be int64\+\_\+t or std\+::string\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+route parameter
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::out\+\_\+of\+\_\+range} & can\textquotesingle{}t find route parameter with this route\+Parameter\+Name\\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a5279cec486b45bfeb3402c198dd1f2e5}\label{classframework_1_1_h_t_t_p_request_a5279cec486b45bfeb3402c198dd1f2e5}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getRouteParameter@{getRouteParameter}}
+\index{getRouteParameter@{getRouteParameter}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getRouteParameter()}{getRouteParameter()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+const string\& framework\+::\+HTTPRequest\+::get\+Route\+Parameter (\begin{DoxyParamCaption}\item[{const string \&}]{route\+Parameter\+Name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 169 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a5acc6b9020cc07985417521a2a9ef4ec}\label{classframework_1_1_h_t_t_p_request_a5acc6b9020cc07985417521a2a9ef4ec}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getRouteParameter@{getRouteParameter}}
+\index{getRouteParameter@{getRouteParameter}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getRouteParameter()}{getRouteParameter()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+const int64\+\_\+t\& framework\+::\+HTTPRequest\+::get\+Route\+Parameter (\begin{DoxyParamCaption}\item[{const string \&}]{route\+Parameter\+Name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 175 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_ab1e073cd453e75fe5b62a6f907e9728c}\label{classframework_1_1_h_t_t_p_request_ab1e073cd453e75fe5b62a6f907e9728c}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getServerIpV4@{getServerIpV4}}
+\index{getServerIpV4@{getServerIpV4}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getServerIpV4()}{getServerIpV4()}}
+{\footnotesize\ttfamily string framework\+::\+HTTPRequest\+::get\+Server\+Ip\+V4 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get server\textquotesingle{}s address 
+
+\begin{DoxyReturn}{Returns}
+server\textquotesingle{}s address
+\end{DoxyReturn}
+
+
+Definition at line 153 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_af5227676f961f75d2d9507aade40dbc9}\label{classframework_1_1_h_t_t_p_request_af5227676f961f75d2d9507aade40dbc9}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!getServerPort@{getServerPort}}
+\index{getServerPort@{getServerPort}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{getServerPort()}{getServerPort()}}
+{\footnotesize\ttfamily uint16\+\_\+t framework\+::\+HTTPRequest\+::get\+Server\+Port (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get server\textquotesingle{}s port 
+
+\begin{DoxyReturn}{Returns}
+server\textquotesingle{}s port
+\end{DoxyReturn}
+
+
+Definition at line 163 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_ae47fe32783387d8fa9a2670980ca8d7b}\label{classframework_1_1_h_t_t_p_request_ae47fe32783387d8fa9a2670980ca8d7b}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!sendAssetFile@{sendAssetFile}}
+\index{sendAssetFile@{sendAssetFile}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{sendAssetFile()}{sendAssetFile()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPRequest\+::send\+Asset\+File (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+Path,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response,  }\item[{const \mbox{\hyperlink{_web_framework_constants_8h_a1b2e374e6f70a1c9c285bf07888b97ca}{smart\+Pointer}}$<$ std\+::unordered\+\_\+map$<$ std\+::string\+\_\+view, std\+::string $>$$>$ \&}]{variables = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+\mbox{\hyperlink{classframework_1_1_resource_executor}{Resource\+Executor}} wrapper 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & must start with leading /\\
+\hline
+{\em response} & with file\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 131 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a74448326450075d85d77a3249e750ba4}\label{classframework_1_1_h_t_t_p_request_a74448326450075d85d77a3249e750ba4}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!sendRequestToAnotherServer@{sendRequestToAnotherServer}}
+\index{sendRequestToAnotherServer@{sendRequestToAnotherServer}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{sendRequestToAnotherServer()}{sendRequestToAnotherServer()}}
+{\footnotesize\ttfamily web\+::\+HTTPParser framework\+::\+HTTPRequest\+::send\+Request\+To\+Another\+Server (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip,  }\item[{const std\+::string \&}]{port,  }\item[{const std\+::string \&}]{request }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Send request and get response from another HTTP server 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & server\textquotesingle{}s address\\
+\hline
+{\em port} & server\textquotesingle{}s port\\
+\hline
+{\em request} & HTTP request\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+response from another server
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em web\+::\+Web\+Exception} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 22 of file HTTPRequest.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a46690b9fff334a4ee435d491b31dc18b}\label{classframework_1_1_h_t_t_p_request_a46690b9fff334a4ee435d491b31dc18b}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!setAttribute@{setAttribute}}
+\index{setAttribute@{setAttribute}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{setAttribute()}{setAttribute()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPRequest\+::set\+Attribute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const std\+::string \&}]{value }\end{DoxyParamCaption})}
+
+
+
+Session wrapper 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & attribute name\\
+\hline
+{\em value} & attribute value\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 74 of file HTTPRequest.\+cpp.
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_ae628c1dde1035a5429c9b7cd526e7509}\label{classframework_1_1_h_t_t_p_request_ae628c1dde1035a5429c9b7cd526e7509}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!ExecutorsManager@{ExecutorsManager}}
+\index{ExecutorsManager@{ExecutorsManager}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{ExecutorsManager}{ExecutorsManager}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classframework_1_1_executors_manager}{Executors\+Manager}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definition at line 203 of file HTTPRequest.\+h.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_aa3ceee616f60d4e54cdacb536d73bb09}\label{classframework_1_1_h_t_t_p_request_aa3ceee616f60d4e54cdacb536d73bb09}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{const \mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&}]{request }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Logging operator 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & any output source\\
+\hline
+{\em request} & class instance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+self for builder pattern
+\end{DoxyReturn}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_request_a59427d391d2da263cab43ae838c5c67f}\label{classframework_1_1_h_t_t_p_request_a59427d391d2da263cab43ae838c5c67f}} 
+\index{framework::HTTPRequest@{framework::HTTPRequest}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!framework::HTTPRequest@{framework::HTTPRequest}}
+\doxysubsubsection{\texorpdfstring{operator$>$$>$}{operator>>}}
+{\footnotesize\ttfamily streams\+::\+IOSocket\+Stream\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{streams\+::\+IOSocket\+Stream \&}]{stream,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&}]{request }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Reading HTTP request from network 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & special class for taking data from network\\
+\hline
+{\em request} & class instance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+self for builder pattern
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em web\+::\+Web\+Exception} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 180 of file HTTPRequest.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Web\+Network/\mbox{\hyperlink{_h_t_t_p_request_8h}{HTTPRequest.\+h}}\item 
+src/\+Web\+Network/\mbox{\hyperlink{_h_t_t_p_request_8cpp}{HTTPRequest.\+cpp}}\end{DoxyCompactItemize}

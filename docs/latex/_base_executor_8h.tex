@@ -1,0 +1,66 @@
+\hypertarget{_base_executor_8h}{}\doxysection{src/\+Executors/\+Base\+Executor.h File Reference}
+\label{_base_executor_8h}\index{src/Executors/BaseExecutor.h@{src/Executors/BaseExecutor.h}}
+{\ttfamily \#include \char`\"{}Web\+Network/\+HTTPRequest.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Web\+Network/\+HTTPResponse.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Exceptions/\+Not\+Implemented\+Exception.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Utility/\+JSONSettings\+Parser.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Web\+Framework\+Constants.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classframework_1_1_base_executor}{framework\+::\+Base\+Executor}}
+\begin{DoxyCompactList}\small\item\em Base class for all executors \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceframework}{framework}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{_base_executor_8h_acd103ddedf7691538e90921775bbae62}{WEB\+\_\+\+FRAMEWORK\+\_\+\+API}}
+\item 
+\#define \mbox{\hyperlink{_base_executor_8h_a49598325da3ace5704e989efd14598f4}{CREATE\+\_\+\+BASE\+\_\+\+EXECUTOR\+\_\+\+SUBCLASS\+\_\+\+INSTANCE}}(subclass\+Name)
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespaceframework_a1f6e63f1d7ae02caceb703752eef61ba}{framework\+::create\+Base\+Executor\+Subclass\+Function}} = Base\+Executor $\ast$($\ast$)()
+\begin{DoxyCompactList}\small\item\em Shortcut to creating \mbox{\hyperlink{classframework_1_1_base_executor}{Base\+Executor}} subclass function signature \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_base_executor_8h_a49598325da3ace5704e989efd14598f4}\label{_base_executor_8h_a49598325da3ace5704e989efd14598f4}} 
+\index{BaseExecutor.h@{BaseExecutor.h}!CREATE\_BASE\_EXECUTOR\_SUBCLASS\_INSTANCE@{CREATE\_BASE\_EXECUTOR\_SUBCLASS\_INSTANCE}}
+\index{CREATE\_BASE\_EXECUTOR\_SUBCLASS\_INSTANCE@{CREATE\_BASE\_EXECUTOR\_SUBCLASS\_INSTANCE}!BaseExecutor.h@{BaseExecutor.h}}
+\doxysubsubsection{\texorpdfstring{CREATE\_BASE\_EXECUTOR\_SUBCLASS\_INSTANCE}{CREATE\_BASE\_EXECUTOR\_SUBCLASS\_INSTANCE}}
+{\footnotesize\ttfamily \#define CREATE\+\_\+\+BASE\+\_\+\+EXECUTOR\+\_\+\+SUBCLASS\+\_\+\+INSTANCE(\begin{DoxyParamCaption}\item[{}]{subclass\+Name }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \_\_declspec(dllexport) \mbox{\hyperlink{classframework_1_1_base_executor}{framework::BaseExecutor}}* create\#\#subclassName\#\#Instance()   \(\backslash\)}
+\DoxyCodeLine{\{   \(\backslash\)}
+\DoxyCodeLine{    return \textcolor{keyword}{new} subclassName();  \(\backslash\)}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+
+
+Macro for each Base\+Executor subclass
+
+Used for loading function that creates Base\+Executor subclass
+
+Definition at line 130 of file Base\+Executor.\+h.
+
+\mbox{\Hypertarget{_base_executor_8h_acd103ddedf7691538e90921775bbae62}\label{_base_executor_8h_acd103ddedf7691538e90921775bbae62}} 
+\index{BaseExecutor.h@{BaseExecutor.h}!WEB\_FRAMEWORK\_API@{WEB\_FRAMEWORK\_API}}
+\index{WEB\_FRAMEWORK\_API@{WEB\_FRAMEWORK\_API}!BaseExecutor.h@{BaseExecutor.h}}
+\doxysubsubsection{\texorpdfstring{WEB\_FRAMEWORK\_API}{WEB\_FRAMEWORK\_API}}
+{\footnotesize\ttfamily \#define WEB\+\_\+\+FRAMEWORK\+\_\+\+API}
+
+
+
+Definition at line 13 of file Base\+Executor.\+h.
+

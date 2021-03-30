@@ -1,0 +1,132 @@
+\hypertarget{structsqlite3__mutex__methods}{}\doxysection{sqlite3\+\_\+mutex\+\_\+methods Struct Reference}
+\label{structsqlite3__mutex__methods}\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+
+
+{\ttfamily \#include $<$sqlite3.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_a1a163f0e0eaed85223b1537434df635a}{x\+Mutex\+Init}} )(void)
+\item 
+int($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_ab3bc5e370edbeb1db4199d5f609fb09f}{x\+Mutex\+End}} )(void)
+\item 
+\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_a1c6c36e7f710a5bb8564946595cba324}{x\+Mutex\+Alloc}} )(int)
+\item 
+void($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_a632046a2d4a6372a567a5ac5e8175b30}{x\+Mutex\+Free}} )(\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)
+\item 
+void($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_a0237ae1928c2edab7be16e9e007f6a02}{x\+Mutex\+Enter}} )(\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)
+\item 
+int($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_aa65a38cee32246dc3257a80ce47be5fe}{x\+Mutex\+Try}} )(\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)
+\item 
+void($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_a0d4ef78481d18de5f9346f80321a17b1}{x\+Mutex\+Leave}} )(\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)
+\item 
+int($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_a71a26118133388426ddf18ab59ce87f5}{x\+Mutex\+Held}} )(\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)
+\item 
+int($\ast$ \mbox{\hyperlink{structsqlite3__mutex__methods_a5b7c9daa7aea5f01ef9fa58f6d1c5cb1}{x\+Mutex\+Notheld}} )(\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 7577 of file sqlite3.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structsqlite3__mutex__methods_a1c6c36e7f710a5bb8564946595cba324}\label{structsqlite3__mutex__methods_a1c6c36e7f710a5bb8564946595cba324}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexAlloc@{xMutexAlloc}}
+\index{xMutexAlloc@{xMutexAlloc}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexAlloc}{xMutexAlloc}}
+{\footnotesize\ttfamily \mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}}$\ast$($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Alloc) (int)}
+
+
+
+Definition at line 7580 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_ab3bc5e370edbeb1db4199d5f609fb09f}\label{structsqlite3__mutex__methods_ab3bc5e370edbeb1db4199d5f609fb09f}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexEnd@{xMutexEnd}}
+\index{xMutexEnd@{xMutexEnd}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexEnd}{xMutexEnd}}
+{\footnotesize\ttfamily int($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+End) (void)}
+
+
+
+Definition at line 7579 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_a0237ae1928c2edab7be16e9e007f6a02}\label{structsqlite3__mutex__methods_a0237ae1928c2edab7be16e9e007f6a02}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexEnter@{xMutexEnter}}
+\index{xMutexEnter@{xMutexEnter}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexEnter}{xMutexEnter}}
+{\footnotesize\ttfamily void($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Enter) (\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)}
+
+
+
+Definition at line 7582 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_a632046a2d4a6372a567a5ac5e8175b30}\label{structsqlite3__mutex__methods_a632046a2d4a6372a567a5ac5e8175b30}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexFree@{xMutexFree}}
+\index{xMutexFree@{xMutexFree}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexFree}{xMutexFree}}
+{\footnotesize\ttfamily void($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Free) (\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)}
+
+
+
+Definition at line 7581 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_a71a26118133388426ddf18ab59ce87f5}\label{structsqlite3__mutex__methods_a71a26118133388426ddf18ab59ce87f5}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexHeld@{xMutexHeld}}
+\index{xMutexHeld@{xMutexHeld}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexHeld}{xMutexHeld}}
+{\footnotesize\ttfamily int($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Held) (\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)}
+
+
+
+Definition at line 7585 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_a1a163f0e0eaed85223b1537434df635a}\label{structsqlite3__mutex__methods_a1a163f0e0eaed85223b1537434df635a}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexInit@{xMutexInit}}
+\index{xMutexInit@{xMutexInit}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexInit}{xMutexInit}}
+{\footnotesize\ttfamily int($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Init) (void)}
+
+
+
+Definition at line 7578 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_a0d4ef78481d18de5f9346f80321a17b1}\label{structsqlite3__mutex__methods_a0d4ef78481d18de5f9346f80321a17b1}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexLeave@{xMutexLeave}}
+\index{xMutexLeave@{xMutexLeave}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexLeave}{xMutexLeave}}
+{\footnotesize\ttfamily void($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Leave) (\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)}
+
+
+
+Definition at line 7584 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_a5b7c9daa7aea5f01ef9fa58f6d1c5cb1}\label{structsqlite3__mutex__methods_a5b7c9daa7aea5f01ef9fa58f6d1c5cb1}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexNotheld@{xMutexNotheld}}
+\index{xMutexNotheld@{xMutexNotheld}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexNotheld}{xMutexNotheld}}
+{\footnotesize\ttfamily int($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Notheld) (\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)}
+
+
+
+Definition at line 7586 of file sqlite3.\+h.
+
+\mbox{\Hypertarget{structsqlite3__mutex__methods_aa65a38cee32246dc3257a80ce47be5fe}\label{structsqlite3__mutex__methods_aa65a38cee32246dc3257a80ce47be5fe}} 
+\index{sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}!xMutexTry@{xMutexTry}}
+\index{xMutexTry@{xMutexTry}!sqlite3\_mutex\_methods@{sqlite3\_mutex\_methods}}
+\doxysubsubsection{\texorpdfstring{xMutexTry}{xMutexTry}}
+{\footnotesize\ttfamily int($\ast$ sqlite3\+\_\+mutex\+\_\+methods\+::x\+Mutex\+Try) (\mbox{\hyperlink{sqlite3_8h_a0f546860bde03fddb33a9fed920da05c}{sqlite3\+\_\+mutex}} $\ast$)}
+
+
+
+Definition at line 7583 of file sqlite3.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+SQLite3/\mbox{\hyperlink{sqlite3_8h}{sqlite3.\+h}}\end{DoxyCompactItemize}

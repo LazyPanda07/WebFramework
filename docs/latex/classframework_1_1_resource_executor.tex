@@ -1,0 +1,273 @@
+\hypertarget{classframework_1_1_resource_executor}{}\doxysection{framework\+::Resource\+Executor Class Reference}
+\label{classframework_1_1_resource_executor}\index{framework::ResourceExecutor@{framework::ResourceExecutor}}
+
+
+Used for sending asset files  
+
+
+
+
+{\ttfamily \#include $<$Resource\+Executor.\+h$>$}
+
+Inheritance diagram for framework\+::Resource\+Executor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.248996cm]{classframework_1_1_resource_executor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1_resource_executor_ad12f6c21a3615d1d1b9f1dc477dba91c}{Resource\+Executor}} (const std\+::filesystem\+::path \&assets, bool is\+Caching, const std\+::string \&path\+To\+Templates)
+\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_a67dcc7f0aa09e4c3259bbf26ef9f8b5e}{init}} (const \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{utility\+::\+JSONSettings\+Parser\+::\+Executor\+Settings}} \&settings) override
+\begin{DoxyCompactList}\small\item\em Create assets folder \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_a3da6c7c27520e4b5815c21b8049684ed}{send\+Static\+File}} (const std\+::string \&file\+Path, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response) override
+\begin{DoxyCompactList}\small\item\em Override from ISend\+Static\+File interface \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_aeba697c61c4627201ff814690dd9a0d4}{send\+Dynamic\+File}} (const std\+::string \&file\+Path, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response, const std\+::unordered\+\_\+map$<$ std\+::string\+\_\+view, std\+::string $>$ \&variables) override
+\begin{DoxyCompactList}\small\item\em Override from ISend\+Dynamic\+File interface \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_a46ed4fe3ea33cdde372dee53e0108fac}{do\+Get}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response) override
+\begin{DoxyCompactList}\small\item\em Send file via GET request \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_ab0fcab87495dc0c1c09f2605f35a8f20}{do\+Post}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&request, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response) override
+\begin{DoxyCompactList}\small\item\em Send file via POST request \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_a251b0011c6425dcdf6c7dcab149303f7}{not\+Found\+Error}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Send not 404.\+html from Web\+Framework\+Assets \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_aea342d3db9b7ec7c20ab8d76a39ab03a}{bad\+Request\+Error}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Send not 400.\+html from Web\+Framework\+Assets \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_resource_executor_ad84c1d96c04cac84348d2e03b8297414}{internal\+Server\+Error}} (\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Send not 500.\+html from Web\+Framework\+Assets \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classframework_1_1_resource_executor_a32900bd02c53d19b751f8f58f52e8469}{$\sim$\+Resource\+Executor}} ()=default
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Used for sending asset files 
+
+
+
+Definition at line 17 of file Resource\+Executor.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1_resource_executor_ad12f6c21a3615d1d1b9f1dc477dba91c}\label{classframework_1_1_resource_executor_ad12f6c21a3615d1d1b9f1dc477dba91c}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!ResourceExecutor@{ResourceExecutor}}
+\index{ResourceExecutor@{ResourceExecutor}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{ResourceExecutor()}{ResourceExecutor()}}
+{\footnotesize\ttfamily framework\+::\+Resource\+Executor\+::\+Resource\+Executor (\begin{DoxyParamCaption}\item[{const std\+::filesystem\+::path \&}]{assets,  }\item[{bool}]{is\+Caching,  }\item[{const std\+::string \&}]{path\+To\+Templates }\end{DoxyParamCaption})}
+
+
+
+Definition at line 41 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_a32900bd02c53d19b751f8f58f52e8469}\label{classframework_1_1_resource_executor_a32900bd02c53d19b751f8f58f52e8469}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!````~ResourceExecutor@{$\sim$ResourceExecutor}}
+\index{````~ResourceExecutor@{$\sim$ResourceExecutor}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{$\sim$ResourceExecutor()}{~ResourceExecutor()}}
+{\footnotesize\ttfamily framework\+::\+Resource\+Executor\+::$\sim$\+Resource\+Executor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_resource_executor_aea342d3db9b7ec7c20ab8d76a39ab03a}\label{classframework_1_1_resource_executor_aea342d3db9b7ec7c20ab8d76a39ab03a}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!badRequestError@{badRequestError}}
+\index{badRequestError@{badRequestError}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{badRequestError()}{badRequestError()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::bad\+Request\+Error (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})}
+
+
+
+Send not 400.\+html from Web\+Framework\+Assets 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & response with error file\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 192 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_a46ed4fe3ea33cdde372dee53e0108fac}\label{classframework_1_1_resource_executor_a46ed4fe3ea33cdde372dee53e0108fac}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!doGet@{doGet}}
+\index{doGet@{doGet}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{doGet()}{doGet()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::do\+Get (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Send file via GET request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & file request\\
+\hline
+{\em response} & response with asset file\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_not_implemented_exception}{framework\+::exceptions\+::\+Not\+Implemented\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Reimplemented from \mbox{\hyperlink{classframework_1_1_base_executor_a32c6cc48e9211a66a757eabf54f9bdda}{framework\+::\+Base\+Executor}}.
+
+
+
+Definition at line 165 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_ab0fcab87495dc0c1c09f2605f35a8f20}\label{classframework_1_1_resource_executor_ab0fcab87495dc0c1c09f2605f35a8f20}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!doPost@{doPost}}
+\index{doPost@{doPost}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{doPost()}{doPost()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::do\+Post (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_request}{HTTPRequest}} \&\&}]{request,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Send file via POST request 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & file request\\
+\hline
+{\em response} & response with asset file\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classframework_1_1_base_executor_ac060082b5f9c120b70fcf21b929cb231}{framework\+::\+Base\+Executor}}.
+
+
+
+Definition at line 175 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_a67dcc7f0aa09e4c3259bbf26ef9f8b5e}\label{classframework_1_1_resource_executor_a67dcc7f0aa09e4c3259bbf26ef9f8b5e}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!init@{init}}
+\index{init@{init}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::init (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings}{utility\+::\+JSONSettings\+Parser\+::\+Executor\+Settings}} \&}]{settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Create assets folder 
+
+
+\begin{DoxyParams}{Parameters}
+{\em settings} & not used\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classframework_1_1_base_executor_a00a736d350e31431363d63e4a1fa5ae7}{framework\+::\+Base\+Executor}}.
+
+
+
+Definition at line 54 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_ad84c1d96c04cac84348d2e03b8297414}\label{classframework_1_1_resource_executor_ad84c1d96c04cac84348d2e03b8297414}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!internalServerError@{internalServerError}}
+\index{internalServerError@{internalServerError}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{internalServerError()}{internalServerError()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::internal\+Server\+Error (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})}
+
+
+
+Send not 500.\+html from Web\+Framework\+Assets 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & response with error file\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 199 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_a251b0011c6425dcdf6c7dcab149303f7}\label{classframework_1_1_resource_executor_a251b0011c6425dcdf6c7dcab149303f7}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!notFoundError@{notFoundError}}
+\index{notFoundError@{notFoundError}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{notFoundError()}{notFoundError()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::not\+Found\+Error (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})}
+
+
+
+Send not 404.\+html from Web\+Framework\+Assets 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & response with error file\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 185 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_aeba697c61c4627201ff814690dd9a0d4}\label{classframework_1_1_resource_executor_aeba697c61c4627201ff814690dd9a0d4}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!sendDynamicFile@{sendDynamicFile}}
+\index{sendDynamicFile@{sendDynamicFile}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{sendDynamicFile()}{sendDynamicFile()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::send\+Dynamic\+File (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+Path,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response,  }\item[{const std\+::unordered\+\_\+map$<$ std\+::string\+\_\+view, std\+::string $>$ \&}]{variables }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Override from ISend\+Dynamic\+File interface 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & path to file from assets folder\\
+\hline
+{\em response} & used for sending file\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_file_does_not_exist_exception}{framework\+::exceptions\+::\+File\+Does\+Not\+Exist\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Implements \mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_dynamic_file_aa912ad9304c0af9403edd35966ac959a}{framework\+::interfaces\+::\+ISend\+Dynamic\+File}}.
+
+
+
+Definition at line 114 of file Resource\+Executor.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_resource_executor_a3da6c7c27520e4b5815c21b8049684ed}\label{classframework_1_1_resource_executor_a3da6c7c27520e4b5815c21b8049684ed}} 
+\index{framework::ResourceExecutor@{framework::ResourceExecutor}!sendStaticFile@{sendStaticFile}}
+\index{sendStaticFile@{sendStaticFile}!framework::ResourceExecutor@{framework::ResourceExecutor}}
+\doxysubsubsection{\texorpdfstring{sendStaticFile()}{sendStaticFile()}}
+{\footnotesize\ttfamily void framework\+::\+Resource\+Executor\+::send\+Static\+File (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+Path,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Override from ISend\+Static\+File interface 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & path to file from assets folder\\
+\hline
+{\em response} & used for sending file\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classframework_1_1exceptions_1_1_file_does_not_exist_exception}{framework\+::exceptions\+::\+File\+Does\+Not\+Exist\+Exception}}} & \\
+\hline
+\end{DoxyExceptions}
+
+
+Implements \mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_static_file_a26debab926005415c2bf70fdf9055e7a}{framework\+::interfaces\+::\+ISend\+Static\+File}}.
+
+
+
+Definition at line 69 of file Resource\+Executor.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Executors/\mbox{\hyperlink{_resource_executor_8h}{Resource\+Executor.\+h}}\item 
+src/\+Executors/\mbox{\hyperlink{_resource_executor_8cpp}{Resource\+Executor.\+cpp}}\end{DoxyCompactItemize}
