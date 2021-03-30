@@ -17,7 +17,7 @@ namespace framework
 	namespace load_balancer
 	{
 		/// <summary>
-		/// <para>Main class of load balancer</para>
+		/// Main class of load balancer
 		/// <para>All initializations go through this class</para>
 		/// </summary>
 		class WEB_FRAMEWORK_API LoadBalancer

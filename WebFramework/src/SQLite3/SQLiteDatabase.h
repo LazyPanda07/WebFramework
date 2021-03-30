@@ -27,7 +27,7 @@ namespace framework
 		class SQLiteDatabaseModel;
 
 		/// <summary>
-		/// <para>Wrapper class for sqlite3 library</para>
+		/// Wrapper class for sqlite3 library
 		/// <para>Providing connect to sqlite3 database</para>
 		/// </summary>
 		class WEB_FRAMEWORK_API SQLiteDatabase

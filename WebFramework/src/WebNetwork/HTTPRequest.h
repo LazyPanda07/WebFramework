@@ -18,7 +18,7 @@
 namespace framework
 {
 	/// <summary>
-	/// <para>Parsing HTTP request</para>
+	/// Parsing HTTP request
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>

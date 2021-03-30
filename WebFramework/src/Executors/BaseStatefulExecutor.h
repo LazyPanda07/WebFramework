@@ -5,7 +5,7 @@
 namespace framework
 {
 	/// <summary>
-	/// <para>Base class for executors with dynamically changes states</para>
+	/// Base class for executors with dynamically changes states
 	/// <para>This type of executors creating dynamically for each client</para>
 	/// <para>Client can change states during connection, after disconnect destroy method called</para>
 	/// </summary>

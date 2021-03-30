@@ -14,7 +14,7 @@
 namespace framework
 {
 	/// <summary>
-	/// <para>HTTPBuilder wrapper</para>
+	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
 	class WEB_FRAMEWORK_API HTTPResponse

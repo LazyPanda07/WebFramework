@@ -7,7 +7,7 @@ namespace framework
 	namespace exceptions
 	{
 		/// <summary>
-		/// Missing loadType in .xml file of executor
+		/// Missing loadType in .json file of executor
 		/// </summary>
 		class WEB_FRAMEWORK_API MissingLoadTypeException : public BaseExecutorException
 		{

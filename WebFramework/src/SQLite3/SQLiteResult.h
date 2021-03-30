@@ -16,6 +16,10 @@ namespace framework
 	{
 		namespace utility
 		{
+			/// <summary>
+			/// Contains result of SQL request
+			/// <para>Contains all rows after SQL request</para>
+			/// </summary>
 			class WEB_FRAMEWORK_API SQLiteResult
 			{
 			public:

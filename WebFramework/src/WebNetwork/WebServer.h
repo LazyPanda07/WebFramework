@@ -10,7 +10,7 @@
 namespace framework
 {
 	/// <summary>
-	/// <para>Standard TCP web server</para>
+	/// Standard TCP web server
 	/// <para>Initialize only through WebFramework</para>
 	/// </summary>
 	class WebServer : public web::BaseTCPServer
@@ -32,7 +32,7 @@ namespace framework
 		/// <summary>
 		/// Construct WebServer
 		/// </summary>
-		/// <param name="parser">settings from .xml file</param>
+		/// <param name="parser">settings from .json file</param>
 		/// <param name="assets">path to assets folder</param>
 		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="isCaching">is caching resource files</param>

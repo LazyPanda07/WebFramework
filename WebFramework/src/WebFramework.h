@@ -14,7 +14,7 @@
 namespace framework
 {
 	/// <summary>
-	/// <para>Main class of framework</para>
+	/// Main class of framework
 	/// <para>All initializations go through this class</para>
 	/// </summary>
 	class WEB_FRAMEWORK_API WebFramework
