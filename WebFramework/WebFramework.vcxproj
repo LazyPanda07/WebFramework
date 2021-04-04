@@ -391,6 +391,18 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ProjectReference Include="..\Log\Log.vcxproj">
       <Project>{89755e92-d5a7-4fa6-b227-7ddc3bba9aa1}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Networks\HTTP\HTTP.vcxproj">
+      <Project>{cd88b391-b7b9-47d5-af8d-153fcb2b5a2b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\HTTP\JSON\JSON.vcxproj">
+      <Project>{f6b57139-d9f3-4b02-aa92-4e1f417649da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\Networks.vcxproj">
+      <Project>{e3c5b070-57f3-4e11-9701-fdcc108aecb3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\SocketStreams\SocketStreams.vcxproj">
+      <Project>{8bb9f3bd-68f4-403a-acc6-f85c75f5d14f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\SHA256\SHA256.vcxproj">
       <Project>{91f7fb1e-1d8d-4544-99e2-23d409d666ab}</Project>
     </ProjectReference>
