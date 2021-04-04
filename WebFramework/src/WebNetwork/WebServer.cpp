@@ -1,6 +1,6 @@
 #include "WebServer.h"
 
-#include "HTTPNetwork.h"
+#include "WebFrameworkHTTPNetwork.h"
 #include "BaseIOSocketStream.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
@@ -18,7 +18,7 @@ namespace framework
 {
 	void WebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 	{
-		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
+		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
 		const string clientIp = getClientIpV4(addr);
 		smartPointer<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;

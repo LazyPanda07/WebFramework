@@ -1,4 +1,4 @@
-#include "HTTPNetwork.h"
+#include "WebFrameworkHTTPNetwork.h"
 
 #include <algorithm>
 #include <charconv>
@@ -9,25 +9,25 @@ using namespace std;
 
 namespace framework
 {
-	HTTPNetwork::HTTPNetwork(SOCKET clientSocket) :
+	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(SOCKET clientSocket) :
 		web::Network(clientSocket)
 	{
 
 	}
 
-	HTTPNetwork::HTTPNetwork(const string& ip, const string& port) :
+	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(const string& ip, const string& port) :
 		web::Network(ip, port)
 	{
 
 	}
 
-	HTTPNetwork::HTTPNetwork(const utility::baseConnectionData& data) :
-		HTTPNetwork(data.ip, data.port)
+	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(const utility::baseConnectionData& data) :
+		WebFrameworkHTTPNetwork(data.ip, data.port)
 	{
-
+	
 	}
 
-	int HTTPNetwork::sendData(const vector<char>& data)
+	int WebFrameworkHTTPNetwork::sendData(const vector<char>& data)
 	{
 		try
 		{
@@ -39,7 +39,7 @@ namespace framework
 		}
 	}
 
-	int HTTPNetwork::receiveData(vector<char>& data)
+	int WebFrameworkHTTPNetwork::receiveData(vector<char>& data)
 	{
 		data.resize(averageHTTPRequestSize);
 		int totalSize = 0;

@@ -21,7 +21,7 @@
     <ClCompile Include="src\WebNetwork\WebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\HTTPNetwork.cpp">
+    <ClCompile Include="src\WebNetwork\WebFrameworkHTTPNetwork.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Executors\BaseExecutor.cpp">
@@ -128,7 +128,7 @@
     <ClInclude Include="src\WebNetwork\WebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\HTTPNetwork.h">
+    <ClInclude Include="src\WebNetwork\WebFrameworkHTTPNetwork.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Executors\BaseExecutor.h">

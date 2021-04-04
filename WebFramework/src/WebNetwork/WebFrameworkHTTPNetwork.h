@@ -8,27 +8,27 @@ namespace framework
 	/// <summary>
 	/// Network functions for HTTP
 	/// </summary>
-	class HTTPNetwork : public web::Network
+	class WebFrameworkHTTPNetwork : public web::Network
 	{
 	public:
 		/// <summary>
 		/// Server side constructor
 		/// </summary>
 		/// <param name="clientSocket">socket from WSA accept function</param>
-		HTTPNetwork(SOCKET clientSocket);
+		WebFrameworkHTTPNetwork(SOCKET clientSocket);
 
 		/// <summary>
 		/// Client side constructor
 		/// </summary>
 		/// <param name="ip">server address</param>
 		/// <param name="port">server listen socket port</param>
-		HTTPNetwork(const std::string& ip, const std::string& port);
+		WebFrameworkHTTPNetwork(const std::string& ip, const std::string& port);
 
 		/// <summary>
 		/// Client side constructor
 		/// </summary>
 		/// <param name="data">struct with ip and port</param>
-		HTTPNetwork(const utility::baseConnectionData& data);
+		WebFrameworkHTTPNetwork(const utility::baseConnectionData& data);
 
 		/// <summary>
 		/// Default send function
@@ -45,6 +45,6 @@ namespace framework
 		/// <exception cref="web::WebException"></exception>
 		int receiveData(std::vector<char>& data) override;
 
-		~HTTPNetwork() = default;
+		~WebFrameworkHTTPNetwork() = default;
 	};
 }
