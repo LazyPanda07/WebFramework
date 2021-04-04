@@ -111,30 +111,6 @@ namespace exceptions
 	inline const std::string badRequest = "Bad request from client";
 }
 
-namespace xml_settings_tags
-{
-	inline constexpr std::string_view startExecutorTag = "<executor>";
-	inline constexpr std::string_view endExecutorTag = "</executor>";
-
-	inline constexpr std::string_view startInitParamTag = "<init-param>";
-	inline constexpr std::string_view endInitParamTag = "</init-param>";
-
-	inline constexpr std::string_view startParamNameTag = "<param-name>";
-	inline constexpr std::string_view endParamNameTag = "</param-name>";
-
-	inline constexpr std::string_view startParamValueTag = "<param-value>";
-	inline constexpr std::string_view endParamValueTag = "</param-value>";
-
-	inline constexpr std::string_view startRouteTag = "<route>";
-	inline constexpr std::string_view endRouteTag = "</route>";
-
-	inline constexpr std::string_view startExecutorNameTag = "<executor-name>";
-	inline constexpr std::string_view endExecutorNameTag = "</executor-name>";
-
-	inline constexpr std::string_view startLoadTypeTag = "<load-type>";
-	inline constexpr std::string_view endLoadTypeTag = "</load-type>";
-}
-
 namespace json_settings_values
 {
 	inline const std::string initializationLoadTypeValue = "initialization";
@@ -148,10 +124,4 @@ namespace web_framework_assets
 	inline constexpr std::string_view badRequest = "400.html";
 	inline constexpr std::string_view notFound = "404.html";
 	inline constexpr std::string_view internalServerError = "500.html";
-}
-
-namespace route_parameters
-{
-	inline const std::string basePattern = "/[a-ZA-Z0-9]*";
-	inline const std::string intPattern = "/[0-9]*";
 }

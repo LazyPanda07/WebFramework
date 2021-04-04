@@ -1,7 +1,7 @@
 #include "MiddlewareServer.h"
 
 #include "BaseIOSocketStream.h"
-#include "WebNetwork/HTTPNetwork.h"
+#include "WebNetwork/WebFrameworkHTTPNetwork.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ namespace framework
 	{
 		void MiddlewareServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 		{
-			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
+			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
 			smartPointer<streams::IOSocketStream> serverStream;
 
 			while (true)
@@ -23,7 +23,7 @@ namespace framework
 
 					clientStream >> request;
 
-					serverStream = make_unique<streams::IOSocketStream>(new buffers::IOSocketBuffer(new HTTPNetwork(controller.getServerConnectionData(web::HTTPParser(request)))));
+					serverStream = make_unique<streams::IOSocketStream>(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(controller.getServerConnectionData(web::HTTPParser(request)))));
 
 					(*serverStream) << request;
 					(*serverStream) >> response;

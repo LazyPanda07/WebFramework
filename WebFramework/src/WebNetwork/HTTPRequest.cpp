@@ -1,7 +1,7 @@
 #include "HTTPRequest.h"
 
 #include "WebFrameworkConstants.h"
-#include "HTTPNetwork.h"
+#include "WebFrameworkHTTPNetwork.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ namespace framework
 
 	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(const string& ip, const string& port, const string& request)
 	{
-		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new HTTPNetwork(ip, port)));
+		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(ip, port)));
 		string response;
 
 		stream << request;
