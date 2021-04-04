@@ -17,7 +17,7 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
-		
+		response.addBody("Body");
 	}
 };
 
