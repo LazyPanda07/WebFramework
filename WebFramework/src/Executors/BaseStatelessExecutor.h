@@ -5,7 +5,7 @@
 namespace framework
 {
 	/// <summary>
-	/// <para>Base class for executors with constant or static states</para>
+	/// Base class for executors with constant or static states
 	/// <para>This type of executors creating during server initializing</para>
 	/// <para>Can't work in multi-threaded mode</para>
 	/// </summary>

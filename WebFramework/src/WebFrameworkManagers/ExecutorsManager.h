@@ -15,7 +15,7 @@
 namespace framework
 {
 	/// <summary>
-	/// <para>Managing requests</para>
+	/// Managing requests
 	/// <para>Initializing subclasses of BaseStatefulExecutor</para>
 	/// <para>Holding pointer to ResourceExecutor</para>
 	/// <para>Initialize only through WebFramework</para>
@@ -49,7 +49,7 @@ namespace framework
 		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="routes">routes for all executors</param>
 		/// <param name="creator">functions that create executors</param>
-		/// <param name="settings">parsed .xml file</param>
+		/// <param name="settings">parsed .json file</param>
 		void init(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, smartPointer<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creator, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings, std::vector<utility::RouteParameters>&& routeParameters) noexcept;
 
 		/// <summary>

@@ -7,7 +7,7 @@ namespace framework
 	namespace exceptions
 	{
 		/// <summary>
-		/// <para>Default exception for all HTTP methods in BaseExecutor</para>
+		/// Default exception for all HTTP methods in BaseExecutor
 		/// <para>Server throws 400 error</para>
 		/// </summary>
 		class WEB_FRAMEWORK_API NotImplementedException : public BadRequestException

@@ -1,6 +1,6 @@
 #include "LoadBalancerServer.h"
 
-#include "WebNetwork/HTTPNetwork.h"
+#include "WebNetwork/WebFrameworkHTTPNetwork.h"
 #include "BaseIOSocketStream.h"
 
 using namespace std;
@@ -53,10 +53,10 @@ namespace framework
 
 		void LoadBalancerServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 		{
-			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new HTTPNetwork(clientSocket)));
+			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
 			const string clientIp = getClientIpV4(addr);
 			loadBalancerConnectionData data = this->chooseServer();
-			streams::IOSocketStream serverStream(new buffers::IOSocketBuffer(new HTTPNetwork(data.ip, data.port)));
+			streams::IOSocketStream serverStream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(data.ip, data.port)));
 			
 			while (true)
 			{

@@ -1,0 +1,71 @@
+\hypertarget{classframework_1_1interfaces_1_1_i_send_dynamic_file}{}\doxysection{framework\+::interfaces\+::ISend\+Dynamic\+File Class Reference}
+\label{classframework_1_1interfaces_1_1_i_send_dynamic_file}\index{framework::interfaces::ISendDynamicFile@{framework::interfaces::ISendDynamicFile}}
+
+
+Providing send\+Dynamic\+File method  
+
+
+
+
+{\ttfamily \#include $<$ISend\+Dynamic\+File.\+h$>$}
+
+Inheritance diagram for framework\+::interfaces\+::ISend\+Dynamic\+File\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classframework_1_1interfaces_1_1_i_send_dynamic_file}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_dynamic_file_aa912ad9304c0af9403edd35966ac959a}{send\+Dynamic\+File}} (const std\+::string \&file\+Path, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response, const std\+::unordered\+\_\+map$<$ std\+::string\+\_\+view, std\+::string $>$ \&variables)=0
+\begin{DoxyCompactList}\small\item\em Sending file from file\+Path path \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{classframework_1_1interfaces_1_1_i_send_dynamic_file_a27e0386e0c671eaee6e161bc91a89bb1}{$\sim$\+ISend\+Dynamic\+File}} ()=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Providing send\+Dynamic\+File method 
+
+
+
+Definition at line 14 of file ISend\+Dynamic\+File.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1interfaces_1_1_i_send_dynamic_file_a27e0386e0c671eaee6e161bc91a89bb1}\label{classframework_1_1interfaces_1_1_i_send_dynamic_file_a27e0386e0c671eaee6e161bc91a89bb1}} 
+\index{framework::interfaces::ISendDynamicFile@{framework::interfaces::ISendDynamicFile}!````~ISendDynamicFile@{$\sim$ISendDynamicFile}}
+\index{````~ISendDynamicFile@{$\sim$ISendDynamicFile}!framework::interfaces::ISendDynamicFile@{framework::interfaces::ISendDynamicFile}}
+\doxysubsubsection{\texorpdfstring{$\sim$ISendDynamicFile()}{~ISendDynamicFile()}}
+{\footnotesize\ttfamily virtual framework\+::interfaces\+::\+ISend\+Dynamic\+File\+::$\sim$\+ISend\+Dynamic\+File (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1interfaces_1_1_i_send_dynamic_file_aa912ad9304c0af9403edd35966ac959a}\label{classframework_1_1interfaces_1_1_i_send_dynamic_file_aa912ad9304c0af9403edd35966ac959a}} 
+\index{framework::interfaces::ISendDynamicFile@{framework::interfaces::ISendDynamicFile}!sendDynamicFile@{sendDynamicFile}}
+\index{sendDynamicFile@{sendDynamicFile}!framework::interfaces::ISendDynamicFile@{framework::interfaces::ISendDynamicFile}}
+\doxysubsubsection{\texorpdfstring{sendDynamicFile()}{sendDynamicFile()}}
+{\footnotesize\ttfamily virtual void framework\+::interfaces\+::\+ISend\+Dynamic\+File\+::send\+Dynamic\+File (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+Path,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response,  }\item[{const std\+::unordered\+\_\+map$<$ std\+::string\+\_\+view, std\+::string $>$ \&}]{variables }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Sending file from file\+Path path 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & must start with leading /\\
+\hline
+{\em response} & with file\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classframework_1_1_resource_executor_aeba697c61c4627201ff814690dd9a0d4}{framework\+::\+Resource\+Executor}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Web\+Network/\+Interfaces/\mbox{\hyperlink{_i_send_dynamic_file_8h}{ISend\+Dynamic\+File.\+h}}\end{DoxyCompactItemize}

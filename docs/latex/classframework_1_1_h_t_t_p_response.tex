@@ -1,0 +1,314 @@
+\hypertarget{classframework_1_1_h_t_t_p_response}{}\doxysection{framework\+::HTTPResponse Class Reference}
+\label{classframework_1_1_h_t_t_p_response}\index{framework::HTTPResponse@{framework::HTTPResponse}}
+
+
+HTTPBuilder wrapper  
+
+
+
+
+{\ttfamily \#include $<$HTTPResponse.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1_h_t_t_p_response_af7361e16ee6e9f770ddc6dc9d58d4c71}{HTTPResponse}} ()
+\item 
+\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_a014f27095c4d44048d26ab18b77f60b4}{operator=}} (const web\+::\+HTTPBuilder \&builder)
+\begin{DoxyCompactList}\small\item\em Assign operator for HTTPBuilder \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_af27934161c5488b12ca5cc92bf8e1ab0}{set\+HTTPVersion}} (const std\+::string \&version)
+\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_a08dc980e48c1ea7b1f73273483281baf}{set\+Response\+Code}} (web\+::\+Response\+Codes code)
+\begin{DoxyCompactList}\small\item\em Set HTTP response code \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_aaf4cc48f232b1afd5042442fdd666e43}{add\+Header}} (const std\+::string \&name, const std\+::string \&value)
+\begin{DoxyCompactList}\small\item\em Set additional HTTP header \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_a58c1b75ccb33fc0d6da593c4c2bdcc9f}{add\+Body}} (const std\+::string \&body)
+\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_aafe2ce052ec1bbc3edc8228e41470cc1}{add\+Body}} (const json\+::\+JSONBuilder \&json)
+\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_aa46f09c9293fd028191609dabffd6c42}{add\+Body}} (std\+::string \&\&body) noexcept
+\item 
+\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_a0aab06fa738b1d47771ec8471380ccf7}{append\+Body}} (const std\+::string \&body)
+\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_a4f86f1f3c96512073df06800ffa63f4c}{add\+Cookie}} (const std\+::string \&name, const std\+::string \&value)
+\begin{DoxyCompactList}\small\item\em Add cookie to HTTP response \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_ab49db53d6fb523a663aaf0eb6f1d4af0}{set\+Default}} ()
+\begin{DoxyCompactList}\small\item\em Clears \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classframework_1_1_h_t_t_p_response_ac798abcfeb660ca02ad7e5d714c3556d}{$\sim$\+HTTPResponse}} ()=default
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+streams\+::\+IOSocket\+Stream \& \mbox{\hyperlink{classframework_1_1_h_t_t_p_response_a5a1e3160a121c149be7e1e17e60a4f81}{operator$<$$<$}} (streams\+::\+IOSocket\+Stream \&stream, \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&response)
+\begin{DoxyCompactList}\small\item\em Sending \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} through network \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+HTTPBuilder wrapper 
+
+Overriding output stream operator for simplify HTTP response sending
+
+Definition at line 20 of file HTTPResponse.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_af7361e16ee6e9f770ddc6dc9d58d4c71}\label{classframework_1_1_h_t_t_p_response_af7361e16ee6e9f770ddc6dc9d58d4c71}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!HTTPResponse@{HTTPResponse}}
+\index{HTTPResponse@{HTTPResponse}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{HTTPResponse()}{HTTPResponse()}}
+{\footnotesize\ttfamily framework\+::\+HTTPResponse\+::\+HTTPResponse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 26 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_ac798abcfeb660ca02ad7e5d714c3556d}\label{classframework_1_1_h_t_t_p_response_ac798abcfeb660ca02ad7e5d714c3556d}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!````~HTTPResponse@{$\sim$HTTPResponse}}
+\index{````~HTTPResponse@{$\sim$HTTPResponse}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{$\sim$HTTPResponse()}{~HTTPResponse()}}
+{\footnotesize\ttfamily framework\+::\+HTTPResponse\+::$\sim$\+HTTPResponse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_aafe2ce052ec1bbc3edc8228e41470cc1}\label{classframework_1_1_h_t_t_p_response_aafe2ce052ec1bbc3edc8228e41470cc1}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!addBody@{addBody}}
+\index{addBody@{addBody}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{addBody()}{addBody()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::add\+Body (\begin{DoxyParamCaption}\item[{const json\+::\+JSONBuilder \&}]{json }\end{DoxyParamCaption})}
+
+
+
+
+
+Some JSON data with HTTP response
+
+Content-\/\+Length and Content-\/\+Type headers setting automatically
+
+
+\begin{DoxyParams}{Parameters}
+{\em json} & JSON data\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 61 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_a58c1b75ccb33fc0d6da593c4c2bdcc9f}\label{classframework_1_1_h_t_t_p_response_a58c1b75ccb33fc0d6da593c4c2bdcc9f}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!addBody@{addBody}}
+\index{addBody@{addBody}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{addBody()}{addBody()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::add\+Body (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{body }\end{DoxyParamCaption})}
+
+
+
+
+
+Some data with HTTP response
+
+Content-\/\+Length header setting automatically
+
+
+\begin{DoxyParams}{Parameters}
+{\em body} & data\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_aa46f09c9293fd028191609dabffd6c42}\label{classframework_1_1_h_t_t_p_response_aa46f09c9293fd028191609dabffd6c42}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!addBody@{addBody}}
+\index{addBody@{addBody}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{addBody()}{addBody()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::add\+Body (\begin{DoxyParamCaption}\item[{std\+::string \&\&}]{body }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+
+
+Some data with HTTP response
+
+Content-\/\+Length header setting automatically
+
+
+\begin{DoxyParams}{Parameters}
+{\em body} & data\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_a4f86f1f3c96512073df06800ffa63f4c}\label{classframework_1_1_h_t_t_p_response_a4f86f1f3c96512073df06800ffa63f4c}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!addCookie@{addCookie}}
+\index{addCookie@{addCookie}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{addCookie()}{addCookie()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::add\+Cookie (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const std\+::string \&}]{value }\end{DoxyParamCaption})}
+
+
+
+Add cookie to HTTP response 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & of cookie\\
+\hline
+{\em value} & of cookie\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 83 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_aaf4cc48f232b1afd5042442fdd666e43}\label{classframework_1_1_h_t_t_p_response_aaf4cc48f232b1afd5042442fdd666e43}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!addHeader@{addHeader}}
+\index{addHeader@{addHeader}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{addHeader()}{addHeader()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::add\+Header (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const std\+::string \&}]{value }\end{DoxyParamCaption})}
+
+
+
+Set additional HTTP header 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & of HTTP header\\
+\hline
+{\em value} & of HTTP header\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 48 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_a0aab06fa738b1d47771ec8471380ccf7}\label{classframework_1_1_h_t_t_p_response_a0aab06fa738b1d47771ec8471380ccf7}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!appendBody@{appendBody}}
+\index{appendBody@{appendBody}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{appendBody()}{appendBody()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \& framework\+::\+HTTPResponse\+::append\+Body (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{body }\end{DoxyParamCaption})}
+
+
+
+
+
+Some data with HTTP response
+
+Content-\/\+Length header setting automatically
+
+
+\begin{DoxyParams}{Parameters}
+{\em body} & data\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to self
+\end{DoxyReturn}
+
+
+Definition at line 76 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_a014f27095c4d44048d26ab18b77f60b4}\label{classframework_1_1_h_t_t_p_response_a014f27095c4d44048d26ab18b77f60b4}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!operator=@{operator=}}
+\index{operator=@{operator=}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \& framework\+::\+HTTPResponse\+::operator= (\begin{DoxyParamCaption}\item[{const web\+::\+HTTPBuilder \&}]{builder }\end{DoxyParamCaption})}
+
+
+
+Assign operator for HTTPBuilder 
+
+
+\begin{DoxyParams}{Parameters}
+{\em builder} & your HTTPBuilder\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+self for builder pattern
+\end{DoxyReturn}
+
+
+Definition at line 31 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_ab49db53d6fb523a663aaf0eb6f1d4af0}\label{classframework_1_1_h_t_t_p_response_ab49db53d6fb523a663aaf0eb6f1d4af0}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!setDefault@{setDefault}}
+\index{setDefault@{setDefault}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{setDefault()}{setDefault()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::set\+Default (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Clears \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} 
+
+
+
+Definition at line 91 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_af27934161c5488b12ca5cc92bf8e1ab0}\label{classframework_1_1_h_t_t_p_response_af27934161c5488b12ca5cc92bf8e1ab0}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!setHTTPVersion@{setHTTPVersion}}
+\index{setHTTPVersion@{setHTTPVersion}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{setHTTPVersion()}{setHTTPVersion()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::set\+HTTPVersion (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{version }\end{DoxyParamCaption})}
+
+
+
+
+
+Set HTTP version
+
+Default is HTTP/1.\+1
+
+
+\begin{DoxyParams}{Parameters}
+{\em version} & full HTTP version like HTTP/1.\+1\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 38 of file HTTPResponse.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_a08dc980e48c1ea7b1f73273483281baf}\label{classframework_1_1_h_t_t_p_response_a08dc980e48c1ea7b1f73273483281baf}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!setResponseCode@{setResponseCode}}
+\index{setResponseCode@{setResponseCode}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{setResponseCode()}{setResponseCode()}}
+{\footnotesize\ttfamily void framework\+::\+HTTPResponse\+::set\+Response\+Code (\begin{DoxyParamCaption}\item[{web\+::\+Response\+Codes}]{code }\end{DoxyParamCaption})}
+
+
+
+Set HTTP response code 
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & value from web\+::\+Response\+Codes\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 43 of file HTTPResponse.\+cpp.
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_h_t_t_p_response_a5a1e3160a121c149be7e1e17e60a4f81}\label{classframework_1_1_h_t_t_p_response_a5a1e3160a121c149be7e1e17e60a4f81}} 
+\index{framework::HTTPResponse@{framework::HTTPResponse}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!framework::HTTPResponse@{framework::HTTPResponse}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily streams\+::\+IOSocket\+Stream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{streams\+::\+IOSocket\+Stream \&}]{stream,  }\item[{\mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} \&}]{response }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Sending \mbox{\hyperlink{classframework_1_1_h_t_t_p_response}{HTTPResponse}} through network 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & special class for sending data through network\\
+\hline
+{\em response} & class instance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to self
+\end{DoxyReturn}
+
+
+Definition at line 100 of file HTTPResponse.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Web\+Network/\mbox{\hyperlink{_h_t_t_p_response_8h}{HTTPResponse.\+h}}\item 
+src/\+Web\+Network/\mbox{\hyperlink{_h_t_t_p_response_8cpp}{HTTPResponse.\+cpp}}\end{DoxyCompactItemize}

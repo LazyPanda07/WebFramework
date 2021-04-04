@@ -1,0 +1,150 @@
+\hypertarget{classframework_1_1_sessions_manager}{}\doxysection{framework\+::Sessions\+Manager Class Reference}
+\label{classframework_1_1_sessions_manager}\index{framework::SessionsManager@{framework::SessionsManager}}
+
+
+Providing and managing session mechanism  
+
+
+
+
+{\ttfamily \#include $<$Sessions\+Manager.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classframework_1_1_sessions_manager_a6c44640a2388bffa7d937e2932651967}{Sessions\+Manager}} ()
+\item 
+void \mbox{\hyperlink{classframework_1_1_sessions_manager_ab4bdb0beb15a56485d21f446a035f679}{set\+Attribute}} (const std\+::string \&ip, const std\+::string \&name, const std\+::string \&value)
+\begin{DoxyCompactList}\small\item\em Set session attribute for client \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classframework_1_1_sessions_manager_a50799f57e25340ebc22b816191e74b53}{get\+Attribute}} (const std\+::string \&ip, const std\+::string \&name)
+\begin{DoxyCompactList}\small\item\em Get attribute from session \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_sessions_manager_a8041377a1b92da8a0bdfd25bb8153e9b}{delete\+Session}} (const std\+::string \&ip)
+\begin{DoxyCompactList}\small\item\em Delete client\textquotesingle{}s session \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classframework_1_1_sessions_manager_abcf282760bdade149b3ba9a2424acf52}{delete\+Attribute}} (const std\+::string \&ip, const std\+::string \&name)
+\begin{DoxyCompactList}\small\item\em Delete attribute from client\textquotesingle{}s session \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classframework_1_1_sessions_manager_ae0af8ed412da1a7e3f387c54ef87407c}{$\sim$\+Sessions\+Manager}} ()=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Providing and managing session mechanism 
+
+
+
+Definition at line 14 of file Sessions\+Manager.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classframework_1_1_sessions_manager_a6c44640a2388bffa7d937e2932651967}\label{classframework_1_1_sessions_manager_a6c44640a2388bffa7d937e2932651967}} 
+\index{framework::SessionsManager@{framework::SessionsManager}!SessionsManager@{SessionsManager}}
+\index{SessionsManager@{SessionsManager}!framework::SessionsManager@{framework::SessionsManager}}
+\doxysubsubsection{\texorpdfstring{SessionsManager()}{SessionsManager()}}
+{\footnotesize\ttfamily framework\+::\+Sessions\+Manager\+::\+Sessions\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 98 of file Sessions\+Manager.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_sessions_manager_ae0af8ed412da1a7e3f387c54ef87407c}\label{classframework_1_1_sessions_manager_ae0af8ed412da1a7e3f387c54ef87407c}} 
+\index{framework::SessionsManager@{framework::SessionsManager}!````~SessionsManager@{$\sim$SessionsManager}}
+\index{````~SessionsManager@{$\sim$SessionsManager}!framework::SessionsManager@{framework::SessionsManager}}
+\doxysubsubsection{\texorpdfstring{$\sim$SessionsManager()}{~SessionsManager()}}
+{\footnotesize\ttfamily framework\+::\+Sessions\+Manager\+::$\sim$\+Sessions\+Manager (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classframework_1_1_sessions_manager_abcf282760bdade149b3ba9a2424acf52}\label{classframework_1_1_sessions_manager_abcf282760bdade149b3ba9a2424acf52}} 
+\index{framework::SessionsManager@{framework::SessionsManager}!deleteAttribute@{deleteAttribute}}
+\index{deleteAttribute@{deleteAttribute}!framework::SessionsManager@{framework::SessionsManager}}
+\doxysubsubsection{\texorpdfstring{deleteAttribute()}{deleteAttribute()}}
+{\footnotesize\ttfamily void framework\+::\+Sessions\+Manager\+::delete\+Attribute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip,  }\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})}
+
+
+
+Delete attribute from client\textquotesingle{}s session 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & client\textquotesingle{}s address\\
+\hline
+{\em name} & attribute name\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 129 of file Sessions\+Manager.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_sessions_manager_a8041377a1b92da8a0bdfd25bb8153e9b}\label{classframework_1_1_sessions_manager_a8041377a1b92da8a0bdfd25bb8153e9b}} 
+\index{framework::SessionsManager@{framework::SessionsManager}!deleteSession@{deleteSession}}
+\index{deleteSession@{deleteSession}!framework::SessionsManager@{framework::SessionsManager}}
+\doxysubsubsection{\texorpdfstring{deleteSession()}{deleteSession()}}
+{\footnotesize\ttfamily void framework\+::\+Sessions\+Manager\+::delete\+Session (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip }\end{DoxyParamCaption})}
+
+
+
+Delete client\textquotesingle{}s session 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & client\textquotesingle{}s address\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 122 of file Sessions\+Manager.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_sessions_manager_a50799f57e25340ebc22b816191e74b53}\label{classframework_1_1_sessions_manager_a50799f57e25340ebc22b816191e74b53}} 
+\index{framework::SessionsManager@{framework::SessionsManager}!getAttribute@{getAttribute}}
+\index{getAttribute@{getAttribute}!framework::SessionsManager@{framework::SessionsManager}}
+\doxysubsubsection{\texorpdfstring{getAttribute()}{getAttribute()}}
+{\footnotesize\ttfamily string framework\+::\+Sessions\+Manager\+::get\+Attribute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip,  }\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})}
+
+
+
+Get attribute from session 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & client\textquotesingle{}s address\\
+\hline
+{\em name} & attribute name\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string value
+\end{DoxyReturn}
+
+
+Definition at line 113 of file Sessions\+Manager.\+cpp.
+
+\mbox{\Hypertarget{classframework_1_1_sessions_manager_ab4bdb0beb15a56485d21f446a035f679}\label{classframework_1_1_sessions_manager_ab4bdb0beb15a56485d21f446a035f679}} 
+\index{framework::SessionsManager@{framework::SessionsManager}!setAttribute@{setAttribute}}
+\index{setAttribute@{setAttribute}!framework::SessionsManager@{framework::SessionsManager}}
+\doxysubsubsection{\texorpdfstring{setAttribute()}{setAttribute()}}
+{\footnotesize\ttfamily void framework\+::\+Sessions\+Manager\+::set\+Attribute (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip,  }\item[{const std\+::string \&}]{name,  }\item[{const std\+::string \&}]{value }\end{DoxyParamCaption})}
+
+
+
+Set session attribute for client 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & client\textquotesingle{}s address\\
+\hline
+{\em name} & attribute name\\
+\hline
+{\em value} & attribute value\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 104 of file Sessions\+Manager.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Web\+Framework\+Managers/\mbox{\hyperlink{_sessions_manager_8h}{Sessions\+Manager.\+h}}\item 
+src/\+Web\+Framework\+Managers/\mbox{\hyperlink{_sessions_manager_8cpp}{Sessions\+Manager.\+cpp}}\end{DoxyCompactItemize}
