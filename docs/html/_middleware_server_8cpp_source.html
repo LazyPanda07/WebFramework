@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.7.3.2</span>
+   &#160;<span id="projectnumber">1.7.3.3</span>
    </div>
    <div id="projectbrief">Web framework for C++</div>
   </td>
@@ -90,7 +90,7 @@ $(document).ready(function(){initNavTree('_middleware_server_8cpp_source.html','
 <a href="_middleware_server_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_middleware_server_8h.html">MiddlewareServer.h</a>&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;BaseIOSocketStream.h&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_h_t_t_p_network_8h.html">WebNetwork/HTTPNetwork.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_web_framework_h_t_t_p_network_8h.html">WebNetwork/WebFrameworkHTTPNetwork.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('_middleware_server_8cpp_source.html','
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keywordtype">void</span> MiddlewareServer::clientConnection(SOCKET clientSocket, sockaddr addr)</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            streams::IOSocketStream clientStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> HTTPNetwork(clientSocket)));</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            streams::IOSocketStream clientStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(clientSocket)));</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;streams::IOSocketStream&gt;</a> serverStream;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('_middleware_server_8cpp_source.html','
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                    clientStream &gt;&gt; request;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                    serverStream = make_unique&lt;streams::IOSocketStream&gt;(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> HTTPNetwork(controller.getServerConnectionData(web::HTTPParser(request)))));</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                    serverStream = make_unique&lt;streams::IOSocketStream&gt;(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(controller.getServerConnectionData(web::HTTPParser(request)))));</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                    (*serverStream) &lt;&lt; request;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                    (*serverStream) &gt;&gt; response;</div>
@@ -135,9 +135,9 @@ $(document).ready(function(){initNavTree('_middleware_server_8cpp_source.html','
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="ttc" id="a_h_t_t_p_network_8h_html"><div class="ttname"><a href="_h_t_t_p_network_8h.html">HTTPNetwork.h</a></div></div>
 <div class="ttc" id="a_middleware_server_8h_html"><div class="ttname"><a href="_middleware_server_8h.html">MiddlewareServer.h</a></div></div>
 <div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00012">WebFrameworkConstants.h:12</a></div></div>
+<div class="ttc" id="a_web_framework_h_t_t_p_network_8h_html"><div class="ttname"><a href="_web_framework_h_t_t_p_network_8h.html">WebFrameworkHTTPNetwork.h</a></div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">framework::middleware::BaseMiddlewareRouteController</a></div><div class="ttdoc">Specify server to connect with getServerConnectionData method</div><div class="ttdef"><b>Definition:</b> <a href="_base_middleware_route_controller_8h_source.html#l00015">BaseMiddlewareRouteController.h:16</a></div></div>
 <div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00014">WebFrameworkDynamicPages.cpp:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

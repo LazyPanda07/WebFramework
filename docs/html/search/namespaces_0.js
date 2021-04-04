@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['exceptions_1360',['exceptions',['../namespaceexceptions.html',1,'']]]
+  ['exceptions_1340',['exceptions',['../namespaceexceptions.html',1,'']]]
 ];

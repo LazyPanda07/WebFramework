@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.7.3.2</span>
+   &#160;<span id="projectnumber">1.7.3.3</span>
    </div>
    <div id="projectbrief">Web framework for C++</div>
   </td>
@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('_web_server_8cpp_source.html',''); ini
 <div class="contents">
 <a href="_web_server_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_web_server_8h.html">WebServer.h</a>&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_h_t_t_p_network_8h.html">HTTPNetwork.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_web_framework_h_t_t_p_network_8h.html">WebFrameworkHTTPNetwork.h</a>&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;BaseIOSocketStream.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_not_implemented_exception_8h.html">Exceptions/NotImplementedException.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_file_does_not_exist_exception_8h.html">Exceptions/FileDoesNotExistException.h</a>&quot;</span></div>
@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('_web_server_8cpp_source.html',''); ini
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> WebServer::clientConnection(SOCKET clientSocket, sockaddr addr)</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        streams::IOSocketStream stream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> HTTPNetwork(clientSocket)));</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        streams::IOSocketStream stream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(clientSocket)));</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">string</span> clientIp = getClientIpV4(addr);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;ResourceExecutor&gt;</a>&amp; resources = executorsManager.getResourceExecutor();</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        unordered_map&lt;string, smartPointer&lt;BaseExecutor&gt;&gt; statefulExecutors;</div>
@@ -386,11 +386,11 @@ $(document).ready(function(){initNavTree('_web_server_8cpp_source.html',''); ini
 <div class="ttc" id="a_cant_find_function_exception_8h_html"><div class="ttname"><a href="_cant_find_function_exception_8h.html">CantFindFunctionException.h</a></div></div>
 <div class="ttc" id="a_cant_load_source_exception_8h_html"><div class="ttname"><a href="_cant_load_source_exception_8h.html">CantLoadSourceException.h</a></div></div>
 <div class="ttc" id="a_file_does_not_exist_exception_8h_html"><div class="ttname"><a href="_file_does_not_exist_exception_8h.html">FileDoesNotExistException.h</a></div></div>
-<div class="ttc" id="a_h_t_t_p_network_8h_html"><div class="ttname"><a href="_h_t_t_p_network_8h.html">HTTPNetwork.h</a></div></div>
 <div class="ttc" id="a_missing_load_type_exception_8h_html"><div class="ttname"><a href="_missing_load_type_exception_8h.html">MissingLoadTypeException.h</a></div></div>
 <div class="ttc" id="a_not_implemented_exception_8h_html"><div class="ttname"><a href="_not_implemented_exception_8h.html">NotImplementedException.h</a></div></div>
 <div class="ttc" id="a_route_parameters_8h_html"><div class="ttname"><a href="_route_parameters_8h.html">RouteParameters.h</a></div></div>
 <div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00012">WebFrameworkConstants.h:12</a></div></div>
+<div class="ttc" id="a_web_framework_h_t_t_p_network_8h_html"><div class="ttname"><a href="_web_framework_h_t_t_p_network_8h.html">WebFrameworkHTTPNetwork.h</a></div></div>
 <div class="ttc" id="a_web_server_8h_html"><div class="ttname"><a href="_web_server_8h.html">WebServer.h</a></div></div>
 <div class="ttc" id="aclassframework_1_1_base_executor_html_a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695"><div class="ttname"><a href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695">framework::BaseExecutor::executorType::stateful</a></div><div class="ttdeci">@ stateful</div></div>
 <div class="ttc" id="aclassframework_1_1_executors_manager_html_a7435a9a4c46fb661836377f2c44da22f"><div class="ttname"><a href="classframework_1_1_executors_manager.html#a7435a9a4c46fb661836377f2c44da22f">framework::ExecutorsManager::init</a></div><div class="ttdeci">void init(const std::filesystem::path &amp;assets, bool isCaching, const std::string &amp;pathToTemplates, std::unordered_map&lt; std::string, smartPointer&lt; BaseExecutor &gt;&gt; &amp;&amp;routes, std::unordered_map&lt; std::string, createBaseExecutorSubclassFunction &gt; &amp;&amp;creator, std::unordered_map&lt; std::string, utility::JSONSettingsParser::ExecutorSettings &gt; &amp;&amp;settings, std::vector&lt; utility::RouteParameters &gt; &amp;&amp;routeParameters) noexcept</div><div class="ttdoc">Initialize method, called from WebFramework</div><div class="ttdef"><b>Definition:</b> <a href="_executors_manager_8cpp_source.html#l00026">ExecutorsManager.cpp:26</a></div></div>

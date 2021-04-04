@@ -21,6 +21,9 @@ var hierarchy =
     [ "fts5_tokenizer", "structfts5__tokenizer.html", null ],
     [ "Fts5ExtensionApi", "struct_fts5_extension_api.html", null ],
     [ "Fts5PhraseIter", "struct_fts5_phrase_iter.html", null ],
+    [ "web::HTTPNetwork", null, [
+      [ "framework::WebFrameworkHTTPNetwork", "classframework_1_1_web_framework_h_t_t_p_network.html", null ]
+    ] ],
     [ "framework::HTTPRequest", "classframework_1_1_h_t_t_p_request.html", null ],
     [ "framework::HTTPResponse", "classframework_1_1_h_t_t_p_response.html", null ],
     [ "framework::interfaces::ISendDynamicFile", "classframework_1_1interfaces_1_1_i_send_dynamic_file.html", [
@@ -32,9 +35,6 @@ var hierarchy =
     [ "framework::utility::JSONSettingsParser", "classframework_1_1utility_1_1_j_s_o_n_settings_parser.html", null ],
     [ "framework::load_balancer::LoadBalancer", "classframework_1_1load__balancer_1_1_load_balancer.html", null ],
     [ "framework::middleware::Middleware", "classframework_1_1middleware_1_1_middleware.html", null ],
-    [ "web::Network", null, [
-      [ "framework::HTTPNetwork", "classframework_1_1_h_t_t_p_network.html", null ]
-    ] ],
     [ "std::priority_queue", null, [
       [ "framework::utility::PriorityQueue< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData, std::vector< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData >, std::greater< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData > >", "classframework_1_1utility_1_1_priority_queue.html", null ],
       [ "framework::utility::PriorityQueue< T, ContainerT, CompareT >", "classframework_1_1utility_1_1_priority_queue.html", null ]

@@ -19,13 +19,12 @@ var searchData=
   ['basemiddlewareroutecontroller_35',['BaseMiddlewareRouteController',['../classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f9de13f22e528f03cceff68032cf21e',1,'framework::middleware::BaseMiddlewareRouteController::BaseMiddlewareRouteController(std::initializer_list&lt; utility::baseConnectionData &gt; servers)'],['../classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f97df81aa2b68ad2f2a940ade6b1edb',1,'framework::middleware::BaseMiddlewareRouteController::BaseMiddlewareRouteController(const std::vector&lt; utility::baseConnectionData &gt; &amp;servers)'],['../classframework_1_1middleware_1_1_base_middleware_route_controller.html',1,'framework::middleware::BaseMiddlewareRouteController']]],
   ['basemiddlewareroutecontroller_2ecpp_36',['BaseMiddlewareRouteController.cpp',['../_base_middleware_route_controller_8cpp.html',1,'']]],
   ['basemiddlewareroutecontroller_2eh_37',['BaseMiddlewareRouteController.h',['../_base_middleware_route_controller_8h.html',1,'']]],
-  ['basepattern_38',['basePattern',['../namespaceroute__parameters.html#a20de84d6034b5d67abe85581e5355bb6',1,'route_parameters']]],
-  ['baseroute_39',['baseRoute',['../structframework_1_1utility_1_1_route_parameters.html#adf4925ed1dfc3419cfcfdab4ddecb42b',1,'framework::utility::RouteParameters']]],
-  ['basestatefulexecutor_40',['BaseStatefulExecutor',['../classframework_1_1_base_stateful_executor.html#a726efe240c5923eaff51feb6e7058198',1,'framework::BaseStatefulExecutor::BaseStatefulExecutor()'],['../classframework_1_1_base_stateful_executor.html',1,'framework::BaseStatefulExecutor']]],
-  ['basestatefulexecutor_2ecpp_41',['BaseStatefulExecutor.cpp',['../_base_stateful_executor_8cpp.html',1,'']]],
-  ['basestatefulexecutor_2eh_42',['BaseStatefulExecutor.h',['../_base_stateful_executor_8h.html',1,'']]],
-  ['basestatelessexecutor_43',['BaseStatelessExecutor',['../classframework_1_1_base_stateless_executor.html#ac62b31745b49225c61a68621f978a581',1,'framework::BaseStatelessExecutor::BaseStatelessExecutor()'],['../classframework_1_1_base_stateless_executor.html',1,'framework::BaseStatelessExecutor']]],
-  ['basestatelessexecutor_2ecpp_44',['BaseStatelessExecutor.cpp',['../_base_stateless_executor_8cpp.html',1,'']]],
-  ['basestatelessexecutor_2eh_45',['BaseStatelessExecutor.h',['../_base_stateless_executor_8h.html',1,'']]],
-  ['begin_46',['begin',['../classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aea463029e7c19324cf449d16fc061317',1,'framework::sqlite::utility::SQLiteResult']]]
+  ['baseroute_38',['baseRoute',['../structframework_1_1utility_1_1_route_parameters.html#adf4925ed1dfc3419cfcfdab4ddecb42b',1,'framework::utility::RouteParameters']]],
+  ['basestatefulexecutor_39',['BaseStatefulExecutor',['../classframework_1_1_base_stateful_executor.html#a726efe240c5923eaff51feb6e7058198',1,'framework::BaseStatefulExecutor::BaseStatefulExecutor()'],['../classframework_1_1_base_stateful_executor.html',1,'framework::BaseStatefulExecutor']]],
+  ['basestatefulexecutor_2ecpp_40',['BaseStatefulExecutor.cpp',['../_base_stateful_executor_8cpp.html',1,'']]],
+  ['basestatefulexecutor_2eh_41',['BaseStatefulExecutor.h',['../_base_stateful_executor_8h.html',1,'']]],
+  ['basestatelessexecutor_42',['BaseStatelessExecutor',['../classframework_1_1_base_stateless_executor.html#ac62b31745b49225c61a68621f978a581',1,'framework::BaseStatelessExecutor::BaseStatelessExecutor()'],['../classframework_1_1_base_stateless_executor.html',1,'framework::BaseStatelessExecutor']]],
+  ['basestatelessexecutor_2ecpp_43',['BaseStatelessExecutor.cpp',['../_base_stateless_executor_8cpp.html',1,'']]],
+  ['basestatelessexecutor_2eh_44',['BaseStatelessExecutor.h',['../_base_stateless_executor_8h.html',1,'']]],
+  ['begin_45',['begin',['../classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aea463029e7c19324cf449d16fc061317',1,'framework::sqlite::utility::SQLiteResult']]]
 ];

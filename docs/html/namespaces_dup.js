@@ -53,30 +53,10 @@ var namespaces_dup =
       [ "dynamicLoadTypeValue", "namespacejson__settings__values.html#ac568ac1d167e7def4d28cd0256a036fc", null ],
       [ "initializationLoadTypeValue", "namespacejson__settings__values.html#af5ef35ab0f62f179b3472113d9b7653e", null ]
     ] ],
-    [ "route_parameters", "namespaceroute__parameters.html", [
-      [ "basePattern", "namespaceroute__parameters.html#a20de84d6034b5d67abe85581e5355bb6", null ],
-      [ "intPattern", "namespaceroute__parameters.html#a4f06bb7153a8a3996ca07bca61a8cace", null ]
-    ] ],
     [ "web_framework_assets", "namespaceweb__framework__assets.html", [
       [ "badRequest", "namespaceweb__framework__assets.html#ab8c5eb889a3bb854a0c9ceabae03260f", null ],
       [ "errorsFolder", "namespaceweb__framework__assets.html#ae599f6a02bfafb679984ba7b75e4beeb", null ],
       [ "internalServerError", "namespaceweb__framework__assets.html#aacb50643642442d0dd18b907b980d4d0", null ],
       [ "notFound", "namespaceweb__framework__assets.html#a0a7c6342a09a5ae96c2c997e7f492d3c", null ]
-    ] ],
-    [ "xml_settings_tags", "namespacexml__settings__tags.html", [
-      [ "endExecutorNameTag", "namespacexml__settings__tags.html#a44bf1239bd71fa82da3b19b144ab5b5f", null ],
-      [ "endExecutorTag", "namespacexml__settings__tags.html#a8418ffe00d7731269c5113b9471ead5f", null ],
-      [ "endInitParamTag", "namespacexml__settings__tags.html#ac44bfa8ee7cc97c43cc38933f7a6b1c0", null ],
-      [ "endLoadTypeTag", "namespacexml__settings__tags.html#a8294e9c3c24c156b8c62d76880a83840", null ],
-      [ "endParamNameTag", "namespacexml__settings__tags.html#a666b84d568a90c3446e6b282040d7b7f", null ],
-      [ "endParamValueTag", "namespacexml__settings__tags.html#a6aaa7246f2f912655430143bca68e06d", null ],
-      [ "endRouteTag", "namespacexml__settings__tags.html#ad2c3ee0888ca0d4692423efc031be32b", null ],
-      [ "startExecutorNameTag", "namespacexml__settings__tags.html#a1e14d6e671ab18c25eb14fc191b93511", null ],
-      [ "startExecutorTag", "namespacexml__settings__tags.html#a309e8f659a014d56f4b5a2a6c373d0f1", null ],
-      [ "startInitParamTag", "namespacexml__settings__tags.html#a13c965a67fedeeab9ff7f1508e844f13", null ],
-      [ "startLoadTypeTag", "namespacexml__settings__tags.html#ae740990d8f98625a14c40b9ec2a776fe", null ],
-      [ "startParamNameTag", "namespacexml__settings__tags.html#a2d57c777cf8f197f2caa56291840a679", null ],
-      [ "startParamValueTag", "namespacexml__settings__tags.html#a06798638bb739558d4a0da152cb40ec6", null ],
-      [ "startRouteTag", "namespacexml__settings__tags.html#aff6a883c70c20932b36f28ebf554dc5a", null ]
     ] ]
 ];

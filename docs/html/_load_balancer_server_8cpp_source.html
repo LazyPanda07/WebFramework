@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.7.3.2</span>
+   &#160;<span id="projectnumber">1.7.3.3</span>
    </div>
    <div id="projectbrief">Web framework for C++</div>
   </td>
@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('_load_balancer_server_8cpp_source.html
 <div class="contents">
 <a href="_load_balancer_server_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_load_balancer_server_8h.html">LoadBalancerServer.h</a>&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_h_t_t_p_network_8h.html">WebNetwork/HTTPNetwork.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_web_framework_h_t_t_p_network_8h.html">WebNetwork/WebFrameworkHTTPNetwork.h</a>&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;BaseIOSocketStream.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using namespace </span>std;</div>
@@ -142,10 +142,10 @@ $(document).ready(function(){initNavTree('_load_balancer_server_8cpp_source.html
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">void</span> LoadBalancerServer::clientConnection(SOCKET clientSocket, sockaddr addr)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            streams::IOSocketStream clientStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> HTTPNetwork(clientSocket)));</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            streams::IOSocketStream clientStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(clientSocket)));</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span> clientIp = getClientIpV4(addr);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            loadBalancerConnectionData data = this-&gt;chooseServer();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            streams::IOSocketStream serverStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> HTTPNetwork(data.ip, data.port)));</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            streams::IOSocketStream serverStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(data.ip, data.port)));</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            {</div>
@@ -179,8 +179,8 @@ $(document).ready(function(){initNavTree('_load_balancer_server_8cpp_source.html
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
-<div class="ttc" id="a_h_t_t_p_network_8h_html"><div class="ttname"><a href="_h_t_t_p_network_8h.html">HTTPNetwork.h</a></div></div>
 <div class="ttc" id="a_load_balancer_server_8h_html"><div class="ttname"><a href="_load_balancer_server_8h.html">LoadBalancerServer.h</a></div></div>
+<div class="ttc" id="a_web_framework_h_t_t_p_network_8h_html"><div class="ttname"><a href="_web_framework_h_t_t_p_network_8h.html">WebFrameworkHTTPNetwork.h</a></div></div>
 <div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00014">WebFrameworkDynamicPages.cpp:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

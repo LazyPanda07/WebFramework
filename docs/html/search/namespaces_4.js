@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['route_5fparameters_1370',['route_parameters',['../namespaceroute__parameters.html',1,'']]]
+  ['web_5fframework_5fassets_1350',['web_framework_assets',['../namespaceweb__framework__assets.html',1,'']]]
 ];
