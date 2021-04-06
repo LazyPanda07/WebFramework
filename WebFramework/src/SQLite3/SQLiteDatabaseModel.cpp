@@ -71,6 +71,18 @@ namespace framework
 				throw runtime_error(sqlite3_errmsg(*db));
 			}
 
+			if (query.find("INSERT") != string::npos)
+			{
+				try
+				{
+					output = this->selectByFieldQuery({ { "id", to_string(sqlite3_last_insert_rowid(db.db)) } });
+				}
+				catch (const runtime_error&)
+				{
+
+				}
+			}
+
 			sqlite3_finalize(result);
 
 			return output;
@@ -142,7 +154,7 @@ namespace framework
 			this->createTableQuery(attributes);
 		}
 
-		void SQLiteDatabaseModel::insertQuery(const unordered_map<string,string>& attributes)
+		utility::SQLiteResult SQLiteDatabaseModel::insertQuery(const unordered_map<string,string>& attributes)
 		{
 			string keys;
 			string values;
@@ -164,7 +176,7 @@ namespace framework
 			keys = '(' + string(keys.begin(), keys.end() - 2) + ')';
 			values = '(' + string(values.begin(), values.end() - 2) + ')';
 
-			this->rawQuery("INSERT INTO " + tableName + " " + keys + " VALUES " + values, queryType::write);
+			return this->rawQuery("INSERT INTO " + tableName + " " + keys + " VALUES " + values, queryType::write);
 		}
 
 		void SQLiteDatabaseModel::updateQuery(const unordered_map<string, string>& attributes, const string& fieldName, const string& fieldValue)

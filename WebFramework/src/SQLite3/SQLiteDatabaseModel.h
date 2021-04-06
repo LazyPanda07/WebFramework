@@ -111,7 +111,7 @@ namespace framework
 			/// </summary>
 			/// <param name="attributes">field name - field value</param>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			void insertQuery(const std::unordered_map<std::string, std::string>& attributes);
+			utility::SQLiteResult insertQuery(const std::unordered_map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// UPDATE table
