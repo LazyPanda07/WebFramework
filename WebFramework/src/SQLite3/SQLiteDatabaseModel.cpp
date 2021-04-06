@@ -75,7 +75,7 @@ namespace framework
 			{
 				try
 				{
-					output = this->selectByFieldQuery({ { "id", to_string(sqlite3_last_insert_rowid(db.db)) } });
+					output = this->executeQuery("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(db.db)));
 				}
 				catch (const runtime_error&)
 				{
