@@ -139,7 +139,10 @@ namespace framework
 
 			clear(code);
 
-			code = insertVariables(variables, code);
+			if (variables)
+			{
+				code = insertVariables(variables, code);
+			}
 
 			replace(code.begin(), code.end(), ',', ' ');
 
