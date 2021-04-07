@@ -132,7 +132,7 @@ namespace framework
 	{
 		if (isWebFrameworkDynamicPages(filePath) && variables)
 		{
-			dynamicResources.sendDynamicFile(filePath, response, *variables);
+			dynamicResources.sendDynamicFile(filePath, response, variables);
 		}
 		else
 		{
