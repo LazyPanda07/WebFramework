@@ -7,7 +7,7 @@
 #include "Log.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/DynamicPagesSyntaxException.h"
-#include "WebFrameworkDynamicPagesFunctions.h"
+#include "StandardWebFrameworkDynamicPagesFunctions.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ namespace framework
 		functionName(move(functionName)),
 		arguments(move(arguments))
 	{
-		
+
 	}
 
 	void WebFrameworkDynamicPages::clear(string& code)
@@ -119,6 +119,7 @@ namespace framework
 	{
 		dynamicPagesFunctions.insert({ "print", print });
 		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates) });
+		dynamicPagesFunctions.insert({ "for", bind(forImplementation, placeholders::_1, dynamicPagesFunctions) });
 	}
 
 	void WebFrameworkDynamicPages::run(const unordered_map<string_view, string>& variables, string& source)

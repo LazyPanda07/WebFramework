@@ -47,9 +47,9 @@ var annotated_dup =
       [ "WebFramework", "classframework_1_1_web_framework.html", "classframework_1_1_web_framework" ],
       [ "ExecutorsManager", "classframework_1_1_executors_manager.html", "classframework_1_1_executors_manager" ],
       [ "SessionsManager", "classframework_1_1_sessions_manager.html", "classframework_1_1_sessions_manager" ],
-      [ "HTTPNetwork", "classframework_1_1_h_t_t_p_network.html", "classframework_1_1_h_t_t_p_network" ],
       [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html", "classframework_1_1_h_t_t_p_request" ],
       [ "HTTPResponse", "classframework_1_1_h_t_t_p_response.html", "classframework_1_1_h_t_t_p_response" ],
+      [ "WebFrameworkHTTPNetwork", "classframework_1_1_web_framework_h_t_t_p_network.html", "classframework_1_1_web_framework_h_t_t_p_network" ],
       [ "WebServer", "classframework_1_1_web_server.html", "classframework_1_1_web_server" ]
     ] ],
     [ "fts5_api", "structfts5__api.html", "structfts5__api" ],

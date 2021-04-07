@@ -16,7 +16,7 @@ namespace framework
 				return false;
 			}
 
-			static constexpr string_view symbols = "0123456789-.";
+			static constexpr string_view symbols = "0123456789-.,";
 
 			if (all_of(source.begin(), source.end(), [](const char& c) { return find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
 			{
@@ -44,15 +44,13 @@ namespace framework
 		utility::SQLiteResult SQLiteDatabaseModel::executeQuery(const string& query)
 		{
 			sqlite3_stmt* result = nullptr;
-			utility::SQLiteResult output;
+			vector<unordered_map<string, string>> output;
 			int code;
 
 			sqlite3_prepare_v2(*db, query.data(), -1, &result, nullptr);
 
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
-				output.addRow();
-
 				for (size_t i = 0; i < sqlite3_column_count(result); i++)
 				{
 					output.back().insert
@@ -73,7 +71,19 @@ namespace framework
 
 			sqlite3_finalize(result);
 
-			return output;
+			if (query.find("INSERT") != string::npos)
+			{
+				try
+				{
+					return this->executeQuery("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(db.db)));
+				}
+				catch (const runtime_error&)
+				{
+
+				}
+			}
+
+			return utility::SQLiteResult(move(output));
 		}
 
 		SQLiteDatabaseModel::SQLiteDatabaseModel(const string& tableName, SQLiteDatabase&& db) :
@@ -142,7 +152,7 @@ namespace framework
 			this->createTableQuery(attributes);
 		}
 
-		void SQLiteDatabaseModel::insertQuery(const unordered_map<string,string>& attributes)
+		utility::SQLiteResult SQLiteDatabaseModel::insertQuery(const map<string,string>& attributes)
 		{
 			string keys;
 			string values;
@@ -164,10 +174,10 @@ namespace framework
 			keys = '(' + string(keys.begin(), keys.end() - 2) + ')';
 			values = '(' + string(values.begin(), values.end() - 2) + ')';
 
-			this->rawQuery("INSERT INTO " + tableName + " " + keys + " VALUES " + values, queryType::write);
+			return this->rawQuery("INSERT INTO " + tableName + " " + keys + " VALUES " + values, queryType::write);
 		}
 
-		void SQLiteDatabaseModel::updateQuery(const unordered_map<string, string>& attributes, const string& fieldName, const string& fieldValue)
+		void SQLiteDatabaseModel::updateQuery(const map<string, string>& attributes, const string& fieldName, const string& fieldValue)
 		{
 			string query = "UPDATE " + tableName + " SET ";
 
@@ -188,6 +198,20 @@ namespace framework
 			this->rawQuery(query, queryType::write);
 		}
 
+		void SQLiteDatabaseModel::deleteQuery(const map<string, string>& attributes)
+		{
+			string query = "DELETE FROM " + tableName + " WHERE ";
+
+			for (const auto& [fieldName, fieldValue] : attributes)
+			{
+				query += fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'') + " AND ";
+			}
+
+			query.resize(query.size() - 5);
+
+			this->rawQuery(query, queryType::write);
+		}
+
 		utility::SQLiteResult SQLiteDatabaseModel::selectAllQuery()
 		{
 			return this->rawQuery("SELECT * FROM " + tableName, queryType::read);
@@ -198,7 +222,7 @@ namespace framework
 			return this->rawQuery("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''), queryType::read);
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::selectByFieldQuery(const unordered_map<string, string>& attributes)
+		utility::SQLiteResult SQLiteDatabaseModel::selectByFieldQuery(const map<string, string>& attributes)
 		{
 			string query = "SELECT * FROM " + tableName + " WHERE ";
 
