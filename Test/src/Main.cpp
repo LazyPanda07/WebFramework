@@ -17,11 +17,7 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
-		auto variables = framework::utility::make_smartPointer<unordered_map<string_view, string>>();
-
-		variables->insert(make_pair("test", "test"));
-
-		request.sendAssetFile("/index.wfdp", response, variables);
+		request.sendAssetFile("/index.wfdp", response);
 	}
 };
 

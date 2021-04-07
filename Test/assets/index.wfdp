@@ -6,7 +6,7 @@
 <body>
 
     {%
-        print($test$);
+        for(0, 10, print);
     %}
 
 </body>
