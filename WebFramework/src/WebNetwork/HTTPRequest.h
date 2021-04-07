@@ -10,8 +10,8 @@
 #include "HTTPParser.h"
 #include "WebFrameworkManagers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
-#include "Interfaces/ISendStaticFile.h"
-#include "Interfaces/ISendDynamicFile.h"
+#include "Interfaces/IStaticFile.h"
+#include "Interfaces/IDynamicFile.h"
 #include "BaseIOSocketStream.h"
 #include "BaseTCPServer.h"
 
@@ -28,8 +28,8 @@ namespace framework
 		smartPointer<web::HTTPParser> parser;
 		SessionsManager& session;
 		const web::BaseTCPServer& serverReference;
-		interfaces::ISendStaticFile& staticResources;
-		interfaces::ISendDynamicFile& dynamicResources;
+		interfaces::IStaticFile& staticResources;
+		interfaces::IDynamicFile& dynamicResources;
 		sqlite::SQLiteManager& database;
 		sockaddr& clientAddr;
 		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
@@ -55,7 +55,7 @@ namespace framework
 		/// <param name="session">from WebServer</param>
 		/// <param name="serverReference">reference to WebServer</param>
 		/// <param name="resources">ResourceExecutor</param>
-		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
+		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
 
 		/// <summary>
 		/// Parameters string from HTTP

@@ -6,15 +6,15 @@
 
 #include "BaseStatelessExecutor.h"
 #include "DynamicPages/WebFrameworkDynamicPages.h"
-#include "WebNetwork/Interfaces/ISendStaticFile.h"
-#include "WebNetwork/Interfaces/ISendDynamicFile.h"
+#include "WebNetwork/Interfaces/IStaticFile.h"
+#include "WebNetwork/Interfaces/IDynamicFile.h"
 
 namespace framework
 {
 	/// <summary>
 	/// Used for sending asset files
 	/// </summary>
-	class ResourceExecutor : public interfaces::ISendStaticFile, public interfaces::ISendDynamicFile, public BaseStatelessExecutor
+	class ResourceExecutor : public interfaces::IStaticFile, public interfaces::IDynamicFile, public BaseStatelessExecutor
 	{
 	private:
 		enum HTMLErrors
@@ -51,7 +51,7 @@ namespace framework
 		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
 		/// <summary>
-		/// Override from ISendStaticFile interface
+		/// Override from IStaticFile interface
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
@@ -59,7 +59,7 @@ namespace framework
 		void sendStaticFile(const std::string& filePath, HTTPResponse& response) override;
 
 		/// <summary>
-		/// Override from ISendDynamicFile interface
+		/// Override from IDynamicFile interface
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>

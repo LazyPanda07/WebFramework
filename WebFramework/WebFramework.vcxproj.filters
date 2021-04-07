@@ -185,10 +185,10 @@
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\ISendStaticFile.h">
+    <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\ISendDynamicFile.h">
+    <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h">
