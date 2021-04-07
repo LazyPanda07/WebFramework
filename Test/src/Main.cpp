@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "WebFramework.h"
-#include "SQLite3/SQLiteDatabaseModel.h"
+#include "Utility/Memory.h"
 
 #pragma comment (lib, "WebFramework.lib")
 
@@ -17,7 +17,7 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
-		response.addBody("Body");
+		request.sendAssetFile("/index.wfdp", response);
 	}
 };
 

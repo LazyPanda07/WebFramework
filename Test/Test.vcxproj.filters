@@ -22,5 +22,6 @@
   <ItemGroup>
     <None Include="web.json" />
     <None Include="web_framework_settings.ini" />
+    <None Include="assets\index.wfdp" />
   </ItemGroup>
 </Project>

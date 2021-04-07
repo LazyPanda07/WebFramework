@@ -178,6 +178,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\index.wfdp" />
     <None Include="web.json" />
     <None Include="web_framework_settings.ini" />
   </ItemGroup>
