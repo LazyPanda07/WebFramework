@@ -140,6 +140,16 @@ namespace framework
 		}
 	}
 
+	void HTTPRequest::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	{
+		dynamicResources.registerDynamicFunction(functionName, move(function));
+	}
+
+	void HTTPRequest::unregisterDynamicFunction(const string& functionName)
+	{
+		dynamicResources.unregisterDynamicFunction(functionName);
+	}
+
 	const json::JSONParser& HTTPRequest::getJSON() const
 	{
 		return parser->getJSON();

@@ -131,6 +131,10 @@ namespace framework
 		/// <param name="response">with file</param>
 		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
 
+		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+
+		void unregisterDynamicFunction(const std::string& functionName);
+
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
