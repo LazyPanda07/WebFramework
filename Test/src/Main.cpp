@@ -17,6 +17,8 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
+		request.registerDynamicFunction("br", [](const vector<string>& values) ->string { return values[0] + "<br>"; });
+
 		request.sendAssetFile("/index.wfdp", response);
 	}
 };

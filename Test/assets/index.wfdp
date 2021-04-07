@@ -6,7 +6,7 @@
 <body>
 
     {%
-        for(0, 10, print);
+        for(0, 10, br);
     %}
 
 </body>
