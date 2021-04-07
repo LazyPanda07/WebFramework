@@ -378,8 +378,8 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\WebFramework.h" />
     <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\ISendDynamicFile.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\ISendStaticFile.h" />
+    <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
+    <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
     <ClInclude Include="src\WebNetwork\WebServer.h" />
   </ItemGroup>
   <ItemGroup>

@@ -30,7 +30,7 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr) :
 		session(session),
 		serverReference(serverReference),
 		staticResources(staticResources),
@@ -130,7 +130,7 @@ namespace framework
 
 	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const smartPointer<unordered_map<string_view, string>>& variables)
 	{
-		if (isWebFrameworkDynamicPages(filePath) && variables)
+		if (isWebFrameworkDynamicPages(filePath))
 		{
 			dynamicResources.sendDynamicFile(filePath, response, variables);
 		}

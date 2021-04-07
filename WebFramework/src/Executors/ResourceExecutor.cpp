@@ -162,6 +162,16 @@ namespace framework
 		response.addBody(result);
 	}
 
+	void ResourceExecutor::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	{
+		dynamicPages.registerDynamicFunction(functionName, move(function));
+	}
+
+	void ResourceExecutor::unregisterDynamicFunction(const string& functionName)
+	{
+		dynamicPages.unregisterDynamicFunction(functionName);
+	}
+
 	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)
 	{
 		if (!request.getHeaders().count("Referer"))
