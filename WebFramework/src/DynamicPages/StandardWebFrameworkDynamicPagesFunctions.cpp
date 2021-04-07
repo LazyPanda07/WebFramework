@@ -1,4 +1,4 @@
-#include "WebFrameworkDynamicPagesFunctions.h"
+#include "StandardWebFrameworkDynamicPagesFunctions.h"
 
 #include <fstream>
 #include <filesystem>

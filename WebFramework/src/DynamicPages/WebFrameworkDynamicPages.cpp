@@ -7,7 +7,7 @@
 #include "Log.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/DynamicPagesSyntaxException.h"
-#include "WebFrameworkDynamicPagesFunctions.h"
+#include "StandardWebFrameworkDynamicPagesFunctions.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ namespace framework
 		functionName(move(functionName)),
 		arguments(move(arguments))
 	{
-		
+
 	}
 
 	void WebFrameworkDynamicPages::clear(string& code)
