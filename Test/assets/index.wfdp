@@ -5,7 +5,9 @@
 </head>
 <body>
 
-    
+    {%
+        print($test$);
+    %}
 
 </body>
 </html>
