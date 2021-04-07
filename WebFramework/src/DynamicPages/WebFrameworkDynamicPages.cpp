@@ -25,7 +25,7 @@ namespace framework
 		code.erase(remove_if(code.begin(), code.end(), [](const char& c) { return iscntrl(c) || isspace(c); }), code.end());
 	}
 
-	string WebFrameworkDynamicPages::insertVariables(const smartPointer<unordered_map<string_view,string>>& variables, string code)
+	string WebFrameworkDynamicPages::insertVariables(const smartPointer<unordered_map<string_view, string>>& variables, string code)
 	{
 		size_t changeVariableStart = code.find('$');
 
@@ -155,6 +155,16 @@ namespace framework
 		{
 			this->run(variables, source);
 		}
+	}
+
+	void WebFrameworkDynamicPages::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	{
+		dynamicPagesFunctions.insert(make_pair(functionName, move(function)));
+	}
+
+	void WebFrameworkDynamicPages::unregisterDynamicFunction(const string& functionName)
+	{
+		dynamicPagesFunctions.erase(functionName);
 	}
 
 	const string& WebFrameworkDynamicPages::getPathToTemplates() const

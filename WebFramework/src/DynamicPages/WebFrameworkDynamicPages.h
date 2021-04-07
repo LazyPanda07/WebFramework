@@ -78,6 +78,10 @@ namespace framework
 		/// <exception cref="std::exception"></exception>
 		void run(const smartPointer<std::unordered_map<std::string_view, std::string>>& variables, std::string& source);
 
+		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+
+		void unregisterDynamicFunction(const std::string& functionName);
+
 		/// <summary>
 		/// Getter for pathToTemplates
 		/// </summary>

@@ -66,6 +66,10 @@ namespace framework
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables) override;
 
+		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
+
+		void unregisterDynamicFunction(const std::string& functionName) override;
+
 		/// <summary>
 		/// Send file via GET request
 		/// </summary>
