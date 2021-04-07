@@ -239,6 +239,9 @@
     <ClInclude Include="src\SQLite3\SQLiteResult.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utility\Memory.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\404.html" />

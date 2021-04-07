@@ -360,6 +360,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\SQLite3\SQLiteManager.h" />
     <ClInclude Include="src\SQLite3\SQLiteResult.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
+    <ClInclude Include="src\Utility\Memory.h" />
     <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h" />
     <ClInclude Include="src\WebFrameworkManagers\SessionsManager.h" />
     <ClInclude Include="src\Middleware\Middleware.h" />
