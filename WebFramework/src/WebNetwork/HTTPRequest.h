@@ -135,6 +135,8 @@ namespace framework
 
 		void unregisterDynamicFunction(const std::string& functionName);
 
+		bool isDynamicFunctionRegistered(const std::string& functionName);
+
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>

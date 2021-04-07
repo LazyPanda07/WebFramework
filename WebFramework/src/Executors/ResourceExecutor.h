@@ -70,6 +70,8 @@ namespace framework
 
 		void unregisterDynamicFunction(const std::string& functionName) override;
 
+		bool isDynamicFunctionRegistered(const std::string& functionName) override;
+
 		/// <summary>
 		/// Send file via GET request
 		/// </summary>

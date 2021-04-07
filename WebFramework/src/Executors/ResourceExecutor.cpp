@@ -172,6 +172,11 @@ namespace framework
 		dynamicPages.unregisterDynamicFunction(functionName);
 	}
 
+	bool ResourceExecutor::isDynamicFunctionRegistered(const string& functionName)
+	{
+		return dynamicPages.isDynamicFunctionRegistered(functionName);
+	}
+
 	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)
 	{
 		if (!request.getHeaders().count("Referer"))

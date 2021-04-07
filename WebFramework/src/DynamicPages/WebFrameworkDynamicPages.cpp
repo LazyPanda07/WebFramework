@@ -119,7 +119,7 @@ namespace framework
 	{
 		dynamicPagesFunctions.insert({ "print", print });
 		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates) });
-		dynamicPagesFunctions.insert({ "for", bind(forImplementation, placeholders::_1, dynamicPagesFunctions) });
+		dynamicPagesFunctions.insert({ "for", bind(forImplementation, placeholders::_1, ref(dynamicPagesFunctions)) });
 	}
 
 	void WebFrameworkDynamicPages::run(const smartPointer<unordered_map<string_view, string>>& variables, string& source)
@@ -165,6 +165,11 @@ namespace framework
 	void WebFrameworkDynamicPages::unregisterDynamicFunction(const string& functionName)
 	{
 		dynamicPagesFunctions.erase(functionName);
+	}
+
+	bool WebFrameworkDynamicPages::isDynamicFunctionRegistered(const string& functionName)
+	{
+		return dynamicPagesFunctions.find(functionName) != dynamicPagesFunctions.end();
 	}
 
 	const string& WebFrameworkDynamicPages::getPathToTemplates() const
