@@ -23,7 +23,7 @@ namespace framework
 	std::string include(const std::vector<std::string>& arguments, const std::string& pathToTemplates);
 
 	/// @brief For cycle
-	/// @param arguments arguments[0] - start index, arguments[1] - index after end, arguments[2] - function name
+	/// @param arguments arguments[0] - start index, arguments[1] - index after end, arguments[2] - function name, arguments[3] - cycle step(optional parameter)
 	/// @return All data from function
 	std::string forImplementation(const std::vector<std::string>& arguments, const std::unordered_map<std::string, std::function<std::string(const std::vector<std::string>&)>>& dynamicPagesFunctions);
 }

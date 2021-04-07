@@ -55,8 +55,14 @@ namespace framework
 		int64_t end = stoll(arguments[1]);
 		string result;
 		const function<string(const vector<string>&)> repeatableFunction = dynamicPagesFunctions.at(arguments[2]);
+		int64_t step = 1;
+		
+		if (arguments.size() == 4)
+		{
+			step = stoll(arguments[3]);
+		}
 
-		for (int64_t i = start; i < end; i++)
+		for (int64_t i = start; i < end; i += step)
 		{
 			result += repeatableFunction({ to_string(i) });
 		}
