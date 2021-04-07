@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "WebNetwork/HTTPResponse.h"
+#include "WebFrameworkConstants.h"
 
 namespace framework
 {
@@ -19,7 +20,7 @@ namespace framework
 			/// </summary>
 			/// <param name="filePath">must start with leading /</param>
 			/// <param name="response">with file</param>
-			virtual void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables) = 0;
+			virtual void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables) = 0;
 
 			virtual ~ISendDynamicFile() = default;
 		};

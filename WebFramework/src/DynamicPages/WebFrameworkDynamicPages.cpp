@@ -25,7 +25,7 @@ namespace framework
 		code.erase(remove_if(code.begin(), code.end(), [](const char& c) { return iscntrl(c) || isspace(c); }), code.end());
 	}
 
-	string WebFrameworkDynamicPages::insertVariables(const unordered_map<string_view, string>& variables, string code)
+	string WebFrameworkDynamicPages::insertVariables(const smartPointer<unordered_map<string_view,string>>& variables, string code)
 	{
 		size_t changeVariableStart = code.find('$');
 
@@ -40,7 +40,7 @@ namespace framework
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
 			}
 
-			const string& variable = variables.at(string_view(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
+			const string& variable = variables->at(string_view(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
 
 			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, variable);
 
@@ -122,7 +122,7 @@ namespace framework
 		dynamicPagesFunctions.insert({ "for", bind(forImplementation, placeholders::_1, dynamicPagesFunctions) });
 	}
 
-	void WebFrameworkDynamicPages::run(const unordered_map<string_view, string>& variables, string& source)
+	void WebFrameworkDynamicPages::run(const smartPointer<unordered_map<string_view, string>>& variables, string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
 
