@@ -8,8 +8,8 @@ namespace framework
 	{
 		namespace utility
 		{
-			SQLiteResult::SQLiteResult(size_t rowCount) :
-				rows(rowCount)
+			SQLiteResult::SQLiteResult(vector<unordered_map<string, string>>&& rows) noexcept :
+				rows(move(rows))
 			{
 
 			}
@@ -40,19 +40,14 @@ namespace framework
 				return *this;
 			}
 
-			void SQLiteResult::addRow()
-			{
-				rows.emplace_back();
-			}
-
-			void SQLiteResult::resize(size_t rowCount)
-			{
-				rows.resize(rowCount);
-			}
-
 			size_t SQLiteResult::size() const
 			{
 				return rows.size();
+			}
+
+			bool SQLiteResult::isEmpty() const
+			{
+				return rows.empty();
 			}
 
 			unordered_map<string, string>& SQLiteResult::operator [] (size_t index)
@@ -83,6 +78,26 @@ namespace framework
 			const unordered_map<string, string>& SQLiteResult::back() const
 			{
 				return rows.back();
+			}
+
+			unordered_map<string, string>& SQLiteResult::at(size_t index)
+			{
+				return rows[index];
+			}
+
+			const unordered_map<string, string>& SQLiteResult::at(size_t index) const
+			{
+				return rows[index];
+			}
+
+			string& SQLiteResult::at(size_t index, const string& columnName)
+			{
+				return rows[index][columnName];
+			}
+
+			const string& SQLiteResult::at(size_t index, const string& columnName) const
+			{
+				return rows[index].at(columnName);
 			}
 
 			SQLiteResult::const_iterator SQLiteResult::begin() const noexcept

@@ -16,7 +16,7 @@ namespace framework
 				return false;
 			}
 
-			static constexpr string_view symbols = "0123456789-.";
+			static constexpr string_view symbols = "0123456789-.,";
 
 			if (all_of(source.begin(), source.end(), [](const char& c) { return find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
 			{
@@ -44,15 +44,13 @@ namespace framework
 		utility::SQLiteResult SQLiteDatabaseModel::executeQuery(const string& query)
 		{
 			sqlite3_stmt* result = nullptr;
-			utility::SQLiteResult output;
+			vector<unordered_map<string, string>> output;
 			int code;
 
 			sqlite3_prepare_v2(*db, query.data(), -1, &result, nullptr);
 
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
-				output.addRow();
-
 				for (size_t i = 0; i < sqlite3_column_count(result); i++)
 				{
 					output.back().insert
@@ -71,11 +69,13 @@ namespace framework
 				throw runtime_error(sqlite3_errmsg(*db));
 			}
 
+			sqlite3_finalize(result);
+
 			if (query.find("INSERT") != string::npos)
 			{
 				try
 				{
-					output = this->executeQuery("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(db.db)));
+					return this->executeQuery("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(db.db)));
 				}
 				catch (const runtime_error&)
 				{
@@ -83,9 +83,7 @@ namespace framework
 				}
 			}
 
-			sqlite3_finalize(result);
-
-			return output;
+			return utility::SQLiteResult(move(output));
 		}
 
 		SQLiteDatabaseModel::SQLiteDatabaseModel(const string& tableName, SQLiteDatabase&& db) :
