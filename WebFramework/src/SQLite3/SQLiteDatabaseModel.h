@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include <shared_mutex>
 
 #include "SQLiteDatabase.h"
@@ -111,7 +111,7 @@ namespace framework
 			/// </summary>
 			/// <param name="attributes">field name - field value</param>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			utility::SQLiteResult insertQuery(const std::unordered_map<std::string, std::string>& attributes);
+			utility::SQLiteResult insertQuery(const std::map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// UPDATE table
@@ -120,7 +120,7 @@ namespace framework
 			/// <param name="fieldName">for condition</param>
 			/// <param name="fieldValue">for condition</param>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			void updateQuery(const std::unordered_map<std::string, std::string>& attributes, const std::string& fieldName, const std::string& fieldValue);
+			void updateQuery(const std::map<std::string, std::string>& attributes, const std::string& fieldName, const std::string& fieldValue);
 
 			/// <summary>
 			/// Delete from table
@@ -129,6 +129,11 @@ namespace framework
 			/// <param name="fieldValue">for condition</param>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
 			void deleteQuery(const std::string& fieldName, const std::string& fieldValue);
+
+			/// @brief Delete from table
+			/// @param attributes key - value condition
+			/// @exception std::runtime_error sqlite3_errmsg
+			void deleteQuery(const std::map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// SELECT all
@@ -152,7 +157,7 @@ namespace framework
 			/// <param name="values">field name - field value</param>
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="std::runtime_error">sqlite3_errmsg</exception>
-			utility::SQLiteResult selectByFieldQuery(const std::unordered_map<std::string, std::string>& attributes);
+			utility::SQLiteResult selectByFieldQuery(const std::map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// Getter for tableName
