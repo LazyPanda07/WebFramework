@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['updatequery_1827',['updateQuery',['../classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a3232aac37a731420e533f4d074acf60a',1,'framework::sqlite::SQLiteDatabaseModel']]]
+  ['updatequery_1831',['updateQuery',['../classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad8ce79a06f15450295a712c62e294aca',1,'framework::sqlite::SQLiteDatabaseModel']]]
 ];

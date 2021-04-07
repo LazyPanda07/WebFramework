@@ -8,6 +8,7 @@ var namespaceframework_1_1utility =
     [ "cp1251ToUTF8", "namespaceframework_1_1utility.html#a83504c25df7c58262b8c7dcaa0ef7f19", null ],
     [ "fromUTF8", "namespaceframework_1_1utility.html#a5c3e94e1749312104d25c566f3d4c4f8", null ],
     [ "fromUTF8", "namespaceframework_1_1utility.html#a6a9e9fc57df6afb9a9848dd69ed803f6", null ],
+    [ "make_smartPointer", "namespaceframework_1_1utility.html#ac4a17ba891527714324557cd5d7a9905", null ],
     [ "toUTF8", "namespaceframework_1_1utility.html#aed1fc10b6c16a128e035e22a57139fac", null ],
     [ "toUTF8", "namespaceframework_1_1utility.html#af8ec1e46d9e9ef5d650d56bd361ba166", null ]
 ];

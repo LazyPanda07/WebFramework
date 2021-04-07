@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebFramework: src/SQLite3/SQLiteResult.h Source File</title>
+<title>WebFramework: WebFramework/src/SQLite3/SQLiteResult.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,9 +26,8 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.7.3.3</span>
    </div>
-   <div id="projectbrief">Web framework for C++</div>
+   <div id="projectbrief">Web framework for C++.</div>
   </td>
  </tr>
  </tbody>
@@ -114,56 +113,62 @@ $(document).ready(function(){initNavTree('_s_q_lite_result_8h_source.html',''); 
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                std::vector&lt;std::unordered_map&lt;std::string, std::string&gt;&gt; rows;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a3fe3c93bd5fa46d11d9338c93fcc49ff">   32</a></span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a3fe3c93bd5fa46d11d9338c93fcc49ff">SQLiteResult</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#ae910767ec8142eabf627c76cd9627551">   32</a></span>&#160;                <span class="keyword">explicit</span> <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#ae910767ec8142eabf627c76cd9627551">SQLiteResult</a>(std::vector&lt;std::unordered_map&lt;std::string, std::string&gt;&gt;&amp;&amp; rows) noexcept;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>(<span class="keywordtype">size_t</span> rowCount);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>(<span class="keyword">const</span> <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp; other);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>(<a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp;&amp; other) noexcept;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp; operator = (<span class="keyword">const</span> <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp; other);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>(<a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp;&amp; other) noexcept;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp; operator = (<a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp;&amp; other) noexcept;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keywordtype">void</span> addRow();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordtype">void</span> resize(<span class="keywordtype">size_t</span> rowCount);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keywordtype">size_t</span> size() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                std::unordered_map&lt;std::string, std::string&gt;&amp; operator [] (<span class="keywordtype">size_t</span> index);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp; operator = (<span class="keyword">const</span> <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp; other);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp; operator = (<a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>&amp;&amp; other) noexcept;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; operator [] (<span class="keywordtype">size_t</span> index) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                std::unordered_map&lt;std::string, std::string&gt;&amp; front();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keywordtype">size_t</span> size() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; front() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                std::unordered_map&lt;std::string, std::string&gt;&amp; back ();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordtype">bool</span> isEmpty() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; back () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a476c1fc9d831c24f0a1c4fc31de04152">const_iterator</a> begin() const noexcept;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a476c1fc9d831c24f0a1c4fc31de04152">const_iterator</a> end() const noexcept;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                std::unordered_map&lt;std::string, std::string&gt;&amp; operator [] (<span class="keywordtype">size_t</span> index);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a76614b44aa4f2a816eb2edc9de59cc49">   66</a></span>&#160;                ~<a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>() = default;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            };</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; operator [] (<span class="keywordtype">size_t</span> index) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                std::unordered_map&lt;std::string, std::string&gt;&amp; front();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; front() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                std::unordered_map&lt;std::string, std::string&gt;&amp; back();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; back() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                std::unordered_map&lt;std::string, std::string&gt;&amp; at(<span class="keywordtype">size_t</span> index);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; at(<span class="keywordtype">size_t</span> index) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a45f7dee0a5883f4f58e43e2c12b5532c">  109</a></span>&#160;                std::string&amp; <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a45f7dee0a5883f4f58e43e2c12b5532c">at</a>(<span class="keywordtype">size_t</span> index, <span class="keyword">const</span> std::string&amp; columnName);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a601e14d9c2e0a02dd10758792a4f27e7">  116</a></span>&#160;                <span class="keyword">const</span> std::string&amp; <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a601e14d9c2e0a02dd10758792a4f27e7">at</a>(<span class="keywordtype">size_t</span> index, <span class="keyword">const</span> std::string&amp; columnName) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a476c1fc9d831c24f0a1c4fc31de04152">const_iterator</a> begin() const noexcept;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a476c1fc9d831c24f0a1c4fc31de04152">const_iterator</a> end() const noexcept;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a76614b44aa4f2a816eb2edc9de59cc49">  126</a></span>&#160;                ~<a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">SQLiteResult</a>() = default;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            };</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
 <div class="ttc" id="a_s_q_lite_result_8h_html_acd103ddedf7691538e90921775bbae62"><div class="ttname"><a href="_s_q_lite_result_8h.html#acd103ddedf7691538e90921775bbae62">WEB_FRAMEWORK_API</a></div><div class="ttdeci">#define WEB_FRAMEWORK_API</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_result_8h_source.html#l00007">SQLiteResult.h:7</a></div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1utility_1_1_s_q_lite_result_html"><div class="ttname"><a href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">framework::sqlite::utility::SQLiteResult</a></div><div class="ttdoc">Contains result of SQL request</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_result_8h_source.html#l00023">SQLiteResult.h:24</a></div></div>
-<div class="ttc" id="aclassframework_1_1sqlite_1_1utility_1_1_s_q_lite_result_html_a3fe3c93bd5fa46d11d9338c93fcc49ff"><div class="ttname"><a href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a3fe3c93bd5fa46d11d9338c93fcc49ff">framework::sqlite::utility::SQLiteResult::SQLiteResult</a></div><div class="ttdeci">SQLiteResult()=default</div></div>
+<div class="ttc" id="aclassframework_1_1sqlite_1_1utility_1_1_s_q_lite_result_html_a45f7dee0a5883f4f58e43e2c12b5532c"><div class="ttname"><a href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a45f7dee0a5883f4f58e43e2c12b5532c">framework::sqlite::utility::SQLiteResult::at</a></div><div class="ttdeci">std::string &amp; at(size_t index, const std::string &amp;columnName)</div><div class="ttdoc">Access to column in row.</div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1utility_1_1_s_q_lite_result_html_a476c1fc9d831c24f0a1c4fc31de04152"><div class="ttname"><a href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a476c1fc9d831c24f0a1c4fc31de04152">framework::sqlite::utility::SQLiteResult::const_iterator</a></div><div class="ttdeci">std::vector&lt; std::unordered_map&lt; std::string, std::string &gt; &gt;::const_iterator const_iterator</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_result_8h_source.html#l00026">SQLiteResult.h:26</a></div></div>
+<div class="ttc" id="aclassframework_1_1sqlite_1_1utility_1_1_s_q_lite_result_html_a601e14d9c2e0a02dd10758792a4f27e7"><div class="ttname"><a href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a601e14d9c2e0a02dd10758792a4f27e7">framework::sqlite::utility::SQLiteResult::at</a></div><div class="ttdeci">const std::string &amp; at(size_t index, const std::string &amp;columnName) const</div><div class="ttdoc">Const access to column in row.</div></div>
+<div class="ttc" id="aclassframework_1_1sqlite_1_1utility_1_1_s_q_lite_result_html_ae910767ec8142eabf627c76cd9627551"><div class="ttname"><a href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#ae910767ec8142eabf627c76cd9627551">framework::sqlite::utility::SQLiteResult::SQLiteResult</a></div><div class="ttdeci">SQLiteResult(std::vector&lt; std::unordered_map&lt; std::string, std::string &gt;&gt; &amp;&amp;rows) noexcept</div></div>
 <div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00014">WebFrameworkDynamicPages.cpp:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_49886c926af054b3c84bac430bae045f.html">SQLite3</a></li><li class="navelem"><a class="el" href="_s_q_lite_result_8h.html">SQLiteResult.h</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_4232ebe3d8b95f9df0e668862e79f8fe.html">SQLite3</a></li><li class="navelem"><a class="el" href="_s_q_lite_result_8h.html">SQLiteResult.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
