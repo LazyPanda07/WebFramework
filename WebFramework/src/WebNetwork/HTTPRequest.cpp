@@ -150,6 +150,11 @@ namespace framework
 		dynamicResources.unregisterDynamicFunction(functionName);
 	}
 
+	bool HTTPRequest::isDynamicFunctionRegistered(const string& functionName)
+	{
+		return dynamicResources.isDynamicFunctionRegistered(functionName);
+	}
+
 	const json::JSONParser& HTTPRequest::getJSON() const
 	{
 		return parser->getJSON();

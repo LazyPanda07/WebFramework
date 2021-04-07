@@ -27,6 +27,8 @@ namespace framework
 
 			virtual void unregisterDynamicFunction(const std::string& functionName) = 0;
 
+			virtual bool isDynamicFunctionRegistered(const std::string& functionName) = 0;
+
 			virtual ~IDynamicFile() = default;
 		};
 	}
