@@ -105,6 +105,7 @@ namespace framework
 		/// </summary>
 		/// <param name="name">attribute name</param>
 		/// <returns>attribute value</returns>
+		/// <exception cref="std::out_of_range"></exception>
 		std::string getAttribute(const std::string& name);
 
 		/// <summary>
@@ -129,6 +130,8 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">must start with leading /</param>
 		/// <param name="response">with file</param>
+		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
+		/// <exception cref="std::exception"></exception>
 		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
 
 		/// @brief Add new function in .wfdp interpreter

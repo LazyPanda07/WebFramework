@@ -11,6 +11,7 @@ namespace framework
 		/// @tparam ...Args Constructor arguments types
 		/// @param ...args Constructor arguments
 		/// @return smartPointer for current build configuration
+		/// @exception std::runtime_error Creates only std::unique_ptr or std::shared_ptr
 		template<typename T, typename... Args>
 		smartPointer<T> make_smartPointer(Args&&... args)
 		{

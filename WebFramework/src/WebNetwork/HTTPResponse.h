@@ -107,6 +107,7 @@ namespace framework
 		/// <param name="stream">special class for sending data through network</param>
 		/// <param name="response">class instance</param>
 		/// <returns>reference to self</returns>
+		/// <exception cref="web::WebException"></exception>
 		friend streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponse& response);
 
 		~HTTPResponse() = default;
