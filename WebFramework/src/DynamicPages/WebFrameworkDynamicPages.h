@@ -78,10 +78,18 @@ namespace framework
 		/// <exception cref="std::exception"></exception>
 		void run(const smartPointer<std::unordered_map<std::string_view, std::string>>& variables, std::string& source);
 
+		/// @brief Add new function in .wfdp interpreter
+		/// @param functionName Name of new function
+		/// @param function Function implementation
 		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
 
+		/// @brief Remove function from .wfdp interpreter
+		/// @param functionName Name of function
 		void unregisterDynamicFunction(const std::string& functionName);
 
+		/// @brief Check if function is registered
+		/// @param functionName Name of function
+		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(const std::string& functionName);
 
 		/// <summary>
