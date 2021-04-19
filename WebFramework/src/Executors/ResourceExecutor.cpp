@@ -111,7 +111,7 @@ namespace framework
 		response.addBody(result);
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const smartPointer<unordered_map<string_view, string>>& variables)
 	{
 		string result;
 
@@ -160,6 +160,21 @@ namespace framework
 		dynamicPages.run(variables, result);
 
 		response.addBody(result);
+	}
+
+	void ResourceExecutor::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	{
+		dynamicPages.registerDynamicFunction(functionName, move(function));
+	}
+
+	void ResourceExecutor::unregisterDynamicFunction(const string& functionName)
+	{
+		dynamicPages.unregisterDynamicFunction(functionName);
+	}
+
+	bool ResourceExecutor::isDynamicFunctionRegistered(const string& functionName)
+	{
+		return dynamicPages.isDynamicFunctionRegistered(functionName);
 	}
 
 	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)

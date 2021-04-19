@@ -30,7 +30,7 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr) :
 		session(session),
 		serverReference(serverReference),
 		staticResources(staticResources),
@@ -130,14 +130,29 @@ namespace framework
 
 	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const smartPointer<unordered_map<string_view, string>>& variables)
 	{
-		if (isWebFrameworkDynamicPages(filePath) && variables)
+		if (isWebFrameworkDynamicPages(filePath))
 		{
-			dynamicResources.sendDynamicFile(filePath, response, *variables);
+			dynamicResources.sendDynamicFile(filePath, response, variables);
 		}
 		else
 		{
 			staticResources.sendStaticFile(filePath, response);
 		}
+	}
+
+	void HTTPRequest::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	{
+		dynamicResources.registerDynamicFunction(functionName, move(function));
+	}
+
+	void HTTPRequest::unregisterDynamicFunction(const string& functionName)
+	{
+		dynamicResources.unregisterDynamicFunction(functionName);
+	}
+
+	bool HTTPRequest::isDynamicFunctionRegistered(const string& functionName)
+	{
+		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}
 
 	const json::JSONParser& HTTPRequest::getJSON() const

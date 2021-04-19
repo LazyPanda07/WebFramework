@@ -5,6 +5,8 @@
 #include <vector>
 #include <functional>
 
+#include "WebFrameworkConstants.h"
+
 namespace framework
 {
 	/// <summary>
@@ -42,7 +44,7 @@ namespace framework
 		/// <param name="code">section with special syntax</param>
 		/// <returns>string after all variable replaces</returns>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
-		static std::string insertVariables(const std::unordered_map<std::string_view, std::string>& variables, std::string code);
+		static std::string insertVariables(const smartPointer<std::unordered_map<std::string_view, std::string>>& variables, std::string code);
 
 		/// <summary>
 		/// Split all sections in functions calling order
@@ -74,7 +76,21 @@ namespace framework
 		/// <param name="source">data string</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void run(const std::unordered_map<std::string_view, std::string>& variables, std::string& source);
+		void run(const smartPointer<std::unordered_map<std::string_view, std::string>>& variables, std::string& source);
+
+		/// @brief Add new function in .wfdp interpreter
+		/// @param functionName Name of new function
+		/// @param function Function implementation
+		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+
+		/// @brief Remove function from .wfdp interpreter
+		/// @param functionName Name of function
+		void unregisterDynamicFunction(const std::string& functionName);
+
+		/// @brief Check if function is registered
+		/// @param functionName Name of function
+		/// @return true if function is registered, false otherwise
+		bool isDynamicFunctionRegistered(const std::string& functionName);
 
 		/// <summary>
 		/// Getter for pathToTemplates

@@ -6,15 +6,15 @@
 
 #include "BaseStatelessExecutor.h"
 #include "DynamicPages/WebFrameworkDynamicPages.h"
-#include "WebNetwork/Interfaces/ISendStaticFile.h"
-#include "WebNetwork/Interfaces/ISendDynamicFile.h"
+#include "WebNetwork/Interfaces/IStaticFile.h"
+#include "WebNetwork/Interfaces/IDynamicFile.h"
 
 namespace framework
 {
 	/// <summary>
 	/// Used for sending asset files
 	/// </summary>
-	class ResourceExecutor : public interfaces::ISendStaticFile, public interfaces::ISendDynamicFile, public BaseStatelessExecutor
+	class ResourceExecutor : public interfaces::IStaticFile, public interfaces::IDynamicFile, public BaseStatelessExecutor
 	{
 	private:
 		enum HTMLErrors
@@ -51,7 +51,7 @@ namespace framework
 		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
 		/// <summary>
-		/// Override from ISendStaticFile interface
+		/// Override from IStaticFile interface
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
@@ -59,12 +59,26 @@ namespace framework
 		void sendStaticFile(const std::string& filePath, HTTPResponse& response) override;
 
 		/// <summary>
-		/// Override from ISendDynamicFile interface
+		/// Override from IDynamicFile interface
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
-		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables) override;
+		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables) override;
+
+		/// @brief Add new function in .wfdp interpreter
+		/// @param functionName Name of new function
+		/// @param function Function implementation
+		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
+
+		/// @brief Remove function from .wfdp interpreter
+		/// @param functionName Name of function
+		void unregisterDynamicFunction(const std::string& functionName) override;
+
+		/// @brief Check if function is registered
+		/// @param functionName Name of function
+		/// @return true if function is registered, false otherwise
+		bool isDynamicFunctionRegistered(const std::string& functionName) override;
 
 		/// <summary>
 		/// Send file via GET request

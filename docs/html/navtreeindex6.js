@@ -1,5 +1,13 @@
 var NAVTREEINDEX6 =
 {
+"structframework_1_1utility_1_1base_connection_data.html#ab843e706869b77830ac5a5f278518a31":[1,0,0,5,0,1],
+"structfts5__api.html":[1,0,1],
+"structfts5__api.html#a20a23794695fa61e2892ad1243b16b67":[1,0,1,3],
+"structfts5__api.html#a3c338289abb33e1805da870172956a7c":[1,0,1,0],
+"structfts5__api.html#a7fe3663f85eab512d5c461e1674da129":[1,0,1,2],
+"structfts5__api.html#acf1a0612be3b91b908f38ecbc6735d17":[1,0,1,1],
+"structfts5__tokenizer.html":[1,0,2],
+"structfts5__tokenizer.html#a61846ad000b2d38a1264c342c8201d5c":[1,0,2,0],
 "structfts5__tokenizer.html#aaaa88b9f3e50f0b1120a05fb1bbb251f":[1,0,2,1],
 "structfts5__tokenizer.html#ae65ca5a9b1e6d5c1ef09731fccefa577":[1,0,2,2],
 "structsqlite3__file.html":[1,0,5],

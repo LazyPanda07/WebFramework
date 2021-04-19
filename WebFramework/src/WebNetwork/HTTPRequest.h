@@ -10,8 +10,8 @@
 #include "HTTPParser.h"
 #include "WebFrameworkManagers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
-#include "Interfaces/ISendStaticFile.h"
-#include "Interfaces/ISendDynamicFile.h"
+#include "Interfaces/IStaticFile.h"
+#include "Interfaces/IDynamicFile.h"
 #include "BaseIOSocketStream.h"
 #include "BaseTCPServer.h"
 
@@ -28,8 +28,8 @@ namespace framework
 		smartPointer<web::HTTPParser> parser;
 		SessionsManager& session;
 		const web::BaseTCPServer& serverReference;
-		interfaces::ISendStaticFile& staticResources;
-		interfaces::ISendDynamicFile& dynamicResources;
+		interfaces::IStaticFile& staticResources;
+		interfaces::IDynamicFile& dynamicResources;
 		sqlite::SQLiteManager& database;
 		sockaddr& clientAddr;
 		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
@@ -55,7 +55,7 @@ namespace framework
 		/// <param name="session">from WebServer</param>
 		/// <param name="serverReference">reference to WebServer</param>
 		/// <param name="resources">ResourceExecutor</param>
-		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::ISendStaticFile& staticResources, interfaces::ISendDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
+		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
 
 		/// <summary>
 		/// Parameters string from HTTP
@@ -105,6 +105,7 @@ namespace framework
 		/// </summary>
 		/// <param name="name">attribute name</param>
 		/// <returns>attribute value</returns>
+		/// <exception cref="std::out_of_range"></exception>
 		std::string getAttribute(const std::string& name);
 
 		/// <summary>
@@ -129,7 +130,23 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">must start with leading /</param>
 		/// <param name="response">with file</param>
+		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
+		/// <exception cref="std::exception"></exception>
 		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
+
+		/// @brief Add new function in .wfdp interpreter
+		/// @param functionName Name of new function
+		/// @param function Function implementation
+		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+
+		/// @brief Remove function from .wfdp interpreter
+		/// @param functionName Name of function
+		void unregisterDynamicFunction(const std::string& functionName);
+
+		/// @brief Check if function is registered
+		/// @param functionName Name of function
+		/// @return true if function is registered, false otherwise
+		bool isDynamicFunctionRegistered(const std::string& functionName);
 
 		/// <summary>
 		/// Getter for JSONParser

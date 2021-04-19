@@ -7,7 +7,7 @@
 #include "Log.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/DynamicPagesSyntaxException.h"
-#include "WebFrameworkDynamicPagesFunctions.h"
+#include "StandardWebFrameworkDynamicPagesFunctions.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ namespace framework
 		functionName(move(functionName)),
 		arguments(move(arguments))
 	{
-		
+
 	}
 
 	void WebFrameworkDynamicPages::clear(string& code)
@@ -25,7 +25,7 @@ namespace framework
 		code.erase(remove_if(code.begin(), code.end(), [](const char& c) { return iscntrl(c) || isspace(c); }), code.end());
 	}
 
-	string WebFrameworkDynamicPages::insertVariables(const unordered_map<string_view, string>& variables, string code)
+	string WebFrameworkDynamicPages::insertVariables(const smartPointer<unordered_map<string_view, string>>& variables, string code)
 	{
 		size_t changeVariableStart = code.find('$');
 
@@ -40,7 +40,7 @@ namespace framework
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
 			}
 
-			const string& variable = variables.at(string_view(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
+			const string& variable = variables->at(string_view(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
 
 			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, variable);
 
@@ -119,9 +119,10 @@ namespace framework
 	{
 		dynamicPagesFunctions.insert({ "print", print });
 		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates) });
+		dynamicPagesFunctions.insert({ "for", bind(forImplementation, placeholders::_1, ref(dynamicPagesFunctions)) });
 	}
 
-	void WebFrameworkDynamicPages::run(const unordered_map<string_view, string>& variables, string& source)
+	void WebFrameworkDynamicPages::run(const smartPointer<unordered_map<string_view, string>>& variables, string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
 
@@ -138,7 +139,10 @@ namespace framework
 
 			clear(code);
 
-			code = insertVariables(variables, code);
+			if (variables)
+			{
+				code = insertVariables(variables, code);
+			}
 
 			replace(code.begin(), code.end(), ',', ' ');
 
@@ -151,6 +155,21 @@ namespace framework
 		{
 			this->run(variables, source);
 		}
+	}
+
+	void WebFrameworkDynamicPages::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	{
+		dynamicPagesFunctions.insert(make_pair(functionName, move(function)));
+	}
+
+	void WebFrameworkDynamicPages::unregisterDynamicFunction(const string& functionName)
+	{
+		dynamicPagesFunctions.erase(functionName);
+	}
+
+	bool WebFrameworkDynamicPages::isDynamicFunctionRegistered(const string& functionName)
+	{
+		return dynamicPagesFunctions.find(functionName) != dynamicPagesFunctions.end();
 	}
 
 	const string& WebFrameworkDynamicPages::getPathToTemplates() const
