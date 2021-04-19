@@ -150,7 +150,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion);GENERATE_DOCUMENTATION=1</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(ProjectDir)\src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -164,7 +164,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+CD $(SolutionDir)
+$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -189,7 +191,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+CD $(SolutionDir)
+$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -217,7 +221,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+CD $(SolutionDir)
+$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -246,7 +252,9 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+CD $(SolutionDir)
+$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -272,8 +280,10 @@
     </Link>
     <CustomBuildStep>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
-      <Outputs>xcopy.txt</Outputs>
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+CD $(SolutionDir)
+$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+      <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -301,8 +311,10 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </Link>
     <CustomBuildStep>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
-      <Outputs>xcopy.txt</Outputs>
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+CD $(SolutionDir)
+$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+      <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
