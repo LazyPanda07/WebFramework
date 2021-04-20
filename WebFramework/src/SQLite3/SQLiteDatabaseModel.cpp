@@ -24,7 +24,7 @@ namespace framework
 
 				for (const auto& i : source)
 				{
-					if (i == '.')
+					if (i == '.' || i == ',')
 					{
 						check++;
 					}

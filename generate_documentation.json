@@ -1,0 +1,10 @@
+{
+  "buildConfiguration": {
+    "Debug": false,
+    "DebugDLL": false,
+    "ProductionRelease": false,
+    "ProductionReleaseDLL": false,
+    "Release": false,
+    "ReleaseDLL": false
+  }
+}

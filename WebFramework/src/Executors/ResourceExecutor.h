@@ -66,10 +66,18 @@ namespace framework
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables) override;
 
+		/// @brief Add new function in .wfdp interpreter
+		/// @param functionName Name of new function
+		/// @param function Function implementation
 		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
 
+		/// @brief Remove function from .wfdp interpreter
+		/// @param functionName Name of function
 		void unregisterDynamicFunction(const std::string& functionName) override;
 
+		/// @brief Check if function is registered
+		/// @param functionName Name of function
+		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(const std::string& functionName) override;
 
 		/// <summary>
