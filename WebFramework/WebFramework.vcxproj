@@ -166,7 +166,9 @@
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
-$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
+IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))
+</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -193,7 +195,8 @@ $(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)<
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
-$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
+IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -223,7 +226,8 @@ $(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)<
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
-$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
+IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -254,7 +258,8 @@ $(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)<
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
-$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
+IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -282,7 +287,8 @@ $(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)<
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
-$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
+IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
@@ -313,7 +319,8 @@ $(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)<
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
-$(SolutionDir)GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)</Command>
+IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
+IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>

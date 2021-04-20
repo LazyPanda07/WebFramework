@@ -3,12 +3,16 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <WebFrameworkVersion>1.8</WebFrameworkVersion>
+    <WebFrameworkLibraryDir>$(SolutionDir)WebFrameworkLibrary\</WebFrameworkLibraryDir>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
     <BuildMacro Include="WebFrameworkVersion">
       <Value>$(WebFrameworkVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="WebFrameworkLibraryDir">
+      <Value>$(WebFrameworkLibraryDir)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
