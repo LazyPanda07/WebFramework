@@ -96,19 +96,19 @@ namespace framework
 		void doPost(HTTPRequest&& request, HTTPResponse& response) override;
 
 		/// <summary>
-		/// Send not 404.html from WebFrameworkAssets
+		/// Send 404.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
 		void notFoundError(HTTPResponse& response);
 
 		/// <summary>
-		/// Send not 400.html from WebFrameworkAssets
+		/// Send 400.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
 		void badRequestError(HTTPResponse& response);
 
 		/// <summary>
-		/// Send not 500.html from WebFrameworkAssets
+		/// Send 500.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
 		void internalServerError(HTTPResponse& response);
