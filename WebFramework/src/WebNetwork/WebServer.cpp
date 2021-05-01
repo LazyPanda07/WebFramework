@@ -81,7 +81,7 @@ namespace framework
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings;// = parser.getSettings();
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings;
 		const auto& tem = parser.getSettings();
 		vector<utility::RouteParameters> routeParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
