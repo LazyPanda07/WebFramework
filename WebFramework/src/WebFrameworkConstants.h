@@ -51,7 +51,7 @@ inline constexpr std::string_view webFrameworkDynamicPagesExtension = ".wfdp";
 
 namespace ini
 {
-	inline const std::string webServerSection = "WebServer";
+	inline const std::string webServerSection = "MultithreadingWebServer";
 	inline const std::string webFrameworkSection = "WebFramework";
 	inline const std::string loggingSection = "Logging";
 	inline const std::string webFrameworkLoadBalancerSection = "WebFrameworkLoadBalancer";
