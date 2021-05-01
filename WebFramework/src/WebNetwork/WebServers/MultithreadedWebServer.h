@@ -1,11 +1,6 @@
 #pragma once
 
-#include "BaseTCPServer.h"
-#include "WebFrameworkConstants.h"
-#include "WebFrameworkManagers/ExecutorsManager.h"
-#include "WebFrameworkManagers/SessionsManager.h"
-#include "SQLite3/SQLiteManager.h"
-#include "Utility/JSONSettingsParser.h"
+#include "BaseWebServer.h"
 
 namespace framework
 {
@@ -13,20 +8,15 @@ namespace framework
 	/// Standard TCP web server
 	/// <para>Initialize only through WebFramework</para>
 	/// </summary>
-	class MultithreadedWebServer : public web::BaseTCPServer
+	class MultithreadedWebServer : public virtual BaseWebServer
 	{
-	private:
-		ExecutorsManager executorsManager;
-		SessionsManager sessionsManager;
-		sqlite::SQLiteManager databasesManager;
-
 	private:
 		/// <summary>
 		/// Called for every client
 		/// </summary>
 		/// <param name="clientSocket">client's socket</param>
 		/// <param name="addr">client's address</param>
-		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
+		virtual void clientConnection(SOCKET clientSocket, sockaddr addr) final override;
 
 	public:
 		/// <summary>

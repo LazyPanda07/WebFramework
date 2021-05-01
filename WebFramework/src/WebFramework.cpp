@@ -4,6 +4,7 @@
 #include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Log.h"
+#include "WebNetwork/WebServers/MultithreadedWebServer.h"
 
 #pragma comment (lib, "BaseTCPServer.lib")
 #pragma comment (lib, "Log.lib")
