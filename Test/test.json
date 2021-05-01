@@ -1,6 +1,6 @@
 {
-  "Index": {
-    "route": "/",
+  "Test": {
+    "route": "/test",
     "loadType": "initialization"
   }
 }

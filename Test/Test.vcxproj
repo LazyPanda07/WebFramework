@@ -170,7 +170,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Index.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebFramework\WebFramework.vcxproj">
@@ -179,8 +181,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\index.wfdp" />
+    <None Include="test.json" />
     <None Include="web.json" />
     <None Include="web_framework_settings.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Index.h" />
+    <ClInclude Include="src\Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
