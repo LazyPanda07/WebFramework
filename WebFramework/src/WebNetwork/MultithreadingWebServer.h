@@ -13,7 +13,7 @@ namespace framework
 	/// Standard TCP web server
 	/// <para>Initialize only through WebFramework</para>
 	/// </summary>
-	class WebServer : public web::BaseTCPServer
+	class MultithreadingWebServer : public web::BaseTCPServer
 	{
 	private:
 		ExecutorsManager executorsManager;
@@ -30,7 +30,7 @@ namespace framework
 
 	public:
 		/// <summary>
-		/// Construct WebServer
+		/// Construct MultithreadingWebServer
 		/// </summary>
 		/// <param name="settings">settings from .json files</param>
 		/// <param name="assets">path to assets folder</param>
@@ -44,8 +44,8 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		WebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
+		MultithreadingWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
-		~WebServer() = default;
+		~MultithreadingWebServer() = default;
 	};
 }

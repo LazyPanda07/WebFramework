@@ -1,4 +1,4 @@
-#include "WebServer.h"
+#include "MultithreadingWebServer.h"
 
 #include "WebFrameworkHTTPNetwork.h"
 #include "BaseIOSocketStream.h"
@@ -16,7 +16,7 @@ using namespace std;
 
 namespace framework
 {
-	void WebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
+	void MultithreadingWebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
 		const string clientIp = getClientIpV4(addr);
@@ -76,8 +76,8 @@ namespace framework
 		}
 	}
 
-	WebServer::WebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
-		BaseTCPServer(port, ip, timeout, false)
+	MultithreadingWebServer::MultithreadingWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+		BaseTCPServer(port, ip, timeout)
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;

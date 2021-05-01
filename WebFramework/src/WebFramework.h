@@ -8,7 +8,7 @@
 
 #include <filesystem>
 
-#include "WebNetwork/WebServer.h"
+#include "WebNetwork/MultithreadingWebServer.h"
 #include "WebFrameworkConstants.h"
 
 namespace framework
@@ -20,7 +20,7 @@ namespace framework
 	class WEB_FRAMEWORK_API WebFramework
 	{
 	private:
-		smartPointer<WebServer> server;
+		smartPointer<MultithreadingWebServer> server;
 
 	public:
 		/// <summary>
@@ -34,12 +34,12 @@ namespace framework
 		WebFramework(const std::filesystem::path& configurationINIFile);
 
 		/// <summary>
-		/// Start WebServer
+		/// Start MultithreadingWebServer
 		/// </summary>
 		void startServer();
 
 		/// <summary>
-		/// Stop WebServer incoming connections
+		/// Stop MultithreadingWebServer incoming connections
 		/// </summary>
 		void stopServer();
 
