@@ -66,6 +66,7 @@ namespace ini
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
+	inline const std::string webServerTypeKey = "webServerType";
 
 	inline const std::string usingLoggingKey = "usingLogging";
 
@@ -75,6 +76,9 @@ namespace ini
 	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
 
 	inline const std::string defaultLoadSourceValue = "current";
+
+	inline const std::string multithreadedWebServerTypeValue = "multithreaded";
+	inline const std::string threadPoolWebServerTypeValue = "threadPool";
 }
 
 namespace exceptions
@@ -92,6 +96,8 @@ namespace exceptions
 	inline const std::string cantFindTemplatesPath = "Can't find templates path option";
 	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
 	inline const std::string cantFindLoadSource = "Can't find load source option";
+	inline const std::string cantFindWebServerType = "Can't find web server type";
+	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
 
 	inline const std::string cantFindIp = "Can't find ip option";
 	inline const std::string cantFindPort = "Can't find port option";

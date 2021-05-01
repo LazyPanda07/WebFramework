@@ -33,6 +33,7 @@ namespace framework
 			auto templatesPath = webFrameworkSettings.equal_range(ini::templatesPathKey);
 			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
 			auto loadSourcesIterator = webFrameworkSettings.equal_range(ini::loadSourceKey);
+			auto webServerType = webFrameworkSettings.equal_range(ini::webServerTypeKey);
 			auto ip = webServerSettings.equal_range(ini::ipKey);
 			auto port = webServerSettings.equal_range(ini::portKey);
 			auto timeout = webServerSettings.equal_range(ini::timeoutKey);
@@ -63,6 +64,11 @@ namespace framework
 			if (loadSourcesIterator.first == webFrameworkSettings.end())
 			{
 				throw out_of_range(::exceptions::cantFindLoadSource);
+			}
+
+			if (webServerType.first == webFrameworkSettings.end())
+			{
+				throw out_of_range(::exceptions::cantFindWebServerType);
 			}
 
 			if (ip.first == webServerSettings.end())
@@ -107,17 +113,28 @@ namespace framework
 
 			transform(settingsPathIterator.first, settingsPathIterator.second, back_inserter(jsonSettings), [](const pair<string, string>& i) { return utility::JSONSettingsParser(i.second); });
 
-			server = make_unique<MultithreadedWebServer>
-				(
-					jsonSettings,
-					assetsPath.first->second,
-					templatesPath.first->second,
-					usingAssetsCache.first->second == "true" ? true : false,
-					ip.first->second,
-					port.first->second,
-					stoi(timeout.first->second),
-					loadSources
-					);
+			if (webServerType.first->second == ini::multithreadedWebServerTypeValue)
+			{
+				server = make_unique<MultithreadedWebServer>
+					(
+						jsonSettings,
+						assetsPath.first->second,
+						templatesPath.first->second,
+						usingAssetsCache.first->second == "true" ? true : false,
+						ip.first->second,
+						port.first->second,
+						stoi(timeout.first->second),
+						loadSources
+						);
+			}
+			else if (webServerType.first->second == ini::threadPoolWebServerTypeValue)
+			{
+
+			}
+			else
+			{
+				throw out_of_range(::exceptions::wrongWebServerType);
+			}
 		}
 		catch (const exceptions::BaseExecutorException&)
 		{

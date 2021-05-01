@@ -20,7 +20,7 @@ namespace framework
 	class WEB_FRAMEWORK_API WebFramework
 	{
 	private:
-		smartPointer<MultithreadedWebServer> server;
+		smartPointer<web::BaseTCPServer> server;
 
 	public:
 		/// <summary>
