@@ -28,7 +28,7 @@ namespace framework
 
 		try
 		{
-			auto settingsPath = webFrameworkSettings.equal_range(ini::settingsPathKey);
+			auto settingsPathIterator = webFrameworkSettings.equal_range(ini::settingsPathKey);
 			auto assetsPath = webFrameworkSettings.equal_range(ini::assetsPathKey);
 			auto templatesPath = webFrameworkSettings.equal_range(ini::templatesPathKey);
 			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
@@ -40,7 +40,7 @@ namespace framework
 			auto dateFormat = loggingSettings.equal_range(ini::dateFormatKey);
 			auto addNewLineAfterLog = loggingSettings.equal_range(ini::addNewLineAfterLogKey);
 
-			if (settingsPath.first == webFrameworkSettings.end())
+			if (settingsPathIterator.first == webFrameworkSettings.end())
 			{
 				throw out_of_range(::exceptions::cantFindSettingsPath);
 			}
@@ -101,12 +101,15 @@ namespace framework
 			}
 
 			vector<string> loadSources;
+			vector<utility::JSONSettingsParser> jsonSettings;
 
-			transform(loadSourcesIterator.first, loadSourcesIterator.second, back_inserter(loadSources), [](const auto& i) { return i.second; });	//take values of loadSource array
+			transform(loadSourcesIterator.first, loadSourcesIterator.second, back_inserter(loadSources), [](const pair<string, string>& i) { return i.second; });	//take values of loadSource array
+
+			transform(settingsPathIterator.first, settingsPathIterator.second, back_inserter(jsonSettings), [](const pair<string, string>& i) { return utility::JSONSettingsParser(i.second); });
 
 			server = make_unique<WebServer>
 				(
-					utility::JSONSettingsParser(settingsPath.first->second),
+					jsonSettings,
 					assetsPath.first->second,
 					templatesPath.first->second,
 					usingAssetsCache.first->second == "true" ? true : false,

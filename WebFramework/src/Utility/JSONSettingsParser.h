@@ -35,6 +35,10 @@ namespace framework
 				json::utility::jsonParserStruct initParameters;
 				std::string name;
 				loadType executorLoadType;
+
+				ExecutorSettings() = default;
+
+				ExecutorSettings(ExecutorSettings&& other) noexcept;
 			};
 
 		private:
@@ -47,6 +51,10 @@ namespace framework
 			/// <param name="JSONSettings">path to .json settings file</param>
 			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 			JSONSettingsParser(const std::string& JSONSettings);
+
+			/// @brief Move constructor
+			/// @param other Another JSONSettingsParser
+			JSONSettingsParser(JSONSettingsParser&& other) noexcept = default;
 
 			/// <summary>
 			/// Get all settings from .json
