@@ -4,6 +4,11 @@ using namespace std;
 
 namespace framework
 {
+	void BaseExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
+	{
+
+	}
+
 	void BaseExecutor::doPost(HTTPRequest&& request, HTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException();
