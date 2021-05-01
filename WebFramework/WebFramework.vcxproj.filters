@@ -18,7 +18,7 @@
     <ClCompile Include="src\WebFramework.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\MultithreadedWebServer.cpp">
+    <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebNetwork\WebFrameworkHTTPNetwork.cpp">
@@ -117,6 +117,9 @@
     <ClCompile Include="src\SQLite3\SQLiteResult.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -125,7 +128,7 @@
     <ClInclude Include="src\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\MultithreadedWebServer.h">
+    <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\WebFrameworkHTTPNetwork.h">
@@ -240,6 +243,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Memory.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -362,7 +362,8 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClCompile Include="src\WebFramework.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
-    <ClCompile Include="src\WebNetwork\MultithreadedWebServer.cpp" />
+    <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
+    <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
@@ -405,7 +406,8 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
-    <ClInclude Include="src\WebNetwork\MultithreadedWebServer.h" />
+    <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
+    <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ThreadPool\ThreadPool.vcxproj">

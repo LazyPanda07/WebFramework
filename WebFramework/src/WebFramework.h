@@ -8,8 +8,7 @@
 
 #include <filesystem>
 
-#include "WebNetwork/MultithreadedWebServer.h"
-#include "WebFrameworkConstants.h"
+#include "WebNetwork/WebServers/BaseWebServer.h"
 
 namespace framework
 {
@@ -20,7 +19,7 @@ namespace framework
 	class WEB_FRAMEWORK_API WebFramework
 	{
 	private:
-		smartPointer<web::BaseTCPServer> server;
+		smartPointer<BaseWebServer> server;
 
 	public:
 		/// <summary>
