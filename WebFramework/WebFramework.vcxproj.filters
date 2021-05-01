@@ -18,7 +18,7 @@
     <ClCompile Include="src\WebFramework.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\MultithreadingWebServer.cpp">
+    <ClCompile Include="src\WebNetwork\MultithreadedWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebNetwork\WebFrameworkHTTPNetwork.cpp">
@@ -125,7 +125,7 @@
     <ClInclude Include="src\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\MultithreadingWebServer.h">
+    <ClInclude Include="src\WebNetwork\MultithreadedWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\WebFrameworkHTTPNetwork.h">

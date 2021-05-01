@@ -107,7 +107,7 @@ namespace framework
 
 			transform(settingsPathIterator.first, settingsPathIterator.second, back_inserter(jsonSettings), [](const pair<string, string>& i) { return utility::JSONSettingsParser(i.second); });
 
-			server = make_unique<MultithreadingWebServer>
+			server = make_unique<MultithreadedWebServer>
 				(
 					jsonSettings,
 					assetsPath.first->second,
