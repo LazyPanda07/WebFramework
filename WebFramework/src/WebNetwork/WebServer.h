@@ -32,7 +32,7 @@ namespace framework
 		/// <summary>
 		/// Construct WebServer
 		/// </summary>
-		/// <param name="parser">settings from .json file</param>
+		/// <param name="settings">settings from .json files</param>
 		/// <param name="assets">path to assets folder</param>
 		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="isCaching">is caching resource files</param>
@@ -44,7 +44,7 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		WebServer(const utility::JSONSettingsParser& parser, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
+		WebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
 		~WebServer() = default;
 	};
