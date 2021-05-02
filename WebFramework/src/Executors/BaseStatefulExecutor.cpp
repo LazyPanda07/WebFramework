@@ -6,6 +6,6 @@ namespace framework
 {
 	BaseExecutor::executorType BaseStatefulExecutor::getType() const
 	{
-		return BaseExecutor::executorType::stateful;
+		return executorType::stateful;
 	}
 }

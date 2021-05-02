@@ -4,7 +4,7 @@ namespace framework
 {
 	BaseExecutor::executorType BaseStatelessExecutor::getType() const
 	{
-		return BaseExecutor::executorType::stateless;
+		return executorType::stateless;
 	}
 
 	void BaseStatelessExecutor::destroy()

@@ -347,6 +347,8 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClCompile Include="src\Exceptions\StringConversionException.cpp" />
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
@@ -385,6 +387,8 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClInclude Include="src\Exceptions\StringConversionException.h" />
     <ClInclude Include="src\Executors\BaseExecutor.h" />
     <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h" />
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
     <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />

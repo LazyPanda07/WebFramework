@@ -123,6 +123,12 @@
     <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -252,6 +258,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

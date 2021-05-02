@@ -18,12 +18,12 @@ namespace framework
 		/// Get executor type
 		/// </summary>
 		/// <returns>executorType::stateless</returns>
-		virtual BaseExecutor::executorType getType() const final;
+		virtual BaseExecutor::executorType getType() const final override;
 
 		/// <summary>
 		/// Stateless executors can't call destroy method
 		/// </summary>
-		virtual void destroy() override final;
+		virtual void destroy() final override;
 
 		virtual ~BaseStatelessExecutor() = default;
 	};
