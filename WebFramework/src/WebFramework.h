@@ -29,7 +29,6 @@ namespace framework
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="std::out_of_range">Can't find some settings</exception>
-		/// <exception cref="std::invalid_argument">Wrong value for settings</exception>
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON setting value</exception>
 		WebFramework(const std::filesystem::path& configurationJSONFile);
 

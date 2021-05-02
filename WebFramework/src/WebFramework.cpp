@@ -8,6 +8,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Log.h"
 #include "WebNetwork/WebServers/MultithreadedWebServer.h"
+#include "WebNetwork/WebServers/ThreadPoolWebServer.h"
 
 #pragma comment (lib, "BaseTCPServer.lib")
 #pragma comment (lib, "Log.lib")
@@ -74,6 +75,8 @@ namespace framework
 
 		vector<utility::JSONSettingsParser> jsonSettings;
 
+		jsonSettings.reserve(settingsPaths.size());
+
 		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
 		if (webServerType == json::multithreadedWebServerTypeValue)
@@ -92,7 +95,36 @@ namespace framework
 		}
 		else if (webServerType == json::threadPoolWebServerTypeValue)
 		{
-
+			try
+			{
+				server = make_unique<ThreadPoolWebServer>
+					(
+						jsonSettings,
+						assetsPath,
+						templatesPath,
+						usingAssetsCache,
+						ip,
+						port,
+						timeout,
+						loadSources,
+						static_cast<uint32_t>(parser.get<int64_t>("threadCount"))
+						);
+			}
+			catch (const json::exceptions::BaseJSONException&)
+			{
+				server = make_unique<ThreadPoolWebServer>
+					(
+						jsonSettings,
+						assetsPath,
+						templatesPath,
+						usingAssetsCache,
+						ip,
+						port,
+						timeout,
+						loadSources,
+						NULL
+						);
+			}
 		}
 		else
 		{

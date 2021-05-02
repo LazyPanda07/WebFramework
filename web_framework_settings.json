@@ -22,5 +22,9 @@
     "usingLogging": true,
     "dateFormat": "DMY",
     "addNewLineAfterLog": true
+  },
+
+  "ThreadPoolServer": {
+    "threadCount": 0
   }
 }
