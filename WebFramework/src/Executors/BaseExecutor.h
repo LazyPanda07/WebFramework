@@ -29,9 +29,11 @@ namespace framework
 	public:
 		enum class executorType
 		{
+			none,
 			stateful,
 			stateless,
-			none
+			heavyOperationStateful,
+			heavyOperationStateless
 		};
 
 	public:

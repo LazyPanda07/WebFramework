@@ -5,6 +5,8 @@
 #include "BaseWebServer.h"
 #include "ThreadPool.h"
 
+#pragma warning(push)
+
 namespace framework
 {
 	class ThreadPoolWebServer final : public virtual BaseWebServer
@@ -50,3 +52,5 @@ namespace framework
 		~ThreadPoolWebServer() = default;
 	};
 }
+
+#pragma warning(pop)

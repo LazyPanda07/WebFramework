@@ -121,7 +121,7 @@ namespace framework
 						executor = routes.insert(make_pair(move(parameters), smartPointer<BaseExecutor>(creator[executorSettings->second.name]()))).first;
 						executor->second->init(executorSettings->second);
 
-						if (executor->second->getType() == BaseExecutor::executorType::stateful)
+						if (executor->second->getType() == BaseExecutor::executorType::stateful || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful)
 						{
 							executor = statefulExecutors.insert(routes.extract(executor)).position;
 						}
