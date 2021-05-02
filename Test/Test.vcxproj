@@ -183,7 +183,7 @@
     <None Include="assets\index.wfdp" />
     <None Include="test.json" />
     <None Include="web.json" />
-    <None Include="web_framework_settings.ini" />
+    <None Include="web_framework_settings.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Index.h" />

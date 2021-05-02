@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 {
 	try
 	{
-		framework::WebFramework webFramework("web_framework_settings.ini");
+		framework::WebFramework webFramework("web_framework_settings.json");
 		string s;
 
 		webFramework.startServer();
