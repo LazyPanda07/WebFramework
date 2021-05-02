@@ -41,11 +41,7 @@ namespace framework
 		}
 		catch (const web::WebException& e)
 		{
-			if (e.getErrorCode() != WSAEWOULDBLOCK)
-			{
-				cout << e.what() << " " << e.getErrorCode() << endl;
-			}
-			else if (!e.getErrorCode())
+			if (!e.getErrorCode())
 			{
 				data.erase(client.clientIp);
 
@@ -53,6 +49,8 @@ namespace framework
 				{
 					i.second->destroy();
 				}
+
+				disconnectedClients.push_back(client.clientSocket);
 			}
 		}
 		catch (const exceptions::BadRequestException&)	// 400
