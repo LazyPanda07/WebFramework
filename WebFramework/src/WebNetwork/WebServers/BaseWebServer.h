@@ -14,6 +14,7 @@ namespace framework
 		ExecutorsManager executorsManager;
 		SessionsManager sessionsManager;
 		sqlite::SQLiteManager databasesManager;
+		ResourceExecutor* resources;
 
 	public:
 		/// <summary>

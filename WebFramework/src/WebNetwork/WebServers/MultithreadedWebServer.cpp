@@ -20,7 +20,6 @@ namespace framework
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
 		const string clientIp = getClientIpV4(addr);
-		smartPointer<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 
