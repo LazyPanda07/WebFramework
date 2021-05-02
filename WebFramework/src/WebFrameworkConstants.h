@@ -49,18 +49,17 @@ inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";
 
 inline constexpr std::string_view webFrameworkDynamicPagesExtension = ".wfdp";
 
-namespace ini
+namespace json
 {
-	inline const std::string webServerSection = "WebServer";
-	inline const std::string webFrameworkSection = "WebFramework";
-	inline const std::string loggingSection = "Logging";
-	inline const std::string webFrameworkLoadBalancerSection = "WebFrameworkLoadBalancer";
+	inline const std::string webServerObject = "WebServer";
+	inline const std::string webFrameworkObject = "WebFramework";
+	inline const std::string loggingObject = "Logging";
 
-	inline const std::string settingsPathKey = "settingsPath";
+	inline const std::string settingsPathsKey = "settingsPaths";
 	inline const std::string ipKey = "ip";
 	inline const std::string portKey = "port";
 	inline const std::string timeoutKey = "timeout";
-	inline const std::string loadSourceKey = "loadSource";
+	inline const std::string loadSourcesKey = "loadSources";
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
@@ -70,15 +69,20 @@ namespace ini
 
 	inline const std::string usingLoggingKey = "usingLogging";
 
-	inline const std::string listOfServersKey = "listOfServers";
-	inline const std::string loadBalancerIpKey = "loadBalancerIp";
-	inline const std::string loadBalancerPortKey = "loadBalancerPort";
-	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
-
 	inline const std::string defaultLoadSourceValue = "current";
 
 	inline const std::string multithreadedWebServerTypeValue = "multithreaded";
 	inline const std::string threadPoolWebServerTypeValue = "threadPool";
+}
+
+namespace ini
+{
+	inline const std::string webFrameworkLoadBalancerSection = "WebFrameworkLoadBalancer";
+
+	inline const std::string listOfServersKey = "listOfServers";
+	inline const std::string loadBalancerIpKey = "loadBalancerIp";
+	inline const std::string loadBalancerPortKey = "loadBalancerPort";
+	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
 }
 
 namespace exceptions
@@ -91,19 +95,7 @@ namespace exceptions
 	inline const std::string cantLoadSource = "Can't load ";
 	inline const std::string missingOtherDLLs = "That load source requires to load other dlls";
 
-	inline const std::string cantFindSettingsPath = "Can't find settings path option";
-	inline const std::string cantFindAssetsPath = "Can't find assets path option";
-	inline const std::string cantFindTemplatesPath = "Can't find templates path option";
-	inline const std::string cantFindUsingAssetsCache = "Can't find using assets cache option";
-	inline const std::string cantFindLoadSource = "Can't find load source option";
-	inline const std::string cantFindWebServerType = "Can't find web server type";
 	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
-
-	inline const std::string cantFindIp = "Can't find ip option";
-	inline const std::string cantFindPort = "Can't find port option";
-	inline const std::string cantFindTimeout = "Can't find timeout option";
-
-	inline const std::string cantFindDateFormat = "Can't find date format option";
 
 	inline const std::string variableDeclarationSyntaxError = "Wrong variable declaration";
 	inline const std::string sectionDeclarationSyntaxError = "Wrong section declaration";

@@ -1,6 +1,9 @@
 #include "WebFramework.h"
 
-#include "INIParser.h"
+#include <fstream>
+
+#include "JSONParser.h"
+#include "Exceptions/BaseJSONException.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Log.h"
@@ -15,139 +18,85 @@ using namespace std;
 
 namespace framework
 {
-	WebFramework::WebFramework(const filesystem::path& configurationINIFile)
+	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
 	{
-		if (!filesystem::exists(configurationINIFile))
+		if (!filesystem::exists(configurationJSONFile))
 		{
-			throw exceptions::FileDoesNotExistException(configurationINIFile.string());
+			throw exceptions::FileDoesNotExistException(configurationJSONFile.string());
 		}
 
-		::utility::INIParser parser(configurationINIFile);
-		const unordered_multimap<string, string>& webServerSettings = parser.getSectionData(ini::webServerSection);
-		const unordered_multimap<string, string>& webFrameworkSettings = parser.getSectionData(ini::webFrameworkSection);
-		const unordered_multimap<string, string>& loggingSettings = parser.getSectionData(ini::loggingSection);
+		json::JSONParser parser(move(ifstream(configurationJSONFile)));
+
+		const vector<string>& settingsPaths = parser.get<vector<string>>(json::settingsPathsKey);
+		const string& assetsPath = parser.get<string>(json::assetsPathKey);
+		const string& templatesPath = parser.get<string>(json::templatesPathKey);
+		bool usingAssetsCache = parser.get<bool>(json::usingAssetsCacheKey);
+		const vector<string>& loadSources = parser.get<vector<string>>(json::loadSourcesKey);
+		const string& webServerType = parser.get<string>(json::webServerTypeKey);
+		const string& ip = parser.get<string>(json::ipKey);
+		const string& port = parser.get<string>(json::portKey);
+		uint64_t timeout = parser.get<uint64_t>(json::timeoutKey);
 
 		try
 		{
-			auto settingsPathIterator = webFrameworkSettings.equal_range(ini::settingsPathKey);
-			auto assetsPath = webFrameworkSettings.equal_range(ini::assetsPathKey);
-			auto templatesPath = webFrameworkSettings.equal_range(ini::templatesPathKey);
-			auto usingAssetsCache = webFrameworkSettings.equal_range(ini::usingAssetsCacheKey);
-			auto loadSourcesIterator = webFrameworkSettings.equal_range(ini::loadSourceKey);
-			auto webServerType = webFrameworkSettings.equal_range(ini::webServerTypeKey);
-			auto ip = webServerSettings.equal_range(ini::ipKey);
-			auto port = webServerSettings.equal_range(ini::portKey);
-			auto timeout = webServerSettings.equal_range(ini::timeoutKey);
-			auto usingLogging = loggingSettings.equal_range(ini::usingLoggingKey);
-			auto dateFormat = loggingSettings.equal_range(ini::dateFormatKey);
-			auto addNewLineAfterLog = loggingSettings.equal_range(ini::addNewLineAfterLogKey);
+			parser.get<json::JSONParser::objectType>(json::loggingObject);	// is logging object exists
 
-			if (settingsPathIterator.first == webFrameworkSettings.end())
+			try
 			{
-				throw out_of_range(::exceptions::cantFindSettingsPath);
-			}
+				bool usingLogging = parser.get<bool>(json::usingLoggingKey);
+				const string& dateFormat = parser.get<string>(json::dateFormatKey);
 
-			if (assetsPath.first == webFrameworkSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindAssetsPath);
-			}
-
-			if (templatesPath.first == webFrameworkSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindTemplatesPath);
-			}
-
-			if (usingAssetsCache.first == webFrameworkSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindUsingAssetsCache);
-			}
-
-			if (loadSourcesIterator.first == webFrameworkSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindLoadSource);
-			}
-
-			if (webServerType.first == webFrameworkSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindWebServerType);
-			}
-
-			if (ip.first == webServerSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindIp);
-			}
-
-			if (port.first == webServerSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindPort);
-			}
-
-			if (timeout.first == webServerSettings.end())
-			{
-				throw out_of_range(::exceptions::cantFindTimeout);
-			}
-
-			if (usingLogging.first != loggingSettings.end())
-			{
-				if (usingLogging.first->second == "true")
+				if (usingLogging)
 				{
-					if (dateFormat.first == loggingSettings.end())
+					try
 					{
-						throw out_of_range(::exceptions::cantFindDateFormat);
-					}
+						bool addNewLineAfterLog = parser.get<bool>(json::addNewLineAfterLogKey);
 
-					if (addNewLineAfterLog.first == loggingSettings.end())
-					{
-						Log::init(Log::dateFormatFromString(dateFormat.first->second));
+						Log::init(Log::dateFormatFromString(dateFormat), addNewLineAfterLog);
 					}
-					else
+					catch (const json::exceptions::BaseJSONException&)
 					{
-						Log::init(Log::dateFormatFromString(dateFormat.first->second), addNewLineAfterLog.first->second == "true" ? true : false);
+						Log::init(Log::dateFormatFromString(dateFormat));
 					}
 				}
 			}
-
-			vector<string> loadSources;
-			vector<utility::JSONSettingsParser> jsonSettings;
-
-			transform(loadSourcesIterator.first, loadSourcesIterator.second, back_inserter(loadSources), [](const pair<string, string>& i) { return i.second; });	//take values of loadSource array
-
-			transform(settingsPathIterator.first, settingsPathIterator.second, back_inserter(jsonSettings), [](const pair<string, string>& i) { return utility::JSONSettingsParser(i.second); });
-
-			if (webServerType.first->second == ini::multithreadedWebServerTypeValue)
+			catch (const json::exceptions::BaseJSONException& e)
 			{
-				server = make_unique<MultithreadedWebServer>
-					(
-						jsonSettings,
-						assetsPath.first->second,
-						templatesPath.first->second,
-						usingAssetsCache.first->second == "true" ? true : false,
-						ip.first->second,
-						port.first->second,
-						stoi(timeout.first->second),
-						loadSources
-						);
-			}
-			else if (webServerType.first->second == ini::threadPoolWebServerTypeValue)
-			{
+				cout << e.what() << endl;
 
-			}
-			else
-			{
-				throw out_of_range(::exceptions::wrongWebServerType);
+				return;
 			}
 		}
-		catch (const exceptions::BaseExecutorException&)
+		catch (const json::exceptions::BaseJSONException&)
 		{
-			throw;
+
 		}
-		catch (const out_of_range&)	//not found settings in unordered_multimap
+
+		vector<utility::JSONSettingsParser> jsonSettings;
+
+		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
+
+		if (webServerType == json::multithreadedWebServerTypeValue)
 		{
-			throw;
+			server = make_unique<MultithreadedWebServer>
+				(
+					jsonSettings,
+					assetsPath,
+					templatesPath,
+					usingAssetsCache,
+					ip,
+					port,
+					timeout,
+					loadSources
+					);
 		}
-		catch (const invalid_argument&)	//stoi or wrong dateFormat
+		else if (webServerType == json::threadPoolWebServerTypeValue)
 		{
-			throw;
+
+		}
+		else
+		{
+			throw out_of_range(::exceptions::wrongWebServerType);
 		}
 	}
 
