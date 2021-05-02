@@ -16,6 +16,7 @@ namespace framework
 			sockaddr addr;
 			std::string clientIp;
 			std::unordered_map<std::string, smartPointer<BaseExecutor>> statefulExecutors;
+			streams::IOSocketStream stream;
 
 			IndividualData(SOCKET clientSocket, const sockaddr& addr);
 

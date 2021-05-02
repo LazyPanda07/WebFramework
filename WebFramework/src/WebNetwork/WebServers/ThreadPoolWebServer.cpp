@@ -1,6 +1,7 @@
 #include "ThreadPoolWebServer.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
+#include "WebNetwork/WebFrameworkHTTPNetwork.h"
 
 using namespace std;
 
@@ -9,24 +10,24 @@ namespace framework
 	ThreadPoolWebServer::IndividualData::IndividualData(SOCKET clientSocket, const sockaddr& addr) :
 		clientSocket(clientSocket),
 		addr(addr),
-		clientIp(getClientIpV4(this->addr))
+		clientIp(getClientIpV4(this->addr)),
+		stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)))
 	{
 
 	}
 
 	void ThreadPoolWebServer::mainCycle(IndividualData& client)
 	{
-		streams::IOSocketStream stream(client.clientSocket);
 		HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, client.addr);
 		HTTPResponse response;
 
 		try
 		{
-			stream >> request;
+			client.stream >> request;
 
 			executorsManager.service(move(request), response, client.statefulExecutors);
 
-			stream << response;
+			client.stream << response;
 		}
 		catch (const web::WebException& e)
 		{
@@ -46,25 +47,25 @@ namespace framework
 		{
 			resources->badRequestError(response);
 
-			stream << response;
+			client.stream << response;
 		}
 		catch (const exceptions::FileDoesNotExistException&)	// 404
 		{
 			resources->notFoundError(response);
 
-			stream << response;
+			client.stream << response;
 		}
 		catch (const exceptions::BaseExecutorException&)	//500
 		{
 			resources->internalServerError(response);
 
-			stream << response;
+			client.stream << response;
 		}
 		catch (...)	//500
 		{
 			resources->internalServerError(response);
 
-			stream << response;
+			client.stream << response;
 		}
 	}
 
