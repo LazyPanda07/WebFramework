@@ -16,12 +16,16 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "usingAssetsCache": true,
-    "webServerType": "multithreaded"
+    "webServerType": "threadPool"
   },
 
   "Logging": {
     "usingLogging": true,
     "dateFormat": "DMY",
     "addNewLineAfterLog": true
+  },
+
+  "ThreadPoolServer": {
+    "threadCount": 0
   }
 }
