@@ -35,7 +35,7 @@ namespace framework
 		const string& webServerType = parser.get<string>(json::webServerTypeKey);
 		const string& ip = parser.get<string>(json::ipKey);
 		const string& port = parser.get<string>(json::portKey);
-		uint64_t timeout = parser.get<uint64_t>(json::timeoutKey);
+		int64_t timeout = parser.get<int64_t>(json::timeoutKey);
 
 		try
 		{
