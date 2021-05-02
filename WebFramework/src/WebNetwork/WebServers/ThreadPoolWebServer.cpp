@@ -7,11 +7,20 @@ using namespace std;
 
 namespace framework
 {
+	ThreadPoolWebServer::IndividualData::IndividualData() :
+		clientSocket(NULL),
+		addr(),
+		isBusy(false)
+	{
+
+	}
+
 	ThreadPoolWebServer::IndividualData::IndividualData(SOCKET clientSocket, const sockaddr& addr) :
 		clientSocket(clientSocket),
 		addr(addr),
 		clientIp(getClientIpV4(this->addr)),
-		stream(new buffers::IOSocketBuffer(new framework::WebFrameworkHTTPNetwork(clientSocket)))
+		stream(new buffers::IOSocketBuffer(new framework::WebFrameworkHTTPNetwork(clientSocket))),
+		isBusy(false)
 	{
 
 	}
@@ -24,6 +33,7 @@ namespace framework
 		clientIp = move(other.clientIp);
 		statefulExecutors = move(other.statefulExecutors);
 		stream = move(other.stream);
+		isBusy = other.isBusy;
 	}
 
 	void ThreadPoolWebServer::mainCycle(IndividualData& client, vector<SOCKET>& disconnectedClients)
@@ -103,7 +113,10 @@ namespace framework
 
 			for (auto& [clientSocket, client] : clients)
 			{
-				this->mainCycle(client, disconnectedClients);
+				if (!client.isBusy)
+				{
+					this->mainCycle(client, disconnectedClients);
+				}
 			}
 
 			for (const auto& i : disconnectedClients)
