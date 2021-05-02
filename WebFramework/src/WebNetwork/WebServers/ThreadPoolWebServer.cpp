@@ -11,12 +11,22 @@ namespace framework
 		clientSocket(clientSocket),
 		addr(addr),
 		clientIp(getClientIpV4(this->addr)),
-		stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)))
+		stream(new buffers::IOSocketBuffer(new framework::WebFrameworkHTTPNetwork(clientSocket)))
 	{
 
 	}
 
-	void ThreadPoolWebServer::mainCycle(IndividualData& client)
+	ThreadPoolWebServer::IndividualData::IndividualData(IndividualData&& other) noexcept :
+		IndividualData()
+	{
+		clientSocket = other.clientSocket;
+		addr = other.addr;
+		clientIp = move(other.clientIp);
+		statefulExecutors = move(other.statefulExecutors);
+		stream = move(other.stream);
+	}
+
+	void ThreadPoolWebServer::mainCycle(IndividualData& client, vector<SOCKET>& disconnectedClients)
 	{
 		HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, client.addr);
 		HTTPResponse response;
@@ -31,9 +41,11 @@ namespace framework
 		}
 		catch (const web::WebException& e)
 		{
-			cout << e.what() << " " << e.getErrorCode() << endl;
-
-			/*if (!e.getErrorCode())
+			if (e.getErrorCode() != WSAEWOULDBLOCK)
+			{
+				cout << e.what() << " " << e.getErrorCode() << endl;
+			}
+			else if (!e.getErrorCode())
 			{
 				data.erase(client.clientIp);
 
@@ -41,7 +53,7 @@ namespace framework
 				{
 					i.second->destroy();
 				}
-			}*/
+			}
 		}
 		catch (const exceptions::BadRequestException&)	// 400
 		{
@@ -71,6 +83,8 @@ namespace framework
 
 	void ThreadPoolWebServer::receiveConnections()
 	{
+		vector<SOCKET> disconnectedClients;
+
 		while (isRunning)
 		{
 			sockaddr addr;
@@ -89,20 +103,25 @@ namespace framework
 				this->clientConnection(clientSocket, addr);
 			}
 
-			for (auto& client : clients)
+			for (auto& [clientSocket, client] : clients)
 			{
-				this->mainCycle(client);
+				this->mainCycle(client, disconnectedClients);
 			}
+
+			for (const auto& i : disconnectedClients)
+			{
+				clients.erase(i);
+			}
+
+			disconnectedClients.clear();
 		}
 	}
 
 	void ThreadPoolWebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 	{
-		if (sockets.find(clientSocket) == sockets.end())
+		if (clients.find(clientSocket) == clients.end())
 		{
-			sockets.insert(clientSocket);
-
-			clients.emplace_back(clientSocket, addr);
+			clients.insert(make_pair(clientSocket, IndividualData(clientSocket, addr)));
 
 			return;
 		}
@@ -131,6 +150,6 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-
+		this->blockingMode = 1;
 	}
 }

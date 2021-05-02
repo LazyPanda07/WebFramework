@@ -1,6 +1,6 @@
 #pragma once
 
-#include <unordered_set>
+#include <unordered_map>
 
 #include "BaseWebServer.h"
 #include "ThreadPool.h"
@@ -18,11 +18,13 @@ namespace framework
 			std::unordered_map<std::string, smartPointer<BaseExecutor>> statefulExecutors;
 			streams::IOSocketStream stream;
 
+			IndividualData() = default;
+
 			IndividualData(SOCKET clientSocket, const sockaddr& addr);
 
 			IndividualData(const IndividualData&) = delete;
 
-			IndividualData(IndividualData&&) noexcept = default;
+			IndividualData(IndividualData&& other) noexcept;
 
 			IndividualData& operator = (const IndividualData&) = delete;
 
@@ -33,11 +35,10 @@ namespace framework
 
 	private:
 		threading::ThreadPool threadPool;
-		std::unordered_set<SOCKET> sockets;
-		std::vector<IndividualData> clients;
+		std::unordered_map<SOCKET, IndividualData> clients;
 
 	private:
-		void mainCycle(IndividualData& client);
+		void mainCycle(IndividualData& client, std::vector<SOCKET>& disconnectedClients);
 
 		void receiveConnections() override;
 
