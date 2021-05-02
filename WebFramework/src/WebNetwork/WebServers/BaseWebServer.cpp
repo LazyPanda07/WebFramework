@@ -25,7 +25,7 @@ namespace framework
 			{
 				if (!filesystem::exists(i))
 				{
-					if (i == ini::defaultLoadSourceValue)
+					if (i == json::defaultLoadSourceValue)
 					{
 						result.push_back(nullptr);
 

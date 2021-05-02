@@ -25,12 +25,13 @@ namespace framework
 		/// <summary>
 		/// Construct WebFramework
 		/// </summary>
-		/// <param name="configurationINIFile">path to .ini configuration file</param>
+		/// <param name="configurationINIFile">path to .json configuration file</param>
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="std::out_of_range">Can't find some settings</exception>
 		/// <exception cref="std::invalid_argument">Wrong value for settings</exception>
-		WebFramework(const std::filesystem::path& configurationINIFile);
+		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON setting value</exception>
+		WebFramework(const std::filesystem::path& configurationJSONFile);
 
 		/// <summary>
 		/// Start MultithreadedWebServer
