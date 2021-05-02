@@ -70,11 +70,28 @@ namespace framework
 
 	void ThreadPoolWebServer::receiveConnections()
 	{
-		BaseTCPServer::receiveConnections();
-
-		for (auto& client : clients)
+		while (isRunning)
 		{
-			this->mainCycle(client);
+			sockaddr addr;
+			int addrlen = sizeof(addr);
+
+			SOCKET clientSocket = accept(listenSocket, &addr, &addrlen);
+
+			if (isRunning && clientSocket != INVALID_SOCKET)
+			{
+				setsockopt(clientSocket, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char*>(&timeout), sizeof(timeout));
+
+				ioctlsocket(clientSocket, FIONBIO, &blockingMode);
+
+				data.insert(getClientIpV4(addr), clientSocket);
+
+				this->clientConnection(clientSocket, addr);
+			}
+
+			for (auto& client : clients)
+			{
+				this->mainCycle(client);
+			}
 		}
 	}
 
