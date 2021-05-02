@@ -18,7 +18,7 @@
     "webServerType": "multithreaded"
   },
 
-  "Loggin": {
+  "Logging": {
     "usingLogging": true,
     "dateFormat": "DMY",
     "addNewLineAfterLog": true
