@@ -129,20 +129,13 @@ namespace framework
 				}
 			}
 
-			bool isThreadPoolTask = executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful;
+			bool isThreadPoolTask = fileRequest ? false : executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful;
 
 			if (method == getRequest)
 			{
 				if (isThreadPoolTask)
 				{
-					if (fileRequest)
-					{
-						threadPoolFunction = bind(&BaseExecutor::doGet, resources.get(), placeholders::_1, placeholders::_2);
-					}
-					else
-					{
-						threadPoolFunction = bind(&BaseExecutor::doGet, executor->second.get(), placeholders::_1, placeholders::_2);
-					}
+					threadPoolFunction = bind(&BaseExecutor::doGet, executor->second.get(), placeholders::_1, placeholders::_2);
 				}
 				else
 				{
@@ -153,14 +146,7 @@ namespace framework
 			{
 				if (isThreadPoolTask)
 				{
-					if (fileRequest)
-					{
-						threadPoolFunction = bind(&BaseExecutor::doPost, resources.get(), placeholders::_1, placeholders::_2);
-					}
-					else
-					{
-						threadPoolFunction = bind(&BaseExecutor::doPost, executor->second.get(), placeholders::_1, placeholders::_2);
-					}
+					threadPoolFunction = bind(&BaseExecutor::doPost, executor->second.get(), placeholders::_1, placeholders::_2);
 				}
 				else
 				{
@@ -171,14 +157,7 @@ namespace framework
 			{
 				if (isThreadPoolTask)
 				{
-					if (fileRequest)
-					{
-						threadPoolFunction = bind(&BaseExecutor::doHead, resources.get(), placeholders::_1, placeholders::_2);
-					}
-					else
-					{
-						threadPoolFunction = bind(&BaseExecutor::doHead, executor->second.get(), placeholders::_1, placeholders::_2);
-					}
+					threadPoolFunction = bind(&BaseExecutor::doHead, executor->second.get(), placeholders::_1, placeholders::_2);
 				}
 				else
 				{
@@ -189,14 +168,7 @@ namespace framework
 			{
 				if (isThreadPoolTask)
 				{
-					if (fileRequest)
-					{
-						threadPoolFunction = bind(&BaseExecutor::doPut, resources.get(), placeholders::_1, placeholders::_2);
-					}
-					else
-					{
-						threadPoolFunction = bind(&BaseExecutor::doPut, executor->second.get(), placeholders::_1, placeholders::_2);
-					}
+					threadPoolFunction = bind(&BaseExecutor::doPut, executor->second.get(), placeholders::_1, placeholders::_2);
 				}
 				else
 				{
@@ -207,14 +179,7 @@ namespace framework
 			{
 				if (isThreadPoolTask)
 				{
-					if (fileRequest)
-					{
-						threadPoolFunction = bind(&BaseExecutor::doDelete, resources.get(), placeholders::_1, placeholders::_2);
-					}
-					else
-					{
-						threadPoolFunction = bind(&BaseExecutor::doDelete, executor->second.get(), placeholders::_1, placeholders::_2);
-					}
+					threadPoolFunction = bind(&BaseExecutor::doDelete, executor->second.get(), placeholders::_1, placeholders::_2);
 				}
 				else
 				{
@@ -225,14 +190,7 @@ namespace framework
 			{
 				if (isThreadPoolTask)
 				{
-					if (fileRequest)
-					{
-						threadPoolFunction = bind(&BaseExecutor::doOptions, resources.get(), placeholders::_1, placeholders::_2);
-					}
-					else
-					{
-						threadPoolFunction = bind(&BaseExecutor::doOptions, executor->second.get(), placeholders::_1, placeholders::_2);
-					}
+					threadPoolFunction = bind(&BaseExecutor::doOptions, executor->second.get(), placeholders::_1, placeholders::_2);
 				}
 				else
 				{
@@ -243,14 +201,7 @@ namespace framework
 			{
 				if (isThreadPoolTask)
 				{
-					if (fileRequest)
-					{
-						threadPoolFunction = bind(&BaseExecutor::doTrace, resources.get(), placeholders::_1, placeholders::_2);
-					}
-					else
-					{
-						threadPoolFunction = bind(&BaseExecutor::doTrace, executor->second.get(), placeholders::_1, placeholders::_2);
-					}
+					threadPoolFunction = bind(&BaseExecutor::doTrace, executor->second.get(), placeholders::_1, placeholders::_2);
 				}
 				else
 				{
