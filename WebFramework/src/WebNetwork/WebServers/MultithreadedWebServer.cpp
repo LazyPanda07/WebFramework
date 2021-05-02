@@ -22,6 +22,7 @@ namespace framework
 		const string clientIp = getClientIpV4(addr);
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
+		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
 
 		while (true)
 		{
@@ -33,7 +34,7 @@ namespace framework
 
 				stream >> request;
 
-				executorsManager.service(move(request), response, statefulExecutors);
+				executorsManager.service(move(request), response, statefulExecutors, threadPoolFunction);
 
 				stream << response;
 			}

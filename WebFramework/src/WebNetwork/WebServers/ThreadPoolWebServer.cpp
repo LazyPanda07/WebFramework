@@ -36,16 +36,13 @@ namespace framework
 		isBusy = other.isBusy;
 	}
 
-	void ThreadPoolWebServer::mainCycle(IndividualData& client, vector<SOCKET>& disconnectedClients)
+	void ThreadPoolWebServer::taskImplementation(HTTPRequest&& request, IndividualData& client, function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients)
 	{
-		HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, client.addr);
 		HTTPResponse response;
 
 		try
 		{
-			client.stream >> request;
-
-			executorsManager.service(move(request), response, client.statefulExecutors);
+			executorMethod(move(request), response);
 
 			client.stream << response;
 		}
@@ -53,6 +50,80 @@ namespace framework
 		{
 			if (!e.getErrorCode())
 			{
+				unique_lock<mutex> lock(disconnectMutex);
+
+				data.erase(client.clientIp);
+
+				for (auto& i : client.statefulExecutors)
+				{
+					i.second->destroy();
+				}
+
+				disconnectedClients.push_back(client.clientSocket);
+			}
+		}
+		catch (const exceptions::BadRequestException&)	// 400
+		{
+			resources->badRequestError(response);
+
+			client.stream << response;
+		}
+		catch (const exceptions::FileDoesNotExistException&)	// 404
+		{
+			resources->notFoundError(response);
+
+			client.stream << response;
+		}
+		catch (const exceptions::BaseExecutorException&)	//500
+		{
+			resources->internalServerError(response);
+
+			client.stream << response;
+		}
+		catch (...)	//500
+		{
+			resources->internalServerError(response);
+
+			client.stream << response;
+		}
+
+		client.isBusy = false;
+	}
+
+	void ThreadPoolWebServer::mainCycle(IndividualData& client, vector<SOCKET>& disconnectedClients)
+	{
+		HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, client.addr);
+		HTTPResponse response;
+		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
+
+		try
+		{
+			client.stream >> request;
+
+			executorsManager.service(move(request), response, client.statefulExecutors, threadPoolFunction);
+
+			if (threadPoolFunction)
+			{
+				client.isBusy = true;
+
+				function<void()> task = [this, &request, &client, threadPoolFunction, &disconnectedClients]()
+				{
+					taskImplementation(move(request), client, *threadPoolFunction, disconnectedClients);
+				};
+
+				threadPool.addTask(move(task));
+
+				return;
+			}
+
+			client.stream << response;
+		}
+		catch (const web::WebException& e)
+		{
+			if (!e.getErrorCode())
+			{
+				unique_lock<mutex> lock(disconnectMutex);
+
 				data.erase(client.clientIp);
 
 				for (auto& i : client.statefulExecutors)
