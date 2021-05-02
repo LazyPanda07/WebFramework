@@ -5,8 +5,6 @@
 #include "BaseWebServer.h"
 #include "ThreadPool.h"
 
-#pragma warning(push)
-
 namespace framework
 {
 	class ThreadPoolWebServer final : public virtual BaseWebServer
@@ -19,8 +17,9 @@ namespace framework
 			std::string clientIp;
 			std::unordered_map<std::string, smartPointer<BaseExecutor>> statefulExecutors;
 			streams::IOSocketStream stream;
+			bool isBusy;
 
-			IndividualData() = default;
+			IndividualData();
 
 			IndividualData(SOCKET clientSocket, const sockaddr& addr);
 
@@ -34,12 +33,14 @@ namespace framework
 
 			~IndividualData() = default;
 		};
-
 	private:
 		threading::ThreadPool threadPool;
 		std::unordered_map<SOCKET, IndividualData> clients;
+		std::mutex disconnectMutex;
 
 	private:
+		void taskImplementation(HTTPRequest&& request, IndividualData& client, std::function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, std::vector<SOCKET>& disconnectedClients);
+
 		void mainCycle(IndividualData& client, std::vector<SOCKET>& disconnectedClients);
 
 		void receiveConnections() override;
@@ -52,5 +53,3 @@ namespace framework
 		~ThreadPoolWebServer() = default;
 	};
 }
-
-#pragma warning(pop)

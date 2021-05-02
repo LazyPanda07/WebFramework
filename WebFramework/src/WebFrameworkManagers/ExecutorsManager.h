@@ -2,8 +2,7 @@
 
 #include <unordered_map>
 #include <string>
-#include <regex>
-
+#include <optional>
 #include <mutex>
 #include <memory>
 
@@ -55,13 +54,13 @@ namespace framework
 		/// <summary>
 		/// Process requests from server
 		/// </summary>
-		/// <param name="request">from server</param>
-		/// <param name="response">for client</param>
+		/// <param name="request">request from client</param>
+		/// <param name="response">response to client</param>
 		/// <param name="statefulExecutors">all stateful executors for client</param>
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="std::out_of_range"></exception>
-		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, smartPointer<BaseExecutor>>& statefulExecutors);
+		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, smartPointer<BaseExecutor>>& statefulExecutors, std::optional<std::function<void(HTTPRequest&&, HTTPResponse&)>>& threadPoolFunction);
 
 		/// <summary>
 		/// Getter for ResourceExecutor
