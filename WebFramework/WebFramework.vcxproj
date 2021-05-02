@@ -154,6 +154,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -182,6 +183,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -212,6 +214,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -243,6 +246,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -276,6 +280,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -307,6 +312,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -364,6 +370,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp" />
+    <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
@@ -408,6 +415,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
     <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
     <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h" />
+    <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ThreadPool\ThreadPool.vcxproj">

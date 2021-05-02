@@ -20,7 +20,6 @@ namespace framework
 	{
 		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
 		const string clientIp = getClientIpV4(addr);
-		smartPointer<ResourceExecutor>& resources = executorsManager.getResourceExecutor();
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 
@@ -77,6 +76,15 @@ namespace framework
 	}
 
 	MultithreadedWebServer::MultithreadedWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+		BaseTCPServer
+		(
+			port,
+			ip,
+			timeout,
+			true,
+			0,
+			false
+		),
 		BaseWebServer
 		(
 			parsers,
@@ -87,15 +95,6 @@ namespace framework
 			port,
 			timeout,
 			pathToSources
-		),
-		BaseTCPServer
-		(
-			port,
-			ip,
-			timeout,
-			true,
-			0,
-			false
 		)
 	{
 		

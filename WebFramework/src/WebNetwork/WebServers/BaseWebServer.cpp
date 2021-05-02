@@ -4,6 +4,7 @@
 #include "Exceptions/CantLoadSourceException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
+#include "Utility/Memory.h"
 
 using namespace std;
 
@@ -227,5 +228,7 @@ namespace framework
 		}
 
 		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));
+
+		resources = executorsManager.getResourceExecutor().get();
 	}
 }

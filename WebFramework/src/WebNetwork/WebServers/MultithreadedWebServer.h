@@ -8,7 +8,7 @@ namespace framework
 	/// Standard TCP web server
 	/// <para>Initialize only through WebFramework</para>
 	/// </summary>
-	class MultithreadedWebServer : public virtual BaseWebServer
+	class MultithreadedWebServer final : public virtual BaseWebServer
 	{
 	private:
 		/// <summary>
@@ -16,7 +16,7 @@ namespace framework
 		/// </summary>
 		/// <param name="clientSocket">client's socket</param>
 		/// <param name="addr">client's address</param>
-		virtual void clientConnection(SOCKET clientSocket, sockaddr addr) final override;
+		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
 		/// <summary>
