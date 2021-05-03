@@ -1,11 +1,6 @@
 #pragma once
 
-#include "BaseTCPServer.h"
-#include "WebFrameworkConstants.h"
-#include "WebFrameworkManagers/ExecutorsManager.h"
-#include "WebFrameworkManagers/SessionsManager.h"
-#include "SQLite3/SQLiteManager.h"
-#include "Utility/JSONSettingsParser.h"
+#include "BaseWebServer.h"
 
 namespace framework
 {
@@ -13,13 +8,8 @@ namespace framework
 	/// Standard TCP web server
 	/// <para>Initialize only through WebFramework</para>
 	/// </summary>
-	class WebServer : public web::BaseTCPServer
+	class MultithreadedWebServer final : public virtual BaseWebServer
 	{
-	private:
-		ExecutorsManager executorsManager;
-		SessionsManager sessionsManager;
-		sqlite::SQLiteManager databasesManager;
-
 	private:
 		/// <summary>
 		/// Called for every client
@@ -30,9 +20,9 @@ namespace framework
 
 	public:
 		/// <summary>
-		/// Construct WebServer
+		/// Construct MultithreadedWebServer
 		/// </summary>
-		/// <param name="parser">settings from .json file</param>
+		/// <param name="settings">settings from .json files</param>
 		/// <param name="assets">path to assets folder</param>
 		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="isCaching">is caching resource files</param>
@@ -44,8 +34,8 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		WebServer(const utility::JSONSettingsParser& parser, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
+		MultithreadedWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
-		~WebServer() = default;
+		~MultithreadedWebServer() = default;
 	};
 }

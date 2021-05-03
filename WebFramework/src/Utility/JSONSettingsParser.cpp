@@ -10,6 +10,14 @@ namespace framework
 {
 	namespace utility
 	{
+		JSONSettingsParser::ExecutorSettings::ExecutorSettings(ExecutorSettings&& other) noexcept :
+			initParameters(move(other.initParameters)),
+			name(move(other.name)),
+			executorLoadType(other.executorLoadType)
+		{
+
+		}
+
 		JSONSettingsParser::JSONSettingsParser(const string& JSONSettings)
 		{
 			ifstream in(JSONSettings);

@@ -29,10 +29,10 @@ namespace framework
 			/// <summary>
 			/// Construct LoadBalancer
 			/// </summary>
-			/// <param name="configurationINIFile">path to .ini configuration file</param>
+			/// <param name="configurationINIFile">path to .json configuration file</param>
 			/// <exception cref="std::out_of_range">Can't find some settings</exception>
 			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
-			LoadBalancer(const std::filesystem::path& configurationINIFile);
+			LoadBalancer(const std::filesystem::path& configurationJSONFile);
 
 			/// <summary>
 			/// Start LoadBalancerServer server

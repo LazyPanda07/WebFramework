@@ -29,9 +29,11 @@ namespace framework
 	public:
 		enum class executorType
 		{
+			none,
 			stateful,
 			stateless,
-			none
+			heavyOperationStateful,
+			heavyOperationStateless
 		};
 
 	public:
@@ -41,7 +43,7 @@ namespace framework
 		/// Initializing executor before use
 		/// </summary>
 		/// <param name="settings">providing parameters from .json to executor</param>
-		virtual void init(const utility::JSONSettingsParser::ExecutorSettings& settings) = 0;
+		virtual void init(const utility::JSONSettingsParser::ExecutorSettings& settings);
 
 		/// <summary>
 		/// Process POST request

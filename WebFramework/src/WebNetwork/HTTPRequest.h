@@ -52,8 +52,8 @@ namespace framework
 		/// <summary>
 		/// Construct HTTPRequest
 		/// </summary>
-		/// <param name="session">from WebServer</param>
-		/// <param name="serverReference">reference to WebServer</param>
+		/// <param name="session">from MultithreadedWebServer</param>
+		/// <param name="serverReference">reference to MultithreadedWebServer</param>
 		/// <param name="resources">ResourceExecutor</param>
 		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
 

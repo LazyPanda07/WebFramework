@@ -13,3 +13,6 @@
 [submodule "Networks"]
 	path = Networks
 	url = https://github.com/LazyPanda07/Networks.git
+[submodule "ThreadPool"]
+	path = ThreadPool
+	url = https://github.com/LazyPanda07/ThreadPool.git

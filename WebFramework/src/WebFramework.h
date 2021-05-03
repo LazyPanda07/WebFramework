@@ -8,8 +8,7 @@
 
 #include <filesystem>
 
-#include "WebNetwork/WebServer.h"
-#include "WebFrameworkConstants.h"
+#include "WebNetwork/WebServers/BaseWebServer.h"
 
 namespace framework
 {
@@ -20,26 +19,26 @@ namespace framework
 	class WEB_FRAMEWORK_API WebFramework
 	{
 	private:
-		smartPointer<WebServer> server;
+		smartPointer<BaseWebServer> server;
 
 	public:
 		/// <summary>
 		/// Construct WebFramework
 		/// </summary>
-		/// <param name="configurationINIFile">path to .ini configuration file</param>
+		/// <param name="configurationINIFile">path to .json configuration file</param>
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
 		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="std::out_of_range">Can't find some settings</exception>
-		/// <exception cref="std::invalid_argument">Wrong value for settings</exception>
-		WebFramework(const std::filesystem::path& configurationINIFile);
+		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON setting value</exception>
+		WebFramework(const std::filesystem::path& configurationJSONFile);
 
 		/// <summary>
-		/// Start WebServer
+		/// Start MultithreadedWebServer
 		/// </summary>
 		void startServer();
 
 		/// <summary>
-		/// Stop WebServer incoming connections
+		/// Stop MultithreadedWebServer incoming connections
 		/// </summary>
 		void stopServer();
 

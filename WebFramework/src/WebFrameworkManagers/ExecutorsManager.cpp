@@ -35,7 +35,7 @@ namespace framework
 		resources->init(utility::JSONSettingsParser::ExecutorSettings());
 	}
 
-	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, smartPointer<BaseExecutor>>& statefulExecutors)
+	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, smartPointer<BaseExecutor>>& statefulExecutors, optional<function<void(HTTPRequest&&, HTTPResponse&)>>& threadPoolFunction)
 	{
 		try
 		{
@@ -121,7 +121,7 @@ namespace framework
 						executor = routes.insert(make_pair(move(parameters), smartPointer<BaseExecutor>(creator[executorSettings->second.name]()))).first;
 						executor->second->init(executorSettings->second);
 
-						if (executor->second->getType() == BaseExecutor::executorType::stateful)
+						if (executor->second->getType() == BaseExecutor::executorType::stateful || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful)
 						{
 							executor = statefulExecutors.insert(routes.extract(executor)).position;
 						}
@@ -129,33 +129,84 @@ namespace framework
 				}
 			}
 
+			bool isThreadPoolTask = fileRequest ? false : executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful;
+
 			if (method == getRequest)
 			{
-				fileRequest ? resources->doGet(move(request), response) : executor->second->doGet(move(request), response);
+				if (isThreadPoolTask)
+				{
+					threadPoolFunction = bind(&BaseExecutor::doGet, executor->second.get(), placeholders::_1, placeholders::_2);
+				}
+				else
+				{
+					fileRequest ? resources->doGet(move(request), response) : executor->second->doGet(move(request), response);
+				}
 			}
 			else if (method == postRequest)
 			{
-				fileRequest ? resources->doPost(move(request), response) : executor->second->doPost(move(request), response);
+				if (isThreadPoolTask)
+				{
+					threadPoolFunction = bind(&BaseExecutor::doPost, executor->second.get(), placeholders::_1, placeholders::_2);
+				}
+				else
+				{
+					fileRequest ? resources->doPost(move(request), response) : executor->second->doPost(move(request), response);
+				}
 			}
 			else if (method == headRequest)
 			{
-				fileRequest ? resources->doHead(move(request), response) : executor->second->doHead(move(request), response);
+				if (isThreadPoolTask)
+				{
+					threadPoolFunction = bind(&BaseExecutor::doHead, executor->second.get(), placeholders::_1, placeholders::_2);
+				}
+				else
+				{
+					fileRequest ? resources->doHead(move(request), response) : executor->second->doHead(move(request), response);
+				}
 			}
 			else if (method == putRequest)
 			{
-				fileRequest ? resources->doPut(move(request), response) : executor->second->doPut(move(request), response);
+				if (isThreadPoolTask)
+				{
+					threadPoolFunction = bind(&BaseExecutor::doPut, executor->second.get(), placeholders::_1, placeholders::_2);
+				}
+				else
+				{
+					fileRequest ? resources->doPut(move(request), response) : executor->second->doPut(move(request), response);
+				}
 			}
 			else if (method == deleteRequest)
 			{
-				fileRequest ? resources->doDelete(move(request), response) : executor->second->doDelete(move(request), response);
+				if (isThreadPoolTask)
+				{
+					threadPoolFunction = bind(&BaseExecutor::doDelete, executor->second.get(), placeholders::_1, placeholders::_2);
+				}
+				else
+				{
+					fileRequest ? resources->doDelete(move(request), response) : executor->second->doDelete(move(request), response);
+				}
 			}
 			else if (method == optionsRequest)
 			{
-				fileRequest ? resources->doOptions(move(request), response) : executor->second->doOptions(move(request), response);
+				if (isThreadPoolTask)
+				{
+					threadPoolFunction = bind(&BaseExecutor::doOptions, executor->second.get(), placeholders::_1, placeholders::_2);
+				}
+				else
+				{
+					fileRequest ? resources->doOptions(move(request), response) : executor->second->doOptions(move(request), response);
+				}
 			}
 			else if (method == traceRequest)
 			{
-				fileRequest ? resources->doTrace(move(request), response) : executor->second->doTrace(move(request), response);
+				if (isThreadPoolTask)
+				{
+					threadPoolFunction = bind(&BaseExecutor::doTrace, executor->second.get(), placeholders::_1, placeholders::_2);
+				}
+				else
+				{
+					fileRequest ? resources->doTrace(move(request), response) : executor->second->doTrace(move(request), response);
+				}
 			}
 		}
 		catch (const exceptions::BaseExecutorException&)
