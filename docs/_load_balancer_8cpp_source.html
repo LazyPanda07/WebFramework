@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.8.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="contents">
 <a href="_load_balancer_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_load_balancer_8h.html">LoadBalancer.h</a>&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;INIParser.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;JSONParser.h&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_file_does_not_exist_exception_8h.html">Exceptions/FileDoesNotExistException.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_web_framework_constants_8h.html">WebFrameworkConstants.h</a>&quot;</span></div>
@@ -103,79 +103,61 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="namespaceframework_1_1load__balancer.html">   15</a></span>&#160;    <span class="keyword">namespace </span>load_balancer</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#af41ede84dd53555cadb3afcccfb9af2e">   17</a></span>&#160;        LoadBalancer::LoadBalancer(<span class="keyword">const</span> filesystem::path&amp; configurationINIFile)</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#a5afe666abdadeb63aa6107d47a675b86">   17</a></span>&#160;        LoadBalancer::LoadBalancer(<span class="keyword">const</span> filesystem::path&amp; configurationJSONFile)</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">if</span> (!filesystem::exists(configurationINIFile))</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">if</span> (!filesystem::exists(configurationJSONFile))</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">exceptions::FileDoesNotExistException</a>(configurationINIFile.string());</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">exceptions::FileDoesNotExistException</a>(configurationJSONFile.string());</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            }</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            ::utility::INIParser parser(configurationINIFile);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keyword">const</span> unordered_multimap&lt;string, string&gt;&amp; webFrameworkLoadBalancerDataSettings = parser.getSectionData(<a class="code" href="namespaceini.html#a114bad0342c41b29492d0cd1a94bef77">ini::webFrameworkLoadBalancerSection</a>);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                <span class="keyword">auto</span> loadBalancerIp = webFrameworkLoadBalancerDataSettings.equal_range(<a class="code" href="namespaceini.html#ab423e36014a89d598270e021f1ff4b60">ini::loadBalancerIpKey</a>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                <span class="keyword">auto</span> loadBalancerPort = webFrameworkLoadBalancerDataSettings.equal_range(<a class="code" href="namespaceini.html#a2c63da3b2750f3959d7a92721e6ea65f">ini::loadBalancerPortKey</a>);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <span class="keyword">auto</span> loadBalancerTimeout = webFrameworkLoadBalancerDataSettings.equal_range(<a class="code" href="namespaceini.html#ab44716bba01b1f0d06506d19f9bfa166">ini::loadBalancerTimeoutKey</a>);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <span class="keywordflow">if</span> (loadBalancerIp.first == webFrameworkLoadBalancerDataSettings.end())</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    <span class="keywordflow">throw</span> out_of_range(::<a class="code" href="namespaceexceptions.html#afef6de05d13982a6f15bcf5a58418c19">exceptions::cantFindLoadBalancerIp</a>);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <span class="keywordflow">if</span> (loadBalancerPort.first == webFrameworkLoadBalancerDataSettings.end())</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                    <span class="keywordflow">throw</span> out_of_range(::<a class="code" href="namespaceexceptions.html#ad7411278092f0e15ed62412d048a756e">exceptions::cantFindLoadBalancerPort</a>);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span> (loadBalancerTimeout.first == webFrameworkLoadBalancerDataSettings.end())</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    <span class="keywordflow">throw</span> out_of_range(::<a class="code" href="namespaceexceptions.html#ad7c808a32479e6dd28056a255de647a9">exceptions::cantFindLoadBalancerTimeout</a>);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                loadBalancerServer = make_unique&lt;LoadBalancerServer&gt;(</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    loadBalancerIp.first-&gt;second,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    loadBalancerPort.first-&gt;second,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    stoul(loadBalancerTimeout.first-&gt;second),</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    parser.getSectionMapData(<a class="code" href="namespaceini.html#a114bad0342c41b29492d0cd1a94bef77">ini::webFrameworkLoadBalancerSection</a>, <a class="code" href="namespaceini.html#ac1522f2bfd6986de89e0c512d7e57029">ini::listOfServersKey</a>)</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    );</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">catch</span> (<span class="keyword">const</span> out_of_range&amp;) <span class="comment">//not found settings in unordered_multimap</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">throw</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            json::JSONParser parser(move(ifstream(configurationJSONFile)));</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerIp = parser.get&lt;<span class="keywordtype">string</span>&gt;(<a class="code" href="namespacejson.html#ad9238266db2102cfd7a0fd404a481cb2">json::loadBalancerIpKey</a>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerPort = parser.get&lt;<span class="keywordtype">string</span>&gt;(<a class="code" href="namespacejson.html#a8bb743177574662b72349f1a0ca850f7">json::loadBalancerPortKey</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            int64_t loadBalancerTimeout = parser.get&lt;int64_t&gt;(<a class="code" href="namespacejson.html#a4698b35a4c8f19e653728fb75f31cec2">json::loadBalancerTimeoutKey</a>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keyword">const</span> <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;json::JSONParser::objectType&gt;</a>&amp; listOfServers = parser.get&lt;<a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;json::JSONParser::objectType&gt;</a>&gt;(<a class="code" href="namespacejson.html#a7236437b85747586733bcfb8e2e2d4f6">json::listOfServersKey</a>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            unordered_map&lt;string, vector&lt;string&gt;&gt; allServers;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [ip, ports] : listOfServers-&gt;data)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                allServers.insert(make_pair(ip, get&lt;vector&lt;string&gt;&gt;(ports)));</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            loadBalancerServer = make_unique&lt;LoadBalancerServer&gt;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                (</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                    loadBalancerIp,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                    loadBalancerPort,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                    loadBalancerTimeout,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    allServers</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                    );</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#a393c96c7c0d81058010b39d3d2ae0f40">   46</a></span>&#160;        <span class="keywordtype">void</span> LoadBalancer::startLoadBalancer()</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            loadBalancerServer-&gt;start();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#acea6685f870ca0671d1d400691ffd802">   51</a></span>&#160;        <span class="keywordtype">void</span> LoadBalancer::stopLoadBalancerServer()</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            loadBalancerServer-&gt;stop();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#a6bf7878f95984ef7af7c48d28e1bad9c">   56</a></span>&#160;        <span class="keywordtype">bool</span> LoadBalancer::getLoadBalancerState()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">return</span> loadBalancerServer-&gt;serverState();</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#a393c96c7c0d81058010b39d3d2ae0f40">   61</a></span>&#160;        <span class="keywordtype">void</span> LoadBalancer::startLoadBalancer()</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            loadBalancerServer-&gt;start();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#acea6685f870ca0671d1d400691ffd802">   66</a></span>&#160;        <span class="keywordtype">void</span> LoadBalancer::stopLoadBalancerServer()</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            loadBalancerServer-&gt;stop();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#a6bf7878f95984ef7af7c48d28e1bad9c">   71</a></span>&#160;        <span class="keywordtype">bool</span> LoadBalancer::getLoadBalancerState()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">return</span> loadBalancerServer-&gt;serverState();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
 <div class="ttc" id="a_file_does_not_exist_exception_8h_html"><div class="ttname"><a href="_file_does_not_exist_exception_8h.html">FileDoesNotExistException.h</a></div></div>
 <div class="ttc" id="a_load_balancer_8h_html"><div class="ttname"><a href="_load_balancer_8h.html">LoadBalancer.h</a></div></div>
 <div class="ttc" id="a_web_framework_constants_8h_html"><div class="ttname"><a href="_web_framework_constants_8h.html">WebFrameworkConstants.h</a></div></div>
+<div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00013">WebFrameworkConstants.h:13</a></div></div>
 <div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00020">FileDoesNotExistException.h:21</a></div></div>
-<div class="ttc" id="anamespaceexceptions_html_ad7411278092f0e15ed62412d048a756e"><div class="ttname"><a href="namespaceexceptions.html#ad7411278092f0e15ed62412d048a756e">exceptions::cantFindLoadBalancerPort</a></div><div class="ttdeci">const std::string cantFindLoadBalancerPort</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00109">WebFrameworkConstants.h:109</a></div></div>
-<div class="ttc" id="anamespaceexceptions_html_ad7c808a32479e6dd28056a255de647a9"><div class="ttname"><a href="namespaceexceptions.html#ad7c808a32479e6dd28056a255de647a9">exceptions::cantFindLoadBalancerTimeout</a></div><div class="ttdeci">const std::string cantFindLoadBalancerTimeout</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00110">WebFrameworkConstants.h:110</a></div></div>
-<div class="ttc" id="anamespaceexceptions_html_afef6de05d13982a6f15bcf5a58418c19"><div class="ttname"><a href="namespaceexceptions.html#afef6de05d13982a6f15bcf5a58418c19">exceptions::cantFindLoadBalancerIp</a></div><div class="ttdeci">const std::string cantFindLoadBalancerIp</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00108">WebFrameworkConstants.h:108</a></div></div>
 <div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
-<div class="ttc" id="anamespaceini_html_a114bad0342c41b29492d0cd1a94bef77"><div class="ttname"><a href="namespaceini.html#a114bad0342c41b29492d0cd1a94bef77">ini::webFrameworkLoadBalancerSection</a></div><div class="ttdeci">const std::string webFrameworkLoadBalancerSection</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00057">WebFrameworkConstants.h:57</a></div></div>
-<div class="ttc" id="anamespaceini_html_a2c63da3b2750f3959d7a92721e6ea65f"><div class="ttname"><a href="namespaceini.html#a2c63da3b2750f3959d7a92721e6ea65f">ini::loadBalancerPortKey</a></div><div class="ttdeci">const std::string loadBalancerPortKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00074">WebFrameworkConstants.h:74</a></div></div>
-<div class="ttc" id="anamespaceini_html_ab423e36014a89d598270e021f1ff4b60"><div class="ttname"><a href="namespaceini.html#ab423e36014a89d598270e021f1ff4b60">ini::loadBalancerIpKey</a></div><div class="ttdeci">const std::string loadBalancerIpKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00073">WebFrameworkConstants.h:73</a></div></div>
-<div class="ttc" id="anamespaceini_html_ab44716bba01b1f0d06506d19f9bfa166"><div class="ttname"><a href="namespaceini.html#ab44716bba01b1f0d06506d19f9bfa166">ini::loadBalancerTimeoutKey</a></div><div class="ttdeci">const std::string loadBalancerTimeoutKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00075">WebFrameworkConstants.h:75</a></div></div>
-<div class="ttc" id="anamespaceini_html_ac1522f2bfd6986de89e0c512d7e57029"><div class="ttname"><a href="namespaceini.html#ac1522f2bfd6986de89e0c512d7e57029">ini::listOfServersKey</a></div><div class="ttdeci">const std::string listOfServersKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00072">WebFrameworkConstants.h:72</a></div></div>
+<div class="ttc" id="anamespacejson_html_a4698b35a4c8f19e653728fb75f31cec2"><div class="ttname"><a href="namespacejson.html#a4698b35a4c8f19e653728fb75f31cec2">json::loadBalancerTimeoutKey</a></div><div class="ttdeci">const std::string loadBalancerTimeoutKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00074">WebFrameworkConstants.h:74</a></div></div>
+<div class="ttc" id="anamespacejson_html_a7236437b85747586733bcfb8e2e2d4f6"><div class="ttname"><a href="namespacejson.html#a7236437b85747586733bcfb8e2e2d4f6">json::listOfServersKey</a></div><div class="ttdeci">const std::string listOfServersKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00071">WebFrameworkConstants.h:71</a></div></div>
+<div class="ttc" id="anamespacejson_html_a8bb743177574662b72349f1a0ca850f7"><div class="ttname"><a href="namespacejson.html#a8bb743177574662b72349f1a0ca850f7">json::loadBalancerPortKey</a></div><div class="ttdeci">const std::string loadBalancerPortKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00073">WebFrameworkConstants.h:73</a></div></div>
+<div class="ttc" id="anamespacejson_html_ad9238266db2102cfd7a0fd404a481cb2"><div class="ttname"><a href="namespacejson.html#ad9238266db2102cfd7a0fd404a481cb2">json::loadBalancerIpKey</a></div><div class="ttdeci">const std::string loadBalancerIpKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00072">WebFrameworkConstants.h:72</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

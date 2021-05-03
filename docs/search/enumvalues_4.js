@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['stateful_2159',['stateful',['../classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695',1,'framework::BaseExecutor']]],
-  ['stateless_2160',['stateless',['../classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c',1,'framework::BaseExecutor']]],
-  ['stringtypeindex_2161',['stringTypeIndex',['../structframework_1_1utility_1_1_route_parameters.html#a0608ab4bbbfef383c4eb874de512d730aa8660a3e4858b9f2ce39bafccc0d4337',1,'framework::utility::RouteParameters']]]
+  ['read_2192',['read',['../classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11aecae13117d6f0584c25a9da6c8f8415e',1,'framework::sqlite::SQLiteDatabaseModel']]]
 ];

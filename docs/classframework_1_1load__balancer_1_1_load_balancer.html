@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.8.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -98,9 +98,9 @@ $(document).ready(function(){initNavTree('classframework_1_1load__balancer_1_1_l
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af41ede84dd53555cadb3afcccfb9af2e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer.html#af41ede84dd53555cadb3afcccfb9af2e">LoadBalancer</a> (const std::filesystem::path &amp;configurationINIFile)</td></tr>
-<tr class="memdesc:af41ede84dd53555cadb3afcccfb9af2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer.html" title="Main class of load balancer">LoadBalancer</a>  <a href="classframework_1_1load__balancer_1_1_load_balancer.html#af41ede84dd53555cadb3afcccfb9af2e">More...</a><br /></td></tr>
-<tr class="separator:af41ede84dd53555cadb3afcccfb9af2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5afe666abdadeb63aa6107d47a675b86"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer.html#a5afe666abdadeb63aa6107d47a675b86">LoadBalancer</a> (const std::filesystem::path &amp;configurationJSONFile)</td></tr>
+<tr class="memdesc:a5afe666abdadeb63aa6107d47a675b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer.html" title="Main class of load balancer">LoadBalancer</a>  <a href="classframework_1_1load__balancer_1_1_load_balancer.html#a5afe666abdadeb63aa6107d47a675b86">More...</a><br /></td></tr>
+<tr class="separator:a5afe666abdadeb63aa6107d47a675b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a393c96c7c0d81058010b39d3d2ae0f40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer.html#a393c96c7c0d81058010b39d3d2ae0f40">startLoadBalancer</a> ()</td></tr>
 <tr class="memdesc:a393c96c7c0d81058010b39d3d2ae0f40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html" title="Tries to balance load of all servers">LoadBalancerServer</a> server  <a href="classframework_1_1load__balancer_1_1_load_balancer.html#a393c96c7c0d81058010b39d3d2ae0f40">More...</a><br /></td></tr>
 <tr class="separator:a393c96c7c0d81058010b39d3d2ae0f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,8 +119,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_load_balancer_8h_source.html#l00023">23</a> of file <a class="el" href="_load_balancer_8h_source.html">LoadBalancer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af41ede84dd53555cadb3afcccfb9af2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af41ede84dd53555cadb3afcccfb9af2e">&#9670;&nbsp;</a></span>LoadBalancer()</h2>
+<a id="a5afe666abdadeb63aa6107d47a675b86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5afe666abdadeb63aa6107d47a675b86">&#9670;&nbsp;</a></span>LoadBalancer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,7 +129,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">framework::load_balancer::LoadBalancer::LoadBalancer </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
-          <td class="paramname"><em>configurationINIFile</em></td><td>)</td>
+          <td class="paramname"><em>configurationJSONFile</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -138,7 +138,7 @@ Public Member Functions</h2></td></tr>
 <p>Construct <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer.html" title="Main class of load balancer">LoadBalancer</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">configurationINIFile</td><td>path to .ini configuration file</td></tr>
+    <tr><td class="paramname">configurationINIFile</td><td>path to .json configuration file</td></tr>
   </table>
   </dd>
 </dl>
@@ -198,7 +198,7 @@ Public Member Functions</h2></td></tr>
 <p>Is server running </p>
 <dl class="section return"><dt>Returns</dt><dd>is server running</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_load_balancer_8cpp_source.html#l00071">71</a> of file <a class="el" href="_load_balancer_8cpp_source.html">LoadBalancer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_load_balancer_8cpp_source.html#l00056">56</a> of file <a class="el" href="_load_balancer_8cpp_source.html">LoadBalancer.cpp</a>.</p>
 
 </div>
 </div>
@@ -219,7 +219,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Start <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html" title="Tries to balance load of all servers">LoadBalancerServer</a> server </p>
 
-<p class="definition">Definition at line <a class="el" href="_load_balancer_8cpp_source.html#l00061">61</a> of file <a class="el" href="_load_balancer_8cpp_source.html">LoadBalancer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_load_balancer_8cpp_source.html#l00046">46</a> of file <a class="el" href="_load_balancer_8cpp_source.html">LoadBalancer.cpp</a>.</p>
 
 </div>
 </div>
@@ -240,7 +240,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Stop <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html" title="Tries to balance load of all servers">LoadBalancerServer</a> incoming connections </p>
 
-<p class="definition">Definition at line <a class="el" href="_load_balancer_8cpp_source.html#l00066">66</a> of file <a class="el" href="_load_balancer_8cpp_source.html">LoadBalancer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_load_balancer_8cpp_source.html#l00051">51</a> of file <a class="el" href="_load_balancer_8cpp_source.html">LoadBalancer.cpp</a>.</p>
 
 </div>
 </div>

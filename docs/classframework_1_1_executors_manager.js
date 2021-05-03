@@ -8,5 +8,5 @@ var classframework_1_1_executors_manager =
     [ "init", "classframework_1_1_executors_manager.html#a7435a9a4c46fb661836377f2c44da22f", null ],
     [ "operator=", "classframework_1_1_executors_manager.html#a0b54d14b691f02af1c74b1e1a3c97cda", null ],
     [ "operator=", "classframework_1_1_executors_manager.html#ab11defcb75d82fa2b79fee14d9d59a11", null ],
-    [ "service", "classframework_1_1_executors_manager.html#a8bc3ee56eade8cc95c99b8161177a886", null ]
+    [ "service", "classframework_1_1_executors_manager.html#af72a31f88757511221d122a2110c1921", null ]
 ];

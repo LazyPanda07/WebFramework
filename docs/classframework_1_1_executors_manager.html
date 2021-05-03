@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.8.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -111,9 +111,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7435a9a4c46fb661836377f2c44da22f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a7435a9a4c46fb661836377f2c44da22f">init</a> (const std::filesystem::path &amp;assets, bool isCaching, const std::string &amp;pathToTemplates, std::unordered_map&lt; std::string, <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt;&gt; &amp;&amp;routes, std::unordered_map&lt; std::string, <a class="el" href="namespaceframework.html#a1f6e63f1d7ae02caceb703752eef61ba">createBaseExecutorSubclassFunction</a> &gt; &amp;&amp;creator, std::unordered_map&lt; std::string, <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &gt; &amp;&amp;settings, std::vector&lt; <a class="el" href="structframework_1_1utility_1_1_route_parameters.html">utility::RouteParameters</a> &gt; &amp;&amp;routeParameters) noexcept</td></tr>
 <tr class="memdesc:a7435a9a4c46fb661836377f2c44da22f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize method, called from <a class="el" href="classframework_1_1_web_framework.html" title="Main class of framework">WebFramework</a>  <a href="classframework_1_1_executors_manager.html#a7435a9a4c46fb661836377f2c44da22f">More...</a><br /></td></tr>
 <tr class="separator:a7435a9a4c46fb661836377f2c44da22f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bc3ee56eade8cc95c99b8161177a886"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a8bc3ee56eade8cc95c99b8161177a886">service</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;&amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, std::unordered_map&lt; std::string, <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt;&gt; &amp;statefulExecutors)</td></tr>
-<tr class="memdesc:a8bc3ee56eade8cc95c99b8161177a886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process requests from server  <a href="classframework_1_1_executors_manager.html#a8bc3ee56eade8cc95c99b8161177a886">More...</a><br /></td></tr>
-<tr class="separator:a8bc3ee56eade8cc95c99b8161177a886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72a31f88757511221d122a2110c1921"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#af72a31f88757511221d122a2110c1921">service</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;&amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, std::unordered_map&lt; std::string, <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt;&gt; &amp;statefulExecutors, std::optional&lt; std::function&lt; void(<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;&amp;, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;)&gt;&gt; &amp;threadPoolFunction)</td></tr>
+<tr class="memdesc:af72a31f88757511221d122a2110c1921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process requests from server  <a href="classframework_1_1_executors_manager.html#af72a31f88757511221d122a2110c1921">More...</a><br /></td></tr>
+<tr class="separator:af72a31f88757511221d122a2110c1921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42352eb3cef31175042dbdf98a9aae3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a42352eb3cef31175042dbdf98a9aae3f">getResourceExecutor</a> ()</td></tr>
 <tr class="memdesc:a42352eb3cef31175042dbdf98a9aae3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for <a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a>  <a href="classframework_1_1_executors_manager.html#a42352eb3cef31175042dbdf98a9aae3f">More...</a><br /></td></tr>
 <tr class="separator:a42352eb3cef31175042dbdf98a9aae3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,7 +126,7 @@ Public Member Functions</h2></td></tr>
 <p>Holding pointer to <a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a></p>
 <p>Initialize only through <a class="el" href="classframework_1_1_web_framework.html" title="Main class of framework">WebFramework</a></p>
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8h_source.html#l00023">23</a> of file <a class="el" href="_executors_manager_8h_source.html">ExecutorsManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8h_source.html#l00022">22</a> of file <a class="el" href="_executors_manager_8h_source.html">ExecutorsManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abab84f66e1d190bf639b42250c138ab3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abab84f66e1d190bf639b42250c138ab3">&#9670;&nbsp;</a></span>ExecutorsManager() <span class="overload">[1/3]</span></h2>
@@ -251,7 +251,7 @@ Public Member Functions</h2></td></tr>
 <p>Getter for <a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a> </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00175">175</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00226">226</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -390,8 +390,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8bc3ee56eade8cc95c99b8161177a886"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bc3ee56eade8cc95c99b8161177a886">&#9670;&nbsp;</a></span>service()</h2>
+<a id="af72a31f88757511221d122a2110c1921"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af72a31f88757511221d122a2110c1921">&#9670;&nbsp;</a></span>service()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -412,7 +412,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::unordered_map&lt; std::string, <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>statefulExecutors</em>&#160;</td>
+          <td class="paramname"><em>statefulExecutors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::optional&lt; std::function&lt; void(<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;&amp;, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;)&gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>threadPoolFunction</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -425,8 +431,8 @@ Public Member Functions</h2></td></tr>
 <p>Process requests from server </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">request</td><td>from server</td></tr>
-    <tr><td class="paramname">response</td><td>for client</td></tr>
+    <tr><td class="paramname">request</td><td>request from client</td></tr>
+    <tr><td class="paramname">response</td><td>response to client</td></tr>
     <tr><td class="paramname">statefulExecutors</td><td>all stateful executors for client</td></tr>
   </table>
   </dd>

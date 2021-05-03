@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.8.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -102,17 +102,24 @@ Inheritance diagram for framework::BaseExecutor:</div>
  <div class="center">
   <img src="classframework_1_1_base_executor.png" usemap="#framework::BaseExecutor_map" alt=""/>
   <map id="framework::BaseExecutor_map" name="framework::BaseExecutor_map">
-<area href="classframework_1_1_base_stateful_executor.html" title="Base class for executors with dynamically changes states" alt="framework::BaseStatefulExecutor" shape="rect" coords="0,56,205,80"/>
-<area href="classframework_1_1_base_stateless_executor.html" title="Base class for executors with constant or static states" alt="framework::BaseStatelessExecutor" shape="rect" coords="215,56,420,80"/>
-<area href="classframework_1_1_resource_executor.html" title="Used for sending asset files" alt="framework::ResourceExecutor" shape="rect" coords="215,112,420,136"/>
+<area href="classframework_1_1_base_heavy_operation_statefull_executor.html" alt="framework::BaseHeavyOperationStatefullExecutor" shape="rect" coords="0,56,298,80"/>
+<area href="classframework_1_1_base_heavy_operation_stateless_executor.html" alt="framework::BaseHeavyOperationStatelessExecutor" shape="rect" coords="308,56,606,80"/>
+<area href="classframework_1_1_base_stateful_executor.html" title="Base class for executors with dynamically changes states" alt="framework::BaseStatefulExecutor" shape="rect" coords="616,56,914,80"/>
+<area href="classframework_1_1_base_stateless_executor.html" title="Base class for executors with constant or static states" alt="framework::BaseStatelessExecutor" shape="rect" coords="924,56,1222,80"/>
+<area href="classframework_1_1_resource_executor.html" title="Used for sending asset files" alt="framework::ResourceExecutor" shape="rect" coords="924,112,1222,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a7151ff985de54f3c32836634eb9d04bf"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">executorType</a> { <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695">stateful</a>
+<tr class="memitem:a7151ff985de54f3c32836634eb9d04bf"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">executorType</a> { <br />
+&#160;&#160;<a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8">none</a>
+, <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695">stateful</a>
 , <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c">stateless</a>
-, <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8">none</a>
+, <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa1184a8ab2aee4659c559f8cef1c6daa9">heavyOperationStateful</a>
+, <br />
+&#160;&#160;<a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa10b448ff611ed001f790c0d188f2e6bb">heavyOperationStateless</a>
+<br />
  }</td></tr>
 <tr class="separator:a7151ff985de54f3c32836634eb9d04bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -120,9 +127,9 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa78d0fadc69822d3454cbf59bf6990c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#aa78d0fadc69822d3454cbf59bf6990c9">BaseExecutor</a> ()=default</td></tr>
 <tr class="separator:aa78d0fadc69822d3454cbf59bf6990c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00a736d350e31431363d63e4a1fa5ae7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a00a736d350e31431363d63e4a1fa5ae7">init</a> (const <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &amp;settings)=0</td></tr>
-<tr class="memdesc:a00a736d350e31431363d63e4a1fa5ae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing executor before use  <a href="classframework_1_1_base_executor.html#a00a736d350e31431363d63e4a1fa5ae7">More...</a><br /></td></tr>
-<tr class="separator:a00a736d350e31431363d63e4a1fa5ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae745ee7647fda519940a0dc5f0100c44"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#ae745ee7647fda519940a0dc5f0100c44">init</a> (const <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &amp;settings)</td></tr>
+<tr class="memdesc:ae745ee7647fda519940a0dc5f0100c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing executor before use  <a href="classframework_1_1_base_executor.html#ae745ee7647fda519940a0dc5f0100c44">More...</a><br /></td></tr>
+<tr class="separator:ae745ee7647fda519940a0dc5f0100c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac060082b5f9c120b70fcf21b929cb231"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#ac060082b5f9c120b70fcf21b929cb231">doPost</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;&amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
 <tr class="memdesc:ac060082b5f9c120b70fcf21b929cb231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process POST request  <a href="classframework_1_1_base_executor.html#ac060082b5f9c120b70fcf21b929cb231">More...</a><br /></td></tr>
 <tr class="separator:ac060082b5f9c120b70fcf21b929cb231"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,9 +183,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695"></a>stateful&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8"></a>none&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695"></a>stateful&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c"></a>stateless&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8"></a>none&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfa1184a8ab2aee4659c559f8cef1c6daa9"></a>heavyOperationStateful&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfa10b448ff611ed001f790c0d188f2e6bb"></a>heavyOperationStateless&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="_base_executor_8h_source.html#l00030">30</a> of file <a class="el" href="_base_executor_8h_source.html">BaseExecutor.h</a>.</p>
@@ -264,7 +273,7 @@ Public Member Functions</h2></td></tr>
 <p>Destroy and unload executor</p>
 <p>Executors inherited from <a class="el" href="classframework_1_1_base_stateless_executor.html" title="Base class for executors with constant or static states">BaseStatelessExecutor</a> no need this method</p>
 
-<p>Implemented in <a class="el" href="classframework_1_1_base_stateless_executor.html#aca62187ae7d0bfa111dfe3e6557721c5">framework::BaseStatelessExecutor</a>.</p>
+<p>Implemented in <a class="el" href="classframework_1_1_base_stateless_executor.html#a20628486ccc35efd522eff66e11fdcee">framework::BaseStatelessExecutor</a>, and <a class="el" href="classframework_1_1_base_heavy_operation_stateless_executor.html#a6e436d99ac9628878eeb2a66b320b450">framework::BaseHeavyOperationStatelessExecutor</a>.</p>
 
 </div>
 </div>
@@ -317,7 +326,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00027">27</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00032">32</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -372,7 +381,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classframework_1_1_resource_executor.html#a46ed4fe3ea33cdde372dee53e0108fac">framework::ResourceExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00012">12</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00017">17</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +434,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00017">17</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00022">22</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -478,7 +487,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00032">32</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00037">37</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -533,7 +542,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classframework_1_1_resource_executor.html#ab0fcab87495dc0c1c09f2605f35a8f20">framework::ResourceExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00007">7</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00012">12</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -586,7 +595,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00022">22</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00027">27</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -639,7 +648,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00037">37</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00042">42</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -673,12 +682,12 @@ Public Member Functions</h2></td></tr>
 <p><a class="el" href="classframework_1_1_executors_manager.html" title="Managing requests">ExecutorsManager</a> can manage executors by getting type of executorType enum class</p>
 <dl class="section return"><dt>Returns</dt><dd>stateful, stateless or none value</dd></dl>
 
-<p>Implemented in <a class="el" href="classframework_1_1_base_stateless_executor.html#ab21a420bb65421ba0d5164d439efcd4a">framework::BaseStatelessExecutor</a>, and <a class="el" href="classframework_1_1_base_stateful_executor.html#a9750a80e5bbd839850040205157d3dd5">framework::BaseStatefulExecutor</a>.</p>
+<p>Implemented in <a class="el" href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">framework::BaseStatelessExecutor</a>, <a class="el" href="classframework_1_1_base_stateful_executor.html#a95882f4bb2dde6015d6e7ed6735a3d18">framework::BaseStatefulExecutor</a>, <a class="el" href="classframework_1_1_base_heavy_operation_stateless_executor.html#a83c89f911f3aa61e51160bd642570ffa">framework::BaseHeavyOperationStatelessExecutor</a>, and <a class="el" href="classframework_1_1_base_heavy_operation_statefull_executor.html#aab406c20af772c223fff3fa58c1df10e">framework::BaseHeavyOperationStatefullExecutor</a>.</p>
 
 </div>
 </div>
-<a id="a00a736d350e31431363d63e4a1fa5ae7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00a736d350e31431363d63e4a1fa5ae7">&#9670;&nbsp;</a></span>init()</h2>
+<a id="ae745ee7647fda519940a0dc5f0100c44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae745ee7647fda519940a0dc5f0100c44">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -687,7 +696,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void framework::BaseExecutor::init </td>
+          <td class="memname">void framework::BaseExecutor::init </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &amp;&#160;</td>
           <td class="paramname"><em>settings</em></td><td>)</td>
@@ -696,7 +705,7 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -709,7 +718,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classframework_1_1_resource_executor.html#a67dcc7f0aa09e4c3259bbf26ef9f8b5e">framework::ResourceExecutor</a>.</p>
+<p>Reimplemented in <a class="el" href="classframework_1_1_resource_executor.html#a67dcc7f0aa09e4c3259bbf26ef9f8b5e">framework::ResourceExecutor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_base_executor_8cpp_source.html#l00007">7</a> of file <a class="el" href="_base_executor_8cpp_source.html">BaseExecutor.cpp</a>.</p>
 
 </div>
 </div>
