@@ -54,6 +54,7 @@ namespace json
 	inline const std::string webServerObject = "WebServer";
 	inline const std::string webFrameworkObject = "WebFramework";
 	inline const std::string loggingObject = "Logging";
+	inline const std::string webFrameworkLoadBalancerObject = "WebFrameworkLoadBalancer";
 
 	inline const std::string settingsPathsKey = "settingsPaths";
 	inline const std::string ipKey = "ip";
@@ -67,22 +68,17 @@ namespace json
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 	inline const std::string webServerTypeKey = "webServerType";
 
+	inline const std::string listOfServersKey = "listOfServers";
+	inline const std::string loadBalancerIpKey = "loadBalancerIp";
+	inline const std::string loadBalancerPortKey = "loadBalancerPort";
+	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
+
 	inline const std::string usingLoggingKey = "usingLogging";
 
 	inline const std::string defaultLoadSourceValue = "current";
 
 	inline const std::string multithreadedWebServerTypeValue = "multithreaded";
 	inline const std::string threadPoolWebServerTypeValue = "threadPool";
-}
-
-namespace ini
-{
-	inline const std::string webFrameworkLoadBalancerSection = "WebFrameworkLoadBalancer";
-
-	inline const std::string listOfServersKey = "listOfServers";
-	inline const std::string loadBalancerIpKey = "loadBalancerIp";
-	inline const std::string loadBalancerPortKey = "loadBalancerPort";
-	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
 }
 
 namespace exceptions
@@ -102,10 +98,6 @@ namespace exceptions
 	inline const std::string missingSemicolonSyntaxError = "Missing semicolon";
 
 	inline const std::string stringConversionErrorCode = "String conversion error code ";
-
-	inline const std::string cantFindLoadBalancerIp = "Can't find load balancer ip option";
-	inline const std::string cantFindLoadBalancerPort = "Can't find load balancer port option";
-	inline const std::string cantFindLoadBalancerTimeout = "Can't find load balancer timeout option";
 
 	inline const std::string badRequest = "Bad request from client";
 }

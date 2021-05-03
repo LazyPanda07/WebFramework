@@ -1,6 +1,6 @@
 #include "LoadBalancer.h"
 
-#include "INIParser.h"
+#include "JSONParser.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "WebFrameworkConstants.h"
@@ -14,48 +14,33 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		LoadBalancer::LoadBalancer(const filesystem::path& configurationINIFile)
+		LoadBalancer::LoadBalancer(const filesystem::path& configurationJSONFile)
 		{
-			if (!filesystem::exists(configurationINIFile))
+			if (!filesystem::exists(configurationJSONFile))
 			{
-				throw exceptions::FileDoesNotExistException(configurationINIFile.string());
+				throw exceptions::FileDoesNotExistException(configurationJSONFile.string());
 			}
 
-			::utility::INIParser parser(configurationINIFile);
-			const unordered_multimap<string, string>& webFrameworkLoadBalancerDataSettings = parser.getSectionData(ini::webFrameworkLoadBalancerSection);
+			json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
-			try
+			const string& loadBalancerIp = parser.get<string>(json::loadBalancerIpKey);
+			const string& loadBalancerPort = parser.get<string>(json::loadBalancerPortKey);
+			int64_t loadBalancerTimeout = parser.get<int64_t>(json::loadBalancerTimeoutKey);
+			const unique_ptr<json::JSONParser::objectType>& listOfServers = parser.get<unique_ptr<json::JSONParser::objectType>>(json::listOfServersKey);
+			unordered_map<string, vector<string>> allServers;
+
+			for (const auto& [ip, ports] : listOfServers->data)
 			{
-				auto loadBalancerIp = webFrameworkLoadBalancerDataSettings.equal_range(ini::loadBalancerIpKey);
-				auto loadBalancerPort = webFrameworkLoadBalancerDataSettings.equal_range(ini::loadBalancerPortKey);
-				auto loadBalancerTimeout = webFrameworkLoadBalancerDataSettings.equal_range(ini::loadBalancerTimeoutKey);
+				allServers.insert(make_pair(ip, get<vector<string>>(ports)));
+			}
 
-				if (loadBalancerIp.first == webFrameworkLoadBalancerDataSettings.end())
-				{
-					throw out_of_range(::exceptions::cantFindLoadBalancerIp);
-				}
-
-				if (loadBalancerPort.first == webFrameworkLoadBalancerDataSettings.end())
-				{
-					throw out_of_range(::exceptions::cantFindLoadBalancerPort);
-				}
-
-				if (loadBalancerTimeout.first == webFrameworkLoadBalancerDataSettings.end())
-				{
-					throw out_of_range(::exceptions::cantFindLoadBalancerTimeout);
-				}
-
-				loadBalancerServer = make_unique<LoadBalancerServer>(
-					loadBalancerIp.first->second,
-					loadBalancerPort.first->second,
-					stoul(loadBalancerTimeout.first->second),
-					parser.getSectionMapData(ini::webFrameworkLoadBalancerSection, ini::listOfServersKey)
+			loadBalancerServer = make_unique<LoadBalancerServer>
+				(
+					loadBalancerIp,
+					loadBalancerPort,
+					loadBalancerTimeout,
+					allServers
 					);
-			}
-			catch (const out_of_range&)	//not found settings in unordered_multimap
-			{
-				throw;
-			}
 		}
 
 		void LoadBalancer::startLoadBalancer()
