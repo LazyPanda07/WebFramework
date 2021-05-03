@@ -128,13 +128,21 @@ $(document).ready(function(){initNavTree('_middleware_server_8cpp_source.html','
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_middleware_server.html#a605daeb821e51fbac3351d1ce4df2d82">   41</a></span>&#160;        MiddlewareServer::MiddlewareServer(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port, DWORD timeout, <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">BaseMiddlewareRouteController</a>&amp; controller) :</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            BaseTCPServer(port, ip, timeout, false),</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            controller(controller)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            BaseTCPServer</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            (</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                port,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                ip,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                timeout,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                true,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                0,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                false</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            ),</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            controller(controller)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
 <div class="ttc" id="a_middleware_server_8h_html"><div class="ttname"><a href="_middleware_server_8h.html">MiddlewareServer.h</a></div></div>
 <div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00013">WebFrameworkConstants.h:13</a></div></div>
 <div class="ttc" id="a_web_framework_h_t_t_p_network_8h_html"><div class="ttname"><a href="_web_framework_h_t_t_p_network_8h.html">WebFrameworkHTTPNetwork.h</a></div></div>
