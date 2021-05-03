@@ -1,9 +1,11 @@
 var classframework_1_1_base_executor =
 [
     [ "executorType", "classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf", [
+      [ "none", "classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
       [ "stateful", "classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695", null ],
       [ "stateless", "classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c", null ],
-      [ "none", "classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8", null ]
+      [ "heavyOperationStateful", "classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa1184a8ab2aee4659c559f8cef1c6daa9", null ],
+      [ "heavyOperationStateless", "classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa10b448ff611ed001f790c0d188f2e6bb", null ]
     ] ],
     [ "BaseExecutor", "classframework_1_1_base_executor.html#aa78d0fadc69822d3454cbf59bf6990c9", null ],
     [ "~BaseExecutor", "classframework_1_1_base_executor.html#ab9cff3af6fa6729e83667921acd358b9", null ],
@@ -16,5 +18,5 @@ var classframework_1_1_base_executor =
     [ "doPut", "classframework_1_1_base_executor.html#aba6237bc87f4e2b9b9842accf619b8e2", null ],
     [ "doTrace", "classframework_1_1_base_executor.html#a4b88c08ed78fdd8aaef234ddf0054015", null ],
     [ "getType", "classframework_1_1_base_executor.html#ad992a4a1027a0e2ebf263b56ce56fc23", null ],
-    [ "init", "classframework_1_1_base_executor.html#a00a736d350e31431363d63e4a1fa5ae7", null ]
+    [ "init", "classframework_1_1_base_executor.html#ae745ee7647fda519940a0dc5f0100c44", null ]
 ];

@@ -41,7 +41,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
@@ -63,12 +63,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_bad_request_exception_8cpp.html",
-"classframework_1_1_base_executor.html",
-"classframework_1_1utility_1_1_priority_queue.html#a3289c71bdf953eadd60c9e6a58feff04",
-"sqlite3_8h.html#a10e1f9842b73123dbab4eb719ba4b7ee",
-"sqlite3_8h.html#a65be1f8fb5dc68185aa4d7216a89d795",
-"sqlite3_8h.html#abbca5c958536832c99baaece00a50959",
-"structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae"
+"_web_framework_h_t_t_p_network_8h_source.html",
+"classframework_1_1sqlite_1_1_s_q_lite_manager.html#af9739992a01b4c2ebd6495646a177a21",
+"sqlite3_8h.html#a072c27c389a842aa3f9f5525dd078877",
+"sqlite3_8h.html#a58d161e149f84c81995d8ec3bd10dd31",
+"sqlite3_8h.html#aaacf2b5fa3b4c7a56b2e4b5b4e461f2a",
+"sqlite3_8h.html#aff7b5eec7d752b3587d2df91fc748ccb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

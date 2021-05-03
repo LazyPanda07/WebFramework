@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.8.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -90,10 +90,14 @@ $(document).ready(function(){initNavTree('_web_framework_8cpp.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_web_framework_8h_source.html">WebFramework.h</a>&quot;</code><br />
-<code>#include &quot;INIParser.h&quot;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &quot;JSONParser.h&quot;</code><br />
+<code>#include &quot;Exceptions/BaseJSONException.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_web_framework_constants_8h_source.html">WebFrameworkConstants.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_file_does_not_exist_exception_8h_source.html">Exceptions/FileDoesNotExistException.h</a>&quot;</code><br />
 <code>#include &quot;Log.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="_multithreaded_web_server_8h_source.html">WebNetwork/WebServers/MultithreadedWebServer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_thread_pool_web_server_8h_source.html">WebNetwork/WebServers/ThreadPoolWebServer.h</a>&quot;</code><br />
 </div>
 <p><a href="_web_framework_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">

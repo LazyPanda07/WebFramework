@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8</span>
+   &#160;<span id="projectnumber">1.8.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('_web_framework_constants_8h.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceini"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html">ini</a></td></tr>
+<tr class="memitem:namespacejson"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html">json</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceexceptions"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html">exceptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,46 +155,52 @@ Variables</h2></td></tr>
 <tr class="separator:a65d7b4ff912b147a28817bbe9a53ea35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef41fd570a86dd79dbeb1d960756c81d"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_web_framework_constants_8h.html#aef41fd570a86dd79dbeb1d960756c81d">webFrameworkDynamicPagesExtension</a> = &quot;.wfdp&quot;</td></tr>
 <tr class="separator:aef41fd570a86dd79dbeb1d960756c81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6455b7a14cd9dd55610bb8a691614de"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#af6455b7a14cd9dd55610bb8a691614de">ini::webServerSection</a> = &quot;WebServer&quot;</td></tr>
-<tr class="separator:af6455b7a14cd9dd55610bb8a691614de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28173ef8e385eb489c7b960149ef7409"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a28173ef8e385eb489c7b960149ef7409">ini::webFrameworkSection</a> = &quot;WebFramework&quot;</td></tr>
-<tr class="separator:a28173ef8e385eb489c7b960149ef7409"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c293961aa6f28c2618f5118783a946f"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a3c293961aa6f28c2618f5118783a946f">ini::loggingSection</a> = &quot;Logging&quot;</td></tr>
-<tr class="separator:a3c293961aa6f28c2618f5118783a946f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114bad0342c41b29492d0cd1a94bef77"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a114bad0342c41b29492d0cd1a94bef77">ini::webFrameworkLoadBalancerSection</a> = &quot;WebFrameworkLoadBalancer&quot;</td></tr>
-<tr class="separator:a114bad0342c41b29492d0cd1a94bef77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b42d55d1df9cc8734247d250b0ec4ca"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a0b42d55d1df9cc8734247d250b0ec4ca">ini::settingsPathKey</a> = &quot;settingsPath&quot;</td></tr>
-<tr class="separator:a0b42d55d1df9cc8734247d250b0ec4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b0bc14d9e7b944e0d02e95e27f921b4"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a3b0bc14d9e7b944e0d02e95e27f921b4">ini::ipKey</a> = &quot;ip&quot;</td></tr>
-<tr class="separator:a3b0bc14d9e7b944e0d02e95e27f921b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a095de13fbec666ef35c601b142f92bb7"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a095de13fbec666ef35c601b142f92bb7">ini::portKey</a> = &quot;port&quot;</td></tr>
-<tr class="separator:a095de13fbec666ef35c601b142f92bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa43ed9c9b8fba248ca07082cca01059"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#aaa43ed9c9b8fba248ca07082cca01059">ini::timeoutKey</a> = &quot;timeout&quot;</td></tr>
-<tr class="separator:aaa43ed9c9b8fba248ca07082cca01059"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bb998632b2ab45b0ef109787d46dcff"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a0bb998632b2ab45b0ef109787d46dcff">ini::loadSourceKey</a> = &quot;loadSource&quot;</td></tr>
-<tr class="separator:a0bb998632b2ab45b0ef109787d46dcff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa771acd549355ac9dd9d753ee86df240"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#aa771acd549355ac9dd9d753ee86df240">ini::assetsPathKey</a> = &quot;assetsPath&quot;</td></tr>
-<tr class="separator:aa771acd549355ac9dd9d753ee86df240"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66205e15d904e6b504e494cd0698a7de"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a66205e15d904e6b504e494cd0698a7de">ini::templatesPathKey</a> = &quot;templatesPath&quot;</td></tr>
-<tr class="separator:a66205e15d904e6b504e494cd0698a7de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ebb9a703375c866c3fae1ee27fad939"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a8ebb9a703375c866c3fae1ee27fad939">ini::usingAssetsCacheKey</a> = &quot;usingAssetsCache&quot;</td></tr>
-<tr class="separator:a8ebb9a703375c866c3fae1ee27fad939"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af693b832d3005f277f2461312eb2f4fd"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#af693b832d3005f277f2461312eb2f4fd">ini::dateFormatKey</a> = &quot;dateFormat&quot;</td></tr>
-<tr class="separator:af693b832d3005f277f2461312eb2f4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa690a7cdf365a185e39d425128946336"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#aa690a7cdf365a185e39d425128946336">ini::addNewLineAfterLogKey</a> = &quot;addNewLineAfterLog&quot;</td></tr>
-<tr class="separator:aa690a7cdf365a185e39d425128946336"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2e32b331d7b0bd15919ac34e7e18656"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#ac2e32b331d7b0bd15919ac34e7e18656">ini::usingLoggingKey</a> = &quot;usingLogging&quot;</td></tr>
-<tr class="separator:ac2e32b331d7b0bd15919ac34e7e18656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1522f2bfd6986de89e0c512d7e57029"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#ac1522f2bfd6986de89e0c512d7e57029">ini::listOfServersKey</a> = &quot;listOfServers&quot;</td></tr>
-<tr class="separator:ac1522f2bfd6986de89e0c512d7e57029"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab423e36014a89d598270e021f1ff4b60"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#ab423e36014a89d598270e021f1ff4b60">ini::loadBalancerIpKey</a> = &quot;loadBalancerIp&quot;</td></tr>
-<tr class="separator:ab423e36014a89d598270e021f1ff4b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c63da3b2750f3959d7a92721e6ea65f"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a2c63da3b2750f3959d7a92721e6ea65f">ini::loadBalancerPortKey</a> = &quot;loadBalancerPort&quot;</td></tr>
-<tr class="separator:a2c63da3b2750f3959d7a92721e6ea65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab44716bba01b1f0d06506d19f9bfa166"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#ab44716bba01b1f0d06506d19f9bfa166">ini::loadBalancerTimeoutKey</a> = &quot;loadBalancerTimeout&quot;</td></tr>
-<tr class="separator:ab44716bba01b1f0d06506d19f9bfa166"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3096ad6edce6869e4d5a650cae42f06a"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceini.html#a3096ad6edce6869e4d5a650cae42f06a">ini::defaultLoadSourceValue</a> = &quot;current&quot;</td></tr>
-<tr class="separator:a3096ad6edce6869e4d5a650cae42f06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c3051c4d880d27d8fbca69c8da68dc9"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a1c3051c4d880d27d8fbca69c8da68dc9">json::webServerObject</a> = &quot;WebServer&quot;</td></tr>
+<tr class="separator:a1c3051c4d880d27d8fbca69c8da68dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a243b906cab70b93f33f153b7cef22a2d"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a243b906cab70b93f33f153b7cef22a2d">json::webFrameworkObject</a> = &quot;WebFramework&quot;</td></tr>
+<tr class="separator:a243b906cab70b93f33f153b7cef22a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a069426a79f301efb0ecb87d5a4bab467"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a069426a79f301efb0ecb87d5a4bab467">json::loggingObject</a> = &quot;Logging&quot;</td></tr>
+<tr class="separator:a069426a79f301efb0ecb87d5a4bab467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad96d2f8d6ca1d17879c211fa3b0167ff"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#ad96d2f8d6ca1d17879c211fa3b0167ff">json::webFrameworkLoadBalancerObject</a> = &quot;WebFrameworkLoadBalancer&quot;</td></tr>
+<tr class="separator:ad96d2f8d6ca1d17879c211fa3b0167ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2808c35f3d17993e0910157d51c68202"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a2808c35f3d17993e0910157d51c68202">json::settingsPathsKey</a> = &quot;settingsPaths&quot;</td></tr>
+<tr class="separator:a2808c35f3d17993e0910157d51c68202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9cf9fff29323e80d4699901996ecfa4"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#ac9cf9fff29323e80d4699901996ecfa4">json::ipKey</a> = &quot;ip&quot;</td></tr>
+<tr class="separator:ac9cf9fff29323e80d4699901996ecfa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c8e42d1008cb25b1ae33a68af70ac47"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a0c8e42d1008cb25b1ae33a68af70ac47">json::portKey</a> = &quot;port&quot;</td></tr>
+<tr class="separator:a0c8e42d1008cb25b1ae33a68af70ac47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d19bdc35f8696b559562a7bf5028543"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a4d19bdc35f8696b559562a7bf5028543">json::timeoutKey</a> = &quot;timeout&quot;</td></tr>
+<tr class="separator:a4d19bdc35f8696b559562a7bf5028543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8af269e41979e7f51717760f3e273894"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a8af269e41979e7f51717760f3e273894">json::loadSourcesKey</a> = &quot;loadSources&quot;</td></tr>
+<tr class="separator:a8af269e41979e7f51717760f3e273894"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9318a37e54724847b12bb3f3a9b8e5e0"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a9318a37e54724847b12bb3f3a9b8e5e0">json::assetsPathKey</a> = &quot;assetsPath&quot;</td></tr>
+<tr class="separator:a9318a37e54724847b12bb3f3a9b8e5e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04e137b097b64639ccbbe3bbbf9219f7"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a04e137b097b64639ccbbe3bbbf9219f7">json::templatesPathKey</a> = &quot;templatesPath&quot;</td></tr>
+<tr class="separator:a04e137b097b64639ccbbe3bbbf9219f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef0d373283720cee5398cfb7963fa59c"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#aef0d373283720cee5398cfb7963fa59c">json::usingAssetsCacheKey</a> = &quot;usingAssetsCache&quot;</td></tr>
+<tr class="separator:aef0d373283720cee5398cfb7963fa59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab183f44749b0f3eb5e5d97862eee0bf0"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#ab183f44749b0f3eb5e5d97862eee0bf0">json::dateFormatKey</a> = &quot;dateFormat&quot;</td></tr>
+<tr class="separator:ab183f44749b0f3eb5e5d97862eee0bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1dd96d697d60a0a5a7591ece5dfa558"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#ae1dd96d697d60a0a5a7591ece5dfa558">json::addNewLineAfterLogKey</a> = &quot;addNewLineAfterLog&quot;</td></tr>
+<tr class="separator:ae1dd96d697d60a0a5a7591ece5dfa558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a8285bcc25d5314526da882df018fa9"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a4a8285bcc25d5314526da882df018fa9">json::webServerTypeKey</a> = &quot;webServerType&quot;</td></tr>
+<tr class="separator:a4a8285bcc25d5314526da882df018fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7236437b85747586733bcfb8e2e2d4f6"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a7236437b85747586733bcfb8e2e2d4f6">json::listOfServersKey</a> = &quot;listOfServers&quot;</td></tr>
+<tr class="separator:a7236437b85747586733bcfb8e2e2d4f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9238266db2102cfd7a0fd404a481cb2"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#ad9238266db2102cfd7a0fd404a481cb2">json::loadBalancerIpKey</a> = &quot;loadBalancerIp&quot;</td></tr>
+<tr class="separator:ad9238266db2102cfd7a0fd404a481cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bb743177574662b72349f1a0ca850f7"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a8bb743177574662b72349f1a0ca850f7">json::loadBalancerPortKey</a> = &quot;loadBalancerPort&quot;</td></tr>
+<tr class="separator:a8bb743177574662b72349f1a0ca850f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4698b35a4c8f19e653728fb75f31cec2"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a4698b35a4c8f19e653728fb75f31cec2">json::loadBalancerTimeoutKey</a> = &quot;loadBalancerTimeout&quot;</td></tr>
+<tr class="separator:a4698b35a4c8f19e653728fb75f31cec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32fd99542a13f632cabcec425bd3c2a4"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a32fd99542a13f632cabcec425bd3c2a4">json::usingLoggingKey</a> = &quot;usingLogging&quot;</td></tr>
+<tr class="separator:a32fd99542a13f632cabcec425bd3c2a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f6d80ce68d69691631f437dcb475f73"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#a2f6d80ce68d69691631f437dcb475f73">json::defaultLoadSourceValue</a> = &quot;current&quot;</td></tr>
+<tr class="separator:a2f6d80ce68d69691631f437dcb475f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d49abcc814a938f80a5a8e9f58f964"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#af4d49abcc814a938f80a5a8e9f58f964">json::multithreadedWebServerTypeValue</a> = &quot;multithreaded&quot;</td></tr>
+<tr class="separator:af4d49abcc814a938f80a5a8e9f58f964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac887cd2ee0ef1b37e707439a5a2602cb"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson.html#ac887cd2ee0ef1b37e707439a5a2602cb">json::threadPoolWebServerTypeValue</a> = &quot;threadPool&quot;</td></tr>
+<tr class="separator:ac887cd2ee0ef1b37e707439a5a2602cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a570f432fc2a9b94e749dfc753eac9981"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a570f432fc2a9b94e749dfc753eac9981">exceptions::notImplemented</a> = &quot;Not implemented&quot;</td></tr>
 <tr class="separator:a570f432fc2a9b94e749dfc753eac9981"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a990c9e9a4aba80eb9bf8c79898b76108"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a990c9e9a4aba80eb9bf8c79898b76108">exceptions::fileDoesNotExist</a> = &quot;file does not exist&quot;</td></tr>
@@ -209,24 +215,8 @@ Variables</h2></td></tr>
 <tr class="separator:a59cf90d9d1d1df804458d9a3be4072f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf25835aba8641e67825f964f7608f6b"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#acf25835aba8641e67825f964f7608f6b">exceptions::missingOtherDLLs</a> = &quot;That load source requires to load other dlls&quot;</td></tr>
 <tr class="separator:acf25835aba8641e67825f964f7608f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a652707709fe8e6656c328c5f583a3f"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a2a652707709fe8e6656c328c5f583a3f">exceptions::cantFindSettingsPath</a> = &quot;Can't find settings path option&quot;</td></tr>
-<tr class="separator:a2a652707709fe8e6656c328c5f583a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c3e6e24a379c631271188959db0da62"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a8c3e6e24a379c631271188959db0da62">exceptions::cantFindAssetsPath</a> = &quot;Can't find assets path option&quot;</td></tr>
-<tr class="separator:a8c3e6e24a379c631271188959db0da62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3633210ffd5a997816d91073b1fbe84c"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a3633210ffd5a997816d91073b1fbe84c">exceptions::cantFindTemplatesPath</a> = &quot;Can't find templates path option&quot;</td></tr>
-<tr class="separator:a3633210ffd5a997816d91073b1fbe84c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898bb515dff67a025a38a21800779da8"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a898bb515dff67a025a38a21800779da8">exceptions::cantFindUsingAssetsCache</a> = &quot;Can't find using assets cache option&quot;</td></tr>
-<tr class="separator:a898bb515dff67a025a38a21800779da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a297e74a7bca1829ac6e94fa5dc094a74"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a297e74a7bca1829ac6e94fa5dc094a74">exceptions::cantFindLoadSource</a> = &quot;Can't find load source option&quot;</td></tr>
-<tr class="separator:a297e74a7bca1829ac6e94fa5dc094a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a481ad6e4ac57da6182aa94fd47b56e7e"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a481ad6e4ac57da6182aa94fd47b56e7e">exceptions::cantFindIp</a> = &quot;Can't find ip option&quot;</td></tr>
-<tr class="separator:a481ad6e4ac57da6182aa94fd47b56e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a665b5d9b461d9b19184d605f15334573"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a665b5d9b461d9b19184d605f15334573">exceptions::cantFindPort</a> = &quot;Can't find port option&quot;</td></tr>
-<tr class="separator:a665b5d9b461d9b19184d605f15334573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4977748214f11d6c9aaf5542cf5d070"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#ac4977748214f11d6c9aaf5542cf5d070">exceptions::cantFindTimeout</a> = &quot;Can't find timeout option&quot;</td></tr>
-<tr class="separator:ac4977748214f11d6c9aaf5542cf5d070"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a513229c26f9576c2368261273a4338b9"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a513229c26f9576c2368261273a4338b9">exceptions::cantFindDateFormat</a> = &quot;Can't find date format option&quot;</td></tr>
-<tr class="separator:a513229c26f9576c2368261273a4338b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e51331d85f6822cdb9dc87d5328d90"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#ab8e51331d85f6822cdb9dc87d5328d90">exceptions::wrongWebServerType</a> = &quot;Wrong type of webServerType option&quot;</td></tr>
+<tr class="separator:ab8e51331d85f6822cdb9dc87d5328d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0d80291ae3d5bb3a74362f13c9d8a36"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#ae0d80291ae3d5bb3a74362f13c9d8a36">exceptions::variableDeclarationSyntaxError</a> = &quot;Wrong variable declaration&quot;</td></tr>
 <tr class="separator:ae0d80291ae3d5bb3a74362f13c9d8a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad523b3792de5196ee6719d3f485aefd1"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#ad523b3792de5196ee6719d3f485aefd1">exceptions::sectionDeclarationSyntaxError</a> = &quot;Wrong section declaration&quot;</td></tr>
@@ -235,12 +225,6 @@ Variables</h2></td></tr>
 <tr class="separator:acf6287884c2ca53f3edd64d5964b1b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa397fdb455a51172dc250623e337e226"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#aa397fdb455a51172dc250623e337e226">exceptions::stringConversionErrorCode</a> = &quot;String conversion error code &quot;</td></tr>
 <tr class="separator:aa397fdb455a51172dc250623e337e226"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afef6de05d13982a6f15bcf5a58418c19"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#afef6de05d13982a6f15bcf5a58418c19">exceptions::cantFindLoadBalancerIp</a> = &quot;Can't find load balancer ip option&quot;</td></tr>
-<tr class="separator:afef6de05d13982a6f15bcf5a58418c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7411278092f0e15ed62412d048a756e"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#ad7411278092f0e15ed62412d048a756e">exceptions::cantFindLoadBalancerPort</a> = &quot;Can't find load balancer port option&quot;</td></tr>
-<tr class="separator:ad7411278092f0e15ed62412d048a756e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7c808a32479e6dd28056a255de647a9"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#ad7c808a32479e6dd28056a255de647a9">exceptions::cantFindLoadBalancerTimeout</a> = &quot;Can't find load balancer timeout option&quot;</td></tr>
-<tr class="separator:ad7c808a32479e6dd28056a255de647a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0af2dbac361b4dbb46a493cc12c1c9a2"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceexceptions.html#a0af2dbac361b4dbb46a493cc12c1c9a2">exceptions::badRequest</a> = &quot;Bad request from client&quot;</td></tr>
 <tr class="separator:a0af2dbac361b4dbb46a493cc12c1c9a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5ef35ab0f62f179b3472113d9b7653e"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacejson__settings__values.html#af5ef35ab0f62f179b3472113d9b7653e">json_settings_values::initializationLoadTypeValue</a> = &quot;initialization&quot;</td></tr>
