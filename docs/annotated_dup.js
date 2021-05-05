@@ -41,6 +41,8 @@ var annotated_dup =
       ] ],
       [ "WebFrameworkDynamicPages", "classframework_1_1_web_framework_dynamic_pages.html", "classframework_1_1_web_framework_dynamic_pages" ],
       [ "BaseExecutor", "classframework_1_1_base_executor.html", "classframework_1_1_base_executor" ],
+      [ "BaseHeavyOperationStatefullExecutor", "classframework_1_1_base_heavy_operation_statefull_executor.html", "classframework_1_1_base_heavy_operation_statefull_executor" ],
+      [ "BaseHeavyOperationStatelessExecutor", "classframework_1_1_base_heavy_operation_stateless_executor.html", "classframework_1_1_base_heavy_operation_stateless_executor" ],
       [ "BaseStatefulExecutor", "classframework_1_1_base_stateful_executor.html", "classframework_1_1_base_stateful_executor" ],
       [ "BaseStatelessExecutor", "classframework_1_1_base_stateless_executor.html", "classframework_1_1_base_stateless_executor" ],
       [ "ResourceExecutor", "classframework_1_1_resource_executor.html", "classframework_1_1_resource_executor" ],
@@ -50,7 +52,9 @@ var annotated_dup =
       [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html", "classframework_1_1_h_t_t_p_request" ],
       [ "HTTPResponse", "classframework_1_1_h_t_t_p_response.html", "classframework_1_1_h_t_t_p_response" ],
       [ "WebFrameworkHTTPNetwork", "classframework_1_1_web_framework_h_t_t_p_network.html", "classframework_1_1_web_framework_h_t_t_p_network" ],
-      [ "WebServer", "classframework_1_1_web_server.html", "classframework_1_1_web_server" ]
+      [ "BaseWebServer", "classframework_1_1_base_web_server.html", "classframework_1_1_base_web_server" ],
+      [ "MultithreadedWebServer", "classframework_1_1_multithreaded_web_server.html", "classframework_1_1_multithreaded_web_server" ],
+      [ "ThreadPoolWebServer", "classframework_1_1_thread_pool_web_server.html", "classframework_1_1_thread_pool_web_server" ]
     ] ],
     [ "fts5_api", "structfts5__api.html", "structfts5__api" ],
     [ "fts5_tokenizer", "structfts5__tokenizer.html", "structfts5__tokenizer" ],

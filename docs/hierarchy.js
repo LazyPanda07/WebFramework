@@ -4,6 +4,8 @@ var hierarchy =
       [ "framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData", "structframework_1_1load__balancer_1_1_load_balancer_server_1_1load_balancer_connection_data.html", null ]
     ] ],
     [ "framework::BaseExecutor", "classframework_1_1_base_executor.html", [
+      [ "framework::BaseHeavyOperationStatefullExecutor", "classframework_1_1_base_heavy_operation_statefull_executor.html", null ],
+      [ "framework::BaseHeavyOperationStatelessExecutor", "classframework_1_1_base_heavy_operation_stateless_executor.html", null ],
       [ "framework::BaseStatefulExecutor", "classframework_1_1_base_stateful_executor.html", null ],
       [ "framework::BaseStatelessExecutor", "classframework_1_1_base_stateless_executor.html", [
         [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
@@ -11,7 +13,10 @@ var hierarchy =
     ] ],
     [ "framework::middleware::BaseMiddlewareRouteController", "classframework_1_1middleware_1_1_base_middleware_route_controller.html", null ],
     [ "web::BaseTCPServer", null, [
-      [ "framework::WebServer", "classframework_1_1_web_server.html", null ],
+      [ "framework::BaseWebServer", "classframework_1_1_base_web_server.html", [
+        [ "framework::MultithreadedWebServer", "classframework_1_1_multithreaded_web_server.html", null ],
+        [ "framework::ThreadPoolWebServer", "classframework_1_1_thread_pool_web_server.html", null ]
+      ] ],
       [ "framework::load_balancer::LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", null ],
       [ "framework::middleware::MiddlewareServer", "classframework_1_1middleware_1_1_middleware_server.html", null ]
     ] ],

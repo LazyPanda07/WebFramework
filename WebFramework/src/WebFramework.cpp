@@ -40,7 +40,7 @@ namespace framework
 
 		try
 		{
-			parser.get<unique_ptr<json::JSONParser::objectType>>(json::loggingObject);	// is logging object exists
+			parser.get<smartPointer<json::JSONParser::objectType>>(json::loggingObject);	// is logging object exists
 
 			try
 			{

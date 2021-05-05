@@ -2,6 +2,14 @@ var dir_b6336cb5ac9585f8f8fc113b1f088aa0 =
 [
     [ "BaseExecutor.cpp", "_base_executor_8cpp.html", null ],
     [ "BaseExecutor.h", "_base_executor_8h.html", "_base_executor_8h" ],
+    [ "BaseHeavyOperationStatefulExecutor.cpp", "_base_heavy_operation_stateful_executor_8cpp.html", null ],
+    [ "BaseHeavyOperationStatefulExecutor.h", "_base_heavy_operation_stateful_executor_8h.html", [
+      [ "BaseHeavyOperationStatefullExecutor", "classframework_1_1_base_heavy_operation_statefull_executor.html", "classframework_1_1_base_heavy_operation_statefull_executor" ]
+    ] ],
+    [ "BaseHeavyOperationStatelessExecutor.cpp", "_base_heavy_operation_stateless_executor_8cpp.html", null ],
+    [ "BaseHeavyOperationStatelessExecutor.h", "_base_heavy_operation_stateless_executor_8h.html", [
+      [ "BaseHeavyOperationStatelessExecutor", "classframework_1_1_base_heavy_operation_stateless_executor.html", "classframework_1_1_base_heavy_operation_stateless_executor" ]
+    ] ],
     [ "BaseStatefulExecutor.cpp", "_base_stateful_executor_8cpp.html", null ],
     [ "BaseStatefulExecutor.h", "_base_stateful_executor_8h.html", [
       [ "BaseStatefulExecutor", "classframework_1_1_base_stateful_executor.html", "classframework_1_1_base_stateful_executor" ]

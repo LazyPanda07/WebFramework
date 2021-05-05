@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['json_5fsettings_5fvalues_1355',['json_settings_values',['../namespacejson__settings__values.html',1,'']]]
+  ['web_5fframework_5fassets_1375',['web_framework_assets',['../namespaceweb__framework__assets.html',1,'']]]
 ];
