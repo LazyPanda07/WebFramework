@@ -45,6 +45,16 @@ namespace framework
 			{
 				throw exceptions::FileDoesNotExistException(key.filename().string());
 			}
+
+			if (SSL_CTX_use_certificate_file(context, cert.string().data(), SSL_FILETYPE_PEM) <= 0)
+			{
+				throw web::exceptions::SSLException();
+			}
+
+			if (SSL_CTX_use_PrivateKey_file(context, key.string().data(), SSL_FILETYPE_PEM) <= 0)
+			{
+				throw web::exceptions::SSLException();
+			}
 		}
 
 		while (isRunning)
