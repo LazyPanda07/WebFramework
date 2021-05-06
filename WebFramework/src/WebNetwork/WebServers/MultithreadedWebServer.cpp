@@ -30,6 +30,21 @@ namespace framework
 			{
 				throw web::exceptions::SSLException();
 			}
+
+			filesystem::path certificatesFolder = filesystem::current_path() /= "certificates";
+			filesystem::path cert = certificatesFolder / certFileName;
+			filesystem::path key = certificatesFolder / keyFileName;
+
+			filesystem::create_directory(certificatesFolder);
+
+			if (!filesystem::exists(cert))
+			{
+				throw exceptions::FileDoesNotExistException(cert.filename().string());
+			}
+			else if (!filesystem::exists(key))
+			{
+				throw exceptions::FileDoesNotExistException(key.filename().string());
+			}
 		}
 
 		while (isRunning)
