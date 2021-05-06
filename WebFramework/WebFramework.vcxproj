@@ -422,7 +422,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ThreadPool\ThreadPool.vcxproj">
+    <ProjectReference Include="..\ThreadPool\ThreadPool.vcxproj">
       <Project>{bde48484-5593-484f-9f84-fc01f8cf83a9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">
