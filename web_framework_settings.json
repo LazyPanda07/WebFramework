@@ -15,7 +15,8 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "usingAssetsCache": true,
-    "webServerType": "multithreaded"
+    "webServerType": "multithreaded",
+    "useHTTPS": true
   },
 
   "Logging": {

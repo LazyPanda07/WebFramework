@@ -33,12 +33,12 @@ namespace framework
 		WebFramework(const std::filesystem::path& configurationJSONFile);
 
 		/// <summary>
-		/// Start MultithreadedWebServer
+		/// Start BaseWebServer
 		/// </summary>
 		void startServer();
 
 		/// <summary>
-		/// Stop MultithreadedWebServer incoming connections
+		/// Stop BaseWebServer incoming connections
 		/// </summary>
 		void stopServer();
 
