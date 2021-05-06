@@ -77,6 +77,12 @@ namespace framework
 		try
 		{
 			useHTTPS = parser.get<bool>(json::useHTTPSKey);
+
+			if (useHTTPS)
+			{
+				SSL_library_init();
+				SSL_load_error_strings();
+			}
 		}
 		catch (const json::exceptions::BaseJSONException&)
 		{
