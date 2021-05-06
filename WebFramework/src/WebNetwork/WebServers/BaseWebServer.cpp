@@ -74,14 +74,6 @@ namespace framework
 						executorSettings.initParameters.data.insert(make_pair(j.first, get<json::utility::jString>(j.second)));
 						break;
 
-					case json::utility::jChar:
-						executorSettings.initParameters.data.insert(make_pair(j.first, get<json::utility::jChar>(j.second)));
-						break;
-
-					case json::utility::jUnsignedChar:
-						executorSettings.initParameters.data.insert(make_pair(j.first, get<json::utility::jUnsignedChar>(j.second)));
-						break;
-
 					case json::utility::jBool:
 						executorSettings.initParameters.data.insert(make_pair(j.first, get<json::utility::jBool>(j.second)));
 						break;
@@ -104,14 +96,6 @@ namespace framework
 
 					case json::utility::jStringArray:
 						executorSettings.initParameters.data.insert(make_pair(j.first, get<json::utility::jStringArray>(j.second)));
-						break;
-
-					case json::utility::jCharArray:
-						executorSettings.initParameters.data.insert(make_pair(j.first, get<json::utility::jCharArray>(j.second)));
-						break;
-
-					case json::utility::jUnsignedCharArray:
-						executorSettings.initParameters.data.insert(make_pair(j.first, get<json::utility::jUnsignedCharArray>(j.second)));
 						break;
 
 					case json::utility::jBoolArray:
