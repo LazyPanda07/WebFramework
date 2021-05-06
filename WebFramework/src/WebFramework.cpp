@@ -37,6 +37,7 @@ namespace framework
 		const string& ip = parser.get<string>(json::ipKey);
 		const string& port = parser.get<string>(json::portKey);
 		int64_t timeout = parser.get<int64_t>(json::timeoutKey);
+		bool useHTTPS = false;
 
 		try
 		{
@@ -73,6 +74,15 @@ namespace framework
 
 		}
 
+		try
+		{
+			useHTTPS = parser.get<bool>(json::useHTTPSKey);
+		}
+		catch (const json::exceptions::BaseJSONException&)
+		{
+
+		}
+
 		vector<utility::JSONSettingsParser> jsonSettings;
 
 		jsonSettings.reserve(settingsPaths.size());
@@ -90,7 +100,8 @@ namespace framework
 					ip,
 					port,
 					timeout,
-					loadSources
+					loadSources,
+					useHTTPS
 					);
 		}
 		else if (webServerType == json::threadPoolWebServerTypeValue)
@@ -107,7 +118,8 @@ namespace framework
 						port,
 						timeout,
 						loadSources,
-						static_cast<uint32_t>(parser.get<int64_t>("threadCount"))
+						static_cast<uint32_t>(parser.get<int64_t>("threadCount")),
+						useHTTPS
 						);
 			}
 			catch (const json::exceptions::BaseJSONException&)
@@ -122,7 +134,8 @@ namespace framework
 						port,
 						timeout,
 						loadSources,
-						NULL
+						NULL,
+						useHTTPS
 						);
 			}
 		}

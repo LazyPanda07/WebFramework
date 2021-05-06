@@ -2,6 +2,8 @@
 
 #include "BaseWebServer.h"
 
+#include <openssl/ssl.h>
+
 namespace framework
 {
 	/// <summary>
@@ -11,11 +13,10 @@ namespace framework
 	class MultithreadedWebServer final : public virtual BaseWebServer
 	{
 	private:
-		/// <summary>
-		/// Called for every client
-		/// </summary>
-		/// <param name="clientSocket">client's socket</param>
-		/// <param name="addr">client's address</param>
+		void receiveConnections() override;
+
+		void clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context);
+
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
@@ -34,7 +35,7 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		MultithreadedWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
+		MultithreadedWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, bool useHTTPS);
 
 		~MultithreadedWebServer() = default;
 	};

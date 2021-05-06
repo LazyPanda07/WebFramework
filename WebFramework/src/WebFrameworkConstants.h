@@ -33,7 +33,12 @@ inline const std::string traceRequest	= "TRACE";
 inline const std::string contentLengthHeader = "Content-Length";
 inline const std::string crlfcrlf = "\r\n\r\n";
 
-inline constexpr int averageHTTPRequestSize = 1500;
+// inline constexpr int averageHTTPRequestSize = 1500;
+
+/// @brief HTTPS cert
+inline const std::string certFileName = "cert.pem";
+/// @brief HTTPS private key
+inline const std::string keyFileName = "key.pem";
 
 /// <summary>
 /// <para>Session life time for client session in nanoseconds</para>
@@ -67,6 +72,7 @@ namespace json
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 	inline const std::string webServerTypeKey = "webServerType";
+	inline const std::string useHTTPSKey = "useHTTPS";
 
 	inline const std::string listOfServersKey = "listOfServers";
 	inline const std::string loadBalancerIpKey = "loadBalancerIp";

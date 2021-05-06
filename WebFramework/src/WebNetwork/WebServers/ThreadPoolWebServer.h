@@ -1,8 +1,11 @@
 #pragma once
 
+#include "BaseWebServer.h"
+
 #include <unordered_map>
 
-#include "BaseWebServer.h"
+#include <openssl/ssl.h>
+
 #include "ThreadPool.h"
 
 namespace framework
@@ -21,7 +24,7 @@ namespace framework
 
 			IndividualData();
 
-			IndividualData(SOCKET clientSocket, const sockaddr& addr);
+			IndividualData(SOCKET clientSocket, const sockaddr& addr, SSL* ssl, SSL_CTX* context);
 
 			IndividualData(const IndividualData&) = delete;
 
@@ -45,10 +48,12 @@ namespace framework
 
 		void receiveConnections() override;
 
+		void clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context);
+
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
-		ThreadPoolWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount);
+		ThreadPoolWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount, bool useHTTPS);
 
 		~ThreadPoolWebServer() = default;
 	};
