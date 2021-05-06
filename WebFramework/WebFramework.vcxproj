@@ -370,6 +370,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClCompile Include="src\WebFramework.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
+    <ClCompile Include="src\WebNetwork\WebFrameworkHTTPSNetwork.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
@@ -417,6 +418,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
+    <ClInclude Include="src\WebNetwork\WebFrameworkHTTPSNetwork.h" />
     <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
     <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h" />
     <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />

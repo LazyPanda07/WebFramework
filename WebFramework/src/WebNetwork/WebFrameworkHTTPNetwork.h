@@ -25,7 +25,7 @@ namespace framework
 		WebFrameworkHTTPNetwork(const std::string& ip, const std::string& port);
 
 		/// <summary>
-		/// Client side constructor
+		/// Client side constructor for middleware server connection
 		/// </summary>
 		/// <param name="data">struct with ip and port</param>
 		WebFrameworkHTTPNetwork(const utility::baseConnectionData& data);

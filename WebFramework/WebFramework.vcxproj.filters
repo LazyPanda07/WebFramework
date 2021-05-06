@@ -129,6 +129,9 @@
     <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\WebNetwork\WebFrameworkHTTPSNetwork.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -264,6 +267,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WebNetwork\WebFrameworkHTTPSNetwork.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

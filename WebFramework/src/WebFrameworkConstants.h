@@ -67,6 +67,7 @@ namespace json
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 	inline const std::string webServerTypeKey = "webServerType";
+	inline const std::string useHTTPSKey = "useHTTPS";
 
 	inline const std::string listOfServersKey = "listOfServers";
 	inline const std::string loadBalancerIpKey = "loadBalancerIp";
