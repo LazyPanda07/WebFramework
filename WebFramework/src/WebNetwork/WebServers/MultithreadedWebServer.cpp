@@ -73,7 +73,7 @@ namespace framework
 				data.insert(getClientIpV4(addr), clientSocket);
 
 				SSL* ssl = nullptr;
-				
+
 				if (useHTTPS)
 				{
 					ssl = SSL_new(context);
@@ -90,7 +90,7 @@ namespace framework
 						continue;
 					}
 
-					if (!SSL_accept(ssl))
+					if (SSL_accept(ssl) <= 0)
 					{
 						SSL_free(ssl);
 
@@ -124,7 +124,7 @@ namespace framework
 			new buffers::IOSocketBuffer
 			(
 				useHTTPS ?
-				static_cast<web::Network*>(new WebFrameworkHTTPSNetwork(clientSocket, ssl, context)) : 
+				static_cast<web::Network*>(new WebFrameworkHTTPSNetwork(clientSocket, ssl, context)) :
 				static_cast<web::Network*>(new WebFrameworkHTTPNetwork(clientSocket))
 			)
 		);
