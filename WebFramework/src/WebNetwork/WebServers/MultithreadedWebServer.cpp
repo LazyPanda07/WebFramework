@@ -90,7 +90,7 @@ namespace framework
 						continue;
 					}
 
-					if (!SSL_accept(ssl))
+					if (SSL_accept(ssl) <= 0)
 					{
 						SSL_free(ssl);
 
