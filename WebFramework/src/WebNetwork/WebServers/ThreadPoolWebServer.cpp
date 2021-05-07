@@ -174,6 +174,8 @@ namespace framework
 
 		if (useHTTPS)
 		{
+			throw exceptions::NotImplementedException();
+
 			context = SSL_CTX_new(TLS_server_method());
 
 			if (!context)
