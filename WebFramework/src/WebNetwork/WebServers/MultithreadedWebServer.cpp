@@ -41,7 +41,7 @@ namespace framework
 					throw web::exceptions::SSLException();
 				}
 
-				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
 				{
 					throw web::exceptions::SSLException();
 				}
