@@ -11,7 +11,7 @@
 #include "Exceptions/BadRequestException.h"
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SSLException.h"
-#include "Utility/HTTPSSingleton.h"
+#include "Utility/Singletons/HTTPSSingleton.h"
 
 #pragma warning(disable: 6387)
 

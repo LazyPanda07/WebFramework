@@ -99,7 +99,7 @@
     <ClCompile Include="src\Middleware\BaseMiddlewareRouteController.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\baseConnectionData.cpp">
+    <ClCompile Include="src\Utility\Middleware\baseConnectionData.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp">
@@ -132,7 +132,7 @@
     <ClCompile Include="src\WebNetwork\WebFrameworkHTTPSNetwork.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\HTTPSSingleton.cpp">
+    <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp">
@@ -233,7 +233,7 @@
     <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\PriorityQueue.h">
+    <ClInclude Include="src\Utility\DataStructures\PriorityQueue.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Middleware\Middleware.h">
@@ -245,7 +245,7 @@
     <ClInclude Include="src\Middleware\BaseMiddlewareRouteController.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\baseConnectionData.h">
+    <ClInclude Include="src\Utility\Middleware\baseConnectionData.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h">
@@ -284,7 +284,7 @@
     <ClInclude Include="src\WebNetwork\WebFrameworkHTTPSNetwork.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\HTTPSSingleton.h">
+    <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h">
