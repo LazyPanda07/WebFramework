@@ -29,19 +29,28 @@ namespace framework
 		{
 			context = SSL_CTX_new(TLS_server_method());
 
-			if (!context)
+			try
 			{
-				throw web::exceptions::SSLException();
-			}
+				if (!context)
+				{
+					throw web::exceptions::SSLException();
+				}
 
-			if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
-			{
-				throw web::exceptions::SSLException();
-			}
+				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
 
-			if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
+			}
+			catch (const web::exceptions::SSLException& e)
 			{
-				throw web::exceptions::SSLException();
+				cout << e.what() << endl;
+
+				exit(-1);
 			}
 		}
 
