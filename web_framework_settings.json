@@ -16,7 +16,11 @@
     "templatesPath": "templates",
     "usingAssetsCache": true,
     "webServerType": "multithreaded",
-    "useHTTPS": true
+    "HTTPS": {
+      "useHTTPS": true,
+      "pathToCertificate": "certificates/cert.pem",
+      "pathToKey": "certificates/key.pem"
+    }
   },
 
   "Logging": {

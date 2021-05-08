@@ -15,7 +15,6 @@ namespace framework
 		SessionsManager sessionsManager;
 		sqlite::SQLiteManager databasesManager;
 		ResourceExecutor* resources;
-		bool useHTTPS;
 
 	public:
 		/// <summary>
@@ -33,7 +32,7 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		BaseWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, bool useHTTPS);
+		BaseWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
 		virtual ~BaseWebServer() = default;
 	};
