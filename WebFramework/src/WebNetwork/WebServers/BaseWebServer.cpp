@@ -10,8 +10,7 @@ using namespace std;
 
 namespace framework
 {
-	BaseWebServer::BaseWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, bool useHTTPS) :
-		useHTTPS(useHTTPS)
+	BaseWebServer::BaseWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources)
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creator;

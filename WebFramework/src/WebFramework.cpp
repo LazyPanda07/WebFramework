@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "WebNetwork/WebServers/MultithreadedWebServer.h"
 #include "WebNetwork/WebServers/ThreadPoolWebServer.h"
+#include "Utility/HTTPSSingleton.h"
 
 #pragma comment (lib, "BaseTCPServer.lib")
 #pragma comment (lib, "Log.lib")
@@ -80,6 +81,17 @@ namespace framework
 
 			if (useHTTPS)
 			{
+				if (webServerType == json::threadPoolWebServerTypeValue)
+				{
+					throw exceptions::NotImplementedException();
+				}
+
+				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+
+				httpsSettings.setUseHTTPS(true);
+				httpsSettings.setPathToCertificate(parser.get<string>(json::pathToCertificateKey));
+				httpsSettings.setPathToKey(parser.get<string>(json::pathToKey));
+
 				SSL_library_init();
 				SSL_load_error_strings();
 			}
@@ -106,8 +118,7 @@ namespace framework
 					ip,
 					port,
 					timeout,
-					loadSources,
-					useHTTPS
+					loadSources
 					);
 		}
 		else if (webServerType == json::threadPoolWebServerTypeValue)
@@ -124,8 +135,7 @@ namespace framework
 						port,
 						timeout,
 						loadSources,
-						static_cast<uint32_t>(parser.get<int64_t>("threadCount")),
-						useHTTPS
+						static_cast<uint32_t>(parser.get<int64_t>("threadCount"))
 						);
 			}
 			catch (const json::exceptions::BaseJSONException&)
@@ -140,8 +150,7 @@ namespace framework
 						port,
 						timeout,
 						loadSources,
-						NULL,
-						useHTTPS
+						NULL
 						);
 			}
 		}

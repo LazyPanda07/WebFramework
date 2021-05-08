@@ -1,7 +1,7 @@
 {
   "WebServer": {
     "ip": "0.0.0.0",
-    "port": "443",
+    "port": "80",
     "timeout": 0
   },
 
@@ -17,7 +17,11 @@
     "templatesPath": "templates",
     "usingAssetsCache": true,
     "webServerType": "multithreaded",
-    "useHTTPS": true
+    "HTTPS": {
+      "useHTTPS": true,
+      "pathToCertificate": "certificates/cert.pem",
+      "pathToKey": "certificates/key.pem"
+    }
   },
 
   "Logging": {

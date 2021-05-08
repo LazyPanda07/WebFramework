@@ -11,6 +11,7 @@
 #include "Exceptions/BadRequestException.h"
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SSLException.h"
+#include "Utility/HTTPSSingleton.h"
 
 #pragma warning(disable: 6387)
 
@@ -21,39 +22,35 @@ namespace framework
 	void MultithreadedWebServer::receiveConnections()
 	{
 		SSL_CTX* context = nullptr;
+		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+		bool useHTTPS = httpsSettings.getUseHTTPS();
 
 		if (useHTTPS)
 		{
 			context = SSL_CTX_new(TLS_server_method());
 
-			if (!context)
+			try
 			{
-				throw web::exceptions::SSLException();
+				if (!context)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
 			}
-
-			filesystem::path certificatesFolder = filesystem::current_path() /= "certificates";
-			filesystem::path cert = certificatesFolder / certFileName;
-			filesystem::path key = certificatesFolder / keyFileName;
-
-			filesystem::create_directory(certificatesFolder);
-
-			if (!filesystem::exists(cert))
+			catch (const web::exceptions::SSLException& e)
 			{
-				throw exceptions::FileDoesNotExistException(cert.filename().string());
-			}
-			else if (!filesystem::exists(key))
-			{
-				throw exceptions::FileDoesNotExistException(key.filename().string());
-			}
+				cout << e.what() << endl;
 
-			if (SSL_CTX_use_certificate_file(context, cert.string().data(), SSL_FILETYPE_PEM) <= 0)
-			{
-				throw web::exceptions::SSLException();
-			}
-
-			if (SSL_CTX_use_PrivateKey_file(context, key.string().data(), SSL_FILETYPE_PEM) <= 0)
-			{
-				throw web::exceptions::SSLException();
+				exit(-1);
 			}
 		}
 
@@ -123,8 +120,8 @@ namespace framework
 		(
 			new buffers::IOSocketBuffer
 			(
-				useHTTPS ?
-				static_cast<web::Network*>(new WebFrameworkHTTPSNetwork(clientSocket, ssl, context)) :
+				utility::HTTPSSingleton::get().getUseHTTPS() ?
+				static_cast<web::Network*>(new WebFrameworkHTTPSNetwork(clientSocket, ssl, context)) : 
 				static_cast<web::Network*>(new WebFrameworkHTTPNetwork(clientSocket))
 			)
 		);
@@ -190,7 +187,7 @@ namespace framework
 		throw exceptions::NotImplementedException();
 	}
 
-	MultithreadedWebServer::MultithreadedWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, bool useHTTPS) :
+	MultithreadedWebServer::MultithreadedWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer
 		(
 			port,
@@ -209,10 +206,9 @@ namespace framework
 			ip,
 			port,
 			timeout,
-			pathToSources,
-			useHTTPS
+			pathToSources
 		)
 	{
-		// TODO: sertificates
+		
 	}
 }

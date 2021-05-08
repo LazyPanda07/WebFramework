@@ -4,6 +4,7 @@
 #include "Exceptions/SSLException.h"
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
 #include "WebNetwork/WebFrameworkHTTPSNetwork.h"
+#include "Utility/HTTPSSingleton.h"
 
 using namespace std;
 
@@ -171,41 +172,35 @@ namespace framework
 	{
 		vector<SOCKET> disconnectedClients;
 		SSL_CTX* context = nullptr;
+		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+		bool useHTTPS = httpsSettings.getUseHTTPS();
 
 		if (useHTTPS)
 		{
-			throw exceptions::NotImplementedException();
-
 			context = SSL_CTX_new(TLS_server_method());
 
-			if (!context)
+			try
 			{
-				throw web::exceptions::SSLException();
+				if (!context)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
 			}
-
-			filesystem::path certificatesFolder = filesystem::current_path() /= "certificates";
-			filesystem::path cert = certificatesFolder / certFileName;
-			filesystem::path key = certificatesFolder / keyFileName;
-
-			filesystem::create_directory(certificatesFolder);
-
-			if (!filesystem::exists(cert))
+			catch (const web::exceptions::SSLException& e)
 			{
-				throw exceptions::FileDoesNotExistException(cert.filename().string());
-			}
-			else if (!filesystem::exists(key))
-			{
-				throw exceptions::FileDoesNotExistException(key.filename().string());
-			}
+				cout << e.what() << endl;
 
-			if (SSL_CTX_use_certificate_file(context, cert.string().data(), SSL_FILETYPE_PEM) <= 0)
-			{
-				throw web::exceptions::SSLException();
-			}
-
-			if (SSL_CTX_use_PrivateKey_file(context, key.string().data(), SSL_FILETYPE_PEM) <= 0)
-			{
-				throw web::exceptions::SSLException();
+				exit(-1);
 			}
 		}
 
@@ -242,7 +237,7 @@ namespace framework
 						continue;
 					}
 
-					if (SSL_connect(ssl) != 1)
+					if (!SSL_accept(ssl))
 					{
 						SSL_free(ssl);
 
@@ -290,7 +285,7 @@ namespace framework
 		throw exceptions::NotImplementedException();
 	}
 
-	ThreadPoolWebServer::ThreadPoolWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount, bool useHTTPS) :
+	ThreadPoolWebServer::ThreadPoolWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
 		BaseTCPServer
 		(
 			port,
@@ -309,8 +304,7 @@ namespace framework
 			ip,
 			port,
 			timeout,
-			pathToSources,
-			useHTTPS
+			pathToSources
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{

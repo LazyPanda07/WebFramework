@@ -53,7 +53,7 @@ namespace framework
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
-		ThreadPoolWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount, bool useHTTPS);
+		ThreadPoolWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount);
 
 		~ThreadPoolWebServer() = default;
 	};
