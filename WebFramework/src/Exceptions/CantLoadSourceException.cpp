@@ -7,7 +7,7 @@ namespace framework
 	namespace exceptions
 	{
 		CantLoadSourceException::CantLoadSourceException(const string& source) :
-			runtime_error(::exceptions::cantLoadSource + source + ". " + ::exceptions::missingOtherDLLs)
+			BaseWebFrameworkException(::exceptions::cantLoadSource + source + ". " + ::exceptions::missingOtherDLLs)
 		{
 
 		}

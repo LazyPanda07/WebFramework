@@ -13,6 +13,8 @@ namespace framework
 		{
 		public:
 			BadRequestException(const std::string& additionalInformation = "");
+
+			virtual ~BadRequestException() = default;
 		};
 	}
 }

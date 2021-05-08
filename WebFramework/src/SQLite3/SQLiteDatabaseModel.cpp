@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "Exceptions/SQLite3Exception.h"
+
 using namespace std;
 
 namespace framework
@@ -66,7 +68,7 @@ namespace framework
 
 			if (code != SQLITE_DONE)
 			{
-				throw runtime_error(sqlite3_errmsg(*db));
+				throw exceptions::SQLite3Exception(sqlite3_errmsg(*db));
 			}
 
 			sqlite3_finalize(result);
@@ -77,7 +79,7 @@ namespace framework
 				{
 					return this->executeQuery("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(db.db)));
 				}
-				catch (const runtime_error&)
+				catch (const exceptions::SQLite3Exception&)
 				{
 
 				}

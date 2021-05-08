@@ -7,7 +7,7 @@ namespace framework
 	namespace exceptions
 	{
 		FileDoesNotExistException::FileDoesNotExistException(const string& filename) :
-			runtime_error(filename + " " + ::exceptions::fileDoesNotExist)
+			BaseWebFrameworkException(filename + " " + ::exceptions::fileDoesNotExist)
 		{
 
 		}
