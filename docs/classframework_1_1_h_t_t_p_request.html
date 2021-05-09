@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -136,7 +136,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0faf91b7585442167d9abb7e8d23194b"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a0faf91b7585442167d9abb7e8d23194b">getCookies</a> () const</td></tr>
 <tr class="memdesc:a0faf91b7585442167d9abb7e8d23194b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client's cookies  <a href="classframework_1_1_h_t_t_p_request.html#a0faf91b7585442167d9abb7e8d23194b">More...</a><br /></td></tr>
 <tr class="separator:a0faf91b7585442167d9abb7e8d23194b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae47fe32783387d8fa9a2670980ca8d7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#ae47fe32783387d8fa9a2670980ca8d7b">sendAssetFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;variables=nullptr)</td></tr>
+<tr class="memitem:ae47fe32783387d8fa9a2670980ca8d7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#ae47fe32783387d8fa9a2670980ca8d7b">sendAssetFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;variables=nullptr)</td></tr>
 <tr class="memdesc:ae47fe32783387d8fa9a2670980ca8d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a> wrapper  <a href="classframework_1_1_h_t_t_p_request.html#ae47fe32783387d8fa9a2670980ca8d7b">More...</a><br /></td></tr>
 <tr class="separator:ae47fe32783387d8fa9a2670980ca8d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add8e04b584ee3657e62a2daa99d44022"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#add8e04b584ee3657e62a2daa99d44022">registerDynamicFunction</a> (const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function)</td></tr>
@@ -168,16 +168,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a4d2a5be29f9665dfc2d85145ba8523ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for route parameters  <a href="classframework_1_1_h_t_t_p_request.html#a4d2a5be29f9665dfc2d85145ba8523ca">More...</a><br /></td></tr>
 <tr class="separator:a4d2a5be29f9665dfc2d85145ba8523ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a65b194837f3eae43b30bcbc2b6e2be"><td class="memTemplParams" colspan="2">template&lt;typename SQLiteDatabaseModelSubclass , typename... Args&gt; </td></tr>
-<tr class="memitem:a4a65b194837f3eae43b30bcbc2b6e2be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">sqlite::SQLiteDatabaseModel</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a4a65b194837f3eae43b30bcbc2b6e2be">getDatabaseModelInstance</a> (const std::string &amp;databaseName, const std::string &amp;tableName, Args &amp;&amp;... args)</td></tr>
+<tr class="memitem:a4a65b194837f3eae43b30bcbc2b6e2be"><td class="memTemplItemLeft" align="right" valign="top">smartPointer&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">sqlite::SQLiteDatabaseModel</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a4a65b194837f3eae43b30bcbc2b6e2be">getDatabaseModelInstance</a> (const std::string &amp;databaseName, const std::string &amp;tableName, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a4a65b194837f3eae43b30bcbc2b6e2be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get instance of SQLiteDatabaseModel subclass for database operations  <a href="classframework_1_1_h_t_t_p_request.html#a4a65b194837f3eae43b30bcbc2b6e2be">More...</a><br /></td></tr>
 <tr class="separator:a4a65b194837f3eae43b30bcbc2b6e2be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52b91828ab27c45d240353dd87ce66bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a52b91828ab27c45d240353dd87ce66bf">~HTTPRequest</a> ()=default</td></tr>
-<tr class="separator:a52b91828ab27c45d240353dd87ce66bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5279cec486b45bfeb3402c198dd1f2e5"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a5279cec486b45bfeb3402c198dd1f2e5"><td class="memTemplItemLeft" align="right" valign="top">const string &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a5279cec486b45bfeb3402c198dd1f2e5">getRouteParameter</a> (const string &amp;routeParameterName)</td></tr>
+<tr class="memitem:a5279cec486b45bfeb3402c198dd1f2e5"><td class="memItemLeft" align="right" valign="top"><a id="a5279cec486b45bfeb3402c198dd1f2e5"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a5279cec486b45bfeb3402c198dd1f2e5"><td class="memTemplItemLeft" align="right" valign="top">const string &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getRouteParameter</b> (const string &amp;routeParameterName)</td></tr>
 <tr class="separator:a5279cec486b45bfeb3402c198dd1f2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5acc6b9020cc07985417521a2a9ef4ec"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a5acc6b9020cc07985417521a2a9ef4ec"><td class="memTemplItemLeft" align="right" valign="top">const int64_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a5acc6b9020cc07985417521a2a9ef4ec">getRouteParameter</a> (const string &amp;routeParameterName)</td></tr>
+<tr class="memitem:a5acc6b9020cc07985417521a2a9ef4ec"><td class="memItemLeft" align="right" valign="top"><a id="a5acc6b9020cc07985417521a2a9ef4ec"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a5acc6b9020cc07985417521a2a9ef4ec"><td class="memTemplItemLeft" align="right" valign="top">const int64_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getRouteParameter</b> (const string &amp;routeParameterName)</td></tr>
 <tr class="separator:a5acc6b9020cc07985417521a2a9ef4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -188,7 +188,8 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:ae628c1dde1035a5429c9b7cd526e7509"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#ae628c1dde1035a5429c9b7cd526e7509">ExecutorsManager</a></td></tr>
+<tr class="memitem:ae628c1dde1035a5429c9b7cd526e7509"><td class="memItemLeft" align="right" valign="top"><a id="ae628c1dde1035a5429c9b7cd526e7509"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>ExecutorsManager</b></td></tr>
 <tr class="separator:ae628c1dde1035a5429c9b7cd526e7509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59427d391d2da263cab43ae838c5c67f"><td class="memItemLeft" align="right" valign="top">streams::IOSocketStream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a59427d391d2da263cab43ae838c5c67f">operator&gt;&gt;</a> (streams::IOSocketStream &amp;stream, <a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request)</td></tr>
 <tr class="memdesc:a59427d391d2da263cab43ae838c5c67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reading HTTP request from network  <a href="classframework_1_1_h_t_t_p_request.html#a59427d391d2da263cab43ae838c5c67f">More...</a><br /></td></tr>
@@ -265,31 +266,6 @@ Friends</h2></td></tr>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00033">33</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a52b91828ab27c45d240353dd87ce66bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52b91828ab27c45d240353dd87ce66bf">&#9670;&nbsp;</a></span>~HTTPRequest()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">framework::HTTPRequest::~HTTPRequest </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -475,7 +451,7 @@ Friends</h2></td></tr>
 template&lt;typename SQLiteDatabaseModelSubclass , typename... Args&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">sqlite::SQLiteDatabaseModel</a> &gt; &amp; framework::HTTPRequest::getDatabaseModelInstance </td>
+          <td class="memname">smartPointer&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">sqlite::SQLiteDatabaseModel</a> &gt; &amp; framework::HTTPRequest::getDatabaseModelInstance </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>databaseName</em>, </td>
@@ -655,7 +631,7 @@ template&lt;typename SQLiteDatabaseModelSubclass , typename... Args&gt; </div>
 </div>
 </div>
 <a id="a4d2a5be29f9665dfc2d85145ba8523ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d2a5be29f9665dfc2d85145ba8523ca">&#9670;&nbsp;</a></span>getRouteParameter() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2a5be29f9665dfc2d85145ba8523ca">&#9670;&nbsp;</a></span>getRouteParameter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -692,50 +668,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a5279cec486b45bfeb3402c198dd1f2e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5279cec486b45bfeb3402c198dd1f2e5">&#9670;&nbsp;</a></span>getRouteParameter() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const string&amp; framework::HTTPRequest::getRouteParameter </td>
-          <td>(</td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>routeParameterName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00184">184</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a5acc6b9020cc07985417521a2a9ef4ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5acc6b9020cc07985417521a2a9ef4ec">&#9670;&nbsp;</a></span>getRouteParameter() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const int64_t&amp; framework::HTTPRequest::getRouteParameter </td>
-          <td>(</td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>routeParameterName</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00190">190</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -872,7 +804,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;&#160;</td>
+          <td class="paramtype">const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>variables</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
@@ -1032,30 +964,6 @@ template&lt;&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="ae628c1dde1035a5429c9b7cd526e7509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae628c1dde1035a5429c9b7cd526e7509">&#9670;&nbsp;</a></span>ExecutorsManager</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">friend class <a class="el" href="classframework_1_1_executors_manager.html">ExecutorsManager</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00220">220</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
-
-</div>
-</div>
 <a id="aa3ceee616f60d4e54cdacb536d73bb09"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3ceee616f60d4e54cdacb536d73bb09">&#9670;&nbsp;</a></span>operator&lt;&lt;</h2>
 
@@ -1165,7 +1073,7 @@ template&lt;&gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespaceframework.html">framework</a></li><li class="navelem"><a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a></li>
+    <li class="navelem"><b>framework</b></li><li class="navelem"><a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

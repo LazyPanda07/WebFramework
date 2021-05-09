@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,24 +87,24 @@ $(document).ready(function(){initNavTree('_s_q_lite_database_model_8h_source.htm
 <div class="title">SQLiteDatabaseModel.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_s_q_lite_database_model_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;shared_mutex&gt;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_s_q_lite_database_8h.html">SQLiteDatabase.h</a>&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_s_q_lite_result_8h.html">SQLiteResult.h</a>&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;SQLiteDatabase.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;SQLiteResult.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">namespace </span>sqlite</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">   18</a></span>&#160;        <span class="keyword">class </span><a class="code" href="_base_executor_exception_8h.html#acd103ddedf7691538e90921775bbae62">WEB_FRAMEWORK_API</a> <a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a></div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">   18</a></span>&#160;        <span class="keyword">class </span>WEB_FRAMEWORK_API <a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">   21</a></span>&#160;            <span class="keyword">enum class</span> <a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">queryType</a></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keyword">enum class</span> queryType</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                read,</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                write</div>
@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('_s_q_lite_database_model_8h_source.htm
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a>&amp; operator = (<a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a>&amp;&amp; other) noexcept;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> rawQuery(<span class="keyword">const</span> std::string&amp; query, <a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">queryType</a> type);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> rawQuery(<span class="keyword">const</span> std::string&amp; query, queryType type);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordtype">void</span> createTableQuery(<span class="keyword">const</span> std::vector&lt;std::pair&lt;std::string, std::string&gt;&gt;&amp; attributes);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
@@ -156,31 +156,25 @@ $(document).ready(function(){initNavTree('_s_q_lite_database_model_8h_source.htm
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <span class="keyword">const</span> std::string&amp; getTableName() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a61e621af79d0af84cd40b65cee28d37c">  168</a></span>&#160;            <a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a61e621af79d0af84cd40b65cee28d37c">~SQLiteDatabaseModel</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            ~<a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        };</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;}</div>
-<div class="ttc" id="a_base_executor_exception_8h_html_acd103ddedf7691538e90921775bbae62"><div class="ttname"><a href="_base_executor_exception_8h.html#acd103ddedf7691538e90921775bbae62">WEB_FRAMEWORK_API</a></div><div class="ttdeci">#define WEB_FRAMEWORK_API</div><div class="ttdef"><b>Definition:</b> <a href="_base_executor_exception_8h_source.html#l00006">BaseExecutorException.h:6</a></div></div>
-<div class="ttc" id="a_s_q_lite_database_8h_html"><div class="ttname"><a href="_s_q_lite_database_8h.html">SQLiteDatabase.h</a></div></div>
-<div class="ttc" id="a_s_q_lite_result_8h_html"><div class="ttname"><a href="_s_q_lite_result_8h.html">SQLiteResult.h</a></div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_html"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database.html">framework::sqlite::SQLiteDatabase</a></div><div class="ttdoc">Wrapper class for sqlite3 library</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_database_8h_source.html#l00033">SQLiteDatabase.h:34</a></div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">framework::sqlite::SQLiteDatabaseModel</a></div><div class="ttdoc">Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_database_model_8h_source.html#l00018">SQLiteDatabaseModel.h:19</a></div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_a077a09a7f139c08746c660d3b7b00d6d"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a077a09a7f139c08746c660d3b7b00d6d">framework::sqlite::SQLiteDatabaseModel::SQLiteDatabaseModel</a></div><div class="ttdeci">SQLiteDatabaseModel(const SQLiteDatabaseModel &amp;)=delete</div><div class="ttdoc">Can't copy model for specific table</div></div>
-<div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_a22f5738c595f5a8f095b68db1b878d11"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">framework::sqlite::SQLiteDatabaseModel::queryType</a></div><div class="ttdeci">queryType</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_database_model_8h_source.html#l00021">SQLiteDatabaseModel.h:22</a></div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_a38027b15d1e9301d4fd4c0825a0b74a9"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a38027b15d1e9301d4fd4c0825a0b74a9">framework::sqlite::SQLiteDatabaseModel::selectByFieldQuery</a></div><div class="ttdeci">utility::SQLiteResult selectByFieldQuery(const std::map&lt; std::string, std::string &gt; &amp;attributes)</div><div class="ttdoc">SELECT with condition</div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_a521d039491e90ffe9aa4136fe009fe04"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a521d039491e90ffe9aa4136fe009fe04">framework::sqlite::SQLiteDatabaseModel::selectByFieldQuery</a></div><div class="ttdeci">utility::SQLiteResult selectByFieldQuery(const std::string &amp;fieldName, const std::string &amp;fieldValue)</div><div class="ttdoc">SELECT with condition</div></div>
-<div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_a61e621af79d0af84cd40b65cee28d37c"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a61e621af79d0af84cd40b65cee28d37c">framework::sqlite::SQLiteDatabaseModel::~SQLiteDatabaseModel</a></div><div class="ttdeci">~SQLiteDatabaseModel()=default</div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_a8058ebd7d7ec4ec9babe0063d822defb"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a8058ebd7d7ec4ec9babe0063d822defb">framework::sqlite::SQLiteDatabaseModel::SQLiteDatabaseModel</a></div><div class="ttdeci">SQLiteDatabaseModel(const std::string &amp;tableName, SQLiteDatabase &amp;&amp;db)</div><div class="ttdoc">Specify table for database</div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_ad0a45278a8ce0f54f9ec8660dfd3ff19"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad0a45278a8ce0f54f9ec8660dfd3ff19">framework::sqlite::SQLiteDatabaseModel::deleteQuery</a></div><div class="ttdeci">void deleteQuery(const std::string &amp;fieldName, const std::string &amp;fieldValue)</div><div class="ttdoc">Delete from table</div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_model_html_adf3c8e6326e17d8d4d69c4010e50951d"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#adf3c8e6326e17d8d4d69c4010e50951d">framework::sqlite::SQLiteDatabaseModel::deleteQuery</a></div><div class="ttdeci">void deleteQuery(const std::map&lt; std::string, std::string &gt; &amp;attributes)</div><div class="ttdoc">Delete from table.</div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1utility_1_1_s_q_lite_result_html"><div class="ttname"><a href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">framework::sqlite::utility::SQLiteResult</a></div><div class="ttdoc">Contains result of SQL request</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_result_8h_source.html#l00023">SQLiteResult.h:24</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_4232ebe3d8b95f9df0e668862e79f8fe.html">SQLite3</a></li><li class="navelem"><a class="el" href="_s_q_lite_database_model_8h.html">SQLiteDatabaseModel.h</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_4232ebe3d8b95f9df0e668862e79f8fe.html">SQLite3</a></li><li class="navelem"><b>SQLiteDatabaseModel.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

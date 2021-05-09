@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -107,7 +107,7 @@ Inheritance diagram for framework::interfaces::IDynamicFile:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3b5b0c848be129cdf1de6193e7805e71"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a3b5b0c848be129cdf1de6193e7805e71">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;variables)=0</td></tr>
+<tr class="memitem:a3b5b0c848be129cdf1de6193e7805e71"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a3b5b0c848be129cdf1de6193e7805e71">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;variables)=0</td></tr>
 <tr class="memdesc:a3b5b0c848be129cdf1de6193e7805e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sending file from filePath path  <a href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a3b5b0c848be129cdf1de6193e7805e71">More...</a><br /></td></tr>
 <tr class="separator:a3b5b0c848be129cdf1de6193e7805e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a505718a448fc166b868344d8096b75f9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a505718a448fc166b868344d8096b75f9">registerDynamicFunction</a> (const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function)=0</td></tr>
@@ -119,40 +119,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a54745131876dd15cf91e90b327b8d62b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a54745131876dd15cf91e90b327b8d62b">isDynamicFunctionRegistered</a> (const std::string &amp;functionName)=0</td></tr>
 <tr class="memdesc:a54745131876dd15cf91e90b327b8d62b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if function is registered.  <a href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a54745131876dd15cf91e90b327b8d62b">More...</a><br /></td></tr>
 <tr class="separator:a54745131876dd15cf91e90b327b8d62b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68406ce65ff04d60087b8091ee11cf33"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a68406ce65ff04d60087b8091ee11cf33">~IDynamicFile</a> ()=default</td></tr>
-<tr class="separator:a68406ce65ff04d60087b8091ee11cf33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Providing sendDynamicFile method </p>
 
 <p class="definition">Definition at line <a class="el" href="_i_dynamic_file_8h_source.html#l00016">16</a> of file <a class="el" href="_i_dynamic_file_8h_source.html">IDynamicFile.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a68406ce65ff04d60087b8091ee11cf33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68406ce65ff04d60087b8091ee11cf33">&#9670;&nbsp;</a></span>~IDynamicFile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual framework::interfaces::IDynamicFile::~IDynamicFile </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a54745131876dd15cf91e90b327b8d62b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54745131876dd15cf91e90b327b8d62b">&#9670;&nbsp;</a></span>isDynamicFunctionRegistered()</h2>
 
@@ -261,7 +233,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a>&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;&#160;</td>
+          <td class="paramtype">const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>variables</em>&#160;</td>
         </tr>
         <tr>
@@ -334,7 +306,7 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespaceframework.html">framework</a></li><li class="navelem"><a class="el" href="namespaceframework_1_1interfaces.html">interfaces</a></li><li class="navelem"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html">IDynamicFile</a></li>
+    <li class="navelem"><b>framework</b></li><li class="navelem"><b>interfaces</b></li><li class="navelem"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html">IDynamicFile</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

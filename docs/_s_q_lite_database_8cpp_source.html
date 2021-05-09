@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,18 +87,18 @@ $(document).ready(function(){initNavTree('_s_q_lite_database_8cpp_source.html','
 <div class="title">SQLiteDatabase.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_s_q_lite_database_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_s_q_lite_database_8h.html">SQLiteDatabase.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;SQLiteDatabase.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#pragma comment (lib, &quot;sqlite3.lib&quot;</span>)</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#pragma comment (lib, &quot;SHA256.lib&quot;</span>)</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespaceframework_1_1sqlite.html">   10</a></span>&#160;    <span class="keyword">namespace </span>sqlite</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">namespace </span>sqlite</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="sqlite3_8h.html#a0ef6f2646262c8a9b24368d8ac140f69">sqlite3</a>* SQLiteDatabase::operator * ()</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        sqlite3* SQLiteDatabase::operator * ()</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keywordflow">return</span> db;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        }</div>
@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('_s_q_lite_database_8cpp_source.html','
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        SQLiteDatabase::SQLiteDatabase(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; databaseName) :</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            databaseName(databaseName)</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <a class="code" href="sqlite3_8h.html#a97ba966ed1acc38409786258268f5f71">sqlite3_open</a>(databaseName.data(), &amp;db);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            sqlite3_open(databaseName.data(), &amp;db);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        }</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#a16771900c77fb46ac70343eca31ef7c8">   23</a></span>&#160;        SQLiteDatabase::SQLiteDatabase(<a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_database.html">SQLiteDatabase</a>&amp;&amp; other) noexcept</div>
@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('_s_q_lite_database_8cpp_source.html','
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#acc12ddb679dc2cbc2c0547e51cbd4a74">   45</a></span>&#160;        <span class="keywordtype">void</span> SQLiteDatabase::close()</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <a class="code" href="sqlite3_8h.html#ac43c9032fc6ef3b2a231dc3a9fa44b2d">sqlite3_close</a>(db);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            sqlite3_close(db);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            db = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
@@ -143,29 +143,24 @@ $(document).ready(function(){initNavTree('_s_q_lite_database_8cpp_source.html','
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">return</span> db;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#ad2656d41dee3f1ace518adf7c6c787d7">   57</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="sqlite3_8h.html#a0ef6f2646262c8a9b24368d8ac140f69">sqlite3</a>* <span class="keyword">const</span> SQLiteDatabase::operator * ()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#ad2656d41dee3f1ace518adf7c6c787d7">   57</a></span>&#160;        <span class="keyword">const</span> sqlite3* <span class="keyword">const</span> SQLiteDatabase::operator * ()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> db;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#a56046f126b6a1880756ed6379af335ed">   62</a></span>&#160;        SQLiteDatabase::~SQLiteDatabase()</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        SQLiteDatabase::~SQLiteDatabase()</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            this-&gt;close();</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
-<div class="ttc" id="a_s_q_lite_database_8h_html"><div class="ttname"><a href="_s_q_lite_database_8h.html">SQLiteDatabase.h</a></div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_database_html"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_database.html">framework::sqlite::SQLiteDatabase</a></div><div class="ttdoc">Wrapper class for sqlite3 library</div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_database_8h_source.html#l00033">SQLiteDatabase.h:34</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
-<div class="ttc" id="asqlite3_8h_html_a0ef6f2646262c8a9b24368d8ac140f69"><div class="ttname"><a href="sqlite3_8h.html#a0ef6f2646262c8a9b24368d8ac140f69">sqlite3</a></div><div class="ttdeci">struct sqlite3 sqlite3</div><div class="ttdef"><b>Definition:</b> <a href="sqlite3_8h_source.html#l00233">sqlite3.h:249</a></div></div>
-<div class="ttc" id="asqlite3_8h_html_a97ba966ed1acc38409786258268f5f71"><div class="ttname"><a href="sqlite3_8h.html#a97ba966ed1acc38409786258268f5f71">sqlite3_open</a></div><div class="ttdeci">SQLITE_API int sqlite3_open(const char *filename, sqlite3 **ppDb)</div></div>
-<div class="ttc" id="asqlite3_8h_html_ac43c9032fc6ef3b2a231dc3a9fa44b2d"><div class="ttname"><a href="sqlite3_8h.html#ac43c9032fc6ef3b2a231dc3a9fa44b2d">sqlite3_close</a></div><div class="ttdeci">SQLITE_API int sqlite3_close(sqlite3 *)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_4232ebe3d8b95f9df0e668862e79f8fe.html">SQLite3</a></li><li class="navelem"><a class="el" href="_s_q_lite_database_8cpp.html">SQLiteDatabase.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_4232ebe3d8b95f9df0e668862e79f8fe.html">SQLite3</a></li><li class="navelem"><b>SQLiteDatabase.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,21 +87,21 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="title">LoadBalancer.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_load_balancer_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_load_balancer_8h.html">LoadBalancer.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;LoadBalancer.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;JSONParser.h&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_file_does_not_exist_exception_8h.html">Exceptions/FileDoesNotExistException.h</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_web_framework_constants_8h.html">WebFrameworkConstants.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;Exceptions/FileDoesNotExistException.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;WebFrameworkConstants.h&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#pragma comment (lib, &quot;BaseTCPServer.lib&quot;</span>)</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma comment (lib, &quot;INIParser.lib&quot;</span>)</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="namespaceframework_1_1load__balancer.html">   15</a></span>&#160;    <span class="keyword">namespace </span>load_balancer</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">namespace </span>load_balancer</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classframework_1_1load__balancer_1_1_load_balancer.html#a5afe666abdadeb63aa6107d47a675b86">   17</a></span>&#160;        LoadBalancer::LoadBalancer(<span class="keyword">const</span> filesystem::path&amp; configurationJSONFile)</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        {</div>
@@ -112,10 +112,10 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            json::JSONParser parser(move(ifstream(configurationJSONFile)));</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerIp = parser.get&lt;<span class="keywordtype">string</span>&gt;(<a class="code" href="namespacejson.html#ad9238266db2102cfd7a0fd404a481cb2">json::loadBalancerIpKey</a>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerPort = parser.get&lt;<span class="keywordtype">string</span>&gt;(<a class="code" href="namespacejson.html#a8bb743177574662b72349f1a0ca850f7">json::loadBalancerPortKey</a>);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            int64_t loadBalancerTimeout = parser.get&lt;int64_t&gt;(<a class="code" href="namespacejson.html#a4698b35a4c8f19e653728fb75f31cec2">json::loadBalancerTimeoutKey</a>);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keyword">const</span> <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;json::JSONParser::objectType&gt;</a>&amp; listOfServers = parser.get&lt;<a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;json::JSONParser::objectType&gt;</a>&gt;(<a class="code" href="namespacejson.html#a7236437b85747586733bcfb8e2e2d4f6">json::listOfServersKey</a>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerIp = parser.get&lt;<span class="keywordtype">string</span>&gt;(json_settings::loadBalancerIpKey);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerPort = parser.get&lt;<span class="keywordtype">string</span>&gt;(json_settings::loadBalancerPortKey);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            int64_t loadBalancerTimeout = parser.get&lt;int64_t&gt;(json_settings::loadBalancerTimeoutKey);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keyword">const</span> smartPointer&lt;json::JSONParser::objectType&gt;&amp; listOfServers = parser.get&lt;smartPointer&lt;json::JSONParser::objectType&gt;&gt;(json_settings::listOfServersKey);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            unordered_map&lt;string, vector&lt;string&gt;&gt; allServers;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [ip, ports] : listOfServers-&gt;data)</div>
@@ -148,22 +148,13 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
-<div class="ttc" id="a_file_does_not_exist_exception_8h_html"><div class="ttname"><a href="_file_does_not_exist_exception_8h.html">FileDoesNotExistException.h</a></div></div>
-<div class="ttc" id="a_load_balancer_8h_html"><div class="ttname"><a href="_load_balancer_8h.html">LoadBalancer.h</a></div></div>
-<div class="ttc" id="a_web_framework_constants_8h_html"><div class="ttname"><a href="_web_framework_constants_8h.html">WebFrameworkConstants.h</a></div></div>
-<div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00013">WebFrameworkConstants.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00020">FileDoesNotExistException.h:21</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
-<div class="ttc" id="anamespacejson_html_a4698b35a4c8f19e653728fb75f31cec2"><div class="ttname"><a href="namespacejson.html#a4698b35a4c8f19e653728fb75f31cec2">json::loadBalancerTimeoutKey</a></div><div class="ttdeci">const std::string loadBalancerTimeoutKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00074">WebFrameworkConstants.h:74</a></div></div>
-<div class="ttc" id="anamespacejson_html_a7236437b85747586733bcfb8e2e2d4f6"><div class="ttname"><a href="namespacejson.html#a7236437b85747586733bcfb8e2e2d4f6">json::listOfServersKey</a></div><div class="ttdeci">const std::string listOfServersKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00071">WebFrameworkConstants.h:71</a></div></div>
-<div class="ttc" id="anamespacejson_html_a8bb743177574662b72349f1a0ca850f7"><div class="ttname"><a href="namespacejson.html#a8bb743177574662b72349f1a0ca850f7">json::loadBalancerPortKey</a></div><div class="ttdeci">const std::string loadBalancerPortKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00073">WebFrameworkConstants.h:73</a></div></div>
-<div class="ttc" id="anamespacejson_html_ad9238266db2102cfd7a0fd404a481cb2"><div class="ttname"><a href="namespacejson.html#ad9238266db2102cfd7a0fd404a481cb2">json::loadBalancerIpKey</a></div><div class="ttdeci">const std::string loadBalancerIpKey</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00072">WebFrameworkConstants.h:72</a></div></div>
+<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00013">FileDoesNotExistException.h:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_75b9abe0588f296d66ec800343423e77.html">LoadBalancer</a></li><li class="navelem"><a class="el" href="_load_balancer_8cpp.html">LoadBalancer.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_75b9abe0588f296d66ec800343423e77.html">LoadBalancer</a></li><li class="navelem"><b>LoadBalancer.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

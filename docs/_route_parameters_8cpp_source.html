@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,11 +87,11 @@ $(document).ready(function(){initNavTree('_route_parameters_8cpp_source.html',''
 <div class="title">RouteParameters.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_route_parameters_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_route_parameters_8h.html">RouteParameters.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;RouteParameters.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keyword">namespace </span>utility</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('_route_parameters_8cpp_source.html',''
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structframework_1_1utility_1_1_route_parameters.html#ae5063ede6b8861cb752860ffec45395c">   49</a></span>&#160;        RouteParameters::RouteParameters(<a class="code" href="structframework_1_1utility_1_1_route_parameters.html">RouteParameters</a>&amp;&amp; other) noexcept :</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        RouteParameters::RouteParameters(RouteParameters&amp;&amp; other) noexcept :</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            baseRoute(move(other.baseRoute)),</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            parameters(move(other.parameters)),</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            indices(move(other.indices))</div>
@@ -144,15 +144,12 @@ $(document).ready(function(){initNavTree('_route_parameters_8cpp_source.html',''
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="ttc" id="a_route_parameters_8h_html"><div class="ttname"><a href="_route_parameters_8h.html">RouteParameters.h</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1_route_parameters_html"><div class="ttname"><a href="structframework_1_1utility_1_1_route_parameters.html">framework::utility::RouteParameters</a></div><div class="ttdef"><b>Definition:</b> <a href="_route_parameters_8h_source.html#l00011">RouteParameters.h:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_851de5df2102183c2483d34551cfaa00.html">Utility</a></li><li class="navelem"><a class="el" href="_route_parameters_8cpp.html">RouteParameters.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_851de5df2102183c2483d34551cfaa00.html">Utility</a></li><li class="navelem"><b>RouteParameters.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

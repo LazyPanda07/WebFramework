@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -90,89 +90,26 @@ $(document).ready(function(){initNavTree('structfts5__api.html',''); initResizab
 <div class="title">fts5_api Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a3c338289abb33e1805da870172956a7c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfts5__api.html#a3c338289abb33e1805da870172956a7c">iVersion</a></td></tr>
+<tr class="memitem:a3c338289abb33e1805da870172956a7c"><td class="memItemLeft" align="right" valign="top"><a id="a3c338289abb33e1805da870172956a7c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>iVersion</b></td></tr>
 <tr class="separator:a3c338289abb33e1805da870172956a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fe3663f85eab512d5c461e1674da129"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfts5__api.html#a7fe3663f85eab512d5c461e1674da129">xCreateTokenizer</a> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pContext, <a class="el" href="structfts5__tokenizer.html">fts5_tokenizer</a> *pTokenizer, void(*xDestroy)(void *))</td></tr>
+<tr class="memitem:a7fe3663f85eab512d5c461e1674da129"><td class="memItemLeft" align="right" valign="top"><a id="a7fe3663f85eab512d5c461e1674da129"></a>
+int(*&#160;</td><td class="memItemRight" valign="bottom"><b>xCreateTokenizer</b> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pContext, <a class="el" href="structfts5__tokenizer.html">fts5_tokenizer</a> *pTokenizer, void(*xDestroy)(void *))</td></tr>
 <tr class="separator:a7fe3663f85eab512d5c461e1674da129"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20a23794695fa61e2892ad1243b16b67"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfts5__api.html#a20a23794695fa61e2892ad1243b16b67">xFindTokenizer</a> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void **ppContext, <a class="el" href="structfts5__tokenizer.html">fts5_tokenizer</a> *pTokenizer)</td></tr>
+<tr class="memitem:a20a23794695fa61e2892ad1243b16b67"><td class="memItemLeft" align="right" valign="top"><a id="a20a23794695fa61e2892ad1243b16b67"></a>
+int(*&#160;</td><td class="memItemRight" valign="bottom"><b>xFindTokenizer</b> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void **ppContext, <a class="el" href="structfts5__tokenizer.html">fts5_tokenizer</a> *pTokenizer)</td></tr>
 <tr class="separator:a20a23794695fa61e2892ad1243b16b67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf1a0612be3b91b908f38ecbc6735d17"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfts5__api.html#acf1a0612be3b91b908f38ecbc6735d17">xCreateFunction</a> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pContext, <a class="el" href="sqlite3_8h.html#a8a1df7b5a066b194f490be5936e85c17">fts5_extension_function</a> xFunction, void(*xDestroy)(void *))</td></tr>
+<tr class="memitem:acf1a0612be3b91b908f38ecbc6735d17"><td class="memItemLeft" align="right" valign="top"><a id="acf1a0612be3b91b908f38ecbc6735d17"></a>
+int(*&#160;</td><td class="memItemRight" valign="bottom"><b>xCreateFunction</b> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pContext, fts5_extension_function xFunction, void(*xDestroy)(void *))</td></tr>
 <tr class="separator:acf1a0612be3b91b908f38ecbc6735d17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l12197">12197</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a3c338289abb33e1805da870172956a7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c338289abb33e1805da870172956a7c">&#9670;&nbsp;</a></span>iVersion</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int fts5_api::iVersion</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l12198">12198</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
-
-</div>
-</div>
-<a id="acf1a0612be3b91b908f38ecbc6735d17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf1a0612be3b91b908f38ecbc6735d17">&#9670;&nbsp;</a></span>xCreateFunction</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int(* fts5_api::xCreateFunction) (<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pContext, <a class="el" href="sqlite3_8h.html#a8a1df7b5a066b194f490be5936e85c17">fts5_extension_function</a> xFunction, void(*xDestroy)(void *))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l12218">12218</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
-
-</div>
-</div>
-<a id="a7fe3663f85eab512d5c461e1674da129"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fe3663f85eab512d5c461e1674da129">&#9670;&nbsp;</a></span>xCreateTokenizer</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int(* fts5_api::xCreateTokenizer) (<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pContext, <a class="el" href="structfts5__tokenizer.html">fts5_tokenizer</a> *pTokenizer, void(*xDestroy)(void *))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l12201">12201</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
-
-</div>
-</div>
-<a id="a20a23794695fa61e2892ad1243b16b67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20a23794695fa61e2892ad1243b16b67">&#9670;&nbsp;</a></span>xFindTokenizer</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int(* fts5_api::xFindTokenizer) (<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void **ppContext, <a class="el" href="structfts5__tokenizer.html">fts5_tokenizer</a> *pTokenizer)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l12210">12210</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>WebFramework/src/SQLite3/<a class="el" href="sqlite3_8h_source.html">sqlite3.h</a></li>
 </ul>
 </div><!-- contents -->

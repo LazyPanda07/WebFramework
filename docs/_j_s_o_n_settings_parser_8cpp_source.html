@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,19 +87,19 @@ $(document).ready(function(){initNavTree('_j_s_o_n_settings_parser_8cpp_source.h
 <div class="title">JSONSettingsParser.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_j_s_o_n_settings_parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_j_s_o_n_settings_parser_8h.html">JSONSettingsParser.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;JSONSettingsParser.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_file_does_not_exist_exception_8h.html">Exceptions/FileDoesNotExistException.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;Exceptions/FileDoesNotExistException.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">namespace </span>utility</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a2c76446c51946f68a11a73a19fed870b">   13</a></span>&#160;        JSONSettingsParser::ExecutorSettings::ExecutorSettings(<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>&amp;&amp; other) noexcept :</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        JSONSettingsParser::ExecutorSettings::ExecutorSettings(ExecutorSettings&amp;&amp; other) noexcept :</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            initParameters(move(other.initParameters)),</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            name(move(other.name)),</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            executorLoadType(other.executorLoadType)</div>
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('_j_s_o_n_settings_parser_8cpp_source.h
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">if</span> (!in.is_open())</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">exceptions::FileDoesNotExistException</a>(JSONSettings);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="keywordflow">throw</span> exceptions::FileDoesNotExistException(JSONSettings);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            }</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            json::JSONParser parser;</div>
@@ -135,11 +135,11 @@ $(document).ready(function(){initNavTree('_j_s_o_n_settings_parser_8cpp_source.h
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                executorSettings.name = i-&gt;first;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordflow">if</span> (loadType == <a class="code" href="namespacejson__settings__values.html#af5ef35ab0f62f179b3472113d9b7653e">json_settings_values::initializationLoadTypeValue</a>)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keywordflow">if</span> (loadType == json_settings_values::initializationLoadTypeValue)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                {</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    executorSettings.executorLoadType = ExecutorSettings::loadType::initialization;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (loadType == <a class="code" href="namespacejson__settings__values.html#ac568ac1d167e7def4d28cd0256a036fc">json_settings_values::dynamicLoadTypeValue</a>)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keywordflow">else</span> <span class="keywordflow">if</span> (loadType == json_settings_values::dynamicLoadTypeValue)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                    executorSettings.executorLoadType = ExecutorSettings::loadType::dynamic;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                }</div>
@@ -159,19 +159,13 @@ $(document).ready(function(){initNavTree('_j_s_o_n_settings_parser_8cpp_source.h
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="ttc" id="a_file_does_not_exist_exception_8h_html"><div class="ttname"><a href="_file_does_not_exist_exception_8h.html">FileDoesNotExistException.h</a></div></div>
-<div class="ttc" id="a_j_s_o_n_settings_parser_8h_html"><div class="ttname"><a href="_j_s_o_n_settings_parser_8h.html">JSONSettingsParser.h</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00020">FileDoesNotExistException.h:21</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
-<div class="ttc" id="anamespacejson__settings__values_html_ac568ac1d167e7def4d28cd0256a036fc"><div class="ttname"><a href="namespacejson__settings__values.html#ac568ac1d167e7def4d28cd0256a036fc">json_settings_values::dynamicLoadTypeValue</a></div><div class="ttdeci">const std::string dynamicLoadTypeValue</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00108">WebFrameworkConstants.h:108</a></div></div>
-<div class="ttc" id="anamespacejson__settings__values_html_af5ef35ab0f62f179b3472113d9b7653e"><div class="ttname"><a href="namespacejson__settings__values.html#af5ef35ab0f62f179b3472113d9b7653e">json_settings_values::initializationLoadTypeValue</a></div><div class="ttdeci">const std::string initializationLoadTypeValue</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00107">WebFrameworkConstants.h:107</a></div></div>
 <div class="ttc" id="astructframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings_html"><div class="ttname"><a href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">framework::utility::JSONSettingsParser::ExecutorSettings</a></div><div class="ttdoc">Settings for executor</div><div class="ttdef"><b>Definition:</b> <a href="_j_s_o_n_settings_parser_8h_source.html#l00026">JSONSettingsParser.h:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_851de5df2102183c2483d34551cfaa00.html">Utility</a></li><li class="navelem"><a class="el" href="_j_s_o_n_settings_parser_8cpp.html">JSONSettingsParser.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_851de5df2102183c2483d34551cfaa00.html">Utility</a></li><li class="navelem"><b>JSONSettingsParser.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

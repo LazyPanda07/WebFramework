@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,13 +87,13 @@ $(document).ready(function(){initNavTree('_base_stateless_executor_8cpp_source.h
 <div class="title">BaseStatelessExecutor.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_base_stateless_executor_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_stateless_executor_8h.html">BaseStatelessExecutor.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;BaseStatelessExecutor.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">    5</a></span>&#160;    <a class="code" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">BaseExecutor::executorType</a> <a class="code" href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">BaseStatelessExecutor::getType</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">    5</a></span>&#160;    BaseExecutor::executorType <a class="code" href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">BaseStatelessExecutor::getType</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c">executorType::stateless</a>;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;        <span class="keywordflow">return</span> executorType::stateless;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    }</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
 <div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classframework_1_1_base_stateless_executor.html#a20628486ccc35efd522eff66e11fdcee">   10</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_base_stateless_executor.html#a20628486ccc35efd522eff66e11fdcee">BaseStatelessExecutor::destroy</a>()</div>
@@ -101,18 +101,14 @@ $(document).ready(function(){initNavTree('_base_stateless_executor_8cpp_source.h
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    }</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
-<div class="ttc" id="a_base_stateless_executor_8h_html"><div class="ttname"><a href="_base_stateless_executor_8h.html">BaseStatelessExecutor.h</a></div></div>
-<div class="ttc" id="aclassframework_1_1_base_executor_html_a7151ff985de54f3c32836634eb9d04bf"><div class="ttname"><a href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">framework::BaseExecutor::executorType</a></div><div class="ttdeci">executorType</div><div class="ttdef"><b>Definition:</b> <a href="_base_executor_8h_source.html#l00030">BaseExecutor.h:31</a></div></div>
-<div class="ttc" id="aclassframework_1_1_base_executor_html_a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c"><div class="ttname"><a href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c">framework::BaseExecutor::executorType::stateless</a></div><div class="ttdeci">@ stateless</div></div>
 <div class="ttc" id="aclassframework_1_1_base_stateless_executor_html_a1e1881e40863cf95423b184e6d71000a"><div class="ttname"><a href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">framework::BaseStatelessExecutor::getType</a></div><div class="ttdeci">virtual BaseExecutor::executorType getType() const final override</div><div class="ttdoc">Get executor type</div><div class="ttdef"><b>Definition:</b> <a href="_base_stateless_executor_8cpp_source.html#l00005">BaseStatelessExecutor.cpp:5</a></div></div>
 <div class="ttc" id="aclassframework_1_1_base_stateless_executor_html_a20628486ccc35efd522eff66e11fdcee"><div class="ttname"><a href="classframework_1_1_base_stateless_executor.html#a20628486ccc35efd522eff66e11fdcee">framework::BaseStatelessExecutor::destroy</a></div><div class="ttdeci">virtual void destroy() final override</div><div class="ttdoc">Stateless executors can't call destroy method</div><div class="ttdef"><b>Definition:</b> <a href="_base_stateless_executor_8cpp_source.html#l00010">BaseStatelessExecutor.cpp:10</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_b6336cb5ac9585f8f8fc113b1f088aa0.html">Executors</a></li><li class="navelem"><a class="el" href="_base_stateless_executor_8cpp.html">BaseStatelessExecutor.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_b6336cb5ac9585f8f8fc113b1f088aa0.html">Executors</a></li><li class="navelem"><b>BaseStatelessExecutor.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

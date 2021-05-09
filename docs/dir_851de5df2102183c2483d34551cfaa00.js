@@ -1,17 +1,13 @@
 var dir_851de5df2102183c2483d34551cfaa00 =
 [
-    [ "baseConnectionData.cpp", "base_connection_data_8cpp.html", null ],
-    [ "baseConnectionData.h", "base_connection_data_8h.html", "base_connection_data_8h" ],
-    [ "JSONSettingsParser.cpp", "_j_s_o_n_settings_parser_8cpp.html", null ],
-    [ "JSONSettingsParser.h", "_j_s_o_n_settings_parser_8h.html", "_j_s_o_n_settings_parser_8h" ],
-    [ "Memory.h", "_memory_8h.html", "_memory_8h" ],
-    [ "PriorityQueue.h", "_priority_queue_8h.html", [
-      [ "PriorityQueue", "classframework_1_1utility_1_1_priority_queue.html", "classframework_1_1utility_1_1_priority_queue" ]
-    ] ],
-    [ "RouteParameters.cpp", "_route_parameters_8cpp.html", null ],
-    [ "RouteParameters.h", "_route_parameters_8h.html", [
-      [ "RouteParameters", "structframework_1_1utility_1_1_route_parameters.html", "structframework_1_1utility_1_1_route_parameters" ]
-    ] ],
-    [ "StringConversion.cpp", "_string_conversion_8cpp.html", "_string_conversion_8cpp" ],
-    [ "StringConversion.h", "_string_conversion_8h.html", "_string_conversion_8h" ]
+    [ "DataStructures", "dir_59b1e824faf0f0aea0d8963c86b36c59.html", "dir_59b1e824faf0f0aea0d8963c86b36c59" ],
+    [ "Middleware", "dir_98aa9f4b52a52e8f6f85f19fd5254655.html", "dir_98aa9f4b52a52e8f6f85f19fd5254655" ],
+    [ "Singletons", "dir_1abccb2764cc97017b976c46b1e0080f.html", "dir_1abccb2764cc97017b976c46b1e0080f" ],
+    [ "JSONSettingsParser.cpp", "_j_s_o_n_settings_parser_8cpp_source.html", null ],
+    [ "JSONSettingsParser.h", "_j_s_o_n_settings_parser_8h_source.html", null ],
+    [ "Memory.h", "_memory_8h_source.html", null ],
+    [ "RouteParameters.cpp", "_route_parameters_8cpp_source.html", null ],
+    [ "RouteParameters.h", "_route_parameters_8h_source.html", null ],
+    [ "StringConversion.cpp", "_string_conversion_8cpp_source.html", null ],
+    [ "StringConversion.h", "_string_conversion_8h_source.html", null ]
 ];

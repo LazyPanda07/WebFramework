@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -99,8 +99,8 @@ $(document).ready(function(){initNavTree('classframework_1_1sqlite_1_1_s_q_lite_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a22f5738c595f5a8f095b68db1b878d11"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">queryType</a> { <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11aecae13117d6f0584c25a9da6c8f8415e">read</a>
-, <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11aefb2a684e4afb7d55e6147fbe5a332ee">write</a>
+<tr class="memitem:a22f5738c595f5a8f095b68db1b878d11"><td class="memItemLeft" align="right" valign="top"><a id="a22f5738c595f5a8f095b68db1b878d11"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>queryType</b> { <b>read</b>
+, <b>write</b>
  }</td></tr>
 <tr class="separator:a22f5738c595f5a8f095b68db1b878d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -121,7 +121,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afeebd1f71e522194e0b113132381be66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#afeebd1f71e522194e0b113132381be66">operator=</a> (<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&amp;other) noexcept</td></tr>
 <tr class="memdesc:afeebd1f71e522194e0b113132381be66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move another <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase">SQLiteDatabaseModel</a>  <a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#afeebd1f71e522194e0b113132381be66">More...</a><br /></td></tr>
 <tr class="separator:afeebd1f71e522194e0b113132381be66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4b7d89bee3798489640e1a60f8c8ed3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad4b7d89bee3798489640e1a60f8c8ed3">rawQuery</a> (const std::string &amp;query, <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">queryType</a> type)</td></tr>
+<tr class="memitem:ad4b7d89bee3798489640e1a60f8c8ed3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad4b7d89bee3798489640e1a60f8c8ed3">rawQuery</a> (const std::string &amp;query, queryType type)</td></tr>
 <tr class="memdesc:ad4b7d89bee3798489640e1a60f8c8ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw SQL query  <a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad4b7d89bee3798489640e1a60f8c8ed3">More...</a><br /></td></tr>
 <tr class="separator:ad4b7d89bee3798489640e1a60f8c8ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04e896520ae4900419291016712f5b10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a04e896520ae4900419291016712f5b10">createTableQuery</a> (const std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; &amp;attributes)</td></tr>
@@ -157,43 +157,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3f1bb5e915e7e73f06178990be0cf54"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad3f1bb5e915e7e73f06178990be0cf54">getTableName</a> () const</td></tr>
 <tr class="memdesc:ad3f1bb5e915e7e73f06178990be0cf54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for tableName  <a href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad3f1bb5e915e7e73f06178990be0cf54">More...</a><br /></td></tr>
 <tr class="separator:ad3f1bb5e915e7e73f06178990be0cf54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61e621af79d0af84cd40b65cee28d37c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a61e621af79d0af84cd40b65cee28d37c">~SQLiteDatabaseModel</a> ()=default</td></tr>
-<tr class="separator:a61e621af79d0af84cd40b65cee28d37c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Providing SELECT, INSERT, UPDATE, DELETE or raw queries for <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html" title="Wrapper class for sqlite3 library">SQLiteDatabase</a> </p>
 
 <p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00018">18</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a22f5738c595f5a8f095b68db1b878d11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22f5738c595f5a8f095b68db1b878d11">&#9670;&nbsp;</a></span>queryType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">framework::sqlite::SQLiteDatabaseModel::queryType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a22f5738c595f5a8f095b68db1b878d11aecae13117d6f0584c25a9da6c8f8415e"></a>read&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a22f5738c595f5a8f095b68db1b878d11aefb2a684e4afb7d55e6147fbe5a332ee"></a>write&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00021">21</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8058ebd7d7ec4ec9babe0063d822defb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8058ebd7d7ec4ec9babe0063d822defb">&#9670;&nbsp;</a></span>SQLiteDatabaseModel() <span class="overload">[1/3]</span></h2>
 
@@ -292,32 +261,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00096">96</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a61e621af79d0af84cd40b65cee28d37c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61e621af79d0af84cd40b65cee28d37c">&#9670;&nbsp;</a></span>~SQLiteDatabaseModel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">framework::sqlite::SQLiteDatabaseModel::~SQLiteDatabaseModel </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00098">98</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -347,12 +291,12 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00129">129</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00131">131</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -381,7 +325,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg </td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg </td></tr>
   </table>
   </dd>
 </dl>
@@ -424,7 +368,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
@@ -449,12 +393,12 @@ Public Member Functions</h2></td></tr>
 <p>Delete table </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00143">143</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00145">145</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -476,7 +420,7 @@ Public Member Functions</h2></td></tr>
 <p>Getter for tableName </p>
 <dl class="section return"><dt>Returns</dt><dd>tableName</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00239">239</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00241">241</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -505,12 +449,12 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00155">155</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00157">157</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -575,7 +519,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00103">103</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00105">105</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -594,7 +538,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a22f5738c595f5a8f095b68db1b878d11">queryType</a>&#160;</td>
+          <td class="paramtype">queryType&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
@@ -615,13 +559,13 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>result of SELECT query, empty string otherwise</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
     <tr><td class="paramname">std::invalid_argument</td><td>wrong type</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00111">111</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00113">113</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -650,12 +594,12 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00148">148</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00150">150</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -678,12 +622,12 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>all rows from table</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00215">215</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00217">217</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -713,7 +657,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>all rows that accept condition</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
@@ -757,7 +701,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>all rows that accept condition</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
@@ -807,12 +751,12 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::runtime_error</td><td>sqlite3_errmsg</td></tr>
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00180">180</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00182">182</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
@@ -825,7 +769,7 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespaceframework.html">framework</a></li><li class="navelem"><a class="el" href="namespaceframework_1_1sqlite.html">sqlite</a></li><li class="navelem"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a></li>
+    <li class="navelem"><b>framework</b></li><li class="navelem"><b>sqlite</b></li><li class="navelem"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

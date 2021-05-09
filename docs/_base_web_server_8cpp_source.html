@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,17 +87,17 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="title">BaseWebServer.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_base_web_server_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_web_server_8h.html">BaseWebServer.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;BaseWebServer.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_file_does_not_exist_exception_8h.html">Exceptions/FileDoesNotExistException.h</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_cant_load_source_exception_8h.html">Exceptions/CantLoadSourceException.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_cant_find_function_exception_8h.html">Exceptions/CantFindFunctionException.h</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_missing_load_type_exception_8h.html">Exceptions/MissingLoadTypeException.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_memory_8h.html">Utility/Memory.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;Exceptions/FileDoesNotExistException.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;Exceptions/CantLoadSourceException.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;Exceptions/CantFindFunctionException.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;Exceptions/MissingLoadTypeException.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;Utility/Memory.h&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
 <div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86">   13</a></span>&#160;    BaseWebServer::BaseWebServer(<span class="keyword">const</span> vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> filesystem::path&amp; assets, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToTemplates, <span class="keywordtype">bool</span> isCaching, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port, DWORD timeout, <span class="keyword">const</span> vector&lt;string&gt;&amp; pathToSources)</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="keywordflow">if</span> (!filesystem::exists(i))</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                    <span class="keywordflow">if</span> (i == <a class="code" href="namespacejson.html#a2f6d80ce68d69691631f437dcb475f73">json::defaultLoadSourceValue</a>)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                    <span class="keywordflow">if</span> (i == json_settings::defaultLoadSourceValue)</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                    {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                        result.push_back(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
@@ -148,203 +148,174 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> executorSettings;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a4dc9e7395c6bfa174fbc5360eb0ab35b">name</a> = i.second.name;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#ae5206d6bf4ce0caa5da5dae61976c12a">executorLoadType</a> = i.second.executorLoadType;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                executorSettings.name = i.second.name;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                executorSettings.executorLoadType = i.second.executorLoadType;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; j : i.second.initParameters.data)</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                {</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    <span class="keywordflow">switch</span> (j.second.index())</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    <span class="keywordflow">case</span> json::utility::jNull:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jNull&gt;(j.second)));</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jNull&gt;(j.second)));</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                    <span class="keywordflow">case</span> json::utility::jString:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jString&gt;(j.second)));</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jString&gt;(j.second)));</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    <span class="keywordflow">case</span> json::utility::jChar:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jChar&gt;(j.second)));</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    <span class="keywordflow">case</span> json::utility::jBool:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jBool&gt;(j.second)));</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    <span class="keywordflow">case</span> json::utility::jUnsignedChar:</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jUnsignedChar&gt;(j.second)));</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    <span class="keywordflow">case</span> json::utility::jInt64_t:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jInt64_t&gt;(j.second)));</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keywordflow">case</span> json::utility::jBool:</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jBool&gt;(j.second)));</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keywordflow">case</span> json::utility::jUint64_t:</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jUint64_t&gt;(j.second)));</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    <span class="keywordflow">case</span> json::utility::jInt64_t:</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jInt64_t&gt;(j.second)));</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    <span class="keywordflow">case</span> json::utility::jDouble:</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jDouble&gt;(j.second)));</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    <span class="keywordflow">case</span> json::utility::jUint64_t:</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jUint64_t&gt;(j.second)));</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    <span class="keywordflow">case</span> json::utility::jNullArray:</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jNullArray&gt;(j.second)));</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <span class="keywordflow">case</span> json::utility::jDouble:</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jDouble&gt;(j.second)));</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <span class="keywordflow">case</span> json::utility::jStringArray:</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jStringArray&gt;(j.second)));</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    <span class="keywordflow">case</span> json::utility::jNullArray:</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jNullArray&gt;(j.second)));</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    <span class="keywordflow">case</span> json::utility::jBoolArray:</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jBoolArray&gt;(j.second)));</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    <span class="keywordflow">case</span> json::utility::jStringArray:</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jStringArray&gt;(j.second)));</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    <span class="keywordflow">case</span> json::utility::jInt64_tArray:</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jInt64_tArray&gt;(j.second)));</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                    <span class="keywordflow">case</span> json::utility::jCharArray:</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jCharArray&gt;(j.second)));</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                    <span class="keywordflow">case</span> json::utility::jUint64_tArray:</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jUint64_tArray&gt;(j.second)));</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                    <span class="keywordflow">case</span> json::utility::jUnsignedCharArray:</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jUnsignedCharArray&gt;(j.second)));</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                    <span class="keywordflow">case</span> json::utility::jDoubleArray:</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jDoubleArray&gt;(j.second)));</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                    <span class="keywordflow">case</span> json::utility::jBoolArray:</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jBoolArray&gt;(j.second)));</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                    <span class="keywordflow">case</span> json::utility::jJsonStruct:</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                        executorSettings.initParameters.data.insert(make_pair(j.first, get&lt;json::utility::jJsonStruct&gt;(j.second).get()));</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                    <span class="keywordflow">case</span> json::utility::jInt64_tArray:</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jInt64_tArray&gt;(j.second)));</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                    <span class="keywordflow">case</span> json::utility::jUint64_tArray:</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jUint64_tArray&gt;(j.second)));</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                    <span class="keywordflow">case</span> json::utility::jDoubleArray:</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jDoubleArray&gt;(j.second)));</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                    <span class="keywordflow">case</span> json::utility::jJsonStruct:</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                        executorSettings.<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">initParameters</a>.data.insert(make_pair(j.first, get&lt;json::utility::jJsonStruct&gt;(j.second).get()));</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                    }</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                settings.insert(make_pair(i.first, move(executorSettings)));</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            }</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        routes.reserve(settings.size());</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        creator.reserve(settings.size());</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                settings.insert(make_pair(i.first, move(executorSettings)));</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        routes.reserve(settings.size());</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        creator.reserve(settings.size());</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        vector&lt;pair&lt;string, string&gt;&gt; nodes;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [i, j] : settings)</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        {</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            createBaseExecutorSubclassFunction <span class="keyword">function</span> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; source : sources)</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            {</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                <span class="keyword">function</span> = <span class="keyword">reinterpret_cast&lt;</span>createBaseExecutorSubclassFunction<span class="keyword">&gt;</span>(GetProcAddress(source, (<span class="stringliteral">&quot;create&quot;</span> + j.name + <span class="stringliteral">&quot;Instance&quot;</span>).data()));</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                <span class="keywordflow">if</span> (<span class="keyword">function</span>)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                }</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            }</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        vector&lt;pair&lt;string, string&gt;&gt; nodes;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [i, j] : settings)</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        {</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <a class="code" href="namespaceframework.html#a1f6e63f1d7ae02caceb703752eef61ba">createBaseExecutorSubclassFunction</a> <span class="keyword">function</span> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; source : sources)</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <span class="keyword">function</span> = <span class="keyword">reinterpret_cast&lt;</span><a class="code" href="namespaceframework.html#a1f6e63f1d7ae02caceb703752eef61ba">createBaseExecutorSubclassFunction</a><span class="keyword">&gt;</span>(GetProcAddress(source, (<span class="stringliteral">&quot;create&quot;</span> + j.name + <span class="stringliteral">&quot;Instance&quot;</span>).data()));</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                <span class="keywordflow">if</span> (<span class="keyword">function</span>)</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">if</span> (!<span class="keyword">function</span>)</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_cant_find_function_exception.html">exceptions::CantFindFunctionException</a>(<span class="stringliteral">&quot;create&quot;</span> + j.name + <span class="stringliteral">&quot;Instance&quot;</span>);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            <span class="keywordflow">switch</span> (j.executorLoadType)</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            {</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            <span class="keywordflow">case</span> utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="keywordflow">if</span> (i.find(<span class="charliteral">&#39;{&#39;</span>) == string::npos)</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            <span class="keywordflow">if</span> (!<span class="keyword">function</span>)</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            {</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_cant_find_function_exception.html">exceptions::CantFindFunctionException</a>(<span class="stringliteral">&quot;create&quot;</span> + j.name + <span class="stringliteral">&quot;Instance&quot;</span>);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keywordflow">switch</span> (j.executorLoadType)</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            {</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keywordflow">case</span> utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <span class="keywordflow">if</span> (i.find(<span class="charliteral">&#39;{&#39;</span>) == string::npos)</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    <span class="keyword">auto</span> [it, success] = routes.emplace(make_pair(i, smartPointer&lt;BaseExecutor&gt;(<span class="keyword">function</span>())));</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                    <span class="keywordflow">if</span> (success)</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                        <span class="keywordflow">if</span> (it-&gt;second-&gt;getType() == BaseExecutor::executorType::stateful || it-&gt;second-&gt;getType() == BaseExecutor::executorType::heavyOperationStateful)</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                        {</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                            routes.erase(i);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                        }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                        {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                            it-&gt;second-&gt;init(j);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                        }</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                    }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                    <span class="keyword">auto</span> [it, success] = routes.emplace(make_pair(i, <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;BaseExecutor&gt;</a>(<span class="keyword">function</span>())));</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                    routeParameters.push_back(i);</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                    <span class="keywordflow">if</span> (success)</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                    {</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                        <span class="keywordflow">if</span> (it-&gt;second-&gt;getType() == BaseExecutor::executorType::stateful || it-&gt;second-&gt;getType() == BaseExecutor::executorType::heavyOperationStateful)</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                        {</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                            routes.erase(i);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                        }</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                        {</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                            it-&gt;second-&gt;init(j);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                        }</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                    }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                }</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                {</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                    routeParameters.push_back(i);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                    <span class="keyword">auto</span> [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;BaseExecutor&gt;</a>(<span class="keyword">function</span>())));</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                    nodes.push_back(make_pair(i, routeParameters.back().baseRoute));</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                    <span class="keyword">auto</span> [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, smartPointer&lt;BaseExecutor&gt;(<span class="keyword">function</span>())));</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                    nodes.push_back(make_pair(i, routeParameters.back().baseRoute));</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                    <span class="keywordflow">if</span> (success)</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                    {</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                        it-&gt;second-&gt;init(j);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                    }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                }</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keywordflow">case</span> utility::JSONSettingsParser::ExecutorSettings::loadType::dynamic:</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                <span class="keywordflow">if</span> (i.find(<span class="charliteral">&#39;{&#39;</span>) != string::npos)</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                {</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                    routeParameters.push_back(i);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                    nodes.push_back(make_pair(i, routeParameters.back().baseRoute));</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                }</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                    <span class="keywordflow">if</span> (success)</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                    {</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                        it-&gt;second-&gt;init(j);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                    }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;            <span class="keywordflow">case</span> utility::JSONSettingsParser::ExecutorSettings::loadType::none:</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_missing_load_type_exception.html">exceptions::MissingLoadTypeException</a>(j.name);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            }</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="keywordflow">case</span> utility::JSONSettingsParser::ExecutorSettings::loadType::dynamic:</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                <span class="keywordflow">if</span> (i.find(<span class="charliteral">&#39;{&#39;</span>) != string::npos)</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                    routeParameters.push_back(i);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                    nodes.push_back(make_pair(i, routeParameters.back().baseRoute));</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                }</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <span class="keywordflow">case</span> utility::JSONSettingsParser::ExecutorSettings::loadType::none:</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_missing_load_type_exception.html">exceptions::MissingLoadTypeException</a>(j.name);</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            }</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            creator[j.name] = <span class="keyword">function</span>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; [i, j] : nodes)</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        {</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <span class="keyword">auto</span> node = settings.extract(i);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            node.key() = move(j);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            settings.insert(move(node));</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        }</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        resources = executorsManager.getResourceExecutor().get();</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;}</div>
-<div class="ttc" id="a_base_web_server_8h_html"><div class="ttname"><a href="_base_web_server_8h.html">BaseWebServer.h</a></div></div>
-<div class="ttc" id="a_cant_find_function_exception_8h_html"><div class="ttname"><a href="_cant_find_function_exception_8h.html">CantFindFunctionException.h</a></div></div>
-<div class="ttc" id="a_cant_load_source_exception_8h_html"><div class="ttname"><a href="_cant_load_source_exception_8h.html">CantLoadSourceException.h</a></div></div>
-<div class="ttc" id="a_file_does_not_exist_exception_8h_html"><div class="ttname"><a href="_file_does_not_exist_exception_8h.html">FileDoesNotExistException.h</a></div></div>
-<div class="ttc" id="a_memory_8h_html"><div class="ttname"><a href="_memory_8h.html">Memory.h</a></div></div>
-<div class="ttc" id="a_missing_load_type_exception_8h_html"><div class="ttname"><a href="_missing_load_type_exception_8h.html">MissingLoadTypeException.h</a></div></div>
-<div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00013">WebFrameworkConstants.h:13</a></div></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            creator[j.name] = <span class="keyword">function</span>;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; [i, j] : nodes)</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        {</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <span class="keyword">auto</span> node = settings.extract(i);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            node.key() = move(j);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            settings.insert(move(node));</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        }</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        resources = executorsManager.getResourceExecutor().get();</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;}</div>
 <div class="ttc" id="aclassframework_1_1exceptions_1_1_cant_find_function_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_cant_find_function_exception.html">framework::exceptions::CantFindFunctionException</a></div><div class="ttdoc">Can't find createBaseExecutorSubclassFunction for executor</div><div class="ttdef"><b>Definition:</b> <a href="_cant_find_function_exception_8h_source.html#l00012">CantFindFunctionException.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_cant_load_source_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_cant_load_source_exception.html">framework::exceptions::CantLoadSourceException</a></div><div class="ttdoc">Wrong path to loadSource from .ini</div><div class="ttdef"><b>Definition:</b> <a href="_cant_load_source_exception_8h_source.html#l00020">CantLoadSourceException.h:21</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00020">FileDoesNotExistException.h:21</a></div></div>
+<div class="ttc" id="aclassframework_1_1exceptions_1_1_cant_load_source_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_cant_load_source_exception.html">framework::exceptions::CantLoadSourceException</a></div><div class="ttdoc">Wrong path to loadSource from .ini</div><div class="ttdef"><b>Definition:</b> <a href="_cant_load_source_exception_8h_source.html#l00013">CantLoadSourceException.h:14</a></div></div>
+<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00013">FileDoesNotExistException.h:14</a></div></div>
 <div class="ttc" id="aclassframework_1_1exceptions_1_1_missing_load_type_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_missing_load_type_exception.html">framework::exceptions::MissingLoadTypeException</a></div><div class="ttdoc">Missing loadType in .json file of executor</div><div class="ttdef"><b>Definition:</b> <a href="_missing_load_type_exception_8h_source.html#l00012">MissingLoadTypeException.h:13</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
-<div class="ttc" id="anamespaceframework_html_a1f6e63f1d7ae02caceb703752eef61ba"><div class="ttname"><a href="namespaceframework.html#a1f6e63f1d7ae02caceb703752eef61ba">framework::createBaseExecutorSubclassFunction</a></div><div class="ttdeci">BaseExecutor *(*)() createBaseExecutorSubclassFunction</div><div class="ttdoc">Shortcut to creating BaseExecutor subclass function signature</div><div class="ttdef"><b>Definition:</b> <a href="_base_executor_8h_source.html#l00125">BaseExecutor.h:125</a></div></div>
-<div class="ttc" id="anamespacejson_html_a2f6d80ce68d69691631f437dcb475f73"><div class="ttname"><a href="namespacejson.html#a2f6d80ce68d69691631f437dcb475f73">json::defaultLoadSourceValue</a></div><div class="ttdeci">const std::string defaultLoadSourceValue</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00078">WebFrameworkConstants.h:78</a></div></div>
 <div class="ttc" id="astructframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings_html"><div class="ttname"><a href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">framework::utility::JSONSettingsParser::ExecutorSettings</a></div><div class="ttdoc">Settings for executor</div><div class="ttdef"><b>Definition:</b> <a href="_j_s_o_n_settings_parser_8h_source.html#l00026">JSONSettingsParser.h:27</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings_html_a4dc9e7395c6bfa174fbc5360eb0ab35b"><div class="ttname"><a href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a4dc9e7395c6bfa174fbc5360eb0ab35b">framework::utility::JSONSettingsParser::ExecutorSettings::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Definition:</b> <a href="_j_s_o_n_settings_parser_8h_source.html#l00036">JSONSettingsParser.h:36</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings_html_a83025b92f8ace871056d8dfc667165ae"><div class="ttname"><a href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#a83025b92f8ace871056d8dfc667165ae">framework::utility::JSONSettingsParser::ExecutorSettings::initParameters</a></div><div class="ttdeci">json::utility::jsonParserStruct initParameters</div><div class="ttdef"><b>Definition:</b> <a href="_j_s_o_n_settings_parser_8h_source.html#l00035">JSONSettingsParser.h:35</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings_html_ae5206d6bf4ce0caa5da5dae61976c12a"><div class="ttname"><a href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html#ae5206d6bf4ce0caa5da5dae61976c12a">framework::utility::JSONSettingsParser::ExecutorSettings::executorLoadType</a></div><div class="ttdeci">loadType executorLoadType</div><div class="ttdef"><b>Definition:</b> <a href="_j_s_o_n_settings_parser_8h_source.html#l00037">JSONSettingsParser.h:37</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_7748b7526ef298e77557bd775519d4ab.html">WebNetwork</a></li><li class="navelem"><a class="el" href="dir_73501ebf01861abc73755c030c1c05f4.html">WebServers</a></li><li class="navelem"><a class="el" href="_base_web_server_8cpp.html">BaseWebServer.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_7748b7526ef298e77557bd775519d4ab.html">WebNetwork</a></li><li class="navelem"><a class="el" href="dir_73501ebf01861abc73755c030c1c05f4.html">WebServers</a></li><li class="navelem"><b>BaseWebServer.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

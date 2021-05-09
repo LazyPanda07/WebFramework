@@ -1,43 +1,47 @@
 var annotated_dup =
 [
-    [ "framework", "namespaceframework.html", [
-      [ "exceptions", "namespaceframework_1_1exceptions.html", [
+    [ "framework", null, [
+      [ "exceptions", null, [
         [ "BadRequestException", "classframework_1_1exceptions_1_1_bad_request_exception.html", "classframework_1_1exceptions_1_1_bad_request_exception" ],
         [ "BaseExecutorException", "classframework_1_1exceptions_1_1_base_executor_exception.html", "classframework_1_1exceptions_1_1_base_executor_exception" ],
+        [ "BaseWebFrameworkException", "classframework_1_1exceptions_1_1_base_web_framework_exception.html", "classframework_1_1exceptions_1_1_base_web_framework_exception" ],
         [ "CantFindFunctionException", "classframework_1_1exceptions_1_1_cant_find_function_exception.html", "classframework_1_1exceptions_1_1_cant_find_function_exception" ],
         [ "CantLoadSourceException", "classframework_1_1exceptions_1_1_cant_load_source_exception.html", "classframework_1_1exceptions_1_1_cant_load_source_exception" ],
+        [ "DatabaseException", "classframework_1_1exceptions_1_1_database_exception.html", "classframework_1_1exceptions_1_1_database_exception" ],
         [ "DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception" ],
         [ "FileDoesNotExistException", "classframework_1_1exceptions_1_1_file_does_not_exist_exception.html", "classframework_1_1exceptions_1_1_file_does_not_exist_exception" ],
         [ "MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", "classframework_1_1exceptions_1_1_missing_load_type_exception" ],
         [ "NotImplementedException", "classframework_1_1exceptions_1_1_not_implemented_exception.html", "classframework_1_1exceptions_1_1_not_implemented_exception" ],
+        [ "SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", "classframework_1_1exceptions_1_1_s_q_lite3_exception" ],
         [ "StringConversionException", "classframework_1_1exceptions_1_1_string_conversion_exception.html", "classframework_1_1exceptions_1_1_string_conversion_exception" ]
       ] ],
-      [ "interfaces", "namespaceframework_1_1interfaces.html", [
+      [ "interfaces", null, [
         [ "IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", "classframework_1_1interfaces_1_1_i_dynamic_file" ],
         [ "IStaticFile", "classframework_1_1interfaces_1_1_i_static_file.html", "classframework_1_1interfaces_1_1_i_static_file" ]
       ] ],
-      [ "load_balancer", "namespaceframework_1_1load__balancer.html", [
+      [ "load_balancer", null, [
         [ "LoadBalancer", "classframework_1_1load__balancer_1_1_load_balancer.html", "classframework_1_1load__balancer_1_1_load_balancer" ],
         [ "LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", "classframework_1_1load__balancer_1_1_load_balancer_server" ]
       ] ],
-      [ "middleware", "namespaceframework_1_1middleware.html", [
+      [ "middleware", null, [
         [ "BaseMiddlewareRouteController", "classframework_1_1middleware_1_1_base_middleware_route_controller.html", "classframework_1_1middleware_1_1_base_middleware_route_controller" ],
         [ "Middleware", "classframework_1_1middleware_1_1_middleware.html", "classframework_1_1middleware_1_1_middleware" ],
         [ "MiddlewareServer", "classframework_1_1middleware_1_1_middleware_server.html", "classframework_1_1middleware_1_1_middleware_server" ]
       ] ],
-      [ "sqlite", "namespaceframework_1_1sqlite.html", [
-        [ "utility", "namespaceframework_1_1sqlite_1_1utility.html", [
+      [ "sqlite", null, [
+        [ "utility", null, [
           [ "SQLiteResult", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result" ]
         ] ],
         [ "SQLiteDatabase", "classframework_1_1sqlite_1_1_s_q_lite_database.html", "classframework_1_1sqlite_1_1_s_q_lite_database" ],
         [ "SQLiteDatabaseModel", "classframework_1_1sqlite_1_1_s_q_lite_database_model.html", "classframework_1_1sqlite_1_1_s_q_lite_database_model" ],
         [ "SQLiteManager", "classframework_1_1sqlite_1_1_s_q_lite_manager.html", "classframework_1_1sqlite_1_1_s_q_lite_manager" ]
       ] ],
-      [ "utility", "namespaceframework_1_1utility.html", [
-        [ "baseConnectionData", "structframework_1_1utility_1_1base_connection_data.html", "structframework_1_1utility_1_1base_connection_data" ],
-        [ "JSONSettingsParser", "classframework_1_1utility_1_1_j_s_o_n_settings_parser.html", "classframework_1_1utility_1_1_j_s_o_n_settings_parser" ],
+      [ "utility", null, [
         [ "PriorityQueue", "classframework_1_1utility_1_1_priority_queue.html", "classframework_1_1utility_1_1_priority_queue" ],
-        [ "RouteParameters", "structframework_1_1utility_1_1_route_parameters.html", "structframework_1_1utility_1_1_route_parameters" ]
+        [ "JSONSettingsParser", "classframework_1_1utility_1_1_j_s_o_n_settings_parser.html", "classframework_1_1utility_1_1_j_s_o_n_settings_parser" ],
+        [ "baseConnectionData", "structframework_1_1utility_1_1base_connection_data.html", "structframework_1_1utility_1_1base_connection_data" ],
+        [ "RouteParameters", "structframework_1_1utility_1_1_route_parameters.html", "structframework_1_1utility_1_1_route_parameters" ],
+        [ "HTTPSSingleton", "classframework_1_1utility_1_1_h_t_t_p_s_singleton.html", "classframework_1_1utility_1_1_h_t_t_p_s_singleton" ]
       ] ],
       [ "WebFrameworkDynamicPages", "classframework_1_1_web_framework_dynamic_pages.html", "classframework_1_1_web_framework_dynamic_pages" ],
       [ "BaseExecutor", "classframework_1_1_base_executor.html", "classframework_1_1_base_executor" ],
@@ -52,6 +56,7 @@ var annotated_dup =
       [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html", "classframework_1_1_h_t_t_p_request" ],
       [ "HTTPResponse", "classframework_1_1_h_t_t_p_response.html", "classframework_1_1_h_t_t_p_response" ],
       [ "WebFrameworkHTTPNetwork", "classframework_1_1_web_framework_h_t_t_p_network.html", "classframework_1_1_web_framework_h_t_t_p_network" ],
+      [ "WebFrameworkHTTPSNetwork", "classframework_1_1_web_framework_h_t_t_p_s_network.html", "classframework_1_1_web_framework_h_t_t_p_s_network" ],
       [ "BaseWebServer", "classframework_1_1_base_web_server.html", "classframework_1_1_base_web_server" ],
       [ "MultithreadedWebServer", "classframework_1_1_multithreaded_web_server.html", "classframework_1_1_multithreaded_web_server" ],
       [ "ThreadPoolWebServer", "classframework_1_1_thread_pool_web_server.html", "classframework_1_1_thread_pool_web_server" ]
