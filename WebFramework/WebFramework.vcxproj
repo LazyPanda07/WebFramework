@@ -172,7 +172,7 @@ $(SolutionDir)custom_build_steps\DebugBuild.bat</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
@@ -242,7 +242,7 @@ $(SolutionDir)custom_build_steps\ReleaseBuild.bat</Command>
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
