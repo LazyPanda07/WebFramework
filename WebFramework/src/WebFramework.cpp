@@ -29,31 +29,31 @@ namespace framework
 
 		json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
-		const vector<string>& settingsPaths = parser.get<vector<string>>(json::settingsPathsKey);
-		const string& assetsPath = parser.get<string>(json::assetsPathKey);
-		const string& templatesPath = parser.get<string>(json::templatesPathKey);
-		bool usingAssetsCache = parser.get<bool>(json::usingAssetsCacheKey);
-		const vector<string>& loadSources = parser.get<vector<string>>(json::loadSourcesKey);
-		const string& webServerType = parser.get<string>(json::webServerTypeKey);
-		const string& ip = parser.get<string>(json::ipKey);
-		const string& port = parser.get<string>(json::portKey);
-		int64_t timeout = parser.get<int64_t>(json::timeoutKey);
+		const vector<string>& settingsPaths = parser.get<vector<string>>(json_settings::settingsPathsKey);
+		const string& assetsPath = parser.get<string>(json_settings::assetsPathKey);
+		const string& templatesPath = parser.get<string>(json_settings::templatesPathKey);
+		bool usingAssetsCache = parser.get<bool>(json_settings::usingAssetsCacheKey);
+		const vector<string>& loadSources = parser.get<vector<string>>(json_settings::loadSourcesKey);
+		const string& webServerType = parser.get<string>(json_settings::webServerTypeKey);
+		const string& ip = parser.get<string>(json_settings::ipKey);
+		const string& port = parser.get<string>(json_settings::portKey);
+		int64_t timeout = parser.get<int64_t>(json_settings::timeoutKey);
 		bool useHTTPS = false;
 
 		try
 		{
-			parser.get<smartPointer<json::JSONParser::objectType>>(json::loggingObject);	// is logging object exists
+			parser.get<smartPointer<json::JSONParser::objectType>>(json_settings::loggingObject);	// is logging object exists
 
 			try
 			{
-				bool usingLogging = parser.get<bool>(json::usingLoggingKey);
-				const string& dateFormat = parser.get<string>(json::dateFormatKey);
+				bool usingLogging = parser.get<bool>(json_settings::usingLoggingKey);
+				const string& dateFormat = parser.get<string>(json_settings::dateFormatKey);
 
 				if (usingLogging)
 				{
 					try
 					{
-						bool addNewLineAfterLog = parser.get<bool>(json::addNewLineAfterLogKey);
+						bool addNewLineAfterLog = parser.get<bool>(json_settings::addNewLineAfterLogKey);
 
 						Log::init(Log::dateFormatFromString(dateFormat), addNewLineAfterLog);
 					}
@@ -77,11 +77,11 @@ namespace framework
 
 		try
 		{
-			useHTTPS = parser.get<bool>(json::useHTTPSKey);
+			useHTTPS = parser.get<bool>(json_settings::useHTTPSKey);
 
 			if (useHTTPS)
 			{
-				if (webServerType == json::threadPoolWebServerTypeValue)
+				if (webServerType == json_settings::threadPoolWebServerTypeValue)
 				{
 					throw exceptions::NotImplementedException();
 				}
@@ -89,8 +89,8 @@ namespace framework
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(parser.get<string>(json::pathToCertificateKey));
-				httpsSettings.setPathToKey(parser.get<string>(json::pathToKey));
+				httpsSettings.setPathToCertificate(parser.get<string>(json_settings::pathToCertificateKey));
+				httpsSettings.setPathToKey(parser.get<string>(json_settings::pathToKey));
 
 				SSL_library_init();
 				SSL_load_error_strings();
@@ -107,7 +107,7 @@ namespace framework
 
 		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
-		if (webServerType == json::multithreadedWebServerTypeValue)
+		if (webServerType == json_settings::multithreadedWebServerTypeValue)
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
@@ -121,7 +121,7 @@ namespace framework
 					loadSources
 					);
 		}
-		else if (webServerType == json::threadPoolWebServerTypeValue)
+		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
 		{
 			try
 			{

@@ -47,7 +47,7 @@ inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";
 
 inline constexpr std::string_view webFrameworkDynamicPagesExtension = ".wfdp";
 
-namespace json
+namespace json_settings
 {
 	inline const std::string webServerObject = "WebServer";
 	inline const std::string webFrameworkObject = "WebFramework";

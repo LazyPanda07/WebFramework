@@ -26,7 +26,7 @@ namespace framework
 			{
 				if (!filesystem::exists(i))
 				{
-					if (i == json::defaultLoadSourceValue)
+					if (i == json_settings::defaultLoadSourceValue)
 					{
 						result.push_back(nullptr);
 
