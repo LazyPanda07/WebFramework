@@ -5,8 +5,8 @@
 #include <shared_mutex>
 
 #include "BaseTCPServer.h"
-#include "Utility/PriorityQueue.h"
-#include "Utility/baseConnectionData.h"
+#include "Utility/DataStructures/PriorityQueue.h"
+#include "Utility/Middleware/baseConnectionData.h"
 
 namespace framework
 {

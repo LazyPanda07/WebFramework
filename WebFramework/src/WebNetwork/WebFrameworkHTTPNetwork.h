@@ -1,7 +1,7 @@
 #pragma once
 
 #include "HTTPNetwork.h"
-#include "Utility/baseConnectionData.h"
+#include "Utility/Middleware/baseConnectionData.h"
 
 namespace framework
 {

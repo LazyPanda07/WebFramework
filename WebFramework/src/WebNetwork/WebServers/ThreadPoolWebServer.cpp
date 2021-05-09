@@ -4,7 +4,7 @@
 #include "Exceptions/SSLException.h"
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
 #include "WebNetwork/WebFrameworkHTTPSNetwork.h"
-#include "Utility/HTTPSSingleton.h"
+#include "Utility/Singletons/HTTPSSingleton.h"
 
 using namespace std;
 
