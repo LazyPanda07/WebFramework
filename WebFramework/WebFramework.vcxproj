@@ -161,7 +161,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
@@ -189,6 +189,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -223,7 +224,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
@@ -254,6 +255,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -297,7 +299,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <Outputs>output.txt</Outputs>
     </CustomBuildStep>
     <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -320,6 +322,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
