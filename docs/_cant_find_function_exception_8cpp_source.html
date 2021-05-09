@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,33 +87,27 @@ $(document).ready(function(){initNavTree('_cant_find_function_exception_8cpp_sou
 <div class="title">CantFindFunctionException.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_cant_find_function_exception_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_cant_find_function_exception_8h.html">CantFindFunctionException.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;CantFindFunctionException.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keyword">namespace </span><a class="code" href="namespaceexceptions.html">exceptions</a></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keyword">namespace </span>exceptions</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classframework_1_1exceptions_1_1_cant_find_function_exception.html#aef95cb2d9a1159fda2d1a2c1942bdd4a">    9</a></span>&#160;        CantFindFunctionException::CantFindFunctionException(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; createFunctionName) :</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            <a class="code" href="classframework_1_1exceptions_1_1_base_executor_exception.html">BaseExecutorException</a>(::<a class="code" href="namespaceexceptions.html">exceptions</a>::<a class="code" href="namespaceexceptions.html#a364f4c1b23d57e77160cae161ba2a4a7">cantFindFunction</a> + createFunctionName + <span class="stringliteral">&quot; function&quot;</span> + <span class="stringliteral">&quot;. &quot;</span> + ::<a class="code" href="namespaceexceptions.html">exceptions</a>::<a class="code" href="namespaceexceptions.html#a68a85f96d37f62c5b2040fd2318b4a61">useMacroToMakeCreationFunction</a>)</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        CantFindFunctionException::CantFindFunctionException(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; createFunctionName) :</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            BaseExecutorException(::exceptions::cantFindFunction + createFunctionName + <span class="stringliteral">&quot; function&quot;</span> + <span class="stringliteral">&quot;. &quot;</span> + ::exceptions::useMacroToMakeCreationFunction)</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        }</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    }</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
-<div class="ttc" id="a_cant_find_function_exception_8h_html"><div class="ttname"><a href="_cant_find_function_exception_8h.html">CantFindFunctionException.h</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_base_executor_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_base_executor_exception.html">framework::exceptions::BaseExecutorException</a></div><div class="ttdoc">Base class for most of WebFramework exceptions</div><div class="ttdef"><b>Definition:</b> <a href="_base_executor_exception_8h_source.html#l00020">BaseExecutorException.h:21</a></div></div>
-<div class="ttc" id="anamespaceexceptions_html"><div class="ttname"><a href="namespaceexceptions.html">exceptions</a></div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00084">WebFrameworkConstants.h:85</a></div></div>
-<div class="ttc" id="anamespaceexceptions_html_a364f4c1b23d57e77160cae161ba2a4a7"><div class="ttname"><a href="namespaceexceptions.html#a364f4c1b23d57e77160cae161ba2a4a7">exceptions::cantFindFunction</a></div><div class="ttdeci">const std::string cantFindFunction</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00088">WebFrameworkConstants.h:88</a></div></div>
-<div class="ttc" id="anamespaceexceptions_html_a68a85f96d37f62c5b2040fd2318b4a61"><div class="ttname"><a href="namespaceexceptions.html#a68a85f96d37f62c5b2040fd2318b4a61">exceptions::useMacroToMakeCreationFunction</a></div><div class="ttdeci">const std::string useMacroToMakeCreationFunction</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00089">WebFrameworkConstants.h:89</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_ab50e2bdbfb89183d438c902c588a296.html">Exceptions</a></li><li class="navelem"><a class="el" href="_cant_find_function_exception_8cpp.html">CantFindFunctionException.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_ab50e2bdbfb89183d438c902c588a296.html">Exceptions</a></li><li class="navelem"><b>CantFindFunctionException.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

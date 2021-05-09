@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,24 +87,24 @@ $(document).ready(function(){initNavTree('_web_framework_8h_source.html',''); in
 <div class="title">WebFramework.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_web_framework_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#ifdef WEB_FRAMEWORK_DLL</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#define WEB_FRAMEWORK_API __declspec(dllexport)</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="_web_framework_8h.html#acd103ddedf7691538e90921775bbae62">    6</a></span>&#160;<span class="preprocessor">#define WEB_FRAMEWORK_API</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define WEB_FRAMEWORK_API</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// WEB_FRAMEWORK_DLL</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;filesystem&gt;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_web_server_8h.html">WebNetwork/WebServers/BaseWebServer.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;WebNetwork/WebServers/BaseWebServer.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework.html">   19</a></span>&#160;    <span class="keyword">class </span><a class="code" href="_web_framework_8h.html#acd103ddedf7691538e90921775bbae62">WEB_FRAMEWORK_API</a> <a class="code" href="classframework_1_1_web_framework.html">WebFramework</a></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework.html">   19</a></span>&#160;    <span class="keyword">class </span>WEB_FRAMEWORK_API <a class="code" href="classframework_1_1_web_framework.html">WebFramework</a></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;BaseWebServer&gt;</a> server;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        smartPointer&lt;BaseWebServer&gt; server;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="classframework_1_1_web_framework.html">WebFramework</a>(<span class="keyword">const</span> std::filesystem::path&amp; configurationJSONFile);</div>
@@ -119,21 +119,16 @@ $(document).ready(function(){initNavTree('_web_framework_8h_source.html',''); in
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">bool</span> getServerState() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework.html#aed318a9e5924f9c702148ce54f6e0fde">   63</a></span>&#160;        <a class="code" href="classframework_1_1_web_framework.html#aed318a9e5924f9c702148ce54f6e0fde">~WebFramework</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        ~<a class="code" href="classframework_1_1_web_framework.html">WebFramework</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    };</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
-<div class="ttc" id="a_base_web_server_8h_html"><div class="ttname"><a href="_base_web_server_8h.html">BaseWebServer.h</a></div></div>
-<div class="ttc" id="a_web_framework_8h_html_acd103ddedf7691538e90921775bbae62"><div class="ttname"><a href="_web_framework_8h.html#acd103ddedf7691538e90921775bbae62">WEB_FRAMEWORK_API</a></div><div class="ttdeci">#define WEB_FRAMEWORK_API</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_8h_source.html#l00006">WebFramework.h:6</a></div></div>
-<div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00013">WebFrameworkConstants.h:13</a></div></div>
 <div class="ttc" id="aclassframework_1_1_web_framework_html"><div class="ttname"><a href="classframework_1_1_web_framework.html">framework::WebFramework</a></div><div class="ttdoc">Main class of framework</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_8h_source.html#l00019">WebFramework.h:20</a></div></div>
-<div class="ttc" id="aclassframework_1_1_web_framework_html_aed318a9e5924f9c702148ce54f6e0fde"><div class="ttname"><a href="classframework_1_1_web_framework.html#aed318a9e5924f9c702148ce54f6e0fde">framework::WebFramework::~WebFramework</a></div><div class="ttdeci">~WebFramework()=default</div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="_web_framework_8h.html">WebFramework.h</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><b>WebFramework.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

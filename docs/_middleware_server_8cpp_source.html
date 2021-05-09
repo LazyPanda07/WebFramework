@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,21 +87,21 @@ $(document).ready(function(){initNavTree('_middleware_server_8cpp_source.html','
 <div class="title">MiddlewareServer.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_middleware_server_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_middleware_server_8h.html">MiddlewareServer.h</a>&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;MiddlewareServer.h&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;BaseIOSocketStream.h&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_web_framework_h_t_t_p_network_8h.html">WebNetwork/WebFrameworkHTTPNetwork.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;WebNetwork/WebFrameworkHTTPNetwork.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">namespace </span>middleware</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keywordtype">void</span> MiddlewareServer::clientConnection(SOCKET clientSocket, sockaddr addr)</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            streams::IOSocketStream clientStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(clientSocket)));</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <a class="code" href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer&lt;streams::IOSocketStream&gt;</a> serverStream;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            smartPointer&lt;streams::IOSocketStream&gt; serverStream;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            {</div>
@@ -143,17 +143,13 @@ $(document).ready(function(){initNavTree('_middleware_server_8cpp_source.html','
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="ttc" id="a_middleware_server_8h_html"><div class="ttname"><a href="_middleware_server_8h.html">MiddlewareServer.h</a></div></div>
-<div class="ttc" id="a_web_framework_constants_8h_html_a1b2e374e6f70a1c9c285bf07888b97ca"><div class="ttname"><a href="_web_framework_constants_8h.html#a1b2e374e6f70a1c9c285bf07888b97ca">smartPointer</a></div><div class="ttdeci">std::unique_ptr&lt; T &gt; smartPointer</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_constants_8h_source.html#l00013">WebFrameworkConstants.h:13</a></div></div>
-<div class="ttc" id="a_web_framework_h_t_t_p_network_8h_html"><div class="ttname"><a href="_web_framework_h_t_t_p_network_8h.html">WebFrameworkHTTPNetwork.h</a></div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">framework::middleware::BaseMiddlewareRouteController</a></div><div class="ttdoc">Specify server to connect with getServerConnectionData method</div><div class="ttdef"><b>Definition:</b> <a href="_base_middleware_route_controller_8h_source.html#l00015">BaseMiddlewareRouteController.h:16</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_64d3068303f24d046a98b61482080f56.html">Middleware</a></li><li class="navelem"><a class="el" href="dir_f344540b9a9d5ecddafd3181671bf101.html">MiddlewareWebNetwork</a></li><li class="navelem"><a class="el" href="_middleware_server_8cpp.html">MiddlewareServer.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_64d3068303f24d046a98b61482080f56.html">Middleware</a></li><li class="navelem"><a class="el" href="dir_f344540b9a9d5ecddafd3181671bf101.html">MiddlewareWebNetwork</a></li><li class="navelem"><b>MiddlewareServer.cpp</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

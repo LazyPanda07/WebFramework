@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -102,10 +102,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a12b511148a8cca7ad25ea27b6a0c497c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classframework_1_1_web_framework.html" title="Main class of framework">WebFramework</a>  <a href="classframework_1_1_web_framework.html#a12b511148a8cca7ad25ea27b6a0c497c">More...</a><br /></td></tr>
 <tr class="separator:a12b511148a8cca7ad25ea27b6a0c497c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac792cff457956f8e510bcdaa496665a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_web_framework.html#ac792cff457956f8e510bcdaa496665a4">startServer</a> ()</td></tr>
-<tr class="memdesc:ac792cff457956f8e510bcdaa496665a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a>  <a href="classframework_1_1_web_framework.html#ac792cff457956f8e510bcdaa496665a4">More...</a><br /></td></tr>
+<tr class="memdesc:ac792cff457956f8e510bcdaa496665a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start <a class="el" href="classframework_1_1_base_web_server.html">BaseWebServer</a>  <a href="classframework_1_1_web_framework.html#ac792cff457956f8e510bcdaa496665a4">More...</a><br /></td></tr>
 <tr class="separator:ac792cff457956f8e510bcdaa496665a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab84e58029ed3d62ff392626c4313ef54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_web_framework.html#ab84e58029ed3d62ff392626c4313ef54">stopServer</a> ()</td></tr>
-<tr class="memdesc:ab84e58029ed3d62ff392626c4313ef54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a> incoming connections  <a href="classframework_1_1_web_framework.html#ab84e58029ed3d62ff392626c4313ef54">More...</a><br /></td></tr>
+<tr class="memdesc:ab84e58029ed3d62ff392626c4313ef54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop <a class="el" href="classframework_1_1_base_web_server.html">BaseWebServer</a> incoming connections  <a href="classframework_1_1_web_framework.html#ab84e58029ed3d62ff392626c4313ef54">More...</a><br /></td></tr>
 <tr class="separator:ab84e58029ed3d62ff392626c4313ef54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbdc33b3da335041bed850fe8d918b8d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_web_framework.html#acbdc33b3da335041bed850fe8d918b8d">getClientsIp</a> () const</td></tr>
 <tr class="memdesc:acbdc33b3da335041bed850fe8d918b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get ip addresses of all currently connected clients  <a href="classframework_1_1_web_framework.html#acbdc33b3da335041bed850fe8d918b8d">More...</a><br /></td></tr>
@@ -116,8 +116,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a045f0863885f5731b74da4295e531d86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_web_framework.html#a045f0863885f5731b74da4295e531d86">getServerState</a> () const</td></tr>
 <tr class="memdesc:a045f0863885f5731b74da4295e531d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is server running  <a href="classframework_1_1_web_framework.html#a045f0863885f5731b74da4295e531d86">More...</a><br /></td></tr>
 <tr class="separator:a045f0863885f5731b74da4295e531d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed318a9e5924f9c702148ce54f6e0fde"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_web_framework.html#aed318a9e5924f9c702148ce54f6e0fde">~WebFramework</a> ()=default</td></tr>
-<tr class="separator:aed318a9e5924f9c702148ce54f6e0fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main class of framework </p>
@@ -152,38 +150,13 @@ Public Member Functions</h2></td></tr>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_base_executor_exception.html" title="Base class for most of WebFramework exceptions">framework::exceptions::BaseExecutorException</a></td><td></td></tr>
     <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html" title="Wrong file path">framework::exceptions::FileDoesNotExistException</a></td><td></td></tr>
-    <tr><td class="paramname">std::out_of_range</td><td>Can't find some settings</td></tr>
+    <tr><td class="paramname">framework::exceptions::NotImplemented</td><td>Thread pool model does not support HTTPS</td></tr>
     <tr><td class="paramname">json::exceptions::CantFindValueException</td><td>can't find JSON setting value</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00022">22</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aed318a9e5924f9c702148ce54f6e0fde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed318a9e5924f9c702148ce54f6e0fde">&#9670;&nbsp;</a></span>~WebFramework()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">framework::WebFramework::~WebFramework </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00023">23</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
 
 </div>
 </div>
@@ -212,7 +185,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00163">163</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00191">191</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
 
 </div>
 </div>
@@ -234,7 +207,7 @@ Public Member Functions</h2></td></tr>
 <p>Get ip addresses of all currently connected clients </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00145">145</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00173">173</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
 
 </div>
 </div>
@@ -256,7 +229,7 @@ Public Member Functions</h2></td></tr>
 <p>Is server running </p>
 <dl class="section return"><dt>Returns</dt><dd>is server running</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00158">158</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00186">186</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
 
 </div>
 </div>
@@ -275,9 +248,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Start <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a> </p>
+<p>Start <a class="el" href="classframework_1_1_base_web_server.html">BaseWebServer</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00135">135</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00163">163</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
 
 </div>
 </div>
@@ -296,9 +269,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Stop <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a> incoming connections </p>
+<p>Stop <a class="el" href="classframework_1_1_base_web_server.html">BaseWebServer</a> incoming connections </p>
 
-<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00140">140</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_web_framework_8cpp_source.html#l00168">168</a> of file <a class="el" href="_web_framework_8cpp_source.html">WebFramework.cpp</a>.</p>
 
 </div>
 </div>
@@ -311,7 +284,7 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespaceframework.html">framework</a></li><li class="navelem"><a class="el" href="classframework_1_1_web_framework.html">WebFramework</a></li>
+    <li class="navelem"><b>framework</b></li><li class="navelem"><a class="el" href="classframework_1_1_web_framework.html">WebFramework</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
