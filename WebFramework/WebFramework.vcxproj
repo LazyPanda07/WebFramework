@@ -149,13 +149,17 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
+    </Lib>
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
@@ -178,13 +182,13 @@ $(SolutionDir)custom_build_steps\DebugBuild.bat</Command>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);ALL_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -212,7 +216,7 @@ $(SolutionDir)custom_build_steps\DebugDLLBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -221,6 +225,10 @@ $(SolutionDir)custom_build_steps\DebugDLLBuild.bat</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
+    </Lib>
     <CustomBuildStep>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 CD $(SolutionDir)
@@ -245,7 +253,7 @@ $(SolutionDir)custom_build_steps\ReleaseBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);ALL_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -253,7 +261,7 @@ $(SolutionDir)custom_build_steps\ReleaseBuild.bat</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -281,7 +289,7 @@ $(SolutionDir)custom_build_steps\ReleaseDLLBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -305,7 +313,7 @@ $(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
     </CustomBuildStep>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionReleaseDLL|x64'">
@@ -317,7 +325,7 @@ $(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);ALL_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -326,7 +334,7 @@ $(SolutionDir)custom_build_steps\ProductionReleaseBuild.bat</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
       <Command>XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\
@@ -348,12 +356,15 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\BadRequestException.cpp" />
+    <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
+    <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
     <ClCompile Include="src\Exceptions\FileDoesNotExistException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
+    <ClCompile Include="src\Exceptions\SQLite3Exception.cpp" />
     <ClCompile Include="src\Exceptions\StringConversionException.cpp" />
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
@@ -365,6 +376,7 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteResult.cpp" />
+    <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\SessionsManager.cpp" />
@@ -373,13 +385,14 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClCompile Include="src\Middleware\MiddlewareWebNetwork\MiddlewareServer.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
-    <ClCompile Include="src\Utility\baseConnectionData.cpp" />
+    <ClCompile Include="src\Utility\Middleware\baseConnectionData.cpp" />
     <ClCompile Include="src\Utility\StringConversion.cpp" />
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
     <ClCompile Include="src\WebNetwork\WebFrameworkHTTPNetwork.cpp" />
     <ClCompile Include="src\WebFramework.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
+    <ClCompile Include="src\WebNetwork\WebFrameworkHTTPSNetwork.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
@@ -388,12 +401,15 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
     <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\BadRequestException.h" />
+    <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
+    <ClInclude Include="src\Exceptions\DatabaseException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
     <ClInclude Include="src\Exceptions\FileDoesNotExistException.h" />
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="src\Exceptions\SQLite3Exception.h" />
     <ClInclude Include="src\Exceptions\StringConversionException.h" />
     <ClInclude Include="src\Executors\BaseExecutor.h" />
     <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
@@ -406,6 +422,7 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h" />
     <ClInclude Include="src\SQLite3\SQLiteManager.h" />
     <ClInclude Include="src\SQLite3\SQLiteResult.h" />
+    <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
     <ClInclude Include="src\Utility\Memory.h" />
     <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h" />
@@ -416,8 +433,8 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClInclude Include="src\SQLite3\sqlite3.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
-    <ClInclude Include="src\Utility\baseConnectionData.h" />
-    <ClInclude Include="src\Utility\PriorityQueue.h" />
+    <ClInclude Include="src\Utility\Middleware\baseConnectionData.h" />
+    <ClInclude Include="src\Utility\DataStructures\PriorityQueue.h" />
     <ClInclude Include="src\Utility\StringConversion.h" />
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\WebFrameworkHTTPNetwork.h" />
@@ -427,12 +444,13 @@ $(SolutionDir)custom_build_steps\ProductionReleaseDLLBuild.bat</Command>
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
+    <ClInclude Include="src\WebNetwork\WebFrameworkHTTPSNetwork.h" />
     <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
     <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h" />
     <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ThreadPool\ThreadPool.vcxproj">
+    <ProjectReference Include="..\ThreadPool\ThreadPool.vcxproj">
       <Project>{bde48484-5593-484f-9f84-fc01f8cf83a9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">

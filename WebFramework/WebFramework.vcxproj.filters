@@ -99,7 +99,7 @@
     <ClCompile Include="src\Middleware\BaseMiddlewareRouteController.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\baseConnectionData.cpp">
+    <ClCompile Include="src\Utility\Middleware\baseConnectionData.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp">
@@ -127,6 +127,21 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WebNetwork\WebFrameworkHTTPSNetwork.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions\SQLite3Exception.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions\DatabaseException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -218,7 +233,7 @@
     <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\PriorityQueue.h">
+    <ClInclude Include="src\Utility\DataStructures\PriorityQueue.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Middleware\Middleware.h">
@@ -230,7 +245,7 @@
     <ClInclude Include="src\Middleware\BaseMiddlewareRouteController.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\baseConnectionData.h">
+    <ClInclude Include="src\Utility\Middleware\baseConnectionData.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h">
@@ -264,6 +279,21 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WebNetwork\WebFrameworkHTTPSNetwork.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\SQLite3Exception.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\DatabaseException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

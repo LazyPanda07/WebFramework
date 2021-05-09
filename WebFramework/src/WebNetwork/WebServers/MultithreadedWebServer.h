@@ -2,6 +2,8 @@
 
 #include "BaseWebServer.h"
 
+#include <openssl/ssl.h>
+
 namespace framework
 {
 	/// <summary>
@@ -11,11 +13,10 @@ namespace framework
 	class MultithreadedWebServer final : public virtual BaseWebServer
 	{
 	private:
-		/// <summary>
-		/// Called for every client
-		/// </summary>
-		/// <param name="clientSocket">client's socket</param>
-		/// <param name="addr">client's address</param>
+		void receiveConnections() override;
+
+		void clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context);
+
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:

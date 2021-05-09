@@ -1,8 +1,11 @@
 #pragma once
 
+#include "BaseWebServer.h"
+
 #include <unordered_map>
 
-#include "BaseWebServer.h"
+#include <openssl/ssl.h>
+
 #include "ThreadPool.h"
 
 namespace framework
@@ -21,7 +24,7 @@ namespace framework
 
 			IndividualData();
 
-			IndividualData(SOCKET clientSocket, const sockaddr& addr);
+			IndividualData(SOCKET clientSocket, const sockaddr& addr, SSL* ssl, SSL_CTX* context);
 
 			IndividualData(const IndividualData&) = delete;
 
@@ -44,6 +47,8 @@ namespace framework
 		void mainCycle(IndividualData& client, std::vector<SOCKET>& disconnectedClients);
 
 		void receiveConnections() override;
+
+		void clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context);
 
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 

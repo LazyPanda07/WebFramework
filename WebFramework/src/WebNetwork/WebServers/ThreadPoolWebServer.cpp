@@ -1,7 +1,10 @@
 #include "ThreadPoolWebServer.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/SSLException.h"
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
+#include "WebNetwork/WebFrameworkHTTPSNetwork.h"
+#include "Utility/Singletons/HTTPSSingleton.h"
 
 using namespace std;
 
@@ -15,11 +18,16 @@ namespace framework
 
 	}
 
-	ThreadPoolWebServer::IndividualData::IndividualData(SOCKET clientSocket, const sockaddr& addr) :
+	ThreadPoolWebServer::IndividualData::IndividualData(SOCKET clientSocket, const sockaddr& addr, SSL* ssl, SSL_CTX* context) :
 		clientSocket(clientSocket),
 		addr(addr),
 		clientIp(getClientIpV4(this->addr)),
-		stream(new buffers::IOSocketBuffer(new framework::WebFrameworkHTTPNetwork(clientSocket))),
+		stream(new buffers::IOSocketBuffer
+		(
+			ssl ?
+			static_cast<web::Network*>(new framework::WebFrameworkHTTPSNetwork(clientSocket, ssl, context)) :
+			static_cast<web::Network*>(new framework::WebFrameworkHTTPNetwork(clientSocket)))
+		),
 		isBusy(false)
 	{
 
@@ -163,6 +171,38 @@ namespace framework
 	void ThreadPoolWebServer::receiveConnections()
 	{
 		vector<SOCKET> disconnectedClients;
+		SSL_CTX* context = nullptr;
+		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+		bool useHTTPS = httpsSettings.getUseHTTPS();
+
+		if (useHTTPS)
+		{
+			context = SSL_CTX_new(TLS_server_method());
+
+			try
+			{
+				if (!context)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
+			}
+			catch (const web::exceptions::SSLException& e)
+			{
+				cout << e.what() << endl;
+
+				exit(-1);
+			}
+		}
 
 		while (isRunning)
 		{
@@ -179,7 +219,33 @@ namespace framework
 
 				data.insert(getClientIpV4(addr), clientSocket);
 
-				this->clientConnection(clientSocket, addr);
+				SSL* ssl = nullptr;
+
+				if (useHTTPS)
+				{
+					ssl = SSL_new(context);
+
+					if (!ssl)
+					{
+						continue;
+					}
+
+					if (!SSL_set_fd(ssl, clientSocket))
+					{
+						SSL_free(ssl);
+
+						continue;
+					}
+
+					if (!SSL_accept(ssl))
+					{
+						SSL_free(ssl);
+
+						continue;
+					}
+				}
+
+				this->clientConnectionImplementation(clientSocket, addr, ssl, context);
 			}
 
 			for (auto& [clientSocket, client] : clients)
@@ -197,16 +263,26 @@ namespace framework
 
 			disconnectedClients.clear();
 		}
+
+		if (useHTTPS)
+		{
+			SSL_CTX_free(context);
+		}
+	}
+
+	void ThreadPoolWebServer::clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context)
+	{
+		if (clients.find(clientSocket) == clients.end())
+		{
+			clients.insert(make_pair(clientSocket, IndividualData(clientSocket, addr, ssl, context)));
+
+			return;
+		}
 	}
 
 	void ThreadPoolWebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 	{
-		if (clients.find(clientSocket) == clients.end())
-		{
-			clients.insert(make_pair(clientSocket, IndividualData(clientSocket, addr)));
-
-			return;
-		}
+		throw exceptions::NotImplementedException();
 	}
 
 	ThreadPoolWebServer::ThreadPoolWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
