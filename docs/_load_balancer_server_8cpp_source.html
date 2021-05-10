@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9</span>
+   &#160;<span id="projectnumber">1.9.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -142,10 +142,10 @@ $(document).ready(function(){initNavTree('_load_balancer_server_8cpp_source.html
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordtype">void</span> LoadBalancerServer::clientConnection(SOCKET clientSocket, sockaddr addr)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            streams::IOSocketStream clientStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(clientSocket)));</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            streams::IOSocketStream clientStream(make_unique&lt;buffers::IOSocketBuffer&gt;(make_unique&lt;WebFrameworkHTTPNetwork&gt;(clientSocket)));</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span> clientIp = getClientIpV4(addr);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            loadBalancerConnectionData data = this-&gt;chooseServer();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            streams::IOSocketStream serverStream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> WebFrameworkHTTPNetwork(data.ip, data.port)));</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            streams::IOSocketStream serverStream(make_unique&lt;buffers::IOSocketBuffer&gt;(make_unique&lt;WebFrameworkHTTPNetwork&gt;(data.ip, data.port)));</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            {</div>
@@ -160,7 +160,7 @@ $(document).ready(function(){initNavTree('_load_balancer_server_8cpp_source.html
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                    serverStream &gt;&gt; response;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    clientStream &lt;&lt; response;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keywordflow">catch</span> (<span class="keyword">const</span> web::WebException&amp;)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keywordflow">catch</span> (<span class="keyword">const</span> web::exceptions::WebException&amp;)</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                {</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                    this-&gt;disconnectUser(data);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>

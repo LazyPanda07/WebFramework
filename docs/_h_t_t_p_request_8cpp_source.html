@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9</span>
+   &#160;<span id="projectnumber">1.9.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('_h_t_t_p_request_8cpp_source.html','')
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classframework_1_1_h_t_t_p_request.html#a74448326450075d85d77a3249e750ba4">   22</a></span>&#160;    web::HTTPParser HTTPRequest::sendRequestToAnotherServer(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; request)</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        streams::IOSocketStream stream(<span class="keyword">new</span> buffers::IOSocketBuffer(<span class="keyword">new</span> <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html">WebFrameworkHTTPNetwork</a>(ip, port)));</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        streams::IOSocketStream stream(make_unique&lt;buffers::IOSocketBuffer&gt;(make_unique&lt;WebFrameworkHTTPNetwork&gt;(ip, port)));</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordtype">string</span> response;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        stream &lt;&lt; request;</div>
@@ -289,7 +289,7 @@ $(document).ready(function(){initNavTree('_h_t_t_p_request_8cpp_source.html','')
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">if</span> (data.find(<span class="stringliteral">&quot;HTTP&quot;</span>) == string::npos)</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keywordflow">throw</span> web::WebException();</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keywordflow">throw</span> web::exceptions::WebException();</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        }</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        request.parser = make_unique&lt;web::HTTPParser&gt;(data);</div>
@@ -341,7 +341,6 @@ $(document).ready(function(){initNavTree('_h_t_t_p_request_8cpp_source.html','')
 <div class="ttc" id="aclassframework_1_1_sessions_manager_html_a8041377a1b92da8a0bdfd25bb8153e9b"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b">framework::SessionsManager::deleteSession</a></div><div class="ttdeci">void deleteSession(const std::string &amp;ip)</div><div class="ttdoc">Delete client's session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00122">SessionsManager.cpp:122</a></div></div>
 <div class="ttc" id="aclassframework_1_1_sessions_manager_html_ab4bdb0beb15a56485d21f446a035f679"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#ab4bdb0beb15a56485d21f446a035f679">framework::SessionsManager::setAttribute</a></div><div class="ttdeci">void setAttribute(const std::string &amp;ip, const std::string &amp;name, const std::string &amp;value)</div><div class="ttdoc">Set session attribute for client</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00104">SessionsManager.cpp:104</a></div></div>
 <div class="ttc" id="aclassframework_1_1_sessions_manager_html_abcf282760bdade149b3ba9a2424acf52"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52">framework::SessionsManager::deleteAttribute</a></div><div class="ttdeci">void deleteAttribute(const std::string &amp;ip, const std::string &amp;name)</div><div class="ttdoc">Delete attribute from client's session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00129">SessionsManager.cpp:129</a></div></div>
-<div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_network_html"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_network.html">framework::WebFrameworkHTTPNetwork</a></div><div class="ttdoc">Network functions for HTTP</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_h_t_t_p_network_8h_source.html#l00011">WebFrameworkHTTPNetwork.h:12</a></div></div>
 <div class="ttc" id="aclassframework_1_1interfaces_1_1_i_dynamic_file_html"><div class="ttname"><a href="classframework_1_1interfaces_1_1_i_dynamic_file.html">framework::interfaces::IDynamicFile</a></div><div class="ttdoc">Providing sendDynamicFile method</div><div class="ttdef"><b>Definition:</b> <a href="_i_dynamic_file_8h_source.html#l00016">IDynamicFile.h:17</a></div></div>
 <div class="ttc" id="aclassframework_1_1interfaces_1_1_i_dynamic_file_html_a3b5b0c848be129cdf1de6193e7805e71"><div class="ttname"><a href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a3b5b0c848be129cdf1de6193e7805e71">framework::interfaces::IDynamicFile::sendDynamicFile</a></div><div class="ttdeci">virtual void sendDynamicFile(const std::string &amp;filePath, HTTPResponse &amp;response, const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;variables)=0</div><div class="ttdoc">Sending file from filePath path</div></div>
 <div class="ttc" id="aclassframework_1_1interfaces_1_1_i_dynamic_file_html_a505718a448fc166b868344d8096b75f9"><div class="ttname"><a href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a505718a448fc166b868344d8096b75f9">framework::interfaces::IDynamicFile::registerDynamicFunction</a></div><div class="ttdeci">virtual void registerDynamicFunction(const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function)=0</div><div class="ttdoc">Add new function in .wfdp interpreter.</div></div>
