@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,16 +87,16 @@ $(document).ready(function(){initNavTree('_middleware_8h_source.html',''); initR
 <div class="title">Middleware.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_middleware_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_middleware_route_controller_8h.html">BaseMiddlewareRouteController.h</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_middleware_server_8h.html">MiddlewareWebNetwork/MiddlewareServer.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;BaseMiddlewareRouteController.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;MiddlewareWebNetwork/MiddlewareServer.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keyword">namespace </span>middleware</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_middleware.html">   14</a></span>&#160;        <span class="keyword">class </span><a class="code" href="_base_executor_exception_8h.html#acd103ddedf7691538e90921775bbae62">WEB_FRAMEWORK_API</a> <a class="code" href="classframework_1_1middleware_1_1_middleware.html">Middleware</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_middleware.html">   14</a></span>&#160;        <span class="keyword">class </span>WEB_FRAMEWORK_API <a class="code" href="classframework_1_1middleware_1_1_middleware.html">Middleware</a></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <a class="code" href="classframework_1_1middleware_1_1_middleware_server.html">MiddlewareServer</a> middlewareServer;</div>
@@ -110,24 +110,19 @@ $(document).ready(function(){initNavTree('_middleware_8h_source.html',''); initR
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordtype">bool</span> middlewareState() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_middleware.html#a77fc7b66d4f5d2a1fccfcf19fede107d">   45</a></span>&#160;            <a class="code" href="classframework_1_1middleware_1_1_middleware.html#a77fc7b66d4f5d2a1fccfcf19fede107d">~Middleware</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            ~<a class="code" href="classframework_1_1middleware_1_1_middleware.html">Middleware</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        };</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="ttc" id="a_base_executor_exception_8h_html_acd103ddedf7691538e90921775bbae62"><div class="ttname"><a href="_base_executor_exception_8h.html#acd103ddedf7691538e90921775bbae62">WEB_FRAMEWORK_API</a></div><div class="ttdeci">#define WEB_FRAMEWORK_API</div><div class="ttdef"><b>Definition:</b> <a href="_base_executor_exception_8h_source.html#l00006">BaseExecutorException.h:6</a></div></div>
-<div class="ttc" id="a_base_middleware_route_controller_8h_html"><div class="ttname"><a href="_base_middleware_route_controller_8h.html">BaseMiddlewareRouteController.h</a></div></div>
-<div class="ttc" id="a_middleware_server_8h_html"><div class="ttname"><a href="_middleware_server_8h.html">MiddlewareServer.h</a></div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">framework::middleware::BaseMiddlewareRouteController</a></div><div class="ttdoc">Specify server to connect with getServerConnectionData method</div><div class="ttdef"><b>Definition:</b> <a href="_base_middleware_route_controller_8h_source.html#l00015">BaseMiddlewareRouteController.h:16</a></div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_middleware_html"><div class="ttname"><a href="classframework_1_1middleware_1_1_middleware.html">framework::middleware::Middleware</a></div><div class="ttdoc">Main class of Middleware servers</div><div class="ttdef"><b>Definition:</b> <a href="_middleware_8h_source.html#l00014">Middleware.h:15</a></div></div>
-<div class="ttc" id="aclassframework_1_1middleware_1_1_middleware_html_a77fc7b66d4f5d2a1fccfcf19fede107d"><div class="ttname"><a href="classframework_1_1middleware_1_1_middleware.html#a77fc7b66d4f5d2a1fccfcf19fede107d">framework::middleware::Middleware::~Middleware</a></div><div class="ttdeci">~Middleware()=default</div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_middleware_server_html"><div class="ttname"><a href="classframework_1_1middleware_1_1_middleware_server.html">framework::middleware::MiddlewareServer</a></div><div class="ttdef"><b>Definition:</b> <a href="_middleware_server_8h_source.html#l00010">MiddlewareServer.h:11</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_64d3068303f24d046a98b61482080f56.html">Middleware</a></li><li class="navelem"><a class="el" href="_middleware_8h.html">Middleware.h</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_64d3068303f24d046a98b61482080f56.html">Middleware</a></li><li class="navelem"><b>Middleware.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

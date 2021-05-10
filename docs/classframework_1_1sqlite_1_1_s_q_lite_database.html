@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -123,15 +123,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aea30a428ca6ac3272b3da40a06707e54"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#aea30a428ca6ac3272b3da40a06707e54">isOpen</a> () const</td></tr>
 <tr class="memdesc:aea30a428ca6ac3272b3da40a06707e54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is database connection open  <a href="classframework_1_1sqlite_1_1_s_q_lite_database.html#aea30a428ca6ac3272b3da40a06707e54">More...</a><br /></td></tr>
 <tr class="separator:aea30a428ca6ac3272b3da40a06707e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2656d41dee3f1ace518adf7c6c787d7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="sqlite3_8h.html#a0ef6f2646262c8a9b24368d8ac140f69">sqlite3</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#ad2656d41dee3f1ace518adf7c6c787d7">operator*</a> () const</td></tr>
+<tr class="memitem:ad2656d41dee3f1ace518adf7c6c787d7"><td class="memItemLeft" align="right" valign="top">const sqlite3 *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#ad2656d41dee3f1ace518adf7c6c787d7">operator*</a> () const</td></tr>
 <tr class="memdesc:ad2656d41dee3f1ace518adf7c6c787d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for db  <a href="classframework_1_1sqlite_1_1_s_q_lite_database.html#ad2656d41dee3f1ace518adf7c6c787d7">More...</a><br /></td></tr>
 <tr class="separator:ad2656d41dee3f1ace518adf7c6c787d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56046f126b6a1880756ed6379af335ed"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#a56046f126b6a1880756ed6379af335ed">~SQLiteDatabase</a> ()</td></tr>
-<tr class="separator:a56046f126b6a1880756ed6379af335ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:ab68f04bc9b56b455937823cadf4a30db"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html#ab68f04bc9b56b455937823cadf4a30db">SQLiteDatabaseModel</a></td></tr>
+<tr class="memitem:ab68f04bc9b56b455937823cadf4a30db"><td class="memItemLeft" align="right" valign="top"><a id="ab68f04bc9b56b455937823cadf4a30db"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>SQLiteDatabaseModel</b></td></tr>
 <tr class="separator:ab68f04bc9b56b455937823cadf4a30db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -231,25 +230,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a56046f126b6a1880756ed6379af335ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56046f126b6a1880756ed6379af335ed">&#9670;&nbsp;</a></span>~SQLiteDatabase()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">framework::sqlite::SQLiteDatabase::~SQLiteDatabase </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_8cpp_source.html#l00062">62</a> of file <a class="el" href="_s_q_lite_database_8cpp_source.html">SQLiteDatabase.cpp</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="acc12ddb679dc2cbc2c0547e51cbd4a74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc12ddb679dc2cbc2c0547e51cbd4a74">&#9670;&nbsp;</a></span>close()</h2>
@@ -323,7 +303,7 @@ Friends</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="sqlite3_8h.html#a0ef6f2646262c8a9b24368d8ac140f69">sqlite3</a> *const framework::sqlite::SQLiteDatabase::operator* </td>
+          <td class="memname">const sqlite3 *const framework::sqlite::SQLiteDatabase::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -402,31 +382,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="ab68f04bc9b56b455937823cadf4a30db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab68f04bc9b56b455937823cadf4a30db">&#9670;&nbsp;</a></span>SQLiteDatabaseModel</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">friend class <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_8h_source.html#l00102">102</a> of file <a class="el" href="_s_q_lite_database_8h_source.html">SQLiteDatabase.h</a>.</p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>WebFramework/src/SQLite3/<a class="el" href="_s_q_lite_database_8h_source.html">SQLiteDatabase.h</a></li>
 <li>WebFramework/src/SQLite3/<a class="el" href="_s_q_lite_database_8cpp_source.html">SQLiteDatabase.cpp</a></li>
@@ -436,7 +391,7 @@ Friends</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespaceframework.html">framework</a></li><li class="navelem"><a class="el" href="namespaceframework_1_1sqlite.html">sqlite</a></li><li class="navelem"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html">SQLiteDatabase</a></li>
+    <li class="navelem"><b>framework</b></li><li class="navelem"><b>sqlite</b></li><li class="navelem"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html">SQLiteDatabase</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

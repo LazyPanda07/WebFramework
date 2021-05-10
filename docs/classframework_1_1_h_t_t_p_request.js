@@ -24,6 +24,7 @@ var classframework_1_1_h_t_t_p_request =
     [ "isDynamicFunctionRegistered", "classframework_1_1_h_t_t_p_request.html#a93df70f4ed8ee0ef665b13dcc6b6f354", null ],
     [ "registerDynamicFunction", "classframework_1_1_h_t_t_p_request.html#add8e04b584ee3657e62a2daa99d44022", null ],
     [ "sendAssetFile", "classframework_1_1_h_t_t_p_request.html#ae47fe32783387d8fa9a2670980ca8d7b", null ],
+    [ "sendRequestToAnotherServer", "classframework_1_1_h_t_t_p_request.html#a74448326450075d85d77a3249e750ba4", null ],
     [ "setAttribute", "classframework_1_1_h_t_t_p_request.html#a46690b9fff334a4ee435d491b31dc18b", null ],
     [ "unregisterDynamicFunction", "classframework_1_1_h_t_t_p_request.html#a5f0d82d7850b2f53ef54d5bdd6a86a9a", null ],
     [ "ExecutorsManager", "classframework_1_1_h_t_t_p_request.html#ae628c1dde1035a5429c9b7cd526e7509", null ],

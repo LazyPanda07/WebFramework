@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -112,21 +112,19 @@ Inheritance diagram for framework::BaseExecutor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a7151ff985de54f3c32836634eb9d04bf"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">executorType</a> { <br />
-&#160;&#160;<a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8">none</a>
-, <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695">stateful</a>
-, <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c">stateless</a>
-, <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa1184a8ab2aee4659c559f8cef1c6daa9">heavyOperationStateful</a>
+<tr class="memitem:a7151ff985de54f3c32836634eb9d04bf"><td class="memItemLeft" align="right" valign="top"><a id="a7151ff985de54f3c32836634eb9d04bf"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>executorType</b> { <br />
+&#160;&#160;<b>none</b>
+, <b>stateful</b>
+, <b>stateless</b>
+, <b>heavyOperationStateful</b>
 , <br />
-&#160;&#160;<a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfa10b448ff611ed001f790c0d188f2e6bb">heavyOperationStateless</a>
+&#160;&#160;<b>heavyOperationStateless</b>
 <br />
  }</td></tr>
 <tr class="separator:a7151ff985de54f3c32836634eb9d04bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa78d0fadc69822d3454cbf59bf6990c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#aa78d0fadc69822d3454cbf59bf6990c9">BaseExecutor</a> ()=default</td></tr>
-<tr class="separator:aa78d0fadc69822d3454cbf59bf6990c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae745ee7647fda519940a0dc5f0100c44"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#ae745ee7647fda519940a0dc5f0100c44">init</a> (const <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &amp;settings)</td></tr>
 <tr class="memdesc:ae745ee7647fda519940a0dc5f0100c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing executor before use  <a href="classframework_1_1_base_executor.html#ae745ee7647fda519940a0dc5f0100c44">More...</a><br /></td></tr>
 <tr class="separator:ae745ee7647fda519940a0dc5f0100c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,99 +151,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4b88c08ed78fdd8aaef234ddf0054015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6557b16a8471d0c6615d7bf1e09e5d1c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a6557b16a8471d0c6615d7bf1e09e5d1c">destroy</a> ()=0</td></tr>
 <tr class="separator:a6557b16a8471d0c6615d7bf1e09e5d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad992a4a1027a0e2ebf263b56ce56fc23"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">executorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#ad992a4a1027a0e2ebf263b56ce56fc23">getType</a> () const =0</td></tr>
+<tr class="memitem:ad992a4a1027a0e2ebf263b56ce56fc23"><td class="memItemLeft" align="right" valign="top">virtual executorType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#ad992a4a1027a0e2ebf263b56ce56fc23">getType</a> () const =0</td></tr>
 <tr class="separator:ad992a4a1027a0e2ebf263b56ce56fc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9cff3af6fa6729e83667921acd358b9"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#ab9cff3af6fa6729e83667921acd358b9">~BaseExecutor</a> ()=default</td></tr>
-<tr class="separator:ab9cff3af6fa6729e83667921acd358b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for all executors </p>
 
 <p class="definition">Definition at line <a class="el" href="_base_executor_8h_source.html#l00027">27</a> of file <a class="el" href="_base_executor_8h_source.html">BaseExecutor.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a7151ff985de54f3c32836634eb9d04bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7151ff985de54f3c32836634eb9d04bf">&#9670;&nbsp;</a></span>executorType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">framework::BaseExecutor::executorType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfa334c4a4c42fdb79d7ebc3e73b517e6f8"></a>none&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695"></a>stateful&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c"></a>stateless&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfa1184a8ab2aee4659c559f8cef1c6daa9"></a>heavyOperationStateful&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a7151ff985de54f3c32836634eb9d04bfa10b448ff611ed001f790c0d188f2e6bb"></a>heavyOperationStateless&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="_base_executor_8h_source.html#l00030">30</a> of file <a class="el" href="_base_executor_8h_source.html">BaseExecutor.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa78d0fadc69822d3454cbf59bf6990c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa78d0fadc69822d3454cbf59bf6990c9">&#9670;&nbsp;</a></span>BaseExecutor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">framework::BaseExecutor::BaseExecutor </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab9cff3af6fa6729e83667921acd358b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9cff3af6fa6729e83667921acd358b9">&#9670;&nbsp;</a></span>~BaseExecutor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual framework::BaseExecutor::~BaseExecutor </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6557b16a8471d0c6615d7bf1e09e5d1c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6557b16a8471d0c6615d7bf1e09e5d1c">&#9670;&nbsp;</a></span>destroy()</h2>
 
@@ -662,7 +575,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bf">executorType</a> framework::BaseExecutor::getType </td>
+          <td class="memname">virtual executorType framework::BaseExecutor::getType </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -677,8 +590,8 @@ Public Member Functions</h2></td></tr>
 
 <p></p>
 <p>By default all executors must be inherited from <a class="el" href="classframework_1_1_base_stateless_executor.html" title="Base class for executors with constant or static states">BaseStatelessExecutor</a> or BaseStatefullExecutor</p>
-<p><a class="el" href="classframework_1_1_base_stateless_executor.html" title="Base class for executors with constant or static states">BaseStatelessExecutor</a> override this method by getting <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfaf1afc4442d1755629946ff8f9f3bfa7c">executorType::stateless</a></p>
-<p><a class="el" href="classframework_1_1_base_stateful_executor.html" title="Base class for executors with dynamically changes states">BaseStatefulExecutor</a> override this method by getting <a class="el" href="classframework_1_1_base_executor.html#a7151ff985de54f3c32836634eb9d04bfabab19dd93081fb031211c4abf44ea695">executorType::stateful</a></p>
+<p><a class="el" href="classframework_1_1_base_stateless_executor.html" title="Base class for executors with constant or static states">BaseStatelessExecutor</a> override this method by getting executorType::stateless</p>
+<p><a class="el" href="classframework_1_1_base_stateful_executor.html" title="Base class for executors with dynamically changes states">BaseStatefulExecutor</a> override this method by getting executorType::stateful</p>
 <p><a class="el" href="classframework_1_1_executors_manager.html" title="Managing requests">ExecutorsManager</a> can manage executors by getting type of executorType enum class</p>
 <dl class="section return"><dt>Returns</dt><dd>stateful, stateless or none value</dd></dl>
 
@@ -733,7 +646,7 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespaceframework.html">framework</a></li><li class="navelem"><a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a></li>
+    <li class="navelem"><b>framework</b></li><li class="navelem"><a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

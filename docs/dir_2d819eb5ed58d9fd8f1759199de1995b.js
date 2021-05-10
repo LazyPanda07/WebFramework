@@ -9,7 +9,7 @@ var dir_2d819eb5ed58d9fd8f1759199de1995b =
     [ "Utility", "dir_851de5df2102183c2483d34551cfaa00.html", "dir_851de5df2102183c2483d34551cfaa00" ],
     [ "WebFrameworkManagers", "dir_b80ed2fa2006b1369916d069650d001d.html", "dir_b80ed2fa2006b1369916d069650d001d" ],
     [ "WebNetwork", "dir_7748b7526ef298e77557bd775519d4ab.html", "dir_7748b7526ef298e77557bd775519d4ab" ],
-    [ "WebFramework.cpp", "_web_framework_8cpp.html", null ],
-    [ "WebFramework.h", "_web_framework_8h.html", "_web_framework_8h" ],
-    [ "WebFrameworkConstants.h", "_web_framework_constants_8h.html", "_web_framework_constants_8h" ]
+    [ "WebFramework.cpp", "_web_framework_8cpp_source.html", null ],
+    [ "WebFramework.h", "_web_framework_8h_source.html", null ],
+    [ "WebFrameworkConstants.h", "_web_framework_constants_8h_source.html", null ]
 ];

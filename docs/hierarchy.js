@@ -31,6 +31,10 @@ var hierarchy =
     ] ],
     [ "framework::HTTPRequest", "classframework_1_1_h_t_t_p_request.html", null ],
     [ "framework::HTTPResponse", "classframework_1_1_h_t_t_p_response.html", null ],
+    [ "web::HTTPSNetwork", null, [
+      [ "framework::WebFrameworkHTTPSNetwork", "classframework_1_1_web_framework_h_t_t_p_s_network.html", null ]
+    ] ],
+    [ "framework::utility::HTTPSSingleton", "classframework_1_1utility_1_1_h_t_t_p_s_singleton.html", null ],
     [ "framework::interfaces::IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", [
       [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
     ] ],
@@ -46,17 +50,22 @@ var hierarchy =
     ] ],
     [ "framework::utility::RouteParameters", "structframework_1_1utility_1_1_route_parameters.html", null ],
     [ "std::runtime_error", null, [
-      [ "framework::exceptions::BaseExecutorException", "classframework_1_1exceptions_1_1_base_executor_exception.html", [
-        [ "framework::exceptions::BadRequestException", "classframework_1_1exceptions_1_1_bad_request_exception.html", [
-          [ "framework::exceptions::NotImplementedException", "classframework_1_1exceptions_1_1_not_implemented_exception.html", null ]
+      [ "framework::exceptions::BaseWebFrameworkException", "classframework_1_1exceptions_1_1_base_web_framework_exception.html", [
+        [ "framework::exceptions::BaseExecutorException", "classframework_1_1exceptions_1_1_base_executor_exception.html", [
+          [ "framework::exceptions::BadRequestException", "classframework_1_1exceptions_1_1_bad_request_exception.html", [
+            [ "framework::exceptions::NotImplementedException", "classframework_1_1exceptions_1_1_not_implemented_exception.html", null ]
+          ] ],
+          [ "framework::exceptions::CantFindFunctionException", "classframework_1_1exceptions_1_1_cant_find_function_exception.html", null ],
+          [ "framework::exceptions::MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", null ]
         ] ],
-        [ "framework::exceptions::CantFindFunctionException", "classframework_1_1exceptions_1_1_cant_find_function_exception.html", null ],
-        [ "framework::exceptions::MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", null ]
-      ] ],
-      [ "framework::exceptions::CantLoadSourceException", "classframework_1_1exceptions_1_1_cant_load_source_exception.html", null ],
-      [ "framework::exceptions::DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", null ],
-      [ "framework::exceptions::FileDoesNotExistException", "classframework_1_1exceptions_1_1_file_does_not_exist_exception.html", null ],
-      [ "framework::exceptions::StringConversionException", "classframework_1_1exceptions_1_1_string_conversion_exception.html", null ]
+        [ "framework::exceptions::CantLoadSourceException", "classframework_1_1exceptions_1_1_cant_load_source_exception.html", null ],
+        [ "framework::exceptions::DatabaseException", "classframework_1_1exceptions_1_1_database_exception.html", [
+          [ "framework::exceptions::SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", null ]
+        ] ],
+        [ "framework::exceptions::DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", null ],
+        [ "framework::exceptions::FileDoesNotExistException", "classframework_1_1exceptions_1_1_file_does_not_exist_exception.html", null ],
+        [ "framework::exceptions::StringConversionException", "classframework_1_1exceptions_1_1_string_conversion_exception.html", null ]
+      ] ]
     ] ],
     [ "framework::SessionsManager", "classframework_1_1_sessions_manager.html", null ],
     [ "sqlite3_file", "structsqlite3__file.html", null ],

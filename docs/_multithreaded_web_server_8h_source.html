@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -87,35 +87,38 @@ $(document).ready(function(){initNavTree('_multithreaded_web_server_8h_source.ht
 <div class="title">MultithreadedWebServer.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="_multithreaded_web_server_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_base_web_server_8h.html">BaseWebServer.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;BaseWebServer.h&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceframework.html">framework</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classframework_1_1_multithreaded_web_server.html">   11</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classframework_1_1_multithreaded_web_server.html">MultithreadedWebServer</a> final : <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="classframework_1_1_base_web_server.html">BaseWebServer</a></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordtype">void</span> clientConnection(SOCKET clientSocket, sockaddr addr) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <a class="code" href="classframework_1_1_multithreaded_web_server.html#a501991c7fe0b3ce6209061ec624f1f64">MultithreadedWebServer</a>(<span class="keyword">const</span> std::vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> std::filesystem::path&amp; assets, <span class="keyword">const</span> std::string&amp; pathToTemplates, <span class="keywordtype">bool</span> isCaching, <span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port, DWORD timeout, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; pathToSources);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classframework_1_1_multithreaded_web_server.html#a1cf50c7857e6913cad31b4320810200b">   39</a></span>&#160;        <a class="code" href="classframework_1_1_multithreaded_web_server.html#a1cf50c7857e6913cad31b4320810200b">~MultithreadedWebServer</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    };</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="ttc" id="a_base_web_server_8h_html"><div class="ttname"><a href="_base_web_server_8h.html">BaseWebServer.h</a></div></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;openssl/ssl.h&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>framework</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classframework_1_1_multithreaded_web_server.html">   13</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classframework_1_1_multithreaded_web_server.html">MultithreadedWebServer</a> final : <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="classframework_1_1_base_web_server.html">BaseWebServer</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordtype">void</span> receiveConnections() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordtype">void</span> clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordtype">void</span> clientConnection(SOCKET clientSocket, sockaddr addr) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <a class="code" href="classframework_1_1_multithreaded_web_server.html#a501991c7fe0b3ce6209061ec624f1f64">MultithreadedWebServer</a>(<span class="keyword">const</span> std::vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> std::filesystem::path&amp; assets, <span class="keyword">const</span> std::string&amp; pathToTemplates, <span class="keywordtype">bool</span> isCaching, <span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port, DWORD timeout, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; pathToSources);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        ~<a class="code" href="classframework_1_1_multithreaded_web_server.html">MultithreadedWebServer</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    };</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
 <div class="ttc" id="aclassframework_1_1_base_web_server_html"><div class="ttname"><a href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_web_server_8h_source.html#l00011">BaseWebServer.h:12</a></div></div>
-<div class="ttc" id="aclassframework_1_1_multithreaded_web_server_html"><div class="ttname"><a href="classframework_1_1_multithreaded_web_server.html">framework::MultithreadedWebServer</a></div><div class="ttdoc">Standard TCP web server</div><div class="ttdef"><b>Definition:</b> <a href="_multithreaded_web_server_8h_source.html#l00011">MultithreadedWebServer.h:12</a></div></div>
-<div class="ttc" id="aclassframework_1_1_multithreaded_web_server_html_a1cf50c7857e6913cad31b4320810200b"><div class="ttname"><a href="classframework_1_1_multithreaded_web_server.html#a1cf50c7857e6913cad31b4320810200b">framework::MultithreadedWebServer::~MultithreadedWebServer</a></div><div class="ttdeci">~MultithreadedWebServer()=default</div></div>
-<div class="ttc" id="aclassframework_1_1_multithreaded_web_server_html_a501991c7fe0b3ce6209061ec624f1f64"><div class="ttname"><a href="classframework_1_1_multithreaded_web_server.html#a501991c7fe0b3ce6209061ec624f1f64">framework::MultithreadedWebServer::MultithreadedWebServer</a></div><div class="ttdeci">MultithreadedWebServer(const std::vector&lt; utility::JSONSettingsParser &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::string &amp;pathToTemplates, bool isCaching, const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</div><div class="ttdoc">Construct MultithreadedWebServer</div><div class="ttdef"><b>Definition:</b> <a href="_multithreaded_web_server_8cpp_source.html#l00079">MultithreadedWebServer.cpp:79</a></div></div>
-<div class="ttc" id="anamespaceframework_html"><div class="ttname"><a href="namespaceframework.html">framework</a></div><div class="ttdef"><b>Definition:</b> <a href="_standard_web_framework_dynamic_pages_functions_8cpp_source.html#l00011">StandardWebFrameworkDynamicPagesFunctions.cpp:12</a></div></div>
+<div class="ttc" id="aclassframework_1_1_multithreaded_web_server_html"><div class="ttname"><a href="classframework_1_1_multithreaded_web_server.html">framework::MultithreadedWebServer</a></div><div class="ttdoc">Standard TCP web server</div><div class="ttdef"><b>Definition:</b> <a href="_multithreaded_web_server_8h_source.html#l00013">MultithreadedWebServer.h:14</a></div></div>
+<div class="ttc" id="aclassframework_1_1_multithreaded_web_server_html_a501991c7fe0b3ce6209061ec624f1f64"><div class="ttname"><a href="classframework_1_1_multithreaded_web_server.html#a501991c7fe0b3ce6209061ec624f1f64">framework::MultithreadedWebServer::MultithreadedWebServer</a></div><div class="ttdeci">MultithreadedWebServer(const std::vector&lt; utility::JSONSettingsParser &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::string &amp;pathToTemplates, bool isCaching, const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</div><div class="ttdoc">Construct MultithreadedWebServer</div><div class="ttdef"><b>Definition:</b> <a href="_multithreaded_web_server_8cpp_source.html#l00190">MultithreadedWebServer.cpp:190</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_7748b7526ef298e77557bd775519d4ab.html">WebNetwork</a></li><li class="navelem"><a class="el" href="dir_73501ebf01861abc73755c030c1c05f4.html">WebServers</a></li><li class="navelem"><a class="el" href="_multithreaded_web_server_8h.html">MultithreadedWebServer.h</a></li>
+    <li class="navelem"><a class="el" href="dir_3c0261c22720ffc053e94336affd2b98.html">WebFramework</a></li><li class="navelem"><a class="el" href="dir_2d819eb5ed58d9fd8f1759199de1995b.html">src</a></li><li class="navelem"><a class="el" href="dir_7748b7526ef298e77557bd775519d4ab.html">WebNetwork</a></li><li class="navelem"><a class="el" href="dir_73501ebf01861abc73755c030c1c05f4.html">WebServers</a></li><li class="navelem"><b>MultithreadedWebServer.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
