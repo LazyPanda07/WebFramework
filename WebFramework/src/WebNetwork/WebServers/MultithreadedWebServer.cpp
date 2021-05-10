@@ -118,12 +118,9 @@ namespace framework
 	{
 		streams::IOSocketStream stream
 		(
-			new buffers::IOSocketBuffer
-			(
-				utility::HTTPSSingleton::get().getUseHTTPS() ?
-				static_cast<web::Network*>(new WebFrameworkHTTPSNetwork(clientSocket, ssl, context)) : 
-				static_cast<web::Network*>(new WebFrameworkHTTPNetwork(clientSocket))
-			)
+			utility::HTTPSSingleton::get().getUseHTTPS() ?
+			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
+			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
 		);
 		const string clientIp = getClientIpV4(addr);
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;

@@ -22,11 +22,11 @@ namespace framework
 		clientSocket(clientSocket),
 		addr(addr),
 		clientIp(getClientIpV4(this->addr)),
-		stream(new buffers::IOSocketBuffer
+		stream
 		(
-			ssl ?
-			static_cast<web::Network*>(new framework::WebFrameworkHTTPSNetwork(clientSocket, ssl, context)) :
-			static_cast<web::Network*>(new framework::WebFrameworkHTTPNetwork(clientSocket)))
+			ssl ? 
+			make_unique<buffers::IOSocketBuffer>(make_unique<framework::WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
+			make_unique<buffers::IOSocketBuffer>(make_unique<framework::WebFrameworkHTTPNetwork>(clientSocket))
 		),
 		isBusy(false)
 	{

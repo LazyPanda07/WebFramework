@@ -21,7 +21,7 @@ namespace framework
 
 	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(const string& ip, const string& port, const string& request)
 	{
-		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(ip, port)));
+		streams::IOSocketStream stream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(ip, port)));
 		string response;
 
 		stream << request;

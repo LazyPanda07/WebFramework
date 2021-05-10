@@ -53,10 +53,10 @@ namespace framework
 
 		void LoadBalancerServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 		{
-			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
+			streams::IOSocketStream clientStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket)));
 			const string clientIp = getClientIpV4(addr);
 			loadBalancerConnectionData data = this->chooseServer();
-			streams::IOSocketStream serverStream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(data.ip, data.port)));
+			streams::IOSocketStream serverStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(data.ip, data.port)));
 			
 			while (true)
 			{
