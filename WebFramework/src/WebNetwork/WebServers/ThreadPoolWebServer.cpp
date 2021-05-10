@@ -174,6 +174,7 @@ namespace framework
 		SSL_CTX* context = nullptr;
 		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 		bool useHTTPS = httpsSettings.getUseHTTPS();
+		u_long block = 0;
 
 		if (useHTTPS)
 		{
@@ -215,7 +216,7 @@ namespace framework
 			{
 				setsockopt(clientSocket, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char*>(&timeout), sizeof(timeout));
 
-				ioctlsocket(clientSocket, FIONBIO, &blockingMode);
+				ioctlsocket(clientSocket, FIONBIO, &block);
 
 				data.insert(getClientIpV4(addr), clientSocket);
 
@@ -237,13 +238,15 @@ namespace framework
 						continue;
 					}
 
-					if (!SSL_accept(ssl))
+					if (SSL_accept(ssl) <= 0)
 					{
 						SSL_free(ssl);
 
 						continue;
 					}
 				}
+
+				ioctlsocket(clientSocket, FIONBIO, &blockingMode);
 
 				this->clientConnectionImplementation(clientSocket, addr, ssl, context);
 			}
