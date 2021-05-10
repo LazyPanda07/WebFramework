@@ -21,7 +21,7 @@ namespace framework
 
 	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(const string& ip, const string& port, const string& request)
 	{
-		streams::IOSocketStream stream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(ip, port)));
+		streams::IOSocketStream stream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(ip, port)));
 		string response;
 
 		stream << request;
@@ -200,7 +200,7 @@ namespace framework
 
 		if (data.find("HTTP") == string::npos)
 		{
-			throw web::WebException();
+			throw web::exceptions::WebException();
 		}
 
 		request.parser = make_unique<web::HTTPParser>(data);
