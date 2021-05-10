@@ -200,7 +200,7 @@ namespace framework
 
 		if (data.find("HTTP") == string::npos)
 		{
-			throw web::WebException();
+			throw web::exceptions::WebException();
 		}
 
 		request.parser = make_unique<web::HTTPParser>(data);

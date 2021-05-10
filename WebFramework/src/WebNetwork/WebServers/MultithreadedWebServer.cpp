@@ -144,7 +144,7 @@ namespace framework
 
 				stream << response;
 			}
-			catch (const web::WebException&)
+			catch (const web::exceptions::WebException&)
 			{
 				data.erase(clientIp);
 

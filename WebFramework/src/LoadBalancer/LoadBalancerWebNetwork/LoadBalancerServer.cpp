@@ -71,7 +71,7 @@ namespace framework
 					serverStream >> response;
 					clientStream << response;
 				}
-				catch (const web::WebException&)
+				catch (const web::exceptions::WebException&)
 				{
 					this->disconnectUser(data);
 

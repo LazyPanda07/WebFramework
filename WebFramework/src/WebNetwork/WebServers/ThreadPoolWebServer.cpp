@@ -54,7 +54,7 @@ namespace framework
 
 			client.stream << response;
 		}
-		catch (const web::WebException& e)
+		catch (const web::exceptions::WebException& e)
 		{
 			if (!e.getErrorCode())
 			{
@@ -126,7 +126,7 @@ namespace framework
 
 			client.stream << response;
 		}
-		catch (const web::WebException& e)
+		catch (const web::exceptions::WebException& e)
 		{
 			if (!e.getErrorCode())
 			{
