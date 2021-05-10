@@ -30,7 +30,7 @@ namespace framework
 
 					clientStream << response;
 				}
-				catch (const web::WebException&)
+				catch (const web::exceptions::WebException&)
 				{
 					break;
 				}
