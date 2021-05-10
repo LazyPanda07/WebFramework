@@ -81,11 +81,6 @@ namespace framework
 
 			if (useHTTPS)
 			{
-				if (webServerType == json_settings::threadPoolWebServerTypeValue)
-				{
-					throw exceptions::NotImplementedException();
-				}
-
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
