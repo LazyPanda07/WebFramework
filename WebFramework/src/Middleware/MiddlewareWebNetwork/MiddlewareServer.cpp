@@ -11,7 +11,7 @@ namespace framework
 	{
 		void MiddlewareServer::clientConnection(SOCKET clientSocket, sockaddr addr)
 		{
-			streams::IOSocketStream clientStream(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(clientSocket)));
+			streams::IOSocketStream clientStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket)));
 			smartPointer<streams::IOSocketStream> serverStream;
 
 			while (true)
@@ -23,7 +23,7 @@ namespace framework
 
 					clientStream >> request;
 
-					serverStream = make_unique<streams::IOSocketStream>(new buffers::IOSocketBuffer(new WebFrameworkHTTPNetwork(controller.getServerConnectionData(web::HTTPParser(request)))));
+					serverStream = make_unique<streams::IOSocketStream>(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(controller.getServerConnectionData(web::HTTPParser(request)))));
 
 					(*serverStream) << request;
 					(*serverStream) >> response;
