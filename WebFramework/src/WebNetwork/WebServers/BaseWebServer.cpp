@@ -63,7 +63,7 @@ namespace framework
 				executorSettings.name = i.second.name;
 				executorSettings.executorLoadType = i.second.executorLoadType;
 
-				if (executorSettings.initParameters)
+				if (i.second.initParameters)
 				{
 					executorSettings.initParameters = utility::copyJSON(i.second.initParameters);
 				}
