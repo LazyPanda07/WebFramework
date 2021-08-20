@@ -32,7 +32,7 @@ namespace framework
 					none
 				};
 
-				json::utility::jsonParserStruct initParameters;
+				json::utility::objectSmartPointer<json::utility::jsonObject> initParameters;
 				std::string name;
 				loadType executorLoadType;
 

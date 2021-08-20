@@ -144,6 +144,9 @@
     <ClCompile Include="src\Exceptions\DatabaseException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utility\CopyJSON.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -294,6 +297,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\DatabaseException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\CopyJSON.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

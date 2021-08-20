@@ -2,7 +2,10 @@
 
 #include <fstream>
 
+#include "CopyJSON.h"
+
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/CantFindValueException.h"
 
 using namespace std;
 
@@ -35,13 +38,18 @@ namespace framework
 
 			for (const auto& i : parser)
 			{
-				const auto& data = get<json::utility::jJsonStruct>(i->second)->data;
-				const string& loadType = get<json::utility::jString>(data.at("loadType"));
+				const auto& data = get<json::utility::objectSmartPointer<json::utility::jsonObject>>(i->second);
+
+				const string& loadType = data->getString("loadType");
 				ExecutorSettings executorSettings;
 
-				if (data.find("initParameters") != data.end())
+				try
 				{
-					executorSettings.initParameters.data = move(get<json::utility::jJsonStruct>(data.at("initParameters"))->data);
+					executorSettings.initParameters = utility::copyJSON(data->getObject("initParameters"));
+				}
+				catch (const json::exceptions::CantFindValueException&)
+				{
+
 				}
 
 				executorSettings.name = i->first;
@@ -55,7 +63,7 @@ namespace framework
 					executorSettings.executorLoadType = ExecutorSettings::loadType::dynamic;
 				}
 
-				settings.insert(make_pair(get<json::utility::jString>(data.at("route")), move(executorSettings)));
+				settings.insert(make_pair(data->getString("route"), move(executorSettings)));
 			}
 		}
 

@@ -29,9 +29,19 @@ namespace framework
 			const smartPointer<json::JSONParser::objectType>& listOfServers = parser.get<smartPointer<json::JSONParser::objectType>>(json_settings::listOfServersKey);
 			unordered_map<string, vector<string>> allServers;
 
-			for (const auto& [ip, ports] : listOfServers->data)
+			for (const auto& [ip, portsArray] : listOfServers->data)
 			{
-				allServers.insert(make_pair(ip, get<vector<string>>(ports)));
+				auto& data = get<vector<json::utility::objectSmartPointer<json::utility::jsonObject>>>(portsArray);
+				vector<string> ports;
+
+				ports.reserve(data.size());
+
+				for (const auto& i : data)
+				{
+					ports.push_back(get<string>(i->data.front().second));
+				}
+
+				allServers.insert(make_pair(ip, move(ports)));
 			}
 
 			loadBalancerServer = make_unique<LoadBalancerServer>
