@@ -29,7 +29,16 @@ namespace framework
 
 		json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
-		const vector<string>& settingsPaths = parser.get<vector<string>>(json_settings::settingsPathsKey);
+		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& settingsPathsJSON = parser.getArray(json_settings::settingsPathsKey);
+		vector<string> settingsPaths;
+
+		settingsPaths.reserve(settingsPathsJSON.size());
+
+		for (const auto& i : settingsPathsJSON)
+		{
+			settingsPaths.push_back(get<string>(i->data.front().second));
+		}
+
 		const string& assetsPath = parser.get<string>(json_settings::assetsPathKey);
 		const string& templatesPath = parser.get<string>(json_settings::templatesPathKey);
 		bool usingAssetsCache = parser.get<bool>(json_settings::usingAssetsCacheKey);
@@ -42,7 +51,7 @@ namespace framework
 
 		try
 		{
-			parser.get<smartPointer<json::JSONParser::objectType>>(json_settings::loggingObject);	// is logging object exists
+			parser.getObject(json_settings::loggingObject);	// is logging object exists
 
 			try
 			{
