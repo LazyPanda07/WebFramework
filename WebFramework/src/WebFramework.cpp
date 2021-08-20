@@ -30,7 +30,7 @@ namespace framework
 		json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
 		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& settingsPathsJSON = parser.getArray(json_settings::settingsPathsKey);
-		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& loadSourcesJSON = parser.getArray(json_settings::settingsPathsKey);
+		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& loadSourcesJSON = parser.getArray(json_settings::loadSourcesKey);
 		vector<string> settingsPaths;
 		vector<string> loadSources;
 
