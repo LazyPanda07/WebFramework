@@ -63,7 +63,10 @@ namespace framework
 				executorSettings.name = i.second.name;
 				executorSettings.executorLoadType = i.second.executorLoadType;
 
-				executorSettings.initParameters = utility::copyJSON(i.second.initParameters);
+				if (executorSettings.initParameters)
+				{
+					executorSettings.initParameters = utility::copyJSON(i.second.initParameters);
+				}
 
 				settings.insert(make_pair(i.first, move(executorSettings)));
 			}
