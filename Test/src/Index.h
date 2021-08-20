@@ -4,6 +4,12 @@
 
 class Index : public framework::BaseStatelessExecutor
 {
+private:
+	std::string first;
+	int second;
+	double third;
+	std::vector<json::utility::objectSmartPointer<json::utility::jsonObject>>* fourth;
+
 public:
 	void init(const framework::utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
