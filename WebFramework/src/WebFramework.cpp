@@ -30,19 +30,27 @@ namespace framework
 		json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
 		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& settingsPathsJSON = parser.getArray(json_settings::settingsPathsKey);
+		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& loadSourcesJSON = parser.getArray(json_settings::settingsPathsKey);
 		vector<string> settingsPaths;
+		vector<string> loadSources;
 
 		settingsPaths.reserve(settingsPathsJSON.size());
+
+		loadSources.reserve(loadSourcesJSON.size());
 
 		for (const auto& i : settingsPathsJSON)
 		{
 			settingsPaths.push_back(get<string>(i->data.front().second));
 		}
 
+		for (const auto& i : loadSourcesJSON)
+		{
+			loadSources.push_back(get<string>(i->data.front().second));
+		}
+
 		const string& assetsPath = parser.get<string>(json_settings::assetsPathKey);
 		const string& templatesPath = parser.get<string>(json_settings::templatesPathKey);
 		bool usingAssetsCache = parser.get<bool>(json_settings::usingAssetsCacheKey);
-		const vector<string>& loadSources = parser.get<vector<string>>(json_settings::loadSourcesKey);
 		const string& webServerType = parser.get<string>(json_settings::webServerTypeKey);
 		const string& ip = parser.get<string>(json_settings::ipKey);
 		const string& port = parser.get<string>(json_settings::portKey);
