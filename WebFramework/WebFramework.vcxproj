@@ -370,6 +370,7 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
     <ClCompile Include="src\SQLite3\SQLiteResult.cpp" />
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
+    <ClCompile Include="src\Utility\StringConversion.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\SessionsManager.cpp" />
     <ClCompile Include="src\Middleware\BaseMiddlewareRouteController.cpp" />

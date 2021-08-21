@@ -113,12 +113,15 @@ namespace web_framework_assets
 template<typename T>
 using smartPointer = std::shared_ptr<T>;
 #define WEB_FRAMEWORK_API __declspec(dllexport) 
+#define WEB_FRAMEWORK_API_FUNCTION extern "C" __declspec(dllexport) 
 
 #define JSON_DLL
 #define THREAD_POOL_DLL
 #define NETWORKS_DLL
+#define LOG_DLL
 #else
 template<typename T>
 using smartPointer = std::unique_ptr<T>;
 #define WEB_FRAMEWORK_API 
+#define WEB_FRAMEWORK_API_FUNCTION 
 #endif // WEB_FRAMEWORK_DLL

@@ -3,7 +3,6 @@
 * For example following link send request to "/test" path http://127.0.0.1/test
 * You can create and configure your class that would be processing this path
 * Base class for all executors
-* May be used for dll with #define EXECUTOR_DLL
 */
 #pragma once
 
