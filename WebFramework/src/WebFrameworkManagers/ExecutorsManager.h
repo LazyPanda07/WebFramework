@@ -1,10 +1,6 @@
 #pragma once
 
-#include <unordered_map>
-#include <string>
-#include <optional>
-#include <mutex>
-#include <memory>
+#include "headers.h"
 
 #include "Executors/BaseExecutor.h"
 #include "Utility/JSONSettingsParser.h"

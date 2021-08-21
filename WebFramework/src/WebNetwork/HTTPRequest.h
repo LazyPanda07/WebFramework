@@ -1,19 +1,11 @@
 #pragma once
 
-#if defined(EXECUTOR_DLL) || defined(ALL_DLL)
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#define HTTP_DLL
-#else
-#define WEB_FRAMEWORK_API
-#endif // EXECUTOR_DLL
+#include "headers.h"
 
-#include "HTTPParser.h"
 #include "WebFrameworkManagers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
 #include "Interfaces/IStaticFile.h"
 #include "Interfaces/IDynamicFile.h"
-#include "BaseIOSocketStream.h"
-#include "BaseTCPServer.h"
 
 namespace framework
 {

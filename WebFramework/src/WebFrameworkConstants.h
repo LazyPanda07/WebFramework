@@ -4,15 +4,6 @@
 #include <chrono>
 #include <memory>
 
-#if defined(EXECUTOR_DLL) || defined(WEB_FRAMEWORK_DLL) || defined(EXCEPTIONS_DLL) || defined(MIDDLEWARE_DLL) || defined(LOAD_BALANCER_DLL) || defined(DATABASES_DLL) || defined(JSON_DLL) || defined(THREAD_POOL_DLL) || defined(ALL_DLL)
-#define DLL_BUILD
-template<typename T>
-using smartPointer = std::shared_ptr<T>;
-#else
-template<typename T>
-using smartPointer = std::unique_ptr<T>;
-#endif
-
 /// <summary>
 /// Default HTTP port
 /// </summary>
@@ -117,3 +108,17 @@ namespace web_framework_assets
 	inline constexpr std::string_view notFound = "404.html";
 	inline constexpr std::string_view internalServerError = "500.html";
 }
+
+#ifdef WEB_FRAMEWORK_DLL
+template<typename T>
+using smartPointer = std::shared_ptr<T>;
+#define WEB_FRAMEWORK_API __declspec(dllexport) 
+
+#define JSON_DLL
+#define THREAD_POOL_DLL
+#define NETWORKS_DLL
+#else
+template<typename T>
+using smartPointer = std::unique_ptr<T>;
+#define WEB_FRAMEWORK_API 
+#endif // WEB_FRAMEWORK_DLL

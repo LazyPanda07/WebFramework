@@ -1,7 +1,6 @@
 #pragma once
 
-#include <unordered_map>
-#include <functional>
+#include "headers.h"
 
 #include "WebNetwork/HTTPResponse.h"
 #include "WebFrameworkConstants.h"

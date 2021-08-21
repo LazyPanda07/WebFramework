@@ -5,7 +5,6 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Utility/Memory.h"
-#include "Utility/CopyJSON.h"
 
 using namespace std;
 

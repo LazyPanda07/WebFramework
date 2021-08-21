@@ -7,17 +7,12 @@
 */
 #pragma once
 
-#if defined(EXECUTOR_DLL) || defined(ALL_DLL)
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // EXECUTOR_DLL
+#include "headers.h"
 
 #include "WebNetwork/HTTPRequest.h"
 #include "WebNetwork/HTTPResponse.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/JSONSettingsParser.h"
-#include "WebFrameworkConstants.h"
 
 namespace framework
 {

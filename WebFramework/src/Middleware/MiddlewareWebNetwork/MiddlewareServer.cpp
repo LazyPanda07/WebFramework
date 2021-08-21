@@ -1,6 +1,5 @@
 #include "MiddlewareServer.h"
 
-#include "BaseIOSocketStream.h"
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
 
 using namespace std;

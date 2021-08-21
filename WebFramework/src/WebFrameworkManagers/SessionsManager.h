@@ -1,10 +1,6 @@
 #pragma once
 
-#include <unordered_map>
-#include <map>
-#include <string>
-#include <mutex>
-#include <chrono>
+#include "headers.h"
 
 namespace framework
 {

@@ -1,12 +1,8 @@
 #pragma once
 
+#include "headers.h"
+
 #include "BaseWebServer.h"
-
-#include <unordered_map>
-
-#include <openssl/ssl.h>
-
-#include "ThreadPool.h"
 
 namespace framework
 {

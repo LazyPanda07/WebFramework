@@ -1,8 +1,6 @@
 #pragma once
 
-#include <unordered_map>
-#include <memory>
-#include <type_traits>
+#include "headers.h"
 
 #include "SQLiteDatabaseModel.h"
 

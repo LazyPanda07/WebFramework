@@ -1,9 +1,5 @@
 #include "JSONSettingsParser.h"
 
-#include <fstream>
-
-#include "CopyJSON.h"
-
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindValueException.h"
 

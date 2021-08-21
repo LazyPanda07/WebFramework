@@ -1,12 +1,6 @@
 #pragma once
 
-#include <stdexcept>
-
-#if defined(EXCEPTIONS_DLL) || defined(ALL_DLL)
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // EXCEPTIONS_DLL
+#include "headers.h"
 
 namespace framework
 {

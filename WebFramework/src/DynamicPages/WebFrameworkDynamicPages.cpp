@@ -1,11 +1,5 @@
 #include "WebFrameworkDynamicPages.h"
 
-#include <stdexcept>
-#include <sstream>
-#include <algorithm>
-
-#include "Log.h"
-#include "WebFrameworkConstants.h"
 #include "Exceptions/DynamicPagesSyntaxException.h"
 #include "StandardWebFrameworkDynamicPagesFunctions.h"
 

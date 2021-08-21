@@ -1,6 +1,5 @@
 #include "HTTPRequest.h"
 
-#include "WebFrameworkConstants.h"
 #include "WebFrameworkHTTPNetwork.h"
 
 using namespace std;

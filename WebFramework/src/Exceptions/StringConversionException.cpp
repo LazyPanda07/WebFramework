@@ -1,9 +1,5 @@
 #include "StringConversionException.h"
 
-#include <string>
-
-#include <Windows.h>
-
 using namespace std;
 
 namespace framework

@@ -1,10 +1,12 @@
 #pragma once
 
-#include "BaseTCPServer.h"
+#include "headers.h"
+
 #include "WebFrameworkManagers/ExecutorsManager.h"
 #include "WebFrameworkManagers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
 #include "Utility/JSONSettingsParser.h"
+#include "Utility/CopyJSON.h"
 
 namespace framework
 {

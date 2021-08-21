@@ -1,9 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <map>
-#include <shared_mutex>
+#include "headers.h"
 
 #include "SQLiteDatabase.h"
 #include "SQLiteResult.h"

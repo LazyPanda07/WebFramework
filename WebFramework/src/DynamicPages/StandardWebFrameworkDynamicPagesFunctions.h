@@ -1,9 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <functional>
-#include <unordered_map>
+#include "headers.h"
 
 namespace framework
 {
