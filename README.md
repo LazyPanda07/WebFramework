@@ -10,6 +10,3 @@ Run WebFrameworkBuilder.exe and choose your .sln file and .vcxproj file. This pr
 
 ## WebFrameworkBuilder
 Link to [WebFrameworkBuilder](https://github.com/LazyPanda07/WebFrameworkBuilder)
-
-## GenerateDocumentation
-Link to [GenerateDocumentation](https://github.com/LazyPanda07/GenerateDocumentation)
