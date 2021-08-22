@@ -180,8 +180,7 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>&lt;different options&gt;
-</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
@@ -214,8 +213,7 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>&lt;different options&gt;
-</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -250,8 +248,7 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>&lt;different options&gt;
-</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
@@ -288,8 +285,7 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>&lt;different options&gt;
-</Command>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionRelease|x64'">
@@ -324,7 +320,8 @@
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <PostBuildEvent>
-      <Command>&lt;different options&gt;
+      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -361,7 +358,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>&lt;different options&gt;
+      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
