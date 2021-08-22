@@ -54,6 +54,8 @@ namespace framework
 		/// <returns>is server running</returns>
 		bool getServerState() const;
 
+		const std::string& getWebFrameworkVersion() const;
+
 		~WebFramework() = default;
 	};
 }
