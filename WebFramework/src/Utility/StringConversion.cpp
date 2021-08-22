@@ -152,5 +152,10 @@ namespace framework
 		{
 			return toUTF8(source, 1251);
 		}
+		
+		WEB_FRAMEWORK_API_FUNCTION string utf8ToCP1251(const string& source)
+		{
+			return fromUTF8(source, 1251);
+		}
 	}
 }

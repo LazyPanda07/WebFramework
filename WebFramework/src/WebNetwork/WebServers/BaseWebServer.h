@@ -6,7 +6,6 @@
 #include "WebFrameworkManagers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
 #include "Utility/JSONSettingsParser.h"
-#include "Utility/CopyJSON.h"
 
 namespace framework
 {

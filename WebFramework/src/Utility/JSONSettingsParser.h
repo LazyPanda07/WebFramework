@@ -2,8 +2,6 @@
 
 #include "headers.h"
 
-#include "CopyJSON.h"
-
 namespace framework
 {
 	namespace utility

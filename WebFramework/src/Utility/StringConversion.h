@@ -33,5 +33,11 @@ namespace framework
 		/// <returns>string in UTF8 encoding</returns>
 		/// <exception cref="framework::exceptions::StringConversion"></exception>
 		WEB_FRAMEWORK_API_FUNCTION std::string cp1251ToUTF8(const std::string& source);
+
+		/// @brief Encode string from UTF8 to CP1251
+		/// @param source String to convert
+		/// @return string in CP1251 encoding
+		/// @exception framework::exceptions::StringConversion 
+		WEB_FRAMEWORK_API_FUNCTION std::string utf8ToCP1251(const std::string& source);
 	}
 }

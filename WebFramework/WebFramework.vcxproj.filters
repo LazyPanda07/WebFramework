@@ -299,9 +299,6 @@
     <ClInclude Include="src\Exceptions\DatabaseException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\CopyJSON.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\headers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
