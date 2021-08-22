@@ -39,7 +39,6 @@ bin/
 
 # Build executable
 !WebFrameworkBuilder.exe
-!GenerateDocumentation.exe
 
 # Build folder
 build/
