@@ -308,5 +308,6 @@
     <None Include="WebFrameworkAssets\Errors\400.html" />
     <None Include="WebFrameworkAssets\Errors\500.html" />
     <None Include="WebFrameworkMacros.props" />
+    <None Include="CustomBuildSteps.exe" />
   </ItemGroup>
 </Project>

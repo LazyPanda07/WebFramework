@@ -180,7 +180,8 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>&lt;different options&gt;
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
@@ -213,7 +214,8 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>&lt;different options&gt;
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -248,7 +250,8 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>&lt;different options&gt;
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
@@ -285,7 +288,8 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>&lt;different options&gt;
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionRelease|x64'">
@@ -320,8 +324,8 @@
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <PostBuildEvent>
-      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>&lt;different options&gt;
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionReleaseDLL|x64'">
@@ -357,8 +361,8 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+      <Command>&lt;different options&gt;
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -490,6 +494,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="CustomBuildSteps.exe" />
     <None Include="WebFrameworkAssets\Errors\400.html" />
     <None Include="WebFrameworkAssets\Errors\404.html" />
     <None Include="WebFrameworkAssets\Errors\500.html" />
