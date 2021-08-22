@@ -1,9 +1,5 @@
 #include "HTTPResponse.h"
 
-#include <ctime>
-
-#include "WebFrameworkConstants.h"
-
 using namespace std;
 
 namespace framework

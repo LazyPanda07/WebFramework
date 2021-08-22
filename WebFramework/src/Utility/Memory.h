@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WebFrameworkConstants.h"
+#include "headers.h"
 
 namespace framework
 {
@@ -13,7 +13,7 @@ namespace framework
 		/// @return smartPointer for current build configuration
 		/// @exception std::runtime_error Creates only std::unique_ptr or std::shared_ptr
 		template<typename T, typename... Args>
-		smartPointer<T> make_smartPointer(Args&&... args)
+		inline smartPointer<T> make_smartPointer(Args&&... args)
 		{
 			if constexpr (std::is_same_v<smartPointer<T>, std::unique_ptr<T>>)
 			{

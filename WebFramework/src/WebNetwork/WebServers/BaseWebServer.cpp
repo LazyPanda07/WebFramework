@@ -5,7 +5,6 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Utility/Memory.h"
-#include "Utility/CopyJSON.h"
 
 using namespace std;
 
@@ -65,7 +64,7 @@ namespace framework
 
 				if (i.second.initParameters)
 				{
-					executorSettings.initParameters = utility::copyJSON(i.second.initParameters);
+					executorSettings.initParameters = json::utility::make_object<json::utility::jsonObject>(*i.second.initParameters);
 				}
 
 				settings.insert(make_pair(i.first, move(executorSettings)));

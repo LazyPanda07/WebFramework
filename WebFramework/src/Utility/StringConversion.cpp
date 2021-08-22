@@ -1,16 +1,12 @@
 #include "StringConversion.h"
 
-#include <Windows.h>
-
-#include "Exceptions/StringConversionException.h"
-
 using namespace std;
 
 namespace framework
 {
 	namespace utility
 	{
-		string toUTF8(const string& source, unsigned int sourceCodePage)
+		WEB_FRAMEWORK_API_FUNCTION string toUTF8(const string& source, uint32_t sourceCodePage)
 		{
 			string result;
 			wstring tem;
@@ -23,12 +19,12 @@ namespace framework
 				nullptr,
 				NULL
 			);
-			
+
 			if (!size)
 			{
 				throw exceptions::StringConversionException();
 			}
-			
+
 			tem.resize(static_cast<size_t>(size) - 1);
 
 			if (!MultiByteToWideChar
@@ -81,7 +77,7 @@ namespace framework
 			return result;
 		}
 
-		string fromUTF8(const string& source, unsigned int resultCodePage)
+		WEB_FRAMEWORK_API_FUNCTION string fromUTF8(const string& source, uint32_t resultCodePage)
 		{
 			string result;
 			wstring tem;
@@ -152,9 +148,14 @@ namespace framework
 			return result;
 		}
 
-		string cp1251ToUTF8(const string& source)
+		WEB_FRAMEWORK_API_FUNCTION string cp1251ToUTF8(const string& source)
 		{
 			return toUTF8(source, 1251);
+		}
+		
+		WEB_FRAMEWORK_API_FUNCTION string utf8ToCP1251(const string& source)
+		{
+			return fromUTF8(source, 1251);
 		}
 	}
 }

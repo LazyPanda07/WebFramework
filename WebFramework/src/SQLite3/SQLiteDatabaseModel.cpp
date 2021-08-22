@@ -1,8 +1,5 @@
 #include "SQLiteDatabaseModel.h"
 
-#include <algorithm>
-#include <stdexcept>
-
 #include "Exceptions/SQLite3Exception.h"
 
 using namespace std;

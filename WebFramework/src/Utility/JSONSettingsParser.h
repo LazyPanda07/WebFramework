@@ -1,14 +1,6 @@
 #pragma once
 
-#if defined(EXECUTOR_DLL) || defined(ALL_DLL)
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#define JSON_DLL
-#else
-#define WEB_FRAMEWORK_API
-#endif // EXECUTOR_DLL
-
-#include "WebFrameworkConstants.h"
-#include "JSONParser.h"
+#include "headers.h"
 
 namespace framework
 {

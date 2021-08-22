@@ -1,15 +1,6 @@
 #pragma once
 
-#if defined(MIDDLEWARE_DLL) || defined(ALL_DLL)
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // MIDDLEWARE_DLL
-
-
-#include <string>
-
-#include "WebFrameworkConstants.h"
+#include "headers.h"
 
 namespace framework
 {

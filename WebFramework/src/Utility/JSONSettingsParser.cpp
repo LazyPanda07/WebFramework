@@ -1,9 +1,5 @@
 #include "JSONSettingsParser.h"
 
-#include <fstream>
-
-#include "CopyJSON.h"
-
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindValueException.h"
 
@@ -45,7 +41,7 @@ namespace framework
 
 				try
 				{
-					executorSettings.initParameters = utility::copyJSON(data->getObject("initParameters"));
+					executorSettings.initParameters = json::utility::make_object<json::utility::jsonObject>(*data->getObject("initParameters"));
 				}
 				catch (const json::exceptions::CantFindValueException&)
 				{

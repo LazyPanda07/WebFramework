@@ -1,11 +1,6 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include <functional>
-
-#include "WebFrameworkConstants.h"
+#include "headers.h"
 
 namespace framework
 {

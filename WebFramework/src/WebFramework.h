@@ -1,12 +1,6 @@
 #pragma once
 
-#ifdef WEB_FRAMEWORK_DLL
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // WEB_FRAMEWORK_DLL
-
-#include <filesystem>
+#include "headers.h"
 
 #include "WebNetwork/WebServers/BaseWebServer.h"
 
