@@ -181,7 +181,7 @@
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)JSON\src $(SolutionDir)ThreadPool\src</Command>
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
@@ -215,7 +215,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)JSON\src $(SolutionDir)ThreadPool\src</Command>
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -251,7 +251,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)JSON\src $(SolutionDir)ThreadPool\src</Command>
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
@@ -289,7 +289,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)JSON\src $(SolutionDir)ThreadPool\src</Command>
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionRelease|x64'">
@@ -326,7 +326,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     <PostBuildEvent>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)JSON\src $(SolutionDir)ThreadPool\src
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -365,7 +365,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     <PostBuildEvent>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)JSON\src $(SolutionDir)ThreadPool\src
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src $(SolutionDir)INIParser\src $(SolutionDir)Log\src $(SolutionDir)Networks\src $(SolutionDir)Networks\HTTP\JSON\src $(SolutionDir)Networks\HTTP\src $(SolutionDir)Networks\SocketStreams\src $(SolutionDir)SHA256\src
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
