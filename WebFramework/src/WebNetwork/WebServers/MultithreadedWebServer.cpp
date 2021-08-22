@@ -2,7 +2,6 @@
 
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
 #include "WebNetwork/WebFrameworkHTTPSNetwork.h"
-#include "BaseIOSocketStream.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindFunctionException.h"

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "HTTPSNetwork.h"
+#include "headers.h"
+
 #include "Utility/Middleware/baseConnectionData.h"
 
 namespace framework

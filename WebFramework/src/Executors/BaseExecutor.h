@@ -3,21 +3,15 @@
 * For example following link send request to "/test" path http://127.0.0.1/test
 * You can create and configure your class that would be processing this path
 * Base class for all executors
-* May be used for dll with #define EXECUTOR_DLL
 */
 #pragma once
 
-#if defined(EXECUTOR_DLL) || defined(ALL_DLL)
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-#else
-#define WEB_FRAMEWORK_API
-#endif // EXECUTOR_DLL
+#include "headers.h"
 
 #include "WebNetwork/HTTPRequest.h"
 #include "WebNetwork/HTTPResponse.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/JSONSettingsParser.h"
-#include "WebFrameworkConstants.h"
 
 namespace framework
 {

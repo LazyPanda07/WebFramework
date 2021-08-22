@@ -1,12 +1,7 @@
 #include "WebFramework.h"
 
-#include <fstream>
-
-#include "JSONParser.h"
 #include "Exceptions/BaseJSONException.h"
-#include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
-#include "Log.h"
 #include "WebNetwork/WebServers/MultithreadedWebServer.h"
 #include "WebNetwork/WebServers/ThreadPoolWebServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
@@ -29,11 +24,28 @@ namespace framework
 
 		json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
-		const vector<string>& settingsPaths = parser.get<vector<string>>(json_settings::settingsPathsKey);
+		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& settingsPathsJSON = parser.getArray(json_settings::settingsPathsKey);
+		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& loadSourcesJSON = parser.getArray(json_settings::loadSourcesKey);
+		vector<string> settingsPaths;
+		vector<string> loadSources;
+
+		settingsPaths.reserve(settingsPathsJSON.size());
+
+		loadSources.reserve(loadSourcesJSON.size());
+
+		for (const auto& i : settingsPathsJSON)
+		{
+			settingsPaths.push_back(get<string>(i->data.front().second));
+		}
+
+		for (const auto& i : loadSourcesJSON)
+		{
+			loadSources.push_back(get<string>(i->data.front().second));
+		}
+
 		const string& assetsPath = parser.get<string>(json_settings::assetsPathKey);
 		const string& templatesPath = parser.get<string>(json_settings::templatesPathKey);
 		bool usingAssetsCache = parser.get<bool>(json_settings::usingAssetsCacheKey);
-		const vector<string>& loadSources = parser.get<vector<string>>(json_settings::loadSourcesKey);
 		const string& webServerType = parser.get<string>(json_settings::webServerTypeKey);
 		const string& ip = parser.get<string>(json_settings::ipKey);
 		const string& port = parser.get<string>(json_settings::portKey);
@@ -42,7 +54,7 @@ namespace framework
 
 		try
 		{
-			parser.get<smartPointer<json::JSONParser::objectType>>(json_settings::loggingObject);	// is logging object exists
+			parser.getObject(json_settings::loggingObject);	// is logging object exists
 
 			try
 			{
