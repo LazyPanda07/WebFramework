@@ -190,13 +190,20 @@ namespace framework
 		return result;
 	}
 
+	void WebFramework::disconnectClient(const string& ip) const
+	{
+		server->pubDisconnect(ip);
+	}
+
 	bool WebFramework::getServerState() const
 	{
 		return server->serverState();
 	}
 
-	void WebFramework::disconnectClient(const string& ip) const
+	const string& WebFramework::getWebFrameworkVersion() const
 	{
-		server->pubDisconnect(ip);
+		static const string webFrameworkVersion = "1.9.3";
+
+		return webFrameworkVersion;
 	}
 }
