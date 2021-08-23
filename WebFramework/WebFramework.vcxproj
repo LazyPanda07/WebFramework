@@ -110,14 +110,16 @@
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <CustomBuildBeforeTargets />
-    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -125,26 +127,30 @@
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
-    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <CustomBuildBeforeTargets />
-    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProductionRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ProductionReleaseDLL|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <CustomBuildAfterTargets>ClCompile</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -166,15 +172,16 @@
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-CD $(SolutionDir)
-IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
-IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))
-</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>output.txt</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
     <ClCompile>
@@ -198,14 +205,16 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-CD $(SolutionDir)
-IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
-IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>output.txt</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -231,14 +240,16 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-CD $(SolutionDir)
-IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
-IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>output.txt</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
     <ClCompile>
@@ -266,14 +277,16 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-CD $(SolutionDir)
-IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
-IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>output.txt</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionRelease|x64'">
     <ClCompile>
@@ -295,18 +308,20 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-CD $(SolutionDir)
-IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
-IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
-      <Outputs>output.txt</Outputs>
+      <Command>
+      </Command>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
     <Lib>
       <AdditionalDependencies>libssl.lib;libcrypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)libs;$(SolutionDir)Networks\vendor\OpenSSL\$(Configuration)-$(Platform);$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\$(Configuration)-$(Platform)</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
+    <PostBuildEvent>
+      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionReleaseDLL|x64'">
     <ClCompile>
@@ -331,17 +346,19 @@ IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; Gener
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <CustomBuildStep>
-      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
-COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
-CD $(SolutionDir)
-IF EXIST GenerateDocumentation.exe GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion)
-IF NOT EXIST GenerateDocumentation.exe (CD $(WebFrameworkLibraryDir) &amp; GenerateDocumentation.exe $(Configuration) $(WebFrameworkVersion))</Command>
-      <Outputs>output.txt</Outputs>
+      <Command>
+      </Command>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
+COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
