@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.1</span>
+   &#160;<span id="projectnumber">1.9.3</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -89,67 +89,63 @@ $(document).ready(function(){initNavTree('_sessions_manager_8h_source.html','');
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;mutex&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;chrono&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>framework</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classframework_1_1_sessions_manager.html">   14</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">class </span>SessionTime</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <span class="keyword">using</span> sessionTimePoint = std::chrono::high_resolution_clock::time_point;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            std::multimap&lt;sessionTimePoint, std::string, std::greater&lt;sessionTimePoint&gt;&gt; timeIp;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            std::unordered_map&lt;std::string, sessionTimePoint&gt; ipTime;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            std::mutex checkLock;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>* userSessionSynchronization;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordtype">void</span> asyncCheck();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordtype">void</span> runAsyncCheck();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordtype">void</span> nextPeriod();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            SessionTime(<a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>* userSession);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordtype">void</span> updateSessionTime(<span class="keyword">const</span> std::string&amp; ip);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            ~SessionTime() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        };</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        SessionTime time;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        std::unordered_map&lt;std::string, std::unordered_map&lt;std::string, std::string&gt;&gt; userSession;  <span class="comment">//ip - (key - value)</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        std::mutex lock;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_sessions_manager.html#ab4bdb0beb15a56485d21f446a035f679">setAttribute</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> std::string&amp; value);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::string <a class="code" href="classframework_1_1_sessions_manager.html#a50799f57e25340ebc22b816191e74b53">getAttribute</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; name);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b">deleteSession</a>(<span class="keyword">const</span> std::string&amp; ip);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52">deleteAttribute</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; name);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        ~<a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    };</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1_sessions_manager_html"><div class="ttname"><a href="classframework_1_1_sessions_manager.html">framework::SessionsManager</a></div><div class="ttdoc">Providing and managing session mechanism</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8h_source.html#l00014">SessionsManager.h:15</a></div></div>
-<div class="ttc" id="aclassframework_1_1_sessions_manager_html_a50799f57e25340ebc22b816191e74b53"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#a50799f57e25340ebc22b816191e74b53">framework::SessionsManager::getAttribute</a></div><div class="ttdeci">std::string getAttribute(const std::string &amp;ip, const std::string &amp;name)</div><div class="ttdoc">Get attribute from session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00113">SessionsManager.cpp:113</a></div></div>
-<div class="ttc" id="aclassframework_1_1_sessions_manager_html_a8041377a1b92da8a0bdfd25bb8153e9b"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b">framework::SessionsManager::deleteSession</a></div><div class="ttdeci">void deleteSession(const std::string &amp;ip)</div><div class="ttdoc">Delete client's session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00122">SessionsManager.cpp:122</a></div></div>
-<div class="ttc" id="aclassframework_1_1_sessions_manager_html_ab4bdb0beb15a56485d21f446a035f679"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#ab4bdb0beb15a56485d21f446a035f679">framework::SessionsManager::setAttribute</a></div><div class="ttdeci">void setAttribute(const std::string &amp;ip, const std::string &amp;name, const std::string &amp;value)</div><div class="ttdoc">Set session attribute for client</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00104">SessionsManager.cpp:104</a></div></div>
-<div class="ttc" id="aclassframework_1_1_sessions_manager_html_abcf282760bdade149b3ba9a2424acf52"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52">framework::SessionsManager::deleteAttribute</a></div><div class="ttdeci">void deleteAttribute(const std::string &amp;ip, const std::string &amp;name)</div><div class="ttdoc">Delete attribute from client's session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00129">SessionsManager.cpp:129</a></div></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;headers.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>framework</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classframework_1_1_sessions_manager.html">   10</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">class </span>SessionTime</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keyword">using</span> sessionTimePoint = std::chrono::high_resolution_clock::time_point;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            std::multimap&lt;sessionTimePoint, std::string, std::greater&lt;sessionTimePoint&gt;&gt; timeIp;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            std::unordered_map&lt;std::string, sessionTimePoint&gt; ipTime;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            std::mutex checkLock;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>* userSessionSynchronization;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordtype">void</span> asyncCheck();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordtype">void</span> runAsyncCheck();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordtype">void</span> nextPeriod();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            SessionTime(<a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>* userSession);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordtype">void</span> updateSessionTime(<span class="keyword">const</span> std::string&amp; ip);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            ~SessionTime() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        };</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        SessionTime time;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        std::unordered_map&lt;std::string, std::unordered_map&lt;std::string, std::string&gt;&gt; userSession;  <span class="comment">//ip - (key - value)</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        std::mutex lock;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_sessions_manager.html#ab4bdb0beb15a56485d21f446a035f679">setAttribute</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> std::string&amp; value);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        std::string <a class="code" href="classframework_1_1_sessions_manager.html#a50799f57e25340ebc22b816191e74b53">getAttribute</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; name);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b">deleteSession</a>(<span class="keyword">const</span> std::string&amp; ip);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52">deleteAttribute</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; name);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        ~<a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    };</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
+<div class="ttc" id="aclassframework_1_1_sessions_manager_html"><div class="ttname"><a href="classframework_1_1_sessions_manager.html">framework::SessionsManager</a></div><div class="ttdoc">Providing and managing session mechanism</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8h_source.html#l00010">SessionsManager.h:11</a></div></div>
+<div class="ttc" id="aclassframework_1_1_sessions_manager_html_a50799f57e25340ebc22b816191e74b53"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#a50799f57e25340ebc22b816191e74b53">framework::SessionsManager::getAttribute</a></div><div class="ttdeci">std::string getAttribute(const std::string &amp;ip, const std::string &amp;name)</div><div class="ttdoc">Get attribute from session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00111">SessionsManager.cpp:111</a></div></div>
+<div class="ttc" id="aclassframework_1_1_sessions_manager_html_a8041377a1b92da8a0bdfd25bb8153e9b"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b">framework::SessionsManager::deleteSession</a></div><div class="ttdeci">void deleteSession(const std::string &amp;ip)</div><div class="ttdoc">Delete client's session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00120">SessionsManager.cpp:120</a></div></div>
+<div class="ttc" id="aclassframework_1_1_sessions_manager_html_ab4bdb0beb15a56485d21f446a035f679"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#ab4bdb0beb15a56485d21f446a035f679">framework::SessionsManager::setAttribute</a></div><div class="ttdeci">void setAttribute(const std::string &amp;ip, const std::string &amp;name, const std::string &amp;value)</div><div class="ttdoc">Set session attribute for client</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00102">SessionsManager.cpp:102</a></div></div>
+<div class="ttc" id="aclassframework_1_1_sessions_manager_html_abcf282760bdade149b3ba9a2424acf52"><div class="ttname"><a href="classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52">framework::SessionsManager::deleteAttribute</a></div><div class="ttdeci">void deleteAttribute(const std::string &amp;ip, const std::string &amp;name)</div><div class="ttdoc">Delete attribute from client's session</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8cpp_source.html#l00127">SessionsManager.cpp:127</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

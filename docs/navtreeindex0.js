@@ -81,9 +81,9 @@ var NAVTREEINDEX0 =
 "_string_conversion_exception_8h_source.html":[1,0,0,0,1,23],
 "_thread_pool_web_server_8cpp_source.html":[1,0,0,0,8,1,4],
 "_thread_pool_web_server_8h_source.html":[1,0,0,0,8,1,5],
-"_web_framework_8cpp_source.html":[1,0,0,0,9],
-"_web_framework_8h_source.html":[1,0,0,0,10],
-"_web_framework_constants_8h_source.html":[1,0,0,0,11],
+"_web_framework_8cpp_source.html":[1,0,0,0,11],
+"_web_framework_8h_source.html":[1,0,0,0,12],
+"_web_framework_constants_8h_source.html":[1,0,0,0,13],
 "_web_framework_dynamic_pages_8cpp_source.html":[1,0,0,0,0,2],
 "_web_framework_dynamic_pages_8h_source.html":[1,0,0,0,0,3],
 "_web_framework_h_t_t_p_network_8cpp_source.html":[1,0,0,0,8,6],
@@ -223,9 +223,10 @@ var NAVTREEINDEX0 =
 "classframework_1_1_web_framework.html":[0,0,0,13],
 "classframework_1_1_web_framework.html#a045f0863885f5731b74da4295e531d86":[0,0,0,13,4],
 "classframework_1_1_web_framework.html#a12b511148a8cca7ad25ea27b6a0c497c":[0,0,0,13,0],
+"classframework_1_1_web_framework.html#aa9e120b757f696255c672ba2cbd24f6c":[0,0,0,13,5],
 "classframework_1_1_web_framework.html#ab77716f7dca7ade81a8354c9f3863ba4":[0,0,0,13,2],
-"classframework_1_1_web_framework.html#ab84e58029ed3d62ff392626c4313ef54":[0,0,0,13,6],
-"classframework_1_1_web_framework.html#ac792cff457956f8e510bcdaa496665a4":[0,0,0,13,5],
+"classframework_1_1_web_framework.html#ab84e58029ed3d62ff392626c4313ef54":[0,0,0,13,7],
+"classframework_1_1_web_framework.html#ac792cff457956f8e510bcdaa496665a4":[0,0,0,13,6],
 "classframework_1_1_web_framework.html#acbdc33b3da335041bed850fe8d918b8d":[0,0,0,13,3],
 "classframework_1_1_web_framework.html#aed318a9e5924f9c702148ce54f6e0fde":[0,0,0,13,1],
 "classframework_1_1_web_framework_dynamic_pages.html":[0,0,0,6],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classframework_1_1_web_framework_h_t_t_p_s_network.html#ac34e4b02a0648fa091ade5895b28a97a":[0,0,0,19,2],
 "classframework_1_1exceptions_1_1_bad_request_exception.html":[0,0,0,0,0],
 "classframework_1_1exceptions_1_1_bad_request_exception.html#ab403016174eff45456e7490c07984adf":[0,0,0,0,0,1],
-"classframework_1_1exceptions_1_1_bad_request_exception.html#ab926bf0bf93cf8e92c8ecbcd8c31883f":[0,0,0,0,0,0],
-"classframework_1_1exceptions_1_1_base_executor_exception.html":[0,0,0,0,1]
+"classframework_1_1exceptions_1_1_bad_request_exception.html#ab926bf0bf93cf8e92c8ecbcd8c31883f":[0,0,0,0,0,0]
 };
