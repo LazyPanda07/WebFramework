@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.1</span>
+   &#160;<span id="projectnumber">1.9.3</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -89,27 +89,28 @@ $(document).ready(function(){initNavTree('_web_framework_h_t_t_p_network_8h_sour
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;HTTPNetwork.h&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;Utility/Middleware/baseConnectionData.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>framework</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_network.html">   11</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html">WebFrameworkHTTPNetwork</a> : <span class="keyword">public</span> web::HTTPNetwork</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">WebFrameworkHTTPNetwork</a>(SOCKET clientSocket);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_network.html#afb5465fae2cdeae62c4f61a73bf0ce87">   25</a></span>&#160;        <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#afb5465fae2cdeae62c4f61a73bf0ce87">WebFrameworkHTTPNetwork</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">WebFrameworkHTTPNetwork</a>(<span class="keyword">const</span> <a class="code" href="structframework_1_1utility_1_1base_connection_data.html">utility::baseConnectionData</a>&amp; data);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        ~<a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html">WebFrameworkHTTPNetwork</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    };</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_network_html"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_network.html">framework::WebFrameworkHTTPNetwork</a></div><div class="ttdoc">Network functions for HTTP</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_h_t_t_p_network_8h_source.html#l00011">WebFrameworkHTTPNetwork.h:12</a></div></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;headers.h&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;Utility/Middleware/baseConnectionData.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>framework</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_network.html">   12</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html">WebFrameworkHTTPNetwork</a> : <span class="keyword">public</span> web::HTTPNetwork</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">WebFrameworkHTTPNetwork</a>(SOCKET clientSocket);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_network.html#afb5465fae2cdeae62c4f61a73bf0ce87">   26</a></span>&#160;        <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#afb5465fae2cdeae62c4f61a73bf0ce87">WebFrameworkHTTPNetwork</a>(<span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">WebFrameworkHTTPNetwork</a>(<span class="keyword">const</span> <a class="code" href="structframework_1_1utility_1_1base_connection_data.html">utility::baseConnectionData</a>&amp; data);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        ~<a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html">WebFrameworkHTTPNetwork</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    };</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_network_html"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_network.html">framework::WebFrameworkHTTPNetwork</a></div><div class="ttdoc">Network functions for HTTP</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_h_t_t_p_network_8h_source.html#l00012">WebFrameworkHTTPNetwork.h:13</a></div></div>
 <div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_network_html_ae38eff9b3768acd9733ed601f5ca20f8"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">framework::WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork</a></div><div class="ttdeci">WebFrameworkHTTPNetwork(SOCKET clientSocket)</div><div class="ttdoc">Server side constructor</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_h_t_t_p_network_8cpp_source.html#l00007">WebFrameworkHTTPNetwork.cpp:7</a></div></div>
 <div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_network_html_afb5465fae2cdeae62c4f61a73bf0ce87"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_network.html#afb5465fae2cdeae62c4f61a73bf0ce87">framework::WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork</a></div><div class="ttdeci">WebFrameworkHTTPNetwork(const std::string &amp;ip, const std::string &amp;port)</div><div class="ttdoc">Client side constructor</div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1base_connection_data_html"><div class="ttname"><a href="structframework_1_1utility_1_1base_connection_data.html">framework::utility::baseConnectionData</a></div><div class="ttdoc">Contains all data for connection to server</div><div class="ttdef"><b>Definition:</b> <a href="base_connection_data_8h_source.html#l00021">baseConnectionData.h:22</a></div></div>
+<div class="ttc" id="astructframework_1_1utility_1_1base_connection_data_html"><div class="ttname"><a href="structframework_1_1utility_1_1base_connection_data.html">framework::utility::baseConnectionData</a></div><div class="ttdoc">Contains all data for connection to server</div><div class="ttdef"><b>Definition:</b> <a href="base_connection_data_8h_source.html#l00012">baseConnectionData.h:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
