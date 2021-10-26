@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"structsqlite3__index__info.html#a79b8a969dd7d582fc2ea3c0fbc5adb56":[0,0,6,4],
+"structsqlite3__index__info.html#a8acf2a7efbc3e193cf01d2afbd44fdbb":[0,0,6,9],
+"structsqlite3__index__info.html#a99787169e2f78c0728bdb339c4107a2e":[0,0,6,6],
 "structsqlite3__index__info.html#aa8b4fe1d2ee38aab57ba5e1da00d7830":[0,0,6,7],
 "structsqlite3__index__info.html#adcdf25dcf9848a6fedf539bb9c921b7f":[0,0,6,8],
 "structsqlite3__index__info.html#ae861993a30ce914a5214eab2579d935a":[0,0,6,12],

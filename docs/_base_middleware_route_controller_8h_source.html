@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.1</span>
+   &#160;<span id="projectnumber">1.9.3</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -89,36 +89,35 @@ $(document).ready(function(){initNavTree('_base_middleware_route_controller_8h_s
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;headers.h&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;HTTPParser.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;Utility/Middleware/baseConnectionData.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>framework</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">namespace </span>middleware</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">   15</a></span>&#160;        <span class="keyword">class </span>WEB_FRAMEWORK_API <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">BaseMiddlewareRouteController</a></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            std::vector&lt;utility::baseConnectionData&gt; servers;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f9de13f22e528f03cceff68032cf21e">   25</a></span>&#160;            <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f9de13f22e528f03cceff68032cf21e">BaseMiddlewareRouteController</a>(std::initializer_list&lt;utility::baseConnectionData&gt; servers);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f97df81aa2b68ad2f2a940ade6b1edb">   31</a></span>&#160;            <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f97df81aa2b68ad2f2a940ade6b1edb">BaseMiddlewareRouteController</a>(<span class="keyword">const</span> std::vector&lt;utility::baseConnectionData&gt;&amp; servers);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#ae2f50b24b419758f456280208eacded6">   38</a></span>&#160;            <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structframework_1_1utility_1_1base_connection_data.html">utility::baseConnectionData</a>&amp; <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#ae2f50b24b419758f456280208eacded6">getServerConnectionData</a>(<span class="keyword">const</span> web::HTTPParser&amp; httpMessage) = 0;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">BaseMiddlewareRouteController</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        };</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">framework::middleware::BaseMiddlewareRouteController</a></div><div class="ttdoc">Specify server to connect with getServerConnectionData method</div><div class="ttdef"><b>Definition:</b> <a href="_base_middleware_route_controller_8h_source.html#l00015">BaseMiddlewareRouteController.h:16</a></div></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;Utility/Middleware/baseConnectionData.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>framework</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">namespace </span>middleware</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">   14</a></span>&#160;        <span class="keyword">class </span>WEB_FRAMEWORK_API <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">BaseMiddlewareRouteController</a></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            std::vector&lt;utility::baseConnectionData&gt; servers;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f9de13f22e528f03cceff68032cf21e">   24</a></span>&#160;            <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f9de13f22e528f03cceff68032cf21e">BaseMiddlewareRouteController</a>(std::initializer_list&lt;utility::baseConnectionData&gt; servers);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f97df81aa2b68ad2f2a940ade6b1edb">   30</a></span>&#160;            <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f97df81aa2b68ad2f2a940ade6b1edb">BaseMiddlewareRouteController</a>(<span class="keyword">const</span> std::vector&lt;utility::baseConnectionData&gt;&amp; servers);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#ae2f50b24b419758f456280208eacded6">   37</a></span>&#160;            <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="structframework_1_1utility_1_1base_connection_data.html">utility::baseConnectionData</a>&amp; <a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#ae2f50b24b419758f456280208eacded6">getServerConnectionData</a>(<span class="keyword">const</span> web::HTTPParser&amp; httpMessage) = 0;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">BaseMiddlewareRouteController</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        };</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html">framework::middleware::BaseMiddlewareRouteController</a></div><div class="ttdoc">Specify server to connect with getServerConnectionData method</div><div class="ttdef"><b>Definition:</b> <a href="_base_middleware_route_controller_8h_source.html#l00014">BaseMiddlewareRouteController.h:15</a></div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html_a1f97df81aa2b68ad2f2a940ade6b1edb"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f97df81aa2b68ad2f2a940ade6b1edb">framework::middleware::BaseMiddlewareRouteController::BaseMiddlewareRouteController</a></div><div class="ttdeci">BaseMiddlewareRouteController(const std::vector&lt; utility::baseConnectionData &gt; &amp;servers)</div><div class="ttdoc">Copy construct</div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html_a1f9de13f22e528f03cceff68032cf21e"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f9de13f22e528f03cceff68032cf21e">framework::middleware::BaseMiddlewareRouteController::BaseMiddlewareRouteController</a></div><div class="ttdeci">BaseMiddlewareRouteController(std::initializer_list&lt; utility::baseConnectionData &gt; servers)</div><div class="ttdoc">Construct BaseMiddlewareRouteController through initializer_list</div></div>
 <div class="ttc" id="aclassframework_1_1middleware_1_1_base_middleware_route_controller_html_ae2f50b24b419758f456280208eacded6"><div class="ttname"><a href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#ae2f50b24b419758f456280208eacded6">framework::middleware::BaseMiddlewareRouteController::getServerConnectionData</a></div><div class="ttdeci">virtual const utility::baseConnectionData &amp; getServerConnectionData(const web::HTTPParser &amp;httpMessage)=0</div><div class="ttdoc">Choose framework::utility::baseConnectionData</div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1base_connection_data_html"><div class="ttname"><a href="structframework_1_1utility_1_1base_connection_data.html">framework::utility::baseConnectionData</a></div><div class="ttdoc">Contains all data for connection to server</div><div class="ttdef"><b>Definition:</b> <a href="base_connection_data_8h_source.html#l00021">baseConnectionData.h:22</a></div></div>
+<div class="ttc" id="astructframework_1_1utility_1_1base_connection_data_html"><div class="ttname"><a href="structframework_1_1utility_1_1base_connection_data.html">framework::utility::baseConnectionData</a></div><div class="ttdoc">Contains all data for connection to server</div><div class="ttdef"><b>Definition:</b> <a href="base_connection_data_8h_source.html#l00012">baseConnectionData.h:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
