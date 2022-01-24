@@ -34,14 +34,14 @@ namespace framework
 
 			for (const auto& i : parser)
 			{
-				const auto& data = get<json::utility::objectSmartPointer<json::utility::jsonObject>>(i->second);
+				const auto& data = get<json::utility::jsonObject>(i->second);
 
-				const string& loadType = data->getString("loadType");
+				const string& loadType = data.getString("loadType");
 				ExecutorSettings executorSettings;
 
 				try
 				{
-					executorSettings.initParameters = json::utility::make_object<json::utility::jsonObject>(*data->getObject("initParameters"));
+					executorSettings.initParameters = data.getObject("initParameters");
 				}
 				catch (const json::exceptions::CantFindValueException&)
 				{
@@ -59,7 +59,7 @@ namespace framework
 					executorSettings.executorLoadType = ExecutorSettings::loadType::dynamic;
 				}
 
-				settings.insert(make_pair(data->getString("route"), move(executorSettings)));
+				settings.insert(make_pair(data.getString("route"), move(executorSettings)));
 			}
 		}
 

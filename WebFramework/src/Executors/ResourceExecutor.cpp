@@ -199,21 +199,21 @@ namespace framework
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response)
 	{
-		response.setResponseCode(web::ResponseCodes::notFound);
+		response.setResponseCode(web::responseCodes::notFound);
 
 		response.addBody(HTMLErrorsData[HTMLErrors::notFound404]);
 	}
 
 	void ResourceExecutor::badRequestError(HTTPResponse& response)
 	{
-		response.setResponseCode(web::ResponseCodes::badRequest);
+		response.setResponseCode(web::responseCodes::badRequest);
 
 		response.addBody(HTMLErrorsData[HTMLErrors::badRequest400]);
 	}
 
 	void ResourceExecutor::internalServerError(HTTPResponse& response)
 	{
-		response.setResponseCode(web::ResponseCodes::internalServerError);
+		response.setResponseCode(web::responseCodes::internalServerError);
 
 		response.addBody(HTMLErrorsData[HTMLErrors::internalServerError500]);
 	}
