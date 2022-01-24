@@ -28,14 +28,14 @@ namespace framework
 
 			for (const auto& [ip, portsArray] : listOfServers->data)
 			{
-				auto& data = get<vector<json::utility::objectSmartPointer<json::utility::jsonObject>>>(portsArray);
+				auto& data = get<vector<json::utility::jsonObject>>(portsArray);
 				vector<string> ports;
 
 				ports.reserve(data.size());
 
 				for (const auto& i : data)
 				{
-					ports.push_back(get<string>(i->data.front().second));
+					ports.push_back(get<string>(i.data.front().second));
 				}
 
 				allServers.insert(make_pair(ip, move(ports)));

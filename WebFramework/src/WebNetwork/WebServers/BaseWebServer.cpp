@@ -62,9 +62,9 @@ namespace framework
 				executorSettings.name = i.second.name;
 				executorSettings.executorLoadType = i.second.executorLoadType;
 
-				if (i.second.initParameters)
+				if (i.second.initParameters.data.size())
 				{
-					executorSettings.initParameters = json::utility::make_object<json::utility::jsonObject>(*i.second.initParameters);
+					executorSettings.initParameters = json::utility::jsonObject(i.second.initParameters);
 				}
 
 				settings.insert(make_pair(i.first, move(executorSettings)));

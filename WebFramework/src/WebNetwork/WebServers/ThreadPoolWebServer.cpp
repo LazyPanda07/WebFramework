@@ -114,7 +114,7 @@ namespace framework
 			{
 				client.isBusy = true;
 
-				function<void()> task = [this, &request, &client, threadPoolFunction, &disconnectedClients]()
+				function<void()> task = [this, &request, &client, threadPoolFunction, &disconnectedClients]() mutable
 				{
 					taskImplementation(move(request), client, *threadPoolFunction, disconnectedClients);
 				};
@@ -231,7 +231,7 @@ namespace framework
 						continue;
 					}
 
-					if (!SSL_set_fd(ssl, clientSocket))
+					if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 					{
 						SSL_free(ssl);
 

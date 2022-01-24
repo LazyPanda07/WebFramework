@@ -79,7 +79,7 @@ namespace framework
 						continue;
 					}
 
-					if (!SSL_set_fd(ssl, clientSocket))
+					if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 					{
 						SSL_free(ssl);
 
