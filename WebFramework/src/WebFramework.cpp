@@ -15,6 +15,11 @@ using namespace std;
 
 namespace framework
 {
+	string WebFramework::webFrameworkVersion()
+	{
+		return "1.9.4"s;
+	}
+
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
 	{
 		if (!filesystem::exists(configurationJSONFile))
@@ -198,12 +203,5 @@ namespace framework
 	bool WebFramework::getServerState() const
 	{
 		return server->serverState();
-	}
-
-	const string& WebFramework::getWebFrameworkVersion() const
-	{
-		static const string webFrameworkVersion = "1.9.3";
-
-		return webFrameworkVersion;
 	}
 }
