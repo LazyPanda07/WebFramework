@@ -49,7 +49,7 @@ namespace framework
 		const string& webServerType = parser.get<string>(json_settings::webServerTypeKey);
 		const string& ip = parser.get<string>(json_settings::ipKey);
 		const string& port = parser.get<string>(json_settings::portKey);
-		int64_t timeout = parser.get<int64_t>(json_settings::timeoutKey);
+		DWORD timeout = static_cast<DWORD>(parser.get<int64_t>(json_settings::timeoutKey));
 		bool useHTTPS = false;
 
 		try

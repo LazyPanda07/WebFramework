@@ -55,12 +55,12 @@ namespace framework
 	{
 		if (!filesystem::exists(assets))
 		{
-			filesystem::create_directory(assets);
+			filesystem::create_directories(assets);
 		}
 
 		if (!filesystem::exists(dynamicPages.getPathToTemplates()))
 		{
-			filesystem::create_directory(dynamicPages.getPathToTemplates());
+			filesystem::create_directories(dynamicPages.getPathToTemplates());
 		}
 
 		this->loadHTMLErrorsData();
@@ -84,22 +84,14 @@ namespace framework
 			}
 		}
 
-		filesystem::path assetsFilePath(assets.string() + filePath);
+		filesystem::path assetFilePath(assets / filePath);
 
-		if (!filesystem::exists(assetsFilePath))
+		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetsFilePath.string());
+			throw exceptions::FileDoesNotExistException(assetFilePath.string());
 		}
 
-		ifstream file(assetsFilePath);
-		string tem;
-
-		while (getline(file, tem))
-		{
-			result += tem + "\n";
-		}
-
-		file.close();
+		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
 
 		if (isCaching)
 		{
@@ -133,22 +125,14 @@ namespace framework
 			}
 		}
 
-		filesystem::path assetsFilePath(assets.string() + filePath);
+		filesystem::path assetFilePath(assets / filePath);
 
-		if (!filesystem::exists(assetsFilePath))
+		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetsFilePath.string());
+			throw exceptions::FileDoesNotExistException(assetFilePath.string());
 		}
 
-		ifstream file(assetsFilePath);
-		string tem;
-
-		while (getline(file, tem))
-		{
-			result += tem + "\n";
-		}
-
-		file.close();
+		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
 
 		if (isCaching)
 		{

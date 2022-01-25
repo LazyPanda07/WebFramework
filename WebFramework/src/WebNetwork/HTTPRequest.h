@@ -120,7 +120,7 @@ namespace framework
 		/// <summary>
 		/// ResourceExecutor wrapper
 		/// </summary>
-		/// <param name="filePath">must start with leading /</param>
+		/// <param name="filePath">path to asset file from assets folder</param>
 		/// <param name="response">with file</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
