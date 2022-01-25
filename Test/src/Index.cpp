@@ -15,26 +15,10 @@ void Index::init(const framework::utility::JSONSettingsParser::ExecutorSettings&
 
 void Index::doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response)
 {
-	// if (!request.isDynamicFunctionRegistered("br"))
-	// {
-	// 	request.registerDynamicFunction("br", [](const vector<string>& values) -> string { return values[0] + "<br>"; });
-	// }
-	// 
-	// request.sendAssetFile("/index.wfdp", response);
-
-	string body;
-
-	body.append(first).append("<br>").
-		append(to_string(second)).append("<br>").
-		append(to_string(third)).append("<br>");
-
-	for (const auto& i : fourth)
+	if (!request.isDynamicFunctionRegistered("br"))
 	{
-		body.append(to_string(get<int64_t>(i.data.front().second))).append(" ");
+		request.registerDynamicFunction("br", [](const vector<string>& values) -> string { return values[0] + "<br>"; });
 	}
-
-	response.addBody
-	(
-		move(body)
-	);
+	
+	request.sendAssetFile("/index.wfdp", response);
 }
