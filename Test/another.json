@@ -1,0 +1,6 @@
+{
+  "AnotherRoute": {
+    "route": "another",
+    "loadType": "dynamic"
+  }
+}

@@ -7,8 +7,8 @@
 
   "WebFramework": {
     "settingsPaths": [
-      "web.json",
-      "test.json"
+      "another.json",
+      "default.json"
     ],
     "loadSources": [
       "current"
@@ -16,7 +16,7 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "usingAssetsCache": true,
-    "webServerType": "multithreaded",
+    "webServerType": "multiThreaded",
     "HTTPS": {
       "useHTTPS": false,
       "pathToCertificate": "certificates/cert.pem",

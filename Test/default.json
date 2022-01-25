@@ -1,0 +1,9 @@
+{
+  "DefaultRoute": {
+    "route": "",
+    "loadType": "initialization",
+    "initParameters": {
+      "message": "Hello user!"
+    }
+  }
+}
