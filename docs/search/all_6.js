@@ -10,7 +10,7 @@ var searchData=
   ['getdatabasemodelinstance_56',['getDatabaseModelInstance',['../classframework_1_1_h_t_t_p_request.html#a4a65b194837f3eae43b30bcbc2b6e2be',1,'framework::HTTPRequest']]],
   ['getdatabasename_57',['getDatabaseName',['../classframework_1_1sqlite_1_1_s_q_lite_database.html#aebc8c1fa0b18765f69f614018d3c2d13',1,'framework::sqlite::SQLiteDatabase']]],
   ['getexecutorsettings_58',['getExecutorSettings',['../classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#a615cdadab296902a1c5069a853ab52d2',1,'framework::utility::JSONSettingsParser']]],
-  ['getheaders_59',['getHeaders',['../classframework_1_1_h_t_t_p_request.html#ae0b7f5ab5fe3a56a94667b8220c62609',1,'framework::HTTPRequest']]],
+  ['getheaders_59',['getHeaders',['../classframework_1_1_h_t_t_p_request.html#a6c6f2f8f2aa8742973a04d0e121a6fe2',1,'framework::HTTPRequest']]],
   ['gethttpversion_60',['getHTTPVersion',['../classframework_1_1_h_t_t_p_request.html#a44f8333d7e29526971c0202c685614d2',1,'framework::HTTPRequest']]],
   ['getjson_61',['getJSON',['../classframework_1_1_h_t_t_p_request.html#a54455bdedde69ca8e954d03933a5b5a6',1,'framework::HTTPRequest']]],
   ['getkeyvalueparameters_62',['getKeyValueParameters',['../classframework_1_1_h_t_t_p_request.html#aaeaa585ebefd1138941e4d197962d515',1,'framework::HTTPRequest']]],
