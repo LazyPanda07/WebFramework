@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "WebFramework.h"
+#include "Executors/BaseStatefulExecutor.h"
 
 #pragma comment (lib, "WebFramework.lib")
 
@@ -21,16 +22,41 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
-		request.sendAssetFile("index.wfdp", response, arguments);
-	}
+		unordered_map<string_view, string> arguments =
+		{
+			{ "message"sv, helloMessage }
+		};
 
-	void doPost(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
-	{
-		response.addBody("<h1>Login: " + request.getKeyValueParameters().at("login") + "</h1><br><h1>Password: " + request.getKeyValueParameters().at("password") + "</h1>");
+		request.sendAssetFile("index.wfdp", response, arguments);
 	}
 
 	~DefaultRoute() = default;
 };
+
+EXECUTOR_CREATION_FUNCTION(DefaultRoute)
+
+class AnotherRoute : public framework::BaseStatefulExecutor
+{
+public:
+	AnotherRoute()
+	{
+		cout << "Create AnotherRoute for user" << endl;
+	}
+
+	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
+	{
+		response.addBody(request.getClientIpV4());
+	}
+
+	void destroy() override
+	{
+		cout << "Destroy AnotherRoute for user" << endl;
+	}
+
+	~AnotherRoute() = default;
+};
+
+EXECUTOR_CREATION_FUNCTION(AnotherRoute)
 
 int main(int argc, char** argv)
 {
@@ -46,7 +72,7 @@ int main(int argc, char** argv)
 
 		}
 	}
-	catch (const std::exception& e)
+	catch (const exception& e)
 	{
 		cout << e.what() << endl;
 	}
