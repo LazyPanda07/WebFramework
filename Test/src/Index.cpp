@@ -4,13 +4,13 @@ using namespace std;
 
 void Index::init(const framework::utility::JSONSettingsParser::ExecutorSettings& settings)
 {
-	first = get<string>(settings.initParameters->data[0].second);
+	first = get<string>(settings.initParameters.data[0].second);
 
-	second = get<int64_t>(settings.initParameters->data[1].second);
+	second = get<int64_t>(settings.initParameters.data[1].second);
 
-	third = get<double>(settings.initParameters->data[2].second);
+	third = get<double>(settings.initParameters.data[2].second);
 
-	fourth = &get<vector<json::utility::objectSmartPointer<json::utility::jsonObject>>>(settings.initParameters->data[3].second);
+	fourth = get<vector<json::utility::jsonObject>>(settings.initParameters.data[3].second);
 }
 
 void Index::doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response)
@@ -28,9 +28,9 @@ void Index::doGet(framework::HTTPRequest&& request, framework::HTTPResponse& res
 		append(to_string(second)).append("<br>").
 		append(to_string(third)).append("<br>");
 
-	for (const auto& i : *fourth)
+	for (const auto& i : fourth)
 	{
-		body.append(to_string(get<int64_t>(i->data.front().second))).append(" ");
+		body.append(to_string(get<int64_t>(i.data.front().second))).append(" ");
 	}
 
 	response.addBody
