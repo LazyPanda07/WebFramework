@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.3</span>
+   &#160;<span id="projectnumber">1.9.4</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('_base_executor_8h_source.html',''); in
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">using</span> createBaseExecutorSubclassFunction = <a class="code" href="classframework_1_1_base_executor.html">BaseExecutor</a>* (*)();</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#define CREATE_BASE_EXECUTOR_SUBCLASS_INSTANCE(subclassName) extern &quot;C&quot;</span> __declspec(dllexport) framework::BaseExecutor* create##subclassName##Instance() \</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#define EXECUTOR_CREATION_FUNCTION(subclassName) extern &quot;C&quot;</span> __declspec(dllexport) framework::BaseExecutor* create##subclassName##Instance() \</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{   \</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    return new subclassName();  \</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;}</div>

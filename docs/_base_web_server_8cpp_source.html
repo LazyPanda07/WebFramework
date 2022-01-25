@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.3</span>
+   &#160;<span id="projectnumber">1.9.4</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -151,9 +151,9 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                executorSettings.name = i.second.name;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                executorSettings.executorLoadType = i.second.executorLoadType;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">if</span> (i.second.initParameters)</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">if</span> (i.second.initParameters.data.size())</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    executorSettings.initParameters = json::utility::make_object&lt;json::utility::jsonObject&gt;(*i.second.initParameters);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    executorSettings.initParameters = json::utility::jsonObject(i.second.initParameters);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                }</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                settings.insert(make_pair(i.first, move(executorSettings)));</div>

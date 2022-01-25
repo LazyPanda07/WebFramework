@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.3</span>
+   &#160;<span id="projectnumber">1.9.4</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -115,9 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a44f8333d7e29526971c0202c685614d2"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a44f8333d7e29526971c0202c685614d2">getHTTPVersion</a> () const</td></tr>
 <tr class="memdesc:a44f8333d7e29526971c0202c685614d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP version  <a href="classframework_1_1_h_t_t_p_request.html#a44f8333d7e29526971c0202c685614d2">More...</a><br /></td></tr>
 <tr class="separator:a44f8333d7e29526971c0202c685614d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0b7f5ab5fe3a56a94667b8220c62609"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; std::string, std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#ae0b7f5ab5fe3a56a94667b8220c62609">getHeaders</a> () const</td></tr>
-<tr class="memdesc:ae0b7f5ab5fe3a56a94667b8220c62609"><td class="mdescLeft">&#160;</td><td class="mdescRight">All HTTP headers  <a href="classframework_1_1_h_t_t_p_request.html#ae0b7f5ab5fe3a56a94667b8220c62609">More...</a><br /></td></tr>
-<tr class="separator:ae0b7f5ab5fe3a56a94667b8220c62609"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c6f2f8f2aa8742973a04d0e121a6fe2"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; std::string, std::string, web::HTTPParser::insensitiveStringHash, web::HTTPParser::insensitiveStringEqual &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a6c6f2f8f2aa8742973a04d0e121a6fe2">getHeaders</a> () const</td></tr>
+<tr class="memdesc:a6c6f2f8f2aa8742973a04d0e121a6fe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">All HTTP headers  <a href="classframework_1_1_h_t_t_p_request.html#a6c6f2f8f2aa8742973a04d0e121a6fe2">More...</a><br /></td></tr>
+<tr class="separator:a6c6f2f8f2aa8742973a04d0e121a6fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e7a1b3895052820d1e11f90d5152dce"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a2e7a1b3895052820d1e11f90d5152dce">getBody</a> () const</td></tr>
 <tr class="memdesc:a2e7a1b3895052820d1e11f90d5152dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP request body  <a href="classframework_1_1_h_t_t_p_request.html#a2e7a1b3895052820d1e11f90d5152dce">More...</a><br /></td></tr>
 <tr class="separator:a2e7a1b3895052820d1e11f90d5152dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,9 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0faf91b7585442167d9abb7e8d23194b"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a0faf91b7585442167d9abb7e8d23194b">getCookies</a> () const</td></tr>
 <tr class="memdesc:a0faf91b7585442167d9abb7e8d23194b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Client's cookies  <a href="classframework_1_1_h_t_t_p_request.html#a0faf91b7585442167d9abb7e8d23194b">More...</a><br /></td></tr>
 <tr class="separator:a0faf91b7585442167d9abb7e8d23194b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae47fe32783387d8fa9a2670980ca8d7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#ae47fe32783387d8fa9a2670980ca8d7b">sendAssetFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;variables=nullptr)</td></tr>
-<tr class="memdesc:ae47fe32783387d8fa9a2670980ca8d7b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a> wrapper  <a href="classframework_1_1_h_t_t_p_request.html#ae47fe32783387d8fa9a2670980ca8d7b">More...</a><br /></td></tr>
-<tr class="separator:ae47fe32783387d8fa9a2670980ca8d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85e79a1e021f86dc9559d675a1351a21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a85e79a1e021f86dc9559d675a1351a21">sendAssetFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::unordered_map&lt; std::string_view, std::string &gt; &amp;variables={})</td></tr>
+<tr class="memdesc:a85e79a1e021f86dc9559d675a1351a21"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a> wrapper  <a href="classframework_1_1_h_t_t_p_request.html#a85e79a1e021f86dc9559d675a1351a21">More...</a><br /></td></tr>
+<tr class="separator:a85e79a1e021f86dc9559d675a1351a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add8e04b584ee3657e62a2daa99d44022"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#add8e04b584ee3657e62a2daa99d44022">registerDynamicFunction</a> (const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function)</td></tr>
 <tr class="memdesc:add8e04b584ee3657e62a2daa99d44022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add new function in .wfdp interpreter.  <a href="classframework_1_1_h_t_t_p_request.html#add8e04b584ee3657e62a2daa99d44022">More...</a><br /></td></tr>
 <tr class="separator:add8e04b584ee3657e62a2daa99d44022"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -498,14 +498,14 @@ template&lt;typename SQLiteDatabaseModelSubclass , typename... Args&gt; </div>
 
 </div>
 </div>
-<a id="ae0b7f5ab5fe3a56a94667b8220c62609"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0b7f5ab5fe3a56a94667b8220c62609">&#9670;&nbsp;</a></span>getHeaders()</h2>
+<a id="a6c6f2f8f2aa8742973a04d0e121a6fe2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c6f2f8f2aa8742973a04d0e121a6fe2">&#9670;&nbsp;</a></span>getHeaders()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const unordered_map&lt; string, string &gt; &amp; framework::HTTPRequest::getHeaders </td>
+          <td class="memname">const unordered_map&lt; string, string, web::HTTPParser::insensitiveStringHash, web::HTTPParser::insensitiveStringEqual &gt; &amp; framework::HTTPRequest::getHeaders </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -783,8 +783,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ae47fe32783387d8fa9a2670980ca8d7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae47fe32783387d8fa9a2670980ca8d7b">&#9670;&nbsp;</a></span>sendAssetFile()</h2>
+<a id="a85e79a1e021f86dc9559d675a1351a21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85e79a1e021f86dc9559d675a1351a21">&#9670;&nbsp;</a></span>sendAssetFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -804,8 +804,8 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>variables</em> = <code>nullptr</code>&#160;</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string_view, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variables</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -818,7 +818,7 @@ template&lt;typename T &gt; </div>
 <p><a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a> wrapper </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filePath</td><td>must start with leading /</td></tr>
+    <tr><td class="paramname">filePath</td><td>path to asset file from assets folder</td></tr>
     <tr><td class="paramname">response</td><td>with file</td></tr>
   </table>
   </dd>

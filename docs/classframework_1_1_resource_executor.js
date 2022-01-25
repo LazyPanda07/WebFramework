@@ -10,7 +10,7 @@ var classframework_1_1_resource_executor =
     [ "isDynamicFunctionRegistered", "classframework_1_1_resource_executor.html#aa7f82ae6b5d61fe1ac92e89902b20a96", null ],
     [ "notFoundError", "classframework_1_1_resource_executor.html#a251b0011c6425dcdf6c7dcab149303f7", null ],
     [ "registerDynamicFunction", "classframework_1_1_resource_executor.html#a2ced4bf06c08290f945e60606b89162b", null ],
-    [ "sendDynamicFile", "classframework_1_1_resource_executor.html#a8f900c11aa3bfd02a545c0441aabc0a0", null ],
+    [ "sendDynamicFile", "classframework_1_1_resource_executor.html#a1b916d36aa5243f2a06433971137ce71", null ],
     [ "sendStaticFile", "classframework_1_1_resource_executor.html#a3da6c7c27520e4b5815c21b8049684ed", null ],
     [ "unregisterDynamicFunction", "classframework_1_1_resource_executor.html#aeeca221c9db717a3048730c417f9bc81", null ]
 ];
