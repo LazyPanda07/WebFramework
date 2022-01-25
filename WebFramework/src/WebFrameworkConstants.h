@@ -3,6 +3,7 @@
 #include <string>
 #include <chrono>
 #include <memory>
+#include <cstdint>
 
 /// <summary>
 /// Default HTTP port
@@ -28,7 +29,7 @@ inline const std::string crlfcrlf = "\r\n\r\n";
 /// <para>Session life time for client session in nanoseconds</para>
 /// <para>If session stands equals or more this value, it must be deleted</para>
 /// </summary>
-inline constexpr auto sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
+inline constexpr uint64_t sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
 /// <summary>
 /// Check session life time period in seconds
 /// </summary>
@@ -69,7 +70,7 @@ namespace json_settings
 
 	inline const std::string defaultLoadSourceValue = "current";
 
-	inline const std::string multithreadedWebServerTypeValue = "multithreaded";
+	inline const std::string multiThreadedWebServerTypeValue = "multiThreaded";
 	inline const std::string threadPoolWebServerTypeValue = "threadPool";
 }
 
@@ -78,7 +79,7 @@ namespace exceptions
 	inline const std::string notImplemented = "Not implemented";
 	inline const std::string fileDoesNotExist = "file does not exist";
 	inline const std::string cantFindFunction = "Can't find ";
-	inline const std::string useMacroToMakeCreationFunction = "Make sure that you add CREATE_BASE_EXECUTOR_SUBCLASS macro to executor class";
+	inline const std::string useMacroToMakeCreationFunction = "Make sure that you add EXECUTOR_CREATION_FUNCTION macro to executor class";
 	inline const std::string missingLoadType = "Missing load type of ";
 	inline const std::string cantLoadSource = "Can't load ";
 	inline const std::string missingOtherDLLs = "That load source requires to load other dlls";
