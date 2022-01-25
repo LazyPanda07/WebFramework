@@ -15,6 +15,11 @@ using namespace std;
 
 namespace framework
 {
+	string WebFramework::webFrameworkVersion()
+	{
+		return "1.9.4"s;
+	}
+
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
 	{
 		if (!filesystem::exists(configurationJSONFile))
@@ -24,8 +29,8 @@ namespace framework
 
 		json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
-		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& settingsPathsJSON = parser.getArray(json_settings::settingsPathsKey);
-		const vector<json::utility::objectSmartPointer<json::utility::jsonObject>>& loadSourcesJSON = parser.getArray(json_settings::loadSourcesKey);
+		const vector<json::utility::jsonObject>& settingsPathsJSON = parser.getArray(json_settings::settingsPathsKey);
+		const vector<json::utility::jsonObject>& loadSourcesJSON = parser.getArray(json_settings::loadSourcesKey);
 		vector<string> settingsPaths;
 		vector<string> loadSources;
 
@@ -35,12 +40,12 @@ namespace framework
 
 		for (const auto& i : settingsPathsJSON)
 		{
-			settingsPaths.push_back(get<string>(i->data.front().second));
+			settingsPaths.push_back(get<string>(i.data.front().second));
 		}
 
 		for (const auto& i : loadSourcesJSON)
 		{
-			loadSources.push_back(get<string>(i->data.front().second));
+			loadSources.push_back(get<string>(i.data.front().second));
 		}
 
 		const string& assetsPath = parser.get<string>(json_settings::assetsPathKey);
@@ -49,7 +54,7 @@ namespace framework
 		const string& webServerType = parser.get<string>(json_settings::webServerTypeKey);
 		const string& ip = parser.get<string>(json_settings::ipKey);
 		const string& port = parser.get<string>(json_settings::portKey);
-		int64_t timeout = parser.get<int64_t>(json_settings::timeoutKey);
+		DWORD timeout = static_cast<DWORD>(parser.get<int64_t>(json_settings::timeoutKey));
 		bool useHTTPS = false;
 
 		try
@@ -114,7 +119,7 @@ namespace framework
 
 		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
-		if (webServerType == json_settings::multithreadedWebServerTypeValue)
+		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
@@ -198,12 +203,5 @@ namespace framework
 	bool WebFramework::getServerState() const
 	{
 		return server->serverState();
-	}
-
-	const string& WebFramework::getWebFrameworkVersion() const
-	{
-		static const string webFrameworkVersion = "1.9.3";
-
-		return webFrameworkVersion;
 	}
 }

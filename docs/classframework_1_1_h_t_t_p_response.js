@@ -11,6 +11,6 @@ var classframework_1_1_h_t_t_p_response =
     [ "operator=", "classframework_1_1_h_t_t_p_response.html#a014f27095c4d44048d26ab18b77f60b4", null ],
     [ "setDefault", "classframework_1_1_h_t_t_p_response.html#ab49db53d6fb523a663aaf0eb6f1d4af0", null ],
     [ "setHTTPVersion", "classframework_1_1_h_t_t_p_response.html#af27934161c5488b12ca5cc92bf8e1ab0", null ],
-    [ "setResponseCode", "classframework_1_1_h_t_t_p_response.html#a08dc980e48c1ea7b1f73273483281baf", null ],
+    [ "setResponseCode", "classframework_1_1_h_t_t_p_response.html#aef7ae56293cf7416fda8e301b99a60fd", null ],
     [ "operator<<", "classframework_1_1_h_t_t_p_response.html#a5a1e3160a121c149be7e1e17e60a4f81", null ]
 ];

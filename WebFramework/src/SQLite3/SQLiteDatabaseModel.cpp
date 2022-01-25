@@ -50,7 +50,7 @@ namespace framework
 
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
-				for (size_t i = 0; i < sqlite3_column_count(result); i++)
+				for (int i = 0; i < sqlite3_column_count(result); i++)
 				{
 					output.back().insert
 					(

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.3</span>
+   &#160;<span id="projectnumber">1.9.4</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('_h_t_t_p_request_8h_source.html',''); 
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">const</span> std::string&amp; getHTTPVersion() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string&gt;&amp; getHeaders() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">const</span> std::unordered_map&lt;std::string, std::string, web::HTTPParser::insensitiveStringHash, web::HTTPParser::insensitiveStringEqual&gt;&amp; getHeaders() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">const</span> std::string&amp; getBody() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('_h_t_t_p_request_8h_source.html',''); 
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        std::unordered_map&lt;std::string, std::string&gt; getCookies() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keywordtype">void</span> sendAssetFile(<span class="keyword">const</span> std::string&amp; filePath, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp; response, <span class="keyword">const</span> smartPointer&lt;std::unordered_map&lt;std::string_view, std::string&gt;&gt;&amp; variables = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keywordtype">void</span> sendAssetFile(<span class="keyword">const</span> std::string&amp; filePath, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp; response, <span class="keyword">const</span> std::unordered_map&lt;std::string_view, std::string&gt;&amp; variables = {});</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordtype">void</span> registerDynamicFunction(<span class="keyword">const</span> std::string&amp; functionName, std::function&lt;std::string(<span class="keyword">const</span> std::vector&lt;std::string&gt;&amp;)&gt;&amp;&amp; <span class="keyword">function</span>);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>

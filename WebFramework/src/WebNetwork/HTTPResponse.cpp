@@ -21,7 +21,7 @@ namespace framework
 
 	HTTPResponse::HTTPResponse()
 	{
-		builder.responseCode(web::ResponseCodes::ok);
+		builder.responseCode(web::responseCodes::ok);
 	}
 
 	HTTPResponse& HTTPResponse::operator = (const web::HTTPBuilder& builder)
@@ -36,7 +36,7 @@ namespace framework
 		builder.HTTPVersion(version);
 	}
 
-	void HTTPResponse::setResponseCode(web::ResponseCodes code)
+	void HTTPResponse::setResponseCode(web::responseCodes code)
 	{
 		builder.responseCode(code);
 	}
@@ -88,7 +88,7 @@ namespace framework
 	{
 		builder.clear();
 
-		builder.responseCode(web::ResponseCodes::ok);
+		builder.responseCode(web::responseCodes::ok);
 
 		body.clear();
 	}
@@ -105,7 +105,7 @@ namespace framework
 
 		if (response.body.size())
 		{
-			result = response.builder.build(&response.body);
+			result = response.builder.build(response.body);
 		}
 		else
 		{

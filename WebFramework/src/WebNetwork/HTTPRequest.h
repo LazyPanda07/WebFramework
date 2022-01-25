@@ -77,7 +77,7 @@ namespace framework
 		/// All HTTP headers
 		/// </summary>
 		/// <returns>HTTP headers as map</returns>
-		const std::unordered_map<std::string, std::string>& getHeaders() const;
+		const std::unordered_map<std::string, std::string, web::HTTPParser::insensitiveStringHash, web::HTTPParser::insensitiveStringEqual>& getHeaders() const;
 
 		/// <summary>
 		/// HTTP request body
@@ -120,11 +120,11 @@ namespace framework
 		/// <summary>
 		/// ResourceExecutor wrapper
 		/// </summary>
-		/// <param name="filePath">must start with leading /</param>
+		/// <param name="filePath">path to asset file from assets folder</param>
 		/// <param name="response">with file</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables = nullptr);
+		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables = {});
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

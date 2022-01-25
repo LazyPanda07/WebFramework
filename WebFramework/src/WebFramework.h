@@ -12,6 +12,11 @@ namespace framework
 	/// </summary>
 	class WEB_FRAMEWORK_API WebFramework
 	{
+	public:
+		/// @brief Get current WebFramework version
+		/// @return Current WebFramework version
+		static std::string webFrameworkVersion();
+
 	private:
 		smartPointer<BaseWebServer> server;
 
@@ -53,8 +58,6 @@ namespace framework
 		/// </summary>
 		/// <returns>is server running</returns>
 		bool getServerState() const;
-
-		const std::string& getWebFrameworkVersion() const;
 
 		~WebFramework() = default;
 	};

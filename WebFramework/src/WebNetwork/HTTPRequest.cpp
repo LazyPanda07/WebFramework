@@ -60,7 +60,7 @@ namespace framework
 		return parser->getHTTPVersion();
 	}
 
-	const unordered_map<string, string>& HTTPRequest::getHeaders() const
+	const unordered_map<string, string, web::HTTPParser::insensitiveStringHash, web::HTTPParser::insensitiveStringEqual>& HTTPRequest::getHeaders() const
 	{
 		return parser->getHeaders();
 	}
@@ -127,7 +127,7 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const smartPointer<unordered_map<string_view, string>>& variables)
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
 	{
 		if (isWebFrameworkDynamicPages(filePath))
 		{
@@ -210,7 +210,7 @@ namespace framework
 	ostream& operator << (ostream& stream, const HTTPRequest& request)
 	{
 		const web::HTTPParser& parser = *request.parser.get();
-		const unordered_map<string, string>& headers = parser.getHeaders();
+		const auto& headers = parser.getHeaders();
 
 		stream << parser.getMethod() << " " << parser.getParameters() << " " << parser.getHTTPVersion() << endl;
 

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.3</span>
+   &#160;<span id="projectnumber">1.9.4</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -107,9 +107,9 @@ Inheritance diagram for framework::interfaces::IDynamicFile:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3b5b0c848be129cdf1de6193e7805e71"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a3b5b0c848be129cdf1de6193e7805e71">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;variables)=0</td></tr>
-<tr class="memdesc:a3b5b0c848be129cdf1de6193e7805e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sending file from filePath path  <a href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a3b5b0c848be129cdf1de6193e7805e71">More...</a><br /></td></tr>
-<tr class="separator:a3b5b0c848be129cdf1de6193e7805e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa66ec604c0b9dcefbbc60eeeffb63b7c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#aa66ec604c0b9dcefbbc60eeeffb63b7c">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::unordered_map&lt; std::string_view, std::string &gt; &amp;variables)=0</td></tr>
+<tr class="memdesc:aa66ec604c0b9dcefbbc60eeeffb63b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sending file from filePath path  <a href="classframework_1_1interfaces_1_1_i_dynamic_file.html#aa66ec604c0b9dcefbbc60eeeffb63b7c">More...</a><br /></td></tr>
+<tr class="separator:aa66ec604c0b9dcefbbc60eeeffb63b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a505718a448fc166b868344d8096b75f9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a505718a448fc166b868344d8096b75f9">registerDynamicFunction</a> (const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function)=0</td></tr>
 <tr class="memdesc:a505718a448fc166b868344d8096b75f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add new function in .wfdp interpreter.  <a href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a505718a448fc166b868344d8096b75f9">More...</a><br /></td></tr>
 <tr class="separator:a505718a448fc166b868344d8096b75f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,8 +209,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3b5b0c848be129cdf1de6193e7805e71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b5b0c848be129cdf1de6193e7805e71">&#9670;&nbsp;</a></span>sendDynamicFile()</h2>
+<a id="aa66ec604c0b9dcefbbc60eeeffb63b7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa66ec604c0b9dcefbbc60eeeffb63b7c">&#9670;&nbsp;</a></span>sendDynamicFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -233,7 +233,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const smartPointer&lt; std::unordered_map&lt; std::string_view, std::string &gt;&gt; &amp;&#160;</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string_view, std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>variables</em>&#160;</td>
         </tr>
         <tr>
@@ -252,13 +252,13 @@ Public Member Functions</h2></td></tr>
 <p>Sending file from filePath path </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filePath</td><td>must start with leading /</td></tr>
+    <tr><td class="paramname">filePath</td><td>path to asset file from assets folder</td></tr>
     <tr><td class="paramname">response</td><td>with file</td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classframework_1_1_resource_executor.html#a8f900c11aa3bfd02a545c0441aabc0a0">framework::ResourceExecutor</a>.</p>
+<p>Implemented in <a class="el" href="classframework_1_1_resource_executor.html#a1b916d36aa5243f2a06433971137ce71">framework::ResourceExecutor</a>.</p>
 
 </div>
 </div>

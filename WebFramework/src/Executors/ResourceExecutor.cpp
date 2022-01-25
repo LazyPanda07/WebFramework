@@ -55,12 +55,12 @@ namespace framework
 	{
 		if (!filesystem::exists(assets))
 		{
-			filesystem::create_directory(assets);
+			filesystem::create_directories(assets);
 		}
 
 		if (!filesystem::exists(dynamicPages.getPathToTemplates()))
 		{
-			filesystem::create_directory(dynamicPages.getPathToTemplates());
+			filesystem::create_directories(dynamicPages.getPathToTemplates());
 		}
 
 		this->loadHTMLErrorsData();
@@ -84,22 +84,14 @@ namespace framework
 			}
 		}
 
-		filesystem::path assetsFilePath(assets.string() + filePath);
+		filesystem::path assetFilePath(assets / filePath);
 
-		if (!filesystem::exists(assetsFilePath))
+		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetsFilePath.string());
+			throw exceptions::FileDoesNotExistException(assetFilePath.string());
 		}
 
-		ifstream file(assetsFilePath);
-		string tem;
-
-		while (getline(file, tem))
-		{
-			result += tem + "\n";
-		}
-
-		file.close();
+		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
 
 		if (isCaching)
 		{
@@ -111,7 +103,7 @@ namespace framework
 		response.addBody(result);
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const smartPointer<unordered_map<string_view, string>>& variables)
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
 	{
 		string result;
 
@@ -133,22 +125,14 @@ namespace framework
 			}
 		}
 
-		filesystem::path assetsFilePath(assets.string() + filePath);
+		filesystem::path assetFilePath(assets / filePath);
 
-		if (!filesystem::exists(assetsFilePath))
+		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetsFilePath.string());
+			throw exceptions::FileDoesNotExistException(assetFilePath.string());
 		}
 
-		ifstream file(assetsFilePath);
-		string tem;
-
-		while (getline(file, tem))
-		{
-			result += tem + "\n";
-		}
-
-		file.close();
+		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
 
 		if (isCaching)
 		{
@@ -199,21 +183,21 @@ namespace framework
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response)
 	{
-		response.setResponseCode(web::ResponseCodes::notFound);
+		response.setResponseCode(web::responseCodes::notFound);
 
 		response.addBody(HTMLErrorsData[HTMLErrors::notFound404]);
 	}
 
 	void ResourceExecutor::badRequestError(HTTPResponse& response)
 	{
-		response.setResponseCode(web::ResponseCodes::badRequest);
+		response.setResponseCode(web::responseCodes::badRequest);
 
 		response.addBody(HTMLErrorsData[HTMLErrors::badRequest400]);
 	}
 
 	void ResourceExecutor::internalServerError(HTTPResponse& response)
 	{
-		response.setResponseCode(web::ResponseCodes::internalServerError);
+		response.setResponseCode(web::responseCodes::internalServerError);
 
 		response.addBody(HTMLErrorsData[HTMLErrors::internalServerError500]);
 	}
