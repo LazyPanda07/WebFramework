@@ -20,5 +20,5 @@ void Index::doGet(framework::HTTPRequest&& request, framework::HTTPResponse& res
 		request.registerDynamicFunction("br", [](const vector<string>& values) -> string { return values[0] + "<br>"; });
 	}
 	
-	request.sendAssetFile("/index.wfdp", response);
+	request.sendAssetFile("index.wfdp", response);
 }
