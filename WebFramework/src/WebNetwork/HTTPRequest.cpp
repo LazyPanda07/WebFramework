@@ -127,7 +127,7 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const smartPointer<unordered_map<string_view, string>>& variables)
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
 	{
 		if (isWebFrameworkDynamicPages(filePath))
 		{

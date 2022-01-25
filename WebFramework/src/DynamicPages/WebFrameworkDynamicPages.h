@@ -39,7 +39,7 @@ namespace framework
 		/// <param name="code">section with special syntax</param>
 		/// <returns>string after all variable replaces</returns>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
-		static std::string insertVariables(const smartPointer<std::unordered_map<std::string_view, std::string>>& variables, std::string code);
+		static std::string insertVariables(const std::unordered_map<std::string_view, std::string>& variables, std::string code);
 
 		/// <summary>
 		/// Split all sections in functions calling order
@@ -71,7 +71,7 @@ namespace framework
 		/// <param name="source">data string</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void run(const smartPointer<std::unordered_map<std::string_view, std::string>>& variables, std::string& source);
+		void run(const std::unordered_map<std::string_view, std::string>& variables, std::string& source);
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

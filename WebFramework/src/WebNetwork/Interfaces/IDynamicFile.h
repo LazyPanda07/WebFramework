@@ -20,7 +20,7 @@ namespace framework
 			/// </summary>
 			/// <param name="filePath">path to asset file from assets folder</param>
 			/// <param name="response">with file</param>
-			virtual void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const smartPointer<std::unordered_map<std::string_view, std::string>>& variables) = 0;
+			virtual void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables) = 0;
 
 			/// @brief Add new function in .wfdp interpreter
 			/// @param functionName Name of new function
