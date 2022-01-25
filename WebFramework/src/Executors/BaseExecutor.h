@@ -123,7 +123,7 @@ namespace framework
 /// <para>Macro for each BaseExecutor subclass</para>
 /// <para>Used for loading function that creates BaseExecutor subclass</para>
 /// </summary>
-#define CREATE_BASE_EXECUTOR_SUBCLASS_INSTANCE(subclassName) extern "C" __declspec(dllexport) framework::BaseExecutor* create##subclassName##Instance()	\
+#define EXECUTOR_CREATION_FUNCTION(subclassName) extern "C" __declspec(dllexport) framework::BaseExecutor* create##subclassName##Instance()	\
 {	\
 	return new subclassName();	\
 }
