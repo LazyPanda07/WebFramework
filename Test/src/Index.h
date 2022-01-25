@@ -16,4 +16,4 @@ public:
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override;
 };
 
-CREATE_BASE_EXECUTOR_SUBCLASS_INSTANCE(Index)
+EXECUTOR_CREATION_FUNCTION(Index)
