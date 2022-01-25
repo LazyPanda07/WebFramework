@@ -1,6 +1,6 @@
 {
   "Index": {
-    "route": "/",
+    "route": "",
     "loadType": "initialization",
     "initParameters": {
       "first": "string",

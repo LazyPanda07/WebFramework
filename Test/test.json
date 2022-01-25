@@ -1,6 +1,6 @@
 {
   "Test": {
-    "route": "/test",
+    "route": "test",
     "loadType": "initialization"
   }
 }
