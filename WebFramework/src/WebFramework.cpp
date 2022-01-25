@@ -119,7 +119,7 @@ namespace framework
 
 		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
-		if (webServerType == json_settings::multithreadedWebServerTypeValue)
+		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
