@@ -24,6 +24,7 @@ public:
 	{
 		unordered_map<string_view, string> arguments =
 		{
+			{ "title"sv, "Main page" },
 			{ "message"sv, helloMessage }
 		};
 
@@ -45,7 +46,14 @@ public:
 
 	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
 	{
-		response.addBody(request.getClientIpV4());
+		localization::TextLocalization& localization = localization::TextLocalization::get(); 
+		unordered_map<string_view, string> arguments =
+		{
+			{ "title"sv, localization["title"] },
+			{ "message"sv, localization["ipMessage"] + request.getClientIpV4()}
+		};
+
+		request.sendAssetFile("index.wfdp", response, arguments);
 	}
 
 	void destroy() override
@@ -64,6 +72,7 @@ int main(int argc, char** argv)
 	{
 		framework::WebFramework webFramework("web_framework_settings.json");
 		string s;
+		localization::TextLocalization::get().changeLanguage("ru");
 
 		webFramework.startServer();
 
