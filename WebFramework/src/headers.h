@@ -45,5 +45,7 @@
 #include "INIParser.h"
 #include "BaseTCPServer.h"
 #include "BaseIOSocketStream.h"
+#include "TextLocalization.h"
+#include "WTextLocalization.h"
 
 #include <Windows.h>

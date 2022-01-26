@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebFramework", "WebFramework\WebFramework.vcxproj", "{E66352D0-66C8-4BAE-85E4-4715D53FD651}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JSON", "Networks\HTTP\JSON\JSON.vcxproj", "{F6B57139-D9F3-4B02-AA92-4E1F417649DA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThreadPool", "ThreadPool\ThreadPool.vcxproj", "{BDE48484-5593-484F-9F84-FC01F8CF83A9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Localization", "Localization\Localization.vcxproj", "{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +157,18 @@ Global
 		{BDE48484-5593-484F-9F84-FC01F8CF83A9}.Release|x64.Build.0 = Release|x64
 		{BDE48484-5593-484F-9F84-FC01F8CF83A9}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
 		{BDE48484-5593-484F-9F84-FC01F8CF83A9}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.Debug|x64.ActiveCfg = Debug|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.Debug|x64.Build.0 = Debug|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.DebugDLL|x64.ActiveCfg = Debug|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.DebugDLL|x64.Build.0 = Debug|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.ProductionRelease|x64.ActiveCfg = Release|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.ProductionRelease|x64.Build.0 = Release|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.ProductionReleaseDLL|x64.ActiveCfg = Release|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.ProductionReleaseDLL|x64.Build.0 = Release|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.Release|x64.ActiveCfg = Release|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.Release|x64.Build.0 = Release|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.ReleaseDLL|x64.ActiveCfg = Release|x64
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35}.ReleaseDLL|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +183,7 @@ Global
 		{8BB9F3BD-68F4-403A-ACC6-F85C75F5D14F} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 		{F6B57139-D9F3-4B02-AA92-4E1F417649DA} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 		{BDE48484-5593-484F-9F84-FC01F8CF83A9} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
+		{D2968AC9-BAC3-4F25-9698-5C1CF6C4FA35} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {155A7728-6396-43E2-9EFF-B3B350E831EA}

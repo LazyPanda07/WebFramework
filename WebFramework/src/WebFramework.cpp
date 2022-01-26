@@ -10,6 +10,7 @@
 #pragma comment (lib, "Log.lib")
 #pragma comment (lib, "INIParser.lib")
 #pragma comment (lib, "Networks.lib")
+#pragma comment (lib, "Localization.lib")
 
 using namespace std;
 
@@ -17,7 +18,7 @@ namespace framework
 {
 	string WebFramework::webFrameworkVersion()
 	{
-		return "1.9.4"s;
+		return "2.0"s;
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
