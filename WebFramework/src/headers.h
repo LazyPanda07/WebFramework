@@ -11,6 +11,7 @@
 #include <memory>
 #include <variant>
 #include <optional>
+#include <format>
 
 #include <mutex>
 #include <shared_mutex>
