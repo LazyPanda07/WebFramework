@@ -11,6 +11,7 @@
 #pragma comment (lib, "INIParser.lib")
 #pragma comment (lib, "Networks.lib")
 #pragma comment (lib, "Localization.lib")
+#pragma comment (lib, "FileManager.lib")
 
 using namespace std;
 
@@ -18,14 +19,14 @@ namespace framework
 {
 	string WebFramework::webFrameworkVersion()
 	{
-		return "2.0"s;
+		return "2.1"s;
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
 	{
 		if (!filesystem::exists(configurationJSONFile))
 		{
-			throw exceptions::FileDoesNotExistException(configurationJSONFile.string());
+			throw file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());
 		}
 
 		json::JSONParser parser(move(ifstream(configurationJSONFile)));

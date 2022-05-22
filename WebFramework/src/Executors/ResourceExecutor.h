@@ -53,7 +53,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		void sendStaticFile(const std::string& filePath, HTTPResponse& response) override;
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables = {}) override;
 
 		/// @brief Add new function in .wfdp interpreter

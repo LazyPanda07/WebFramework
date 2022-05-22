@@ -4,7 +4,6 @@
     "port": "80",
     "timeout": 0
   },
-
   "WebFramework": {
     "settingsPaths": [
       "web.json"
@@ -22,13 +21,11 @@
       "pathToKey": "certificates/key.pem"
     }
   },
-
   "Logging": {
     "usingLogging": true,
     "dateFormat": "DMY",
     "addNewLineAfterLog": true
   },
-
   "ThreadPoolServer": {
     "threadCount": 0
   }

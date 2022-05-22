@@ -212,7 +212,7 @@ namespace framework
 		{
 			throw;
 		}
-		catch (const exceptions::FileDoesNotExistException&)
+		catch (const file_manager::exceptions::FileDoesNotExistException&)
 		{
 			throw;
 		}

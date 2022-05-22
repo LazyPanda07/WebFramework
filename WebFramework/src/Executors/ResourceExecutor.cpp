@@ -88,7 +88,7 @@ namespace framework
 
 		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetFilePath.string());
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath.string());
 		}
 
 		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
@@ -129,7 +129,7 @@ namespace framework
 
 		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetFilePath.string());
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath.string());
 		}
 
 		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();

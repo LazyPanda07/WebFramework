@@ -76,7 +76,7 @@ namespace framework
 
 			client.stream << response;
 		}
-		catch (const exceptions::FileDoesNotExistException&)	// 404
+		catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
 		{
 			resources->notFoundError(response);
 
@@ -148,7 +148,7 @@ namespace framework
 
 			client.stream << response;
 		}
-		catch (const exceptions::FileDoesNotExistException&)	// 404
+		catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
 		{
 			resources->notFoundError(response);
 

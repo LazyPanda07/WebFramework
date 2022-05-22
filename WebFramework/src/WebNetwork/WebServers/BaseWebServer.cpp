@@ -22,11 +22,11 @@ namespace framework
 
 			result.reserve(pathToSources.size());
 
-			for (const auto& i : pathToSources)
+			for (const string& pathToSource : pathToSources)
 			{
-				if (!filesystem::exists(i))
+				if (!filesystem::exists(pathToSource))
 				{
-					if (i == json_settings::defaultLoadSourceValue)
+					if (pathToSource == json_settings::defaultLoadSourceValue)
 					{
 						result.push_back(nullptr);
 
@@ -34,17 +34,17 @@ namespace framework
 					}
 					else
 					{
-						throw exceptions::FileDoesNotExistException(i);
+						throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 					}
 				}
 				else
 				{
-					result.push_back(LoadLibraryA(i.data()));
+					result.push_back(LoadLibraryA(pathToSource.data()));
 				}
 
 				if (!result.back())
 				{
-					throw exceptions::CantLoadSourceException(i);
+					throw exceptions::CantLoadSourceException(pathToSource);
 				}
 			}
 

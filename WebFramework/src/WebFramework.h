@@ -26,7 +26,7 @@ namespace framework
 		/// </summary>
 		/// <param name="configurationINIFile">path to .json configuration file</param>
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="framework::exceptions::NotImplemented">Thread pool model does not support HTTPS</exception>
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON setting value</exception>
 		WebFramework(const std::filesystem::path& configurationJSONFile);

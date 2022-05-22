@@ -24,7 +24,7 @@ namespace framework
 			/// </summary>
 			/// <param name="configurationINIFile">path to .json configuration file</param>
 			/// <exception cref="std::out_of_range">Can't find some settings</exception>
-			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+			/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 			LoadBalancer(const std::filesystem::path& configurationJSONFile);
 
 			/// <summary>

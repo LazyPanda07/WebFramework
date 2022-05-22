@@ -29,7 +29,7 @@ namespace framework
 		/// <param name="port">default is 80 or 443</param>
 		/// <param name="timeout">wait for client connection in milliseconds</param>
 		/// <param name="pathToSources">paths to files with executors</param>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>

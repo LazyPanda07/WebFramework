@@ -54,7 +54,7 @@ namespace framework
 		/// <param name="response">response to client</param>
 		/// <param name="statefulExecutors">all stateful executors for client</param>
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="std::out_of_range"></exception>
 		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, smartPointer<BaseExecutor>>& statefulExecutors, std::optional<std::function<void(HTTPRequest&&, HTTPResponse&)>>& threadPoolFunction);
 
