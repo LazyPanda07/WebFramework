@@ -34,12 +34,22 @@ namespace framework
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		bool isCaching;
 		file_manager::FileManager& fileManager;
+		std::function<void(const std::string&, HTTPResponse&)> sendStaticFileFunction;
+		std::function<void(const std::string&, HTTPResponse&, const std::unordered_map<std::string_view, std::string>&)> sendDynamicFileFunction;
 
 	private:
 		/// <summary>
-		/// Load all htmls from WebFrameworkAssets/Errors
+		/// Load all .htmls from WebFrameworkAssets/Errors
 		/// </summary>
 		void loadHTMLErrorsData();
+
+		void sendStaticFileWithCaching(const std::string& filePath, HTTPResponse& response);
+
+		void sendStaticFileWithoutCaching(const std::string& filePath, HTTPResponse& response);
+
+		void sendDynamicFileWithCaching(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables);
+
+		void sendDynamicFileWithoutCaching(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables);
 
 	public:
 		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates);
@@ -112,6 +122,8 @@ namespace framework
 		/// </summary>
 		/// <param name="response">response with error file</param>
 		void internalServerError(HTTPResponse& response);
+
+		bool getIsCaching() const;
 
 		~ResourceExecutor() = default;
 	};
