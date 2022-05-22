@@ -41,12 +41,13 @@ namespace framework
 		static web::HTTPParser sendRequestToAnotherServer(const std::string& ip, const std::string& port, const std::string& request);
 
 	public:
-		/// <summary>
-		/// Construct HTTPRequest
-		/// </summary>
-		/// <param name="session">from MultithreadedWebServer</param>
-		/// <param name="serverReference">reference to MultithreadedWebServer</param>
-		/// <param name="resources">ResourceExecutor</param>
+		/// @brief Construct HTTPRequest
+		/// @param session Session from MultithreadedWebServer
+		/// @param serverReference Reference to server
+		/// @param staticResources Static resources manager
+		/// @param dynamicResources Dynamic resources manager
+		/// @param database Reference to database
+		/// @param clientAddr Client address
 		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
 
 		/// <summary>

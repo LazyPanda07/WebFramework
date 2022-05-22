@@ -28,7 +28,7 @@ namespace framework
 				std::string name;
 				loadType executorLoadType;
 
-				ExecutorSettings() = default;
+				ExecutorSettings();
 
 				ExecutorSettings(ExecutorSettings&& other) noexcept;
 			};

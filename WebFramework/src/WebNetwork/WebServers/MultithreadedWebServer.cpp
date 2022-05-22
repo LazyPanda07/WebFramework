@@ -125,12 +125,13 @@ namespace framework
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
+		shared_ptr<ResourceExecutor> resourceExecutor = resources.lock();
 
 		while (true)
 		{
 			try
 			{
-				HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, addr);
+				HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, addr);
 
 				response.setDefault();
 
@@ -153,25 +154,25 @@ namespace framework
 			}
 			catch (const exceptions::BadRequestException&)	// 400
 			{
-				resources->badRequestError(response);
+				resourceExecutor->badRequestError(response);
 
 				stream << response;
 			}
 			catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
 			{
-				resources->notFoundError(response);
+				resourceExecutor->notFoundError(response);
 
 				stream << response;
 			}
 			catch (const exceptions::BaseExecutorException&)	//500
 			{
-				resources->internalServerError(response);
+				resourceExecutor->internalServerError(response);
 
 				stream << response;
 			}
 			catch (...)	//500
 			{
-				resources->internalServerError(response);
+				resourceExecutor->internalServerError(response);
 
 				stream << response;
 			}
@@ -183,7 +184,7 @@ namespace framework
 		throw exceptions::NotImplementedException();
 	}
 
-	MultithreadedWebServer::MultithreadedWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+	MultithreadedWebServer::MultithreadedWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer
 		(
 			port,
@@ -195,6 +196,7 @@ namespace framework
 		),
 		BaseWebServer
 		(
+			configuration,
 			parsers,
 			assets,
 			pathToTemplates,

@@ -44,7 +44,7 @@ namespace framework
 		isBusy = other.isBusy;
 	}
 
-	void ThreadPoolWebServer::taskImplementation(HTTPRequest&& request, IndividualData& client, function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients)
+	void ThreadPoolWebServer::taskImplementation(HTTPRequest&& request, IndividualData& client, function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
 	{
 		HTTPResponse response;
 
@@ -72,25 +72,25 @@ namespace framework
 		}
 		catch (const exceptions::BadRequestException&)	// 400
 		{
-			resources->badRequestError(response);
+			resourceExecutor->badRequestError(response);
 
 			client.stream << response;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
 		{
-			resources->notFoundError(response);
+			resourceExecutor->notFoundError(response);
 
 			client.stream << response;
 		}
 		catch (const exceptions::BaseExecutorException&)	//500
 		{
-			resources->internalServerError(response);
+			resourceExecutor->internalServerError(response);
 
 			client.stream << response;
 		}
 		catch (...)	//500
 		{
-			resources->internalServerError(response);
+			resourceExecutor->internalServerError(response);
 
 			client.stream << response;
 		}
@@ -98,9 +98,9 @@ namespace framework
 		client.isBusy = false;
 	}
 
-	void ThreadPoolWebServer::mainCycle(IndividualData& client, vector<SOCKET>& disconnectedClients)
+	void ThreadPoolWebServer::mainCycle(IndividualData& client, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
 	{
-		HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, client.addr);
+		HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, client.addr);
 		HTTPResponse response;
 		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
 
@@ -114,9 +114,9 @@ namespace framework
 			{
 				client.isBusy = true;
 
-				function<void()> task = [this, &request, &client, threadPoolFunction, &disconnectedClients]() mutable
+				function<void()> task = [this, &request, &client, threadPoolFunction, &disconnectedClients, &resourceExecutor]() mutable
 				{
-					taskImplementation(move(request), client, *threadPoolFunction, disconnectedClients);
+					taskImplementation(move(request), client, *threadPoolFunction, disconnectedClients, resourceExecutor);
 				};
 
 				threadPool.addTask(move(task));
@@ -144,25 +144,25 @@ namespace framework
 		}
 		catch (const exceptions::BadRequestException&)	// 400
 		{
-			resources->badRequestError(response);
+			resourceExecutor->badRequestError(response);
 
 			client.stream << response;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
 		{
-			resources->notFoundError(response);
+			resourceExecutor->notFoundError(response);
 
 			client.stream << response;
 		}
 		catch (const exceptions::BaseExecutorException&)	//500
 		{
-			resources->internalServerError(response);
+			resourceExecutor->internalServerError(response);
 
 			client.stream << response;
 		}
 		catch (...)	//500
 		{
-			resources->internalServerError(response);
+			resourceExecutor->internalServerError(response);
 
 			client.stream << response;
 		}
@@ -175,6 +175,7 @@ namespace framework
 		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 		bool useHTTPS = httpsSettings.getUseHTTPS();
 		u_long block = 0;
+		shared_ptr<ResourceExecutor> resourceExecutor = resources.lock();
 
 		if (useHTTPS)
 		{
@@ -255,7 +256,7 @@ namespace framework
 			{
 				if (!client.isBusy)
 				{
-					this->mainCycle(client, disconnectedClients);
+					this->mainCycle(client, disconnectedClients, resourceExecutor);
 				}
 			}
 
@@ -288,7 +289,7 @@ namespace framework
 		throw exceptions::NotImplementedException();
 	}
 
-	ThreadPoolWebServer::ThreadPoolWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
+	ThreadPoolWebServer::ThreadPoolWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
 		BaseTCPServer
 		(
 			port,
@@ -300,6 +301,7 @@ namespace framework
 		),
 		BaseWebServer
 		(
+			configuration,
 			parsers,
 			assets,
 			pathToTemplates,

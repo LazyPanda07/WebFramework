@@ -23,6 +23,7 @@ namespace framework
 		/// <summary>
 		/// Construct MultithreadedWebServer
 		/// </summary>
+		/// <param name="configuration">settings from main .json file</param>
 		/// <param name="settings">settings from .json files</param>
 		/// <param name="assets">path to assets folder</param>
 		/// <param name="pathToTemplates">path to templates folder</param>
@@ -35,7 +36,7 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		MultithreadedWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
+		MultithreadedWebServer(const json::JSONParser& configuration, const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
 		~MultithreadedWebServer() = default;
 	};

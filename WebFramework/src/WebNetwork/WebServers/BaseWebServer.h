@@ -15,13 +15,14 @@ namespace framework
 		ExecutorsManager executorsManager;
 		SessionsManager sessionsManager;
 		sqlite::SQLiteManager databasesManager;
-		ResourceExecutor* resources;
+		std::weak_ptr<ResourceExecutor> resources;
 
 	public:
 		/// <summary>
-		/// Construct MultithreadedWebServer
+		/// Construct web server
 		/// </summary>
-		/// <param name="settings">settings from .json files</param>
+		/// <param name="configuration">settings from main .json file</param>
+		/// <param name="parsers">settings from .json files</param>
 		/// <param name="assets">path to assets folder</param>
 		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="isCaching">is caching resource files</param>
@@ -33,7 +34,7 @@ namespace framework
 		/// <exception cref="framework::exceptions::CantLoadSourceException"></exception>
 		/// <exception cref="framework::exceptions::CantFindFunctionException"></exception>
 		/// <exception cref="framework::exceptions::MissingLoadTypeException"></exception>
-		BaseWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
+		BaseWebServer(const json::JSONParser& configuration, const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
 		virtual ~BaseWebServer() = default;
 	};

@@ -15,21 +15,21 @@ namespace framework
 	ExecutorsManager& ExecutorsManager::operator = (ExecutorsManager&& other) noexcept
 	{
 		this->routes = move(other.routes);
-		this->creator = move(other.creator);
+		this->creators = move(other.creators);
 		this->settings = move(other.settings);
 		this->resources = move(other.resources);
 
 		return *this;
 	}
 
-	void ExecutorsManager::init(const filesystem::path& assets, bool isCaching, const string& pathToTemplates, unordered_map<string, smartPointer<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
+	void ExecutorsManager::init(const json::JSONParser& configuraion, const filesystem::path& assets, bool isCaching, const string& pathToTemplates, unordered_map<string, smartPointer<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
 	{
 		this->routes = move(routes);
-		this->creator = move(creator);
+		this->creators = move(creators);
 		this->settings = move(settings);
 		this->routeParameters = move(routeParameters);
 
-		resources = make_unique<ResourceExecutor>(assets, isCaching, pathToTemplates);
+		resources = make_shared<ResourceExecutor>(configuraion, assets, isCaching, pathToTemplates);
 
 		resources->init(utility::JSONSettingsParser::ExecutorSettings());
 	}
@@ -117,7 +117,7 @@ namespace framework
 							parameters = it->baseRoute;
 						}
 
-						executor = routes.insert(make_pair(move(parameters), smartPointer<BaseExecutor>(creator[executorSettings->second.name]()))).first;
+						executor = routes.insert(make_pair(move(parameters), smartPointer<BaseExecutor>(creators[executorSettings->second.name]()))).first;
 						executor->second->init(executorSettings->second);
 
 						if (executor->second->getType() == BaseExecutor::executorType::stateful || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful)
@@ -222,7 +222,7 @@ namespace framework
 		}
 	}
 
-	smartPointer<ResourceExecutor>& ExecutorsManager::getResourceExecutor()
+	shared_ptr<ResourceExecutor>& ExecutorsManager::getResourceExecutor()
 	{
 		return resources;
 	}

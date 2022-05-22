@@ -9,6 +9,12 @@ namespace framework
 {
 	namespace utility
 	{
+		JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
+			executorLoadType(loadType::none)
+		{
+
+		}
+
 		JSONSettingsParser::ExecutorSettings::ExecutorSettings(ExecutorSettings&& other) noexcept :
 			initParameters(move(other.initParameters)),
 			name(move(other.name)),

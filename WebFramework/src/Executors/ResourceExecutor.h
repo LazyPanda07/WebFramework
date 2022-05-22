@@ -6,6 +6,7 @@
 #include "DynamicPages/WebFrameworkDynamicPages.h"
 #include "WebNetwork/Interfaces/IStaticFile.h"
 #include "WebNetwork/Interfaces/IDynamicFile.h"
+#include "FileManager.h"
 
 namespace framework
 {
@@ -32,6 +33,7 @@ namespace framework
 		std::unordered_map<std::string, std::string> dynamicCache;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		bool isCaching;
+		file_manager::FileManager& fileManager;
 
 	private:
 		/// <summary>
@@ -40,7 +42,7 @@ namespace framework
 		void loadHTMLErrorsData();
 
 	public:
-		ResourceExecutor(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates);
+		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates);
 
 		/// <summary>
 		/// Create assets folder

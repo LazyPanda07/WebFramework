@@ -38,9 +38,9 @@ namespace framework
 		std::mutex disconnectMutex;
 
 	private:
-		void taskImplementation(HTTPRequest&& request, IndividualData& client, std::function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, std::vector<SOCKET>& disconnectedClients);
+		void taskImplementation(HTTPRequest&& request, IndividualData& client, std::function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, std::vector<SOCKET>& disconnectedClients, std::shared_ptr<ResourceExecutor>& resourceExecutor);
 
-		void mainCycle(IndividualData& client, std::vector<SOCKET>& disconnectedClients);
+		void mainCycle(IndividualData& client, std::vector<SOCKET>& disconnectedClients, std::shared_ptr<ResourceExecutor>& resourceExecutor);
 
 		void receiveConnections() override;
 
@@ -49,7 +49,7 @@ namespace framework
 		void clientConnection(SOCKET clientSocket, sockaddr addr) override;
 
 	public:
-		ThreadPoolWebServer(const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount);
+		ThreadPoolWebServer(const json::JSONParser& configuration, const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, bool isCaching, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount);
 
 		~ThreadPoolWebServer() = default;
 	};

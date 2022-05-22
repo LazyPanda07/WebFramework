@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include "WebFramework.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -23,22 +24,23 @@ namespace framework
 				result += tem + '\n';
 			}
 
+			html.close();
+
 			return result;
 		};
 
 		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(html);
-		html.close();
 
 		html.open(allErrorsFolder / web_framework_assets::notFound);
+
 		HTMLErrorsData[HTMLErrors::notFound404] = readFile(html);
-		html.close();
 
 		html.open(allErrorsFolder / web_framework_assets::internalServerError);
+
 		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
-		html.close();
 	}
 
-	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching, const string& pathToTemplates) :
+	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, bool isCaching, const string& pathToTemplates) :
 #ifdef WEB_FRAMEWORK_ASSETS
 		defaultAssets(WEB_FRAMEWORK_ASSETS),
 #else
@@ -46,7 +48,16 @@ namespace framework
 #endif // WEB_FRAMEWORK_ASSETS
 		assets(assets),
 		isCaching(isCaching),
-		dynamicPages(pathToTemplates)
+		dynamicPages(pathToTemplates),
+		fileManager
+		(
+			file_manager::FileManager::getInstance
+			(
+				configuration.contains("threadCount", json::utility::variantTypeEnum::jInt64_t) ?
+				static_cast<uint32_t>(configuration.get<int64_t>("threadCount")) :
+				NULL
+			)
+		)
 	{
 
 	}
