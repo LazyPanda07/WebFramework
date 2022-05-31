@@ -137,26 +137,19 @@ namespace framework
 		response.addBody(result);
 	}
 
-	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, bool isCaching, const string& pathToTemplates) :
+	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates) :
 #ifdef WEB_FRAMEWORK_ASSETS
 		defaultAssets(WEB_FRAMEWORK_ASSETS),
 #else
 		defaultAssets(webFrameworkDefaultAssests),
 #endif // WEB_FRAMEWORK_ASSETS
 		assets(assets),
-		isCaching(isCaching),
 		dynamicPages(pathToTemplates),
-		fileManager
-		(
-			file_manager::FileManager::getInstance
-			(
-				configuration.contains("threadCount", json::utility::variantTypeEnum::jInt64_t) ?
-				static_cast<uint32_t>(configuration.get<int64_t>("threadCount")) :
-				NULL
-			)
-		)
+		fileManager(file_manager::FileManager::getInstance())
 	{
-		if (isCaching)
+		fileManager.getCache().setCacheSize(cachingSize);
+
+		if (cachingSize)
 		{
 			sendStaticFileFunction = bind(&ResourceExecutor::sendStaticFileWithCaching, this, placeholders::_1, placeholders::_2);
 
@@ -253,6 +246,6 @@ namespace framework
 
 	bool ResourceExecutor::getIsCaching() const
 	{
-		return isCaching;
+		return fileManager.getCache().getCacheSize();
 	}
 }

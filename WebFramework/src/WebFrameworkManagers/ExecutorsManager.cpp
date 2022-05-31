@@ -22,14 +22,14 @@ namespace framework
 		return *this;
 	}
 
-	void ExecutorsManager::init(const json::JSONParser& configuraion, const filesystem::path& assets, bool isCaching, const string& pathToTemplates, unordered_map<string, smartPointer<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
+	void ExecutorsManager::init(const json::JSONParser& configuraion, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates, unordered_map<string, smartPointer<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creator, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
 	{
 		this->routes = move(routes);
 		this->creators = move(creators);
 		this->settings = move(settings);
 		this->routeParameters = move(routeParameters);
 
-		resources = make_shared<ResourceExecutor>(configuraion, assets, isCaching, pathToTemplates);
+		resources = make_shared<ResourceExecutor>(configuraion, assets, cachingSize, pathToTemplates);
 
 		resources->init(utility::JSONSettingsParser::ExecutorSettings());
 	}

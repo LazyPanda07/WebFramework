@@ -29,7 +29,7 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());
 		}
 
-		currentConfiguration = (move(ifstream(configurationJSONFile)));
+		currentConfiguration = move(ifstream(configurationJSONFile));
 
 		const vector<json::utility::jsonObject>& settingsPathsJSON = currentConfiguration.getArray(json_settings::settingsPathsKey);
 		const vector<json::utility::jsonObject>& loadSourcesJSON = currentConfiguration.getArray(json_settings::loadSourcesKey);
@@ -52,7 +52,7 @@ namespace framework
 
 		const string& assetsPath = currentConfiguration.get<string>(json_settings::assetsPathKey);
 		const string& templatesPath = currentConfiguration.get<string>(json_settings::templatesPathKey);
-		bool usingAssetsCache = currentConfiguration.get<bool>(json_settings::usingAssetsCacheKey);
+		uint64_t cachingSize = currentConfiguration.get<uint64_t>(json_settings::cachingSize);
 		const string& webServerType = currentConfiguration.get<string>(json_settings::webServerTypeKey);
 		const string& ip = currentConfiguration.get<string>(json_settings::ipKey);
 		const string& port = currentConfiguration.get<string>(json_settings::portKey);
@@ -129,7 +129,7 @@ namespace framework
 					jsonSettings,
 					assetsPath,
 					templatesPath,
-					usingAssetsCache,
+					cachingSize,
 					ip,
 					port,
 					timeout,
@@ -146,7 +146,7 @@ namespace framework
 						jsonSettings,
 						assetsPath,
 						templatesPath,
-						usingAssetsCache,
+						cachingSize,
 						ip,
 						port,
 						timeout,
@@ -162,7 +162,7 @@ namespace framework
 						jsonSettings,
 						assetsPath,
 						templatesPath,
-						usingAssetsCache,
+						cachingSize,
 						ip,
 						port,
 						timeout,

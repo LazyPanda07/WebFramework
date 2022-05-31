@@ -53,7 +53,7 @@ namespace json_settings
 	inline const std::string loadSourcesKey = "loadSources";
 	inline const std::string assetsPathKey = "assetsPath";
 	inline const std::string templatesPathKey = "templatesPath";
-	inline const std::string usingAssetsCacheKey = "usingAssetsCache";
+	inline const std::string cachingSize = "cachingSize";
 	inline const std::string dateFormatKey = "dateFormat";
 	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
 	inline const std::string webServerTypeKey = "webServerType";

@@ -6,7 +6,6 @@
 #include "DynamicPages/WebFrameworkDynamicPages.h"
 #include "WebNetwork/Interfaces/IStaticFile.h"
 #include "WebNetwork/Interfaces/IDynamicFile.h"
-#include "FileManager.h"
 
 namespace framework
 {
@@ -32,7 +31,6 @@ namespace framework
 		std::unordered_map<std::string, std::string> staticCache;
 		std::unordered_map<std::string, std::string> dynamicCache;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
-		bool isCaching;
 		file_manager::FileManager& fileManager;
 		std::function<void(const std::string&, HTTPResponse&)> sendStaticFileFunction;
 		std::function<void(const std::string&, HTTPResponse&, const std::unordered_map<std::string_view, std::string>&)> sendDynamicFileFunction;
@@ -52,7 +50,7 @@ namespace framework
 		void sendDynamicFileWithoutCaching(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables);
 
 	public:
-		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates);
+		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::string& pathToTemplates);
 
 		/// <summary>
 		/// Create assets folder

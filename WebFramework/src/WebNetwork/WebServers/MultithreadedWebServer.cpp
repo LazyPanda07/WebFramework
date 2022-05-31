@@ -184,7 +184,7 @@ namespace framework
 		throw exceptions::NotImplementedException();
 	}
 
-	MultithreadedWebServer::MultithreadedWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+	MultithreadedWebServer::MultithreadedWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer
 		(
 			port,
@@ -200,7 +200,7 @@ namespace framework
 			parsers,
 			assets,
 			pathToTemplates,
-			isCaching,
+			cachingSize,
 			ip,
 			port,
 			timeout,

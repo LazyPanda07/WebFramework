@@ -41,12 +41,12 @@ namespace framework
 		/// </summary>
 		/// <param name="configuration">settings from main .json file</param>
 		/// <param name="assets">path to assets</param>
-		/// <param name="isCaching">is caching resource files</param>
+		/// <param name="cachingSize">size of available cache in bytes</param>
 		/// <param name="pathToTemplates">path to templates folder</param>
 		/// <param name="routes">routes for all executors</param>
 		/// <param name="creator">functions that create executors</param>
 		/// <param name="settings">parsed .json file</param>
-		void init(const json::JSONParser& configuraion, const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates, std::unordered_map<std::string, smartPointer<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creators, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings, std::vector<utility::RouteParameters>&& routeParameters) noexcept;
+		void init(const json::JSONParser& configuraion, const std::filesystem::path& assets, uint64_t cachingSize, const std::string& pathToTemplates, std::unordered_map<std::string, smartPointer<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creators, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings, std::vector<utility::RouteParameters>&& routeParameters) noexcept;
 
 		/// <summary>
 		/// Process requests from server

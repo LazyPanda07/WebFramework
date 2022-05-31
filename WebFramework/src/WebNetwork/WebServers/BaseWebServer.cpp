@@ -10,7 +10,7 @@ using namespace std;
 
 namespace framework
 {
-	BaseWebServer::BaseWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources)
+	BaseWebServer::BaseWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources)
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, createBaseExecutorSubclassFunction> creators;
@@ -158,7 +158,7 @@ namespace framework
 			settings.insert(move(node));
 		}
 
-		executorsManager.init(configuration, assets, isCaching, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters));
+		executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters));
 
 		resources = executorsManager.getResourceExecutor();
 	}

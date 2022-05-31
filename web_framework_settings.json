@@ -13,7 +13,7 @@
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",
-    "usingAssetsCache": true,
+    "cachingSize": 0,
     "webServerType": "threadPool",
     "HTTPS": {
       "useHTTPS": false,
