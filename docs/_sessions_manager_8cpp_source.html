@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('_sessions_manager_8cpp_source.html',''
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classframework_1_1_sessions_manager.html#ab4bdb0beb15a56485d21f446a035f679">  102</a></span>&#160;    <span class="keywordtype">void</span> SessionsManager::setAttribute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; name, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; value)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span> SessionsManager::setAttribute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; name, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; value)</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    {</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        unique_lock&lt;mutex&gt; guard(lock);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('_sessions_manager_8cpp_source.html',''
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        time.updateSessionTime(ip);</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="classframework_1_1_sessions_manager.html#a50799f57e25340ebc22b816191e74b53">  111</a></span>&#160;    <span class="keywordtype">string</span> SessionsManager::getAttribute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; name)</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">string</span> SessionsManager::getAttribute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; name)</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    {</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        unique_lock guard(lock);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
@@ -206,14 +206,14 @@ $(document).ready(function(){initNavTree('_sessions_manager_8cpp_source.html',''
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">return</span> userSession.at(ip).at(name);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b">  120</a></span>&#160;    <span class="keywordtype">void</span> SessionsManager::deleteSession(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordtype">void</span> SessionsManager::deleteSession(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip)</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    {</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        unique_lock guard(lock);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        userSession.erase(ip);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52">  127</a></span>&#160;    <span class="keywordtype">void</span> SessionsManager::deleteAttribute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; name)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">void</span> SessionsManager::deleteAttribute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; name)</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    {</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        unique_lock guard(lock);</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>

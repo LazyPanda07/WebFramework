@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -97,16 +97,16 @@ Inheritance diagram for framework::BaseWebServer:</div>
  <div class="center">
   <img src="classframework_1_1_base_web_server.png" usemap="#framework::BaseWebServer_map" alt=""/>
   <map id="framework::BaseWebServer_map" name="framework::BaseWebServer_map">
-<area href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server" alt="framework::MultithreadedWebServer" shape="rect" coords="0,112,218,136"/>
+<area href="classframework_1_1_multithreaded_web_server.html" alt="framework::MultithreadedWebServer" shape="rect" coords="0,112,218,136"/>
 <area href="classframework_1_1_thread_pool_web_server.html" alt="framework::ThreadPoolWebServer" shape="rect" coords="228,112,446,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a00c0bee2588f87b5a20d43db2e883a86"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86">BaseWebServer</a> (const std::vector&lt; <a class="el" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">utility::JSONSettingsParser</a> &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::string &amp;pathToTemplates, bool isCaching, const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</td></tr>
-<tr class="memdesc:a00c0bee2588f87b5a20d43db2e883a86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a>  <a href="classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86">More...</a><br /></td></tr>
-<tr class="separator:a00c0bee2588f87b5a20d43db2e883a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7498f519611bea8d5a3b1c5ebbcd8aff"><td class="memItemLeft" align="right" valign="top"><a id="a7498f519611bea8d5a3b1c5ebbcd8aff"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BaseWebServer</b> (const json::JSONParser &amp;configuration, const std::vector&lt; <a class="el" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">utility::JSONSettingsParser</a> &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::string &amp;pathToTemplates, uint64_t cachingSize, const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</td></tr>
+<tr class="separator:a7498f519611bea8d5a3b1c5ebbcd8aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -119,105 +119,14 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a741057be8e8790de4f418f6e7f637aa4"><td class="memItemLeft" align="right" valign="top"><a id="a741057be8e8790de4f418f6e7f637aa4"></a>
 <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html">sqlite::SQLiteManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>databasesManager</b></td></tr>
 <tr class="separator:a741057be8e8790de4f418f6e7f637aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8568c7a012a8b1ed43dfcb44386ffadf"><td class="memItemLeft" align="right" valign="top"><a id="a8568c7a012a8b1ed43dfcb44386ffadf"></a>
-<a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>resources</b></td></tr>
-<tr class="separator:a8568c7a012a8b1ed43dfcb44386ffadf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d0af983bc6031d36a563f8206e07fd"><td class="memItemLeft" align="right" valign="top"><a id="a92d0af983bc6031d36a563f8206e07fd"></a>
+std::weak_ptr&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>resources</b></td></tr>
+<tr class="separator:a92d0af983bc6031d36a563f8206e07fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_base_web_server_8h_source.html#l00012">12</a> of file <a class="el" href="_base_web_server_8h_source.html">BaseWebServer.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a00c0bee2588f87b5a20d43db2e883a86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00c0bee2588f87b5a20d43db2e883a86">&#9670;&nbsp;</a></span>BaseWebServer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">framework::BaseWebServer::BaseWebServer </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">utility::JSONSettingsParser</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>parsers</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
-          <td class="paramname"><em>assets</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>pathToTemplates</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>isCaching</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>ip</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">DWORD&#160;</td>
-          <td class="paramname"><em>timeout</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>pathToSources</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Construct <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a> </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">settings</td><td>settings from .json files</td></tr>
-    <tr><td class="paramname">assets</td><td>path to assets folder</td></tr>
-    <tr><td class="paramname">pathToTemplates</td><td>path to templates folder</td></tr>
-    <tr><td class="paramname">isCaching</td><td>is caching resource files</td></tr>
-    <tr><td class="paramname">ip</td><td>0.0.0.0 alias for running in all ips</td></tr>
-    <tr><td class="paramname">port</td><td>default is 80 or 443</td></tr>
-    <tr><td class="paramname">timeout</td><td>wait for client connection in milliseconds</td></tr>
-    <tr><td class="paramname">pathToSources</td><td>paths to files with executors</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html" title="Wrong file path">framework::exceptions::FileDoesNotExistException</a></td><td></td></tr>
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_cant_load_source_exception.html" title="Wrong path to loadSource from .ini">framework::exceptions::CantLoadSourceException</a></td><td></td></tr>
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_cant_find_function_exception.html" title="Can&#39;t find createBaseExecutorSubclassFunction for executor">framework::exceptions::CantFindFunctionException</a></td><td></td></tr>
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_missing_load_type_exception.html" title="Missing loadType in .json file of executor">framework::exceptions::MissingLoadTypeException</a></td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="_base_web_server_8cpp_source.html#l00013">13</a> of file <a class="el" href="_base_web_server_8cpp_source.html">BaseWebServer.cpp</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>WebFramework/src/WebNetwork/WebServers/<a class="el" href="_base_web_server_8h_source.html">BaseWebServer.h</a></li>
 <li>WebFramework/src/WebNetwork/WebServers/<a class="el" href="_base_web_server_8cpp_source.html">BaseWebServer.cpp</a></li>
 </ul>

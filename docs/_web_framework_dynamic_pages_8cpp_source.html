@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -199,7 +199,7 @@ $(document).ready(function(){initNavTree('_web_framework_dynamic_pages_8cpp_sour
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_dynamic_pages.html#aa547fed2d49ba906b9324bff1023afd0">  113</a></span>&#160;    WebFrameworkDynamicPages::WebFrameworkDynamicPages(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToTemplates) :</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    WebFrameworkDynamicPages::WebFrameworkDynamicPages(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToTemplates) :</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        pathToTemplates(pathToTemplates)</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    {</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        dynamicPagesFunctions.insert({ <span class="stringliteral">&quot;print&quot;</span>, print });</div>
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('_web_framework_dynamic_pages_8cpp_sour
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        dynamicPagesFunctions.insert({ <span class="stringliteral">&quot;for&quot;</span>, bind(forImplementation, placeholders::_1, ref(dynamicPagesFunctions)) });</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    }</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_dynamic_pages.html#a7971923ed3881f8762d4196a113efd9a">  121</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_web_framework_dynamic_pages.html#a7971923ed3881f8762d4196a113efd9a">WebFrameworkDynamicPages::run</a>(<span class="keyword">const</span> unordered_map&lt;string_view, string&gt;&amp; variables, <span class="keywordtype">string</span>&amp; source)</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">void</span> WebFrameworkDynamicPages::run(<span class="keyword">const</span> unordered_map&lt;string_view, string&gt;&amp; variables, <span class="keywordtype">string</span>&amp; source)</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    {</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordtype">size_t</span> nextSectionStart = source.find(<span class="stringliteral">&quot;{%&quot;</span>);</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('_web_framework_dynamic_pages_8cpp_sour
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            <span class="keywordflow">if</span> (nextSectionEnd == string::npos)</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html">exceptions::DynamicPagesSyntaxException</a>(::exceptions::sectionDeclarationSyntaxError);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                <span class="keywordflow">throw</span> exceptions::DynamicPagesSyntaxException(::exceptions::sectionDeclarationSyntaxError);</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            }</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordtype">string</span> code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);</div>
@@ -238,36 +238,30 @@ $(document).ready(function(){initNavTree('_web_framework_dynamic_pages_8cpp_sour
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">if</span> (source.find(<span class="stringliteral">&quot;{%&quot;</span>) != string::npos)</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            this-&gt;<a class="code" href="classframework_1_1_web_framework_dynamic_pages.html#a7971923ed3881f8762d4196a113efd9a">run</a>(variables, source);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            this-&gt;run(variables, source);</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        }</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    }</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_dynamic_pages.html#aaa5305dd02a52243fd6efc828bcf4223">  156</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_web_framework_dynamic_pages.html#aaa5305dd02a52243fd6efc828bcf4223">WebFrameworkDynamicPages::registerDynamicFunction</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; functionName, <span class="keyword">function</span>&lt;<span class="keywordtype">string</span>(<span class="keyword">const</span> vector&lt;string&gt;&amp;)&gt;&amp;&amp; <span class="keyword">function</span>)</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordtype">void</span> WebFrameworkDynamicPages::registerDynamicFunction(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; functionName, <span class="keyword">function</span>&lt;<span class="keywordtype">string</span>(<span class="keyword">const</span> vector&lt;string&gt;&amp;)&gt;&amp;&amp; <span class="keyword">function</span>)</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    {</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        dynamicPagesFunctions.insert(make_pair(functionName, move(<span class="keyword">function</span>)));</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    }</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_dynamic_pages.html#a4376c926c04fd8d10185934281d289ad">  161</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classframework_1_1_web_framework_dynamic_pages.html#a4376c926c04fd8d10185934281d289ad">WebFrameworkDynamicPages::unregisterDynamicFunction</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; functionName)</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">void</span> WebFrameworkDynamicPages::unregisterDynamicFunction(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; functionName)</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    {</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        dynamicPagesFunctions.erase(functionName);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_dynamic_pages.html#a8f1bc54fd72607f6ea663529b8137c8f">  166</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classframework_1_1_web_framework_dynamic_pages.html#a8f1bc54fd72607f6ea663529b8137c8f">WebFrameworkDynamicPages::isDynamicFunctionRegistered</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; functionName)</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">bool</span> WebFrameworkDynamicPages::isDynamicFunctionRegistered(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; functionName)</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    {</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordflow">return</span> dynamicPagesFunctions.find(functionName) != dynamicPagesFunctions.end();</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_dynamic_pages.html#ac8a59bd090d91ce85d4b0d2eb043d95d">  171</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <a class="code" href="classframework_1_1_web_framework_dynamic_pages.html#ac8a59bd090d91ce85d4b0d2eb043d95d">WebFrameworkDynamicPages::getPathToTemplates</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; WebFrameworkDynamicPages::getPathToTemplates()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keywordflow">return</span> pathToTemplates;</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1_web_framework_dynamic_pages_html_a4376c926c04fd8d10185934281d289ad"><div class="ttname"><a href="classframework_1_1_web_framework_dynamic_pages.html#a4376c926c04fd8d10185934281d289ad">framework::WebFrameworkDynamicPages::unregisterDynamicFunction</a></div><div class="ttdeci">void unregisterDynamicFunction(const std::string &amp;functionName)</div><div class="ttdoc">Remove function from .wfdp interpreter.</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00161">WebFrameworkDynamicPages.cpp:161</a></div></div>
-<div class="ttc" id="aclassframework_1_1_web_framework_dynamic_pages_html_a7971923ed3881f8762d4196a113efd9a"><div class="ttname"><a href="classframework_1_1_web_framework_dynamic_pages.html#a7971923ed3881f8762d4196a113efd9a">framework::WebFrameworkDynamicPages::run</a></div><div class="ttdeci">void run(const std::unordered_map&lt; std::string_view, std::string &gt; &amp;variables, std::string &amp;source)</div><div class="ttdoc">Run interpreter</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00121">WebFrameworkDynamicPages.cpp:121</a></div></div>
-<div class="ttc" id="aclassframework_1_1_web_framework_dynamic_pages_html_a8f1bc54fd72607f6ea663529b8137c8f"><div class="ttname"><a href="classframework_1_1_web_framework_dynamic_pages.html#a8f1bc54fd72607f6ea663529b8137c8f">framework::WebFrameworkDynamicPages::isDynamicFunctionRegistered</a></div><div class="ttdeci">bool isDynamicFunctionRegistered(const std::string &amp;functionName)</div><div class="ttdoc">Check if function is registered.</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00166">WebFrameworkDynamicPages.cpp:166</a></div></div>
-<div class="ttc" id="aclassframework_1_1_web_framework_dynamic_pages_html_aaa5305dd02a52243fd6efc828bcf4223"><div class="ttname"><a href="classframework_1_1_web_framework_dynamic_pages.html#aaa5305dd02a52243fd6efc828bcf4223">framework::WebFrameworkDynamicPages::registerDynamicFunction</a></div><div class="ttdeci">void registerDynamicFunction(const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function)</div><div class="ttdoc">Add new function in .wfdp interpreter.</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00156">WebFrameworkDynamicPages.cpp:156</a></div></div>
-<div class="ttc" id="aclassframework_1_1_web_framework_dynamic_pages_html_ac8a59bd090d91ce85d4b0d2eb043d95d"><div class="ttname"><a href="classframework_1_1_web_framework_dynamic_pages.html#ac8a59bd090d91ce85d4b0d2eb043d95d">framework::WebFrameworkDynamicPages::getPathToTemplates</a></div><div class="ttdeci">const std::string &amp; getPathToTemplates() const</div><div class="ttdoc">Getter for pathToTemplates</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_dynamic_pages_8cpp_source.html#l00171">WebFrameworkDynamicPages.cpp:171</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_dynamic_pages_syntax_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html">framework::exceptions::DynamicPagesSyntaxException</a></div><div class="ttdoc">Syntax erros in .wfdp</div><div class="ttdef"><b>Definition:</b> <a href="_dynamic_pages_syntax_exception_8h_source.html#l00012">DynamicPagesSyntaxException.h:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

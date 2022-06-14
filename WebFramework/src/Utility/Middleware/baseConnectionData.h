@@ -11,9 +11,11 @@ namespace framework
 		/// </summary>
 		struct WEB_FRAMEWORK_API baseConnectionData
 		{
+		public:
 			std::string ip;
 			std::string port;
 
+		public:
 			/// <summary>
 			/// Construct baseConnectionData from raw ip and port
 			/// </summary>

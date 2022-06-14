@@ -63,7 +63,6 @@ var hierarchy =
           [ "framework::exceptions::SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", null ]
         ] ],
         [ "framework::exceptions::DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", null ],
-        [ "framework::exceptions::FileDoesNotExistException", "classframework_1_1exceptions_1_1_file_does_not_exist_exception.html", null ],
         [ "framework::exceptions::StringConversionException", "classframework_1_1exceptions_1_1_string_conversion_exception.html", null ]
       ] ]
     ] ],

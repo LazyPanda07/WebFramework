@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -101,8 +101,8 @@ Inheritance diagram for framework::ResourceExecutor:</div>
  <div class="center">
   <img src="classframework_1_1_resource_executor.png" usemap="#framework::ResourceExecutor_map" alt=""/>
   <map id="framework::ResourceExecutor_map" name="framework::ResourceExecutor_map">
-<area href="classframework_1_1interfaces_1_1_i_static_file.html" title="Providing sendStaticFile method" alt="framework::interfaces::IStaticFile" shape="rect" coords="0,56,212,80"/>
-<area href="classframework_1_1interfaces_1_1_i_dynamic_file.html" title="Providing sendDynamicFile method" alt="framework::interfaces::IDynamicFile" shape="rect" coords="222,56,434,80"/>
+<area href="classframework_1_1interfaces_1_1_i_static_file.html" alt="framework::interfaces::IStaticFile" shape="rect" coords="0,56,212,80"/>
+<area href="classframework_1_1interfaces_1_1_i_dynamic_file.html" alt="framework::interfaces::IDynamicFile" shape="rect" coords="222,56,434,80"/>
 <area href="classframework_1_1_base_stateless_executor.html" title="Base class for executors with constant or static states" alt="framework::BaseStatelessExecutor" shape="rect" coords="444,56,656,80"/>
 <area href="classframework_1_1_base_executor.html" title="Base class for all executors" alt="framework::BaseExecutor" shape="rect" coords="444,0,656,24"/>
   </map>
@@ -110,9 +110,9 @@ Inheritance diagram for framework::ResourceExecutor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad12f6c21a3615d1d1b9f1dc477dba91c"><td class="memItemLeft" align="right" valign="top"><a id="ad12f6c21a3615d1d1b9f1dc477dba91c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceExecutor</b> (const std::filesystem::path &amp;assets, bool isCaching, const std::string &amp;pathToTemplates)</td></tr>
-<tr class="separator:ad12f6c21a3615d1d1b9f1dc477dba91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa723ed6f8adf29946a7da59100e8dbfc"><td class="memItemLeft" align="right" valign="top"><a id="aa723ed6f8adf29946a7da59100e8dbfc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ResourceExecutor</b> (const json::JSONParser &amp;configuration, const std::filesystem::path &amp;assets, uint64_t cachingSize, const std::string &amp;pathToTemplates)</td></tr>
+<tr class="separator:aa723ed6f8adf29946a7da59100e8dbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67dcc7f0aa09e4c3259bbf26ef9f8b5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a67dcc7f0aa09e4c3259bbf26ef9f8b5e">init</a> (const <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &amp;settings) override</td></tr>
 <tr class="memdesc:a67dcc7f0aa09e4c3259bbf26ef9f8b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create assets folder  <a href="classframework_1_1_resource_executor.html#a67dcc7f0aa09e4c3259bbf26ef9f8b5e">More...</a><br /></td></tr>
 <tr class="separator:a67dcc7f0aa09e4c3259bbf26ef9f8b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,6 +146,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad84c1d96c04cac84348d2e03b8297414"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#ad84c1d96c04cac84348d2e03b8297414">internalServerError</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
 <tr class="memdesc:ad84c1d96c04cac84348d2e03b8297414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send 500.html from WebFrameworkAssets  <a href="classframework_1_1_resource_executor.html#ad84c1d96c04cac84348d2e03b8297414">More...</a><br /></td></tr>
 <tr class="separator:ad84c1d96c04cac84348d2e03b8297414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58f1ce4b9eafff8302a44890bd51742d"><td class="memItemLeft" align="right" valign="top"><a id="a58f1ce4b9eafff8302a44890bd51742d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>getIsCaching</b> () const</td></tr>
+<tr class="separator:a58f1ce4b9eafff8302a44890bd51742d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classframework_1_1_base_stateless_executor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classframework_1_1_base_stateless_executor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classframework_1_1_base_stateless_executor.html">framework::BaseStatelessExecutor</a></td></tr>
 <tr class="memitem:a1e1881e40863cf95423b184e6d71000a inherit pub_methods_classframework_1_1_base_stateless_executor"><td class="memItemLeft" align="right" valign="top">virtual BaseExecutor::executorType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">getType</a> () const final override</td></tr>
 <tr class="memdesc:a1e1881e40863cf95423b184e6d71000a inherit pub_methods_classframework_1_1_base_stateless_executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get executor type  <a href="classframework_1_1_base_stateless_executor.html#a1e1881e40863cf95423b184e6d71000a">More...</a><br /></td></tr>
@@ -213,7 +216,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00191">191</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00150">150</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -268,7 +271,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classframework_1_1_base_executor.html#a32c6cc48e9211a66a757eabf54f9bdda">framework::BaseExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00164">164</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00123">123</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -317,7 +320,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classframework_1_1_base_executor.html#ac060082b5f9c120b70fcf21b929cb231">framework::BaseExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00174">174</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00133">133</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -355,7 +358,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classframework_1_1_base_executor.html#ae745ee7647fda519940a0dc5f0100c44">framework::BaseExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00054">54</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00061">61</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -383,7 +386,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00198">198</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00157">157</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -420,9 +423,9 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if function is registered, false otherwise </dd></dl>
 
-<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a54745131876dd15cf91e90b327b8d62b">framework::interfaces::IDynamicFile</a>.</p>
+<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html">framework::interfaces::IDynamicFile</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00159">159</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00118">118</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -450,7 +453,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00184">184</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00143">143</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -497,9 +500,9 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a505718a448fc166b868344d8096b75f9">framework::interfaces::IDynamicFile</a>.</p>
+<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html">framework::interfaces::IDynamicFile</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00149">149</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00108">108</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -553,14 +556,14 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html" title="Wrong file path">framework::exceptions::FileDoesNotExistException</a></td><td></td></tr>
+    <tr><td class="paramname">file_manager::exceptions::FileDoesNotExistException</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#aa66ec604c0b9dcefbbc60eeeffb63b7c">framework::interfaces::IDynamicFile</a>.</p>
+<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html">framework::interfaces::IDynamicFile</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00106">106</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00091">91</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -608,14 +611,14 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html" title="Wrong file path">framework::exceptions::FileDoesNotExistException</a></td><td></td></tr>
+    <tr><td class="paramname">file_manager::exceptions::FileDoesNotExistException</td><td></td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_static_file.html#a8eaccc4e7a351c788125b7658187135b">framework::interfaces::IStaticFile</a>.</p>
+<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_static_file.html">framework::interfaces::IStaticFile</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00069">69</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00076">76</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -651,9 +654,9 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a8d0af89e3993630d1dbec76e50f592ff">framework::interfaces::IDynamicFile</a>.</p>
+<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html">framework::interfaces::IDynamicFile</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00154">154</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00113">113</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>

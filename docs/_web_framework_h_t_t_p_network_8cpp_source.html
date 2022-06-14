@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -93,27 +93,24 @@ $(document).ready(function(){initNavTree('_web_framework_h_t_t_p_network_8cpp_so
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">    7</a></span>&#160;    WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(SOCKET clientSocket) :</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(SOCKET clientSocket) :</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        HTTPNetwork(clientSocket)</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    }</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port) :</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port) :</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        HTTPNetwork(ip, port)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae46a8b3b231215142cd3a5c30df347b1">   19</a></span>&#160;    <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork</a>(<span class="keyword">const</span> <a class="code" href="structframework_1_1utility_1_1base_connection_data.html">utility::baseConnectionData</a>&amp; data) :</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="classframework_1_1_web_framework_h_t_t_p_network.html">WebFrameworkHTTPNetwork</a>(data.ip, data.port)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(<span class="keyword">const</span> utility::baseConnectionData&amp; data) :</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        WebFrameworkHTTPNetwork(data.ip, data.port)</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_network_html"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_network.html">framework::WebFrameworkHTTPNetwork</a></div><div class="ttdoc">Network functions for HTTP</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_h_t_t_p_network_8h_source.html#l00012">WebFrameworkHTTPNetwork.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_network_html_ae38eff9b3768acd9733ed601f5ca20f8"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">framework::WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork</a></div><div class="ttdeci">WebFrameworkHTTPNetwork(SOCKET clientSocket)</div><div class="ttdoc">Server side constructor</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_h_t_t_p_network_8cpp_source.html#l00007">WebFrameworkHTTPNetwork.cpp:7</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1base_connection_data_html"><div class="ttname"><a href="structframework_1_1utility_1_1base_connection_data.html">framework::utility::baseConnectionData</a></div><div class="ttdoc">Contains all data for connection to server</div><div class="ttdef"><b>Definition:</b> <a href="base_connection_data_8h_source.html#l00012">baseConnectionData.h:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

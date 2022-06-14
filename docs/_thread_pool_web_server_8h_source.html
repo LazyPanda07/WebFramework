@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -127,9 +127,9 @@ $(document).ready(function(){initNavTree('_thread_pool_web_server_8h_source.html
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        std::mutex disconnectMutex;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> taskImplementation(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp; request, IndividualData&amp; client, std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp;, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp;)&gt; executorMethod, std::vector&lt;SOCKET&gt;&amp; disconnectedClients);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> taskImplementation(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp; request, IndividualData&amp; client, std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp;, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp;)&gt; executorMethod, std::vector&lt;SOCKET&gt;&amp; disconnectedClients, std::shared_ptr&lt;ResourceExecutor&gt;&amp; resourceExecutor);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> mainCycle(IndividualData&amp; client, std::vector&lt;SOCKET&gt;&amp; disconnectedClients);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> mainCycle(IndividualData&amp; client, std::vector&lt;SOCKET&gt;&amp; disconnectedClients, std::shared_ptr&lt;ResourceExecutor&gt;&amp; resourceExecutor);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> receiveConnections() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('_thread_pool_web_server_8h_source.html
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">void</span> clientConnection(SOCKET clientSocket, sockaddr addr) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="classframework_1_1_thread_pool_web_server.html">ThreadPoolWebServer</a>(<span class="keyword">const</span> std::vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> std::filesystem::path&amp; assets, <span class="keyword">const</span> std::string&amp; pathToTemplates, <span class="keywordtype">bool</span> isCaching, <span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port, DWORD timeout, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; pathToSources, uint32_t threadCount);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="classframework_1_1_thread_pool_web_server.html">ThreadPoolWebServer</a>(<span class="keyword">const</span> json::JSONParser&amp; configuration, <span class="keyword">const</span> std::vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> std::filesystem::path&amp; assets, <span class="keyword">const</span> std::string&amp; pathToTemplates, uint64_t cachingSize, <span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port, DWORD timeout, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; pathToSources, uint32_t threadCount);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        ~<a class="code" href="classframework_1_1_thread_pool_web_server.html">ThreadPoolWebServer</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    };</div>

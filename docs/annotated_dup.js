@@ -9,7 +9,6 @@ var annotated_dup =
         [ "CantLoadSourceException", "classframework_1_1exceptions_1_1_cant_load_source_exception.html", "classframework_1_1exceptions_1_1_cant_load_source_exception" ],
         [ "DatabaseException", "classframework_1_1exceptions_1_1_database_exception.html", "classframework_1_1exceptions_1_1_database_exception" ],
         [ "DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception" ],
-        [ "FileDoesNotExistException", "classframework_1_1exceptions_1_1_file_does_not_exist_exception.html", "classframework_1_1exceptions_1_1_file_does_not_exist_exception" ],
         [ "MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", "classframework_1_1exceptions_1_1_missing_load_type_exception" ],
         [ "NotImplementedException", "classframework_1_1exceptions_1_1_not_implemented_exception.html", "classframework_1_1exceptions_1_1_not_implemented_exception" ],
         [ "SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", "classframework_1_1exceptions_1_1_s_q_lite3_exception" ],

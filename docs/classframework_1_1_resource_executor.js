@@ -1,10 +1,11 @@
 var classframework_1_1_resource_executor =
 [
-    [ "ResourceExecutor", "classframework_1_1_resource_executor.html#ad12f6c21a3615d1d1b9f1dc477dba91c", null ],
+    [ "ResourceExecutor", "classframework_1_1_resource_executor.html#aa723ed6f8adf29946a7da59100e8dbfc", null ],
     [ "~ResourceExecutor", "classframework_1_1_resource_executor.html#a32900bd02c53d19b751f8f58f52e8469", null ],
     [ "badRequestError", "classframework_1_1_resource_executor.html#aea342d3db9b7ec7c20ab8d76a39ab03a", null ],
     [ "doGet", "classframework_1_1_resource_executor.html#a46ed4fe3ea33cdde372dee53e0108fac", null ],
     [ "doPost", "classframework_1_1_resource_executor.html#ab0fcab87495dc0c1c09f2605f35a8f20", null ],
+    [ "getIsCaching", "classframework_1_1_resource_executor.html#a58f1ce4b9eafff8302a44890bd51742d", null ],
     [ "init", "classframework_1_1_resource_executor.html#a67dcc7f0aa09e4c3259bbf26ef9f8b5e", null ],
     [ "internalServerError", "classframework_1_1_resource_executor.html#ad84c1d96c04cac84348d2e03b8297414", null ],
     [ "isDynamicFunctionRegistered", "classframework_1_1_resource_executor.html#aa7f82ae6b5d61fe1ac92e89902b20a96", null ],

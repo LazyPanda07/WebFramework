@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('_web_framework_h_t_t_p_s_network_8cpp_
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_s_network.html#a83bed1b51aba6b44f34ca87bf9a4ebad">    7</a></span>&#160;    WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(SOCKET clientSocket, SSL* ssl, SSL_CTX* context) :</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(SOCKET clientSocket, SSL* ssl, SSL_CTX* context) :</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        HTTPSNetwork</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        (</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            clientSocket,</div>
@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('_web_framework_h_t_t_p_s_network_8cpp_
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    }</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classframework_1_1_web_framework_h_t_t_p_s_network.html#a83bed1b51aba6b44f34ca87bf9a4ebad">WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port) :</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port) :</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        HTTPSNetwork</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        (</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            ip,</div>
@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('_web_framework_h_t_t_p_s_network_8cpp_
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    }</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classframework_1_1_web_framework_h_t_t_p_s_network.html#ac34e4b02a0648fa091ade5895b28a97a">   28</a></span>&#160;    <a class="code" href="classframework_1_1_web_framework_h_t_t_p_s_network.html#a83bed1b51aba6b44f34ca87bf9a4ebad">WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork</a>(<span class="keyword">const</span> <a class="code" href="structframework_1_1utility_1_1base_connection_data.html">utility::baseConnectionData</a>&amp; data) :</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(<span class="keyword">const</span> utility::baseConnectionData&amp; data) :</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        HTTPSNetwork</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        (</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            data.ip,</div>
@@ -124,8 +124,6 @@ $(document).ready(function(){initNavTree('_web_framework_h_t_t_p_s_network_8cpp_
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1_web_framework_h_t_t_p_s_network_html_a83bed1b51aba6b44f34ca87bf9a4ebad"><div class="ttname"><a href="classframework_1_1_web_framework_h_t_t_p_s_network.html#a83bed1b51aba6b44f34ca87bf9a4ebad">framework::WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork</a></div><div class="ttdeci">WebFrameworkHTTPSNetwork(SOCKET clientSocket, SSL *ssl, SSL_CTX *context)</div><div class="ttdoc">Server side constructor.</div><div class="ttdef"><b>Definition:</b> <a href="_web_framework_h_t_t_p_s_network_8cpp_source.html#l00007">WebFrameworkHTTPSNetwork.cpp:7</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1base_connection_data_html"><div class="ttname"><a href="structframework_1_1utility_1_1base_connection_data.html">framework::utility::baseConnectionData</a></div><div class="ttdoc">Contains all data for connection to server</div><div class="ttdef"><b>Definition:</b> <a href="base_connection_data_8h_source.html#l00012">baseConnectionData.h:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

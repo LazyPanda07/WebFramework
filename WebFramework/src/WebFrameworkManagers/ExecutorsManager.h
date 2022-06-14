@@ -9,12 +9,6 @@
 
 namespace framework
 {
-	/// <summary>
-	/// Managing requests
-	/// <para>Initializing subclasses of BaseStatefulExecutor</para>
-	/// <para>Holding pointer to ResourceExecutor</para>
-	/// <para>Initialize only through WebFramework</para>
-	/// </summary>
 	class ExecutorsManager
 	{
 	private:
@@ -36,33 +30,10 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		/// <summary>
-		/// Initialize method, called from WebFramework
-		/// </summary>
-		/// <param name="configuration">settings from main .json file</param>
-		/// <param name="assets">path to assets</param>
-		/// <param name="cachingSize">size of available cache in bytes</param>
-		/// <param name="pathToTemplates">path to templates folder</param>
-		/// <param name="routes">routes for all executors</param>
-		/// <param name="creator">functions that create executors</param>
-		/// <param name="settings">parsed .json file</param>
 		void init(const json::JSONParser& configuraion, const std::filesystem::path& assets, uint64_t cachingSize, const std::string& pathToTemplates, std::unordered_map<std::string, smartPointer<BaseExecutor>>&& routes, std::unordered_map<std::string, createBaseExecutorSubclassFunction>&& creators, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings, std::vector<utility::RouteParameters>&& routeParameters) noexcept;
 
-		/// <summary>
-		/// Process requests from server
-		/// </summary>
-		/// <param name="request">request from client</param>
-		/// <param name="response">response to client</param>
-		/// <param name="statefulExecutors">all stateful executors for client</param>
-		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
-		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		/// <exception cref="std::out_of_range"></exception>
 		void service(HTTPRequest&& request, HTTPResponse& response, std::unordered_map<std::string, smartPointer<BaseExecutor>>& statefulExecutors, std::optional<std::function<void(HTTPRequest&&, HTTPResponse&)>>& threadPoolFunction);
 
-		/// <summary>
-		/// Getter for ResourceExecutor
-		/// </summary>
-		/// <returns>ResourceExecutor</returns>
 		std::shared_ptr<ResourceExecutor>& getResourceExecutor();
 
 		~ExecutorsManager() = default;

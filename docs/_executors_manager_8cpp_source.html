@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -104,35 +104,35 @@ $(document).ready(function(){initNavTree('_executors_manager_8cpp_source.html','
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    ExecutorsManager&amp; ExecutorsManager::operator = (ExecutorsManager&amp;&amp; other) noexcept</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        this-&gt;routes = move(other.routes);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        this-&gt;creator = move(other.creator);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        this-&gt;creators = move(other.creators);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        this-&gt;settings = move(other.settings);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        this-&gt;resources = move(other.resources);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classframework_1_1_executors_manager.html#a7435a9a4c46fb661836377f2c44da22f">   25</a></span>&#160;    <span class="keywordtype">void</span> ExecutorsManager::init(<span class="keyword">const</span> filesystem::path&amp; assets, <span class="keywordtype">bool</span> isCaching, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToTemplates, unordered_map&lt;<span class="keywordtype">string</span>, smartPointer&lt;BaseExecutor&gt;&gt;&amp;&amp; routes, unordered_map&lt;string, createBaseExecutorSubclassFunction&gt;&amp;&amp; creator, unordered_map&lt;string, utility::JSONSettingsParser::ExecutorSettings&gt;&amp;&amp; settings, vector&lt;utility::RouteParameters&gt;&amp;&amp; routeParameters) noexcept</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">void</span> ExecutorsManager::init(<span class="keyword">const</span> json::JSONParser&amp; configuraion, <span class="keyword">const</span> filesystem::path&amp; assets, uint64_t cachingSize, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToTemplates, unordered_map&lt;<span class="keywordtype">string</span>, smartPointer&lt;BaseExecutor&gt;&gt;&amp;&amp; routes, unordered_map&lt;string, createBaseExecutorSubclassFunction&gt;&amp;&amp; creator, unordered_map&lt;string, utility::JSONSettingsParser::ExecutorSettings&gt;&amp;&amp; settings, vector&lt;utility::RouteParameters&gt;&amp;&amp; routeParameters) noexcept</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        this-&gt;routes = move(routes);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        this-&gt;creator = move(creator);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        this-&gt;creators = move(creators);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        this-&gt;settings = move(settings);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        this-&gt;routeParameters = move(routeParameters);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        resources = make_unique&lt;ResourceExecutor&gt;(assets, isCaching, pathToTemplates);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        resources = make_shared&lt;ResourceExecutor&gt;(configuraion, assets, cachingSize, pathToTemplates);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        resources-&gt;init(<a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a>());</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        resources-&gt;init(utility::JSONSettingsParser::ExecutorSettings());</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classframework_1_1_executors_manager.html#af72a31f88757511221d122a2110c1921">   37</a></span>&#160;    <span class="keywordtype">void</span> ExecutorsManager::service(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp; request, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp; response, unordered_map&lt;<span class="keywordtype">string</span>, smartPointer&lt;BaseExecutor&gt;&gt;&amp; statefulExecutors, optional&lt;<span class="keyword">function</span>&lt;<span class="keywordtype">void</span>(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp;, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp;)&gt;&gt;&amp; threadPoolFunction)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> ExecutorsManager::service(HTTPRequest&amp;&amp; request, HTTPResponse&amp; response, unordered_map&lt;<span class="keywordtype">string</span>, smartPointer&lt;BaseExecutor&gt;&gt;&amp; statefulExecutors, optional&lt;<span class="keyword">function</span>&lt;<span class="keywordtype">void</span>(HTTPRequest&amp;&amp;, HTTPResponse&amp;)&gt;&gt;&amp; threadPoolFunction)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; method = request.getMethod();</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordtype">string</span> parameters = request.getRawParameters();</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            decltype(routes.find(<span class="stringliteral">&quot;&quot;</span>)) executor;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">bool</span> fileRequest = parameters.find(<span class="charliteral">&#39;.&#39;</span>) != string::npos;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">bool</span> fileRequest = parameters.find(&#39;.&#39;) != <span class="keywordtype">string</span>::npos;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">if</span> (parameters.find(<span class="charliteral">&#39;?&#39;</span>) != string::npos)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            if (parameters.find(&#39;?&#39;) != <span class="keywordtype">string</span>::npos)</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                parameters.resize(parameters.find(<span class="charliteral">&#39;?&#39;</span>));</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            }</div>
@@ -154,18 +154,18 @@ $(document).ready(function(){initNavTree('_executors_manager_8cpp_source.html','
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                        <span class="keywordflow">if</span> (executorSettings == settings.end())</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                        {</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                            <span class="keyword">auto</span> it = find_if(routeParameters.begin(), routeParameters.end(),</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                [&amp;parameters](<span class="keyword">const</span> <a class="code" href="structframework_1_1utility_1_1_route_parameters.html">utility::RouteParameters</a>&amp; value) {return parameters.find(value.baseRoute) != string::npos; });</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                [&amp;parameters](<span class="keyword">const</span> utility::RouteParameters&amp; value) {return parameters.find(value.baseRoute) != string::npos; });</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                            <span class="keywordflow">if</span> (it == routeParameters.end())</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                            {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_not_implemented_exception.html">exceptions::NotImplementedException</a>(); <span class="comment">// 404</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                <span class="keywordflow">throw</span> exceptions::NotImplementedException(); <span class="comment">// 404</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                            }</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                            executorSettings = settings.find(it-&gt;baseRoute);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                            <span class="keywordflow">if</span> (executorSettings == settings.end())</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                            {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_not_implemented_exception.html">exceptions::NotImplementedException</a>(); <span class="comment">// 404</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                                <span class="keywordflow">throw</span> exceptions::NotImplementedException(); <span class="comment">// 404</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                            }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                            <span class="keywordtype">size_t</span> i = 0;</div>
@@ -190,11 +190,11 @@ $(document).ready(function(){initNavTree('_executors_manager_8cpp_source.html','
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                    }</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                    <span class="keywordflow">catch</span> (<span class="keyword">const</span> invalid_argument&amp;)</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                                    {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                        <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_bad_request_exception.html">exceptions::BadRequestException</a>(<span class="stringliteral">&quot;Can&#39;t convert to int64_t&quot;</span>); <span class="comment">// 400</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                                        <span class="keywordflow">throw</span> exceptions::BadRequestException(<span class="stringliteral">&quot;Can&#39;t convert to int64_t&quot;</span>); <span class="comment">// 400</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                                    }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                                    <span class="keywordflow">catch</span> (<span class="keyword">const</span> out_of_range&amp;)</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                    {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                                        <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_bad_request_exception.html">exceptions::BadRequestException</a>(<span class="stringliteral">&quot;Out of range of int64_t&quot;</span>); <span class="comment">// 400</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                                        <span class="keywordflow">throw</span> exceptions::BadRequestException(<span class="stringliteral">&quot;Out of range of int64_t&quot;</span>); <span class="comment">// 400</span></div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                                    }</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                                    <span class="keywordflow">break</span>;</div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('_executors_manager_8cpp_source.html','
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                            parameters = it-&gt;baseRoute;</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                        }</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        executor = routes.insert(make_pair(move(parameters), smartPointer&lt;BaseExecutor&gt;(creator[executorSettings-&gt;second.name]()))).first;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                        executor = routes.insert(make_pair(move(parameters), smartPointer&lt;BaseExecutor&gt;(creators[executorSettings-&gt;second.name]()))).first;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                        executor-&gt;second-&gt;init(executorSettings-&gt;second);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                        <span class="keywordflow">if</span> (executor-&gt;second-&gt;getType() == BaseExecutor::executorType::stateful || executor-&gt;second-&gt;getType() == BaseExecutor::executorType::heavyOperationStateful)</div>
@@ -297,11 +297,11 @@ $(document).ready(function(){initNavTree('_executors_manager_8cpp_source.html','
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                }</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            }</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code" href="classframework_1_1exceptions_1_1_base_executor_exception.html">exceptions::BaseExecutorException</a>&amp;)</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">catch</span> (<span class="keyword">const</span> exceptions::BaseExecutorException&amp;)</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        {</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="keywordflow">throw</span>;</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        }</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">exceptions::FileDoesNotExistException</a>&amp;)</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="keywordflow">catch</span> (<span class="keyword">const</span> file_manager::exceptions::FileDoesNotExistException&amp;)</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        {</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <span class="keywordflow">throw</span>;</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        }</div>
@@ -311,19 +311,11 @@ $(document).ready(function(){initNavTree('_executors_manager_8cpp_source.html','
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        }</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    }</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="classframework_1_1_executors_manager.html#a42352eb3cef31175042dbdf98a9aae3f">  225</a></span>&#160;    smartPointer&lt;ResourceExecutor&gt;&amp; ExecutorsManager::getResourceExecutor()</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    shared_ptr&lt;ResourceExecutor&gt;&amp; ExecutorsManager::getResourceExecutor()</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    {</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="keywordflow">return</span> resources;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    }</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1_h_t_t_p_request_html"><div class="ttname"><a href="classframework_1_1_h_t_t_p_request.html">framework::HTTPRequest</a></div><div class="ttdoc">Parsing HTTP request</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_request_8h_source.html#l00017">HTTPRequest.h:18</a></div></div>
-<div class="ttc" id="aclassframework_1_1_h_t_t_p_response_html"><div class="ttname"><a href="classframework_1_1_h_t_t_p_response.html">framework::HTTPResponse</a></div><div class="ttdoc">HTTPBuilder wrapper</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8h_source.html#l00011">HTTPResponse.h:12</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_bad_request_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_bad_request_exception.html">framework::exceptions::BadRequestException</a></div><div class="ttdoc">HTTP bad request 400 error code</div><div class="ttdef"><b>Definition:</b> <a href="_bad_request_exception_8h_source.html#l00012">BadRequestException.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_base_executor_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_base_executor_exception.html">framework::exceptions::BaseExecutorException</a></div><div class="ttdoc">Base class for most of WebFramework exceptions</div><div class="ttdef"><b>Definition:</b> <a href="_base_executor_exception_8h_source.html#l00012">BaseExecutorException.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00012">FileDoesNotExistException.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_not_implemented_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_not_implemented_exception.html">framework::exceptions::NotImplementedException</a></div><div class="ttdoc">Default exception for all HTTP methods in BaseExecutor</div><div class="ttdef"><b>Definition:</b> <a href="_not_implemented_exception_8h_source.html#l00013">NotImplementedException.h:14</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings_html"><div class="ttname"><a href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">framework::utility::JSONSettingsParser::ExecutorSettings</a></div><div class="ttdoc">Settings for executor</div><div class="ttdef"><b>Definition:</b> <a href="_j_s_o_n_settings_parser_8h_source.html#l00018">JSONSettingsParser.h:19</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1_route_parameters_html"><div class="ttname"><a href="structframework_1_1utility_1_1_route_parameters.html">framework::utility::RouteParameters</a></div><div class="ttdef"><b>Definition:</b> <a href="_route_parameters_8h_source.html#l00009">RouteParameters.h:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -95,18 +95,17 @@ $(document).ready(function(){initNavTree('_i_static_file_8h_source.html',''); in
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keyword">namespace </span>interfaces</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classframework_1_1interfaces_1_1_i_static_file.html">   12</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classframework_1_1interfaces_1_1_i_static_file.html">IStaticFile</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classframework_1_1interfaces_1_1_i_static_file.html#a8eaccc4e7a351c788125b7658187135b">   20</a></span>&#160;            <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classframework_1_1interfaces_1_1_i_static_file.html#a8eaccc4e7a351c788125b7658187135b">sendStaticFile</a>(<span class="keyword">const</span> std::string&amp; filePath, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp; response) = 0;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1interfaces_1_1_i_static_file.html">IStaticFile</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        };</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    }</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classframework_1_1interfaces_1_1_i_static_file.html">    9</a></span>&#160;        <span class="keyword">class </span><a class="code" href="classframework_1_1interfaces_1_1_i_static_file.html">IStaticFile</a></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            <span class="keyword">virtual</span> <span class="keywordtype">void</span> sendStaticFile(<span class="keyword">const</span> std::string&amp; filePath, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp; response) = 0;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1interfaces_1_1_i_static_file.html">IStaticFile</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        };</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    }</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
 <div class="ttc" id="aclassframework_1_1_h_t_t_p_response_html"><div class="ttname"><a href="classframework_1_1_h_t_t_p_response.html">framework::HTTPResponse</a></div><div class="ttdoc">HTTPBuilder wrapper</div><div class="ttdef"><b>Definition:</b> <a href="_h_t_t_p_response_8h_source.html#l00011">HTTPResponse.h:12</a></div></div>
-<div class="ttc" id="aclassframework_1_1interfaces_1_1_i_static_file_html"><div class="ttname"><a href="classframework_1_1interfaces_1_1_i_static_file.html">framework::interfaces::IStaticFile</a></div><div class="ttdoc">Providing sendStaticFile method</div><div class="ttdef"><b>Definition:</b> <a href="_i_static_file_8h_source.html#l00012">IStaticFile.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1interfaces_1_1_i_static_file_html_a8eaccc4e7a351c788125b7658187135b"><div class="ttname"><a href="classframework_1_1interfaces_1_1_i_static_file.html#a8eaccc4e7a351c788125b7658187135b">framework::interfaces::IStaticFile::sendStaticFile</a></div><div class="ttdeci">virtual void sendStaticFile(const std::string &amp;filePath, HTTPResponse &amp;response)=0</div><div class="ttdoc">Sending file from filePath path</div></div>
+<div class="ttc" id="aclassframework_1_1interfaces_1_1_i_static_file_html"><div class="ttname"><a href="classframework_1_1interfaces_1_1_i_static_file.html">framework::interfaces::IStaticFile</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_static_file_8h_source.html#l00009">IStaticFile.h:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

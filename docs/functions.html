@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -117,9 +117,6 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>BaseMiddlewareRouteController()
 : <a class="el" href="classframework_1_1middleware_1_1_base_middleware_route_controller.html#a1f9de13f22e528f03cceff68032cf21e">framework::middleware::BaseMiddlewareRouteController</a>
 </li>
-<li>BaseWebServer()
-: <a class="el" href="classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86">framework::BaseWebServer</a>
-</li>
 <li>begin()
 : <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aea463029e7c19324cf449d16fc061317">framework::sqlite::utility::SQLiteResult</a>
 </li>
@@ -139,14 +136,12 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <h3><a id="index_d"></a>- d -</h3><ul>
 <li>deleteAttribute()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a09f892844c5fb7bc690374542730814d">framework::HTTPRequest</a>
-, <a class="el" href="classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52">framework::SessionsManager</a>
 </li>
 <li>deleteQuery()
 : <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad0a45278a8ce0f54f9ec8660dfd3ff19">framework::sqlite::SQLiteDatabaseModel</a>
 </li>
 <li>deleteSession()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#abaf4720cdb6e24ff2e69677b71496658">framework::HTTPRequest</a>
-, <a class="el" href="classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b">framework::SessionsManager</a>
 </li>
 <li>destroy()
 : <a class="el" href="classframework_1_1_base_executor.html#a6557b16a8471d0c6615d7bf1e09e5d1c">framework::BaseExecutor</a>
@@ -211,7 +206,6 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </li>
 <li>getAttribute()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#ae9338bd301a24307f2d711b163ab8b53">framework::HTTPRequest</a>
-, <a class="el" href="classframework_1_1_sessions_manager.html#a50799f57e25340ebc22b816191e74b53">framework::SessionsManager</a>
 </li>
 <li>getBody()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a2e7a1b3895052820d1e11f90d5152dce">framework::HTTPRequest</a>
@@ -227,6 +221,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </li>
 <li>getCookies()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a0faf91b7585442167d9abb7e8d23194b">framework::HTTPRequest</a>
+</li>
+<li>getCurrentConfiguration()
+: <a class="el" href="classframework_1_1_web_framework.html#aa0d4aa6c4ac0d21845d09ab8d00142bc">framework::WebFramework</a>
 </li>
 <li>getDatabaseModelInstance()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a4a65b194837f3eae43b30bcbc2b6e2be">framework::HTTPRequest</a>
@@ -255,14 +252,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>getMethod()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a8889654fdfd4cac12f6ea844cf3a5521">framework::HTTPRequest</a>
 </li>
-<li>getPathToTemplates()
-: <a class="el" href="classframework_1_1_web_framework_dynamic_pages.html#ac8a59bd090d91ce85d4b0d2eb043d95d">framework::WebFrameworkDynamicPages</a>
-</li>
 <li>getRawParameters()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a66235136733458e8d392aa522502d7a0">framework::HTTPRequest</a>
-</li>
-<li>getResourceExecutor()
-: <a class="el" href="classframework_1_1_executors_manager.html#a42352eb3cef31175042dbdf98a9aae3f">framework::ExecutorsManager</a>
 </li>
 <li>getRouteParameter()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a4d2a5be29f9665dfc2d85145ba8523ca">framework::HTTPRequest</a>
@@ -305,7 +296,6 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <h3><a id="index_i"></a>- i -</h3><ul>
 <li>init()
 : <a class="el" href="classframework_1_1_base_executor.html#ae745ee7647fda519940a0dc5f0100c44">framework::BaseExecutor</a>
-, <a class="el" href="classframework_1_1_executors_manager.html#a7435a9a4c46fb661836377f2c44da22f">framework::ExecutorsManager</a>
 , <a class="el" href="classframework_1_1_resource_executor.html#a67dcc7f0aa09e4c3259bbf26ef9f8b5e">framework::ResourceExecutor</a>
 </li>
 <li>insertQuery()
@@ -316,9 +306,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </li>
 <li>isDynamicFunctionRegistered()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a93df70f4ed8ee0ef665b13dcc6b6f354">framework::HTTPRequest</a>
-, <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a54745131876dd15cf91e90b327b8d62b">framework::interfaces::IDynamicFile</a>
 , <a class="el" href="classframework_1_1_resource_executor.html#aa7f82ae6b5d61fe1ac92e89902b20a96">framework::ResourceExecutor</a>
-, <a class="el" href="classframework_1_1_web_framework_dynamic_pages.html#a8f1bc54fd72607f6ea663529b8137c8f">framework::WebFrameworkDynamicPages</a>
 </li>
 <li>isEmpty()
 : <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#ad98aafe3223d64fff50a8debc36a449a">framework::sqlite::utility::SQLiteResult</a>
@@ -340,12 +328,6 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>LoadBalancer()
 : <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer.html#a5afe666abdadeb63aa6107d47a675b86">framework::load_balancer::LoadBalancer</a>
 </li>
-<li>loadBalancerConnectionData()
-: <a class="el" href="structframework_1_1load__balancer_1_1_load_balancer_server_1_1load_balancer_connection_data.html#af5cf72c3dc80eea72dbee6f16c9c05f4">framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData</a>
-</li>
-<li>LoadBalancerServer()
-: <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html#aa03bd7e4aa22fbb8d02f1f40dc88d0b1">framework::load_balancer::LoadBalancerServer</a>
-</li>
 </ul>
 
 
@@ -353,14 +335,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>Middleware()
 : <a class="el" href="classframework_1_1middleware_1_1_middleware.html#aeb8970f9adb1da0594f0cc4605fd4dab">framework::middleware::Middleware</a>
 </li>
-<li>MiddlewareServer()
-: <a class="el" href="classframework_1_1middleware_1_1_middleware_server.html#a605daeb821e51fbac3351d1ce4df2d82">framework::middleware::MiddlewareServer</a>
-</li>
 <li>middlewareState()
 : <a class="el" href="classframework_1_1middleware_1_1_middleware.html#aab2b28c7fc5865d05a35b9f9e7e72918">framework::middleware::Middleware</a>
-</li>
-<li>MultithreadedWebServer()
-: <a class="el" href="classframework_1_1_multithreaded_web_server.html#a501991c7fe0b3ce6209061ec624f1f64">framework::MultithreadedWebServer</a>
 </li>
 </ul>
 
@@ -386,12 +362,6 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 , <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#af89e1d5c2bf4d46a9a5e30046e9efaf7">framework::sqlite::SQLiteDatabaseModel</a>
 , <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aa8ec226ca8ea4bf38dbc790b934fca56">framework::sqlite::utility::SQLiteResult</a>
 </li>
-<li>operator==()
-: <a class="el" href="structframework_1_1load__balancer_1_1_load_balancer_server_1_1load_balancer_connection_data.html#ac6d39d642018323766d53b56a25977a9">framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData</a>
-</li>
-<li>operator&gt;()
-: <a class="el" href="structframework_1_1load__balancer_1_1_load_balancer_server_1_1load_balancer_connection_data.html#a230d3582bee55fe8f973ee0196327617">framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData</a>
-</li>
 <li>operator&gt;&gt;
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a59427d391d2da263cab43ae838c5c67f">framework::HTTPRequest</a>
 </li>
@@ -410,12 +380,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </li>
 <li>registerDynamicFunction()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#add8e04b584ee3657e62a2daa99d44022">framework::HTTPRequest</a>
-, <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a505718a448fc166b868344d8096b75f9">framework::interfaces::IDynamicFile</a>
 , <a class="el" href="classframework_1_1_resource_executor.html#a2ced4bf06c08290f945e60606b89162b">framework::ResourceExecutor</a>
-, <a class="el" href="classframework_1_1_web_framework_dynamic_pages.html#aaa5305dd02a52243fd6efc828bcf4223">framework::WebFrameworkDynamicPages</a>
-</li>
-<li>run()
-: <a class="el" href="classframework_1_1_web_framework_dynamic_pages.html#a7971923ed3881f8762d4196a113efd9a">framework::WebFrameworkDynamicPages</a>
 </li>
 </ul>
 
@@ -431,22 +396,16 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a85e79a1e021f86dc9559d675a1351a21">framework::HTTPRequest</a>
 </li>
 <li>sendDynamicFile()
-: <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#aa66ec604c0b9dcefbbc60eeeffb63b7c">framework::interfaces::IDynamicFile</a>
-, <a class="el" href="classframework_1_1_resource_executor.html#a1b916d36aa5243f2a06433971137ce71">framework::ResourceExecutor</a>
+: <a class="el" href="classframework_1_1_resource_executor.html#a1b916d36aa5243f2a06433971137ce71">framework::ResourceExecutor</a>
 </li>
 <li>sendRequestToAnotherServer()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a74448326450075d85d77a3249e750ba4">framework::HTTPRequest</a>
 </li>
 <li>sendStaticFile()
-: <a class="el" href="classframework_1_1interfaces_1_1_i_static_file.html#a8eaccc4e7a351c788125b7658187135b">framework::interfaces::IStaticFile</a>
-, <a class="el" href="classframework_1_1_resource_executor.html#a3da6c7c27520e4b5815c21b8049684ed">framework::ResourceExecutor</a>
-</li>
-<li>service()
-: <a class="el" href="classframework_1_1_executors_manager.html#af72a31f88757511221d122a2110c1921">framework::ExecutorsManager</a>
+: <a class="el" href="classframework_1_1_resource_executor.html#a3da6c7c27520e4b5815c21b8049684ed">framework::ResourceExecutor</a>
 </li>
 <li>setAttribute()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a46690b9fff334a4ee435d491b31dc18b">framework::HTTPRequest</a>
-, <a class="el" href="classframework_1_1_sessions_manager.html#ab4bdb0beb15a56485d21f446a035f679">framework::SessionsManager</a>
 </li>
 <li>setDefault()
 : <a class="el" href="classframework_1_1_h_t_t_p_response.html#ab49db53d6fb523a663aaf0eb6f1d4af0">framework::HTTPResponse</a>
@@ -493,9 +452,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <h3><a id="index_u"></a>- u -</h3><ul>
 <li>unregisterDynamicFunction()
 : <a class="el" href="classframework_1_1_h_t_t_p_request.html#a5f0d82d7850b2f53ef54d5bdd6a86a9a">framework::HTTPRequest</a>
-, <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a8d0af89e3993630d1dbec76e50f592ff">framework::interfaces::IDynamicFile</a>
 , <a class="el" href="classframework_1_1_resource_executor.html#aeeca221c9db717a3048730c417f9bc81">framework::ResourceExecutor</a>
-, <a class="el" href="classframework_1_1_web_framework_dynamic_pages.html#a4376c926c04fd8d10185934281d289ad">framework::WebFrameworkDynamicPages</a>
 </li>
 <li>updateQuery()
 : <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad8ce79a06f15450295a712c62e294aca">framework::sqlite::SQLiteDatabaseModel</a>
@@ -506,15 +463,6 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <h3><a id="index_w"></a>- w -</h3><ul>
 <li>WebFramework()
 : <a class="el" href="classframework_1_1_web_framework.html#a12b511148a8cca7ad25ea27b6a0c497c">framework::WebFramework</a>
-</li>
-<li>WebFrameworkDynamicPages()
-: <a class="el" href="classframework_1_1_web_framework_dynamic_pages.html#aa547fed2d49ba906b9324bff1023afd0">framework::WebFrameworkDynamicPages</a>
-</li>
-<li>WebFrameworkHTTPNetwork()
-: <a class="el" href="classframework_1_1_web_framework_h_t_t_p_network.html#ae38eff9b3768acd9733ed601f5ca20f8">framework::WebFrameworkHTTPNetwork</a>
-</li>
-<li>WebFrameworkHTTPSNetwork()
-: <a class="el" href="classframework_1_1_web_framework_h_t_t_p_s_network.html#a83bed1b51aba6b44f34ca87bf9a4ebad">framework::WebFrameworkHTTPSNetwork</a>
 </li>
 <li>webFrameworkVersion()
 : <a class="el" href="classframework_1_1_web_framework.html#a4823c352d84da4db0f9d54fbb77b8e6c">framework::WebFramework</a>

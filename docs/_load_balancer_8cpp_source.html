@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">if</span> (!filesystem::exists(configurationJSONFile))</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">exceptions::FileDoesNotExistException</a>(configurationJSONFile.string());</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <span class="keywordflow">throw</span> file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            }</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            json::JSONParser parser(move(ifstream(configurationJSONFile)));</div>
@@ -112,10 +112,10 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerIp = parser.get&lt;<span class="keywordtype">string</span>&gt;(json_settings::loadBalancerIpKey);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; loadBalancerPort = parser.get&lt;<span class="keywordtype">string</span>&gt;(json_settings::loadBalancerPortKey);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            DWORD loadBalancerTimeout = <span class="keyword">static_cast&lt;</span>DWORD<span class="keyword">&gt;</span>(parser.get&lt;int64_t&gt;(json_settings::loadBalancerTimeoutKey));</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keyword">const</span> smartPointer&lt;json::JSONParser::objectType&gt;&amp; listOfServers = parser.get&lt;smartPointer&lt;json::JSONParser::objectType&gt;&gt;(json_settings::listOfServersKey);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keyword">const</span> json::utility::jsonObject&amp; listOfServers = parser.get&lt;json::utility::jsonObject&gt;(json_settings::listOfServersKey);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            unordered_map&lt;string, vector&lt;string&gt;&gt; allServers;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [ip, portsArray] : listOfServers-&gt;data)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [ip, portsArray] : listOfServers.data)</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <span class="keyword">auto</span>&amp; data = get&lt;vector&lt;json::utility::jsonObject&gt;&gt;(portsArray);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                vector&lt;string&gt; ports;</div>
@@ -155,7 +155,6 @@ $(document).ready(function(){initNavTree('_load_balancer_8cpp_source.html',''); 
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00012">FileDoesNotExistException.h:13</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
