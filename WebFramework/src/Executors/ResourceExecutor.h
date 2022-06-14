@@ -24,16 +24,11 @@ namespace framework
 		};
 
 	private:
-		std::shared_mutex cacheMutex;
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
 		WebFrameworkDynamicPages dynamicPages;
-		std::unordered_map<std::string, std::string> staticCache;
-		std::unordered_map<std::string, std::string> dynamicCache;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		file_manager::FileManager& fileManager;
-		std::function<void(const std::string&, HTTPResponse&)> sendStaticFileFunction;
-		std::function<void(const std::string&, HTTPResponse&, const std::unordered_map<std::string_view, std::string>&)> sendDynamicFileFunction;
 
 	private:
 		/// <summary>
@@ -41,13 +36,7 @@ namespace framework
 		/// </summary>
 		void loadHTMLErrorsData();
 
-		void sendStaticFileWithCaching(const std::string& filePath, HTTPResponse& response);
-
-		void sendStaticFileWithoutCaching(const std::string& filePath, HTTPResponse& response);
-
-		void sendDynamicFileWithCaching(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables);
-
-		void sendDynamicFileWithoutCaching(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables);
+		void readFile(std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 
 	public:
 		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::string& pathToTemplates);

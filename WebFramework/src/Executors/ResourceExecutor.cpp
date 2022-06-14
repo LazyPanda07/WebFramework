@@ -40,101 +40,9 @@ namespace framework
 		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
 	}
 
-	void ResourceExecutor::sendStaticFileWithCaching(const string& filePath, HTTPResponse& response)
+	void ResourceExecutor::readFile(string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
 	{
-		string result;
-		shared_lock<shared_mutex> shared(cacheMutex);
-		auto findFile = staticCache.find(filePath);
-
-		if (findFile != staticCache.end())
-		{
-			response.addBody(findFile->second);
-
-			return;
-		}
-
-		filesystem::path assetFilePath(assets / filePath);
-
-		if (!filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath.string());
-		}
-
-		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
-
-		{
-			unique_lock<shared_mutex> insertLock(cacheMutex);
-
-			staticCache[filePath] = result;
-		}
-
-		response.addBody(result);
-	}
-
-	void ResourceExecutor::sendStaticFileWithoutCaching(const string& filePath, HTTPResponse& response)
-	{
-		filesystem::path assetFilePath(assets / filePath);
-
-		if (!filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath.string());
-		}
-
-		response.addBody((ostringstream() << ifstream(assetFilePath).rdbuf()).str());
-	}
-
-	void ResourceExecutor::sendDynamicFileWithCaching(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
-	{
-		string result;
-		shared_lock<shared_mutex> shared(cacheMutex);
-		auto findFile = dynamicCache.find(filePath);
-
-		if (findFile != dynamicCache.end())
-		{
-			result = findFile->second;
-
-			dynamicPages.run(variables, result);
-
-			response.addBody(result);
-
-			return;
-		}
-
-		filesystem::path assetFilePath(assets / filePath);
-
-		if (!filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath.string());
-		}
-
-		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
-
-		{
-			unique_lock<shared_mutex> insertLock(cacheMutex);
-
-			dynamicCache[filePath] = result;
-		}
-
-		dynamicPages.run(variables, result);
-
-		response.addBody(result);
-	}
-
-	void ResourceExecutor::sendDynamicFileWithoutCaching(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
-	{
-		string result;
-		filesystem::path assetFilePath(assets / filePath);
-
-		if (!filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath.string());
-		}
-
-		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
-
-		dynamicPages.run(variables, result);
-
-		response.addBody(result);
+		result = handle->readAllData();
 	}
 
 	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates) :
@@ -148,19 +56,6 @@ namespace framework
 		fileManager(file_manager::FileManager::getInstance())
 	{
 		fileManager.getCache().setCacheSize(cachingSize);
-
-		if (cachingSize)
-		{
-			sendStaticFileFunction = bind(&ResourceExecutor::sendStaticFileWithCaching, this, placeholders::_1, placeholders::_2);
-
-			sendDynamicFileFunction = bind(&ResourceExecutor::sendDynamicFileWithCaching, this, placeholders::_1, placeholders::_2, placeholders::_3);
-		}
-		else
-		{
-			sendStaticFileFunction = bind(&ResourceExecutor::sendStaticFileWithoutCaching, this, placeholders::_1, placeholders::_2);
-
-			sendDynamicFileFunction = bind(&ResourceExecutor::sendDynamicFileWithoutCaching, this, placeholders::_1, placeholders::_2, placeholders::_3);
-		}
 	}
 
 	void ResourceExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
@@ -180,12 +75,34 @@ namespace framework
 
 	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response)
 	{
-		sendStaticFileFunction(filePath, response);
+		string result;
+		filesystem::path assetFilePath(assets / filePath);
+
+		if (!filesystem::exists(assetFilePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, result, placeholders::_1));
+
+		response.addBody(move(result));
 	}
 
 	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
 	{
-		sendDynamicFileFunction(filePath, response, variables);
+		string result;
+		filesystem::path assetFilePath(assets / filePath);
+
+		if (!filesystem::exists(assetFilePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, result, placeholders::_1));
+
+		dynamicPages.run(variables, result);
+
+		response.addBody(move(result));
 	}
 
 	void ResourceExecutor::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
