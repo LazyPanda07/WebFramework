@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classframework_1_1_h_t_t_p_request.htm
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d58bdc6dd90c49e5b21978717e1519d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a0d58bdc6dd90c49e5b21978717e1519d">HTTPRequest</a> (<a class="el" href="classframework_1_1_sessions_manager.html">SessionsManager</a> &amp;session, const web::BaseTCPServer &amp;serverReference, <a class="el" href="classframework_1_1interfaces_1_1_i_static_file.html">interfaces::IStaticFile</a> &amp;staticResources, <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html">interfaces::IDynamicFile</a> &amp;dynamicResources, <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html">sqlite::SQLiteManager</a> &amp;database, sockaddr &amp;clientAddr)</td></tr>
-<tr class="memdesc:a0d58bdc6dd90c49e5b21978717e1519d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classframework_1_1_h_t_t_p_request.html" title="Parsing HTTP request">HTTPRequest</a>  <a href="classframework_1_1_h_t_t_p_request.html#a0d58bdc6dd90c49e5b21978717e1519d">More...</a><br /></td></tr>
+<tr class="memdesc:a0d58bdc6dd90c49e5b21978717e1519d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct <a class="el" href="classframework_1_1_h_t_t_p_request.html" title="Parsing HTTP request">HTTPRequest</a>.  <a href="classframework_1_1_h_t_t_p_request.html#a0d58bdc6dd90c49e5b21978717e1519d">More...</a><br /></td></tr>
 <tr class="separator:a0d58bdc6dd90c49e5b21978717e1519d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66235136733458e8d392aa522502d7a0"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_h_t_t_p_request.html#a66235136733458e8d392aa522502d7a0">getRawParameters</a> () const</td></tr>
 <tr class="memdesc:a66235136733458e8d392aa522502d7a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters string from HTTP  <a href="classframework_1_1_h_t_t_p_request.html#a66235136733458e8d392aa522502d7a0">More...</a><br /></td></tr>
@@ -255,12 +255,15 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ExecutorsManager</b>
       </table>
 </div><div class="memdoc">
 
-<p>Construct <a class="el" href="classframework_1_1_h_t_t_p_request.html" title="Parsing HTTP request">HTTPRequest</a> </p>
+<p>Construct <a class="el" href="classframework_1_1_h_t_t_p_request.html" title="Parsing HTTP request">HTTPRequest</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">session</td><td>from <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a></td></tr>
-    <tr><td class="paramname">serverReference</td><td>reference to <a class="el" href="classframework_1_1_multithreaded_web_server.html" title="Standard TCP web server">MultithreadedWebServer</a></td></tr>
-    <tr><td class="paramname">resources</td><td><a class="el" href="classframework_1_1_resource_executor.html" title="Used for sending asset files">ResourceExecutor</a></td></tr>
+    <tr><td class="paramname">session</td><td>Session from <a class="el" href="classframework_1_1_multithreaded_web_server.html">MultithreadedWebServer</a> </td></tr>
+    <tr><td class="paramname">serverReference</td><td>Reference to server </td></tr>
+    <tr><td class="paramname">staticResources</td><td>Static resources manager </td></tr>
+    <tr><td class="paramname">dynamicResources</td><td>Dynamic resources manager </td></tr>
+    <tr><td class="paramname">database</td><td>Reference to database </td></tr>
+    <tr><td class="paramname">clientAddr</td><td>Client address </td></tr>
   </table>
   </dd>
 </dl>
@@ -494,7 +497,7 @@ template&lt;typename SQLiteDatabaseModelSubclass , typename... Args&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>instance of SQLiteDatabaseModel subclass</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00218">218</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00219">219</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>

@@ -10,6 +10,8 @@
 #pragma comment (lib, "Log.lib")
 #pragma comment (lib, "INIParser.lib")
 #pragma comment (lib, "Networks.lib")
+#pragma comment (lib, "Localization.lib")
+#pragma comment (lib, "FileManager.lib")
 
 using namespace std;
 
@@ -17,20 +19,20 @@ namespace framework
 {
 	string WebFramework::webFrameworkVersion()
 	{
-		return "1.9.4"s;
+		return "2.1"s;
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
 	{
 		if (!filesystem::exists(configurationJSONFile))
 		{
-			throw exceptions::FileDoesNotExistException(configurationJSONFile.string());
+			throw file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());
 		}
 
-		json::JSONParser parser(move(ifstream(configurationJSONFile)));
+		currentConfiguration = move(ifstream(configurationJSONFile));
 
-		const vector<json::utility::jsonObject>& settingsPathsJSON = parser.getArray(json_settings::settingsPathsKey);
-		const vector<json::utility::jsonObject>& loadSourcesJSON = parser.getArray(json_settings::loadSourcesKey);
+		const vector<json::utility::jsonObject>& settingsPathsJSON = currentConfiguration.getArray(json_settings::settingsPathsKey);
+		const vector<json::utility::jsonObject>& loadSourcesJSON = currentConfiguration.getArray(json_settings::loadSourcesKey);
 		vector<string> settingsPaths;
 		vector<string> loadSources;
 
@@ -48,29 +50,29 @@ namespace framework
 			loadSources.push_back(get<string>(i.data.front().second));
 		}
 
-		const string& assetsPath = parser.get<string>(json_settings::assetsPathKey);
-		const string& templatesPath = parser.get<string>(json_settings::templatesPathKey);
-		bool usingAssetsCache = parser.get<bool>(json_settings::usingAssetsCacheKey);
-		const string& webServerType = parser.get<string>(json_settings::webServerTypeKey);
-		const string& ip = parser.get<string>(json_settings::ipKey);
-		const string& port = parser.get<string>(json_settings::portKey);
-		DWORD timeout = static_cast<DWORD>(parser.get<int64_t>(json_settings::timeoutKey));
+		const string& assetsPath = currentConfiguration.get<string>(json_settings::assetsPathKey);
+		const string& templatesPath = currentConfiguration.get<string>(json_settings::templatesPathKey);
+		uint64_t cachingSize = currentConfiguration.get<uint64_t>(json_settings::cachingSize);
+		const string& webServerType = currentConfiguration.get<string>(json_settings::webServerTypeKey);
+		const string& ip = currentConfiguration.get<string>(json_settings::ipKey);
+		const string& port = currentConfiguration.get<string>(json_settings::portKey);
+		DWORD timeout = static_cast<DWORD>(currentConfiguration.get<int64_t>(json_settings::timeoutKey));
 		bool useHTTPS = false;
 
 		try
 		{
-			parser.getObject(json_settings::loggingObject);	// is logging object exists
+			currentConfiguration.getObject(json_settings::loggingObject);	// is logging object exists
 
 			try
 			{
-				bool usingLogging = parser.get<bool>(json_settings::usingLoggingKey);
-				const string& dateFormat = parser.get<string>(json_settings::dateFormatKey);
+				bool usingLogging = currentConfiguration.get<bool>(json_settings::usingLoggingKey);
+				const string& dateFormat = currentConfiguration.get<string>(json_settings::dateFormatKey);
 
 				if (usingLogging)
 				{
 					try
 					{
-						bool addNewLineAfterLog = parser.get<bool>(json_settings::addNewLineAfterLogKey);
+						bool addNewLineAfterLog = currentConfiguration.get<bool>(json_settings::addNewLineAfterLogKey);
 
 						Log::init(Log::dateFormatFromString(dateFormat), addNewLineAfterLog);
 					}
@@ -94,15 +96,15 @@ namespace framework
 
 		try
 		{
-			useHTTPS = parser.get<bool>(json_settings::useHTTPSKey);
+			useHTTPS = currentConfiguration.get<bool>(json_settings::useHTTPSKey);
 
 			if (useHTTPS)
 			{
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(parser.get<string>(json_settings::pathToCertificateKey));
-				httpsSettings.setPathToKey(parser.get<string>(json_settings::pathToKey));
+				httpsSettings.setPathToCertificate(currentConfiguration.get<string>(json_settings::pathToCertificateKey));
+				httpsSettings.setPathToKey(currentConfiguration.get<string>(json_settings::pathToKey));
 
 				SSL_library_init();
 				SSL_load_error_strings();
@@ -123,10 +125,11 @@ namespace framework
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
+					currentConfiguration,
 					jsonSettings,
 					assetsPath,
 					templatesPath,
-					usingAssetsCache,
+					cachingSize,
 					ip,
 					port,
 					timeout,
@@ -139,25 +142,27 @@ namespace framework
 			{
 				server = make_unique<ThreadPoolWebServer>
 					(
+						currentConfiguration,
 						jsonSettings,
 						assetsPath,
 						templatesPath,
-						usingAssetsCache,
+						cachingSize,
 						ip,
 						port,
 						timeout,
 						loadSources,
-						static_cast<uint32_t>(parser.get<int64_t>("threadCount"))
+						static_cast<uint32_t>(currentConfiguration.get<int64_t>("threadCount"))
 						);
 			}
 			catch (const json::exceptions::BaseJSONException&)
 			{
 				server = make_unique<ThreadPoolWebServer>
 					(
+						currentConfiguration,
 						jsonSettings,
 						assetsPath,
 						templatesPath,
-						usingAssetsCache,
+						cachingSize,
 						ip,
 						port,
 						timeout,
@@ -182,26 +187,33 @@ namespace framework
 		server->stop();
 	}
 
-	vector<string> WebFramework::getClientsIp() const
-	{
-		const vector<pair<string, SOCKET>> clients = server->getClients();
-		vector<string> result(clients.size());
-
-		for (size_t i = 0; i < clients.size(); i++)
-		{
-			result[i] = clients[i].first;
-		}
-
-		return result;
-	}
-
 	void WebFramework::disconnectClient(const string& ip) const
 	{
 		server->pubDisconnect(ip);
 	}
 
+	vector<string> WebFramework::getClientsIp() const
+	{
+		const vector<pair<string, SOCKET>> clients = server->getClients();
+		vector<string> result;
+
+		result.reserve(clients.size());
+
+		for (const auto& [ip, _] : clients)
+		{
+			result.push_back(ip);
+		}
+
+		return result;
+	}
+
 	bool WebFramework::getServerState() const
 	{
 		return server->serverState();
+	}
+
+	const json::JSONParser& WebFramework::getCurrentConfiguration() const
+	{
+		return currentConfiguration;
 	}
 }

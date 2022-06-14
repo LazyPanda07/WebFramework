@@ -16,3 +16,9 @@
 [submodule "ThreadPool"]
 	path = ThreadPool
 	url = https://github.com/LazyPanda07/ThreadPool.git
+[submodule "Localization"]
+	path = Localization
+	url = https://github.com/LazyPanda07/Localization.git
+[submodule "FileManager"]
+	path = FileManager
+	url = https://github.com/LazyPanda07/FileManager.git

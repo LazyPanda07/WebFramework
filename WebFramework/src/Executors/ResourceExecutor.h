@@ -24,23 +24,22 @@ namespace framework
 		};
 
 	private:
-		std::shared_mutex cacheMutex;
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
 		WebFrameworkDynamicPages dynamicPages;
-		std::unordered_map<std::string, std::string> staticCache;
-		std::unordered_map<std::string, std::string> dynamicCache;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
-		bool isCaching;
+		file_manager::FileManager& fileManager;
 
 	private:
 		/// <summary>
-		/// Load all htmls from WebFrameworkAssets/Errors
+		/// Load all .htmls from WebFrameworkAssets/Errors
 		/// </summary>
 		void loadHTMLErrorsData();
 
+		void readFile(std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
+
 	public:
-		ResourceExecutor(const std::filesystem::path& assets, bool isCaching, const std::string& pathToTemplates);
+		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::string& pathToTemplates);
 
 		/// <summary>
 		/// Create assets folder
@@ -53,7 +52,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		void sendStaticFile(const std::string& filePath, HTTPResponse& response) override;
 
 		/// <summary>
@@ -61,7 +60,7 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables = {}) override;
 
 		/// @brief Add new function in .wfdp interpreter
@@ -110,6 +109,8 @@ namespace framework
 		/// </summary>
 		/// <param name="response">response with error file</param>
 		void internalServerError(HTTPResponse& response);
+
+		bool getIsCaching() const;
 
 		~ResourceExecutor() = default;
 	};

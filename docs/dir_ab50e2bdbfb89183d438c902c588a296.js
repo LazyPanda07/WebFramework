@@ -14,8 +14,6 @@ var dir_ab50e2bdbfb89183d438c902c588a296 =
     [ "DatabaseException.h", "_database_exception_8h_source.html", null ],
     [ "DynamicPagesSyntaxException.cpp", "_dynamic_pages_syntax_exception_8cpp_source.html", null ],
     [ "DynamicPagesSyntaxException.h", "_dynamic_pages_syntax_exception_8h_source.html", null ],
-    [ "FileDoesNotExistException.cpp", "_file_does_not_exist_exception_8cpp_source.html", null ],
-    [ "FileDoesNotExistException.h", "_file_does_not_exist_exception_8h_source.html", null ],
     [ "MissingLoadTypeException.cpp", "_missing_load_type_exception_8cpp_source.html", null ],
     [ "MissingLoadTypeException.h", "_missing_load_type_exception_8h_source.html", null ],
     [ "NotImplementedException.cpp", "_not_implemented_exception_8cpp_source.html", null ],

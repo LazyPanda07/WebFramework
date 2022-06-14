@@ -19,6 +19,7 @@ namespace framework
 
 	private:
 		smartPointer<BaseWebServer> server;
+		json::JSONParser currentConfiguration;
 
 	public:
 		/// <summary>
@@ -26,7 +27,7 @@ namespace framework
 		/// </summary>
 		/// <param name="configurationINIFile">path to .json configuration file</param>
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
-		/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="framework::exceptions::NotImplemented">Thread pool model does not support HTTPS</exception>
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON setting value</exception>
 		WebFramework(const std::filesystem::path& configurationJSONFile);
@@ -42,22 +43,26 @@ namespace framework
 		void stopServer();
 
 		/// <summary>
-		/// Get ip addresses of all currently connected clients
-		/// </summary>
-		/// <returns></returns>
-		std::vector<std::string> getClientsIp() const;
-
-		/// <summary>
 		/// Disconnect specific client
 		/// </summary>
 		/// <param name="ip">client's address</param>
 		void disconnectClient(const std::string& ip) const;
 
 		/// <summary>
+		/// Get ip addresses of all currently connected clients
+		/// </summary>
+		/// <returns></returns>
+		std::vector<std::string> getClientsIp() const;
+
+		/// <summary>
 		/// Is server running
 		/// </summary>
 		/// <returns>is server running</returns>
 		bool getServerState() const;
+
+		/// @brief Getter for currentConfiguration
+		/// @return Get current running configuration JSON 
+		const json::JSONParser& getCurrentConfiguration() const;
 
 		~WebFramework() = default;
 	};

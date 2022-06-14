@@ -15,7 +15,7 @@ namespace framework
 		{
 			if (!filesystem::exists(configurationJSONFile))
 			{
-				throw exceptions::FileDoesNotExistException(configurationJSONFile.string());
+				throw file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());
 			}
 
 			json::JSONParser parser(move(ifstream(configurationJSONFile)));

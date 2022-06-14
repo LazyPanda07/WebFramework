@@ -158,8 +158,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -190,8 +190,8 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -226,8 +226,8 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -262,8 +262,8 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -300,8 +300,8 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -338,8 +338,8 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src;$(SolutionDir)Networks\HTTP\src;$(SolutionDir)Log\src;$(SolutionDir)Networks\SocketStreams\src;$(SolutionDir)INIParser\src;$(SolutionDir)Networks\HTTP\JSON\src;$(SolutionDir)SHA256\src;$(SolutionDir)Networks\src;$(SolutionDir)ThreadPool\src;$(SolutionDir)Networks\vendor\OpenSSL\include;$(ProjectDir)src;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src;$(SolutionDir)WebFrameworkLibrary\Log\src;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src;$(SolutionDir)WebFrameworkLibrary\INIParser\src;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src;$(SolutionDir)WebFrameworkLibrary\SHA256\src;$(SolutionDir)WebFrameworkLibrary\Networks\src;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -378,7 +378,6 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
     <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
-    <ClCompile Include="src\Exceptions\FileDoesNotExistException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
     <ClCompile Include="src\Exceptions\SQLite3Exception.cpp" />
@@ -424,7 +423,6 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
     <ClInclude Include="src\Exceptions\DatabaseException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
-    <ClInclude Include="src\Exceptions\FileDoesNotExistException.h" />
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="src\Exceptions\SQLite3Exception.h" />
@@ -469,6 +467,12 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src $(SolutionDir)build $(Solu
     <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FileManager\FileManager.vcxproj">
+      <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Localization\Localization.vcxproj">
+      <Project>{d2968ac9-bac3-4f25-9698-5c1cf6c4fa35}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ThreadPool\ThreadPool.vcxproj">
       <Project>{bde48484-5593-484f-9f84-fc01f8cf83a9}</Project>
     </ProjectReference>

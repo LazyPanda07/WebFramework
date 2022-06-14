@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -104,19 +104,17 @@ $(document).ready(function(){initNavTree('_base_web_server_8h_source.html',''); 
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="classframework_1_1_executors_manager.html">ExecutorsManager</a> executorsManager;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="classframework_1_1_sessions_manager.html">SessionsManager</a> sessionsManager;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html">sqlite::SQLiteManager</a> databasesManager;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <a class="code" href="classframework_1_1_resource_executor.html">ResourceExecutor</a>* resources;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        std::weak_ptr&lt;ResourceExecutor&gt; resources;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86">BaseWebServer</a>(<span class="keyword">const</span> std::vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> std::filesystem::path&amp; assets, <span class="keyword">const</span> std::string&amp; pathToTemplates, <span class="keywordtype">bool</span> isCaching, <span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port, DWORD timeout, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; pathToSources);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1_base_web_server.html">BaseWebServer</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    };</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <a class="code" href="classframework_1_1_base_web_server.html">BaseWebServer</a>(<span class="keyword">const</span> json::JSONParser&amp; configuration, <span class="keyword">const</span> std::vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> std::filesystem::path&amp; assets, <span class="keyword">const</span> std::string&amp; pathToTemplates, uint64_t cachingSize, <span class="keyword">const</span> std::string&amp; ip, <span class="keyword">const</span> std::string&amp; port, DWORD timeout, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; pathToSources);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1_base_web_server.html">BaseWebServer</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    };</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
 <div class="ttc" id="aclassframework_1_1_base_web_server_html"><div class="ttname"><a href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_web_server_8h_source.html#l00012">BaseWebServer.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1_base_web_server_html_a00c0bee2588f87b5a20d43db2e883a86"><div class="ttname"><a href="classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86">framework::BaseWebServer::BaseWebServer</a></div><div class="ttdeci">BaseWebServer(const std::vector&lt; utility::JSONSettingsParser &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::string &amp;pathToTemplates, bool isCaching, const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</div><div class="ttdoc">Construct MultithreadedWebServer</div><div class="ttdef"><b>Definition:</b> <a href="_base_web_server_8cpp_source.html#l00013">BaseWebServer.cpp:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1_executors_manager_html"><div class="ttname"><a href="classframework_1_1_executors_manager.html">framework::ExecutorsManager</a></div><div class="ttdoc">Managing requests</div><div class="ttdef"><b>Definition:</b> <a href="_executors_manager_8h_source.html#l00018">ExecutorsManager.h:19</a></div></div>
-<div class="ttc" id="aclassframework_1_1_resource_executor_html"><div class="ttname"><a href="classframework_1_1_resource_executor.html">framework::ResourceExecutor</a></div><div class="ttdoc">Used for sending asset files</div><div class="ttdef"><b>Definition:</b> <a href="_resource_executor_8h_source.html#l00015">ResourceExecutor.h:16</a></div></div>
-<div class="ttc" id="aclassframework_1_1_sessions_manager_html"><div class="ttname"><a href="classframework_1_1_sessions_manager.html">framework::SessionsManager</a></div><div class="ttdoc">Providing and managing session mechanism</div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8h_source.html#l00010">SessionsManager.h:11</a></div></div>
+<div class="ttc" id="aclassframework_1_1_executors_manager_html"><div class="ttname"><a href="classframework_1_1_executors_manager.html">framework::ExecutorsManager</a></div><div class="ttdef"><b>Definition:</b> <a href="_executors_manager_8h_source.html#l00012">ExecutorsManager.h:13</a></div></div>
+<div class="ttc" id="aclassframework_1_1_sessions_manager_html"><div class="ttname"><a href="classframework_1_1_sessions_manager.html">framework::SessionsManager</a></div><div class="ttdef"><b>Definition:</b> <a href="_sessions_manager_8h_source.html#l00007">SessionsManager.h:8</a></div></div>
 <div class="ttc" id="aclassframework_1_1sqlite_1_1_s_q_lite_manager_html"><div class="ttname"><a href="classframework_1_1sqlite_1_1_s_q_lite_manager.html">framework::sqlite::SQLiteManager</a></div><div class="ttdef"><b>Definition:</b> <a href="_s_q_lite_manager_8h_source.html#l00011">SQLiteManager.h:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

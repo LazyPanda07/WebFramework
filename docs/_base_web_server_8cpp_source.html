@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">1.9.4</span>
+   &#160;<span id="projectnumber">v2.1</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -99,10 +99,10 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86">   13</a></span>&#160;    BaseWebServer::BaseWebServer(<span class="keyword">const</span> vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> filesystem::path&amp; assets, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToTemplates, <span class="keywordtype">bool</span> isCaching, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port, DWORD timeout, <span class="keyword">const</span> vector&lt;string&gt;&amp; pathToSources)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    BaseWebServer::BaseWebServer(<span class="keyword">const</span> json::JSONParser&amp; configuration, <span class="keyword">const</span> vector&lt;utility::JSONSettingsParser&gt;&amp; parsers, <span class="keyword">const</span> filesystem::path&amp; assets, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToTemplates, uint64_t cachingSize, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; port, DWORD timeout, <span class="keyword">const</span> vector&lt;string&gt;&amp; pathToSources)</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        unordered_map&lt;string, smartPointer&lt;BaseExecutor&gt;&gt; routes;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        unordered_map&lt;string, createBaseExecutorSubclassFunction&gt; creator;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        unordered_map&lt;string, createBaseExecutorSubclassFunction&gt; creators;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        unordered_map&lt;string, utility::JSONSettingsParser::ExecutorSettings&gt; settings;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        vector&lt;utility::RouteParameters&gt; routeParameters;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        vector&lt;HMODULE&gt; sources = [&amp;pathToSources]() -&gt; vector&lt;HMODULE&gt;</div>
@@ -111,11 +111,11 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            result.reserve(pathToSources.size());</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; i : pathToSources)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; pathToSource : pathToSources)</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="keywordflow">if</span> (!filesystem::exists(i))</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="keywordflow">if</span> (!filesystem::exists(pathToSource))</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                    <span class="keywordflow">if</span> (i == json_settings::defaultLoadSourceValue)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                    <span class="keywordflow">if</span> (pathToSource == json_settings::defaultLoadSourceValue)</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                    {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                        result.push_back(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
@@ -123,17 +123,17 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                    }</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                    {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                        <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">exceptions::FileDoesNotExistException</a>(i);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                        <span class="keywordflow">throw</span> file_manager::exceptions::FileDoesNotExistException(pathToSource);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                    }</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                }</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    result.push_back(LoadLibraryA(i.data()));</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    result.push_back(LoadLibraryA(pathToSource.data()));</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">if</span> (!result.back())</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_cant_load_source_exception.html">exceptions::CantLoadSourceException</a>(i);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    <span class="keywordflow">throw</span> exceptions::CantLoadSourceException(pathToSource);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                }</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; i : jsonSettings)</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <a class="code" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> executorSettings;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                utility::JSONSettingsParser::ExecutorSettings executorSettings;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                executorSettings.name = i.second.name;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                executorSettings.executorLoadType = i.second.executorLoadType;</div>
@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        routes.reserve(settings.size());</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        creator.reserve(settings.size());</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        creators.reserve(settings.size());</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        vector&lt;pair&lt;string, string&gt;&gt; nodes;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
@@ -181,7 +181,7 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">if</span> (!<span class="keyword">function</span>)</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_cant_find_function_exception.html">exceptions::CantFindFunctionException</a>(<span class="stringliteral">&quot;create&quot;</span> + j.name + <span class="stringliteral">&quot;Instance&quot;</span>);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <span class="keywordflow">throw</span> exceptions::CantFindFunctionException(<span class="stringliteral">&quot;create&quot;</span> + j.name + <span class="stringliteral">&quot;Instance&quot;</span>);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">switch</span> (j.executorLoadType)</div>
@@ -230,12 +230,12 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <span class="keywordflow">case</span> utility::JSONSettingsParser::ExecutorSettings::loadType::none:</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                <span class="keywordflow">throw</span> <a class="code" href="classframework_1_1exceptions_1_1_missing_load_type_exception.html">exceptions::MissingLoadTypeException</a>(j.name);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                <span class="keywordflow">throw</span> exceptions::MissingLoadTypeException(j.name);</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            }</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            creator[j.name] = <span class="keyword">function</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            creators[j.name] = <span class="keyword">function</span>;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; [i, j] : nodes)</div>
@@ -247,16 +247,11 @@ $(document).ready(function(){initNavTree('_base_web_server_8cpp_source.html','')
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            settings.insert(move(node));</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        }</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters));</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        resources = executorsManager.getResourceExecutor().get();</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        resources = executorsManager.getResourceExecutor();</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_cant_find_function_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_cant_find_function_exception.html">framework::exceptions::CantFindFunctionException</a></div><div class="ttdoc">Can't find createBaseExecutorSubclassFunction for executor</div><div class="ttdef"><b>Definition:</b> <a href="_cant_find_function_exception_8h_source.html#l00012">CantFindFunctionException.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_cant_load_source_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_cant_load_source_exception.html">framework::exceptions::CantLoadSourceException</a></div><div class="ttdoc">Wrong path to loadSource from .ini</div><div class="ttdef"><b>Definition:</b> <a href="_cant_load_source_exception_8h_source.html#l00012">CantLoadSourceException.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_file_does_not_exist_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_file_does_not_exist_exception.html">framework::exceptions::FileDoesNotExistException</a></div><div class="ttdoc">Wrong file path</div><div class="ttdef"><b>Definition:</b> <a href="_file_does_not_exist_exception_8h_source.html#l00012">FileDoesNotExistException.h:13</a></div></div>
-<div class="ttc" id="aclassframework_1_1exceptions_1_1_missing_load_type_exception_html"><div class="ttname"><a href="classframework_1_1exceptions_1_1_missing_load_type_exception.html">framework::exceptions::MissingLoadTypeException</a></div><div class="ttdoc">Missing loadType in .json file of executor</div><div class="ttdef"><b>Definition:</b> <a href="_missing_load_type_exception_8h_source.html#l00012">MissingLoadTypeException.h:13</a></div></div>
-<div class="ttc" id="astructframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings_html"><div class="ttname"><a href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">framework::utility::JSONSettingsParser::ExecutorSettings</a></div><div class="ttdoc">Settings for executor</div><div class="ttdef"><b>Definition:</b> <a href="_j_s_o_n_settings_parser_8h_source.html#l00018">JSONSettingsParser.h:19</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

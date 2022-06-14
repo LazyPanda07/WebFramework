@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include "WebFramework.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -23,32 +24,38 @@ namespace framework
 				result += tem + '\n';
 			}
 
+			html.close();
+
 			return result;
 		};
 
 		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(html);
-		html.close();
 
 		html.open(allErrorsFolder / web_framework_assets::notFound);
+
 		HTMLErrorsData[HTMLErrors::notFound404] = readFile(html);
-		html.close();
 
 		html.open(allErrorsFolder / web_framework_assets::internalServerError);
+
 		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
-		html.close();
 	}
 
-	ResourceExecutor::ResourceExecutor(const filesystem::path& assets, bool isCaching, const string& pathToTemplates) :
+	void ResourceExecutor::readFile(string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
+	{
+		result = handle->readAllData();
+	}
+
+	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates) :
 #ifdef WEB_FRAMEWORK_ASSETS
 		defaultAssets(WEB_FRAMEWORK_ASSETS),
 #else
 		defaultAssets(webFrameworkDefaultAssests),
 #endif // WEB_FRAMEWORK_ASSETS
 		assets(assets),
-		isCaching(isCaching),
-		dynamicPages(pathToTemplates)
+		dynamicPages(pathToTemplates),
+		fileManager(file_manager::FileManager::getInstance())
 	{
-
+		fileManager.getCache().setCacheSize(cachingSize);
 	}
 
 	void ResourceExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
@@ -69,81 +76,33 @@ namespace framework
 	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response)
 	{
 		string result;
-
-		if (isCaching)
-		{
-			shared_lock<shared_mutex> shared(cacheMutex);
-
-			auto findFile = staticCache.find(filePath);
-
-			if (findFile != staticCache.end())
-			{
-				response.addBody(findFile->second);
-
-				return;
-			}
-		}
-
 		filesystem::path assetFilePath(assets / filePath);
 
 		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetFilePath.string());
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
+		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, result, placeholders::_1));
 
-		if (isCaching)
-		{
-			unique_lock<shared_mutex> insertLock(cacheMutex);
-
-			staticCache[filePath] = result;
-		}
-
-		response.addBody(result);
+		response.addBody(move(result));
 	}
 
 	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
 	{
 		string result;
-
-		if (isCaching)
-		{
-			shared_lock<shared_mutex> shared(cacheMutex);
-
-			auto findFile = dynamicCache.find(filePath);
-
-			if (findFile != dynamicCache.end())
-			{
-				result = findFile->second;
-
-				dynamicPages.run(variables, result);
-
-				response.addBody(result);
-
-				return;
-			}
-		}
-
 		filesystem::path assetFilePath(assets / filePath);
 
 		if (!filesystem::exists(assetFilePath))
 		{
-			throw exceptions::FileDoesNotExistException(assetFilePath.string());
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		result = (ostringstream() << ifstream(assetFilePath).rdbuf()).str();
-
-		if (isCaching)
-		{
-			unique_lock<shared_mutex> insertLock(cacheMutex);
-
-			dynamicCache[filePath] = result;
-		}
+		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, result, placeholders::_1));
 
 		dynamicPages.run(variables, result);
 
-		response.addBody(result);
+		response.addBody(move(result));
 	}
 
 	void ResourceExecutor::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
@@ -200,5 +159,10 @@ namespace framework
 		response.setResponseCode(web::responseCodes::internalServerError);
 
 		response.addBody(HTMLErrorsData[HTMLErrors::internalServerError500]);
+	}
+
+	bool ResourceExecutor::getIsCaching() const
+	{
+		return fileManager.getCache().getCacheSize();
 	}
 }

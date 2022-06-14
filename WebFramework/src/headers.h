@@ -11,6 +11,7 @@
 #include <memory>
 #include <variant>
 #include <optional>
+#include <format>
 
 #include <mutex>
 #include <shared_mutex>
@@ -35,6 +36,7 @@
 #include "JSONArrayWrapper.h"
 #include "ThreadPool.h"
 #include "SingletonThreadPool.h"
+#include "FileManager.h"
 #include "HTTPBuilder.h"
 #include "HTTPParser.h"
 #include "HTTPNetwork.h"
@@ -44,5 +46,7 @@
 #include "INIParser.h"
 #include "BaseTCPServer.h"
 #include "BaseIOSocketStream.h"
+#include "TextLocalization.h"
+#include "WTextLocalization.h"
 
 #include <Windows.h>

@@ -55,3 +55,6 @@ build/
 *.sqlite3
 *.sqlite
 *.db
+
+# Localization
+ProjectLocalization/

@@ -1,9 +1,9 @@
 var searchData=
 [
   ['databaseexception_23',['DatabaseException',['../classframework_1_1exceptions_1_1_database_exception.html',1,'framework::exceptions']]],
-  ['deleteattribute_24',['deleteAttribute',['../classframework_1_1_sessions_manager.html#abcf282760bdade149b3ba9a2424acf52',1,'framework::SessionsManager::deleteAttribute()'],['../classframework_1_1_h_t_t_p_request.html#a09f892844c5fb7bc690374542730814d',1,'framework::HTTPRequest::deleteAttribute()']]],
+  ['deleteattribute_24',['deleteAttribute',['../classframework_1_1_h_t_t_p_request.html#a09f892844c5fb7bc690374542730814d',1,'framework::HTTPRequest']]],
   ['deletequery_25',['deleteQuery',['../classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad0a45278a8ce0f54f9ec8660dfd3ff19',1,'framework::sqlite::SQLiteDatabaseModel::deleteQuery(const std::string &amp;fieldName, const std::string &amp;fieldValue)'],['../classframework_1_1sqlite_1_1_s_q_lite_database_model.html#adf3c8e6326e17d8d4d69c4010e50951d',1,'framework::sqlite::SQLiteDatabaseModel::deleteQuery(const std::map&lt; std::string, std::string &gt; &amp;attributes)']]],
-  ['deletesession_26',['deleteSession',['../classframework_1_1_sessions_manager.html#a8041377a1b92da8a0bdfd25bb8153e9b',1,'framework::SessionsManager::deleteSession()'],['../classframework_1_1_h_t_t_p_request.html#abaf4720cdb6e24ff2e69677b71496658',1,'framework::HTTPRequest::deleteSession()']]],
+  ['deletesession_26',['deleteSession',['../classframework_1_1_h_t_t_p_request.html#abaf4720cdb6e24ff2e69677b71496658',1,'framework::HTTPRequest']]],
   ['destroy_27',['destroy',['../classframework_1_1_base_executor.html#a6557b16a8471d0c6615d7bf1e09e5d1c',1,'framework::BaseExecutor::destroy()'],['../classframework_1_1_base_heavy_operation_stateless_executor.html#a6e436d99ac9628878eeb2a66b320b450',1,'framework::BaseHeavyOperationStatelessExecutor::destroy()'],['../classframework_1_1_base_stateless_executor.html#a20628486ccc35efd522eff66e11fdcee',1,'framework::BaseStatelessExecutor::destroy()']]],
   ['disconnectclient_28',['disconnectClient',['../classframework_1_1_web_framework.html#ab77716f7dca7ade81a8354c9f3863ba4',1,'framework::WebFramework']]],
   ['dodelete_29',['doDelete',['../classframework_1_1_base_executor.html#a6cb0118d1dd538deb5207337487b129b',1,'framework::BaseExecutor']]],
