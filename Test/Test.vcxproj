@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)FileManager\src\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,13 +122,14 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)FileManager\src\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)WebFramework\libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -138,7 +139,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)FileManager\src\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,19 +162,23 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)FileManager\src\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)WebFramework\libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Networks\HTTP\JSON\JSON.vcxproj">
+      <Project>{f6b57139-d9f3-4b02-aa92-4e1f417649da}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\WebFramework\WebFramework.vcxproj">
       <Project>{e66352d0-66c8-4bae-85e4-4715d53fd651}</Project>
     </ProjectReference>
@@ -187,4 +192,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
