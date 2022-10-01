@@ -211,7 +211,7 @@ namespace framework
 		return currentConfiguration;
 	}
 
-	const string& WebFramework::getConfigurationJSONFile() const
+	const filesystem::path& WebFramework::getConfigurationJSONFile() const
 	{
 		return configurationJSONFile;
 	}
