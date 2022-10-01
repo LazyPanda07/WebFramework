@@ -50,13 +50,13 @@ namespace framework
 			loadSources.push_back(get<string>(i.data.front().second));
 		}
 
-		const string& assetsPath = currentConfiguration.get<string>(json_settings::assetsPathKey);
-		const string& templatesPath = currentConfiguration.get<string>(json_settings::templatesPathKey);
-		uint64_t cachingSize = currentConfiguration.get<uint64_t>(json_settings::cachingSize);
-		const string& webServerType = currentConfiguration.get<string>(json_settings::webServerTypeKey);
-		const string& ip = currentConfiguration.get<string>(json_settings::ipKey);
-		const string& port = currentConfiguration.get<string>(json_settings::portKey);
-		DWORD timeout = static_cast<DWORD>(currentConfiguration.get<int64_t>(json_settings::timeoutKey));
+		const string& assetsPath = currentConfiguration.getString(json_settings::assetsPathKey);
+		const string& templatesPath = currentConfiguration.getString(json_settings::templatesPathKey);
+		uint64_t cachingSize = currentConfiguration.getUnsignedInt(json_settings::cachingSize);
+		const string& webServerType = currentConfiguration.getString(json_settings::webServerTypeKey);
+		const string& ip = currentConfiguration.getString(json_settings::ipKey);
+		const string& port = currentConfiguration.getString(json_settings::portKey);
+		DWORD timeout = static_cast<DWORD>(currentConfiguration.getInt(json_settings::timeoutKey));
 		bool useHTTPS = false;
 
 		try
@@ -65,14 +65,14 @@ namespace framework
 
 			try
 			{
-				bool usingLogging = currentConfiguration.get<bool>(json_settings::usingLoggingKey);
-				const string& dateFormat = currentConfiguration.get<string>(json_settings::dateFormatKey);
+				bool usingLogging = currentConfiguration.getBool(json_settings::usingLoggingKey);
+				const string& dateFormat = currentConfiguration.getString(json_settings::dateFormatKey);
 
 				if (usingLogging)
 				{
 					try
 					{
-						bool addNewLineAfterLog = currentConfiguration.get<bool>(json_settings::addNewLineAfterLogKey);
+						bool addNewLineAfterLog = currentConfiguration.getBool(json_settings::addNewLineAfterLogKey);
 
 						Log::init(Log::dateFormatFromString(dateFormat), addNewLineAfterLog);
 					}
@@ -96,15 +96,15 @@ namespace framework
 
 		try
 		{
-			useHTTPS = currentConfiguration.get<bool>(json_settings::useHTTPSKey);
+			useHTTPS = currentConfiguration.getBool(json_settings::useHTTPSKey);
 
 			if (useHTTPS)
 			{
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(currentConfiguration.get<string>(json_settings::pathToCertificateKey));
-				httpsSettings.setPathToKey(currentConfiguration.get<string>(json_settings::pathToKey));
+				httpsSettings.setPathToCertificate(currentConfiguration.getString(json_settings::pathToCertificateKey));
+				httpsSettings.setPathToKey(currentConfiguration.getString(json_settings::pathToKey));
 
 				SSL_library_init();
 				SSL_load_error_strings();
@@ -151,7 +151,7 @@ namespace framework
 						port,
 						timeout,
 						loadSources,
-						static_cast<uint32_t>(currentConfiguration.get<int64_t>("threadCount"))
+						static_cast<uint32_t>(currentConfiguration.getInt("threadCount"))
 						);
 			}
 			catch (const json::exceptions::BaseJSONException&)
