@@ -15,7 +15,8 @@ namespace framework
 		return "2.2"s;
 	}
 
-	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
+	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
+		configurationJSONFile(configurationJSONFile.string())
 	{
 		if (!filesystem::exists(configurationJSONFile))
 		{
@@ -208,5 +209,10 @@ namespace framework
 	const json::JSONParser& WebFramework::getCurrentConfiguration() const
 	{
 		return currentConfiguration;
+	}
+
+	const string& WebFramework::getConfigurationJSONFile() const
+	{
+		return configurationJSONFile;
 	}
 }

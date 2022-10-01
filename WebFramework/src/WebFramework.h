@@ -32,6 +32,7 @@ namespace framework
 	private:
 		smartPointer<BaseWebServer> server;
 		json::JSONParser currentConfiguration;
+		std::string configurationJSONFile;
 
 	public:
 		/// <summary>
@@ -75,6 +76,10 @@ namespace framework
 		/// @brief Getter for currentConfiguration
 		/// @return Get current running configuration JSON 
 		const json::JSONParser& getCurrentConfiguration() const;
+
+		/// @brief Getter for configurationJSONFile
+		/// @return Get path to configuration JSON file
+		const std::string& getConfigurationJSONFile() const;
 
 		~WebFramework() = default;
 	};
