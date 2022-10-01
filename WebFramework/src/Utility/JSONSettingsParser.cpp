@@ -9,6 +9,12 @@ namespace framework
 {
 	namespace utility
 	{
+		JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
+			executorLoadType(loadType::none)
+		{
+
+		}
+
 		JSONSettingsParser::ExecutorSettings::ExecutorSettings(ExecutorSettings&& other) noexcept :
 			initParameters(move(other.initParameters)),
 			name(move(other.name)),
@@ -23,7 +29,7 @@ namespace framework
 
 			if (!in.is_open())
 			{
-				throw exceptions::FileDoesNotExistException(JSONSettings);
+				throw file_manager::exceptions::FileDoesNotExistException(JSONSettings);
 			}
 
 			json::JSONParser parser;

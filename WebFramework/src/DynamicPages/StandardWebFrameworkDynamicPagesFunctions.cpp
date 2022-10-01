@@ -29,7 +29,7 @@ namespace framework
 
 		if (!filesystem::exists(filePath))
 		{
-			throw exceptions::FileDoesNotExistException(filePath.string());
+			throw file_manager::exceptions::FileDoesNotExistException(filePath.string());
 		}
 
 		result.reserve(filesystem::file_size(filePath));

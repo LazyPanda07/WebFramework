@@ -12,6 +12,6 @@ var searchData=
   ['basestatefulexecutor_14',['BaseStatefulExecutor',['../classframework_1_1_base_stateful_executor.html',1,'framework']]],
   ['basestatelessexecutor_15',['BaseStatelessExecutor',['../classframework_1_1_base_stateless_executor.html',1,'framework']]],
   ['basewebframeworkexception_16',['BaseWebFrameworkException',['../classframework_1_1exceptions_1_1_base_web_framework_exception.html',1,'framework::exceptions']]],
-  ['basewebserver_17',['BaseWebServer',['../classframework_1_1_base_web_server.html#a00c0bee2588f87b5a20d43db2e883a86',1,'framework::BaseWebServer::BaseWebServer()'],['../classframework_1_1_base_web_server.html',1,'framework::BaseWebServer']]],
+  ['basewebserver_17',['BaseWebServer',['../classframework_1_1_base_web_server.html',1,'framework']]],
   ['begin_18',['begin',['../classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aea463029e7c19324cf449d16fc061317',1,'framework::sqlite::utility::SQLiteResult']]]
 ];

@@ -10,10 +10,10 @@ using namespace std;
 
 namespace framework
 {
-	BaseWebServer::BaseWebServer(const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, bool isCaching, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources)
+	BaseWebServer::BaseWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources)
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
-		unordered_map<string, createBaseExecutorSubclassFunction> creator;
+		unordered_map<string, createBaseExecutorSubclassFunction> creators;
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings;
 		vector<utility::RouteParameters> routeParameters;
 		vector<HMODULE> sources = [&pathToSources]() -> vector<HMODULE>
@@ -22,11 +22,11 @@ namespace framework
 
 			result.reserve(pathToSources.size());
 
-			for (const auto& i : pathToSources)
+			for (const string& pathToSource : pathToSources)
 			{
-				if (!filesystem::exists(i))
+				if (!filesystem::exists(pathToSource))
 				{
-					if (i == json_settings::defaultLoadSourceValue)
+					if (pathToSource == json_settings::defaultLoadSourceValue)
 					{
 						result.push_back(nullptr);
 
@@ -34,17 +34,17 @@ namespace framework
 					}
 					else
 					{
-						throw exceptions::FileDoesNotExistException(i);
+						throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 					}
 				}
 				else
 				{
-					result.push_back(LoadLibraryA(i.data()));
+					result.push_back(LoadLibraryA(pathToSource.data()));
 				}
 
 				if (!result.back())
 				{
-					throw exceptions::CantLoadSourceException(i);
+					throw exceptions::CantLoadSourceException(pathToSource);
 				}
 			}
 
@@ -72,7 +72,7 @@ namespace framework
 		}
 
 		routes.reserve(settings.size());
-		creator.reserve(settings.size());
+		creators.reserve(settings.size());
 
 		vector<pair<string, string>> nodes;
 
@@ -146,7 +146,7 @@ namespace framework
 				break;
 			}
 
-			creator[j.name] = function;
+			creators[j.name] = function;
 		}
 
 		for (auto&& [i, j] : nodes)
@@ -158,8 +158,8 @@ namespace framework
 			settings.insert(move(node));
 		}
 
-		executorsManager.init(assets, isCaching, pathToTemplates, move(routes), move(creator), move(settings), move(routeParameters));
+		executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters));
 
-		resources = executorsManager.getResourceExecutor().get();
+		resources = executorsManager.getResourceExecutor();
 	}
 }

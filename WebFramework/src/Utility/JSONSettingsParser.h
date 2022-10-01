@@ -28,7 +28,7 @@ namespace framework
 				std::string name;
 				loadType executorLoadType;
 
-				ExecutorSettings() = default;
+				ExecutorSettings();
 
 				ExecutorSettings(ExecutorSettings&& other) noexcept;
 			};
@@ -41,7 +41,7 @@ namespace framework
 			/// Construct JSONSettingsParser from .json file
 			/// </summary>
 			/// <param name="JSONSettings">path to .json settings file</param>
-			/// <exception cref="framework::exceptions::FileDoesNotExistException"></exception>
+			/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 			JSONSettingsParser(const std::string& JSONSettings);
 
 			/// @brief Move constructor

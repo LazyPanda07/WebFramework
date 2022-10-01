@@ -36,6 +36,7 @@
 #include "JSONArrayWrapper.h"
 #include "ThreadPool.h"
 #include "SingletonThreadPool.h"
+#include "FileManager.h"
 #include "HTTPBuilder.h"
 #include "HTTPParser.h"
 #include "HTTPNetwork.h"
