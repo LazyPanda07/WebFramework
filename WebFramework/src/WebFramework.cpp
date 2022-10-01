@@ -6,20 +6,13 @@
 #include "WebNetwork/WebServers/ThreadPoolWebServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 
-#pragma comment (lib, "BaseTCPServer.lib")
-#pragma comment (lib, "Log.lib")
-#pragma comment (lib, "INIParser.lib")
-#pragma comment (lib, "Networks.lib")
-#pragma comment (lib, "Localization.lib")
-#pragma comment (lib, "FileManager.lib")
-
 using namespace std;
 
 namespace framework
 {
-	string WebFramework::webFrameworkVersion()
+	string WebFramework::getWebFrameworkVersion()
 	{
-		return "2.1"s;
+		return "2.2"s;
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
@@ -40,12 +33,12 @@ namespace framework
 
 		loadSources.reserve(loadSourcesJSON.size());
 
-		for (const auto& i : settingsPathsJSON)
+		for (const json::utility::jsonObject& i : settingsPathsJSON)
 		{
 			settingsPaths.push_back(get<string>(i.data.front().second));
 		}
 
-		for (const auto& i : loadSourcesJSON)
+		for (const json::utility::jsonObject& i : loadSourcesJSON)
 		{
 			loadSources.push_back(get<string>(i.data.front().second));
 		}

@@ -26,9 +26,9 @@
 #include <chrono>
 #include <ctime>
 
-#include "WebFrameworkConstants.h"
-
 #include <openssl/ssl.h>
+
+#include "WebFrameworkConstants.h"
 
 #include "JSONBuilder.h"
 #include "JSONParser.h"
