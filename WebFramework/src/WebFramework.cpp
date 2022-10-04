@@ -16,34 +16,19 @@ namespace framework
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
-		configurationJSONFile(configurationJSONFile.string())
+		configurationJSONFile(configurationJSONFile),
+		basePath(configurationJSONFile)
 	{
 		if (!filesystem::exists(configurationJSONFile))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());
 		}
 
-		currentConfiguration = move(ifstream(configurationJSONFile));
+		currentConfiguration.setJSONData((ifstream(configurationJSONFile)));
+		basePath.remove_filename();
 
-		const vector<json::utility::jsonObject>& settingsPathsJSON = currentConfiguration.getArray(json_settings::settingsPathsKey);
-		const vector<json::utility::jsonObject>& loadSourcesJSON = currentConfiguration.getArray(json_settings::loadSourcesKey);
-		vector<string> settingsPaths;
-		vector<string> loadSources;
-
-		settingsPaths.reserve(settingsPathsJSON.size());
-
-		loadSources.reserve(loadSourcesJSON.size());
-
-		for (const json::utility::jsonObject& i : settingsPathsJSON)
-		{
-			settingsPaths.push_back(get<string>(i.data.front().second));
-		}
-
-		for (const json::utility::jsonObject& i : loadSourcesJSON)
-		{
-			loadSources.push_back(get<string>(i.data.front().second));
-		}
-
+		vector<string> settingsPaths = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::settingsPathsKey)).getAsStringArray();
+		vector<string> loadSources = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::loadSourcesKey)).getAsStringArray();
 		const string& assetsPath = currentConfiguration.getString(json_settings::assetsPathKey);
 		const string& templatesPath = currentConfiguration.getString(json_settings::templatesPathKey);
 		uint64_t cachingSize = currentConfiguration.getUnsignedInt(json_settings::cachingSize);
@@ -52,6 +37,9 @@ namespace framework
 		const string& port = currentConfiguration.getString(json_settings::portKey);
 		DWORD timeout = static_cast<DWORD>(currentConfiguration.getInt(json_settings::timeoutKey));
 		bool useHTTPS = false;
+
+		ranges::for_each(settingsPaths, [this](string& path) { path = basePath.string() + path; });
+		ranges::for_each(loadSources, [this](string& source) { source = basePath.string() + source; });
 
 		try
 		{

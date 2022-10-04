@@ -21,6 +21,7 @@ namespace framework
 		smartPointer<BaseWebServer> server;
 		json::JSONParser currentConfiguration;
 		std::filesystem::path configurationJSONFile;
+		std::filesystem::path basePath;
 
 	public:
 		/// <summary>
