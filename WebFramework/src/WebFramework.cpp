@@ -38,8 +38,16 @@ namespace framework
 		DWORD timeout = static_cast<DWORD>(currentConfiguration.getInt(json_settings::timeoutKey));
 		bool useHTTPS = false;
 
-		ranges::for_each(settingsPaths, [this](string& path) { path = basePath.string() + path; });
-		ranges::for_each(loadSources, [this](string& source) { source = basePath.string() + source; });
+		ranges::for_each(settingsPaths, [this](string& path)
+			{
+				if (path == "current")
+				{
+					return;
+				}
+
+				path = (basePath / path).string();
+			});
+		ranges::for_each(loadSources, [this](string& source) { source = (basePath / source).string(); });
 
 		try
 		{
