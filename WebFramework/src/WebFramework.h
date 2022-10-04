@@ -4,6 +4,18 @@
 
 #include "WebNetwork/WebServers/BaseWebServer.h"
 
+#pragma comment(lib, "BaseTCPServer.lib")
+#pragma comment(lib, "FileManager.lib")
+#pragma comment(lib, "HTTP.lib")
+#pragma comment(lib, "INIParser.lib")
+#pragma comment(lib, "JSON.lib")
+#pragma comment(lib, "Localization.lib")
+#pragma comment(lib, "Log.lib")
+#pragma comment(lib, "Networks.lib")
+#pragma comment(lib, "SHA256.lib")
+#pragma comment(lib, "SocketStreams.lib")
+#pragma comment(lib, "ThreadPool.lib")
+
 namespace framework
 {
 	/// <summary>
@@ -15,11 +27,12 @@ namespace framework
 	public:
 		/// @brief Get current WebFramework version
 		/// @return Current WebFramework version
-		static std::string webFrameworkVersion();
+		static std::string getWebFrameworkVersion();
 
 	private:
 		smartPointer<BaseWebServer> server;
 		json::JSONParser currentConfiguration;
+		std::filesystem::path configurationJSONFile;
 
 	public:
 		/// <summary>
@@ -63,6 +76,10 @@ namespace framework
 		/// @brief Getter for currentConfiguration
 		/// @return Get current running configuration JSON 
 		const json::JSONParser& getCurrentConfiguration() const;
+
+		/// @brief Getter for configurationJSONFile
+		/// @return Get path to configuration JSON file
+		const std::filesystem::path& getConfigurationJSONFile() const;
 
 		~WebFramework() = default;
 	};
