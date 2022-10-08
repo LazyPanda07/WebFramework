@@ -29,8 +29,8 @@ namespace framework
 
 		vector<string> settingsPaths = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::settingsPathsKey)).getAsStringArray();
 		vector<string> loadSources = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::loadSourcesKey)).getAsStringArray();
-		const string& assetsPath = currentConfiguration.getString(json_settings::assetsPathKey);
-		const string& templatesPath = currentConfiguration.getString(json_settings::templatesPathKey);
+		string assetsPath = (basePath / currentConfiguration.getString(json_settings::assetsPathKey)).string();
+		string templatesPath = (basePath / currentConfiguration.getString(json_settings::templatesPathKey)).string();
 		uint64_t cachingSize = currentConfiguration.getUnsignedInt(json_settings::cachingSize);
 		const string& webServerType = currentConfiguration.getString(json_settings::webServerTypeKey);
 		const string& ip = currentConfiguration.getString(json_settings::ipKey);
@@ -55,20 +55,17 @@ namespace framework
 
 			try
 			{
-				bool usingLogging = currentConfiguration.getBool(json_settings::usingLoggingKey);
 				const string& dateFormat = currentConfiguration.getString(json_settings::dateFormatKey);
 
-				if (usingLogging)
+				if (currentConfiguration.getBool(json_settings::usingLoggingKey))
 				{
 					try
 					{
-						bool addNewLineAfterLog = currentConfiguration.getBool(json_settings::addNewLineAfterLogKey);
-
-						Log::init(Log::dateFormatFromString(dateFormat), addNewLineAfterLog);
+						Log::init(Log::dateFormatFromString(dateFormat), currentConfiguration.getBool(json_settings::addNewLineAfterLogKey), basePath);
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
-						Log::init(Log::dateFormatFromString(dateFormat));
+						Log::init(Log::dateFormatFromString(dateFormat), true, basePath);
 					}
 				}
 			}
