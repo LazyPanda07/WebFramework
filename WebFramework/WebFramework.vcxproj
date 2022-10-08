@@ -181,6 +181,7 @@
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -215,6 +216,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -251,6 +253,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -289,6 +292,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -326,6 +330,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <PostBuildEvent>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -364,6 +369,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <PostBuildEvent>
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
+COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
