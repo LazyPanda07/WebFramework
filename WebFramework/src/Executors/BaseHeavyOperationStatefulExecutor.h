@@ -4,15 +4,21 @@
 
 namespace framework
 {
-	class BaseHeavyOperationStatefullExecutor : public BaseExecutor
+	/// <summary>
+	/// Base class for executors with dynamically changes states
+	/// <para>This type of executors creating dynamically for each client</para>
+	/// <para>Client can change states during connection, after disconnect destroy method called</para>
+	/// <para>Run in separate thread</para>
+	/// </summary>
+	class WEB_FRAMEWORK_API BaseHeavyOperationStatefulExecutor : public BaseExecutor
 	{
 	public:
-		BaseHeavyOperationStatefullExecutor() = default;
+		BaseHeavyOperationStatefulExecutor() = default;
 
 		/// @brief Get executor type
 		/// @return executorType::heavyOperationStateful
-		virtual BaseExecutor::executorType getType() const final override;
+		virtual executorType getType() const final override;
 
-		virtual ~BaseHeavyOperationStatefullExecutor() = default;
+		virtual ~BaseHeavyOperationStatefulExecutor() = default;
 	};
 }
