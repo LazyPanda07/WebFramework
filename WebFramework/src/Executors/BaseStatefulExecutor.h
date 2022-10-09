@@ -18,7 +18,7 @@ namespace framework
 		/// Get executor type
 		/// </summary>
 		/// <returns>executorType::stateful</returns>
-		virtual BaseExecutor::executorType getType() const final override;
+		virtual executorType getType() const final override;
 
 		virtual ~BaseStatefulExecutor() = default;
 	};

@@ -4,7 +4,7 @@ using namespace std;
 
 namespace framework
 {
-	BaseExecutor::executorType BaseHeavyOperationStatefullExecutor::getType() const
+	BaseExecutor::executorType BaseHeavyOperationStatefulExecutor::getType() const
 	{
 		return executorType::heavyOperationStateful;
 	}
