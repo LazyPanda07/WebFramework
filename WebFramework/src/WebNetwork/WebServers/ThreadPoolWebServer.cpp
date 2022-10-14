@@ -44,9 +44,10 @@ namespace framework
 		isBusy = other.isBusy;
 	}
 
-	void ThreadPoolWebServer::taskImplementation(HTTPRequest&& request, IndividualData& client, function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
+	void ThreadPoolWebServer::taskImplementation(HTTPRequest& request, SOCKET socket, function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
 	{
 		HTTPResponse response;
+		IndividualData& client = *clients[socket];
 
 		try
 		{
@@ -114,12 +115,15 @@ namespace framework
 			{
 				client.isBusy = true;
 
-				function<void()> task = [this, &request, &client, threadPoolFunction, &disconnectedClients, &resourceExecutor]() mutable
-				{
-					taskImplementation(move(request), client, *threadPoolFunction, disconnectedClients, resourceExecutor);
-				};
+#pragma warning(push)
+#pragma warning(disable: 26800)
 
-				threadPool.addTask(move(task));
+				threadPool.addTask
+				(
+					bind(&ThreadPoolWebServer::taskImplementation, this, move(request), client.clientSocket, *threadPoolFunction, disconnectedClients, resourceExecutor)
+				);
+
+#pragma warning(pop)
 
 				return;
 			}
@@ -254,15 +258,19 @@ namespace framework
 
 			for (auto& [clientSocket, client] : clients)
 			{
-				if (!client.isBusy)
+				if (!client->isBusy)
 				{
-					this->mainCycle(client, disconnectedClients, resourceExecutor);
+					this->mainCycle(*client, disconnectedClients, resourceExecutor);
 				}
 			}
 
-			for (const auto& i : disconnectedClients)
+			for (SOCKET clientSocket : disconnectedClients)
 			{
-				clients.erase(i);
+				auto it = clients.find(clientSocket);
+
+				delete it->second;
+
+				clients.erase(it);
 			}
 
 			disconnectedClients.clear();
@@ -278,7 +286,7 @@ namespace framework
 	{
 		if (clients.find(clientSocket) == clients.end())
 		{
-			clients.insert(make_pair(clientSocket, IndividualData(clientSocket, addr, ssl, context)));
+			clients.insert(make_pair(clientSocket, new IndividualData(clientSocket, addr, ssl, context)));
 
 			return;
 		}

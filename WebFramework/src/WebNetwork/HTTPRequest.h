@@ -50,6 +50,10 @@ namespace framework
 		/// @param clientAddr Client address
 		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
 
+		HTTPRequest(HTTPRequest&& other) noexcept;
+
+		HTTPRequest(const HTTPRequest& other);
+
 		/// <summary>
 		/// Parameters string from HTTP
 		/// </summary>

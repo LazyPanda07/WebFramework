@@ -36,9 +36,19 @@ namespace framework
 
 	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, smartPointer<BaseExecutor>>& statefulExecutors, optional<function<void(HTTPRequest&&, HTTPResponse&)>>& threadPoolFunction)
 	{
+		static const unordered_map<string, decltype(&BaseExecutor::doGet)> methods =
+		{
+			{ "GET", &BaseExecutor::doGet },
+			{ "POST", &BaseExecutor::doPost },
+			{ "HEAD", &BaseExecutor::doHead },
+			{ "PUT", &BaseExecutor::doPut },
+			{ "DELETE", &BaseExecutor::doDelete },
+			{ "OPTIONS", &BaseExecutor::doOptions },
+			{ "TRACE", &BaseExecutor::doTrace }
+		};
+
 		try
 		{
-			const string& method = request.getMethod();
 			string parameters = request.getRawParameters();
 			decltype(routes.find("")) executor;
 			bool fileRequest = parameters.find('.') != string::npos;
@@ -128,92 +138,30 @@ namespace framework
 				}
 			}
 
-			bool isThreadPoolTask = fileRequest ? false : executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful;
+			auto method = methods.at(request.getMethod());
+			bool isThreadPoolTask = fileRequest ? false :
+				(executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless ||
+					executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful);
 
-			if (method == getRequest)
+			if (isThreadPoolTask)
 			{
-				if (isThreadPoolTask)
-				{
-					threadPoolFunction = bind(&BaseExecutor::doGet, executor->second.get(), placeholders::_1, placeholders::_2);
-				}
-				else
-				{
-					fileRequest ? resources->doGet(move(request), response) : executor->second->doGet(move(request), response);
-				}
+				threadPoolFunction = bind(method, executor->second.get(), placeholders::_1, placeholders::_2);
 			}
-			else if (method == postRequest)
+			else
 			{
-				if (isThreadPoolTask)
-				{
-					threadPoolFunction = bind(&BaseExecutor::doPost, executor->second.get(), placeholders::_1, placeholders::_2);
-				}
-				else
-				{
-					fileRequest ? resources->doPost(move(request), response) : executor->second->doPost(move(request), response);
-				}
-			}
-			else if (method == headRequest)
-			{
-				if (isThreadPoolTask)
-				{
-					threadPoolFunction = bind(&BaseExecutor::doHead, executor->second.get(), placeholders::_1, placeholders::_2);
-				}
-				else
-				{
-					fileRequest ? resources->doHead(move(request), response) : executor->second->doHead(move(request), response);
-				}
-			}
-			else if (method == putRequest)
-			{
-				if (isThreadPoolTask)
-				{
-					threadPoolFunction = bind(&BaseExecutor::doPut, executor->second.get(), placeholders::_1, placeholders::_2);
-				}
-				else
-				{
-					fileRequest ? resources->doPut(move(request), response) : executor->second->doPut(move(request), response);
-				}
-			}
-			else if (method == deleteRequest)
-			{
-				if (isThreadPoolTask)
-				{
-					threadPoolFunction = bind(&BaseExecutor::doDelete, executor->second.get(), placeholders::_1, placeholders::_2);
-				}
-				else
-				{
-					fileRequest ? resources->doDelete(move(request), response) : executor->second->doDelete(move(request), response);
-				}
-			}
-			else if (method == optionsRequest)
-			{
-				if (isThreadPoolTask)
-				{
-					threadPoolFunction = bind(&BaseExecutor::doOptions, executor->second.get(), placeholders::_1, placeholders::_2);
-				}
-				else
-				{
-					fileRequest ? resources->doOptions(move(request), response) : executor->second->doOptions(move(request), response);
-				}
-			}
-			else if (method == traceRequest)
-			{
-				if (isThreadPoolTask)
-				{
-					threadPoolFunction = bind(&BaseExecutor::doTrace, executor->second.get(), placeholders::_1, placeholders::_2);
-				}
-				else
-				{
-					fileRequest ? resources->doTrace(move(request), response) : executor->second->doTrace(move(request), response);
-				}
+				fileRequest ?
+					invoke(method, resources.get(), move(request), response) :
+					invoke(method, executor->second.get(), move(request), response);
 			}
 		}
 		catch (const exceptions::BaseExecutorException&)
 		{
 			throw;
 		}
-		catch (const file_manager::exceptions::FileDoesNotExistException&)
+		catch (const file_manager::exceptions::FileDoesNotExistException& e)
 		{
+			Log::error("File request exception. {}", e.what());
+
 			throw;
 		}
 		catch (const out_of_range&)

@@ -13,7 +13,7 @@ namespace framework
 			streams::IOSocketStream clientStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket)));
 			smartPointer<streams::IOSocketStream> serverStream;
 
-			while (true)
+			while (isRunning)
 			{
 				try
 				{

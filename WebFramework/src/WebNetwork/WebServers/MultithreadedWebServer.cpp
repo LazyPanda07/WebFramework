@@ -127,7 +127,7 @@ namespace framework
 		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
 		shared_ptr<ResourceExecutor> resourceExecutor = resources.lock();
 
-		while (true)
+		while (isRunning)
 		{
 			try
 			{

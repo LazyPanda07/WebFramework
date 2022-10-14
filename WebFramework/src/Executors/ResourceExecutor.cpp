@@ -5,6 +5,7 @@
 #include "WebFramework.h"
 #include "WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/BadRequestException.h"
 
 using namespace std;
 
@@ -43,6 +44,11 @@ namespace framework
 	void ResourceExecutor::readFile(string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
 	{
 		result = handle->readAllData();
+
+		if (result.empty())
+		{
+			throw exceptions::BadRequestException("File is empty");
+		}
 	}
 
 	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates) :
