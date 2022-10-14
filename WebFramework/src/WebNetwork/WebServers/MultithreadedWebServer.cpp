@@ -23,6 +23,7 @@ namespace framework
 		SSL_CTX* context = nullptr;
 		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 		bool useHTTPS = httpsSettings.getUseHTTPS();
+		int addrlen = sizeof(sockaddr);
 
 		if (useHTTPS)
 		{
@@ -56,8 +57,6 @@ namespace framework
 		while (isRunning)
 		{
 			sockaddr addr;
-			int addrlen = sizeof(addr);
-
 			SOCKET clientSocket = accept(listenSocket, &addr, &addrlen);
 
 			if (isRunning && clientSocket != INVALID_SOCKET)
@@ -105,6 +104,11 @@ namespace framework
 
 				this->onConnectionReceive(clientSocket, addr);
 			}
+		}
+
+		for (const auto& [ip, _] : data.getClients())
+		{
+			this->pubDisconnect(ip);
 		}
 
 		if (useHTTPS)

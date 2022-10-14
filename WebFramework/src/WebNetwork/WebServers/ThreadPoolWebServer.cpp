@@ -276,6 +276,11 @@ namespace framework
 			disconnectedClients.clear();
 		}
 
+		for (const auto& [ip, _] : data.getClients())
+		{
+			this->pubDisconnect(ip);
+		}
+
 		if (useHTTPS)
 		{
 			SSL_CTX_free(context);
