@@ -89,7 +89,7 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, result, placeholders::_1));
+		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
 
 		response.addBody(move(result));
 	}
@@ -104,7 +104,7 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, result, placeholders::_1));
+		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
 
 		dynamicPages.run(variables, result);
 
