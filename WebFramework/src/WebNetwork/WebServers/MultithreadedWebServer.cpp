@@ -93,14 +93,7 @@ namespace framework
 					}
 				}
 
-				if (multiThreading)
-				{
-					thread(&MultithreadedWebServer::clientConnectionImplementation, this, clientSocket, addr, ssl, context).detach();
-				}
-				else
-				{
-					this->clientConnectionImplementation(clientSocket, addr, ssl, context);
-				}
+				thread(&MultithreadedWebServer::clientConnectionImplementation, this, clientSocket, addr, ssl, context).detach();
 
 				this->onConnectionReceive(clientSocket, addr);
 			}
