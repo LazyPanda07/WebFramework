@@ -4,7 +4,7 @@ var hierarchy =
       [ "framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData", "structframework_1_1load__balancer_1_1_load_balancer_server_1_1load_balancer_connection_data.html", null ]
     ] ],
     [ "framework::BaseExecutor", "classframework_1_1_base_executor.html", [
-      [ "framework::BaseHeavyOperationStatefullExecutor", "classframework_1_1_base_heavy_operation_statefull_executor.html", null ],
+      [ "framework::BaseHeavyOperationStatefulExecutor", "classframework_1_1_base_heavy_operation_stateful_executor.html", null ],
       [ "framework::BaseHeavyOperationStatelessExecutor", "classframework_1_1_base_heavy_operation_stateless_executor.html", null ],
       [ "framework::BaseStatefulExecutor", "classframework_1_1_base_stateful_executor.html", null ],
       [ "framework::BaseStatelessExecutor", "classframework_1_1_base_stateless_executor.html", [

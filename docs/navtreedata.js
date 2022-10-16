@@ -44,8 +44,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_bad_request_exception_8cpp_source.html",
-"classframework_1_1exceptions_1_1_base_executor_exception.html",
-"structsqlite3__index__info.html#aa8b4fe1d2ee38aab57ba5e1da00d7830"
+"classframework_1_1exceptions_1_1_bad_request_exception.html",
+"structsqlite3__index__info.html#a79b8a969dd7d582fc2ea3c0fbc5adb56"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">v2.1</span>
+   &#160;<span id="projectnumber">v2.2</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -123,11 +123,11 @@ $(document).ready(function(){initNavTree('_thread_pool_web_server_8h_source.html
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        };</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        threading::ThreadPool threadPool;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        std::unordered_map&lt;SOCKET, IndividualData&gt; clients;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        std::unordered_map&lt;SOCKET, IndividualData*&gt; clients;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        std::mutex disconnectMutex;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> taskImplementation(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp; request, IndividualData&amp; client, std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp;, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp;)&gt; executorMethod, std::vector&lt;SOCKET&gt;&amp; disconnectedClients, std::shared_ptr&lt;ResourceExecutor&gt;&amp; resourceExecutor);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> taskImplementation(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp; request, SOCKET socket, std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a>&amp;&amp;, <a class="code" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a>&amp;)&gt; executorMethod, std::vector&lt;SOCKET&gt;&amp; disconnectedClients, std::shared_ptr&lt;ResourceExecutor&gt;&amp; resourceExecutor);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> mainCycle(IndividualData&amp; client, std::vector&lt;SOCKET&gt;&amp; disconnectedClients, std::shared_ptr&lt;ResourceExecutor&gt;&amp; resourceExecutor);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>

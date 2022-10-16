@@ -44,7 +44,7 @@ var annotated_dup =
       ] ],
       [ "WebFrameworkDynamicPages", "classframework_1_1_web_framework_dynamic_pages.html", "classframework_1_1_web_framework_dynamic_pages" ],
       [ "BaseExecutor", "classframework_1_1_base_executor.html", "classframework_1_1_base_executor" ],
-      [ "BaseHeavyOperationStatefullExecutor", "classframework_1_1_base_heavy_operation_statefull_executor.html", "classframework_1_1_base_heavy_operation_statefull_executor" ],
+      [ "BaseHeavyOperationStatefulExecutor", "classframework_1_1_base_heavy_operation_stateful_executor.html", "classframework_1_1_base_heavy_operation_stateful_executor" ],
       [ "BaseHeavyOperationStatelessExecutor", "classframework_1_1_base_heavy_operation_stateless_executor.html", "classframework_1_1_base_heavy_operation_stateless_executor" ],
       [ "BaseStatefulExecutor", "classframework_1_1_base_stateful_executor.html", "classframework_1_1_base_stateful_executor" ],
       [ "BaseStatelessExecutor", "classframework_1_1_base_stateless_executor.html", "classframework_1_1_base_stateless_executor" ],

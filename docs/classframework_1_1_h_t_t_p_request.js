@@ -1,6 +1,8 @@
 var classframework_1_1_h_t_t_p_request =
 [
     [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html#a0d58bdc6dd90c49e5b21978717e1519d", null ],
+    [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html#a6b9d98637a2141ae40e9c198d0a65f0d", null ],
+    [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html#a251c70ea5aa10e3380cf8e09edb16898", null ],
     [ "~HTTPRequest", "classframework_1_1_h_t_t_p_request.html#a52b91828ab27c45d240353dd87ce66bf", null ],
     [ "deleteAttribute", "classframework_1_1_h_t_t_p_request.html#a09f892844c5fb7bc690374542730814d", null ],
     [ "deleteSession", "classframework_1_1_h_t_t_p_request.html#abaf4720cdb6e24ff2e69677b71496658", null ],
