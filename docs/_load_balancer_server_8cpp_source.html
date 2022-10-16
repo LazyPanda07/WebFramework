@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">v2.1</span>
+   &#160;<span id="projectnumber">v2.2</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('_load_balancer_server_8cpp_source.html
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            loadBalancerConnectionData data = this-&gt;chooseServer();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            streams::IOSocketStream serverStream(make_unique&lt;buffers::IOSocketBuffer&gt;(make_unique&lt;WebFrameworkHTTPNetwork&gt;(data.ip, data.port)));</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">while</span> (isRunning)</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                {</div>

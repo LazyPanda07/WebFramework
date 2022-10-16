@@ -36,7 +36,6 @@ namespace framework
 		const string& ip = currentConfiguration.getString(json_settings::ipKey);
 		const string& port = currentConfiguration.getString(json_settings::portKey);
 		DWORD timeout = static_cast<DWORD>(currentConfiguration.getInt(json_settings::timeoutKey));
-		bool useHTTPS = false;
 
 		ranges::for_each(settingsPaths, [this](string& path) {path = (basePath / path).string(); });
 		ranges::for_each(loadSources, [this](string& source)
@@ -83,15 +82,13 @@ namespace framework
 
 		try
 		{
-			useHTTPS = currentConfiguration.getBool(json_settings::useHTTPSKey);
-
-			if (useHTTPS)
+			if (currentConfiguration.getBool(json_settings::useHTTPSKey))
 			{
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(currentConfiguration.getString(json_settings::pathToCertificateKey));
-				httpsSettings.setPathToKey(currentConfiguration.getString(json_settings::pathToKey));
+				httpsSettings.setPathToCertificate(basePath / currentConfiguration.getString(json_settings::pathToCertificateKey));
+				httpsSettings.setPathToKey(basePath / currentConfiguration.getString(json_settings::pathToKey));
 
 				SSL_library_init();
 				SSL_load_error_strings();

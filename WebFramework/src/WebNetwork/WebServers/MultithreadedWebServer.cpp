@@ -23,6 +23,7 @@ namespace framework
 		SSL_CTX* context = nullptr;
 		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 		bool useHTTPS = httpsSettings.getUseHTTPS();
+		int addrlen = sizeof(sockaddr);
 
 		if (useHTTPS)
 		{
@@ -56,8 +57,6 @@ namespace framework
 		while (isRunning)
 		{
 			sockaddr addr;
-			int addrlen = sizeof(addr);
-
 			SOCKET clientSocket = accept(listenSocket, &addr, &addrlen);
 
 			if (isRunning && clientSocket != INVALID_SOCKET)
@@ -94,17 +93,15 @@ namespace framework
 					}
 				}
 
-				if (multiThreading)
-				{
-					thread(&MultithreadedWebServer::clientConnectionImplementation, this, clientSocket, addr, ssl, context).detach();
-				}
-				else
-				{
-					this->clientConnectionImplementation(clientSocket, addr, ssl, context);
-				}
+				thread(&MultithreadedWebServer::clientConnectionImplementation, this, clientSocket, addr, ssl, context).detach();
 
 				this->onConnectionReceive(clientSocket, addr);
 			}
+		}
+
+		for (const auto& [ip, _] : data.getClients())
+		{
+			this->pubDisconnect(ip);
 		}
 
 		if (useHTTPS)
@@ -127,7 +124,7 @@ namespace framework
 		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
 		shared_ptr<ResourceExecutor> resourceExecutor = resources.lock();
 
-		while (true)
+		while (isRunning)
 		{
 			try
 			{
@@ -152,25 +149,25 @@ namespace framework
 
 				break;
 			}
-			catch (const exceptions::BadRequestException&)	// 400
+			catch (const exceptions::BadRequestException&) // 400
 			{
 				resourceExecutor->badRequestError(response);
 
 				stream << response;
 			}
-			catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
+			catch (const file_manager::exceptions::FileDoesNotExistException&) // 404
 			{
 				resourceExecutor->notFoundError(response);
 
 				stream << response;
 			}
-			catch (const exceptions::BaseExecutorException&)	//500
+			catch (const exceptions::BaseExecutorException&) // 500
 			{
 				resourceExecutor->internalServerError(response);
 
 				stream << response;
 			}
-			catch (...)	//500
+			catch (...)	// 500
 			{
 				resourceExecutor->internalServerError(response);
 

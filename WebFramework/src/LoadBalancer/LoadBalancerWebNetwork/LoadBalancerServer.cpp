@@ -57,7 +57,7 @@ namespace framework
 			loadBalancerConnectionData data = this->chooseServer();
 			streams::IOSocketStream serverStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(data.ip, data.port)));
 			
-			while (true)
+			while (isRunning)
 			{
 				try
 				{

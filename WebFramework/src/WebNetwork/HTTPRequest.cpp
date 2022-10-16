@@ -1,6 +1,7 @@
 #include "HTTPRequest.h"
 
 #include "WebFrameworkHTTPNetwork.h"
+#include "Utility/Memory.h"
 
 using namespace std;
 
@@ -38,6 +39,38 @@ namespace framework
 		clientAddr(clientAddr)
 	{
 
+	}
+
+	HTTPRequest::HTTPRequest(HTTPRequest&& other) noexcept :
+		HTTPRequest
+		(
+			other.session,
+			other.serverReference,
+			other.staticResources,
+			other.dynamicResources,
+			other.database,
+			other.clientAddr
+		)
+
+	{
+		parser = move(other.parser);
+		routeParameters = move(routeParameters);
+	}
+
+	HTTPRequest::HTTPRequest(const HTTPRequest& other) :
+		HTTPRequest
+		(
+			other.session,
+			other.serverReference,
+			other.staticResources,
+			other.dynamicResources,
+			other.database,
+			other.clientAddr
+		)
+	{
+		parser = utility::make_smartPointer<web::HTTPParser>(*other.parser);
+
+		routeParameters = other.routeParameters;
 	}
 
 	const string& HTTPRequest::getRawParameters() const

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">v2.1</span>
+   &#160;<span id="projectnumber">v2.2</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -90,6 +90,11 @@ $(document).ready(function(){initNavTree('classframework_1_1_base_heavy_operatio
 <div class="title">framework::BaseHeavyOperationStatelessExecutor Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base class for executors with constant or static states  
+ <a href="classframework_1_1_base_heavy_operation_stateless_executor.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_base_heavy_operation_stateless_executor_8h_source.html">BaseHeavyOperationStatelessExecutor.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for framework::BaseHeavyOperationStatelessExecutor:</div>
 <div class="dyncontent">
@@ -102,7 +107,7 @@ Inheritance diagram for framework::BaseHeavyOperationStatelessExecutor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a83c89f911f3aa61e51160bd642570ffa"><td class="memItemLeft" align="right" valign="top">virtual BaseExecutor::executorType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_heavy_operation_stateless_executor.html#a83c89f911f3aa61e51160bd642570ffa">getType</a> () const final override</td></tr>
+<tr class="memitem:a83c89f911f3aa61e51160bd642570ffa"><td class="memItemLeft" align="right" valign="top">virtual executorType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_heavy_operation_stateless_executor.html#a83c89f911f3aa61e51160bd642570ffa">getType</a> () const final override</td></tr>
 <tr class="memdesc:a83c89f911f3aa61e51160bd642570ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get executor type.  <a href="classframework_1_1_base_heavy_operation_stateless_executor.html#a83c89f911f3aa61e51160bd642570ffa">More...</a><br /></td></tr>
 <tr class="separator:a83c89f911f3aa61e51160bd642570ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e436d99ac9628878eeb2a66b320b450"><td class="memItemLeft" align="right" valign="top"><a id="a6e436d99ac9628878eeb2a66b320b450"></a>
@@ -150,8 +155,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a7151ff985de54f3c32836634eb9d04bf inherit pub_types_classframework_1_1_base_executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_base_heavy_operation_stateless_executor_8h_source.html#l00007">7</a> of file <a class="el" href="_base_heavy_operation_stateless_executor_8h_source.html">BaseHeavyOperationStatelessExecutor.h</a>.</p>
+<div class="textblock"><p>Base class for executors with constant or static states </p>
+<p>This type of executors creating during server initializing</p>
+<p>Can't work in multi-threaded mode</p>
+<p>Run in separate thread</p>
+
+<p class="definition">Definition at line <a class="el" href="_base_heavy_operation_stateless_executor_8h_source.html#l00013">13</a> of file <a class="el" href="_base_heavy_operation_stateless_executor_8h_source.html">BaseHeavyOperationStatelessExecutor.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a83c89f911f3aa61e51160bd642570ffa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83c89f911f3aa61e51160bd642570ffa">&#9670;&nbsp;</a></span>getType()</h2>
