@@ -40,7 +40,7 @@ namespace framework
 
 			for (const auto& i : parser)
 			{
-				const auto& data = get<json::utility::jsonObject>(i->second);
+				const auto& data = get<json::utility::jsonObject>(i.second);
 
 				const string& loadType = data.getString("loadType");
 				ExecutorSettings executorSettings;
@@ -54,7 +54,7 @@ namespace framework
 
 				}
 
-				executorSettings.name = i->first;
+				executorSettings.name = i.first;
 				
 				if (loadType == json_settings_values::initializationLoadTypeValue)
 				{
