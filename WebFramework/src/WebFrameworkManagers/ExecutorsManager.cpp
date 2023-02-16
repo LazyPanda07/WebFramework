@@ -32,6 +32,17 @@ namespace framework
 		resources = make_shared<ResourceExecutor>(configuraion, assets, cachingSize, pathToTemplates);
 
 		resources->init(utility::JSONSettingsParser::ExecutorSettings());
+
+		const string& webServerType = configuraion.getString(json_settings::webServerTypeKey);
+
+		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
+		{
+			serverType = webServerType::multiThreaded;
+		}
+		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
+		{
+			serverType = webServerType::threadPool;
+		}
 	}
 
 	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, smartPointer<BaseExecutor>>& statefulExecutors, optional<function<void(HTTPRequest&&, HTTPResponse&)>>& threadPoolFunction)
@@ -143,7 +154,7 @@ namespace framework
 				(executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless ||
 					executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful);
 
-			if (isThreadPoolTask)
+			if (serverType == webServerType::threadPool && isThreadPoolTask)
 			{
 				threadPoolFunction = bind(method, executor->second.get(), placeholders::_1, placeholders::_2);
 			}

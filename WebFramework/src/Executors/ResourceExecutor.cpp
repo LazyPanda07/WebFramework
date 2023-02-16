@@ -79,7 +79,7 @@ namespace framework
 		this->loadHTMLErrorsData();
 	}
 
-	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response)
+	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response, bool isBinary)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -89,12 +89,19 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+		if (isBinary)
+		{
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+		}
+		else
+		{
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+		}
 
 		response.addBody(move(result));
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -104,7 +111,14 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+		if (isBinary)
+		{
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+		}
+		else
+		{
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+		}
 
 		dynamicPages.run(variables, result);
 

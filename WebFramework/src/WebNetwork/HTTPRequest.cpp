@@ -160,15 +160,15 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables)
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary)
 	{
 		if (isWebFrameworkDynamicPages(filePath))
 		{
-			dynamicResources.sendDynamicFile(filePath, response, variables);
+			dynamicResources.sendDynamicFile(filePath, response, variables, isBinary);
 		}
 		else
 		{
-			staticResources.sendStaticFile(filePath, response);
+			staticResources.sendStaticFile(filePath, response, isBinary);
 		}
 	}
 

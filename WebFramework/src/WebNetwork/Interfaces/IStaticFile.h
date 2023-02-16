@@ -9,7 +9,7 @@ namespace framework
 		class IStaticFile
 		{
 		public:
-			virtual void sendStaticFile(const std::string& filePath, HTTPResponse& response) = 0;
+			virtual void sendStaticFile(const std::string& filePath, HTTPResponse& response, bool isBinary) = 0;
 
 			virtual ~IStaticFile() = default;
 		};
