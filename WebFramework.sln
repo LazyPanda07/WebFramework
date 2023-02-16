@@ -175,10 +175,10 @@ Global
 		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.Debug|x64.Build.0 = Debug|x64
 		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.DebugDLL|x64.ActiveCfg = DebugDLL|x64
 		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.DebugDLL|x64.Build.0 = DebugDLL|x64
-		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionRelease|x64.ActiveCfg = Release|x64
-		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionRelease|x64.Build.0 = Release|x64
-		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
-		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionReleaseDLL|x64.Build.0 = ReleaseDLL|x64
+		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionRelease|x64.ActiveCfg = ProductionRelease|x64
+		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
+		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
 		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.Release|x64.ActiveCfg = Release|x64
 		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.Release|x64.Build.0 = Release|x64
 		{1ECA0169-41DD-48B1-A53F-8355BAE79B40}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
