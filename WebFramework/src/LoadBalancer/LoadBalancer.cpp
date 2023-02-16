@@ -20,10 +20,10 @@ namespace framework
 
 			json::JSONParser parser(move(ifstream(configurationJSONFile)));
 
-			const string& loadBalancerIp = parser.get<string>(json_settings::loadBalancerIpKey);
-			const string& loadBalancerPort = parser.get<string>(json_settings::loadBalancerPortKey);
-			DWORD loadBalancerTimeout = static_cast<DWORD>(parser.get<int64_t>(json_settings::loadBalancerTimeoutKey));
-			const json::utility::jsonObject& listOfServers = parser.get<json::utility::jsonObject>(json_settings::listOfServersKey);
+			const string& loadBalancerIp = parser.getValue<string>(json_settings::loadBalancerIpKey);
+			const string& loadBalancerPort = parser.getValue<string>(json_settings::loadBalancerPortKey);
+			DWORD loadBalancerTimeout = static_cast<DWORD>(parser.getValue<int64_t>(json_settings::loadBalancerTimeoutKey));
+			const json::utility::jsonObject& listOfServers = parser.getValue<json::utility::jsonObject>(json_settings::listOfServersKey);
 			unordered_map<string, vector<string>> allServers;
 
 			for (const auto& [ip, portsArray] : listOfServers.data)
