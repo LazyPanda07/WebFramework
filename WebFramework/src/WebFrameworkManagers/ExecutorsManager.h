@@ -12,12 +12,20 @@ namespace framework
 	class ExecutorsManager
 	{
 	private:
+		enum class webServerType
+		{
+			multiThreaded,
+			threadPool
+		};
+
+	private:
 		std::mutex checkExecutor;
 		std::unordered_map<std::string, smartPointer<BaseExecutor>> routes;	// route - executor
 		std::unordered_map<std::string, createBaseExecutorSubclassFunction> creators;	// executor name - create function
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings;	// route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters;	// base routes for parameterize executors
+		webServerType serverType;
 
 	public:
 		ExecutorsManager() = default;
