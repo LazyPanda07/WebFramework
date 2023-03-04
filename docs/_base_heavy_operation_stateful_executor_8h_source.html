@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">WebFramework
-   &#160;<span id="projectnumber">v2.1</span>
+   &#160;<span id="projectnumber">v2.2</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -93,19 +93,18 @@ $(document).ready(function(){initNavTree('_base_heavy_operation_stateful_executo
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>framework</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classframework_1_1_base_heavy_operation_statefull_executor.html">    7</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classframework_1_1_base_heavy_operation_statefull_executor.html">BaseHeavyOperationStatefullExecutor</a> : <span class="keyword">public</span> <a class="code" href="classframework_1_1_base_executor.html">BaseExecutor</a></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <a class="code" href="classframework_1_1_base_heavy_operation_statefull_executor.html">BaseHeavyOperationStatefullExecutor</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keyword">virtual</span> BaseExecutor::executorType <a class="code" href="classframework_1_1_base_heavy_operation_statefull_executor.html#aab406c20af772c223fff3fa58c1df10e">getType</a>() <span class="keyword">const</span> <span class="keyword">final</span> <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1_base_heavy_operation_statefull_executor.html">BaseHeavyOperationStatefullExecutor</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    };</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classframework_1_1_base_heavy_operation_stateful_executor.html">   13</a></span>&#160;    <span class="keyword">class </span>WEB_FRAMEWORK_API <a class="code" href="classframework_1_1_base_heavy_operation_stateful_executor.html">BaseHeavyOperationStatefulExecutor</a> : <span class="keyword">public</span> <a class="code" href="classframework_1_1_base_executor.html">BaseExecutor</a></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <a class="code" href="classframework_1_1_base_heavy_operation_stateful_executor.html">BaseHeavyOperationStatefulExecutor</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">virtual</span> executorType getType() <span class="keyword">const</span> <span class="keyword">final</span> <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classframework_1_1_base_heavy_operation_stateful_executor.html">BaseHeavyOperationStatefulExecutor</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    };</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
 <div class="ttc" id="aclassframework_1_1_base_executor_html"><div class="ttname"><a href="classframework_1_1_base_executor.html">framework::BaseExecutor</a></div><div class="ttdoc">Base class for all executors</div><div class="ttdef"><b>Definition:</b> <a href="_base_executor_8h_source.html#l00021">BaseExecutor.h:22</a></div></div>
-<div class="ttc" id="aclassframework_1_1_base_heavy_operation_statefull_executor_html"><div class="ttname"><a href="classframework_1_1_base_heavy_operation_statefull_executor.html">framework::BaseHeavyOperationStatefullExecutor</a></div><div class="ttdef"><b>Definition:</b> <a href="_base_heavy_operation_stateful_executor_8h_source.html#l00007">BaseHeavyOperationStatefulExecutor.h:8</a></div></div>
-<div class="ttc" id="aclassframework_1_1_base_heavy_operation_statefull_executor_html_aab406c20af772c223fff3fa58c1df10e"><div class="ttname"><a href="classframework_1_1_base_heavy_operation_statefull_executor.html#aab406c20af772c223fff3fa58c1df10e">framework::BaseHeavyOperationStatefullExecutor::getType</a></div><div class="ttdeci">virtual BaseExecutor::executorType getType() const final override</div><div class="ttdoc">Get executor type.</div><div class="ttdef"><b>Definition:</b> <a href="_base_heavy_operation_stateful_executor_8cpp_source.html#l00007">BaseHeavyOperationStatefulExecutor.cpp:7</a></div></div>
+<div class="ttc" id="aclassframework_1_1_base_heavy_operation_stateful_executor_html"><div class="ttname"><a href="classframework_1_1_base_heavy_operation_stateful_executor.html">framework::BaseHeavyOperationStatefulExecutor</a></div><div class="ttdoc">Base class for executors with dynamically changes states</div><div class="ttdef"><b>Definition:</b> <a href="_base_heavy_operation_stateful_executor_8h_source.html#l00013">BaseHeavyOperationStatefulExecutor.h:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

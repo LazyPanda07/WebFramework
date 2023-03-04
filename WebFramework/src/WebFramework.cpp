@@ -6,58 +6,47 @@
 #include "WebNetwork/WebServers/ThreadPoolWebServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 
-#pragma comment (lib, "BaseTCPServer.lib")
-#pragma comment (lib, "Log.lib")
-#pragma comment (lib, "INIParser.lib")
-#pragma comment (lib, "Networks.lib")
-#pragma comment (lib, "Localization.lib")
-#pragma comment (lib, "FileManager.lib")
-
 using namespace std;
 
 namespace framework
 {
-	string WebFramework::webFrameworkVersion()
+	string WebFramework::getWebFrameworkVersion()
 	{
-		return "2.1"s;
+		return "2.3"s;
 	}
 
-	WebFramework::WebFramework(const filesystem::path& configurationJSONFile)
+	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
+		configurationJSONFile(configurationJSONFile),
+		basePath(configurationJSONFile)
 	{
 		if (!filesystem::exists(configurationJSONFile))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());
 		}
 
-		currentConfiguration = move(ifstream(configurationJSONFile));
+		currentConfiguration.setJSONData((ifstream(configurationJSONFile)));
+		basePath.remove_filename();
 
-		const vector<json::utility::jsonObject>& settingsPathsJSON = currentConfiguration.getArray(json_settings::settingsPathsKey);
-		const vector<json::utility::jsonObject>& loadSourcesJSON = currentConfiguration.getArray(json_settings::loadSourcesKey);
-		vector<string> settingsPaths;
-		vector<string> loadSources;
-
-		settingsPaths.reserve(settingsPathsJSON.size());
-
-		loadSources.reserve(loadSourcesJSON.size());
-
-		for (const auto& i : settingsPathsJSON)
-		{
-			settingsPaths.push_back(get<string>(i.data.front().second));
-		}
-
-		for (const auto& i : loadSourcesJSON)
-		{
-			loadSources.push_back(get<string>(i.data.front().second));
-		}
-
-		const string& assetsPath = currentConfiguration.getString(json_settings::assetsPathKey);
-		const string& templatesPath = currentConfiguration.getString(json_settings::templatesPathKey);
+		vector<string> settingsPaths = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::settingsPathsKey)).getAsStringArray();
+		vector<string> loadSources = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::loadSourcesKey)).getAsStringArray();
+		string assetsPath = (basePath / currentConfiguration.getString(json_settings::assetsPathKey)).string();
+		string templatesPath = (basePath / currentConfiguration.getString(json_settings::templatesPathKey)).string();
 		uint64_t cachingSize = currentConfiguration.getUnsignedInt(json_settings::cachingSize);
 		const string& webServerType = currentConfiguration.getString(json_settings::webServerTypeKey);
 		const string& ip = currentConfiguration.getString(json_settings::ipKey);
 		const string& port = currentConfiguration.getString(json_settings::portKey);
 		DWORD timeout = static_cast<DWORD>(currentConfiguration.getInt(json_settings::timeoutKey));
-		bool useHTTPS = false;
+
+		ranges::for_each(settingsPaths, [this](string& path) {path = (basePath / path).string(); });
+		ranges::for_each(loadSources, [this](string& source)
+			{
+				if (source == "current")
+				{
+					return;
+				}
+
+				source = (basePath / source).string();
+			});
 
 		try
 		{
@@ -65,20 +54,17 @@ namespace framework
 
 			try
 			{
-				bool usingLogging = currentConfiguration.getBool(json_settings::usingLoggingKey);
 				const string& dateFormat = currentConfiguration.getString(json_settings::dateFormatKey);
 
-				if (usingLogging)
+				if (currentConfiguration.getBool(json_settings::usingLoggingKey))
 				{
 					try
 					{
-						bool addNewLineAfterLog = currentConfiguration.getBool(json_settings::addNewLineAfterLogKey);
-
-						Log::init(Log::dateFormatFromString(dateFormat), addNewLineAfterLog);
+						Log::init(Log::dateFormatFromString(dateFormat), currentConfiguration.getBool(json_settings::addNewLineAfterLogKey), basePath);
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
-						Log::init(Log::dateFormatFromString(dateFormat));
+						Log::init(Log::dateFormatFromString(dateFormat), true, basePath);
 					}
 				}
 			}
@@ -96,15 +82,13 @@ namespace framework
 
 		try
 		{
-			useHTTPS = currentConfiguration.getBool(json_settings::useHTTPSKey);
-
-			if (useHTTPS)
+			if (currentConfiguration.getBool(json_settings::useHTTPSKey))
 			{
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(currentConfiguration.getString(json_settings::pathToCertificateKey));
-				httpsSettings.setPathToKey(currentConfiguration.getString(json_settings::pathToKey));
+				httpsSettings.setPathToCertificate(basePath / currentConfiguration.getString(json_settings::pathToCertificateKey));
+				httpsSettings.setPathToKey(basePath / currentConfiguration.getString(json_settings::pathToKey));
 
 				SSL_library_init();
 				SSL_load_error_strings();
@@ -215,5 +199,10 @@ namespace framework
 	const json::JSONParser& WebFramework::getCurrentConfiguration() const
 	{
 		return currentConfiguration;
+	}
+
+	const filesystem::path& WebFramework::getConfigurationJSONFile() const
+	{
+		return configurationJSONFile;
 	}
 }

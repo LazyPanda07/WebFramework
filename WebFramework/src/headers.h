@@ -26,9 +26,9 @@
 #include <chrono>
 #include <ctime>
 
-#include "WebFrameworkConstants.h"
-
 #include <openssl/ssl.h>
+
+#include "WebFrameworkConstants.h"
 
 #include "JSONBuilder.h"
 #include "JSONParser.h"
@@ -50,3 +50,15 @@
 #include "WTextLocalization.h"
 
 #include <Windows.h>
+
+#pragma comment(lib, "BaseTCPServer.lib")
+#pragma comment(lib, "FileManager.lib")
+#pragma comment(lib, "HTTP.lib")
+#pragma comment(lib, "INIParser.lib")
+#pragma comment(lib, "JSON.lib")
+#pragma comment(lib, "Localization.lib")
+#pragma comment(lib, "Log.lib")
+#pragma comment(lib, "Networks.lib")
+#pragma comment(lib, "SHA256.lib")
+#pragma comment(lib, "SocketStreams.lib")
+#pragma comment(lib, "ThreadPool.lib")

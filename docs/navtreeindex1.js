@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"classframework_1_1exceptions_1_1_bad_request_exception.html":[0,0,0,0,0],
+"classframework_1_1exceptions_1_1_bad_request_exception.html#ab403016174eff45456e7490c07984adf":[0,0,0,0,0,1],
+"classframework_1_1exceptions_1_1_bad_request_exception.html#ab926bf0bf93cf8e92c8ecbcd8c31883f":[0,0,0,0,0,0],
 "classframework_1_1exceptions_1_1_base_executor_exception.html":[0,0,0,0,1],
 "classframework_1_1exceptions_1_1_base_executor_exception.html#a48211f43f07fffa4761afababf644700":[0,0,0,0,1,0],
 "classframework_1_1exceptions_1_1_base_executor_exception.html#ac8804cbd44f0570a549869d70d1314ef":[0,0,0,0,1,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "structsqlite3__index__info.html#a5410066c067c3891cdf165c70cc4d6b1":[0,0,6,13],
 "structsqlite3__index__info.html#a5515d9de0f37f68d7e0930c20a668b29":[0,0,6,15],
 "structsqlite3__index__info.html#a634aa93834e2b47acf34454746c0f248":[0,0,6,3],
-"structsqlite3__index__info.html#a6823a68979e19d8e332389361e920ef9":[0,0,6,5],
-"structsqlite3__index__info.html#a79b8a969dd7d582fc2ea3c0fbc5adb56":[0,0,6,4],
-"structsqlite3__index__info.html#a8acf2a7efbc3e193cf01d2afbd44fdbb":[0,0,6,9],
-"structsqlite3__index__info.html#a99787169e2f78c0728bdb339c4107a2e":[0,0,6,6]
+"structsqlite3__index__info.html#a6823a68979e19d8e332389361e920ef9":[0,0,6,5]
 };
