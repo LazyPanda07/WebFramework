@@ -1,14 +1,11 @@
 var classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result =
 [
-    [ "const_iterator", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a476c1fc9d831c24f0a1c4fc31de04152", null ],
-    [ "SQLiteResult", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#ae910767ec8142eabf627c76cd9627551", null ],
     [ "SQLiteResult", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a218e73756e9400f611c3ceb10a67f510", null ],
     [ "SQLiteResult", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a4a239e675950c1de7a051156cdea0db0", null ],
-    [ "~SQLiteResult", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a76614b44aa4f2a816eb2edc9de59cc49", null ],
     [ "at", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#af3ba39462440c4fc00065ad1817eefe4", null ],
     [ "at", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a050318855daa63ee52363275c1d0d6e4", null ],
-    [ "at", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a45f7dee0a5883f4f58e43e2c12b5532c", null ],
-    [ "at", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a601e14d9c2e0a02dd10758792a4f27e7", null ],
+    [ "at", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a0fecc8e9513fe62b0709b07e58c6b2c9", null ],
+    [ "at", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a206331dcf3b6dcf73ae05c86261d1fd9", null ],
     [ "back", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#a3ef26065b4fd59b6862a065c20a15cc5", null ],
     [ "back", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aee79241a56ea24abfa16022ab751fbb4", null ],
     [ "begin", "classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aea463029e7c19324cf449d16fc061317", null ],

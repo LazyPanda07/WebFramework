@@ -1,7 +1,6 @@
 var classframework_1_1_web_framework =
 [
     [ "WebFramework", "classframework_1_1_web_framework.html#a12b511148a8cca7ad25ea27b6a0c497c", null ],
-    [ "~WebFramework", "classframework_1_1_web_framework.html#aed318a9e5924f9c702148ce54f6e0fde", null ],
     [ "disconnectClient", "classframework_1_1_web_framework.html#ab77716f7dca7ade81a8354c9f3863ba4", null ],
     [ "getClientsIp", "classframework_1_1_web_framework.html#acbdc33b3da335041bed850fe8d918b8d", null ],
     [ "getConfigurationJSONFile", "classframework_1_1_web_framework.html#a8124ca5d85799a15d3060b21573f316d", null ],
