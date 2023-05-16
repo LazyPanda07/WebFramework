@@ -79,7 +79,7 @@ namespace framework
 		this->loadHTMLErrorsData();
 	}
 
-	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response, bool isBinary)
+	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response, bool isBinary, const string& fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -98,10 +98,15 @@ namespace framework
 			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
 		}
 
+		if (fileName.size())
+		{
+			response.addHeader("Content-Disposition", format("attachment; filename*=UTF-8''{}", fileName));
+		}
+
 		response.addBody(move(result));
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary)
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary, const string& fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -121,6 +126,11 @@ namespace framework
 		}
 
 		dynamicPages.run(variables, result);
+
+		if (fileName.size())
+		{
+			response.addHeader("Content-Disposition", format("attachment; filename*=UTF-8''{}", fileName));
+		}
 
 		response.addBody(move(result));
 	}
