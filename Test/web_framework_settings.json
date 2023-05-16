@@ -7,8 +7,7 @@
 
   "WebFramework": {
     "settingsPaths": [
-      "another.json",
-      "default.json"
+      "web.json"
     ],
     "loadSources": [
       "current"
