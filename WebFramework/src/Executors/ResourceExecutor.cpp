@@ -100,7 +100,7 @@ namespace framework
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format("attachment; filename*=UTF-8''{}", fileName));
+			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName));
 		}
 
 		response.addBody(move(result));
@@ -129,7 +129,7 @@ namespace framework
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format("attachment; filename*=UTF-8''{}", fileName));
+			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName));
 		}
 
 		response.addBody(move(result));

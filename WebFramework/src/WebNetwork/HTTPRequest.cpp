@@ -162,14 +162,19 @@ namespace framework
 
 	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary, const string& fileName)
 	{
-		if (isWebFrameworkDynamicPages(filePath))
-		{
-			dynamicResources.sendDynamicFile(filePath, response, variables, isBinary, fileName);
-		}
-		else
-		{
-			staticResources.sendStaticFile(filePath, response, isBinary, fileName);
-		}
+		HTTPRequest::isWebFrameworkDynamicPages(filePath) ?
+			this->sendDynamicFile(filePath, response, variables, isBinary, fileName) :
+			this->sendStaticFile(filePath, response, isBinary, fileName);
+	}
+
+	void HTTPRequest::sendStaticFile(const string& filePath, HTTPResponse& response, bool isBinary, const string& fileName)
+	{
+		staticResources.sendStaticFile(filePath, response, isBinary, fileName);
+	}
+
+	void HTTPRequest::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary, const string& fileName)
+	{
+		dynamicResources.sendDynamicFile(filePath, response, variables, isBinary, fileName);
 	}
 
 	void HTTPRequest::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
