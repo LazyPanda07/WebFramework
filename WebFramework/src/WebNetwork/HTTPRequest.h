@@ -127,9 +127,10 @@ namespace framework
 		/// </summary>
 		/// <param name="filePath">path to asset file from assets folder</param>
 		/// <param name="response">with file</param>
+		///  <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables = {}, bool isBinary = true);
+		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables = {}, bool isBinary = true, const std::string& fileName = "");
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

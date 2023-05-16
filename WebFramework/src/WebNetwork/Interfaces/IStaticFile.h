@@ -9,7 +9,10 @@ namespace framework
 		class IStaticFile
 		{
 		public:
-			virtual void sendStaticFile(const std::string& filePath, HTTPResponse& response, bool isBinary) = 0;
+			/**
+			* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
+			*/
+			virtual void sendStaticFile(const std::string& filePath, HTTPResponse& response, bool isBinary, const std::string& fileName) = 0;
 
 			virtual ~IStaticFile() = default;
 		};
