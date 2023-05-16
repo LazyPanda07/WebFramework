@@ -22,3 +22,6 @@
 [submodule "FileManager"]
 	path = FileManager
 	url = https://github.com/LazyPanda07/FileManager.git
+[submodule "UtilityLibrary"]
+	path = UtilityLibrary
+	url = https://github.com/LazyPanda07/UtilityLibrary.git

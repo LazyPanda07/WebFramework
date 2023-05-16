@@ -112,6 +112,7 @@ using smartPointer = std::shared_ptr<T>;
 #define THREAD_POOL_DLL
 #define NETWORKS_DLL
 #define LOG_DLL
+#define UTILITY_LIBRARY_DLL
 #else
 template<typename T>
 using smartPointer = std::unique_ptr<T>;

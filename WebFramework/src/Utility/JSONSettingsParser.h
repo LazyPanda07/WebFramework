@@ -42,6 +42,7 @@ namespace framework
 			/// </summary>
 			/// <param name="JSONSettings">path to .json settings file</param>
 			/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
+			/// <exception cref="std::runtime_error"></exception>
 			JSONSettingsParser(const std::string& JSONSettings);
 
 			/// @brief Move constructor

@@ -62,3 +62,4 @@
 #pragma comment(lib, "SHA256.lib")
 #pragma comment(lib, "SocketStreams.lib")
 #pragma comment(lib, "ThreadPool.lib")
+#pragma comment(lib, "UtilityLibrary.lib")

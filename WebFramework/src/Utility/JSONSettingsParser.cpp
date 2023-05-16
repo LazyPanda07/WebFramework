@@ -38,10 +38,9 @@ namespace framework
 
 			in.close();
 
-			for (const auto& i : parser)
+			for (const auto& [name, description] : parser)
 			{
-				const auto& data = get<json::utility::jsonObject>(i.second);
-
+				const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
 				const string& loadType = data.getString("loadType");
 				ExecutorSettings executorSettings;
 
@@ -54,8 +53,8 @@ namespace framework
 
 				}
 
-				executorSettings.name = i.first;
-				
+				executorSettings.name = name;
+
 				if (loadType == json_settings_values::initializationLoadTypeValue)
 				{
 					executorSettings.executorLoadType = ExecutorSettings::loadType::initialization;
@@ -63,6 +62,10 @@ namespace framework
 				else if (loadType == json_settings_values::dynamicLoadTypeValue)
 				{
 					executorSettings.executorLoadType = ExecutorSettings::loadType::dynamic;
+				}
+				else
+				{
+					throw runtime_error("Wrong loadType");
 				}
 
 				settings.insert(make_pair(data.getString("route"), move(executorSettings)));
