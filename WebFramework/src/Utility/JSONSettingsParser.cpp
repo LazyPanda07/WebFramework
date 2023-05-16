@@ -2,7 +2,7 @@
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindValueException.h"
-#include "Utility/CharactersEncoding.h"
+#include "Strings.h"
 
 using namespace std;
 
@@ -69,7 +69,7 @@ namespace framework
 					throw runtime_error("Wrong loadType");
 				}
 
-				settings.insert(make_pair(utility::encodeString(data.getString("route")), move(executorSettings)));
+				settings.insert(make_pair(::utility::strings::replaceAll(data.getString("route"), " ", "%20"), move(executorSettings)));
 			}
 		}
 
