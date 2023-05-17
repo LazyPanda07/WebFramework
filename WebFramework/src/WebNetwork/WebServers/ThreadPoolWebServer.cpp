@@ -53,7 +53,10 @@ namespace framework
 		{
 			executorMethod(move(request), response);
 
-			client.stream << response;
+			if (response)
+			{
+				client.stream << response;
+			}
 		}
 		catch (const web::exceptions::WebException& e)
 		{
@@ -101,7 +104,7 @@ namespace framework
 
 	void ThreadPoolWebServer::mainCycle(IndividualData& client, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
 	{
-		HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, client.addr);
+		HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, client.addr, client.stream);
 		HTTPResponse response;
 		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
 
@@ -122,13 +125,15 @@ namespace framework
 				(
 					bind(&ThreadPoolWebServer::taskImplementation, this, move(request), client.clientSocket, *threadPoolFunction, disconnectedClients, resourceExecutor)
 				);
-
 #pragma warning(pop)
 
 				return;
 			}
 
-			client.stream << response;
+			if (response)
+			{
+				client.stream << response;
+			}
 		}
 		catch (const web::exceptions::WebException& e)
 		{

@@ -13,8 +13,9 @@ namespace framework
 	private:
 		web::HTTPBuilder builder;
 		std::string body;
+		bool isValid;
 
-	private:
+	public:
 		/// <summary>
 		/// Added full date GMT to response
 		/// </summary>
@@ -91,6 +92,13 @@ namespace framework
 		/// Clears HTTPResponse
 		/// </summary>
 		void setDefault();
+
+		void setIsValid(bool isValid);
+
+		/*
+		* isValid getter
+		*/
+		explicit operator bool() const;
 
 		/// <summary>
 		/// Sending HTTPResponse through network

@@ -19,7 +19,8 @@ namespace framework
 		return result;
 	}
 
-	HTTPResponse::HTTPResponse()
+	HTTPResponse::HTTPResponse() :
+		isValid(true)
 	{
 		builder.responseCode(web::responseCodes::ok);
 	}
@@ -91,6 +92,18 @@ namespace framework
 		builder.responseCode(web::responseCodes::ok);
 
 		body.clear();
+
+		this->setIsValid(true);
+	}
+
+	void HTTPResponse::setIsValid(bool isValid)
+	{
+		this->isValid = isValid;
+	}
+
+	HTTPResponse::operator bool() const
+	{
+		return isValid;
 	}
 
 	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponse& response)

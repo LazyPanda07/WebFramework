@@ -170,6 +170,11 @@ namespace framework
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
+	const filesystem::path& ResourceExecutor::getPathToAssets() const
+	{
+		return assets;
+	}
+
 	void ResourceExecutor::notFoundError(HTTPResponse& response)
 	{
 		response.setResponseCode(web::responseCodes::notFound);
