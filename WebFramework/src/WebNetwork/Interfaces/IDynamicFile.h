@@ -2,6 +2,7 @@
 
 #include "headers.h"
 
+#include "IFile.h"
 #include "WebNetwork/HTTPResponse.h"
 #include "WebFrameworkConstants.h"
 
@@ -9,7 +10,7 @@ namespace framework
 {
 	namespace interfaces
 	{
-		class IDynamicFile
+		class IDynamicFile : virtual public IFile
 		{
 		public:
 			/*

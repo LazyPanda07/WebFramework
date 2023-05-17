@@ -1,12 +1,13 @@
 #pragma once
 
+#include "IFile.h"
 #include "WebNetwork/HTTPResponse.h"
 
 namespace framework
 {
 	namespace interfaces
 	{
-		class IStaticFile
+		class IStaticFile : virtual public IFile
 		{
 		public:
 			/**

@@ -25,11 +25,13 @@ inline constexpr uint64_t sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
 /// <summary>
 /// Check session life time period in seconds
 /// </summary>
-inline constexpr std::chrono::duration<unsigned int> sessionCheckPeriod(60);
+inline constexpr std::chrono::duration<uint32_t> sessionCheckPeriod(60);
 
 inline const std::wstring webFrameworkDefaultAssests = L"WebFrameworkAssets";
 
 inline constexpr std::string_view webFrameworkDynamicPagesExtension = ".wfdp";
+
+inline constexpr size_t defaultChunkSize = 14 * 1024 * 1024;
 
 namespace json_settings
 {

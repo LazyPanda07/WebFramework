@@ -92,6 +92,8 @@ namespace framework
 		/// <param name="response">response with asset file</param>
 		void doPost(HTTPRequest&& request, HTTPResponse& response) override;
 
+		const std::filesystem::path& getPathToAssets() const final override;
+
 		/// <summary>
 		/// Send 404.html from WebFrameworkAssets
 		/// </summary>

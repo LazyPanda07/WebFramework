@@ -447,6 +447,7 @@ COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)</Command>
     <ClInclude Include="src\Utility\DataStructures\PriorityQueue.h" />
     <ClInclude Include="src\Utility\StringConversion.h" />
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
+    <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
     <ClInclude Include="src\WebNetwork\WebFrameworkHTTPNetwork.h" />
     <ClInclude Include="src\WebFrameworkConstants.h" />
     <ClInclude Include="src\WebFramework.h" />

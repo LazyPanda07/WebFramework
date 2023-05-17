@@ -302,6 +302,9 @@
     <ClInclude Include="src\Utility\CharactersEncoding.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\WebNetwork\Interfaces\IFile.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\404.html" />

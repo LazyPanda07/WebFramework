@@ -17,14 +17,15 @@ namespace framework
 	class WEB_FRAMEWORK_API HTTPRequest
 	{
 	private:
-		smartPointer<web::HTTPParser> parser;
 		SessionsManager& session;
 		const web::BaseTCPServer& serverReference;
+		streams::IOSocketStream& stream;
+		sqlite::SQLiteManager& database;
+		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
+		sockaddr& clientAddr;
+		smartPointer<web::HTTPParser> parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
-		sqlite::SQLiteManager& database;
-		sockaddr& clientAddr;
-		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
@@ -48,7 +49,7 @@ namespace framework
 		/// @param dynamicResources Dynamic resources manager
 		/// @param database Reference to database
 		/// @param clientAddr Client address
-		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr);
+		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr, streams::IOSocketStream& stream);
 
 		HTTPRequest(HTTPRequest&& other) noexcept;
 
@@ -126,7 +127,6 @@ namespace framework
 		/// ResourceExecutor wrapper
 		/// </summary>
 		/// <param name="filePath">path to asset file from assets folder</param>
-		/// <param name="response">with file</param>
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
@@ -134,8 +134,7 @@ namespace framework
 
 		/*
 		* Send non dynamic file
-		* @param filePath Pat to asset file from assets folder
-		* @param response With file
+		* @param filePath Path to asset file from assets folder
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
@@ -143,13 +142,20 @@ namespace framework
 
 		/*
 		* Send dynamic file(.wfdp)
-		* @param filePath Pat to asset file from assets folder
-		* @param response With file
+		* @param filePath Path to asset file from assets folder
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
-		* @exception framework::exceptions::DynamicPagesSyntaxException\
+		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
 		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables, bool isBinary = true, const std::string& fileName = "");
+
+		/*
+		* Send large files
+		* @param filePath Path to asset file from assets folder
+		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
+		* @param chunkSize Desired size of read data before sending
+		*/
+		void streamFile(const std::string& filePath, HTTPResponse& response, const std::string& fileName, size_t chunkSize = defaultChunkSize);
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

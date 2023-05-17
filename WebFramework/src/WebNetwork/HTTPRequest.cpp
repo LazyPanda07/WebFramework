@@ -2,6 +2,7 @@
 
 #include "WebFrameworkHTTPNetwork.h"
 #include "Utility/Memory.h"
+#include "Exceptions/FileDoesNotExistException.h"
 
 using namespace std;
 
@@ -30,15 +31,16 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
-		staticResources(staticResources),
-		dynamicResources(dynamicResources),
+		stream(stream),
 		database(database),
-		clientAddr(clientAddr)
+		clientAddr(clientAddr),
+		staticResources(staticResources),
+		dynamicResources(dynamicResources)
 	{
-
+		
 	}
 
 	HTTPRequest::HTTPRequest(HTTPRequest&& other) noexcept :
@@ -49,12 +51,13 @@ namespace framework
 			other.staticResources,
 			other.dynamicResources,
 			other.database,
-			other.clientAddr
+			other.clientAddr,
+			other.stream
 		)
 
 	{
 		parser = move(other.parser);
-		routeParameters = move(routeParameters);
+		routeParameters = move(other.routeParameters);
 	}
 
 	HTTPRequest::HTTPRequest(const HTTPRequest& other) :
@@ -65,11 +68,11 @@ namespace framework
 			other.staticResources,
 			other.dynamicResources,
 			other.database,
-			other.clientAddr
+			other.clientAddr,
+			other.stream
 		)
 	{
 		parser = utility::make_smartPointer<web::HTTPParser>(*other.parser);
-
 		routeParameters = other.routeParameters;
 	}
 
@@ -175,6 +178,58 @@ namespace framework
 	void HTTPRequest::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary, const string& fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, response, variables, isBinary, fileName);
+	}
+
+	void HTTPRequest::streamFile(const string& filePath, HTTPResponse& response, const string& fileName, size_t chunkSize)
+	{
+		// TODO: caching
+
+		string chunk;
+		filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
+
+		if (!filesystem::exists(assetFilePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		response.setIsValid(false);
+
+		ifstream fileStream(assetFilePath, ios::binary);
+
+		chunk.resize(chunkSize);
+
+		streamsize dataSize = fileStream.readsome(chunk.data(), chunkSize);
+
+		if (dataSize != chunkSize)
+		{
+			chunk.resize(dataSize);
+		}
+
+		stream << web::HTTPBuilder().
+			headers
+			(
+				"Date", HTTPResponse::getFullDate(),
+				"Server", "WebFramework-Server",
+				"Content-Type", "application/octet-stream",
+				"Content-Disposition", format(R"(attachment; filename="{}")", fileName),
+				"Connection", "keep-alive",
+				"Transfer-Encoding", "chunked"
+			).
+			build(format("{}\r\n{}\r\n", chunk.size(), chunk));
+
+		while (!fileStream.eof())
+		{
+			dataSize = fileStream.readsome(chunk.data(), chunkSize);
+
+			if (dataSize != chunkSize)
+			{
+				chunk.resize(dataSize);
+			}
+
+			stream << web::HTTPBuilder().getChunk(chunk);
+		}
+
+		stream << web::HTTPBuilder().getChunk("");
 	}
 
 	void HTTPRequest::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
