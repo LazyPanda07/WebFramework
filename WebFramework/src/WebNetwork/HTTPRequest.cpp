@@ -198,7 +198,7 @@ namespace framework
 
 		chunk.resize(chunkSize);
 
-		streamsize dataSize = fileStream.readsome(chunk.data(), chunkSize);
+		streamsize dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
 
 		if (dataSize != chunkSize)
 		{
@@ -218,7 +218,7 @@ namespace framework
 
 		while (!fileStream.eof())
 		{
-			dataSize = fileStream.readsome(chunk.data(), chunkSize);
+			dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
 
 			if (dataSize != chunkSize)
 			{
