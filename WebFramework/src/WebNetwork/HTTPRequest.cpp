@@ -194,7 +194,7 @@ namespace framework
 
 		response.setIsValid(false);
 
-		ifstream fileStream(assetFilePath, ios::binary);
+		ifstream fileStream(assetFilePath, ios_base::binary);
 
 		chunk.resize(chunkSize);
 
@@ -214,8 +214,7 @@ namespace framework
 				"Content-Disposition", format(R"(attachment; filename="{}")", fileName),
 				"Connection", "keep-alive",
 				"Transfer-Encoding", "chunked"
-			).
-			build(format("{}\r\n{}\r\n", chunk.size(), chunk));
+			).build() + web::HTTPBuilder().getChunk(chunk);
 
 		while (!fileStream.eof())
 		{
