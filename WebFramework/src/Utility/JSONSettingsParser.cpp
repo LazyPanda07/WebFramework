@@ -2,6 +2,7 @@
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindValueException.h"
+#include "Strings.h"
 
 using namespace std;
 
@@ -38,10 +39,9 @@ namespace framework
 
 			in.close();
 
-			for (const auto& i : parser)
+			for (const auto& [name, description] : parser)
 			{
-				const auto& data = get<json::utility::jsonObject>(i.second);
-
+				const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
 				const string& loadType = data.getString("loadType");
 				ExecutorSettings executorSettings;
 
@@ -54,8 +54,8 @@ namespace framework
 
 				}
 
-				executorSettings.name = i.first;
-				
+				executorSettings.name = name;
+
 				if (loadType == json_settings_values::initializationLoadTypeValue)
 				{
 					executorSettings.executorLoadType = ExecutorSettings::loadType::initialization;
@@ -64,8 +64,12 @@ namespace framework
 				{
 					executorSettings.executorLoadType = ExecutorSettings::loadType::dynamic;
 				}
+				else
+				{
+					throw runtime_error("Wrong loadType");
+				}
 
-				settings.insert(make_pair(data.getString("route"), move(executorSettings)));
+				settings.insert(make_pair(::utility::strings::replaceAll(data.getString("route"), " ", "%20"), move(executorSettings)));
 			}
 		}
 

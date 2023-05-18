@@ -128,7 +128,7 @@ namespace framework
 		{
 			try
 			{
-				HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, addr);
+				HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, addr, stream);
 
 				response.setDefault();
 
@@ -136,7 +136,10 @@ namespace framework
 
 				executorsManager.service(move(request), response, statefulExecutors, threadPoolFunction);
 
-				stream << response;
+				if (response)
+				{
+					stream << response;
+				}
 			}
 			catch (const web::exceptions::WebException&)
 			{
