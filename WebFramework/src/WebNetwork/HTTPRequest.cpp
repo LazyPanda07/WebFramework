@@ -213,8 +213,8 @@ namespace framework
 				"Content-Type", "application/octet-stream",
 				"Content-Disposition", format(R"(attachment; filename="{}")", fileName),
 				"Connection", "keep-alive",
-				"Transfer-Encoding", "chunked"
-			).build() + web::HTTPBuilder().getChunk(chunk);
+				"Content-Length", filesystem::file_size(assetFilePath)
+			).build() + chunk;
 
 		while (!fileStream.eof())
 		{
@@ -225,10 +225,8 @@ namespace framework
 				chunk.resize(dataSize);
 			}
 
-			stream << web::HTTPBuilder().getChunk(chunk);
+			stream << chunk;
 		}
-
-		stream << web::HTTPBuilder().getChunk("");
 	}
 
 	void HTTPRequest::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
