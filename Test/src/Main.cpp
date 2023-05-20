@@ -20,7 +20,7 @@ public:
 		helloMessage = settings.initParameters.getString("message");
 	}
 
-	void doGet(framework::HTTPRequest&& request, framework::HTTPResponse& response) override
+	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override
 	{
 		unordered_map<string_view, string> arguments =
 		{
