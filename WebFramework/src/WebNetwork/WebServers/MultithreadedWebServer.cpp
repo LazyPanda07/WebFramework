@@ -121,7 +121,7 @@ namespace framework
 		const string clientIp = getClientIpV4(addr);
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
-		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
+		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
 		shared_ptr<ResourceExecutor> resourceExecutor = resources.lock();
 
 		while (isRunning)
@@ -134,7 +134,7 @@ namespace framework
 
 				stream >> request;
 
-				executorsManager.service(move(request), response, statefulExecutors, threadPoolFunction);
+				executorsManager.service(request, response, statefulExecutors, threadPoolFunction);
 
 				if (response)
 				{

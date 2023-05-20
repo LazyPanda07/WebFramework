@@ -95,7 +95,7 @@ namespace framework
 
 		void setIsValid(bool isValid);
 
-		/*
+		/**
 		* isValid getter
 		*/
 		explicit operator bool() const;

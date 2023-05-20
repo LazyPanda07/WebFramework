@@ -45,7 +45,7 @@ namespace framework
 		}
 	}
 
-	void ExecutorsManager::service(HTTPRequest&& request, HTTPResponse& response, unordered_map<string, smartPointer<BaseExecutor>>& statefulExecutors, optional<function<void(HTTPRequest&&, HTTPResponse&)>>& threadPoolFunction)
+	void ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, smartPointer<BaseExecutor>>& statefulExecutors, optional<function<void(HTTPRequest&, HTTPResponse&)>>& threadPoolFunction)
 	{
 		static const unordered_map<string, decltype(&BaseExecutor::doGet)> methods =
 		{
@@ -161,8 +161,8 @@ namespace framework
 			else
 			{
 				fileRequest ?
-					invoke(method, resources.get(), move(request), response) :
-					invoke(method, executor->second.get(), move(request), response);
+					invoke(method, resources.get(), request, response) :
+					invoke(method, executor->second.get(), request, response);
 			}
 		}
 		catch (const exceptions::BaseExecutorException&)
