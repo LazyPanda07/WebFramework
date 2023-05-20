@@ -150,7 +150,7 @@ namespace framework
 		return dynamicPages.isDynamicFunctionRegistered(functionName);
 	}
 
-	void ResourceExecutor::doGet(HTTPRequest&& request, HTTPResponse& response)
+	void ResourceExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
 		if (!request.getHeaders().count("Referer"))
 		{
@@ -160,7 +160,7 @@ namespace framework
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
-	void ResourceExecutor::doPost(HTTPRequest&& request, HTTPResponse& response)
+	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
 		if (!request.getHeaders().count("Referer"))
 		{

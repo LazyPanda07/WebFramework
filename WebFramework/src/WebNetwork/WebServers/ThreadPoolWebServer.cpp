@@ -44,14 +44,13 @@ namespace framework
 		isBusy = other.isBusy;
 	}
 
-	void ThreadPoolWebServer::taskImplementation(HTTPRequest& request, SOCKET socket, function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
+	void ThreadPoolWebServer::taskImplementation(HTTPRequest& request, IndividualData& client, function<void(HTTPRequest&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
 	{
 		HTTPResponse response;
-		IndividualData& client = *clients[socket];
 
 		try
 		{
-			executorMethod(move(request), response);
+			executorMethod(request, response);
 
 			if (response)
 			{
@@ -106,26 +105,22 @@ namespace framework
 	{
 		HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, client.addr, client.stream);
 		HTTPResponse response;
-		optional<function<void(HTTPRequest&&, HTTPResponse&)>> threadPoolFunction;
+		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
 
 		try
 		{
 			client.stream >> request;
 
-			executorsManager.service(move(request), response, client.statefulExecutors, threadPoolFunction);
+			executorsManager.service(request, response, client.statefulExecutors, threadPoolFunction);
 
 			if (threadPoolFunction)
 			{
 				client.isBusy = true;
 
-#pragma warning(push)
-#pragma warning(disable: 26800)
-
 				threadPool.addTask
 				(
-					bind(&ThreadPoolWebServer::taskImplementation, this, move(request), client.clientSocket, *threadPoolFunction, disconnectedClients, resourceExecutor)
+					bind(&ThreadPoolWebServer::taskImplementation, this, ref(request), ref(client), *threadPoolFunction, ref(disconnectedClients), ref(resourceExecutor))
 				);
-#pragma warning(pop)
 
 				return;
 			}
@@ -268,6 +263,8 @@ namespace framework
 					this->mainCycle(*client, disconnectedClients, resourceExecutor);
 				}
 			}
+
+			unique_lock<mutex> lock(disconnectMutex);
 
 			for (SOCKET clientSocket : disconnectedClients)
 			{

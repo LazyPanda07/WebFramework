@@ -45,7 +45,7 @@ namespace framework
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doPost(HTTPRequest&& request, HTTPResponse& response);
+		virtual void doPost(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process GET request
@@ -53,7 +53,7 @@ namespace framework
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doGet(HTTPRequest&& request, HTTPResponse& response);
+		virtual void doGet(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process HEAD request
@@ -61,7 +61,7 @@ namespace framework
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doHead(HTTPRequest&& request, HTTPResponse& response);
+		virtual void doHead(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process PUT request
@@ -69,7 +69,7 @@ namespace framework
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doPut(HTTPRequest&& request, HTTPResponse& response);
+		virtual void doPut(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process DELETE request
@@ -77,7 +77,7 @@ namespace framework
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doDelete(HTTPRequest&& request, HTTPResponse& response);
+		virtual void doDelete(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process OPTIONS request
@@ -85,7 +85,7 @@ namespace framework
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doOptions(HTTPRequest&& request, HTTPResponse& response);
+		virtual void doOptions(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process TRACE request
@@ -93,7 +93,7 @@ namespace framework
 		/// <param name="request">special class for requests</param>
 		/// <param name="response">special class for responses</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doTrace(HTTPRequest&& request, HTTPResponse& response);
+		virtual void doTrace(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>
