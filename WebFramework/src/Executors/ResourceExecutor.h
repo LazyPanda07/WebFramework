@@ -83,14 +83,14 @@ namespace framework
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		void doGet(HTTPRequest&& request, HTTPResponse& response) override;
+		void doGet(HTTPRequest& request, HTTPResponse& response) override;
 
 		/// <summary>
 		/// Send file via POST request
 		/// </summary>
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
-		void doPost(HTTPRequest&& request, HTTPResponse& response) override;
+		void doPost(HTTPRequest& request, HTTPResponse& response) override;
 
 		const std::filesystem::path& getPathToAssets() const final override;
 

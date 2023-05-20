@@ -38,7 +38,7 @@ namespace framework
 		std::mutex disconnectMutex;
 
 	private:
-		void taskImplementation(HTTPRequest& request, SOCKET socket, std::function<void(HTTPRequest&&, HTTPResponse&)> executorMethod, std::vector<SOCKET>& disconnectedClients, std::shared_ptr<ResourceExecutor>& resourceExecutor);
+		void taskImplementation(HTTPRequest& request, IndividualData& client, std::function<void(HTTPRequest&, HTTPResponse&)> executorMethod, std::vector<SOCKET>& disconnectedClients, std::shared_ptr<ResourceExecutor>& resourceExecutor);
 
 		void mainCycle(IndividualData& client, std::vector<SOCKET>& disconnectedClients, std::shared_ptr<ResourceExecutor>& resourceExecutor);
 
