@@ -13,7 +13,7 @@ namespace framework
 		class IDynamicFile : virtual public IFile
 		{
 		public:
-			/*
+			/**
 			* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
 			*/
 			virtual void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables, bool isBinary, const std::string& fileName) = 0;

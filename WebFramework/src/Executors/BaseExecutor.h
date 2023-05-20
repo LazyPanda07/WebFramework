@@ -1,4 +1,4 @@
-/*
+/**
 * Executors is classes that can process specific request from clients
 * For example following link send request to "/test" path http://127.0.0.1/test
 * You can create and configure your class that would be processing this path
