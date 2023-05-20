@@ -189,10 +189,10 @@ Global
 		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.Debug|x64.Build.0 = Debug|x64
 		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.DebugDLL|x64.ActiveCfg = DebugDLL|x64
 		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.DebugDLL|x64.Build.0 = DebugDLL|x64
-		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionRelease|x64.ActiveCfg = Release|x64
-		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionRelease|x64.Build.0 = Release|x64
-		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
-		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionReleaseDLL|x64.Build.0 = ReleaseDLL|x64
+		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionRelease|x64.ActiveCfg = ProductionRelease|x64
+		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionRelease|x64.Build.0 = ProductionRelease|x64
+		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionReleaseDLL|x64.ActiveCfg = ProductionReleaseDLL|x64
+		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ProductionReleaseDLL|x64.Build.0 = ProductionReleaseDLL|x64
 		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.Release|x64.ActiveCfg = Release|x64
 		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.Release|x64.Build.0 = Release|x64
 		{F71A5E4A-5242-4FA9-B614-5C0603ADC678}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
