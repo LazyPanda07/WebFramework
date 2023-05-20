@@ -47,6 +47,9 @@ namespace framework
 	void ThreadPoolWebServer::taskImplementation(HTTPRequest& request, IndividualData& client, function<void(HTTPRequest&, HTTPResponse&)> executorMethod, vector<SOCKET>& disconnectedClients, shared_ptr<ResourceExecutor>& resourceExecutor)
 	{
 		HTTPResponse response;
+		u_long block = 0;
+
+		ioctlsocket(client.clientSocket, FIONBIO, &block);
 
 		try
 		{
@@ -97,6 +100,10 @@ namespace framework
 
 			client.stream << response;
 		}
+
+		block = 1;
+
+		ioctlsocket(client.clientSocket, FIONBIO, &block);
 
 		client.isBusy = false;
 	}
