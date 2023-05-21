@@ -182,30 +182,15 @@ namespace framework
 
 	void HTTPRequest::streamFile(const string& filePath, HTTPResponse& response, const string& fileName, size_t chunkSize)
 	{
-		// TODO: caching
-
-		string chunk;
 		filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
-
+		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
+		
 		if (!filesystem::exists(assetFilePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		response.setIsValid(false);
-
-		ifstream fileStream(assetFilePath, ios_base::binary);
-
-		chunk.resize(chunkSize);
-
-		streamsize dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
-
-		if (dataSize != chunkSize)
-		{
-			chunk.resize(dataSize);
-		}
-
-		stream << web::HTTPBuilder().
+		string httpResponse = web::HTTPBuilder().
 			headers
 			(
 				"Date", HTTPResponse::getFullDate(),
@@ -214,7 +199,41 @@ namespace framework
 				"Content-Disposition", format(R"(attachment; filename="{}")", fileName),
 				"Connection", "keep-alive",
 				"Content-Length", filesystem::file_size(assetFilePath)
-			).build() + chunk;
+			).build();
+
+		response.setIsValid(false);
+
+#pragma warning(push)
+#pragma warning(disable: 26800)
+
+		try
+		{
+			const string& data = cache[assetFilePath];
+
+			stream << move(httpResponse) + data;
+
+			return;
+		}
+		catch (const file_manager::exceptions::FileDoesNotExistException&)
+		{
+
+		}
+
+		ifstream fileStream(assetFilePath, ios_base::binary);
+		string chunk(chunkSize, '\0');
+
+		streamsize dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
+
+		if (dataSize != chunkSize)
+		{
+			chunk.resize(dataSize);
+		}
+
+		cache.appendCache(assetFilePath, chunk);
+
+		stream << move(httpResponse) + chunk;
+
+#pragma warning(pop)
 
 		while (!fileStream.eof())
 		{
@@ -224,6 +243,8 @@ namespace framework
 			{
 				chunk.resize(dataSize);
 			}
+
+			cache.appendCache(assetFilePath, chunk);
 
 			stream << chunk;
 		}
