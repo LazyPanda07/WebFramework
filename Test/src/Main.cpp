@@ -1,13 +1,13 @@
 #include <iostream>
 
 #include "WebFramework.h"
-#include "Executors/BaseStatefulExecutor.h"
+#include "Executors/BaseHeavyOperationStatelessExecutor.h"
 
 #pragma comment (lib, "WebFramework.lib")
 
 using namespace std;
 
-class DefaultRoute : public framework::BaseStatelessExecutor
+class DefaultRoute : public framework::BaseHeavyOperationStatelessExecutor
 {
 private:
 	string helloMessage;
