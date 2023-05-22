@@ -22,13 +22,15 @@ public:
 
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override
 	{
-		unordered_map<string_view, string> arguments =
-		{
-			{ "title"sv, "Main page" },
-			{ "message"sv, helloMessage }
-		};
+		// unordered_map<string_view, string> arguments =
+		// {
+		// 	{ "title"sv, "Main page" },
+		// 	{ "message"sv, helloMessage }
+		// };
+		// 
+		// request.sendDynamicFile("index.wfdp", response, arguments);
 
-		request.sendDynamicFile("index.wfdp", response, arguments);
+		request.streamFile("LostConnection.zip", response, "LostConnection.zip");
 	}
 
 	~DefaultRoute() = default;

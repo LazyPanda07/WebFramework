@@ -60,7 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)FileManager\src\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -86,7 +86,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)WebFramework\src\;$(SolutionDir)Localization\src\;$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)FileManager\src\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
