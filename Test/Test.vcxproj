@@ -47,7 +47,8 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -69,13 +70,16 @@
       <AdditionalLibraryDirectories>$(SolutionDir)WebFramework\libs</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep>
-      <Command>COPY /Y $(SolutionDir)WebFramework\dlls\sqlite3.dll $(Outdir)</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>output.txt</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>copy /y $(SolutionDir)bin\$(Configuration)-$(Platform)\Localization\*.dll $(OutDir)</Command>
+      <Command>copy /y $(SolutionDir)bin\$(Configuration)-$(Platform)\Localization\*.dll $(OutDir)
+copy /Y $(SolutionDir)WebFramework\dlls\sqlite3.dll $(Outdir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,7 +101,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)WebFramework\libs</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y $(SolutionDir)bin\$(Configuration)-$(Platform)\Localization\*.dll $(OutDir)</Command>
+      <Command>copy /y $(SolutionDir)bin\$(Configuration)-$(Platform)\Localization\*.dll $(OutDir)
+copy /Y $(SolutionDir)WebFramework\dlls\sqlite3.dll $(Outdir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
