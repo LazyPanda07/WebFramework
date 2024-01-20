@@ -7,6 +7,12 @@ using namespace std;
 
 namespace framework
 {
+	ExecutorsManager::ExecutorsManager() :
+		serverType(webServerType::multiThreaded)
+	{
+
+	}
+
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept
 	{
 		(*this) = move(other);
@@ -22,7 +28,7 @@ namespace framework
 		return *this;
 	}
 
-	void ExecutorsManager::init(const json::JSONParser& configuraion, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates, unordered_map<string, smartPointer<BaseExecutor>>&& routes, unordered_map<string, createBaseExecutorSubclassFunction>&& creators, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
+	void ExecutorsManager::init(const json::JSONParser& configuraion, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates, unordered_map<string, smartPointer<BaseExecutor>>&& routes, unordered_map<string, utility::ExecutorCreator>&& creators, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
 	{
 		this->routes = move(routes);
 		this->creators = move(creators);

@@ -119,11 +119,17 @@ namespace framework
 	using createBaseExecutorSubclassFunction = BaseExecutor* (*)();
 }
 
-/// <summary>
-/// <para>Macro for each BaseExecutor subclass</para>
-/// <para>Used for loading function that creates BaseExecutor subclass</para>
-/// </summary>
-#define EXECUTOR_CREATION_FUNCTION(subclassName) extern "C" __declspec(dllexport) framework::BaseExecutor* create##subclassName##Instance()	\
+/**
+* Macro for each BaseExecutor subclass
+* Used for loading function that creates BaseExecutor subclass
+*/
+#define DECLARE_EXECUTOR(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Instance()	\
 {	\
 	return new subclassName();	\
 }
+
+/**
+* Macro for each BaseExecutor subclass
+* Used for loading function that creates BaseExecutor subclass
+*/
+#define EXECUTOR_CREATION_FUNCTION(subclassName) DECLARE_EXECUTOR(subclassName)

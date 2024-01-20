@@ -13,7 +13,7 @@ namespace framework
 {
 	void ResourceExecutor::loadHTMLErrorsData()
 	{
-		const filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
+		filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
 		ifstream html(allErrorsFolder / web_framework_assets::badRequest);
 		auto readFile = [](ifstream& html) -> string
 		{
@@ -52,11 +52,12 @@ namespace framework
 	}
 
 	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates) :
-#ifdef WEB_FRAMEWORK_ASSETS
-		defaultAssets(WEB_FRAMEWORK_ASSETS),
-#else
-		defaultAssets(webFrameworkDefaultAssests),
-#endif // WEB_FRAMEWORK_ASSETS
+		defaultAssets
+		(
+			configuration.contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ? 
+			configuration.getString(json_settings::webFrameworkDefaultAssetsPath) :
+			webFrameworkDefaultAssests
+		),
 		assets(assets),
 		dynamicPages(pathToTemplates),
 		fileManager(file_manager::FileManager::getInstance())

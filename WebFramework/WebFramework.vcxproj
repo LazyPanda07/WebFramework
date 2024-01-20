@@ -156,7 +156,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -182,6 +182,7 @@
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
+if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -189,7 +190,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -217,6 +218,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
+if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -226,7 +228,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -254,6 +256,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
+if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -263,7 +266,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;WEB_FRAMEWORK_ASSETS=LR"($(ProjectDir)WebFrameworkAssets)";%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -293,6 +296,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <PostBuildEvent>
       <Command>COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
+if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\
 START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -331,7 +335,9 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\ $(SolutionDir)UtilityLibrary\include\</Command>
+if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\ $(SolutionDir)UtilityLibrary\include\
+XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(SolutionDir)build\WebFrameworkAssets\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ProductionReleaseDLL|x64'">
@@ -370,7 +376,9 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
       <Command>XCOPY $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\ /Y /E
 COPY /Y $(ProjectDir)dlls\sqlite3.dll $(OutDir)
 COPY /Y $(ProjectDir)libs\sqlite3.lib $(OutDir)
-START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\ $(SolutionDir)UtilityLibrary\include\</Command>
+if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\
+START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(SolutionDir)docs $(Configuration)-$(Platform) $(SolutionDir)BaseTCPServer\src\ $(SolutionDir)INIParser\src\ $(SolutionDir)Log\src\ $(SolutionDir)Networks\src\ $(SolutionDir)Networks\HTTP\JSON\src\ $(SolutionDir)Networks\HTTP\src\ $(SolutionDir)Networks\SocketStreams\src\ $(SolutionDir)SHA256\src\ $(SolutionDir)FileManager\src\ $(SolutionDir)Networks\vendor\OpenSSL\include\ $(SolutionDir)Localization\src\ $(SolutionDir)ThreadPool\src\ $(SolutionDir)UtilityLibrary\include\
+XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(SolutionDir)build\WebFrameworkAssets\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -393,11 +401,11 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
-    <ClCompile Include="src\headers.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteResult.cpp" />
     <ClCompile Include="src\Utility\CharactersEncoding.cpp" />
+    <ClCompile Include="src\Utility\ExecutorCreator.cpp" />
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\Utility\StringConversion.cpp" />
@@ -445,6 +453,7 @@ START CustomBuildSteps.exe $(Outdir) $(ProjectDir)src\ $(SolutionDir)build $(Sol
     <ClInclude Include="src\SQLite3\SQLiteManager.h" />
     <ClInclude Include="src\SQLite3\SQLiteResult.h" />
     <ClInclude Include="src\Utility\CharactersEncoding.h" />
+    <ClInclude Include="src\Utility\ExecutorCreator.h" />
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
     <ClInclude Include="src\Utility\Memory.h" />

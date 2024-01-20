@@ -12,7 +12,7 @@ namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
 	{
-		return "2.4"s;
+		return "2.5"s;
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
