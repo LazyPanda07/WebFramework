@@ -1,6 +1,6 @@
 var annotated_dup =
 [
-    [ "framework", null, [
+    [ "framework", "namespaceframework.html", [
       [ "exceptions", null, [
         [ "BadRequestException", "classframework_1_1exceptions_1_1_bad_request_exception.html", null ],
         [ "BaseExecutorException", "classframework_1_1exceptions_1_1_base_executor_exception.html", null ],
@@ -15,8 +15,9 @@ var annotated_dup =
         [ "StringConversionException", "classframework_1_1exceptions_1_1_string_conversion_exception.html", null ]
       ] ],
       [ "interfaces", null, [
-        [ "IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", null ],
-        [ "IStaticFile", "classframework_1_1interfaces_1_1_i_static_file.html", null ]
+        [ "IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", "classframework_1_1interfaces_1_1_i_dynamic_file" ],
+        [ "IFile", "classframework_1_1interfaces_1_1_i_file.html", null ],
+        [ "IStaticFile", "classframework_1_1interfaces_1_1_i_static_file.html", "classframework_1_1interfaces_1_1_i_static_file" ]
       ] ],
       [ "load_balancer", null, [
         [ "LoadBalancer", "classframework_1_1load__balancer_1_1_load_balancer.html", "classframework_1_1load__balancer_1_1_load_balancer" ],
@@ -37,6 +38,7 @@ var annotated_dup =
       ] ],
       [ "utility", null, [
         [ "baseConnectionData", "structframework_1_1utility_1_1base_connection_data.html", "structframework_1_1utility_1_1base_connection_data" ],
+        [ "ExecutorCreator", "classframework_1_1utility_1_1_executor_creator.html", null ],
         [ "HTTPSSingleton", "classframework_1_1utility_1_1_h_t_t_p_s_singleton.html", null ],
         [ "JSONSettingsParser", "classframework_1_1utility_1_1_j_s_o_n_settings_parser.html", "classframework_1_1utility_1_1_j_s_o_n_settings_parser" ],
         [ "PriorityQueue", "classframework_1_1utility_1_1_priority_queue.html", "classframework_1_1utility_1_1_priority_queue" ],
@@ -64,6 +66,7 @@ var annotated_dup =
     [ "fts5_tokenizer", "structfts5__tokenizer.html", null ],
     [ "Fts5ExtensionApi", "struct_fts5_extension_api.html", null ],
     [ "Fts5PhraseIter", "struct_fts5_phrase_iter.html", null ],
+    [ "PercentEncodingSymbols", "class_percent_encoding_symbols.html", null ],
     [ "sqlite3_file", "structsqlite3__file.html", null ],
     [ "sqlite3_index_info", "structsqlite3__index__info.html", "structsqlite3__index__info" ],
     [ "sqlite3_io_methods", "structsqlite3__io__methods.html", null ],

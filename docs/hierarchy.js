@@ -20,6 +20,7 @@ var hierarchy =
       [ "framework::load_balancer::LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", null ],
       [ "framework::middleware::MiddlewareServer", "classframework_1_1middleware_1_1_middleware_server.html", null ]
     ] ],
+    [ "framework::utility::ExecutorCreator", "classframework_1_1utility_1_1_executor_creator.html", null ],
     [ "framework::utility::JSONSettingsParser::ExecutorSettings", "structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html", null ],
     [ "framework::ExecutorsManager", "classframework_1_1_executors_manager.html", null ],
     [ "fts5_api", "structfts5__api.html", null ],
@@ -35,15 +36,18 @@ var hierarchy =
       [ "framework::WebFrameworkHTTPSNetwork", "classframework_1_1_web_framework_h_t_t_p_s_network.html", null ]
     ] ],
     [ "framework::utility::HTTPSSingleton", "classframework_1_1utility_1_1_h_t_t_p_s_singleton.html", null ],
-    [ "framework::interfaces::IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", [
-      [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
-    ] ],
-    [ "framework::interfaces::IStaticFile", "classframework_1_1interfaces_1_1_i_static_file.html", [
-      [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
+    [ "framework::interfaces::IFile", "classframework_1_1interfaces_1_1_i_file.html", [
+      [ "framework::interfaces::IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", [
+        [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
+      ] ],
+      [ "framework::interfaces::IStaticFile", "classframework_1_1interfaces_1_1_i_static_file.html", [
+        [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
+      ] ]
     ] ],
     [ "framework::utility::JSONSettingsParser", "classframework_1_1utility_1_1_j_s_o_n_settings_parser.html", null ],
     [ "framework::load_balancer::LoadBalancer", "classframework_1_1load__balancer_1_1_load_balancer.html", null ],
     [ "framework::middleware::Middleware", "classframework_1_1middleware_1_1_middleware.html", null ],
+    [ "PercentEncodingSymbols", "class_percent_encoding_symbols.html", null ],
     [ "std::priority_queue", null, [
       [ "framework::utility::PriorityQueue< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData, std::vector< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData >, std::greater< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData > >", "classframework_1_1utility_1_1_priority_queue.html", null ],
       [ "framework::utility::PriorityQueue< T, ContainerT, CompareT >", "classframework_1_1utility_1_1_priority_queue.html", null ]

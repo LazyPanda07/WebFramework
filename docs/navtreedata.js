@@ -25,6 +25,14 @@
 var NAVTREE =
 [
   [ "WebFramework", "index.html", [
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Typedefs", "namespacemembers_type.html", null ]
+      ] ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -32,7 +40,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -44,7 +52,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_bad_request_exception_8cpp_source.html",
-"classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aa3bd0f0ec6f634087bf6ef7b849ad43a"
+"classframework_1_1_resource_executor.html#ad84c1d96c04cac84348d2e03b8297414"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

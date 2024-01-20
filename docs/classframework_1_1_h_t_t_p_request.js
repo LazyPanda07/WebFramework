@@ -1,6 +1,6 @@
 var classframework_1_1_h_t_t_p_request =
 [
-    [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html#a0d58bdc6dd90c49e5b21978717e1519d", null ],
+    [ "HTTPRequest", "classframework_1_1_h_t_t_p_request.html#acbfa960da24f48bc3a833e18d4686f43", null ],
     [ "deleteAttribute", "classframework_1_1_h_t_t_p_request.html#a09f892844c5fb7bc690374542730814d", null ],
     [ "deleteSession", "classframework_1_1_h_t_t_p_request.html#abaf4720cdb6e24ff2e69677b71496658", null ],
     [ "getAttribute", "classframework_1_1_h_t_t_p_request.html#ae9338bd301a24307f2d711b163ab8b53", null ],
@@ -20,9 +20,12 @@ var classframework_1_1_h_t_t_p_request =
     [ "getServerPort", "classframework_1_1_h_t_t_p_request.html#af5227676f961f75d2d9507aade40dbc9", null ],
     [ "isDynamicFunctionRegistered", "classframework_1_1_h_t_t_p_request.html#a93df70f4ed8ee0ef665b13dcc6b6f354", null ],
     [ "registerDynamicFunction", "classframework_1_1_h_t_t_p_request.html#add8e04b584ee3657e62a2daa99d44022", null ],
-    [ "sendAssetFile", "classframework_1_1_h_t_t_p_request.html#a2f65e23768a9ac1ff11372beccf1a3a1", null ],
+    [ "sendAssetFile", "classframework_1_1_h_t_t_p_request.html#ae6e405c75d41b2925b439a4d953c9396", null ],
+    [ "sendDynamicFile", "classframework_1_1_h_t_t_p_request.html#a8d8a7a33bc6f7a0930d329d296c88980", null ],
     [ "sendRequestToAnotherServer", "classframework_1_1_h_t_t_p_request.html#a74448326450075d85d77a3249e750ba4", null ],
+    [ "sendStaticFile", "classframework_1_1_h_t_t_p_request.html#aa61e6afd780ebf369f63c1d520f04be7", null ],
     [ "setAttribute", "classframework_1_1_h_t_t_p_request.html#a46690b9fff334a4ee435d491b31dc18b", null ],
+    [ "streamFile", "classframework_1_1_h_t_t_p_request.html#af5994684e30ddf2d898788bd43deb5f1", null ],
     [ "unregisterDynamicFunction", "classframework_1_1_h_t_t_p_request.html#a5f0d82d7850b2f53ef54d5bdd6a86a9a", null ],
     [ "operator<<", "classframework_1_1_h_t_t_p_request.html#af80b6c9976789bd000910d633a96b944", null ],
     [ "operator>>", "classframework_1_1_h_t_t_p_request.html#a9da36f9d51ac280b99fc3b8c1ee8c792", null ]
