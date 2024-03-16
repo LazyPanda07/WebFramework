@@ -39,14 +39,17 @@ jobs:
           unzip version-3.45.2.zip -d .
 
     - name: LS
-      shell: bash
       run: ls
           
     - name: Build
-      working-directory: version-3.45.2
+      working-directory: sqlite-version-3.45.2
       run: |
           mkdir build
           cd build
           ../sqlite/configure
           make
           make sqlite3.c
+
+    - name: LS
+      working-directory: sqlite-version-3.45.2
+      run: ls
