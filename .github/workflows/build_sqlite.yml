@@ -2,6 +2,8 @@ name: Build SQLite
 
 
 on:
+  push:
+    branches: [dev]
   workflow_dispatch:
   
 
@@ -25,7 +27,6 @@ jobs:
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
-            
 
     
   linux-build:
@@ -45,3 +46,10 @@ jobs:
       shell: bash
       run: ls
           
+    - name: Build
+      run: |
+          mkdir build
+          cd build
+          ../sqlite/configure
+          make
+          make sqlite3.c
