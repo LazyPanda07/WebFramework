@@ -12,7 +12,7 @@ namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
 	{
-		return "2.5"s;
+		return "2.6.0"s;
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
@@ -191,9 +191,9 @@ namespace framework
 		return result;
 	}
 
-	bool WebFramework::getServerState() const
+	bool WebFramework::isServerRunning() const
 	{
-		return server->serverState();
+		return server->isServerRunning();
 	}
 
 	const json::JSONParser& WebFramework::getCurrentConfiguration() const

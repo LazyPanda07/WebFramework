@@ -8,7 +8,7 @@ namespace framework
 {
 	namespace middleware
 	{
-		void MiddlewareServer::clientConnection(SOCKET clientSocket, sockaddr addr)
+		void MiddlewareServer::clientConnection(SOCKET clientSocket, const sockaddr& addr)
 		{
 			streams::IOSocketStream clientStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket)));
 			smartPointer<streams::IOSocketStream> serverStream;

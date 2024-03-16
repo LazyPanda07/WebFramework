@@ -50,7 +50,7 @@ namespace framework
 
 		}
 
-		void LoadBalancerServer::clientConnection(SOCKET clientSocket, sockaddr addr)
+		void LoadBalancerServer::clientConnection(SOCKET clientSocket, const sockaddr& addr)
 		{
 			streams::IOSocketStream clientStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket)));
 			const string clientIp = getClientIpV4(addr);

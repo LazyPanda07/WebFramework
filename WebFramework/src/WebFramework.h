@@ -60,7 +60,7 @@ namespace framework
 		/// Is server running
 		/// </summary>
 		/// <returns>is server running</returns>
-		bool getServerState() const;
+		bool isServerRunning() const;
 
 		/// @brief Getter for currentConfiguration
 		/// @return Get current running configuration JSON 

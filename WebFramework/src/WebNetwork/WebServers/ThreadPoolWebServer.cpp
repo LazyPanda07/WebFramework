@@ -306,7 +306,7 @@ namespace framework
 		}
 	}
 
-	void ThreadPoolWebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
+	void ThreadPoolWebServer::clientConnection(SOCKET clientSocket, const sockaddr& addr)
 	{
 		throw exceptions::NotImplementedException();
 	}

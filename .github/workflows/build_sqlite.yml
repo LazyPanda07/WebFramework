@@ -1,0 +1,47 @@
+name: Build SQLite
+
+
+on:
+  workflow_dispatch:
+  
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Download latest SQLite
+      uses: robinraju/release-downloader@v1.9
+      with:
+        repository: sqlite/sqlite
+        latest: true
+        extract: true
+        zipBall: true
+        tarBall: false
+        
+    - name: LS
+      shell: bash
+      run: ls
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+            
+
+    
+  linux-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download latest SQLite
+      uses: robinraju/release-downloader@v1.9
+      with:
+        repository: sqlite/sqlite
+        latest: true
+        extract: true
+        zipBall: true
+        tarBall: false
+
+    - name: LS
+      shell: bash
+      run: ls
+          

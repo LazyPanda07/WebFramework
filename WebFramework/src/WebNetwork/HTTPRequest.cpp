@@ -91,12 +91,12 @@ namespace framework
 		return parser->getKeyValueParameters();
 	}
 
-	const string& HTTPRequest::getHTTPVersion() const
+	string HTTPRequest::getHTTPVersion() const
 	{
-		return parser->getHTTPVersion();
+		return "HTTP/" + to_string(parser->getHTTPVersion());
 	}
 
-	const unordered_map<string, string, web::HTTPParser::insensitiveStringHash, web::HTTPParser::insensitiveStringEqual>& HTTPRequest::getHeaders() const
+	const web::HeadersMap& HTTPRequest::getHeaders() const
 	{
 		return parser->getHeaders();
 	}
@@ -310,7 +310,7 @@ namespace framework
 
 		if (data.find("HTTP") == string::npos)
 		{
-			throw web::exceptions::WebException();
+			THROW_WEB_EXCEPTION;
 		}
 
 		request.parser = make_unique<web::HTTPParser>(data);

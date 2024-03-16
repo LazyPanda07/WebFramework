@@ -200,9 +200,6 @@
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\SQLite3\sqlite3.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

@@ -77,13 +77,13 @@ namespace framework
 		/// HTTP version
 		/// </summary>
 		/// <returns>HTTP version</returns>
-		const std::string& getHTTPVersion() const;
+		std::string getHTTPVersion() const;
 
 		/// <summary>
 		/// All HTTP headers
 		/// </summary>
 		/// <returns>HTTP headers as map</returns>
-		const std::unordered_map<std::string, std::string, web::HTTPParser::insensitiveStringHash, web::HTTPParser::insensitiveStringEqual>& getHeaders() const;
+		const web::HeadersMap& getHeaders() const;
 
 		/// <summary>
 		/// HTTP request body

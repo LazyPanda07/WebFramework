@@ -179,7 +179,7 @@ namespace framework
 		}
 	}
 
-	void MultithreadedWebServer::clientConnection(SOCKET clientSocket, sockaddr addr)
+	void MultithreadedWebServer::clientConnection(SOCKET clientSocket, const sockaddr& addr)
 	{
 		throw exceptions::NotImplementedException();
 	}
