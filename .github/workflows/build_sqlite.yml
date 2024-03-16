@@ -33,20 +33,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Download latest SQLite
-      uses: robinraju/release-downloader@v1.9
-      with:
-        repository: sqlite/sqlite
-        latest: true
-        extract: true
-        zipBall: true
-        tarBall: false
+    - name: Get SQLite
+      run: |
+          wget https://github.com/sqlite/sqlite/archive/refs/tags/version-3.45.2.zip
+          unzip version-3.45.2.zip -d .
 
     - name: LS
       shell: bash
       run: ls
           
     - name: Build
+      working-directory: version-3.45.2
       run: |
           mkdir build
           cd build
