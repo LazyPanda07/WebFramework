@@ -22,7 +22,7 @@ namespace framework
 		streams::IOSocketStream& stream;
 		sqlite::SQLiteManager& database;
 		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
-		sockaddr& clientAddr;
+		const sockaddr& clientAddr;
 		smartPointer<web::HTTPParser> parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
@@ -49,7 +49,7 @@ namespace framework
 		/// @param dynamicResources Dynamic resources manager
 		/// @param database Reference to database
 		/// @param clientAddr Client address
-		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr, streams::IOSocketStream& stream);
+		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, const sockaddr& clientAddr, streams::IOSocketStream& stream);
 
 		HTTPRequest(HTTPRequest&& other) noexcept;
 

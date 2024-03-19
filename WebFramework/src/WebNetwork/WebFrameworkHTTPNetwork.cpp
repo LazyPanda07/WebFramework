@@ -16,7 +16,7 @@ namespace framework
 
 	}
 
-	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(const utility::baseConnectionData& data) :
+	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(const utility::BaseConnectionData& data) :
 		WebFrameworkHTTPNetwork(data.ip, data.port)
 	{
 	

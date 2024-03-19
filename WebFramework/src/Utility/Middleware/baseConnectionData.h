@@ -9,7 +9,7 @@ namespace framework
 		/// <summary>
 		/// Contains all data for connection to server
 		/// </summary>
-		struct WEB_FRAMEWORK_API baseConnectionData
+		struct WEB_FRAMEWORK_API BaseConnectionData
 		{
 		public:
 			std::string ip;
@@ -17,20 +17,20 @@ namespace framework
 
 		public:
 			/// <summary>
-			/// Construct baseConnectionData from raw ip and port
+			/// Construct BaseConnectionData from raw ip and port
 			/// </summary>
 			/// <param name="ip">server's address</param>
 			/// <param name="port">server's port</param>
-			baseConnectionData(const std::string& ip, const std::string& port);
+			BaseConnectionData(const std::string& ip, const std::string& port);
 
 			/// <summary>
-			/// Construct baseConnectionData from raw ip and port
+			/// Construct BaseConnectionData from raw ip and port
 			/// </summary>
 			/// <param name="ip">server's address</param>
 			/// <param name="port">server's port</param>
-			baseConnectionData(std::string&& ip, std::string&& port) noexcept;
+			BaseConnectionData(std::string&& ip, std::string&& port) noexcept;
 
-			virtual ~baseConnectionData() = default;
+			virtual ~BaseConnectionData() = default;
 		};
 	}
 }

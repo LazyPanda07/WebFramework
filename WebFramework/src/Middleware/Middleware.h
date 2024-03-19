@@ -40,7 +40,7 @@ namespace framework
 			/// Is server running
 			/// </summary>
 			/// <returns>is server running</returns>
-			bool middlewareState() const;
+			bool isMiddlewareRunning() const;
 
 			~Middleware() = default;
 		};

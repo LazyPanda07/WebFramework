@@ -3,7 +3,7 @@
 #include "headers.h"
 
 #include "Utility/DataStructures/PriorityQueue.h"
-#include "Utility/Middleware/baseConnectionData.h"
+#include "Utility/Middleware/BaseConnectionData.h"
 
 namespace framework
 {
@@ -12,7 +12,7 @@ namespace framework
 		class LoadBalancerServer : public web::BaseTCPServer
 		{
 		public:
-			struct loadBalancerConnectionData : public utility::baseConnectionData
+			struct loadBalancerConnectionData : public utility::BaseConnectionData
 			{
 			public:
 				unsigned int connections;
@@ -39,7 +39,7 @@ namespace framework
 			void disconnectUser(const loadBalancerConnectionData& data);
 
 		private:
-			void clientConnection(SOCKET clientSocket, const sockaddr& addr) override;
+			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr) override;
 
 		public:
 			LoadBalancerServer(const std::string& ip, const std::string& port, DWORD timeout, const std::unordered_map<std::string, std::vector<std::string>>& allServers);

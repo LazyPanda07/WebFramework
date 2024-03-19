@@ -45,10 +45,10 @@ namespace framework
 		void stopServer();
 
 		/// <summary>
-		/// Disconnect specific client
+		/// Kick specific client
 		/// </summary>
 		/// <param name="ip">client's address</param>
-		void disconnectClient(const std::string& ip) const;
+		void kick(const std::string& ip) const;
 
 		/// <summary>
 		/// Get ip addresses of all currently connected clients

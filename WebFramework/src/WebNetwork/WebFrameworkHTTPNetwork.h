@@ -2,7 +2,7 @@
 
 #include "headers.h"
 
-#include "Utility/Middleware/baseConnectionData.h"
+#include "Utility/Middleware/BaseConnectionData.h"
 
 namespace framework
 {
@@ -13,7 +13,7 @@ namespace framework
 
 		WebFrameworkHTTPNetwork(const std::string& ip, const std::string& port);
 
-		WebFrameworkHTTPNetwork(const utility::baseConnectionData& data);
+		WebFrameworkHTTPNetwork(const utility::BaseConnectionData& data);
 
 		~WebFrameworkHTTPNetwork() = default;
 	};

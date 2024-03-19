@@ -66,7 +66,7 @@ namespace framework
 			{
 				unique_lock<mutex> lock(disconnectMutex);
 
-				data.erase(client.clientIp);
+				data.remove(client.clientIp, client.clientSocket);
 
 				for (auto& i : client.statefulExecutors)
 				{
@@ -143,7 +143,7 @@ namespace framework
 			{
 				unique_lock<mutex> lock(disconnectMutex);
 
-				data.erase(client.clientIp);
+				data.remove(client.clientIp, client.clientSocket);
 
 				for (auto& i : client.statefulExecutors)
 				{
@@ -182,40 +182,8 @@ namespace framework
 	void ThreadPoolWebServer::receiveConnections()
 	{
 		vector<SOCKET> disconnectedClients;
-		SSL_CTX* context = nullptr;
-		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
-		bool useHTTPS = httpsSettings.getUseHTTPS();
 		u_long block = 0;
 		shared_ptr<ResourceExecutor> resourceExecutor = resources.lock();
-
-		if (useHTTPS)
-		{
-			context = SSL_CTX_new(TLS_server_method());
-
-			try
-			{
-				if (!context)
-				{
-					throw web::exceptions::SSLException();
-				}
-
-				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
-				{
-					throw web::exceptions::SSLException();
-				}
-
-				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
-				{
-					throw web::exceptions::SSLException();
-				}
-			}
-			catch (const web::exceptions::SSLException& e)
-			{
-				cout << e.what() << endl;
-
-				exit(-1);
-			}
-		}
 
 		while (isRunning)
 		{
@@ -230,7 +198,7 @@ namespace framework
 
 				ioctlsocket(clientSocket, FIONBIO, &block);
 
-				data.insert(getClientIpV4(addr), clientSocket);
+				data.add(BaseTCPServer::getClientIpV4(addr), clientSocket);
 
 				SSL* ssl = nullptr;
 
@@ -284,16 +252,6 @@ namespace framework
 
 			disconnectedClients.clear();
 		}
-
-		for (const auto& [ip, _] : data.getClients())
-		{
-			this->pubDisconnect(ip);
-		}
-
-		if (useHTTPS)
-		{
-			SSL_CTX_free(context);
-		}
 	}
 
 	void ThreadPoolWebServer::clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context)
@@ -306,7 +264,7 @@ namespace framework
 		}
 	}
 
-	void ThreadPoolWebServer::clientConnection(SOCKET clientSocket, const sockaddr& addr)
+	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr)
 	{
 		throw exceptions::NotImplementedException();
 	}

@@ -60,11 +60,11 @@ namespace framework
 				{
 					try
 					{
-						Log::init(Log::dateFormatFromString(dateFormat), currentConfiguration.getBool(json_settings::addNewLineAfterLogKey), basePath);
+						Log::configure(dateFormat, basePath, currentConfiguration.getUnsignedInt(json_settings::logFileSizeKey));
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
-						Log::init(Log::dateFormatFromString(dateFormat), true, basePath);
+						Log::configure(dateFormat, basePath);
 					}
 				}
 			}
@@ -171,14 +171,14 @@ namespace framework
 		server->stop();
 	}
 
-	void WebFramework::disconnectClient(const string& ip) const
+	void WebFramework::kick(const string& ip) const
 	{
-		server->pubDisconnect(ip);
+		server->kick(ip);
 	}
 
 	vector<string> WebFramework::getClientsIp() const
 	{
-		const vector<pair<string, SOCKET>> clients = server->getClients();
+		vector<pair<string, vector<SOCKET>>> clients = server->getClients();
 		vector<string> result;
 
 		result.reserve(clients.size());

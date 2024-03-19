@@ -6,12 +6,15 @@
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Utility/Memory.h"
 #include "Utility/ExecutorCreator.h"
+#include "Utility/Singletons/HTTPSSingleton.h"
+#include "Exceptions/SSLException.h"
 
 using namespace std;
 
 namespace framework
 {
-	BaseWebServer::BaseWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources)
+	BaseWebServer::BaseWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+		context(nullptr)
 	{
 		unordered_map<string, smartPointer<BaseExecutor>> routes;
 		unordered_map<string, utility::ExecutorCreator> creators;
@@ -161,8 +164,40 @@ namespace framework
 				settings.insert(move(node));
 			}
 
+			utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+
+			useHTTPS = httpsSettings.getUseHTTPS();
+
+			if (useHTTPS)
+			{
+				context = SSL_CTX_new(TLS_server_method());
+
+				if (!context)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
+
+				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
+				{
+					throw web::exceptions::SSLException();
+				}
+			}
+
 			executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters));
 
 			resources = executorsManager.getResourceExecutor();
+	}
+
+	BaseWebServer::~BaseWebServer()
+	{
+		if (useHTTPS)
+		{
+			SSL_CTX_free(context);
+		}
 	}
 }

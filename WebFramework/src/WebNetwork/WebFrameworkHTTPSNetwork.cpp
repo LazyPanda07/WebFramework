@@ -25,7 +25,7 @@ namespace framework
 
 	}
 
-	WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(const utility::baseConnectionData& data) :
+	WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(const utility::BaseConnectionData& data) :
 		HTTPSNetwork
 		(
 			data.ip,

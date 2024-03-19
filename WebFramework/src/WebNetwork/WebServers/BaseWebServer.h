@@ -16,10 +16,12 @@ namespace framework
 		SessionsManager sessionsManager;
 		sqlite::SQLiteManager databasesManager;
 		std::weak_ptr<ResourceExecutor> resources;
+		SSL_CTX* context;
+		bool useHTTPS;
 
 	public:
 		BaseWebServer(const json::JSONParser& configuration, const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, uint64_t cachingSize, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources);
 
-		virtual ~BaseWebServer() = default;
+		virtual ~BaseWebServer();
 	};
 }

@@ -60,9 +60,9 @@ namespace framework
 			loadBalancerServer->stop();
 		}
 
-		bool LoadBalancer::getLoadBalancerState() const
+		bool LoadBalancer::isLoadBalancerRunning() const
 		{
-			return loadBalancerServer->serverState();
+			return loadBalancerServer->isServerRunning();
 		}
 	}
 }

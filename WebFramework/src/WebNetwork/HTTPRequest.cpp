@@ -31,7 +31,7 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr& clientAddr, streams::IOSocketStream& stream) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, const sockaddr& clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
 		stream(stream),
@@ -272,7 +272,7 @@ namespace framework
 
 	string HTTPRequest::getClientIpV4() const
 	{
-		return serverReference.getClientIpV4(clientAddr);
+		return web::BaseTCPServer::getClientIpV4(clientAddr);
 	}
 
 	string HTTPRequest::getServerIpV4() const
@@ -282,7 +282,7 @@ namespace framework
 
 	uint16_t HTTPRequest::getClientPort() const
 	{
-		return serverReference.getClientPortV4(clientAddr);
+		return web::BaseTCPServer::getClientPortV4(clientAddr);
 	}
 
 	uint16_t HTTPRequest::getServerPort() const

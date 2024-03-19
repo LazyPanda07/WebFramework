@@ -22,9 +22,9 @@ namespace framework
 			middlewareServer.stop();
 		}
 
-		bool Middleware::middlewareState() const
+		bool Middleware::isMiddlewareRunning() const
 		{
-			return middlewareServer.serverState();
+			return middlewareServer.isServerRunning();
 		}
 	}
 }

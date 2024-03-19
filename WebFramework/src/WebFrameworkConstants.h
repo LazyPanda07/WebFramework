@@ -49,7 +49,7 @@ namespace json_settings
 	inline const std::string templatesPathKey = "templatesPath";
 	inline const std::string cachingSize = "cachingSize";
 	inline const std::string dateFormatKey = "dateFormat";
-	inline const std::string addNewLineAfterLogKey = "addNewLineAfterLog";
+	inline const std::string logFileSizeKey = "logFileSize";
 	inline const std::string webServerTypeKey = "webServerType";
 	inline const std::string useHTTPSKey = "useHTTPS";
 	inline const std::string pathToCertificateKey = "pathToCertificate";
@@ -108,8 +108,13 @@ namespace web_framework_assets
 #ifdef WEB_FRAMEWORK_DLL
 template<typename T>
 using smartPointer = std::shared_ptr<T>;
-#define WEB_FRAMEWORK_API __declspec(dllexport) 
-#define WEB_FRAMEWORK_API_FUNCTION extern "C" WEB_FRAMEWORK_API 
+#ifdef __LINUX__
+#define WEB_FRAMEWORK_API __attribute__((visibility("default")))
+#else
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#endif
+
+#define WEB_FRAMEWORK_API_FUNCTION extern "C" WEB_FRAMEWORK_API
 
 #define JSON_DLL
 #define THREAD_POOL_DLL

@@ -49,7 +49,7 @@ add_library(
 	WebFramework/src/Utility/ExecutorCreator.cpp
 	WebFramework/src/Utility/CharactersEncoding.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
-	WebFramework/src/Utility/Middleware/baseConnectionData.cpp
+	WebFramework/src/Utility/Middleware/BaseConnectionData.cpp
 	WebFramework/src/WebFrameworkManagers/ExecutorsManager.cpp
 	WebFramework/src/WebFrameworkManagers/SessionsManager.cpp
 	WebFramework/src/WebNetwork/HTTPRequest.cpp

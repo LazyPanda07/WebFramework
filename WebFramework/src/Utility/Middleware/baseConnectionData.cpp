@@ -1,4 +1,4 @@
-#include "baseConnectionData.h"
+#include "BaseConnectionData.h"
 
 using namespace std;
 
@@ -6,14 +6,14 @@ namespace framework
 {
 	namespace utility
 	{
-		baseConnectionData::baseConnectionData(const string& ip, const string& port) :
+		BaseConnectionData::BaseConnectionData(const string& ip, const string& port) :
 			ip(ip),
 			port(port)
 		{
 
 		}
 
-		baseConnectionData::baseConnectionData(string&& ip, string&& port) noexcept :
+		BaseConnectionData::BaseConnectionData(string&& ip, string&& port) noexcept :
 			ip(move(ip)),
 			port(move(port))
 		{

@@ -41,7 +41,7 @@ namespace framework
 			/// Is server running
 			/// </summary>
 			/// <returns>is server running</returns>
-			bool getLoadBalancerState() const;
+			bool isLoadBalancerRunning() const;
 
 			~LoadBalancer() = default;
 		};

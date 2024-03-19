@@ -25,7 +25,7 @@
   "Logging": {
     "usingLogging": true,
     "dateFormat": "DMY",
-    "addNewLineAfterLog": true
+    "logFileSize": 134217728
   },
   "ThreadPoolServer": {
     "threadCount": 0

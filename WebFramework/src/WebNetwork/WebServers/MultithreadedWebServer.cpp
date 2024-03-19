@@ -18,107 +18,40 @@ using namespace std;
 
 namespace framework
 {
-	void MultithreadedWebServer::receiveConnections()
+	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr)
 	{
-		SSL_CTX* context = nullptr;
-		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
-		bool useHTTPS = httpsSettings.getUseHTTPS();
-		int addrlen = sizeof(sockaddr);
+		SSL* ssl = nullptr;
 
 		if (useHTTPS)
 		{
-			context = SSL_CTX_new(TLS_server_method());
+			ssl = SSL_new(context);
 
-			try
+			if (!ssl)
 			{
-				if (!context)
-				{
-					throw web::exceptions::SSLException();
-				}
-
-				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
-				{
-					throw web::exceptions::SSLException();
-				}
-
-				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
-				{
-					throw web::exceptions::SSLException();
-				}
+				return;
 			}
-			catch (const web::exceptions::SSLException& e)
-			{
-				cout << e.what() << endl;
 
-				exit(-1);
+			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+			{
+				SSL_free(ssl);
+
+				return;
+			}
+
+			if (SSL_accept(ssl) <= 0)
+			{
+				SSL_free(ssl);
+
+				return;
 			}
 		}
 
-		while (isRunning)
-		{
-			sockaddr addr;
-			SOCKET clientSocket = accept(listenSocket, &addr, &addrlen);
-
-			if (isRunning && clientSocket != INVALID_SOCKET)
-			{
-				setsockopt(clientSocket, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char*>(&timeout), sizeof(timeout));
-
-				ioctlsocket(clientSocket, FIONBIO, &blockingMode);
-
-				data.insert(getClientIpV4(addr), clientSocket);
-
-				SSL* ssl = nullptr;
-				
-				if (useHTTPS)
-				{
-					ssl = SSL_new(context);
-
-					if (!ssl)
-					{
-						continue;
-					}
-
-					if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
-					{
-						SSL_free(ssl);
-
-						continue;
-					}
-
-					if (SSL_accept(ssl) <= 0)
-					{
-						SSL_free(ssl);
-
-						continue;
-					}
-				}
-
-				thread(&MultithreadedWebServer::clientConnectionImplementation, this, clientSocket, addr, ssl, context).detach();
-
-				this->onConnectionReceive(clientSocket, addr);
-			}
-		}
-
-		for (const auto& [ip, _] : data.getClients())
-		{
-			this->pubDisconnect(ip);
-		}
-
-		if (useHTTPS)
-		{
-			SSL_CTX_free(context);
-		}
-	}
-
-	void MultithreadedWebServer::clientConnectionImplementation(SOCKET clientSocket, sockaddr addr, SSL* ssl, SSL_CTX* context)
-	{
 		streams::IOSocketStream stream
 		(
-			utility::HTTPSSingleton::get().getUseHTTPS() ?
+			useHTTPS ?
 			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
 			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
 		);
-		const string clientIp = getClientIpV4(addr);
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
@@ -134,22 +67,25 @@ namespace framework
 
 				stream >> request;
 
+				if (stream.eof())
+				{
+					break;
+				}
+
 				executorsManager.service(request, response, statefulExecutors, threadPoolFunction);
 
 				if (response)
 				{
 					stream << response;
 				}
+
+				if (stream.eof())
+				{
+					break;
+				}
 			}
 			catch (const web::exceptions::WebException&)
 			{
-				data.erase(clientIp);
-
-				for (auto& i : statefulExecutors)
-				{
-					i.second->destroy();
-				}
-
 				break;
 			}
 			catch (const exceptions::BadRequestException&) // 400
@@ -179,11 +115,6 @@ namespace framework
 		}
 	}
 
-	void MultithreadedWebServer::clientConnection(SOCKET clientSocket, const sockaddr& addr)
-	{
-		throw exceptions::NotImplementedException();
-	}
-
 	MultithreadedWebServer::MultithreadedWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		BaseTCPServer
 		(
@@ -207,6 +138,6 @@ namespace framework
 			pathToSources
 		)
 	{
-		
+
 	}
 }

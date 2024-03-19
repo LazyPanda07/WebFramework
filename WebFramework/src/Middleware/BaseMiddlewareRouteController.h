@@ -2,7 +2,7 @@
 
 #include "headers.h"
 
-#include "Utility/Middleware/baseConnectionData.h"
+#include "Utility/Middleware/BaseConnectionData.h"
 
 namespace framework
 {
@@ -14,27 +14,27 @@ namespace framework
 		class WEB_FRAMEWORK_API BaseMiddlewareRouteController
 		{
 		protected:
-			std::vector<utility::baseConnectionData> servers;
+			std::vector<utility::BaseConnectionData> servers;
 
 		public:
 			/// <summary>
 			/// Construct BaseMiddlewareRouteController through initializer_list
 			/// </summary>
 			/// <param name="servers">ips and ports for all servers</param>
-			BaseMiddlewareRouteController(std::initializer_list<utility::baseConnectionData> servers);
+			BaseMiddlewareRouteController(std::initializer_list<utility::BaseConnectionData> servers);
 
 			/// <summary>
 			/// Copy construct
 			/// </summary>
 			/// <param name="servers">ips and ports for all servers</param>
-			BaseMiddlewareRouteController(const std::vector<utility::baseConnectionData>& servers);
+			BaseMiddlewareRouteController(const std::vector<utility::BaseConnectionData>& servers);
 
 			/// <summary>
-			/// Choose framework::utility::baseConnectionData
+			/// Choose framework::utility::BaseConnectionData
 			/// </summary>
 			/// <param name="httpMessage">client's request</param>
 			/// <returns>value from servers member</returns>
-			virtual const utility::baseConnectionData& getServerConnectionData(const web::HTTPParser& httpMessage) = 0;
+			virtual const utility::BaseConnectionData& getServerConnectionData(const web::HTTPParser& httpMessage) = 0;
 
 			virtual ~BaseMiddlewareRouteController() = default;
 		};

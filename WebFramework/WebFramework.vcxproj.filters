@@ -93,7 +93,7 @@
     <ClCompile Include="src\Middleware\BaseMiddlewareRouteController.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\Middleware\baseConnectionData.cpp">
+    <ClCompile Include="src\Utility\Middleware\BaseConnectionData.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp">
@@ -242,7 +242,7 @@
     <ClInclude Include="src\Middleware\BaseMiddlewareRouteController.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\Middleware\baseConnectionData.h">
+    <ClInclude Include="src\Utility\Middleware\BaseConnectionData.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h">

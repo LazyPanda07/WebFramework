@@ -37,20 +37,20 @@ namespace framework
 		}
 
 		LoadBalancerServer::loadBalancerConnectionData::loadBalancerConnectionData(const string& ip, const string& port, unsigned int connections) :
-			baseConnectionData(ip, port),
+			BaseConnectionData(ip, port),
 			connections(connections)
 		{
 
 		}
 
 		LoadBalancerServer::loadBalancerConnectionData::loadBalancerConnectionData(string&& ip, string&& port, unsigned int connections) noexcept :
-			baseConnectionData(move(ip),move(port)),
+			BaseConnectionData(move(ip),move(port)),
 			connections(connections)
 		{
 
 		}
 
-		void LoadBalancerServer::clientConnection(SOCKET clientSocket, const sockaddr& addr)
+		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr)
 		{
 			streams::IOSocketStream clientStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket)));
 			const string clientIp = getClientIpV4(addr);

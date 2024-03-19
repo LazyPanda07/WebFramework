@@ -46,9 +46,9 @@ jobs:
       run: |
           mkdir build
           cd build
-          ../sqlite/configure
-          make
-          make sqlite3.c
+          ../configure
+          make -j $(nproc)
+          make sqlite3.c -j $(nproc)
 
     - name: LS
       working-directory: sqlite-version-3.45.2
