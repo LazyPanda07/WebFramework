@@ -2,8 +2,6 @@ name: Build SQLite
 
 
 on:
-  push:
-    branches: [dev]
   workflow_dispatch:
   
 

@@ -100,7 +100,7 @@ add_subdirectory(ThreadPool)
 add_subdirectory(UtilityLibrary)
 
 target_link_directories(
-	${PROJECT_NAME}
+	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
 )
 
