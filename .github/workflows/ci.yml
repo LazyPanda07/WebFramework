@@ -47,6 +47,8 @@ jobs:
 
     - name: Build
       run: |
+          export CC=/usr/bin/gcc-13
+          export CXX=usr/bin/g++-13
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
