@@ -38,7 +38,6 @@ add_library(
 	WebFramework/src/Exceptions/MissingLoadTypeException.cpp
 	WebFramework/src/Exceptions/NotImplementedException.cpp
 	WebFramework/src/Exceptions/SQLite3Exception.cpp
-	WebFramework/src/Exceptions/StringConversionException.cpp
 	WebFramework/src/Executors/BaseExecutor.cpp
 	WebFramework/src/Executors/BaseHeavyOperationStatefulExecutor.cpp
 	WebFramework/src/Executors/BaseHeavyOperationStatelessExecutor.cpp
@@ -53,7 +52,6 @@ add_library(
 	WebFramework/src/SQLite3/SQLiteDatabase.cpp
 	WebFramework/src/SQLite3/SQLiteDatabaseModel.cpp
 	WebFramework/src/SQLite3/SQLiteResult.cpp
-	WebFramework/src/Utility/StringConversion.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/ExecutorCreator.cpp
