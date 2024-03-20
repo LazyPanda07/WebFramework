@@ -1,4 +1,4 @@
-#include "StringConversion.h"
+#include "CharactersEncoding.h"
 
 #include "ThreadPool.h"
 #include "Strings.h"
