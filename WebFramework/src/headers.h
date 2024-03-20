@@ -49,4 +49,6 @@
 #include "TextLocalization.h"
 #include "WTextLocalization.h"
 
+#ifndef __LINUX__
 #include <Windows.h>
+#endif
