@@ -1,11 +1,21 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(SQLITE_LIBRARY_PATH )
+set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3/lib)
+set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
 option(BUILD_SHARED_LIBS "" OFF)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
+
+	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
+	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
+	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)
+else ()
+	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
+	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
+	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
 endif ()
 
 if (${BUILD_SHARED_LIBS})
@@ -64,6 +74,7 @@ add_library(
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
+	WebFramework/vendor/sqlite3/include/
 	WebFramework/src/
 	BaseTCPServer/src/
 	FileManager/src/
@@ -90,5 +101,33 @@ add_subdirectory(UtilityLibrary)
 
 target_link_directories(
 	${PROJECT_NAME}
-
+	${SQLITE_LIBRARY_PATH}
 )
+
+target_link_libraries(
+	${PROJECT_NAME}
+	BaseTCPServer
+	FileManager
+	INIParser
+	Localization
+	Log
+	Networks
+	JSON
+	SocketStreams
+	SHA256
+	ThreadPool
+	UtilityLibrary
+)
+
+install(
+	TARGETS ${PROJECT_NAME} 
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
+)
+
+install(FILES ${SQLITE_DLL_PATH} DESTINATION ${SQLITE_DLL_DESTINATION_PATH})
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+	install(DIRECTORY ${CMAKE_SOURCE_DIR}/WebFramework/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN ".h")
+endif ()
