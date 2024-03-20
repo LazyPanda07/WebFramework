@@ -103,7 +103,7 @@ namespace framework
 
 		block = 1;
 
-		ioctlsocket(client.clientSocket, FIONBIO, &block);
+		// ioctlsocket(client.clientSocket, FIONBIO, &block);
 
 		client.isBusy = false;
 	}
