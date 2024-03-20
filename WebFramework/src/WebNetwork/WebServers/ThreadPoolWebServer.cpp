@@ -49,7 +49,7 @@ namespace framework
 		HTTPResponse response;
 		u_long block = 0;
 
-		ioctlsocket(client.clientSocket, FIONBIO, &block);
+		// ioctlsocket(client.clientSocket, FIONBIO, &block);
 
 		try
 		{
@@ -188,15 +188,19 @@ namespace framework
 		while (isRunning)
 		{
 			sockaddr addr;
-			int addrlen = sizeof(addr);
+#ifdef __LINUX__
+			socklen_t addrlen = sizeof(sockaddr);
+#else
+			int addrlen = sizeof(sockaddr);
+#endif
 
 			SOCKET clientSocket = accept(listenSocket, &addr, &addrlen);
 
 			if (isRunning && clientSocket != INVALID_SOCKET)
 			{
-				setsockopt(clientSocket, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char*>(&timeout), sizeof(timeout));
+				// setsockopt(clientSocket, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char*>(&timeout), sizeof(timeout));
 
-				ioctlsocket(clientSocket, FIONBIO, &block);
+				// ioctlsocket(clientSocket, FIONBIO, &block);
 
 				data.add(BaseTCPServer::getClientIpV4(addr), clientSocket);
 
@@ -226,7 +230,7 @@ namespace framework
 					}
 				}
 
-				ioctlsocket(clientSocket, FIONBIO, &blockingMode);
+				// ioctlsocket(clientSocket, FIONBIO, &blockingMode);
 
 				this->clientConnectionImplementation(clientSocket, addr, ssl, context);
 			}

@@ -43,7 +43,14 @@ namespace framework
 					}
 					else
 					{
-						result.push_back(LoadLibraryA(pathToSource.data()));
+						HMODULE handle = nullptr;
+
+#ifdef __LINUX__
+						handle = dlopen((string("lib") + pathToSource + ".so").data(), RTLD_LAZY);
+#else
+						handle = LoadLibraryA((pathToSource + ".dll").data());
+#endif
+						result.push_back(handle);
 					}
 
 					if (!result.back())
@@ -79,6 +86,14 @@ namespace framework
 			creators.reserve(settings.size());
 
 			vector<pair<string, string>> nodes;
+			auto load = [](HMODULE handle, const char* name)
+			{
+#ifdef __LINUX__
+				return dlsym(handle, name);
+#else
+				return GetProcAddress(handle, name);
+#endif
+			};
 
 			for (const auto& [i, j] : settings)
 			{
@@ -86,14 +101,14 @@ namespace framework
 
 				for (const auto& source : sources)
 				{
-					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(GetProcAddress(source, ("create" + j.name + "Instance").data())))
+					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(load(source, ("create" + j.name + "Instance").data())))
 					{
 						creator.setCreateFunction(ptr);
 
 						break;
 					}
 
-					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(GetProcAddress(source, ("create" + j.name + "Instance").data())));
+					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(load(source, ("create" + j.name + "Instance").data())));
 				}
 
 				if (!creator)

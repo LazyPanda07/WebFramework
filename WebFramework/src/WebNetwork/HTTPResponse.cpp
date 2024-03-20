@@ -1,5 +1,9 @@
 #include "HTTPResponse.h"
 
+#ifdef __LINUX__
+#include <time.h>
+#endif
+
 using namespace std;
 
 namespace framework
@@ -11,11 +15,15 @@ namespace framework
 		string result;
 
 		// TODO: current date time
-		// result.resize(64);
+		result.resize(64);
 
-		// gmtime_s(&calendarTime, &epochTime);
-
-		// result.resize(strftime(result.data(), result.size(), "%a, %d %b %Y %H:%M:%S GMT", &calendarTime));
+#ifdef __LINUX__
+		gmtime_r(&epochTime, &calendarTime);
+#else
+		gmtime_s(&calendarTime, &epochTime);
+#endif
+		
+		result.resize(strftime(result.data(), result.size(), "%a, %d %b %Y %H:%M:%S GMT", &calendarTime));
 
 		return result;
 	}
