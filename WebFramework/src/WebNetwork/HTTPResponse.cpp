@@ -10,11 +10,12 @@ namespace framework
 		tm calendarTime;
 		string result;
 
-		result.resize(64);
+		// TODO: current date time
+		// result.resize(64);
 
-		gmtime_s(&calendarTime, &epochTime);
+		// gmtime_s(&calendarTime, &epochTime);
 
-		result.resize(strftime(result.data(), result.size(), "%a, %d %b %Y %H:%M:%S GMT", &calendarTime));
+		// result.resize(strftime(result.data(), result.size(), "%a, %d %b %Y %H:%M:%S GMT", &calendarTime));
 
 		return result;
 	}
