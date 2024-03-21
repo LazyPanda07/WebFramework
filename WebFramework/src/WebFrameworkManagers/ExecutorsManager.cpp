@@ -187,7 +187,7 @@ namespace framework
 		}
 	}
 
-	shared_ptr<ResourceExecutor>& ExecutorsManager::getResourceExecutor()
+	shared_ptr<ResourceExecutor> ExecutorsManager::getResourceExecutor()
 	{
 		return resources;
 	}

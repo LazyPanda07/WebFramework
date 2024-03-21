@@ -43,7 +43,7 @@ namespace framework
 
 		void service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, smartPointer<BaseExecutor>>& statefulExecutors, std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>>& threadPoolFunction);
 
-		std::shared_ptr<ResourceExecutor>& getResourceExecutor();
+		std::shared_ptr<ResourceExecutor> getResourceExecutor();
 
 		~ExecutorsManager() = default;
 	};

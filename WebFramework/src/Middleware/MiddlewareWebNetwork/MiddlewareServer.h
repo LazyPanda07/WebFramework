@@ -14,7 +14,7 @@ namespace framework
 			BaseMiddlewareRouteController& controller;
 
 		private:
-			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr) override;
+			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr, std::function<void()>&& cleanup) override;
 
 		public:
 			MiddlewareServer(const std::string& ip, const std::string& port, DWORD timeout, BaseMiddlewareRouteController& controller);

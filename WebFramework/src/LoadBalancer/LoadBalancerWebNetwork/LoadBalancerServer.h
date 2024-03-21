@@ -39,7 +39,7 @@ namespace framework
 			void disconnectUser(const loadBalancerConnectionData& data);
 
 		private:
-			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr) override;
+			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr, std::function<void()>&& cleanup) override;
 
 		public:
 			LoadBalancerServer(const std::string& ip, const std::string& port, DWORD timeout, const std::unordered_map<std::string, std::vector<std::string>>& allServers);

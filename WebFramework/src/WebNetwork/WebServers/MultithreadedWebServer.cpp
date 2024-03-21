@@ -18,7 +18,7 @@ using namespace std;
 
 namespace framework
 {
-	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr)
+	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
 	{
 		SSL* ssl = nullptr;
 
@@ -55,13 +55,12 @@ namespace framework
 		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
-		shared_ptr<ResourceExecutor> resourceExecutor = resources.lock();
 
 		while (isRunning)
 		{
 			try
 			{
-				HTTPRequest request(sessionsManager, *this, *resourceExecutor, *resourceExecutor, databasesManager, addr, stream);
+				HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, addr, stream);
 
 				response.setDefault();
 
@@ -90,25 +89,25 @@ namespace framework
 			}
 			catch (const exceptions::BadRequestException&) // 400
 			{
-				resourceExecutor->badRequestError(response);
+				resources->badRequestError(response);
 
 				stream << response;
 			}
 			catch (const file_manager::exceptions::FileDoesNotExistException&) // 404
 			{
-				resourceExecutor->notFoundError(response);
+				resources->notFoundError(response);
 
 				stream << response;
 			}
 			catch (const exceptions::BaseExecutorException&) // 500
 			{
-				resourceExecutor->internalServerError(response);
+				resources->internalServerError(response);
 
 				stream << response;
 			}
 			catch (...)	// 500
 			{
-				resourceExecutor->internalServerError(response);
+				resources->internalServerError(response);
 
 				stream << response;
 			}

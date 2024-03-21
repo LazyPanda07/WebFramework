@@ -15,7 +15,7 @@ namespace framework
 		ExecutorsManager executorsManager;
 		SessionsManager sessionsManager;
 		sqlite::SQLiteManager databasesManager;
-		std::weak_ptr<ResourceExecutor> resources;
+		std::shared_ptr<ResourceExecutor> resources;
 		SSL_CTX* context;
 		bool useHTTPS;
 
