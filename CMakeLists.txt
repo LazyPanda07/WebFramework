@@ -5,6 +5,23 @@ set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3/lib)
 set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
 set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
+set(
+	LIBS
+	BaseTCPServer
+	FileManager
+	INIParser
+	Localization
+	Log
+	Networks
+	JSON
+	SocketStreams
+	SHA256
+	ThreadPool
+	UtilityLibrary
+	sqlite3
+	ssl
+	crypto
+)
 option(SHARED_WEB_FRAMEWORK "" OFF)
 
 if (UNIX)
@@ -14,10 +31,15 @@ if (UNIX)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+	install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else ()
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
+	set(LIBS ${LIBS} crypt32)
+
+	install(DIRECTORY vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 endif ()
 
 if (${SHARED_WEB_FRAMEWORK})
@@ -108,17 +130,7 @@ target_link_directories(
 
 target_link_libraries(
 	${PROJECT_NAME}
-	BaseTCPServer
-	FileManager
-	INIParser
-	Localization
-	Log
-	Networks
-	JSON
-	SocketStreams
-	SHA256
-	ThreadPool
-	UtilityLibrary
+	${LIBS}
 )
 
 install(
