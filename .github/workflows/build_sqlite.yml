@@ -1,13 +1,12 @@
 name: Build SQLite
 
 
-# on: workflow_dispatch
-on: 
-  push:
-    branches: [dev]
+on: workflow_dispatch
+
   
 env:
   SQLITE_TAG: version-3.45.2
+
 
 jobs:
   windows-build:
