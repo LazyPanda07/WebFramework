@@ -6,6 +6,8 @@ on:
   push:
     branches: [dev]
   
+env:
+  SQLITE_TAG: version-3.45.2
 
 jobs:
   windows-build:
@@ -16,21 +18,30 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: sqlite/sqlite
-        ref: version-3.45.2
+        ref: ${{ env.SQLITE_TAG }}
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
         
-    - name: LS
-      run: ls
-          
     - name: Build
       run: |
           nmake /f Makefile.msc
           nmake /f Makefile.msc sqlite3.c
-          
-    - name: LS
-      run: ls
+
+    - name: Prepare
+      shell: bash
+      run: |
+          mkdir -p sqlite_windows/dll
+          mkdir sqlite_windows/lib
+          mkdir sqlite_windows/include
+          mv sqlite3.dll sqlite_windows/dll
+          mv sqlite3.lib sqlite_windows/lib
+          mv sqlite3.h sqlite_windows/include
+
+    - name: Upload SQLite
+      uses: actions/upload-artifact@v4
+      with:
+        path: sqlite_windows
 
     
   linux-build:
@@ -41,11 +52,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: sqlite/sqlite
-        ref: version-3.45.2
+        ref: ${{ env.SQLITE_TAG }}
         
-    - name: LS
-      run: ls
-          
     - name: Build
       run: |
           export CC=/usr/bin/gcc-13
@@ -54,13 +62,17 @@ jobs:
           cd build
           ../configure
           make -j $(nproc)
+          make sqlite3.c -j $(nproc)
           gcc sqlite3.c -shared -O3 -fPIC -lpthread -ldl -o libsqlite3.so
-          
-    - name: LS
-      run: cd build && ls
+      
+    - name: Prepare
+      run: |
+          mkdir -p sqlite_linux/lib
+          mkdir sqlite_linux/include
+          mv build/libsqlite3.so sqlite_linux/lib
+          mv build/sqlite3.h sqlite_linux/include
 
     - name: Upload SQLite
       uses: actions/upload-artifact@v4
       with:
-        name: sqlite
-        path: build/libsqlite3.so
+        path: sqlite_linux
