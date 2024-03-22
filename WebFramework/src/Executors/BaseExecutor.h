@@ -119,6 +119,16 @@ namespace framework
 	using createBaseExecutorSubclassFunction = BaseExecutor* (*)();
 }
 
+#ifdef __LINUX__
+/**
+* Macro for each BaseExecutor subclass
+* Used for loading function that creates BaseExecutor subclass
+*/
+#define DECLARE_EXECUTOR(subclassName) extern "C" __attribute__((visibility("default"))) void* create##subclassName##Instance()	\
+{	\
+	return new subclassName();	\
+}
+#else
 /**
 * Macro for each BaseExecutor subclass
 * Used for loading function that creates BaseExecutor subclass
@@ -127,6 +137,7 @@ namespace framework
 {	\
 	return new subclassName();	\
 }
+#endif
 
 /**
 * Macro for each BaseExecutor subclass
