@@ -49,8 +49,7 @@ build/
 # SQLite binaries
 !sqlite3.lib
 !sqlite3.dll
-!sqlite3.a
-!sqlite3.so
+!libsqlite3.so
 
 # Databases
 *.sqlite3

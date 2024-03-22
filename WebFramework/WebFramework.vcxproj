@@ -378,7 +378,6 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
     <ClCompile Include="src\Exceptions\SQLite3Exception.cpp" />
-    <ClCompile Include="src\Exceptions\StringConversionException.cpp" />
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
     <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp" />
@@ -393,7 +392,6 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\Utility\ExecutorCreator.cpp" />
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
-    <ClCompile Include="src\Utility\StringConversion.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\SessionsManager.cpp" />
     <ClCompile Include="src\Middleware\BaseMiddlewareRouteController.cpp" />
@@ -424,7 +422,6 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="src\Exceptions\SQLite3Exception.h" />
-    <ClInclude Include="src\Exceptions\StringConversionException.h" />
     <ClInclude Include="src\Executors\BaseExecutor.h" />
     <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
     <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h" />
@@ -451,7 +448,6 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
     <ClInclude Include="src\Utility\Middleware\BaseConnectionData.h" />
     <ClInclude Include="src\Utility\DataStructures\PriorityQueue.h" />
-    <ClInclude Include="src\Utility\StringConversion.h" />
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
     <ClInclude Include="src\WebNetwork\WebFrameworkHTTPNetwork.h" />

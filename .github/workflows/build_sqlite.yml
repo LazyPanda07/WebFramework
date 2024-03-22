@@ -10,21 +10,25 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Download latest SQLite
-      uses: robinraju/release-downloader@v1.9
+    - name: Get SQLite
+      uses: actions/checkout@v4
       with:
         repository: sqlite/sqlite
-        latest: true
-        extract: true
-        zipBall: true
-        tarBall: false
-        
-    - name: LS
-      shell: bash
-      run: ls
+        ref: version-3.45.2
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
+        
+    - name: LS
+      run: ls
+          
+    - name: Build
+      run: |
+          nmake /f Makefile.msc
+          nmake /f Makefile.msc sqlite3.c
+          
+    - name: LS
+      run: ls
 
     
   linux-build:
@@ -32,22 +36,29 @@ jobs:
 
     steps:
     - name: Get SQLite
-      run: |
-          wget https://github.com/sqlite/sqlite/archive/refs/tags/version-3.45.2.zip
-          unzip version-3.45.2.zip -d .
-
+      uses: actions/checkout@v4
+      with:
+        repository: sqlite/sqlite
+        ref: version-3.45.2
+        
     - name: LS
       run: ls
           
     - name: Build
-      working-directory: sqlite-version-3.45.2
       run: |
+          export CC=/usr/bin/gcc-13
+          export CXX=/usr/bin/g++-13
           mkdir build
           cd build
           ../configure
           make -j $(nproc)
-          make sqlite3.c -j $(nproc)
-
+          gcc sqlite3.c -shared -O3 -fPIC -lpthread -ldl -o libsqlite3.so
+          
     - name: LS
-      working-directory: sqlite-version-3.45.2
-      run: ls
+      run: cd build && ls
+
+    - name: Upload SQLite
+      uses: actions/upload-artifact@v4
+      with:
+        name: sqlite
+        path: build/libsqlite3.so

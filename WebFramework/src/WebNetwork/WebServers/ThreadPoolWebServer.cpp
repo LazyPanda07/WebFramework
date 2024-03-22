@@ -10,71 +10,159 @@ using namespace std;
 
 namespace framework
 {
-	void ThreadPoolWebServer::taskImplementation(streams::IOSocketStream&& stream, HTTPRequest&& request, function<void(HTTPRequest&, HTTPResponse&)> executorMethod)
+	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup) :
+		stream
+		(
+			ssl ?
+			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
+			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
+		),
+		cleanup(move(cleanup)),
+		address(address),
+		ssl(ssl),
+		context(context),
+		clientSocket(clientSocket),
+		isBusy(false),
+		webExceptionAcquired(false)
 	{
-		HTTPResponse response;
-		u_long block = 0;
 
-		// ioctlsocket(client.clientSocket, FIONBIO, &block);
+	}
+
+	bool ThreadPoolWebServer::Client::clientServe
+	(
+		SessionsManager& sessionsManager,
+		web::BaseTCPServer& server,
+		interfaces::IStaticFile& staticResources,
+		interfaces::IDynamicFile& dynamicResources,
+		sqlite::SQLiteManager& databaseManager,
+		ExecutorsManager& executorsManager,
+		ResourceExecutor& resourceExecutor,
+		threading::ThreadPool& threadPool
+	)
+	{
+		if (stream.eof() || webExceptionAcquired)
+		{
+			return true;
+		}
+
+		if (isBusy)
+		{
+			return false;
+		}
+
+		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
+		HTTPResponse response;
 
 		try
 		{
-			executorMethod(request, response);
+			HTTPRequest request(sessionsManager, server, staticResources, dynamicResources, databaseManager, address, stream);
+
+			response.setDefault();
+
+			stream >> request;
+
+			if (stream.eof())
+			{
+				return true;
+			}
+
+			executorsManager.service(request, response, statefulExecutors, threadPoolFunction);
+
+			if (threadPoolFunction)
+			{
+				isBusy = true;
+
+				threadPool.addTask
+				(
+					[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
+					{
+						try
+						{
+							(*threadPoolFunction)(request, response);
+
+							stream << response;
+						}
+						catch (const web::exceptions::WebException&)
+						{
+							webExceptionAcquired = true;
+						}
+						catch (const exceptions::BadRequestException&) // 400
+						{
+							resourceExecutor.badRequestError(response);
+
+							stream << response;
+						}
+						catch (const file_manager::exceptions::FileDoesNotExistException&) // 404
+						{
+							resourceExecutor.notFoundError(response);
+
+							stream << response;
+						}
+						catch (const exceptions::BaseExecutorException&) // 500
+						{
+							resourceExecutor.internalServerError(response);
+
+							stream << response;
+						}
+						catch (...) // 500
+						{
+							resourceExecutor.internalServerError(response);
+
+							stream << response;
+						}
+					},
+					[this]() mutable
+					{
+						isBusy = false;
+					}
+				);
+
+				return false;
+			}
 
 			if (response)
 			{
-				client.stream << response;
+				stream << response;
 			}
 		}
-		catch (const web::exceptions::WebException& e)
+		catch (const web::exceptions::WebException&)
 		{
-			if (!e.getErrorCode())
-			{
-				unique_lock<mutex> lock(disconnectMutex);
-
-				data.remove(client.clientIp, client.clientSocket);
-
-				for (auto& i : client.statefulExecutors)
-				{
-					i.second->destroy();
-				}
-
-				disconnectedClients.push_back(client.clientSocket);
-			}
+			return true;
 		}
-		catch (const exceptions::BadRequestException&)	// 400
+		catch (const exceptions::BadRequestException&) // 400
 		{
-			resources->badRequestError(response);
+			resourceExecutor.badRequestError(response);
 
-			client.stream << response;
+			stream << response;
 		}
-		catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
+		catch (const file_manager::exceptions::FileDoesNotExistException&) // 404
 		{
-			resources->notFoundError(response);
+			resourceExecutor.notFoundError(response);
 
-			client.stream << response;
+			stream << response;
 		}
-		catch (const exceptions::BaseExecutorException&)	//500
+		catch (const exceptions::BaseExecutorException&) // 500
 		{
-			resources->internalServerError(response);
+			resourceExecutor.internalServerError(response);
 
-			client.stream << response;
+			stream << response;
 		}
-		catch (...)	//500
+		catch (...) // 500
 		{
-			resources->internalServerError(response);
+			resourceExecutor.internalServerError(response);
 
-			client.stream << response;
+			stream << response;
 		}
 
-		block = 1;
-
-		// ioctlsocket(client.clientSocket, FIONBIO, &block);
-
-		client.isBusy = false;
+		return stream.eof();
 	}
 
-	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
+	ThreadPoolWebServer::Client::~Client()
+	{
+		cleanup();
+	}
+
+	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
 	{
 		SSL* ssl = nullptr;
 
@@ -102,77 +190,48 @@ namespace framework
 			}
 		}
 
-		HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, client.addr, client.stream);
-		HTTPResponse response;
-		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
-		streams::IOSocketStream stream
-		(
-			useHTTPS ?
-			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
-			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
-		);
+		clients.emplace_back(ssl, context, clientSocket, address, move(cleanup));
+	}
 
-		try
+	void ThreadPoolWebServer::serve(std::string ip, SOCKET clientSocket, sockaddr address)
+	{
+		BaseWebServer::serve(ip, clientSocket, address);
+
+		size_t size = clients.size();
+		size_t swaps = 0;
+		
+		for (size_t i = 0; i < size;)
 		{
-			stream >> request;
+			Client& client = clients[i++];
 
-			executorsManager.service(request, response, client.statefulExecutors, threadPoolFunction);
+			bool finished = client.clientServe
+			(
+				sessionsManager,
+				*this,
+				*resources,
+				*resources,
+				databaseManager,
+				executorsManager,
+				*resources,
+				threadPool
+			);
 
-			if (threadPoolFunction)
+			if (finished)
 			{
-				threadPool.addTask
-				(
-					bind(&ThreadPoolWebServer::taskImplementation, this, move(stream), move(request), *threadPoolFunction)
-				);
+				Client& lastClient = clients[size - 1];
 
-				return;
-			}
-
-			if (response)
-			{
-				stream << response;
-			}
-		}
-		catch (const web::exceptions::WebException& e)
-		{
-			if (!e.getErrorCode())
-			{
-				unique_lock<mutex> lock(disconnectMutex);
-
-				data.remove(client.clientIp, client.clientSocket);
-
-				for (auto& i : client.statefulExecutors)
+				if (&client != &lastClient)
 				{
-					i.second->destroy();
+					swap(client, lastClient);
+					
+					swaps++;
+					i--;
+					size--;
 				}
-
-				disconnectedClients.push_back(client.clientSocket);
 			}
 		}
-		catch (const exceptions::BadRequestException&)	// 400
-		{
-			resources->badRequestError(response);
 
-			client.stream << response;
-		}
-		catch (const file_manager::exceptions::FileDoesNotExistException&)	// 404
-		{
-			resources->notFoundError(response);
-
-			client.stream << response;
-		}
-		catch (const exceptions::BaseExecutorException&)	//500
-		{
-			resources->internalServerError(response);
-
-			client.stream << response;
-		}
-		catch (...)	//500
-		{
-			resources->internalServerError(response);
-
-			client.stream << response;
-		}
+		clients.erase(clients.begin() + clients.size() - swaps, clients.end());
 	}
 
 	ThreadPoolWebServer::ThreadPoolWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :

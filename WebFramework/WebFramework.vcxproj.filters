@@ -75,9 +75,6 @@
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Exceptions\StringConversionException.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -136,9 +133,6 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\DatabaseException.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utility\StringConversion.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\CharactersEncoding.cpp">
@@ -216,12 +210,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utility\StringConversion.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Exceptions\StringConversionException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\LoadBalancer\LoadBalancer.h">

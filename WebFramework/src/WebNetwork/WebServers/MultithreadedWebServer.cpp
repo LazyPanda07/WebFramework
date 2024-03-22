@@ -60,7 +60,7 @@ namespace framework
 		{
 			try
 			{
-				HTTPRequest request(sessionsManager, *this, *resources, *resources, databasesManager, addr, stream);
+				HTTPRequest request(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
 
 				response.setDefault();
 
