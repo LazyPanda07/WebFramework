@@ -115,12 +115,6 @@ using smartPointer = std::shared_ptr<T>;
 #endif
 
 #define WEB_FRAMEWORK_API_FUNCTION extern "C" WEB_FRAMEWORK_API
-
-#define JSON_DLL
-#define THREAD_POOL_DLL
-#define NETWORKS_DLL
-#define LOG_DLL
-#define UTILITY_LIBRARY_DLL
 #else
 template<typename T>
 using smartPointer = std::unique_ptr<T>;

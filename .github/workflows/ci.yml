@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
+        shared: [[ON, DLL], [OFF, ""]]
   
     steps:
     - uses: actions/checkout@v4
@@ -24,13 +25,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} -G "NMake Makefiles" ..
           nmake install
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}_Windows
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
         path: build/install-dir
 
 
@@ -39,6 +40,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
+        shared: [[ON, DLL], [OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -51,12 +53,12 @@ jobs:
           export CXX=/usr/bin/g++-13
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} ..
           make install -j $(nproc)
           
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}_Linux
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
         path: build/install-dir
         

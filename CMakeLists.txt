@@ -4,7 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3/lib)
 set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
-option(BUILD_SHARED_LIBS "" OFF)
+set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
+option(SHARED_WEB_FRAMEWORK "" OFF)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
@@ -18,14 +19,16 @@ else ()
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
 endif ()
 
-if (${BUILD_SHARED_LIBS})
+if (${SHARED_WEB_FRAMEWORK})
 	add_definitions(-DWEB_FRAMEWORK_DLL)
+
+	set(WEB_FRAMEWORK_LIBRARY_TYPE SHARED)
 endif ()
 
 project(WebFramework)
 
 add_library(
-	${PROJECT_NAME}
+	${PROJECT_NAME} ${WEB_FRAMEWORK_LIBRARY_TYPE}
 	WebFramework/src/DynamicPages/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/DynamicPages/WebFrameworkDynamicPages.cpp
 	WebFramework/src/Exceptions/BadRequestException.cpp
@@ -125,6 +128,10 @@ install(
 )
 
 install(FILES ${SQLITE_DLL_PATH} DESTINATION ${SQLITE_DLL_DESTINATION_PATH})
+
+if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
+	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
+endif ()
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 	install(DIRECTORY ${CMAKE_SOURCE_DIR}/WebFramework/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN ".h")

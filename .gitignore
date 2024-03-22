@@ -36,12 +36,11 @@
 
 # Binaries
 bin/
+build/
+out/
 
 # Build executable
 !WebFrameworkBuilder.exe
-
-# Build folder
-build/
 
 # Log files
 *.log
