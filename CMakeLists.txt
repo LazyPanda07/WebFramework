@@ -32,14 +32,14 @@ if (UNIX)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-	install(DIRECTORY vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else ()
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
 	set(LIBS ${LIBS} crypt32)
 
-	install(DIRECTORY vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 endif ()
 
 if (${SHARED_WEB_FRAMEWORK})
