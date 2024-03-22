@@ -23,6 +23,10 @@ if (${SHARED_WEB_FRAMEWORK})
 	add_definitions(-DWEB_FRAMEWORK_DLL)
 
 	set(WEB_FRAMEWORK_LIBRARY_TYPE SHARED)
+
+	if (UNIX)
+		set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+	endif (UNIX)
 endif ()
 
 project(WebFramework)
