@@ -39,6 +39,7 @@ namespace json_settings
 	inline const std::string webFrameworkObject = "WebFramework";
 	inline const std::string loggingObject = "Logging";
 	inline const std::string webFrameworkLoadBalancerObject = "WebFrameworkLoadBalancer";
+	inline const std::string threadPoolServerObject = "ThreadPoolServer";
 
 	inline const std::string settingsPathsKey = "settingsPaths";
 	inline const std::string ipKey = "ip";

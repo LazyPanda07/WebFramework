@@ -27,15 +27,18 @@ namespace framework
 		currentConfiguration.setJSONData((ifstream(configurationJSONFile)));
 		basePath.remove_filename();
 
-		vector<string> settingsPaths = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::settingsPathsKey)).getAsStringArray();
-		vector<string> loadSources = json::utility::JSONArrayWrapper(currentConfiguration.getArray(json_settings::loadSourcesKey)).getAsStringArray();
-		string assetsPath = (basePath / currentConfiguration.getString(json_settings::assetsPathKey)).string();
-		string templatesPath = (basePath / currentConfiguration.getString(json_settings::templatesPathKey)).string();
-		uint64_t cachingSize = currentConfiguration.getUnsignedInt(json_settings::cachingSize);
-		const string& webServerType = currentConfiguration.getString(json_settings::webServerTypeKey);
-		const string& ip = currentConfiguration.getString(json_settings::ipKey);
-		const string& port = currentConfiguration.getString(json_settings::portKey);
-		DWORD timeout = static_cast<DWORD>(currentConfiguration.getInt(json_settings::timeoutKey));
+		const json::utility::jsonObject& webServerSettings = currentConfiguration.getObject(json_settings::webServerObject);
+		const string& ip = webServerSettings.getString(json_settings::ipKey);
+		const string& port = webServerSettings.getString(json_settings::portKey);
+		DWORD timeout = static_cast<DWORD>(webServerSettings.getInt(json_settings::timeoutKey));
+
+		const json::utility::jsonObject& webFrameworkSettings = currentConfiguration.getObject(json_settings::webFrameworkObject);
+		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
+		vector<string> loadSources = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::loadSourcesKey)).getAsStringArray();
+		string assetsPath = (basePath / webFrameworkSettings.getString(json_settings::assetsPathKey)).string();
+		string templatesPath = (basePath / webFrameworkSettings.getString(json_settings::templatesPathKey)).string();
+		uint64_t cachingSize = webFrameworkSettings.getUnsignedInt(json_settings::cachingSize);
+		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
 
 		ranges::for_each(settingsPaths, [this](string& path) {path = (basePath / path).string(); });
 		ranges::for_each(loadSources, [this](string& source)
@@ -50,17 +53,17 @@ namespace framework
 
 		try
 		{
-			currentConfiguration.getObject(json_settings::loggingObject);	// is logging object exists
+			const json::utility::jsonObject& loggingSettings = currentConfiguration.getObject(json_settings::loggingObject); // is logging object exists
 
 			try
 			{
-				const string& dateFormat = currentConfiguration.getString(json_settings::dateFormatKey);
+				const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
 
-				if (currentConfiguration.getBool(json_settings::usingLoggingKey))
+				if (loggingSettings.getBool(json_settings::usingLoggingKey))
 				{
 					try
 					{
-						Log::configure(dateFormat, basePath, currentConfiguration.getUnsignedInt(json_settings::logFileSizeKey));
+						Log::configure(dateFormat, basePath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
@@ -82,13 +85,13 @@ namespace framework
 
 		try
 		{
-			if (currentConfiguration.getBool(json_settings::useHTTPSKey))
+			if (webFrameworkSettings.getBool(json_settings::useHTTPSKey))
 			{
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(basePath / currentConfiguration.getString(json_settings::pathToCertificateKey));
-				httpsSettings.setPathToKey(basePath / currentConfiguration.getString(json_settings::pathToKey));
+				httpsSettings.setPathToCertificate(basePath / webFrameworkSettings.getString(json_settings::pathToCertificateKey));
+				httpsSettings.setPathToKey(basePath / webFrameworkSettings.getString(json_settings::pathToKey));
 
 				SSL_library_init();
 				SSL_load_error_strings();
@@ -118,7 +121,7 @@ namespace framework
 					port,
 					timeout,
 					loadSources
-					);
+				);
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
 		{
@@ -135,8 +138,8 @@ namespace framework
 						port,
 						timeout,
 						loadSources,
-						static_cast<uint32_t>(currentConfiguration.getInt("threadCount"))
-						);
+						static_cast<uint32_t>(currentConfiguration.getObject(json_settings::threadPoolServerObject).getInt("threadCount"))
+					);
 			}
 			catch (const json::exceptions::BaseJSONException&)
 			{
@@ -152,7 +155,7 @@ namespace framework
 						timeout,
 						loadSources,
 						NULL
-						);
+					);
 			}
 		}
 		else

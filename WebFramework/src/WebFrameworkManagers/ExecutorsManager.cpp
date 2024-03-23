@@ -39,7 +39,7 @@ namespace framework
 
 		resources->init(utility::JSONSettingsParser::ExecutorSettings());
 
-		const string& webServerType = configuraion.getString(json_settings::webServerTypeKey);
+		const string& webServerType = configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey);
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{

@@ -54,8 +54,8 @@ namespace framework
 	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates) :
 		defaultAssets
 		(
-			configuration.contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ? 
-			configuration.getString(json_settings::webFrameworkDefaultAssetsPath) :
+			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ? 
+			configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webFrameworkDefaultAssetsPath) :
 			webFrameworkDefaultAssests
 		),
 		assets(assets),
