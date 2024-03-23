@@ -32,7 +32,11 @@ namespace framework
 					{
 						if (pathToSource == json_settings::defaultLoadSourceValue)
 						{
+#ifdef __LINUX__
+							result.push_back(dlopen(nullptr, RTLD_LAZY));
+#else
 							result.push_back(nullptr);
+#endif
 
 							continue;
 						}
