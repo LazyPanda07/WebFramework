@@ -70,6 +70,11 @@ namespace framework
 			decltype(routes.find("")) executor;
 			bool fileRequest = parameters.find('.') != string::npos;
 
+			if (parameters.empty())
+			{
+				parameters += '/';
+			}
+
 			if (parameters.find('?') != string::npos)
 			{
 				parameters.resize(parameters.find('?'));
