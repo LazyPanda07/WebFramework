@@ -48,6 +48,7 @@ target_include_directories(
 	../Log/src/
 	../SHA256/src/
 	../INIParser/src/
+	../Localization/src/
 	../Networks/SocketStreams/src/
 	../UtilityLibrary/src/
 	../Networks/vendor/OpenSSL/include/
