@@ -30,7 +30,7 @@ namespace framework
 			userSessionSynchronization->deleteSession(i.second);
 		}
 
-		nextPeriod();
+		this->nextPeriod();
 	}
 
 	void SessionsManager::SessionTime::runAsyncCheck()

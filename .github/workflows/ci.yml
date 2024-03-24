@@ -182,9 +182,10 @@ jobs:
           make install -j $(nproc)
 
     - name: Memory leak test
-      uses: LazyPanda07/check-memory-leaks@v1
+      uses: LazyPanda07/check-memory-leaks@v1.2
       with:
         path: Tests/build/bin
         name: Tests
+        leak-kinds: definite,indirect,reachable
         pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
         
