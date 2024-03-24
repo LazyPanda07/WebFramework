@@ -47,6 +47,7 @@ target_include_directories(
 	../ThreadPool/src/
 	../Log/src/
 	../SHA256/src/
+	../INIParser/src/
 	../Networks/SocketStreams/src/
 	../UtilityLibrary/src/
 	../Networks/vendor/OpenSSL/include/
