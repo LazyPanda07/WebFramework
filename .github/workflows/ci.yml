@@ -80,7 +80,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
-        path: Networks
+        path: WebFrameworkLibrary
 
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@v1
@@ -123,7 +123,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
-        path: Networks
+        path: WebFrameworkLibrary
 
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@v1
@@ -164,7 +164,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
-        path: Networks
+        path: WebFrameworkLibrary
 
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@v1
