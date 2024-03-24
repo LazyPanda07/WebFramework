@@ -156,6 +156,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
+        config: [config.json, threadPoolConfig.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -188,7 +189,6 @@ jobs:
       with:
         path: Tests/build/bin
         name: Tests
-        leak-kinds: definite,indirect,reachable
         pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
         args: ${{ matrix.config }}
         

@@ -16,6 +16,7 @@ namespace framework
 			std::multimap<sessionTimePoint, std::string, std::greater<sessionTimePoint>> timeIp;
 			std::unordered_map<std::string, sessionTimePoint> ipTime;
 			std::mutex checkLock;
+			std::future<void> handle;
 			SessionsManager* userSessionSynchronization;
 
 		private:
@@ -35,7 +36,7 @@ namespace framework
 
 	private:
 		SessionTime time;
-		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> userSession;	//ip - (key - value)
+		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> userSession;	// ip - (key - value)
 		std::mutex lock;
 
 	public:

@@ -63,9 +63,10 @@ namespace framework
 	}
 
 	SessionsManager::SessionTime::SessionTime(SessionsManager* userSession) :
-		userSessionSynchronization(userSession)
+		userSessionSynchronization(userSession),
+		handle(async(launch::async, &SessionTime::runAsyncCheck, this))
 	{
-		thread(&SessionTime::runAsyncCheck, this).detach();
+		
 	}
 
 	void SessionsManager::SessionTime::updateSessionTime(const string& ip)
