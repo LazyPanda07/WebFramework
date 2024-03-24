@@ -70,11 +70,6 @@ namespace framework
 			decltype(routes.find("")) executor;
 			bool fileRequest = parameters.find('.') != string::npos;
 
-			if (parameters.empty())
-			{
-				parameters += '/';
-			}
-
 			if (parameters.find('?') != string::npos)
 			{
 				parameters.resize(parameters.find('?'));
@@ -97,7 +92,7 @@ namespace framework
 						if (executorSettings == settings.end())
 						{
 							auto it = find_if(routeParameters.begin(), routeParameters.end(),
-								[&parameters](const utility::RouteParameters& value) {return parameters.find(value.baseRoute) != string::npos; });
+								[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) != string::npos; });
 
 							if (it == routeParameters.end())
 							{

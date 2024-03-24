@@ -189,7 +189,7 @@ namespace framework
 				return;
 			}
 		}
-
+		
 		clients.emplace_back(ssl, context, clientSocket, address, move(cleanup));
 	}
 
@@ -258,6 +258,6 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-		this->blockingMode = 1;
+		
 	}
 }

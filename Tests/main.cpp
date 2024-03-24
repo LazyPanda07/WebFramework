@@ -6,18 +6,12 @@
 
 void startTests(int argc, char** argv)
 {
-	try
-	{
-		testing::InitGoogleTest(&argc, argv);
+	std::thread([argc, argv]() mutable
+		{
+			testing::InitGoogleTest(&argc, argv);
 
-		exit(RUN_ALL_TESTS());
-	}
-	catch (const web::exceptions::WebException& e)
-	{
-		std::cout << e.what() << ' ' << e.getFile() << ' ' << e.getLine() << ' ' << e.getErrorCode() << std::endl;
-
-		exit(-2);
-	}
+			exit(RUN_ALL_TESTS());
+		}).detach();
 }
 
 int main(int argc, char** argv) try

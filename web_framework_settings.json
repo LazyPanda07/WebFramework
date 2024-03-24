@@ -14,7 +14,7 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "cachingSize": 0,
-    "webServerType": "threadPool",
+    "webServerType": "multiThreaded",
     "HTTPS": {
       "useHTTPS": false,
       "pathToCertificate": "certificates/cert.pem",
