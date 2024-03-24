@@ -16,7 +16,7 @@ void startTests(int argc, char** argv)
 
 int main(int argc, char** argv) try
 {
-	framework::WebFramework server("config.json");
+	framework::WebFramework server(argv[1]);
 
 	server.startServer(true, std::bind(startTests, argc, argv));
 

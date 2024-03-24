@@ -77,5 +77,4 @@ endif (UNIX)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
-install(FILES web.json DESTINATION ${CMAKE_BINARY_DIR}/bin)
-install(FILES config.json DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(DIRECTORY configs/ DESTINATION ${CMAKE_BINARY_DIR}/bin)

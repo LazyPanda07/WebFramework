@@ -70,6 +70,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
+        config: [config.json, threadPoolConfig.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -103,7 +104,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          .\Tests.exe
+          .\Tests.exe ${{ matrix.config }}
 
 
   linux-tests:
@@ -113,6 +114,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
+        config: [config.json, threadPoolConfig.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -144,7 +146,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests ${{ matrix.config }}
   
 
   memory-leak-tests:
@@ -188,4 +190,5 @@ jobs:
         name: Tests
         leak-kinds: definite,indirect,reachable
         pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
+        args: ${{ matrix.config }}
         
