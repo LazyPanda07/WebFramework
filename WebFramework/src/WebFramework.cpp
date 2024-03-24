@@ -164,14 +164,14 @@ namespace framework
 		}
 	}
 
-	void WebFramework::startServer()
+	void WebFramework::startServer(bool wait, const function<void()>& onStartServer)
 	{
-		server->start();
+		server->start(wait, onStartServer);
 	}
 
-	void WebFramework::stopServer()
+	void WebFramework::stopServer(bool wait)
 	{
-		server->stop();
+		server->stop(wait);
 	}
 
 	void WebFramework::kick(const string& ip) const

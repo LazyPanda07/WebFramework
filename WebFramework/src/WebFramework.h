@@ -37,12 +37,12 @@ namespace framework
 		/// <summary>
 		/// Start BaseWebServer
 		/// </summary>
-		void startServer();
+		void startServer(bool wait = false, const std::function<void()>& onStartServer = []() {});
 
 		/// <summary>
 		/// Stop BaseWebServer incoming connections
 		/// </summary>
-		void stopServer();
+		void stopServer(bool wait = true);
 
 		/// <summary>
 		/// Kick specific client
