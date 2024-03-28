@@ -35,66 +35,67 @@ inline constexpr size_t defaultChunkSize = 14 * 1024 * 1024;
 
 namespace json_settings
 {
-	inline const std::string webServerObject = "WebServer";
-	inline const std::string webFrameworkObject = "WebFramework";
-	inline const std::string loggingObject = "Logging";
-	inline const std::string webFrameworkLoadBalancerObject = "WebFrameworkLoadBalancer";
-	inline const std::string threadPoolServerObject = "ThreadPoolServer";
+	inline constexpr std::string_view webServerObject = "WebServer";
+	inline constexpr std::string_view webFrameworkObject = "WebFramework";
+	inline constexpr std::string_view loggingObject = "Logging";
+	inline constexpr std::string_view webFrameworkLoadBalancerObject = "WebFrameworkLoadBalancer";
+	inline constexpr std::string_view threadPoolServerObject = "ThreadPoolServer";
 
-	inline const std::string settingsPathsKey = "settingsPaths";
-	inline const std::string ipKey = "ip";
-	inline const std::string portKey = "port";
-	inline const std::string timeoutKey = "timeout";
-	inline const std::string loadSourcesKey = "loadSources";
-	inline const std::string assetsPathKey = "assetsPath";
-	inline const std::string templatesPathKey = "templatesPath";
-	inline const std::string cachingSize = "cachingSize";
-	inline const std::string dateFormatKey = "dateFormat";
-	inline const std::string logFileSizeKey = "logFileSize";
-	inline const std::string webServerTypeKey = "webServerType";
-	inline const std::string useHTTPSKey = "useHTTPS";
-	inline const std::string pathToCertificateKey = "pathToCertificate";
-	inline const std::string pathToKey = "pathToKey";
-	inline const std::string webFrameworkDefaultAssetsPath = "defaultAssetsPath";
+	inline constexpr std::string_view settingsPathsKey = "settingsPaths";
+	inline constexpr std::string_view ipKey = "ip";
+	inline constexpr std::string_view portKey = "port";
+	inline constexpr std::string_view timeoutKey = "timeout";
+	inline constexpr std::string_view loadSourcesKey = "loadSources";
+	inline constexpr std::string_view assetsPathKey = "assetsPath";
+	inline constexpr std::string_view templatesPathKey = "templatesPath";
+	inline constexpr std::string_view cachingSize = "cachingSize";
+	inline constexpr std::string_view dateFormatKey = "dateFormat";
+	inline constexpr std::string_view logFileSizeKey = "logFileSize";
+	inline constexpr std::string_view webServerTypeKey = "webServerType";
+	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
+	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
+	inline constexpr std::string_view pathToKey = "pathToKey";
+	inline constexpr std::string_view webFrameworkDefaultAssetsPath = "defaultAssetsPath";
 
-	inline const std::string listOfServersKey = "listOfServers";
-	inline const std::string loadBalancerIpKey = "loadBalancerIp";
-	inline const std::string loadBalancerPortKey = "loadBalancerPort";
-	inline const std::string loadBalancerTimeoutKey = "loadBalancerTimeout";
+	inline constexpr std::string_view listOfServersKey = "listOfServers";
+	inline constexpr std::string_view loadBalancerIpKey = "loadBalancerIp";
+	inline constexpr std::string_view loadBalancerPortKey = "loadBalancerPort";
+	inline constexpr std::string_view loadBalancerTimeoutKey = "loadBalancerTimeout";
 
-	inline const std::string usingLoggingKey = "usingLogging";
+	inline constexpr std::string_view usingLoggingKey = "usingLogging";
+	inline constexpr std::string_view logsPathKey = "logsPath";
 
-	inline const std::string defaultLoadSourceValue = "current";
+	inline constexpr std::string_view defaultLoadSourceValue = "current";
 
-	inline const std::string multiThreadedWebServerTypeValue = "multiThreaded";
-	inline const std::string threadPoolWebServerTypeValue = "threadPool";
+	inline constexpr std::string_view multiThreadedWebServerTypeValue = "multiThreaded";
+	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";
 }
 
 namespace exceptions
 {
-	inline const std::string notImplemented = "Not implemented";
-	inline const std::string fileDoesNotExist = "file does not exist";
-	inline const std::string cantFindFunction = "Can't find ";
-	inline const std::string useMacroToMakeCreationFunction = "Make sure that you add EXECUTOR_CREATION_FUNCTION macro to executor class";
-	inline const std::string missingLoadType = "Missing load type of ";
-	inline const std::string cantLoadSource = "Can't load ";
-	inline const std::string missingOtherDLLs = "That load source requires to load other dlls";
+	inline constexpr std::string_view notImplemented = "Not implemented";
+	inline constexpr std::string_view fileDoesNotExist = "file does not exist";
+	inline constexpr std::string_view cantFindFunction = "Can't find ";
+	inline constexpr std::string_view useMacroToMakeCreationFunction = "Make sure that you add DECLARE_EXECUTOR macro for executor class";
+	inline constexpr std::string_view missingLoadType = "Missing load type of ";
+	inline constexpr std::string_view cantLoadSource = "Can't load ";
+	inline constexpr std::string_view missingOtherDLLs = "That load source requires to load other dlls";
 
 	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
 
-	inline const std::string variableDeclarationSyntaxError = "Wrong variable declaration";
-	inline const std::string sectionDeclarationSyntaxError = "Wrong section declaration";
-	inline const std::string missingSemicolonSyntaxError = "Missing semicolon";
+	inline constexpr std::string_view variableDeclarationSyntaxError = "Wrong variable declaration";
+	inline constexpr std::string_view sectionDeclarationSyntaxError = "Wrong section declaration";
+	inline constexpr std::string_view missingSemicolonSyntaxError = "Missing semicolon";
 
-	inline const std::string stringConversionErrorCode = "String conversion error code ";
+	inline constexpr std::string_view stringConversionErrorCode = "String conversion error code ";
 
-	inline const std::string badRequest = "Bad request from client";
+	inline constexpr std::string_view badRequest = "Bad request from client";
 }
 
 namespace json_settings_values
 {
-	inline const std::string initializationLoadTypeValue = "initialization";
-	inline const std::string dynamicLoadTypeValue = "dynamic";
+	inline constexpr std::string_view initializationLoadTypeValue = "initialization";
+	inline constexpr std::string_view dynamicLoadTypeValue = "dynamic";
 }
 
 namespace web_framework_assets

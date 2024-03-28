@@ -10,7 +10,7 @@ namespace framework
 		class WEB_FRAMEWORK_API BaseWebFrameworkException : public std::runtime_error
 		{
 		public:
-			BaseWebFrameworkException(const std::string& errorMessage);
+			BaseWebFrameworkException(std::string_view errorMessage);
 
 			virtual ~BaseWebFrameworkException() = default;
 		};

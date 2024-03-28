@@ -308,9 +308,9 @@ namespace framework
 
 		stream >> data;
 
-		if (data.find("HTTP") == string::npos)
+		if (stream.eof() || stream.bad())
 		{
-			THROW_WEB_EXCEPTION;
+			return stream;
 		}
 
 		request.parser = make_unique<web::HTTPParser>(data);

@@ -6,12 +6,12 @@
 
 void startTests(int argc, char** argv)
 {
-	std::async(std::launch::async, [argc, argv]() mutable
+	std::thread([argc, argv]() mutable
 		{
 			testing::InitGoogleTest(&argc, argv);
 
 			exit(RUN_ALL_TESTS());
-		});
+		}).detach();
 }
 
 int main(int argc, char** argv) try

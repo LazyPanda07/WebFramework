@@ -6,7 +6,7 @@ namespace framework
 {
 	namespace exceptions
 	{
-		DynamicPagesSyntaxException::DynamicPagesSyntaxException(const string& syntaxError) :
+		DynamicPagesSyntaxException::DynamicPagesSyntaxException(string_view syntaxError) :
 			BaseWebFrameworkException(syntaxError)
 		{
 

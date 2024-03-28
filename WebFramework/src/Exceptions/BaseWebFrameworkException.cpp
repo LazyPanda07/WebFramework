@@ -6,8 +6,8 @@ namespace framework
 {
 	namespace exceptions
 	{
-		BaseWebFrameworkException::BaseWebFrameworkException(const string& errorMessage) :
-			runtime_error(errorMessage)
+		BaseWebFrameworkException::BaseWebFrameworkException(string_view errorMessage) :
+			runtime_error(string(errorMessage.data(), errorMessage.size()))
 		{
 
 		}

@@ -6,8 +6,8 @@ namespace framework
 {
 	namespace exceptions
 	{
-		CantLoadSourceException::CantLoadSourceException(const string& source) :
-			BaseWebFrameworkException(::exceptions::cantLoadSource + source + ". " + ::exceptions::missingOtherDLLs)
+		CantLoadSourceException::CantLoadSourceException(string_view source) :
+			BaseWebFrameworkException(format("{}{}. ", ::exceptions::cantLoadSource, source, ::exceptions::missingOtherDLLs))
 		{
 
 		}

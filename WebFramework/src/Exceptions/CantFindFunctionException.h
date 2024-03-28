@@ -12,7 +12,7 @@ namespace framework
 		class WEB_FRAMEWORK_API CantFindFunctionException : public BaseExecutorException
 		{
 		public:
-			CantFindFunctionException(const std::string& createFunctionName);
+			CantFindFunctionException(std::string_view createFunctionName);
 
 			~CantFindFunctionException() = default;
 		};

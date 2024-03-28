@@ -6,8 +6,8 @@ namespace framework
 {
 	namespace exceptions
 	{
-		CantFindFunctionException::CantFindFunctionException(const string& createFunctionName) :
-			BaseExecutorException(::exceptions::cantFindFunction + createFunctionName + " function" + ". " + ::exceptions::useMacroToMakeCreationFunction)
+		CantFindFunctionException::CantFindFunctionException(string_view createFunctionName) :
+			BaseExecutorException(format("{} {} function. {}", ::exceptions::cantFindFunction, createFunctionName, ::exceptions::useMacroToMakeCreationFunction))
 		{
 
 		}

@@ -6,8 +6,8 @@ namespace framework
 {
 	namespace exceptions
 	{
-		MissingLoadTypeException::MissingLoadTypeException(const string& className) :
-			BaseExecutorException(::exceptions::missingLoadType + className)
+		MissingLoadTypeException::MissingLoadTypeException(string_view className) :
+			BaseExecutorException(format("{}{}", ::exceptions::missingLoadType, className))
 		{
 
 		}

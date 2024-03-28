@@ -12,7 +12,7 @@ namespace framework
 		class WEB_FRAMEWORK_API DynamicPagesSyntaxException : public BaseWebFrameworkException
 		{
 		public:
-			DynamicPagesSyntaxException(const std::string& syntaxError);
+			DynamicPagesSyntaxException(std::string_view syntaxError);
 
 			~DynamicPagesSyntaxException() = default;
 		};

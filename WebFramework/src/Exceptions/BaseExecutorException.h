@@ -12,7 +12,7 @@ namespace framework
 		class WEB_FRAMEWORK_API BaseExecutorException : public BaseWebFrameworkException
 		{
 		public:
-			BaseExecutorException(const std::string& message);
+			BaseExecutorException(std::string_view message);
 
 			virtual ~BaseExecutorException() = default;
 		};

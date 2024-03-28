@@ -6,7 +6,7 @@ namespace framework
 {
 	namespace exceptions
 	{
-		BaseExecutorException::BaseExecutorException(const string& message) :
+		BaseExecutorException::BaseExecutorException(string_view message) :
 			BaseWebFrameworkException(message)
 		{
 

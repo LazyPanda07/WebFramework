@@ -12,7 +12,7 @@ namespace framework
 		class WEB_FRAMEWORK_API MissingLoadTypeException : public BaseExecutorException
 		{
 		public:
-			MissingLoadTypeException(const std::string& className);
+			MissingLoadTypeException(std::string_view className);
 
 			~MissingLoadTypeException() = default;
 		};

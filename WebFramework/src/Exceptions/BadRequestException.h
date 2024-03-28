@@ -12,7 +12,7 @@ namespace framework
 		class WEB_FRAMEWORK_API BadRequestException : public BaseExecutorException
 		{
 		public:
-			BadRequestException(const std::string& additionalInformation = "");
+			BadRequestException(std::string_view additionalInformation = "");
 
 			virtual ~BadRequestException() = default;
 		};

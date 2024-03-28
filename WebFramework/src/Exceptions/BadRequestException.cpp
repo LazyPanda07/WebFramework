@@ -6,8 +6,8 @@ namespace framework
 {
 	namespace exceptions
 	{
-		BadRequestException::BadRequestException(const string& additionalInformation) :
-			BaseExecutorException(::exceptions::badRequest + (additionalInformation.empty() ? "" : ". " + additionalInformation))
+		BadRequestException::BadRequestException(string_view additionalInformation) :
+			BaseExecutorException(format("{}. {}", ::exceptions::badRequest, additionalInformation.empty() ? "" : additionalInformation))
 		{
 
 		}

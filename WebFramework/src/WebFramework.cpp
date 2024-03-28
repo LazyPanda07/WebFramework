@@ -12,12 +12,14 @@ namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
 	{
-		return "2.6.0"s;
+		string version = "2.6.0";
+
+		return version;
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
 		configurationJSONFile(configurationJSONFile),
-		basePath(configurationJSONFile)
+		basePath(filesystem::absolute(configurationJSONFile))
 	{
 		if (!filesystem::exists(configurationJSONFile))
 		{
@@ -25,6 +27,7 @@ namespace framework
 		}
 
 		currentConfiguration.setJSONData((ifstream(configurationJSONFile)));
+		
 		basePath.remove_filename();
 
 		const json::utility::jsonObject& webServerSettings = currentConfiguration.getObject(json_settings::webServerObject);
@@ -57,17 +60,20 @@ namespace framework
 
 			try
 			{
-				const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
-
 				if (loggingSettings.getBool(json_settings::usingLoggingKey))
 				{
+					string logsPath;
+					const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
+
+					loggingSettings.tryGetString(json_settings::logsPathKey, logsPath);
+
 					try
 					{
-						Log::configure(dateFormat, basePath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
+						Log::configure(dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
-						Log::configure(dateFormat, basePath);
+						Log::configure(dateFormat, logsPath);
 					}
 				}
 			}
