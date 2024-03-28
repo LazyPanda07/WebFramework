@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "gtest/gtest.h"
 
 #include "IOSocketStream.h"
@@ -10,7 +12,7 @@ TEST(HelloExecutor, Get)
 {
 	streams::IOSocketStream stream(std::make_unique<web::HTTPNetwork>("127.0.0.1", "8080"));
 
-	for (size_t i = 0; i < 1; i++)
+	for (size_t i = 0; i < 1000; i++)
 	{
 		std::string request = web::HTTPBuilder().getRequest().build();
 		std::string response;
@@ -22,6 +24,8 @@ TEST(HelloExecutor, Get)
 		stream >> response;
 
 		parser.setJSONData(web::HTTPParser(response).getBody());
+
+		std::cout << "JSON data: " << web::HTTPParser(response).getBody() << std::endl;
 
 		ASSERT_EQ(parser.getString("message"), "Hello, World!");
 		ASSERT_TRUE(parser.tryGetInt("randomNumber", value));
