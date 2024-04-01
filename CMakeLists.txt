@@ -34,6 +34,8 @@ if (UNIX)
 
 	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else ()
+	add_definitions(-DNOMINMAX)
+
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)

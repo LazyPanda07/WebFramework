@@ -15,22 +15,14 @@ namespace framework
 
 	}
 
-	WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(const string& ip, const string& port) :
-		HTTPSNetwork
-		(
-			ip,
-			port
-		)
+	WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(string_view ip, string_view port) :
+		HTTPSNetwork(ip, port)
 	{
 
 	}
 
 	WebFrameworkHTTPSNetwork::WebFrameworkHTTPSNetwork(const utility::BaseConnectionData& data) :
-		HTTPSNetwork
-		(
-			data.ip,
-			data.port
-		)
+		HTTPSNetwork(data.ip, data.port)
 	{
 
 	}

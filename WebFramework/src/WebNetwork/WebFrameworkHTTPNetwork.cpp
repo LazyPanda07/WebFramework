@@ -10,7 +10,7 @@ namespace framework
 
 	}
 
-	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(const string& ip, const string& port) :
+	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(string_view ip, string_view port) :
 		HTTPNetwork(ip, port)
 	{
 
