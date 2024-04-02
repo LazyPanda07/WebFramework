@@ -24,6 +24,8 @@ if (UNIX)
 
 	set(CMAKE_CXX_FLAGS -rdynamic)
 else ()
+	add_definitions(-DNOMINMAX)
+
 	set(LIBS ${LIBS} crypt32)
 endif (UNIX)
 
