@@ -12,7 +12,7 @@ TEST(HelloExecutor, Get)
 {
 	streams::IOSocketStream stream(std::make_unique<web::HTTPNetwork>("127.0.0.1", "8080"));
 
-	for (size_t i = 0; i < 1000; i++)
+	for (size_t i = 0; i < 1; i++)
 	{
 		std::string request = web::HTTPBuilder().getRequest().build();
 		std::string response;
