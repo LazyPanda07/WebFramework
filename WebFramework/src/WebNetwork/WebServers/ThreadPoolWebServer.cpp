@@ -165,6 +165,50 @@ namespace framework
 		}
 	}
 
+	void ThreadPoolWebServer::mainLoop()
+	{
+		while (isRunning)
+		{
+			unique_lock<mutex> lock(clientsMutex);
+
+			size_t size = clients.size();
+			size_t swaps = 0;
+
+			for (size_t i = 0; i < size;)
+			{
+				Client& client = clients[i++];
+
+				bool finished = client.clientServe
+				(
+					sessionsManager,
+					*this,
+					*resources,
+					*resources,
+					databaseManager,
+					executorsManager,
+					*resources,
+					threadPool
+				);
+
+				if (finished)
+				{
+					Client& lastClient = clients[size - 1];
+
+					if (&client != &lastClient)
+					{
+						swap(client, lastClient);
+
+						swaps++;
+						i--;
+						size--;
+					}
+				}
+			}
+
+			clients.erase(clients.end() - swaps, clients.end());
+		}
+	}
+
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
 	{
 		SSL* ssl = nullptr;
@@ -192,49 +236,10 @@ namespace framework
 				return;
 			}
 		}
-		
+
+		unique_lock<mutex> lock(clientsMutex);
+
 		clients.emplace_back(ssl, context, clientSocket, address, move(cleanup));
-	}
-
-	void ThreadPoolWebServer::serve(std::string ip, SOCKET clientSocket, sockaddr address)
-	{
-		BaseWebServer::serve(ip, clientSocket, address);
-
-		size_t size = clients.size();
-		size_t swaps = 0;
-
-		for (size_t i = 0; i < size;)
-		{
-			Client& client = clients[i++];
-
-			bool finished = client.clientServe
-			(
-				sessionsManager,
-				*this,
-				*resources,
-				*resources,
-				databaseManager,
-				executorsManager,
-				*resources,
-				threadPool
-			);
-
-			if (finished)
-			{
-				Client& lastClient = clients[size - 1];
-
-				if (&client != &lastClient)
-				{
-					swap(client, lastClient);
-					
-					swaps++;
-					i--;
-					size--;
-				}
-			}
-		}
-
-		// clients.erase(clients.begin() + clients.size() - swaps, clients.end());
 	}
 
 	ThreadPoolWebServer::ThreadPoolWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
@@ -261,6 +266,15 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-		
+
+	}
+
+	void ThreadPoolWebServer::start(bool wait, const function<void()>& onStartServer)
+	{
+		isRunning = true;
+
+		thread(&ThreadPoolWebServer::mainLoop, this).detach();
+
+		BaseWebServer::start(wait, onStartServer);
 	}
 }

@@ -51,14 +51,18 @@ namespace framework
 	private:
 		threading::ThreadPool threadPool;
 		std::vector<Client> clients;
+		std::mutex clientsMutex;
+
+	private:
+		void mainLoop();
 
 	private:
 		void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& address, std::function<void()>&& cleanup) override;
 
-		void serve(std::string ip, SOCKET clientSocket, sockaddr address) override;
-
 	public:
 		ThreadPoolWebServer(const json::JSONParser& configuration, const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, uint64_t cachingSize, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount);
+
+		void start(bool wait = false, const std::function<void()>& onStartServer = []() {}) override;
 
 		~ThreadPoolWebServer() = default;
 	};
