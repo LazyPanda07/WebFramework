@@ -159,7 +159,10 @@ namespace framework
 
 	ThreadPoolWebServer::Client::~Client()
 	{
-		cleanup();
+		if (static_cast<bool>(cleanup))
+		{
+			cleanup();
+		}
 	}
 
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
