@@ -34,3 +34,9 @@ catch (const web::exceptions::WebException& e)
 
 	return -1;
 }
+catch (const std::exception& e)
+{
+	std::cout << e.what() << std::endl;
+
+	return -2;
+}
