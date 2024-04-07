@@ -159,7 +159,7 @@ namespace framework
 
 	ThreadPoolWebServer::Client::~Client()
 	{
-		if (static_cast<bool>(cleanup))
+		if (cleanup)
 		{
 			cleanup();
 		}
@@ -202,7 +202,7 @@ namespace framework
 
 		size_t size = clients.size();
 		size_t swaps = 0;
-		
+
 		for (size_t i = 0; i < size;)
 		{
 			Client& client = clients[i++];
@@ -234,7 +234,7 @@ namespace framework
 			}
 		}
 
-		clients.erase(clients.begin() + clients.size() - swaps, clients.end());
+		// clients.erase(clients.begin() + clients.size() - swaps, clients.end());
 	}
 
 	ThreadPoolWebServer::ThreadPoolWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
