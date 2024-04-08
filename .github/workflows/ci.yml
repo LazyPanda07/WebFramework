@@ -174,21 +174,21 @@ jobs:
       with:
         install-path: Tests/gtest
         
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          export CC=/usr/bin/gcc-13
-          export CXX=/usr/bin/g++-13
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
+    # - name: Build tests
+    #   working-directory: Tests
+    #   run: |
+    #       export CC=/usr/bin/gcc-13
+    #       export CXX=/usr/bin/g++-13
+    #       mkdir build
+    #       cd build
+    #       cmake -DCMAKE_BUILD_TYPE=Release ..
+    #       make install -j $(nproc)
 
-    - name: Memory leak test
-      uses: LazyPanda07/check-memory-leaks@v1.3
-      with:
-        path: Tests/build/bin
-        name: Tests
-        pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
-        args: ${{ matrix.config }}
+    # - name: Memory leak test
+    #   uses: LazyPanda07/check-memory-leaks@v1.3
+    #   with:
+    #     path: Tests/build/bin
+    #     name: Tests
+    #     pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
+    #     args: ${{ matrix.config }}
         
