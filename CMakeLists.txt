@@ -155,5 +155,5 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 endif ()
 
 if (${HTTPS_SUPPORT})
-	install(DIRECTORY WebFramework/certificates ${CMAKE_INSTALL_PREFIX})
+	install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif ()
