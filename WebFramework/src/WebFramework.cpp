@@ -17,6 +17,11 @@ namespace framework
 		return version;
 	}
 
+	bool WebFramework::getUseHTTPS()
+	{
+		return utility::HTTPSSingleton::get().getUseHTTPS();
+	}
+
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
 		configurationJSONFile(configurationJSONFile),
 		basePath(filesystem::absolute(configurationJSONFile))
@@ -79,7 +84,7 @@ namespace framework
 			}
 			catch (const json::exceptions::BaseJSONException& e)
 			{
-				cout << e.what() << endl;
+				cerr << e.what() << endl;
 
 				return;
 			}

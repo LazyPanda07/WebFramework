@@ -17,6 +17,12 @@ namespace framework
 		/// @return Current WebFramework version
 		static std::string getWebFrameworkVersion();
 
+		/**
+		 * @brief Is server use HTTPS
+		 * @return 
+		 */
+		static bool getUseHTTPS();
+
 	private:
 		smartPointer<BaseWebServer> server;
 		json::JSONParser currentConfiguration;

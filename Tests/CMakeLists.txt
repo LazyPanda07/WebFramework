@@ -35,11 +35,13 @@ add_executable(
 	${PROJECT_NAME}
 	main.cpp
 	HelloExecutor.cpp
+	utility.cpp
 	cases/GetRequest.cpp
- )
+)
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
+	${PROJECT_DIR}/
 	../WebFramework/src/
 	../BaseTCPServer/src/
 	../Networks/src/
@@ -80,3 +82,5 @@ endif (UNIX)
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
 install(DIRECTORY configs/ DESTINATION ${CMAKE_BINARY_DIR}/bin)
+
+install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_PATH}/certificates DESTINATION ${CMAKE_BINARY_DIR}/bin)
