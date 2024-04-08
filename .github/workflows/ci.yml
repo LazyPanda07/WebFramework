@@ -139,7 +139,7 @@ jobs:
           export CXX=/usr/bin/g++-13
           mkdir build
           cd build
-          cmake ..
+          cmake -DCMAKE_BUILD_TYPE=Release ..
           make install -j $(nproc)
 
     - name: Tests
@@ -181,7 +181,7 @@ jobs:
           export CXX=/usr/bin/g++-13
           mkdir build
           cd build
-          cmake ..
+          cmake -DCMAKE_BUILD_TYPE=Release ..
           make install -j $(nproc)
 
     - name: Memory leak test
