@@ -10,9 +10,16 @@ void startTests(int argc, char** argv)
 {
 	std::thread([argc, argv]() mutable
 		{
-			testing::InitGoogleTest(&argc, argv);
+			try
+			{
+				testing::InitGoogleTest(&argc, argv);
 
-			exit(RUN_ALL_TESTS());
+				exit(RUN_ALL_TESTS());
+			}
+			catch (const std::out_of_range&)
+			{
+				exit(-2);
+			}
 		}).detach();
 }
 
@@ -32,5 +39,9 @@ catch (const web::exceptions::WebException& e)
 {
 	std::cout << e.what() << ' ' << e.getFile() << ' ' << e.getLine() << ' ' << e.getErrorCode() << std::endl;
 
-	return -1;
+	exit(-1);
+}
+catch (const std::out_of_range&)
+{
+	exit(-5);
 }

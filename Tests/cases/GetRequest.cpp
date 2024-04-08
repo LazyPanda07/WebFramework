@@ -10,22 +10,29 @@
 
 TEST(HelloExecutor, Get)
 {
-	streams::IOSocketStream stream(std::make_unique<web::HTTPNetwork>("127.0.0.1", "8080"));
-
-	for (size_t i = 0; i < 1000; i++)
+	try
 	{
-		std::string request = web::HTTPBuilder().getRequest().build();
-		std::string response;
-		json::JSONParser parser;
-		int64_t value;
+		streams::IOSocketStream stream(std::make_unique<web::HTTPNetwork>("127.0.0.1", "8080"));
 
-		stream << request;
+		for (size_t i = 0; i < 1000; i++)
+		{
+			std::string request = web::HTTPBuilder().getRequest().build();
+			std::string response;
+			json::JSONParser parser;
+			int64_t value;
 
-		stream >> response;
+			stream << request;
 
-		parser.setJSONData(web::HTTPParser(response).getBody());
+			stream >> response;
 
-		ASSERT_EQ(parser.getString("message"), "Hello, World!");
-		ASSERT_TRUE(parser.tryGetInt("randomNumber", value));
+			parser.setJSONData(web::HTTPParser(response).getBody());
+
+			ASSERT_EQ(parser.getString("message"), "Hello, World!");
+			ASSERT_TRUE(parser.tryGetInt("randomNumber", value));
+		}
+	}
+	catch (const std::out_of_range&)
+	{
+		exit(-4);
 	}
 }
