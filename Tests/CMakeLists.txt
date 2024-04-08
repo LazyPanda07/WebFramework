@@ -41,7 +41,7 @@ add_executable(
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	${PROJECT_DIR}/
+	${CMAKE_SOURCE_DIR}/
 	../WebFramework/src/
 	../BaseTCPServer/src/
 	../Networks/src/
