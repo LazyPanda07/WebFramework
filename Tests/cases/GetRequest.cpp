@@ -26,8 +26,6 @@ TEST(HelloExecutor, requestType) \
  \
 		parser.setJSONData(web::HTTPParser(response).getBody()); \
  \
-		std::cout << web::HTTPParser(response).getBody() << std::endl; \
- \
 		ASSERT_EQ(parser.getString("message"), "Hello, World!"); \
 		ASSERT_TRUE(parser.tryGetInt("randomNumber", value)); \
 	} \
