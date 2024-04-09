@@ -34,14 +34,14 @@ project(Tests)
 add_executable(
 	${PROJECT_NAME}
 	main.cpp
-	HelloExecutor.cpp
-	utility.cpp
+	utilities/utilities.cpp
+	executors/HelloExecutor.cpp
 	cases/GetRequest.cpp
 )
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	${CMAKE_SOURCE_DIR}/
+	utilities/
 	../WebFramework/src/
 	../BaseTCPServer/src/
 	../Networks/src/

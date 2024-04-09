@@ -8,6 +8,8 @@
 
 #include "settings.h"
 
+bool useHTTPS;
+
 void startTests(int argc, char** argv)
 {
 	std::thread([argc, argv]() mutable
@@ -17,8 +19,6 @@ void startTests(int argc, char** argv)
 			exit(RUN_ALL_TESTS());
 		}).detach();
 }
-
-bool useHTTPS;
 
 int main(int argc, char** argv) try
 {

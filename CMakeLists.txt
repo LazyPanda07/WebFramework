@@ -23,7 +23,7 @@ set(
 	crypto
 )
 option(SHARED_WEB_FRAMEWORK "" OFF)
-option(HTTPS_SUPPORT "" OFF)
+option(USE_HTTPS "" OFF)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
@@ -154,6 +154,6 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 	install(DIRECTORY WebFramework/vendor/sqlite3/include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/vendor/sqlite3/)
 endif ()
 
-if (${HTTPS_SUPPORT})
+if (${USE_HTTPS})
 	install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif ()
