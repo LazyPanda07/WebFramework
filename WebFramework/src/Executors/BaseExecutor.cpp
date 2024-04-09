@@ -43,4 +43,9 @@ namespace framework
 	{
 		throw exceptions::NotImplementedException();
 	}
+
+	void BaseExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	{
+		throw exceptions::NotImplementedException();
+	}
 }

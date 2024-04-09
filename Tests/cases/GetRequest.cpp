@@ -26,6 +26,8 @@ TEST(HelloExecutor, requestType) \
  \
 		parser.setJSONData(web::HTTPParser(response).getBody()); \
  \
+		std::cout << web::HTTPParser(response).getBody() << std::endl; \
+ \
 		ASSERT_EQ(parser.getString("message"), "Hello, World!"); \
 		ASSERT_TRUE(parser.tryGetInt("randomNumber", value)); \
 	} \
@@ -63,6 +65,10 @@ std::string constructRequest(std::string_view requestType)
 	{
 		result.traceRequest();
 	}
+	else if (requestType == "PATCH")
+	{
+		result.patchRequest();
+	}
 
 	return result.build();
 }
@@ -88,3 +94,5 @@ BASIC_TEST(DELETE)
 BASIC_TEST(OPTIONS)
 
 BASIC_TEST(TRACE)
+
+BASIC_TEST(PATCH)

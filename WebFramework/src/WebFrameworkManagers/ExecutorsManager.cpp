@@ -61,7 +61,8 @@ namespace framework
 			{ "PUT", &BaseExecutor::doPut },
 			{ "DELETE", &BaseExecutor::doDelete },
 			{ "OPTIONS", &BaseExecutor::doOptions },
-			{ "TRACE", &BaseExecutor::doTrace }
+			{ "TRACE", &BaseExecutor::doTrace },
+			{ "PATCH", &BaseExecutor::doPatch }
 		};
 
 		try

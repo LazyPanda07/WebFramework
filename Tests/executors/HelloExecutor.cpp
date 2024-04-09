@@ -42,4 +42,9 @@ void HelloExecutor::doTrace(framework::HTTPRequest& request, framework::HTTPResp
 	this->doGet(request, response);
 }
 
+void HelloExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
+{
+	this->doGet(request, response);
+}
+
 DECLARE_EXECUTOR(HelloExecutor)

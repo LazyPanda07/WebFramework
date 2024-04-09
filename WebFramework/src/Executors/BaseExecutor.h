@@ -42,58 +42,65 @@ namespace framework
 		/// <summary>
 		/// Process POST request
 		/// </summary>
-		/// <param name="request">special class for requests</param>
-		/// <param name="response">special class for responses</param>
+		/// <param name="request">Request controller</param>
+		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doPost(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process GET request
 		/// </summary>
-		/// <param name="request">special class for requests</param>
-		/// <param name="response">special class for responses</param>
+		/// <param name="request">Request controller</param>
+		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doGet(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process HEAD request
 		/// </summary>
-		/// <param name="request">special class for requests</param>
-		/// <param name="response">special class for responses</param>
+		/// <param name="request">Request controller</param>
+		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doHead(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process PUT request
 		/// </summary>
-		/// <param name="request">special class for requests</param>
-		/// <param name="response">special class for responses</param>
+		/// <param name="request">Request controller</param>
+		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doPut(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process DELETE request
 		/// </summary>
-		/// <param name="request">special class for requests</param>
-		/// <param name="response">special class for responses</param>
+		/// <param name="request">Request controller</param>
+		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doDelete(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process OPTIONS request
 		/// </summary>
-		/// <param name="request">special class for requests</param>
-		/// <param name="response">special class for responses</param>
+		/// <param name="request">Request controller</param>
+		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doOptions(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// Process TRACE request
 		/// </summary>
-		/// <param name="request">special class for requests</param>
-		/// <param name="response">special class for responses</param>
+		/// <param name="request">Request controller</param>
+		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doTrace(HTTPRequest& request, HTTPResponse& response);
+
+		/**
+		 * @brief Process PATCH request
+		 * @param request Request controller
+		 * @param response Response controller
+		 */
+		virtual void doPatch(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>
