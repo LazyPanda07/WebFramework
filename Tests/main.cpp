@@ -18,6 +18,8 @@ void startTests(int argc, char** argv)
 		}).detach();
 }
 
+bool useHTTPS;
+
 int main(int argc, char** argv) try
 {
 	std::mt19937 random(time(nullptr));
