@@ -4,8 +4,6 @@
 
 #include "settings.h"
 
-bool useHTTPS;
-
 namespace utility
 {
 	streams::IOSocketStream createSocketStream()
