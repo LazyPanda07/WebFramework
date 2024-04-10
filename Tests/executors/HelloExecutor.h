@@ -18,4 +18,6 @@ public:
 	void doTrace(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
 	void doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+
+	void doConnect(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 };

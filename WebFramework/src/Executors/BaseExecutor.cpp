@@ -86,6 +86,11 @@ namespace framework
 
 		response.addBody(request.getParser().getRawData());
 	}
+
+	void BaseExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	{
+		throw exceptions::NotImplementedException();
+	}
 }
 
 inline void isImplemented

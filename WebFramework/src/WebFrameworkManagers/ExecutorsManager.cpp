@@ -60,9 +60,10 @@ namespace framework
 			{ "HEAD", &BaseExecutor::doHead },
 			{ "PUT", &BaseExecutor::doPut },
 			{ "DELETE", &BaseExecutor::doDelete },
-			{ "OPTIONS", &BaseExecutor::doOptions },
+			{ "PATCH", &BaseExecutor::doPatch },
+			{ "OPTIONS",& BaseExecutor::doOptions },
 			{ "TRACE", &BaseExecutor::doTrace },
-			{ "PATCH", &BaseExecutor::doPatch }
+			{ "CONNECT", &BaseExecutor::doConnect }
 		};
 
 		try

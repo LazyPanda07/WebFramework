@@ -99,7 +99,14 @@ namespace framework
 		/// </summary>
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
-		void doTrace(HTTPRequest& request, HTTPResponse& response);
+		virtual void doTrace(HTTPRequest& request, HTTPResponse& response);
+
+		/**
+		 * @brief Process CONNECT request
+		 * @param request Request controller
+		 * @param response Response controller
+		 */
+		virtual void doConnect(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>
