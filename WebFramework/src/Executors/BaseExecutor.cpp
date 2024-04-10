@@ -2,17 +2,17 @@
 
 using namespace std;
 
+static void isImplemented
+(
+	vector<string>& result,
+	framework::HTTPRequest& request, 
+	const string& methodName, 
+	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
+	framework::BaseExecutor& executor
+);
+
 namespace framework
 {
-	static void isImplemented
-	(
-		vector<string>& result,
-		HTTPRequest& request, 
-		const string& methodName, 
-		void(BaseExecutor::*method)(HTTPRequest&, HTTPResponse&), 
-		BaseExecutor& executor
-	);
-
 	void BaseExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
 
@@ -78,30 +78,31 @@ namespace framework
 	{
 		throw exceptions::NotImplementedException();
 	}
+}
 
-	void isImplemented
-	(
-		vector<string>& result,
-		HTTPRequest& request, 
-		const string& methodName, 
-		void(BaseExecutor::*method)(HTTPRequest&, HTTPResponse&), 
-		BaseExecutor& executor
-	)
-		HTTPResponse response;
+inline void isImplemented
+(
+	vector<string>& result,
+	framework::HTTPRequest& request,
+	const string& methodName, 
+	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
+	framework::BaseExecutor& executor
+)
+{
+	framework::HTTPResponse response;
 
-		try
-		{
-			(executor.*method)(request, response);
+	try
+	{
+		(executor.*method)(request, response);
 
-			result.push_back(methodName);
-		}
-		catch (const exceptions::NotImplementedException&)
-		{
+		result.push_back(methodName);
+	}
+	catch (const exceptions::framework::NotImplementedException&)
+	{
 
-		}
-		catch (...)
-		{
-			result.push_back(methodName);
-		}
+	}
+	catch (...)
+	{
+		result.push_back(methodName);
 	}
 }
