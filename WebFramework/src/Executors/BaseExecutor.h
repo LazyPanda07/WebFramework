@@ -79,6 +79,13 @@ namespace framework
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
 		virtual void doDelete(HTTPRequest& request, HTTPResponse& response);
 
+		/**
+		 * @brief Process PATCH request
+		 * @param request Request controller
+		 * @param response Response controller
+		 */
+		virtual void doPatch(HTTPRequest& request, HTTPResponse& response);
+
 		/// <summary>
 		/// Process OPTIONS request
 		/// </summary>
@@ -92,15 +99,7 @@ namespace framework
 		/// </summary>
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
-		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doTrace(HTTPRequest& request, HTTPResponse& response);
-
-		/**
-		 * @brief Process PATCH request
-		 * @param request Request controller
-		 * @param response Response controller
-		 */
-		virtual void doPatch(HTTPRequest& request, HTTPResponse& response);
+		void doTrace(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>
