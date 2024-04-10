@@ -72,38 +72,38 @@ namespace framework
 			other.stream
 		)
 	{
-		parser = utility::make_smartPointer<web::HTTPParser>(*other.parser);
+		parser = other.parser;
 		routeParameters = other.routeParameters;
 	}
 
 	const string& HTTPRequest::getRawParameters() const
 	{
-		return parser->getParameters();
+		return parser.getParameters();
 	}
 
 	const string& HTTPRequest::getMethod() const
 	{
-		return parser->getMethod();
+		return parser.getMethod();
 	}
 
 	const unordered_map<string, string>& HTTPRequest::getKeyValueParameters() const
 	{
-		return parser->getKeyValueParameters();
+		return parser.getKeyValueParameters();
 	}
 
 	string HTTPRequest::getHTTPVersion() const
 	{
-		return "HTTP/" + to_string(parser->getHTTPVersion());
+		return "HTTP/" + to_string(parser.getHTTPVersion());
 	}
 
 	const web::HeadersMap& HTTPRequest::getHeaders() const
 	{
-		return parser->getHeaders();
+		return parser.getHeaders();
 	}
 
 	const string& HTTPRequest::getBody() const
 	{
-		return parser->getBody();
+		return parser.getBody();
 	}
 
 	void HTTPRequest::setAttribute(const string& name, const string& value)
@@ -132,7 +132,7 @@ namespace framework
 
 		try
 		{
-			const string& cookies = parser->getHeaders().at("Cookie");
+			const string& cookies = parser.getHeaders().at("Cookie");
 			size_t offset = 0;
 
 			while (true)
@@ -267,7 +267,12 @@ namespace framework
 
 	const json::JSONParser& HTTPRequest::getJSON() const
 	{
-		return parser->getJSON();
+		return parser.getJSON();
+	}
+
+	const web::HTTPParser& HTTPRequest::getParser() const
+	{
+		return parser;
 	}
 
 	string HTTPRequest::getClientIpV4() const
@@ -313,14 +318,14 @@ namespace framework
 			return stream;
 		}
 
-		request.parser = make_unique<web::HTTPParser>(data);
+		request.parser.parse(data);
 
 		return stream;
 	}
 
 	ostream& operator << (ostream& stream, const HTTPRequest& request)
 	{
-		const web::HTTPParser& parser = *request.parser.get();
+		const web::HTTPParser& parser = request.parser;
 		const auto& headers = parser.getHeaders();
 
 		stream << parser.getMethod() << " " << parser.getParameters() << " " << parser.getHTTPVersion() << endl;

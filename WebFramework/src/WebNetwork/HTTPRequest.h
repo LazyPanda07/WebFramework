@@ -23,7 +23,7 @@ namespace framework
 		sqlite::SQLiteManager& database;
 		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
 		const sockaddr& clientAddr;
-		smartPointer<web::HTTPParser> parser;
+		web::HTTPParser parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
 
@@ -176,6 +176,12 @@ namespace framework
 		/// </summary>
 		/// <returns>JSONParser</returns>
 		const json::JSONParser& getJSON() const;
+
+		/**
+		 * @brief HTTP parser getter
+		 * @return 
+		 */
+		const web::HTTPParser& getParser() const;
 
 		/// <summary>
 		/// Get client's address

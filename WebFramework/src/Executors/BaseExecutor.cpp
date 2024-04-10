@@ -50,6 +50,10 @@ namespace framework
 
 	void BaseExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
+#ifdef NDEBUG
+		throw exceptions::NotImplementedException();
+#endif
+
 		vector<string> methods = { "OPTIONS" };
 		string allowHeader;
 
@@ -76,7 +80,11 @@ namespace framework
 
 	void BaseExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
+#ifdef NDEBUG
 		throw exceptions::NotImplementedException();
+#endif
+
+		response.addBody(request.getParser().getRawData());
 	}
 }
 
