@@ -97,7 +97,7 @@ inline void isImplemented
 
 		result.push_back(methodName);
 	}
-	catch (const exceptions::framework::NotImplementedException&)
+	catch (const framework::exceptions::NotImplementedException&)
 	{
 
 	}
