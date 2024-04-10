@@ -7,8 +7,8 @@ static void isImplemented
 	vector<string>& result,
 	framework::HTTPRequest& request, 
 	const string& methodName, 
-	void(BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
-	BaseExecutor& executor
+	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
+	framework::BaseExecutor& executor
 );
 
 namespace framework
@@ -85,8 +85,8 @@ inline void isImplemented
 	vector<string>& result,
 	framework::HTTPRequest& request, 
 	const string& methodName, 
-	void(BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
-	BaseExecutor& executor
+	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
+	framework::BaseExecutor& executor
 )
 	framework::HTTPResponse response;
 
