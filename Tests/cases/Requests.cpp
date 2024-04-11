@@ -75,28 +75,6 @@ std::string constructRequest(std::string_view requestType)
 	return result.build();
 }
 
-BASIC_TEST(GET)
-
-BASIC_TEST(POST)
-
-BASIC_TEST(HEAD)
-
-BASIC_TEST(PUT)
-
-#define TEMP DELETE
-
-#undef DELETE
-
-BASIC_TEST(DELETE)
-
-#define DELETE TEMP
-
-#undef TEMP
-
-BASIC_TEST(PATCH)
-
-BASIC_TEST(CONNECT)
-
 TEST(HelloExecutor, OPTIONS)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
@@ -149,3 +127,25 @@ TEST(HelloExecutor, TRACE)
 #endif
 	}
 }
+
+BASIC_TEST(GET)
+
+BASIC_TEST(POST)
+
+BASIC_TEST(HEAD)
+
+BASIC_TEST(PUT)
+
+#define TEMP DELETE
+
+#undef DELETE
+
+BASIC_TEST(DELETE)
+
+#define DELETE TEMP
+
+#undef TEMP
+
+BASIC_TEST(PATCH)
+
+BASIC_TEST(CONNECT)

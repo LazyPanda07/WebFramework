@@ -139,7 +139,7 @@ jobs:
           export CXX=/usr/bin/g++-13
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
           make install -j $(nproc)
 
     - name: Tests
