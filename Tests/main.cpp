@@ -36,7 +36,7 @@ int main(int argc, char** argv) try
 }
 catch (const web::exceptions::WebException& e)
 {
-	std::cout << e.what() << ' ' << e.getFile() << ' ' << e.getLine() << ' ' << e.getErrorCode() << std::endl;
+	std::cout << e.what() << std::endl;
 
 	exit(-1);
 }
