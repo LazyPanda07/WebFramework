@@ -59,15 +59,15 @@ std::string constructRequest(std::string_view requestType)
 	{
 		result.patchRequest();
 	}
-	else if (request == "CONNECT")
+	else if (requestType == "CONNECT")
 	{
 		result.connectRequest();
 	}
-	else if (request == "OPTIONS")
+	else if (requestType == "OPTIONS")
 	{
 		result.optionsRequest();
 	}
-	else if (request == "TRACE")
+	else if (requestType == "TRACE")
 	{
 		result.traceRequest();
 	}
