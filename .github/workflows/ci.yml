@@ -146,8 +146,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          sudo ./Tests ${{ matrix.config }}
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} sudo ./Tests ${{ matrix.config }}
   
 
   memory-leak-tests:
