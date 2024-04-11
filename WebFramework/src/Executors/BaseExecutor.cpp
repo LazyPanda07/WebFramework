@@ -64,6 +64,7 @@ namespace framework
 		isImplemented(methods, request, "DELETE", &BaseExecutor::doDelete, *this);
 		isImplemented(methods, request, "PATCH", &BaseExecutor::doPatch, *this);
 		isImplemented(methods, request, "TRACE", &BaseExecutor::doTrace, *this);
+		isImplemented(methods, request, "CONNECT", &BaseExecutor::doConnect, *this);
 
 		for (size_t i = 0; i < methods.size(); i++) 
 		{

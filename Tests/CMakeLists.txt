@@ -36,7 +36,7 @@ add_executable(
 	main.cpp
 	utilities/utilities.cpp
 	executors/HelloExecutor.cpp
-	cases/GetRequest.cpp
+	cases/Requests.cpp
 )
 
 target_include_directories(

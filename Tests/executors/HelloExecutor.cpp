@@ -32,16 +32,6 @@ void HelloExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPRes
 	this->doGet(request, response);
 }
 
-void HelloExecutor::doOptions(framework::HTTPRequest& request, framework::HTTPResponse& response)
-{
-	this->doGet(request, response);
-}
-
-void HelloExecutor::doTrace(framework::HTTPRequest& request, framework::HTTPResponse& response)
-{
-	this->doGet(request, response);
-}
-
 void HelloExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	this->doGet(request, response);
