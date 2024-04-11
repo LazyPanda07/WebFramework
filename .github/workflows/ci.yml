@@ -114,7 +114,6 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        config: [config.json, threadPoolConfig.json, configHTTPS.json, threadPoolConfigHTTPS.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -146,7 +145,10 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests ${{ matrix.config }}
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests config.json
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests threadPoolConfig.json
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests configHTTPS.json
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests threadPoolConfigHTTPS.json
   
 
   memory-leak-tests:
