@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 
 #include "gtest/gtest.h"
 
@@ -7,6 +8,8 @@
 #include "JSONParser.h"
 
 #include "utilities.h"
+
+using namespace std::chrono_literals;
 
 #define BASIC_TEST(requestType) \
 TEST(HelloExecutor, requestType) \
@@ -29,6 +32,8 @@ TEST(HelloExecutor, requestType) \
 		ASSERT_EQ(parser.getString("message"), "Hello, World!"); \
 		ASSERT_TRUE(parser.tryGetInt("randomNumber", value)); \
 	} \
+ \
+	std::this_thread::sleep_for(1min); \
 }
 
 std::string constructRequest(std::string_view requestType)
@@ -96,6 +101,8 @@ TEST(HelloExecutor, OPTIONS)
 		ASSERT_EQ(parser.getHeaders().at("Allow"), "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT");
 #endif
 	}
+
+	std::this_thread::sleep_for(1min);
 }
 
 TEST(HelloExecutor, TRACE)
@@ -126,6 +133,8 @@ TEST(HelloExecutor, TRACE)
 		}
 #endif
 	}
+
+	std::this_thread::sleep_for(1min);
 }
 
 BASIC_TEST(GET)
