@@ -6,7 +6,7 @@
 
 namespace framework
 {
-	class WebFrameworkHTTPNetwork : public web::HTTPNetwork
+	class WEB_FRAMEWORK_API WebFrameworkHTTPNetwork : public web::HTTPNetwork
 	{
 	public:
 		WebFrameworkHTTPNetwork(SOCKET clientSocket);

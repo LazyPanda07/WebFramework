@@ -6,7 +6,7 @@
 
 namespace framework
 {
-	class WebFrameworkHTTPSNetwork : public web::HTTPSNetwork
+	class WEB_FRAMEWORK_API WebFrameworkHTTPSNetwork : public web::HTTPSNetwork
 	{
 	public:
 		WebFrameworkHTTPSNetwork(SOCKET clientSocket, SSL* ssl, SSL_CTX* context);
