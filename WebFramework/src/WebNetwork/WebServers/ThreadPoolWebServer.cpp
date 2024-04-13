@@ -159,10 +159,10 @@ namespace framework
 
 	ThreadPoolWebServer::Client::~Client()
 	{
-		/*if (cleanup)
+		if (cleanup)
 		{
 			cleanup();
-		}*/
+		}
 	}
 
 	void ThreadPoolWebServer::mainLoop()

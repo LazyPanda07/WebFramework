@@ -6,7 +6,7 @@
 
 namespace framework
 {
-	class WEB_FRAMEWORK_API WebFrameworkHTTPNetwork : public web::HTTPNetwork
+	class WebFrameworkHTTPNetwork : public web::HTTPNetwork
 	{
 	public:
 		WebFrameworkHTTPNetwork(SOCKET clientSocket);
@@ -15,6 +15,6 @@ namespace framework
 
 		WebFrameworkHTTPNetwork(const utility::BaseConnectionData& data);
 
-		~WebFrameworkHTTPNetwork();
+		~WebFrameworkHTTPNetwork() = default;
 	};
 }

@@ -1,7 +1,6 @@
 #include "utilities.h"
 
-#include "WebNetwork/WebFrameworkHTTPNetwork.h"
-#include "WebNetwork/WebFrameworkHTTPSNetwork.h"
+#include "HTTPSNetwork.h"
 
 #include "settings.h"
 
@@ -9,17 +8,11 @@ namespace utility
 {
 	streams::IOSocketStream createSocketStream()
 	{
-		web::Network* network = nullptr;
-
-		if (useHTTPS)
-		{
-			network = new framework::WebFrameworkHTTPSNetwork("127.0.0.1", "8080");
-		}
-		else
-		{
-			network = new framework::WebFrameworkHTTPNetwork("127.0.0.1", "8080");
-		}
-
-		return streams::IOSocketStream(std::unique_ptr<web::Network>(network));
+		return streams::IOSocketStream
+		(
+			useHTTPS ?
+			std::make_unique<web::HTTPSNetwork>("127.0.0.1", "8080") :
+			std::make_unique<web::HTTPNetwork>("127.0.0.1", "8080")
+		);
 	}
 }
