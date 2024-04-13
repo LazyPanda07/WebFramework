@@ -21,4 +21,9 @@ namespace framework
 	{
 	
 	}
+
+	WebFrameworkHTTPNetwork::~WebFrameworkHTTPNetwork()
+	{
+		clientSocket = -1;
+	}
 }

@@ -15,6 +15,6 @@ namespace framework
 
 		WebFrameworkHTTPNetwork(const utility::BaseConnectionData& data);
 
-		~WebFrameworkHTTPNetwork() = default;
+		~WebFrameworkHTTPNetwork();
 	};
 }
