@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(WEB_FRAMEWORK_LIBRARY_PATH ../WebFrameworkLibrary)
+set(WEB_FRAMEWORK_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(
 	LIBS 
 	WebFramework
@@ -21,11 +21,7 @@ set(
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
-
-	set(CMAKE_CXX_FLAGS -rdynamic)
 else ()
-	add_definitions(-DNOMINMAX)
-
 	set(LIBS ${LIBS} crypt32)
 endif (UNIX)
 
@@ -35,12 +31,10 @@ add_executable(
 	${PROJECT_NAME}
 	main.cpp
 	utilities/utilities.cpp
-	executors/HelloExecutor.cpp
 	cases/Requests.cpp
 )
 
-target_include_directories(
-	${PROJECT_NAME} PUBLIC
+include_directories(
 	utilities/
 	../WebFramework/src/
 	../BaseTCPServer/src/
@@ -54,7 +48,6 @@ target_include_directories(
 	../INIParser/src/
 	../Localization/src/
 	../Networks/SocketStreams/src/
-	../UtilityLibrary/src/
 	../Networks/vendor/OpenSSL/include/
 	../WebFramework/vendor/sqlite3/include/
 	gtest/include/
@@ -72,6 +65,8 @@ target_link_libraries(
 	gtest
 	gtest_main
 )
+
+add_subdirectory(server)
 
 if (UNIX)
 	install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_PATH}/lib/ DESTINATION ${CMAKE_BINARY_DIR}/bin FILES_MATCHING PATTERN "*.so")
