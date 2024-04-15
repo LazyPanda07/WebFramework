@@ -102,9 +102,10 @@ jobs:
 
     - name: Tests
       working-directory: Tests
+      shell: bash
       run: |
           cd build/bin
-          .\Tests.exe ${{ matrix.config }}
+          ./Server.exe ${{ matrix.config }} & ./Tests.exe
 
 
   linux-tests:
@@ -146,7 +147,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests ${{ matrix.config }}
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} Server ${{ matrix.config }} & LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests
   
 
   memory-leak-tests:

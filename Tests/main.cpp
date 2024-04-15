@@ -1,5 +1,3 @@
-#include <functional>
-#include <random>
 #include <chrono>
 
 #include "WebFramework.h"
@@ -12,6 +10,10 @@ bool useHTTPS;
 
 int main(int argc, char** argv)
 {
+	using namespace std::chrono_literals;
+
+	std::this_thread::sleep_for(5s);
+
 	testing::InitGoogleTest(&argc, argv);
 
 	useHTTPS = framework::WebFramework::getUseHTTPS();

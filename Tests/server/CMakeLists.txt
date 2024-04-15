@@ -7,7 +7,7 @@ if (UNIX)
 	set(CMAKE_CXX_FLAGS -rdynamic)
 endif (UNIX)
 
-project(server)
+project(Server)
 
 add_executable(
 	${PROJECT_NAME}
