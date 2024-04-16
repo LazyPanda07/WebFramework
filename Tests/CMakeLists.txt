@@ -3,19 +3,19 @@ cmake_minimum_required(VERSION 3.27.0)
 set(CMAKE_CXX_STANDARD 20)
 set(WEB_FRAMEWORK_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(
-	LIBS 
-	WebFramework 
-	BaseTCPServer 
-	JSON 
-	FileManager 
-	ThreadPool 
-	Log 
-	HTTP 
-	Networks 
-	SocketStreams 
+	LIBS
+	WebFramework
+	BaseTCPServer
+	JSON
+	FileManager
+	ThreadPool
+	Log
+	HTTP
+	Networks
+	SocketStreams
 	UtilityLibrary 
-	sqlite3 
-	ssl 
+	sqlite3
+	ssl
 	crypto
 )
 
@@ -34,22 +34,23 @@ add_executable(
 	cases/Requests.cpp
 )
 
-include_directories(
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
 	utilities/
-	../WebFramework/src/
-	../BaseTCPServer/src/
-	../Networks/src/
-	../Networks/HTTP/src/
-	../Networks/HTTP/JSON/src/
-	../FileManager/src/
-	../ThreadPool/src/
-	../Log/src/
-	../SHA256/src/
-	../INIParser/src/
-	../Localization/src/
-	../Networks/SocketStreams/src/
-	../Networks/vendor/OpenSSL/include/
-	../WebFramework/vendor/sqlite3/include/
+	${CMAKE_SOURCE_DIR}/../WebFramework/src/
+	${CMAKE_SOURCE_DIR}/../BaseTCPServer/src/
+	${CMAKE_SOURCE_DIR}/../Networks/src/
+	${CMAKE_SOURCE_DIR}/../Networks/HTTP/src/
+	${CMAKE_SOURCE_DIR}/../Networks/HTTP/JSON/src/
+	${CMAKE_SOURCE_DIR}/../FileManager/src/
+	${CMAKE_SOURCE_DIR}/../ThreadPool/src/
+	${CMAKE_SOURCE_DIR}/../Log/src/
+	${CMAKE_SOURCE_DIR}/../SHA256/src/
+	${CMAKE_SOURCE_DIR}/../INIParser/src/
+	${CMAKE_SOURCE_DIR}/../Localization/src/
+	${CMAKE_SOURCE_DIR}/../Networks/SocketStreams/src/
+	${CMAKE_SOURCE_DIR}/../Networks/vendor/OpenSSL/include/
+	${CMAKE_SOURCE_DIR}/../WebFramework/vendor/sqlite3/include/
 	gtest/include/
 )
 
