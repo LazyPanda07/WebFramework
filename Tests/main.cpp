@@ -1,6 +1,7 @@
 #include <chrono>
+#include <fstream>
 
-#include "WebFramework.h"
+#include "JSONParser.h"
 
 #include "gtest/gtest.h"
 
@@ -12,11 +13,11 @@ int main(int argc, char** argv)
 {
 	using namespace std::chrono_literals;
 
+	useHTTPS = json::JSONParser(std::ifstream(argv[1])).getObject("WebFramework").getObject("HTTPS").getBool("useHTTPS");
+
 	std::this_thread::sleep_for(5s);
 
 	testing::InitGoogleTest(&argc, argv);
-
-	useHTTPS = framework::WebFramework::getUseHTTPS();
 
 	exit(RUN_ALL_TESTS());
 
