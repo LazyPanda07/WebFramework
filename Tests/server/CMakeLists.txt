@@ -15,7 +15,7 @@ add_executable(
 	executors/HelloExecutor.cpp
 )
 
-target_link_directories(
+target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${CMAKE_SOURCE_DIR}/../WebFramework/src/
 	${CMAKE_SOURCE_DIR}/../BaseTCPServer/src/

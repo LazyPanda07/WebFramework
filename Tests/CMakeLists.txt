@@ -55,13 +55,13 @@ target_include_directories(
 )
 
 target_link_directories(
-	${PROJECT_NAME} PUBLIC
+	${PROJECT_NAME} PRIVATE
 	${WEB_FRAMEWORK_LIBRARY_PATH}/lib/
 	gtest/lib/
 )
 
 target_link_libraries(
-	${PROJECT_NAME} PUBLIC
+	${PROJECT_NAME} PRIVATE
 	${LIBS}
 	gtest
 	gtest_main
