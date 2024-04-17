@@ -193,17 +193,17 @@ namespace framework
 
 				if (!context)
 				{
-					throw web::exceptions::SSLException();
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
 				}
 
 				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
 				{
-					throw web::exceptions::SSLException();
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
 				}
 
 				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
 				{
-					throw web::exceptions::SSLException();
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
 				}
 			}
 
