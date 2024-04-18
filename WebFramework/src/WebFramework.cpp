@@ -96,13 +96,15 @@ namespace framework
 
 		try
 		{
-			if (webFrameworkSettings.getBool(json_settings::useHTTPSKey))
+			const json::utility::jsonObject& https = webFrameworkSettings.getObject(json_settings::httpsObject);
+
+			if (https.getBool(json_settings::useHTTPSKey))
 			{
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
 				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(basePath / webFrameworkSettings.getString(json_settings::pathToCertificateKey));
-				httpsSettings.setPathToKey(basePath / webFrameworkSettings.getString(json_settings::pathToKey));
+				httpsSettings.setPathToCertificate(basePath / https.getString(json_settings::pathToCertificateKey));
+				httpsSettings.setPathToKey(basePath / https.getString(json_settings::pathToKey));
 
 				SSL_library_init();
 				SSL_load_error_strings();
