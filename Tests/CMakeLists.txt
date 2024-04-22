@@ -4,19 +4,19 @@ set(CMAKE_CXX_STANDARD 20)
 set(WEB_FRAMEWORK_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(
 	LIBS
-	WebFramework
-	BaseTCPServer
-	JSON
-	FileManager
-	ThreadPool
-	Log
-	HTTP
-	Networks
-	SocketStreams
-	UtilityLibrary 
-	sqlite3
-	ssl
-	crypto
+    WebFramework
+    BaseTCPServer
+    Networks
+    HTTP
+    JSON
+    SocketStreams
+    FileManager
+    ThreadPool
+    Log
+    UtilityLibrary
+    sqlite3
+    ssl
+    crypto
 )
 
 if (UNIX)
