@@ -186,7 +186,7 @@ jobs:
           make install -j $(nproc)
 
     - name: Memory leak test
-      uses: LazyPanda07/check-memory-leaks@v1.3
+      uses: LazyPanda07/check-memory-leaks@v1.4
       with:
         path: Tests/build/bin
         name: Server
