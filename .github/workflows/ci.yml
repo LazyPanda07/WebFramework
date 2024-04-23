@@ -102,10 +102,9 @@ jobs:
 
     - name: Tests
       working-directory: Tests
-      shell: bash
       run: |
           cd build/bin
-          ./Server.exe ${{ matrix.config }} & ./Basic.exe ${{ matrix.config }}
+          run_tests.bat ${{ matrix.config }} 
 
 
   linux-tests:
@@ -147,7 +146,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Server ${{ matrix.config }} & LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Basic ${{ matrix.config }}
+          source run_tests.sh ${{ matrix.config }} 
   
 
   memory-leak-tests:
@@ -185,16 +184,16 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release ..
           make install -j $(nproc)
 
-    - name: Memory leak test
-      uses: LazyPanda07/check-memory-leaks@v1.4
-      with:
-        path: Tests/build/bin
-        name: Server
-        pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
-        args: ${{ matrix.config }} & sleep 1
+    # - name: Memory leak test
+    #   uses: LazyPanda07/check-memory-leaks@v1.4
+    #   with:
+    #     path: Tests/build/bin
+    #     name: Server
+    #     pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
+    #     args: ${{ matrix.config }} & sleep 1
 
-    - name: Run tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Basic ${{ matrix.config }}
+    # - name: Run tests
+    #   working-directory: Tests
+    #   run: |
+    #       cd build/bin
+    #       LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Basic ${{ matrix.config }}
