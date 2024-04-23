@@ -9,7 +9,7 @@ valgrind --max-threads=1000 --leak-check=full --show-leak-kinds=all --track-orig
 
 ./Basic ${WEB_FRAMEWORK_SERVER_CONFIG}
 
-sleep 600
+sleep 120
 
 export VALGRIND_RESULT_FREED=$(grep -Rnw 'memory_leaks_result.txt' -e 'All heap blocks were freed -- no leaks are possible')
 export VALGRIND_RESULT_DEFINITELY_LOST=$(grep -Rnw 'memory_leaks_result.txt' -e 'definitely lost: 0 bytes')

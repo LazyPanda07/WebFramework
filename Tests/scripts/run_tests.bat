@@ -8,4 +8,4 @@ timeout 5
 
 call Basic.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 
-timeout 600
+timeout 120

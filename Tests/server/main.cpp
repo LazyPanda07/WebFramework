@@ -10,7 +10,11 @@ int main(int argc, char** argv) try
 
 	server.startServer();
 
-	std::this_thread::sleep_for(std::chrono::minutes(10));
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+
+	std::cout << "Server: " << server.isServerRunning() << std::endl;
+
+	std::this_thread::sleep_for(std::chrono::minutes(2));
 
 	server.stopServer(true);
 
