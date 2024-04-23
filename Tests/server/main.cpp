@@ -10,17 +10,9 @@ int main(int argc, char** argv) try
 
 	server.startServer();
 
-	while (true)
-	{
-		if (std::filesystem::exists("stop_server.txt"))
-		{
-			server.stopServer(true);
+	std::this_thread::sleep_for(std::chrono::minutes(10));
 
-			break;
-		}
-
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
+	server.stopServer(true);
 
 	return 0;
 }

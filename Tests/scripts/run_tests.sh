@@ -9,6 +9,4 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
 ./Basic ${WEB_FRAMEWORK_SERVER_CONFIG}
 
-touch stop_server.txt
-
-sleep 5
+sleep 600
