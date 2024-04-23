@@ -7,3 +7,7 @@ start Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 timeout 5
 
 call Basic.exe %WEB_FRAMEWORK_SERVER_CONFIG%
+
+type NUL > stop_server.txt
+
+timeout 5
