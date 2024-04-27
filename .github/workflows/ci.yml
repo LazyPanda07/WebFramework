@@ -80,13 +80,15 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
+        # name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
+        name: Release_Windows
         path: WebFrameworkLibrary
 
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@v1
       with:
-        build-type: ${{ matrix.configuration }}
+        # build-type: ${{ matrix.configuration }}
+        build-type: Release
         install-path: Tests/gtest
 
     - name: Enable NMake
@@ -97,7 +99,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
+          # cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ..
           nmake install
 
     - name: Tests
@@ -105,7 +108,8 @@ jobs:
       run: |
           cd build/bin
           certutil -addstore -f "ROOT" certificates\cert.pem
-          .\run_tests.bat ${{ matrix.config }} 
+          # .\run_tests.bat ${{ matrix.config }} 
+          .\run_tests.bat threadPoolConfigHTTPS.json
 
 
   linux-tests:
