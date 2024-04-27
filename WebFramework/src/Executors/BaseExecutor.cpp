@@ -51,6 +51,8 @@ namespace framework
 	void BaseExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
 #ifdef NDEBUG
+		printf("NDEBUG\n");
+
 		throw exceptions::NotImplementedException();
 #endif
 
@@ -82,6 +84,8 @@ namespace framework
 	void BaseExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
 #ifdef NDEBUG
+		printf("NDEBUG\n");
+
 		throw exceptions::NotImplementedException();
 #endif
 

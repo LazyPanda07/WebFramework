@@ -8,5 +8,3 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} & sleep 5
 
 ./Basic ${WEB_FRAMEWORK_SERVER_CONFIG}
-
-sleep 120
