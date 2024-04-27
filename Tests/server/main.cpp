@@ -8,7 +8,7 @@ int main(int argc, char** argv) try
 {
 	framework::WebFramework server(argv[1]);
 
-	server.startServer(true);
+	server.startServer(true, []() { std::cout << "Server is running" << std::endl; });
 
 	return 0;
 }
