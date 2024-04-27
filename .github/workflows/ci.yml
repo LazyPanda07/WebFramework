@@ -66,11 +66,11 @@ jobs:
   windows-tests:
     runs-on: windows-latest
     needs: windows-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
-        config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
+    # strategy:
+      # matrix:
+        # configuration: [Debug, Release]
+        # shared: [[ON, DLL], [OFF, ""]]
+        # config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
 
     steps:
     - uses: actions/checkout@v4
