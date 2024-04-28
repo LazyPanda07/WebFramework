@@ -64,13 +64,14 @@ jobs:
         
 
   windows-tests:
-    runs-on: windows-latest
+    # runs-on: windows-latest
+    runs-on: self-hosted
     needs: windows-build
     strategy:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        config: [multiThreadedConfig.json, threadPoolConfig.json]
+        config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
 
     steps:
     - uses: actions/checkout@v4
