@@ -15,6 +15,8 @@ set(
     crypto
 )
 
+add_definitions(-DSTART_SERVER_FILE="start_server.txt")
+
 if (WIN32)
 	set(LIBS ${LIBS} crypt32)
 endif (WIN32)
