@@ -64,8 +64,7 @@ jobs:
         
 
   windows-tests:
-    # runs-on: windows-latest
-    runs-on: self-hosted
+    runs-on: windows-latest
     needs: windows-build
     strategy:
       matrix:
