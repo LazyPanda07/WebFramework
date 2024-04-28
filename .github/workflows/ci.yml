@@ -66,11 +66,11 @@ jobs:
   windows-tests:
     runs-on: windows-latest
     needs: windows-build
-    # strategy:
-      # matrix:
-        # configuration: [Debug, Release]
-        # shared: [[ON, DLL], [OFF, ""]]
-        # config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        shared: [[ON, DLL], [OFF, ""]]
+        config: [multiThreadedConfig.json, threadPoolConfig.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -80,15 +80,13 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        # name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
-        name: Release_Windows
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
         path: WebFrameworkLibrary
 
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@v1
       with:
-        # build-type: ${{ matrix.configuration }}
-        build-type: Release
+        build-type: ${{ matrix.configuration }}
         install-path: Tests/gtest
 
     - name: Enable NMake
@@ -99,8 +97,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          # cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
-          cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
           nmake install
 
     - name: Tests
@@ -108,8 +105,7 @@ jobs:
       run: |
           cd build/bin
           certutil -addstore -f "ROOT" certificates\cert.pem
-          # .\run_tests.bat ${{ matrix.config }} 
-          .\run_tests.bat threadPoolConfigHTTPS.json
+          .\run_tests.bat ${{ matrix.config }}
 
 
   linux-tests:
