@@ -21,5 +21,7 @@ int main(int argc, char** argv)
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
+	std::this_thread::sleep_for(std::chrono::seconds(10));
+
 	return RUN_ALL_TESTS();
 }
