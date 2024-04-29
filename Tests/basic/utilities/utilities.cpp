@@ -11,8 +11,8 @@ namespace utility
 		return streams::IOSocketStream
 		(
 			useHTTPS ?
-			std::make_unique<web::HTTPSNetwork>("localhost", "8080") :
-			std::make_unique<web::HTTPNetwork>("localhost", "8080")
+			std::make_unique<web::HTTPSNetwork>("127.0.0.1", "8080") :
+			std::make_unique<web::HTTPNetwork>("127.0.0.1", "8080")
 		);
 	}
 }

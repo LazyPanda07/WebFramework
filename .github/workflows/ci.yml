@@ -104,7 +104,6 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          certutil -addstore -f "ROOT" certificates\cert.pem
           .\run_tests.bat ${{ matrix.config }}
 
 
