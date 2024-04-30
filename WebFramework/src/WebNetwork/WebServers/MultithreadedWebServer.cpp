@@ -41,8 +41,6 @@ namespace framework
 			if (int errorCode = SSL_accept(ssl); errorCode != 1)
 			{
 				throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
-
-				SSL_free(ssl);
 			}
 		}
 
