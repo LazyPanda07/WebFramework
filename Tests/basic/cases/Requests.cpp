@@ -5,7 +5,7 @@
 #include "HTTPBuilder.h"
 #include "HTTPParser.h"
 #include "JSONParser.h"
-#include "exceptions/SSLException.h"
+#include "Exceptions/SSLException.h"
 
 #include "utilities.h"
 
