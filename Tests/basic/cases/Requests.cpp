@@ -5,7 +5,6 @@
 #include "HTTPBuilder.h"
 #include "HTTPParser.h"
 #include "JSONParser.h"
-#include "Exceptions/SSLException.h"
 
 #include "utilities.h"
 
@@ -78,33 +77,24 @@ std::string constructRequest(std::string_view requestType)
 
 TEST(HelloExecutor, OPTIONS)
 {
-	try
+	streams::IOSocketStream stream = utility::createSocketStream();
+
+	for (size_t i = 0; i < 10000; i++)
 	{
-		streams::IOSocketStream stream = utility::createSocketStream();
+		std::string request = constructRequest("OPTIONS");
+		std::string response;
 
-		for (size_t i = 0; i < 10000; i++)
-		{
-			std::string request = constructRequest("OPTIONS");
-			std::string response;
+		stream << request;
 
-			stream << request;
+		stream >> response;
 
-			stream >> response;
-
-			web::HTTPParser parser(response);
+		web::HTTPParser parser(response);
 
 #ifdef NDEBUG
-			ASSERT_EQ(parser.getResponseCode(), web::responseCodes::badRequest);
+		ASSERT_EQ(parser.getResponseCode(), web::responseCodes::badRequest);
 #else
-			ASSERT_EQ(parser.getHeaders().at("Allow"), "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT");
+		ASSERT_EQ(parser.getHeaders().at("Allow"), "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT");
 #endif
-		}
-	}
-	catch (const web::exceptions::SSLException& e)
-	{
-		std::vector<unsigned long> codes = e.getErrorCodes();
-
-		std::cout << e.what() << ' ' << e.getReturnCode() << ' ' << codes.size() << std::endl;
 	}
 }
 
@@ -116,7 +106,7 @@ TEST(HelloExecutor, TRACE)
 	{
 		std::string request = constructRequest("TRACE");
 		std::string response;
-		
+
 		stream << request;
 
 		stream >> response;

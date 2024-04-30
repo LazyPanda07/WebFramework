@@ -28,21 +28,21 @@ namespace framework
 
 			if (!ssl)
 			{
-				return;
+				throw web::exceptions::SSLException(__LINE__, __FILE__);
 			}
 
 			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 			{
 				SSL_free(ssl);
 
-				return;
+				throw web::exceptions::SSLException(__LINE__, __FILE__);
 			}
 
-			if (SSL_accept(ssl) <= 0)
+			if (int errorCode = SSL_accept(ssl); errorCode != 1)
 			{
-				SSL_free(ssl);
+				throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
 
-				return;
+				SSL_free(ssl);
 			}
 		}
 

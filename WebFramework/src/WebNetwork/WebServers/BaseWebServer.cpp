@@ -196,14 +196,14 @@ namespace framework
 					throw web::exceptions::SSLException(__LINE__, __FILE__);
 				}
 
-				if (SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM) <= 0)
+				if (int errorCode = SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM); errorCode != 1)
 				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
+					throw web::exceptions::SSLException(__LINE__, __FILE__, nullptr, errorCode);
 				}
 
-				if (SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM) <= 0)
+				if (int errorCode = SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM); errorCode != 1)
 				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
+					throw web::exceptions::SSLException(__LINE__, __FILE__, nullptr, errorCode);
 				}
 			}
 
