@@ -18,16 +18,16 @@ namespace framework
 			SQLiteManager() = default;
 
 			template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-			std::shared_ptr<SQLiteDatabaseModel> create(std::string_view databaseName, std::string_view tableName, Args&&... args);
+			std::shared_ptr<SQLiteDatabaseModel> create(const std::string& databaseName, const std::string& tableName, Args&&... args);
 
 			template<std::derived_from<SQLiteDatabaseModel> T>
-			std::shared_ptr<SQLiteDatabaseModel> get(std::string_view databaseName, std::string_view tableName);
+			std::shared_ptr<SQLiteDatabaseModel> get(const std::string& databaseName, const std::string& tableName);
 
 			~SQLiteManager() = default;
 		};
 
 		template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-		std::shared_ptr<SQLiteDatabaseModel> SQLiteManager::create(std::string_view databaseName, std::string_view tableName, Args&&... args)
+		std::shared_ptr<SQLiteDatabaseModel> SQLiteManager::create(const std::string& databaseName, const std::string& tableName, Args&&... args)
 		{
 			std::unique_lock<std::shared_mutex> lock(mutex);
 			auto database = allTables.find(databaseName);
@@ -60,7 +60,7 @@ namespace framework
 		}
 
 		template<std::derived_from<SQLiteDatabaseModel> T>
-		std::shared_ptr<SQLiteDatabaseModel> SQLiteManager::get(std::string_view databaseName, std::string_view tableName)
+		std::shared_ptr<SQLiteDatabaseModel> SQLiteManager::get(const std::string& databaseName, const std::string& tableName)
 		{
 			std::shared_lock<std::shared_mutex> lock(mutex);
 			auto database = allTables.find(databaseName);
