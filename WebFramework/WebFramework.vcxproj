@@ -167,7 +167,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(SolutionDir)Networks\vendor\OpenSSL\lib\Windows\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
@@ -198,7 +198,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(SolutionDir)Networks\vendor\OpenSSL\lib\Windows\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -237,7 +237,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(SolutionDir)Networks\vendor\OpenSSL\lib\Windows\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
@@ -272,7 +272,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(SolutionDir)Networks\vendor\OpenSSL\lib\Windows\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -318,7 +318,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       </Outputs>
     </CustomBuildStep>
     <Lib>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(SolutionDir)Networks\vendor\OpenSSL\lib\Windows\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
@@ -347,7 +347,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(SolutionDir)Networks\vendor\OpenSSL\lib\Windows\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <CustomBuildStep>

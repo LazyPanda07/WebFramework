@@ -2,9 +2,6 @@
 
 #include "Exceptions/FileDoesNotExistException.h"
 
-#pragma comment (lib, "BaseTCPServer.lib")
-#pragma comment (lib, "INIParser.lib")
-
 using namespace std;
 
 namespace framework

@@ -11,50 +11,74 @@ namespace framework
 		class WEB_FRAMEWORK_API SQLiteManager
 		{
 		private:
-			std::unordered_map<std::string, std::unordered_map<std::string, smartPointer<SQLiteDatabaseModel>>> allTables;	// database name - table name - SQLiteDatabaseModel subclass
+			std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<SQLiteDatabaseModel>>> allTables;
+			std::shared_mutex mutex;
 
 		public:
 			SQLiteManager() = default;
 
-			/// <summary>
-			/// Get instance of SQLiteDatabaseModel subclass for database operations
-			/// </summary>
-			/// <typeparam name="SQLiteDatabaseModelSubclass">subclass of SQLiteDatabaseModel</typeparam>
-			/// <typeparam name="...Args">arguments for constructor if needs to create new instance</typeparam>
-			/// <param name="databaseName">name of database</param>
-			/// <param name="tableName">name of table</param>
-			/// <param name="...args">arguments for constructor if needs to create new instance</param>
-			/// <returns>instance of SQLiteDatabaseModel subclass</returns>
-			template<std::derived_from<SQLiteDatabaseModel> SQLiteDatabaseModelSubclass, typename... Args>
-			smartPointer<SQLiteDatabaseModel>& get(const std::string& databaseName, std::string_view tableName, Args&&... args);
+			template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
+			std::shared_ptr<SQLiteDatabaseModel> create(std::string_view databaseName, std::string_view tableName, Args&&... args);
+
+			template<std::derived_from<SQLiteDatabaseModel> T>
+			std::shared_ptr<SQLiteDatabaseModel> get(std::string_view databaseName, std::string_view tableName);
 
 			~SQLiteManager() = default;
 		};
 
-		template<std::derived_from<SQLiteDatabaseModel> SQLiteDatabaseModelSubclass, typename... Args>
-		smartPointer<SQLiteDatabaseModel>& SQLiteManager::get(const std::string& databaseName, std::string_view tableName, Args&&... args)
+		template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
+		std::shared_ptr<SQLiteDatabaseModel> SQLiteManager::create(std::string_view databaseName, std::string_view tableName, Args&&... args)
 		{
+			std::unique_lock<std::shared_mutex> lock(mutex);
 			auto database = allTables.find(databaseName);
 
 			if (database != allTables.end())
 			{
-				auto table = database->second.find(tableName);
+				auto& tables = database->second;
+				auto table = tables.find(tableName);
 
-				if (table != database->second.end())
+				if (table != tables.end())
 				{
-					return table->second;
+					return std::dynamic_pointer_cast<T>(table->second);
 				}
-				else
-				{
-					return allTables[databaseName].emplace(std::make_pair(tableName, utility::make_smartPointer<SQLiteDatabaseModelSubclass>(std::forward<Args>(args)...))).first->second;
-				}
+
+				std::shared_ptr<T> model = std::make_shared(std::forward<Args>(args)...);
+
+				tables[tableName] = model;
+
+				return model;
 			}
 			else
 			{
-				allTables.emplace(std::make_pair(databaseName, std::unordered_map<std::string, smartPointer<SQLiteDatabaseModel>>()));
+				std::shared_ptr<T> model = std::make_shared(std::forward<Args>(args)...);
+				auto& tables = allTables.emplace(databaseName).first->second;
 
-				return allTables[databaseName].emplace(std::make_pair(tableName, utility::make_smartPointer<SQLiteDatabaseModelSubclass>(std::forward<Args>(args)...))).first->second;
+				tables[tableName] = model;
+
+				return model;
 			}
+		}
+
+		template<std::derived_from<SQLiteDatabaseModel> T>
+		std::shared_ptr<SQLiteDatabaseModel> SQLiteManager::get(std::string_view databaseName, std::string_view tableName)
+		{
+			std::shared_lock<std::shared_mutex> lock(mutex);
+			auto database = allTables.find(databaseName);
+
+			if (database == allTables.end())
+			{
+				return nullptr;
+			}
+
+			auto& tables = database->second;
+			auto table = tables.find(tableName);
+
+			if (table == tables.end())
+			{
+				return nullptr;
+			}
+
+			return table->second;
 		}
 	}
 }
