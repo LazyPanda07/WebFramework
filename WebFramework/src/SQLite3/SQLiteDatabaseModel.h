@@ -40,7 +40,7 @@ namespace framework
 			/// </summary>
 			/// <param name="query">raw query</param>
 			/// <returns>execution result</returns>
-			utility::SQLiteResult executeQuery(const std::string& query);
+			utility::SQLiteResult execute(const std::string& query);
 
 		public:
 			/// <summary>
@@ -81,34 +81,34 @@ namespace framework
 			/// <returns>result of SELECT query, empty string otherwise</returns>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
 			/// <exception cref="std::invalid_argument">wrong type</exception>
-			utility::SQLiteResult rawQuery(const std::string& query, queryType type);
+			utility::SQLiteResult raw(const std::string& query, queryType type);
 
 			/// <summary>
 			/// Create table
 			/// </summary>
 			/// <param name="attributes">field name - field description</param>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			void createTableQuery(const std::vector<std::pair<std::string, std::string>>& attributes);
+			void createTable(const std::vector<std::pair<std::string, std::string>>& attributes);
 
 			/// <summary>
 			/// Delete table
 			/// </summary>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			void dropTableQuery();
+			void dropTable();
 
 			/// <summary>
 			/// Delete and create table
 			/// </summary>
 			/// <param name="attributes">field name- field description</param>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			void recreateTableQuery(const std::vector<std::pair<std::string, std::string>>& attributes);
+			void recreateTable(const std::vector<std::pair<std::string, std::string>>& attributes);
 
 			/// <summary>
 			/// INSERT row
 			/// </summary>
 			/// <param name="attributes">field name - field value</param>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			utility::SQLiteResult insertQuery(const std::map<std::string, std::string>& attributes);
+			utility::SQLiteResult insert(const std::unordered_map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// UPDATE table
@@ -117,7 +117,7 @@ namespace framework
 			/// <param name="fieldName">for condition</param>
 			/// <param name="fieldValue">for condition</param>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			void updateQuery(const std::map<std::string, std::string>& attributes, const std::string& fieldName, const std::string& fieldValue);
+			void update(const std::unordered_map<std::string, std::string>& attributes, const std::string& fieldName, const std::string& fieldValue);
 
 			/// <summary>
 			/// Delete from table
@@ -130,14 +130,14 @@ namespace framework
 			/// @brief Delete from table
 			/// @param attributes key - value condition
 			/// @exception framework::exceptions::SQLite3Exception sqlite3_errmsg
-			void deleteQuery(const std::map<std::string, std::string>& attributes);
+			void deleteQuery(const std::unordered_map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// SELECT all
 			/// </summary>
 			/// <returns>all rows from table</returns>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			utility::SQLiteResult selectAllQuery();
+			utility::SQLiteResult selectAll();
 
 			/// <summary>
 			/// SELECT with condition
@@ -146,7 +146,7 @@ namespace framework
 			/// <param name="fieldValue">for condition</param>
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			utility::SQLiteResult selectByFieldQuery(const std::string& fieldName, const std::string& fieldValue);
+			utility::SQLiteResult selectByField(const std::string& fieldName, const std::string& fieldValue);
 
 			/// <summary>
 			/// SELECT with condition
@@ -154,7 +154,7 @@ namespace framework
 			/// <param name="values">field name - field value</param>
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			utility::SQLiteResult selectByFieldQuery(const std::map<std::string, std::string>& attributes);
+			utility::SQLiteResult selectByField(const std::unordered_map<std::string, std::string>& attributes);
 
 			/// <summary>
 			/// Getter for tableName
@@ -162,7 +162,7 @@ namespace framework
 			/// <returns>tableName</returns>
 			const std::string& getTableName() const;
 
-			~SQLiteDatabaseModel() = default;
+			virtual ~SQLiteDatabaseModel() = default;
 		};
 	}
 }

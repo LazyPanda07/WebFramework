@@ -17,7 +17,7 @@ namespace framework
 
 			static constexpr string_view symbols = "0123456789-.,";
 
-			if (all_of(source.begin(), source.end(), [](const char& c) { return find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
+			if (all_of(source.begin(), source.end(), [](char c) { return find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
 			{
 				size_t check = 0;
 
@@ -40,7 +40,7 @@ namespace framework
 			return false;
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::executeQuery(const string& query)
+		utility::SQLiteResult SQLiteDatabaseModel::execute(const string& query)
 		{
 			sqlite3_stmt* result = nullptr;
 			vector<unordered_map<string, string>> output;
@@ -74,7 +74,7 @@ namespace framework
 			{
 				try
 				{
-					return this->executeQuery("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(db.db)));
+					return this->execute("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(*db)));
 				}
 				catch (const exceptions::SQLite3Exception&)
 				{
@@ -107,25 +107,25 @@ namespace framework
 			return *this;
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::rawQuery(const string& query, SQLiteDatabaseModel::queryType type)
+		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query, SQLiteDatabaseModel::queryType type)
 		{
 			if (type == queryType::read)
 			{
 				shared_lock<shared_mutex> lock(readWriteMutex);
 
-				return this->executeQuery(query);
+				return this->execute(query);
 			}
 			else if (type == queryType::write)
 			{
 				unique_lock<shared_mutex> lock(readWriteMutex);
 
-				return this->executeQuery(query);
+				return this->execute(query);
 			}
 
 			throw invalid_argument("invalid type variable");
 		}
 
-		void SQLiteDatabaseModel::createTableQuery(const vector<pair<string, string>>& attributes)
+		void SQLiteDatabaseModel::createTable(const vector<pair<string, string>>& attributes)
 		{
 			string fields = "(";
 
@@ -136,22 +136,22 @@ namespace framework
 
 			fields.replace(fields.end() - 2, fields.end(), ")");
 
-			this->rawQuery("CREATE TABLE IF NOT EXISTS " + tableName + ' ' + fields, queryType::write);
+			this->raw("CREATE TABLE IF NOT EXISTS " + tableName + ' ' + fields, queryType::write);
 		}
 
-		void SQLiteDatabaseModel::dropTableQuery()
+		void SQLiteDatabaseModel::dropTable()
 		{
-			this->rawQuery("DROP TABLE IF EXISTS " + tableName, queryType::write);
+			this->raw("DROP TABLE IF EXISTS " + tableName, queryType::write);
 		}
 
-		void SQLiteDatabaseModel::recreateTableQuery(const vector<pair<string, string>>& attributes)
+		void SQLiteDatabaseModel::recreateTable(const vector<pair<string, string>>& attributes)
 		{
-			this->dropTableQuery();
+			this->dropTable();
 
-			this->createTableQuery(attributes);
+			this->createTable(attributes);
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::insertQuery(const map<string,string>& attributes)
+		utility::SQLiteResult SQLiteDatabaseModel::insert(const unordered_map<string,string>& attributes)
 		{
 			string keys;
 			string values;
@@ -173,10 +173,10 @@ namespace framework
 			keys = '(' + string(keys.begin(), keys.end() - 2) + ')';
 			values = '(' + string(values.begin(), values.end() - 2) + ')';
 
-			return this->rawQuery("INSERT INTO " + tableName + " " + keys + " VALUES " + values, queryType::write);
+			return this->raw("INSERT INTO " + tableName + " " + keys + " VALUES " + values, queryType::write);
 		}
 
-		void SQLiteDatabaseModel::updateQuery(const map<string, string>& attributes, const string& fieldName, const string& fieldValue)
+		void SQLiteDatabaseModel::update(const unordered_map<string, string>& attributes, const string& fieldName, const string& fieldValue)
 		{
 			string query = "UPDATE " + tableName + " SET ";
 
@@ -187,17 +187,17 @@ namespace framework
 
 			query += "WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'');
 
-			this->rawQuery(query, queryType::write);
+			this->raw(query, queryType::write);
 		}
 
 		void SQLiteDatabaseModel::deleteQuery(const string& fieldName, const string& fieldValue)
 		{
 			string query = "DELETE FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'');
 
-			this->rawQuery(query, queryType::write);
+			this->raw(query, queryType::write);
 		}
 
-		void SQLiteDatabaseModel::deleteQuery(const map<string, string>& attributes)
+		void SQLiteDatabaseModel::deleteQuery(const unordered_map<string, string>& attributes)
 		{
 			string query = "DELETE FROM " + tableName + " WHERE ";
 
@@ -208,20 +208,20 @@ namespace framework
 
 			query.resize(query.size() - 5);
 
-			this->rawQuery(query, queryType::write);
+			this->raw(query, queryType::write);
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::selectAllQuery()
+		utility::SQLiteResult SQLiteDatabaseModel::selectAll()
 		{
-			return this->rawQuery("SELECT * FROM " + tableName, queryType::read);
+			return this->raw("SELECT * FROM " + tableName, queryType::read);
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::selectByFieldQuery(const string& fieldName, const string& fieldValue)
+		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const string& fieldName, const string& fieldValue)
 		{
-			return this->rawQuery("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''), queryType::read);
+			return this->raw("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''), queryType::read);
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::selectByFieldQuery(const map<string, string>& attributes)
+		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const unordered_map<string, string>& attributes)
 		{
 			string query = "SELECT * FROM " + tableName + " WHERE ";
 
@@ -232,7 +232,7 @@ namespace framework
 
 			query.resize(query.size() - 5);
 
-			return this->rawQuery(query, queryType::read);
+			return this->raw(query, queryType::read);
 		}
 
 		const string& SQLiteDatabaseModel::getTableName() const

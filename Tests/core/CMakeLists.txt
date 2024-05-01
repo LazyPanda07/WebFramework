@@ -6,7 +6,7 @@ if (UNIX)
 	add_definitions(-D__LINUX__)
 endif (UNIX)
 
-project(Basic)
+project(Core)
 
 add_executable(
 	${PROJECT_NAME}

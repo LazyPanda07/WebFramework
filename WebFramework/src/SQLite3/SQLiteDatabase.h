@@ -2,19 +2,30 @@
 
 #include "headers.h"
 
-#include "sqlite3.h"
+#include <sqlite3.h>
 
+#ifndef __LINUX__
 #pragma push_macro("max")
 
 #undef max
+#endif
+
+namespace std
+{
+	template<>
+	struct default_delete<sqlite3>
+	{
+		void operator ()(sqlite3* ptr) const
+		{
+			sqlite3_close(ptr);
+		}
+	};
+}
 
 namespace framework
 {
 	namespace sqlite
 	{
-		/// <summary>
-		/// Forward declaration
-		/// </summary>
 		class SQLiteDatabaseModel;
 
 		/// <summary>
@@ -25,13 +36,9 @@ namespace framework
 		{
 		private:
 			std::string databaseName;
-			sqlite3* db;
+			std::unique_ptr<sqlite3> db;
 
 		private:
-			/// <summary>
-			/// Getter for db
-			/// </summary>
-			/// <returns>pointer to sqlite3 handle connection</returns>
 			sqlite3* operator * ();
 
 		public:
@@ -40,13 +47,13 @@ namespace framework
 			/// </summary>
 			/// <param name="other"></param>
 			/// <returns></returns>
-			SQLiteDatabase(const std::string& databaseName);
+			SQLiteDatabase(std::string_view databaseName);
 
 			/// <summary>
 			/// Move another database
 			/// </summary>
 			/// <param name="other">another SQLiteDatabase instance</param>
-			SQLiteDatabase(SQLiteDatabase&& other) noexcept;
+			SQLiteDatabase(SQLiteDatabase&& other) noexcept = default;
 
 			/// <summary>
 			/// Can't copy connection handle from another database
@@ -62,7 +69,7 @@ namespace framework
 			/// Move another database
 			/// </summary>
 			/// <param name="other">another SQLiteDatabase instance</param>
-			SQLiteDatabase& operator = (SQLiteDatabase&& other) noexcept;
+			SQLiteDatabase& operator = (SQLiteDatabase&& other) noexcept = default;
 
 			/// <summary>
 			/// Getter for databaseName
@@ -87,7 +94,7 @@ namespace framework
 			/// <returns>pointer to sqlite3 handle connection</returns>
 			const sqlite3* const operator * () const;
 
-			~SQLiteDatabase();
+			~SQLiteDatabase() = default;
 
 		public:
 			friend class SQLiteDatabaseModel;
@@ -95,4 +102,6 @@ namespace framework
 	}
 }
 
+#ifndef __LINUX__
 #pragma pop_macro("max")
+#endif

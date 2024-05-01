@@ -23,7 +23,7 @@ endif (WIN32)
 
 project(Tests)
 
-add_subdirectory(basic)
+add_subdirectory(core)
 add_subdirectory(server)
 
 if (UNIX)

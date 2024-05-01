@@ -1,7 +1,6 @@
 #include "SQLiteDatabase.h"
 
-#pragma comment (lib, "sqlite3.lib")
-#pragma comment (lib, "SHA256.lib")
+#include "Exceptions/SQLite3Exception.h"
 
 using namespace std;
 
@@ -11,32 +10,22 @@ namespace framework
 	{
 		sqlite3* SQLiteDatabase::operator * ()
 		{
-			return db;
+			return db.get();
 		}
 
-		SQLiteDatabase::SQLiteDatabase(const string& databaseName) :
+		SQLiteDatabase::SQLiteDatabase(string_view databaseName) :
 			databaseName(databaseName)
 		{
-			sqlite3_open(databaseName.data(), &db);
+			sqlite3* connection = nullptr;
+
+			if (sqlite3_open(databaseName.data(), &connection) != SQLITE_OK)
+			{
+				throw exceptions::SQLite3Exception(format("Can't open {} database", databaseName));
+			}
+
+			db = unique_ptr<sqlite3>(connection);
 		}
-
-		SQLiteDatabase::SQLiteDatabase(SQLiteDatabase&& other) noexcept
-		{
-			(*this) = move(other);
-		}
-
-		SQLiteDatabase& SQLiteDatabase::operator = (SQLiteDatabase&& other) noexcept
-		{
-			this->close();
-
-			databaseName = move(other.databaseName);
-			db = other.db;
-
-			other.db = nullptr;
-
-			return *this;
-		}
-
+		
 		const string& SQLiteDatabase::getDatabaseName() const
 		{
 			return databaseName;
@@ -44,24 +33,17 @@ namespace framework
 
 		void SQLiteDatabase::close()
 		{
-			sqlite3_close(db);
-
-			db = nullptr;
+			db.reset();
 		}
 
 		bool SQLiteDatabase::isOpen() const
 		{
-			return db;
+			return static_cast<bool>(db);
 		}
 
 		const sqlite3* const SQLiteDatabase::operator * () const
 		{
-			return db;
-		}
-
-		SQLiteDatabase::~SQLiteDatabase()
-		{
-			this->close();
+			return db.get();
 		}
 	}
 }
