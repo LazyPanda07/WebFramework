@@ -30,26 +30,20 @@ namespace framework
 
 				for (const string& temp : pathToSources)
 				{
-					string pathToSource = makePathToSource(temp);
-
-					if (!filesystem::exists(pathToSource))
+					if (temp == json_settings::defaultLoadSourceValue)
 					{
-						if (pathToSource == json_settings::defaultLoadSourceValue)
-						{
 #ifdef __LINUX__
-							result.push_back(dlopen(nullptr, RTLD_LAZY));
+						result.push_back(dlopen(nullptr, RTLD_LAZY));
 #else
-							result.push_back(nullptr);
+						result.push_back(nullptr);
 #endif
 
-							continue;
-						}
-						else
-						{
-							throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
-						}
+						continue;
 					}
-					else
+
+					string pathToSource = makePathToSource(temp);
+
+					if (filesystem::exists(pathToSource))
 					{
 						HMODULE handle = nullptr;
 
@@ -59,6 +53,10 @@ namespace framework
 						handle = LoadLibraryA(pathToSource.data());
 #endif
 						result.push_back(handle);
+					}
+					else
+					{
+						throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 					}
 
 					if (!result.back())
@@ -228,7 +226,11 @@ namespace framework
 string makePathToSource(const string& pathToSource)
 {
 #ifdef __LINUX__
-	return format("lib{}.so", pathToSource);
+	filesystem::path temp(pathToSource);
+	filesystem::path parent = temp.parent_path();
+	filesystem::path fileName = temp.filename();
+
+	return format("{}lib{}.so", parent.string(), fileName.string());
 #else
 	return format("{}.dll", pathToSource);
 #endif
