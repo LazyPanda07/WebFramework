@@ -1,5 +1,7 @@
 #include "CRUDExecutor.h"
 
+#include "DatabaseModel.h"
+
 void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 
@@ -7,7 +9,7 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 
 void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.getDatabaseModelInstance();
+	
 }
 
 void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
