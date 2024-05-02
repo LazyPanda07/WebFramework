@@ -11,6 +11,8 @@
 
 using namespace std;
 
+static string makePathToSource(const string& pathToSource);
+
 namespace framework
 {
 	BaseWebServer::BaseWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
@@ -26,8 +28,10 @@ namespace framework
 
 				result.reserve(pathToSources.size());
 
-				for (const string& pathToSource : pathToSources)
+				for (const string& temp : pathToSources)
 				{
+					string pathToSource = makePathToSource(temp);
+
 					if (!filesystem::exists(pathToSource))
 					{
 						if (pathToSource == json_settings::defaultLoadSourceValue)
@@ -50,9 +54,9 @@ namespace framework
 						HMODULE handle = nullptr;
 
 #ifdef __LINUX__
-						handle = dlopen((string("lib") + pathToSource + ".so").data(), RTLD_LAZY);
+						handle = dlopen(pathToSource.data(), RTLD_LAZY);
 #else
-						handle = LoadLibraryA((pathToSource + ".dll").data());
+						handle = LoadLibraryA(pathToSource.data());
 #endif
 						result.push_back(handle);
 					}
@@ -219,4 +223,13 @@ namespace framework
 			SSL_CTX_free(context);
 		}
 	}
+}
+
+string makePathToSource(const string& pathToSource)
+{
+#ifdef __LINUX__
+	return format("lib{}.so", pathToSource);
+#else
+	return format("{}.dll", pathToSource);
+#endif
 }
