@@ -120,12 +120,6 @@ namespace framework
 			return nullptr;
 		}
 
-		SQLiteManager::Database::Database(const std::string& databaseName) :
-			database(std::make_shared<SQLiteDatabase>(databaseName))
-		{
-
-		}
-
 		template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
 		std::shared_ptr<T> SQLiteManager::Database::add(const std::string& tableName, Args&&... args)
 		{

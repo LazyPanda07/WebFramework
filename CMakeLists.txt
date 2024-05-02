@@ -81,6 +81,7 @@ add_library(
 	WebFramework/src/SQLite3/SQLiteDatabase.cpp
 	WebFramework/src/SQLite3/SQLiteDatabaseModel.cpp
 	WebFramework/src/SQLite3/SQLiteResult.cpp
+	WebFramework/src/SQLite3/SQLiteManager.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/ExecutorCreator.cpp

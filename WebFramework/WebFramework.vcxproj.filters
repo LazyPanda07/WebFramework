@@ -108,6 +108,9 @@
     <ClCompile Include="src\SQLite3\SQLiteResult.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\SQLite3\SQLiteManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
     <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
