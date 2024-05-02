@@ -2,5 +2,9 @@
   "HelloExecutor": {
     "route": "",
     "loadType": "initialization"
+  },
+  "CRUDExecutor": {
+    "route": "database",
+    "loadType": "dynamic"
   }
 }

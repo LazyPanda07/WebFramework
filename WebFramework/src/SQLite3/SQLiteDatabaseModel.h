@@ -26,7 +26,7 @@ namespace framework
 			SQLiteDatabase db;
 			std::shared_mutex readWriteMutex;
 
-		private:
+		protected:
 			/// <summary>
 			/// Check that string represent number
 			/// </summary>
@@ -34,7 +34,7 @@ namespace framework
 			/// <returns>true if source is correct number, false otherwise</returns>
 			static bool isNumber(const std::string& source);
 
-		private:
+		protected:
 			/// <summary>
 			/// Execute raw query
 			/// </summary>

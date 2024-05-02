@@ -9,7 +9,8 @@
       "web.json"
     ],
     "loadSources": [
-      "current"
+      "current",
+      "Database"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",

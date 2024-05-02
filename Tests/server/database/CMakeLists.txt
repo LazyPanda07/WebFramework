@@ -4,29 +4,20 @@ set(CMAKE_CXX_STANDARD 20)
 set(
 	LIBS
 	WebFramework
-	BaseTCPServer
-	FileManager
-	ThreadPool
-	Log
-	Localization
-	SHA256
-	INIParser
 	${LIBS}
 	sqlite3
 )
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
-
-	set(CMAKE_CXX_FLAGS -rdynamic)
 endif (UNIX)
 
-project(Server)
+project(Database)
 
-add_executable(
-	${PROJECT_NAME}
-	main.cpp
-	executors/HelloExecutor.cpp
+add_library(
+	${PROJECT_NAME} SHARED
+	CRUDExecutor.cpp
+	DatabaseModel.cpp
 )
 
 target_include_directories(
@@ -56,7 +47,5 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	${LIBS}
 )
-
-# add_subdirectory(database)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)

@@ -17,9 +17,25 @@ namespace framework
 		public:
 			SQLiteManager() = default;
 
+			/**
+			 * @brief Create specific model
+			 * @tparam ...Args 
+			 * @tparam T 
+			 * @param databaseName 
+			 * @param tableName 
+			 * @param ...args Constructor arguments
+			 * @return 
+			 */
 			template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
 			std::shared_ptr<SQLiteDatabaseModel> create(const std::string& databaseName, const std::string& tableName, Args&&... args);
 
+			/**
+			 * @brief Get specific model
+			 * @tparam T 
+			 * @param databaseName 
+			 * @param tableName 
+			 * @return nullptr if model is not created
+			 */
 			template<std::derived_from<SQLiteDatabaseModel> T>
 			std::shared_ptr<SQLiteDatabaseModel> get(const std::string& databaseName, const std::string& tableName);
 
@@ -30,14 +46,12 @@ namespace framework
 		std::shared_ptr<SQLiteDatabaseModel> SQLiteManager::create(const std::string& databaseName, const std::string& tableName, Args&&... args)
 		{
 			std::unique_lock<std::shared_mutex> lock(mutex);
-			auto database = allTables.find(databaseName);
 
-			if (database != allTables.end())
+			if (auto database = allTables.find(databaseName); database != allTables.end())
 			{
 				auto& tables = database->second;
-				auto table = tables.find(tableName);
 
-				if (table != tables.end())
+				if (auto table = tables.find(tableName); table != tables.end())
 				{
 					return std::dynamic_pointer_cast<T>(table->second);
 				}
