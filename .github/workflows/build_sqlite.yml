@@ -63,7 +63,7 @@ jobs:
           ../configure
           make -j $(nproc)
           make sqlite3.c -j $(nproc)
-          gcc sqlite3.c -shared -O3 -fPIC -lpthread -ldl -o libsqlite3.so
+          gcc -DSQLITE_THREADSAFE=1 sqlite3.c -shared -O3 -fPIC -lpthread -ldl -o libsqlite3.so
       
     - name: Prepare
       run: |

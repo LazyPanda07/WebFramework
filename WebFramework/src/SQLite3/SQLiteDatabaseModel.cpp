@@ -46,7 +46,7 @@ namespace framework
 			vector<unordered_map<string, string>> output;
 			int code;
 
-			sqlite3_prepare_v2(*db, query.data(), -1, &result, nullptr);
+			sqlite3_prepare_v2(**db, query.data(), -1, &result, nullptr);
 
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
@@ -65,7 +65,7 @@ namespace framework
 
 			if (code != SQLITE_DONE)
 			{
-				throw exceptions::SQLite3Exception(sqlite3_errmsg(*db));
+				throw exceptions::SQLite3Exception(sqlite3_errmsg(**db));
 			}
 
 			sqlite3_finalize(result);
@@ -74,7 +74,7 @@ namespace framework
 			{
 				try
 				{
-					return this->execute("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(*db)));
+					return this->execute("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(**db)));
 				}
 				catch (const exceptions::SQLite3Exception&)
 				{
@@ -85,44 +85,15 @@ namespace framework
 			return utility::SQLiteResult(move(output));
 		}
 
-		SQLiteDatabaseModel::SQLiteDatabaseModel(const string& tableName, SQLiteDatabase&& db) :
-			tableName(tableName),
-			db(move(db))
+		SQLiteDatabaseModel::SQLiteDatabaseModel(const string& tableName) :
+			tableName(tableName)
 		{
 
 		}
 
-		SQLiteDatabaseModel::SQLiteDatabaseModel(SQLiteDatabaseModel&& other) noexcept :
-			tableName(move(other.tableName)),
-			db(move(db))
+		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query)
 		{
-
-		}
-
-		SQLiteDatabaseModel& SQLiteDatabaseModel::operator = (SQLiteDatabaseModel&& other) noexcept
-		{
-			tableName = move(other.tableName);
-			db = move(other.db);
-
-			return *this;
-		}
-
-		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query, SQLiteDatabaseModel::queryType type)
-		{
-			if (type == queryType::read)
-			{
-				shared_lock<shared_mutex> lock(readWriteMutex);
-
-				return this->execute(query);
-			}
-			else if (type == queryType::write)
-			{
-				unique_lock<shared_mutex> lock(readWriteMutex);
-
-				return this->execute(query);
-			}
-
-			throw invalid_argument("invalid type variable");
+			return this->execute(query);
 		}
 
 		void SQLiteDatabaseModel::createTable(const vector<pair<string, string>>& attributes)

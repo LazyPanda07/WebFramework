@@ -230,7 +230,7 @@ string makePathToSource(const string& pathToSource)
 	filesystem::path parent = temp.parent_path();
 	filesystem::path fileName = temp.filename();
 
-	return format("{}lib{}.so", parent.string(), fileName.string());
+	return format("{}/lib{}.so", parent.string(), fileName.string());
 #else
 	return format("{}.dll", pathToSource);
 #endif
