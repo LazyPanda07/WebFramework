@@ -193,7 +193,7 @@ namespace framework
 				}
 			}
 			
-			return database ? database->get(tableName) : nullptr;
+			return database ? database->get<T>(tableName) : nullptr;
 		}
 	}
 }

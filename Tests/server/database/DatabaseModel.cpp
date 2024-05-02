@@ -1,7 +1,7 @@
 #include "DatabaseModel.h"
 
 DatabaseModel::DatabaseModel() :
-	SQLiteDatabaseModel()
+	SQLiteDatabaseModel("test")
 {
 
 }

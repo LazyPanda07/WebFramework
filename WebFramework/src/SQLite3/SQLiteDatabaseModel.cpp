@@ -107,12 +107,12 @@ namespace framework
 
 			fields.replace(fields.end() - 2, fields.end(), ")");
 
-			this->raw("CREATE TABLE IF NOT EXISTS " + tableName + ' ' + fields, queryType::write);
+			this->raw("CREATE TABLE IF NOT EXISTS " + tableName + ' ' + fields);
 		}
 
 		void SQLiteDatabaseModel::dropTable()
 		{
-			this->raw("DROP TABLE IF EXISTS " + tableName, queryType::write);
+			this->raw("DROP TABLE IF EXISTS " + tableName);
 		}
 
 		void SQLiteDatabaseModel::recreateTable(const vector<pair<string, string>>& attributes)
@@ -144,7 +144,7 @@ namespace framework
 			keys = '(' + string(keys.begin(), keys.end() - 2) + ')';
 			values = '(' + string(values.begin(), values.end() - 2) + ')';
 
-			return this->raw("INSERT INTO " + tableName + " " + keys + " VALUES " + values, queryType::write);
+			return this->raw("INSERT INTO " + tableName + " " + keys + " VALUES " + values);
 		}
 
 		void SQLiteDatabaseModel::update(const unordered_map<string, string>& attributes, const string& fieldName, const string& fieldValue)
@@ -158,14 +158,14 @@ namespace framework
 
 			query += "WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'');
 
-			this->raw(query, queryType::write);
+			this->raw(query);
 		}
 
 		void SQLiteDatabaseModel::deleteQuery(const string& fieldName, const string& fieldValue)
 		{
 			string query = "DELETE FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'');
 
-			this->raw(query, queryType::write);
+			this->raw(query);
 		}
 
 		void SQLiteDatabaseModel::deleteQuery(const unordered_map<string, string>& attributes)
@@ -179,17 +179,17 @@ namespace framework
 
 			query.resize(query.size() - 5);
 
-			this->raw(query, queryType::write);
+			this->raw(query);
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectAll()
 		{
-			return this->raw("SELECT * FROM " + tableName, queryType::read);
+			return this->raw("SELECT * FROM " + tableName);
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const string& fieldName, const string& fieldValue)
 		{
-			return this->raw("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''), queryType::read);
+			return this->raw("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''));
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const unordered_map<string, string>& attributes)
@@ -203,7 +203,7 @@ namespace framework
 
 			query.resize(query.size() - 5);
 
-			return this->raw(query, queryType::read);
+			return this->raw(query);
 		}
 
 		const string& SQLiteDatabaseModel::getTableName() const
