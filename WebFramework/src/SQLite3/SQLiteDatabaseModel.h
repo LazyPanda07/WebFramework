@@ -5,6 +5,11 @@
 #include "SQLiteDatabase.h"
 #include "SQLiteResult.h"
 
+#define DECLARE_DATABASE_NAME(DatabaseName) public: static constexpr std::string_view databaseName = DatabaseName
+#define DECLARE_TABLE_NAME(TableName) public: static constexpr std::string_view tableName = TableName
+#define DECLARE_DATABASE_AND_TABLE_NAME(DatabaseName, TableName) DECLARE_DATABASE_NAME(DatabaseName); \
+	DECLARE_TABLE_NAME(TableName);
+
 namespace framework
 {
 	namespace sqlite
@@ -14,8 +19,9 @@ namespace framework
 		/// </summary>
 		class WEB_FRAMEWORK_API SQLiteDatabaseModel
 		{
-		private:
-			std::string tableName;
+		public:
+			static constexpr std::string_view databaseName = "";
+			static constexpr std::string_view tableName = "";
 
 		protected:
 			std::shared_ptr<SQLiteDatabase> db;
@@ -42,7 +48,7 @@ namespace framework
 			/// </summary>
 			/// <param name="tableName">name of table</param>
 			/// <param name="db">temporary database object</param>
-			SQLiteDatabaseModel(const std::string& tableName);
+			SQLiteDatabaseModel() = default;
 
 			/// <summary>
 			/// Can't copy model for specific table
@@ -81,7 +87,7 @@ namespace framework
 			/// </summary>
 			/// <param name="attributes">field name - field description</param>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			virtual void createTable(const std::vector<std::pair<std::string, std::string>>& attributes);
+			virtual void createTable(const std::vector<std::pair<std::string, std::string>>& attributes = {});
 
 			/// <summary>
 			/// Delete table
@@ -94,14 +100,14 @@ namespace framework
 			/// </summary>
 			/// <param name="attributes">field name- field description</param>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			virtual void recreateTable(const std::vector<std::pair<std::string, std::string>>& attributes);
+			virtual void recreateTable(const std::vector<std::pair<std::string, std::string>>& attributes = {});
 
 			/// <summary>
 			/// INSERT row
 			/// </summary>
 			/// <param name="attributes">field name - field value</param>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
-			virtual utility::SQLiteResult insert(const std::unordered_map<std::string, std::string>& attributes);
+			virtual utility::SQLiteResult insert(const std::unordered_map<std::string, std::string>& attributes = {});
 
 			/// <summary>
 			/// UPDATE table
@@ -123,7 +129,7 @@ namespace framework
 			/// @brief Delete from table
 			/// @param attributes key - value condition
 			/// @exception framework::exceptions::SQLite3Exception sqlite3_errmsg
-			virtual void deleteQuery(const std::unordered_map<std::string, std::string>& attributes);
+			virtual void deleteQuery(const std::unordered_map<std::string, std::string>& attributes = {});
 
 			/// <summary>
 			/// SELECT all
@@ -148,12 +154,6 @@ namespace framework
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
 			virtual utility::SQLiteResult selectByField(const std::unordered_map<std::string, std::string>& attributes);
-
-			/// <summary>
-			/// Getter for tableName
-			/// </summary>
-			/// <returns>tableName</returns>
-			const std::string& getTableName() const;
 
 			virtual ~SQLiteDatabaseModel() = default;
 

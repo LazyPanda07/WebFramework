@@ -23,23 +23,13 @@ namespace framework
 			public:
 				explicit SQLiteResult(std::vector<std::unordered_map<std::string, std::string>>&& rows) noexcept;
 
-				/// @brief Copy constructor
-				/// @param other SQLiteResult to copy
-				SQLiteResult(const SQLiteResult& other);
+				SQLiteResult(const SQLiteResult& other) = default;
 
-				/// @brief Move constructor
-				/// @param other SQLiteResult to move
-				SQLiteResult(SQLiteResult&& other) noexcept;
+				SQLiteResult(SQLiteResult&& other) noexcept = default;
 
-				/// @brief Copy operator
-				/// @param other SQLiteResult to copy
-				/// @return Self
-				SQLiteResult& operator = (const SQLiteResult& other);
+				SQLiteResult& operator = (const SQLiteResult& other) = default;
 
-				/// @brief Move operator
-				/// @param other SQLiteResult to move
-				/// @return Self
-				SQLiteResult& operator = (SQLiteResult&& other) noexcept;
+				SQLiteResult& operator = (SQLiteResult&& other) noexcept = default;
 
 				/// @brief Number of rows
 				/// @return Number of rows

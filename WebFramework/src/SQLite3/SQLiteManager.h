@@ -33,49 +33,33 @@ namespace framework
 
 			private:
 				std::shared_ptr<SQLiteDatabase> database;
-				std::unordered_map<std::string, ModelsData> models;
+				std::unordered_map<std::string_view, ModelsData> models;
 				mutable std::shared_mutex mutex;
 
 			public:
 				Database(const std::string& databaseName);
 
 				template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-				std::shared_ptr<T> add(const std::string& tableName, Args&&... args);
+				std::shared_ptr<T> add(Args&&... args);
 
 				template<std::derived_from<SQLiteDatabaseModel> T>
-				std::shared_ptr<T> get(const std::string& tableName) const;
+				std::shared_ptr<T> get() const;
 
 				~Database() = default;
 			};
 
 		private:
-			std::unordered_map<std::string, std::unique_ptr<Database>> databases;
+			std::unordered_map<std::string_view, std::unique_ptr<Database>> databases;
 			mutable std::shared_mutex mutex;
 
 		public:
 			SQLiteManager() = default;
 
-			/**
-			 * @brief Add model
-			 * @tparam ...Args 
-			 * @tparam T 
-			 * @param databaseName 
-			 * @param tableName 
-			 * @param ...args Constructor arguments
-			 * @return 
-			 */
 			template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-			std::shared_ptr<T> add(const std::string& databaseName, const std::string& tableName, Args&&... args);
+			std::shared_ptr<T> add(Args&&... args);
 
-			/**
-			 * @brief Get model
-			 * @tparam T 
-			 * @param databaseName 
-			 * @param tableName 
-			 * @return nullptr if model is not created
-			 */
 			template<std::derived_from<SQLiteDatabaseModel> T>
-			std::shared_ptr<T> get(const std::string& databaseName, const std::string& tableName) const;
+			std::shared_ptr<T> get() const;
 
 			~SQLiteManager() = default;
 
@@ -121,18 +105,18 @@ namespace framework
 		}
 
 		template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-		std::shared_ptr<T> SQLiteManager::Database::add(const std::string& tableName, Args&&... args)
+		std::shared_ptr<T> SQLiteManager::Database::add(Args&&... args)
 		{
 			std::unique_lock<std::shared_mutex> lock(mutex);
 			ModelsData* data = nullptr;
 
-			if (auto modelsData = models.find(tableName); modelsData != models.end())
+			if (auto modelsData = models.find(T::tableName); modelsData != models.end())
 			{
 				data = &modelsData->second;
 			}
 			else
 			{
-				modelsData = models.emplace(tableName).first;
+				modelsData = models.emplace(T::tableName).first;
 
 				data = &modelsData->second;
 			}
@@ -141,11 +125,11 @@ namespace framework
 		}
 
 		template<std::derived_from<SQLiteDatabaseModel> T>
-		std::shared_ptr<T> SQLiteManager::Database::get(const std::string& tableName) const
+		std::shared_ptr<T> SQLiteManager::Database::get() const
 		{
 			std::shared_lock<std::shared_mutex> lock(mutex);
 			
-			if (auto modelsData = models.find(tableName); modelsData != models.end())
+			if (auto modelsData = models.find(T::tableName); modelsData != models.end())
 			{
 				return modelsData->second.get<T>();
 			}
@@ -154,40 +138,43 @@ namespace framework
 		}
 
 		template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-		std::shared_ptr<T> SQLiteManager::add(const std::string& databaseName, const std::string& tableName, Args&&... args)
+		std::shared_ptr<T> SQLiteManager::add(Args&&... args)
 		{
+			static_assert(T::databaseName.size(), "SQLiteDatabaseModel::databaseName is empty");
+			static_assert(T::tableName.size(), "SQLiteDatabaseModel::tableName is empty");
+
 			std::unique_lock<std::shared_mutex> lock(mutex);
 			std::unique_ptr<Database>* database = nullptr;
 
-			if (auto it = databases.find(databaseName); it != databases.end())
+			if (auto it = databases.find(T::databaseName); it != databases.end())
 			{
 				database = &it->second;
 			}
 			else
 			{
-				it = databases.emplace(databaseName, std::make_unique<Database>(database)).first;
+				it = databases.emplace(T::databaseName, std::make_unique<Database>(std::string(T::databaseName))).first;
 
 				database = &it->second;
 			}
 
-			return (*database)->add(tableName, std::forward<Args>(args)...);
+			return (*database)->add<T>(std::forward<Args>(args)...);
 		}
 
 		template<std::derived_from<SQLiteDatabaseModel> T>
-		std::shared_ptr<T> SQLiteManager::get(const std::string& databaseName, const std::string& tableName) const
+		std::shared_ptr<T> SQLiteManager::get() const
 		{
 			Database* database = nullptr;
 
 			{
 				std::shared_lock<std::shared_mutex> lock(mutex);
 				
-				if (auto it = databases.find(databaseName); it != databases.end())
+				if (auto it = databases.find(T::databaseName); it != databases.end())
 				{
 					database = &(*it->second);
 				}
 			}
 			
-			return database ? database->get<T>(tableName) : nullptr;
+			return database ? database->get<T>() : nullptr;
 		}
 	}
 }

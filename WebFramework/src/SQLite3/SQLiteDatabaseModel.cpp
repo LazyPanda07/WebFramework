@@ -74,7 +74,7 @@ namespace framework
 			{
 				try
 				{
-					return this->execute("SELECT * FROM " + this->getTableName() + " WHERE id=" + to_string(sqlite3_last_insert_rowid(**db)));
+					return this->execute(format("SELECT * FROM {} WHERE id={}", tableName, to_string(sqlite3_last_insert_rowid(**db))));
 				}
 				catch (const exceptions::SQLite3Exception&)
 				{
@@ -83,12 +83,6 @@ namespace framework
 			}
 
 			return utility::SQLiteResult(move(output));
-		}
-
-		SQLiteDatabaseModel::SQLiteDatabaseModel(const string& tableName) :
-			tableName(tableName)
-		{
-
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query)
@@ -107,12 +101,12 @@ namespace framework
 
 			fields.replace(fields.end() - 2, fields.end(), ")");
 
-			this->raw("CREATE TABLE IF NOT EXISTS " + tableName + ' ' + fields);
+			this->raw(format("CREATE TABLE IF NOT EXISTS {} {}", tableName, fields));
 		}
 
 		void SQLiteDatabaseModel::dropTable()
 		{
-			this->raw("DROP TABLE IF EXISTS " + tableName);
+			this->raw(format("DROP TABLE IF EXISTS ", tableName));
 		}
 
 		void SQLiteDatabaseModel::recreateTable(const vector<pair<string, string>>& attributes)
@@ -144,12 +138,12 @@ namespace framework
 			keys = '(' + string(keys.begin(), keys.end() - 2) + ')';
 			values = '(' + string(values.begin(), values.end() - 2) + ')';
 
-			return this->raw("INSERT INTO " + tableName + " " + keys + " VALUES " + values);
+			return this->raw(format("INSERT INTO {} {} VALUES ", tableName, keys, values));
 		}
 
 		void SQLiteDatabaseModel::update(const unordered_map<string, string>& attributes, const string& fieldName, const string& fieldValue)
 		{
-			string query = "UPDATE " + tableName + " SET ";
+			string query = format("UPDATE {} SET ", tableName);
 
 			for (const auto& [key, value] : attributes)
 			{
@@ -163,14 +157,12 @@ namespace framework
 
 		void SQLiteDatabaseModel::deleteQuery(const string& fieldName, const string& fieldValue)
 		{
-			string query = "DELETE FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'');
-
-			this->raw(query);
+			this->raw(format("DELETE FROM {} WHERE {} = {}", tableName, fieldName, (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'')));
 		}
 
 		void SQLiteDatabaseModel::deleteQuery(const unordered_map<string, string>& attributes)
 		{
-			string query = "DELETE FROM " + tableName + " WHERE ";
+			string query = format("DELETE FROM {} WHERE ", tableName);
 
 			for (const auto& [fieldName, fieldValue] : attributes)
 			{
@@ -184,17 +176,17 @@ namespace framework
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectAll()
 		{
-			return this->raw("SELECT * FROM " + tableName);
+			return this->raw(format("SELECT * FROM {}", tableName));
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const string& fieldName, const string& fieldValue)
 		{
-			return this->raw("SELECT * FROM " + tableName + " WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\''));
+			return this->raw(format("SELECT * FROM {} WHERE {} = {}", tableName, fieldName, (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'')));
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const unordered_map<string, string>& attributes)
 		{
-			string query = "SELECT * FROM " + tableName + " WHERE ";
+			string query = format("SELECT * FROM {} WHERE ", tableName);
 
 			for (const auto& [fieldName, fieldValue] : attributes)
 			{
@@ -204,11 +196,6 @@ namespace framework
 			query.resize(query.size() - 5);
 
 			return this->raw(query);
-		}
-
-		const string& SQLiteDatabaseModel::getTableName() const
-		{
-			return tableName;
 		}
 	}
 }

@@ -14,32 +14,6 @@ namespace framework
 
 			}
 
-			SQLiteResult::SQLiteResult(const SQLiteResult& other) :
-				rows(other.rows)
-			{
-
-			}
-
-			SQLiteResult::SQLiteResult(SQLiteResult&& other) noexcept :
-				rows(move(other.rows))
-			{
-
-			}
-
-			SQLiteResult& SQLiteResult::operator = (const SQLiteResult& other)
-			{
-				rows = other.rows;
-
-				return *this;
-			}
-
-			SQLiteResult& SQLiteResult::operator = (SQLiteResult&& other) noexcept
-			{
-				rows = move(other.rows);
-
-				return *this;
-			}
-
 			size_t SQLiteResult::size() const
 			{
 				return rows.size();
@@ -82,17 +56,17 @@ namespace framework
 
 			unordered_map<string, string>& SQLiteResult::at(size_t index)
 			{
-				return rows[index];
+				return rows.at(index);
 			}
 
 			const unordered_map<string, string>& SQLiteResult::at(size_t index) const
 			{
-				return rows[index];
+				return rows.at(index);
 			}
 
 			string& SQLiteResult::at(size_t index, const string& columnName)
 			{
-				return rows[index][columnName];
+				return rows[index].at(columnName);
 			}
 
 			const string& SQLiteResult::at(size_t index, const string& columnName) const

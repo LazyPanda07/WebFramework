@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseStatefulExecutor.h>
+#include <Executors/BaseStatelessExecutor.h>
 
-class CRUDExecutor : public framework::BaseStatefulExecutor
+class CRUDExecutor : public framework::BaseStatelessExecutor
 {
 public:
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
@@ -11,5 +11,7 @@ public:
 
 	void doPut(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-	void destroy() override;
+	void doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+
+	void doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 };

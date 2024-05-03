@@ -234,26 +234,26 @@ namespace framework
 		/// <returns>self for builder pattern</returns>
 		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
 
-		/// <summary>
-		/// Get instance of SQLiteDatabaseModel subclass for database operations
-		/// </summary>
-		/// <typeparam name="SQLiteDatabaseModelSubclass">subclass of SQLiteDatabaseModel</typeparam>
-		/// <typeparam name="...Args">arguments for constructor if needs to create new instance</typeparam>
-		/// <param name="databaseName">name of database</param>
-		/// <param name="tableName">name of table</param>
-		/// <param name="...args">arguments for constructor if needs to create new instance</param>
-		/// <returns>instance of SQLiteDatabaseModel subclass</returns>
-		template<typename SQLiteDatabaseModelSubclass, typename... Args>
-		smartPointer<sqlite::SQLiteDatabaseModel>& getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args);
+		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
+		std::shared_ptr<T> createModel(Args&&... args);
+
+		template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
+		std::shared_ptr<T> getModel() const;
 
 		friend class ExecutorsManager;
 
 		~HTTPRequest() = default;
 	};
 
-	template<typename SQLiteDatabaseModelSubclass, typename... Args>
-	smartPointer<sqlite::SQLiteDatabaseModel>& HTTPRequest::getDatabaseModelInstance(const std::string& databaseName, const std::string& tableName, Args&&... args)
+	template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
+	std::shared_ptr<T> HTTPRequest::createModel(Args&&... args)
 	{
-		return database.get<SQLiteDatabaseModelSubclass>(databaseName, tableName, std::forward<Args>(args)...);
+		return database.add<T>(std::forward<Args>(args)...);
+	}
+
+	template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
+	std::shared_ptr<T> HTTPRequest::getModel() const
+	{
+		return database.get<T>();
 	}
 }

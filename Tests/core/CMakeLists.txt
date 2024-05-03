@@ -13,6 +13,7 @@ add_executable(
 	main.cpp
 	utilities/utilities.cpp
 	cases/Requests.cpp
+	cases/Database.cpp
 )
 
 target_include_directories(
