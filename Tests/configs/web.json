@@ -5,6 +5,6 @@
   },
   "CRUDExecutor": {
     "route": "database",
-    "loadType": "dynamic"
+    "loadType": "initialization"
   }
 }

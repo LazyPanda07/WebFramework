@@ -35,8 +35,6 @@ void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPRespon
 			{ "amount", "int NOT NULL" }
 		}
 	);
-
-	response.addBody("qwe");
 }
 
 void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
