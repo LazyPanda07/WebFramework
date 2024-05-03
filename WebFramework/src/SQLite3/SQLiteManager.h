@@ -116,7 +116,7 @@ namespace framework
 			}
 			else
 			{
-				modelsData = models.emplace(T::tableName).first;
+				modelsData = models.emplace(T::tableName, ModelsData()).first;
 
 				data = &modelsData->second;
 			}
