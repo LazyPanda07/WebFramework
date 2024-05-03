@@ -121,7 +121,7 @@ namespace framework
 				data = &modelsData->second;
 			}
 
-			return data->add<T>(std::forward<Args>(args)...);
+			return data->add<T>(database, std::forward<Args>(args)...);
 		}
 
 		template<std::derived_from<SQLiteDatabaseModel> T>
@@ -131,7 +131,9 @@ namespace framework
 			
 			if (auto modelsData = models.find(T::tableName); modelsData != models.end())
 			{
-				return modelsData->second.get<T>();
+				ModelsData& data = modelsData->second;
+
+				return data.get<T>();
 			}
 
 			return nullptr;
