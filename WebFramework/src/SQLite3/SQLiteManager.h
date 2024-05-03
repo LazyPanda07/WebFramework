@@ -131,7 +131,7 @@ namespace framework
 			
 			if (auto modelsData = models.find(T::tableName); modelsData != models.end())
 			{
-				ModelsData& data = modelsData->second;
+				const ModelsData& data = modelsData->second;
 
 				return data.get<T>();
 			}
@@ -165,7 +165,7 @@ namespace framework
 		template<std::derived_from<SQLiteDatabaseModel> T>
 		std::shared_ptr<T> SQLiteManager::get() const
 		{
-			Database* database = nullptr;
+			const Database* database = nullptr;
 
 			{
 				std::shared_lock<std::shared_mutex> lock(mutex);

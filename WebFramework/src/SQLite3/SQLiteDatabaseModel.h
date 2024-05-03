@@ -24,7 +24,7 @@ namespace framework
 			static constexpr std::string_view tableName = "";
 
 		protected:
-			std::shared_ptr<SQLiteDatabase> db;
+			std::shared_ptr<SQLiteDatabase> database;
 
 		protected:
 			/// <summary>
@@ -43,35 +43,14 @@ namespace framework
 			utility::SQLiteResult execute(const std::string& query);
 
 		public:
-			/// <summary>
-			/// Specify table for database
-			/// </summary>
-			/// <param name="tableName">name of table</param>
-			/// <param name="db">temporary database object</param>
 			SQLiteDatabaseModel() = default;
 
-			/// <summary>
-			/// Can't copy model for specific table
-			/// </summary>
-			/// <param name="">other SQLiteDatabaseModel instance</param>
 			SQLiteDatabaseModel(const SQLiteDatabaseModel&) = delete;
 
-			/// <summary>
-			/// Can't copy model for specific table
-			/// </summary>
-			/// <param name="">other SQLiteDatabaseModel instance</param>
 			SQLiteDatabaseModel& operator = (const SQLiteDatabaseModel&) = delete;
 
-			/// <summary>
-			/// Move another SQLiteDatabaseModel
-			/// </summary>
-			/// <param name="other">another SQLiteDatabaseModel instance</param>
 			SQLiteDatabaseModel(SQLiteDatabaseModel&& other) noexcept = default;
 
-			/// <summary>
-			/// Move another SQLiteDatabaseModel
-			/// </summary>
-			/// <param name="other">another SQLiteDatabaseModel instance</param>
 			SQLiteDatabaseModel& operator = (SQLiteDatabaseModel&& other) noexcept = default;
 
 			/// <summary>

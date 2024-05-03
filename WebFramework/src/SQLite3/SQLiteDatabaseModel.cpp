@@ -46,7 +46,7 @@ namespace framework
 			vector<unordered_map<string, string>> output;
 			int code;
 
-			sqlite3_prepare_v2(**db, query.data(), -1, &result, nullptr);
+			sqlite3_prepare_v2(**database, query.data(), -1, &result, nullptr);
 
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
@@ -65,7 +65,7 @@ namespace framework
 
 			if (code != SQLITE_DONE)
 			{
-				throw exceptions::SQLite3Exception(sqlite3_errmsg(**db));
+				throw exceptions::SQLite3Exception(sqlite3_errmsg(**database));
 			}
 
 			sqlite3_finalize(result);
@@ -74,7 +74,7 @@ namespace framework
 			{
 				try
 				{
-					return this->execute(format("SELECT * FROM {} WHERE id={}", tableName, to_string(sqlite3_last_insert_rowid(**db))));
+					return this->execute(format("SELECT * FROM {} WHERE id={}", tableName, to_string(sqlite3_last_insert_rowid(**database))));
 				}
 				catch (const exceptions::SQLite3Exception&)
 				{
