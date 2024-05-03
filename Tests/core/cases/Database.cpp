@@ -16,6 +16,8 @@ TEST(Database, Create)
 
 	stream >> response;
 
+	std::cout << "Response: " << response << std::endl;
+
 	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok);
 }
 
