@@ -30,7 +30,7 @@ void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPRespon
 	request.createModel<DatabaseModel>()->createTable
 	(
 		{
-			{ "id", "int PRIMARY KEY AUTO_INCREMENT" },
+			{ "id", "int PRIMARY KEY AUTOINCREMENT" },
 			{ "name", "varchar(255) NOT NULL" },
 			{ "amount", "int NOT NULL" }
 		}
