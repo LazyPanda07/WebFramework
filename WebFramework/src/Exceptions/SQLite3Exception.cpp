@@ -7,7 +7,7 @@ namespace framework
 	namespace exceptions
 	{
 		SQLite3Exception::SQLite3Exception(const string& errorMessage, string_view query) :
-			DatabaseException(format("Exception: {}. Query: {}", errorMessage, query))
+			DatabaseException(format("{}. Query: {}", errorMessage, query))
 		{
 
 		}
