@@ -55,15 +55,14 @@ namespace framework
 
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
+				unordered_map<string, string>& row = output.emplace_back();
+
 				for (int i = 0; i < sqlite3_column_count(result); i++)
 				{
-					output.back().insert
+					row.emplace
 					(
-						make_pair
-						(
-							sqlite3_column_name(result, i),
-							reinterpret_cast<const char*>(sqlite3_column_text(result, i))
-						)
+						sqlite3_column_name(result, i),
+						reinterpret_cast<const char*>(sqlite3_column_text(result, i))
 					);
 				}
 			}
