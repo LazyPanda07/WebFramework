@@ -15,6 +15,11 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 	{
 		json::utility::jsonObject object;
 
+		for (const auto& [key, printValue] : value)
+		{
+			std::cout << key << ' ' << printValue << std::endl;
+		}
+
 		object["id"] = value.at("id");
 		object["name"] = value.at("name");
 		object["amount"] = value.at("amount");

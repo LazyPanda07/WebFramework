@@ -56,8 +56,9 @@ namespace framework
 			while ((code = sqlite3_step(result)) == SQLITE_ROW)
 			{
 				unordered_map<string, string>& row = output.emplace_back();
+				int columnCount = sqlite3_column_count(result);
 
-				for (int i = 0; i < sqlite3_column_count(result); i++)
+				for (int i = 0; i < columnCount; i++)
 				{
 					row.emplace
 					(
@@ -78,7 +79,7 @@ namespace framework
 			{
 				try
 				{
-					return this->execute(format("SELECT * FROM {} WHERE id={}", this->getTableName(), to_string(sqlite3_last_insert_rowid(**database))));
+					return this->execute(format("SELECT * FROM {} WHERE id = {}", this->getTableName(), to_string(sqlite3_last_insert_rowid(**database))));
 				}
 				catch (const exceptions::SQLite3Exception&)
 				{
@@ -97,8 +98,6 @@ namespace framework
 
 		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query)
 		{
-			cout << query << endl;
-
 			return this->execute(query);
 		}
 
