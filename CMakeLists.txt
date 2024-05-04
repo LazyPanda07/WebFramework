@@ -23,7 +23,6 @@ set(
 	crypto
 )
 option(SHARED_WEB_FRAMEWORK "" OFF)
-option(USE_HTTPS "" OFF)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
@@ -150,11 +149,6 @@ if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 endif ()
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-	install(DIRECTORY WebFramework/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
-	install(DIRECTORY WebFramework/vendor/sqlite3/include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/vendor/sqlite3/)
-endif ()
-
-if (${USE_HTTPS})
-	install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
-endif ()
+install(DIRECTORY WebFramework/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY WebFramework/vendor/sqlite3/include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/vendor/sqlite3/)
+install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})

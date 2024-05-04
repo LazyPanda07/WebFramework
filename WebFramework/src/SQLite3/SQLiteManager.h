@@ -23,7 +23,7 @@ namespace framework
 					ModelsData() = default;
 
 					template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-					std::shared_ptr<T> add(const std::shared_ptr<SQLiteDatabase>& database, Args&&... args);
+					std::shared_ptr<T> add(std::shared_ptr<SQLiteDatabase> database, Args&&... args);
 
 					template<std::derived_from<SQLiteDatabaseModel> T>
 					std::shared_ptr<T> get() const;
@@ -67,7 +67,7 @@ namespace framework
 		};
 
 		template<std::derived_from<SQLiteDatabaseModel> T, typename... Args>
-		std::shared_ptr<T> SQLiteManager::Database::ModelsData::add(const std::shared_ptr<SQLiteDatabase>& database, Args&&... args)
+		std::shared_ptr<T> SQLiteManager::Database::ModelsData::add(std::shared_ptr<SQLiteDatabase> database, Args&&... args)
 		{
 			size_t typeHash = typeid(T).hash_code();
 
@@ -81,7 +81,9 @@ namespace framework
 
 			T* model = static_cast<T*>(malloc(sizeof(T)));
 
-			model->database = database;
+			memset(model, 0, sizeof(T));
+
+			model->databaseConstructor = database;
 
 			model = new (model)(T)(std::forward<Args>(args)...);
 
