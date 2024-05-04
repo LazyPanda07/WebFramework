@@ -98,6 +98,8 @@ namespace framework
 
 		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query)
 		{
+			cout << query << endl;
+
 			return this->execute(query);
 		}
 
