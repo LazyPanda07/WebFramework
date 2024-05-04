@@ -42,28 +42,20 @@ TEST(Database, Select)
 
 	stream >> response;
 
-	web::HTTPParser parser(response);
-
-	std::cout << parser.getBody() << std::endl;
-
-	ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
+	ASSERT_EQ(web::HTTPParser(response).getJSON().getArray("data").size(), 11) << response;
 }
 
 TEST(Database, Update)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parameters("database").build();
+	std::string request = web::HTTPBuilder().patchRequest().parameters("database").build();
 	std::string response;
 
 	stream << request;
 
 	stream >> response;
 
-	web::HTTPParser parser(response);
-
-	std::cout << parser.getBody() << std::endl;
-
-	ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
+	ASSERT_EQ(web::HTTPParser(response).getJSON().getArray("data").size(), 1) << response;
 }
 
 TEST(Database, Delete)

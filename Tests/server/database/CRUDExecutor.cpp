@@ -81,9 +81,9 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 	{
 		json::utility::jsonObject object;
 
-		object["id"] = value.at("id");
-		object["name"] = value.at("name");
-		object["amount"] = value.at("amount");
+		object.setInt("id", std::stoi(value.at("id")));
+		object.setString("name", value.at("name"));
+		object.setInt("amount", std::stoi(value.at("amount")));
 
 		json::utility::appendArray(object, data);
 	}
