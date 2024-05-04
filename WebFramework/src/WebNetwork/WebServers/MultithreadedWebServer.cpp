@@ -85,27 +85,33 @@ namespace framework
 			{
 				break;
 			}
-			catch (const exceptions::BadRequestException&) // 400
+			catch (const exceptions::BadRequestException& e) // 400
 			{
-				resources->badRequestError(response);
+				resources->badRequestError(response, &e);
 
 				stream << response;
 			}
-			catch (const file_manager::exceptions::FileDoesNotExistException&) // 404
+			catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 			{
-				resources->notFoundError(response);
+				resources->notFoundError(response, &e);
 
 				stream << response;
 			}
-			catch (const exceptions::BaseExecutorException&) // 500
+			catch (const exceptions::BaseExecutorException& e) // 500
 			{
-				resources->internalServerError(response);
+				resources->internalServerError(response, &e);
+
+				stream << response;
+			}
+			catch (const exception& e)
+			{
+				resources->internalServerError(response, &e);
 
 				stream << response;
 			}
 			catch (...)	// 500
 			{
-				resources->internalServerError(response);
+				resources->internalServerError(response, nullptr);
 
 				stream << response;
 			}

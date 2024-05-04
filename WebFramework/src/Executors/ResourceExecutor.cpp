@@ -176,25 +176,64 @@ namespace framework
 		return assets;
 	}
 
-	void ResourceExecutor::notFoundError(HTTPResponse& response)
+	void ResourceExecutor::notFoundError(HTTPResponse& response, const exception* exception)
 	{
+		const string& message = HTMLErrorsData[HTMLErrors::notFound404];
+
+#ifdef NDEBUG
+		response.addBody(message);
+#else
+		if (exception)
+		{
+			response.addBody(format("{} Exception: {}", message, exception->what()));
+		}
+		else
+		{
+			response.addBody(message);
+		}
+#endif
+
 		response.setResponseCode(web::responseCodes::notFound);
-
-		response.addBody(HTMLErrorsData[HTMLErrors::notFound404]);
 	}
 
-	void ResourceExecutor::badRequestError(HTTPResponse& response)
+	void ResourceExecutor::badRequestError(HTTPResponse& response, const exception* exception)
 	{
+		const string& message = HTMLErrorsData[HTMLErrors::badRequest400];
+
+#ifdef NDEBUG
+		response.addBody(message);
+#else
+		if (exception)
+		{
+			response.addBody(format("{} Exception: {}", message, exception->what()));
+		}
+		else
+		{
+			response.addBody(message);
+		}
+#endif
+
 		response.setResponseCode(web::responseCodes::badRequest);
-
-		response.addBody(HTMLErrorsData[HTMLErrors::badRequest400]);
 	}
 
-	void ResourceExecutor::internalServerError(HTTPResponse& response)
-	{
-		response.setResponseCode(web::responseCodes::internalServerError);
+	void ResourceExecutor::internalServerError(HTTPResponse& response, const exception* exception)
+	{		
+		const string& message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
-		response.addBody(HTMLErrorsData[HTMLErrors::internalServerError500]);
+#ifdef NDEBUG
+		response.addBody(message);
+#else
+		if (exception)
+		{
+			response.addBody(format("{} Exception: {}", message, exception->what()));
+		}
+		else
+		{
+			response.addBody(message);
+		}
+#endif
+
+		response.setResponseCode(web::responseCodes::internalServerError);
 	}
 
 	bool ResourceExecutor::getIsCaching() const

@@ -86,27 +86,33 @@ namespace framework
 						{
 							webExceptionAcquired = true;
 						}
-						catch (const exceptions::BadRequestException&) // 400
+						catch (const exceptions::BadRequestException& e) // 400
 						{
-							resourceExecutor.badRequestError(response);
+							resourceExecutor.badRequestError(response, &e);
 
 							stream << response;
 						}
-						catch (const file_manager::exceptions::FileDoesNotExistException&) // 404
+						catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 						{
-							resourceExecutor.notFoundError(response);
+							resourceExecutor.notFoundError(response, &e);
 
 							stream << response;
 						}
-						catch (const exceptions::BaseExecutorException&) // 500
+						catch (const exceptions::BaseExecutorException& e) // 500
 						{
-							resourceExecutor.internalServerError(response);
+							resourceExecutor.internalServerError(response, &e);
+
+							stream << response;
+						}
+						catch (const exception& e)
+						{
+							resourceExecutor.internalServerError(response, &e);
 
 							stream << response;
 						}
 						catch (...) // 500
 						{
-							resourceExecutor.internalServerError(response);
+							resourceExecutor.internalServerError(response, nullptr);
 
 							stream << response;
 						}
@@ -129,27 +135,33 @@ namespace framework
 		{
 			return true;
 		}
-		catch (const exceptions::BadRequestException&) // 400
+		catch (const exceptions::BadRequestException& e) // 400
 		{
-			resourceExecutor.badRequestError(response);
+			resourceExecutor.badRequestError(response, &e);
 
 			stream << response;
 		}
-		catch (const file_manager::exceptions::FileDoesNotExistException&) // 404
+		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
-			resourceExecutor.notFoundError(response);
+			resourceExecutor.notFoundError(response, &e);
 
 			stream << response;
 		}
-		catch (const exceptions::BaseExecutorException&) // 500
+		catch (const exceptions::BaseExecutorException& e) // 500
 		{
-			resourceExecutor.internalServerError(response);
+			resourceExecutor.internalServerError(response, &e);
+
+			stream << response;
+		}
+		catch (const exception& e)
+		{
+			resourceExecutor.internalServerError(response, &e);
 
 			stream << response;
 		}
 		catch (...) // 500
 		{
-			resourceExecutor.internalServerError(response);
+			resourceExecutor.internalServerError(response, nullptr);
 
 			stream << response;
 		}

@@ -98,19 +98,19 @@ namespace framework
 		/// Send 404.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void notFoundError(HTTPResponse& response);
+		void notFoundError(HTTPResponse& response, const std::exception* exception);
 
 		/// <summary>
 		/// Send 400.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badRequestError(HTTPResponse& response);
+		void badRequestError(HTTPResponse& response, const std::exception* exception);
 
 		/// <summary>
 		/// Send 500.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void internalServerError(HTTPResponse& response);
+		void internalServerError(HTTPResponse& response, const std::exception* exception);
 
 		bool getIsCaching() const;
 
