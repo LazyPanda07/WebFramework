@@ -8,7 +8,7 @@ namespace framework
 {
 	namespace sqlite
 	{
-		bool SQLiteDatabaseModel::isNumber(const string& source)
+		bool SQLiteDatabaseModel::isNumber(string_view source)
 		{
 			if (source.empty())
 			{
@@ -38,6 +38,11 @@ namespace framework
 			}
 
 			return false;
+		}
+
+		string SQLiteDatabaseModel::convertToValue(string_view source)
+		{
+			return SQLiteDatabaseModel::isNumber(source) ? string(source) : format("'{}'", source);
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::execute(const string& query)
@@ -102,7 +107,7 @@ namespace framework
 
 			for (const auto& [key, value] : attributes)
 			{
-				fields += key + ' ' + value + ", ";
+				fields += format("{} {}, ", key, value);
 			}
 
 			fields.replace(fields.end() - 2, fields.end(), ")");
@@ -112,7 +117,7 @@ namespace framework
 
 		void SQLiteDatabaseModel::dropTable()
 		{
-			this->raw(format("DROP TABLE IF EXISTS ", this->getTableName()));
+			this->raw(format("DROP TABLE IF EXISTS {}", this->getTableName()));
 		}
 
 		void SQLiteDatabaseModel::recreateTable(const vector<pair<string, string>>& attributes)
@@ -122,29 +127,18 @@ namespace framework
 			this->createTable(attributes);
 		}
 
-		utility::SQLiteResult SQLiteDatabaseModel::insert(const unordered_map<string,string>& attributes)
+		utility::SQLiteResult SQLiteDatabaseModel::insert(const unordered_map<string, string>& attributes)
 		{
 			string keys;
 			string values;
 
 			for (const auto& [key, value] : attributes)
 			{
-				keys += key + ", ";
-
-				if (isNumber(value))
-				{
-					values += value + ", ";
-				}
-				else
-				{
-					values += '\'' + value + "', ";
-				}
+				keys += format("{}, ", key);
+				values += format("{}, ", SQLiteDatabaseModel::convertToValue(value));
 			}
 
-			keys = '(' + string(keys.begin(), keys.end() - 2) + ')';
-			values = '(' + string(values.begin(), values.end() - 2) + ')';
-
-			return this->raw(format("INSERT INTO {} {} VALUES ", this->getTableName(), keys, values));
+			return this->raw(format("INSERT INTO {} ({}) VALUES ({})", this->getTableName(), string(keys.begin(), keys.end() - 2), string(values.begin(), values.end() - 2)));
 		}
 
 		void SQLiteDatabaseModel::update(const unordered_map<string, string>& attributes, const string& fieldName, const string& fieldValue)
@@ -153,17 +147,17 @@ namespace framework
 
 			for (const auto& [key, value] : attributes)
 			{
-				query += key + " = " + (isNumber(value) ? value : '\'' + value + '\'') + ' ';
+				query += format("{} = {} ", key, SQLiteDatabaseModel::convertToValue(value));
 			}
 
-			query += "WHERE " + fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'');
+			query += format("WHERE {} = {}", fieldName, SQLiteDatabaseModel::convertToValue(fieldValue));
 
 			this->raw(query);
 		}
 
 		void SQLiteDatabaseModel::deleteQuery(const string& fieldName, const string& fieldValue)
 		{
-			this->raw(format("DELETE FROM {} WHERE {} = {}", this->getTableName(), fieldName, (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'')));
+			this->raw(format("DELETE FROM {} WHERE {} = {}", this->getTableName(), fieldName, SQLiteDatabaseModel::convertToValue(fieldValue)));
 		}
 
 		void SQLiteDatabaseModel::deleteQuery(const unordered_map<string, string>& attributes)
@@ -172,7 +166,7 @@ namespace framework
 
 			for (const auto& [fieldName, fieldValue] : attributes)
 			{
-				query += fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'') + " AND ";
+				query += format("{} = {} AND ", fieldName, SQLiteDatabaseModel::convertToValue(fieldValue));
 			}
 
 			query.resize(query.size() - 5);
@@ -187,7 +181,7 @@ namespace framework
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const string& fieldName, const string& fieldValue)
 		{
-			return this->raw(format("SELECT * FROM {} WHERE {} = {}", this->getTableName(), fieldName, (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'')));
+			return this->raw(format("SELECT * FROM {} WHERE {} = {}", this->getTableName(), fieldName, SQLiteDatabaseModel::convertToValue(fieldValue)));
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::selectByField(const unordered_map<string, string>& attributes)
@@ -196,7 +190,7 @@ namespace framework
 
 			for (const auto& [fieldName, fieldValue] : attributes)
 			{
-				query += fieldName + " = " + (isNumber(fieldValue) ? fieldValue : '\'' + fieldValue + '\'') + " AND ";
+				query += format("{} = {} AND ", fieldName, SQLiteDatabaseModel::convertToValue(fieldValue));
 			}
 
 			query.resize(query.size() - 5);

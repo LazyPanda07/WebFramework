@@ -30,12 +30,19 @@ namespace framework
 			std::shared_ptr<SQLiteDatabase> databaseConstructor;
 
 		protected:
-			/// <summary>
-			/// Check that string represent number
-			/// </summary>
-			/// <param name="source">attribute value</param>
-			/// <returns>true if source is correct number, false otherwise</returns>
-			static bool isNumber(const std::string& source);
+			/**
+			 * @brief Check that string represent number
+			 * @param source Attribute value
+			 * @return true if source is correct number, false otherwise
+			 */
+			static bool isNumber(std::string_view source);
+
+			/**
+			 * @brief If source is string surrounds it with quotes
+			 * @param source Attribute value
+			 * @return 
+			 */
+			static std::string convertToValue(std::string_view source);
 
 		protected:
 			/// <summary>
