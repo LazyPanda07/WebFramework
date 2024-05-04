@@ -5,10 +5,10 @@
 #include "SQLiteDatabase.h"
 #include "SQLiteResult.h"
 
-#define DECLARE_DATABASE_NAME(DatabaseName) public: static constexpr std::string_view databaseName = DatabaseName
-#define DECLARE_TABLE_NAME(TableName) public: static constexpr std::string_view tableName = TableName
+#define DECLARE_DATABASE_NAME(DatabaseName) public: static constexpr std::string_view databaseName = DatabaseName; inline std::string_view getDatabaseName() const override { return databaseName; }
+#define DECLARE_TABLE_NAME(TableName) public: static constexpr std::string_view tableName = TableName; inline std::string_view getTableName() const override { return tableName; }
 #define DECLARE_DATABASE_AND_TABLE_NAME(DatabaseName, TableName) DECLARE_DATABASE_NAME(DatabaseName); \
-	DECLARE_TABLE_NAME(TableName);
+                                                                 DECLARE_TABLE_NAME(TableName);
 
 namespace framework
 {
@@ -136,6 +136,10 @@ namespace framework
 			/// <returns>all rows that accept condition</returns>
 			/// <exception cref="framework::exceptions::SQLite3Exception">sqlite3_errmsg</exception>
 			virtual utility::SQLiteResult selectByField(const std::unordered_map<std::string, std::string>& attributes);
+
+			virtual std::string_view getDatabaseName() const = 0;
+
+			virtual std::string_view getTableName() const = 0;
 
 			virtual ~SQLiteDatabaseModel() = default;
 
