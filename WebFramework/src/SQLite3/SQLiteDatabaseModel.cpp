@@ -65,7 +65,7 @@ namespace framework
 
 			if (code != SQLITE_DONE)
 			{
-				throw exceptions::SQLite3Exception(sqlite3_errmsg(**database));
+				throw exceptions::SQLite3Exception(sqlite3_errmsg(**database), query);
 			}
 
 			sqlite3_finalize(result);

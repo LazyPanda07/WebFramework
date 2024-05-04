@@ -16,9 +16,7 @@ TEST(Database, Create)
 
 	stream >> response;
 
-	std::cout << "Response: " << response << std::endl;
-
-	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok);
+	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
 }
 
 TEST(Database, Insert)
@@ -31,7 +29,7 @@ TEST(Database, Insert)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok);
+	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
 }
 
 TEST(Database, Select)
@@ -48,7 +46,7 @@ TEST(Database, Select)
 
 	std::cout << parser.getBody() << std::endl;
 
-	ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok);
+	ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
 }
 
 TEST(Database, Update)
@@ -65,7 +63,7 @@ TEST(Database, Update)
 
 	std::cout << parser.getBody() << std::endl;
 
-	ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok);
+	ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
 }
 
 TEST(Database, Delete)
@@ -78,5 +76,5 @@ TEST(Database, Delete)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok);
+	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
 }
