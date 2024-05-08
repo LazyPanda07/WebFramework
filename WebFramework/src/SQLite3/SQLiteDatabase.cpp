@@ -18,6 +18,8 @@ namespace framework
 		{
 			sqlite3* connection = nullptr;
 
+			this->databaseName += ".sqlite";
+
 			if (sqlite3_open(databaseName.data(), &connection) != SQLITE_OK)
 			{
 				throw exceptions::SQLite3Exception(format("Can't open {} database", databaseName));

@@ -6,5 +6,9 @@
   "CRUDExecutor": {
     "route": "database",
     "loadType": "initialization"
+  },
+  "MultiUserExecutor": {
+    "route": "multi_user_database",
+    "loadType": "dynamic"
   }
 }
