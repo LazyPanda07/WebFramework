@@ -20,9 +20,9 @@ namespace framework
 
 			this->databaseName += ".sqlite";
 
-			if (sqlite3_open(databaseName.data(), &connection) != SQLITE_OK)
+			if (sqlite3_open(this->databaseName.data(), &connection) != SQLITE_OK)
 			{
-				throw exceptions::SQLite3Exception(format("Can't open {} database", databaseName));
+				throw exceptions::SQLite3Exception(format("Can't open {} database", this->databaseName));
 			}
 
 			db = unique_ptr<sqlite3>(connection);
