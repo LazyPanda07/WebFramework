@@ -17,7 +17,9 @@ project(Database)
 add_library(
 	${PROJECT_NAME} SHARED
 	CRUDExecutor.cpp
+	MultiUserExecutor.cpp
 	DatabaseModel.cpp
+	MultiUserDatabaseModel.cpp
 )
 
 target_include_directories(

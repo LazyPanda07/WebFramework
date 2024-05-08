@@ -14,6 +14,7 @@ add_executable(
 	utilities/utilities.cpp
 	cases/Requests.cpp
 	cases/Database.cpp
+	cases/MultiUserDatabase.cpp
 )
 
 target_include_directories(

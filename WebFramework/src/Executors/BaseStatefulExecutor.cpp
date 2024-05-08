@@ -8,4 +8,9 @@ namespace framework
 	{
 		return executorType::stateful;
 	}
+
+	void BaseStatefulExecutor::destroy()
+	{
+		
+	}
 }

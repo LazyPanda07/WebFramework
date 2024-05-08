@@ -20,6 +20,8 @@ namespace framework
 		/// <returns>executorType::stateful</returns>
 		virtual executorType getType() const final override;
 
+		virtual void destroy() override;
+
 		virtual ~BaseStatefulExecutor() = default;
 	};
 }
