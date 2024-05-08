@@ -30,7 +30,7 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 		json::utility::jsonObject object;
 
 		object.setInt("id", std::stoi(value.at("id")));
-        object.setInt("user_id", std::stoi(value.at("user_id")))
+        object.setInt("user_id", std::stoi(value.at("user_id")));
 		object.setString("data", value.at("data"));
 
 		json::utility::appendArray(object, data);
@@ -59,7 +59,7 @@ void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRe
     (
         {
             { "user_id", std::to_string(userId) },
-            { "data", request.getJSON()["data"].getString() }
+            { "data", request.getJSON().getString("data") }
         }
     );
 }

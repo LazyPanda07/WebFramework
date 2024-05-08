@@ -78,6 +78,6 @@ TEST(Database, MultiUser)
 
     for (std::future<void>& awaiter : awaiters)
     {
-        await.wait();
+        awaiter.wait();
     }
 }
