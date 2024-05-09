@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseStatefulExecutor.h>
+#include <Executors/BaseHeavyOperationStatefulExecutor.h>
 
-class MultiUserExecutor : public framework::BaseStatefulExecutor
+class MultiUserExecutor : public framework::BaseHeavyOperationStatefulExecutor
 {
 private:
 	size_t userId;
