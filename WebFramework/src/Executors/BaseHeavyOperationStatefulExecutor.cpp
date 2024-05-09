@@ -8,4 +8,9 @@ namespace framework
 	{
 		return executorType::heavyOperationStateful;
 	}
+
+	void BaseHeavyOperationStatefulExecutor::destroy()
+	{
+
+	}
 }

@@ -19,6 +19,8 @@ namespace framework
 		/// @return executorType::heavyOperationStateful
 		virtual executorType getType() const final override;
 
+		virtual void destroy() override;
+
 		virtual ~BaseHeavyOperationStatefulExecutor() = default;
 	};
 }
