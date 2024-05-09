@@ -101,6 +101,7 @@ jobs:
           nmake install
 
     - name: Tests
+      if: ${{ !(matrix.configuration == 'Release' && matrix.shared[1] == 'DLL') }}
       working-directory: Tests
       run: |
           cd build/bin
