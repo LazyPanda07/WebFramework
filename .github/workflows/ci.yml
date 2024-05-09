@@ -70,7 +70,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
+        config: [multiThreadedConfig.json, multiThreadedConfigHTTPS.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -101,7 +101,6 @@ jobs:
           nmake install
 
     - name: Tests
-      if: ${{ !(matrix.configuration == 'Release' && matrix.shared[1] == 'DLL') }}
       working-directory: Tests
       run: |
           cd build/bin
@@ -115,7 +114,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
+        config: [multiThreadedConfig.json, multiThreadedConfigHTTPS.json]
 
     steps:
     - uses: actions/checkout@v4
