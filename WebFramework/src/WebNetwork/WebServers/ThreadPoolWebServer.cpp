@@ -125,8 +125,7 @@ namespace framework
 
 				return false;
 			}
-
-			if (response)
+			else if (response)
 			{
 				stream << response;
 			}
