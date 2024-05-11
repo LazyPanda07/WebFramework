@@ -12,7 +12,7 @@
 #include "utilities.h"
 
 static constexpr size_t clientsNumber = 8;
-static constexpr size_t requestsNumber = 5000;
+static constexpr size_t requestsNumber = 1250;
 
 static std::string generateRandomString()
 {

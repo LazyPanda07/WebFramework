@@ -12,7 +12,7 @@ valgrind --max-threads=1000 --leak-check=full --show-leak-kinds=all --track-orig
 
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
 
-
+kill -TERM $(cat start_server.txt)
 
 cat memory_leaks_result.txt
 
