@@ -29,6 +29,6 @@
     "logFileSize": 134217728
   },
   "ThreadPoolServer": {
-    "threadCount": 2
+    "threadCount": 4
   }
 }
