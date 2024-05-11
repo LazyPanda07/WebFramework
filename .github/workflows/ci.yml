@@ -147,3 +147,48 @@ jobs:
       run: |
           cd build/bin
           source run_tests.sh ${{ matrix.config }} 
+
+
+  memory-leak-tests:
+    runs-on: ubuntu-latest
+    needs: linux-build
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        shared: [[ON, DLL], [OFF, ""]]
+        config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install valgrind
+      run: sudo apt install -y valgrind
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        path: WebFrameworkLibrary
+
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@v1
+      with:
+        install-path: Tests/gtest
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          export CC=/usr/bin/gcc-13
+          export CXX=/usr/bin/g++-13
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
+          make install -j $(nproc)
+
+    - name: Tests
+      working-directory: Tests
+      run: |
+          cd build/bin
+          source run_memory_leak_tests.sh ${{ matrix.config }} 

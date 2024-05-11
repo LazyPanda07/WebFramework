@@ -187,7 +187,7 @@ namespace framework
 
 			for (size_t i = 0; i < size;)
 			{
-				Client& client = clients[i++];
+				Client& client = *clients[i++];
 
 				bool finished = client.clientServe
 				(
@@ -203,7 +203,7 @@ namespace framework
 
 				if (finished)
 				{
-					Client& lastClient = clients[size - 1];
+					Client& lastClient = *clients[size - 1];
 
 					if (&client != &lastClient)
 					{
@@ -248,7 +248,7 @@ namespace framework
 
 		unique_lock<mutex> lock(clientsMutex);
 
-		clients.emplace_back(ssl, context, clientSocket, address, move(cleanup));
+		clients.emplace_back(make_unique<Client>(ssl, context, clientSocket, address, move(cleanup)));
 	}
 
 	ThreadPoolWebServer::ThreadPoolWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
@@ -275,7 +275,7 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-		clients.reserve(8);
+		
 	}
 
 	void ThreadPoolWebServer::start(bool wait, const function<void()>& onStartServer)

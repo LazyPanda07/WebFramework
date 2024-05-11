@@ -50,7 +50,7 @@ namespace framework
 
 	private:
 		threading::ThreadPool threadPool;
-		std::vector<Client> clients;
+		std::vector<std::unique_ptr<Client>> clients;
 		std::mutex clientsMutex;
 
 	private:
