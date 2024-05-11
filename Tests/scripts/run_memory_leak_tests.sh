@@ -2,7 +2,7 @@
 
 set -e
 
-export WEB_FRAMEWORK_SERVER_CONFIG=1
+export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export VALGRIND_RESULT_FREED=$(grep -Rnw 'memory_leaks_result.txt' -e 'All heap blocks were freed -- no leaks are possible')
 export VALGRIND_RESULT_DEFINITELY_LOST=$(grep -Rnw 'memory_leaks_result.txt' -e 'definitely lost: 0 bytes')
 export VALGRIND_RESULT_INDIRECTLY_LOST=$(grep -Rnw 'memory_leaks_result.txt' -e 'indirectly lost: 0 bytes')
