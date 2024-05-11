@@ -275,7 +275,7 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-
+		clients.reserve(8);
 	}
 
 	void ThreadPoolWebServer::start(bool wait, const function<void()>& onStartServer)
