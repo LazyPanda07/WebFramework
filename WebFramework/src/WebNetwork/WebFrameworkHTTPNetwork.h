@@ -11,7 +11,7 @@ namespace framework
 	public:
 		WebFrameworkHTTPNetwork(SOCKET clientSocket);
 
-		WebFrameworkHTTPNetwork(std::string_view ip, std::string_view port);
+		WebFrameworkHTTPNetwork(std::string_view ip, std::string_view port, DWORD timeout = 30'000);
 
 		WebFrameworkHTTPNetwork(const utility::BaseConnectionData& data);
 

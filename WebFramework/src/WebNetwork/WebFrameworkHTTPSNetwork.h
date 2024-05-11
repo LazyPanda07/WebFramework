@@ -11,7 +11,7 @@ namespace framework
 	public:
 		WebFrameworkHTTPSNetwork(SOCKET clientSocket, SSL* ssl, SSL_CTX* context);
 
-		WebFrameworkHTTPSNetwork(std::string_view ip, std::string_view port);
+		WebFrameworkHTTPSNetwork(std::string_view ip, std::string_view port, DWORD timeout = 30'000);
 
 		WebFrameworkHTTPSNetwork(const utility::BaseConnectionData& data);
 

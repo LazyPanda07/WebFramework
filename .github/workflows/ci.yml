@@ -112,12 +112,9 @@ jobs:
     needs: linux-build
     strategy:
       matrix:
-        # configuration: [Debug, Release]
-        configuration: [Debug]
-        # shared: [[ON, DLL], [OFF, ""]]
-        shared: [[OFF, ""], [OFF, ""]]
-        # config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
-        config: [threadPoolConfigHTTPS.json]
+        configuration: [Debug, Release]
+        shared: [[ON, DLL], [OFF, ""]]
+        config: [multiThreadedConfig.json, threadPoolConfig.json, multiThreadedConfigHTTPS.json, threadPoolConfigHTTPS.json]
 
     steps:
     - uses: actions/checkout@v4

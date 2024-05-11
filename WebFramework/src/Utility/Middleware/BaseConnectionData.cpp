@@ -6,16 +6,18 @@ namespace framework
 {
 	namespace utility
 	{
-		BaseConnectionData::BaseConnectionData(const string& ip, const string& port) :
+		BaseConnectionData::BaseConnectionData(const string& ip, const string& port, DWORD timeout) :
 			ip(ip),
-			port(port)
+			port(port),
+			timeout(timeout)
 		{
 
 		}
 
-		BaseConnectionData::BaseConnectionData(string&& ip, string&& port) noexcept :
+		BaseConnectionData::BaseConnectionData(string&& ip, string&& port, DWORD timeout) noexcept :
 			ip(move(ip)),
-			port(move(port))
+			port(move(port)),
+			timeout(timeout)
 		{
 
 		}

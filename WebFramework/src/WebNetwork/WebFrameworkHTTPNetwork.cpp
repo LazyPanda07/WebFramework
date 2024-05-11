@@ -10,14 +10,14 @@ namespace framework
 
 	}
 
-	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(string_view ip, string_view port) :
-		HTTPNetwork(ip, port)
+	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(string_view ip, string_view port, DWORD timeout) :
+		HTTPNetwork(ip, port, timeout)
 	{
 
 	}
 
 	WebFrameworkHTTPNetwork::WebFrameworkHTTPNetwork(const utility::BaseConnectionData& data) :
-		WebFrameworkHTTPNetwork(data.ip, data.port)
+		WebFrameworkHTTPNetwork(data.ip, data.port, data.timeout)
 	{
 	
 	}

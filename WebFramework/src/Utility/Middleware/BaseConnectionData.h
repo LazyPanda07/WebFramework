@@ -14,6 +14,7 @@ namespace framework
 		public:
 			std::string ip;
 			std::string port;
+			DWORD timeout;
 
 		public:
 			/// <summary>
@@ -21,14 +22,14 @@ namespace framework
 			/// </summary>
 			/// <param name="ip">server's address</param>
 			/// <param name="port">server's port</param>
-			BaseConnectionData(const std::string& ip, const std::string& port);
+			BaseConnectionData(const std::string& ip, const std::string& port, DWORD timeout = 30'000);
 
 			/// <summary>
 			/// Construct BaseConnectionData from raw ip and port
 			/// </summary>
 			/// <param name="ip">server's address</param>
 			/// <param name="port">server's port</param>
-			BaseConnectionData(std::string&& ip, std::string&& port) noexcept;
+			BaseConnectionData(std::string&& ip, std::string&& port, DWORD timeout = 30'000) noexcept;
 
 			virtual ~BaseConnectionData() = default;
 		};
