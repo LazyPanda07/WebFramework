@@ -180,7 +180,7 @@ namespace framework
 	{
 		while (isRunning)
 		{
-			unique_lock<mutex> lock(clientsMutex);
+			// unique_lock<mutex> lock(clientsMutex);
 
 			size_t size = clients.size();
 			size_t swaps = 0;
@@ -246,7 +246,7 @@ namespace framework
 			}
 		}
 
-		unique_lock<mutex> lock(clientsMutex);
+		// unique_lock<mutex> lock(clientsMutex);
 
 		clients.emplace_back(make_unique<Client>(ssl, context, clientSocket, address, move(cleanup)));
 	}
@@ -275,7 +275,7 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-		
+		clients.reserve(8);
 	}
 
 	void ThreadPoolWebServer::start(bool wait, const function<void()>& onStartServer)

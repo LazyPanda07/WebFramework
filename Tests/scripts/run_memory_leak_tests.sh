@@ -14,6 +14,8 @@ valgrind --max-threads=1000 --leak-check=full --show-leak-kinds=all --track-orig
 
 kill -TERM $(cat start_server.txt)
 
+sleep 10
+
 cat memory_leaks_result.txt
 
 if [[ -n "${VALGRIND_RESULT_DEFINITELY_LOST}" ]];

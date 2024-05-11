@@ -51,7 +51,7 @@ namespace framework
 	private:
 		threading::ThreadPool threadPool;
 		std::vector<std::unique_ptr<Client>> clients;
-		std::mutex clientsMutex;
+		// std::mutex clientsMutex;
 
 	private:
 		void mainLoop();
