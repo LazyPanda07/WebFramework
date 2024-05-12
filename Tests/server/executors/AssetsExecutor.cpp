@@ -29,3 +29,5 @@ void AssetsExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPRe
 {
 	request.unregisterDynamicFunction("customFunction");
 }
+
+DECLARE_EXECUTOR(AssetsExecutor)
