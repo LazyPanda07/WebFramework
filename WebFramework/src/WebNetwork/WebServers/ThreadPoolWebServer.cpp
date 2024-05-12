@@ -180,7 +180,7 @@ namespace framework
 	{
 		while (isRunning)
 		{
-			// unique_lock<mutex> lock(clientsMutex);
+			unique_lock<mutex> lock(clientsMutex);
 
 			size_t size = clients.size();
 			size_t swaps = 0;
@@ -275,7 +275,7 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-		clients.reserve(8);
+		
 	}
 
 	void ThreadPoolWebServer::start(bool wait, const function<void()>& onStartServer)
