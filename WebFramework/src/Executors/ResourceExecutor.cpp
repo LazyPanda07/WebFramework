@@ -107,7 +107,7 @@ namespace framework
 		response.addBody(move(result));
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary, const string& fileName)
+	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);

@@ -45,13 +45,13 @@ namespace framework
 		return result;
 	}
 
-	string forImplementation(const vector<string>& arguments, const unordered_map<string, function<string(const vector<string>&)>>& dynamicPagesFunctions)
+	string forWFDP(const vector<string>& arguments, const unordered_map<string, function<string(const vector<string>&)>>& dynamicPagesFunctions)
 	{
 		int64_t start = stoll(arguments[0]);
 		int64_t end = stoll(arguments[1]);
-		string result;
 		const function<string(const vector<string>&)> repeatableFunction = dynamicPagesFunctions.at(arguments[2]);
 		int64_t step = 1;
+		string result;
 		
 		if (arguments.size() == 4)
 		{

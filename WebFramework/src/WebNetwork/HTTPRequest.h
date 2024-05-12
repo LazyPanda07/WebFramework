@@ -130,7 +130,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables = {}, bool isBinary = true, const std::string& fileName = "");
+		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, const std::string& fileName = "");
 
 		/**
 		* Send non dynamic file
@@ -147,7 +147,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables, bool isBinary = true, const std::string& fileName = "");
+		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, const std::string& fileName = "");
 
 		/**
 		* Send large files

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Executors/BaseStatelessExecutor.h>
 
 class HelloExecutor : public framework::BaseStatelessExecutor

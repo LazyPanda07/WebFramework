@@ -27,6 +27,7 @@ add_executable(
 	${PROJECT_NAME}
 	main.cpp
 	executors/HelloExecutor.cpp
+	executors/AssetsExecutor.cpp
 )
 
 target_include_directories(

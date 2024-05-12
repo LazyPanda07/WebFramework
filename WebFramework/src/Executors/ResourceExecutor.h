@@ -61,7 +61,7 @@ namespace framework
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string_view, std::string>& variables = {}, bool isBinary = true, const std::string& fileName = "") override;
+		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, const std::string& fileName = "") override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

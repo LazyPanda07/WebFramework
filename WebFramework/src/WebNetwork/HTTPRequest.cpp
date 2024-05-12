@@ -163,7 +163,7 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary, const string& fileName)
+	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
 	{
 		HTTPRequest::isWebFrameworkDynamicPages(filePath) ?
 			this->sendDynamicFile(filePath, response, variables, isBinary, fileName) :
@@ -175,7 +175,7 @@ namespace framework
 		staticResources.sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
-	void HTTPRequest::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string_view, string>& variables, bool isBinary, const string& fileName)
+	void HTTPRequest::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, response, variables, isBinary, fileName);
 	}

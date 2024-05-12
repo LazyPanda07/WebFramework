@@ -9,7 +9,7 @@ using namespace std;
 
 namespace framework
 {
-	WebFrameworkDynamicPages::executionUnit::executionUnit(string&& functionName, vector<string>&& arguments) noexcept :
+	WebFrameworkDynamicPages::ExecutionUnit::ExecutionUnit(string&& functionName, vector<string>&& arguments) noexcept :
 		functionName(move(functionName)),
 		arguments(move(arguments))
 	{
@@ -21,7 +21,7 @@ namespace framework
 		code.erase(remove_if(code.begin(), code.end(), [](const char& c) { return iscntrl(c) || isspace(c); }), code.end());
 	}
 
-	string WebFrameworkDynamicPages::insertVariables(const unordered_map<string_view, string>& variables, string code)
+	string WebFrameworkDynamicPages::insertVariables(const unordered_map<string, string>& variables, string code)
 	{
 		size_t changeVariableStart = code.find('$');
 
@@ -36,7 +36,7 @@ namespace framework
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
 			}
 
-			const string& variable = variables.at(string_view(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
+			const string& variable = variables.at(string(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
 
 			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, variable);
 
@@ -46,9 +46,9 @@ namespace framework
 		return code;
 	}
 
-	vector<WebFrameworkDynamicPages::executionUnit> WebFrameworkDynamicPages::preExecute(const string& code)
+	vector<WebFrameworkDynamicPages::ExecutionUnit> WebFrameworkDynamicPages::preExecute(const string& code)
 	{
-		vector<executionUnit> result;
+		vector<ExecutionUnit> result;
 		size_t startLine = 0;
 		size_t endLine = code.find(';');
 
@@ -86,7 +86,7 @@ namespace framework
 		return result;
 	}
 
-	string WebFrameworkDynamicPages::execute(const vector<executionUnit>& codes)
+	string WebFrameworkDynamicPages::execute(const vector<ExecutionUnit>& codes)
 	{
 		string result;
 
@@ -112,10 +112,10 @@ namespace framework
 	{
 		dynamicPagesFunctions.insert({ "print", print });
 		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates) });
-		dynamicPagesFunctions.insert({ "for", bind(forImplementation, placeholders::_1, ref(dynamicPagesFunctions)) });
+		dynamicPagesFunctions.insert({ "for", bind(forWFDP, placeholders::_1, ref(dynamicPagesFunctions)) });
 	}
 
-	void WebFrameworkDynamicPages::run(const unordered_map<string_view, string>& variables, string& source)
+	void WebFrameworkDynamicPages::run(const unordered_map<string, string>& variables, string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
 

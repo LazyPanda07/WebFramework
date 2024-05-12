@@ -10,5 +10,9 @@
   "MultiUserExecutor": {
     "route": "multi_user_database",
     "loadType": "dynamic"
+  },
+  "AssetsExecutor": {
+    "route": "wfdp",
+    "loadType": "dynamic"
   }
 }
