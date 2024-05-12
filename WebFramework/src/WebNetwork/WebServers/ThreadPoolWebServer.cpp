@@ -176,48 +176,43 @@ namespace framework
 		}
 	}
 
-	void ThreadPoolWebServer::mainLoop()
+	void ThreadPoolWebServer::serveClients()
 	{
-		while (isRunning)
+		size_t size = clients.size();
+		size_t swaps = 0;
+
+		for (size_t i = 0; i < size;)
 		{
-			unique_lock<mutex> lock(clientsMutex);
+			Client& client = *clients[i++];
 
-			size_t size = clients.size();
-			size_t swaps = 0;
+			bool finished = client.clientServe
+			(
+				sessionsManager,
+				*this,
+				*resources,
+				*resources,
+				databaseManager,
+				executorsManager,
+				*resources,
+				threadPool
+			);
 
-			for (size_t i = 0; i < size;)
+			if (finished)
 			{
-				Client& client = *clients[i++];
+				Client& lastClient = *clients[size - 1];
 
-				bool finished = client.clientServe
-				(
-					sessionsManager,
-					*this,
-					*resources,
-					*resources,
-					databaseManager,
-					executorsManager,
-					*resources,
-					threadPool
-				);
-
-				if (finished)
+				if (&client != &lastClient)
 				{
-					Client& lastClient = *clients[size - 1];
+					swap(client, lastClient);
 
-					if (&client != &lastClient)
-					{
-						swap(client, lastClient);
-
-						swaps++;
-						i--;
-						size--;
-					}
+					swaps++;
+					i--;
+					size--;
 				}
 			}
-
-			clients.erase(clients.end() - swaps, clients.end());
 		}
+
+		clients.erase(clients.end() - swaps, clients.end());
 	}
 
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
@@ -246,9 +241,14 @@ namespace framework
 			}
 		}
 
-		unique_lock<mutex> lock(clientsMutex);
-
 		clients.emplace_back(make_unique<Client>(ssl, context, clientSocket, address, move(cleanup)));
+
+		this->serveClients();
+	}
+
+	void ThreadPoolWebServer::onInvalidConnectionReceive()
+	{
+		this->serveClients();
 	}
 
 	ThreadPoolWebServer::ThreadPoolWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
@@ -275,15 +275,6 @@ namespace framework
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{
-		
-	}
 
-	void ThreadPoolWebServer::start(bool wait, const function<void()>& onStartServer)
-	{
-		isRunning = true;
-
-		thread(&ThreadPoolWebServer::mainLoop, this).detach();
-
-		BaseWebServer::start(wait, onStartServer);
 	}
 }
