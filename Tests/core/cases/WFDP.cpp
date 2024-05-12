@@ -9,7 +9,7 @@
 TEST(WFDP, Print)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parameters
+	std::string request = web::HTTPBuilder().getRequest().parametersWithRoute
 	(
 		"wfdp",
 		"data", "Hello, World!"
@@ -63,7 +63,7 @@ TEST(WFDP, Include)
 TEST(WFDP, CustomFunction)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	
+
 	{
 		std::string request = web::HTTPBuilder().postRequest().parameters("wfdp").build();
 		std::string response;
@@ -76,7 +76,7 @@ TEST(WFDP, CustomFunction)
 	}
 
 	{
-		std::string request = web::HTTPBuilder().getRequest().parameters
+		std::string request = web::HTTPBuilder().getRequest().parametersWithRoute
 		(
 			"wfdp",
 			"first", "15",
