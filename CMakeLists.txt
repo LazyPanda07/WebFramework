@@ -84,7 +84,6 @@ add_library(
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/ExecutorCreator.cpp
-	WebFramework/src/Utility/CharactersEncoding.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/Middleware/BaseConnectionData.cpp
 	WebFramework/src/WebFrameworkManagers/ExecutorsManager.cpp
