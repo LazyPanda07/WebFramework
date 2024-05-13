@@ -22,6 +22,8 @@ namespace framework
 	private:
 		static void clear(std::string& code);
 
+		static void separateArguments(std::string& code);
+
 		static std::string insertVariables(const std::unordered_map<std::string, std::string>& variables, std::string code);
 
 		static std::vector<ExecutionUnit> preExecute(const std::string& code);

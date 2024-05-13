@@ -50,6 +50,11 @@
 #include "IOSocketStream.h"
 #include "TextLocalization.h"
 #include "WTextLocalization.h"
+#include "Strings.h"
+#include "Files.h"
+#include "ConsoleArgumentParser.h"
+#include "Timers.h"
+#include "CSVParser.h"
 
 #ifdef __LINUX__
 #include <dlfcn.h>

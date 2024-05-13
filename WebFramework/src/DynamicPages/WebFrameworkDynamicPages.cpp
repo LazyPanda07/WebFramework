@@ -7,6 +7,8 @@
 
 using namespace std;
 
+static constexpr string_view argumentsDelimiter = "</arg>";
+
 namespace framework
 {
 	WebFrameworkDynamicPages::ExecutionUnit::ExecutionUnit(string&& functionName, vector<string>&& arguments) noexcept :
@@ -19,6 +21,35 @@ namespace framework
 	void WebFrameworkDynamicPages::clear(string& code)
 	{
 		code.erase(remove_if(code.begin(), code.end(), [](const char& c) { return iscntrl(c) || isspace(c); }), code.end());
+	}
+
+	void WebFrameworkDynamicPages::separateArguments(string& code)
+	{
+		bool stringArgument = false;
+
+		for (size_t i = 0; i < code.size(); i++)
+		{
+			switch (code[i])
+			{
+			case '"':
+				stringArgument = !stringArgument;
+
+				break;
+
+			case ',':
+				if (stringArgument)
+				{
+					continue;
+				}
+
+				code.replace(i, 1, argumentsDelimiter);
+
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 
 	string WebFrameworkDynamicPages::insertVariables(const unordered_map<string, string>& variables, string code)
@@ -36,10 +67,9 @@ namespace framework
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
 			}
 
-			bool hasComma = code[changeVariableEnd + 1] == ',';
 			const string& variable = variables.at(string(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
 
-			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + (hasComma ? 2 : 1), variable);
+			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, variable);
 
 			changeVariableStart = code.find('$');
 		}
@@ -64,21 +94,15 @@ namespace framework
 		{
 			endLine++;
 
-			const string_view line(code.data() + startLine, endLine - startLine);
-			const size_t openBracket = line.find('(');
+			string_view line(code.data() + startLine, endLine - startLine);
+			size_t openBracket = line.find('(');
 			string functionName(line.substr(0, openBracket));
-			vector<string> arguments;
-			istringstream is(string(line.data() + openBracket + 1, line.find(')') - openBracket - 1));
-			string tem;
-
-			arguments.reserve(count(line.begin(), line.end(), ',') + 1);
-
-			while (is >> tem)
-			{
-				arguments.push_back(move(tem));
-			}
-
-			result.emplace_back(move(functionName), move(arguments));
+			
+			result.emplace_back
+			(
+				move(functionName),
+				utility::strings::split(string_view(line.data() + openBracket + 1, line.find(')') - openBracket - 1), argumentsDelimiter)
+			);
 
 			startLine = endLine;
 			endLine = code.find(';', endLine + 1);
@@ -132,6 +156,8 @@ namespace framework
 			string code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);
 
 			WebFrameworkDynamicPages::clear(code);
+
+			WebFrameworkDynamicPages::separateArguments(code);
 
 			if (variables.size())
 			{
