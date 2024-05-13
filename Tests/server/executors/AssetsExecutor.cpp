@@ -7,7 +7,7 @@ static std::string customFunction(const std::vector<std::string>& args)
 {
 	using namespace std::string_literals;
 
-	return std::accumulate(args.begin(), args.end(), "Data: "s, [](const std::string& left, const std::string& right) { return std::format("{} {}", left, right); });
+	return std::accumulate(args.begin(), args.end(), "Data:"s, [](const std::string& left, const std::string& right) { return std::format("{} {}", left, right); });
 }
 
 void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)

@@ -36,9 +36,10 @@ namespace framework
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
 			}
 
+			bool hasComma = code[changeVariableEnd + 1] == ',';
 			const string& variable = variables.at(string(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
 
-			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, variable);
+			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + (hasComma ? 2 : 1), variable);
 
 			changeVariableStart = code.find('$');
 		}
@@ -130,16 +131,14 @@ namespace framework
 
 			string code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);
 
-			clear(code);
+			WebFrameworkDynamicPages::clear(code);
 
 			if (variables.size())
 			{
-				code = insertVariables(variables, code);
+				code = WebFrameworkDynamicPages::insertVariables(variables, code);
 			}
 
-			replace(code.begin(), code.end(), ',', ' ');
-
-			source.replace(source.begin() + nextSectionStart, source.begin() + nextSectionEnd + 2, this->execute(preExecute(code)));
+			source.replace(source.begin() + nextSectionStart, source.begin() + nextSectionEnd + 2, this->execute(WebFrameworkDynamicPages::preExecute(code)));
 
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
 		}
