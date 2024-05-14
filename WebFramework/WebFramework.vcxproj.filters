@@ -251,9 +251,6 @@
     <ClInclude Include="src\SQLite3\SQLiteResult.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\Memory.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

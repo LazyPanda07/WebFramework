@@ -50,7 +50,7 @@ namespace framework
 			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
 			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
 		);
-		unordered_map<string, smartPointer<BaseExecutor>> statefulExecutors;
+		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
 

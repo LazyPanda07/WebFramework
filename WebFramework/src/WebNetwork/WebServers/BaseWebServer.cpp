@@ -4,7 +4,6 @@
 #include "Exceptions/CantLoadSourceException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
-#include "Utility/Memory.h"
 #include "Utility/ExecutorCreator.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Exceptions/SSLException.h"
@@ -18,7 +17,7 @@ namespace framework
 	BaseWebServer::BaseWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
 		context(nullptr)
 	{
-		unordered_map<string, smartPointer<BaseExecutor>> routes;
+		unordered_map<string, unique_ptr<BaseExecutor>> routes;
 		unordered_map<string, utility::ExecutorCreator> creators;
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings;
 		vector<utility::RouteParameters> routeParameters;
@@ -127,7 +126,7 @@ namespace framework
 				case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
 					if (i.find('{') == string::npos)
 					{
-						auto [it, success] = routes.emplace(make_pair(i, smartPointer<BaseExecutor>(creator())));
+						auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(creator())));
 
 						if (success)
 						{
@@ -145,7 +144,7 @@ namespace framework
 					{
 						routeParameters.push_back(i);
 
-						auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, smartPointer<BaseExecutor>(creator())));
+						auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, unique_ptr<BaseExecutor>(creator())));
 
 						nodes.push_back(make_pair(i, routeParameters.back().baseRoute));
 

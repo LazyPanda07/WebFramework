@@ -24,7 +24,7 @@ namespace framework
 		static bool getUseHTTPS();
 
 	private:
-		smartPointer<BaseWebServer> server;
+		std::unique_ptr<web::BaseTCPServer> server;
 		json::JSONParser currentConfiguration;
 		std::filesystem::path configurationJSONFile;
 		std::filesystem::path basePath;

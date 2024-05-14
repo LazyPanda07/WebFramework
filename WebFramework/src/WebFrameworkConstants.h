@@ -109,8 +109,6 @@ namespace web_framework_assets
 }
 
 #ifdef WEB_FRAMEWORK_DLL
-template<typename T>
-using smartPointer = std::shared_ptr<T>;
 #ifdef __LINUX__
 #define WEB_FRAMEWORK_API __attribute__((visibility("default")))
 #else
@@ -118,9 +116,11 @@ using smartPointer = std::shared_ptr<T>;
 #endif
 
 #define WEB_FRAMEWORK_API_FUNCTION extern "C" WEB_FRAMEWORK_API
+
+#ifndef __LINUX__
+#pragma warning(disable: 4275)
+#endif
 #else
-template<typename T>
-using smartPointer = std::unique_ptr<T>;
 #define WEB_FRAMEWORK_API 
 #define WEB_FRAMEWORK_API_FUNCTION 
 #endif // WEB_FRAMEWORK_DLL

@@ -156,7 +156,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -188,7 +188,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -224,7 +224,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -260,7 +260,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -298,7 +298,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -334,7 +334,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL;WEB_FRAMEWORK_VERSION=$(WebFrameworkVersion)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)BaseTCPServer\src\;$(SolutionDir)Networks\HTTP\src\;$(SolutionDir)Log\src\;$(SolutionDir)Networks\SocketStreams\src\;$(SolutionDir)INIParser\src\;$(SolutionDir)Networks\HTTP\JSON\src\;$(SolutionDir)SHA256\src\;$(SolutionDir)Networks\src\;$(SolutionDir)ThreadPool\src\;$(SolutionDir)Networks\vendor\OpenSSL\include\;$(SolutionDir)Localization\src\;$(SolutionDir)FileManager\src\;$(SolutionDir)UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(SolutionDir)WebFrameworkLibrary\BaseTCPServer\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\src\;$(SolutionDir)WebFrameworkLibrary\Log\src\;$(SolutionDir)WebFrameworkLibrary\Networks\SocketStreams\src\;$(SolutionDir)WebFrameworkLibrary\INIParser\src\;$(SolutionDir)WebFrameworkLibrary\Networks\HTTP\JSON\src\;$(SolutionDir)WebFrameworkLibrary\SHA256\src\;$(SolutionDir)WebFrameworkLibrary\Networks\src\;$(SolutionDir)WebFrameworkLibrary\ThreadPool\src\;$(SolutionDir)WebFrameworkLibrary\Networks\vendor\OpenSSL\include\;$(SolutionDir)WebFrameworkLibrary\Localization\src\;$(SolutionDir)WebFrameworkLibrary\FileManager\src\;$(SolutionDir)WebFrameworkLibrary\UtilityLibrary\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -437,7 +437,6 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Utility\ExecutorCreator.h" />
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
-    <ClInclude Include="src\Utility\Memory.h" />
     <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h" />
     <ClInclude Include="src\WebFrameworkManagers\SessionsManager.h" />
     <ClInclude Include="src\Middleware\Middleware.h" />

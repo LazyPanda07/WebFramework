@@ -16,7 +16,7 @@ namespace framework
 		class WEB_FRAMEWORK_API LoadBalancer
 		{
 		private:
-			smartPointer<LoadBalancerServer> loadBalancerServer;
+			std::unique_ptr<LoadBalancerServer> loadBalancerServer;
 
 		public:
 			/// <summary>

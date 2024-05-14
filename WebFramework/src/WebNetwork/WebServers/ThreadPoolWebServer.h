@@ -13,7 +13,7 @@ namespace framework
 		{
 		private:
 			streams::IOSocketStream stream;
-			std::unordered_map<std::string, smartPointer<BaseExecutor>> statefulExecutors;
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
 			std::function<void()> cleanup;
 			sockaddr address;
 			SSL* ssl;
