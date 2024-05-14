@@ -10,6 +10,11 @@ static std::string customFunction(const std::vector<std::string>& args)
 
 void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
+	for (const auto& [key, value] : request.getKeyValueParameters())
+	{
+		std::cout << key << ' ' << value << std::endl;
+	}
+
 	request.sendDynamicFile
 	(
 		std::format("{}.wfdp", request.getJSON().getString("fileName")),
