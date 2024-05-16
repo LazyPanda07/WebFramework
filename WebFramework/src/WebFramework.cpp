@@ -186,7 +186,7 @@ namespace framework
 			throw runtime_error(errorMessage);
 		}
 
-		this->initHTTPS();
+		this->initHTTPS(webFrameworkSettings);
 
 		vector<utility::JSONSettingsParser> jsonSettings;
 
