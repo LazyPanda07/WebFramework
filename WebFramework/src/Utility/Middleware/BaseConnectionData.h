@@ -2,6 +2,8 @@
 
 #include "headers.h"
 
+#include "Network.h"
+
 namespace framework
 {
 	namespace utility
