@@ -29,6 +29,18 @@ namespace framework
 		std::filesystem::path configurationJSONFile;
 		std::filesystem::path basePath;
 
+	private:
+		std::string initLogging() const;
+
+		void initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const;
+
+		void initServer
+		(
+			const json::utility::jsonObject& webFrameworkSettings,
+			const std::vector<utility::JSONSettingsParser>& jsonSettings,
+			const std::vector<std::string>& loadSources
+		);
+
 	public:
 		/// <summary>
 		/// Construct WebFramework
@@ -36,8 +48,8 @@ namespace framework
 		/// <param name="configurationINIFile">path to .json configuration file</param>
 		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		/// <exception cref="framework::exceptions::NotImplemented">Thread pool model does not support HTTPS</exception>
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON setting value</exception>
+		/// <exception cref="std::runtime_error"></exception>
 		WebFramework(const std::filesystem::path& configurationJSONFile);
 
 		/// <summary>
