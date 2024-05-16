@@ -2,6 +2,8 @@
 
 #include "headers.h"
 
+#include "BaseTCPServer.h"
+
 #include "Utility/DataStructures/PriorityQueue.h"
 #include "Utility/Middleware/BaseConnectionData.h"
 

@@ -1,5 +1,7 @@
 #include "JSONSettingsParser.h"
 
+#include "JSONParser.h"
+
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindValueException.h"
 #include "Strings.h"

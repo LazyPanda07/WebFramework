@@ -2,6 +2,9 @@
 
 #include "headers.h"
 
+#include "BaseTCPServer.h"
+#include "HTTPParser.h"
+
 #include "WebFrameworkManagers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
 #include "Interfaces/IStaticFile.h"

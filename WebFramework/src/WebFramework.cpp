@@ -1,5 +1,8 @@
 #include "WebFramework.h"
 
+#include "Log.h"
+#include "JSONArrayWrapper.h"
+
 #include "Exceptions/BaseJSONException.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "WebNetwork/WebServers/MultithreadedWebServer.h"

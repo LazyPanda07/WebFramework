@@ -2,6 +2,8 @@
 
 #include "headers.h"
 
+#include "HTTPParser.h"
+
 #include "Utility/Middleware/BaseConnectionData.h"
 
 namespace framework

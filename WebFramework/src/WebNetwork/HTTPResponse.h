@@ -2,6 +2,9 @@
 
 #include "headers.h"
 
+#include "HTTPBuilder.h"
+#include "IOSocketStream.h"
+
 namespace framework
 {
 	/// <summary>

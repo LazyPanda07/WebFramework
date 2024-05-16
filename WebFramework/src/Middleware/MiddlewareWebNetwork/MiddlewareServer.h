@@ -2,6 +2,8 @@
 
 #include "headers.h"
 
+#include "BaseTCPServer.h"
+
 #include "Middleware/BaseMiddlewareRouteController.h"
 
 namespace framework

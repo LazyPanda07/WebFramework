@@ -7,8 +7,8 @@ namespace framework
 	void SessionsManager::SessionTime::asyncCheck()
 	{
 		unique_lock<mutex> guard(checkLock);
-		vector<pair<sessionTimePoint, string>> deleteVariants;
-		const sessionTimePoint current = chrono::high_resolution_clock::now();
+		vector<pair<SessionTimePoint, string>> deleteVariants;
+		const SessionTimePoint current = chrono::high_resolution_clock::now();
 
 		for (const auto& i : timeIp)
 		{
@@ -45,12 +45,12 @@ namespace framework
 
 	void SessionsManager::SessionTime::nextPeriod()
 	{
-		multimap<sessionTimePoint, string, greater<sessionTimePoint>> tem;
-		const sessionTimePoint period = chrono::high_resolution_clock::now();
+		multimap<SessionTimePoint, string, greater<SessionTimePoint>> tem;
+		const SessionTimePoint period = chrono::high_resolution_clock::now();
 
 		for (const auto& i : timeIp)
 		{
-			sessionTimePoint next = i.first;
+			SessionTimePoint next = i.first;
 
 			next += period - next;
 
@@ -87,7 +87,7 @@ namespace framework
 			timeIp.erase(target);
 		}
 
-		sessionTimePoint start = chrono::high_resolution_clock::now();
+		SessionTimePoint start = chrono::high_resolution_clock::now();
 
 		ipTime[ip] = start;
 

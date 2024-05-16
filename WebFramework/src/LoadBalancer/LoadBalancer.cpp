@@ -1,5 +1,7 @@
 #include "LoadBalancer.h"
 
+#include "JSONParser.h"
+
 #include "Exceptions/FileDoesNotExistException.h"
 
 using namespace std;

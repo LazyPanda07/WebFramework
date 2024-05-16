@@ -2,6 +2,8 @@
 
 #include "headers.h"
 
+#include "FileManager.h"
+
 #include "BaseStatelessExecutor.h"
 #include "DynamicPages/WebFrameworkDynamicPages.h"
 #include "WebNetwork/Interfaces/IStaticFile.h"

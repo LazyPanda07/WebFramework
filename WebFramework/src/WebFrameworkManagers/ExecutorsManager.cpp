@@ -1,5 +1,7 @@
 #include "ExecutorsManager.h"
 
+#include "Log.h"
+
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
 

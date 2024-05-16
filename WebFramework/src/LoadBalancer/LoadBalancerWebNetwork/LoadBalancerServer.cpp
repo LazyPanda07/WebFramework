@@ -1,5 +1,7 @@
 #include "LoadBalancerServer.h"
 
+#include "IOSocketStream.h"
+
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
 
 using namespace std;

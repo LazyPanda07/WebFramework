@@ -2,6 +2,8 @@
 
 #include "headers.h"
 
+#include "ThreadPool.h"
+
 #include "BaseWebServer.h"
 
 namespace framework

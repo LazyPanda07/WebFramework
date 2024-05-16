@@ -10,11 +10,11 @@ namespace framework
 		class SessionTime
 		{
 		public:
-			using sessionTimePoint = std::chrono::high_resolution_clock::time_point;
+			using SessionTimePoint = std::chrono::high_resolution_clock::time_point;
 
 		private:
-			std::multimap<sessionTimePoint, std::string, std::greater<sessionTimePoint>> timeIp;
-			std::unordered_map<std::string, sessionTimePoint> ipTime;
+			std::multimap<SessionTimePoint, std::string, std::greater<SessionTimePoint>> timeIp;
+			std::unordered_map<std::string, SessionTimePoint> ipTime;
 			std::mutex checkLock;
 			std::future<void> handle;
 			SessionsManager* userSessionSynchronization;

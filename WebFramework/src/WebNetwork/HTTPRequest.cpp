@@ -1,5 +1,7 @@
 #include "HTTPRequest.h"
 
+#include "FileManager.h"
+
 #include "WebFrameworkHTTPNetwork.h"
 #include "Exceptions/FileDoesNotExistException.h"
 
