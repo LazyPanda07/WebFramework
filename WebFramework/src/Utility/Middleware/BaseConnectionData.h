@@ -1,6 +1,6 @@
 #pragma once
 
-#include "headers.h"
+#include "core.h"
 
 #include "Network.h"
 
@@ -24,14 +24,7 @@ namespace framework
 			/// </summary>
 			/// <param name="ip">server's address</param>
 			/// <param name="port">server's port</param>
-			BaseConnectionData(const std::string& ip, const std::string& port, DWORD timeout = 30'000);
-
-			/// <summary>
-			/// Construct BaseConnectionData from raw ip and port
-			/// </summary>
-			/// <param name="ip">server's address</param>
-			/// <param name="port">server's port</param>
-			BaseConnectionData(std::string&& ip, std::string&& port, DWORD timeout = 30'000) noexcept;
+			BaseConnectionData(std::string_view ip, std::string_view port, DWORD timeout = 30'000);
 
 			virtual ~BaseConnectionData() = default;
 		};

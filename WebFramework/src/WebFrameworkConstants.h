@@ -39,7 +39,7 @@ namespace json_settings
 	inline constexpr std::string_view webFrameworkObject = "WebFramework";
 	inline constexpr std::string_view httpsObject = "HTTPS";
 	inline constexpr std::string_view loggingObject = "Logging";
-	inline constexpr std::string_view webFrameworkLoadBalancerObject = "WebFrameworkLoadBalancer";
+	inline constexpr std::string_view loadBalancerObject = "LoadBalancer";
 	inline constexpr std::string_view threadPoolServerObject = "ThreadPoolServer";
 
 	inline constexpr std::string_view settingsPathsKey = "settingsPaths";
@@ -70,6 +70,8 @@ namespace json_settings
 
 	inline constexpr std::string_view multiThreadedWebServerTypeValue = "multiThreaded";
 	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";
+	inline constexpr std::string_view loadBalancerWebServerTypeValue = "loadBalancer";
+	inline constexpr std::string_view proxyWebServerTypeValue = "proxy";
 }
 
 namespace exceptions

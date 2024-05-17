@@ -10,10 +10,10 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		LoadBalancerServer::loadBalancerConnectionData LoadBalancerServer::chooseServer()
+		LoadBalancerServer::LoadBalancerConnectionData LoadBalancerServer::chooseServer()
 		{
 			unique_lock<shared_mutex> lock(allServersMutex);
-			loadBalancerConnectionData data = allServers.top();
+			LoadBalancerConnectionData data = allServers.top();
 
 			allServers.pop();
 
@@ -26,27 +26,20 @@ namespace framework
 			return data;
 		}
 
-		void LoadBalancerServer::disconnectUser(const loadBalancerConnectionData& data)
+		void LoadBalancerServer::disconnectUser(const LoadBalancerConnectionData& data)
 		{
 			unique_lock<shared_mutex> lock(allServersMutex);
 
 			auto valueFromContainer = allServers.find(data);
-			loadBalancerConnectionData valueToInsert(valueFromContainer->ip, valueFromContainer->port, valueFromContainer->connections - 1);
+			LoadBalancerConnectionData valueToInsert(valueFromContainer->ip, valueFromContainer->port, valueFromContainer->connections - 1);
 
 			allServers.erase(*valueFromContainer);
 
 			allServers.push(move(valueToInsert));
 		}
 
-		LoadBalancerServer::loadBalancerConnectionData::loadBalancerConnectionData(const string& ip, const string& port, unsigned int connections) :
+		LoadBalancerServer::LoadBalancerConnectionData::LoadBalancerConnectionData(string_view ip, string_view port, uint64_t connections) :
 			BaseConnectionData(ip, port),
-			connections(connections)
-		{
-
-		}
-
-		LoadBalancerServer::loadBalancerConnectionData::loadBalancerConnectionData(string&& ip, string&& port, unsigned int connections) noexcept :
-			BaseConnectionData(move(ip),move(port)),
 			connections(connections)
 		{
 
@@ -56,7 +49,7 @@ namespace framework
 		{
 			streams::IOSocketStream clientStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket)));
 			const string clientIp = getClientIpV4(addr);
-			loadBalancerConnectionData data = this->chooseServer();
+			LoadBalancerConnectionData data = this->chooseServer();
 			streams::IOSocketStream serverStream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(data.ip, data.port)));
 			
 			while (isRunning)
@@ -81,7 +74,7 @@ namespace framework
 			}
 		}
 
-		LoadBalancerServer::LoadBalancerServer(const string& ip, const string& port, DWORD timeout, const unordered_map<string, vector<string>>& allServers) :
+		LoadBalancerServer::LoadBalancerServer(string_view ip, string_view port, DWORD timeout, const unordered_map<string, vector<string>>& allServers) :
 			BaseTCPServer
 			(
 				port,

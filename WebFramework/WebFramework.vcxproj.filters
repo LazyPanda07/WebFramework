@@ -75,10 +75,7 @@
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.cpp">
+    <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Middleware\Middleware.cpp">
@@ -139,6 +136,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\ExecutorCreator.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoadBalancer\Heuristics\ConnectionsHeuristic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -212,10 +215,7 @@
     <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\LoadBalancer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h">
+    <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\DataStructures\PriorityQueue.h">
@@ -278,13 +278,19 @@
     <ClInclude Include="src\Exceptions\DatabaseException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers.h">
+    <ClInclude Include="src\core.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\ExecutorCreator.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadBalancer\Heuristics\ConnectionsHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

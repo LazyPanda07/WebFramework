@@ -26,6 +26,7 @@ option(SHARED_WEB_FRAMEWORK "" OFF)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
+	add_compile_options(-rdynamic)
 
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
@@ -72,8 +73,9 @@ add_library(
 	WebFramework/src/Executors/BaseStatefulExecutor.cpp
 	WebFramework/src/Executors/BaseStatelessExecutor.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
-	WebFramework/src/LoadBalancer/LoadBalancer.cpp
-	WebFramework/src/LoadBalancer/LoadBalancerWebNetwork/LoadBalancerServer.cpp
+	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
+	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
+	WebFramework/src/LoadBalancer/Heuristics/ConnectionsHeuristic.cpp
 	WebFramework/src/Middleware/BaseMiddlewareRouteController.cpp
 	WebFramework/src/Middleware/Middleware.cpp
 	WebFramework/src/Middleware/MiddlewareWebNetwork/MiddlewareServer.cpp

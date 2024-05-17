@@ -1,6 +1,6 @@
 #pragma once
 
-#include "headers.h"
+#include "core.h"
 
 #include "WebFrameworkManagers/ExecutorsManager.h"
 #include "WebFrameworkManagers/SessionsManager.h"

@@ -385,8 +385,9 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
-    <ClCompile Include="src\LoadBalancer\LoadBalancer.cpp" />
-    <ClCompile Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\ConnectionsHeuristic.cpp" />
+    <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteResult.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteManager.cpp" />
     <ClCompile Include="src\Utility\ExecutorCreator.cpp" />
@@ -429,9 +430,10 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
     <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
-    <ClInclude Include="src\headers.h" />
-    <ClInclude Include="src\LoadBalancer\LoadBalancer.h" />
-    <ClInclude Include="src\LoadBalancer\LoadBalancerWebNetwork\LoadBalancerServer.h" />
+    <ClInclude Include="src\core.h" />
+    <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
+    <ClInclude Include="src\LoadBalancer\Heuristics\ConnectionsHeuristic.h" />
+    <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />
     <ClInclude Include="src\SQLite3\SQLiteManager.h" />
     <ClInclude Include="src\SQLite3\SQLiteResult.h" />
     <ClInclude Include="src\Utility\ExecutorCreator.h" />

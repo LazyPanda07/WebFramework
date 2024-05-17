@@ -7,6 +7,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "WebNetwork/WebServers/MultithreadedWebServer.h"
 #include "WebNetwork/WebServers/ThreadPoolWebServer.h"
+#include "LoadBalancer/LoadBalancerServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 
 using namespace std;
@@ -154,6 +155,27 @@ namespace framework
 					);
 			}
 		}
+		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
+		{
+			const json::utility::jsonObject& loadBalancerSettings = currentConfiguration.getObject(json_settings::loadBalancerObject);
+			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject("listOfServers");
+			unordered_map<string, vector<string>> allServers;
+
+			for (const auto& [key, value] : listOfServers)
+			{
+				allServers.emplace
+				(
+					key,
+					json::utility::JSONArrayWrapper(get<vector<json::utility::jsonObject>>(value)).getAsStringArray()
+				);
+			}
+
+			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, allServers);
+		}
+		else if (webServerType == json_settings::proxyWebServerTypeValue)
+		{
+
+		}
 	}
 
 	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
@@ -166,13 +188,13 @@ namespace framework
 		}
 
 		currentConfiguration.setJSONData((ifstream(configurationJSONFile)));
-		
+
 		basePath.remove_filename();
 
 		const json::utility::jsonObject& webFrameworkSettings = currentConfiguration.getObject(json_settings::webFrameworkObject);
 		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
 		vector<string> loadSources = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::loadSourcesKey)).getAsStringArray();
-		
+
 		ranges::for_each(settingsPaths, [this](string& path) { path = (basePath / path).string(); });
 		ranges::for_each(loadSources, [this](string& source)
 			{
