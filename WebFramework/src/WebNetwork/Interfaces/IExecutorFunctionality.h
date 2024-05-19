@@ -12,7 +12,7 @@ namespace framework
 {
 	namespace interfaces
 	{
-		class IExecutorFunctionality
+		class WEB_FRAMEWORK_API IExecutorFunctionality
 		{
 		protected:
 			ExecutorsManager executorsManager;
