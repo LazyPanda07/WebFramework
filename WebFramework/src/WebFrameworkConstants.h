@@ -59,9 +59,8 @@ namespace json_settings
 	inline constexpr std::string_view webFrameworkDefaultAssetsPath = "defaultAssetsPath";
 
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
-	inline constexpr std::string_view loadBalancerIpKey = "loadBalancerIp";
-	inline constexpr std::string_view loadBalancerPortKey = "loadBalancerPort";
-	inline constexpr std::string_view loadBalancerTimeoutKey = "loadBalancerTimeout";
+	inline constexpr std::string_view heuristicKey = "heuristic";
+	inline constexpr std::string_view loadSourceKey = "loadSource";
 
 	inline constexpr std::string_view usingLoggingKey = "usingLogging";
 	inline constexpr std::string_view logsPathKey = "logsPath";

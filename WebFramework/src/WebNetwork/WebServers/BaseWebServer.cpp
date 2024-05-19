@@ -1,5 +1,7 @@
 #include "BaseWebServer.h"
 
+#include "MultiLocalizationManager.h"
+
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantLoadSourceException.h"
 #include "Exceptions/CantFindFunctionException.h"
@@ -106,19 +108,19 @@ namespace framework
 
 				for (const auto& source : sources)
 				{
-					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(load(source, ("create" + j.name + "Instance").data())))
+					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(load(source, format("create{}Instance", j.name).data())))
 					{
 						creator.setCreateFunction(ptr);
 
 						break;
 					}
 
-					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(load(source, ("create" + j.name + "Instance").data())));
+					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(load(source, format("create{}Instance", j.name).data())));
 				}
 
 				if (!creator)
 				{
-					throw exceptions::CantFindFunctionException("create" + j.name + "Instance");
+					throw exceptions::CantFindFunctionException(format("create{}Instance", j.name));
 				}
 
 				switch (j.executorLoadType)
@@ -186,9 +188,7 @@ namespace framework
 
 			utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 
-			useHTTPS = httpsSettings.getUseHTTPS();
-
-			if (useHTTPS)
+			if (useHTTPS = httpsSettings.getUseHTTPS(); useHTTPS)
 			{
 				context = SSL_CTX_new(TLS_server_method());
 

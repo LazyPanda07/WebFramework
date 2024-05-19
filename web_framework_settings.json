@@ -5,6 +5,8 @@
     "timeout": 0
   },
   "LoadBalancer": {
+    "heuristic": "connections",
+    "loadSource": "current",
     "listOfServers": {
       "127.0.0.1": [
         "8500"

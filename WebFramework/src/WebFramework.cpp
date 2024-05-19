@@ -158,6 +158,8 @@ namespace framework
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
 		{
 			const json::utility::jsonObject& loadBalancerSettings = currentConfiguration.getObject(json_settings::loadBalancerObject);
+			const string& heuristic = loadBalancerSettings.getString(json_settings::heuristicKey);
+			const string& loadSource = loadBalancerSettings.getString(json_settings::loadSourceKey);
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject("listOfServers");
 			unordered_map<string, vector<string>> allServers;
 
@@ -170,7 +172,7 @@ namespace framework
 				);
 			}
 
-			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, allServers);
+			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, heuristic, nullptr, allServers);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)
 		{
