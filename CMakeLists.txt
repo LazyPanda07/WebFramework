@@ -97,6 +97,7 @@ add_library(
 	WebFramework/src/WebNetwork/WebServers/BaseWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/ThreadPoolWebServer.cpp
+	WebFramework/src/WebNetwork/Interfaces/IExecutorFunctionality.cpp
 	WebFramework/src/WebFramework.cpp
 )
 
