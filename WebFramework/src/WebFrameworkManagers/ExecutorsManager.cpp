@@ -30,7 +30,17 @@ namespace framework
 		return *this;
 	}
 
-	void ExecutorsManager::init(const json::JSONParser& configuraion, const filesystem::path& assets, uint64_t cachingSize, const string& pathToTemplates, unordered_map<string, unique_ptr<BaseExecutor>>&& routes, unordered_map<string, utility::ExecutorCreator>&& creators, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings, vector<utility::RouteParameters>&& routeParameters) noexcept
+	void ExecutorsManager::init
+	(
+		const json::JSONParser& configuraion,
+		const filesystem::path& assets,
+		uint64_t cachingSize,
+		const filesystem::path& pathToTemplates,
+		unordered_map<string, unique_ptr<BaseExecutor>>&& routes,
+		unordered_map<string, utility::ExecutorCreator>&& creators,
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
+		vector<utility::RouteParameters>&& routeParameters
+	) noexcept
 	{
 		this->routes = move(routes);
 		this->creators = move(creators);
@@ -63,7 +73,7 @@ namespace framework
 			{ "PUT", &BaseExecutor::doPut },
 			{ "DELETE", &BaseExecutor::doDelete },
 			{ "PATCH", &BaseExecutor::doPatch },
-			{ "OPTIONS",& BaseExecutor::doOptions },
+			{ "OPTIONS",&BaseExecutor::doOptions },
 			{ "TRACE", &BaseExecutor::doTrace },
 			{ "CONNECT", &BaseExecutor::doConnect }
 		};

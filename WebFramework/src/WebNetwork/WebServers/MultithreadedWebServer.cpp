@@ -12,7 +12,9 @@
 #include "Exceptions/SSLException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 
+#ifndef __LINUX__
 #pragma warning(disable: 6387)
+#endif
 
 using namespace std;
 
@@ -118,7 +120,18 @@ namespace framework
 		}
 	}
 
-	MultithreadedWebServer::MultithreadedWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources) :
+	MultithreadedWebServer::MultithreadedWebServer
+	(
+		const json::JSONParser& configuration,
+		const vector<utility::JSONSettingsParser>& parsers,
+		const filesystem::path& assets,
+		const filesystem::path& pathToTemplates,
+		uint64_t cachingSize,
+		string_view ip,
+		string_view port,
+		DWORD timeout,
+		const vector<string>& pathToSources
+	) :
 		BaseTCPServer
 		(
 			port,
@@ -128,19 +141,16 @@ namespace framework
 			0,
 			false
 		),
-		BaseWebServer
+		IExecutorFunctionality
 		(
 			configuration,
-			parsers,
 			assets,
 			pathToTemplates,
 			cachingSize,
-			ip,
-			port,
-			timeout,
+			parsers,
 			pathToSources
 		)
 	{
-		
+
 	}
 }

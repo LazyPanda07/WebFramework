@@ -2,7 +2,7 @@
 
 #include "core.h"
 
-#include "BaseTCPServer.h"
+#include "WebNetwork/WebServers/BaseWebServer.h"
 #include "MultiLocalizationManager.h"
 
 #include "Utility/DataStructures/PriorityQueue.h"
@@ -12,7 +12,7 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		class LoadBalancerServer : public web::BaseTCPServer
+		class LoadBalancerServer : public BaseWebServer
 		{
 		private:
 			std::vector<utility::BaseConnectionData> allServers;

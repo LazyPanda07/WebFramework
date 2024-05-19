@@ -251,7 +251,19 @@ namespace framework
 		this->serveClients();
 	}
 
-	ThreadPoolWebServer::ThreadPoolWebServer(const json::JSONParser& configuration, const vector<utility::JSONSettingsParser>& parsers, const filesystem::path& assets, const string& pathToTemplates, uint64_t cachingSize, const string& ip, const string& port, DWORD timeout, const vector<string>& pathToSources, uint32_t threadCount) :
+	ThreadPoolWebServer::ThreadPoolWebServer
+	(
+		const json::JSONParser& configuration,
+		const vector<utility::JSONSettingsParser>& parsers,
+		const filesystem::path& assets,
+		const filesystem::path& pathToTemplates,
+		uint64_t cachingSize,
+		string_view ip,
+		string_view port,
+		DWORD timeout,
+		const vector<string>& pathToSources,
+		uint32_t threadCount
+	) :
 		BaseTCPServer
 		(
 			port,
@@ -261,16 +273,13 @@ namespace framework
 			1,
 			false
 		),
-		BaseWebServer
+		IExecutorFunctionality
 		(
 			configuration,
-			parsers,
 			assets,
 			pathToTemplates,
 			cachingSize,
-			ip,
-			port,
-			timeout,
+			parsers,
 			pathToSources
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())

@@ -5,10 +5,13 @@
 #include "ThreadPool.h"
 
 #include "BaseWebServer.h"
+#include "WebNetwork/Interfaces/IExecutorFunctionality.h"
 
 namespace framework
 {
-	class ThreadPoolWebServer : public virtual BaseWebServer
+	class ThreadPoolWebServer : 
+		public virtual BaseWebServer,
+		public interfaces::IExecutorFunctionality
 	{
 	private:
 		class Client
@@ -63,7 +66,19 @@ namespace framework
 		void onInvalidConnectionReceive() override;
 
 	public:
-		ThreadPoolWebServer(const json::JSONParser& configuration, const std::vector<utility::JSONSettingsParser>& parsers, const std::filesystem::path& assets, const std::string& pathToTemplates, uint64_t cachingSize, const std::string& ip, const std::string& port, DWORD timeout, const std::vector<std::string>& pathToSources, uint32_t threadCount);
+		ThreadPoolWebServer
+		(
+			const json::JSONParser& configuration,
+			const std::vector<utility::JSONSettingsParser>& parsers,
+			const std::filesystem::path& assets,
+			const std::filesystem::path& pathToTemplates,
+			uint64_t cachingSize,
+			std::string_view ip,
+			std::string_view port,
+			DWORD timeout,
+			const std::vector<std::string>& pathToSources,
+			uint32_t threadCount
+		);
 
 		~ThreadPoolWebServer() = default;
 	};

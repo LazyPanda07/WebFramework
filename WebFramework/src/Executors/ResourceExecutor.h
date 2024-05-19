@@ -41,7 +41,7 @@ namespace framework
 		void readFile(std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 
 	public:
-		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::string& pathToTemplates);
+		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::filesystem::path& pathToTemplates);
 
 		/// <summary>
 		/// Create assets folder

@@ -17,7 +17,7 @@ namespace framework
 
 	private:
 		std::unordered_map<std::string, std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
-		const std::string pathToTemplates;
+		const std::filesystem::path pathToTemplates;
 
 	private:
 		static void clear(std::string& code);
@@ -31,7 +31,7 @@ namespace framework
 		std::string execute(const std::vector<ExecutionUnit>& codes);
 
 	public:
-		WebFrameworkDynamicPages(const std::string& pathToTemplates);
+		WebFrameworkDynamicPages(const std::filesystem::path& pathToTemplates);
 
 		void run(const std::unordered_map<std::string, std::string>& variables, std::string& source);
 
@@ -41,7 +41,7 @@ namespace framework
 
 		bool isDynamicFunctionRegistered(const std::string& functionName);
 
-		const std::string& getPathToTemplates() const;
+		const std::filesystem::path& getPathToTemplates() const;
 
 		~WebFrameworkDynamicPages() = default;
 	};

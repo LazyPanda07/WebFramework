@@ -135,11 +135,11 @@ namespace framework
 		return result;
 	}
 
-	WebFrameworkDynamicPages::WebFrameworkDynamicPages(const string& pathToTemplates) :
+	WebFrameworkDynamicPages::WebFrameworkDynamicPages(const filesystem::path& pathToTemplates) :
 		pathToTemplates(pathToTemplates)
 	{
 		dynamicPagesFunctions.insert({ "print", print });
-		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates) });
+		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates.string()) });
 		dynamicPagesFunctions.insert({ "for", bind(forWFDP, placeholders::_1, ref(dynamicPagesFunctions)) });
 	}
 
@@ -193,7 +193,7 @@ namespace framework
 		return dynamicPagesFunctions.find(functionName) != dynamicPagesFunctions.end();
 	}
 
-	const string& WebFrameworkDynamicPages::getPathToTemplates() const
+	const filesystem::path& WebFrameworkDynamicPages::getPathToTemplates() const
 	{
 		return pathToTemplates;
 	}

@@ -39,7 +39,17 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		void init(const json::JSONParser& configuraion, const std::filesystem::path& assets, uint64_t cachingSize, const std::string& pathToTemplates, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes, std::unordered_map<std::string, utility::ExecutorCreator>&& creators, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings, std::vector<utility::RouteParameters>&& routeParameters) noexcept;
+		void init
+		(
+			const json::JSONParser& configuraion,
+			const std::filesystem::path& assets,
+			uint64_t cachingSize,
+			const std::filesystem::path& pathToTemplates,
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes,
+			std::unordered_map<std::string, utility::ExecutorCreator>&& creators, 
+			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
+			std::vector<utility::RouteParameters>&& routeParameters
+		) noexcept;
 
 		void service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors, std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>>& threadPoolFunction);
 
