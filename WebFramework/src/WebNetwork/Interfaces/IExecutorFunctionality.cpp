@@ -104,12 +104,12 @@ namespace framework
 			creators.reserve(settings.size());
 
 			vector<pair<string, string>> nodes;
-			auto load = [](HMODULE handle, const char* name)
+			auto load = [](HMODULE handle, string_view name)
 				{
 #ifdef __LINUX__
-					return dlsym(handle, name);
+					return dlsym(handle, name.data());
 #else
-					return GetProcAddress(handle, name);
+					return GetProcAddress(handle, name.data());
 #endif
 				};
 
@@ -119,14 +119,14 @@ namespace framework
 
 				for (const auto& source : sources)
 				{
-					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(load(source, format("create{}Instance", j.name).data())))
+					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(load(source, format("create{}Instance", j.name))))
 					{
 						creator.setCreateFunction(ptr);
 
 						break;
 					}
 
-					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(load(source, format("create{}Instance", j.name).data())));
+					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(load(source, format("create{}Instance", j.name))));
 				}
 
 				if (!creator)

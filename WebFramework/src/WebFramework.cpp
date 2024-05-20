@@ -172,7 +172,9 @@ namespace framework
 				);
 			}
 
-			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, heuristic, nullptr, allServers);
+			// TODO: pass load sources
+
+			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, heuristic, vector<HMODULE>(), allServers);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)
 		{
