@@ -9,6 +9,7 @@
 #include "WebNetwork/WebServers/ThreadPoolWebServer.h"
 #include "LoadBalancer/LoadBalancerServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
+#include "Utility/Sources.h"
 
 using namespace std;
 
@@ -92,7 +93,7 @@ namespace framework
 	(
 		const json::utility::jsonObject& webFrameworkSettings,
 		const vector<utility::JSONSettingsParser>& jsonSettings,
-		const vector<string>& loadSources
+		const vector<string>& pathToSources
 	)
 	{
 		const json::utility::jsonObject& webServerSettings = currentConfiguration.getObject(json_settings::webServerObject);
@@ -117,7 +118,7 @@ namespace framework
 					ip,
 					port,
 					timeout,
-					loadSources
+					pathToSources
 				);
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
@@ -134,7 +135,7 @@ namespace framework
 						ip,
 						port,
 						timeout,
-						loadSources,
+						pathToSources,
 						static_cast<uint32_t>(currentConfiguration.getObject(json_settings::threadPoolServerObject).getInt("threadCount"))
 					);
 			}
@@ -150,7 +151,7 @@ namespace framework
 						ip,
 						port,
 						timeout,
-						loadSources,
+						pathToSources,
 						NULL
 					);
 			}
@@ -172,9 +173,7 @@ namespace framework
 				);
 			}
 
-			// TODO: pass load sources
-
-			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, heuristic, vector<HMODULE>(), allServers);
+			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, heuristic, utility::loadSources(pathToSources), allServers);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)
 		{
@@ -197,10 +196,10 @@ namespace framework
 
 		const json::utility::jsonObject& webFrameworkSettings = currentConfiguration.getObject(json_settings::webFrameworkObject);
 		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
-		vector<string> loadSources = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::loadSourcesKey)).getAsStringArray();
+		vector<string> pathToSources = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::loadSourcesKey)).getAsStringArray();
 
 		ranges::for_each(settingsPaths, [this](string& path) { path = (basePath / path).string(); });
-		ranges::for_each(loadSources, [this](string& source)
+		ranges::for_each(pathToSources, [this](string& source)
 			{
 				if (source == "current")
 				{
@@ -227,7 +226,7 @@ namespace framework
 		(
 			webFrameworkSettings,
 			jsonSettings,
-			loadSources
+			pathToSources
 		);
 
 		if (!server)

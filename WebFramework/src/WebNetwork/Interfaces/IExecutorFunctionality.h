@@ -21,8 +21,6 @@ namespace framework
 			std::shared_ptr<ResourceExecutor> resources;
 
 		private:
-			static std::vector<HMODULE> loadSources(const std::vector<std::string>& pathToSources);
-
 			static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorSettings(const std::vector<utility::JSONSettingsParser>& parsers);
 
 		public:

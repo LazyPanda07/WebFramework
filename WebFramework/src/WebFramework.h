@@ -38,7 +38,7 @@ namespace framework
 		(
 			const json::utility::jsonObject& webFrameworkSettings,
 			const std::vector<utility::JSONSettingsParser>& jsonSettings,
-			const std::vector<std::string>& loadSources
+			const std::vector<std::string>& pathToSources
 		);
 
 	public:

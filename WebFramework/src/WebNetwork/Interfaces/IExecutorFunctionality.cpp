@@ -4,6 +4,7 @@
 #include "Exceptions/CantLoadSourceException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
+#include "Utility/Sources.h"
 
 using namespace std;
 
@@ -13,52 +14,6 @@ namespace framework
 {
 	namespace interfaces
 	{
-		vector<HMODULE> IExecutorFunctionality::loadSources(const vector<string>& pathToSources)
-		{
-			vector<HMODULE> result;
-
-			result.reserve(pathToSources.size());
-
-			for (const string& temp : pathToSources)
-			{
-				if (temp == json_settings::defaultLoadSourceValue)
-				{
-#ifdef __LINUX__
-					result.push_back(dlopen(nullptr, RTLD_LAZY));
-#else
-					result.push_back(nullptr);
-#endif
-
-					continue;
-				}
-
-				string pathToSource = makePathToSource(temp);
-
-				if (filesystem::exists(pathToSource))
-				{
-					HMODULE handle = nullptr;
-
-#ifdef __LINUX__
-					handle = dlopen(pathToSource.data(), RTLD_LAZY);
-#else
-					handle = LoadLibraryA(pathToSource.data());
-#endif
-					result.push_back(handle);
-				}
-				else
-				{
-					throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
-				}
-
-				if (!result.back())
-				{
-					throw exceptions::CantLoadSourceException(pathToSource);
-				}
-			}
-
-			return result;
-		}
-
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> IExecutorFunctionality::createExecutorSettings(const vector<utility::JSONSettingsParser>& parsers)
 		{
 			unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> result;
@@ -97,21 +52,13 @@ namespace framework
 			unordered_map<string, unique_ptr<BaseExecutor>> routes;
 			unordered_map<string, utility::ExecutorCreator> creators;
 			vector<utility::RouteParameters> routeParameters;
-			vector<HMODULE> sources = IExecutorFunctionality::loadSources(pathToSources);
+			vector<HMODULE> sources = utility::loadSources(pathToSources);
 			unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = IExecutorFunctionality::createExecutorSettings(parsers);
 
 			routes.reserve(settings.size());
 			creators.reserve(settings.size());
 
 			vector<pair<string, string>> nodes;
-			auto load = [](HMODULE handle, string_view name)
-				{
-#ifdef __LINUX__
-					return dlsym(handle, name.data());
-#else
-					return GetProcAddress(handle, name.data());
-#endif
-				};
 
 			for (const auto& [i, j] : settings)
 			{
@@ -119,14 +66,14 @@ namespace framework
 
 				for (const auto& source : sources)
 				{
-					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(load(source, format("create{}Instance", j.name))))
+					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(utility::load(source, format("create{}Instance", j.name))))
 					{
 						creator.setCreateFunction(ptr);
 
 						break;
 					}
 
-					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(load(source, format("create{}Instance", j.name))));
+					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(utility::load(source, format("create{}Instance", j.name))));
 				}
 
 				if (!creator)

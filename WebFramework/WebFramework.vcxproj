@@ -393,6 +393,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\SQLite3\SQLiteManager.cpp" />
     <ClCompile Include="src\Utility\ExecutorCreator.cpp" />
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
+    <ClCompile Include="src\Utility\Sources.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp" />
     <ClCompile Include="src\WebFrameworkManagers\SessionsManager.cpp" />

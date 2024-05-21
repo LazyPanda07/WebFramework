@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.27.0)
 set(CMAKE_CXX_STANDARD 20)
 set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3/lib)
 set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
+set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
 set(
 	LIBS
@@ -83,6 +84,7 @@ add_library(
 	WebFramework/src/SQLite3/SQLiteDatabaseModel.cpp
 	WebFramework/src/SQLite3/SQLiteResult.cpp
 	WebFramework/src/SQLite3/SQLiteManager.cpp
+	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/ExecutorCreator.cpp
@@ -142,7 +144,7 @@ install(
 	TARGETS ${PROJECT_NAME} 
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
 	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
 )
 
 install(FILES ${SQLITE_DLL_PATH} DESTINATION ${SQLITE_DLL_DESTINATION_PATH})

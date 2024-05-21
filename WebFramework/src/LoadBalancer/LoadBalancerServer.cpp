@@ -31,15 +31,6 @@ namespace framework
 				false
 			)
 		{
-			auto load = [heuristicName](HMODULE handle)
-				{
-#ifdef __LINUX__
-					return dlsym(handle, heuristicName.data());
-#else
-					return GetProcAddress(handle, heuristicName.data());
-#endif
-				};
-
 			for (const auto& [ip, ports] : allServers)
 			{
 				for (const auto& port : ports)
@@ -50,7 +41,7 @@ namespace framework
 
 			for (HMODULE source : loadSources)
 			{
-				if (auto heuristicCreateFunction = reinterpret_cast<BaseLoadBalancerHeuristic * (*)()>(load(source)); heuristicCreateFunction)
+				if (auto heuristicCreateFunction = reinterpret_cast<BaseLoadBalancerHeuristic * (*)()>(utility::load(source, heuristicName)); heuristicCreateFunction)
 				{
 					heuristic = unique_ptr<BaseLoadBalancerHeuristic>(heuristicCreateFunction());
 				}
