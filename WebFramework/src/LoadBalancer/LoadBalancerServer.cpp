@@ -3,6 +3,7 @@
 #include "IOSocketStream.h"
 
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
+#include "Utility/Sources.h"
 
 using namespace std;
 
