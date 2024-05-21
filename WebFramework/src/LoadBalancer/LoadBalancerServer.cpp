@@ -1,9 +1,13 @@
 #include "LoadBalancerServer.h"
 
 #include "IOSocketStream.h"
+#include "Exceptions/SSLException.h"
+#include "HTTPSNetwork.h"
 
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
 #include "Utility/Sources.h"
+#include "WebNetwork/WebFrameworkHTTPNetwork.h"
+#include "WebNetwork/WebFrameworkHTTPSNetwork.h"
 
 using namespace std;
 
@@ -20,15 +24,87 @@ namespace framework
 
 		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
 		{
+			const auto& [connectionData, heuristic] = *min_element
+			(
+				allServers.begin(), allServers.end(),
+				[](const ServerData& left, const ServerData& right)
+				{
+					return (*left.heuristic)() < (*right.heuristic)();
+				}
+			);
+			SSL* ssl = nullptr;
+
+			if (useHTTPS)
+			{
+				ssl = SSL_new(context);
+
+				if (!ssl)
+				{
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
+				}
+
+				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				{
+					SSL_free(ssl);
+
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
+				}
+
+				if (int errorCode = SSL_accept(ssl); errorCode != 1)
+				{
+					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+				}
+			}
+
+			// TODO: timeout
+
+			streams::IOSocketStream clientStream
+			(
+				ssl ?
+				make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
+				make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
+			);
+			streams::IOSocketStream serverStream
+			(
+				serversHTTPS ?
+				std::make_unique<web::HTTPSNetwork>(connectionData.ip, connectionData.port, 0) :
+				std::make_unique<web::HTTPNetwork>(connectionData.ip, connectionData.port, 0)
+			);
+
+			heuristic->onStart();
+
 			while (isRunning)
 			{
-				
+				string request;
+				string response;
+
+				clientStream >> request;
+
+				if (clientStream.eof())
+				{
+					break;
+				}
+
+				serverStream << request;
+
+				if (serverStream.eof())
+				{
+					// TODO: 500 to client
+
+					break;
+				}
+
+				serverStream >> response;
+
+				clientStream << response;
 			}
+
+			heuristic->onEnd();
 		}
 
 		LoadBalancerServer::LoadBalancerServer
 		(
-			string_view ip, string_view port, DWORD timeout,
+			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
 			string_view heuristicName, const vector<HMODULE>& loadSources,
 			const unordered_map<string, vector<string>>& allServers
 		) :
@@ -40,16 +116,17 @@ namespace framework
 				true,
 				0,
 				false
-			)
+			),
+			serversHTTPS(serversHTTPS)
 		{
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
-			void*(*heuristicCreateFunction)() = nullptr;
+			void* (*heuristicCreateFunction)() = nullptr;
 
 			for (HMODULE source : loadSources)
 			{
-				if (heuristicCreateFunction = reinterpret_cast<void*(*)()>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
+				if (heuristicCreateFunction = reinterpret_cast<void* (*)()>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
 				{
-					break;	
+					break;
 				}
 			}
 
@@ -68,7 +145,7 @@ namespace framework
 
 					this->allServers.emplace_back
 					(
-						utility::BaseConnectionData(ip, port, 0), 
+						utility::BaseConnectionData(ip, port, 0),
 						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction()))
 					);
 				}

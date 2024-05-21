@@ -13,5 +13,15 @@ namespace framework
 		{
 
 		}
+
+		void BaseLoadBalancerHeuristic::onStart()
+		{
+
+		}
+
+		void BaseLoadBalancerHeuristic::onEnd()
+		{
+
+		}
 	}
 }

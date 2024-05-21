@@ -38,6 +38,7 @@ namespace framework
 
 		private:
 			std::vector<ServerData> allServers;
+			bool serversHTTPS;
 
 		private:
 			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr, std::function<void()>&& cleanup) override;
@@ -45,7 +46,7 @@ namespace framework
 		public:
 			LoadBalancerServer
 			(
-				std::string_view ip, std::string_view port, DWORD timeout,
+				std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
 				std::string_view heuristicName, const std::vector<HMODULE>& loadSources,
 				const std::unordered_map<std::string, std::vector<std::string>>& allServers
 			);

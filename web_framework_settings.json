@@ -7,6 +7,7 @@
   "LoadBalancer": {
     "heuristic": "connections",
     "loadSource": "current",
+    "serversHTTPS": false,
     "listOfServers": {
       "127.0.0.1": [
         "8500"

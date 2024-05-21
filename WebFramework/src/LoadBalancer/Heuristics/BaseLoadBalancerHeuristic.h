@@ -18,6 +18,10 @@ namespace framework
 
 			virtual uint64_t operator ()() const = 0;
 
+			virtual void onStart();
+
+			virtual void onEnd();
+
 			virtual ~BaseLoadBalancerHeuristic() = default;
 		};
 	}

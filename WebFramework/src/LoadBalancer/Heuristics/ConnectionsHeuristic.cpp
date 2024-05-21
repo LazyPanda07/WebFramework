@@ -12,9 +12,19 @@ namespace framework
 
 		}
 
+		void ConnectionsHeuristic::onStart()
+		{
+			connectons++;
+		}
+
+		void ConnectionsHeuristic::onEnd()
+		{
+			connectons--;
+		}
+
 		uint64_t ConnectionsHeuristic::operator ()() const
 		{
-			return 0;
+			return connectons;
 		}
 
 		DECLARE_HEURISTIC(ConnectionsHeuristic)
