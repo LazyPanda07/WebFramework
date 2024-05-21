@@ -16,9 +16,28 @@ namespace framework
 		class LoadBalancerServer : public BaseWebServer
 		{
 		private:
-			std::vector<utility::BaseConnectionData> allServers;
-			std::shared_mutex allServersMutex;
-			std::unique_ptr<BaseLoadBalancerHeuristic> heuristic;
+			struct ServerData
+			{
+			public:
+				utility::BaseConnectionData connectionData;
+				std::unique_ptr<BaseLoadBalancerHeuristic> heuristic;
+
+			public:
+				ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept;
+
+				ServerData(const ServerData&) = delete;
+
+				ServerData(ServerData&&) noexcept = default;
+
+				ServerData& operator = (const ServerData&) = delete;
+
+				ServerData& operator = (ServerData&&) noexcept = default;
+
+				~ServerData() = default;
+			};
+
+		private:
+			std::vector<ServerData> allServers;
 
 		private:
 			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr, std::function<void()>&& cleanup) override;

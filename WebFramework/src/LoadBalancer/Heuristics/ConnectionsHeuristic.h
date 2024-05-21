@@ -9,7 +9,9 @@ namespace framework
 		class ConnectionsHeuristic : public BaseLoadBalancerHeuristic
 		{
 		public:
-			ConnectionsHeuristic() = default;
+			ConnectionsHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
+
+			uint64_t operator ()() const override;
 
 			~ConnectionsHeuristic() = default;
 		};

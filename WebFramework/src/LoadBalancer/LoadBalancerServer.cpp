@@ -11,9 +11,19 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
+		LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
+			connectionData(move(connectionData)),
+			heuristic(move(heuristic))
 		{
 
+		}
+
+		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
+		{
+			while (isRunning)
+			{
+				
+			}
 		}
 
 		LoadBalancerServer::LoadBalancerServer
@@ -32,25 +42,36 @@ namespace framework
 				false
 			)
 		{
-			for (const auto& [ip, ports] : allServers)
-			{
-				for (const auto& port : ports)
-				{
-					this->allServers.emplace_back(ip, port);
-				}
-			}
+			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
+			void*(*heuristicCreateFunction)() = nullptr;
 
 			for (HMODULE source : loadSources)
 			{
-				if (auto heuristicCreateFunction = reinterpret_cast<BaseLoadBalancerHeuristic * (*)()>(utility::load(source, heuristicName)); heuristicCreateFunction)
+				if (heuristicCreateFunction = reinterpret_cast<void*(*)()>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
 				{
-					heuristic = unique_ptr<BaseLoadBalancerHeuristic>(heuristicCreateFunction());
+					break;	
 				}
 			}
 
-			if (!heuristic)
+			if (!heuristicCreateFunction)
 			{
 				throw runtime_error("Can't find heuristic");
+			}
+
+			this->allServers.reserve(allServers.size());
+
+			for (const auto& [ip, ports] : allServers)
+			{
+				for (const string& port : ports)
+				{
+					// TODO: timeout
+
+					this->allServers.emplace_back
+					(
+						utility::BaseConnectionData(ip, port, 0), 
+						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction()));
+					);
+				}
 			}
 		}
 	}
