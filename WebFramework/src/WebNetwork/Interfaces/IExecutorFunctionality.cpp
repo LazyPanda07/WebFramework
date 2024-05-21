@@ -1,7 +1,5 @@
 #include "IExecutorFunctionality.h"
 
-#include "Exceptions/FileDoesNotExistException.h"
-#include "Exceptions/CantLoadSourceException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Utility/Sources.h"

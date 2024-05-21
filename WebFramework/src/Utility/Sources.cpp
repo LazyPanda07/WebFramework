@@ -1,5 +1,8 @@
 #include "Sources.h"
 
+#include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/CantLoadSourceException.h"
+
 using namespace std;
 
 static string makePathToSource(const string& pathToSource);
