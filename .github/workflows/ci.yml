@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
-        path: build/install-dir
+        path: build/WebFrameworkLibrary
 
 
   linux-build:
@@ -61,7 +61,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
-        path: build/install-dir
+        path: build/WebFrameworkLibrary
         
 
   windows-tests:
