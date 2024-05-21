@@ -69,7 +69,7 @@ namespace framework
 					this->allServers.emplace_back
 					(
 						utility::BaseConnectionData(ip, port, 0), 
-						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction()));
+						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction()))
 					);
 				}
 			}
