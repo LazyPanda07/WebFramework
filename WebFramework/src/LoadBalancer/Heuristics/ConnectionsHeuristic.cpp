@@ -1,5 +1,7 @@
 #include "ConnectionsHeuristic.h"
 
+using namespace std;
+
 namespace framework
 {
 	namespace load_balancer
