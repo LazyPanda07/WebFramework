@@ -8,8 +8,6 @@
 
 using namespace std;
 
-static string makePathToSource(const string& pathToSource);
-
 namespace framework
 {
 	namespace interfaces
@@ -149,17 +147,4 @@ namespace framework
 			resources = executorsManager.getResourceExecutor();
 		}
 	}
-}
-
-string makePathToSource(const string& pathToSource)
-{
-#ifdef __LINUX__
-	filesystem::path temp(pathToSource);
-	filesystem::path parent = temp.parent_path();
-	filesystem::path fileName = temp.filename();
-
-	return format("{}/lib{}.so", parent.string(), fileName.string());
-#else
-	return format("{}.dll", pathToSource);
-#endif
 }
