@@ -2,7 +2,8 @@
 
 #include "Executors/BaseStatelessExecutor.h"
 
-class IdExecutor : public framework::BaseStatel{
+class IdExecutor : public framework::BaseStatelessExecutor
+{
 public:
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 };
