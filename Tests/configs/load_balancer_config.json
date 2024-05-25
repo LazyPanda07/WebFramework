@@ -1,0 +1,33 @@
+{
+  "WebServer": {
+    "ip": "127.0.0.1",
+    "port": "9090",
+    "timeout": 0
+  },
+  "WebFramework": {
+    "settingsPaths": [
+      "load_balancer_web.json"
+    ],
+    "loadSources": [
+      "current"
+    ],
+    "assetsPath": "assets",
+    "templatesPath": "templates",
+    "cachingSize": 0,
+    "webServerType": "loadBalancer",
+    "HTTPS": {
+      "useHTTPS": false,
+      "pathToCertificate": "certificates/cert.pem",
+      "pathToKey": "certificates/key.pem"
+    },
+    "defaultAssetsPath": "WebFrameworkAssets"
+  },
+  "Logging": {
+    "usingLogging": true,
+    "dateFormat": "DMY",
+    "logFileSize": 134217728
+  },
+  "ThreadPoolServer": {
+    "threadCount": 0
+  }
+}

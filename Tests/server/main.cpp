@@ -29,7 +29,7 @@ int main(int argc, char** argv) try
 }
 catch (const web::exceptions::WebException& e)
 {
-	std::cout << e.what() << std::endl;
+	std::cerr << e.what() << std::endl;
 
 	exit(-1);
 }

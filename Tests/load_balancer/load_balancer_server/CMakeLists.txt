@@ -21,13 +21,12 @@ if (UNIX)
 	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -rdynamic)
 endif (UNIX)
 
-project(Server)
+project(LoadBalancerServer)
 
 add_executable(
 	${PROJECT_NAME}
 	main.cpp
-	executors/HelloExecutor.cpp
-	executors/AssetsExecutor.cpp
+	IdExecutor.cpp
 )
 
 target_include_directories(
@@ -58,7 +57,5 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	${LIBS}
 )
-
-add_subdirectory(database)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
