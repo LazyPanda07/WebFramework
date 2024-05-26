@@ -4,6 +4,8 @@
 
 #include "WebNetwork/WebServers/BaseWebServer.h"
 
+#include "Config.h"
+
 namespace framework
 {
 	/// <summary>
@@ -25,9 +27,7 @@ namespace framework
 
 	private:
 		std::unique_ptr<web::BaseTCPServer> server;
-		json::JSONParser currentConfiguration;
-		std::filesystem::path configurationJSONFile;
-		std::filesystem::path basePath;
+		utility::Config config;
 
 	private:
 		std::string initLogging() const;
@@ -42,23 +42,17 @@ namespace framework
 		);
 
 	public:
-		/// <summary>
-		/// Construct WebFramework
-		/// </summary>
-		/// <param name="configurationINIFile">path to .json configuration file</param>
-		/// <exception cref="framework::exceptions::BaseExecutorException"></exception>
-		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON setting value</exception>
-		/// <exception cref="std::runtime_error"></exception>
-		WebFramework(const std::filesystem::path& configurationJSONFile);
+		WebFramework(const utility::Config& webFrameworkConfig);
+
+		WebFramework(const std::filesystem::path& webFrameworkConfigPath);
 
 		/// <summary>
-		/// Start BaseWebServer
+		/// Start server
 		/// </summary>
 		void startServer(bool wait = false, const std::function<void()>& onStartServer = []() {});
 
 		/// <summary>
-		/// Stop BaseWebServer incoming connections
+		/// Stop server
 		/// </summary>
 		void stopServer(bool wait = true);
 
@@ -83,10 +77,6 @@ namespace framework
 		/// @brief Getter for currentConfiguration
 		/// @return Get current running configuration JSON 
 		const json::JSONParser& getCurrentConfiguration() const;
-
-		/// @brief Getter for configurationJSONFile
-		/// @return Get path to configuration JSON file
-		const std::filesystem::path& getConfigurationJSONFile() const;
 
 		~WebFramework() = default;
 	};

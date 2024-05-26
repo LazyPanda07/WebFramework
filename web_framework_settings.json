@@ -8,14 +8,16 @@
     "heuristic": "connections",
     "loadSource": "current",
     "serversHTTPS": false,
-    "listOfServers": {
-      "127.0.0.1": [
-        "8500"
-      ],
-      "192.168.0.4": [
-        "8501"
-      ]
-    }
+    "listOfServers": [
+      {
+        "ip": "127.0.0.1",
+        "port": "8500"
+      },
+      {
+        "ip": "192.168.0.4",
+        "port": "8501"
+      }
+    ]
   },
   "WebFramework": {
     "settingsPaths": [

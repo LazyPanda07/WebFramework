@@ -367,6 +367,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp" />
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
@@ -414,6 +415,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
     <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\BadRequestException.h" />

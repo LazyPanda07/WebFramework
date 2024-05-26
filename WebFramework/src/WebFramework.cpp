@@ -31,7 +31,7 @@ namespace framework
 	{
 		try
 		{
-			const json::utility::jsonObject& loggingSettings = currentConfiguration.getObject(json_settings::loggingObject); // is logging object exists
+			const json::utility::jsonObject& loggingSettings = (*config).getObject(json_settings::loggingObject); // is logging object exists
 
 			try
 			{
@@ -74,6 +74,7 @@ namespace framework
 			if (https.getBool(json_settings::useHTTPSKey))
 			{
 				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+				const filesystem::path& basePath = config.getBasePath();
 
 				httpsSettings.setUseHTTPS(true);
 				httpsSettings.setPathToCertificate(basePath / https.getString(json_settings::pathToCertificateKey));
@@ -96,7 +97,8 @@ namespace framework
 		const vector<string>& pathToSources
 	)
 	{
-		const json::utility::jsonObject& webServerSettings = currentConfiguration.getObject(json_settings::webServerObject);
+		const filesystem::path& basePath = config.getBasePath();
+		const json::utility::jsonObject& webServerSettings = (*config).getObject(json_settings::webServerObject);
 		const string& ip = webServerSettings.getString(json_settings::ipKey);
 		const string& port = webServerSettings.getString(json_settings::portKey);
 		DWORD timeout = static_cast<DWORD>(webServerSettings.getInt(json_settings::timeoutKey));
@@ -110,7 +112,7 @@ namespace framework
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
-					currentConfiguration,
+					(*config),
 					jsonSettings,
 					assetsPath,
 					templatesPath,
@@ -127,7 +129,7 @@ namespace framework
 			{
 				server = make_unique<ThreadPoolWebServer>
 					(
-						currentConfiguration,
+						(*config),
 						jsonSettings,
 						assetsPath,
 						templatesPath,
@@ -136,14 +138,14 @@ namespace framework
 						port,
 						timeout,
 						pathToSources,
-						static_cast<uint32_t>(currentConfiguration.getObject(json_settings::threadPoolServerObject).getInt("threadCount"))
+						static_cast<uint32_t>((*config).getObject(json_settings::threadPoolServerObject).getInt("threadCount"))
 					);
 			}
 			catch (const json::exceptions::BaseJSONException&)
 			{
 				server = make_unique<ThreadPoolWebServer>
 					(
-						currentConfiguration,
+						(*config),
 						jsonSettings,
 						assetsPath,
 						templatesPath,
@@ -158,7 +160,7 @@ namespace framework
 		}
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
 		{
-			const json::utility::jsonObject& loadBalancerSettings = currentConfiguration.getObject(json_settings::loadBalancerObject);
+			const json::utility::jsonObject& loadBalancerSettings = (*config).getObject(json_settings::loadBalancerObject);
 			const string& heuristic = loadBalancerSettings.getString(json_settings::heuristicKey);
 			const string& loadSource = loadBalancerSettings.getString(json_settings::loadSourceKey);
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
@@ -182,25 +184,16 @@ namespace framework
 		}
 	}
 
-	WebFramework::WebFramework(const filesystem::path& configurationJSONFile) :
-		configurationJSONFile(configurationJSONFile),
-		basePath(filesystem::absolute(configurationJSONFile))
+	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
+		config(webFrameworkConfig)
 	{
-		if (!filesystem::exists(configurationJSONFile))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(configurationJSONFile.string());
-		}
-
-		currentConfiguration.setJSONData((ifstream(configurationJSONFile)));
-
-		basePath.remove_filename();
-
-		const json::utility::jsonObject& webFrameworkSettings = currentConfiguration.getObject(json_settings::webFrameworkObject);
+		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
+		const filesystem::path& basePath = config.getBasePath();
 		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
 		vector<string> pathToSources = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::loadSourcesKey)).getAsStringArray();
 
-		ranges::for_each(settingsPaths, [this](string& path) { path = (basePath / path).string(); });
-		ranges::for_each(pathToSources, [this](string& source)
+		ranges::for_each(settingsPaths, [this, &basePath](string& path) { path = (basePath / path).string(); });
+		ranges::for_each(pathToSources, [this, &basePath](string& source)
 			{
 				if (source == "current")
 				{
@@ -234,6 +227,12 @@ namespace framework
 		{
 			throw runtime_error(::exceptions::wrongWebServerType);
 		}
+	}
+
+	WebFramework::WebFramework(const filesystem::path& webFrameworkConfigPath) :
+		WebFramework(utility::Config(webFrameworkConfigPath))
+	{
+
 	}
 
 	void WebFramework::startServer(bool wait, const function<void()>& onStartServer)
@@ -273,11 +272,6 @@ namespace framework
 
 	const json::JSONParser& WebFramework::getCurrentConfiguration() const
 	{
-		return currentConfiguration;
-	}
-
-	const filesystem::path& WebFramework::getConfigurationJSONFile() const
-	{
-		return configurationJSONFile;
+		return (*config);
 	}
 }
