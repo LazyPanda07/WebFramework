@@ -9,6 +9,11 @@ int main(int argc, char** argv) try
 	
 	config.overrideConfiguration("port", parser.get<int64_t>("--port"), true);
 
+	if (parser.get<bool>("--custom_heuristic"))
+	{
+		config.overrideConfiguration("heuristic", "CustomHeuristic", true);
+	}
+
 	if (std::string type = parser.get<std::string>("--type"); type == "server")
 	{
 		std::vector<json::utility::jsonObject> settingsPaths;

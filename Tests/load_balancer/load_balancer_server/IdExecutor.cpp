@@ -16,8 +16,6 @@ void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse&
 	);
 }
 
-DECLARE_EXECUTOR(IdExecutor)
-
 int64_t getProcessId()
 {
 #ifdef __LINUX__
@@ -26,3 +24,5 @@ int64_t getProcessId()
 	return static_cast<int64_t>(GetCurrentProcessId());
 #endif
 }
+
+DECLARE_EXECUTOR(IdExecutor)

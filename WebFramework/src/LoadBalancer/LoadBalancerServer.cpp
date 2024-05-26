@@ -26,7 +26,7 @@ namespace framework
 		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
 		{
 			static mutex dataMutex;
-			ServerData* data = nullptr;
+			const ServerData* data = nullptr;
 
 			{
 				unique_lock<mutex> lock(dataMutex);
