@@ -1,7 +1,5 @@
 #include "LoadBalancerServer.h"
 
-#include <execution>
-
 #include "IOSocketStream.h"
 #include "Exceptions/SSLException.h"
 #include "HTTPSNetwork.h"
@@ -35,7 +33,6 @@ namespace framework
 
 				data = &*min_element
 				(
-					execution::parallel_unsequenced_policy(),
 					allServers.begin(), allServers.end(),
 					[](const ServerData& left, const ServerData& right)
 					{
