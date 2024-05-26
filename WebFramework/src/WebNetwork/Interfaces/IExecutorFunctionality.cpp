@@ -46,7 +46,7 @@ namespace framework
 		)
 		{
 			unordered_map<string, unique_ptr<BaseExecutor>> routes;
-			unordered_map<string, utility::ExecutorCreator> creators;
+			unordered_map<string, createExecutorFunction> creators;
 			vector<utility::RouteParameters> routeParameters;
 			vector<HMODULE> sources = utility::loadSources(pathToSources);
 			unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = IExecutorFunctionality::createExecutorSettings(parsers);
@@ -58,18 +58,14 @@ namespace framework
 
 			for (const auto& [i, j] : settings)
 			{
-				utility::ExecutorCreator creator;
+				createExecutorFunction creator = nullptr;
 
 				for (const auto& source : sources)
 				{
-					if (void* (*ptr)() = reinterpret_cast<void* (*)()>(utility::load(source, format("create{}Instance", j.name))))
+					if (creator = reinterpret_cast<createExecutorFunction>(utility::load(source, format("create{}Instance", j.name))))
 					{
-						creator.setCreateFunction(ptr);
-
 						break;
 					}
-
-					creator.setCreateFunction(reinterpret_cast<createBaseExecutorSubclassFunction>(utility::load(source, format("create{}Instance", j.name))));
 				}
 
 				if (!creator)
@@ -82,7 +78,14 @@ namespace framework
 				case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
 					if (i.find('{') == string::npos)
 					{
-						auto [it, success] = routes.emplace(make_pair(i, unique_ptr<BaseExecutor>(creator())));
+						auto [it, success] = routes.emplace
+						(
+							make_pair
+							(
+								i,
+								unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
+							)
+						);
 
 						if (success)
 						{
@@ -100,7 +103,14 @@ namespace framework
 					{
 						routeParameters.push_back(i);
 
-						auto [it, success] = routes.emplace(make_pair(routeParameters.back().baseRoute, unique_ptr<BaseExecutor>(creator())));
+						auto [it, success] = routes.emplace
+						(
+							make_pair
+							(
+								routeParameters.back().baseRoute,
+								unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
+							)
+						);
 
 						nodes.push_back(make_pair(i, routeParameters.back().baseRoute));
 

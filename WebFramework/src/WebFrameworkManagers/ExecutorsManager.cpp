@@ -37,7 +37,7 @@ namespace framework
 		uint64_t cachingSize,
 		const filesystem::path& pathToTemplates,
 		unordered_map<string, unique_ptr<BaseExecutor>>&& routes,
-		unordered_map<string, utility::ExecutorCreator>&& creators,
+		unordered_map<string, createExecutorFunction>&& creators,
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 		vector<utility::RouteParameters>&& routeParameters
 	) noexcept
@@ -158,7 +158,14 @@ namespace framework
 							parameters = it->baseRoute;
 						}
 
-						executor = routes.insert(make_pair(move(parameters), unique_ptr<BaseExecutor>(creators[executorSettings->second.name]()))).first;
+						executor = routes.insert
+						(
+							make_pair
+							(
+								move(parameters),
+								unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
+							)
+						).first;
 						executor->second->init(executorSettings->second);
 
 						if (executor->second->getType() == BaseExecutor::executorType::stateful || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful)

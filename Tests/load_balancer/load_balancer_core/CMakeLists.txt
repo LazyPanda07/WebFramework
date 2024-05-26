@@ -22,6 +22,7 @@ target_include_directories(
 	${WEB_FRAMEWORK_DIR}/Networks/HTTP/JSON/src/
 	${WEB_FRAMEWORK_DIR}/Networks/SocketStreams/src/
 	${WEB_FRAMEWORK_DIR}/Networks/vendor/OpenSSL/include/
+	${WEB_FRAMEWORK_DIR}/UtilityLibrary/include/
 	${GTEST_INCLUDE_DIR}
 )
 

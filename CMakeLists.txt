@@ -76,7 +76,7 @@ add_library(
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
-	WebFramework/src/LoadBalancer/Heuristics/ConnectionsHeuristic.cpp
+	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
 	WebFramework/src/Middleware/BaseMiddlewareRouteController.cpp
 	WebFramework/src/Middleware/Middleware.cpp
 	WebFramework/src/Middleware/MiddlewareWebNetwork/MiddlewareServer.cpp
@@ -87,7 +87,6 @@ add_library(
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/JSONSettingsParser.cpp
-	WebFramework/src/Utility/ExecutorCreator.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/Middleware/BaseConnectionData.cpp
 	WebFramework/src/WebFrameworkManagers/ExecutorsManager.cpp

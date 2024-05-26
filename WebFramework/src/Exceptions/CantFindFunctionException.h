@@ -7,7 +7,7 @@ namespace framework
 	namespace exceptions
 	{
 		/// <summary>
-		/// Can't find createBaseExecutorSubclassFunction for executor
+		/// Can't find createExecutorFunction for executor
 		/// </summary>
 		class WEB_FRAMEWORK_API CantFindFunctionException : public BaseExecutorException
 		{

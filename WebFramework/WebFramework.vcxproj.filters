@@ -138,13 +138,10 @@
     <ClCompile Include="src\Exceptions\DatabaseException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\ExecutorCreator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\LoadBalancer\Heuristics\ConnectionsHeuristic.cpp">
+    <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp">
@@ -293,19 +290,19 @@
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\ExecutorCreator.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\Heuristics\ConnectionsHeuristic.h">
+    <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Config.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\Sources.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

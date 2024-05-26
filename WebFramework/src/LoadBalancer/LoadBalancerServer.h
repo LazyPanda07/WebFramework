@@ -48,7 +48,7 @@ namespace framework
 			(
 				std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
 				std::string_view heuristicName, const std::vector<HMODULE>& loadSources,
-				const std::unordered_map<std::string, std::vector<std::string>>& allServers
+				const std::unordered_map<std::string, std::vector<int64_t>>& allServers
 			);
 
 			~LoadBalancerServer() = default;

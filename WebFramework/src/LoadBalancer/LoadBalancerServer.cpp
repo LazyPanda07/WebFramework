@@ -1,5 +1,7 @@
 #include "LoadBalancerServer.h"
 
+#include <execution>
+
 #include "IOSocketStream.h"
 #include "Exceptions/SSLException.h"
 #include "HTTPSNetwork.h"
@@ -8,6 +10,7 @@
 #include "Utility/Sources.h"
 #include "WebNetwork/WebFrameworkHTTPNetwork.h"
 #include "WebNetwork/WebFrameworkHTTPSNetwork.h"
+#include "Heuristics/Connections.h"
 
 using namespace std;
 
@@ -24,15 +27,27 @@ namespace framework
 
 		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
 		{
-			const auto& [connectionData, heuristic] = *min_element
-			(
-				allServers.begin(), allServers.end(),
-				[](const ServerData& left, const ServerData& right)
-				{
-					return (*left.heuristic)() < (*right.heuristic)();
-				}
-			);
+			static mutex dataMutex;
+			ServerData* data = nullptr;
+
+			{
+				unique_lock<mutex> lock(dataMutex);
+
+				data = &*min_element
+				(
+					execution::parallel_unsequenced_policy(),
+					allServers.begin(), allServers.end(),
+					[](const ServerData& left, const ServerData& right)
+					{
+						return (*left.heuristic)() < (*right.heuristic)();
+					}
+				);
+			}
+
+			const auto& [connectionData, heuristic] = *data;
 			SSL* ssl = nullptr;
+
+			heuristic->onStart();
 
 			if (useHTTPS)
 			{
@@ -71,8 +86,6 @@ namespace framework
 				std::make_unique<web::HTTPNetwork>(connectionData.ip, connectionData.port, 0)
 			);
 
-			heuristic->onStart();
-
 			while (isRunning)
 			{
 				string request;
@@ -106,7 +119,7 @@ namespace framework
 		(
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
 			string_view heuristicName, const vector<HMODULE>& loadSources,
-			const unordered_map<string, vector<string>>& allServers
+			const unordered_map<string, vector<int64_t>>& allServers
 		) :
 			BaseTCPServer
 			(
@@ -120,33 +133,41 @@ namespace framework
 			serversHTTPS(serversHTTPS)
 		{
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
-			void* (*heuristicCreateFunction)() = nullptr;
+			createHeuristicFunction heuristicCreateFunction = nullptr;
 
-			for (HMODULE source : loadSources)
+			if (heuristicName == "Connections")
 			{
-				if (heuristicCreateFunction = reinterpret_cast<void* (*)()>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
-				{
-					break;
-				}
+				heuristicCreateFunction = [](string_view ip, string_view port, bool useHTTPS) -> void* { return new Connections(ip, port, useHTTPS); };
 			}
-
-			if (!heuristicCreateFunction)
+			else
 			{
-				throw runtime_error("Can't find heuristic");
+				for (HMODULE source : loadSources)
+				{
+					if (heuristicCreateFunction = reinterpret_cast<createHeuristicFunction>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
+					{
+						break;
+					}
+				}
+
+				if (!heuristicCreateFunction)
+				{
+					throw runtime_error("Can't find heuristic");
+				}
 			}
 
 			this->allServers.reserve(allServers.size());
 
 			for (const auto& [ip, ports] : allServers)
 			{
-				for (const string& port : ports)
+				for (int64_t port : ports)
 				{
 					// TODO: timeout
+					string portString = to_string(port);
 
 					this->allServers.emplace_back
 					(
-						utility::BaseConnectionData(ip, port, 0),
-						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction()))
+						utility::BaseConnectionData(ip, portString, 0),
+						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction(ip, portString, serversHTTPS)))
 					);
 				}
 			}

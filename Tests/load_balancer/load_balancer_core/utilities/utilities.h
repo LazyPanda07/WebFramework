@@ -4,5 +4,5 @@
 
 namespace utility
 {
-	streams::IOSocketStream createSocketStream(bool useHTTPS);
+	streams::IOSocketStream createSocketStream(int64_t port, bool useHTTPS);
 }

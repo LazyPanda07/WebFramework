@@ -6,7 +6,6 @@
 #include "Utility/JSONSettingsParser.h"
 #include "Executors/ResourceExecutor.h"
 #include "Utility/RouteParameters.h"
-#include "Utility/ExecutorCreator.h"
 
 namespace framework
 {
@@ -22,7 +21,7 @@ namespace framework
 	private:
 		std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
-		std::unordered_map<std::string, utility::ExecutorCreator> creators; // executor name - create function
+		std::unordered_map<std::string, createExecutorFunction> creators; // executor name - create function
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -46,7 +45,7 @@ namespace framework
 			uint64_t cachingSize,
 			const std::filesystem::path& pathToTemplates,
 			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes,
-			std::unordered_map<std::string, utility::ExecutorCreator>&& creators, 
+			std::unordered_map<std::string, createExecutorFunction>&& creators,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 			std::vector<utility::RouteParameters>&& routeParameters
 		) noexcept;

@@ -27,7 +27,7 @@ int main(int argc, char** argv) try
 
 	return 0;
 }
-catch (const web::exceptions::WebException& e)
+catch (const std::exception& e)
 {
 	std::cerr << e.what() << std::endl;
 

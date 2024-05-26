@@ -1,14 +1,52 @@
 #include "WebFramework.h"
 
+#include "ConsoleArgumentParser.h"
+
 int main(int argc, char** argv) try
 {
-	framework::WebFramework server(argv[1]);
+	utility::parsers::ConsoleArgumentParser parser(argc, argv);
+	framework::utility::Config config(parser.get<std::string>("--config"));
+	
+	config.overrideConfiguration("port", parser.get<int64_t>("--port"), true);
+
+	if (std::string type = parser.get<std::string>("--type"); type == "server")
+	{
+		std::vector<json::utility::jsonObject> settingsPaths;
+
+		json::utility::appendArray("load_balancer_web.json", settingsPaths);
+
+		config.overrideConfiguration("webServerType", "multiThreaded", true);
+
+		config.overrideConfiguration("settingsPaths", settingsPaths, true);
+	}
+	else
+	{
+		bool serversHTTPS = parser.get<bool>("--serversHTTPS", false);
+		std::vector<json::utility::jsonObject> listOfServers;
+
+		config.overrideConfiguration("serversHTTPS", serversHTTPS, true);
+
+		if (serversHTTPS)
+		{
+			json::utility::appendArray(10002LL, listOfServers);
+			json::utility::appendArray(10003LL, listOfServers);
+		}
+		else
+		{
+			json::utility::appendArray(10000LL, listOfServers);
+			json::utility::appendArray(10001LL, listOfServers);
+		}
+
+		config.overrideConfiguration("127.0.0.1", listOfServers, true);
+	}
+
+	framework::WebFramework server(config);
 
 	server.startServer(true);
 
 	return 0;
 }
-catch (const web::exceptions::WebException& e)
+catch (const std::exception& e)
 {
 	std::cerr << e.what() << std::endl;
 

@@ -100,7 +100,7 @@ namespace framework
 		const filesystem::path& basePath = config.getBasePath();
 		const json::utility::jsonObject& webServerSettings = (*config).getObject(json_settings::webServerObject);
 		const string& ip = webServerSettings.getString(json_settings::ipKey);
-		const string& port = webServerSettings.getString(json_settings::portKey);
+		string port = to_string(webServerSettings.getInt(json_settings::portKey));
 		DWORD timeout = static_cast<DWORD>(webServerSettings.getInt(json_settings::timeoutKey));
 
 		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
@@ -165,14 +165,14 @@ namespace framework
 			const string& loadSource = loadBalancerSettings.getString(json_settings::loadSourceKey);
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject("listOfServers");
-			unordered_map<string, vector<string>> allServers;
+			unordered_map<string, vector<int64_t>> allServers;
 
 			for (const auto& [key, value] : listOfServers)
 			{
 				allServers.emplace
 				(
 					key,
-					json::utility::JSONArrayWrapper(get<vector<json::utility::jsonObject>>(value)).getAsStringArray()
+					json::utility::JSONArrayWrapper(get<vector<json::utility::jsonObject>>(value)).getAsInt64_tArray()
 				);
 			}
 

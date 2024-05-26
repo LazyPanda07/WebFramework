@@ -126,10 +126,7 @@ namespace framework
 		virtual ~BaseExecutor() = default;
 	};
 
-	/// <summary>
-	/// Shortcut to creating BaseExecutor subclass function signature
-	/// </summary>
-	using createBaseExecutorSubclassFunction = BaseExecutor* (*)();
+	using createExecutorFunction = void* (*)();
 }
 
 #ifdef __LINUX__
@@ -151,9 +148,3 @@ namespace framework
 	return new subclassName();	\
 }
 #endif
-
-/**
-* Macro for each BaseExecutor subclass
-* Used for loading function that creates BaseExecutor subclass
-*/
-#define EXECUTOR_CREATION_FUNCTION(subclassName) DECLARE_EXECUTOR(subclassName)
