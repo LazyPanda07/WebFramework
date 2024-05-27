@@ -1,6 +1,6 @@
 {
   "Executor": {
     "route": "default_request",
-    "type": "initialization"
+    "loadType": "initialization"
   }
 }
