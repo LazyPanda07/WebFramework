@@ -39,8 +39,9 @@ namespace json_settings
 	inline constexpr std::string_view webFrameworkObject = "WebFramework";
 	inline constexpr std::string_view httpsObject = "HTTPS";
 	inline constexpr std::string_view loggingObject = "Logging";
-	inline constexpr std::string_view loadBalancerObject = "LoadBalancer";
 	inline constexpr std::string_view threadPoolServerObject = "ThreadPoolServer";
+	inline constexpr std::string_view loadBalancerObject = "LoadBalancer";
+	inline constexpr std::string_view proxyObject = "Proxy";
 
 	inline constexpr std::string_view settingsPathsKey = "settingsPaths";
 	inline constexpr std::string_view ipKey = "ip";

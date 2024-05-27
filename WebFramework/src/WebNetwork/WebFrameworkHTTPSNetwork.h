@@ -4,7 +4,7 @@
 
 #include "HTTPSNetwork.h"
 
-#include "Utility/Middleware/BaseConnectionData.h"
+#include "Utility/BaseConnectionData.h"
 
 namespace framework
 {

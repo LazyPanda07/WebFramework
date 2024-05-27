@@ -77,9 +77,6 @@ add_library(
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
-	WebFramework/src/Middleware/BaseMiddlewareRouteController.cpp
-	WebFramework/src/Middleware/Middleware.cpp
-	WebFramework/src/Middleware/MiddlewareWebNetwork/MiddlewareServer.cpp
 	WebFramework/src/SQLite3/SQLiteDatabase.cpp
 	WebFramework/src/SQLite3/SQLiteDatabaseModel.cpp
 	WebFramework/src/SQLite3/SQLiteResult.cpp
@@ -88,7 +85,7 @@ add_library(
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
-	WebFramework/src/Utility/Middleware/BaseConnectionData.cpp
+	WebFramework/src/Utility/BaseConnectionData.cpp
 	WebFramework/src/WebFrameworkManagers/ExecutorsManager.cpp
 	WebFramework/src/WebFrameworkManagers/SessionsManager.cpp
 	WebFramework/src/WebNetwork/HTTPRequest.cpp

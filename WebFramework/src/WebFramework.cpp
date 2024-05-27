@@ -10,6 +10,7 @@
 #include "LoadBalancer/LoadBalancerServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Sources.h"
+#include "Proxy/ProxyServer.h"
 
 using namespace std;
 
@@ -180,7 +181,7 @@ namespace framework
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)
 		{
-
+			server = make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).getObject(json_settings::proxyObject));
 		}
 	}
 

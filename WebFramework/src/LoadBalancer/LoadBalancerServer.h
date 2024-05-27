@@ -6,8 +6,7 @@
 #include "MultiLocalizationManager.h"
 #include "Heuristics/BaseLoadBalancerHeuristic.h"
 
-#include "Utility/DataStructures/PriorityQueue.h"
-#include "Utility/Middleware/BaseConnectionData.h"
+#include "Utility/BaseConnectionData.h"
 
 namespace framework
 {
