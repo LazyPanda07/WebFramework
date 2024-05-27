@@ -12,9 +12,9 @@ namespace framework
 {
 	namespace proxy
 	{
-		ProxyServer::ProxyData::ProxyData(string_view ip, string_view port, DWORD timeout, bool useHTTPS) :
+		ProxyServer::ProxyData::ProxyData(string_view ip, string_view port, DWORD timeout, bool isHTTPS) :
 			BaseConnectionData(ip, port, timeout),
-			useHTTPS(useHTTPS)
+			isHTTPS(isHTTPS)
 		{
 
 		}
@@ -70,7 +70,7 @@ namespace framework
 
 			streams::IOSocketStream serverStream
 			(
-				data.useHTTPS ?
+				data.isHTTPS ?
 				std::make_unique<web::HTTPSNetwork>(data.ip, data.port, data.timeout) :
 				std::make_unique<web::HTTPNetwork>(data.ip, data.port, data.timeout)
 			);
@@ -102,10 +102,10 @@ namespace framework
 				const string& ip = proxiedServer.getString("ip");
 				int64_t port = proxiedServer.getInt("port");
 				uint64_t timeout = proxiedServer.getUnsignedInt("timeout");
-				bool useHTTPS = proxiedServer.getBool("useHTTPS");
+				bool isHTTPS = proxiedServer.getBool("isHTTPS");
 				vector<string> serverRoutes = json::utility::JSONArrayWrapper(proxiedServer.getArray("routes")).getAsStringArray();
 
-				const ProxyData& data = proxyData.emplace_back(ip, to_string(port), static_cast<DWORD>(timeout), useHTTPS);
+				const ProxyData& data = proxyData.emplace_back(ip, to_string(port), static_cast<DWORD>(timeout), isHTTPS);
 
 				for (const string& route : serverRoutes)
 				{

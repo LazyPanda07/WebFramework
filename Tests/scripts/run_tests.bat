@@ -3,6 +3,9 @@
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
 start Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
+start DefaultHTTPSServer.exe
+start ProxyServer.exe --config proxy_config.json --port 15000
+start ProxyServer.exe --config proxy_config.json --port 15001 --useHTTPS
 start LoadBalancerServer.exe --config load_balancer_config.json --port 9090
 start LoadBalancerServer.exe --config load_balancer_config.json --port 9091 --serversHTTPS
 start LoadBalancerServer.exe --config load_balancer_config_https.json --port 9092
@@ -20,3 +23,5 @@ call LoadBalancerCore.exe --port 9091
 call LoadBalancerCore.exe --port 9092 --useHTTPS
 call LoadBalancerCore.exe --port 9093 --useHTTPS
 call LoadBalancerCore.exe --port 9094 --custom_heuristic
+call ProxyCore.exe --port 15000
+call ProxyCore.exe --port 15001 --useHTTPS

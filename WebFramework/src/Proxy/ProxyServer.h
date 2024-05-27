@@ -15,7 +15,7 @@ namespace framework
 			struct ProxyData : public utility::BaseConnectionData
 			{
 			public:
-				bool useHTTPS;
+				bool isHTTPS;
 
 			public:
 				ProxyData(std::string_view ip, std::string_view port, DWORD timeout, bool useHTTPS);

@@ -6,6 +6,9 @@ export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
 ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
+./DefaultHTTPSServer
+./ProxyServer --config proxy_config.json --port 15000
+./ProxyServer --config proxy_config.json --port 15001 --useHTTPS
 ./LoadBalancerServer --config load_balancer_config.json --port 9090 &
 ./LoadBalancerServer --config load_balancer_config.json --port 9091 --serversHTTPS &
 ./LoadBalancerServer --config load_balancer_config_https.json --port 9092 &
@@ -23,3 +26,5 @@ sleep 1
 ./LoadBalancerCore --port 9092 --useHTTPS
 ./LoadBalancerCore --port 9093 --useHTTPS
 ./LoadBalancerCore --port 9094 --custom_heuristic
+./ProxyCore --port 15000
+./ProxyCore --port 15001 --useHTTPS

@@ -21,13 +21,11 @@ if (UNIX)
 	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -rdynamic)
 endif (UNIX)
 
-project(LoadBalancerServer)
+project(ProxyServer)
 
 add_executable(
 	${PROJECT_NAME}
 	main.cpp
-	IdExecutor.cpp
-	CustomHeuristic.cpp
 )
 
 target_include_directories(

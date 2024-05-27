@@ -1,7 +1,7 @@
 {
   "WebServer": {
-    "ip": "0.0.0.0",
-    "port": 80,
+    "ip": "127.0.0.1",
+    "port": 15000,
     "timeout": 0
   },
   "LoadBalancer": {
@@ -10,30 +10,34 @@
     "serversHTTPS": false,
     "listOfServers": {
       "127.0.0.1": [
-        8500
-      ],
-      "192.168.0.4": [
-        8501
+        10000,
+        10001
       ]
     }
   },
   "Proxy": {
     "proxiedServers": [
       {
-        "ip": "0.0.0.0",
-        "port": 80,
-        "timeout": 0,
+        "ip": "127.0.0.1",
+        "port": 10000,
         "isHTTPS": false,
         "routes": [
-          "",
-          "get"
+          ""
+        ]
+      },
+      {
+        "ip": "127.0.0.1",
+        "port": 20000,
+        "isHTTPS": true,
+        "routes": [
+          "default_request"
         ]
       }
     ]
   },
   "WebFramework": {
     "settingsPaths": [
-      "web.json"
+
     ],
     "loadSources": [
       "current"
@@ -41,7 +45,7 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "cachingSize": 0,
-    "webServerType": "multiThreaded",
+    "webServerType": "proxy",
     "HTTPS": {
       "useHTTPS": false,
       "pathToCertificate": "certificates/cert.pem",
@@ -52,8 +56,7 @@
   "Logging": {
     "usingLogging": true,
     "dateFormat": "DMY",
-    "logFileSize": 134217728,
-    "logsPath": ""
+    "logFileSize": 134217728
   },
   "ThreadPoolServer": {
     "threadCount": 0

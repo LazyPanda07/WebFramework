@@ -26,6 +26,8 @@ project(Tests)
 add_subdirectory(core)
 add_subdirectory(server)
 add_subdirectory(load_balancer)
+add_subdirectory(proxy)
+add_subdirectory(default_https_server)
 
 if (UNIX)
 	install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/ DESTINATION ${CMAKE_BINARY_DIR}/bin FILES_MATCHING PATTERN "*.so")
