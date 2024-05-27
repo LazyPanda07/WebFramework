@@ -6,7 +6,7 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		class BaseLoadBalancerHeuristic
+		class WEB_FRAMEWORK_API BaseLoadBalancerHeuristic
 		{
 		protected:
 			std::string ip;

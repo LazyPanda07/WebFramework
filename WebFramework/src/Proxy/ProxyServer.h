@@ -9,7 +9,7 @@ namespace framework
 {
 	namespace proxy
 	{
-		class ProxyServer : public BaseWebServer
+		class WEB_FRAMEWORK_API ProxyServer : public BaseWebServer
 		{
 		private:
 			struct ProxyData : public utility::BaseConnectionData

@@ -77,6 +77,7 @@ add_library(
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
+	WebFramework/src/Proxy/ProxyServer.cpp
 	WebFramework/src/SQLite3/SQLiteDatabase.cpp
 	WebFramework/src/SQLite3/SQLiteDatabaseModel.cpp
 	WebFramework/src/SQLite3/SQLiteResult.cpp
