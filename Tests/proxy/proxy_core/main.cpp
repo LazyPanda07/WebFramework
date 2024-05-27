@@ -33,7 +33,7 @@ TEST(Proxy, DefaultRequestRoute)
 
 	stream >> response;
 
-	ASSERT_TRUE(web::HTTPParser(response).getJSON().getString("data", "data"));
+	ASSERT_TRUE(web::HTTPParser(response).getJSON().getString("data"), "data");
 }
 
 int main(int argc, char** argv)
