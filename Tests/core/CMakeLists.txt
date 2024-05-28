@@ -16,6 +16,7 @@ add_executable(
 	cases/Database.cpp
 	cases/MultiUserDatabase.cpp
 	cases/WFDP.cpp
+	cases/ResourceLoading.cpp
 )
 
 target_include_directories(
