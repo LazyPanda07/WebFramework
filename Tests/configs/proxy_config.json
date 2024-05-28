@@ -20,6 +20,7 @@
       {
         "ip": "127.0.0.1",
         "port": 10000,
+        "timeout": 30000,
         "isHTTPS": false,
         "routes": [
           ""
@@ -28,6 +29,7 @@
       {
         "ip": "127.0.0.1",
         "port": 20000,
+        "timeout": 30000,
         "isHTTPS": true,
         "routes": [
           "default_request"
