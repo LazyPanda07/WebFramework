@@ -68,6 +68,8 @@ namespace framework
 
 			const ProxyData& data = *routes.at(route);
 
+			cout << data.ip << ' ' << data.port << endl;
+
 			streams::IOSocketStream serverStream
 			(
 				data.isHTTPS ?
