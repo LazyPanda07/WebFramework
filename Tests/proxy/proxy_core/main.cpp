@@ -40,8 +40,8 @@ int main(int argc, char** argv)
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 
-	useHTTPS = parser.get<bool>("useHTTPS");
-	port = parser.get<int64_t>("port");
+	useHTTPS = parser.get<bool>("--useHTTPS");
+	port = parser.get<int64_t>("--port");
 
 	testing::InitGoogleTest(&argc, argv);
 
