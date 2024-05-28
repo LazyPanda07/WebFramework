@@ -93,7 +93,7 @@ namespace framework
 				false
 			)
 		{
-			const vector<json::utility::jsonObject>& servers = proxySettings.getArray("proxiedServers");
+			vector<json::utility::jsonObject> servers = json::utility::JSONArrayWrapper(proxySettings.getArray("proxiedServers")).getAsObjectArray();
 
 			proxyData.reserve(servers.size());
 
