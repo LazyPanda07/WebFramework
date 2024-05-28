@@ -153,21 +153,11 @@ namespace framework
 
 	void ResourceExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
-		if (!request.getHeaders().count("Referer"))
-		{
-			throw exceptions::NotImplementedException();
-		}
-
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
 	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
-		if (!request.getHeaders().count("Referer"))
-		{
-			throw exceptions::NotImplementedException();
-		}
-
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
