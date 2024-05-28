@@ -17,5 +17,5 @@ TEST(ResourceLoading, Index)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html").rdbuf()).str());
+	ASSERT_EQ(web::HTTPParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str());
 }
