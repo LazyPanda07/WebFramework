@@ -22,6 +22,8 @@ namespace framework
 {
 	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
 	{
+		// TODO: handle exceptions
+
 		SSL* ssl = nullptr;
 
 		if (useHTTPS)

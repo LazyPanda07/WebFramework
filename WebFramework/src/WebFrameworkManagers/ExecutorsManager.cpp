@@ -176,7 +176,7 @@ namespace framework
 				}
 			}
 
-			auto method = methods.at(request.getMethod());
+			void (BaseExecutor::* method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
 			bool isThreadPoolTask = fileRequest ? false :
 				(executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless ||
 					executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful);
@@ -192,18 +192,22 @@ namespace framework
 					invoke(method, executor->second.get(), request, response);
 			}
 		}
-		catch (const exceptions::BaseExecutorException&)
+		catch (const exceptions::BaseExecutorException& e)
 		{
+			Log::error("Executor exception: {}", "LogExecutor", e.what());
+
 			throw;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e)
 		{
-			Log::error("File request exception. {}", e.what());
+			Log::error("File request exception. {}", "LogExecutor", e.what());
 
 			throw;
 		}
 		catch (const out_of_range&)
 		{
+			Log::error("Out of range", "LogExecutor");
+
 			throw;
 		}
 	}

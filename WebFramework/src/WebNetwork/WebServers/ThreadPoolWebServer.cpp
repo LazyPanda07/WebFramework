@@ -217,6 +217,8 @@ namespace framework
 
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
 	{
+		// TODO: handle exceptions
+
 		SSL* ssl = nullptr;
 
 		if (useHTTPS)
