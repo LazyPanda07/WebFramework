@@ -63,7 +63,7 @@ namespace framework
 		}
 	}
 
-	void ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors, optional<function<void(HTTPRequest&, HTTPResponse&)>>& threadPoolFunction)
+	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		static const unordered_map<string, decltype(&BaseExecutor::doGet)> methods =
 		{
@@ -183,7 +183,7 @@ namespace framework
 
 			if (serverType == webServerType::threadPool && isThreadPoolTask)
 			{
-				threadPoolFunction = bind(method, executor->second.get(), placeholders::_1, placeholders::_2);
+				return bind(method, executor->second.get(), placeholders::_1, placeholders::_2);
 			}
 			else
 			{
@@ -191,6 +191,8 @@ namespace framework
 					invoke(method, resources.get(), request, response) :
 					invoke(method, executor->second.get(), request, response);
 			}
+
+			return {};
 		}
 		catch (const exceptions::BaseExecutorException& e)
 		{

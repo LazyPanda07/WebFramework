@@ -4,8 +4,8 @@
 
 #include "MultiLocalizationManager.h"
 
-#include "WebFrameworkManagers/ExecutorsManager.h"
-#include "WebFrameworkManagers/SessionsManager.h"
+#include "Managers/ExecutorsManager.h"
+#include "Managers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
 
 namespace framework

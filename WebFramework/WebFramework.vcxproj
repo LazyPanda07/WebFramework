@@ -396,8 +396,8 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\Sources.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
-    <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp" />
-    <ClCompile Include="src\WebFrameworkManagers\SessionsManager.cpp" />
+    <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
+    <ClCompile Include="src\Managers\SessionsManager.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
     <ClCompile Include="src\Utility\BaseConnectionData.cpp" />
@@ -439,8 +439,8 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
     <ClInclude Include="src\Utility\Sources.h" />
-    <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h" />
-    <ClInclude Include="src\WebFrameworkManagers\SessionsManager.h" />
+    <ClInclude Include="src\Managers\ExecutorsManager.h" />
+    <ClInclude Include="src\Managers\SessionsManager.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
     <ClInclude Include="src\Utility\BaseConnectionData.h" />

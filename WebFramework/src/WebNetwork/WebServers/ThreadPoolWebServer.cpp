@@ -51,14 +51,10 @@ namespace framework
 			return false;
 		}
 
-		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
-		HTTPResponse response;
-
 		try
 		{
 			HTTPRequest request(sessionsManager, server, staticResources, dynamicResources, databaseManager, address, stream);
-
-			response.setDefault();
+			HTTPResponse response;
 
 			stream >> request;
 
@@ -67,7 +63,7 @@ namespace framework
 				return true;
 			}
 
-			executorsManager.service(request, response, statefulExecutors, threadPoolFunction);
+			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(request, response, statefulExecutors);
 
 			if (threadPoolFunction)
 			{
@@ -137,30 +133,40 @@ namespace framework
 		}
 		catch (const exceptions::BadRequestException& e) // 400
 		{
+			HTTPResponse response;
+
 			resourceExecutor.badRequestError(response, &e);
 
 			stream << response;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
+			HTTPResponse response;
+
 			resourceExecutor.notFoundError(response, &e);
 
 			stream << response;
 		}
 		catch (const exceptions::BaseExecutorException& e) // 500
 		{
+			HTTPResponse response;
+
 			resourceExecutor.internalServerError(response, &e);
 
 			stream << response;
 		}
 		catch (const exception& e)
 		{
+			HTTPResponse response;
+
 			resourceExecutor.internalServerError(response, &e);
 
 			stream << response;
 		}
 		catch (...) // 500
 		{
+			HTTPResponse response;
+
 			resourceExecutor.internalServerError(response, nullptr);
 
 			stream << response;

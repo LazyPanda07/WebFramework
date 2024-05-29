@@ -6,7 +6,7 @@
 #include "HTTPParser.h"
 #include "MultiLocalizationManager.h"
 
-#include "WebFrameworkManagers/SessionsManager.h"
+#include "Managers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
 #include "Interfaces/IStaticFile.h"
 #include "Interfaces/IDynamicFile.h"

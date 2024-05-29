@@ -64,7 +64,6 @@ namespace framework
 		);
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
-		optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction;
 
 		while (isRunning)
 		{
@@ -81,7 +80,7 @@ namespace framework
 					break;
 				}
 
-				executorsManager.service(request, response, statefulExecutors, threadPoolFunction);
+				executorsManager.service(request, response, statefulExecutors);
 
 				if (response)
 				{

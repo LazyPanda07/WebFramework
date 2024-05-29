@@ -50,7 +50,7 @@ namespace framework
 			std::vector<utility::RouteParameters>&& routeParameters
 		) noexcept;
 
-		void service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors, std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>>& threadPoolFunction);
+		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor();
 

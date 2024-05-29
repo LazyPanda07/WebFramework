@@ -78,10 +78,10 @@
     <ClCompile Include="src\Utility\BaseConnectionData.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebFrameworkManagers\ExecutorsManager.cpp">
+    <ClCompile Include="src\Managers\ExecutorsManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebFrameworkManagers\SessionsManager.cpp">
+    <ClCompile Include="src\Managers\SessionsManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\Sources.cpp">
@@ -212,10 +212,10 @@
     <ClInclude Include="src\Utility\BaseConnectionData.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebFrameworkManagers\ExecutorsManager.h">
+    <ClInclude Include="src\Managers\ExecutorsManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebFrameworkManagers\SessionsManager.h">
+    <ClInclude Include="src\Managers\SessionsManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\SQLite3\SQLiteManager.h">
