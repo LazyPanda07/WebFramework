@@ -1,7 +1,8 @@
 #include "MultithreadedWebServer.h"
 
-#include "WebNetwork/WebFrameworkHTTPNetwork.h"
-#include "WebNetwork/WebFrameworkHTTPSNetwork.h"
+#include "Log.h"
+#include "HTTPSNetwork.h"
+
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindFunctionException.h"
@@ -22,37 +23,44 @@ namespace framework
 {
 	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
 	{
-		// TODO: handle exceptions
-
 		SSL* ssl = nullptr;
 
-		if (useHTTPS)
+		try
 		{
-			ssl = SSL_new(context);
-
-			if (!ssl)
+			if (useHTTPS)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
-			}
+				ssl = SSL_new(context);
 
-			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
-			{
-				SSL_free(ssl);
+				if (!ssl)
+				{
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
+				}
 
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
-			}
+				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				{
+					SSL_free(ssl);
 
-			if (int errorCode = SSL_accept(ssl); errorCode != 1)
-			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
+				}
+
+				if (int errorCode = SSL_accept(ssl); errorCode != 1)
+				{
+					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+				}
 			}
+		}
+		catch (const web::exceptions::SSLException& e)
+		{
+			Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+
+			return;
 		}
 
 		streams::IOSocketStream stream
 		(
 			useHTTPS ?
-			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
-			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
+			make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
+			make_unique<web::HTTPNetwork>(clientSocket)
 		);
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;

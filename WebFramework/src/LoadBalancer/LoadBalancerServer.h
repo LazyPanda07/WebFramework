@@ -2,9 +2,11 @@
 
 #include "core.h"
 
-#include "WebNetwork/WebServers/BaseWebServer.h"
 #include "MultiLocalizationManager.h"
+
+#include "WebNetwork/WebServers/BaseWebServer.h"
 #include "Heuristics/BaseLoadBalancerHeuristic.h"
+#include "Executors/ResourceExecutor.h"
 
 #include "Utility/BaseConnectionData.h"
 
@@ -37,6 +39,7 @@ namespace framework
 
 		private:
 			std::vector<ServerData> allServers;
+			std::shared_ptr<ResourceExecutor> resources;
 			bool serversHTTPS;
 
 		private:
@@ -47,7 +50,8 @@ namespace framework
 			(
 				std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
 				std::string_view heuristicName, const std::vector<HMODULE>& loadSources,
-				const std::unordered_map<std::string, std::vector<int64_t>>& allServers
+				const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
+				const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::filesystem::path& pathToTemplates
 			);
 
 			~LoadBalancerServer() = default;

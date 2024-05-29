@@ -21,9 +21,6 @@
     <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\WebFrameworkHTTPNetwork.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\Executors\BaseExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
     <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\WebFrameworkHTTPSNetwork.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -153,9 +147,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WebNetwork\WebFrameworkHTTPNetwork.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Executors\BaseExecutor.h">
@@ -249,9 +240,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WebNetwork\WebFrameworkHTTPSNetwork.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h">

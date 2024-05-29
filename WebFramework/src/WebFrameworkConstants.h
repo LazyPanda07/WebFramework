@@ -66,6 +66,8 @@ namespace json_settings
 
 	inline constexpr std::string_view usingLoggingKey = "usingLogging";
 	inline constexpr std::string_view logsPathKey = "logsPath";
+	inline constexpr std::string_view duplicateOutputKey = "duplicateOutput";
+	inline constexpr std::string_view duplicateErrorOutputKey = "duplicateErrorOutput";
 
 	inline constexpr std::string_view defaultLoadSourceValue = "current";
 

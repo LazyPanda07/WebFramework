@@ -91,8 +91,6 @@ add_library(
 	WebFramework/src/WebFrameworkManagers/SessionsManager.cpp
 	WebFramework/src/WebNetwork/HTTPRequest.cpp
 	WebFramework/src/WebNetwork/HTTPResponse.cpp
-	WebFramework/src/WebNetwork/WebFrameworkHTTPNetwork.cpp
-	WebFramework/src/WebNetwork/WebFrameworkHTTPSNetwork.cpp
 	WebFramework/src/WebNetwork/WebServers/BaseWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/ThreadPoolWebServer.cpp

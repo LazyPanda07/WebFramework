@@ -1,10 +1,9 @@
 #include "ProxyServer.h"
 
 #include "JSONArrayWrapper.h"
+#include "HTTPSNetwork.h"
 
 #include "Exceptions/SSLException.h"
-#include "WebNetwork/WebFrameworkHTTPNetwork.h"
-#include "WebNetwork/WebFrameworkHTTPSNetwork.h"
 
 using namespace std;
 
@@ -48,8 +47,8 @@ namespace framework
 			streams::IOSocketStream clientStream
 			(
 				ssl ?
-				make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
-				make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
+				make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
+				make_unique<web::HTTPNetwork>(clientSocket)
 			);
 
 			string request;
@@ -71,8 +70,8 @@ namespace framework
 			streams::IOSocketStream serverStream
 			(
 				data.isHTTPS ?
-				std::make_unique<web::HTTPSNetwork>(data.ip, data.port, data.timeout) :
-				std::make_unique<web::HTTPNetwork>(data.ip, data.port, data.timeout)
+				make_unique<web::HTTPSNetwork>(data.ip, data.port, data.timeout) :
+				make_unique<web::HTTPNetwork>(data.ip, data.port, data.timeout)
 			);
 
 			serverStream << request;

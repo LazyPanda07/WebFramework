@@ -1,10 +1,11 @@
 #include "ThreadPoolWebServer.h"
 
+#include "Log.h"
+
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/SSLException.h"
-#include "WebNetwork/WebFrameworkHTTPNetwork.h"
-#include "WebNetwork/WebFrameworkHTTPSNetwork.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
+#include "HTTPSNetwork.h"
 
 using namespace std;
 
@@ -14,8 +15,8 @@ namespace framework
 		stream
 		(
 			ssl ?
-			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
-			make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
+			make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
+			make_unique<web::HTTPNetwork>(clientSocket)
 		),
 		cleanup(move(cleanup)),
 		address(address),
@@ -217,33 +218,38 @@ namespace framework
 
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
 	{
-		// TODO: handle exceptions
-
 		SSL* ssl = nullptr;
 
-		if (useHTTPS)
+		try
 		{
-			ssl = SSL_new(context);
-
-			if (!ssl)
+			if (useHTTPS)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
+				ssl = SSL_new(context);
+
+				if (!ssl)
+				{
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
+				}
+
+				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				{
+					SSL_free(ssl);
+
+					throw web::exceptions::SSLException(__LINE__, __FILE__);
+				}
+
+				if (int errorCode = SSL_accept(ssl); errorCode != 1)
+				{
+					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+				}
 			}
 
-			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
-			{
-				SSL_free(ssl);
-
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
-			}
-
-			if (int errorCode = SSL_accept(ssl); errorCode != 1)
-			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
-			}
+			clients.emplace_back(make_unique<Client>(ssl, context, clientSocket, address, move(cleanup)));
 		}
-
-		clients.emplace_back(make_unique<Client>(ssl, context, clientSocket, address, move(cleanup)));
+		catch (const web::exceptions::SSLException& e)
+		{
+			Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+		}
 
 		this->serveClients();
 	}

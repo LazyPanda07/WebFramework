@@ -4,6 +4,7 @@
 
 #include "BaseTCPServer.h"
 #include "HTTPParser.h"
+#include "MultiLocalizationManager.h"
 
 #include "WebFrameworkManagers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
@@ -42,7 +43,7 @@ namespace framework
 		/// <param name="request">HTTP request</param>
 		/// <returns>response from another server</returns>
 		/// <exception cref="web::WebException"></exception>
-		static web::HTTPParser sendRequestToAnotherServer(const std::string& ip, const std::string& port, const std::string& request);
+		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
 
 	public:
 		/// @brief Construct HTTPRequest

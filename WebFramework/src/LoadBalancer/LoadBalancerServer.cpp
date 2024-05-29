@@ -4,10 +4,7 @@
 #include "Exceptions/SSLException.h"
 #include "HTTPSNetwork.h"
 
-#include "WebNetwork/WebFrameworkHTTPNetwork.h"
 #include "Utility/Sources.h"
-#include "WebNetwork/WebFrameworkHTTPNetwork.h"
-#include "WebNetwork/WebFrameworkHTTPSNetwork.h"
 #include "Heuristics/Connections.h"
 
 using namespace std;
@@ -68,19 +65,17 @@ namespace framework
 				}
 			}
 
-			// TODO: timeout
-
 			streams::IOSocketStream clientStream
 			(
 				ssl ?
-				make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPSNetwork>(clientSocket, ssl, context)) :
-				make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(clientSocket))
+				make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
+				make_unique<web::HTTPNetwork>(clientSocket)
 			);
 			streams::IOSocketStream serverStream
 			(
 				serversHTTPS ?
-				std::make_unique<web::HTTPSNetwork>(connectionData.ip, connectionData.port, 0) :
-				std::make_unique<web::HTTPNetwork>(connectionData.ip, connectionData.port, 0)
+				make_unique<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeout) :
+				make_unique<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeout)
 			);
 
 			while (isRunning)
@@ -99,7 +94,11 @@ namespace framework
 
 				if (serverStream.eof())
 				{
-					// TODO: 500 to client
+					HTTPResponse errorResponse;
+
+					resources->internalServerError(errorResponse, nullptr);
+
+					clientStream << errorResponse;
 
 					break;
 				}
@@ -116,7 +115,8 @@ namespace framework
 		(
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
 			string_view heuristicName, const vector<HMODULE>& loadSources,
-			const unordered_map<string, vector<int64_t>>& allServers
+			const unordered_map<string, vector<int64_t>>& allServers,
+			const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const filesystem::path& pathToTemplates
 		) :
 			BaseTCPServer
 			(
@@ -127,6 +127,7 @@ namespace framework
 				0,
 				false
 			),
+			resources(make_shared<ResourceExecutor>(configuration, assets, cachingSize, pathToTemplates)),
 			serversHTTPS(serversHTTPS)
 		{
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
@@ -158,12 +159,11 @@ namespace framework
 			{
 				for (int64_t port : ports)
 				{
-					// TODO: timeout
 					string portString = to_string(port);
 
 					this->allServers.emplace_back
 					(
-						utility::BaseConnectionData(ip, portString, 0),
+						utility::BaseConnectionData(ip, portString, timeout),
 						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction(ip, portString, serversHTTPS)))
 					);
 				}

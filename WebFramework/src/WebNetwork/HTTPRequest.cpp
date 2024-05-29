@@ -1,8 +1,8 @@
 #include "HTTPRequest.h"
 
 #include "FileManager.h"
+#include "HTTPSNetwork.h"
 
-#include "WebFrameworkHTTPNetwork.h"
 #include "Exceptions/FileDoesNotExistException.h"
 
 using namespace std;
@@ -21,9 +21,14 @@ namespace framework
 		return string_view(filePath.data() + extension) == webFrameworkDynamicPagesExtension;
 	}
 
-	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(const string& ip, const string& port, const string& request)
+	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(string_view ip, string_view port, string_view request, DWORD timeout, bool useHTTPS)
 	{
-		streams::IOSocketStream stream(make_unique<buffers::IOSocketBuffer>(make_unique<WebFrameworkHTTPNetwork>(ip, port)));
+		streams::IOSocketStream stream
+		(
+			useHTTPS ?
+			make_unique<web::HTTPSNetwork>(ip, port, timeout) :
+			make_unique<web::HTTPNetwork>(ip, port, timeout)
+		);
 		string response;
 
 		stream << request;

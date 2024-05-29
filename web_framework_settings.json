@@ -53,7 +53,9 @@
     "usingLogging": true,
     "dateFormat": "DMY",
     "logFileSize": 134217728,
-    "logsPath": ""
+    "logsPath": "",
+    "duplicateOutput": false,
+    "duplicateErrorOutput": false
   },
   "ThreadPoolServer": {
     "threadCount": 0

@@ -40,8 +40,13 @@ namespace framework
 				{
 					string logsPath;
 					const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
+					bool duplicateOutput = false;
+					bool duplicateErrorOutput = false;
 
 					loggingSettings.tryGetString(json_settings::logsPathKey, logsPath);
+
+					loggingSettings.tryGetBool(json_settings::duplicateOutputKey, duplicateOutput);
+					loggingSettings.tryGetBool(json_settings::duplicateErrorOutputKey, duplicateErrorOutput);
 
 					try
 					{
@@ -50,6 +55,16 @@ namespace framework
 					catch (const json::exceptions::BaseJSONException&)
 					{
 						Log::configure(dateFormat, logsPath);
+					}
+
+					if (duplicateOutput)
+					{
+						Log::duplicateLog(cout);
+					}
+
+					if (duplicateErrorOutput)
+					{
+						Log::duplicateErrorLog(cerr);
 					}
 				}
 			}
@@ -113,7 +128,7 @@ namespace framework
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
-					(*config),
+					*config,
 					jsonSettings,
 					assetsPath,
 					templatesPath,
@@ -130,7 +145,7 @@ namespace framework
 			{
 				server = make_unique<ThreadPoolWebServer>
 					(
-						(*config),
+						*config,
 						jsonSettings,
 						assetsPath,
 						templatesPath,
@@ -146,7 +161,7 @@ namespace framework
 			{
 				server = make_unique<ThreadPoolWebServer>
 					(
-						(*config),
+						*config,
 						jsonSettings,
 						assetsPath,
 						templatesPath,
@@ -177,7 +192,20 @@ namespace framework
 				);
 			}
 
-			server = make_unique<load_balancer::LoadBalancerServer>(ip, port, timeout, serversHTTPS, heuristic, utility::loadSources(pathToSources), allServers);
+			server = make_unique<load_balancer::LoadBalancerServer>
+				(
+					ip,
+					port,
+					timeout,
+					serversHTTPS,
+					heuristic,
+					utility::loadSources(pathToSources),
+					allServers,
+					(*config),
+					assetsPath,
+					cachingSize,
+					templatesPath
+				);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)
 		{

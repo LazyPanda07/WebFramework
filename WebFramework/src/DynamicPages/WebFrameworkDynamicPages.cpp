@@ -118,11 +118,11 @@ namespace framework
 	{
 		string result;
 
-		for (const auto& i : codes)
+		for (const auto& [functionName, arguments] : codes)
 		{
 			try
 			{
-				result += dynamicPagesFunctions.at(i.functionName)(i.arguments);
+				result += dynamicPagesFunctions.at(functionName)(arguments);
 			}
 			catch (const exception& e)
 			{
