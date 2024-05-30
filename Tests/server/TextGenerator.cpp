@@ -1,5 +1,7 @@
 #include "TextGenerator.h"
 
+static constexpr size_t defaultSize = 15;
+
 TextGenerator::TextGenerator(std::string_view data) :
 	data(data),
 	offset(0)
@@ -14,7 +16,7 @@ std::string TextGenerator::generate()
 		return {};
 	}
 
-	std::string result = data.substr(offset, (std::min)(15ULL, data.size() - offset));
+	std::string result = data.substr(offset, (std::min)(defaultSize, data.size() - offset));
 
 	offset += result.size();
 
