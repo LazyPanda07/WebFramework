@@ -7,6 +7,8 @@
 
 #include "utilities.h"
 
+using namespace std::string_literals;
+
 TEST(Chunks, Data)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
@@ -20,7 +22,7 @@ TEST(Chunks, Data)
 	web::HTTPParser parser(response);
 	const std::vector<std::string>& chunks = parser.getChunks();
 
-	std::string result = std::accumulate(chunks.begin(), chunks.end(), "");
+	std::string result = std::accumulate(chunks.begin(), chunks.end(), ""s);
 
 	ASSERT_EQ(result, "Some information here");
 }
@@ -38,7 +40,7 @@ TEST(Chunks, File)
 	web::HTTPParser parser(response);
 	const std::vector<std::string>& chunks = parser.getChunks();
 
-	std::string result = std::accumulate(chunks.begin(), chunks.end(), "");
+	std::string result = std::accumulate(chunks.begin(), chunks.end(), ""s);
 
 	ASSERT_EQ(result, "Some information here");
 	ASSERT_EQ(parser.getHeaders().at("Content-Disposition"), (R"(attachment; filename="file.txt")"));
