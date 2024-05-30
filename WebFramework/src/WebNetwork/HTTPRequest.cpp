@@ -49,39 +49,6 @@ namespace framework
 		
 	}
 
-	HTTPRequest::HTTPRequest(HTTPRequest&& other) noexcept :
-		HTTPRequest
-		(
-			other.session,
-			other.serverReference,
-			other.staticResources,
-			other.dynamicResources,
-			other.database,
-			other.clientAddr,
-			other.stream
-		)
-
-	{
-		parser = move(other.parser);
-		routeParameters = move(other.routeParameters);
-	}
-
-	HTTPRequest::HTTPRequest(const HTTPRequest& other) :
-		HTTPRequest
-		(
-			other.session,
-			other.serverReference,
-			other.staticResources,
-			other.dynamicResources,
-			other.database,
-			other.clientAddr,
-			other.stream
-		)
-	{
-		parser = other.parser;
-		routeParameters = other.routeParameters;
-	}
-
 	const string& HTTPRequest::getRawParameters() const
 	{
 		return parser.getParameters();
@@ -216,7 +183,7 @@ namespace framework
 		{
 			const string& data = cache[assetFilePath];
 
-			stream << move(httpResponse) + data;
+			stream << httpResponse + data;
 
 			return;
 		}
@@ -237,7 +204,7 @@ namespace framework
 
 		cache.appendCache(assetFilePath, chunk);
 
-		stream << move(httpResponse) + chunk;
+		stream << httpResponse + chunk;
 
 #pragma warning(pop)
 

@@ -10,6 +10,7 @@
 #include "SQLite3/SQLiteManager.h"
 #include "Interfaces/IStaticFile.h"
 #include "Interfaces/IDynamicFile.h"
+#include "Utility/ChunkGenerator.h"
 
 namespace framework
 {
@@ -35,29 +36,18 @@ namespace framework
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
 
 	public:
-		/// <summary>
-		/// Send request and get response from another HTTP server
-		/// </summary>
-		/// <param name="ip">server's address</param>
-		/// <param name="port">server's port</param>
-		/// <param name="request">HTTP request</param>
-		/// <returns>response from another server</returns>
-		/// <exception cref="web::WebException"></exception>
 		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
 
 	public:
-		/// @brief Construct HTTPRequest
-		/// @param session Session from MultithreadedWebServer
-		/// @param serverReference Reference to server
-		/// @param staticResources Static resources manager
-		/// @param dynamicResources Dynamic resources manager
-		/// @param database Reference to database
-		/// @param clientAddr Client address
 		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, const sockaddr& clientAddr, streams::IOSocketStream& stream);
 
-		HTTPRequest(HTTPRequest&& other) noexcept;
+		HTTPRequest(HTTPRequest&&) noexcept = default;
 
-		HTTPRequest(const HTTPRequest& other);
+		HTTPRequest(const HTTPRequest&) = default;
+
+		HTTPRequest& operator =(HTTPRequest&&) noexcept = default;
+
+		HTTPRequest& operator =(const HTTPRequest&) = default;
 
 		/// <summary>
 		/// Parameters string from HTTP
@@ -183,7 +173,7 @@ namespace framework
 
 		/**
 		 * @brief HTTP parser getter
-		 * @return 
+		 * @return
 		 */
 		const web::HTTPParser& getParser() const;
 
@@ -221,6 +211,18 @@ namespace framework
 		template<typename T>
 		const T& getRouteParameter(const std::string& routeParameterName);
 
+		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
+		std::shared_ptr<T> createModel(Args&&... args);
+
+		template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
+		std::shared_ptr<T> getModel() const;
+
+		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+		void sendChunks(HTTPResponse& response, Args&&... args);
+
+		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
+
 		/// <summary>
 		/// Reading HTTP request from network
 		/// </summary>
@@ -238,12 +240,6 @@ namespace framework
 		/// <returns>self for builder pattern</returns>
 		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
 
-		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
-		std::shared_ptr<T> createModel(Args&&... args);
-
-		template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
-		std::shared_ptr<T> getModel() const;
-
 		friend class ExecutorsManager;
 
 		~HTTPRequest() = default;
@@ -259,5 +255,48 @@ namespace framework
 	std::shared_ptr<T> HTTPRequest::getModel() const
 	{
 		return database.get<T>();
+	}
+
+	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+	void HTTPRequest::sendChunks(HTTPResponse& response, Args&&... args)
+	{
+		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
+	}
+
+	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+	void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
+	{
+		T generator(std::forward<Args>(args)...);
+
+		web::HTTPBuilder builder = web::HTTPBuilder().chunk(generator.generate()).partialChunks().headers
+		(
+			"Date", HTTPResponse::getFullDate(),
+			"Server", "WebFramework-Server",
+			"Connection", "keep-alive"
+		);
+
+		if (fileName.size())
+		{
+			builder.headers
+			(
+				"Content-Disposition", std::format(R"(attachment; filename="{}")", fileName)
+			);
+		}
+
+		stream << builder.build();
+
+		response.setIsValid(false);
+
+		while (true)
+		{
+			std::string data = generator.generate();
+
+			stream << web::HTTPBuilder::getChunk(data);
+
+			if (stream.eof() || data.empty())
+			{
+				break;
+			}
+		}
 	}
 }

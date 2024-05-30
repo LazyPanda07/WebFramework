@@ -26,12 +26,15 @@ project(Server)
 add_executable(
 	${PROJECT_NAME}
 	main.cpp
+	TextGenerator.cpp
 	executors/HelloExecutor.cpp
 	executors/AssetsExecutor.cpp
+	executors/ChunksExecutor.cpp
 )
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
+	${PROJECT_SOURCE_DIR}
 	${WEB_FRAMEWORK_DIR}/WebFramework/src/
 	${WEB_FRAMEWORK_DIR}/BaseTCPServer/src/
 	${WEB_FRAMEWORK_DIR}/Networks/src/

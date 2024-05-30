@@ -14,5 +14,9 @@
   "AssetsExecutor": {
     "route": "wfdp",
     "loadType": "dynamic"
+  },
+  "ChunksExecutor": {
+    "route": "chunks",
+    "loadType": "initialization"
   }
 }

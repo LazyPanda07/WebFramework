@@ -17,7 +17,7 @@ add_executable(
 	cases/MultiUserDatabase.cpp
 	cases/WFDP.cpp
 	cases/ResourceLoading.cpp
-)
+ "cases/Chunks.cpp")
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
