@@ -7,19 +7,6 @@
 
 #include "utilities.h"
 
-TEST(ResourceLoading, Index)
-{
-	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parameters("index.html").build();
-	std::string response;
-
-	stream << request;
-
-	stream >> response;
-
-	ASSERT_EQ(web::HTTPParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str());
-}
-
 TEST(ResourceLoading, StreamFile)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
@@ -48,4 +35,17 @@ TEST(ResourceLoading, StreamFile)
 	ASSERT_EQ(parser->getBody(), result);
 
 	ASSERT_EQ(parser->getHeaders().at("DownloadType"), "from-cache");
+}
+
+TEST(ResourceLoading, Index)
+{
+	streams::IOSocketStream stream = utility::createSocketStream();
+	std::string request = web::HTTPBuilder().getRequest().parameters("index.html").build();
+	std::string response;
+
+	stream << request;
+
+	stream >> response;
+
+	ASSERT_EQ(web::HTTPParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str());
 }
