@@ -77,7 +77,10 @@ namespace framework
 						{
 							(*threadPoolFunction)(request, response);
 
-							stream << response;
+							if (response)
+							{
+								stream << response;
+							}
 						}
 						catch (const web::exceptions::WebException&)
 						{
