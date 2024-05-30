@@ -18,5 +18,9 @@
   "ChunksExecutor": {
     "route": "chunks",
     "loadType": "initialization"
+  },
+  "DownloadExecutor": {
+    "route": "download",
+    "loadType": "initialization"
   }
 }

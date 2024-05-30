@@ -30,6 +30,7 @@ add_executable(
 	executors/HelloExecutor.cpp
 	executors/AssetsExecutor.cpp
 	executors/ChunksExecutor.cpp
+	executors/DownloadExecutor.cpp
 )
 
 target_include_directories(

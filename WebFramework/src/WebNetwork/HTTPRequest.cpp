@@ -153,7 +153,7 @@ namespace framework
 		dynamicResources.sendDynamicFile(filePath, response, variables, isBinary, fileName);
 	}
 
-	void HTTPRequest::streamFile(const string& filePath, HTTPResponse& response, const string& fileName, size_t chunkSize)
+	void HTTPRequest::streamFile(string_view filePath, HTTPResponse& response, string_view fileName, size_t chunkSize)
 	{
 		filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
 		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
@@ -163,7 +163,7 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		string httpResponse = web::HTTPBuilder().
+		web::HTTPBuilder builder = web::HTTPBuilder().
 			headers
 			(
 				"Date", HTTPResponse::getFullDate(),
@@ -173,8 +173,7 @@ namespace framework
 				"Connection", "keep-alive",
 				"Content-Length", filesystem::file_size(assetFilePath)
 			).
-			responseCode(web::responseCodes::ok).
-			build();
+			responseCode(web::responseCodes::ok);
 
 		response.setIsValid(false);
 
@@ -185,7 +184,12 @@ namespace framework
 		{
 			const string& data = cache[assetFilePath];
 
-			stream << httpResponse + data;
+			builder.headers
+			(
+				"DownloadType", "from-cache"
+			);
+
+			stream << builder.build(data);
 
 			return;
 		}
@@ -206,7 +210,12 @@ namespace framework
 
 		cache.appendCache(assetFilePath, chunk);
 
-		stream << httpResponse + chunk;
+		builder.headers
+		(
+			"DownloadType", "from-file"
+		);
+
+		stream << builder.build() + chunk;
 
 #pragma warning(pop)
 
