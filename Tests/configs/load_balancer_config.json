@@ -24,7 +24,7 @@
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",
-    "cachingSize": 0,
+    "cachingSize": 536870912,
     "webServerType": "loadBalancer",
     "HTTPS": {
       "useHTTPS": false,

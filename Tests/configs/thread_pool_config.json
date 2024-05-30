@@ -14,7 +14,7 @@
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",
-    "cachingSize": 0,
+    "cachingSize": 536870912,
     "webServerType": "threadPool",
     "HTTPS": {
       "useHTTPS": false,
