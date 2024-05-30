@@ -17,11 +17,11 @@ start LoadBalancerServer.exe --config load_balancer_config.json --type server --
 start LoadBalancerServer.exe --config load_balancer_config_https.json  --type server --port 10002
 start LoadBalancerServer.exe --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS
 
-call Core.exe %WEB_FRAMEWORK_SERVER_CONFIG% || exit /b
-call LoadBalancerCore.exe --port 9090 || exit /b
-call LoadBalancerCore.exe --port 9091 || exit /b
-call LoadBalancerCore.exe --port 9092 --useHTTPS || exit /b
-call LoadBalancerCore.exe --port 9093 --useHTTPS || exit /b
-call LoadBalancerCore.exe --port 9094 --custom_heuristic || exit /b
-call ProxyCore.exe --port 15000 || exit /b
-call ProxyCore.exe --port 15001 --useHTTPS || exit /b
+call Core.exe %WEB_FRAMEWORK_SERVER_CONFIG% || exit 1
+call LoadBalancerCore.exe --port 9090 || exit 1
+call LoadBalancerCore.exe --port 9091 || exit 1
+call LoadBalancerCore.exe --port 9092 --useHTTPS || exit 1
+call LoadBalancerCore.exe --port 9093 --useHTTPS || exit 1
+call LoadBalancerCore.exe --port 9094 --custom_heuristic || exit 1
+call ProxyCore.exe --port 15000 || exit 1
+call ProxyCore.exe --port 15001 --useHTTPS || exit 1
