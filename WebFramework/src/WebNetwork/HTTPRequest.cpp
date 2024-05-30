@@ -172,7 +172,9 @@ namespace framework
 				"Content-Disposition", format(R"(attachment; filename="{}")", fileName),
 				"Connection", "keep-alive",
 				"Content-Length", filesystem::file_size(assetFilePath)
-			).build();
+			).
+			responseCode(web::responseCodes::ok).
+			build();
 
 		response.setIsValid(false);
 

@@ -268,7 +268,7 @@ namespace framework
 	{
 		T generator(std::forward<Args>(args)...);
 
-		web::HTTPBuilder builder = web::HTTPBuilder().chunk(generator.generate()).partialChunks().headers
+		web::HTTPBuilder builder = web::HTTPBuilder().chunk(generator.generate()).partialChunks().responseCode(web::responseCodes::ok).headers
 		(
 			"Date", HTTPResponse::getFullDate(),
 			"Server", "WebFramework-Server",
