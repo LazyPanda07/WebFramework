@@ -193,9 +193,9 @@ namespace framework
 
 		for (size_t i = 0; i < size;)
 		{
-			Client& client = *clients[i++];
+			Client* client = clients[i++];
 
-			bool finished = client.clientServe
+			bool finished = client->clientServe
 			(
 				sessionsManager,
 				*this,
@@ -209,9 +209,9 @@ namespace framework
 
 			if (finished)
 			{
-				Client& lastClient = *clients[size - 1];
+				Client* lastClient = clients[size - 1];
 
-				if (&client != &lastClient)
+				if (client != lastClient)
 				{
 					swap(client, lastClient);
 
@@ -222,7 +222,14 @@ namespace framework
 			}
 		}
 
+		vector<Client*> finishedClients(clients.end() - swaps, clients.end());
+
 		clients.erase(clients.end() - swaps, clients.end());
+
+		for (Client* client : clients)
+		{
+			delete client;
+		}
 	}
 
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
@@ -253,7 +260,7 @@ namespace framework
 				}
 			}
 
-			clients.emplace_back(make_unique<Client>(ssl, context, clientSocket, address, move(cleanup)));
+			clients.emplace_back(new Client(ssl, context, clientSocket, address, move(cleanup)));
 		}
 		catch (const web::exceptions::SSLException& e)
 		{

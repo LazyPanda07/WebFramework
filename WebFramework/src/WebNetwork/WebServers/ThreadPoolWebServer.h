@@ -32,11 +32,11 @@ namespace framework
 
 			Client(const Client&) = delete;
 
-			Client(Client&&) noexcept = default;
+			Client(Client&&) noexcept = delete;
 
 			Client& operator = (const Client&) = delete;
 
-			Client& operator = (Client&&) noexcept = default;
+			Client& operator = (Client&&) noexcept = delete;
 
 			bool clientServe
 			(
@@ -55,7 +55,7 @@ namespace framework
 
 	private:
 		threading::ThreadPool threadPool;
-		std::vector<std::unique_ptr<Client>> clients;
+		std::vector<Client*> clients;
 
 	private:
 		void serveClients();
