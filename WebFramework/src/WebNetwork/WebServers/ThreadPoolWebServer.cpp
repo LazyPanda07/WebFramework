@@ -222,14 +222,16 @@ namespace framework
 			}
 		}
 
-		vector<Client*> finishedClients(clients.end() - swaps, clients.end());
+		// TODO: refactor
 
-		clients.erase(clients.end() - swaps, clients.end());
+		span<Client*> finishedClients(clients.end() - swaps, clients.end());
 
-		for (Client* client : clients)
+		for (Client* client : finishedClients)
 		{
 			delete client;
 		}
+
+		clients.erase(clients.end() - swaps, clients.end());
 	}
 
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
@@ -260,7 +262,7 @@ namespace framework
 				}
 			}
 
-			clients.emplace_back(new Client(ssl, context, clientSocket, address, move(cleanup)));
+			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup)));
 		}
 		catch (const web::exceptions::SSLException& e)
 		{

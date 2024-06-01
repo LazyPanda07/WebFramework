@@ -25,6 +25,7 @@
 #include <queue>
 #include <unordered_map>
 #include <map>
+#include <span>
 
 #include <chrono>
 #include <ctime>
