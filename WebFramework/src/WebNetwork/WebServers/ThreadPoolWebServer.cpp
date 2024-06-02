@@ -67,61 +67,105 @@ namespace framework
 
 			if (threadPoolFunction)
 			{
-				isBusy = true;
+				// isBusy = true;
 
-				threadPool.addTask
-				(
-					[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
+				try
+				{
+					(*threadPoolFunction)(request, response);
+
+					if (response)
 					{
-						try
-						{
-							(*threadPoolFunction)(request, response);
-
-							if (response)
-							{
-								stream << response;
-							}
-						}
-						catch (const web::exceptions::WebException&)
-						{
-							webExceptionAcquired = true;
-						}
-						catch (const exceptions::BadRequestException& e) // 400
-						{
-							resourceExecutor.badRequestError(response, &e);
-
-							stream << response;
-						}
-						catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
-						{
-							resourceExecutor.notFoundError(response, &e);
-
-							stream << response;
-						}
-						catch (const exceptions::BaseExecutorException& e) // 500
-						{
-							resourceExecutor.internalServerError(response, &e);
-
-							stream << response;
-						}
-						catch (const exception& e)
-						{
-							resourceExecutor.internalServerError(response, &e);
-
-							stream << response;
-						}
-						catch (...) // 500
-						{
-							resourceExecutor.internalServerError(response, nullptr);
-
-							stream << response;
-						}
-					},
-					[this]() mutable
-					{
-						isBusy = false;
+						stream << response;
 					}
-				);
+				}
+				catch (const web::exceptions::WebException&)
+				{
+					webExceptionAcquired = true;
+				}
+				catch (const exceptions::BadRequestException& e) // 400
+				{
+					resourceExecutor.badRequestError(response, &e);
+
+					stream << response;
+				}
+				catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
+				{
+					resourceExecutor.notFoundError(response, &e);
+
+					stream << response;
+				}
+				catch (const exceptions::BaseExecutorException& e) // 500
+				{
+					resourceExecutor.internalServerError(response, &e);
+
+					stream << response;
+				}
+				catch (const exception& e)
+				{
+					resourceExecutor.internalServerError(response, &e);
+
+					stream << response;
+				}
+				catch (...) // 500
+				{
+					resourceExecutor.internalServerError(response, nullptr);
+
+					stream << response;
+				}
+
+				//threadPool.addTask
+				//(
+				//	[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
+				//	{
+				//		try
+				//		{
+				//			(*threadPoolFunction)(request, response);
+
+				//			if (response)
+				//			{
+				//				stream << response;
+				//			}
+				//		}
+				//		catch (const web::exceptions::WebException&)
+				//		{
+				//			webExceptionAcquired = true;
+				//		}
+				//		catch (const exceptions::BadRequestException& e) // 400
+				//		{
+				//			resourceExecutor.badRequestError(response, &e);
+
+				//			stream << response;
+				//		}
+				//		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
+				//		{
+				//			resourceExecutor.notFoundError(response, &e);
+
+				//			stream << response;
+				//		}
+				//		catch (const exceptions::BaseExecutorException& e) // 500
+				//		{
+				//			resourceExecutor.internalServerError(response, &e);
+
+				//			stream << response;
+				//		}
+				//		catch (const exception& e)
+				//		{
+				//			resourceExecutor.internalServerError(response, &e);
+
+				//			stream << response;
+				//		}
+				//		catch (...) // 500
+				//		{
+				//			resourceExecutor.internalServerError(response, nullptr);
+
+				//			stream << response;
+				//		}
+				//	},
+				//	[this]() mutable
+				//	{
+				//		isBusy = false;
+				//	}
+				//);
 
 				return false;
 			}
@@ -224,14 +268,14 @@ namespace framework
 
 		if (swaps)
 		{
-			/*span<Client*> finishedClients(clients.end() - swaps, clients.end());
+			span<Client*> finishedClients(clients.end() - swaps, clients.end());
 
 			for (Client* client : finishedClients)
 			{
 				delete client;
 			}
 
-			clients.erase(clients.end() - swaps, clients.end());*/
+			clients.erase(clients.end() - swaps, clients.end());
 		}
 	}
 
