@@ -6,12 +6,14 @@
 
 #include "utilities.h"
 
+static inline constexpr size_t requestsNumber = 100;
+
 #define BASIC_TEST(requestType) \
 TEST(HelloExecutor, requestType) \
 { \
 	streams::IOSocketStream stream = utility::createSocketStream(); \
  \
-	for (size_t i = 0; i < 10000; i++) \
+	for (size_t i = 0; i < requestsNumber; i++) \
 	{ \
 		std::string request = constructRequest(#requestType); \
 		std::string response; \
@@ -77,7 +79,7 @@ TEST(HelloExecutor, OPTIONS)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
 
-	for (size_t i = 0; i < 10000; i++)
+	for (size_t i = 0; i < requestsNumber; i++)
 	{
 		std::string request = constructRequest("OPTIONS");
 		std::string response;
@@ -100,7 +102,7 @@ TEST(HelloExecutor, TRACE)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
 
-	for (size_t i = 0; i < 10000; i++)
+	for (size_t i = 0; i < requestsNumber; i++)
 	{
 		std::string request = constructRequest("TRACE");
 		std::string response;

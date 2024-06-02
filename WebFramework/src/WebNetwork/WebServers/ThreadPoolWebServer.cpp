@@ -67,107 +67,72 @@ namespace framework
 
 			if (threadPoolFunction)
 			{
-				// isBusy = true;
+				/*
+				isBusy = true;
 
-				try
-				{
-					(*threadPoolFunction)(request, response);
-
-					if (response)
+				threadPool.addTask
+				(
+					[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
 					{
-						stream << response;
+						try
+						{
+							(*threadPoolFunction)(request, response);
+
+							if (response)
+							{
+								stream << response;
+							}
+						}
+						catch (const web::exceptions::WebException&)
+						{
+							webExceptionAcquired = true;
+						}
+						catch (const exceptions::BadRequestException& e) // 400
+						{
+							resourceExecutor.badRequestError(response, &e);
+
+							stream << response;
+						}
+						catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
+						{
+							resourceExecutor.notFoundError(response, &e);
+
+							stream << response;
+						}
+						catch (const exceptions::BaseExecutorException& e) // 500
+						{
+							resourceExecutor.internalServerError(response, &e);
+
+							stream << response;
+						}
+						catch (const exception& e)
+						{
+							resourceExecutor.internalServerError(response, &e);
+
+							stream << response;
+						}
+						catch (...) // 500
+						{
+							resourceExecutor.internalServerError(response, nullptr);
+
+							stream << response;
+						}
+					},
+					[this]() mutable
+					{
+						isBusy = false;
 					}
-				}
-				catch (const web::exceptions::WebException&)
-				{
-					webExceptionAcquired = true;
-				}
-				catch (const exceptions::BadRequestException& e) // 400
-				{
-					resourceExecutor.badRequestError(response, &e);
-
-					stream << response;
-				}
-				catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
-				{
-					resourceExecutor.notFoundError(response, &e);
-
-					stream << response;
-				}
-				catch (const exceptions::BaseExecutorException& e) // 500
-				{
-					resourceExecutor.internalServerError(response, &e);
-
-					stream << response;
-				}
-				catch (const exception& e)
-				{
-					resourceExecutor.internalServerError(response, &e);
-
-					stream << response;
-				}
-				catch (...) // 500
-				{
-					resourceExecutor.internalServerError(response, nullptr);
-
-					stream << response;
-				}
-
-				//threadPool.addTask
-				//(
-				//	[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
-				//	{
-				//		try
-				//		{
-				//			(*threadPoolFunction)(request, response);
-
-				//			if (response)
-				//			{
-				//				stream << response;
-				//			}
-				//		}
-				//		catch (const web::exceptions::WebException&)
-				//		{
-				//			webExceptionAcquired = true;
-				//		}
-				//		catch (const exceptions::BadRequestException& e) // 400
-				//		{
-				//			resourceExecutor.badRequestError(response, &e);
-
-				//			stream << response;
-				//		}
-				//		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
-				//		{
-				//			resourceExecutor.notFoundError(response, &e);
-
-				//			stream << response;
-				//		}
-				//		catch (const exceptions::BaseExecutorException& e) // 500
-				//		{
-				//			resourceExecutor.internalServerError(response, &e);
-
-				//			stream << response;
-				//		}
-				//		catch (const exception& e)
-				//		{
-				//			resourceExecutor.internalServerError(response, &e);
-
-				//			stream << response;
-				//		}
-				//		catch (...) // 500
-				//		{
-				//			resourceExecutor.internalServerError(response, nullptr);
-
-				//			stream << response;
-				//		}
-				//	},
-				//	[this]() mutable
-				//	{
-				//		isBusy = false;
-				//	}
-				//);
+				);
 
 				return false;
+				*/
+
+				(*threadPoolFunction)(request, response);
+
+				if (response)
+				{
+					stream << response;
+				}
 			}
 			else if (response)
 			{
@@ -232,12 +197,9 @@ namespace framework
 
 	void ThreadPoolWebServer::serveClients()
 	{
-		size_t size = clients.size();
-		size_t swaps = 0;
-
-		for (size_t i = 0; i < size;)
+		for (size_t i = 0; i < clients.size();)
 		{
-			Client* client = clients[i++];
+			Client* client = clients[i];
 
 			bool finished = client->serve
 			(
@@ -253,29 +215,19 @@ namespace framework
 
 			if (finished)
 			{
-				Client* lastClient = clients[size - 1];
+				delete client;
 
-				if (client != lastClient)
+				clients.erase(clients.begin() + i);
+
+				if (i)
 				{
-					swap(client, lastClient);
-
-					swaps++;
 					i--;
-					size--;
 				}
 			}
-		}
-
-		if (swaps)
-		{
-			span<Client*> finishedClients(clients.end() - swaps, clients.end());
-
-			for (Client* client : finishedClients)
+			else
 			{
-				delete client;
+				i++;
 			}
-
-			clients.erase(clients.end() - swaps, clients.end());
 		}
 	}
 
