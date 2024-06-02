@@ -31,7 +31,7 @@ TEST(Database, MultiUser)
 {
     std::vector<streams::IOSocketStream> clients;
     std::vector<std::future<void>> awaiters;
-    auto requests = [](streams::IOSocketStream& stream)
+    auto requests = [](streams::IOSocketStream& stream, size_t index)
     {
         std::string request = web::HTTPBuilder().postRequest().parameters("multi_user_database").build();
 	    std::string response;
@@ -46,9 +46,13 @@ TEST(Database, MultiUser)
         {
             request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
 
+            printf("Start request by %zd. Request %zd of %zd\n", index, i, requestsNumber);
+
             stream << request;
 
             stream >> response;
+
+            printf("Finish request by %zd. Request %zd of %zd\n", index, i, requestsNumber);
 
             ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
         }
@@ -73,7 +77,7 @@ TEST(Database, MultiUser)
     {
         streams::IOSocketStream& stream = clients.emplace_back(utility::createSocketStream());
 
-        awaiters.emplace_back(std::async(std::launch::async, requests, std::ref(stream)));
+        awaiters.emplace_back(std::async(std::launch::async, requests, std::ref(stream), i));
     }
 
     for (std::future<void>& awaiter : awaiters)
