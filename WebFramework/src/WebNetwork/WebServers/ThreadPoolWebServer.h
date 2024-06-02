@@ -38,7 +38,7 @@ namespace framework
 
 			Client& operator = (Client&&) noexcept = delete;
 
-			bool clientServe
+			bool serve
 			(
 				SessionsManager& sessionsManager,
 				web::BaseTCPServer& server,

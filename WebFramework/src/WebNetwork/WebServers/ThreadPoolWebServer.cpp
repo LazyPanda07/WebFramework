@@ -29,7 +29,7 @@ namespace framework
 
 	}
 
-	bool ThreadPoolWebServer::Client::clientServe
+	bool ThreadPoolWebServer::Client::serve
 	(
 		SessionsManager& sessionsManager,
 		web::BaseTCPServer& server,
@@ -195,7 +195,7 @@ namespace framework
 		{
 			Client* client = clients[i++];
 
-			bool finished = client->clientServe
+			bool finished = client->serve
 			(
 				sessionsManager,
 				*this,
@@ -224,14 +224,14 @@ namespace framework
 
 		if (swaps)
 		{
-			span<Client*> finishedClients(clients.end() - swaps, clients.end());
+			/*span<Client*> finishedClients(clients.end() - swaps, clients.end());
 
 			for (Client* client : finishedClients)
 			{
 				delete client;
 			}
 
-			clients.erase(clients.end() - swaps, clients.end());
+			clients.erase(clients.end() - swaps, clients.end());*/
 		}
 	}
 
