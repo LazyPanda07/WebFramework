@@ -14,7 +14,7 @@ int main(int argc, char** argv) try
 	(
 		true,
 		[]() 
-		{ 
+		{
 #ifdef __LINUX__
 			pid_t processId = getpid();
 #else
