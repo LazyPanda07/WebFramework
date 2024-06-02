@@ -222,16 +222,17 @@ namespace framework
 			}
 		}
 
-		// TODO: refactor
-
-		span<Client*> finishedClients(clients.begin() + clients.size() - swaps, clients.end());
-
-		for (Client* client : finishedClients)
+		if (swaps)
 		{
-			delete client;
-		}
+			span<Client*> finishedClients(clients.end() - swaps, clients.end());
 
-		clients.erase(clients.begin() + clients.size() - swaps, clients.end());
+			for (Client* client : finishedClients)
+			{
+				delete client;
+			}
+
+			clients.erase(clients.end() - swaps, clients.end());
+		}
 	}
 
 	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup)
