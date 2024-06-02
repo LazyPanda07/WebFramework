@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -118,17 +118,17 @@ Inheritance diagram for framework::ResourceExecutor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa723ed6f8adf29946a7da59100e8dbfc" id="r_aa723ed6f8adf29946a7da59100e8dbfc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#aa723ed6f8adf29946a7da59100e8dbfc">ResourceExecutor</a> (const json::JSONParser &amp;configuration, const std::filesystem::path &amp;assets, uint64_t cachingSize, const std::string &amp;pathToTemplates)</td></tr>
-<tr class="separator:aa723ed6f8adf29946a7da59100e8dbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa499a9b606c394b6088c781d654c41b6" id="r_aa499a9b606c394b6088c781d654c41b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#aa499a9b606c394b6088c781d654c41b6">ResourceExecutor</a> (const json::JSONParser &amp;configuration, const std::filesystem::path &amp;assets, uint64_t cachingSize, const std::filesystem::path &amp;pathToTemplates)</td></tr>
+<tr class="separator:aa499a9b606c394b6088c781d654c41b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67dcc7f0aa09e4c3259bbf26ef9f8b5e" id="r_a67dcc7f0aa09e4c3259bbf26ef9f8b5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a67dcc7f0aa09e4c3259bbf26ef9f8b5e">init</a> (const <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &amp;settings) override</td></tr>
 <tr class="memdesc:a67dcc7f0aa09e4c3259bbf26ef9f8b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create assets folder.  <br /></td></tr>
 <tr class="separator:a67dcc7f0aa09e4c3259bbf26ef9f8b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb6a05f9b00c765788035c15e8caf88e" id="r_adb6a05f9b00c765788035c15e8caf88e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#adb6a05f9b00c765788035c15e8caf88e">sendStaticFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, bool isBinary=true, const std::string &amp;fileName=&quot;&quot;) override</td></tr>
 <tr class="memdesc:adb6a05f9b00c765788035c15e8caf88e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override from IStaticFile interface.  <br /></td></tr>
 <tr class="separator:adb6a05f9b00c765788035c15e8caf88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2794fef485ce1ae4d02b6260d472e80b" id="r_a2794fef485ce1ae4d02b6260d472e80b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a2794fef485ce1ae4d02b6260d472e80b">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::unordered_map&lt; std::string_view, std::string &gt; &amp;variables={}, bool isBinary=true, const std::string &amp;fileName=&quot;&quot;) override</td></tr>
-<tr class="memdesc:a2794fef485ce1ae4d02b6260d472e80b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override from IDynamicFile interface.  <br /></td></tr>
-<tr class="separator:a2794fef485ce1ae4d02b6260d472e80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3327a0a28d447f6da933b6d6592547ac" id="r_a3327a0a28d447f6da933b6d6592547ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a3327a0a28d447f6da933b6d6592547ac">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::unordered_map&lt; std::string, std::string &gt; &amp;variables={}, bool isBinary=true, const std::string &amp;fileName=&quot;&quot;) override</td></tr>
+<tr class="memdesc:a3327a0a28d447f6da933b6d6592547ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override from IDynamicFile interface.  <br /></td></tr>
+<tr class="separator:a3327a0a28d447f6da933b6d6592547ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ced4bf06c08290f945e60606b89162b" id="r_a2ced4bf06c08290f945e60606b89162b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a2ced4bf06c08290f945e60606b89162b">registerDynamicFunction</a> (const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function) override</td></tr>
 <tr class="memdesc:a2ced4bf06c08290f945e60606b89162b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add new function in .wfdp interpreter.  <br /></td></tr>
 <tr class="separator:a2ced4bf06c08290f945e60606b89162b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,15 +146,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4e77f18beeb3debef546edb40ab69d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11bd4ef1aea490a956c8ff5692af75e4" id="r_a11bd4ef1aea490a956c8ff5692af75e4"><td class="memItemLeft" align="right" valign="top">const std::filesystem::path &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a11bd4ef1aea490a956c8ff5692af75e4">getPathToAssets</a> () const final override</td></tr>
 <tr class="separator:a11bd4ef1aea490a956c8ff5692af75e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a251b0011c6425dcdf6c7dcab149303f7" id="r_a251b0011c6425dcdf6c7dcab149303f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a251b0011c6425dcdf6c7dcab149303f7">notFoundError</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
-<tr class="memdesc:a251b0011c6425dcdf6c7dcab149303f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send 404.html from WebFrameworkAssets.  <br /></td></tr>
-<tr class="separator:a251b0011c6425dcdf6c7dcab149303f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea342d3db9b7ec7c20ab8d76a39ab03a" id="r_aea342d3db9b7ec7c20ab8d76a39ab03a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#aea342d3db9b7ec7c20ab8d76a39ab03a">badRequestError</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
-<tr class="memdesc:aea342d3db9b7ec7c20ab8d76a39ab03a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send 400.html from WebFrameworkAssets.  <br /></td></tr>
-<tr class="separator:aea342d3db9b7ec7c20ab8d76a39ab03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad84c1d96c04cac84348d2e03b8297414" id="r_ad84c1d96c04cac84348d2e03b8297414"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#ad84c1d96c04cac84348d2e03b8297414">internalServerError</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
-<tr class="memdesc:ad84c1d96c04cac84348d2e03b8297414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send 500.html from WebFrameworkAssets.  <br /></td></tr>
-<tr class="separator:ad84c1d96c04cac84348d2e03b8297414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9de20a2b8ac9c7ebd8938ce39376a9c2" id="r_a9de20a2b8ac9c7ebd8938ce39376a9c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a9de20a2b8ac9c7ebd8938ce39376a9c2">notFoundError</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::exception *exception)</td></tr>
+<tr class="memdesc:a9de20a2b8ac9c7ebd8938ce39376a9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send 404.html from WebFrameworkAssets.  <br /></td></tr>
+<tr class="separator:a9de20a2b8ac9c7ebd8938ce39376a9c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c37db2f814279bca3a3b441a75cd8dc" id="r_a3c37db2f814279bca3a3b441a75cd8dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a3c37db2f814279bca3a3b441a75cd8dc">badRequestError</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::exception *exception)</td></tr>
+<tr class="memdesc:a3c37db2f814279bca3a3b441a75cd8dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send 400.html from WebFrameworkAssets.  <br /></td></tr>
+<tr class="separator:a3c37db2f814279bca3a3b441a75cd8dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34627208674835f9949e7bf6e0e3f8ce" id="r_a34627208674835f9949e7bf6e0e3f8ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a34627208674835f9949e7bf6e0e3f8ce">internalServerError</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::exception *exception)</td></tr>
+<tr class="memdesc:a34627208674835f9949e7bf6e0e3f8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send 500.html from WebFrameworkAssets.  <br /></td></tr>
+<tr class="separator:a34627208674835f9949e7bf6e0e3f8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58f1ce4b9eafff8302a44890bd51742d" id="r_a58f1ce4b9eafff8302a44890bd51742d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_resource_executor.html#a58f1ce4b9eafff8302a44890bd51742d">getIsCaching</a> () const</td></tr>
 <tr class="separator:a58f1ce4b9eafff8302a44890bd51742d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classframework_1_1_base_stateless_executor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classframework_1_1_base_stateless_executor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classframework_1_1_base_stateless_executor.html">framework::BaseStatelessExecutor</a></td></tr>
@@ -174,12 +174,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8a9a5ba17aa7b180ff59ce5077667d87 inherit pub_methods_classframework_1_1_base_executor" id="r_a8a9a5ba17aa7b180ff59ce5077667d87"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a8a9a5ba17aa7b180ff59ce5077667d87">doDelete</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
 <tr class="memdesc:a8a9a5ba17aa7b180ff59ce5077667d87 inherit pub_methods_classframework_1_1_base_executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process DELETE request.  <br /></td></tr>
 <tr class="separator:a8a9a5ba17aa7b180ff59ce5077667d87 inherit pub_methods_classframework_1_1_base_executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16e4fc29479c32edaa8459035c2e377f inherit pub_methods_classframework_1_1_base_executor" id="r_a16e4fc29479c32edaa8459035c2e377f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a16e4fc29479c32edaa8459035c2e377f">doPatch</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
+<tr class="memdesc:a16e4fc29479c32edaa8459035c2e377f inherit pub_methods_classframework_1_1_base_executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process PATCH request.  <br /></td></tr>
+<tr class="separator:a16e4fc29479c32edaa8459035c2e377f inherit pub_methods_classframework_1_1_base_executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaea4ac32bfd1922451b5d3e97666d21d inherit pub_methods_classframework_1_1_base_executor" id="r_aaea4ac32bfd1922451b5d3e97666d21d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#aaea4ac32bfd1922451b5d3e97666d21d">doOptions</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
 <tr class="memdesc:aaea4ac32bfd1922451b5d3e97666d21d inherit pub_methods_classframework_1_1_base_executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process OPTIONS request.  <br /></td></tr>
 <tr class="separator:aaea4ac32bfd1922451b5d3e97666d21d inherit pub_methods_classframework_1_1_base_executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b04906f822dcef29b222f737b30ac3f inherit pub_methods_classframework_1_1_base_executor" id="r_a8b04906f822dcef29b222f737b30ac3f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#a8b04906f822dcef29b222f737b30ac3f">doTrace</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
 <tr class="memdesc:a8b04906f822dcef29b222f737b30ac3f inherit pub_methods_classframework_1_1_base_executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process TRACE request.  <br /></td></tr>
 <tr class="separator:a8b04906f822dcef29b222f737b30ac3f inherit pub_methods_classframework_1_1_base_executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4144ce70090edd094bfb2833a456a89 inherit pub_methods_classframework_1_1_base_executor" id="r_ac4144ce70090edd094bfb2833a456a89"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_executor.html#ac4144ce70090edd094bfb2833a456a89">doConnect</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response)</td></tr>
+<tr class="memdesc:ac4144ce70090edd094bfb2833a456a89 inherit pub_methods_classframework_1_1_base_executor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process CONNECT request.  <br /></td></tr>
+<tr class="separator:ac4144ce70090edd094bfb2833a456a89 inherit pub_methods_classframework_1_1_base_executor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -198,10 +204,10 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Used for sending asset files. </p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8h_source.html#l00015">15</a> of file <a class="el" href="_resource_executor_8h_source.html">ResourceExecutor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8h_source.html#l00017">17</a> of file <a class="el" href="_resource_executor_8h_source.html">ResourceExecutor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa723ed6f8adf29946a7da59100e8dbfc" name="aa723ed6f8adf29946a7da59100e8dbfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa723ed6f8adf29946a7da59100e8dbfc">&#9670;&#160;</a></span>ResourceExecutor()</h2>
+<a id="aa499a9b606c394b6088c781d654c41b6" name="aa499a9b606c394b6088c781d654c41b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa499a9b606c394b6088c781d654c41b6">&#9670;&#160;</a></span>ResourceExecutor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +233,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>pathToTemplates</em>&#160;</td>
         </tr>
         <tr>
@@ -243,8 +249,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aea342d3db9b7ec7c20ab8d76a39ab03a" name="aea342d3db9b7ec7c20ab8d76a39ab03a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea342d3db9b7ec7c20ab8d76a39ab03a">&#9670;&#160;</a></span>badRequestError()</h2>
+<a id="a3c37db2f814279bca3a3b441a75cd8dc" name="a3c37db2f814279bca3a3b441a75cd8dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c37db2f814279bca3a3b441a75cd8dc">&#9670;&#160;</a></span>badRequestError()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -253,8 +259,18 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">void framework::ResourceExecutor::badRequestError </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;&#160;</td>
-          <td class="paramname"><em>response</em></td><td>)</td>
+          <td class="paramname"><em>response</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::exception *&#160;</td>
+          <td class="paramname"><em>exception</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -267,7 +283,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00186">186</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00189">189</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -371,7 +387,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classframework_1_1_base_executor.html#a86986860d2111fbaf3a4cf26ef537be3">framework::BaseExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00164">164</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00159">159</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -390,7 +406,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00200">200</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00229">229</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -419,7 +435,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_file.html">framework::interfaces::IFile</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00174">174</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00164">164</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -461,8 +477,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ad84c1d96c04cac84348d2e03b8297414" name="ad84c1d96c04cac84348d2e03b8297414"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad84c1d96c04cac84348d2e03b8297414">&#9670;&#160;</a></span>internalServerError()</h2>
+<a id="a34627208674835f9949e7bf6e0e3f8ce" name="a34627208674835f9949e7bf6e0e3f8ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34627208674835f9949e7bf6e0e3f8ce">&#9670;&#160;</a></span>internalServerError()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,8 +487,18 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">void framework::ResourceExecutor::internalServerError </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;&#160;</td>
-          <td class="paramname"><em>response</em></td><td>)</td>
+          <td class="paramname"><em>response</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::exception *&#160;</td>
+          <td class="paramname"><em>exception</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -485,7 +511,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00193">193</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00209">209</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -528,8 +554,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a251b0011c6425dcdf6c7dcab149303f7" name="a251b0011c6425dcdf6c7dcab149303f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a251b0011c6425dcdf6c7dcab149303f7">&#9670;&#160;</a></span>notFoundError()</h2>
+<a id="a9de20a2b8ac9c7ebd8938ce39376a9c2" name="a9de20a2b8ac9c7ebd8938ce39376a9c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9de20a2b8ac9c7ebd8938ce39376a9c2">&#9670;&#160;</a></span>notFoundError()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -538,8 +564,18 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">void framework::ResourceExecutor::notFoundError </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;&#160;</td>
-          <td class="paramname"><em>response</em></td><td>)</td>
+          <td class="paramname"><em>response</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::exception *&#160;</td>
+          <td class="paramname"><em>exception</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -552,7 +588,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00179">179</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00169">169</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 
 </div>
 </div>
@@ -605,8 +641,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2794fef485ce1ae4d02b6260d472e80b" name="a2794fef485ce1ae4d02b6260d472e80b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2794fef485ce1ae4d02b6260d472e80b">&#9670;&#160;</a></span>sendDynamicFile()</h2>
+<a id="a3327a0a28d447f6da933b6d6592547ac" name="a3327a0a28d447f6da933b6d6592547ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3327a0a28d447f6da933b6d6592547ac">&#9670;&#160;</a></span>sendDynamicFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -629,7 +665,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::unordered_map&lt; std::string_view, std::string &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>variables</em> = <code>{}</code>, </td>
         </tr>
         <tr>
@@ -672,7 +708,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#ad5b5b31ef24f89833d755894602f022d">framework::interfaces::IDynamicFile</a>.</p>
+<p>Implements <a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#af48f8966519a06611a2e180125c4b33a">framework::interfaces::IDynamicFile</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_resource_executor_8cpp_source.html#l00110">110</a> of file <a class="el" href="_resource_executor_8cpp_source.html">ResourceExecutor.cpp</a>.</p>
 

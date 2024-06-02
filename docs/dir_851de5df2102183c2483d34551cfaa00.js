@@ -1,17 +1,14 @@
 var dir_851de5df2102183c2483d34551cfaa00 =
 [
-    [ "DataStructures", "dir_59b1e824faf0f0aea0d8963c86b36c59.html", "dir_59b1e824faf0f0aea0d8963c86b36c59" ],
-    [ "Middleware", "dir_98aa9f4b52a52e8f6f85f19fd5254655.html", "dir_98aa9f4b52a52e8f6f85f19fd5254655" ],
     [ "Singletons", "dir_1abccb2764cc97017b976c46b1e0080f.html", "dir_1abccb2764cc97017b976c46b1e0080f" ],
-    [ "CharactersEncoding.cpp", "_characters_encoding_8cpp_source.html", null ],
-    [ "CharactersEncoding.h", "_characters_encoding_8h_source.html", null ],
-    [ "ExecutorCreator.cpp", "_executor_creator_8cpp_source.html", null ],
-    [ "ExecutorCreator.h", "_executor_creator_8h_source.html", null ],
+    [ "BaseConnectionData.cpp", "_base_connection_data_8cpp_source.html", null ],
+    [ "BaseConnectionData.h", "_base_connection_data_8h_source.html", null ],
+    [ "ChunkGenerator.cpp", "_chunk_generator_8cpp_source.html", null ],
+    [ "ChunkGenerator.h", "_chunk_generator_8h_source.html", null ],
     [ "JSONSettingsParser.cpp", "_j_s_o_n_settings_parser_8cpp_source.html", null ],
     [ "JSONSettingsParser.h", "_j_s_o_n_settings_parser_8h_source.html", null ],
-    [ "Memory.h", "_memory_8h_source.html", null ],
     [ "RouteParameters.cpp", "_route_parameters_8cpp_source.html", null ],
     [ "RouteParameters.h", "_route_parameters_8h_source.html", null ],
-    [ "StringConversion.cpp", "_string_conversion_8cpp_source.html", null ],
-    [ "StringConversion.h", "_string_conversion_8h_source.html", null ]
+    [ "Sources.cpp", "_sources_8cpp_source.html", null ],
+    [ "Sources.h", "_sources_8h_source.html", null ]
 ];

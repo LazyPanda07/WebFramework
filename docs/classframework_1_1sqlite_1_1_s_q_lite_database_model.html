@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -91,10 +91,14 @@ $(document).ready(function(){initNavTree('classframework_1_1sqlite_1_1_s_q_lite_
 
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classframework_1_1sqlite_1_1_s_q_lite_database_model-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">framework::sqlite::SQLiteDatabaseModel Class Reference</div></div>
+  <div class="headertitle"><div class="title">framework::sqlite::SQLiteDatabaseModel Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -103,99 +107,99 @@ $(document).ready(function(){initNavTree('classframework_1_1sqlite_1_1_s_q_lite_
 
 <p><code>#include &lt;<a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a22f5738c595f5a8f095b68db1b878d11" id="r_a22f5738c595f5a8f095b68db1b878d11"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><b>queryType</b> { <b>read</b>
-, <b>write</b>
- }</td></tr>
-<tr class="separator:a22f5738c595f5a8f095b68db1b878d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8058ebd7d7ec4ec9babe0063d822defb" id="r_a8058ebd7d7ec4ec9babe0063d822defb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a8058ebd7d7ec4ec9babe0063d822defb">SQLiteDatabaseModel</a> (const std::string &amp;tableName, <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html">SQLiteDatabase</a> &amp;&amp;db)</td></tr>
-<tr class="memdesc:a8058ebd7d7ec4ec9babe0063d822defb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify table for database.  <br /></td></tr>
-<tr class="separator:a8058ebd7d7ec4ec9babe0063d822defb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a077a09a7f139c08746c660d3b7b00d6d" id="r_a077a09a7f139c08746c660d3b7b00d6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a077a09a7f139c08746c660d3b7b00d6d">SQLiteDatabaseModel</a> (const <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;)=delete</td></tr>
-<tr class="memdesc:a077a09a7f139c08746c660d3b7b00d6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can't copy model for specific table.  <br /></td></tr>
+<tr class="memitem:a077a09a7f139c08746c660d3b7b00d6d" id="r_a077a09a7f139c08746c660d3b7b00d6d"><td class="memItemLeft" align="right" valign="top"><a id="a077a09a7f139c08746c660d3b7b00d6d" name="a077a09a7f139c08746c660d3b7b00d6d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SQLiteDatabaseModel</b> (const <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;)=delete</td></tr>
 <tr class="separator:a077a09a7f139c08746c660d3b7b00d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa29f8262c4ca2b4fba9844c6a589d62" id="r_aaa29f8262c4ca2b4fba9844c6a589d62"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#aaa29f8262c4ca2b4fba9844c6a589d62">operator=</a> (const <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;)=delete</td></tr>
-<tr class="memdesc:aaa29f8262c4ca2b4fba9844c6a589d62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can't copy model for specific table.  <br /></td></tr>
+<tr class="memitem:aaa29f8262c4ca2b4fba9844c6a589d62" id="r_aaa29f8262c4ca2b4fba9844c6a589d62"><td class="memItemLeft" align="right" valign="top"><a id="aaa29f8262c4ca2b4fba9844c6a589d62" name="aaa29f8262c4ca2b4fba9844c6a589d62"></a>
+<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;)=delete</td></tr>
 <tr class="separator:aaa29f8262c4ca2b4fba9844c6a589d62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6586b15a207f00f535118e3a0e05c1c6" id="r_a6586b15a207f00f535118e3a0e05c1c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a6586b15a207f00f535118e3a0e05c1c6">SQLiteDatabaseModel</a> (<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&amp;other) noexcept</td></tr>
-<tr class="memdesc:a6586b15a207f00f535118e3a0e05c1c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move another <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a>.  <br /></td></tr>
-<tr class="separator:a6586b15a207f00f535118e3a0e05c1c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afeebd1f71e522194e0b113132381be66" id="r_afeebd1f71e522194e0b113132381be66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#afeebd1f71e522194e0b113132381be66">operator=</a> (<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&amp;other) noexcept</td></tr>
-<tr class="memdesc:afeebd1f71e522194e0b113132381be66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move another <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a>.  <br /></td></tr>
-<tr class="separator:afeebd1f71e522194e0b113132381be66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4b7d89bee3798489640e1a60f8c8ed3" id="r_ad4b7d89bee3798489640e1a60f8c8ed3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad4b7d89bee3798489640e1a60f8c8ed3">rawQuery</a> (const std::string &amp;query, queryType type)</td></tr>
-<tr class="memdesc:ad4b7d89bee3798489640e1a60f8c8ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw SQL query.  <br /></td></tr>
-<tr class="separator:ad4b7d89bee3798489640e1a60f8c8ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa13310142d8c975847dc22d824ad328e" id="r_aa13310142d8c975847dc22d824ad328e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#aa13310142d8c975847dc22d824ad328e">createTableQuery</a> (const std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;attributes)</td></tr>
-<tr class="memdesc:aa13310142d8c975847dc22d824ad328e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create table.  <br /></td></tr>
-<tr class="separator:aa13310142d8c975847dc22d824ad328e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5468a7da4990a7f75791a960b696325" id="r_af5468a7da4990a7f75791a960b696325"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#af5468a7da4990a7f75791a960b696325">dropTableQuery</a> ()</td></tr>
-<tr class="memdesc:af5468a7da4990a7f75791a960b696325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete table.  <br /></td></tr>
-<tr class="separator:af5468a7da4990a7f75791a960b696325"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a395b58d5e4a6912f79f965c7102c5e97" id="r_a395b58d5e4a6912f79f965c7102c5e97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a395b58d5e4a6912f79f965c7102c5e97">recreateTableQuery</a> (const std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;attributes)</td></tr>
-<tr class="memdesc:a395b58d5e4a6912f79f965c7102c5e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete and create table.  <br /></td></tr>
-<tr class="separator:a395b58d5e4a6912f79f965c7102c5e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a004d356d01afcc4739f7322dff217a35" id="r_a004d356d01afcc4739f7322dff217a35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a004d356d01afcc4739f7322dff217a35">insertQuery</a> (const std::map&lt; std::string, std::string &gt; &amp;attributes)</td></tr>
-<tr class="memdesc:a004d356d01afcc4739f7322dff217a35"><td class="mdescLeft">&#160;</td><td class="mdescRight">INSERT row.  <br /></td></tr>
-<tr class="separator:a004d356d01afcc4739f7322dff217a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8ce79a06f15450295a712c62e294aca" id="r_ad8ce79a06f15450295a712c62e294aca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad8ce79a06f15450295a712c62e294aca">updateQuery</a> (const std::map&lt; std::string, std::string &gt; &amp;attributes, const std::string &amp;fieldName, const std::string &amp;fieldValue)</td></tr>
-<tr class="memdesc:ad8ce79a06f15450295a712c62e294aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">UPDATE table.  <br /></td></tr>
-<tr class="separator:ad8ce79a06f15450295a712c62e294aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0a45278a8ce0f54f9ec8660dfd3ff19" id="r_ad0a45278a8ce0f54f9ec8660dfd3ff19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad0a45278a8ce0f54f9ec8660dfd3ff19">deleteQuery</a> (const std::string &amp;fieldName, const std::string &amp;fieldValue)</td></tr>
-<tr class="memdesc:ad0a45278a8ce0f54f9ec8660dfd3ff19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete from table.  <br /></td></tr>
-<tr class="separator:ad0a45278a8ce0f54f9ec8660dfd3ff19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf3c8e6326e17d8d4d69c4010e50951d" id="r_adf3c8e6326e17d8d4d69c4010e50951d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#adf3c8e6326e17d8d4d69c4010e50951d">deleteQuery</a> (const std::map&lt; std::string, std::string &gt; &amp;attributes)</td></tr>
-<tr class="memdesc:adf3c8e6326e17d8d4d69c4010e50951d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete from table.  <br /></td></tr>
-<tr class="separator:adf3c8e6326e17d8d4d69c4010e50951d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad75a5ec37f7687f81bf5863c40b2f50" id="r_aad75a5ec37f7687f81bf5863c40b2f50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#aad75a5ec37f7687f81bf5863c40b2f50">selectAllQuery</a> ()</td></tr>
-<tr class="memdesc:aad75a5ec37f7687f81bf5863c40b2f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">SELECT all.  <br /></td></tr>
-<tr class="separator:aad75a5ec37f7687f81bf5863c40b2f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a521d039491e90ffe9aa4136fe009fe04" id="r_a521d039491e90ffe9aa4136fe009fe04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a521d039491e90ffe9aa4136fe009fe04">selectByFieldQuery</a> (const std::string &amp;fieldName, const std::string &amp;fieldValue)</td></tr>
-<tr class="memdesc:a521d039491e90ffe9aa4136fe009fe04"><td class="mdescLeft">&#160;</td><td class="mdescRight">SELECT with condition.  <br /></td></tr>
-<tr class="separator:a521d039491e90ffe9aa4136fe009fe04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38027b15d1e9301d4fd4c0825a0b74a9" id="r_a38027b15d1e9301d4fd4c0825a0b74a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a38027b15d1e9301d4fd4c0825a0b74a9">selectByFieldQuery</a> (const std::map&lt; std::string, std::string &gt; &amp;attributes)</td></tr>
-<tr class="memdesc:a38027b15d1e9301d4fd4c0825a0b74a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">SELECT with condition.  <br /></td></tr>
-<tr class="separator:a38027b15d1e9301d4fd4c0825a0b74a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3f1bb5e915e7e73f06178990be0cf54" id="r_ad3f1bb5e915e7e73f06178990be0cf54"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ad3f1bb5e915e7e73f06178990be0cf54">getTableName</a> () const</td></tr>
-<tr class="memdesc:ad3f1bb5e915e7e73f06178990be0cf54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for tableName.  <br /></td></tr>
-<tr class="separator:ad3f1bb5e915e7e73f06178990be0cf54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefb3c17f20633ca07313f514a32a1ec1" id="r_aefb3c17f20633ca07313f514a32a1ec1"><td class="memItemLeft" align="right" valign="top"><a id="aefb3c17f20633ca07313f514a32a1ec1" name="aefb3c17f20633ca07313f514a32a1ec1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SQLiteDatabaseModel</b> (<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&amp;other) noexcept=default</td></tr>
+<tr class="separator:aefb3c17f20633ca07313f514a32a1ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f91411c7527273f7836de7b5b32ca2" id="r_a41f91411c7527273f7836de7b5b32ca2"><td class="memItemLeft" align="right" valign="top"><a id="a41f91411c7527273f7836de7b5b32ca2" name="a41f91411c7527273f7836de7b5b32ca2"></a>
+<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&amp;other) noexcept=default</td></tr>
+<tr class="separator:a41f91411c7527273f7836de7b5b32ca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eb0898de4a25055cf292385d98d1b4b" id="r_a9eb0898de4a25055cf292385d98d1b4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a9eb0898de4a25055cf292385d98d1b4b">raw</a> (const std::string &amp;query)</td></tr>
+<tr class="memdesc:a9eb0898de4a25055cf292385d98d1b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw SQL query.  <br /></td></tr>
+<tr class="separator:a9eb0898de4a25055cf292385d98d1b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11dd37d72b38280c26868daa278624c7" id="r_a11dd37d72b38280c26868daa278624c7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a11dd37d72b38280c26868daa278624c7">createTable</a> (const std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;attributes={})</td></tr>
+<tr class="memdesc:a11dd37d72b38280c26868daa278624c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create table.  <br /></td></tr>
+<tr class="separator:a11dd37d72b38280c26868daa278624c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af927d9e0f891a3e4bff668c30f3bb4c2" id="r_af927d9e0f891a3e4bff668c30f3bb4c2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#af927d9e0f891a3e4bff668c30f3bb4c2">dropTable</a> ()</td></tr>
+<tr class="memdesc:af927d9e0f891a3e4bff668c30f3bb4c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete table.  <br /></td></tr>
+<tr class="separator:af927d9e0f891a3e4bff668c30f3bb4c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aa9c0a99f0185e53307a142b8468973" id="r_a5aa9c0a99f0185e53307a142b8468973"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a5aa9c0a99f0185e53307a142b8468973">recreateTable</a> (const std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;attributes={})</td></tr>
+<tr class="memdesc:a5aa9c0a99f0185e53307a142b8468973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete and create table.  <br /></td></tr>
+<tr class="separator:a5aa9c0a99f0185e53307a142b8468973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa495f4c9787f9fee809447cd264c6c79" id="r_aa495f4c9787f9fee809447cd264c6c79"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#aa495f4c9787f9fee809447cd264c6c79">insert</a> (const std::unordered_map&lt; std::string, std::string &gt; &amp;attributes={})</td></tr>
+<tr class="memdesc:aa495f4c9787f9fee809447cd264c6c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">INSERT row.  <br /></td></tr>
+<tr class="separator:aa495f4c9787f9fee809447cd264c6c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee6f5949551efd255d1beb3169b9bd92" id="r_aee6f5949551efd255d1beb3169b9bd92"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#aee6f5949551efd255d1beb3169b9bd92">update</a> (const std::unordered_map&lt; std::string, std::string &gt; &amp;attributes, const std::string &amp;fieldName, const std::string &amp;fieldValue)</td></tr>
+<tr class="memdesc:aee6f5949551efd255d1beb3169b9bd92"><td class="mdescLeft">&#160;</td><td class="mdescRight">UPDATE table.  <br /></td></tr>
+<tr class="separator:aee6f5949551efd255d1beb3169b9bd92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5268a9530fa25dc0971cceff54374856" id="r_a5268a9530fa25dc0971cceff54374856"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a5268a9530fa25dc0971cceff54374856">deleteQuery</a> (const std::string &amp;fieldName, const std::string &amp;fieldValue)</td></tr>
+<tr class="memdesc:a5268a9530fa25dc0971cceff54374856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete from table.  <br /></td></tr>
+<tr class="separator:a5268a9530fa25dc0971cceff54374856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff0967386bca234d16c270c87f6f5022" id="r_aff0967386bca234d16c270c87f6f5022"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#aff0967386bca234d16c270c87f6f5022">deleteQuery</a> (const std::unordered_map&lt; std::string, std::string &gt; &amp;attributes={})</td></tr>
+<tr class="memdesc:aff0967386bca234d16c270c87f6f5022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete from table.  <br /></td></tr>
+<tr class="separator:aff0967386bca234d16c270c87f6f5022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d17303ebfab908b049d1f107ede4bd9" id="r_a0d17303ebfab908b049d1f107ede4bd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a0d17303ebfab908b049d1f107ede4bd9">selectAll</a> ()</td></tr>
+<tr class="memdesc:a0d17303ebfab908b049d1f107ede4bd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">SELECT all.  <br /></td></tr>
+<tr class="separator:a0d17303ebfab908b049d1f107ede4bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8acca4c86a90a933671d512f81756dc" id="r_ab8acca4c86a90a933671d512f81756dc"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ab8acca4c86a90a933671d512f81756dc">selectByField</a> (const std::string &amp;fieldName, const std::string &amp;fieldValue)</td></tr>
+<tr class="memdesc:ab8acca4c86a90a933671d512f81756dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">SELECT with condition.  <br /></td></tr>
+<tr class="separator:ab8acca4c86a90a933671d512f81756dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1497ff3f16ef790bd1706f6c3fc07016" id="r_a1497ff3f16ef790bd1706f6c3fc07016"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a1497ff3f16ef790bd1706f6c3fc07016">selectByField</a> (const std::unordered_map&lt; std::string, std::string &gt; &amp;attributes)</td></tr>
+<tr class="memdesc:a1497ff3f16ef790bd1706f6c3fc07016"><td class="mdescLeft">&#160;</td><td class="mdescRight">SELECT with condition.  <br /></td></tr>
+<tr class="separator:a1497ff3f16ef790bd1706f6c3fc07016"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae37cf46482068f13877021b3e0c2944d" id="r_ae37cf46482068f13877021b3e0c2944d"><td class="memItemLeft" align="right" valign="top"><a id="ae37cf46482068f13877021b3e0c2944d" name="ae37cf46482068f13877021b3e0c2944d"></a>
+virtual std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>getDatabaseName</b> () const =0</td></tr>
+<tr class="separator:ae37cf46482068f13877021b3e0c2944d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab27f73640e0dab224a2f1fd04b5d13c8" id="r_ab27f73640e0dab224a2f1fd04b5d13c8"><td class="memItemLeft" align="right" valign="top"><a id="ab27f73640e0dab224a2f1fd04b5d13c8" name="ab27f73640e0dab224a2f1fd04b5d13c8"></a>
+virtual std::string_view&#160;</td><td class="memItemRight" valign="bottom"><b>getTableName</b> () const =0</td></tr>
+<tr class="separator:ab27f73640e0dab224a2f1fd04b5d13c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a6eb91824d96e6795e9ea92e66c169233" id="r_a6eb91824d96e6795e9ea92e66c169233"><td class="memItemLeft" align="right" valign="top">static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a6eb91824d96e6795e9ea92e66c169233">databaseName</a> = &quot;&quot;</td></tr>
+<tr class="separator:a6eb91824d96e6795e9ea92e66c169233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc18969b100ef0dd344e7a2adcd76a0c" id="r_abc18969b100ef0dd344e7a2adcd76a0c"><td class="memItemLeft" align="right" valign="top">static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#abc18969b100ef0dd344e7a2adcd76a0c">tableName</a> = &quot;&quot;</td></tr>
+<tr class="separator:abc18969b100ef0dd344e7a2adcd76a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a8ba55bae88bce46871c707ba7b2b1fd1" id="r_a8ba55bae88bce46871c707ba7b2b1fd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a8ba55bae88bce46871c707ba7b2b1fd1">execute</a> (const std::string &amp;query)</td></tr>
+<tr class="memdesc:a8ba55bae88bce46871c707ba7b2b1fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute raw query.  <br /></td></tr>
+<tr class="separator:a8ba55bae88bce46871c707ba7b2b1fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a18d33a20d0747de463b8c25ab1ab6acf" id="r_a18d33a20d0747de463b8c25ab1ab6acf"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a18d33a20d0747de463b8c25ab1ab6acf">isNumber</a> (std::string_view source)</td></tr>
+<tr class="memdesc:a18d33a20d0747de463b8c25ab1ab6acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check that string represent number.  <br /></td></tr>
+<tr class="separator:a18d33a20d0747de463b8c25ab1ab6acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40e92b21fbced9e3b5b77ff74ffb72a6" id="r_a40e92b21fbced9e3b5b77ff74ffb72a6"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a40e92b21fbced9e3b5b77ff74ffb72a6">convertToValue</a> (std::string_view source)</td></tr>
+<tr class="memdesc:a40e92b21fbced9e3b5b77ff74ffb72a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">If source is string surrounds it with quotes.  <br /></td></tr>
+<tr class="separator:a40e92b21fbced9e3b5b77ff74ffb72a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a9716e09e7459f4e2bc1d56dcd59ec165" id="r_a9716e09e7459f4e2bc1d56dcd59ec165"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html">SQLiteDatabase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#a9716e09e7459f4e2bc1d56dcd59ec165">database</a></td></tr>
+<tr class="separator:a9716e09e7459f4e2bc1d56dcd59ec165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ab876637ddc3a45d1716a2cf81ec95625" id="r_ab876637ddc3a45d1716a2cf81ec95625"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html#ab876637ddc3a45d1716a2cf81ec95625">SQLiteManager</a></td></tr>
+<tr class="separator:ab876637ddc3a45d1716a2cf81ec95625"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Providing SELECT, INSERT, UPDATE, DELETE or raw queries for <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html" title="Wrapper class for sqlite3 library.">SQLiteDatabase</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00015">15</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a22f5738c595f5a8f095b68db1b878d11" name="a22f5738c595f5a8f095b68db1b878d11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22f5738c595f5a8f095b68db1b878d11">&#9670;&#160;</a></span>queryType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class framework::sqlite::SQLiteDatabaseModel::queryType</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00018">18</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8058ebd7d7ec4ec9babe0063d822defb" name="a8058ebd7d7ec4ec9babe0063d822defb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8058ebd7d7ec4ec9babe0063d822defb">&#9670;&#160;</a></span>SQLiteDatabaseModel() <span class="overload">[1/3]</span></h2>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00020">20</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a30f9c3ae695e3f7fa73383bd2446176c" name="a30f9c3ae695e3f7fa73383bd2446176c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30f9c3ae695e3f7fa73383bd2446176c">&#9670;&#160;</a></span>SQLiteDatabaseModel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,65 +207,19 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">framework::sqlite::SQLiteDatabaseModel::SQLiteDatabaseModel </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>tableName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html">SQLiteDatabase</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>db</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Specify table for database. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tableName</td><td>name of table</td></tr>
-    <tr><td class="paramname">db</td><td>temporary database object</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a077a09a7f139c08746c660d3b7b00d6d" name="a077a09a7f139c08746c660d3b7b00d6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a077a09a7f139c08746c660d3b7b00d6d">&#9670;&#160;</a></span>SQLiteDatabaseModel() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">framework::sqlite::SQLiteDatabaseModel::SQLiteDatabaseModel </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Can't copy model for specific table. </p>
-<p>other <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a> instance</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00093">93</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a6586b15a207f00f535118e3a0e05c1c6" name="a6586b15a207f00f535118e3a0e05c1c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6586b15a207f00f535118e3a0e05c1c6">&#9670;&#160;</a></span>SQLiteDatabaseModel() <span class="overload">[3/3]</span></h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a40e92b21fbced9e3b5b77ff74ffb72a6" name="a40e92b21fbced9e3b5b77ff74ffb72a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40e92b21fbced9e3b5b77ff74ffb72a6">&#9670;&#160;</a></span>convertToValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,47 +228,55 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">framework::sqlite::SQLiteDatabaseModel::SQLiteDatabaseModel </td>
+          <td class="memname">string framework::sqlite::SQLiteDatabaseModel::convertToValue </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Move another <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a>. </p>
+<p>If source is string surrounds it with quotes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>another <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a> instance</td></tr>
+    <tr><td class="paramname">source</td><td>Attribute value </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00095">95</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00043">43</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa13310142d8c975847dc22d824ad328e" name="aa13310142d8c975847dc22d824ad328e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa13310142d8c975847dc22d824ad328e">&#9670;&#160;</a></span>createTableQuery()</h2>
+<a id="a11dd37d72b38280c26868daa278624c7" name="a11dd37d72b38280c26868daa278624c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11dd37d72b38280c26868daa278624c7">&#9670;&#160;</a></span>createTable()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::createTableQuery </td>
+          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::createTable </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>attributes</em></td><td>)</td>
+          <td class="paramname"><em>attributes</em> = <code>{}</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Create table. </p>
@@ -327,50 +293,21 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00128">128</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00104">104</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="adf3c8e6326e17d8d4d69c4010e50951d" name="adf3c8e6326e17d8d4d69c4010e50951d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf3c8e6326e17d8d4d69c4010e50951d">&#9670;&#160;</a></span>deleteQuery() <span class="overload">[1/2]</span></h2>
+<a id="a5268a9530fa25dc0971cceff54374856" name="a5268a9530fa25dc0971cceff54374856"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5268a9530fa25dc0971cceff54374856">&#9670;&#160;</a></span>deleteQuery() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::deleteQuery </td>
-          <td>(</td>
-          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>attributes</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Delete from table. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">attributes</td><td>key - value condition </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad0a45278a8ce0f54f9ec8660dfd3ff19" name="ad0a45278a8ce0f54f9ec8660dfd3ff19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0a45278a8ce0f54f9ec8660dfd3ff19">&#9670;&#160;</a></span>deleteQuery() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::deleteQuery </td>
+          <td class="memname">virtual void framework::sqlite::SQLiteDatabaseModel::deleteQuery </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>fieldName</em>, </td>
@@ -387,6 +324,11 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Delete from table. </p>
@@ -406,19 +348,67 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af5468a7da4990a7f75791a960b696325" name="af5468a7da4990a7f75791a960b696325"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5468a7da4990a7f75791a960b696325">&#9670;&#160;</a></span>dropTableQuery()</h2>
+<a id="aff0967386bca234d16c270c87f6f5022" name="aff0967386bca234d16c270c87f6f5022"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff0967386bca234d16c270c87f6f5022">&#9670;&#160;</a></span>deleteQuery() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::dropTableQuery </td>
+          <td class="memname">virtual void framework::sqlite::SQLiteDatabaseModel::deleteQuery </td>
+          <td>(</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>attributes</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Delete from table. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attributes</td><td>key - value condition </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af927d9e0f891a3e4bff668c30f3bb4c2" name="af927d9e0f891a3e4bff668c30f3bb4c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af927d9e0f891a3e4bff668c30f3bb4c2">&#9670;&#160;</a></span>dropTable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::dropTable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Delete table. </p>
@@ -429,46 +419,69 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00142">142</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00118">118</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ad3f1bb5e915e7e73f06178990be0cf54" name="ad3f1bb5e915e7e73f06178990be0cf54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3f1bb5e915e7e73f06178990be0cf54">&#9670;&#160;</a></span>getTableName()</h2>
+<a id="a8ba55bae88bce46871c707ba7b2b1fd1" name="a8ba55bae88bce46871c707ba7b2b1fd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ba55bae88bce46871c707ba7b2b1fd1">&#9670;&#160;</a></span>execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const string &amp; framework::sqlite::SQLiteDatabaseModel::getTableName </td>
+          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::execute </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter for tableName. </p>
-<dl class="section return"><dt>Returns</dt><dd>tableName</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00238">238</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a004d356d01afcc4739f7322dff217a35" name="a004d356d01afcc4739f7322dff217a35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a004d356d01afcc4739f7322dff217a35">&#9670;&#160;</a></span>insertQuery()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::insertQuery </td>
-          <td>(</td>
-          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>attributes</em></td><td>)</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>query</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Execute raw query. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">query</td><td>raw query</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>execution result</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00048">48</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa495f4c9787f9fee809447cd264c6c79" name="aa495f4c9787f9fee809447cd264c6c79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa495f4c9787f9fee809447cd264c6c79">&#9670;&#160;</a></span>insert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::insert </td>
+          <td>(</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>attributes</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>INSERT row. </p>
@@ -485,12 +498,12 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00154">154</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00130">130</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aaa29f8262c4ca2b4fba9844c6a589d62" name="aaa29f8262c4ca2b4fba9844c6a589d62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa29f8262c4ca2b4fba9844c6a589d62">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="a18d33a20d0747de463b8c25ab1ab6acf" name="a18d33a20d0747de463b8c25ab1ab6acf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d33a20d0747de463b8c25ab1ab6acf">&#9670;&#160;</a></span>isNumber()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -499,83 +512,45 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp; framework::sqlite::SQLiteDatabaseModel::operator= </td>
+          <td class="memname">bool framework::sqlite::SQLiteDatabaseModel::isNumber </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Can't copy model for specific table. </p>
-<p>other <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a> instance</p>
-
-</div>
-</div>
-<a id="afeebd1f71e522194e0b113132381be66" name="afeebd1f71e522194e0b113132381be66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afeebd1f71e522194e0b113132381be66">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp; framework::sqlite::SQLiteDatabaseModel::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Move another <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a>. </p>
+<p>Check that string represent number. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>another <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a> instance</td></tr>
+    <tr><td class="paramname">source</td><td>Attribute value </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>true if source is correct number, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00102">102</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00011">11</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ad4b7d89bee3798489640e1a60f8c8ed3" name="ad4b7d89bee3798489640e1a60f8c8ed3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4b7d89bee3798489640e1a60f8c8ed3">&#9670;&#160;</a></span>rawQuery()</h2>
+<a id="a9eb0898de4a25055cf292385d98d1b4b" name="a9eb0898de4a25055cf292385d98d1b4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eb0898de4a25055cf292385d98d1b4b">&#9670;&#160;</a></span>raw()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::rawQuery </td>
+          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::raw </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>query</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>query</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">queryType&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -591,29 +566,36 @@ Public Member Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
-    <tr><td class="paramname">std::invalid_argument</td><td>wrong type</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00110">110</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00099">99</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a395b58d5e4a6912f79f965c7102c5e97" name="a395b58d5e4a6912f79f965c7102c5e97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a395b58d5e4a6912f79f965c7102c5e97">&#9670;&#160;</a></span>recreateTableQuery()</h2>
+<a id="a5aa9c0a99f0185e53307a142b8468973" name="a5aa9c0a99f0185e53307a142b8468973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aa9c0a99f0185e53307a142b8468973">&#9670;&#160;</a></span>recreateTable()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::recreateTableQuery </td>
+          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::recreateTable </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>attributes</em></td><td>)</td>
+          <td class="paramname"><em>attributes</em> = <code>{}</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Delete and create table. </p>
@@ -630,18 +612,18 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00147">147</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00123">123</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aad75a5ec37f7687f81bf5863c40b2f50" name="aad75a5ec37f7687f81bf5863c40b2f50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad75a5ec37f7687f81bf5863c40b2f50">&#9670;&#160;</a></span>selectAllQuery()</h2>
+<a id="a0d17303ebfab908b049d1f107ede4bd9" name="a0d17303ebfab908b049d1f107ede4bd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d17303ebfab908b049d1f107ede4bd9">&#9670;&#160;</a></span>selectAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::selectAllQuery </td>
+          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::selectAll </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -658,24 +640,84 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00214">214</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00177">177</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a38027b15d1e9301d4fd4c0825a0b74a9" name="a38027b15d1e9301d4fd4c0825a0b74a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38027b15d1e9301d4fd4c0825a0b74a9">&#9670;&#160;</a></span>selectByFieldQuery() <span class="overload">[1/2]</span></h2>
+<a id="ab8acca4c86a90a933671d512f81756dc" name="ab8acca4c86a90a933671d512f81756dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8acca4c86a90a933671d512f81756dc">&#9670;&#160;</a></span>selectByField() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::selectByFieldQuery </td>
+          <td class="memname">virtual <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::selectByField </td>
           <td>(</td>
-          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>fieldName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>fieldValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>SELECT with condition. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fieldName</td><td>for condition</td></tr>
+    <tr><td class="paramname">fieldValue</td><td>for condition</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>all rows that accept condition</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1497ff3f16ef790bd1706f6c3fc07016" name="a1497ff3f16ef790bd1706f6c3fc07016"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1497ff3f16ef790bd1706f6c3fc07016">&#9670;&#160;</a></span>selectByField() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::selectByField </td>
+          <td>(</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>attributes</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>SELECT with condition. </p>
@@ -695,60 +737,19 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a521d039491e90ffe9aa4136fe009fe04" name="a521d039491e90ffe9aa4136fe009fe04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a521d039491e90ffe9aa4136fe009fe04">&#9670;&#160;</a></span>selectByFieldQuery() <span class="overload">[2/2]</span></h2>
+<a id="aee6f5949551efd255d1beb3169b9bd92" name="aee6f5949551efd255d1beb3169b9bd92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee6f5949551efd255d1beb3169b9bd92">&#9670;&#160;</a></span>update()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html">utility::SQLiteResult</a> framework::sqlite::SQLiteDatabaseModel::selectByFieldQuery </td>
+          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::update </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>fieldName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>fieldValue</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>SELECT with condition. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fieldName</td><td>for condition</td></tr>
-    <tr><td class="paramname">fieldValue</td><td>for condition</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>all rows that accept condition</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions.">framework::exceptions::SQLite3Exception</a></td><td>sqlite3_errmsg</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad8ce79a06f15450295a712c62e294aca" name="ad8ce79a06f15450295a712c62e294aca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8ce79a06f15450295a712c62e294aca">&#9670;&#160;</a></span>updateQuery()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void framework::sqlite::SQLiteDatabaseModel::updateQuery </td>
-          <td>(</td>
-          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>attributes</em>, </td>
         </tr>
         <tr>
@@ -769,6 +770,11 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>UPDATE table. </p>
@@ -787,7 +793,105 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00179">179</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8cpp_source.html#l00144">144</a> of file <a class="el" href="_s_q_lite_database_model_8cpp_source.html">SQLiteDatabaseModel.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="ab876637ddc3a45d1716a2cf81ec95625" name="ab876637ddc3a45d1716a2cf81ec95625"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab876637ddc3a45d1716a2cf81ec95625">&#9670;&#160;</a></span>SQLiteManager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html">SQLiteManager</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00153">153</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9716e09e7459f4e2bc1d56dcd59ec165" name="a9716e09e7459f4e2bc1d56dcd59ec165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9716e09e7459f4e2bc1d56dcd59ec165">&#9670;&#160;</a></span>database</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database.html">SQLiteDatabase</a>&gt; framework::sqlite::SQLiteDatabaseModel::database</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00027">27</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
+
+</div>
+</div>
+<a id="a6eb91824d96e6795e9ea92e66c169233" name="a6eb91824d96e6795e9ea92e66c169233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eb91824d96e6795e9ea92e66c169233">&#9670;&#160;</a></span>databaseName</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::string_view framework::sqlite::SQLiteDatabaseModel::databaseName = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00023">23</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
+
+</div>
+</div>
+<a id="abc18969b100ef0dd344e7a2adcd76a0c" name="abc18969b100ef0dd344e7a2adcd76a0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc18969b100ef0dd344e7a2adcd76a0c">&#9670;&#160;</a></span>tableName</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::string_view framework::sqlite::SQLiteDatabaseModel::tableName = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_database_model_8h_source.html#l00024">24</a> of file <a class="el" href="_s_q_lite_database_model_8h_source.html">SQLiteDatabaseModel.h</a>.</p>
 
 </div>
 </div>

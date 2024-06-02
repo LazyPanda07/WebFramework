@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -111,9 +111,8 @@ Inheritance diagram for framework::exceptions::BaseWebFrameworkException:</div>
 <area href="classframework_1_1exceptions_1_1_cant_load_source_exception.html" title="Wrong path to loadSource from .ini." alt="framework::exceptions::CantLoadSourceException" shape="rect" coords="660,112,980,136"/>
 <area href="classframework_1_1exceptions_1_1_database_exception.html" title="Base class for all database exceptions." alt="framework::exceptions::DatabaseException" shape="rect" coords="990,112,1310,136"/>
 <area href="classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html" title="Syntax erros in .wfdp." alt="framework::exceptions::DynamicPagesSyntaxException" shape="rect" coords="1320,112,1640,136"/>
-<area href="classframework_1_1exceptions_1_1_string_conversion_exception.html" title="Errors in UTF8 convertion." alt="framework::exceptions::StringConversionException" shape="rect" coords="1650,112,1970,136"/>
 <area href="classframework_1_1exceptions_1_1_bad_request_exception.html" title="HTTP bad request 400 error code." alt="framework::exceptions::BadRequestException" shape="rect" coords="0,168,320,192"/>
-<area href="classframework_1_1exceptions_1_1_cant_find_function_exception.html" title="Can&#39;t find createBaseExecutorSubclassFunction for executor." alt="framework::exceptions::CantFindFunctionException" shape="rect" coords="330,168,650,192"/>
+<area href="classframework_1_1exceptions_1_1_cant_find_function_exception.html" title="Can&#39;t find createExecutorFunction for executor." alt="framework::exceptions::CantFindFunctionException" shape="rect" coords="330,168,650,192"/>
 <area href="classframework_1_1exceptions_1_1_missing_load_type_exception.html" title="Missing loadType in .json file of executor." alt="framework::exceptions::MissingLoadTypeException" shape="rect" coords="660,168,980,192"/>
 <area href="classframework_1_1exceptions_1_1_s_q_lite3_exception.html" title="Class for SQLite3 exceptions." alt="framework::exceptions::SQLite3Exception" shape="rect" coords="990,168,1310,192"/>
 <area href="classframework_1_1exceptions_1_1_not_implemented_exception.html" title="Default exception for all HTTP methods in BaseExecutor." alt="framework::exceptions::NotImplementedException" shape="rect" coords="0,224,320,248"/>
@@ -122,16 +121,16 @@ Inheritance diagram for framework::exceptions::BaseWebFrameworkException:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2446e840ed6e97f7d9591a61663eedf9" id="r_a2446e840ed6e97f7d9591a61663eedf9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1exceptions_1_1_base_web_framework_exception.html#a2446e840ed6e97f7d9591a61663eedf9">BaseWebFrameworkException</a> (const std::string &amp;errorMessage)</td></tr>
-<tr class="separator:a2446e840ed6e97f7d9591a61663eedf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42f34458ec84b5a6248f10beb0e1c644" id="r_a42f34458ec84b5a6248f10beb0e1c644"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1exceptions_1_1_base_web_framework_exception.html#a42f34458ec84b5a6248f10beb0e1c644">BaseWebFrameworkException</a> (std::string_view errorMessage)</td></tr>
+<tr class="separator:a42f34458ec84b5a6248f10beb0e1c644"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for all <a class="el" href="classframework_1_1_web_framework.html" title="Main class of framework.">WebFramework</a> exceptions. </p>
 
 <p class="definition">Definition at line <a class="el" href="_base_web_framework_exception_8h_source.html#l00010">10</a> of file <a class="el" href="_base_web_framework_exception_8h_source.html">BaseWebFrameworkException.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2446e840ed6e97f7d9591a61663eedf9" name="a2446e840ed6e97f7d9591a61663eedf9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2446e840ed6e97f7d9591a61663eedf9">&#9670;&#160;</a></span>BaseWebFrameworkException()</h2>
+<a id="a42f34458ec84b5a6248f10beb0e1c644" name="a42f34458ec84b5a6248f10beb0e1c644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42f34458ec84b5a6248f10beb0e1c644">&#9670;&#160;</a></span>BaseWebFrameworkException()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +138,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">framework::exceptions::BaseWebFrameworkException::BaseWebFrameworkException </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>errorMessage</em></td><td>)</td>
           <td></td>
         </tr>

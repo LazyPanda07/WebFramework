@@ -11,22 +11,21 @@ var annotated_dup =
         [ "DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", null ],
         [ "MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", null ],
         [ "NotImplementedException", "classframework_1_1exceptions_1_1_not_implemented_exception.html", null ],
-        [ "SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", null ],
-        [ "StringConversionException", "classframework_1_1exceptions_1_1_string_conversion_exception.html", null ]
+        [ "SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", null ]
       ] ],
       [ "interfaces", null, [
         [ "IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", "classframework_1_1interfaces_1_1_i_dynamic_file" ],
+        [ "IExecutorFunctionality", "classframework_1_1interfaces_1_1_i_executor_functionality.html", null ],
         [ "IFile", "classframework_1_1interfaces_1_1_i_file.html", null ],
         [ "IStaticFile", "classframework_1_1interfaces_1_1_i_static_file.html", "classframework_1_1interfaces_1_1_i_static_file" ]
       ] ],
       [ "load_balancer", null, [
-        [ "LoadBalancer", "classframework_1_1load__balancer_1_1_load_balancer.html", "classframework_1_1load__balancer_1_1_load_balancer" ],
-        [ "LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", "classframework_1_1load__balancer_1_1_load_balancer_server" ]
+        [ "BaseLoadBalancerHeuristic", "classframework_1_1load__balancer_1_1_base_load_balancer_heuristic.html", null ],
+        [ "Connections", "classframework_1_1load__balancer_1_1_connections.html", null ],
+        [ "LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", null ]
       ] ],
-      [ "middleware", null, [
-        [ "BaseMiddlewareRouteController", "classframework_1_1middleware_1_1_base_middleware_route_controller.html", "classframework_1_1middleware_1_1_base_middleware_route_controller" ],
-        [ "Middleware", "classframework_1_1middleware_1_1_middleware.html", "classframework_1_1middleware_1_1_middleware" ],
-        [ "MiddlewareServer", "classframework_1_1middleware_1_1_middleware_server.html", null ]
+      [ "proxy", null, [
+        [ "ProxyServer", "classframework_1_1proxy_1_1_proxy_server.html", null ]
       ] ],
       [ "sqlite", null, [
         [ "utility", null, [
@@ -34,14 +33,14 @@ var annotated_dup =
         ] ],
         [ "SQLiteDatabase", "classframework_1_1sqlite_1_1_s_q_lite_database.html", "classframework_1_1sqlite_1_1_s_q_lite_database" ],
         [ "SQLiteDatabaseModel", "classframework_1_1sqlite_1_1_s_q_lite_database_model.html", "classframework_1_1sqlite_1_1_s_q_lite_database_model" ],
-        [ "SQLiteManager", "classframework_1_1sqlite_1_1_s_q_lite_manager.html", "classframework_1_1sqlite_1_1_s_q_lite_manager" ]
+        [ "SQLiteManager", "classframework_1_1sqlite_1_1_s_q_lite_manager.html", null ]
       ] ],
       [ "utility", null, [
-        [ "baseConnectionData", "structframework_1_1utility_1_1base_connection_data.html", "structframework_1_1utility_1_1base_connection_data" ],
-        [ "ExecutorCreator", "classframework_1_1utility_1_1_executor_creator.html", null ],
+        [ "BaseConnectionData", "structframework_1_1utility_1_1_base_connection_data.html", "structframework_1_1utility_1_1_base_connection_data" ],
+        [ "ChunkGenerator", "classframework_1_1utility_1_1_chunk_generator.html", "classframework_1_1utility_1_1_chunk_generator" ],
+        [ "Config", "classframework_1_1utility_1_1_config.html", "classframework_1_1utility_1_1_config" ],
         [ "HTTPSSingleton", "classframework_1_1utility_1_1_h_t_t_p_s_singleton.html", null ],
         [ "JSONSettingsParser", "classframework_1_1utility_1_1_j_s_o_n_settings_parser.html", "classframework_1_1utility_1_1_j_s_o_n_settings_parser" ],
-        [ "PriorityQueue", "classframework_1_1utility_1_1_priority_queue.html", "classframework_1_1utility_1_1_priority_queue" ],
         [ "RouteParameters", "structframework_1_1utility_1_1_route_parameters.html", null ]
       ] ],
       [ "BaseExecutor", "classframework_1_1_base_executor.html", "classframework_1_1_base_executor" ],
@@ -58,15 +57,15 @@ var annotated_dup =
       [ "SessionsManager", "classframework_1_1_sessions_manager.html", null ],
       [ "ThreadPoolWebServer", "classframework_1_1_thread_pool_web_server.html", null ],
       [ "WebFramework", "classframework_1_1_web_framework.html", "classframework_1_1_web_framework" ],
-      [ "WebFrameworkDynamicPages", "classframework_1_1_web_framework_dynamic_pages.html", null ],
-      [ "WebFrameworkHTTPNetwork", "classframework_1_1_web_framework_h_t_t_p_network.html", null ],
-      [ "WebFrameworkHTTPSNetwork", "classframework_1_1_web_framework_h_t_t_p_s_network.html", null ]
+      [ "WebFrameworkDynamicPages", "classframework_1_1_web_framework_dynamic_pages.html", null ]
+    ] ],
+    [ "std", null, [
+      [ "default_delete< sqlite3 >", "structstd_1_1default__delete_3_01sqlite3_01_4.html", null ]
     ] ],
     [ "fts5_api", "structfts5__api.html", null ],
     [ "fts5_tokenizer", "structfts5__tokenizer.html", null ],
     [ "Fts5ExtensionApi", "struct_fts5_extension_api.html", null ],
     [ "Fts5PhraseIter", "struct_fts5_phrase_iter.html", null ],
-    [ "PercentEncodingSymbols", "class_percent_encoding_symbols.html", null ],
     [ "sqlite3_file", "structsqlite3__file.html", null ],
     [ "sqlite3_index_info", "structsqlite3__index__info.html", "structsqlite3__index__info" ],
     [ "sqlite3_io_methods", "structsqlite3__io__methods.html", null ],

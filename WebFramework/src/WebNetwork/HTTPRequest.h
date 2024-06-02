@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core.h"
+#include "WebFrameworkCore.h"
 
 #include "BaseTCPServer.h"
 #include "HTTPParser.h"

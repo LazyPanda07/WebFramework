@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -96,16 +96,17 @@ $(document).ready(function(){initNavTree('classframework_1_1_web_framework.html'
 
 <p>This is the complete list of members for <a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#ab77716f7dca7ade81a8354c9f3863ba4">disconnectClient</a>(const std::string &amp;ip) const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#acbdc33b3da335041bed850fe8d918b8d">getClientsIp</a>() const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a8124ca5d85799a15d3060b21573f316d">getConfigurationJSONFile</a>() const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#acbdc33b3da335041bed850fe8d918b8d">getClientsIp</a>() const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#aa0d4aa6c4ac0d21845d09ab8d00142bc">getCurrentConfiguration</a>() const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a045f0863885f5731b74da4295e531d86">getServerState</a>() const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#adf21b26155174f8323cef41ce05beb32">getUseHTTPS</a>()</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a07eb7ad3aa5343af50cdcbb4929072af">getWebFrameworkVersion</a>()</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#ac792cff457956f8e510bcdaa496665a4">startServer</a>()</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#ab84e58029ed3d62ff392626c4313ef54">stopServer</a>()</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a12b511148a8cca7ad25ea27b6a0c497c">WebFramework</a>(const std::filesystem::path &amp;configurationJSONFile)</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>~WebFramework</b>()=default (defined in <a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a>)</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a8f05f2df041988db234fe29db01cf8f4">isServerRunning</a>() const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a1769850b51af4ffc461d4ab4764392d1">kick</a>(const std::string &amp;ip) const</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a3bbf15447e6bfd92443bdeacebf74c1a">startServer</a>(bool wait=false, const std::function&lt; void()&gt; &amp;onStartServer=[]() {})</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classframework_1_1_web_framework.html#a845222e098196847a27b1a25cd8243a7">stopServer</a>(bool wait=true)</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>WebFramework</b>(const utility::Config &amp;webFrameworkConfig) (defined in <a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a>)</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>WebFramework</b>(const std::filesystem::path &amp;webFrameworkConfigPath) (defined in <a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a>)</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~WebFramework</b>()=default (defined in <a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a>)</td><td class="entry"><a class="el" href="classframework_1_1_web_framework.html">framework::WebFramework</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

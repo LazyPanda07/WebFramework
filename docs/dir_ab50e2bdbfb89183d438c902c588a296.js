@@ -19,7 +19,5 @@ var dir_ab50e2bdbfb89183d438c902c588a296 =
     [ "NotImplementedException.cpp", "_not_implemented_exception_8cpp_source.html", null ],
     [ "NotImplementedException.h", "_not_implemented_exception_8h_source.html", null ],
     [ "SQLite3Exception.cpp", "_s_q_lite3_exception_8cpp_source.html", null ],
-    [ "SQLite3Exception.h", "_s_q_lite3_exception_8h_source.html", null ],
-    [ "StringConversionException.cpp", "_string_conversion_exception_8cpp_source.html", null ],
-    [ "StringConversionException.h", "_string_conversion_exception_8h_source.html", null ]
+    [ "SQLite3Exception.h", "_s_q_lite3_exception_8h_source.html", null ]
 ];

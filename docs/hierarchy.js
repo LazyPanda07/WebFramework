@@ -1,8 +1,6 @@
 var hierarchy =
 [
-    [ "framework::utility::baseConnectionData", "structframework_1_1utility_1_1base_connection_data.html", [
-      [ "framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData", "structframework_1_1load__balancer_1_1_load_balancer_server_1_1load_balancer_connection_data.html", null ]
-    ] ],
+    [ "framework::utility::BaseConnectionData", "structframework_1_1utility_1_1_base_connection_data.html", null ],
     [ "framework::BaseExecutor", "classframework_1_1_base_executor.html", [
       [ "framework::BaseHeavyOperationStatefulExecutor", "classframework_1_1_base_heavy_operation_stateful_executor.html", null ],
       [ "framework::BaseHeavyOperationStatelessExecutor", "classframework_1_1_base_heavy_operation_stateless_executor.html", null ],
@@ -11,31 +9,33 @@ var hierarchy =
         [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
       ] ]
     ] ],
-    [ "framework::middleware::BaseMiddlewareRouteController", "classframework_1_1middleware_1_1_base_middleware_route_controller.html", null ],
+    [ "framework::load_balancer::BaseLoadBalancerHeuristic", "classframework_1_1load__balancer_1_1_base_load_balancer_heuristic.html", [
+      [ "framework::load_balancer::Connections", "classframework_1_1load__balancer_1_1_connections.html", null ]
+    ] ],
     [ "web::BaseTCPServer", null, [
       [ "framework::BaseWebServer", "classframework_1_1_base_web_server.html", [
         [ "framework::MultithreadedWebServer", "classframework_1_1_multithreaded_web_server.html", null ],
-        [ "framework::ThreadPoolWebServer", "classframework_1_1_thread_pool_web_server.html", null ]
-      ] ],
-      [ "framework::load_balancer::LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", null ],
-      [ "framework::middleware::MiddlewareServer", "classframework_1_1middleware_1_1_middleware_server.html", null ]
+        [ "framework::ThreadPoolWebServer", "classframework_1_1_thread_pool_web_server.html", null ],
+        [ "framework::load_balancer::LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", null ],
+        [ "framework::proxy::ProxyServer", "classframework_1_1proxy_1_1_proxy_server.html", null ]
+      ] ]
     ] ],
-    [ "framework::utility::ExecutorCreator", "classframework_1_1utility_1_1_executor_creator.html", null ],
+    [ "framework::utility::ChunkGenerator", "classframework_1_1utility_1_1_chunk_generator.html", null ],
+    [ "framework::utility::Config", "classframework_1_1utility_1_1_config.html", null ],
+    [ "std::default_delete< sqlite3 >", "structstd_1_1default__delete_3_01sqlite3_01_4.html", null ],
     [ "framework::utility::JSONSettingsParser::ExecutorSettings", "structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html", null ],
     [ "framework::ExecutorsManager", "classframework_1_1_executors_manager.html", null ],
     [ "fts5_api", "structfts5__api.html", null ],
     [ "fts5_tokenizer", "structfts5__tokenizer.html", null ],
     [ "Fts5ExtensionApi", "struct_fts5_extension_api.html", null ],
     [ "Fts5PhraseIter", "struct_fts5_phrase_iter.html", null ],
-    [ "web::HTTPNetwork", null, [
-      [ "framework::WebFrameworkHTTPNetwork", "classframework_1_1_web_framework_h_t_t_p_network.html", null ]
-    ] ],
     [ "framework::HTTPRequest", "classframework_1_1_h_t_t_p_request.html", null ],
     [ "framework::HTTPResponse", "classframework_1_1_h_t_t_p_response.html", null ],
-    [ "web::HTTPSNetwork", null, [
-      [ "framework::WebFrameworkHTTPSNetwork", "classframework_1_1_web_framework_h_t_t_p_s_network.html", null ]
-    ] ],
     [ "framework::utility::HTTPSSingleton", "classframework_1_1utility_1_1_h_t_t_p_s_singleton.html", null ],
+    [ "framework::interfaces::IExecutorFunctionality", "classframework_1_1interfaces_1_1_i_executor_functionality.html", [
+      [ "framework::MultithreadedWebServer", "classframework_1_1_multithreaded_web_server.html", null ],
+      [ "framework::ThreadPoolWebServer", "classframework_1_1_thread_pool_web_server.html", null ]
+    ] ],
     [ "framework::interfaces::IFile", "classframework_1_1interfaces_1_1_i_file.html", [
       [ "framework::interfaces::IDynamicFile", "classframework_1_1interfaces_1_1_i_dynamic_file.html", [
         [ "framework::ResourceExecutor", "classframework_1_1_resource_executor.html", null ]
@@ -45,13 +45,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "framework::utility::JSONSettingsParser", "classframework_1_1utility_1_1_j_s_o_n_settings_parser.html", null ],
-    [ "framework::load_balancer::LoadBalancer", "classframework_1_1load__balancer_1_1_load_balancer.html", null ],
-    [ "framework::middleware::Middleware", "classframework_1_1middleware_1_1_middleware.html", null ],
-    [ "PercentEncodingSymbols", "class_percent_encoding_symbols.html", null ],
-    [ "std::priority_queue", null, [
-      [ "framework::utility::PriorityQueue< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData, std::vector< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData >, std::greater< framework::load_balancer::LoadBalancerServer::loadBalancerConnectionData > >", "classframework_1_1utility_1_1_priority_queue.html", null ],
-      [ "framework::utility::PriorityQueue< T, ContainerT, CompareT >", "classframework_1_1utility_1_1_priority_queue.html", null ]
-    ] ],
     [ "framework::utility::RouteParameters", "structframework_1_1utility_1_1_route_parameters.html", null ],
     [ "std::runtime_error", null, [
       [ "framework::exceptions::BaseWebFrameworkException", "classframework_1_1exceptions_1_1_base_web_framework_exception.html", [
@@ -66,8 +59,7 @@ var hierarchy =
         [ "framework::exceptions::DatabaseException", "classframework_1_1exceptions_1_1_database_exception.html", [
           [ "framework::exceptions::SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", null ]
         ] ],
-        [ "framework::exceptions::DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", null ],
-        [ "framework::exceptions::StringConversionException", "classframework_1_1exceptions_1_1_string_conversion_exception.html", null ]
+        [ "framework::exceptions::DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", null ]
       ] ]
     ] ],
     [ "framework::SessionsManager", "classframework_1_1_sessions_manager.html", null ],

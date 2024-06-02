@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -109,8 +109,8 @@ Inheritance diagram for framework::interfaces::IDynamicFile:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad5b5b31ef24f89833d755894602f022d" id="r_ad5b5b31ef24f89833d755894602f022d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#ad5b5b31ef24f89833d755894602f022d">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::unordered_map&lt; std::string_view, std::string &gt; &amp;variables, bool isBinary, const std::string &amp;fileName)=0</td></tr>
-<tr class="separator:ad5b5b31ef24f89833d755894602f022d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af48f8966519a06611a2e180125c4b33a" id="r_af48f8966519a06611a2e180125c4b33a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#af48f8966519a06611a2e180125c4b33a">sendDynamicFile</a> (const std::string &amp;filePath, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, const std::unordered_map&lt; std::string, std::string &gt; &amp;variables, bool isBinary, const std::string &amp;fileName)=0</td></tr>
+<tr class="separator:af48f8966519a06611a2e180125c4b33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a505718a448fc166b868344d8096b75f9" id="r_a505718a448fc166b868344d8096b75f9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a505718a448fc166b868344d8096b75f9">registerDynamicFunction</a> (const std::string &amp;functionName, std::function&lt; std::string(const std::vector&lt; std::string &gt; &amp;)&gt; &amp;&amp;function)=0</td></tr>
 <tr class="separator:a505718a448fc166b868344d8096b75f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d0af89e3993630d1dbec76e50f592ff" id="r_a8d0af89e3993630d1dbec76e50f592ff"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_dynamic_file.html#a8d0af89e3993630d1dbec76e50f592ff">unregisterDynamicFunction</a> (const std::string &amp;functionName)=0</td></tr>
@@ -192,8 +192,8 @@ virtual const std::filesystem::path &amp;&#160;</td><td class="memItemRight" val
 
 </div>
 </div>
-<a id="ad5b5b31ef24f89833d755894602f022d" name="ad5b5b31ef24f89833d755894602f022d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5b5b31ef24f89833d755894602f022d">&#9670;&#160;</a></span>sendDynamicFile()</h2>
+<a id="af48f8966519a06611a2e180125c4b33a" name="af48f8966519a06611a2e180125c4b33a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af48f8966519a06611a2e180125c4b33a">&#9670;&#160;</a></span>sendDynamicFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +216,7 @@ virtual const std::filesystem::path &amp;&#160;</td><td class="memItemRight" val
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::unordered_map&lt; std::string_view, std::string &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>variables</em>, </td>
         </tr>
         <tr>
@@ -250,7 +250,7 @@ virtual const std::filesystem::path &amp;&#160;</td><td class="memItemRight" val
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classframework_1_1_resource_executor.html#a2794fef485ce1ae4d02b6260d472e80b">framework::ResourceExecutor</a>.</p>
+<p>Implemented in <a class="el" href="classframework_1_1_resource_executor.html#a3327a0a28d447f6da933b6d6592547ac">framework::ResourceExecutor</a>.</p>
 
 </div>
 </div>

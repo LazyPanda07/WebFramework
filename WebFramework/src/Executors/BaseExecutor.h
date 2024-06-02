@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "core.h"
+#include "WebFrameworkCore.h"
 
 #include "WebNetwork/HTTPRequest.h"
 #include "WebNetwork/HTTPResponse.h"

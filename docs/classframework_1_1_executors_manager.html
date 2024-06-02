@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -109,16 +109,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a95bfce076475f96b6536972524d72395"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab11defcb75d82fa2b79fee14d9d59a11" id="r_ab11defcb75d82fa2b79fee14d9d59a11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1_executors_manager.html">ExecutorsManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#ab11defcb75d82fa2b79fee14d9d59a11">operator=</a> (<a class="el" href="classframework_1_1_executors_manager.html">ExecutorsManager</a> &amp;&amp;other) noexcept</td></tr>
 <tr class="separator:ab11defcb75d82fa2b79fee14d9d59a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fb3a9c2412b93c018ce964f92882cf6" id="r_a8fb3a9c2412b93c018ce964f92882cf6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a8fb3a9c2412b93c018ce964f92882cf6">init</a> (const json::JSONParser &amp;configuraion, const std::filesystem::path &amp;assets, uint64_t cachingSize, const std::string &amp;pathToTemplates, std::unordered_map&lt; std::string, smartPointer&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;&amp;routes, std::unordered_map&lt; std::string, <a class="el" href="classframework_1_1utility_1_1_executor_creator.html">utility::ExecutorCreator</a> &gt; &amp;&amp;creators, std::unordered_map&lt; std::string, <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &gt; &amp;&amp;settings, std::vector&lt; <a class="el" href="structframework_1_1utility_1_1_route_parameters.html">utility::RouteParameters</a> &gt; &amp;&amp;routeParameters) noexcept</td></tr>
-<tr class="separator:a8fb3a9c2412b93c018ce964f92882cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adac2860a3c726d61f67d3db3dc4a3e87" id="r_adac2860a3c726d61f67d3db3dc4a3e87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#adac2860a3c726d61f67d3db3dc4a3e87">service</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, std::unordered_map&lt; std::string, smartPointer&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;statefulExecutors, std::optional&lt; std::function&lt; void(<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;)&gt; &gt; &amp;threadPoolFunction)</td></tr>
-<tr class="separator:adac2860a3c726d61f67d3db3dc4a3e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f2fdb36fb9bbe4bea08aad88066626f" id="r_a5f2fdb36fb9bbe4bea08aad88066626f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a5f2fdb36fb9bbe4bea08aad88066626f">getResourceExecutor</a> ()</td></tr>
-<tr class="separator:a5f2fdb36fb9bbe4bea08aad88066626f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fdaaedfc8586a672fb102e966942a08" id="r_a0fdaaedfc8586a672fb102e966942a08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a0fdaaedfc8586a672fb102e966942a08">init</a> (const json::JSONParser &amp;configuraion, const std::filesystem::path &amp;assets, uint64_t cachingSize, const std::filesystem::path &amp;pathToTemplates, std::unordered_map&lt; std::string, std::unique_ptr&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;&amp;routes, std::unordered_map&lt; std::string, createExecutorFunction &gt; &amp;&amp;creators, std::unordered_map&lt; std::string, <a class="el" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">utility::JSONSettingsParser::ExecutorSettings</a> &gt; &amp;&amp;settings, std::vector&lt; <a class="el" href="structframework_1_1utility_1_1_route_parameters.html">utility::RouteParameters</a> &gt; &amp;&amp;routeParameters) noexcept</td></tr>
+<tr class="separator:a0fdaaedfc8586a672fb102e966942a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3935588fa04905f3591540d47456a979" id="r_a3935588fa04905f3591540d47456a979"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::function&lt; void(<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;)&gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a3935588fa04905f3591540d47456a979">service</a> (<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;request, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, std::unordered_map&lt; std::string, std::unique_ptr&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;statefulExecutors)</td></tr>
+<tr class="separator:a3935588fa04905f3591540d47456a979"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6deac153cd4c09913769f5371880f498" id="r_a6deac153cd4c09913769f5371880f498"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_executors_manager.html#a6deac153cd4c09913769f5371880f498">getResourceExecutor</a> ()</td></tr>
+<tr class="separator:a6deac153cd4c09913769f5371880f498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8h_source.html#l00013">13</a> of file <a class="el" href="_executors_manager_8h_source.html">ExecutorsManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8h_source.html#l00012">12</a> of file <a class="el" href="_executors_manager_8h_source.html">ExecutorsManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0b627940087d9c844fdf3ee1b104b901" name="a0b627940087d9c844fdf3ee1b104b901"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0b627940087d9c844fdf3ee1b104b901">&#9670;&#160;</a></span>ExecutorsManager() <span class="overload">[1/2]</span></h2>
@@ -135,7 +135,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00010">10</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00012">12</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -163,19 +163,19 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00016">16</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00018">18</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5f2fdb36fb9bbe4bea08aad88066626f" name="a5f2fdb36fb9bbe4bea08aad88066626f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f2fdb36fb9bbe4bea08aad88066626f">&#9670;&#160;</a></span>getResourceExecutor()</h2>
+<a id="a6deac153cd4c09913769f5371880f498" name="a6deac153cd4c09913769f5371880f498"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6deac153cd4c09913769f5371880f498">&#9670;&#160;</a></span>getResourceExecutor()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">shared_ptr&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt; &amp; framework::ExecutorsManager::getResourceExecutor </td>
+          <td class="memname">shared_ptr&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt; framework::ExecutorsManager::getResourceExecutor </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -183,12 +183,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00190">190</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00217">217</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a8fb3a9c2412b93c018ce964f92882cf6" name="a8fb3a9c2412b93c018ce964f92882cf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fb3a9c2412b93c018ce964f92882cf6">&#9670;&#160;</a></span>init()</h2>
+<a id="a0fdaaedfc8586a672fb102e966942a08" name="a0fdaaedfc8586a672fb102e966942a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fdaaedfc8586a672fb102e966942a08">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,19 +217,19 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>pathToTemplates</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::unordered_map&lt; std::string, smartPointer&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype">std::unordered_map&lt; std::string, std::unique_ptr&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>routes</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::unordered_map&lt; std::string, <a class="el" href="classframework_1_1utility_1_1_executor_creator.html">utility::ExecutorCreator</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype">std::unordered_map&lt; std::string, createExecutorFunction &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>creators</em>, </td>
         </tr>
         <tr>
@@ -257,7 +257,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00031">31</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00033">33</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -285,18 +285,18 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00021">21</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00023">23</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="adac2860a3c726d61f67d3db3dc4a3e87" name="adac2860a3c726d61f67d3db3dc4a3e87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adac2860a3c726d61f67d3db3dc4a3e87">&#9670;&#160;</a></span>service()</h2>
+<a id="a3935588fa04905f3591540d47456a979" name="a3935588fa04905f3591540d47456a979"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3935588fa04905f3591540d47456a979">&#9670;&#160;</a></span>service()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void framework::ExecutorsManager::service </td>
+          <td class="memname">optional&lt; function&lt; void(<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;)&gt; &gt; framework::ExecutorsManager::service </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;&#160;</td>
           <td class="paramname"><em>request</em>, </td>
@@ -310,14 +310,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::unordered_map&lt; std::string, smartPointer&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>statefulExecutors</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::optional&lt; std::function&lt; void(<a class="el" href="classframework_1_1_h_t_t_p_request.html">HTTPRequest</a> &amp;, <a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;)&gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>threadPoolFunction</em>&#160;</td>
+          <td class="paramtype">std::unordered_map&lt; std::string, std::unique_ptr&lt; <a class="el" href="classframework_1_1_base_executor.html">BaseExecutor</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>statefulExecutors</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -327,13 +321,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00054">54</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_executors_manager_8cpp_source.html#l00066">66</a> of file <a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>WebFramework/src/WebFrameworkManagers/<a class="el" href="_executors_manager_8h_source.html">ExecutorsManager.h</a></li>
-<li>WebFramework/src/WebFrameworkManagers/<a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a></li>
+<li>WebFramework/src/Managers/<a class="el" href="_executors_manager_8h_source.html">ExecutorsManager.h</a></li>
+<li>WebFramework/src/Managers/<a class="el" href="_executors_manager_8cpp_source.html">ExecutorsManager.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

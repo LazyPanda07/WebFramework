@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('classframework_1_1_multithreaded_web_s
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classframework_1_1_multithreaded_web_server-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">framework::MultithreadedWebServer Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
+  <div class="headertitle"><div class="title">framework::MultithreadedWebServer Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
@@ -102,36 +102,42 @@ Inheritance diagram for framework::MultithreadedWebServer:</div>
  <div class="center">
   <img src="classframework_1_1_multithreaded_web_server.png" usemap="#framework::MultithreadedWebServer_map" alt=""/>
   <map id="framework::MultithreadedWebServer_map" name="framework::MultithreadedWebServer_map">
-<area href="classframework_1_1_base_web_server.html" alt="framework::BaseWebServer" shape="rect" coords="0,56,218,80"/>
+<area href="classframework_1_1_base_web_server.html" alt="framework::BaseWebServer" shape="rect" coords="0,56,264,80"/>
+<area href="classframework_1_1interfaces_1_1_i_executor_functionality.html" alt="framework::interfaces::IExecutorFunctionality" shape="rect" coords="274,56,538,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a38f6ee30edbdf2aa5ac30772378cb436" id="r_a38f6ee30edbdf2aa5ac30772378cb436"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_multithreaded_web_server.html#a38f6ee30edbdf2aa5ac30772378cb436">MultithreadedWebServer</a> (const json::JSONParser &amp;configuration, const std::vector&lt; <a class="el" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">utility::JSONSettingsParser</a> &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::string &amp;pathToTemplates, uint64_t cachingSize, const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</td></tr>
-<tr class="separator:a38f6ee30edbdf2aa5ac30772378cb436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classframework_1_1_base_web_server"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classframework_1_1_base_web_server')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></td></tr>
-<tr class="memitem:a7498f519611bea8d5a3b1c5ebbcd8aff inherit pub_methods_classframework_1_1_base_web_server" id="r_a7498f519611bea8d5a3b1c5ebbcd8aff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a7498f519611bea8d5a3b1c5ebbcd8aff">BaseWebServer</a> (const json::JSONParser &amp;configuration, const std::vector&lt; <a class="el" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">utility::JSONSettingsParser</a> &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::string &amp;pathToTemplates, uint64_t cachingSize, const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</td></tr>
-<tr class="separator:a7498f519611bea8d5a3b1c5ebbcd8aff inherit pub_methods_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e6e0345d4528913b91fa401db730b9" id="r_a26e6e0345d4528913b91fa401db730b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_multithreaded_web_server.html#a26e6e0345d4528913b91fa401db730b9">MultithreadedWebServer</a> (const json::JSONParser &amp;configuration, const std::vector&lt; <a class="el" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">utility::JSONSettingsParser</a> &gt; &amp;parsers, const std::filesystem::path &amp;assets, const std::filesystem::path &amp;pathToTemplates, uint64_t cachingSize, std::string_view ip, std::string_view port, DWORD timeout, const std::vector&lt; std::string &gt; &amp;pathToSources)</td></tr>
+<tr class="separator:a26e6e0345d4528913b91fa401db730b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classframework_1_1interfaces_1_1_i_executor_functionality"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classframework_1_1interfaces_1_1_i_executor_functionality')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classframework_1_1interfaces_1_1_i_executor_functionality.html">framework::interfaces::IExecutorFunctionality</a></td></tr>
+<tr class="memitem:aae0b0c0d7217948ef479d72daf9ec6bc inherit pub_methods_classframework_1_1interfaces_1_1_i_executor_functionality" id="r_aae0b0c0d7217948ef479d72daf9ec6bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_executor_functionality.html#aae0b0c0d7217948ef479d72daf9ec6bc">IExecutorFunctionality</a> (const json::JSONParser &amp;configuration, const std::filesystem::path &amp;assets, const std::filesystem::path &amp;pathToTemplates, uint64_t cachingSize, const std::vector&lt; <a class="el" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">utility::JSONSettingsParser</a> &gt; &amp;parsers, const std::vector&lt; std::string &gt; &amp;pathToSources)</td></tr>
+<tr class="separator:aae0b0c0d7217948ef479d72daf9ec6bc inherit pub_methods_classframework_1_1interfaces_1_1_i_executor_functionality"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classframework_1_1_base_web_server"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classframework_1_1_base_web_server')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></td></tr>
-<tr class="memitem:aa152841e4be37a9901f27a0f9a7631b3 inherit pro_attribs_classframework_1_1_base_web_server" id="r_aa152841e4be37a9901f27a0f9a7631b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1_executors_manager.html">ExecutorsManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#aa152841e4be37a9901f27a0f9a7631b3">executorsManager</a></td></tr>
-<tr class="separator:aa152841e4be37a9901f27a0f9a7631b3 inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12e2657503dbd70049c2d8a8e6aeca61 inherit pro_attribs_classframework_1_1_base_web_server" id="r_a12e2657503dbd70049c2d8a8e6aeca61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1_sessions_manager.html">SessionsManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a12e2657503dbd70049c2d8a8e6aeca61">sessionsManager</a></td></tr>
-<tr class="separator:a12e2657503dbd70049c2d8a8e6aeca61 inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a741057be8e8790de4f418f6e7f637aa4 inherit pro_attribs_classframework_1_1_base_web_server" id="r_a741057be8e8790de4f418f6e7f637aa4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html">sqlite::SQLiteManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a741057be8e8790de4f418f6e7f637aa4">databasesManager</a></td></tr>
-<tr class="separator:a741057be8e8790de4f418f6e7f637aa4 inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92d0af983bc6031d36a563f8206e07fd inherit pro_attribs_classframework_1_1_base_web_server" id="r_a92d0af983bc6031d36a563f8206e07fd"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a92d0af983bc6031d36a563f8206e07fd">resources</a></td></tr>
-<tr class="separator:a92d0af983bc6031d36a563f8206e07fd inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a781cda322d989b1039bc8a500d48a620 inherit pro_attribs_classframework_1_1_base_web_server" id="r_a781cda322d989b1039bc8a500d48a620"><td class="memItemLeft" align="right" valign="top">SSL_CTX *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a781cda322d989b1039bc8a500d48a620">context</a></td></tr>
+<tr class="separator:a781cda322d989b1039bc8a500d48a620 inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e7bedef70d4e760c42b5d0d4554909d inherit pro_attribs_classframework_1_1_base_web_server" id="r_a3e7bedef70d4e760c42b5d0d4554909d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a3e7bedef70d4e760c42b5d0d4554909d">useHTTPS</a></td></tr>
+<tr class="separator:a3e7bedef70d4e760c42b5d0d4554909d inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classframework_1_1interfaces_1_1_i_executor_functionality.html">framework::interfaces::IExecutorFunctionality</a></td></tr>
+<tr class="memitem:a5e23d0323430205c35c334dadb214e1c inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality" id="r_a5e23d0323430205c35c334dadb214e1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1_executors_manager.html">ExecutorsManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_executor_functionality.html#a5e23d0323430205c35c334dadb214e1c">executorsManager</a></td></tr>
+<tr class="separator:a5e23d0323430205c35c334dadb214e1c inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0ab8a4af3b799588f834452fe267343 inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality" id="r_af0ab8a4af3b799588f834452fe267343"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1_sessions_manager.html">SessionsManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_executor_functionality.html#af0ab8a4af3b799588f834452fe267343">sessionsManager</a></td></tr>
+<tr class="separator:af0ab8a4af3b799588f834452fe267343 inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a38ca920869e0858e2174a3709c2280 inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality" id="r_a8a38ca920869e0858e2174a3709c2280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html">sqlite::SQLiteManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_executor_functionality.html#a8a38ca920869e0858e2174a3709c2280">databaseManager</a></td></tr>
+<tr class="separator:a8a38ca920869e0858e2174a3709c2280 inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a3d2c2061c67fa7ffde2390e56b1018 inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality" id="r_a9a3d2c2061c67fa7ffde2390e56b1018"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classframework_1_1_resource_executor.html">ResourceExecutor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1interfaces_1_1_i_executor_functionality.html#a9a3d2c2061c67fa7ffde2390e56b1018">resources</a></td></tr>
+<tr class="separator:a9a3d2c2061c67fa7ffde2390e56b1018 inherit pro_attribs_classframework_1_1interfaces_1_1_i_executor_functionality"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_multithreaded_web_server_8h_source.html#l00009">9</a> of file <a class="el" href="_multithreaded_web_server_8h_source.html">MultithreadedWebServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_multithreaded_web_server_8h_source.html#l00010">10</a> of file <a class="el" href="_multithreaded_web_server_8h_source.html">MultithreadedWebServer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a38f6ee30edbdf2aa5ac30772378cb436" name="a38f6ee30edbdf2aa5ac30772378cb436"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38f6ee30edbdf2aa5ac30772378cb436">&#9670;&#160;</a></span>MultithreadedWebServer()</h2>
+<a id="a26e6e0345d4528913b91fa401db730b9" name="a26e6e0345d4528913b91fa401db730b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26e6e0345d4528913b91fa401db730b9">&#9670;&#160;</a></span>MultithreadedWebServer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,7 +163,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>pathToTemplates</em>, </td>
         </tr>
         <tr>
@@ -169,13 +175,13 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>ip</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
@@ -198,7 +204,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_multithreaded_web_server_8cpp_source.html#l00187">187</a> of file <a class="el" href="_multithreaded_web_server_8cpp_source.html">MultithreadedWebServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_multithreaded_web_server_8cpp_source.html#l00132">132</a> of file <a class="el" href="_multithreaded_web_server_8cpp_source.html">MultithreadedWebServer.cpp</a>.</p>
 
 </div>
 </div>

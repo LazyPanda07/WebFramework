@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -101,25 +101,31 @@ $(document).ready(function(){initNavTree('classframework_1_1load__balancer_1_1_l
 Inheritance diagram for framework::load_balancer::LoadBalancerServer:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classframework_1_1load__balancer_1_1_load_balancer_server.png" alt=""/>
- </div></div>
+  <img src="classframework_1_1load__balancer_1_1_load_balancer_server.png" usemap="#framework::load_5Fbalancer::LoadBalancerServer_map" alt=""/>
+  <map id="framework::load_5Fbalancer::LoadBalancerServer_map" name="framework::load_5Fbalancer::LoadBalancerServer_map">
+<area href="classframework_1_1_base_web_server.html" alt="framework::BaseWebServer" shape="rect" coords="0,56,282,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structframework_1_1load__balancer_1_1_load_balancer_server_1_1load_balancer_connection_data.html">loadBalancerConnectionData</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a31bd9d35ce8b5c3201ce76a8fd405c96" id="r_a31bd9d35ce8b5c3201ce76a8fd405c96"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html#a31bd9d35ce8b5c3201ce76a8fd405c96">LoadBalancerServer</a> (const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::unordered_map&lt; std::string, std::vector&lt; std::string &gt; &gt; &amp;allServers)</td></tr>
-<tr class="separator:a31bd9d35ce8b5c3201ce76a8fd405c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67fd70d89b1f25d9cb29eff671a59000" id="r_a67fd70d89b1f25d9cb29eff671a59000"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html#a67fd70d89b1f25d9cb29eff671a59000">LoadBalancerServer</a> (std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS, std::string_view heuristicName, const std::vector&lt; HMODULE &gt; &amp;loadSources, const std::unordered_map&lt; std::string, std::vector&lt; int64_t &gt; &gt; &amp;allServers, const json::JSONParser &amp;configuration, const std::filesystem::path &amp;assets, uint64_t cachingSize, const std::filesystem::path &amp;pathToTemplates)</td></tr>
+<tr class="separator:a67fd70d89b1f25d9cb29eff671a59000"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classframework_1_1_base_web_server"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classframework_1_1_base_web_server')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></td></tr>
+<tr class="memitem:a781cda322d989b1039bc8a500d48a620 inherit pro_attribs_classframework_1_1_base_web_server" id="r_a781cda322d989b1039bc8a500d48a620"><td class="memItemLeft" align="right" valign="top">SSL_CTX *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a781cda322d989b1039bc8a500d48a620">context</a></td></tr>
+<tr class="separator:a781cda322d989b1039bc8a500d48a620 inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e7bedef70d4e760c42b5d0d4554909d inherit pro_attribs_classframework_1_1_base_web_server" id="r_a3e7bedef70d4e760c42b5d0d4554909d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1_base_web_server.html#a3e7bedef70d4e760c42b5d0d4554909d">useHTTPS</a></td></tr>
+<tr class="separator:a3e7bedef70d4e760c42b5d0d4554909d inherit pro_attribs_classframework_1_1_base_web_server"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_load_balancer_server_8h_source.html#l00012">12</a> of file <a class="el" href="_load_balancer_server_8h_source.html">LoadBalancerServer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_load_balancer_server_8h_source.html#l00017">17</a> of file <a class="el" href="_load_balancer_server_8h_source.html">LoadBalancerServer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a31bd9d35ce8b5c3201ce76a8fd405c96" name="a31bd9d35ce8b5c3201ce76a8fd405c96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31bd9d35ce8b5c3201ce76a8fd405c96">&#9670;&#160;</a></span>LoadBalancerServer()</h2>
+<a id="a67fd70d89b1f25d9cb29eff671a59000" name="a67fd70d89b1f25d9cb29eff671a59000"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67fd70d89b1f25d9cb29eff671a59000">&#9670;&#160;</a></span>LoadBalancerServer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -127,13 +133,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">framework::load_balancer::LoadBalancerServer::LoadBalancerServer </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>ip</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>port</em>, </td>
         </tr>
         <tr>
@@ -145,8 +151,50 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::unordered_map&lt; std::string, std::vector&lt; std::string &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>allServers</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>serversHTTPS</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>heuristicName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; HMODULE &gt; &amp;&#160;</td>
+          <td class="paramname"><em>loadSources</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, std::vector&lt; int64_t &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>allServers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const json::JSONParser &amp;&#160;</td>
+          <td class="paramname"><em>configuration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>assets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>cachingSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>pathToTemplates</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -156,13 +204,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_load_balancer_server_8cpp_source.html#l00082">82</a> of file <a class="el" href="_load_balancer_server_8cpp_source.html">LoadBalancerServer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_load_balancer_server_8cpp_source.html#l00114">114</a> of file <a class="el" href="_load_balancer_server_8cpp_source.html">LoadBalancerServer.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>WebFramework/src/LoadBalancer/LoadBalancerWebNetwork/<a class="el" href="_load_balancer_server_8h_source.html">LoadBalancerServer.h</a></li>
-<li>WebFramework/src/LoadBalancer/LoadBalancerWebNetwork/<a class="el" href="_load_balancer_server_8cpp_source.html">LoadBalancerServer.cpp</a></li>
+<li>WebFramework/src/LoadBalancer/<a class="el" href="_load_balancer_server_8h_source.html">LoadBalancerServer.h</a></li>
+<li>WebFramework/src/LoadBalancer/<a class="el" href="_load_balancer_server_8cpp_source.html">LoadBalancerServer.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

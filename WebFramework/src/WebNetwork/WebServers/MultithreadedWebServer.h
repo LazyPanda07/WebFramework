@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core.h"
+#include "WebFrameworkCore.h"
 
 #include "BaseWebServer.h"
 #include "WebNetwork/Interfaces/IExecutorFunctionality.h"

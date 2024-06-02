@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -109,7 +109,7 @@ Inheritance diagram for framework::exceptions::BaseExecutorException:</div>
   <map id="framework::exceptions::BaseExecutorException_map" name="framework::exceptions::BaseExecutorException_map">
 <area href="classframework_1_1exceptions_1_1_base_web_framework_exception.html" title="Base class for all WebFramework exceptions." alt="framework::exceptions::BaseWebFrameworkException" shape="rect" coords="324,56,638,80"/>
 <area href="classframework_1_1exceptions_1_1_bad_request_exception.html" title="HTTP bad request 400 error code." alt="framework::exceptions::BadRequestException" shape="rect" coords="0,168,314,192"/>
-<area href="classframework_1_1exceptions_1_1_cant_find_function_exception.html" title="Can&#39;t find createBaseExecutorSubclassFunction for executor." alt="framework::exceptions::CantFindFunctionException" shape="rect" coords="324,168,638,192"/>
+<area href="classframework_1_1exceptions_1_1_cant_find_function_exception.html" title="Can&#39;t find createExecutorFunction for executor." alt="framework::exceptions::CantFindFunctionException" shape="rect" coords="324,168,638,192"/>
 <area href="classframework_1_1exceptions_1_1_missing_load_type_exception.html" title="Missing loadType in .json file of executor." alt="framework::exceptions::MissingLoadTypeException" shape="rect" coords="648,168,962,192"/>
 <area href="classframework_1_1exceptions_1_1_not_implemented_exception.html" title="Default exception for all HTTP methods in BaseExecutor." alt="framework::exceptions::NotImplementedException" shape="rect" coords="0,224,314,248"/>
   </map>
@@ -117,19 +117,19 @@ Inheritance diagram for framework::exceptions::BaseExecutorException:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a48211f43f07fffa4761afababf644700" id="r_a48211f43f07fffa4761afababf644700"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1exceptions_1_1_base_executor_exception.html#a48211f43f07fffa4761afababf644700">BaseExecutorException</a> (const std::string &amp;message)</td></tr>
-<tr class="separator:a48211f43f07fffa4761afababf644700"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1b13957261c8e61f1ea06aa3d67c50a" id="r_af1b13957261c8e61f1ea06aa3d67c50a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1exceptions_1_1_base_executor_exception.html#af1b13957261c8e61f1ea06aa3d67c50a">BaseExecutorException</a> (std::string_view message)</td></tr>
+<tr class="separator:af1b13957261c8e61f1ea06aa3d67c50a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classframework_1_1exceptions_1_1_base_web_framework_exception"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classframework_1_1exceptions_1_1_base_web_framework_exception')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classframework_1_1exceptions_1_1_base_web_framework_exception.html">framework::exceptions::BaseWebFrameworkException</a></td></tr>
-<tr class="memitem:a2446e840ed6e97f7d9591a61663eedf9 inherit pub_methods_classframework_1_1exceptions_1_1_base_web_framework_exception" id="r_a2446e840ed6e97f7d9591a61663eedf9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1exceptions_1_1_base_web_framework_exception.html#a2446e840ed6e97f7d9591a61663eedf9">BaseWebFrameworkException</a> (const std::string &amp;errorMessage)</td></tr>
-<tr class="separator:a2446e840ed6e97f7d9591a61663eedf9 inherit pub_methods_classframework_1_1exceptions_1_1_base_web_framework_exception"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42f34458ec84b5a6248f10beb0e1c644 inherit pub_methods_classframework_1_1exceptions_1_1_base_web_framework_exception" id="r_a42f34458ec84b5a6248f10beb0e1c644"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1exceptions_1_1_base_web_framework_exception.html#a42f34458ec84b5a6248f10beb0e1c644">BaseWebFrameworkException</a> (std::string_view errorMessage)</td></tr>
+<tr class="separator:a42f34458ec84b5a6248f10beb0e1c644 inherit pub_methods_classframework_1_1exceptions_1_1_base_web_framework_exception"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for most of <a class="el" href="classframework_1_1_web_framework.html" title="Main class of framework.">WebFramework</a> exceptions. </p>
 
 <p class="definition">Definition at line <a class="el" href="_base_executor_exception_8h_source.html#l00012">12</a> of file <a class="el" href="_base_executor_exception_8h_source.html">BaseExecutorException.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a48211f43f07fffa4761afababf644700" name="a48211f43f07fffa4761afababf644700"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48211f43f07fffa4761afababf644700">&#9670;&#160;</a></span>BaseExecutorException()</h2>
+<a id="af1b13957261c8e61f1ea06aa3d67c50a" name="af1b13957261c8e61f1ea06aa3d67c50a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1b13957261c8e61f1ea06aa3d67c50a">&#9670;&#160;</a></span>BaseExecutorException()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,7 +137,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">framework::exceptions::BaseExecutorException::BaseExecutorException </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>message</em></td><td>)</td>
           <td></td>
         </tr>

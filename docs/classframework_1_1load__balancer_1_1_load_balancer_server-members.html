@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -96,7 +96,11 @@ $(document).ready(function(){initNavTree('classframework_1_1load__balancer_1_1_l
 
 <p>This is the complete list of members for <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html">framework::load_balancer::LoadBalancerServer</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>LoadBalancerServer</b>(const std::string &amp;ip, const std::string &amp;port, DWORD timeout, const std::unordered_map&lt; std::string, std::vector&lt; std::string &gt; &gt; &amp;allServers) (defined in <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html">framework::load_balancer::LoadBalancerServer</a>)</td><td class="entry"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html">framework::load_balancer::LoadBalancerServer</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>BaseWebServer</b>() (defined in <a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a>)</td><td class="entry"><a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>context</b> (defined in <a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a>)</td><td class="entry"><a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>LoadBalancerServer</b>(std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS, std::string_view heuristicName, const std::vector&lt; HMODULE &gt; &amp;loadSources, const std::unordered_map&lt; std::string, std::vector&lt; int64_t &gt; &gt; &amp;allServers, const json::JSONParser &amp;configuration, const std::filesystem::path &amp;assets, uint64_t cachingSize, const std::filesystem::path &amp;pathToTemplates) (defined in <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html">framework::load_balancer::LoadBalancerServer</a>)</td><td class="entry"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html">framework::load_balancer::LoadBalancerServer</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>useHTTPS</b> (defined in <a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a>)</td><td class="entry"><a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~BaseWebServer</b>() (defined in <a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a>)</td><td class="entry"><a class="el" href="classframework_1_1_base_web_server.html">framework::BaseWebServer</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>~LoadBalancerServer</b>()=default (defined in <a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html">framework::load_balancer::LoadBalancerServer</a>)</td><td class="entry"><a class="el" href="classframework_1_1load__balancer_1_1_load_balancer_server.html">framework::load_balancer::LoadBalancerServer</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.5</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v2.6.0</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -91,7 +91,9 @@ $(document).ready(function(){initNavTree('classframework_1_1sqlite_1_1_s_q_lite_
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classframework_1_1sqlite_1_1_s_q_lite_manager-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">framework::sqlite::SQLiteManager Class Reference</div></div>
 </div><!--header-->
@@ -99,68 +101,87 @@ $(document).ready(function(){initNavTree('classframework_1_1sqlite_1_1_s_q_lite_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abb7eda2fe8484dfb923a6e05e7dc01bd" id="r_abb7eda2fe8484dfb923a6e05e7dc01bd"><td class="memTemplParams" colspan="2">template&lt;typename SQLiteDatabaseModelSubclass , typename... Args&gt; </td></tr>
-<tr class="memitem:abb7eda2fe8484dfb923a6e05e7dc01bd"><td class="memTemplItemLeft" align="right" valign="top">smartPointer&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html#abb7eda2fe8484dfb923a6e05e7dc01bd">get</a> (const std::string &amp;databaseName, const std::string &amp;tableName, Args &amp;&amp;... args)</td></tr>
-<tr class="memdesc:abb7eda2fe8484dfb923a6e05e7dc01bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get instance of <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a> subclass for database operations.  <br /></td></tr>
-<tr class="separator:abb7eda2fe8484dfb923a6e05e7dc01bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad271657e92a840ab66dea40147319e3" id="r_aad271657e92a840ab66dea40147319e3"><td class="memTemplParams" colspan="2">template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &gt; T, typename... Args&gt; </td></tr>
+<tr class="memitem:aad271657e92a840ab66dea40147319e3"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html#aad271657e92a840ab66dea40147319e3">add</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:aad271657e92a840ab66dea40147319e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea04bf15843771916020108a776d95ac" id="r_aea04bf15843771916020108a776d95ac"><td class="memTemplParams" colspan="2">template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &gt; T&gt; </td></tr>
+<tr class="memitem:aea04bf15843771916020108a776d95ac"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html#aea04bf15843771916020108a776d95ac">get</a> () const</td></tr>
+<tr class="separator:aea04bf15843771916020108a776d95ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ab68f04bc9b56b455937823cadf4a30db" id="r_ab68f04bc9b56b455937823cadf4a30db"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_manager.html#ab68f04bc9b56b455937823cadf4a30db">SQLiteDatabaseModel</a></td></tr>
+<tr class="separator:ab68f04bc9b56b455937823cadf4a30db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_s_q_lite_manager_8h_source.html#l00011">11</a> of file <a class="el" href="_s_q_lite_manager_8h_source.html">SQLiteManager.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="abb7eda2fe8484dfb923a6e05e7dc01bd" name="abb7eda2fe8484dfb923a6e05e7dc01bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb7eda2fe8484dfb923a6e05e7dc01bd">&#9670;&#160;</a></span>get()</h2>
+<a id="aad271657e92a840ab66dea40147319e3" name="aad271657e92a840ab66dea40147319e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad271657e92a840ab66dea40147319e3">&#9670;&#160;</a></span>add()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename SQLiteDatabaseModelSubclass , typename... Args&gt; </div>
+template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &gt; T, typename... Args&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">smartPointer&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &gt; &amp; framework::sqlite::SQLiteManager::get </td>
+          <td class="memname">std::shared_ptr&lt; T &gt; framework::sqlite::SQLiteManager::add </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>databaseName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>tableName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">Args &amp;&amp;...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>args</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get instance of <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a> subclass for database operations. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">SQLiteDatabaseModelSubclass</td><td>subclass of <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a></td></tr>
-    <tr><td class="paramname">...Args</td><td>arguments for constructor if needs to create new instance</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">databaseName</td><td>name of database</td></tr>
-    <tr><td class="paramname">tableName</td><td>name of table</td></tr>
-    <tr><td class="paramname">...args</td><td>arguments for constructor if needs to create new instance</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>instance of <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html" title="Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase.">SQLiteDatabaseModel</a> subclass</dd></dl>
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_manager_8h_source.html#l00145">145</a> of file <a class="el" href="_s_q_lite_manager_8h_source.html">SQLiteManager.h</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_s_q_lite_manager_8h_source.html#l00035">35</a> of file <a class="el" href="_s_q_lite_manager_8h_source.html">SQLiteManager.h</a>.</p>
+</div>
+</div>
+<a id="aea04bf15843771916020108a776d95ac" name="aea04bf15843771916020108a776d95ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea04bf15843771916020108a776d95ac">&#9670;&#160;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a> &gt; T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; T &gt; framework::sqlite::SQLiteManager::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_manager_8h_source.html#l00168">168</a> of file <a class="el" href="_s_q_lite_manager_8h_source.html">SQLiteManager.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="ab68f04bc9b56b455937823cadf4a30db" name="ab68f04bc9b56b455937823cadf4a30db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab68f04bc9b56b455937823cadf4a30db">&#9670;&#160;</a></span>SQLiteDatabaseModel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">SQLiteDatabaseModel</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_s_q_lite_manager_8h_source.html#l00066">66</a> of file <a class="el" href="_s_q_lite_manager_8h_source.html">SQLiteManager.h</a>.</p>
 
 </div>
 </div>

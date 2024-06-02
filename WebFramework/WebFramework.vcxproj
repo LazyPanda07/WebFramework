@@ -430,7 +430,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
     <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
-    <ClInclude Include="src\core.h" />
+    <ClInclude Include="src\WebFrameworkCore.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h" />
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />

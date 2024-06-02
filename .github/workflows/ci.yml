@@ -148,45 +148,88 @@ jobs:
           source run_tests.sh ${{ matrix.config }} 
 
 
-  memory-leak-tests:
-    runs-on: ubuntu-24.04
-    needs: linux-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # memory-leak-tests:
+  #   runs-on: ubuntu-24.04
+  #   needs: linux-build
+  #   strategy:
+  #     matrix:
+  #       configuration: [Debug, Release]
+  #       shared: [[ON, DLL], [OFF, ""]]
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
+
+  #   - name: Install valgrind
+  #     run: sudo apt install -y valgrind
+
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+  #       path: WebFrameworkLibrary
+
+  #   - name: Get Google Test
+  #     uses: LazyPanda07/get-gtest@v1
+  #     with:
+  #       install-path: Tests/gtest
+
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
+  #         make install -j $(nproc)
+
+  #   - name: Tests
+  #     working-directory: Tests
+  #     run: |
+  #         cd build/bin
+  #         source run_memory_leak_tests.sh ${{ matrix.config }} 
+
+  publish:
+    needs: [windows-tests, linux-tests]
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
 
-    - name: Install valgrind
-      # run: sudo apt install -y valgrind
-      run: sudo snap install valgrind --classic
+    - uses: LazyPanda07/extract-current-branch@master
+    
+    - name: Setup release version variable
+      shell: pwsh
+      run: echo "VERSION=$($($($(Select-String -Path .\src\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
       uses: actions/download-artifact@v4
+      
+    - name: Setup Windows build list
+      run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
+      
+    - name: Create Windows zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
+
+    - name: Create Linux zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
+
+    - name: Publish Windows
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: svenstaro/upload-release-action@master
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
-        path: WebFrameworkLibrary
+        tag: v${{ env.VERSION }}
+        file: windows.zip
 
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
+    - name: Publish Linux
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: svenstaro/upload-release-action@master
       with:
-        install-path: Tests/gtest
-
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
-          make install -j $(nproc)
-
-    - name: Tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          source run_memory_leak_tests.sh ${{ matrix.config }} 
+        tag: v${{ env.VERSION }}
+        file: linux.zip

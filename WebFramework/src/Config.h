@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core.h"
+#include "WebFrameworkCore.h"
 
 #include "JSONParser.h"
 
@@ -8,6 +8,9 @@ namespace framework
 {
 	namespace utility
 	{
+		/**
+		 * @brief Config file representation
+		 */
 		class WEB_FRAMEWORK_API Config
 		{
 		private:
@@ -36,10 +39,25 @@ namespace framework
 
 			Config& operator = (Config&&) noexcept = default;
 
+			/**
+			 * @brief Override specific config value
+			 * @param key Config key
+			 * @param value Config value
+			 * @param recursive Search recursively
+			 * @return 
+			 */
 			Config& overrideConfiguration(std::string_view key, const json::utility::jsonObject::variantType& value, bool recursive = false);
 
+			/**
+			 * @brief Config file directory
+			 * @return 
+			 */
 			const std::filesystem::path& getBasePath() const;
 
+			/**
+			 * @brief Actual settings
+			 * @return 
+			 */
 			const json::JSONParser& operator * () const;
 
 			~Config() = default;

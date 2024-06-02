@@ -23,6 +23,5 @@ var searchData=
   ['sqlitedatabase_20',['SQLiteDatabase',['../classframework_1_1sqlite_1_1_s_q_lite_database.html',1,'framework::sqlite']]],
   ['sqlitedatabasemodel_21',['SQLiteDatabaseModel',['../classframework_1_1sqlite_1_1_s_q_lite_database_model.html',1,'framework::sqlite']]],
   ['sqlitemanager_22',['SQLiteManager',['../classframework_1_1sqlite_1_1_s_q_lite_manager.html',1,'framework::sqlite']]],
-  ['sqliteresult_23',['SQLiteResult',['../classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html',1,'framework::sqlite::utility']]],
-  ['stringconversionexception_24',['StringConversionException',['../classframework_1_1exceptions_1_1_string_conversion_exception.html',1,'framework::exceptions']]]
+  ['sqliteresult_23',['SQLiteResult',['../classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html',1,'framework::sqlite::utility']]]
 ];
