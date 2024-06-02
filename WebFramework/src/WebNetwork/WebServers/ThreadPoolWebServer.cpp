@@ -41,7 +41,7 @@ namespace framework
 		threading::ThreadPool& threadPool
 	)
 	{
-		/*if (stream.eof() || webExceptionAcquired)
+		if (stream.eof() || webExceptionAcquired)
 		{
 			return true;
 		}
@@ -49,7 +49,7 @@ namespace framework
 		if (isBusy)
 		{
 			return false;
-		}*/
+		}
 
 		try
 		{
@@ -67,7 +67,6 @@ namespace framework
 
 			if (threadPoolFunction)
 			{
-				/*
 				isBusy = true;
 
 				threadPool.addTask
@@ -125,14 +124,6 @@ namespace framework
 				);
 
 				return false;
-				*/
-
-				(*threadPoolFunction)(request, response);
-
-				if (response)
-				{
-					stream << response;
-				}
 			}
 			else if (response)
 			{
