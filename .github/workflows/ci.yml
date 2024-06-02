@@ -203,21 +203,21 @@ jobs:
     
     - name: Setup release version variable
       shell: pwsh
-      run: echo "VERSION=$($($($(Select-String -Path .\src\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      # if: ${{ env.CURRENT_BRANCH == 'master' }}
       uses: actions/download-artifact@v4
       
     - name: Setup Windows build list
       run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
       
     - name: Create Windows zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      # if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
 
     - name: Create Linux zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      # if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
 
     - name: Publish Windows
