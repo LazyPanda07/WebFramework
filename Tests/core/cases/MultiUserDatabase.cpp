@@ -46,13 +46,9 @@ TEST(Database, MultiUser)
         {
             request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
 
-            printf("Start request by %zd. Request %zd of %zd\n", index, i, requestsNumber);
-
             stream << request;
 
             stream >> response;
-
-            printf("Finish request by %zd. Request %zd of %zd\n", index, i, requestsNumber);
 
             ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
         }

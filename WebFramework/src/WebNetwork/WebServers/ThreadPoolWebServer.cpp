@@ -139,8 +139,10 @@ namespace framework
 				stream << response;
 			}
 		}
-		catch (const web::exceptions::WebException&)
+		catch (const web::exceptions::WebException& e)
 		{
+			Log::error("Serve exception: {}", "ThreadPool", e.what());
+
 			return true;
 		}
 		catch (const exceptions::BadRequestException& e) // 400
