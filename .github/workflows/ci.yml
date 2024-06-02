@@ -167,7 +167,7 @@ jobs:
 
     - name: Install valgrind
       # run: sudo apt install -y valgrind
-      run: snap install valgrind
+      run: sudo snap install valgrind
 
     - name: Download artifacts
       uses: actions/download-artifact@v4
