@@ -17,12 +17,8 @@ add_executable(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	utilities/
-	${WEB_FRAMEWORK_DIR}/Networks/src/
-	${WEB_FRAMEWORK_DIR}/Networks/HTTP/src/
-	${WEB_FRAMEWORK_DIR}/Networks/HTTP/JSON/src/
-	${WEB_FRAMEWORK_DIR}/Networks/SocketStreams/src/
-	${WEB_FRAMEWORK_DIR}/Networks/vendor/OpenSSL/include/
-	${WEB_FRAMEWORK_DIR}/UtilityLibrary/include/
+	${WEB_FRAMEWORK_LIBRARY_DIR}/include/
+	${WEB_FRAMEWORK_LIBRARY_DIR}/include/vendor/OpenSSL/include/
 	${GTEST_INCLUDE_DIR}
 )
 

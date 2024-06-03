@@ -46,7 +46,7 @@ target_link_libraries(
 add_custom_command(
 	TARGET ${PROJECT_NAME}
 	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy ${WEB_FRAMEWORK_LIBRARY_DIR}/localization_modules.json ${CMAKE_INSTALL_PREFIX}
+	COMMAND ${CMAKE_COMMAND} -E copy ${WEB_FRAMEWORK_LIBRARY_DIR}/localization_modules.json ${CMAKE_INSTALL_PREFIX}/localization_modules.json
 )
 
 add_custom_command(

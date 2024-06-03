@@ -136,7 +136,6 @@ jobs:
     - name: Build tests
       working-directory: Tests
       run: |
-          export VERBOSE=1
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
