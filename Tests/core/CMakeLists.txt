@@ -17,7 +17,8 @@ add_executable(
 	cases/MultiUserDatabase.cpp
 	cases/WFDP.cpp
 	cases/ResourceLoading.cpp
- "cases/Chunks.cpp")
+	cases/Chunks.cpp
+)
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
@@ -32,7 +33,7 @@ target_include_directories(
 
 target_link_directories(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBRARY_DIR}/lib/
+	${WEB_FRAMEWORK_LIBRARY_LIB_DIRS}
 	${GTEST_LIB_DIR}
 )
 

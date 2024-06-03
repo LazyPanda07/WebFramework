@@ -14,6 +14,12 @@ set(
     ssl
     crypto
 )
+set(
+    WEB_FRAMEWORK_LIBRARY_LIB_DIRS 
+    ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/ 
+    ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/OpenSSL/
+    ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/sqlite3/
+)
 
 add_definitions(-DSTART_SERVER_FILE="start_server.txt")
 

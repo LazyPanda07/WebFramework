@@ -51,7 +51,7 @@ target_include_directories(
 
 target_link_directories(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBRARY_DIR}/lib/
+	${WEB_FRAMEWORK_LIBRARY_LIB_DIRS}
 )
 
 target_link_libraries(
