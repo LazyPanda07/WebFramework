@@ -59,8 +59,8 @@ endif(WIN32)
 if(UNIX)
     install(DIRECTORY ${WebFrameworkSDK}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX} FILES_MATCHING PATTERN "*.so")
 elseif(WIN32)
-    install(DIRECTORY ${WebFrameworkSDK}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX})
     install(DIRECTORY ${WebFrameworkSDK}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX} PATTERN "vendor" EXCLUDE)
+    install(FILES ${WebFrameworkSDK}/dll/vendor/sqlite3/sqlite3.dll DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif(UNIX)
 
 add_custom_target(
