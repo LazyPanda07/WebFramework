@@ -18,7 +18,7 @@ target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	utilities/
 	${WEB_FRAMEWORK_LIBRARY_DIR}/include/
-	${WEB_FRAMEWORK_LIBRARY_DIR}/include/vendor/OpenSSL/include/
+	${WEB_FRAMEWORK_LIBRARY_DIR}/include/vendor/OpenSSL/
 	${GTEST_INCLUDE_DIR}
 )
 
