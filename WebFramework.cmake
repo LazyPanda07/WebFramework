@@ -1,12 +1,16 @@
-if (NOT DEFINED CMAKE_CXX_STANDARD)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 20)
 endif()
 
-if (${CMAKE_CXX_STANDARD} LESS 20)
+if(NOT DEFINED PROJECT_LOCALIZATION_DIR)
+    set(PROJECT_LOCALIZATION_DIR ${CMAKE_SOURCE_DIR})
+endif()
+
+if(${CMAKE_CXX_STANDARD} LESS 20)
     set(CMAKE_CXX_STANDARD 20)
 endif()
 
-if (UNIX)
+if(UNIX)
     add_definitions(-D__LINUX__)
 endif(UNIX)
 
@@ -44,7 +48,7 @@ link_directories(
     ${WebFrameworkSDK}/lib/vendor/sqlite3/
 )
 
-if (WIN32)
+if(WIN32)
     set(
         WEB_FRAMEWORK_LIBS
         ${WEB_FRAMEWORK_LIBS}
@@ -52,8 +56,23 @@ if (WIN32)
     )
 endif(WIN32)
 
-if (UNIX)
+if(UNIX)
     install(DIRECTORY ${WebFrameworkSDK}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX} FILES_MATCHING PATTERN "*.so")
 elseif(WIN32)
     install(DIRECTORY ${WebFrameworkSDK}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif(UNIX)
+
+add_custom_target(
+    generate_localization
+    COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} generate
+)
+
+add_custom_target(
+    build_debug_localization
+    COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} debug_build ${DEBUG_LOCALIZATION_DIR}
+)
+
+add_custom_target(
+    build_release_localization
+    COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} release_build ${RELEASE_LOCALIZATION_DIR}
+)
