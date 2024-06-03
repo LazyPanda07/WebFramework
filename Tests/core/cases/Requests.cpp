@@ -35,39 +35,39 @@ std::string constructRequest(std::string_view requestType)
 {
 	web::HTTPBuilder result;
 
-	if (requestType == "GET")
+	if(requestType == "GET")
 	{
 		result.getRequest();
 	}
-	else if (requestType == "POST")
+	else if(requestType == "POST")
 	{
 		result.postRequest();
 	}
-	else if (requestType == "HEAD")
+	else if(requestType == "HEAD")
 	{
 		result.headRequest();
 	}
-	else if (requestType == "PUT")
+	else if(requestType == "PUT")
 	{
 		result.putRequest();
 	}
-	else if (requestType == "DELETE")
+	else if(requestType == "DELETE")
 	{
 		result.deleteRequest();
 	}
-	else if (requestType == "PATCH")
+	else if(requestType == "PATCH")
 	{
 		result.patchRequest();
 	}
-	else if (requestType == "CONNECT")
+	else if(requestType == "CONNECT")
 	{
 		result.connectRequest();
 	}
-	else if (requestType == "OPTIONS")
+	else if(requestType == "OPTIONS")
 	{
 		result.optionsRequest();
 	}
-	else if (requestType == "TRACE")
+	else if(requestType == "TRACE")
 	{
 		result.traceRequest();
 	}

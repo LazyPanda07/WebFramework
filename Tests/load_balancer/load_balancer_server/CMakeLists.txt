@@ -15,11 +15,11 @@ set(
 	sqlite3
 )
 
-if (UNIX)
+if(UNIX)
 	add_definitions(-D__LINUX__)
 
 	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -rdynamic)
-endif (UNIX)
+endif(UNIX)
 
 project(LoadBalancerServer)
 
@@ -59,4 +59,4 @@ target_link_libraries(
 	${LIBS}
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})

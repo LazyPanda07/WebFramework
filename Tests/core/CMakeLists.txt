@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-if (UNIX)
+if(UNIX)
 	add_definitions(-D__LINUX__)
-endif (UNIX)
+endif(UNIX)
 
 project(Core)
 
@@ -18,6 +18,7 @@ add_executable(
 	cases/WFDP.cpp
 	cases/ResourceLoading.cpp
 	cases/Chunks.cpp
+	cases/Localization.cpp
 )
 
 target_include_directories(
@@ -44,4 +45,4 @@ target_link_libraries(
 	gtest_main
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})

@@ -22,7 +22,7 @@ bool customHeuristic;
 
 TEST(LoadBalancer, ConnectionsHeuristic)
 {
-	if (customHeuristic)
+	if(customHeuristic)
 	{
 		GTEST_SKIP();
 	}
@@ -78,7 +78,7 @@ TEST(LoadBalancer, ConnectionsHeuristic)
 
 TEST(LoadBalancer, CustomHeuristic)
 {
-	if (!customHeuristic)
+	if(!customHeuristic)
 	{
 		GTEST_SKIP();
 	}

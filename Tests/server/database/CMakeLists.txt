@@ -1,16 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(
-	LIBS
-	WebFramework
-	${LIBS}
-	sqlite3
-)
-
-if (UNIX)
-	add_definitions(-D__LINUX__)
-endif (UNIX)
 
 project(Database)
 
@@ -41,14 +31,9 @@ target_include_directories(
 	${WEB_FRAMEWORK_DIR}/WebFramework/vendor/sqlite3/include/
 )
 
-target_link_directories(
-	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBRARY_LIB_DIRS}
-)
-
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${LIBS}
+	${WEB_FRAMEWORK_LIBS}
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})

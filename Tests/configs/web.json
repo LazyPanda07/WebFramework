@@ -22,5 +22,9 @@
   "DownloadExecutor": {
     "route": "download",
     "loadType": "initialization"
+  },
+  "LocalizationExecutor": {
+    "route": "localization",
+    "loadType": "initialization"
   }
 }

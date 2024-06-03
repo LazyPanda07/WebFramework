@@ -9,12 +9,12 @@ int main(int argc, char** argv) try
 	
 	config.overrideConfiguration("port", parser.get<int64_t>("--port"), true);
 
-	if (parser.get<bool>("--custom_heuristic"))
+	if(parser.get<bool>("--custom_heuristic"))
 	{
 		config.overrideConfiguration("heuristic", "CustomHeuristic", true);
 	}
 
-	if (std::string type = parser.get<std::string>("--type"); type == "server")
+	if(std::string type = parser.get<std::string>("--type"); type == "server")
 	{
 		std::vector<json::utility::jsonObject> settingsPaths;
 
@@ -31,7 +31,7 @@ int main(int argc, char** argv) try
 
 		config.overrideConfiguration("serversHTTPS", serversHTTPS, true);
 
-		if (serversHTTPS)
+		if(serversHTTPS)
 		{
 			json::utility::appendArray(10002LL, listOfServers);
 			json::utility::appendArray(10003LL, listOfServers);

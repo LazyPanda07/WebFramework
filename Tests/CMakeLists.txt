@@ -20,12 +20,13 @@ set(
     ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/OpenSSL/
     ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/sqlite3/
 )
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
 add_definitions(-DSTART_SERVER_FILE="start_server.txt")
 
-if (WIN32)
+if(WIN32)
 	set(LIBS ${LIBS} crypt32)
-endif (WIN32)
+endif(WIN32)
 
 project(Tests)
 
@@ -35,16 +36,9 @@ add_subdirectory(load_balancer)
 add_subdirectory(proxy)
 add_subdirectory(default_https_server)
 
-if (UNIX)
-	install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/ DESTINATION ${CMAKE_BINARY_DIR}/bin FILES_MATCHING PATTERN "*.so")
-else ()
-	install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/dll/ DESTINATION ${CMAKE_BINARY_DIR}/bin)
-	install(FILES ${WEB_FRAMEWORK_LIBRARY_DIR}/dll/vendor/sqlite3/sqlite3.dll DESTINATION ${CMAKE_BINARY_DIR}/bin)
-endif (UNIX)
+install(DIRECTORY configs/ DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY scripts/ DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY templates DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY assets DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(DIRECTORY configs/ DESTINATION ${CMAKE_BINARY_DIR}/bin)
-install(DIRECTORY scripts/ DESTINATION ${CMAKE_BINARY_DIR}/bin)
-install(DIRECTORY templates DESTINATION ${CMAKE_BINARY_DIR}/bin)
-install(DIRECTORY assets DESTINATION ${CMAKE_BINARY_DIR}/bin)
-
-install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
