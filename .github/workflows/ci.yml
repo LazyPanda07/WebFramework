@@ -141,7 +141,8 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          . run_tests.sh ${{ matrix.config }} 
+          ls
+          source run_tests.sh ${{ matrix.config }} 
 
 
   memory-leak-tests:
@@ -178,7 +179,8 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          . run_memory_leak_tests.sh ${{ matrix.config }} 
+          ls
+          source run_memory_leak_tests.sh ${{ matrix.config }} 
   
 
   publish:
