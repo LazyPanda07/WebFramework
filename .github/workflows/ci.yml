@@ -139,9 +139,9 @@ jobs:
 
     - name: Tests
       working-directory: Tests
+      shell: bash
       run: |
           cd build/bin
-          echo "Shell name: ${SHELL}"
           source run_tests.sh ${{ matrix.config }} 
 
 
@@ -177,6 +177,7 @@ jobs:
 
     - name: Tests
       working-directory: Tests
+      shell: bash
       run: |
           cd build/bin
           source run_memory_leak_tests.sh ${{ matrix.config }} 
