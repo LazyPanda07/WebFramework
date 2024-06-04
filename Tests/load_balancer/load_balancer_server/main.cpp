@@ -2,12 +2,17 @@
 
 #include "ConsoleArgumentParser.h"
 
+#ifdef __LINUX__
+#include <unistd.h> 
+#endif
+
 int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 	framework::utility::Config config(parser.get<std::string>("--config"));
+	int64_t port = parser.get<int64_t>("--port");
 	
-	config.overrideConfiguration("port", parser.get<int64_t>("--port"), true);
+	config.overrideConfiguration("port", port, true);
 
 	if(parser.get<bool>("--custom_heuristic"))
 	{
@@ -47,7 +52,23 @@ int main(int argc, char** argv) try
 
 	framework::WebFramework server(config);
 
-	server.startServer(true);
+	server.startServer
+	(
+		true,
+		[port]()
+		{
+#ifdef __LINUX__
+			pid_t processId = getpid();
+#else
+			DWORD processId = GetCurrentProcessId();
+#endif
+			switch (port)
+			{
+			default:
+				break;
+			}
+		}
+	);
 
 	return 0;
 }

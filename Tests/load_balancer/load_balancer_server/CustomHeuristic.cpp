@@ -16,7 +16,7 @@ uint64_t CustomHeuristic::operator ()() const
 
 uint64_t getId()
 {
-	static uint64_t id = 0;
+	static std::atomic_uint64_t id = 0;
 
 	return id++;
 }

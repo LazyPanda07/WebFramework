@@ -21,7 +21,7 @@ set(
 )
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
-add_definitions(-DSTART_SERVER_FILE="start_server.txt")
+add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
 
 if(WIN32)
 	set(LIBS ${LIBS} crypt32)

@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 
 	testing::InitGoogleTest(&argc, argv);
 
-	while (!std::filesystem::exists(START_SERVER_FILE))
+	while (!std::filesystem::exists(START_CORE_SERVER_FILE))
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}

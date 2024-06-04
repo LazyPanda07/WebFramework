@@ -36,12 +36,12 @@ namespace framework
 						return (*left.heuristic)() < (*right.heuristic)();
 					}
 				);
+
+				data->heuristic->onStart();
 			}
 
 			const auto& [connectionData, heuristic] = *data;
 			SSL* ssl = nullptr;
-
-			heuristic->onStart();
 
 			if (useHTTPS)
 			{
@@ -108,7 +108,11 @@ namespace framework
 				clientStream << response;
 			}
 
-			heuristic->onEnd();
+			{
+				unique_lock<mutex> lock(dataMutex);
+
+				heuristic->onEnd();
+			}
 		}
 
 		LoadBalancerServer::LoadBalancerServer
