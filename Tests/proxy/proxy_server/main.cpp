@@ -23,6 +23,22 @@ int main(int argc, char** argv) try
 #else
 			DWORD processId = GetCurrentProcessId();
 #endif
+			switch (port)
+			{
+			case 15000:
+				std::ofstream(START_PROXY_SERVER_FILE) << processId;
+
+				break;
+
+			case 15001:
+				std::ofstream(START_PROXY_HTTPS_SERVER_FILE) << processId;
+
+				break;
+
+			default:
+				break;
+			}
+
 		}
 	);
 

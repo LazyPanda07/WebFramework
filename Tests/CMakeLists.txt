@@ -22,6 +22,12 @@ set(
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
+add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
+add_definitions(-DSTART_PROXY_HTTPS_SERVER_FILE="start_proxy_https_server.txt")
+add_definitions(-DSTART_LOAD_BALANCER_9090_SERVER_FILE="start_load_balancer_9090_server.txt")
+add_definitions(-DSTART_LOAD_BALANCER_9091_SERVER_FILE="start_load_balancer_9091_server.txt")
+add_definitions(-DSTART_LOAD_BALANCER_9092_SERVER_FILE="start_load_balancer_9092_server.txt")
+add_definitions(-DSTART_LOAD_BALANCER_9093_SERVER_FILE="start_load_balancer_9093_server.txt")
 
 if(WIN32)
 	set(LIBS ${LIBS} crypt32)
