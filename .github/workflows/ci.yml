@@ -141,7 +141,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          echo ${SHELL}
+          echo "Shell name: ${SHELL}"
           source run_tests.sh ${{ matrix.config }} 
 
 
