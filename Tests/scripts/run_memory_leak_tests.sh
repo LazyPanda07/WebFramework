@@ -4,11 +4,12 @@ set -e
 
 function check_memory_leak_results()
 {
-	local VALGRIND_RESULT_FREED=$(grep -Rnw '$1' -e 'All heap blocks were freed -- no leaks are possible')
-	local VALGRIND_RESULT_DEFINITELY_LOST=$(grep -Rnw '$1' -e 'definitely lost: 0 bytes')
-	local VALGRIND_RESULT_INDIRECTLY_LOST=$(grep -Rnw '$1' -e 'indirectly lost: 0 bytes')
+	local FILE_NAME=$1
+	local VALGRIND_RESULT_FREED=$(grep -Rnw '$(echo ${FILE_NAME})' -e 'All heap blocks were freed -- no leaks are possible')
+	local VALGRIND_RESULT_DEFINITELY_LOST=$(grep -Rnw '$(echo ${FILE_NAME})' -e 'definitely lost: 0 bytes')
+	local VALGRIND_RESULT_INDIRECTLY_LOST=$(grep -Rnw '$(echo ${FILE_NAME})' -e 'indirectly lost: 0 bytes')
 
-	cat $1
+	cat ${FILE_NAME}
 
 	if [[ -n "$VALGRIND_RESULT_DEFINITELY_LOST" ]];
 	then
