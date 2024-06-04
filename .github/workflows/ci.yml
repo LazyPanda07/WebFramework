@@ -141,7 +141,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          ls
+          echo ${SHELL}
           source run_tests.sh ${{ matrix.config }} 
 
 
@@ -179,7 +179,6 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          ls
           source run_memory_leak_tests.sh ${{ matrix.config }} 
   
 
