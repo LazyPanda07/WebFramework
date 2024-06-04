@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(WEB_FRAMEWORK_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(WEB_FRAMEWORK_DIR ${CMAKE_SOURCE_DIR}/..)
-set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/gtest/include/)
 set(GTEST_LIB_DIR ${CMAKE_SOURCE_DIR}/gtest/lib/)
 set(
 	LIBS
@@ -29,6 +28,13 @@ if(WIN32)
 endif(WIN32)
 
 project(Tests)
+
+find_package(GTest)
+
+if(NOT ${GTest_FOUND})
+	set(GTEST_BOTH_LIBRARIES gtest gtest_main)
+	set(GTEST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/gtest/include/)
+endif()
 
 add_subdirectory(core)
 add_subdirectory(server)

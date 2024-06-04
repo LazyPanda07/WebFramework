@@ -23,7 +23,7 @@ target_include_directories(
 	${WEB_FRAMEWORK_DIR}/Networks/SocketStreams/src/
 	${WEB_FRAMEWORK_DIR}/Networks/vendor/OpenSSL/include/
 	${WEB_FRAMEWORK_DIR}/UtilityLibrary/include/
-	${GTEST_INCLUDE_DIR}
+	${GTEST_INCLUDE_DIRS}
 )
 
 target_link_directories(
@@ -35,8 +35,7 @@ target_link_directories(
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	${LIBS}
-	gtest
-	gtest_main
+	${GTEST_BOTH_LIBRARIES}
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
