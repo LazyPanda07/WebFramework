@@ -4,7 +4,7 @@ set -e
 
 function check_memory_leak_results()
 {
-	FILE_NAME=$1
+	local FILE_NAME=$1
 
 	VALGRIND_RESULT_FREED=$(grep -Rnw '${FILE_NAME}' -e 'All heap blocks were freed -- no leaks are possible')
 	VALGRIND_RESULT_DEFINITELY_LOST=$(grep -Rnw '${FILE_NAME}' -e 'definitely lost: 0 bytes')
