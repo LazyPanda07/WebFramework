@@ -38,6 +38,7 @@ LOAD_BALANCER_9091_FILE_NAME=load_balancer_9091_memory_leaks_result.txt
 LOAD_BALANCER_9092_FILE_NAME=load_balancer_9092_memory_leaks_result.txt
 LOAD_BALANCER_9093_FILE_NAME=load_balancer_9093_memory_leaks_result.txt
 
+./DefaultHTTPSServer &
 ./LoadBalancerServer --config load_balancer_config.json --type server --port 10000 &
 ./LoadBalancerServer --config load_balancer_config.json --type server --port 10001 --serversHTTPS &
 ./LoadBalancerServer --config load_balancer_config_https.json  --type server --port 10002 &
