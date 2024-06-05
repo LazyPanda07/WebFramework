@@ -29,9 +29,9 @@ static std::string generateRandomString()
 
 TEST(Database, MultiUser)
 {
-    std::vector<streams::IOSocketStream> clients;
+    std::vector<std::unique_ptr<streams::IOSocketStream>> clients;
     std::vector<std::future<void>> awaiters;
-    auto requests = [](streams::IOSocketStream& stream, size_t index)
+    auto requests = [](streams::IOSocketStream& stream)
     {
         std::string request = web::HTTPBuilder().postRequest().parameters("multi_user_database").build();
 	    std::string response;
@@ -71,13 +71,13 @@ TEST(Database, MultiUser)
 
     for (size_t i = 0; i < clientsNumber; i++)
     {
-        streams::IOSocketStream& stream = clients.emplace_back(utility::createSocketStream());
-
-        awaiters.emplace_back(std::async(std::launch::async, requests, std::ref(stream), i));
+        awaiters.emplace_back(std::async(std::launch::async, requests, std::ref(*clients.emplace_back(utility::createSocketStream()))));
     }
 
-    for (std::future<void>& awaiter : awaiters)
+    for (size_t i = 0; i < clientsNumber; i++)
     {
-        awaiter.wait();
+        awaiters[i].wait();
+
+        clients[i].reset();
     }
 }
