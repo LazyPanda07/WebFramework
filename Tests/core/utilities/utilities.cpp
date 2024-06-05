@@ -8,7 +8,7 @@ namespace utility
 {
 	streams::IOSocketStream createSocketStream()
 	{
-		static constexpr DWORD timeout = 0;
+		static constexpr DWORD timeout = 30'000;
 
 		return streams::IOSocketStream
 		(
