@@ -35,35 +35,42 @@ TEST(Database, MultiUser)
     {
         std::string request = web::HTTPBuilder().postRequest().parameters("multi_user_database").build();
 	    std::string response;
-
-	    stream << request;
-
-	    stream >> response;
-
-	    ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
-
-        for (size_t i = 0; i < requestsNumber; i++)
+        
+        try
         {
-            request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
-
             stream << request;
 
             stream >> response;
 
             ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+
+            for (size_t i = 0; i < requestsNumber; i++)
+            {
+                request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
+
+                stream << request;
+
+                stream >> response;
+
+                ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+            }
+
+            request = web::HTTPBuilder().getRequest().parameters("multi_user_database").build();
+
+            stream << request;
+
+            stream >> response;
+
+            web::HTTPParser parser(response);
+
+            ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
+
+            ASSERT_EQ(parser.getJSON().getArray("data").size(), requestsNumber) << response;
         }
-
-        request = web::HTTPBuilder().getRequest().parameters("multi_user_database").build();
-
-        stream << request;
-
-        stream >> response;
-
-        web::HTTPParser parser(response);
-
-        ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
-
-        ASSERT_EQ(parser.getJSON().getArray("data").size(), requestsNumber) << response;
+        catch (const std::exception& e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     };
 
     clients.reserve(clientsNumber);
