@@ -48,13 +48,19 @@ link_directories(
     ${WebFrameworkSDK}/lib/vendor/sqlite3/
 )
 
-if(WIN32)
+if(UNIX)
+    set(
+        WEB_FRAMEWORK_LIBS
+        ${WEB_FRAMEWORK_LIBS}
+        uuid
+    )
+elseif(WIN32)
     set(
         WEB_FRAMEWORK_LIBS
         ${WEB_FRAMEWORK_LIBS}
         crypt32
     )
-endif(WIN32)
+endif()
 
 if(UNIX)
     install(DIRECTORY ${WebFrameworkSDK}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX} FILES_MATCHING PATTERN "*.so")
