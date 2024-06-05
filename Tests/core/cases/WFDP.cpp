@@ -1,3 +1,6 @@
+#include <filesystem>
+#include <fstream>
+
 #include "gtest/gtest.h"
 
 #include "HTTPBuilder.h"
@@ -19,11 +22,26 @@ TEST(WFDP, Print)
 	);
 	std::string response;
 
-	stream << request;
+	try
+	{
+		stream << request;
 
-	stream >> response;
+		stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getBody(), "Hello, World!");
+		ASSERT_EQ(web::HTTPParser(response).getBody(), "Hello, World!");
+	}
+	catch (const web::exceptions::WebException& e)
+	{
+		std::cout << e.what() << std::endl;
+
+		for (const auto& it : std::filesystem::recursive_directory_iterator("logs"))
+		{
+			if (it.is_regular_file())
+			{
+				std::cout << "Log: " << (std::ostringstream() << std::ifstream(it.path()).rdbuf()).str() << std::endl;
+			}
+		}
+	}
 }
 
 TEST(WFDP, For)

@@ -84,7 +84,7 @@ namespace framework
 						}
 						catch (const web::exceptions::WebException& e)
 						{
-							Log::error("Serve exception: {}", "ThreadPool", e.what());
+							Log::error("Thread pool serve exception: {}", "ThreadPool", e.what());
 
 							webExceptionAcquired = true;
 						}
