@@ -71,7 +71,7 @@ TEST(Database, MultiUser)
 
     for (size_t i = 0; i < clientsNumber; i++)
     {
-        awaiters.emplace_back(std::async(std::launch::async, requests, std::ref(*clients.emplace_back(utility::createSocketStream()))));
+        awaiters.emplace_back(std::async(std::launch::async, requests, std::ref(*clients.emplace_back(utility::createSocketStreamPointer()))));
     }
 
     for (size_t i = 0; i < clientsNumber; i++)
