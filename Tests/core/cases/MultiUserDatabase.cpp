@@ -29,16 +29,16 @@ static std::string generateRandomString()
 
 TEST(Database, MultiUser)
 {
-    std::vector<std::unique_ptr<streams::IOSocketStream>> clients;
+    std::vector<streams::IOSocketStream> clients;
     std::vector<std::future<void>> awaiters;
-    auto requests = [](std::unique_ptr<streams::IOSocketStream>& stream)
+    auto requests = [](streams::IOSocketStream& stream)
     {
         std::string request = web::HTTPBuilder().postRequest().parameters("multi_user_database").build();
 	    std::string response;
 
-	    (*stream) << request;
+	    stream << request;
 
-	    (*stream) >> response;
+	    stream >> response;
 
 	    ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
 
@@ -46,26 +46,24 @@ TEST(Database, MultiUser)
         {
             request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
 
-            (*stream) << request;
+            stream << request;
 
-            (*stream) >> response;
+            stream >> response;
 
             ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
         }
 
         request = web::HTTPBuilder().getRequest().parameters("multi_user_database").build();
 
-        (*stream) << request;
+        stream << request;
 
-        (*stream) >> response;
+        stream >> response;
 
         web::HTTPParser parser(response);
 
         ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
 
         ASSERT_EQ(parser.getJSON().getArray("data").size(), requestsNumber) << response;
-
-        stream.reset();
     };
 
     clients.reserve(clientsNumber);
@@ -73,7 +71,15 @@ TEST(Database, MultiUser)
 
     for (size_t i = 0; i < clientsNumber; i++)
     {
-        awaiters.emplace_back(std::async(std::launch::async, requests, std::ref(clients.emplace_back(utility::createSocketStreamPointer()))));
+        awaiters.emplace_back
+        (
+            std::async
+            (
+                std::launch::async, 
+                requests, 
+                std::ref(clients.emplace_back(utility::createSocketStream()))
+            )
+        );
     }
 
     for (std::future<void>& awaiter : awaiters)
