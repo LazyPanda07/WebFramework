@@ -1,34 +1,26 @@
 #include "MultiUserExecutor.h"
 
-#include <mutex>
-
 #include "MultiUserDatabaseModel.h"
-
-static size_t getId()
-{
-    static std::atomic_size_t nextIndex = 0;
-
-    return nextIndex++;
-}
+#include "UUID.h"
 
 MultiUserExecutor::MultiUserExecutor() :
-    userId(getId())
+    userId(utility::generateUUID())
 {
-    
+	
 }
 
 void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
-	framework::sqlite::utility::SQLiteResult result = model->selectByField("user_id", std::to_string(userId));
+	framework::sqlite::utility::SQLiteResult result = model->selectByField("user_id", userId);
 	std::vector<json::utility::jsonObject> data;
 
 	for (const auto& value : result)
 	{
 		json::utility::jsonObject object;
 
-		object.setInt("id", std::stoi(value.at("id")));
-        object.setInt("user_id", std::stoi(value.at("user_id")));
+		object.setString("id", value.at("id"));
+		object.setString("user_id", value.at("user_id"));
 		object.setString("data", value.at("data"));
 
 		json::utility::appendArray(object, data);
@@ -43,8 +35,8 @@ void MultiUserExecutor::doPost(framework::HTTPRequest& request, framework::HTTPR
 	(
 		{
 			{ "id", "INTEGER PRIMARY KEY AUTOINCREMENT" },
-			{ "user_id", "INTEGER NOT NULL" },
-			{ "data", "VARCHAR(255) NOT NULL" }
+			{ "user_id", "TEXT NOT NULL" },
+			{ "data", "TEXT NOT NULL" }
 		}
 	);
 }
@@ -56,7 +48,7 @@ void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRe
 	model->insert
     (
         {
-            { "user_id", std::to_string(userId) },
+            { "user_id", userId },
             { "data", request.getJSON().getString("data") }
         }
     );

@@ -5,7 +5,7 @@
 class MultiUserExecutor : public framework::BaseHeavyOperationStatefulExecutor
 {
 private:
-	size_t userId;
+	std::string userId;
 
 public:
 	MultiUserExecutor();
