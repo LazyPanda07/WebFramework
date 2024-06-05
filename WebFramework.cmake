@@ -59,6 +59,7 @@ elseif(WIN32)
         WEB_FRAMEWORK_LIBS
         ${WEB_FRAMEWORK_LIBS}
         crypt32
+        Rpcrt4
     )
 endif()
 
