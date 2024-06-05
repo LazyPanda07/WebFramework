@@ -6,9 +6,7 @@
 
 static size_t getId()
 {
-    static std::mutex mutex;
-    static size_t nextIndex = 0;
-    std::unique_lock<std::mutex> lock(mutex);
+    static std::atomic_size_t nextIndex = 0;
 
     return nextIndex++;
 }
