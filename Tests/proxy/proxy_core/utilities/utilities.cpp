@@ -6,7 +6,7 @@ namespace utility
 {
 	streams::IOSocketStream createSocketStream(int64_t port, bool useHTTPS)
 	{
-		static constexpr DWORD timeout = 30'000;
+		static constexpr DWORD timeout = 600'000;
 
 		return streams::IOSocketStream
 		(
