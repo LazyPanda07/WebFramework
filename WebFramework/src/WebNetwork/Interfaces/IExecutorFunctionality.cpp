@@ -49,12 +49,7 @@ namespace framework
 			unordered_map<string, createExecutorFunction> creators;
 			vector<utility::RouteParameters> routeParameters;
 			unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = IExecutorFunctionality::createExecutorSettings(parsers);
-
-			cout << __LINE__ << endl;
-
 			vector<HMODULE> sources = utility::loadSources(pathToSources);
-
-			cout << __LINE__ << endl;
 
 			routes.reserve(settings.size());
 			creators.reserve(settings.size());
