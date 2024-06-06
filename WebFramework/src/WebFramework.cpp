@@ -124,8 +124,12 @@ namespace framework
 		string templatesPath = (basePath / webFrameworkSettings.getString(json_settings::templatesPathKey)).string();
 		uint64_t cachingSize = webFrameworkSettings.getUnsignedInt(json_settings::cachingSize);
 
+		ofstream test("test.txt", ios::app);
+
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
+			test << __LINE__ << endl;
+
 			server = make_unique<MultithreadedWebServer>
 				(
 					*config,
@@ -216,6 +220,7 @@ namespace framework
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig)
 	{
+		ofstream test("test.txt");
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
 		const filesystem::path& basePath = config.getBasePath();
 		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
@@ -237,6 +242,8 @@ namespace framework
 			throw runtime_error(errorMessage);
 		}
 
+		test << __LINE__ << endl;
+
 		this->initHTTPS(webFrameworkSettings);
 
 		vector<utility::JSONSettingsParser> jsonSettings;
@@ -247,6 +254,8 @@ namespace framework
 
 		try
 		{
+			test << __LINE__ << endl;
+
 			this->initServer
 			(
 				webFrameworkSettings,
@@ -260,6 +269,8 @@ namespace framework
 
 			throw;
 		}
+
+		test << __LINE__ << endl;
 
 		if (!server)
 		{

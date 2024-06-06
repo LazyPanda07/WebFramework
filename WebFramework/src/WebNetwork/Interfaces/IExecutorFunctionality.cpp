@@ -45,20 +45,21 @@ namespace framework
 			const vector<string>& pathToSources
 		)
 		{
+			ofstream test("test.txt", ios::app);
+
+			test << __LINE__ << endl;
+
 			unordered_map<string, unique_ptr<BaseExecutor>> routes;
 			unordered_map<string, createExecutorFunction> creators;
 			vector<utility::RouteParameters> routeParameters;
+			
+			test << __LINE__ << endl;
+
 			unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = IExecutorFunctionality::createExecutorSettings(parsers);
 
-			std::ofstream stream("test.txt");
-
-			stream << "start" << std::endl;
+			test << __LINE__ << endl;
 
 			vector<HMODULE> sources = utility::loadSources(pathToSources);
-
-			stream << "end" << std::endl;
-
-			stream.close();
 
 			routes.reserve(settings.size());
 			creators.reserve(settings.size());
