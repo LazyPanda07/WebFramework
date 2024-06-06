@@ -18,6 +18,8 @@ int main(int argc, char** argv)
 
 	while (!std::filesystem::exists(START_CORE_SERVER_FILE))
 	{
+		std::cout << "Wait for starting core server..." << std::endl;
+
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
