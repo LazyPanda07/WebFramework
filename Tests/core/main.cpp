@@ -18,17 +18,6 @@ int main(int argc, char** argv)
 
 	while (!std::filesystem::exists(START_CORE_SERVER_FILE))
 	{
-		std::ifstream in("test.txt");
-
-		if (in.is_open())
-		{
-			std::cout << (std::ostringstream() << in.rdbuf()).str() << std::endl;
-		}
-		else
-		{
-			std::cout << "no file" << std::endl;
-		}
-
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 

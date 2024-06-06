@@ -1,6 +1,6 @@
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
-start Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
+call Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 start DefaultHTTPSServer.exe
 start ProxyServer.exe --config proxy_config.json --port 15000
 start ProxyServer.exe --config proxy_config.json --port 15001 --useHTTPS
