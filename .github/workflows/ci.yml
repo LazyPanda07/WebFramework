@@ -105,7 +105,6 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          dumpbin /dependents LocalizationData.dll
           .\run_tests.bat ${{ matrix.config }}
 
 
