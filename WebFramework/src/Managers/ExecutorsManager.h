@@ -15,7 +15,9 @@ namespace framework
 		enum class webServerType
 		{
 			multiThreaded,
-			threadPool
+			threadPool,
+			loadBalancer,
+			proxy
 		};
 
 	private:

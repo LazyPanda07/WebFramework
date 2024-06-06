@@ -42,17 +42,8 @@ namespace framework
 			sqlite3* operator * ();
 
 		public:
-			/// <summary>
-			/// Create database
-			/// </summary>
-			/// <param name="other"></param>
-			/// <returns></returns>
 			SQLiteDatabase(std::string_view databaseName);
 
-			/// <summary>
-			/// Move another database
-			/// </summary>
-			/// <param name="other">another SQLiteDatabase instance</param>
 			SQLiteDatabase(SQLiteDatabase&& other) noexcept = default;
 
 			/// <summary>

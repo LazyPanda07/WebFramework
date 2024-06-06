@@ -61,6 +61,14 @@ namespace framework
 		{
 			serverType = webServerType::threadPool;
 		}
+		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
+		{
+			serverType = webServerType::loadBalancer;
+		}
+		else if (webServerType == json_settings::proxyWebServerTypeValue)
+		{
+			serverType = webServerType::proxy;
+		}
 	}
 
 	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)

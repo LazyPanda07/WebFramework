@@ -92,8 +92,10 @@ namespace framework
 					break;
 				}
 			}
-			catch (const web::exceptions::WebException&)
+			catch (const web::exceptions::WebException& e)
 			{
+				Log::error("Multithreaded serve exception: {}", "Multithreaded", e.what());
+
 				break;
 			}
 			catch (const exceptions::BadRequestException& e) // 400
