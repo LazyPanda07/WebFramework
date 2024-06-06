@@ -8,7 +8,7 @@
 
 TEST(Localization, English)
 {
-	/*streams::IOSocketStream stream = utility::createSocketStream();
+	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string request = web::HTTPBuilder().getRequest().parameters("localization").build
 	(
 		json::JSONBuilder(CP_UTF8).appendString("language", "en")
@@ -19,12 +19,12 @@ TEST(Localization, English)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), "value");*/
+	ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), "value");
 }
 
 TEST(Localization, Russian)
 {
-	/*streams::IOSocketStream stream = utility::createSocketStream();
+	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string request = web::HTTPBuilder().getRequest().parameters("localization").build
 	(
 		json::JSONBuilder(CP_UTF8).appendString("language", "ru")
@@ -35,5 +35,5 @@ TEST(Localization, Russian)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), "значение");*/
+	ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), "значение");
 }
