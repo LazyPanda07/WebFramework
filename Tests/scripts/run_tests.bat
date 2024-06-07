@@ -1,3 +1,5 @@
+@echo off
+
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
 call Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%

@@ -13,7 +13,7 @@ int main(int argc, char** argv) try
 	framework::WebFramework server(argv[1]);
 
 	std::cout << __LINE__ << std::endl;
-
+	
 	server.startServer
 	(
 		true,

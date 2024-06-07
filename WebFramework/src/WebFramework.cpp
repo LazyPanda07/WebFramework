@@ -218,6 +218,8 @@ namespace framework
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig)
 	{
+		cout << __LINE__ << endl;
+
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
 		const filesystem::path& basePath = config.getBasePath();
 		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
@@ -234,10 +236,14 @@ namespace framework
 				source = (basePath / source).string();
 			});
 
+		cout << __LINE__ << endl;
+
 		if (string errorMessage = this->initLogging(); errorMessage.size())
 		{
 			throw runtime_error(errorMessage);
 		}
+
+		cout << __LINE__ << endl;
 
 		this->initHTTPS(webFrameworkSettings);
 
