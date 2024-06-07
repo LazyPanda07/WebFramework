@@ -8,7 +8,11 @@
 
 int main(int argc, char** argv) try
 {
+	std::cout << __LINE__ << std::endl;
+
 	framework::WebFramework server(argv[1]);
+
+	std::cout << __LINE__ << std::endl;
 
 	server.startServer
 	(
@@ -29,7 +33,7 @@ int main(int argc, char** argv) try
 }
 catch (const std::exception& e)
 {
-	std::cerr << e.what() << std::endl;
+	std::cout << e.what() << std::endl;
 
 	exit(-1);
 }

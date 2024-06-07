@@ -126,6 +126,8 @@ namespace framework
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
+			cout << __LINE__ << endl;
+
 			server = make_unique<MultithreadedWebServer>
 				(
 					*config,
@@ -245,6 +247,8 @@ namespace framework
 
 		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
+		cout << __LINE__ << endl;
+
 		try
 		{
 			this->initServer
@@ -253,6 +257,8 @@ namespace framework
 				jsonSettings,
 				pathToSources
 			);
+
+			cout << __LINE__ << endl;
 		}
 		catch (const exception& e)
 		{
