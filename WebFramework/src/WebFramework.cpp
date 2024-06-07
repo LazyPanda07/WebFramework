@@ -50,19 +50,11 @@ namespace framework
 
 					try
 					{
-						cout << format("{} {} {}", dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey)) << endl;
-
 						Log::configure(dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
 						Log::configure(dateFormat, logsPath);
-					}
-					catch (const exception& e)
-					{
-						cout << e.what() << endl;
-
-						exit(-1);
 					}
 
 					if (duplicateOutput)
