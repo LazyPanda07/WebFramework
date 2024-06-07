@@ -24,7 +24,6 @@ add_executable(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	utilities/
-	${WEB_FRAMEWORK_DIR}/Log/src/
 	${WEB_FRAMEWORK_DIR}/Networks/src/
 	${WEB_FRAMEWORK_DIR}/Networks/HTTP/src/
 	${WEB_FRAMEWORK_DIR}/Networks/HTTP/JSON/src/
@@ -41,7 +40,6 @@ target_link_directories(
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	Log
 	${LIBS}
 	${GTEST_BOTH_LIBRARIES}
 )
