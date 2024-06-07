@@ -50,6 +50,11 @@ namespace framework
 
 					try
 					{
+						set_terminate([]()
+							{
+								cout << "Crash" << endl;
+							});
+
 						Log::configure(dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
 					}
 					catch (const json::exceptions::BaseJSONException&)

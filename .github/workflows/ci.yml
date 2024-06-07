@@ -103,11 +103,9 @@ jobs:
 
     - name: Tests
       working-directory: Tests
-      shell: cmd
       run: |
           cd build/bin
-          set PATH=%cd%
-          run_tests.bat ${{ matrix.config }}
+          .\run_tests.bat ${{ matrix.config }}
 
 
   linux-tests:
