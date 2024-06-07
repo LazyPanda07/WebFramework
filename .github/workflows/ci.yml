@@ -103,11 +103,11 @@ jobs:
 
     - name: Tests
       working-directory: Tests
+      shell: cmd
       run: |
           cd build/bin
-          dir
-          where Log.dll
-          .\run_tests.bat ${{ matrix.config }}
+          set PATH=%cd%
+          run_tests.bat ${{ matrix.config }}
 
 
   linux-tests:
