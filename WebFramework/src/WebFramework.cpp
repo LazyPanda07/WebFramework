@@ -30,41 +30,76 @@ namespace framework
 
 	string WebFramework::initLogging() const
 	{
+		cout << __LINE__ << endl;
+
 		try
 		{
+			cout << __LINE__ << endl;
+
 			const json::utility::jsonObject& loggingSettings = (*config).getObject(json_settings::loggingObject); // is logging object exists
+
+			cout << __LINE__ << endl;
 
 			try
 			{
+				cout << __LINE__ << endl;
+
 				if (loggingSettings.getBool(json_settings::usingLoggingKey))
 				{
+					cout << __LINE__ << endl;
+
 					string logsPath;
 					const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
 					bool duplicateOutput = false;
 					bool duplicateErrorOutput = false;
+					
+					cout << __LINE__ << endl;
 
 					loggingSettings.tryGetString(json_settings::logsPathKey, logsPath);
 
+					cout << __LINE__ << endl;
+
 					loggingSettings.tryGetBool(json_settings::duplicateOutputKey, duplicateOutput);
+
+					cout << __LINE__ << endl;
+
 					loggingSettings.tryGetBool(json_settings::duplicateErrorOutputKey, duplicateErrorOutput);
+
+					cout << __LINE__ << endl;
 
 					try
 					{
+						cout << __LINE__ << endl;
+
 						Log::configure(dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
+
+						cout << __LINE__ << endl;
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
+						cout << __LINE__ << endl;
+
 						Log::configure(dateFormat, logsPath);
+
+						cout << __LINE__ << endl;
 					}
 
 					if (duplicateOutput)
 					{
+						cout << __LINE__ << endl;
+
 						Log::duplicateLog(cout);
+
+						cout << __LINE__ << endl;
 					}
 
 					if (duplicateErrorOutput)
 					{
+						cout << __LINE__ << endl;
+
 						Log::duplicateErrorLog(cerr);
+
+						cout << __LINE__ << endl;
 					}
 				}
 			}
