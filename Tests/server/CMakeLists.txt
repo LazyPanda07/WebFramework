@@ -35,6 +35,7 @@ add_executable(
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
+	${WEB_FRAMEWORK_DIR}/Log/src/
 	${PROJECT_SOURCE_DIR}
 )
 
