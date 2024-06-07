@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(WebFrameworkSDK ${WEB_FRAMEWORK_LIBRARY_DIR}/)
 set(LOCALIZATION_BUILD_TYPE build_release_localization)
 set(DEBUG_LOCALIZATION_DIR ${CMAKE_INSTALL_PREFIX})
 set(RELEASE_LOCALIZATION_DIR ${CMAKE_INSTALL_PREFIX})
@@ -35,7 +34,6 @@ add_executable(
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_DIR}/Log/src/
 	${PROJECT_SOURCE_DIR}
 )
 

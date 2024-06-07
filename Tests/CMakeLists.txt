@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(WEB_FRAMEWORK_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(WEB_FRAMEWORK_DIR ${CMAKE_SOURCE_DIR}/..)
+set(WebFrameworkSDK ${WEB_FRAMEWORK_LIBRARY_DIR})
 set(GTEST_LIB_DIR ${CMAKE_SOURCE_DIR}/gtest/lib/)
 set(
 	LIBS
