@@ -30,76 +30,49 @@ namespace framework
 
 	string WebFramework::initLogging() const
 	{
-		cout << __LINE__ << endl;
-
 		try
 		{
-			cout << __LINE__ << endl;
-
 			const json::utility::jsonObject& loggingSettings = (*config).getObject(json_settings::loggingObject); // is logging object exists
-
-			cout << __LINE__ << endl;
 
 			try
 			{
-				cout << __LINE__ << endl;
-
 				if (loggingSettings.getBool(json_settings::usingLoggingKey))
 				{
-					cout << __LINE__ << endl;
-
 					string logsPath;
 					const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
 					bool duplicateOutput = false;
 					bool duplicateErrorOutput = false;
-					
-					cout << __LINE__ << endl;
 
 					loggingSettings.tryGetString(json_settings::logsPathKey, logsPath);
 
-					cout << __LINE__ << endl;
-
 					loggingSettings.tryGetBool(json_settings::duplicateOutputKey, duplicateOutput);
-
-					cout << __LINE__ << endl;
-
 					loggingSettings.tryGetBool(json_settings::duplicateErrorOutputKey, duplicateErrorOutput);
-
-					cout << __LINE__ << endl;
 
 					try
 					{
-						cout << __LINE__ << endl;
+						cout << format("{} {} {}", dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey)) << endl;
 
 						Log::configure(dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
-
-						cout << __LINE__ << endl;
 					}
 					catch (const json::exceptions::BaseJSONException&)
 					{
-						cout << __LINE__ << endl;
-
 						Log::configure(dateFormat, logsPath);
+					}
+					catch (const exception& e)
+					{
+						cout << e.what() << endl;
 
-						cout << __LINE__ << endl;
+						exit(-1);
 					}
 
 					if (duplicateOutput)
 					{
-						cout << __LINE__ << endl;
-
 						Log::duplicateLog(cout);
-
-						cout << __LINE__ << endl;
 					}
 
 					if (duplicateErrorOutput)
 					{
-						cout << __LINE__ << endl;
-
 						Log::duplicateErrorLog(cerr);
-
-						cout << __LINE__ << endl;
 					}
 				}
 			}
@@ -161,8 +134,6 @@ namespace framework
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
-			cout << __LINE__ << endl;
-
 			server = make_unique<MultithreadedWebServer>
 				(
 					*config,
@@ -253,8 +224,6 @@ namespace framework
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig)
 	{
-		cout << __LINE__ << endl;
-
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
 		const filesystem::path& basePath = config.getBasePath();
 		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
@@ -271,14 +240,10 @@ namespace framework
 				source = (basePath / source).string();
 			});
 
-		cout << __LINE__ << endl;
-
 		if (string errorMessage = this->initLogging(); errorMessage.size())
 		{
 			throw runtime_error(errorMessage);
 		}
-
-		cout << __LINE__ << endl;
 
 		this->initHTTPS(webFrameworkSettings);
 
@@ -288,8 +253,6 @@ namespace framework
 
 		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
-		cout << __LINE__ << endl;
-
 		try
 		{
 			this->initServer
@@ -298,8 +261,6 @@ namespace framework
 				jsonSettings,
 				pathToSources
 			);
-
-			cout << __LINE__ << endl;
 		}
 		catch (const exception& e)
 		{
