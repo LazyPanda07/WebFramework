@@ -184,7 +184,7 @@ $(document).ready(function(){initNavTree('_thread_pool_web_server_8cpp_source.ht
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                        }</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                        <span class="keywordflow">catch</span> (<span class="keyword">const</span> web::exceptions::WebException&amp; e)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                        {</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                            Log::error(<span class="stringliteral">&quot;Serve exception: {}&quot;</span>, <span class="stringliteral">&quot;ThreadPool&quot;</span>, e.what());</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                            Log::error(<span class="stringliteral">&quot;Thread pool serve exception: {}&quot;</span>, <span class="stringliteral">&quot;ThreadPool&quot;</span>, e.what());</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                            webExceptionAcquired = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                        }</div>

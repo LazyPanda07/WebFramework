@@ -10,7 +10,7 @@ var searchData=
   ['sethttpversion_7',['setHTTPVersion',['../classframework_1_1_h_t_t_p_response.html#af27934161c5488b12ca5cc92bf8e1ab0',1,'framework::HTTPResponse']]],
   ['setresponsecode_8',['setResponseCode',['../classframework_1_1_h_t_t_p_response.html#aef7ae56293cf7416fda8e301b99a60fd',1,'framework::HTTPResponse']]],
   ['size_9',['size',['../classframework_1_1sqlite_1_1utility_1_1_s_q_lite_result.html#aa8f46f7af47fa7e00262659ca4e9901d',1,'framework::sqlite::utility::SQLiteResult']]],
-  ['sqlitedatabase_10',['sqlitedatabase',['../classframework_1_1sqlite_1_1_s_q_lite_database.html#ab66b4872a3a55872a86758db0fb7763a',1,'framework::sqlite::SQLiteDatabase::SQLiteDatabase(std::string_view databaseName)'],['../classframework_1_1sqlite_1_1_s_q_lite_database.html#a1773a378a7efd3597e7d0ab98f19f8ae',1,'framework::sqlite::SQLiteDatabase::SQLiteDatabase(SQLiteDatabase &amp;&amp;other) noexcept=default'],['../classframework_1_1sqlite_1_1_s_q_lite_database.html#a1d202abd02e098b4a1a1e1161de77650',1,'framework::sqlite::SQLiteDatabase::SQLiteDatabase(const SQLiteDatabase &amp;)=delete']]],
+  ['sqlitedatabase_10',['SQLiteDatabase',['../classframework_1_1sqlite_1_1_s_q_lite_database.html#a1d202abd02e098b4a1a1e1161de77650',1,'framework::sqlite::SQLiteDatabase']]],
   ['startserver_11',['startServer',['../classframework_1_1_web_framework.html#a3bbf15447e6bfd92443bdeacebf74c1a',1,'framework::WebFramework']]],
   ['stopserver_12',['stopServer',['../classframework_1_1_web_framework.html#a845222e098196847a27b1a25cd8243a7',1,'framework::WebFramework']]],
   ['streamfile_13',['streamFile',['../classframework_1_1_h_t_t_p_request.html#a1f1c6f677f15a9932f77cccab62d7f20',1,'framework::HTTPRequest']]]
