@@ -32,6 +32,8 @@ add_definitions(-DSTART_LOAD_BALANCER_9093_SERVER_FILE="start_load_balancer_9093
 
 if(WIN32)
 	set(LIBS ${LIBS} crypt32)
+
+    add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
 endif(WIN32)
 
 project(Tests)
