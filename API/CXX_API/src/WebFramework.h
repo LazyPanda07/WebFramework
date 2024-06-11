@@ -76,11 +76,11 @@ namespace framework_api
 
 	void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServer, void, bool wait, void* onStartServer);
+		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServer, void, bool wait, void* onStartServer, bool isLambda);
 
 		this->onStartServer = onStartServer;
 
-		handler->CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServer, wait, static_cast<void*>(&this->onStartServer));
+		handler->CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServer, wait, static_cast<void*>(&this->onStartServer), true);
 	}
 
 	void WebFramework::stop(bool wait)

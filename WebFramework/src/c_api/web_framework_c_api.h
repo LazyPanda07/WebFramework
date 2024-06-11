@@ -14,7 +14,7 @@ WEB_FRAMEWORK_API void* createWebFrameworkFromPath(const char* configPath);
 
 WEB_FRAMEWORK_API void* createWebFrameworkFromString(const char* serverConfiguration, const char* sourcesPath);
 
-WEB_FRAMEWORK_API void startWebFrameworkServer(void* implementation, bool wait, void* onStartServer);
+WEB_FRAMEWORK_API void startWebFrameworkServer(void* implementation, bool wait, void* onStartServer, bool isLambda);
 
 WEB_FRAMEWORK_API void stopWebFrameworkServer(void* implementation, bool wait);
 
