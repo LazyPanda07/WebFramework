@@ -32,8 +32,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UtilityLibrary", "UtilityLibrary\UtilityLibrary.vcxproj", "{F71A5E4A-5242-4FA9-B614-5C0603ADC678}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{4DD1875E-103B-4E84-88B7-1B3E5D6A2EDF}"
+	ProjectSection(SolutionItems) = preProject
+		API\CMakeLists.txt = API\CMakeLists.txt
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebFrameworkCXXAPI", "API\WebFrameworkCXXAPI\WebFrameworkCXXAPI.vcxproj", "{3F4D262A-28BD-49D4-BB24-A83363263739}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CXX_API", "API\CXX_API\CXX_API.vcxproj", "{3F4D262A-28BD-49D4-BB24-A83363263739}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

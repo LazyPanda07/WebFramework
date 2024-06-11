@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-project(api)
+project(API)
 
-add_subdirectory(WebFrameworkCXXAPI)
+add_subdirectory(CXX_API)

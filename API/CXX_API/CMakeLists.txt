@@ -8,7 +8,7 @@ if(UNIX)
 	add_definitions(-D__LINUX__)
 endif(UNIX)
 
-project(WebFrameworkCXXAPI)
+project(CXX_API)
 
 add_library(
 	${PROJECT_NAME} STATIC
