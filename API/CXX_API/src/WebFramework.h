@@ -4,11 +4,6 @@
 
 #include "DLLHandler.h"
 
-void deleteHack(void* hack)
-{
-	delete hack;
-}
-
 namespace framework_api
 {
 	class WebFramework
@@ -76,11 +71,11 @@ namespace framework_api
 
 	void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServer, void, bool wait, void* onStartServer, bool isLambda);
+		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, void, bool wait, void* onStartServer);
 
 		this->onStartServer = onStartServer;
 
-		handler->CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServer, wait, static_cast<void*>(&this->onStartServer), true);
+		handler->CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer));
 	}
 
 	void WebFramework::stop(bool wait)

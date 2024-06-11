@@ -19,20 +19,16 @@ void* createWebFrameworkFromString(const char* serverConfiguration, const char* 
 	return new framework::WebFramework(framework::utility::Config::createConfig(serverConfiguration, sourcesPath));
 }
 
-void startWebFrameworkServer(void* implementation, bool wait, void* onStartServer, bool isLambda)
+void startWebFrameworkServerCXX(void* implementation, bool wait, void* onStartServer)
 {
-	framework::WebFramework* server = static_cast<framework::WebFramework*>(implementation);
+	std::function<void()>* lambda = static_cast<std::function<void()>*>(onStartServer);
 
-	if (isLambda)
-	{
-		std::function<void()>* lambda = static_cast<std::function<void()>*>(onStartServer);
+	static_cast<framework::WebFramework*>(implementation)->start(wait, *lambda);
+}
 
-		server->start(wait, *lambda);
-	}
-	else
-	{
-		server->start(wait, static_cast<void(*)()>(onStartServer));
-	}
+void startWebFrameworkServer(void* implementation, bool wait, void (*onStartServer)())
+{
+	static_cast<framework::WebFramework*>(implementation)->start(wait, onStartServer);
 }
 
 void stopWebFrameworkServer(void* implementation, bool wait)
