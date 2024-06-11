@@ -23,7 +23,7 @@ set(
 	ssl
 	crypto
 )
-option(SHARED_WEB_FRAMEWORK "" OFF)
+option(SHARED_WEB_FRAMEWORK "" ON)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
@@ -98,6 +98,7 @@ add_library(
 	WebFramework/src/WebNetwork/Interfaces/IExecutorFunctionality.cpp
 	WebFramework/src/Config.cpp
 	WebFramework/src/WebFramework.cpp
+	WebFramework/src/c_api/web_framework_c_api.cpp
 )
 
 target_include_directories(
@@ -126,6 +127,8 @@ add_subdirectory(Networks)
 add_subdirectory(SHA256)
 add_subdirectory(ThreadPool)
 add_subdirectory(UtilityLibrary)
+
+add_subdirectory(API)
 
 target_link_directories(
 	${PROJECT_NAME} PUBLIC

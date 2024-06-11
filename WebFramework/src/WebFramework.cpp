@@ -18,7 +18,7 @@ namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
 	{
-		string version = "2.6.1";
+		string version = "3.0.0";
 
 		return version;
 	}
@@ -275,10 +275,20 @@ namespace framework
 
 	void WebFramework::startServer(bool wait, const function<void()>& onStartServer)
 	{
-		server->start(wait, onStartServer);
+		this->start(wait, onStartServer);
 	}
 
 	void WebFramework::stopServer(bool wait)
+	{
+		this->stop(wait);
+	}
+
+	void WebFramework::start(bool wait, const function<void()>& onStartServer)
+	{
+		server->start(wait, onStartServer);
+	}
+
+	void WebFramework::stop(bool wait)
 	{
 		server->stop(wait);
 	}

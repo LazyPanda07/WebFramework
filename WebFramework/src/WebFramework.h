@@ -46,15 +46,33 @@ namespace framework
 
 		WebFramework(const std::filesystem::path& webFrameworkConfigPath);
 
-		/// <summary>
-		/// Start server
-		/// </summary>
+		/**
+		 * @deprecated
+		 * @brief Start server
+		 * @param wait
+		 * @param onStartServer
+		 */
 		void startServer(bool wait = false, const std::function<void()>& onStartServer = []() {});
 
-		/// <summary>
-		/// Stop server
-		/// </summary>
+		/**
+		 * @deprecated
+		 * @brief Stop server
+		 * @param wait
+		 */
 		void stopServer(bool wait = true);
+
+		/**
+		 * @brief Start server
+		 * @param wait 
+		 * @param onStartServer 
+		 */
+		void start(bool wait = false, const std::function<void()>& onStartServer = []() {});
+		
+		/**
+		 * @brief Stop server
+		 * @param wait 
+		 */
+		void stop(bool wait = true);
 
 		/// <summary>
 		/// Kick specific client

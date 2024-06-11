@@ -141,6 +141,9 @@
     <ClCompile Include="src\Utility\ChunkGenerator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\c_api\web_framework_c_api.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WebFramework.h">
@@ -282,6 +285,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\ChunkGenerator.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\c_api\web_framework_c_api.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
