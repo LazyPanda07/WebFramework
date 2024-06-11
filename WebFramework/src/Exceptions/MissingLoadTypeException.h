@@ -9,7 +9,7 @@ namespace framework
 		/// <summary>
 		/// Missing loadType in .json file of executor
 		/// </summary>
-		class WEB_FRAMEWORK_API MissingLoadTypeException : public BaseExecutorException
+		class MissingLoadTypeException : public BaseExecutorException
 		{
 		public:
 			MissingLoadTypeException(std::string_view className);

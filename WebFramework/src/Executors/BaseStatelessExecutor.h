@@ -9,7 +9,7 @@ namespace framework
 	/// <para>This type of executors creating during server initializing</para>
 	/// <para>Can't work in multi-threaded mode</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API BaseStatelessExecutor : public BaseExecutor
+	class BaseStatelessExecutor : public BaseExecutor
 	{
 	public:
 		BaseStatelessExecutor() = default;

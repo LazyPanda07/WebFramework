@@ -8,13 +8,13 @@ namespace framework
 {
 	namespace sqlite
 	{
-		class WEB_FRAMEWORK_API SQLiteManager
+		class SQLiteManager
 		{
 		private:
-			class WEB_FRAMEWORK_API Database
+			class Database
 			{
 			private:
-				class WEB_FRAMEWORK_API ModelsData
+				class ModelsData
 				{
 				private:
 					std::vector<std::pair<std::shared_ptr<SQLiteDatabaseModel>, size_t>> data;

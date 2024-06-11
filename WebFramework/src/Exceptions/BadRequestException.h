@@ -9,7 +9,7 @@ namespace framework
 		/// <summary>
 		/// HTTP bad request 400 error code
 		/// </summary>
-		class WEB_FRAMEWORK_API BadRequestException : public BaseExecutorException
+		class BadRequestException : public BaseExecutorException
 		{
 		public:
 			BadRequestException(std::string_view additionalInformation = "");

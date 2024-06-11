@@ -10,7 +10,7 @@ namespace framework
 	/// <para>Client can change states during connection, after disconnect destroy method called</para>
 	/// <para>Run in separate thread</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API BaseHeavyOperationStatefulExecutor : public BaseExecutor
+	class BaseHeavyOperationStatefulExecutor : public BaseExecutor
 	{
 	public:
 		BaseHeavyOperationStatefulExecutor() = default;

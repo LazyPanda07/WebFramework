@@ -11,13 +11,13 @@ namespace framework
 		/// <summary>
 		/// Parser for .json settings file
 		/// </summary>
-		class WEB_FRAMEWORK_API JSONSettingsParser
+		class JSONSettingsParser
 		{
 		public:
 			/// <summary>
 			/// Settings for executor
 			/// </summary>
-			struct WEB_FRAMEWORK_API ExecutorSettings
+			struct ExecutorSettings
 			{
 				enum class loadType
 				{

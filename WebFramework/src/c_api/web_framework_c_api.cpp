@@ -1,4 +1,3 @@
-#define WEB_FRAMEWORK_DLL
 #ifdef WEB_FRAMEWORK_DLL
 
 #include "web_framework_c_api.h"

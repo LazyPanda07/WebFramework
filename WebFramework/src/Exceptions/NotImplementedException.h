@@ -10,7 +10,7 @@ namespace framework
 		/// Default exception for all HTTP methods in BaseExecutor
 		/// <para>Server throws 400 error</para>
 		/// </summary>
-		class WEB_FRAMEWORK_API NotImplementedException : public BadRequestException
+		class NotImplementedException : public BadRequestException
 		{
 		public:
 			NotImplementedException();

@@ -17,7 +17,7 @@ namespace framework
 		/// <summary>
 		/// Providing SELECT, INSERT, UPDATE, DELETE or raw queries for SQLiteDatabase
 		/// </summary>
-		class WEB_FRAMEWORK_API SQLiteDatabaseModel
+		class SQLiteDatabaseModel
 		{
 		public:
 			static constexpr std::string_view databaseName = "";

@@ -11,7 +11,7 @@ namespace framework
 		/// <summary>
 		/// Contains all data for connection to server
 		/// </summary>
-		struct WEB_FRAMEWORK_API BaseConnectionData
+		struct BaseConnectionData
 		{
 		public:
 			std::string ip;

@@ -12,7 +12,7 @@ namespace framework
 			/// Contains result of SQL request
 			/// <para>Contains all rows after SQL request</para>
 			/// </summary>
-			class WEB_FRAMEWORK_API SQLiteResult
+			class SQLiteResult
 			{
 			public:
 				using const_iterator = std::vector<std::unordered_map<std::string, std::string>>::const_iterator;
