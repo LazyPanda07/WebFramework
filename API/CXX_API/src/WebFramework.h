@@ -21,7 +21,7 @@ namespace framework
 
 		WebFramework(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath);
 
-		WebFramework(std::shared_ptr<DLLHandler> handler, const Config& config);
+		WebFramework(std::shared_ptr<DLLHandler> handler, const utility::Config& config);
 
 		WebFramework(const WebFramework& other);
 
@@ -71,7 +71,7 @@ namespace framework
 		}
 	}
 
-	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const Config& config) :
+	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const utility::Config& config) :
 		handler(handler),
 		weak(false)
 	{

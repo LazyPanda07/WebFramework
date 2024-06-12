@@ -27,11 +27,11 @@ namespace framework
 
 		WebFramework createWebFramework(std::string_view serverConfiguration, std::string_view sourcesPath);
 
-		WebFramework createWebFramework(const Config& config);
+		WebFramework createWebFramework(const utility::Config& config);
 
-		Config createConfig(const std::filesystem::path& configPath);
+		utility::Config createConfig(const std::filesystem::path& configPath);
 
-		Config createConfig(std::string_view serverConfiguration, std::string_view sourcesPath);
+		utility::Config createConfig(std::string_view serverConfiguration, std::string_view sourcesPath);
 
 	public:
 		Service() = delete;
@@ -90,24 +90,24 @@ namespace framework
 		return WebFramework(handler, serverConfiguration, sourcesPath);
 	}
 
-	inline WebFramework Service::createWebFramework(const Config& config)
+	inline WebFramework Service::createWebFramework(const utility::Config& config)
 	{
 		return WebFramework(handler, config);
 	}
 
-	inline Config Service::createConfig(const std::filesystem::path& configPath)
+	inline utility::Config Service::createConfig(const std::filesystem::path& configPath)
 	{
 		if (!std::filesystem::exists(configPath))
 		{
 			throw std::runtime_error(std::format("Path {} doesn't exist", configPath.string()));
 		}
 
-		return Config(handler, configPath);
+		return utility::Config(handler, configPath);
 	}
 
-	inline Config Service::createConfig(std::string_view serverConfiguration, std::string_view sourcesPath)
+	inline utility::Config Service::createConfig(std::string_view serverConfiguration, std::string_view sourcesPath)
 	{
-		return Config(handler, serverConfiguration, sourcesPath);
+		return utility::Config(handler, serverConfiguration, sourcesPath);
 	}
 
 	inline Service& Service::createService(const std::filesystem::path& pathToDLL)
