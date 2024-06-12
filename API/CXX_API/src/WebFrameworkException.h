@@ -15,7 +15,7 @@ namespace framework
 	public:
 		WebFrameworkException(std::shared_ptr<DLLHandler> handler, void* implementation);
 
-		const char* what() const override;
+		const char* what() const noexcept override;
 
 		~WebFrameworkException() = default;
 	};
@@ -37,7 +37,7 @@ namespace framework
 
 	}
 
-	inline const char* WebFrameworkException::what() const
+	inline const char* WebFrameworkException::what() const noexcept
 	{
 		using getErrorMessage = const char* (*)(void* exception);
 
