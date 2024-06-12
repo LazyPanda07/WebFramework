@@ -28,6 +28,7 @@ option(SHARED_WEB_FRAMEWORK "" ON)
 if (UNIX)
 	add_definitions(-D__LINUX__)
 	add_compile_options(-rdynamic)
+	add_compile_options(-fvisibility=hidden)
 
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
