@@ -58,8 +58,8 @@ namespace framework
 				return std::format("{}.dll", pathToSource.string());
 
 #else
-				filesystem::path parent = pathToSource.parent_path();
-				filesystem::path fileName = pathToSource.filename();
+				std::filesystem::path parent = pathToSource.parent_path();
+				std::filesystem::path fileName = pathToSource.filename();
 
 				return std::format("{}/lib{}.so", parent.string(), fileName.string());
 #endif

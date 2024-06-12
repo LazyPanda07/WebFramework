@@ -4,6 +4,8 @@
 #include <utility>
 
 #ifdef __LINUX__
+#include <dlfcn.h>
+
 using HMODULE = void*;
 #else
 #include <Windows.h>
