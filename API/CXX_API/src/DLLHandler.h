@@ -4,7 +4,7 @@
 #include <utility>
 
 #ifdef __LINUX__
-using HMODULE = void*
+using HMODULE = void*;
 #else
 #include <Windows.h>
 #endif
