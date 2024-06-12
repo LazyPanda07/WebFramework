@@ -70,7 +70,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
+        shared: [[OFF, ""]]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
@@ -116,7 +116,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
+        shared: [[OFF, ""]]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
@@ -154,7 +154,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
+        shared: [[OFF, ""]]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
