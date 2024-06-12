@@ -7,7 +7,7 @@
 #include "WebFramework.h"
 #include "Config.h"
 
-namespace framework_api
+namespace framework
 {
 	class Service
 	{
@@ -48,7 +48,7 @@ namespace framework_api
 	};
 }
 
-namespace framework_api
+namespace framework
 {
 	inline Service::Service(const std::filesystem::path& pathToDLL)
 	{

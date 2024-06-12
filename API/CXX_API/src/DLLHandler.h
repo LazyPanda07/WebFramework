@@ -13,7 +13,7 @@ using HMODULE = void*
 #define CALL_FUNCTION(functionName, ...) callFunction<functionName>(#functionName, __VA_ARGS__)
 #define CALL_CLASS_MEMBER_FUNCTION(functionName, ...) callClassMemberFunction<functionName>(#functionName, implementation, __VA_ARGS__)
 
-namespace framework_api
+namespace framework
 {
 	class DLLHandler
 	{
@@ -35,7 +35,7 @@ namespace framework_api
 	};
 }
 
-namespace framework_api
+namespace framework
 {
 	inline DLLHandler::DLLHandler(const std::filesystem::path& pathToDLL)
 	{

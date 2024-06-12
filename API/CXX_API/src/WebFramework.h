@@ -6,7 +6,7 @@
 #include "WebFrameworkException.h"
 #include "Config.h"
 
-namespace framework_api
+namespace framework
 {
 	class WebFramework
 	{
@@ -39,7 +39,7 @@ namespace framework_api
 	};
 }
 
-namespace framework_api
+namespace framework
 {
 	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const std::string& config) :
 		handler(handler),

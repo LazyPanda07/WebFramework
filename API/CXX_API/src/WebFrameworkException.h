@@ -4,7 +4,7 @@
 
 #include "DLLHandler.h"
 
-namespace framework_api
+namespace framework
 {
 	class WebFrameworkException : public std::exception
 	{
