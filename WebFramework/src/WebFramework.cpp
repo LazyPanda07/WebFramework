@@ -14,6 +14,8 @@
 
 using namespace std;
 
+// TODO: try catch to tryGet
+
 namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()

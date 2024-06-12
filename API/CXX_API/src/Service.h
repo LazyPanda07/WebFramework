@@ -47,13 +47,14 @@ namespace framework_api
 	{
 		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path
 			{
-#ifdef __LINUX__
+#ifndef __LINUX__
+				return std::format("{}.dll", pathToSource.string());
+				
+#else
 				filesystem::path parent = pathToSource.parent_path();
 				filesystem::path fileName = pathToSource.filename();
 
 				return std::format("{}/lib{}.so", parent.string(), fileName.string());
-#else
-				return std::format("{}.dll", pathToSource.string());
 #endif
 			};
 

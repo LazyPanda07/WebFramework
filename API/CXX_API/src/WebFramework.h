@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "DLLHandler.h"
+#include "WebFrameworkException.h"
 
 namespace framework_api
 {
@@ -41,18 +42,30 @@ namespace framework_api
 		handler(handler),
 		weak(false)
 	{
-		using createWebFrameworkFromPath = void* (*)(const char* configPath);
+		using createWebFrameworkFromPath = void* (*)(const char* configPath, void** exception);
+		void* exception = nullptr;
 
-		implementation = handler->CALL_FUNCTION(createWebFrameworkFromPath, config.data());
+		implementation = handler->CALL_FUNCTION(createWebFrameworkFromPath, config.data(), &exception);
+
+		if (exception)
+		{
+			throw WebFrameworkException(handler, exception);
+		}
 	}
 
 	WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath) :
 		handler(handler),
 		weak(false)
 	{
-		using createWebFrameworkFromString = void* (*)(const char* serverConfiguration, const char* sourcesPath);
+		using createWebFrameworkFromString = void* (*)(const char* serverConfiguration, const char* sourcesPath, void** exception);
+		void* exception = nullptr;
 
-		implementation = handler->CALL_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), sourcesPath.data());
+		implementation = handler->CALL_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
+
+		if (exception)
+		{
+			throw WebFrameworkException(handler, exception);
+		}
 	}
 
 	WebFramework::WebFramework(const WebFramework& other)
@@ -71,18 +84,30 @@ namespace framework_api
 
 	void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, void, bool wait, void* onStartServer);
+		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, void, bool wait, void* onStartServer, void** exception);
+		void* exception = nullptr;
 
 		this->onStartServer = onStartServer;
 
-		handler->CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer));
+		handler->CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
+
+		if (exception)
+		{
+			throw WebFrameworkException(handler, exception);
+		}
 	}
 
 	void WebFramework::stop(bool wait)
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, void, bool wait);
+		DEFINE_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, void, bool wait, void** exception);
+		void* exception = nullptr;
 
-		handler->CALL_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, wait);
+		handler->CALL_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, wait, &exception);
+
+		if (exception)
+		{
+			throw WebFrameworkException(handler, exception);
+		}
 	}
 
 	WebFramework::~WebFramework()
