@@ -4,6 +4,7 @@
 
 #include "DLLHandler.h"
 #include "WebFrameworkException.h"
+#include "Config.h"
 
 namespace framework_api
 {
@@ -19,6 +20,8 @@ namespace framework_api
 		WebFramework(std::shared_ptr<DLLHandler> handler, const std::string& config);
 
 		WebFramework(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath);
+
+		WebFramework(std::shared_ptr<DLLHandler> handler, const Config& config);
 
 		WebFramework(const WebFramework& other);
 
@@ -38,7 +41,7 @@ namespace framework_api
 
 namespace framework_api
 {
-	WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const std::string& config) :
+	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const std::string& config) :
 		handler(handler),
 		weak(false)
 	{
@@ -53,7 +56,7 @@ namespace framework_api
 		}
 	}
 
-	WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath) :
+	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath) :
 		handler(handler),
 		weak(false)
 	{
@@ -68,12 +71,27 @@ namespace framework_api
 		}
 	}
 
-	WebFramework::WebFramework(const WebFramework& other)
+	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const Config& config) :
+		handler(handler),
+		weak(false)
+	{
+		using createWebFrameworkFromConfig = void* (*)(void* config, void** exception);
+		void* exception = nullptr;
+
+		implementation = handler->CALL_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
+
+		if (exception)
+		{
+			throw WebFrameworkException(handler, exception);
+		}
+	}
+
+	inline WebFramework::WebFramework(const WebFramework& other)
 	{
 		(*this) = other;
 	}
 
-	WebFramework& WebFramework::operator = (const WebFramework& other)
+	inline WebFramework& WebFramework::operator = (const WebFramework& other)
 	{
 		handler = other.handler;
 		implementation = other.implementation;
@@ -82,7 +100,7 @@ namespace framework_api
 		return *this;
 	}
 
-	void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
+	inline void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, void, bool wait, void* onStartServer, void** exception);
 		void* exception = nullptr;
@@ -97,7 +115,7 @@ namespace framework_api
 		}
 	}
 
-	void WebFramework::stop(bool wait)
+	inline void WebFramework::stop(bool wait)
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, void, bool wait, void** exception);
 		void* exception = nullptr;
@@ -110,7 +128,7 @@ namespace framework_api
 		}
 	}
 
-	WebFramework::~WebFramework()
+	inline WebFramework::~WebFramework()
 	{
 		if (!weak)
 		{

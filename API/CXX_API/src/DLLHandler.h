@@ -37,7 +37,7 @@ namespace framework_api
 
 namespace framework_api
 {
-	DLLHandler::DLLHandler(const std::filesystem::path& pathToDLL)
+	inline DLLHandler::DLLHandler(const std::filesystem::path& pathToDLL)
 	{
 #ifdef __LINUX__
 		handle = dlopen(pathToDLL.string().data(), RTLD_LAZY);
@@ -47,7 +47,7 @@ namespace framework_api
 	}
 
 	template<typename T, typename... Args>
-	auto DLLHandler::callFunction(std::string_view functionName, Args&&... args)
+	inline auto DLLHandler::callFunction(std::string_view functionName, Args&&... args)
 	{
 		T function;
 
@@ -61,7 +61,7 @@ namespace framework_api
 	}
 
 	template<typename T, typename... Args>
-	auto DLLHandler::callClassMemberFunction(std::string_view functionName, void* implementation, Args&&... args)
+	inline auto DLLHandler::callClassMemberFunction(std::string_view functionName, void* implementation, Args&&... args)
 	{
 		T function;
 
@@ -74,7 +74,7 @@ namespace framework_api
 		return function(implementation, std::forward<Args>(args)...);
 	}
 
-	void DLLHandler::free(void* implementation)
+	inline void DLLHandler::free(void* implementation)
 	{
 		using deleteWebFrameworkObject = void (*)(void* implementation);
 

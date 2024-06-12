@@ -20,7 +20,7 @@ namespace framework_api
 		~WebFrameworkException() = default;
 	};
 
-	WebFrameworkException::WebFrameworkException(std::shared_ptr<DLLHandler> handler, void* implementation) :
+	inline WebFrameworkException::WebFrameworkException(std::shared_ptr<DLLHandler> handler, void* implementation) :
 		handler(handler),
 		implementation
 		(
@@ -37,10 +37,10 @@ namespace framework_api
 
 	}
 
-	const char* WebFrameworkException::what() const
+	inline const char* WebFrameworkException::what() const
 	{
-		using getErrorMessage = const char* (*)(void** exception);
+		using getErrorMessage = const char* (*)(void* exception);
 
-		return handler->CALL_FUNCTION(getErrorMessage, &implementation);
+		return handler->CALL_FUNCTION(getErrorMessage, implementation.get());
 	}
 }

@@ -28,7 +28,6 @@ option(SHARED_WEB_FRAMEWORK "" ON)
 if (UNIX)
 	add_definitions(-D__LINUX__)
 	add_compile_options(-rdynamic)
-	add_compile_options(-fvisibility=hidden)
 
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
@@ -55,6 +54,10 @@ if (${SHARED_WEB_FRAMEWORK})
 endif ()
 
 project(WebFramework)
+
+if(UNIX)
+	target_compile_options(${PROJECT_NAME} PUBLIC -fvisibility=hidden)
+endif()
 
 add_library(
 	${PROJECT_NAME} ${WEB_FRAMEWORK_LIBRARY_TYPE}

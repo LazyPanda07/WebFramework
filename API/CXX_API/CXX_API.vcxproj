@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\DLLHandler.h" />
     <ClInclude Include="src\import.h" />
     <ClInclude Include="src\Service.h" />

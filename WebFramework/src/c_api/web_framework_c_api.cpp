@@ -4,11 +4,18 @@
 
 #include "WebFramework.h"
 #include "Log.h"
+#include "Config.h"
+
+#define LOG_EXCEPTION() Log::error("Exception: {}", "C_API", e.what())
+#define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
+#define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
 
 void deleteWebFrameworkObject(void* implementation)
 {
 	delete implementation;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void* createWebFrameworkFromPath(const char* configPath, void** exception)
 {
@@ -18,9 +25,7 @@ void* createWebFrameworkFromPath(const char* configPath, void** exception)
 	}
 	catch (const std::exception& e)
 	{
-		Log::error("Exception: {}", "C_API", e.what());
-
-		*exception = new std::runtime_error(e.what());
+		LOG_AND_CREATE_EXCEPTION();
 	}
 
 	return nullptr;
@@ -34,13 +39,53 @@ void* createWebFrameworkFromString(const char* serverConfiguration, const char* 
 	}
 	catch (const std::exception& e)
 	{
-		Log::error("Exception: {}", "C_API", e.what());
-
-		*exception = new std::runtime_error(e.what());
+		LOG_AND_CREATE_EXCEPTION();
 	}
 
 	return nullptr;
 }
+
+void* createWebFrameworkFromConfig(void* config, void** exception)
+{
+	try
+	{
+		return new framework::WebFramework(*static_cast<framework::utility::Config*>(config));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void* createConfigFromPath(const char* configPath, void** exception)
+{
+	try
+	{
+		return new framework::utility::Config(configPath);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void* createConfigFromString(const char* serverConfiguration, const char* sourcesPath, void** exception)
+{
+	try
+	{
+		return new framework::utility::Config(framework::utility::Config::createConfig(serverConfiguration, sourcesPath));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void startWebFrameworkServerCXX(void* implementation, bool wait, void* onStartServer, void** exception)
 {
@@ -52,9 +97,7 @@ void startWebFrameworkServerCXX(void* implementation, bool wait, void* onStartSe
 	}
 	catch (const std::exception& e)
 	{
-		Log::error("Exception: {}", "C_API", e.what());
-
-		*exception = new std::runtime_error(e.what());
+		LOG_AND_CREATE_EXCEPTION();
 	}
 }
 
@@ -66,9 +109,7 @@ void startWebFrameworkServer(void* implementation, bool wait, void (*onStartServ
 	}
 	catch (const std::exception& e)
 	{
-		Log::error("Exception: {}", "C_API", e.what());
-
-		*exception = new std::runtime_error(e.what());
+		LOG_AND_CREATE_EXCEPTION();
 	}
 }
 
@@ -80,15 +121,105 @@ void stopWebFrameworkServer(void* implementation, bool wait, void** exception)
 	}
 	catch (const std::exception& e)
 	{
-		Log::error("Exception: {}", "C_API", e.what());
-
-		*exception = new std::runtime_error(e.what());
+		LOG_AND_CREATE_EXCEPTION();
 	}
 }
+
+void overrideConfigurationString(void* implementation, const char* key, const char* value, bool recursive, void** exception)
+{
+	try
+	{
+		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, std::string(value), recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void overrideConfigurationInteger(void* implementation, const char* key, int64_t value, bool recursive, void** exception)
+{
+	try
+	{
+		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void overrideConfigurationBoolean(void* implementation, const char* key, bool value, bool recursive, void** exception)
+{
+	try
+	{
+		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void overrideConfigurationStringArray(void* implementation, const char* key, const char** value, bool recursive, int64_t size, void** exception)
+{
+	try
+	{
+		std::vector<json::utility::jsonObject> data;
+
+		data.reserve(size);
+
+		for (int64_t i = 0; i < size; i++)
+		{
+			json::utility::appendArray(std::string(value[i]), data);
+		}
+
+		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, data, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void overrideConfigurationIntegerArray(void* implementation, const char* key, int64_t* value, bool recursive, int64_t size, void** exception)
+{
+	try
+	{
+		std::vector<json::utility::jsonObject> data;
+
+		data.reserve(size);
+
+		for (int64_t i = 0; i < size; i++)
+		{
+			json::utility::appendArray(value[i], data);
+		}
+
+		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, data, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const char* getErrorMessage(void* exception)
 {
 	return static_cast<std::runtime_error*>(exception)->what();
+}
+
+const char* getConfiguration(void* implementation, void** exception)
+{
+	try
+	{
+		return (*(*static_cast<framework::utility::Config*>(implementation))).getRawData().data();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
 }
 
 #endif

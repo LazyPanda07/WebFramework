@@ -5,6 +5,7 @@
 
 #include "DLLHandler.h"
 #include "WebFramework.h"
+#include "Config.h"
 
 namespace framework_api
 {
@@ -26,6 +27,12 @@ namespace framework_api
 
 		WebFramework createWebFramework(std::string_view serverConfiguration, std::string_view sourcesPath);
 
+		WebFramework createWebFramework(const Config& config);
+
+		Config createConfig(const std::filesystem::path& configPath);
+
+		Config createConfig(std::string_view serverConfiguration, std::string_view sourcesPath);
+
 	public:
 		Service() = delete;
 
@@ -43,13 +50,13 @@ namespace framework_api
 
 namespace framework_api
 {
-	Service::Service(const std::filesystem::path& pathToDLL)
+	inline Service::Service(const std::filesystem::path& pathToDLL)
 	{
 		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path
 			{
 #ifndef __LINUX__
 				return std::format("{}.dll", pathToSource.string());
-				
+
 #else
 				filesystem::path parent = pathToSource.parent_path();
 				filesystem::path fileName = pathToSource.filename();
@@ -72,7 +79,7 @@ namespace framework_api
 	{
 		if (!std::filesystem::exists(configPath))
 		{
-			throw std::runtime_error(std::format("Can't find {}", configPath.string()));
+			throw std::runtime_error(std::format("Path {} doesn't exist", configPath.string()));
 		}
 
 		return WebFramework(handler, configPath.string());
@@ -81,6 +88,26 @@ namespace framework_api
 	inline WebFramework Service::createWebFramework(std::string_view serverConfiguration, std::string_view sourcesPath)
 	{
 		return WebFramework(handler, serverConfiguration, sourcesPath);
+	}
+
+	inline WebFramework Service::createWebFramework(const Config& config)
+	{
+		return WebFramework(handler, config);
+	}
+
+	inline Config Service::createConfig(const std::filesystem::path& configPath)
+	{
+		if (!std::filesystem::exists(configPath))
+		{
+			throw std::runtime_error(std::format("Path {} doesn't exist", configPath.string()));
+		}
+
+		return Config(handler, configPath);
+	}
+
+	inline Config Service::createConfig(std::string_view serverConfiguration, std::string_view sourcesPath)
+	{
+		return Config(handler, serverConfiguration, sourcesPath);
 	}
 
 	inline Service& Service::createService(const std::filesystem::path& pathToDLL)
