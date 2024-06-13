@@ -1,6 +1,7 @@
 import ctypes
 from typing import Callable
 
+from . import Config
 from .DLLHandler import DLLHandler
 from .WebFrameworkException import WebFrameworkException
 
@@ -29,6 +30,17 @@ class WebFramework:
         implementation = handler.call_function("createWebFrameworkFromString", ctypes.c_void_p,
                                                ctypes.c_char_p(server_configuration.encode()),
                                                ctypes.c_char_p(sources_path.encode()), ctypes.byref(exception))
+
+        if exception:
+            raise WebFrameworkException(handler, exception.value)
+
+        return cls(handler, implementation)
+
+    @classmethod
+    def from_config(cls, handler: DLLHandler, config: Config):
+        exception = ctypes.c_void_p(0)
+        implementation = handler.call_function("createWebFrameworkFromConfig", ctypes.c_void_p,
+                                               ctypes.c_uint64(config.implementation), ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(handler, exception.value)
