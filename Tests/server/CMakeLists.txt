@@ -11,12 +11,6 @@ if(UNIX)
 	file(CHMOD ${WEB_FRAMEWORK_LIBRARY_DIR}/assets/LocalizationUtils PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 endif(UNIX)
 
-if(WIN32)
-	if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-		set(LOCALIZATION_BUILD_TYPE build_debug_localization)
-	endif()
-endif(WIN32)
-
 include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFramework.cmake)
 
 project(Server)

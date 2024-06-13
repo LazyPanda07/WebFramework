@@ -40,6 +40,7 @@ set(
     crypto
     sqlite3
 )
+set(IS_WEB_FRAMEWORK_SHARED OFF CACHE STRING "Is WebFramework dynamically linked")
 
 link_directories(
     BEFORE
@@ -65,9 +66,17 @@ endif()
 
 if(UNIX)
     install(DIRECTORY ${WebFrameworkSDK}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX} FILES_MATCHING PATTERN "*.so")
+
+    if(EXISTS ${WebFrameworkSDK}/lib/libWebFramework.so)
+        set(IS_WEB_FRAMEWORK_SHARED ON)
+    endif()
 elseif(WIN32)
     install(DIRECTORY ${WebFrameworkSDK}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX} PATTERN "vendor" EXCLUDE)
     install(FILES ${WebFrameworkSDK}/dll/vendor/sqlite3/sqlite3.dll DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+    if(EXISTS ${WebFrameworkSDK}/dll/WebFramework.dll)
+        set(IS_WEB_FRAMEWORK_SHARED ON)
+    endif()
 endif(UNIX)
 
 add_custom_target(
