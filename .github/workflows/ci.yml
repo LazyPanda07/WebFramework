@@ -106,7 +106,7 @@ jobs:
           cd build/bin
           .\run_tests.bat ${{ matrix.config }}
 
-    - name: Upload test binaries
+    - name: Upload tests binaries
       if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
       uses: actions/upload-artifact@v4
       with:
@@ -150,7 +150,7 @@ jobs:
           cd build/bin
           source run_tests.sh ${{ matrix.config }}
       
-    - name: Upload test binaries
+    - name: Upload tests binaries
       if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
       uses: actions/upload-artifact@v4
       with:
