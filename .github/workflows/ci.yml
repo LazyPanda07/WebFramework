@@ -106,6 +106,13 @@ jobs:
           cd build/bin
           .\run_tests.bat ${{ matrix.config }}
 
+    - name: Upload test binaries
+      if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: Tests_Windows
+        path: Tests/build/bin
+
 
   static-linux-tests:
     runs-on: ubuntu-latest
@@ -141,7 +148,15 @@ jobs:
       shell: bash
       run: |
           cd build/bin
-          source run_tests.sh ${{ matrix.config }} 
+          source run_tests.sh ${{ matrix.config }}
+      
+    - name: Upload test binaries
+      if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: Tests_Linux
+        path: Tests/build/bin
+
 
 
   static-memory-leak-tests:
@@ -197,7 +212,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: Release_DLL${{ matrix.os[1] }}
+          name: ReleaseDLL_${{ matrix.os[1] }}
           path: WebFrameworkLibrary
 
       - name: Download tests artifacts
