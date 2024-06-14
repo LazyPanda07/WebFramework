@@ -50,6 +50,7 @@ add_subdirectory(server)
 add_subdirectory(load_balancer)
 add_subdirectory(proxy)
 add_subdirectory(default_https_server)
+add_subdirectory(api)
 
 install(DIRECTORY configs/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY scripts/ DESTINATION ${CMAKE_INSTALL_PREFIX})
