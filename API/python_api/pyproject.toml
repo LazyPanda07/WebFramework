@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+
+[project]
+name = "web_framework_api"
+description = "Python API for WebFramework"
+readme = "README.md"
+authors = [
+    { name = "LazyPanda07", email = "semengricenko@gmail.com" }
+]
+maintainers = [
+    { name = "LazyPanda07", email = "semengricenko@gmail.com" }
+]
+license = { text = "MIT License" }
+keywords = ["Web"]
+version = "1.0.0"
+dependencies = [
+    "multipledispatch"
+]
+
+[project.urls]
+Repository = "http://github.com/LazyPanda07/WebFramework"
+Wiki = "http://github.com/LazyPanda07/WebFramework/wiki"

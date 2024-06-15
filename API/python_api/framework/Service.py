@@ -41,6 +41,6 @@ class Service:
     def create_web_framework(self, server_configuration: str, sources_path: str) -> WebFramework:
         return WebFramework.from_string(self.__handler, server_configuration, sources_path)
 
-    @dispatch(Config)
+    @dispatch(type(Config))
     def create_web_framework(self, config: Config) -> WebFramework:
         return WebFramework.from_config(self.__handler, config)

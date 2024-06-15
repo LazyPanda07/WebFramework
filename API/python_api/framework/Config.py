@@ -35,6 +35,7 @@ class Config:
 
         return cls(handler, implementation)
 
+    @dispatch(str, str, bool)
     def override_configuration(self, key: str, value: str, recursive: bool):
         exception = ctypes.c_void_p(0)
 
@@ -67,7 +68,7 @@ class Config:
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
 
-    @dispatch(str, List[str], bool)
+    @dispatch(str, list, bool)
     def override_configuration(self, key: str, value: List[str], recursive: bool):
         exception = ctypes.c_void_p(0)
 
@@ -83,7 +84,7 @@ class Config:
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
 
-    @dispatch(str, List[int], bool)
+    @dispatch(str, list, bool)
     def override_configuration(self, key: str, value: List[int], recursive: bool):
         exception = ctypes.c_void_p(0)
 
