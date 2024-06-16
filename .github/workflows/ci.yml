@@ -205,10 +205,6 @@ jobs:
     needs: [static-windows-tests, static-linux-tests]
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -220,6 +216,12 @@ jobs:
         with:
           name: Tests_${{ matrix.os[1] }}
           path: TestsBinaries
+
+      - name: Directory
+        run: ls
+
+      - name: Python API directory
+        run: WebFrameworkLibrary/api/python_api/
 
       - name: Install Python API
         run: pip install WebFrameworkLibrary/api/python_api/
