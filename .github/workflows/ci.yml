@@ -222,7 +222,7 @@ jobs:
         
       - name: Tests
         run: |
-          cp WebFrameworkLibrary/${{ matrix[2] }} TestsBinaries
+          cp WebFrameworkLibrary/${{ matrix.os[2] }} TestsBinaries
           cd TestsBinaries
           python main.py ${{ matrix.config }}
   
