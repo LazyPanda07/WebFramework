@@ -205,6 +205,11 @@ jobs:
     needs: [static-windows-tests, static-linux-tests]
 
     steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+            python-version: 3.12
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -218,7 +223,7 @@ jobs:
           path: TestsBinaries
         
       - name: Install Python API
-        run: cd WebFrameworkLibrary/api/python_api && pip install .
+        run: pip install WebFrameworkLibrary/api/python_api/
         
       - name: Tests
         run: |
