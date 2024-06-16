@@ -200,7 +200,7 @@ jobs:
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        os: [[windows-latest, Windows], [ubuntu-latest, Linux]]
+        os: [[windows-latest, Windows, dll/WebFrameworkLibrary.dll], [ubuntu-latest, Linux, lib/libWebFrameworkLibrary.so]]
     runs-on: ${{ matrix.os[0] }}
     needs: [static-windows-tests, static-linux-tests]
 
@@ -219,11 +219,11 @@ jobs:
         
       - name: Install Python API
         run: pip install WebFrameworkLibrary/api/python_api/
-
+        
       - name: Tests
         run: |
+          cp WebFrameworkLibrary/${{ matrix[2] }} TestsBinaries
           cd TestsBinaries
-          ls
           python main.py ${{ matrix.config }}
   
 
