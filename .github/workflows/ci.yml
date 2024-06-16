@@ -219,12 +219,13 @@ jobs:
 
       - name: Directory
         run: ls
-
+        
       - name: Python API directory
-        run: WebFrameworkLibrary/api/python_api/
+        run: ls WebFrameworkLibrary/api/python_api/
 
       - name: Install Python API
-        run: pip install WebFrameworkLibrary/api/python_api/
+        working-directory: WebFrameworkLibrary/api
+        run: pip install python_api/
 
       - name: Tests
         run: |
