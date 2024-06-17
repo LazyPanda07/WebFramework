@@ -10,7 +10,8 @@
     ],
     "loadSources": [
       "current",
-      "Database"
+      "Database",
+      "ServerExecutors"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",

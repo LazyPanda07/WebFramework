@@ -61,6 +61,11 @@ namespace framework
 
 string makePathToSource(const string& pathToSource)
 {
+	if (filesystem::path(pathToSource).has_extension())
+	{
+		return pathToSource;
+	}
+
 #ifdef __LINUX__
 	filesystem::path temp(pathToSource);
 	filesystem::path parent = temp.parent_path();

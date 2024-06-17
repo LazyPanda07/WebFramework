@@ -11,7 +11,7 @@ TextGenerator::TextGenerator(std::string_view data) :
 
 std::string TextGenerator::generate()
 {
-	if(offset >= data.size())
+	if (offset >= data.size())
 	{
 		return {};
 	}

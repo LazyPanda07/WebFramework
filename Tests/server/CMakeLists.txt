@@ -6,8 +6,6 @@ set(DEBUG_LOCALIZATION_DIR ${CMAKE_INSTALL_PREFIX})
 set(RELEASE_LOCALIZATION_DIR ${CMAKE_INSTALL_PREFIX})
 
 if(UNIX)
-	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -rdynamic)
-
 	file(CHMOD ${WEB_FRAMEWORK_LIBRARY_DIR}/assets/LocalizationUtils PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 endif(UNIX)
 
@@ -18,12 +16,6 @@ project(Server)
 add_executable(
 	${PROJECT_NAME}
 	main.cpp
-	TextGenerator.cpp
-	executors/HelloExecutor.cpp
-	executors/AssetsExecutor.cpp
-	executors/ChunksExecutor.cpp
-	executors/DownloadExecutor.cpp
-	executors/LocalizationExecutor.cpp
 )
 
 target_include_directories(
@@ -51,5 +43,6 @@ if(NOT ${CMAKE_GENERATOR} STREQUAL "Ninja")
 endif()
 
 add_subdirectory(database)
+add_subdirectory(server_executors)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})

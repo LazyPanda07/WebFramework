@@ -79,17 +79,19 @@ elseif(WIN32)
     endif()
 endif(UNIX)
 
-add_custom_target(
-    generate_localization
-    COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} generate
-)
+if(NOT TARGET generate_localization)
+    add_custom_target(
+        generate_localization
+        COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} generate
+    )
 
-add_custom_target(
-    build_debug_localization
-    COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} debug_build ${DEBUG_LOCALIZATION_DIR}
-)
+    add_custom_target(
+        build_debug_localization
+        COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} debug_build ${DEBUG_LOCALIZATION_DIR}
+    )
 
-add_custom_target(
-    build_release_localization
-    COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} release_build ${RELEASE_LOCALIZATION_DIR}
-)
+    add_custom_target(
+        build_release_localization
+        COMMAND ${WebFrameworkSDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} release_build ${RELEASE_LOCALIZATION_DIR}
+    )
+endif()
