@@ -201,7 +201,7 @@ jobs:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         # os: [[windows-latest, Windows, dll/WebFramework.dll], [ubuntu-latest, Linux, lib/libWebFramework.so]]
-        os: [[windows-latest, Windows, dll/WebFramework.dll]]
+        os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\]]
     runs-on: ${{ matrix.os[0] }}
     needs: [static-windows-tests, static-linux-tests]
 
@@ -225,7 +225,7 @@ jobs:
         run: |
           cp WebFrameworkLibrary/${{ matrix.os[2] }} TestsBinaries
           cd TestsBinaries
-          python main.py ${{ matrix.config }}
+          ${{ matrix.os[4] }}${{ matrix.os[3] }} ${{ matrix.config }}
   
 
   publish:
