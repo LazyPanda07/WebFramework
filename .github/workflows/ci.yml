@@ -257,6 +257,7 @@ jobs:
             cd TestsBinaries
             python3 -m venv .venv
             source .venv/bin/activate
+            cd ..
             python -m pip install pip --upgrade
             pip install setuptools
             pip install setuptools --upgrade
