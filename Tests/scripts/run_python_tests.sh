@@ -5,7 +5,7 @@ set -e
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
-python server.py ${WEB_FRAMEWORK_SERVER_CONFIG} &
+python3 server.py ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
 # ./ProxyServer --config proxy_config.json --port 15000 &
 # ./ProxyServer --config proxy_config.json --port 15001 --useHTTPS &
