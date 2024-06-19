@@ -254,9 +254,7 @@ jobs:
         
       - name: Install Python API
         run: |
-            python3 -m pip install pip --upgrade
             pip3 install setuptools
-            pip3 install setuptools --upgrade
             pip3 install WebFrameworkLibrary/api/python_api/
         
       - name: Tests
