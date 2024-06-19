@@ -200,8 +200,8 @@ jobs:
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        # os: [[windows-latest, Windows, dll/WebFramework.dll], [ubuntu-latest, Linux, lib/libWebFramework.so]]
-        os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\]]
+        os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\], [ubuntu-latest, Linux, lib/libWebFramework.so, run_python_tests.sh, ./]]
+        # os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\]]
     runs-on: ${{ matrix.os[0] }}
     needs: [static-windows-tests, static-linux-tests]
 
@@ -219,7 +219,11 @@ jobs:
           path: TestsBinaries
         
       - name: Install Python API
-        run: pip install WebFrameworkLibrary/api/python_api/
+        run: |
+            python -m pip install pip --upgrade
+            pip install setuptools
+            pip install setuptools --upgrade
+            pip install WebFrameworkLibrary/api/python_api/
         
       - name: Tests
         run: |
