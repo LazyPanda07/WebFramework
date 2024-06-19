@@ -196,25 +196,24 @@ jobs:
           source run_memory_leak_tests.sh ${{ matrix.config }} 
 
   
-  python-api-tests:
+  windows-python-tests:
+    runs-on: windows-latest
+    needs: [static-windows-tests]
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\], [ubuntu-latest, Linux, lib/libWebFramework.so, run_python_tests.sh, "source "]]
-    runs-on: ${{ matrix.os[0] }}
-    needs: [static-windows-tests, static-linux-tests]
 
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ReleaseDLL_${{ matrix.os[1] }}
+          name: ReleaseDLL_Windows
           path: WebFrameworkLibrary
 
       - name: Download tests artifacts
         uses: actions/download-artifact@v4
         with:
-          name: Tests_${{ matrix.os[1] }}
+          name: Tests_Windows
           path: TestsBinaries
         
       - name: Install Python API
@@ -226,13 +225,49 @@ jobs:
         
       - name: Tests
         run: |
-          cp WebFrameworkLibrary/${{ matrix.os[2] }} TestsBinaries
+          cp WebFrameworkLibrary/dll/WebFramework.dll TestsBinaries
           cd TestsBinaries
-          ${{ matrix.os[4] }}${{ matrix.os[3] }} ${{ matrix.config }}
+          .\run_python_tests.bat ${{ matrix.config }}
+
+
+  linux-python-tests:
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+    needs: [static-linux-tests]
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ReleaseDLL_Linux
+          path: WebFrameworkLibrary
+
+      - name: Download tests artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Tests_Linux
+          path: TestsBinaries
+        
+      - name: Install Python API
+        run: |
+            python3 -m pip install pip --upgrade
+            pip3 install setuptools
+            pip3 install setuptools --upgrade
+            pip3 install WebFrameworkLibrary/api/python_api/
+        
+      - name: Tests
+        run: |
+          cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
+          cd TestsBinaries
+          source run_python_tests.sh ${{ matrix.config }}
   
 
   publish:
-    needs: [static-memory-leak-tests, python-api-tests]
+    needs: [static-memory-leak-tests, windows-python-tests, linux-python-tests]
     runs-on: ubuntu-latest
 
     steps:
