@@ -24,7 +24,7 @@ class Config:
         return cls(handler, implementation)
 
     @classmethod
-    def from_string(cls, handler, server_configuration: str, sources_path: str):
+    def from_string(cls, handler: DLLHandler, server_configuration: str, sources_path: str):
         exception = ctypes.c_void_p(0)
         implementation = handler.call_function("createConfigFromString", ctypes.c_void_p,
                                                ctypes.c_char_p(server_configuration.encode()),
@@ -36,7 +36,7 @@ class Config:
         return cls(handler, implementation)
 
     @dispatch(str, str, bool)
-    def override_configuration(self, key: str, value: str, recursive: bool):
+    def override_configuration(self, key: str, value: str, recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
         self.__handler.call_function_member_function("overrideConfigurationString", None, self.implementation,
@@ -47,7 +47,7 @@ class Config:
             raise WebFrameworkException(self.__handler, exception.value)
 
     @dispatch(str, int, bool)
-    def override_configuration(self, key: str, value: int, recursive: bool):
+    def override_configuration(self, key: str, value: int, recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
         self.__handler.call_function_member_function("overrideConfigurationInteger", None, self.implementation,
@@ -58,7 +58,7 @@ class Config:
             raise WebFrameworkException(self.__handler, exception.value)
 
     @dispatch(str, bool, bool)
-    def override_configuration(self, key: str, value: bool, recursive: bool):
+    def override_configuration(self, key: str, value: bool, recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
         self.__handler.call_function_member_function("overrideConfigurationBoolean", None, self.implementation,
@@ -69,7 +69,7 @@ class Config:
             raise WebFrameworkException(self.__handler, exception.value)
 
     @dispatch(str, list, bool)
-    def override_configuration(self, key: str, value: List[str], recursive: bool):
+    def override_configuration(self, key: str, value: List[str], recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_char_p * len(value))()
@@ -85,7 +85,7 @@ class Config:
             raise WebFrameworkException(self.__handler, exception.value)
 
     @dispatch(str, list, bool)
-    def override_configuration(self, key: str, value: List[int], recursive: bool):
+    def override_configuration(self, key: str, value: List[int], recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_int64 * len(value))()

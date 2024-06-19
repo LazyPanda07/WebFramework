@@ -4,7 +4,7 @@ import platform
 from multipledispatch import dispatch
 from pathlib import Path
 
-from . import Config
+from .Config import Config
 from .DLLHandler import DLLHandler
 from .WebFramework import WebFramework
 
@@ -44,3 +44,11 @@ class Service:
     @dispatch(type(Config))
     def create_web_framework(self, config: Config) -> WebFramework:
         return WebFramework.from_config(self.__handler, config)
+
+    @dispatch(str)
+    def create_config(self, config_path: str) -> Config:
+        return Config.from_path(self.__handler, config_path)
+
+    @dispatch(str, str)
+    def create_config(self, server_configuration: str, sources_path: str) -> Config:
+        return Config.from_string(self.__handler, server_configuration, sources_path)

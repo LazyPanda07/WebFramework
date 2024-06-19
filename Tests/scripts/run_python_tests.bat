@@ -3,9 +3,8 @@
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
 start python server.py %WEB_FRAMEWORK_SERVER_CONFIG%
-start DefaultHTTPSServer.exe
-@REM start ProxyServer.exe --config proxy_config.json --port 15000
-@REM start ProxyServer.exe --config proxy_config.json --port 15001 --useHTTPS
+start python proxy_server.py --config proxy_config.json --port 15000
+start python proxy_server.py --config proxy_config.json --port 15001 --useHTTPS
 @REM start LoadBalancerServer.exe --config load_balancer_config.json --port 9090
 @REM start LoadBalancerServer.exe --config load_balancer_config.json --port 9091 --serversHTTPS
 @REM start LoadBalancerServer.exe --config load_balancer_config_https.json --port 9092
@@ -17,11 +16,13 @@ start DefaultHTTPSServer.exe
 @REM start LoadBalancerServer.exe --config load_balancer_config_https.json  --type server --port 10002
 @REM start LoadBalancerServer.exe --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS
 
+start DefaultHTTPSServer.exe
+
 call Core.exe %WEB_FRAMEWORK_SERVER_CONFIG% || exit 1
 REM call LoadBalancerCore.exe --port 9090 || exit 1
 REM call LoadBalancerCore.exe --port 9091 || exit 1
 REM call LoadBalancerCore.exe --port 9092 --useHTTPS || exit 1
 REM call LoadBalancerCore.exe --port 9093 --useHTTPS || exit 1
 REM call LoadBalancerCore.exe --port 9094 --custom_heuristic || exit 1
-REM call ProxyCore.exe --port 15000 || exit 1
-REM call ProxyCore.exe --port 15001 --useHTTPS || exit 1
+call ProxyCore.exe --port 15000 || exit 1
+call ProxyCore.exe --port 15001 --useHTTPS || exit 1
