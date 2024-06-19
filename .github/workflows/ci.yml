@@ -233,6 +233,8 @@ jobs:
   linux-python-tests:
     runs-on: ubuntu-latest
     needs: [static-linux-tests]
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
@@ -252,15 +254,19 @@ jobs:
         
       - name: Install Python API
         run: |
-            python3 -m pip install pip --upgrade
-            pip3 install setuptools
-            pip3 install setuptools --upgrade
-            pip3 install WebFrameworkLibrary/api/python_api/
+            cd TestsBinaries
+            python3 -m venv .venv
+            source .venv/bin/activate
+            python -m pip install pip --upgrade
+            pip install setuptools
+            pip install setuptools --upgrade
+            pip install WebFrameworkLibrary/api/python_api/
         
       - name: Tests
         run: |
           cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
           cd TestsBinaries
+          source .venv/bin/activate
           source run_python_tests.sh ${{ matrix.config }}
   
 
