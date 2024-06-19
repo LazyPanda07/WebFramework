@@ -253,6 +253,7 @@ jobs:
           path: TestsBinaries
         
       - name: Install Python API
+        shell: bash
         run: |
             cd TestsBinaries
             python3 -m venv .venv
@@ -264,6 +265,7 @@ jobs:
             pip install WebFrameworkLibrary/api/python_api/
         
       - name: Tests
+        shell: bash
         run: |
           cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
           cd TestsBinaries
