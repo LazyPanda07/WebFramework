@@ -19,7 +19,7 @@ if __name__ == '__main__':
         config.override_configuration("useHTTPS", bool(args.useHTTPS), True)
         config.override_configuration("port", int(args.port), True)
 
-        server = service.create_web_framework(config)
+        server = service.create_web_framework_from_config(config)
 
         server.start(True)
     except WebFrameworkException as exception:
