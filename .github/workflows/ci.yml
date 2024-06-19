@@ -200,8 +200,7 @@ jobs:
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\], [ubuntu-latest, Linux, lib/libWebFramework.so, run_python_tests.sh, ./]]
-        # os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\]]
+        os: [[windows-latest, Windows, dll/WebFramework.dll, run_python_tests.bat, .\], [ubuntu-latest, Linux, lib/libWebFramework.so, run_python_tests.sh, "source "]]
     runs-on: ${{ matrix.os[0] }}
     needs: [static-windows-tests, static-linux-tests]
 
