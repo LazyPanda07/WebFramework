@@ -264,6 +264,12 @@ jobs:
             pip install setuptools --upgrade
             pip install WebFrameworkLibrary/api/python_api/
         
+      - name: Chmod
+        run: |
+          cd TestsBinaries
+          chmod +x DefaultHTTPSServer
+          chmod +x Core
+
       - name: Tests
         shell: bash
         run: |
