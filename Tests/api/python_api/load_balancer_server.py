@@ -26,7 +26,7 @@ if __name__ == '__main__':
         if args.type == "server":
             settings_paths: List[str] = ["load_balancer_web.json"]
 
-            config.override_configuration("webServerType", "webServerType", True)
+            config.override_configuration("webServerType", "multiThreaded", True)
 
             config.override_configuration_string_array("settingsPaths", settings_paths, True)
         else:
