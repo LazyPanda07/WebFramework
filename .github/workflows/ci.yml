@@ -202,8 +202,6 @@ jobs:
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-    env:
-      ACTIONS_RUNNER_HOOK_JOB_COMPLETED: TestsBinaries/print_logs.ps1
 
     steps:
       - name: Download artifacts
@@ -240,8 +238,6 @@ jobs:
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-    env:
-      ACTIONS_RUNNER_HOOK_JOB_COMPLETED: TestsBinaries/print_logs.sh
 
     steps:
       - name: Download artifacts
@@ -283,6 +279,7 @@ jobs:
           cd TestsBinaries
           source .venv/bin/activate
           source run_python_tests.sh ${{ matrix.config }}
+          python3 print_logs.py
   
 
   publish:
