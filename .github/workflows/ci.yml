@@ -279,7 +279,6 @@ jobs:
           cd TestsBinaries
           source .venv/bin/activate
           source run_python_tests.sh ${{ matrix.config }}
-          python3 print_logs.py
   
 
   publish:
