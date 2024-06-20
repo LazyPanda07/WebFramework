@@ -269,6 +269,7 @@ jobs:
           cd TestsBinaries
           chmod +x DefaultHTTPSServer
           chmod +x Core
+          chmod +x LoadBalancerCore
           chmod +x ProxyCore
 
       - name: Tests

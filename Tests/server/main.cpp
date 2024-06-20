@@ -1,4 +1,5 @@
 #include <fstream>
+#include <filesystem>
 
 #include "WebFramework.h"
 
@@ -8,6 +9,11 @@
 
 int main(int argc, char** argv) try
 {
+	if (std::filesystem::exists("test_database.sqlite"))
+	{
+		std::filesystem::remove("test_database.sqlite");
+	}
+
 	framework::WebFramework server(argv[1]);
 
 	server.startServer

@@ -4,3 +4,4 @@ project(PythonAPI)
 
 install(FILES server.py DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES proxy_server.py DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES load_balancer_server.py DESTINATION ${CMAKE_INSTALL_PREFIX})

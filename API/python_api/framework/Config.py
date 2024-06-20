@@ -68,8 +68,7 @@ class Config:
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
 
-    @dispatch(str, list, bool)
-    def override_configuration(self, key: str, value: List[str], recursive: bool = False):
+    def override_configuration_string_array(self, key: str, value: List[str], recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_char_p * len(value))()
@@ -84,8 +83,7 @@ class Config:
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
 
-    @dispatch(str, list, bool)
-    def override_configuration(self, key: str, value: List[int], recursive: bool = False):
+    def override_configuration_integer_array(self, key: str, value: List[int], recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_int64 * len(value))()

@@ -11,15 +11,15 @@ int main(int argc, char** argv) try
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 	framework::utility::Config config(parser.get<std::string>("--config"));
 	int64_t port = parser.get<int64_t>("--port");
-	
+
 	config.overrideConfiguration("port", port, true);
 
-	if(parser.get<bool>("--custom_heuristic"))
+	if (parser.get<bool>("--custom_heuristic"))
 	{
 		config.overrideConfiguration("heuristic", "CustomHeuristic", true);
 	}
 
-	if(std::string type = parser.get<std::string>("--type"); type == "server")
+	if (std::string type = parser.get<std::string>("--type"); type == "server")
 	{
 		std::vector<json::utility::jsonObject> settingsPaths;
 
@@ -31,12 +31,12 @@ int main(int argc, char** argv) try
 	}
 	else
 	{
-		bool serversHTTPS = parser.get<bool>("--serversHTTPS", false);
+		bool serversHTTPS = parser.get<bool>("--serversHTTPS");
 		std::vector<json::utility::jsonObject> listOfServers;
 
 		config.overrideConfiguration("serversHTTPS", serversHTTPS, true);
 
-		if(serversHTTPS)
+		if (serversHTTPS)
 		{
 			json::utility::appendArray(10002LL, listOfServers);
 			json::utility::appendArray(10003LL, listOfServers);

@@ -6,9 +6,9 @@ from framework.WebFrameworkException import WebFrameworkException
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--config", required=True)
-    parser.add_argument("--port", required=True)
-    parser.add_argument("--useHTTPS")
+    parser.add_argument("--config", required=True, type=str)
+    parser.add_argument("--port", required=True, type=int)
+    parser.add_argument("--useHTTPS", action=argparse.BooleanOptionalAction, default=False)
 
     args = parser.parse_args()
 
@@ -16,8 +16,8 @@ if __name__ == '__main__':
         service = Service("WebFramework")
         config = service.create_config(args.config)
 
-        config.override_configuration("useHTTPS", bool(args.useHTTPS), True)
-        config.override_configuration("port", int(args.port), True)
+        config.override_configuration("useHTTPS", args.useHTTPS, True)
+        config.override_configuration("port", args.port, True)
 
         server = service.create_web_framework_from_config(config)
 
