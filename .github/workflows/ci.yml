@@ -56,6 +56,12 @@ jobs:
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} ..
           make install -j $(nproc)
+
+    - name: Strip
+      if: ${{ matrix.shared[0] == 'ON' }}
+      run: |
+          cd build/WebFrameworkLibrary
+          strip libWebFramework.so
           
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
