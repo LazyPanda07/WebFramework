@@ -48,8 +48,8 @@ WEB_FRAMEWORK_API void overrideConfigurationIntegerArray(void* implementation, c
 
 WEB_FRAMEWORK_API const char* getErrorMessage(void* exception);
 
-WEB_FRAMEWORK_API const char* getRawConfiguration(void* implementation, void** exception);
-
 WEB_FRAMEWORK_API void* getConfigurationString(void* implementation, void** exception);
+
+WEB_FRAMEWORK_API const char* getRawConfiguration(void* implementation, void** exception);
 
 #endif

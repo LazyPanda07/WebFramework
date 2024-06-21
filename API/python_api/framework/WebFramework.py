@@ -57,17 +57,17 @@ class WebFramework:
         self.__on_start_server = on_start_server
         exception = ctypes.c_void_p(0)
 
-        self.__handler.call_function_member_function("startWebFrameworkServer", None, self.__implementation, wait,
-                                                     self.__function_signature(self.__on_start_server),
-                                                     ctypes.byref(exception))
+        self.__handler.call_class_member_function("startWebFrameworkServer", None, self.__implementation, wait,
+                                                  self.__function_signature(self.__on_start_server),
+                                                  ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
 
     def stop(self, wait: bool = True):
         exception = ctypes.c_void_p(0)
-        self.__handler.call_function_member_function("stopWebFrameworkServer", None, self.__implementation, wait,
-                                                     ctypes.byref(exception))
+        self.__handler.call_class_member_function("stopWebFrameworkServer", None, self.__implementation, wait,
+                                                  ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)

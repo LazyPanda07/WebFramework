@@ -37,7 +37,9 @@ namespace framework
 
 			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
 
-			std::string_view getConfiguration() const;
+			std::string getConfiguration() const;
+
+			std::string_view getRawConfiguration() const;
 
 			void* getImplementation() const;
 
@@ -207,12 +209,32 @@ namespace framework
 			return *this;
 		}
 
-		inline std::string_view Config::getConfiguration() const
+		inline std::string Config::getConfiguration() const
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getConfiguration, const char*, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationString, void*, void** exception);
+			using getDataFromString = const char* (*)(void* implementation);
 			void* exception = nullptr;
 
-			const char* result = handler->CALL_CLASS_MEMBER_FUNCTION(getConfiguration, &exception);
+			void* stringPtr = handler->CALL_CLASS_MEMBER_FUNCTION(getConfigurationString, &exception);
+
+			if (exception)
+			{
+				throw WebFrameworkException(handler, exception);
+			}
+
+			std::string result(handler->CALL_FUNCTION(getDataFromString, stringPtr));
+
+			handler->free(stringPtr);
+
+			return result;
+		}
+
+		inline std::string_view Config::getRawConfiguration() const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getRawConfiguration, const char*, void** exception);
+			void* exception = nullptr;
+
+			const char* result = handler->CALL_CLASS_MEMBER_FUNCTION(getRawConfiguration, &exception);
 
 			if (exception)
 			{

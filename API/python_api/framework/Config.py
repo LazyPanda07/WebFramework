@@ -39,9 +39,9 @@ class Config:
     def override_configuration(self, key: str, value: str, recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
-        self.__handler.call_function_member_function("overrideConfigurationString", None, self.implementation,
-                                                     ctypes.c_char_p(key.encode()), ctypes.c_char_p(value.encode()),
-                                                     recursive, ctypes.byref(exception))
+        self.__handler.call_class_member_function("overrideConfigurationString", None, self.implementation,
+                                                  ctypes.c_char_p(key.encode()), ctypes.c_char_p(value.encode()),
+                                                  recursive, ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
@@ -50,9 +50,9 @@ class Config:
     def override_configuration(self, key: str, value: int, recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
-        self.__handler.call_function_member_function("overrideConfigurationInteger", None, self.implementation,
-                                                     ctypes.c_char_p(key.encode()), ctypes.c_int64(value),
-                                                     recursive, ctypes.byref(exception))
+        self.__handler.call_class_member_function("overrideConfigurationInteger", None, self.implementation,
+                                                  ctypes.c_char_p(key.encode()), ctypes.c_int64(value),
+                                                  recursive, ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
@@ -61,9 +61,9 @@ class Config:
     def override_configuration(self, key: str, value: bool, recursive: bool = False):
         exception = ctypes.c_void_p(0)
 
-        self.__handler.call_function_member_function("overrideConfigurationBoolean", None, self.implementation,
-                                                     ctypes.c_char_p(key.encode()), value,
-                                                     recursive, ctypes.byref(exception))
+        self.__handler.call_class_member_function("overrideConfigurationBoolean", None, self.implementation,
+                                                  ctypes.c_char_p(key.encode()), value,
+                                                  recursive, ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
@@ -76,9 +76,9 @@ class Config:
         for i in range(len(value)):
             data[i] = value[i].encode()
 
-        self.__handler.call_function_member_function("overrideConfigurationStringArray", None, self.implementation,
-                                                     ctypes.c_char_p(key.encode()), ctypes.pointer(data),
-                                                     recursive, ctypes.c_int64(len(value)), ctypes.byref(exception))
+        self.__handler.call_class_member_function("overrideConfigurationStringArray", None, self.implementation,
+                                                  ctypes.c_char_p(key.encode()), ctypes.pointer(data),
+                                                  recursive, ctypes.c_int64(len(value)), ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
@@ -91,9 +91,9 @@ class Config:
         for i in range(len(value)):
             data[i] = value[i]
 
-        self.__handler.call_function_member_function("overrideConfigurationIntegerArray", None, self.implementation,
-                                                     ctypes.c_char_p(key.encode()), ctypes.pointer(data),
-                                                     recursive, ctypes.c_int64(len(value)), ctypes.byref(exception))
+        self.__handler.call_class_member_function("overrideConfigurationIntegerArray", None, self.implementation,
+                                                  ctypes.c_char_p(key.encode()), ctypes.pointer(data),
+                                                  recursive, ctypes.c_int64(len(value)), ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
@@ -101,9 +101,9 @@ class Config:
     def get_configuration(self) -> str:
         exception = ctypes.c_void_p(0)
 
-        string_implementation = self.__handler.call_function_member_function("getConfigurationString", ctypes.c_void_p,
-                                                                             self.implementation,
-                                                                             ctypes.byref(exception))
+        string_implementation = self.__handler.call_class_member_function("getConfigurationString", ctypes.c_void_p,
+                                                                          self.implementation,
+                                                                          ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)
@@ -120,9 +120,9 @@ class Config:
     def get_raw_configuration(self) -> str:
         exception = ctypes.c_void_p(0)
 
-        result = self.__handler.call_function_member_function("getRawConfiguration", ctypes.c_char_p,
-                                                              self.implementation,
-                                                              ctypes.byref(exception))
+        result = self.__handler.call_class_member_function("getRawConfiguration", ctypes.c_char_p,
+                                                           self.implementation,
+                                                           ctypes.byref(exception))
 
         if exception:
             raise WebFrameworkException(self.__handler, exception.value)

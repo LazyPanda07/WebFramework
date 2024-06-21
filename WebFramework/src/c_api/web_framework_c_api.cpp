@@ -215,18 +215,6 @@ const char* getErrorMessage(void* exception)
 	return static_cast<std::runtime_error*>(exception)->what();
 }
 
-const char* getRawConfiguration(void* implementation, void** exception)
-{
-	try
-	{
-		return (*(*static_cast<framework::utility::Config*>(implementation))).getRawData().data();
-	}
-	catch (const std::exception& e)
-	{
-		LOG_AND_CREATE_EXCEPTION();
-	}
-}
-
 void* getConfigurationString(void* implementation, void** exception)
 {
 	try
@@ -237,6 +225,18 @@ void* getConfigurationString(void* implementation, void** exception)
 		result << *config;
 
 		return new std::string(result.str());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+const char* getRawConfiguration(void* implementation, void** exception)
+{
+	try
+	{
+		return (*(*static_cast<framework::utility::Config*>(implementation))).getRawData().data();
 	}
 	catch (const std::exception& e)
 	{

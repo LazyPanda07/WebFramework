@@ -12,7 +12,7 @@ class DLLHandler:
 
         return function(*args)
 
-    def call_function_member_function(self, function_name: str, return_type, implementation: ctypes.c_void_p, *args):
+    def call_class_member_function(self, function_name: str, return_type, implementation: ctypes.c_void_p, *args):
         function = self.__handle[function_name]
 
         function.restype = return_type
