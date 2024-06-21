@@ -118,14 +118,14 @@ namespace framework
 
 							if (it == routeParameters.end())
 							{
-								throw exceptions::NotImplementedException(); // 404
+								throw exceptions::BadRequestException(); // 400
 							}
 
 							executorSettings = settings.find(it->baseRoute);
 
 							if (executorSettings == settings.end())
 							{
-								throw exceptions::NotImplementedException(); // 404
+								throw exceptions::BadRequestException(); // 400
 							}
 
 							size_t i = 0;

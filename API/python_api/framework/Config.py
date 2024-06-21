@@ -101,7 +101,27 @@ class Config:
     def get_configuration(self) -> str:
         exception = ctypes.c_void_p(0)
 
-        result = self.__handler.call_function_member_function("getConfiguration", ctypes.c_char_p, self.implementation,
+        string_implementation = self.__handler.call_function_member_function("getConfigurationString", ctypes.c_void_p,
+                                                                             self.implementation,
+                                                                             ctypes.byref(exception))
+
+        if exception:
+            raise WebFrameworkException(self.__handler, exception.value)
+
+        result_ptr = self.__handler.call_function("getDataFromString", ctypes.c_char_p,
+                                                  ctypes.c_uint64(string_implementation))
+
+        result = str(result_ptr.decode())
+
+        self.__handler.free(string_implementation)
+
+        return result
+
+    def get_raw_configuration(self) -> str:
+        exception = ctypes.c_void_p(0)
+
+        result = self.__handler.call_function_member_function("getRawConfiguration", ctypes.c_char_p,
+                                                              self.implementation,
                                                               ctypes.byref(exception))
 
         if exception:

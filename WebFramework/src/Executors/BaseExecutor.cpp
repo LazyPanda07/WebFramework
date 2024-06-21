@@ -20,38 +20,38 @@ namespace framework
 
 	void BaseExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
 	void BaseExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
 	void BaseExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
 	{
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
 	void BaseExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
 	{
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
 	void BaseExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
 	{
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
 	void BaseExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
 	{
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
 	void BaseExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
 #ifdef NDEBUG
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 #endif
 
 		vector<string> methods = { "OPTIONS" };
@@ -82,7 +82,7 @@ namespace framework
 	void BaseExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
 #ifdef NDEBUG
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 #endif
 
 		response.addBody(request.getParser().getRawData());
@@ -90,7 +90,7 @@ namespace framework
 
 	void BaseExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
 	{
-		throw exceptions::NotImplementedException();
+		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 }
 

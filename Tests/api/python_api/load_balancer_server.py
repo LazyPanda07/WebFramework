@@ -20,8 +20,8 @@ if __name__ == '__main__':
         service = Service("WebFramework")
         config = service.create_config(args.config)
 
-        # if args.custom_heuristic:
-        #    config.override_configuration("heuristic", "CustomHeuristic", True)
+        if args.custom_heuristic:
+           config.override_configuration("heuristic", "CustomHeuristic", True)
 
         if args.type == "server":
             settings_paths: List[str] = ["load_balancer_web.json"]

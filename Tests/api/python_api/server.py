@@ -6,7 +6,7 @@ from framework.WebFrameworkException import WebFrameworkException
 
 def write_process_id():
     with open("start_core_server.txt", "w") as file:
-            file.write(os.getpid())
+            file.write(str(os.getpid()))
 
 if __name__ == '__main__':
     try:

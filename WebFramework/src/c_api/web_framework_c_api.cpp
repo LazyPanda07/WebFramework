@@ -15,6 +15,11 @@ void deleteWebFrameworkObject(void* implementation)
 	delete implementation;
 }
 
+const char* getDataFromString(void* implementation)
+{
+	return static_cast<std::string*>(implementation)->data();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void* createWebFrameworkFromPath(const char* configPath, void** exception)
@@ -210,11 +215,28 @@ const char* getErrorMessage(void* exception)
 	return static_cast<std::runtime_error*>(exception)->what();
 }
 
-const char* getConfiguration(void* implementation, void** exception)
+const char* getRawConfiguration(void* implementation, void** exception)
 {
 	try
 	{
 		return (*(*static_cast<framework::utility::Config*>(implementation))).getRawData().data();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void* getConfigurationString(void* implementation, void** exception)
+{
+	try
+	{
+		framework::utility::Config& config = *static_cast<framework::utility::Config*>(implementation);
+		std::ostringstream result;
+
+		result << *config;
+
+		return new std::string(result.str());
 	}
 	catch (const std::exception& e)
 	{

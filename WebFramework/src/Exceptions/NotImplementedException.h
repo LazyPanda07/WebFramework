@@ -13,7 +13,7 @@ namespace framework
 		class NotImplementedException : public BadRequestException
 		{
 		public:
-			NotImplementedException();
+			NotImplementedException(std::string_view className, std::string_view methodName);
 
 			~NotImplementedException() = default;
 		};

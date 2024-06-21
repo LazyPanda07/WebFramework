@@ -20,7 +20,8 @@
 
     ],
     "loadSources": [
-      "current"
+      "current",
+      "LoadBalancerExecutors"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",

@@ -12,6 +12,8 @@
 
 WEB_FRAMEWORK_API void deleteWebFrameworkObject(void* implementation);
 
+WEB_FRAMEWORK_API const char* getDataFromString(void* implementation);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 WEB_FRAMEWORK_API void* createWebFrameworkFromPath(const char* configPath, void** exception);
@@ -46,6 +48,8 @@ WEB_FRAMEWORK_API void overrideConfigurationIntegerArray(void* implementation, c
 
 WEB_FRAMEWORK_API const char* getErrorMessage(void* exception);
 
-WEB_FRAMEWORK_API const char* getConfiguration(void* implementation, void** exception);
+WEB_FRAMEWORK_API const char* getRawConfiguration(void* implementation, void** exception);
+
+WEB_FRAMEWORK_API void* getConfigurationString(void* implementation, void** exception);
 
 #endif

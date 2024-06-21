@@ -17,8 +17,6 @@ set(
 
 if(UNIX)
 	add_definitions(-D__LINUX__)
-
-	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -rdynamic)
 endif(UNIX)
 
 project(LoadBalancerServer)
@@ -26,8 +24,6 @@ project(LoadBalancerServer)
 add_executable(
 	${PROJECT_NAME}
 	main.cpp
-	IdExecutor.cpp
-	CustomHeuristic.cpp
 )
 
 target_include_directories(
@@ -58,5 +54,7 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	${LIBS}
 )
+
+add_subdirectory(load_balancer_executors)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
