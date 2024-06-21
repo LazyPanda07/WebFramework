@@ -60,7 +60,7 @@ jobs:
     - name: Strip
       if: ${{ matrix.shared[0] == 'ON' }}
       run: |
-          cd build/WebFrameworkLibrary
+          cd build/WebFrameworkLibrary/lib
           strip libWebFramework.so
           
     - name: Upload artifacts
