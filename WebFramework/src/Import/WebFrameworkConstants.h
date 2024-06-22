@@ -109,6 +109,9 @@ namespace web_framework_assets
 #define WEB_FRAMEWORK_API __attribute__((visibility("default")))
 #else
 #define WEB_FRAMEWORK_API __declspec(dllexport)
+
+#pragma warning(disable: 4275)
+#pragma warning(disable: 4251)
 #endif
 #else
 #define WEB_FRAMEWORK_API

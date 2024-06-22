@@ -1,15 +1,31 @@
-#include "WebFramework.h"
+#include <iostream>
+#include <fstream>
+
+#ifdef CXX_API
+#include "Service.h"
+#else
+#include "Import/WebFramework.h"
+#endif
 
 #include "ConsoleArgumentParser.h"
 
 #ifdef __LINUX__
 #include <unistd.h> 
+#else
+#include <Windows.h>
 #endif
 
 int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
+
+#ifdef CXX_API
+	framework::Service& service = framework::Service::createService("WebFramework");
+	framework::utility::Config config = service.createConfig(parser.get<std::string>("--config"));
+#else
 	framework::utility::Config config(parser.get<std::string>("--config"));
+#endif
+
 	int64_t port = parser.get<int64_t>("--port");
 
 	config.overrideConfiguration("port", port, true);
@@ -21,9 +37,7 @@ int main(int argc, char** argv) try
 
 	if (std::string type = parser.get<std::string>("--type"); type == "server")
 	{
-		std::vector<json::utility::jsonObject> settingsPaths;
-
-		json::utility::appendArray("load_balancer_web.json", settingsPaths);
+		std::vector<std::string> settingsPaths = { "load_balancer_web.json" };
 
 		config.overrideConfiguration("webServerType", "multiThreaded", true);
 
@@ -32,27 +46,37 @@ int main(int argc, char** argv) try
 	else
 	{
 		bool serversHTTPS = parser.get<bool>("--serversHTTPS");
-		std::vector<json::utility::jsonObject> listOfServers;
+		std::vector<int64_t> listOfServers;
 
 		config.overrideConfiguration("serversHTTPS", serversHTTPS, true);
 
 		if (serversHTTPS)
 		{
-			json::utility::appendArray(10002LL, listOfServers);
-			json::utility::appendArray(10003LL, listOfServers);
+			listOfServers =
+			{
+				10002,
+				10003
+			};
 		}
 		else
 		{
-			json::utility::appendArray(10000LL, listOfServers);
-			json::utility::appendArray(10001LL, listOfServers);
+			listOfServers =
+			{
+				10000,
+				10001,
+			};
 		}
 
 		config.overrideConfiguration("127.0.0.1", listOfServers, true);
 	}
 
+#ifdef CXX_API
+	framework::WebFramework server = service.createWebFramework(config);
+#else
 	framework::WebFramework server(config);
+#endif
 
-	server.startServer
+	server.start
 	(
 		true,
 		[port]()

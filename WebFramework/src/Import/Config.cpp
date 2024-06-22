@@ -8,6 +8,23 @@ namespace framework
 {
 	namespace utility
 	{
+		template<ranges::range T>
+		Config& Config::overrideConfigurationArray(string_view key, const T& value, bool recursive)
+		{
+			vector<json::utility::jsonObject> data;
+
+			data.reserve(distance(value.begin(), value.end()));
+
+			for (const auto& temp : value)
+			{
+				json::utility::appendArray(temp, data);
+			}
+
+			currentConfiguration.overrideValue(key, data, recursive);
+
+			return *this;
+		}
+
 		Config Config::createConfig(string_view serverConfiguration, string_view sourcesPath)
 		{
 			Config result;
@@ -36,6 +53,16 @@ namespace framework
 			currentConfiguration.overrideValue(key, value, recursive);
 
 			return *this;
+		}
+
+		Config& Config::overrideConfiguration(string_view key, const vector<int64_t>& value, bool recursive)
+		{
+			return this->overrideConfigurationArray(key, value, recursive);
+		}
+
+		Config& Config::overrideConfiguration(string_view key, const vector<string>& value, bool recursive)
+		{
+			return this->overrideConfigurationArray(key, value, recursive);
 		}
 
 		const filesystem::path& Config::getBasePath() const

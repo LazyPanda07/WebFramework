@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WebFrameworkCore.h"
+#include "Import/WebFrameworkCore.h"
 
 namespace framework
 {
@@ -8,11 +8,11 @@ namespace framework
 	{
 		class WEB_FRAMEWORK_API BaseLoadBalancerHeuristic
 		{
-		protected:
+		private:
 			std::string ip;
 			std::string port;
 			bool useHTTPS;
-			
+
 		public:
 			BaseLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
 
@@ -21,6 +21,12 @@ namespace framework
 			virtual void onStart();
 
 			virtual void onEnd();
+
+			const std::string& getIp() const;
+
+			const std::string& getPort() const;
+
+			bool getUseHTTPS() const;
 
 			virtual ~BaseLoadBalancerHeuristic() = default;
 		};

@@ -1,10 +1,17 @@
+#include <iostream>
 #include <fstream>
 #include <filesystem>
 
-#include "WebFramework.h"
+#ifdef CXX_API
+#include "Service.h"
+#else
+#include "Import/WebFramework.h"
+#endif
 
 #ifdef __LINUX__
 #include <unistd.h> 
+#else
+#include <Windows.h>
 #endif
 
 int main(int argc, char** argv) try
@@ -14,9 +21,14 @@ int main(int argc, char** argv) try
 		std::filesystem::remove("test_database.sqlite");
 	}
 
+#ifdef CXX_API
+	framework::Service& serice = framework::Service::createService("WebFramework");
+	framework::WebFramework server = serice.createWebFramework(argv[1]);
+#else
 	framework::WebFramework server(argv[1]);
-
-	server.startServer
+#endif
+	
+	server.start
 	(
 		true,
 		[]() 

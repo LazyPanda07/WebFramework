@@ -21,6 +21,7 @@ set(
     ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/sqlite3/
 )
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
+option(CXX_API "" OFF)
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
 add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
@@ -35,6 +36,10 @@ if(WIN32)
 
     add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
 endif(WIN32)
+
+if (${CXX_API})
+    add_definitions(-DCXX_API)
+endif()
 
 project(Tests)
 

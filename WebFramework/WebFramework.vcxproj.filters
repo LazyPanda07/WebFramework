@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\WebFramework.cpp">
+    <ClCompile Include="src\Import\WebFramework.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp">
@@ -132,7 +132,7 @@
     <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Config.cpp">
+    <ClCompile Include="src\Import\Config.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Proxy\ProxyServer.cpp">
@@ -146,10 +146,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\WebFramework.h">
+    <ClInclude Include="src\Import\WebFramework.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebFrameworkConstants.h">
+    <ClInclude Include="src\Import\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h">
@@ -260,7 +260,7 @@
     <ClInclude Include="src\Exceptions\DatabaseException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebFrameworkCore.h">
+    <ClInclude Include="src\Import\WebFrameworkCore.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h">
@@ -275,7 +275,7 @@
     <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Config.h">
+    <ClInclude Include="src\Import\Config.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Sources.h">

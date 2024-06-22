@@ -20,7 +20,7 @@ namespace framework
 		~Service() = default;
 
 	public:
-		static Service& createService(const std::filesystem::path& pathToDLL);
+		static Service& createService(const std::filesystem::path& pathToDLL = "WebFramework");
 
 	public:
 		WebFramework createWebFramework(const std::filesystem::path& configPath);

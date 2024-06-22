@@ -79,6 +79,13 @@ elseif(WIN32)
     endif()
 endif(UNIX)
 
+if (${IS_WEB_FRAMEWORK_SHARED})
+    include_directories(
+        BEFORE
+        ${WebFrameworkSDK}/api/cxx/include/
+    )
+endif()
+
 if(NOT TARGET generate_localization)
     add_custom_target(
         generate_localization

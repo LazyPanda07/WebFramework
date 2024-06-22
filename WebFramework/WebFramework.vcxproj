@@ -249,7 +249,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Config.cpp" />
+    <ClCompile Include="src\Import\Config.cpp" />
     <ClCompile Include="src\c_api\web_framework_c_api.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Utility\ChunkGenerator.cpp" />
@@ -286,7 +286,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
     <ClCompile Include="src\Utility\BaseConnectionData.cpp" />
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
-    <ClCompile Include="src\WebFramework.cpp" />
+    <ClCompile Include="src\Import\WebFramework.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
@@ -294,7 +294,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\Import\Config.h" />
     <ClInclude Include="src\c_api\web_framework_c_api.h" />
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
     <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h" />
@@ -314,7 +314,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
     <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
-    <ClInclude Include="src\WebFrameworkCore.h" />
+    <ClInclude Include="src\Import\WebFrameworkCore.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h" />
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />
@@ -333,8 +333,8 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
-    <ClInclude Include="src\WebFrameworkConstants.h" />
-    <ClInclude Include="src\WebFramework.h" />
+    <ClInclude Include="src\Import\WebFrameworkConstants.h" />
+    <ClInclude Include="src\Import\WebFramework.h" />
     <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />

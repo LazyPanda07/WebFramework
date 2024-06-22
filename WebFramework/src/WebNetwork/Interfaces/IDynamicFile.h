@@ -1,10 +1,10 @@
 #pragma once
 
-#include "WebFrameworkCore.h"
+#include "Import/WebFrameworkCore.h"
 
 #include "IFile.h"
 #include "WebNetwork/HTTPResponse.h"
-#include "WebFrameworkConstants.h"
+#include "Import/WebFrameworkConstants.h"
 
 namespace framework
 {

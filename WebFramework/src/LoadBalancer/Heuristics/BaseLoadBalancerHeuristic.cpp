@@ -23,5 +23,20 @@ namespace framework
 		{
 
 		}
+
+		const string& BaseLoadBalancerHeuristic::getIp() const
+		{
+			return ip;
+		}
+
+		const string& BaseLoadBalancerHeuristic::getPort() const
+		{
+			return port;
+		}
+
+		bool BaseLoadBalancerHeuristic::getUseHTTPS() const
+		{
+			return useHTTPS;
+		}
 	}
 }

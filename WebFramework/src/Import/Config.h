@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WebFrameworkCore.h"
+#include "Import/WebFrameworkCore.h"
 
 #include "JSONParser.h"
 
@@ -16,6 +16,10 @@ namespace framework
 		private:
 			json::JSONParser currentConfiguration;
 			std::filesystem::path basePath;
+
+		private:
+			template<std::ranges::range T>
+			Config& overrideConfigurationArray(std::string_view key, const T& value, bool recursive);
 
 		private:
 			Config() = default;
@@ -47,6 +51,24 @@ namespace framework
 			 * @return 
 			 */
 			Config& overrideConfiguration(std::string_view key, const json::utility::jsonObject::variantType& value, bool recursive = false);
+
+			/**
+			 * @brief Override specific config value
+			 * @param key Config key
+			 * @param value Config value
+			 * @param recursive Search recursively
+			 * @return
+			 */
+			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
+
+			/**
+			 * @brief Override specific config value
+			 * @param key Config key
+			 * @param value Config value
+			 * @param recursive Search recursively
+			 * @return
+			 */
+			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
 
 			/**
 			 * @brief Config file directory

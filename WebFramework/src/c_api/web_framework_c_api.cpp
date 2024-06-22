@@ -2,9 +2,9 @@
 
 #include "web_framework_c_api.h"
 
-#include "WebFramework.h"
+#include "Import/WebFramework.h"
+#include "Import/Config.h"
 #include "Log.h"
-#include "Config.h"
 
 #define LOG_EXCEPTION() Log::error("Exception: {}", "C_API", e.what())
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
