@@ -9,7 +9,7 @@ namespace framework
 		/// <summary>
 		/// Base class for most of WebFramework exceptions
 		/// </summary>
-		class BaseExecutorException : public BaseWebFrameworkException
+		class WEB_FRAMEWORK_API BaseExecutorException : public BaseWebFrameworkException
 		{
 		public:
 			BaseExecutorException(std::string_view message);

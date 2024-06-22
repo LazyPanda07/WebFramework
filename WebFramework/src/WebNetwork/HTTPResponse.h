@@ -11,7 +11,7 @@ namespace framework
 	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class HTTPResponse
+	class WEB_FRAMEWORK_API HTTPResponse
 	{
 	private:
 		web::HTTPBuilder builder;

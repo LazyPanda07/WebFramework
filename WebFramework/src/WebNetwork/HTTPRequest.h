@@ -19,7 +19,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class HTTPRequest
+	class WEB_FRAMEWORK_API HTTPRequest
 	{
 	private:
 		SessionsManager& session;

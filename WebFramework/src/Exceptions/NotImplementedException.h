@@ -10,7 +10,7 @@ namespace framework
 		/// Default exception for all HTTP methods in BaseExecutor
 		/// <para>Server throws 400 error</para>
 		/// </summary>
-		class NotImplementedException : public BadRequestException
+		class WEB_FRAMEWORK_API NotImplementedException : public BadRequestException
 		{
 		public:
 			NotImplementedException(std::string_view className, std::string_view methodName);

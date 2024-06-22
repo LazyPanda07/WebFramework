@@ -11,7 +11,7 @@ namespace framework
 		/**
 		 * @brief Config file representation
 		 */
-		class Config
+		class WEB_FRAMEWORK_API Config
 		{
 		private:
 			json::JSONParser currentConfiguration;

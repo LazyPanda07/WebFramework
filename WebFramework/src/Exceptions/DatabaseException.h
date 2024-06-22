@@ -7,7 +7,7 @@ namespace framework
 	namespace exceptions
 	{
 		/// @brief Base class for all database exceptions
-		class DatabaseException : public BaseWebFrameworkException
+		class WEB_FRAMEWORK_API DatabaseException : public BaseWebFrameworkException
 		{
 		public:
 			DatabaseException(const std::string& errorMessage);

@@ -32,7 +32,7 @@ namespace framework
 		/// Wrapper class for sqlite3 library
 		/// <para>Providing connect to sqlite3 database</para>
 		/// </summary>
-		class SQLiteDatabase
+		class WEB_FRAMEWORK_API SQLiteDatabase
 		{
 		private:
 			std::string databaseName;

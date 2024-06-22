@@ -10,7 +10,7 @@ namespace framework
 {
 	namespace interfaces
 	{
-		class IDynamicFile : virtual public IFile
+		class WEB_FRAMEWORK_API IDynamicFile : virtual public IFile
 		{
 		public:
 			/**

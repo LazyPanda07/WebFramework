@@ -12,7 +12,7 @@ namespace framework
 	/// Main class of framework
 	/// <para>All initializations go through this class</para>
 	/// </summary>
-	class WebFramework
+	class WEB_FRAMEWORK_API WebFramework
 	{
 	public:
 		/// @brief Get current WebFramework version

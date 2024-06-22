@@ -7,7 +7,7 @@ namespace framework
 {
 	namespace interfaces
 	{
-		class IStaticFile : virtual public IFile
+		class WEB_FRAMEWORK_API IStaticFile : virtual public IFile
 		{
 		public:
 			/**

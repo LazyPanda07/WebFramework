@@ -5,15 +5,6 @@
 #include <memory>
 #include <cstdint>
 
-/// <summary>
-/// Default HTTP port
-/// </summary>
-inline constexpr std::string_view HTTPPort = "80";
-/// <summary>
-/// Default HTTPS port
-/// </summary>
-inline constexpr std::string_view HTTPSPort = "443";
-
 inline const std::string contentLengthHeader = "Content-Length";
 inline const std::string crlfcrlf = "\r\n\r\n";
 
@@ -112,3 +103,13 @@ namespace web_framework_assets
 	inline constexpr std::string_view notFound = "404.html";
 	inline constexpr std::string_view internalServerError = "500.html";
 }
+
+#ifdef WEB_FRAMEWORK_DLL
+#ifdef __LINUX__
+#define WEB_FRAMEWORK_API __attribute__((visibility("default")))
+#else
+#define WEB_FRAMEWORK_API __declspec(dllexport)
+#endif
+#else
+#define WEB_FRAMEWORK_API
+#endif

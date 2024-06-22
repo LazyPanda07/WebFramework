@@ -18,7 +18,7 @@ namespace framework
 	/// <summary>
 	/// Base class for all executors
 	/// </summary>
-	class BaseExecutor
+	class WEB_FRAMEWORK_API BaseExecutor
 	{
 	public:
 		enum class executorType

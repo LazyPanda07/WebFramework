@@ -6,7 +6,7 @@ namespace framework
 {
 	namespace interfaces
 	{
-		class IFile
+		class WEB_FRAMEWORK_API IFile
 		{
 		public:
 			virtual const std::filesystem::path& getPathToAssets() const = 0;
