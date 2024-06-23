@@ -275,6 +275,84 @@ jobs:
           cd build/bin
           source run_tests.sh ${{ matrix.config }}
 
+
+  windows-cxx-tests:
+    runs-on: windows-latest
+    needs: windows-build
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}DLL_Windows
+        path: WebFrameworkLibrary
+
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@v1
+      with:
+        build-type: ${{ matrix.configuration }}
+        install-path: Tests/gtest
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Tests
+      working-directory: Tests
+      run: |
+          cd build/bin
+          .\run_tests.bat ${{ matrix.config }}
+
+
+  linux-cxx-tests:
+    runs-on: ubuntu-latest
+    needs: linux-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}DLL_Linux
+        path: WebFrameworkLibrary
+        
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON ..
+          make install -j $(nproc)
+
+    - name: Tests
+      working-directory: Tests
+      shell: bash
+      run: |
+          cd build/bin
+          source run_tests.sh ${{ matrix.config }}
+
   
   windows-python-tests:
     runs-on: windows-latest
@@ -362,7 +440,7 @@ jobs:
   
 
   publish:
-    needs: [static-memory-leak-tests, windows-python-tests, linux-python-tests]
+    needs: [static-memory-leak-tests, windows-cxx-tests, linux-cxx-tests, windows-python-tests, linux-python-tests]
     runs-on: ubuntu-latest
 
     steps:
@@ -375,7 +453,7 @@ jobs:
     
     - name: Setup release version variable
       shell: pwsh
-      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\Import\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
       if: ${{ env.CURRENT_BRANCH == 'master' }}
