@@ -315,6 +315,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
+          .\CXX_API.exe
           .\run_tests.bat ${{ matrix.config }}
 
 
@@ -352,6 +353,7 @@ jobs:
       shell: bash
       run: |
           cd build/bin
+          ./CXX_API
           source run_tests.sh ${{ matrix.config }}
 
   
