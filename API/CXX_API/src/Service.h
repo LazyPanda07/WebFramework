@@ -116,7 +116,7 @@ namespace framework
 
 		if (!instance)
 		{
-			instance = std::unique_ptr<Service>(new Service(pathToDLL));
+			instance = std::unique_ptr<Service>(new Service(std::filesystem::absolute(pathToDLL)));
 		}
 
 		return *instance;
