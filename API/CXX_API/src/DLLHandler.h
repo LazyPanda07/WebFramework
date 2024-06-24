@@ -44,8 +44,19 @@ namespace framework
 #ifdef __LINUX__
 		handle = dlopen(pathToDLL.string().data(), RTLD_LAZY);
 #else
+		SetDllDirectoryA(pathToDLL.parent_path().string().data());
+
 		handle = LoadLibraryA(pathToDLL.string().data());
 #endif
+
+		if (!handle)
+		{
+#ifdef __LINUX__
+			throw std::runtime_error(std::format("Can't load {} or its dependencies", pathToDLL.string()));
+#else
+			throw std::runtime_error(std::format("GetLastError(): {}", GetLastError()));
+#endif
+		}
 	}
 
 	template<typename T, typename... Args>
