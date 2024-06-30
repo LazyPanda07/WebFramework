@@ -14,8 +14,6 @@
 
 using namespace std;
 
-// TODO: try catch to tryGet
-
 namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
@@ -32,52 +30,47 @@ namespace framework
 
 	string WebFramework::initLogging() const
 	{
-		try
+		json::utility::jsonObject loggingSettings;
+
+		if (!(*config).tryGetObject(json_settings::loggingObject, loggingSettings))
 		{
-			const json::utility::jsonObject& loggingSettings = (*config).getObject(json_settings::loggingObject); // is logging object exists
-
-			try
-			{
-				if (loggingSettings.getBool(json_settings::usingLoggingKey))
-				{
-					string logsPath;
-					const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
-					bool duplicateOutput = false;
-					bool duplicateErrorOutput = false;
-
-					loggingSettings.tryGetString(json_settings::logsPathKey, logsPath);
-
-					loggingSettings.tryGetBool(json_settings::duplicateOutputKey, duplicateOutput);
-					loggingSettings.tryGetBool(json_settings::duplicateErrorOutputKey, duplicateErrorOutput);
-
-					try
-					{
-						Log::configure(dateFormat, logsPath, loggingSettings.getUnsignedInt(json_settings::logFileSizeKey));
-					}
-					catch (const json::exceptions::BaseJSONException&)
-					{
-						Log::configure(dateFormat, logsPath);
-					}
-
-					if (duplicateOutput)
-					{
-						Log::duplicateLog(cout);
-					}
-
-					if (duplicateErrorOutput)
-					{
-						Log::duplicateErrorLog(cerr);
-					}
-				}
-			}
-			catch (const json::exceptions::BaseJSONException& e)
-			{
-				return e.what();
-			}
+			return "";
 		}
-		catch (const json::exceptions::BaseJSONException& e)
+
+		bool usingLogging = false;
+
+		if (loggingSettings.tryGetBool(json_settings::usingLoggingKey, usingLogging) && usingLogging)
 		{
-			cerr << e.what() << endl;
+			string logsPath;
+			const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
+			bool duplicateOutput = false;
+			bool duplicateErrorOutput = false;
+
+			loggingSettings.tryGetString(json_settings::logsPathKey, logsPath);
+
+			loggingSettings.tryGetBool(json_settings::duplicateOutputKey, duplicateOutput);
+			loggingSettings.tryGetBool(json_settings::duplicateErrorOutputKey, duplicateErrorOutput);
+
+			uint64_t logFileSize = 0;
+
+			if (loggingSettings.tryGetUnsignedInt(json_settings::logFileSizeKey, logFileSize))
+			{
+				Log::configure(dateFormat, logsPath, logFileSize);
+			}
+			else
+			{
+				Log::configure(dateFormat, logsPath);
+			}
+
+			if (duplicateOutput)
+			{
+				Log::duplicateLog(cout);
+			}
+
+			if (duplicateErrorOutput)
+			{
+				Log::duplicateErrorLog(cerr);
+			}
 		}
 
 		return "";
@@ -85,26 +78,26 @@ namespace framework
 
 	void WebFramework::initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const
 	{
-		try
+		json::utility::jsonObject https;
+
+		if (!webFrameworkSettings.tryGetObject(json_settings::httpsObject, https))
 		{
-			const json::utility::jsonObject& https = webFrameworkSettings.getObject(json_settings::httpsObject);
-
-			if (https.getBool(json_settings::useHTTPSKey))
-			{
-				utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
-				const filesystem::path& basePath = config.getBasePath();
-
-				httpsSettings.setUseHTTPS(true);
-				httpsSettings.setPathToCertificate(basePath / https.getString(json_settings::pathToCertificateKey));
-				httpsSettings.setPathToKey(basePath / https.getString(json_settings::pathToKey));
-
-				SSL_library_init();
-				SSL_load_error_strings();
-			}
+			return;
 		}
-		catch (const json::exceptions::BaseJSONException& e)
+
+		bool useHTTPS = false;
+
+		if (https.tryGetBool(json_settings::useHTTPSKey, useHTTPS) && useHTTPS)
 		{
-			cerr << e.what() << endl;
+			utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+			const filesystem::path& basePath = config.getBasePath();
+
+			httpsSettings.setUseHTTPS(true);
+			httpsSettings.setPathToCertificate(basePath / https.getString(json_settings::pathToCertificateKey));
+			httpsSettings.setPathToKey(basePath / https.getString(json_settings::pathToKey));
+
+			SSL_library_init();
+			SSL_load_error_strings();
 		}
 	}
 
@@ -143,38 +136,27 @@ namespace framework
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
 		{
-			try
+			int64_t threadCount = 0;
+			json::utility::jsonObject threadPoolServerObject;
+
+			if ((*config).tryGetObject(json_settings::threadPoolServerObject, threadPoolServerObject))
 			{
-				server = make_unique<ThreadPoolWebServer>
-					(
-						*config,
-						jsonSettings,
-						assetsPath,
-						templatesPath,
-						cachingSize,
-						ip,
-						port,
-						timeout,
-						pathToSources,
-						static_cast<uint32_t>((*config).getObject(json_settings::threadPoolServerObject).getInt("threadCount"))
-					);
+				(*config).tryGetInt(json_settings::threadCountKey, threadCount);
 			}
-			catch (const json::exceptions::BaseJSONException&)
-			{
-				server = make_unique<ThreadPoolWebServer>
-					(
-						*config,
-						jsonSettings,
-						assetsPath,
-						templatesPath,
-						cachingSize,
-						ip,
-						port,
-						timeout,
-						pathToSources,
-						NULL
-					);
-			}
+
+			server = make_unique<ThreadPoolWebServer>
+				(
+					*config,
+					jsonSettings,
+					assetsPath,
+					templatesPath,
+					cachingSize,
+					ip,
+					port,
+					timeout,
+					pathToSources,
+					static_cast<uint32_t>(threadCount)
+				);
 		}
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
 		{

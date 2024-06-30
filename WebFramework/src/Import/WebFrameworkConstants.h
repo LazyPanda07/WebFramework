@@ -62,6 +62,8 @@ namespace json_settings
 
 	inline constexpr std::string_view defaultLoadSourceValue = "current";
 
+	inline constexpr std::string_view defaultLoadSourceValue = "current";
+
 	inline constexpr std::string_view multiThreadedWebServerTypeValue = "multiThreaded";
 	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";
 	inline constexpr std::string_view loadBalancerWebServerTypeValue = "loadBalancer";

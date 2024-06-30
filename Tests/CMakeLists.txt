@@ -21,6 +21,7 @@ set(
     ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/sqlite3/
 )
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 option(CXX_API "" OFF)
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
