@@ -1,5 +1,7 @@
 #pragma once
 
+#include <concepts>
+
 #include "DLLHandler.h"
 #include "WebFrameworkException.h"
 
@@ -27,7 +29,8 @@ namespace framework
 
 			Config& operator = (Config&& other) noexcept = delete;
 
-			Config& overrideConfiguration(std::string_view key, std::string_view value, bool recursive = false);
+			template<std::convertible_to<std::string_view> T>
+			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
 
 			Config& overrideConfiguration(std::string_view key, int64_t value, bool recursive = false);
 
@@ -98,12 +101,13 @@ namespace framework
 			return *this;
 		}
 
-		inline Config& Config::overrideConfiguration(std::string_view key, std::string_view value, bool recursive)
+		template<std::convertible_to<std::string_view> T>
+		inline Config& Config::overrideConfiguration(std::string_view key, const T& value, bool recursive)
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationString, void, const char* key, const char* value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			handler->CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationString, key.data(), value.data(), recursive, &exception);
+			handler->CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
 
 			if (exception)
 			{
