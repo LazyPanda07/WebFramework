@@ -108,8 +108,27 @@ class Config:
         exception = ctypes.c_void_p(0)
 
         handler = DLLHandler.get_instance()
-
         string_implementation = handler.call_class_member_function("getConfigurationString", ctypes.c_void_p,
+                                                                   self.implementation,
+                                                                   ctypes.byref(exception))
+
+        if exception:
+            raise WebFrameworkException(exception.value)
+
+        result_ptr = handler.call_function("getDataFromString", ctypes.c_char_p,
+                                           ctypes.c_uint64(string_implementation))
+
+        result = str(result_ptr.decode())
+
+        handler.free(string_implementation)
+
+        return result
+
+    def get_base_path(self) -> str:
+        exception = ctypes.c_void_p(0)
+
+        handler = DLLHandler.get_instance()
+        string_implementation = handler.call_class_member_function("getBasePath", ctypes.c_void_p,
                                                                    self.implementation,
                                                                    ctypes.byref(exception))
 

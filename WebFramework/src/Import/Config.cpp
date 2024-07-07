@@ -70,6 +70,16 @@ namespace framework
 			return basePath;
 		}
 
+		string Config::getConfiguration() const
+		{
+			return (ostringstream() << currentConfiguration).str();
+		}
+
+		string_view Config::getRawConfiguration() const
+		{
+			return currentConfiguration.getRawData();
+		}
+
 		const json::JSONParser& Config::operator * () const
 		{
 			return currentConfiguration;

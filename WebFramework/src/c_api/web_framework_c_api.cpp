@@ -244,4 +244,16 @@ const char* getRawConfiguration(void* implementation, void** exception)
 	}
 }
 
+void* getBasePath(void* implementation, void** exception)
+{
+	try
+	{
+		return new std::string(static_cast<framework::utility::Config*>(implementation)->getBasePath().string());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
 #endif

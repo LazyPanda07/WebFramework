@@ -76,6 +76,10 @@ namespace framework
 			 */
 			const std::filesystem::path& getBasePath() const;
 
+			std::string getConfiguration() const;
+
+			std::string_view getRawConfiguration() const;
+
 			/**
 			 * @brief Actual settings
 			 * @return 

@@ -1,3 +1,4 @@
+import pathlib
 import unittest
 from typing import List
 
@@ -19,6 +20,8 @@ class APITest(unittest.TestCase):
         self.config.override_configuration_string_array("settingsPaths", self.value, True)
 
         self.assertNotEqual(self.config.get_configuration(), self.config.get_raw_configuration())
+
+        self.assertEqual(self.config.get_base_path(), pathlib.Path().resolve())
 
 
 if __name__ == '__main__':

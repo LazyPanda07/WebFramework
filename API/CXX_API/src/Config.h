@@ -39,6 +39,8 @@ namespace framework
 
 			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
 
+			std::string getBasePath() const;
+
 			std::string getConfiguration() const;
 
 			std::string_view getRawConfiguration() const;
@@ -213,6 +215,27 @@ namespace framework
 			}
 
 			return *this;
+		}
+
+		inline std::string Config::getBasePath() const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getBasePath, void*, void** exception);
+			using getDataFromString = const char* (*)(void* implementation);
+			void* exception = nullptr;
+			DLLHandler& handler = DLLHandler::getInstance();
+
+			void* stringPtr = handler.CALL_CLASS_MEMBER_FUNCTION(getBasePath, &exception);
+
+			if (exception)
+			{
+				throw WebFrameworkException(exception);
+			}
+
+			std::string result(handler.CALL_FUNCTION(getDataFromString, stringPtr));
+
+			handler.free(stringPtr);
+
+			return result;
 		}
 
 		inline std::string Config::getConfiguration() const

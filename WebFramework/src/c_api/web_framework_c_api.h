@@ -52,4 +52,6 @@ EXPORT void* getConfigurationString(void* implementation, void** exception);
 
 EXPORT const char* getRawConfiguration(void* implementation, void** exception);
 
+EXPORT void* getBasePath(void* implementation, void** exception);
+
 #endif
