@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
 
+#ifdef __LINUX__
+#include <unistd.h>
+#endif
+
 #ifdef CXX_API
 #include "import.h"
 #else
