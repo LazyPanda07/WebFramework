@@ -5,6 +5,8 @@ set -e
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 # export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+ls
+
 ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
 ./ProxyServer --config proxy_config.json --port 15000 &

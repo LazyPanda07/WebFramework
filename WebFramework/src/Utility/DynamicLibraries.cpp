@@ -1,6 +1,7 @@
 #include "DynamicLibraries.h"
 
 #include <format>
+#include <iostream>
 
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -34,7 +35,9 @@ namespace framework
 
 		HMODULE load(const filesystem::path& dynamicLibraryPath)
 		{
-			string realDynamicLibraryPath = makePathToDynamicLibrary(dynamicLibraryPath);
+			std::cout << std::filesystem::absolute(dynamicLibraryPath) << std::endl;
+
+			string realDynamicLibraryPath = makePathToDynamicLibrary(std::filesystem::absolute(dynamicLibraryPath));
 			HMODULE result;
 
 			if (!filesystem::exists(realDynamicLibraryPath))
