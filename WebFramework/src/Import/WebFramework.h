@@ -26,10 +26,14 @@ namespace framework
 		static bool getUseHTTPS();
 
 	private:
-		std::unique_ptr<web::BaseTCPServer> server;
 		utility::Config config;
+		std::vector<std::pair<std::string, HMODULE>> dynamicLibraries;
+		mutable HMODULE logDynamicLibrary;
+		std::unique_ptr<web::BaseTCPServer> server;
 
 	private:
+		void initDynamicCommonLibraries();
+
 		std::string initLogging() const;
 
 		void initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const;
@@ -96,6 +100,6 @@ namespace framework
 		/// @return Get current running configuration JSON 
 		const json::JSONParser& getCurrentConfiguration() const;
 
-		~WebFramework() = default;
+		~WebFramework();
 	};
 }

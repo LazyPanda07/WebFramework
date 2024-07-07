@@ -1,11 +1,10 @@
 #include "Sources.h"
 
+#include "DynamicLibraries.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantLoadSourceException.h"
 
 using namespace std;
-
-static string makePathToSource(const string& pathToSource);
 
 namespace framework
 {
@@ -30,7 +29,7 @@ namespace framework
 					continue;
 				}
 
-				string pathToSource = makePathToSource(temp);
+				string pathToSource = makePathToDynamicLibrary(temp);
 
 				if (filesystem::exists(pathToSource))
 				{
@@ -57,22 +56,4 @@ namespace framework
 			return result;
         }
     }
-}
-
-string makePathToSource(const string& pathToSource)
-{
-	if (filesystem::path(pathToSource).has_extension())
-	{
-		return pathToSource;
-	}
-
-#ifdef __LINUX__
-	filesystem::path temp(pathToSource);
-	filesystem::path parent = temp.parent_path();
-	filesystem::path fileName = temp.filename();
-
-	return format("{}/lib{}.so", parent.string(), fileName.string());
-#else
-	return format("{}.dll", pathToSource);
-#endif
 }

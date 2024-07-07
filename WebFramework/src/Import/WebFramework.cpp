@@ -1,5 +1,7 @@
 #include "WebFramework.h"
 
+#include <filesystem>
+
 #include "Log.h"
 #include "JSONArrayWrapper.h"
 
@@ -11,8 +13,14 @@
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Sources.h"
 #include "Proxy/ProxyServer.h"
+#include "Utility/DynamicLibraries.h"
 
 using namespace std;
+
+inline auto getLibraryPath = [](const string& libraryName)
+	{
+		return format("{}/{}", filesystem::current_path().string(), libraryName);
+	};
 
 namespace framework
 {
@@ -28,6 +36,21 @@ namespace framework
 		return utility::HTTPSSingleton::get().getUseHTTPS();
 	}
 
+	void WebFramework::initDynamicCommonLibraries()
+	{
+		vector<string> commonLibraries =
+		{
+			"sqlite",
+			"FileManager",
+			"Localization",
+		};
+
+		for (const string& libraryName : commonLibraries)
+		{
+			dynamicLibraries.emplace_back(libraryName, utility::load(getLibraryPath(libraryName)));
+		}
+	}
+
 	string WebFramework::initLogging() const
 	{
 		json::utility::jsonObject loggingSettings;
@@ -41,6 +64,8 @@ namespace framework
 
 		if (loggingSettings.tryGetBool(json_settings::usingLoggingKey, usingLogging) && usingLogging)
 		{
+			logDynamicLibrary = utility::load(getLibraryPath("Log"));
+
 			string logsPath;
 			const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
 			bool duplicateOutput = false;
@@ -216,6 +241,8 @@ namespace framework
 				source = (basePath / source).string();
 			});
 
+		this->initDynamicCommonLibraries();
+
 		if (string errorMessage = this->initLogging(); errorMessage.size())
 		{
 			throw runtime_error(errorMessage);
@@ -305,5 +332,21 @@ namespace framework
 	const json::JSONParser& WebFramework::getCurrentConfiguration() const
 	{
 		return (*config);
+	}
+
+	WebFramework::~WebFramework()
+	{
+		for (auto&& [libraryName, dynamicLibrary] : dynamicLibraries)
+		{
+			if (!utility::unload(dynamicLibrary))
+			{
+				Log::error("Something went wrong while unloading {} library", "DynamicLibraries", move(libraryName));
+			}
+		}
+
+		if (!utility::unload(logDynamicLibrary))
+		{
+			cerr << "Something went wrong while unloading Log dynamic library" << endl;
+		}
 	}
 }
