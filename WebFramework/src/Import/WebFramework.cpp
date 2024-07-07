@@ -40,7 +40,7 @@ namespace framework
 	{
 		vector<string> commonLibraries =
 		{
-			"sqlite",
+			"sqlite3",
 			"FileManager",
 			"Localization",
 		};
