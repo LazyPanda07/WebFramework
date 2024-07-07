@@ -27,12 +27,16 @@ namespace framework
 
 	private:
 		utility::Config config;
+		std::unique_ptr<web::BaseTCPServer> server;
+#ifndef WEB_FRAMEWORK_DLL
 		std::vector<std::pair<std::string, HMODULE>> dynamicLibraries;
 		mutable HMODULE logDynamicLibrary;
-		std::unique_ptr<web::BaseTCPServer> server;
+#endif
 
 	private:
+#ifndef WEB_FRAMEWORK_DLL
 		void initDynamicCommonLibraries();
+#endif
 
 		std::string initLogging() const;
 

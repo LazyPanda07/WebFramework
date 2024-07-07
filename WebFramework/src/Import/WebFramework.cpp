@@ -36,6 +36,7 @@ namespace framework
 		return utility::HTTPSSingleton::get().getUseHTTPS();
 	}
 
+#ifndef WEB_FRAMEWORK_DLL
 	void WebFramework::initDynamicCommonLibraries()
 	{
 		vector<string> commonLibraries =
@@ -50,6 +51,7 @@ namespace framework
 			dynamicLibraries.emplace_back(libraryName, utility::load(getLibraryPath(libraryName)));
 		}
 	}
+#endif
 
 	string WebFramework::initLogging() const
 	{
@@ -64,7 +66,9 @@ namespace framework
 
 		if (loggingSettings.tryGetBool(json_settings::usingLoggingKey, usingLogging) && usingLogging)
 		{
+#ifndef WEB_FRAMEWORK_DLL
 			logDynamicLibrary = utility::load(getLibraryPath("Log"));
+#endif
 
 			string logsPath;
 			const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
@@ -241,7 +245,9 @@ namespace framework
 				source = (basePath / source).string();
 			});
 
+#ifndef WEB_FRAMEWORK_DLL
 		this->initDynamicCommonLibraries();
+#endif
 
 		if (string errorMessage = this->initLogging(); errorMessage.size())
 		{
@@ -336,6 +342,7 @@ namespace framework
 
 	WebFramework::~WebFramework()
 	{
+#ifndef WEB_FRAMEWORK_DLL
 		for (auto&& [libraryName, dynamicLibrary] : dynamicLibraries)
 		{
 			if (!utility::unload(dynamicLibrary))
@@ -349,4 +356,5 @@ namespace framework
 			cerr << "Something went wrong while unloading Log dynamic library" << endl;
 		}
 	}
+#endif
 }
