@@ -60,7 +60,7 @@ namespace framework
 			HMODULE dynamicLibrary;
 
 #ifdef __LINUX__
-			dynamicLibrary = dlopen(std::format("lib{}.so").data(), RTLD_LAZY);
+			dynamicLibrary = dlopen(std::format("lib{}.so", libraryName).data(), RTLD_LAZY);
 #else
 			dynamicLibrary = LoadLibraryA(std::format("{}.dll", libraryName).data());
 #endif
