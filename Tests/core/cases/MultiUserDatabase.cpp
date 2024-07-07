@@ -16,81 +16,74 @@ static constexpr size_t requestsNumber = 25;
 
 static std::string generateRandomString()
 {
-    std::mt19937_64 random(std::time(nullptr));
-    std::string result;
+	std::mt19937_64 random(std::time(nullptr));
+	std::string result;
 
-    for (size_t i = 0; i < 128; i++)
-    {
-        result += static_cast<char>(random() % 26 + 'A');
-    }
+	for (size_t i = 0; i < 128; i++)
+	{
+		result += static_cast<char>(random() % 26 + 'A');
+	}
 
-    return result;
+	return result;
 }
 
 TEST(Database, MultiUser)
 {
-    std::vector<streams::IOSocketStream> clients;
-    std::vector<std::future<void>> awaiters;
-    auto requests = [](streams::IOSocketStream& stream)
-    {
-        std::string request = web::HTTPBuilder().postRequest().parameters("multi_user_database").build();
-	    std::string response;
-        
-        try
-        {
-            stream << request;
+	std::vector<streams::IOSocketStream> clients;
+	std::vector<std::future<void>> awaiters;
+	auto requests = [](streams::IOSocketStream& stream)
+		{
+			std::string request = web::HTTPBuilder().postRequest().parameters("multi_user_database").build();
+			std::string response;
 
-            stream >> response;
+			stream << request;
 
-            ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+			stream >> response;
 
-            for (size_t i = 0; i < requestsNumber; i++)
-            {
-                request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
+			ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
 
-                stream << request;
+			for (size_t i = 0; i < requestsNumber; i++)
+			{
+				request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
 
-                stream >> response;
+				stream << request;
 
-                ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
-            }
+				stream >> response;
 
-            request = web::HTTPBuilder().getRequest().parameters("multi_user_database").build();
+				ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+			}
 
-            stream << request;
+			request = web::HTTPBuilder().getRequest().parameters("multi_user_database").build();
 
-            stream >> response;
+			stream << request;
 
-            web::HTTPParser parser(response);
+			stream >> response;
 
-            ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
+			web::HTTPParser parser(response);
 
-            ASSERT_EQ(parser.getJSON().getArray("data").size(), requestsNumber) << response;
-        }
-        catch (const std::exception& e)
-        {
-            std::cout << e.what() << std::endl;
-        }
-    };
+			ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
 
-    clients.reserve(clientsNumber);
-    awaiters.reserve(clientsNumber);
+			ASSERT_EQ(parser.getJSON().getArray("data").size(), requestsNumber) << response;
+		};
 
-    for (size_t i = 0; i < clientsNumber; i++)
-    {
-        awaiters.emplace_back
-        (
-            std::async
-            (
-                std::launch::async, 
-                requests, 
-                std::ref(clients.emplace_back(utility::createSocketStream()))
-            )
-        );
-    }
+	clients.reserve(clientsNumber);
+	awaiters.reserve(clientsNumber);
 
-    for (std::future<void>& awaiter : awaiters)
-    {
-        awaiter.wait();
-    }
+	for (size_t i = 0; i < clientsNumber; i++)
+	{
+		awaiters.emplace_back
+		(
+			std::async
+			(
+				std::launch::async,
+				requests,
+				std::ref(clients.emplace_back(utility::createSocketStream()))
+			)
+		);
+	}
+
+	for (std::future<void>& awaiter : awaiters)
+	{
+		awaiter.wait();
+	}
 }

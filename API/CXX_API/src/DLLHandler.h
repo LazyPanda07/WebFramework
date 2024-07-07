@@ -22,11 +22,20 @@ namespace framework
 	class DLLHandler
 	{
 	private:
+		static inline std::unique_ptr<DLLHandler> handler;
+
+	private:
 		HMODULE handle;
 
-	public:
+	private:
 		DLLHandler(const std::filesystem::path& pathToDLL);
 
+		~DLLHandler() = default;
+
+	public:
+		static DLLHandler& get();
+
+	public:
 		template<typename T, typename... Args>
 		auto callFunction(std::string_view functionName, Args&&... args);
 
@@ -35,7 +44,8 @@ namespace framework
 
 		void free(void* implementation);
 
-		~DLLHandler() = default;
+		friend void initializeWebFramework(const std::filesystem::path& pathToDLL);
+		friend struct std::default_delete<DLLHandler>;
 	};
 }
 
@@ -57,6 +67,16 @@ namespace framework
 			throw std::runtime_error(std::format("GetLastError(): {}", GetLastError()));
 #endif
 		}
+	}
+
+	inline DLLHandler& DLLHandler::get()
+	{
+		if (!DLLHandler::handler)
+		{
+			throw std::runtime_error("WebFramework must be initialized with initializeWebFramework function");
+		}
+
+		return *DLLHandler::handler;
 	}
 
 	template<typename T, typename... Args>

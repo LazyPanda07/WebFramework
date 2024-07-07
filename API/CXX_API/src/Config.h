@@ -12,14 +12,13 @@ namespace framework
 		class Config
 		{
 		private:
-			std::shared_ptr<DLLHandler> handler;
 			void* implementation;
 			bool weak;
 
 		public:
-			Config(std::shared_ptr<DLLHandler> handler, const std::filesystem::path& configPath);
+			Config(const std::filesystem::path& configPath);
 
-			Config(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath);
+			Config(std::string_view serverConfiguration, std::string_view sourcesPath);
 
 			Config(const Config& other);
 
@@ -55,35 +54,39 @@ namespace framework
 {
 	namespace utility
 	{
-		inline Config::Config(std::shared_ptr<DLLHandler> handler, const std::filesystem::path& configPath) :
-			handler(handler),
+		inline Config::Config(const std::filesystem::path& configPath) :
 			implementation(nullptr),
 			weak(false)
 		{
 			using createConfigFromPath = void* (*)(const char* configPath, void** exception);
+
+			if (!std::filesystem::exists(configPath))
+			{
+				throw std::runtime_error(std::format("Path {} doesn't exist", configPath.string()));
+			}
+
 			void* exception = nullptr;
 
-			implementation = handler->CALL_FUNCTION(createConfigFromPath, configPath.string().data(), &exception);
+			implementation = DLLHandler::get().CALL_FUNCTION(createConfigFromPath, configPath.string().data(), &exception);
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 		}
 
-		inline Config::Config(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath) :
-			handler(handler),
+		inline Config::Config(std::string_view serverConfiguration, std::string_view sourcesPath) :
 			implementation(nullptr),
 			weak(false)
 		{
 			using createConfigFromString = void* (*)(const char* serverConfiguration, const char* sourcesPath, void** exception);
 			void* exception = nullptr;
 
-			implementation = handler->CALL_FUNCTION(createConfigFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
+			implementation = DLLHandler::get().CALL_FUNCTION(createConfigFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 		}
 
@@ -94,8 +97,7 @@ namespace framework
 
 		inline Config& Config::operator = (const Config& other)
 		{
-			handler = handler;
-			implementation = implementation;
+			implementation = other.implementation;
 			weak = true;
 
 			return *this;
@@ -107,11 +109,11 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationString, void, const char* key, const char* value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			handler->CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
+			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -122,11 +124,11 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, void, const char* key, int64_t value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			handler->CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, key.data(), value, recursive, &exception);
+			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, key.data(), value, recursive, &exception);
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -137,11 +139,11 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, void, const char* key, bool value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			handler->CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, key.data(), value, recursive, &exception);
+			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, key.data(), value, recursive, &exception);
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -168,13 +170,13 @@ namespace framework
 #pragma warning(pop)
 #endif
 
-			handler->CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationStringArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
+			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationStringArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
 
 			delete[] data;
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -201,13 +203,13 @@ namespace framework
 #pragma warning(pop)
 #endif
 
-			handler->CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationIntegerArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
+			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationIntegerArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
 
 			delete[] data;
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -218,17 +220,18 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationString, void*, void** exception);
 			using getDataFromString = const char* (*)(void* implementation);
 			void* exception = nullptr;
+			DLLHandler& handler = DLLHandler::get();
 
-			void* stringPtr = handler->CALL_CLASS_MEMBER_FUNCTION(getConfigurationString, &exception);
+			void* stringPtr = handler.CALL_CLASS_MEMBER_FUNCTION(getConfigurationString, &exception);
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 
-			std::string result(handler->CALL_FUNCTION(getDataFromString, stringPtr));
+			std::string result(handler.CALL_FUNCTION(getDataFromString, stringPtr));
 
-			handler->free(stringPtr);
+			handler.free(stringPtr);
 
 			return result;
 		}
@@ -238,11 +241,11 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(getRawConfiguration, const char*, void** exception);
 			void* exception = nullptr;
 
-			const char* result = handler->CALL_CLASS_MEMBER_FUNCTION(getRawConfiguration, &exception);
+			const char* result = DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(getRawConfiguration, &exception);
 
 			if (exception)
 			{
-				throw WebFrameworkException(handler, exception);
+				throw WebFrameworkException(exception);
 			}
 
 			return std::string_view(result);
@@ -257,7 +260,7 @@ namespace framework
 		{
 			if (!weak)
 			{
-				handler->free(implementation);
+				DLLHandler::get().free(implementation);
 			}
 		}
 	}

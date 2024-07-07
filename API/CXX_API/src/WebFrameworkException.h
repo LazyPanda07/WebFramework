@@ -9,19 +9,17 @@ namespace framework
 	class WebFrameworkException : public std::exception
 	{
 	private:
-		std::shared_ptr<DLLHandler> handler;
 		std::shared_ptr<void> implementation;
 
 	public:
-		WebFrameworkException(std::shared_ptr<DLLHandler> handler, void* implementation);
+		WebFrameworkException(void* implementation);
 
 		const char* what() const noexcept override;
 
 		~WebFrameworkException() = default;
 	};
 
-	inline WebFrameworkException::WebFrameworkException(std::shared_ptr<DLLHandler> handler, void* implementation) :
-		handler(handler),
+	inline WebFrameworkException::WebFrameworkException(void* implementation) :
 		implementation
 		(
 			std::shared_ptr<void>
@@ -29,7 +27,7 @@ namespace framework
 				implementation,
 				[this](void* block)
 				{
-					this->handler->free(block);
+					DLLHandler::get().free(block);
 				}
 			)
 		)
@@ -41,6 +39,6 @@ namespace framework
 	{
 		using getErrorMessage = const char* (*)(void* exception);
 
-		return handler->CALL_FUNCTION(getErrorMessage, implementation.get());
+		return DLLHandler::get().CALL_FUNCTION(getErrorMessage, implementation.get());
 	}
 }

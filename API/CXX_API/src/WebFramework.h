@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <filesystem>
 
 #include "DLLHandler.h"
 #include "WebFrameworkException.h"
@@ -8,20 +9,21 @@
 
 namespace framework
 {
+	void initializeWebFramework(const std::filesystem::path& pathToDLL);
+
 	class WebFramework
 	{
 	private:
 		std::function<void()> onStartServer;
-		std::shared_ptr<DLLHandler> handler;
 		void* implementation;
 		bool weak;
 
 	public:
-		WebFramework(std::shared_ptr<DLLHandler> handler, const std::string& config);
+		WebFramework(const std::string& config);
 
-		WebFramework(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath);
+		WebFramework(std::string_view serverConfiguration, std::string_view sourcesPath);
 
-		WebFramework(std::shared_ptr<DLLHandler> handler, const utility::Config& config);
+		WebFramework(const utility::Config& config);
 
 		WebFramework(const WebFramework& other);
 
@@ -41,48 +43,81 @@ namespace framework
 
 namespace framework
 {
-	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const std::string& config) :
-		handler(handler),
+	inline void initializeWebFramework(const std::filesystem::path& pathToDLL)
+	{
+		if (DLLHandler::handler)
+		{
+			throw std::runtime_error("WebFramework already initialized");
+		}
+
+		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path
+			{
+#ifndef __LINUX__
+				return std::format("{}.dll", pathToSource.string());
+
+#else
+				std::filesystem::path parent = pathToSource.parent_path();
+				std::filesystem::path fileName = pathToSource.filename();
+
+				return std::format("{}/lib{}.so", parent.string(), fileName.string());
+#endif
+			};
+
+		std::filesystem::path realPath = makePathToDLL(std::filesystem::absolute(pathToDLL));
+
+		if (!std::filesystem::exists(realPath))
+		{
+			throw std::runtime_error(std::format("Path {} doesn't exist", realPath.string()));
+		}
+
+		DLLHandler::handler = std::unique_ptr<DLLHandler>(new DLLHandler(realPath));
+	}
+
+	inline WebFramework::WebFramework(const std::string& config) :
 		weak(false)
 	{
 		using createWebFrameworkFromPath = void* (*)(const char* configPath, void** exception);
-		void* exception = nullptr;
 
-		implementation = handler->CALL_FUNCTION(createWebFrameworkFromPath, config.data(), &exception);
+		if (!std::filesystem::exists(config))
+		{
+			throw std::runtime_error(std::format("Path {} doesn't exist", config));
+		}
+
+		void* exception = nullptr;
+		
+		implementation = DLLHandler::get().CALL_FUNCTION(createWebFrameworkFromPath, config.data(), &exception);
 
 		if (exception)
 		{
-			throw WebFrameworkException(handler, exception);
+			throw WebFrameworkException(exception);
 		}
 	}
 
-	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, std::string_view serverConfiguration, std::string_view sourcesPath) :
-		handler(handler),
+	inline WebFramework::WebFramework(std::string_view serverConfiguration, std::string_view sourcesPath) :
 		weak(false)
 	{
 		using createWebFrameworkFromString = void* (*)(const char* serverConfiguration, const char* sourcesPath, void** exception);
 		void* exception = nullptr;
-
-		implementation = handler->CALL_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
+		
+		implementation = DLLHandler::get().CALL_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
 
 		if (exception)
 		{
-			throw WebFrameworkException(handler, exception);
+			throw WebFrameworkException(exception);
 		}
 	}
 
-	inline WebFramework::WebFramework(std::shared_ptr<DLLHandler> handler, const utility::Config& config) :
-		handler(handler),
+	inline WebFramework::WebFramework(const utility::Config& config) :
 		weak(false)
 	{
 		using createWebFrameworkFromConfig = void* (*)(void* config, void** exception);
 		void* exception = nullptr;
-
-		implementation = handler->CALL_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
+		
+		implementation = DLLHandler::get().CALL_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
 
 		if (exception)
 		{
-			throw WebFrameworkException(handler, exception);
+			throw WebFrameworkException(exception);
 		}
 	}
 
@@ -93,7 +128,6 @@ namespace framework
 
 	inline WebFramework& WebFramework::operator = (const WebFramework& other)
 	{
-		handler = other.handler;
 		implementation = other.implementation;
 		weak = true;
 
@@ -107,11 +141,11 @@ namespace framework
 
 		this->onStartServer = onStartServer;
 
-		handler->CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
+		DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
 
 		if (exception)
 		{
-			throw WebFrameworkException(handler, exception);
+			throw WebFrameworkException(exception);
 		}
 	}
 
@@ -120,11 +154,11 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, void, bool wait, void** exception);
 		void* exception = nullptr;
 
-		handler->CALL_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, wait, &exception);
+		DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, wait, &exception);
 
 		if (exception)
 		{
-			throw WebFrameworkException(handler, exception);
+			throw WebFrameworkException(exception);
 		}
 	}
 
@@ -132,7 +166,7 @@ namespace framework
 	{
 		if (!weak)
 		{
-			handler->free(implementation);
+			DLLHandler::get().free(implementation);
 		}
 	}
 }

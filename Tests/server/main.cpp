@@ -3,7 +3,7 @@
 #include <filesystem>
 
 #ifdef CXX_API
-#include "Service.h"
+#include "import.h"
 #else
 #include "Import/WebFramework.h"
 #endif
@@ -22,11 +22,10 @@ int main(int argc, char** argv) try
 	}
 
 #ifdef CXX_API
-	framework::Service& serice = framework::Service::createService("WebFramework");
-	framework::WebFramework server = serice.createWebFramework(argv[1]);
-#else
-	framework::WebFramework server(argv[1]);
+	framework::initializeWebFramework("WebFramework");
 #endif
+
+	framework::WebFramework server(argv[1]);
 	
 	server.start
 	(

@@ -1,11 +1,12 @@
 #include "gtest/gtest.h"
 
-#include "Service.h"
+#include "import.h"
 
 TEST(API, Config)
 {
-	framework::Service& service = framework::Service::createService("WebFramework");
-	framework::utility::Config config = service.createConfig("multi_threaded_config.json");
+	framework::initializeWebFramework("WebFramework");
+
+	framework::utility::Config config("multi_threaded_config.json");
 
 	ASSERT_EQ(config.getConfiguration(), config.getRawConfiguration());
 

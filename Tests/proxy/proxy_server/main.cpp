@@ -2,7 +2,7 @@
 #include <fstream>
 
 #ifdef CXX_API
-#include "Service.h"
+#include "import.h"
 #else
 #include "Import/WebFramework.h"
 #endif
@@ -14,22 +14,17 @@ int main(int argc, char** argv) try
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 
 #ifdef CXX_API
-	framework::Service& service = framework::Service::createService("WebFramework");
-	framework::utility::Config config = service.createConfig(parser.get<std::string>("--config"));
-#else
-	framework::utility::Config config(parser.get<std::string>("--config"));
+	framework::initializeWebFramework("WebFramework");
 #endif
+
+	framework::utility::Config config(parser.get<std::string>("--config"));
 
 	int64_t port = parser.get<int64_t>("--port");
 
 	config.overrideConfiguration("useHTTPS", parser.get<bool>("--useHTTPS"), true);
 	config.overrideConfiguration("port", port, true);
 
-#ifdef CXX_API
-	framework::WebFramework server = service.createWebFramework(config);
-#else
 	framework::WebFramework server(config);
-#endif
 
 	server.start
 	(
