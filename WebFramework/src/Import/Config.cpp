@@ -30,7 +30,7 @@ namespace framework
 			Config result;
 
 			result.currentConfiguration.setJSONData(serverConfiguration);
-			result.basePath = filesystem::absolute(sourcesPath);
+			result.basePath = filesystem::absolute(sourcesPath).parent_path();
 
 			return result;
 		}
@@ -43,7 +43,7 @@ namespace framework
 				throw file_manager::exceptions::FileDoesNotExistException(configPath.string());
 			}
 
-			basePath.remove_filename();
+			basePath = basePath.parent_path();
 
 			currentConfiguration.setJSONData(ifstream(configPath));
 		}

@@ -315,7 +315,7 @@ jobs:
       working-directory: Tests
       run: |
           cd build/bin
-          .\CXX_API.exe
+          .\CXX_API.exe || exit 1
           .\run_tests.bat ${{ matrix.config }}
 
 
