@@ -89,6 +89,7 @@ add_library(
 	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/BaseConnectionData.cpp
+	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
 	WebFramework/src/Managers/SessionsManager.cpp
 	WebFramework/src/WebNetwork/HTTPRequest.cpp
