@@ -21,7 +21,7 @@ class APITest(unittest.TestCase):
 
         self.assertNotEqual(self.config.get_configuration(), self.config.get_raw_configuration())
 
-        self.assertEqual(self.config.get_base_path(), pathlib.Path().resolve())
+        self.assertEqual(self.config.get_base_path(), str(pathlib.Path().resolve()))
 
 
 if __name__ == '__main__':
