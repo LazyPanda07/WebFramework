@@ -352,6 +352,7 @@ jobs:
       working-directory: Tests
       shell: bash
       run: |
+          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           cd build/bin
           ./CXX_API
           source run_tests.sh ${{ matrix.config }}
