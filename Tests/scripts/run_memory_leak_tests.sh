@@ -28,7 +28,7 @@ function check_memory_leak_results()
 }
 
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
-# export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
 CORE_FILE_NAME=core_memory_leaks_result.txt
 PROXY_FILE_NAME=proxy_memory_leaks_result.txt

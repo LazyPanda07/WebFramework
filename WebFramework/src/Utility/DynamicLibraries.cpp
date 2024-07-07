@@ -1,7 +1,6 @@
 #include "DynamicLibraries.h"
 
 #include <format>
-#include <iostream>
 
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -30,55 +29,6 @@ namespace framework
 			return format("{}/lib{}.so", parent.string(), fileName.string());
 #else
 			return format("{}.dll", pathToSource.string());
-#endif
-		}
-
-		HMODULE load(const filesystem::path& dynamicLibraryPath)
-		{
-			std::cout << std::filesystem::absolute(dynamicLibraryPath) << std::endl;
-
-			string realDynamicLibraryPath = makePathToDynamicLibrary(std::filesystem::absolute(dynamicLibraryPath));
-			HMODULE result;
-
-			if (!filesystem::exists(realDynamicLibraryPath))
-			{
-#ifdef __LINUX__
-				realDynamicLibraryPath = format("lib{}.so", dynamicLibraryPath.filename().string());
-#else
-				realDynamicLibraryPath = format("{}.dll", dynamicLibraryPath.filename().string());
-#endif
-			}
-
-
-#ifdef __LINUX__
-			result = dlopen(realDynamicLibraryPath.data(), RTLD_LAZY);
-
-#else
-			result = LoadLibraryA(realDynamicLibraryPath.data());
-#endif
-
-			if (!result)
-			{
-				string fileName;
-
-#ifdef __LINUX__
-				fileName = format("lib{}.so", dynamicLibraryPath.filename().string());
-#else
-				fileName = format("{}.dll", dynamicLibraryPath.filename().string());
-#endif
-
-				throw runtime_error(format("Can't load {} or {}", makePathToDynamicLibrary(dynamicLibraryPath), move(fileName)));
-			}
-
-			return result;
-		}
-
-		bool unload(HMODULE dynamicLibrary)
-		{
-#ifdef __LINUX__
-			return !dlclose(dynamicLibrary);
-#else
-			return FreeLibrary(dynamicLibrary);
 #endif
 		}
 	}

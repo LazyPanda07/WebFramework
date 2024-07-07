@@ -3,9 +3,7 @@
 set -e
 
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
-# export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-
-ls
+export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
 ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &

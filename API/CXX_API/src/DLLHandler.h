@@ -23,10 +23,6 @@ namespace framework
 	{
 	private:
 		HMODULE handle;
-		std::vector<HMODULE> dynamicLibraries;
-
-	private:
-		void initDynamicCommonLibraries();
 
 	public:
 		DLLHandler(const std::filesystem::path& pathToDLL);
@@ -45,34 +41,8 @@ namespace framework
 
 namespace framework
 {
-	void DLLHandler::initDynamicCommonLibraries()
-	{
-		std::vector<std::string> commonLibraries =
-		{
-			"sqlite3",
-			"FileManager",
-			"Localization",
-			"Log"
-		};
-
-		for (const std::string& libraryName : commonLibraries)
-		{
-			HMODULE dynamicLibrary;
-
-#ifdef __LINUX__
-			dynamicLibrary = dlopen(std::format("{}/lib{}.so", std::filesystem::current_path().string(), libraryName).data(), RTLD_LAZY);
-#else
-			dynamicLibrary = LoadLibraryA(std::format("{}/{}.dll", std::filesystem::current_path().string(), libraryName).data());
-#endif
-
-			dynamicLibraries.push_back(dynamicLibrary);
-		}
-	}
-
 	inline DLLHandler::DLLHandler(const std::filesystem::path& pathToDLL)
 	{
-		this->initDynamicCommonLibraries();
-
 #ifdef __LINUX__
 		handle = dlopen(pathToDLL.string().data(), RTLD_LAZY);
 #else

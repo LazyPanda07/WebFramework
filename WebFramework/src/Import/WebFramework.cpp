@@ -17,11 +17,6 @@
 
 using namespace std;
 
-inline auto getLibraryPath = [](const string& libraryName)
-	{
-		return format("{}/{}", filesystem::current_path().string(), libraryName);
-	};
-
 namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
@@ -36,23 +31,6 @@ namespace framework
 		return utility::HTTPSSingleton::get().getUseHTTPS();
 	}
 
-#ifndef WEB_FRAMEWORK_DLL
-	void WebFramework::initDynamicCommonLibraries()
-	{
-		vector<string> commonLibraries =
-		{
-			"sqlite3",
-			"FileManager",
-			"Localization",
-		};
-
-		for (const string& libraryName : commonLibraries)
-		{
-			dynamicLibraries.emplace_back(libraryName, utility::load(getLibraryPath(libraryName)));
-		}
-	}
-#endif
-
 	string WebFramework::initLogging() const
 	{
 		json::utility::jsonObject loggingSettings;
@@ -66,10 +44,6 @@ namespace framework
 
 		if (loggingSettings.tryGetBool(json_settings::usingLoggingKey, usingLogging) && usingLogging)
 		{
-#ifndef WEB_FRAMEWORK_DLL
-			logDynamicLibrary = utility::load(getLibraryPath("Log"));
-#endif
-
 			string logsPath;
 			const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
 			bool duplicateOutput = false;
@@ -245,10 +219,6 @@ namespace framework
 				source = (basePath / source).string();
 			});
 
-#ifndef WEB_FRAMEWORK_DLL
-		this->initDynamicCommonLibraries();
-#endif
-
 		if (string errorMessage = this->initLogging(); errorMessage.size())
 		{
 			throw runtime_error(errorMessage);
@@ -338,23 +308,5 @@ namespace framework
 	const json::JSONParser& WebFramework::getCurrentConfiguration() const
 	{
 		return (*config);
-	}
-
-	WebFramework::~WebFramework()
-	{
-#ifndef WEB_FRAMEWORK_DLL
-		for (auto&& [libraryName, dynamicLibrary] : dynamicLibraries)
-		{
-			if (!utility::unload(dynamicLibrary))
-			{
-				Log::error("Something went wrong while unloading {} library", "DynamicLibraries", move(libraryName));
-			}
-		}
-
-		if (!utility::unload(logDynamicLibrary))
-		{
-			cerr << "Something went wrong while unloading Log dynamic library" << endl;
-		}
-#endif
 	}
 }
