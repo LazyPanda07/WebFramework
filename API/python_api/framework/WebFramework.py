@@ -10,7 +10,7 @@ from .WebFrameworkException import WebFrameworkException
 
 
 def initialize_web_framework(path_to_dll: str):
-    if DLLHandler.__instance is not None:
+    if DLLHandler.instance is not None:
         raise Exception("WebFramework already initialized")
 
     path_to_dll = os.path.abspath(path_to_dll)
@@ -24,7 +24,7 @@ def initialize_web_framework(path_to_dll: str):
     if not os.path.exists(path_to_dll):
         raise FileNotFoundError(f"Path {path_to_dll} doesn't exist")
 
-    DLLHandler.__instance = DLLHandler(path_to_dll)
+    DLLHandler.instance = DLLHandler(path_to_dll)
 
 
 class WebFramework:

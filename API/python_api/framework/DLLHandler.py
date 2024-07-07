@@ -2,17 +2,17 @@ import ctypes
 
 
 class DLLHandler:
-    __instance = None
+    instance = None
 
     def __init__(self, path_to_dll: str):
         self.__handle = ctypes.CDLL(path_to_dll)
 
     @classmethod
     def get_instance(cls):
-        if cls.__instance is None:
+        if cls.instance is None:
             raise Exception("WebFramework must be initialized with initialize_web_framework function")
 
-        return cls.__instance
+        return cls.instance
 
     def call_function(self, function_name: str, return_type, *args):
         function = self.__handle[function_name]
