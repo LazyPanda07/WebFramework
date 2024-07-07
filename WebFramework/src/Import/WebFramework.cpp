@@ -355,6 +355,6 @@ namespace framework
 		{
 			cerr << "Something went wrong while unloading Log dynamic library" << endl;
 		}
-	}
 #endif
+	}
 }
