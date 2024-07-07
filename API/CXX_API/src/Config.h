@@ -67,7 +67,7 @@ namespace framework
 
 			void* exception = nullptr;
 
-			implementation = DLLHandler::get().CALL_FUNCTION(createConfigFromPath, configPath.string().data(), &exception);
+			implementation = DLLHandler::getInstance().CALL_FUNCTION(createConfigFromPath, configPath.string().data(), &exception);
 
 			if (exception)
 			{
@@ -82,7 +82,7 @@ namespace framework
 			using createConfigFromString = void* (*)(const char* serverConfiguration, const char* sourcesPath, void** exception);
 			void* exception = nullptr;
 
-			implementation = DLLHandler::get().CALL_FUNCTION(createConfigFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
+			implementation = DLLHandler::getInstance().CALL_FUNCTION(createConfigFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
 
 			if (exception)
 			{
@@ -109,7 +109,7 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationString, void, const char* key, const char* value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
+			DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
 
 			if (exception)
 			{
@@ -124,7 +124,7 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, void, const char* key, int64_t value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, key.data(), value, recursive, &exception);
+			DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, key.data(), value, recursive, &exception);
 
 			if (exception)
 			{
@@ -139,7 +139,7 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, void, const char* key, bool value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, key.data(), value, recursive, &exception);
+			DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, key.data(), value, recursive, &exception);
 
 			if (exception)
 			{
@@ -170,7 +170,7 @@ namespace framework
 #pragma warning(pop)
 #endif
 
-			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationStringArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
+			DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationStringArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
 
 			delete[] data;
 
@@ -203,7 +203,7 @@ namespace framework
 #pragma warning(pop)
 #endif
 
-			DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationIntegerArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
+			DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationIntegerArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
 
 			delete[] data;
 
@@ -220,7 +220,7 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationString, void*, void** exception);
 			using getDataFromString = const char* (*)(void* implementation);
 			void* exception = nullptr;
-			DLLHandler& handler = DLLHandler::get();
+			DLLHandler& handler = DLLHandler::getInstance();
 
 			void* stringPtr = handler.CALL_CLASS_MEMBER_FUNCTION(getConfigurationString, &exception);
 
@@ -241,7 +241,7 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(getRawConfiguration, const char*, void** exception);
 			void* exception = nullptr;
 
-			const char* result = DLLHandler::get().CALL_CLASS_MEMBER_FUNCTION(getRawConfiguration, &exception);
+			const char* result = DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(getRawConfiguration, &exception);
 
 			if (exception)
 			{
@@ -260,7 +260,7 @@ namespace framework
 		{
 			if (!weak)
 			{
-				DLLHandler::get().free(implementation);
+				DLLHandler::getInstance().free(implementation);
 			}
 		}
 	}

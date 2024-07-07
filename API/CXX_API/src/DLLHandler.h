@@ -22,7 +22,7 @@ namespace framework
 	class DLLHandler
 	{
 	private:
-		static inline std::unique_ptr<DLLHandler> handler;
+		static inline std::unique_ptr<DLLHandler> instance;
 
 	private:
 		HMODULE handle;
@@ -33,7 +33,7 @@ namespace framework
 		~DLLHandler() = default;
 
 	public:
-		static DLLHandler& get();
+		static DLLHandler& getInstance();
 
 	public:
 		template<typename T, typename... Args>
@@ -69,14 +69,14 @@ namespace framework
 		}
 	}
 
-	inline DLLHandler& DLLHandler::get()
+	inline DLLHandler& DLLHandler::getInstance()
 	{
-		if (!DLLHandler::handler)
+		if (!DLLHandler::instance)
 		{
 			throw std::runtime_error("WebFramework must be initialized with initializeWebFramework function");
 		}
 
-		return *DLLHandler::handler;
+		return *DLLHandler::instance;
 	}
 
 	template<typename T, typename... Args>

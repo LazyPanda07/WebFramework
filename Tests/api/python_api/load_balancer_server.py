@@ -1,7 +1,8 @@
 import argparse
 from typing import List
 
-from framework.Service import Service
+from framework.WebFramework import WebFramework, initialize_web_framework
+from framework.Config import Config
 from framework.WebFrameworkException import WebFrameworkException
 
 if __name__ == '__main__':
@@ -17,11 +18,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        service = Service("WebFramework")
-        config = service.create_config(args.config)
+        initialize_web_framework("WebFramework")
+
+        config = Config.from_path(args.config)
 
         if args.custom_heuristic:
-           config.override_configuration("heuristic", "CustomHeuristic", True)
+            config.override_configuration("heuristic", "CustomHeuristic", True)
 
         if args.type == "server":
             settings_paths: List[str] = ["load_balancer_web.json"]
@@ -44,7 +46,7 @@ if __name__ == '__main__':
 
         config.override_configuration("port", args.port, True)
 
-        server = service.create_web_framework_from_config(config)
+        server = WebFramework.from_config(config)
 
         server.start(True)
     except WebFrameworkException as exception:

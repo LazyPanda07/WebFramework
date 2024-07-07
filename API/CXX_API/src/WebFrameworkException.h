@@ -27,7 +27,7 @@ namespace framework
 				implementation,
 				[this](void* block)
 				{
-					DLLHandler::get().free(block);
+					DLLHandler::getInstance().free(block);
 				}
 			)
 		)
@@ -39,6 +39,6 @@ namespace framework
 	{
 		using getErrorMessage = const char* (*)(void* exception);
 
-		return DLLHandler::get().CALL_FUNCTION(getErrorMessage, implementation.get());
+		return DLLHandler::getInstance().CALL_FUNCTION(getErrorMessage, implementation.get());
 	}
 }

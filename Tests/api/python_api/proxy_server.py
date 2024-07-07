@@ -1,6 +1,7 @@
 import argparse
 
-from framework.Service import Service
+from framework.WebFramework import WebFramework, initialize_web_framework
+from framework.Config import Config
 from framework.WebFrameworkException import WebFrameworkException
 
 if __name__ == '__main__':
@@ -13,13 +14,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        service = Service("WebFramework")
-        config = service.create_config(args.config)
+        initialize_web_framework("WebFramework")
+
+        config = Config.from_path(args.config)
 
         config.override_configuration("useHTTPS", args.useHTTPS, True)
         config.override_configuration("port", args.port, True)
 
-        server = service.create_web_framework_from_config(config)
+        server = WebFramework.from_config(config)
 
         server.start(True)
     except WebFrameworkException as exception:

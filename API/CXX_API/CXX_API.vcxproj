@@ -87,7 +87,6 @@
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\DLLHandler.h" />
     <ClInclude Include="src\import.h" />
-    <ClInclude Include="src\Service.h" />
     <ClInclude Include="src\WebFramework.h" />
   </ItemGroup>
   <ItemGroup>

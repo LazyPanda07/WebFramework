@@ -22,6 +22,7 @@ python3 load_balancer_server.py --config load_balancer_config.json --port 9094 -
 ./DefaultHTTPSServer &
 sleep 1
 
+python3 api_test.py
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
 ./LoadBalancerCore --port 9090
 ./LoadBalancerCore --port 9091

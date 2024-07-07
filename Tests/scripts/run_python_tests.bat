@@ -18,6 +18,7 @@ start python load_balancer_server.py --config load_balancer_config_https.json --
 
 start DefaultHTTPSServer.exe
 
+python api_test.py || exit 1
 call Core.exe %WEB_FRAMEWORK_SERVER_CONFIG% || exit 1
 call LoadBalancerCore.exe --port 9090 || exit 1
 call LoadBalancerCore.exe --port 9091 || exit 1
