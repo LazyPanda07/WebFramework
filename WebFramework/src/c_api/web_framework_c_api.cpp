@@ -60,6 +60,8 @@ void* createWebFrameworkFromConfig(void* config, void** exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+
+	return nullptr;
 }
 
 void* createConfigFromPath(const char* configPath, void** exception)
@@ -230,6 +232,8 @@ void* getConfigurationString(void* implementation, void** exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+
+	return nullptr;
 }
 
 const char* getRawConfiguration(void* implementation, void** exception)
@@ -242,6 +246,8 @@ const char* getRawConfiguration(void* implementation, void** exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+
+	return nullptr;
 }
 
 void* getBasePath(void* implementation, void** exception)
@@ -254,6 +260,8 @@ void* getBasePath(void* implementation, void** exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+
+	return nullptr;
 }
 
 #endif

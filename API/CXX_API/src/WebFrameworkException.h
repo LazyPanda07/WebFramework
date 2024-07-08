@@ -37,7 +37,7 @@ namespace framework
 
 	inline const char* WebFrameworkException::what() const noexcept
 	{
-		using getErrorMessage = const char* (*)(void* exception);
+		using getErrorMessage = const char* (*)(void* implementation);
 
 		return DLLHandler::getInstance().CALL_FUNCTION(getErrorMessage, implementation.get());
 	}

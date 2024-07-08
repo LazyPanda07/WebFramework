@@ -34,7 +34,7 @@ class WebFramework:
         self.__on_start_server = None
 
     @classmethod
-    def from_path(cls, config_path: str):
+    def from_path(cls, config_path: str) -> "WebFramework":
         config_path = os.path.abspath(config_path)
 
         if not os.path.exists(config_path):
@@ -51,7 +51,7 @@ class WebFramework:
         return cls(implementation)
 
     @classmethod
-    def from_string(cls, server_configuration: str, sources_path: str):
+    def from_string(cls, server_configuration: str, sources_path: str) -> "WebFramework":
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createWebFrameworkFromString", ctypes.c_void_p,
                                                                  ctypes.c_char_p(server_configuration.encode()),
@@ -64,7 +64,7 @@ class WebFramework:
         return cls(implementation)
 
     @classmethod
-    def from_config(cls, config: Config):
+    def from_config(cls, config: Config) -> "WebFramework":
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createWebFrameworkFromConfig", ctypes.c_void_p,
                                                                  ctypes.c_uint64(config.implementation),

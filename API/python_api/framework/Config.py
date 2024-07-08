@@ -12,7 +12,7 @@ class Config:
         self.implementation = implementation
 
     @classmethod
-    def from_path(cls, config_path: str):
+    def from_path(cls, config_path: str) -> "Config":
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createConfigFromPath", ctypes.c_void_p,
                                                                  ctypes.c_char_p(config_path.encode()),
@@ -24,7 +24,7 @@ class Config:
         return cls(implementation)
 
     @classmethod
-    def from_string(cls, server_configuration: str, sources_path: str):
+    def from_string(cls, server_configuration: str, sources_path: str) -> "Config":
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createConfigFromString", ctypes.c_void_p,
                                                                  ctypes.c_char_p(server_configuration.encode()),
@@ -37,7 +37,7 @@ class Config:
         return cls(implementation)
 
     @dispatch(str, str, bool)
-    def override_configuration(self, key: str, value: str, recursive: bool = False):
+    def override_configuration(self, key: str, value: str, recursive: bool = False) -> "Config":
         exception = ctypes.c_void_p(0)
 
         DLLHandler.get_instance().call_class_member_function("overrideConfigurationString", None, self.implementation,
@@ -48,8 +48,10 @@ class Config:
         if exception:
             raise WebFrameworkException(exception.value)
 
+        return self
+
     @dispatch(str, int, bool)
-    def override_configuration(self, key: str, value: int, recursive: bool = False):
+    def override_configuration(self, key: str, value: int, recursive: bool = False) -> "Config":
         exception = ctypes.c_void_p(0)
 
         DLLHandler.get_instance().call_class_member_function("overrideConfigurationInteger", None, self.implementation,
@@ -59,8 +61,10 @@ class Config:
         if exception:
             raise WebFrameworkException(exception.value)
 
+        return self
+
     @dispatch(str, bool, bool)
-    def override_configuration(self, key: str, value: bool, recursive: bool = False):
+    def override_configuration(self, key: str, value: bool, recursive: bool = False) -> "Config":
         exception = ctypes.c_void_p(0)
 
         DLLHandler.get_instance().call_class_member_function("overrideConfigurationBoolean", None, self.implementation,
@@ -70,7 +74,9 @@ class Config:
         if exception:
             raise WebFrameworkException(exception.value)
 
-    def override_configuration_string_array(self, key: str, value: List[str], recursive: bool = False):
+        return self
+
+    def override_configuration_string_array(self, key: str, value: List[str], recursive: bool = False) -> "Config":
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_char_p * len(value))()
@@ -87,7 +93,9 @@ class Config:
         if exception:
             raise WebFrameworkException(exception.value)
 
-    def override_configuration_integer_array(self, key: str, value: List[int], recursive: bool = False):
+        return self
+
+    def override_configuration_integer_array(self, key: str, value: List[int], recursive: bool = False) -> "Config":
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_int64 * len(value))()
@@ -103,6 +111,8 @@ class Config:
 
         if exception:
             raise WebFrameworkException(exception.value)
+
+        return self
 
     def get_configuration(self) -> str:
         exception = ctypes.c_void_p(0)
