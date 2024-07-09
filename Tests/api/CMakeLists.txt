@@ -6,6 +6,6 @@ add_subdirectory(python)
 
 if (${CXX_API})
 	add_subdirectory(CXX)
-elif (${CSHARP_API})
+elseif (${CSHARP_API})
 	add_subdirectory(CSharp)
 endif()
