@@ -23,6 +23,7 @@ set(
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 option(CXX_API "" OFF)
+option(CSHARP_API "" OFF)
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
 add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
