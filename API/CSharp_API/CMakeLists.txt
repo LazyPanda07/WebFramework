@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(DOTNET_VERSION 8.0)
-
 project(CSharp_API)
 
 add_custom_target(
