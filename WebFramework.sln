@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{4DD1875E-103
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CXX_API", "API\CXX_API\CXX_API.vcxproj", "{3F4D262A-28BD-49D4-BB24-A83363263739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp_API", "API\CSharp_API\CSharp_API.csproj", "{5BBA94D8-A316-40BC-A14C-9D9F4AE4D04C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebFrameworkCSharpAPI", "API\CSharp_API\WebFrameworkCSharpAPI.csproj", "{5BBA94D8-A316-40BC-A14C-9D9F4AE4D04C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

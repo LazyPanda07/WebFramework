@@ -1,164 +1,211 @@
-﻿using System.Runtime.InteropServices;
+﻿namespace Framework;
 
-namespace Framework
+using System.Runtime.InteropServices;
+
+public partial class Config
 {
-	public partial class Config
+	public unsafe readonly void* implementation;
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void* createConfigFromPath(string configPath, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void* createConfigFromString(string serverConfiguration, string sourcesPath, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void overrideConfigurationString(void* implementation, string key, string value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void overrideConfigurationInteger(void* implementation, string key, long value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void overrideConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void overrideConfigurationStringArray(void* implementation, string key, [In] string[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void overrideConfigurationIntegerArray(void* implementation, string key, [In] long[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void* getConfigurationString(void* implementation, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial char* getRawConfiguration(void* implementation, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial char* getDataFromString(void* implementation);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void* getBasePath(void* implementation, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void deleteWebFrameworkObject(void* implementation);
+
+	public unsafe Config(string configPath)
 	{
-		public unsafe readonly void* implementation;
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void* createConfigFromPath(char* configPath, ref void* exception);
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void* createConfigFromString(char* serverConfiguration, char* sourcesPath, ref void* exception);
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void overrideConfigurationString(char* key, char* value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void overrideConfigurationInteger(char* key, long value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void overrideConfigurationBoolean(char* key, [MarshalAs(UnmanagedType.Bool)] bool value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void overrideConfigurationStringArray(char* key, char** value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void overrideConfigurationIntegerArray(char* key, long** value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
-
-		[LibraryImport(DLLHandler.libraryName)]
-		private static unsafe partial void free(void* implementation);
-
-		unsafe Config(string configPath)
+		if (!Path.Exists(configPath))
 		{
-			if (!Path.Exists(configPath))
-			{
-				throw new Exception($"Path {configPath} doesn't exist");
-			}
-
-			void* exception = null;
-
-			fixed (char* configPathPointer = configPath)
-			{
-				implementation = createConfigFromPath(configPathPointer, ref exception);
-			}
-
-			if (exception != null)
-			{
-				throw new WebFrameworkException(exception);
-			}
+			throw new Exception($"Path {configPath} doesn't exist");
 		}
 
-		unsafe Config(string serverConfiguration, string sourcesPath)
+		void* exception = null;
+
+		implementation = createConfigFromPath(configPath, ref exception);
+
+		if (exception != null)
 		{
-			void* exception = null;
+			throw new WebFrameworkException(exception);
+		}
+	}
 
-			fixed (char* serverConfigurationPointer = serverConfiguration)
-			{
-				fixed (char* sourcesPathPointer = sourcesPath)
-				{
-					implementation = createConfigFromString(serverConfigurationPointer, sourcesPathPointer, ref exception);
-				}
-			}
+	public unsafe Config(string serverConfiguration, string sourcesPath)
+	{
+		void* exception = null;
 
-			if (exception != null)
-			{
-				throw new WebFrameworkException(exception);
-			}
+		implementation = createConfigFromString(serverConfiguration, sourcesPath, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	public unsafe Config OverrideConfiguration(string key, string value, bool recursive = false)
+	{
+		void* exception = null;
+
+		overrideConfigurationString(implementation, key, value, recursive, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
 		}
 
-		unsafe Config OverrideConfiguration(string key, string value, bool recursive = false)
+		return this;
+	}
+
+	public unsafe Config OverrideConfiguration(string key, long value, bool recursive = false)
+	{
+		void* exception = null;
+
+		overrideConfigurationInteger(implementation, key, value, recursive, ref exception);
+
+		if (exception != null)
 		{
-			void* exception = null;
-
-			fixed (char* keyPointer = key)
-			{
-				fixed (char* valuePointer = value)
-				{
-					overrideConfigurationString(keyPointer, valuePointer, recursive, ref exception);
-				}
-			}
-
-			if (exception != null)
-			{
-				throw new WebFrameworkException(exception);
-			}
-
-			return this;
+			throw new WebFrameworkException(exception);
 		}
 
-		unsafe Config OverrideConfiguration(string key, long value, bool recursive = false)
+		return this;
+	}
+
+	public unsafe Config OverrideConfiguration(string key, bool value, bool recursive = false)
+	{
+		void* exception = null;
+
+		overrideConfigurationBoolean(implementation, key, value, recursive, ref exception);
+
+		if (exception != null)
 		{
-			void* exception = null;
-
-			fixed (char* keyPointer = key)
-			{
-				overrideConfigurationInteger(keyPointer, value, recursive, ref exception);
-			}
-
-			if (exception != null)
-			{
-				throw new WebFrameworkException(exception);
-			}
-
-			return this;
+			throw new WebFrameworkException(exception);
 		}
 
-		unsafe Config OverrideConfiguration(string key, bool value, bool recursive = false)
+		return this;
+	}
+
+	public unsafe Config OverrideConfiguration(string key, List<string> value, bool recursive = false)
+	{
+		void* exception = null;
+
+		overrideConfigurationStringArray(implementation, key, [.. value], recursive, value.Count, ref exception);
+
+		if (exception != null)
 		{
-			void* exception = null;
-
-			fixed (char* keyPointer = key)
-			{
-				overrideConfigurationBoolean(keyPointer, value, recursive, ref exception);
-			}
-
-			if (exception != null)
-			{
-				throw new WebFrameworkException(exception);
-			}
-
-			return this;
+			throw new WebFrameworkException(exception);
 		}
 
-		unsafe Config OverrideConfiguration(string key, List<string> value, bool recursive = false)
+		return this;
+	}
+
+	public unsafe Config OverrideConfiguration(string key, List<long> value, bool recursive = false)
+	{
+		void* exception = null;
+
+		fixed (char* keyPointer = key)
 		{
-			//void* exception = null;
-
-			//fixed (char* keyPointer = key)
-			//{
-			//	overrideConfigurationStringArray(keyPointer, value, recursive, (long)value.Count, ref exception);
-			//}
-
-			//if (exception != null)
-			//{
-			//	throw new WebFrameworkException(exception);
-			//}
-
-			return this;
+			overrideConfigurationIntegerArray(implementation, key, [.. value], recursive, value.Count, ref exception);
 		}
 
-		unsafe Config OverrideConfiguration(string key, List<long> value, bool recursive = false)
+		if (exception != null)
 		{
-			//void* exception = null;
-
-			//fixed (char* keyPointer = key)
-			//{
-			//	overrideConfigurationIntegerArray(keyPointer, value, recursive, (long)value.Count, ref exception);
-			//}
-
-			//if (exception != null)
-			//{
-			//	throw new WebFrameworkException(exception);
-			//}
-
-			return this;
+			throw new WebFrameworkException(exception);
 		}
 
-		unsafe ~Config()
+		return this;
+	}
+
+	public unsafe string GetConfiguration()
+	{
+		void* exception = null;
+
+		void* stringPointer = getConfigurationString(implementation, ref exception);
+
+		if (exception != null)
 		{
-			free(implementation);
+			throw new WebFrameworkException(exception);
 		}
+
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer));
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
+		deleteWebFrameworkObject(stringPointer);
+
+#pragma warning disable CS8603 // Possible null reference return.
+		return result;
+#pragma warning restore CS8603 // Possible null reference return.
+	}
+
+	public unsafe string GetRawConfiguration()
+	{
+		void* exception = null;
+
+		char* result = getRawConfiguration(implementation, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+#pragma warning disable CS8603 // Possible null reference return.
+		return Marshal.PtrToStringUTF8((IntPtr)result);
+#pragma warning restore CS8603 // Possible null reference return.
+	}
+
+	public unsafe string GetBasePath()
+	{
+		void* exception = null;
+
+		void* stringPointer = getBasePath(implementation, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer));
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
+		deleteWebFrameworkObject(stringPointer);
+
+#pragma warning disable CS8603 // Possible null reference return.
+		return result;
+#pragma warning restore CS8603 // Possible null reference return.
+	}
+
+	unsafe ~Config()
+	{
+		deleteWebFrameworkObject(implementation);
 	}
 }

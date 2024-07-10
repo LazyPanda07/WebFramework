@@ -1,7 +1,6 @@
-﻿namespace Framework
+﻿namespace Framework;
+
+internal class DLLHandler
 {
-	internal class DLLHandler
-	{
-		public const string libraryName = "WebFramework";
-	}
+	public const string libraryName = "WebFramework";
 }
