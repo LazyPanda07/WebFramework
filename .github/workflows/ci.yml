@@ -443,6 +443,86 @@ jobs:
           source run_python_tests.sh ${{ matrix.config }}
   
 
+  windows-csharp-tests:
+    runs-on: windows-latest
+    needs: windows-build
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+  
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ReleaseDLL_Windows
+        path: WebFrameworkLibrary
+
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@v1
+      with:
+        build-type: Release
+        install-path: Tests/gtest
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Tests
+      working-directory: Tests
+      run: |
+          cd build/bin
+          dotnet test CSharpAPI.dll
+
+
+  linux-csharp-tests:
+    runs-on: ubuntu-latest
+    needs: linux-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ReleaseDLL_Linux
+        path: WebFrameworkLibrary
+        
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON ..
+          make install -j $(nproc)
+
+    - name: Tests
+      working-directory: Tests
+      shell: bash
+      run: |
+          cd build/bin
+          export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
+          ls
+          dotnet test CSharpAPI.dll
+
+
   publish:
     needs: [static-memory-leak-tests, windows-cxx-tests, linux-cxx-tests, windows-python-tests, linux-python-tests]
     runs-on: ubuntu-latest
