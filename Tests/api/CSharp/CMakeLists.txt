@@ -6,12 +6,12 @@ if (UNIX)
 	add_custom_target(
 		${PROJECT_NAME} ALL
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Tests
-		COMMAND dotnet publish Tests.sln -o ${CMAKE_INSTALL_PREFIX} /p:Configuration=Release /p:Plaftorm='Any CPU' /p:DebugType=None /p:DebugSymbols=false
+		COMMAND dotnet publish Tests.sln -o ${CMAKE_INSTALL_PREFIX} -p:DebugType=None -p:DebugSymbols=false -p:Configuration=Release -p:Plaftorm=AnyCPU
 	)
 else()
 	add_custom_target(
 		${PROJECT_NAME} ALL
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Tests
-		COMMAND dotnet publish Tests.sln -o ${CMAKE_INSTALL_PREFIX} /p:Configuration=Release /p:Plaftorm="Any CPU" /p:DebugType=None /p:DebugSymbols=false
+		COMMAND dotnet publish Tests.sln -o ${CMAKE_INSTALL_PREFIX} -p:DebugType=None -p:DebugSymbols=false -p:Configuration=Release -p:Platform=AnyCPU
 	)
 endif()
