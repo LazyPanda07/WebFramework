@@ -483,6 +483,7 @@ jobs:
       run: |
           cd build/bin
           dotnet test CSharpAPI.dll
+          .\run_csharp_tests.bat ${{ matrix.config }}
 
 
   linux-csharp-tests:
@@ -520,6 +521,7 @@ jobs:
           cd build/bin
           export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
           dotnet test CSharpAPI.dll
+          source run_csharp_tests.sh ${{ matrix.config }}
 
 
   publish:
