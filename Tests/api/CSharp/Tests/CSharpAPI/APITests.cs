@@ -50,7 +50,11 @@ public class APITests(ITestOutputHelper output)
 
 		config.OverrideConfiguration("webServerType", "threadPool", true);
 
-		Assert.Contains("threadPool", config.GetConfiguration());
+		dynamic? data = JsonConvert.DeserializeObject(config.GetConfiguration());
+
+		Assert.NotEqual(data, null);
+
+		Assert.Equal("threadPool", data.WebFramework.webServerType);
 	}
 
 	[Fact]

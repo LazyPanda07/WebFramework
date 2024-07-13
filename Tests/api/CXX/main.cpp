@@ -33,7 +33,7 @@ framework::utility::Config createConfig()
 
 TEST(API, ConfigConstructors)
 {
-	framework::utility::Config configFromPath("multi_threaded_config.json");
+	framework::utility::Config configFromPath = createConfig();
 	framework::utility::Config configFromStrings(getConfiguration(), std::filesystem::current_path().string());
 
 	ASSERT_EQ(configFromPath.getRawConfiguration(), configFromStrings.getRawConfiguration());

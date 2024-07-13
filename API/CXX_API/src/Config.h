@@ -31,9 +31,11 @@ namespace framework
 			template<std::convertible_to<std::string_view> T>
 			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
 
-			Config& overrideConfiguration(std::string_view key, int64_t value, bool recursive = false);
+			template<std::convertible_to<int64_t> T>
+			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
 
-			Config& overrideConfiguration(std::string_view key, bool value, bool recursive = false);
+			template<>
+			Config& overrideConfiguration<bool>(std::string_view key, const bool& value, bool recursive);
 
 			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
 
@@ -121,12 +123,13 @@ namespace framework
 			return *this;
 		}
 
-		inline Config& Config::overrideConfiguration(std::string_view key, int64_t value, bool recursive)
+		template<std::convertible_to<int64_t> T>
+		inline Config& Config::overrideConfiguration(std::string_view key, const T& value, bool recursive)
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, void, const char* key, int64_t value, bool recursive, void** exception);
 			void* exception = nullptr;
 
-			DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, key.data(), value, recursive, &exception);
+			DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, key.data(), static_cast<int64_t>(value), recursive, &exception);
 
 			if (exception)
 			{
@@ -136,7 +139,8 @@ namespace framework
 			return *this;
 		}
 
-		inline Config& Config::overrideConfiguration(std::string_view key, bool value, bool recursive)
+		template<>
+		inline Config& Config::overrideConfiguration<bool>(std::string_view key, const bool& value, bool recursive)
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, void, const char* key, bool value, bool recursive, void** exception);
 			void* exception = nullptr;
