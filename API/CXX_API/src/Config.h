@@ -18,7 +18,7 @@ namespace framework
 		public:
 			Config(const std::filesystem::path& configPath);
 
-			Config(std::string_view serverConfiguration, std::string_view sourcesPath);
+			Config(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
 			Config(const Config& other);
 
@@ -76,14 +76,14 @@ namespace framework
 			}
 		}
 
-		inline Config::Config(std::string_view serverConfiguration, std::string_view sourcesPath) :
+		inline Config::Config(std::string_view serverConfiguration, std::string_view applicationDirectory) :
 			implementation(nullptr),
 			weak(false)
 		{
-			using createConfigFromString = void* (*)(const char* serverConfiguration, const char* sourcesPath, void** exception);
+			using createConfigFromString = void* (*)(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 			void* exception = nullptr;
 
-			implementation = DLLHandler::getInstance().CALL_FUNCTION(createConfigFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
+			implementation = DLLHandler::getInstance().CALL_FUNCTION(createConfigFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
 
 			if (exception)
 			{

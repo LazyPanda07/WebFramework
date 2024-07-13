@@ -36,11 +36,11 @@ void* createWebFrameworkFromPath(const char* configPath, void** exception)
 	return nullptr;
 }
 
-void* createWebFrameworkFromString(const char* serverConfiguration, const char* sourcesPath, void** exception)
+void* createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception)
 {
 	try
 	{
-		return new framework::WebFramework(framework::utility::Config::createConfig(serverConfiguration, sourcesPath));
+		return new framework::WebFramework(framework::utility::Config(serverConfiguration, applicationDirectory));
 	}
 	catch (const std::exception& e)
 	{
@@ -78,11 +78,11 @@ void* createConfigFromPath(const char* configPath, void** exception)
 	return nullptr;
 }
 
-void* createConfigFromString(const char* serverConfiguration, const char* sourcesPath, void** exception)
+void* createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception)
 {
 	try
 	{
-		return new framework::utility::Config(framework::utility::Config::createConfig(serverConfiguration, sourcesPath));
+		return new framework::utility::Config(serverConfiguration, applicationDirectory);
 	}
 	catch (const std::exception& e)
 	{

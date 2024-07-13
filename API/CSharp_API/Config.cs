@@ -61,11 +61,11 @@ public partial class Config
 		}
 	}
 
-	public unsafe Config(string serverConfiguration, string sourcesPath)
+	public unsafe Config(string serverConfiguration, string applicationDirectory)
 	{
 		void* exception = null;
 
-		implementation = createConfigFromString(serverConfiguration, sourcesPath, ref exception);
+		implementation = createConfigFromString(serverConfiguration, applicationDirectory, ref exception);
 
 		if (exception != null)
 		{

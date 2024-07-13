@@ -24,11 +24,14 @@ class Config:
         return cls(implementation)
 
     @classmethod
-    def from_string(cls, server_configuration: str, sources_path: str) -> "Config":
+    def from_string(cls, server_configuration: str, application_directory: str) -> "Config":
+        print(f"{server_configuration} {type(server_configuration)}")
+        print(f"{application_directory} {type(application_directory)}")
+        
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createConfigFromString", ctypes.c_void_p,
                                                                  ctypes.c_char_p(server_configuration.encode()),
-                                                                 ctypes.c_char_p(sources_path.encode()),
+                                                                 ctypes.c_char_p(application_directory.encode()),
                                                                  ctypes.byref(exception))
 
         if exception:

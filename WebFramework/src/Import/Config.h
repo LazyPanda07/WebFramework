@@ -25,16 +25,15 @@ namespace framework
 			Config() = default;
 
 		public:
+			Config(const std::filesystem::path& configPath);
+
 			/**
 			 * @brief Create config from text
 			 * @param serverConfiguration UTF8 encoded configuration
 			 * @param applicationDirectory Relative to that path all *.json settings construct their own paths(assets path, templates path, ...)
-			 * @return 
+			 * @return
 			 */
-			static Config createConfig(std::string_view serverConfiguration, std::string_view applicationDirectory);
-
-		public:
-			Config(const std::filesystem::path& configPath);
+			Config(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
 			Config(const Config&) = default;
 

@@ -74,18 +74,14 @@ TEST(API, ConfigOverrideStringArray)
 
 	config.overrideConfiguration("loadSources", std::vector<std::string>{ "anotherSource" }, true);
 
-	std::cout << config.getConfiguration() << std::endl;
-
 	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
 }
 
 TEST(API, ConfigOverrideIntegerArray)
 {
 	framework::utility::Config config = createConfig();
-	
-	config.overrideConfiguration("port", std::vector<int64_t> { 15 }, true);
 
-	std::cout << config.getConfiguration() << std::endl;
+	config.overrideConfiguration("port", std::vector<int64_t>{ 15 }, true);
 
 	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
 }

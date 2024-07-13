@@ -31,11 +31,11 @@ class WebFramework:
         return cls(implementation)
 
     @classmethod
-    def from_string(cls, server_configuration: str, sources_path: str) -> "WebFramework":
+    def from_string(cls, server_configuration: str, application_directory: str) -> "WebFramework":
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createWebFrameworkFromString", ctypes.c_void_p,
                                                                  ctypes.c_char_p(server_configuration.encode()),
-                                                                 ctypes.c_char_p(sources_path.encode()),
+                                                                 ctypes.c_char_p(application_directory.encode()),
                                                                  ctypes.byref(exception))
 
         if exception:

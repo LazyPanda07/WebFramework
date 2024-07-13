@@ -25,16 +25,6 @@ namespace framework
 			return *this;
 		}
 
-		Config Config::createConfig(string_view serverConfiguration, string_view applicationDirectory)
-		{
-			Config result;
-
-			result.currentConfiguration.setJSONData(serverConfiguration);
-			result.basePath = filesystem::absolute(applicationDirectory);
-
-			return result;
-		}
-
 		Config::Config(const filesystem::path& configPath) :
 			basePath(filesystem::absolute(configPath))
 		{
@@ -46,6 +36,13 @@ namespace framework
 			basePath = basePath.parent_path();
 
 			currentConfiguration.setJSONData(ifstream(configPath));
+		}
+
+		Config::Config(string_view serverConfiguration, string_view applicationDirectory) :
+			currentConfiguration(serverConfiguration),
+			basePath(filesystem::absolute(applicationDirectory))
+		{
+			
 		}
 
 		Config& Config::overrideConfiguration(string_view key, const json::utility::jsonObject::variantType& value, bool recursive)

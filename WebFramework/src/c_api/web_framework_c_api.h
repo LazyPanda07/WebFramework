@@ -18,13 +18,13 @@ EXPORT const char* getDataFromString(void* implementation);
 
 EXPORT void* createWebFrameworkFromPath(const char* configPath, void** exception);
 
-EXPORT void* createWebFrameworkFromString(const char* serverConfiguration, const char* sourcesPath, void** exception);
+EXPORT void* createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 
 EXPORT void* createWebFrameworkFromConfig(void* config, void** exception);
 
 EXPORT void* createConfigFromPath(const char* configPath, void** exception);
 
-EXPORT void* createConfigFromString(const char* serverConfiguration, const char* sourcesPath, void** exception);
+EXPORT void* createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
