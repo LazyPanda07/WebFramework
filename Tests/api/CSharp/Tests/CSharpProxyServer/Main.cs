@@ -39,8 +39,6 @@ class ProxyServer
 					using StreamWriter writer = new(file);
 
 					writer.Write($"{Environment.ProcessId}");
-
-					file.Close();
 				}
 			);
 		}

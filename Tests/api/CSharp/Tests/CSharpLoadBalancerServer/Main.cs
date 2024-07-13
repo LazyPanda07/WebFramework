@@ -87,8 +87,6 @@ class LoadBalancerServer
 					using StreamWriter writer = new(file);
 
 					writer.Write($"{Environment.ProcessId}");
-
-					file.Close();
 				}
 			);
 		}
