@@ -137,16 +137,14 @@ namespace framework
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
 			createHeuristicFunction heuristicCreateFunction = nullptr;
 
+			std::cout << heuristicName << " heuristic" << std::endl;
+
 			if (heuristicName == "Connections")
 			{
-				std::cout << "Connections heuristic" << std::endl;
-
 				heuristicCreateFunction = [](string_view ip, string_view port, bool useHTTPS) -> void* { return new Connections(ip, port, useHTTPS); };
 			}
 			else
 			{
-				std::cout << heuristicName << " heuristic" << std::endl;
-
 				for (HMODULE source : loadSources)
 				{
 					if (heuristicCreateFunction = reinterpret_cast<createHeuristicFunction>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
