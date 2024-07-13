@@ -17,7 +17,7 @@ def get_configuration():
 
         result += c
 
-        return result
+    return result
 
 
 def create_config():
