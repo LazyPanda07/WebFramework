@@ -137,8 +137,6 @@ namespace framework
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
 			createHeuristicFunction heuristicCreateFunction = nullptr;
 
-			std::cout << heuristicName << " heuristic" << std::endl;
-
 			if (heuristicName == "Connections")
 			{
 				heuristicCreateFunction = [](string_view ip, string_view port, bool useHTTPS) -> void* { return new Connections(ip, port, useHTTPS); };

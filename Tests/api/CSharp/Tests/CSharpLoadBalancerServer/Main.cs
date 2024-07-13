@@ -2,7 +2,7 @@
 
 class LoadBalancerServer
 {
-	static int Main(string config, long port, bool custom_heuristic = false, string type = "", bool serversHTTPS = false)
+	static int Main(string config, long port, bool customHeuristic = false, string type = "", bool serversHTTPS = false)
 	{
 		try
 		{
@@ -10,7 +10,7 @@ class LoadBalancerServer
 
 			serverConfig.OverrideConfiguration("port", port, true);
 
-			if (custom_heuristic)
+			if (customHeuristic)
 			{
 				serverConfig.OverrideConfiguration("heuristic", "CustomHeuristic", true);
 			}
