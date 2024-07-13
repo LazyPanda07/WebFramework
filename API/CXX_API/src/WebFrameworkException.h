@@ -6,39 +6,42 @@
 
 namespace framework
 {
-	class WebFrameworkException : public std::exception
+	namespace exceptions
 	{
-	private:
-		std::shared_ptr<void> implementation;
+		class WebFrameworkException : public std::exception
+		{
+		private:
+			std::shared_ptr<void> implementation;
 
-	public:
-		WebFrameworkException(void* implementation);
+		public:
+			WebFrameworkException(void* implementation);
 
-		const char* what() const noexcept override;
+			const char* what() const noexcept override;
 
-		~WebFrameworkException() = default;
-	};
+			~WebFrameworkException() = default;
+		};
 
-	inline WebFrameworkException::WebFrameworkException(void* implementation) :
-		implementation
-		(
-			std::shared_ptr<void>
+		inline WebFrameworkException::WebFrameworkException(void* implementation) :
+			implementation
 			(
-				implementation,
-				[this](void* block)
-				{
-					DLLHandler::getInstance().free(block);
-				}
+				std::shared_ptr<void>
+				(
+					implementation,
+					[this](void* block)
+					{
+						utility::DLLHandler::getInstance().free(block);
+					}
+				)
 			)
-		)
-	{
+		{
 
-	}
+		}
 
-	inline const char* WebFrameworkException::what() const noexcept
-	{
-		using getErrorMessage = const char* (*)(void* implementation);
+		inline const char* WebFrameworkException::what() const noexcept
+		{
+			using getErrorMessage = const char* (*)(void* implementation);
 
-		return DLLHandler::getInstance().CALL_FUNCTION(getErrorMessage, implementation.get());
+			return utility::DLLHandler::getInstance().CALL_FUNCTION(getErrorMessage, implementation.get());
+		}
 	}
 }

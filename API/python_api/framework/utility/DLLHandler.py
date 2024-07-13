@@ -1,4 +1,26 @@
 import ctypes
+import platform
+import os
+
+from pathlib import Path
+
+
+def initialize_web_framework(path_to_dll: str):
+    if DLLHandler.instance is not None:
+        return
+
+    path_to_dll = os.path.abspath(path_to_dll)
+
+    if platform.system() == "Windows":
+        path_to_dll = f"{path_to_dll}.dll"
+    else:
+        path = Path(path_to_dll)
+        path_to_dll = f"{path.parent}/lib{path.name}.so"
+
+    if not os.path.exists(path_to_dll):
+        raise FileNotFoundError(f"Path {path_to_dll} doesn't exist")
+
+    DLLHandler.instance = DLLHandler(path_to_dll)
 
 
 class DLLHandler:

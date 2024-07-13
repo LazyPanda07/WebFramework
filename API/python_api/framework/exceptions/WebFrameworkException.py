@@ -1,6 +1,6 @@
 import ctypes
 
-from .DLLHandler import DLLHandler
+from framework.utility.DLLHandler import DLLHandler
 
 
 class WebFrameworkException(Exception):

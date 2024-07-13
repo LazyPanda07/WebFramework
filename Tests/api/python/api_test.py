@@ -2,8 +2,8 @@ import pathlib
 import unittest
 from typing import List
 
-from framework.WebFramework import initialize_web_framework
-from framework.Config import Config
+from framework.utility.DLLHandler import initialize_web_framework
+from framework.utility.Config import Config
 
 
 class APITest(unittest.TestCase):

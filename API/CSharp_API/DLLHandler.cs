@@ -1,4 +1,4 @@
-﻿namespace Framework;
+﻿namespace Framework.Utility;
 
 internal class DLLHandler
 {

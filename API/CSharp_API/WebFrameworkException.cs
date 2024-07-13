@@ -1,6 +1,8 @@
-﻿namespace Framework;
+﻿namespace Framework.Exceptions;
 
 using System.Runtime.InteropServices;
+
+using Framework.Utility;
 
 public unsafe partial class WebFrameworkException(void* implementation) : Exception
 {

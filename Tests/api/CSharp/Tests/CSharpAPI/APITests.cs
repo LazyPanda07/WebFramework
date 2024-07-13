@@ -1,6 +1,4 @@
-namespace APITests;
-
-using Framework;
+using Framework.Utility;
 using Newtonsoft.Json;
 using System.Text;
 using Xunit.Abstractions;
@@ -37,7 +35,7 @@ public class APITests(ITestOutputHelper output)
 	[Fact]
 	public unsafe void ConfigConstructors()
 	{
-		Config configFromPath = new("multi_threaded_config.json");
+		Config configFromPath = CreateConfig();
 		Config configFromStrings = new(GetConfiguration(), Directory.GetCurrentDirectory());
 
 		Assert.Equal(configFromPath.GetRawConfiguration(), configFromStrings.GetRawConfiguration());

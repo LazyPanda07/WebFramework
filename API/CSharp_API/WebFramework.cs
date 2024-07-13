@@ -2,6 +2,9 @@
 
 using System.Runtime.InteropServices;
 
+using Framework.Utility;
+using Framework.Exceptions;
+
 public partial class WebFramework
 {
 	private readonly unsafe void* implementation;

@@ -1,27 +1,100 @@
 #include "gtest/gtest.h"
 
 #include <filesystem>
+#include <fstream>
 
 #include "import.h"
 
-TEST(API, Config)
+std::string getConfiguration()
 {
-	framework::initializeWebFramework("WebFramework");
+	std::ifstream in("multi_threaded_config.json");
+	std::ostringstream os;
+	std::string result;
 
-	framework::utility::Config config("multi_threaded_config.json");
+	os << in.rdbuf();
 
-	ASSERT_EQ(config.getConfiguration(), config.getRawConfiguration());
+	for (char c : os.str())
+	{
+		if (c == '\r')
+		{
+			continue;
+		}
 
-	config.overrideConfiguration("settingsPaths", std::vector<std::string>{ "load_balancer_web.json" }, true);
+		result += c;
+	}
 
-	ASSERT_NE(config.getConfiguration(), config.getRawConfiguration());
+	return result;
+}
 
-	ASSERT_EQ(config.getBasePath(), std::filesystem::current_path().string());
+framework::utility::Config createConfig()
+{
+	return framework::utility::Config("multi_threaded_config.json");
+}
+
+TEST(API, ConfigConstructors)
+{
+	framework::utility::Config configFromPath("multi_threaded_config.json");
+	framework::utility::Config configFromStrings(getConfiguration(), std::filesystem::current_path().string());
+
+	ASSERT_EQ(configFromPath.getRawConfiguration(), configFromStrings.getRawConfiguration());
+	ASSERT_EQ(configFromPath.getConfiguration(), configFromStrings.getConfiguration());
+	ASSERT_EQ(configFromPath.getBasePath(), configFromStrings.getBasePath());
+}
+
+TEST(API, ConfigOverrideString)
+{
+	framework::utility::Config config = createConfig();
+
+	config.overrideConfiguration("webServerType", "threadPool", true);
+
+	ASSERT_NE(config.getConfiguration().find(R"("webServerType": "threadPool")"), std::string::npos);
+}
+
+TEST(API, ConfigOverrideInteger)
+{
+	framework::utility::Config config = createConfig();
+
+	config.overrideConfiguration("cachingSize", 0LL, true);
+
+	ASSERT_NE(config.getConfiguration().find(R"("cachingSize": 0)"), std::string::npos);
+}
+
+TEST(API, ConfigOverrideBool)
+{
+	framework::utility::Config config = createConfig();
+
+	config.overrideConfiguration("usingLogging", false, true);
+
+	ASSERT_NE(config.getConfiguration().find(R"("usingLogging": false)"), std::string::npos);
+}
+
+TEST(API, ConfigOverrideStringArray)
+{
+	framework::utility::Config config = createConfig();
+
+	config.overrideConfiguration("loadSources", std::vector<std::string>{ "anotherSource" }, true);
+
+	std::cout << config.getConfiguration() << std::endl;
+
+	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
+}
+
+TEST(API, ConfigOverrideIntegerArray)
+{
+	framework::utility::Config config = createConfig();
+	
+	config.overrideConfiguration("port", std::vector<int64_t> { 15 }, true);
+
+	std::cout << config.getConfiguration() << std::endl;
+
+	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
 }
 
 int main(int argc, char** argv)
 {
 	testing::InitGoogleTest(&argc, argv);
+
+	framework::utility::initializeWebFramework("WebFramework");
 
 	return RUN_ALL_TESTS();
 }

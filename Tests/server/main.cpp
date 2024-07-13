@@ -22,7 +22,7 @@ int main(int argc, char** argv) try
 	}
 
 #ifdef CXX_API
-	framework::initializeWebFramework("WebFramework");
+	framework::utility::initializeWebFramework("WebFramework");
 #endif
 
 	framework::WebFramework server(argv[1]);

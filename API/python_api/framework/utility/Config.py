@@ -3,8 +3,8 @@ from typing import List
 
 from multipledispatch import dispatch
 
-from .DLLHandler import DLLHandler
-from .WebFrameworkException import WebFrameworkException
+from framework.utility.DLLHandler import DLLHandler
+from framework.exceptions.WebFrameworkException import WebFrameworkException
 
 
 class Config:

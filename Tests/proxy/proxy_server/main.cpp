@@ -18,7 +18,7 @@ int main(int argc, char** argv) try
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 
 #ifdef CXX_API
-	framework::initializeWebFramework("WebFramework");
+	framework::utility::initializeWebFramework("WebFramework");
 #endif
 
 	framework::utility::Config config(parser.get<std::string>("--config"));

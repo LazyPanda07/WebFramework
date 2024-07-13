@@ -1,30 +1,10 @@
 import ctypes
 import os
-import platform
-from pathlib import Path
 from typing import Callable
 
-from . import Config
-from .DLLHandler import DLLHandler
-from .WebFrameworkException import WebFrameworkException
-
-
-def initialize_web_framework(path_to_dll: str):
-    if DLLHandler.instance is not None:
-        raise Exception("WebFramework already initialized")
-
-    path_to_dll = os.path.abspath(path_to_dll)
-
-    if platform.system() == "Windows":
-        path_to_dll = f"{path_to_dll}.dll"
-    else:
-        path = Path(path_to_dll)
-        path_to_dll = f"{path.parent}/lib{path.name}.so"
-
-    if not os.path.exists(path_to_dll):
-        raise FileNotFoundError(f"Path {path_to_dll} doesn't exist")
-
-    DLLHandler.instance = DLLHandler(path_to_dll)
+from .utility import Config
+from framework.utility.DLLHandler import DLLHandler
+from framework.exceptions.WebFrameworkException import WebFrameworkException
 
 
 class WebFramework:
@@ -75,7 +55,7 @@ class WebFramework:
 
         return cls(implementation)
 
-    def start(self, wait: bool = False, on_start_server: Callable[[None], None] = None):
+    def start(self, wait: bool = False, on_start_server: Callable[[], None] = None):
         if on_start_server is None:
             def default_function():
                 pass

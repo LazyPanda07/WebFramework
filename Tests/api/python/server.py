@@ -1,8 +1,9 @@
 import sys
 import os
 
-from framework.WebFramework import WebFramework, initialize_web_framework
-from framework.WebFrameworkException import WebFrameworkException
+from framework.WebFramework import WebFramework
+from framework.utility.DLLHandler import initialize_web_framework
+from framework.exceptions.WebFrameworkException import WebFrameworkException
 
 
 def write_process_id():

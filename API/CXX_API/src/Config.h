@@ -73,7 +73,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 		}
 
@@ -115,7 +115,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -130,7 +130,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -145,7 +145,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -178,7 +178,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -211,7 +211,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			return *this;
@@ -228,7 +228,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			std::string result(handler.CALL_FUNCTION(getDataFromString, stringPtr));
@@ -249,7 +249,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			std::string result(handler.CALL_FUNCTION(getDataFromString, stringPtr));
@@ -268,7 +268,7 @@ namespace framework
 
 			if (exception)
 			{
-				throw WebFrameworkException(exception);
+				throw exceptions::WebFrameworkException(exception);
 			}
 
 			return std::string_view(result);

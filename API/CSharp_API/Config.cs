@@ -1,6 +1,8 @@
-﻿namespace Framework;
+﻿namespace Framework.Utility;
 
 using System.Runtime.InteropServices;
+
+using Framework.Exceptions;
 
 public partial class Config
 {
