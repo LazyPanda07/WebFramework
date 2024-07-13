@@ -15,8 +15,6 @@ def get_configuration():
         for i in range(len(temp)):
             result += temp[i]
 
-    print(result)
-
     return result
 
 
