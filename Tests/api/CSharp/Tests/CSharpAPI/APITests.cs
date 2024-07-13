@@ -54,7 +54,10 @@ public class APITests(ITestOutputHelper output)
 
 		Assert.NotEqual(data, null);
 
-		Assert.Equal<string>("threadPool", data.WebFramework.webServerType);
+		const string expected = "threadPool";
+		string actual = data.WebFramework.webServerType;
+
+		Assert.Equal(expected, actual);
 	}
 
 	[Fact]
