@@ -12,7 +12,7 @@ public partial class Config
 	private static unsafe partial void* createConfigFromPath(string configPath, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void* createConfigFromString(string serverConfiguration, string sourcesPath, ref void* exception);
+	private static unsafe partial void* createConfigFromString(string serverConfiguration, string applicationDirectory, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void overrideConfigurationString(void* implementation, string key, string value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);

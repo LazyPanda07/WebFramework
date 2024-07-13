@@ -13,7 +13,7 @@ public partial class WebFramework
 	private static unsafe partial void* createWebFrameworkFromPath(string configPath, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void* createWebFrameworkFromString(string serverConfiguration, string sourcesPath, ref void* exception);
+	private static unsafe partial void* createWebFrameworkFromString(string serverConfiguration, string applicationDirectory, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void* createWebFrameworkFromConfig(void* config, ref void* exception);
@@ -44,11 +44,11 @@ public partial class WebFramework
 		}
 	}
 
-	public unsafe WebFramework(string serverConfiguration, string sourcesPath)
+	public unsafe WebFramework(string serverConfiguration, string applicationDirectory)
 	{
 		void* exception = null;
 
-		implementation = createWebFrameworkFromString(serverConfiguration, sourcesPath, ref exception);
+		implementation = createWebFrameworkFromString(serverConfiguration, applicationDirectory, ref exception);
 
 		if (exception != null)
 		{

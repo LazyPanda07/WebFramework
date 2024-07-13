@@ -19,7 +19,7 @@ namespace framework
 	public:
 		WebFramework(const std::string& config);
 
-		WebFramework(std::string_view serverConfiguration, std::string_view sourcesPath);
+		WebFramework(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
 		WebFramework(const utility::Config& config);
 
@@ -61,13 +61,13 @@ namespace framework
 		}
 	}
 
-	inline WebFramework::WebFramework(std::string_view serverConfiguration, std::string_view sourcesPath) :
+	inline WebFramework::WebFramework(std::string_view serverConfiguration, std::string_view applicationDirectory) :
 		weak(false)
 	{
-		using createWebFrameworkFromString = void* (*)(const char* serverConfiguration, const char* sourcesPath, void** exception);
+		using createWebFrameworkFromString = void* (*)(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), sourcesPath.data(), &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
 
 		if (exception)
 		{

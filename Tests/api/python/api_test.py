@@ -7,15 +7,15 @@ from framework.utility.Config import Config
 
 
 def get_configuration():
+    result = ""
+
     with open("multi_threaded_config.json", "r") as file:
-        result = ""
         temp = file.read()
 
-        for c in temp:
-            if c == '\r':
-                continue
+        for i in range(len(temp)):
+            result += temp[i]
 
-        result += c
+    print(result)
 
     return result
 
