@@ -34,9 +34,6 @@ namespace framework
 			template<std::convertible_to<int64_t> T>
 			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
 
-			template<>
-			Config& overrideConfiguration<bool>(std::string_view key, const bool& value, bool recursive);
-
 			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
 
 			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
