@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpAPI", "CSharpAPI\CSha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpServer", "CSharpServer\CSharpServer.csproj", "{58320F69-A8F4-41CC-A64A-D903AA01D7EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpProxyServer", "CSharpProxyServer\CSharpProxyServer.csproj", "{B3A7AEBD-01C1-410C-BF35-A9F06C74117E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpProxyServer", "CSharpProxyServer\CSharpProxyServer.csproj", "{B3A7AEBD-01C1-410C-BF35-A9F06C74117E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpLoadBalancerServer", "CSharpLoadBalancerServer\CSharpLoadBalancerServer.csproj", "{B7CF8C93-FFC5-4236-A3B5-C671492066AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpLoadBalancerServer", "CSharpLoadBalancerServer\CSharpLoadBalancerServer.csproj", "{B7CF8C93-FFC5-4236-A3B5-C671492066AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -47,7 +47,7 @@ namespace framework
 	{
 		if (DLLHandler::instance)
 		{
-			throw std::runtime_error("WebFramework already initialized");
+			return;
 		}
 
 		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path

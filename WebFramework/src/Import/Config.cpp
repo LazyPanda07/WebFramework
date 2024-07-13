@@ -25,12 +25,12 @@ namespace framework
 			return *this;
 		}
 
-		Config Config::createConfig(string_view serverConfiguration, string_view sourcesPath)
+		Config Config::createConfig(string_view serverConfiguration, string_view applicationDirectory)
 		{
 			Config result;
 
 			result.currentConfiguration.setJSONData(serverConfiguration);
-			result.basePath = filesystem::absolute(sourcesPath).parent_path();
+			result.basePath = filesystem::absolute(applicationDirectory);
 
 			return result;
 		}

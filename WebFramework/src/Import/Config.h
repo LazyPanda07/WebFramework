@@ -28,9 +28,10 @@ namespace framework
 			/**
 			 * @brief Create config from text
 			 * @param serverConfiguration UTF8 encoded configuration
+			 * @param applicationDirectory Relative to that path all *.json settings construct their own paths(assets path, templates path, ...)
 			 * @return 
 			 */
-			static Config createConfig(std::string_view serverConfiguration, std::string_view sourcesPath);
+			static Config createConfig(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
 		public:
 			Config(const std::filesystem::path& configPath);
