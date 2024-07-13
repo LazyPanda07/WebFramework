@@ -8,16 +8,16 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 dotnet CSharpServer.dll ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
 dotnet CSharpProxyServer.dll --config proxy_config.json --port 15000 &
-dotnet CSharpProxyServer.dll --config proxy_config.json --port 15001 --useHTTPS &
+dotnet CSharpProxyServer.dll --config proxy_config.json --port 15001 --use-https &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9090 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9091 --serversHTTPS &
+dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9091 --servers-https &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --port 9092 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --port 9093 --serversHTTPS &
+dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --port 9093 --servers-https &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --type server --port 10000 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --type server --port 10001 --serversHTTPS &
+dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --type server --port 10001 --servers-https &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json  --type server --port 10002 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9094 --custom_heuristic &
+dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --type server --port 10003 --servers-https &
+dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9094 --custom-heuristic &
 sleep 1
 
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
