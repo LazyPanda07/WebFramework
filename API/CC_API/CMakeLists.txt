@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_C_STANDARD 17)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
@@ -8,11 +8,11 @@ if(UNIX)
 	add_definitions(-D__LINUX__)
 endif(UNIX)
 
-project(CXX_API)
+project(CC_API)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/dummy.cpp
+	src/dummy.c
 )
 
 install(
@@ -22,5 +22,4 @@ install(
 	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
 )
 
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include FILES_MATCHING PATTERN "*.hpp")
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cc/include FILES_MATCHING PATTERN "*.h")

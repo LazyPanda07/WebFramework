@@ -2,8 +2,8 @@
 
 #include <concepts>
 
-#include "DLLHandler.h"
-#include "WebFrameworkException.h"
+#include "DLLHandler.hpp"
+#include "WebFrameworkException.hpp"
 
 namespace framework
 {

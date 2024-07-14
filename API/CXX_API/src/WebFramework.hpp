@@ -3,9 +3,9 @@
 #include <functional>
 #include <filesystem>
 
-#include "DLLHandler.h"
-#include "WebFrameworkException.h"
-#include "Config.h"
+#include "DLLHandler.hpp"
+#include "WebFrameworkException.hpp"
+#include "Config.hpp"
 
 namespace framework
 {

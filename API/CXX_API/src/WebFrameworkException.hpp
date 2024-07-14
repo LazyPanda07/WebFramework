@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "DLLHandler.h"
+#include "DLLHandler.hpp"
 
 namespace framework
 {

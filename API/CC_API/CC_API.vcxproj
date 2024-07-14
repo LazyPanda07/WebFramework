@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{3f4d262a-28bd-49d4-bb24-a83363263739}</ProjectGuid>
-    <RootNamespace>WebFrameworkCXXAPI</RootNamespace>
+    <ProjectGuid>{3d090049-a939-49cf-b7cb-434e4197b940}</ProjectGuid>
+    <RootNamespace>CC_API</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -59,6 +59,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,6 +76,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -84,14 +86,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Config.hpp" />
-    <ClInclude Include="src\DLLHandler.hpp" />
-    <ClInclude Include="src\import.h" />
-    <ClInclude Include="src\WebFramework.hpp" />
+    <ClCompile Include="src\dummy.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\dummy.cpp" />
-    <ClCompile Include="src\WebFrameworkException.hpp" />
+    <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\DLLHandler.h" />
+    <ClInclude Include="src\import.h" />
+    <ClInclude Include="src\WebFramework.h" />
+    <ClInclude Include="src\WebFrameworkException.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
