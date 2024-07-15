@@ -26,6 +26,10 @@ HMODULE getInstance(const char* pathToDLL);
 
 void* findFunction(const char* name);
 
+void deleteWebFrameworkObject(void* object);
+
+const char* getDataFromString(WebFramework string);
+
 size_t findLastChar(char* ptr, char c);
 
 inline void initializeWebFramework(const char* pathToDLL)
@@ -115,6 +119,20 @@ inline void* findFunction(const char* name)
 #else
 	return (void*)GetProcAddress(instance, name);
 #endif
+}
+
+inline void deleteWebFrameworkObject(void* object)
+{
+	typedef void* (*deleteWebFrameworkObject)(void* object);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkObject, object);
+}
+
+inline const char* getDataFromString(WebFramework string)
+{
+	typedef const char* (*getDataFromString)(void* implementation);
+
+	return CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, string);
 }
 
 inline size_t findLastChar(char* ptr, char c)

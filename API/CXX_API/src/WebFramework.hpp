@@ -17,7 +17,7 @@ namespace framework
 		bool weak;
 
 	public:
-		WebFramework(const std::string& config);
+		WebFramework(const std::string& configPath);
 
 		WebFramework(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
@@ -41,19 +41,19 @@ namespace framework
 
 namespace framework
 {
-	inline WebFramework::WebFramework(const std::string& config) :
+	inline WebFramework::WebFramework(const std::string& configPath) :
 		weak(false)
 	{
 		using createWebFrameworkFromPath = void* (*)(const char* configPath, void** exception);
 
-		if (!std::filesystem::exists(config))
+		if (!std::filesystem::exists(configPath))
 		{
-			throw std::runtime_error(std::format("Path {} doesn't exist", config));
+			throw std::runtime_error(std::format("Path {} doesn't exist", configPath));
 		}
 
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, config.data(), &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, configPath.data(), &exception);
 
 		if (exception)
 		{
