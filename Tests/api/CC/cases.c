@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include "cases.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,9 +11,12 @@
 #include <unistd.h>
 #else
 #include <Windows.h>
+
+#pragma warning(disable: 6011)
+#pragma warning(disable: 6386)
 #endif
 
-const char* getConfiguration()
+static char* getConfigurationData()
 {
 	FILE* in = fopen("multi_threaded_config.json", "r");
 	size_t size = 0;
@@ -48,7 +51,7 @@ const char* getConfiguration()
 	return data;
 }
 
-Config createConfig()
+static Config createConfig()
 {
 	Config result;
 
@@ -57,21 +60,26 @@ Config createConfig()
 	return result;
 }
 
-TEST(API, ConfigConstructors)
+void initialize()
+{
+	initializeWebFramework("WebFramework");
+}
+
+void configConstructors(bool* configuration, bool* basePath, bool* rawConfiguration)
 {
 	Config configFromPath = createConfig();
 	Config configFromStrings;
-	const char* data = getConfiguration();
-	char* currentDirectory[4096];
+	char* data = getConfigurationData();
+	char currentDirectory[4096];
 
 	memset(currentDirectory, 0, sizeof(currentDirectory));
 
 #ifdef __LINUX__
 	getcwd(currentDirectory, sizeof(currentDirectory));
 #else
-	GetCurrentDirectory(sizeof(currentDirectory), currentDirectory);
+	GetCurrentDirectoryA(sizeof(currentDirectory), currentDirectory);
 #endif
-	
+
 	createConfigFromString(data, currentDirectory, &configFromStrings);
 
 	free(data);
@@ -83,7 +91,7 @@ TEST(API, ConfigConstructors)
 		getConfiguration(configFromPath, &fromPathString);
 		getConfiguration(configFromStrings, &fromStringsString);
 
-		ASSERT_FALSE(strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString)));
+		*configuration = strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString));
 
 		deleteWebFrameworkObject(fromPathString);
 		deleteWebFrameworkObject(fromStringsString);
@@ -96,12 +104,12 @@ TEST(API, ConfigConstructors)
 		getBasePath(configFromPath, &fromPathString);
 		getBasePath(configFromStrings, &fromStringsString);
 
-		ASSERT_FALSE(strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString)));
+		*basePath = strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString));
 
 		deleteWebFrameworkObject(fromPathString);
 		deleteWebFrameworkObject(fromStringsString);
 	}
-	
+
 	{
 		const char* fromPathString;
 		const char* fromStringsString;
@@ -109,14 +117,14 @@ TEST(API, ConfigConstructors)
 		getRawConfiguration(configFromPath, &fromPathString);
 		getRawConfiguration(configFromStrings, &fromStringsString);
 
-		ASSERT_FALSE(strcmp(fromPathString, fromStringsString));
+		*rawConfiguration = strcmp(fromPathString, fromStringsString);
 	}
 
 	deleteWebFrameworkObject(configFromPath);
 	deleteWebFrameworkObject(configFromStrings);
 }
 
-TEST(API, ConfigOverrideString)
+void configOverrideString(bool* assertTrue)
 {
 	Config config = createConfig();
 	WebFrameworkString data = NULL;
@@ -125,62 +133,84 @@ TEST(API, ConfigOverrideString)
 
 	getConfiguration(config, &data);
 
-	ASSERT_TRUE(strstr(getDataFromString(data), "\"webServerType\": \"threadPool\""));
+	*assertTrue = strstr(getDataFromString(data), "\"webServerType\": \"threadPool\"");
 
 	deleteWebFrameworkObject(data);
 	deleteWebFrameworkObject(config);
 }
 
-TEST(API, ConfigOverrideInteger)
+void configOverrideInteger(bool* assertTrue)
 {
 	Config config = createConfig();
 	WebFrameworkString data = NULL;
 
-	overrideConfigurationInteger("cachingSize", 0, true);
+	overrideConfigurationInteger(config, "cachingSize", 0, true);
 
-	ASSERT_TRUE(strstr(getDataFromString(data), "\"cachingSize\": 0"));
+	getConfiguration(config, &data);
+
+	*assertTrue = strstr(getDataFromString(data), "\"cachingSize\": 0");
 
 	deleteWebFrameworkObject(data);
 	deleteWebFrameworkObject(config);
 }
 
-TEST(API, ConfigOverrideBool)
+void configOverrideBool(bool* assertTrue)
 {
 	Config config = createConfig();
 	WebFrameworkString data = NULL;
 
-	overrideConfigurationBoolean("usingLogging", false, true);
+	overrideConfigurationBoolean(config, "usingLogging", false, true);
 
-	ASSERT_TRUE(strstr(getDataFromString(data), "\"usingLogging\": false"));
+	getConfiguration(config, &data);
+
+	*assertTrue = strstr(getDataFromString(data), "\"usingLogging\": false");
 
 	deleteWebFrameworkObject(data);
 	deleteWebFrameworkObject(config);
 }
 
-TEST(API, ConfigOverrideStringArray)
+void configOverrideStringArray(bool* assertFalse)
 {
 	Config config = createConfig();
 	WebFrameworkString data = NULL;
+	WebFrameworkString rawData = NULL;
+	const char** values = malloc(sizeof(const char*));
 
-	config.overrideConfiguration("loadSources", std::vector<std::string>{ "anotherSource" }, true);
+	values[0] = "anotherSource";
 
-	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
+	overrideConfigurationStringArray(config, "loadSources", values, true, 1);
+
+	getConfiguration(config, &data);
+	getConfiguration(config, &rawData);
+
+	*assertFalse = strcmp(getDataFromString(data), getDataFromString(rawData));
+
+	deleteWebFrameworkObject(data);
+	deleteWebFrameworkObject(rawData);
+	deleteWebFrameworkObject(config);
+
+	free(values);
 }
 
-TEST(API, ConfigOverrideIntegerArray)
+void configOverrideIntegerArray(bool* assertFalse)
 {
-	framework::utility::Config config = createConfig();
+	Config config = createConfig();
+	WebFrameworkString data = NULL;
+	WebFrameworkString rawData = NULL;
+	int64_t* values = malloc(sizeof(int64_t));
 
-	config.overrideConfiguration("port", std::vector<int64_t>{ 15 }, true);
+	values[0] = 15;
 
-	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
-}
+	overrideConfigurationIntegerArray(config, "port", values, true, 1);
 
-int main(int argc, char** argv)
-{
-	testing::InitGoogleTest(&argc, argv);
+	getConfiguration(config, &data);
+	getConfiguration(config, &rawData);
 
-	framework::utility::initializeWebFramework("WebFramework");
+	*assertFalse = strcmp(getDataFromString(data), getDataFromString(rawData));
 
-	return RUN_ALL_TESTS();
+	deleteWebFrameworkObject(data);
+	deleteWebFrameworkObject(rawData);
+	deleteWebFrameworkObject(config);
+
+	free(values);
 }

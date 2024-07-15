@@ -1,17 +1,24 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFramework.cmake)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+
+if(UNIX)
+	add_definitions(-D__LINUX__)
+endif(UNIX)
 
 project(CC_API)
 
 add_executable(
 	${PROJECT_NAME}
-	main.c
+	main.cpp
+	cases.c
 )
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${GTEST_INCLUDE_DIRS}
+	${WEB_FRAMEWORK_LIBRARY_DIR}/api/cc/include/
 )
 
 target_link_directories(
@@ -21,7 +28,6 @@ target_link_directories(
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
 	${GTEST_BOTH_LIBRARIES}
 )
 
