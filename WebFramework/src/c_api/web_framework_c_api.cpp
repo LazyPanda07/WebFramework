@@ -189,7 +189,7 @@ void overrideConfigurationStringArray(void* implementation, const char* key, con
 	}
 }
 
-void overrideConfigurationIntegerArray(void* implementation, const char* key, int64_t* value, bool recursive, int64_t size, void** exception)
+void overrideConfigurationIntegerArray(void* implementation, const char* key, const int64_t* value, bool recursive, int64_t size, void** exception)
 {
 	try
 	{
@@ -210,14 +210,7 @@ void overrideConfigurationIntegerArray(void* implementation, const char* key, in
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-const char* getErrorMessage(void* exception)
-{
-	return static_cast<std::runtime_error*>(exception)->what();
-}
-
-void* getConfigurationString(void* implementation, void** exception)
+void* getConfiguration(void* implementation, void** exception)
 {
 	try
 	{
@@ -262,6 +255,13 @@ void* getBasePath(void* implementation, void** exception)
 	}
 
 	return nullptr;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const char* getErrorMessage(void* exception)
+{
+	return static_cast<std::runtime_error*>(exception)->what();
 }
 
 #endif

@@ -14,8 +14,8 @@ using HMODULE = void*;
 #endif
 
 #define DEFINE_CLASS_MEMBER_FUNCTION(functionName, returnType, ...) using functionName = returnType (*)(void* implementation, __VA_ARGS__)
-#define CALL_FUNCTION(functionName, ...) callFunction<functionName>(#functionName, __VA_ARGS__)
-#define CALL_CLASS_MEMBER_FUNCTION(functionName, ...) callClassMemberFunction<functionName>(#functionName, implementation, __VA_ARGS__)
+#define CALL_WEB_FRAMEWORK_FUNCTION(functionName, ...) callFunction<functionName>(#functionName, __VA_ARGS__)
+#define CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(functionName, ...) callClassMemberFunction<functionName>(#functionName, implementation, __VA_ARGS__)
 
 namespace framework
 {
@@ -149,7 +149,7 @@ namespace framework
 		{
 			using deleteWebFrameworkObject = void (*)(void* implementation);
 
-			this->CALL_FUNCTION(deleteWebFrameworkObject, implementation);
+			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkObject, implementation);
 		}
 	}
 }

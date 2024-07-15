@@ -30,7 +30,7 @@ public partial class Config
 	private static unsafe partial void overrideConfigurationIntegerArray(void* implementation, string key, [In] long[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void* getConfigurationString(void* implementation, ref void* exception);
+	private static unsafe partial void* getConfiguration(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial char* getRawConfiguration(void* implementation, ref void* exception);
@@ -150,7 +150,7 @@ public partial class Config
 	{
 		void* exception = null;
 
-		void* stringPointer = getConfigurationString(implementation, ref exception);
+		void* stringPointer = getConfiguration(implementation, ref exception);
 
 		if (exception != null)
 		{

@@ -41,7 +41,7 @@ namespace framework
 		{
 			using getErrorMessage = const char* (*)(void* implementation);
 
-			return utility::DLLHandler::getInstance().CALL_FUNCTION(getErrorMessage, implementation.get());
+			return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getErrorMessage, implementation.get());
 		}
 	}
 }

@@ -53,7 +53,7 @@ namespace framework
 
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_FUNCTION(createWebFrameworkFromPath, config.data(), &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, config.data(), &exception);
 
 		if (exception)
 		{
@@ -67,7 +67,7 @@ namespace framework
 		using createWebFrameworkFromString = void* (*)(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
 
 		if (exception)
 		{
@@ -81,7 +81,7 @@ namespace framework
 		using createWebFrameworkFromConfig = void* (*)(void* config, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
 
 		if (exception)
 		{
@@ -109,7 +109,7 @@ namespace framework
 
 		this->onStartServer = onStartServer;
 
-		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
+		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
 
 		if (exception)
 		{
@@ -122,7 +122,7 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, void, bool wait, void** exception);
 		void* exception = nullptr;
 
-		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, wait, &exception);
+		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(stopWebFrameworkServer, wait, &exception);
 
 		if (exception)
 		{

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __LINUX__
 #include <dlfcn.h>
@@ -12,30 +14,65 @@ typedef void* HMODULE;
 #include <Windows.h>
 #endif
 
+#define CALL_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)findFunction(#functionName))(__VA_ARGS__)
+#define CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)findFunction(#functionName))(implementation, __VA_ARGS__)
+
 typedef HMODULE DLLHandler;
+typedef void* WebFrameworkString;
 
 void initializeWebFramework(const char* pathToDLL);
 
-void* getInstance(const char* pathToDLL);
+HMODULE getInstance(const char* pathToDLL);
+
+void* findFunction(const char* name);
+
+size_t findLastChar(char* ptr, char c);
 
 inline void initializeWebFramework(const char* pathToDLL)
 {
-	char fullPath[4096];
+#define MAX_PATH_SIZE 4096
+
+	char fullPath[MAX_PATH_SIZE];
+	char realPath[MAX_PATH_SIZE];
 
 	memset(fullPath, 0, sizeof(fullPath));
+	memset(realPath, 0, sizeof(realPath));
 	
 #ifdef __LINUX__
 	realpath(pathToDLL, fullPath);
 #else
 	GetFullPathNameA(pathToDLL, sizeof(fullPath), fullPath, NULL);
 #endif
+
+#ifdef __LINUX__
+	size_t index = findLastChar(fullPath, '/');
+	size_t directorySize = index;
+	size_t fileNameSize = strlen(fullPath + index + 1);
+	char* directory = malloc(directorySize);
+	char* fileName = malloc(fileNameSize);
+
+	directory[directorySize] = 0;
+	fileName[fileNameSize] = 0;
+
+	memcpy(directory, fullPath, directorySize);
+	memcpy(fileName, fullPath + index + 1, fileNameSize);
+
+	sprintf(realPath, "%s/lib%s.so", directory, fileName);
+
+	free(directory);
+	free(fileName);
+#else
+	sprintf(realPath, "%s.dll", fullPath);
+#endif
 	
-	getInstance(fullPath);
+	getInstance(realPath);
+
+#undef MAX_PATH_SIZE
 }
 
-inline void* getInstance(const char* pathToDLL)
+inline HMODULE getInstance(const char* pathToDLL)
 {
-	static HMODULE* instance = NULL;
+	static HMODULE instance = NULL;
 
 	if (!instance)
 	{
@@ -49,9 +86,9 @@ inline void* getInstance(const char* pathToDLL)
 			if (!instance)
 			{
 #ifdef __LINUX__
-				printf("Can't load %s or its dependencies", pathToDLL);
+				printf("Can't load %s or its dependencies\n", pathToDLL);
 #else
-				printf("GetLastError(): %zu", GetLastError());
+				printf("GetLastError(): %zd\n", (uint64_t)GetLastError());
 #endif
 
 				exit(-1);
@@ -67,4 +104,35 @@ inline void* getInstance(const char* pathToDLL)
 	}
 
 	return instance;
+}
+
+inline void* findFunction(const char* name)
+{
+	HMODULE instance = getInstance(NULL);
+
+#ifdef __LINUX__
+	return dlsym(instance, name);
+#else
+	return (void*)GetProcAddress(instance, name);
+#endif
+}
+
+inline size_t findLastChar(char* ptr, char c)
+{
+	size_t result = -1;
+
+	for (size_t i = 0;; i++)
+	{
+		if (ptr[i] == 0)
+		{
+			return result;
+		}
+
+		if (ptr[i] == c)
+		{
+			result = i;
+		}
+	}
+
+	return result;
 }

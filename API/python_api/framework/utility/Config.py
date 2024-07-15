@@ -118,7 +118,7 @@ class Config:
         exception = ctypes.c_void_p(0)
 
         handler = DLLHandler.get_instance()
-        string_implementation = handler.call_class_member_function("getConfigurationString", ctypes.c_void_p,
+        string_implementation = handler.call_class_member_function("getConfiguration", ctypes.c_void_p,
                                                                    self.implementation,
                                                                    ctypes.byref(exception))
 

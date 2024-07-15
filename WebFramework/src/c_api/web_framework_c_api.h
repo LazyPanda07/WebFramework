@@ -42,16 +42,16 @@ EXPORT void overrideConfigurationBoolean(void* implementation, const char* key, 
 
 EXPORT void overrideConfigurationStringArray(void* implementation, const char* key, const char** value, bool recursive, int64_t size, void** exception);
 
-EXPORT void overrideConfigurationIntegerArray(void* implementation, const char* key, int64_t* value, bool recursive, int64_t size, void** exception);
+EXPORT void overrideConfigurationIntegerArray(void* implementation, const char* key, const int64_t* value, bool recursive, int64_t size, void** exception);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-EXPORT const char* getErrorMessage(void* exception);
-
-EXPORT void* getConfigurationString(void* implementation, void** exception);
+EXPORT void* getConfiguration(void* implementation, void** exception);
 
 EXPORT const char* getRawConfiguration(void* implementation, void** exception);
 
 EXPORT void* getBasePath(void* implementation, void** exception);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+EXPORT const char* getErrorMessage(void* exception);
 
 #endif
