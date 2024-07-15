@@ -28,7 +28,7 @@ void* findFunction(const char* name);
 
 void deleteWebFrameworkObject(void* object);
 
-const char* getDataFromString(WebFramework string);
+const char* getDataFromString(WebFrameworkString string);
 
 size_t findLastChar(char* ptr, char c);
 
@@ -128,7 +128,7 @@ inline void deleteWebFrameworkObject(void* object)
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkObject, object);
 }
 
-inline const char* getDataFromString(WebFramework string)
+inline const char* getDataFromString(WebFrameworkString string)
 {
 	typedef const char* (*getDataFromString)(void* implementation);
 
