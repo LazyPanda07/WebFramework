@@ -13,6 +13,7 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 ./LoadBalancerServer --config load_balancer_config.json --port 9091 --serversHTTPS &
 ./LoadBalancerServer --config load_balancer_config_https.json --port 9092 &
 ./LoadBalancerServer --config load_balancer_config_https.json --port 9093 --serversHTTPS &
+
 ./LoadBalancerServer --config load_balancer_config.json --type server --port 10000 &
 ./LoadBalancerServer --config load_balancer_config.json --type server --port 10001 --serversHTTPS &
 ./LoadBalancerServer --config load_balancer_config_https.json  --type server --port 10002 &

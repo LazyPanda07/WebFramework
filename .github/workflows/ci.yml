@@ -399,6 +399,7 @@ jobs:
       run: |
           cd build/bin
           .\CC_API.exe || exit 1
+          .\run_cc_tests.bat ${{ matrix.config }}
 
 
   linux-cc-tests:
@@ -437,6 +438,7 @@ jobs:
           cd build/bin
           export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
           ./CC_API
+          source run_cc_tests.sh ${{ matrix.config }}
   
 
   windows-python-tests:

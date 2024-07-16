@@ -13,6 +13,7 @@ dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 90
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9091 --servers-https &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --port 9092 &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --port 9093 --servers-https &
+
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --type server --port 10000 &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --type server --port 10001 --servers-https &
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json  --type server --port 10002 &
