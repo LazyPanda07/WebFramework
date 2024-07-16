@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 
 	WebFrameworkException exception = createConfigFromPath(argv[1], &config);
 	bool serversHTTPS = false;
-	const char* type = "";
+	const char* type = NULL;
 
 	if (exception)
 	{
@@ -117,7 +117,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	if (!strcmp(type, "server"))
+	if (type != NULL && !strcmp(type, "server"))
 	{
 		const char** settingsPaths = malloc(sizeof(const char*));
 
