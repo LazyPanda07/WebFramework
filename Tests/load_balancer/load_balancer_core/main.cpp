@@ -5,6 +5,7 @@
 #include <chrono>
 #include <algorithm>
 #include <thread>
+#include <filesystem>
 
 #include "gtest/gtest.h"
 
@@ -120,6 +121,19 @@ TEST(LoadBalancer, CustomHeuristic)
 	ASSERT_EQ(ids.size(), 1);
 }
 
+void printLog()
+{
+	for (const auto& it : std::filesystem::recursive_directory_iterator(std::filesystem::current_path() / "logs"))
+	{
+		if (it.is_regular_file())
+		{
+			std::ifstream log(it.path());
+
+			std::cout << (std::ostringstream() << log.rdbuf()).str() << std::endl;
+		}
+	}
+}
+
 int main(int argc, char** argv)
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
@@ -130,5 +144,12 @@ int main(int argc, char** argv)
 
 	testing::InitGoogleTest(&argc, argv);
 
-	return RUN_ALL_TESTS();
+	int result = RUN_ALL_TESTS();
+
+	if (result)
+	{
+		printLog();
+	}
+
+	return result;
 }

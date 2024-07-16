@@ -10,6 +10,19 @@
 
 bool useHTTPS;
 
+void printLog()
+{
+	for (const auto& it : std::filesystem::recursive_directory_iterator(std::filesystem::current_path() / "logs"))
+	{
+		if (it.is_regular_file())
+		{
+			std::ifstream log(it.path());
+
+			std::cout << (std::ostringstream() << log.rdbuf()).str() << std::endl;
+		}
+	}
+}
+
 int main(int argc, char** argv)
 {
 	useHTTPS = json::JSONParser(std::ifstream(argv[1])).getObject("WebFramework").getObject("HTTPS").getBool("useHTTPS");
@@ -21,5 +34,12 @@ int main(int argc, char** argv)
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
-	return RUN_ALL_TESTS();
+	int result = RUN_ALL_TESTS();
+
+	if (result)
+	{
+		printLog();
+	}
+
+	return result;
 }
