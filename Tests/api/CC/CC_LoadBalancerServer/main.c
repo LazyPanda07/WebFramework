@@ -177,7 +177,7 @@ int main(int argc, char** argv)
 			listOfServers[1] = 10001;
 		}
 
-		exception = overrideConfigurationIntegerArray(listOfServers, "127.0.0.1", listOfServers, true, 2);
+		exception = overrideConfigurationIntegerArray(config, "127.0.0.1", listOfServers, true, 2);
 
 		if (exception)
 		{
