@@ -61,7 +61,7 @@ int main(int argc, char** argv) try
 			listOfServers =
 			{
 				10000,
-				10001,
+				10001
 			};
 		}
 

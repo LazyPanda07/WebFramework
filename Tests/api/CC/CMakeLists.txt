@@ -4,3 +4,5 @@ project(CC)
 
 add_subdirectory(CC_API)
 add_subdirectory(CC_Server)
+add_subdirectory(CC_LoadBalancerServer)
+add_subdirectory(CC_ProxyServer)
