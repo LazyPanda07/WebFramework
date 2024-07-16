@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 
 	if (argc == 3)
 	{
-		exception = overrideConfigurationInteger(config, "useHTTPS", true, true);
+		exception = overrideConfigurationBoolean(config, "useHTTPS", true, true);
 
 		if (exception)
 		{

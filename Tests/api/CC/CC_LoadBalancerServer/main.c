@@ -66,6 +66,13 @@ int main(int argc, char** argv)
 	bool serversHTTPS = false;
 	const char* type = "";
 
+	if (exception)
+	{
+		printf("%s\n", getErrorMessage(exception));
+
+		return -1;
+	}
+
 	for (int i = 2; i < argc;)
 	{
 		if (!strcmp(argv[i], "--port"))
@@ -78,7 +85,7 @@ int main(int argc, char** argv)
 			{
 				printf("%s\n", getErrorMessage(exception));
 
-				return -1;
+				return -2;
 			}
 
 			i += 2;
@@ -97,7 +104,7 @@ int main(int argc, char** argv)
 			{
 				printf("%s\n", getErrorMessage(exception));
 
-				return -2;
+				return -3;
 			}
 
 			i++;
@@ -122,7 +129,7 @@ int main(int argc, char** argv)
 		{
 			printf("%s\n", getErrorMessage(exception));
 
-			return -3;
+			return -4;
 		}
 
 		exception = overrideConfigurationStringArray(config, "settingsPaths", settingsPaths, true, 1);
@@ -131,7 +138,7 @@ int main(int argc, char** argv)
 		{
 			printf("%s\n", getErrorMessage(exception));
 
-			return -4;
+			return -5;
 		}
 
 		free(settingsPaths);
@@ -146,7 +153,7 @@ int main(int argc, char** argv)
 		{
 			printf("%s\n", getErrorMessage(exception));
 
-			return -5;
+			return -6;
 		}
 
 		if (serversHTTPS)
@@ -166,7 +173,7 @@ int main(int argc, char** argv)
 		{
 			printf("%s\n", getErrorMessage(exception));
 
-			return -6;
+			return -7;
 		}
 
 		free(listOfServers);
@@ -178,7 +185,7 @@ int main(int argc, char** argv)
 	{
 		printf("%s\n", getErrorMessage(exception));
 
-		return -7;
+		return -8;
 	}
 
 	exception = startWebFrameworkServer(server, true, writeProcessId);
@@ -187,7 +194,7 @@ int main(int argc, char** argv)
 	{
 		printf("%s\n", getErrorMessage(exception));
 
-		return -8;
+		return -9;
 	}
 
 	return 0;
