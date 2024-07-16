@@ -9,6 +9,8 @@
 #include <Windows.h>
 #endif
 
+int port;
+
 void writeProcessId()
 {
 #ifdef __LINUX__
@@ -58,7 +60,9 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	exception = overrideConfigurationInteger(config, "port", atoi(argv[2]), true);
+	port = atoi(argv[2]);
+
+	exception = overrideConfigurationInteger(config, "port", port, true);
 
 	if (exception)
 	{
