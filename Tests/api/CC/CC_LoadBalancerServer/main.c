@@ -64,7 +64,7 @@ int main(int argc, char** argv)
 
 	WebFrameworkException exception = createConfigFromPath(argv[1], &config);
 	bool serversHTTPS = false;
-	const char* type = NULL;
+	const char* type = "";
 
 	if (exception)
 	{
@@ -72,6 +72,8 @@ int main(int argc, char** argv)
 
 		return -1;
 	}
+
+	printf("%s\n", __LINE__);
 
 	for (int i = 2; i < argc;)
 	{
@@ -117,7 +119,9 @@ int main(int argc, char** argv)
 		}
 	}
 
-	if (type != NULL && !strcmp(type, "server"))
+	printf("%s\n", __LINE__);
+
+	if (!strcmp(type, "server"))
 	{
 		const char** settingsPaths = malloc(sizeof(const char*));
 
@@ -179,6 +183,8 @@ int main(int argc, char** argv)
 		free(listOfServers);
 	}
 
+	printf("%s\n", __LINE__);
+
 	exception = createWebFrameworkFromConfig(config, &server);
 
 	if (exception)
@@ -187,6 +193,8 @@ int main(int argc, char** argv)
 
 		return -8;
 	}
+
+	printf("%s\n", __LINE__);
 
 	exception = startWebFrameworkServer(server, true, writeProcessId);
 
