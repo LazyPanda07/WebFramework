@@ -24,27 +24,27 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	if (argc > 2)
+	exception = overrideConfigurationInteger(config, "port", atoi(argv[2]), true);
+
+	if (exception)
 	{
-		exception = overrideConfigurationInteger(config, "port", atoi(argv[2]), true);
+		printf("%s\n", getErrorMessage(exception));
 
-		if (exception)
-		{
-			printf("%s\n", getErrorMessage(exception));
-
-			return -2;
-		}
+		return -2;
 	}
 
-	if (argc == 3)
+	for (int i = 0; i < argc; i++)
 	{
-		exception = overrideConfigurationBoolean(config, "useHTTPS", true, true);
-
-		if (exception)
+		if (!strcmp(argv[i], "--useHTTPS"))
 		{
-			printf("%s\n", getErrorMessage(exception));
+			exception = overrideConfigurationBoolean(config, "useHTTPS", true, true);
 
-			return -3;
+			if (exception)
+			{
+				printf("%s\n", getErrorMessage(exception));
+
+				return -3;
+			}	
 		}
 	}
 
