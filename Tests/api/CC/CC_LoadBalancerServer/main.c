@@ -57,20 +57,14 @@ void writeProcessId()
 
 int main(int argc, char** argv)
 {
-	printf("%d\n", __LINE__);
-
 	initializeWebFramework("WebFramework");
 
 	Config config;
 	WebFramework server;
 
-	printf("%d\n", __LINE__);
-
 	WebFrameworkException exception = createConfigFromPath(argv[1], &config);
 	bool serversHTTPS = false;
 	const char* type = "";
-
-	printf("%d\n", __LINE__);
 
 	if (exception)
 	{
@@ -78,8 +72,6 @@ int main(int argc, char** argv)
 
 		return -1;
 	}
-
-	printf("%d\n", __LINE__);
 
 	for (int i = 2; i < argc;)
 	{
@@ -124,8 +116,6 @@ int main(int argc, char** argv)
 			i += 2;
 		}
 	}
-
-	printf("%d\n", __LINE__);
 
 	if (!strcmp(type, "server"))
 	{
@@ -189,8 +179,6 @@ int main(int argc, char** argv)
 		free(listOfServers);
 	}
 
-	printf("%d\n", __LINE__);
-
 	exception = createWebFrameworkFromConfig(config, &server);
 
 	if (exception)
@@ -199,8 +187,6 @@ int main(int argc, char** argv)
 
 		return -8;
 	}
-
-	printf("%d\n", __LINE__);
 
 	exception = startWebFrameworkServer(server, true, writeProcessId);
 

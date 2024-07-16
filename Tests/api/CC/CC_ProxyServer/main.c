@@ -9,6 +9,40 @@
 #include <Windows.h>
 #endif
 
+void writeProcessId()
+{
+#ifdef __LINUX__
+	pid_t processId = getpid();
+#else
+	DWORD processId = GetCurrentProcessId();
+#endif
+
+	FILE* file = NULL;
+
+	switch (port)
+	{
+	case 15000:
+		file = fopen(START_PROXY_SERVER_FILE, "w");
+
+		break;
+
+	case 15001:
+		file = fopen(START_PROXY_HTTPS_SERVER_FILE, "w");
+
+		break;
+
+	default:
+		break;
+	}
+
+	if (file)
+	{
+		fwrite(&processId, sizeof(processId), 1, file);
+
+		fclose(file);
+	}
+}
+
 int main(int argc, char** argv)
 {
 	initializeWebFramework("WebFramework");
@@ -57,7 +91,7 @@ int main(int argc, char** argv)
 		return -4;
 	}
 
-	exception = startWebFrameworkServer(server, true, NULL);
+	exception = startWebFrameworkServer(server, true, writeProcessId);
 
 	if (exception)
 	{
