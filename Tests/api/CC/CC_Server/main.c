@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "import.h"
+
 #ifdef __LINUX__
 #include <unistd.h> 
 #else
 #include <Windows.h>
 #endif
-
-#include "import.h"
 
 void writeProcessId()
 {
