@@ -57,6 +57,8 @@ void writeProcessId()
 
 int main(int argc, char** argv)
 {
+	printf("%d\n", __LINE__);
+
 	initializeWebFramework("WebFramework");
 
 	Config config;
