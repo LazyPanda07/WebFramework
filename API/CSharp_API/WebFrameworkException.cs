@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 using Framework.Utility;
 
-public unsafe partial class WebFrameworkException(void* implementation) : Exception
+public sealed unsafe partial class WebFrameworkException(void* implementation) : Exception, IDisposable
 {
 	private readonly unsafe void* implementation = implementation;
 
@@ -14,15 +14,10 @@ public unsafe partial class WebFrameworkException(void* implementation) : Except
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void deleteWebFrameworkObject(void* implementation);
 
+	public void Dispose() => deleteWebFrameworkObject(implementation);
+
 	public override string Message
 	{
-#pragma warning disable CS8603 // Possible null reference return.
-		get => Marshal.PtrToStringUTF8((IntPtr)getErrorMessage(implementation));
-#pragma warning restore CS8603 // Possible null reference return.
-	}
-
-	unsafe ~WebFrameworkException()
-	{
-		deleteWebFrameworkObject(implementation);
+		get => Marshal.PtrToStringUTF8((IntPtr)getErrorMessage(implementation))!;
 	}
 }
