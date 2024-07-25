@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Framework.Utility;
 using Framework.Exceptions;
 
-public partial class WebFramework
+public sealed unsafe partial class WebFramework : IDisposable
 {
 	private readonly unsafe void* implementation;
 
@@ -94,8 +94,5 @@ public partial class WebFramework
 		}
 	}
 
-	unsafe ~WebFramework()
-	{
-		deleteWebFrameworkObject(implementation);
-	}
+	public void Dispose() => deleteWebFrameworkObject(implementation);
 }

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 using Framework.Exceptions;
 
-public partial class Config
+public sealed unsafe partial class Config : IDisposable
 {
 	public unsafe readonly void* implementation;
 
@@ -157,15 +157,11 @@ public partial class Config
 			throw new WebFrameworkException(exception);
 		}
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer));
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
 
 		deleteWebFrameworkObject(stringPointer);
 
-#pragma warning disable CS8603 // Possible null reference return.
 		return result;
-#pragma warning restore CS8603 // Possible null reference return.
 	}
 
 	public unsafe string GetRawConfiguration()
@@ -179,9 +175,7 @@ public partial class Config
 			throw new WebFrameworkException(exception);
 		}
 
-#pragma warning disable CS8603 // Possible null reference return.
-		return Marshal.PtrToStringUTF8((IntPtr)result);
-#pragma warning restore CS8603 // Possible null reference return.
+		return Marshal.PtrToStringUTF8((IntPtr)result)!;
 	}
 
 	public unsafe string GetBasePath()
@@ -195,19 +189,12 @@ public partial class Config
 			throw new WebFrameworkException(exception);
 		}
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer));
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
 
 		deleteWebFrameworkObject(stringPointer);
 
-#pragma warning disable CS8603 // Possible null reference return.
 		return result;
-#pragma warning restore CS8603 // Possible null reference return.
 	}
 
-	unsafe ~Config()
-	{
-		deleteWebFrameworkObject(implementation);
-	}
+	public void Dispose() => deleteWebFrameworkObject(implementation);
 }

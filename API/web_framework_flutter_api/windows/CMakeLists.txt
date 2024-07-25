@@ -1,34 +1,19 @@
-# The Flutter tooling requires that developers have a version of Visual Studio
-# installed that includes CMake 3.14 or later. You should not increase this
-# version, as doing so will cause the plugin to fail to compile for some
-# customers of the plugin.
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Project-level configuration.
-set(PROJECT_NAME "web_framework_flutter_api")
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(web_framework_flutter_api LANGUAGES CXX)
 
-# Explicitly opt in to modern CMake behaviors to avoid warnings with recent
-# versions of CMake.
-cmake_policy(VERSION 3.14...3.25)
+set(PLUGIN_NAME web_framework_flutter_api_plugin)
 
-# This value is used when generating builds using this plugin, so it must
-# not be changed
-set(PLUGIN_NAME "web_framework_flutter_api_plugin")
-
-# Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES
-  "web_framework_flutter_api_plugin.cpp"
-  "web_framework_flutter_api_plugin.h"
+  web_framework_flutter_api_plugin.cpp
 )
 
 # Define the plugin library target. Its name must not be changed (see comment
 # on PLUGIN_NAME above).
 add_library(${PLUGIN_NAME} SHARED
-  "include/web_framework_flutter_api/web_framework_flutter_api_plugin_c_api.h"
-  "web_framework_flutter_api_plugin_c_api.cpp"
+  web_framework_flutter_api_plugin_c_api.cpp
   ${PLUGIN_SOURCES}
 )
 

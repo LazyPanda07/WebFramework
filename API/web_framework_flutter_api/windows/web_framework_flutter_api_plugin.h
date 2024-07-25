@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 
 #include <flutter/method_channel.h>
 #include <flutter/plugin_registrar_windows.h>
