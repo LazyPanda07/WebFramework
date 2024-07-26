@@ -18,15 +18,13 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
     - name: Build
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} -G "NMake Makefiles" ..
-          nmake install
+          cmake -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} ..
+          cmake --build . -t INSTALL -j $([Environment]::ProcessorCount) --config ${{ matrix.configuration }}
+          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
