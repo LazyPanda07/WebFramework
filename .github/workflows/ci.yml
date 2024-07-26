@@ -24,7 +24,6 @@ jobs:
           cd build
           cmake -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} ..
           cmake --build . -t INSTALL -j $([Environment]::ProcessorCount) --config ${{ matrix.configuration }}
-          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
