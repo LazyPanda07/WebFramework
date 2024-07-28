@@ -1,5 +1,7 @@
 # WebFramework
-Web framework for C++
+* A web server that follows the principles of ease of use and ease of development
+* Supports easy scalability
+* Allows parallel development(each member can develop single isolated module)
 
 ## Getting Started Build
 Start by cloning the repository
