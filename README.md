@@ -2,6 +2,8 @@
 * A web server that follows the principles of ease of use and ease of development
 * Supports easy scalability
 * Allows parallel development(each member can develop single isolated module)
+* Server functionality development available on ```C++ in Windows and Linux```
+* Server running API available on [C++ Windows and Linux,](https://github.com/LazyPanda07/WebFramework/wiki/API#c), [C Windows and Linux](https://github.com/LazyPanda07/WebFramework/wiki/API#c-1), [Python](https://github.com/LazyPanda07/WebFramework/wiki/API#python), [C# .NET 8.0](https://github.com/LazyPanda07/WebFramework/wiki/API#c-net-80), [Flutter Windows, Linux, Android](https://github.com/LazyPanda07/WebFramework/wiki/API#flutter-windows-linux-android)
 
 ## Getting Started Build
 Start by cloning the repository
