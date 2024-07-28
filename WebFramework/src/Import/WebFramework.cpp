@@ -232,21 +232,12 @@ namespace framework
 
 		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
-		try
-		{
-			this->initServer
-			(
-				webFrameworkSettings,
-				jsonSettings,
-				pathToSources
-			);
-		}
-		catch (const exception& e)
-		{
-			Log::error("Failed to initialize server: {}", "Initialization", e.what());
-
-			throw;
-		}
+		this->initServer
+		(
+			webFrameworkSettings,
+			jsonSettings,
+			pathToSources
+		);
 
 		if (!server)
 		{

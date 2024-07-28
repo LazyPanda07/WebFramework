@@ -44,6 +44,8 @@ EXPORT void overrideConfigurationStringArray(void* implementation, const char* k
 
 EXPORT void overrideConfigurationIntegerArray(void* implementation, const char* key, const int64_t* value, bool recursive, int64_t size, void** exception);
 
+EXPORT void overrideBasePath(void* implementation, const char* basePath, void** exception);
+
 EXPORT void* getConfiguration(void* implementation, void** exception);
 
 EXPORT const char* getRawConfiguration(void* implementation, void** exception);

@@ -210,6 +210,18 @@ void overrideConfigurationIntegerArray(void* implementation, const char* key, co
 	}
 }
 
+void overrideBasePath(void* implementation, const char* basePath, void** exception)
+{
+	try
+	{
+		reinterpret_cast<framework::utility::Config*>(implementation)->overrideBasePath(basePath);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
 void* getConfiguration(void* implementation, void** exception)
 {
 	try

@@ -62,6 +62,18 @@ namespace framework
 			return this->overrideConfigurationArray(key, value, recursive);
 		}
 
+		Config& Config::overrideBasePath(const std::filesystem::path& basePath)
+		{
+			if (!filesystem::exists(basePath))
+			{
+				throw file_manager::exceptions::FileDoesNotExistException(basePath.string());
+			}
+
+			this->basePath = basePath;
+
+			return *this;
+		}
+
 		const filesystem::path& Config::getBasePath() const
 		{
 			return basePath;

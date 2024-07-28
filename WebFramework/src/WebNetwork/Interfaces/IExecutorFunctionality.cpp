@@ -3,6 +3,7 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Utility/Sources.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -70,6 +71,8 @@ namespace framework
 
 				if (!creator)
 				{
+					Log::error("Can't find creator for executor {}", "LogWebFrameworkInitialization", j.name);
+
 					throw exceptions::CantFindFunctionException(format("create{}Instance", j.name));
 				}
 

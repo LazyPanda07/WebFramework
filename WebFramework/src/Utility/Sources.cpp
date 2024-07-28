@@ -3,6 +3,7 @@
 #include "DynamicLibraries.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantLoadSourceException.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -44,11 +45,15 @@ namespace framework
 				}
 				else
 				{
+					Log::error("Can't find source {}", "LogWebFrameworkSources", pathToSource);
+
 					throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 				}
 
 				if (!result.back())
 				{
+					Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
+
 					throw exceptions::CantLoadSourceException(pathToSource);
 				}
 			}

@@ -70,6 +70,8 @@ namespace framework
 			 */
 			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
 
+			Config& overrideBasePath(const std::filesystem::path& basePath);
+
 			/**
 			 * @brief Config file directory
 			 * @return 
