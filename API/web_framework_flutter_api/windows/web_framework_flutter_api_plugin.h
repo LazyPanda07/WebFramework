@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <functional>
+#include <filesystem>
 
 #include <flutter/method_channel.h>
 #include <flutter/plugin_registrar_windows.h>
@@ -10,6 +10,9 @@ namespace web_framework_flutter_api
 {
 	class WebFrameworkFlutterApiPlugin : public flutter::Plugin
 	{
+	private:
+		static std::filesystem::path getCurrentPath();
+
 	public:
 		static void RegisterWithRegistrar(flutter::PluginRegistrarWindows* registrar);
 

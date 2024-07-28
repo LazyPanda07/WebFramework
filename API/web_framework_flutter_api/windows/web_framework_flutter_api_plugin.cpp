@@ -1,7 +1,5 @@
 #include "web_framework_flutter_api_plugin.h"
 
-#include <filesystem>
-
 // This must be included before many other Windows headers.
 #include <Windows.h>
 
@@ -11,6 +9,17 @@
 
 namespace web_framework_flutter_api
 {
+	std::filesystem::path WebFrameworkFlutterApiPlugin::getCurrentPath()
+	{
+		wchar_t currentPath[4096];
+
+		GetModuleFileNameW(nullptr, currentPath, 4096);
+
+		std::filesystem::path realPath(currentPath);
+
+		return realPath.remove_filename();
+	}
+
 	void WebFrameworkFlutterApiPlugin::RegisterWithRegistrar(flutter::PluginRegistrarWindows* registrar)
 	{
 		std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>> channel = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>
@@ -35,15 +44,11 @@ namespace web_framework_flutter_api
 	{
 		if (methodCall.method_name() == "getLibraryPath")
 		{
-			wchar_t currentPath[4096];
-
-			GetModuleFileNameW(nullptr, currentPath, 4096);
-
-			std::filesystem::path realPath(currentPath);
-
-			realPath.remove_filename() /= "WebFramework.dll";
-
-			result->Success(realPath.string());
+			result->Success((WebFrameworkFlutterApiPlugin::getCurrentPath() /= "WebFramework.dll").string());
+		}
+		else if (methodCall.method_name() == "getAssetsPath")
+		{
+			result->Success((WebFrameworkFlutterApiPlugin::getCurrentPath() / "data" / "flutter_assets" / "assets").string());
 		}
 		else
 		{

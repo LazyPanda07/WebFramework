@@ -497,14 +497,15 @@ jobs:
       - name: Install Python API
         shell: bash
         run: |
-            cd TestsBinaries
-            python3 -m venv .venv
-            source .venv/bin/activate
-            cd ..
-            python -m pip install pip --upgrade
-            pip install setuptools
-            pip install setuptools --upgrade
-            pip install WebFrameworkLibrary/api/python_api/
+            # cd TestsBinaries
+            # python3 -m venv .venv
+            # source .venv/bin/activate
+            # cd ..
+            # python -m pip install pip --upgrade
+            # pip install setuptools
+            # pip install setuptools --upgrade
+            # pip install WebFrameworkLibrary/api/python_api/
+            pip3 install WebFrameworkLibrary/api/python_api/
         
       - name: Chmod
         run: |
@@ -519,7 +520,7 @@ jobs:
         run: |
           cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
           cd TestsBinaries
-          source .venv/bin/activate
+          # source .venv/bin/activate
           source run_python_tests.sh ${{ matrix.config }}
   
 
