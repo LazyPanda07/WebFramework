@@ -6,7 +6,7 @@ namespace framework
 {
 	string HTTPResponse::getFullDate()
 	{
-		return format("{:%a, %d %b %Y %H:%M:%OS} GMT", chrono::sys_time(chrono::system_clock::now()));
+		return format("{:%a, %d %b %Y %H:%M:%OS} GMT", chrono::system_clock::now());
 	}
 
 	HTTPResponse::HTTPResponse()
