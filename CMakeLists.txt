@@ -103,7 +103,7 @@ add_library(
 	WebFramework/src/c_api/web_framework_c_api.cpp
 )
 
-if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
+if (WIN32)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/MP")
 endif (WIN32)
 
