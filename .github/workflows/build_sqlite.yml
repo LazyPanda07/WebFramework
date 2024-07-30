@@ -46,6 +46,8 @@ jobs:
     
   linux-build:
     runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
 
     steps:
     - name: Get SQLite
@@ -56,8 +58,6 @@ jobs:
         
     - name: Build
       run: |
-          export CC=/usr/bin/gcc-13
-          export CXX=/usr/bin/g++-13
           mkdir build
           cd build
           ../configure
@@ -77,3 +77,4 @@ jobs:
       with:
         name: sqlite_linux
         path: sqlite_linux
+        
