@@ -19,6 +19,9 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
     - name: Build
       run: |
           mkdir build
