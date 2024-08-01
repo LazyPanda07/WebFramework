@@ -32,7 +32,6 @@ if (UNIX)
 	add_compile_options(-rdynamic)
 	add_compile_options(-fvisibility=hidden)
 
-	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -45,6 +44,8 @@ if (UNIX)
 		
 		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 	else()
+		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
+
 		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 	endif()
 else ()
@@ -149,8 +150,6 @@ target_link_directories(
 	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
 )
-
-message("SQLite path: ${SQLITE_LIBRARY_PATH}")
 
 target_link_libraries(
 	${PROJECT_NAME}
