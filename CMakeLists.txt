@@ -150,6 +150,8 @@ target_link_directories(
 	${SQLITE_LIBRARY_PATH}
 )
 
+message("SQLite path: ${SQLITE_LIBRARY_PATH}")
+
 target_link_libraries(
 	${PROJECT_NAME}
 	${LIBS}
