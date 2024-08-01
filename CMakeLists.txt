@@ -25,6 +25,8 @@ set(
 )
 option(SHARED_WEB_FRAMEWORK "" ON)
 
+project(WebFramework)
+
 if (UNIX)
 	add_definitions(-D__LINUX__)
 	add_compile_options(-rdynamic)
@@ -35,7 +37,16 @@ if (UNIX)
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+		add_definitions(-D__ANDROID__)
+
+		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android)
+		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
+		
+		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+	else()
+		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+	endif()
 else ()
 	add_definitions(-DNOMINMAX)
 	add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
@@ -53,8 +64,6 @@ if (${SHARED_WEB_FRAMEWORK})
 
 	set(WEB_FRAMEWORK_LIBRARY_TYPE SHARED)
 endif ()
-
-project(WebFramework)
 
 add_library(
 	${PROJECT_NAME} ${WEB_FRAMEWORK_LIBRARY_TYPE}
