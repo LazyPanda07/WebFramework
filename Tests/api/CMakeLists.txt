@@ -15,3 +15,7 @@ endif()
 if (${CSHARP_API})
 	add_subdirectory(CSharp)
 endif()
+
+if (${FLUTTER_API})
+	add_subdirectory(flutter)
+endif()

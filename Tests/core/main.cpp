@@ -29,10 +29,16 @@ int main(int argc, char** argv)
 
 	testing::InitGoogleTest(&argc, argv);
 
+#ifndef FLUTTER_API
 	while (!std::filesystem::exists(START_CORE_SERVER_FILE))
 	{
+		std::cout << "Wait " << START_CORE_SERVER_FILE << " file..." << std::endl;
+
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
+#else
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+#endif
 
 	int result = RUN_ALL_TESTS();
 

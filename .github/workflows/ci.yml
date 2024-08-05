@@ -623,6 +623,38 @@ jobs:
           source run_csharp_tests.sh ${{ matrix.config }}
 
 
+  windows-flutter-tests:
+    runs-on: windows-latest
+    needs: windows-build
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Flutter
+      run: choco install flutter
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ReleaseDLL_Windows
+        path: WebFrameworkLibrary
+        
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DFLUTTER_API=ON -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Tests
+      working-directory: Tests
+      run: |
+          cd build/bin
+
+
   publish:
     needs: [static-memory-leak-tests, windows-cxx-tests, linux-cxx-tests, windows-python-tests, linux-python-tests]
     runs-on: ubuntu-latest

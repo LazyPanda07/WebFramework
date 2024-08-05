@@ -25,6 +25,7 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 option(CC_API "" OFF)
 option(CXX_API "" OFF)
 option(CSHARP_API "" OFF)
+option(FLUTTER_API "" OFF)
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
 add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
@@ -42,6 +43,10 @@ endif(WIN32)
 
 if (${CXX_API})
     add_definitions(-DCXX_API)
+endif()
+
+if (${FLUTTER_API})
+    add_definitions(-DFLUTTER_API)
 endif()
 
 project(Tests)
@@ -64,6 +69,7 @@ install(DIRECTORY configs/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY scripts/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY templates DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY assets DESTINATION ${CMAKE_INSTALL_PREFIX})
+
 
 install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
 
