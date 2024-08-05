@@ -10,5 +10,5 @@ if(${WEB_FRAMEWORK_LIBRARY_TYPE} STREQUAL SHARED)
 endif()
 
 if(${WEB_FRAMEWORK_LIBRARY_TYPE} STREQUAL SHARED)
-	install(DIRECTORY web_framework_flutter_api DESTINATION ${CMAKE_INSTALL_PREFIX}/api/web_framework_flutter_api/)
+	install(DIRECTORY web_framework_flutter_api/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/web_framework_flutter_api/)
 endif()

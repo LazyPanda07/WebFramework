@@ -32,7 +32,7 @@ if (UNIX)
 	add_compile_options(-rdynamic)
 	add_compile_options(-fvisibility=hidden)
 	
-	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
+	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
@@ -41,12 +41,12 @@ if (UNIX)
 		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
 		
-		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	else()
 		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
 
-		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	endif()
 else ()
 	add_definitions(-DNOMINMAX)
@@ -54,10 +54,10 @@ else ()
 
 	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
 	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
-	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll/vendor/sqlite3)
+	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
 	set(LIBS ${LIBS} crypt32)
 
-	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
 endif ()
 
 if (${SHARED_WEB_FRAMEWORK})

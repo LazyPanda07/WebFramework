@@ -3,16 +3,30 @@ if(NOT DEFINED CMAKE_CXX_STANDARD)
 endif()
 
 if(NOT DEFINED PROJECT_LOCALIZATION_DIR)
-    set(PROJECT_LOCALIZATION_DIR ${CMAKE_SOURCE_DIR})
+    set(PROJECT_LOCALIZATION_DIR ${CMAKE_SOURCE_DIR}/project_localization)
 endif()
 
-if(${CMAKE_CXX_STANDARD} LESS 20)
-    set(CMAKE_CXX_STANDARD 20)
+if (NOT DEFINED WEB_FRAMEWORK_CC_API)
+    set(WEB_FRAMEWORK_CC_API OFF)
+endif()
+
+if (${WEB_FRAMEWORK_CC_API})
+    message("Use WebFramework CC API")
+else()
+    message("Use WebFramework CXX API")
+
+    if(${CMAKE_CXX_STANDARD} LESS 20)
+        set(CMAKE_CXX_STANDARD 20)
+    endif()
 endif()
 
 if(UNIX)
     add_definitions(-D__LINUX__)
 endif(UNIX)
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+    add_definitions(-D__ANDROID__)
+endif()
 
 include_directories(
     BEFORE
@@ -71,8 +85,7 @@ if(UNIX)
         set(IS_WEB_FRAMEWORK_SHARED ON)
     endif()
 elseif(WIN32)
-    install(DIRECTORY ${WebFrameworkSDK}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX} PATTERN "vendor" EXCLUDE)
-    install(FILES ${WebFrameworkSDK}/dll/vendor/sqlite3/sqlite3.dll DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(DIRECTORY ${WebFrameworkSDK}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 
     if(EXISTS ${WebFrameworkSDK}/dll/WebFramework.dll)
         set(IS_WEB_FRAMEWORK_SHARED ON)
@@ -80,10 +93,17 @@ elseif(WIN32)
 endif(UNIX)
 
 if (${IS_WEB_FRAMEWORK_SHARED})
-    include_directories(
-        BEFORE
-        ${WebFrameworkSDK}/api/cxx/include/
-    )
+    if (${WEB_FRAMEWORK_CC_API})
+        include_directories(
+            BEFORE
+            ${WebFrameworkSDK}/api/cc/include/
+        )
+    else()
+        include_directories(
+            BEFORE
+            ${WebFrameworkSDK}/api/cxx/include/
+        )
+    endif()
 endif()
 
 if(NOT TARGET generate_localization)
