@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 
 from framework.WebFramework import WebFramework
 from framework.utility.DLLHandler import initialize_web_framework
@@ -20,7 +21,9 @@ if __name__ == '__main__':
 
         server = WebFramework.from_path(sys.argv[1])
 
-        server.start(True, write_process_id)
+        server.start(False, write_process_id)
+
+        time.sleep(120)
     except WebFrameworkException as exception:
         print(exception)
 
