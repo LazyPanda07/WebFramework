@@ -4,8 +4,8 @@ set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
 start CC_Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 start DefaultHTTPSServer.exe
-start CC_ProxyServer.exe proxy_config.json --port 15000
-start CC_ProxyServer.exe proxy_config.json --port 15001 --useHTTPS
+start CC_ProxyServer.exe proxy_config.json 15000
+start CC_ProxyServer.exe proxy_config.json 15001 --useHTTPS
 start CC_LoadBalancerServer.exe load_balancer_config.json --port 9090
 start CC_LoadBalancerServer.exe load_balancer_config.json --port 9091 --serversHTTPS
 start CC_LoadBalancerServer.exe load_balancer_config_https.json --port 9092
