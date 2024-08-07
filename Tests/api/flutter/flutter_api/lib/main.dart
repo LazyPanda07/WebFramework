@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:web_framework_flutter_api/config.dart';
 import 'package:web_framework_flutter_api/web_framework.dart';
 import 'package:web_framework_flutter_api/web_framework_exception.dart';
@@ -70,6 +73,21 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future<void> _mainTest() async {
+    test("Config from path", () async {
+      Config config = await Config.fromPath("multi_threaded_config.json");
+
+      expect(config.getRawConfiguration(), "");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _mainTest();
   }
 
   @override
