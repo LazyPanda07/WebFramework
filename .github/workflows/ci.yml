@@ -633,7 +633,9 @@ jobs:
         submodules: recursive
 
     - name: Install Flutter
-      run: choco install flutter
+      run: | 
+          choco install flutter
+          refreshenv
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
