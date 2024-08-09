@@ -633,9 +633,10 @@ jobs:
         submodules: recursive
 
     - name: Install Flutter
-      run: | 
-          choco install flutter
-          refreshenv
+      uses: subosito/flutter-action@v2.16.0
+      with:
+        channel: stable
+        flutter-version: 3.24.0
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
