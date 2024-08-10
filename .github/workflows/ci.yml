@@ -640,10 +640,7 @@ jobs:
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
-
+      
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@v1
       with:
