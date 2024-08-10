@@ -69,9 +69,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
-*.so
-
 # Distribution / packaging
 .Python
 build/
@@ -233,6 +230,6 @@ obj/
 
 # FLutter
 API/web_framework_flutter_api/example/assets/
-# */flutter/generated_plugin_registrant.cc
-# */flutter/generated_plugin_registrant.h
-# */flutter/generated_plugins.cmake
+generated_plugin_registrant.cc
+generated_plugin_registrant.h
+generated_plugins.cmake
