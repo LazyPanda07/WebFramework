@@ -113,9 +113,7 @@ jobs:
       
     - name: Build
       working-directory: API/web_framework_flutter_api/example
-      run: |
-          flutter build windows --debug
-          flutter build windows --release
+      run: flutter build windows --release
 
 
   linux-flutter-build:
@@ -139,7 +137,6 @@ jobs:
           export CC=/usr/bin/clang
           export CXX=/usr/bin/clang++
           git config --global --add safe.directory /opt/flutter
-          flutter build linux --debug
           flutter build linux --release
 
 
@@ -157,7 +154,6 @@ jobs:
       working-directory: API/web_framework_flutter_api/example
       run: |
           git config --global --add safe.directory /opt/flutter
-          flutter build apk --debug
           flutter build apk --release
 
 
