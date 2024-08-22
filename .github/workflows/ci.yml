@@ -154,6 +154,7 @@ jobs:
         submodules: recursive
 
     - name: Build
+      working-directory: API/web_framework_flutter_api/example
       run: |
           git config --global --add safe.directory /opt/flutter
           flutter build apk --debug

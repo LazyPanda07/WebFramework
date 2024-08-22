@@ -2,10 +2,11 @@
 
 #include <flutter_linux/flutter_linux.h>
 #include <gtk/gtk.h>
-#include <sys/utsname.h>
 
 #include <cstring>
 #include <filesystem>
+
+#include <libgen.h>
 
 #include "web_framework_flutter_api_plugin_private.h"
 
@@ -20,7 +21,7 @@ struct _WebFrameworkFlutterApiPlugin
 
 G_DEFINE_TYPE(WebFrameworkFlutterApiPlugin, web_framework_flutter_api_plugin, g_object_get_type())
 
-static std::filesystem::path WebFrameworkFlutterApiPlugin::getCurrentPath()
+static std::filesystem::path getCurrentPath()
 {
     char result[4096]{};
     ssize_t count = readlink("/proc/self/exe", result, 4096);
