@@ -24,7 +24,7 @@ G_DEFINE_TYPE(WebFrameworkFlutterApiPlugin, web_framework_flutter_api_plugin, g_
 static std::filesystem::path getCurrentPath()
 {
     char result[4096]{};
-    ssize_t count = readlink("/proc/self/exe", result, 4096);
+    readlink("/proc/self/exe", result, 4096);
 
     return dirname(result);
 }
