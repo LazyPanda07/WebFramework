@@ -5,6 +5,7 @@
 #include <sys/utsname.h>
 
 #include <cstring>
+#include <filesystem>
 
 #include "web_framework_flutter_api_plugin_private.h"
 
@@ -19,6 +20,14 @@ struct _WebFrameworkFlutterApiPlugin
 
 G_DEFINE_TYPE(WebFrameworkFlutterApiPlugin, web_framework_flutter_api_plugin, g_object_get_type())
 
+static std::filesystem::path WebFrameworkFlutterApiPlugin::getCurrentPath()
+{
+    char result[4096]{};
+    ssize_t count = readlink("/proc/self/exe", result, 4096);
+
+    return dirname(result);
+}
+
 // Called when a method call is received from Flutter.
 static void web_framework_flutter_api_plugin_handle_method_call(WebFrameworkFlutterApiPlugin* self, FlMethodCall* method_call)
 {
@@ -26,10 +35,14 @@ static void web_framework_flutter_api_plugin_handle_method_call(WebFrameworkFlut
 
 	const gchar* method = fl_method_call_get_name(method_call);
 
-	if (strcmp(method, "getPlatformVersion") == 0)
+	if (!strcmp(method, "getLibraryPath"))
 	{
-		response = get_platform_version();
+		response = getLibraryPath();
 	}
+    else if (!strcmp(method, "getAssetsPath"))
+    {
+        response = getAssetsPath();
+    }
 	else
 	{
 		response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
@@ -38,13 +51,18 @@ static void web_framework_flutter_api_plugin_handle_method_call(WebFrameworkFlut
 	fl_method_call_respond(method_call, response, nullptr);
 }
 
-FlMethodResponse* get_platform_version()
+FlMethodResponse* getLibraryPath()
 {
-	struct utsname uname_data = {};
-	uname(&uname_data);
-	g_autofree gchar* version = g_strdup_printf("Linux %s", uname_data.version);
-	g_autoptr(FlValue) result = fl_value_new_string(version);
+	g_autofree gchar* libraryPath = g_strdup_printf("%s", (getCurrentPath() / "libWebFramework.so").string().data());
+	g_autoptr(FlValue) result = fl_value_new_string(libraryPath);
 	return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+FlMethodResponse* getAssetsPath()
+{
+    g_autofree gchar* libraryPath = g_strdup_printf("%s", (getCurrentPath() / "data" / "flutter_assets" / "assets").string().data());
+    g_autoptr(FlValue) result = fl_value_new_string(libraryPath);
+    return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
 static void web_framework_flutter_api_plugin_dispose(GObject* object)

@@ -3,7 +3,7 @@
 # the plugin to fail to compile for some customers of the plugin.
 cmake_minimum_required(VERSION 3.27.0)
 
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Project-level configuration.
 set(PROJECT_NAME "web_framework_flutter_api")
@@ -15,7 +15,7 @@ set(PLUGIN_NAME "web_framework_flutter_api_plugin")
 
 # Any new source files that you add to the plugin should be added here.
 list(APPEND PLUGIN_SOURCES
-  "web_framework_flutter_api_plugin.cc"
+  "web_framework_flutter_api_plugin.cpp"
 )
 
 # Define the plugin library target. Its name must not be changed (see comment

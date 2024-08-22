@@ -11,7 +11,7 @@ namespace web_framework_flutter_api
 {
 	std::filesystem::path WebFrameworkFlutterApiPlugin::getCurrentPath()
 	{
-		wchar_t currentPath[4096];
+		wchar_t currentPath[4096]{};
 
 		GetModuleFileNameW(nullptr, currentPath, 4096);
 
@@ -44,7 +44,7 @@ namespace web_framework_flutter_api
 	{
 		if (methodCall.method_name() == "getLibraryPath")
 		{
-			result->Success((WebFrameworkFlutterApiPlugin::getCurrentPath() /= "WebFramework.dll").string());
+			result->Success((WebFrameworkFlutterApiPlugin::getCurrentPath() / "WebFramework.dll").string());
 		}
 		else if (methodCall.method_name() == "getAssetsPath")
 		{
