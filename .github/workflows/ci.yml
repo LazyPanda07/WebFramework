@@ -121,19 +121,13 @@ jobs:
   linux-flutter-build:
     runs-on: ubuntu-latest
     container:
-      image: lazypanda07/ubuntu_cxx20:24.04
+      image: lazypanda07/ubuntu_cxx20:android
 
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-
-    - name: Install Flutter
-      uses: subosito/flutter-action@v2.16.0
-      with:
-        channel: stable
-        flutter-version: ${{ env.flutter-version }}
-
+        
     - name: Install Clang
       run: |
           sudo apt update
