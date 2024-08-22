@@ -138,6 +138,7 @@ jobs:
       run: |
           export CC=/usr/bin/clang
           export CXX=/usr/bin/clang++
+          git config --global --add safe.directory /opt/flutter
           flutter build linux --debug
           flutter build linux --release
 
@@ -154,6 +155,7 @@ jobs:
 
     - name: Build
       run: |
+          git config --global --add safe.directory /opt/flutter
           flutter build apk --debug
           flutter build apk --release
 
