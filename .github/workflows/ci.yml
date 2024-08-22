@@ -690,7 +690,22 @@ jobs:
 
           
   publish:
-    needs: [static-memory-leak-tests, windows-cxx-tests, linux-cxx-tests, windows-python-tests, linux-python-tests]
+    needs: [
+      static-memory-leak-tests,
+      windows-cxx-tests,
+      linux-cxx-tests,
+      windows-csharp-tests,
+      linux-csharp-tests,
+      windows-python-tests,
+      linux-python-tests,
+      windows-cc-tests,
+      linux-cc-tests,
+      windows-android-build,
+      linux-android-build,
+      windows-flutter-build,
+      linux-flutter-build,
+      android-flutter-build
+    ]
     runs-on: ubuntu-latest
 
     steps:
