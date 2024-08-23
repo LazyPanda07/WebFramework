@@ -2,8 +2,8 @@ import json
 import pathlib
 import unittest
 
-from framework.utility.DLLHandler import initialize_web_framework
-from framework.utility.Config import Config
+from web_framework_api.utility.DLLHandler import initialize_web_framework
+from web_framework_api.utility.Config import Config
 
 
 def get_configuration():

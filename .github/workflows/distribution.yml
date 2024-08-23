@@ -4,13 +4,14 @@ name: Distribution
 on:
   release:
   workflow_dispatch:
-  push:
 
 
 jobs:
   pip-package:
     runs-on: ubuntu-latest
-
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+    
     steps:
     - name: Get Linux latest release
       uses: robinraju/release-downloader@v1.11
@@ -34,11 +35,15 @@ jobs:
           mkdir package/dll
           mkdir package/lib
           cp -r ReleaseDLL_Linux/api/python_api package
-          mv ReleaseDLL_Linux/lib/*.so package/lib
           mv ReleaseDLL_Windows/dll/*.dll package/dll
+          mv ReleaseDLL_Linux/lib/*.so package/lib
 
-    - name: Create zip
+    - name: Build wheel
+      working-directory: package
+      run: python3 -m build
+
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: pip-package
-        path: package
+        path: package/dist

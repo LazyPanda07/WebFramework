@@ -1,9 +1,9 @@
 import argparse
 
-from framework.WebFramework import WebFramework
-from framework.utility.DLLHandler import initialize_web_framework
-from framework.exceptions.WebFrameworkException import WebFrameworkException
-from framework.utility.Config import Config
+from web_framework_api.WebFramework import WebFramework
+from web_framework_api.utility.DLLHandler import initialize_web_framework
+from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException
+from web_framework_api.utility.Config import Config
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

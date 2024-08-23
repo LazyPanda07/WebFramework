@@ -3,8 +3,8 @@ import os
 from typing import Callable
 
 from .utility import Config
-from framework.utility.DLLHandler import DLLHandler
-from framework.exceptions.WebFrameworkException import WebFrameworkException
+from web_framework_api.utility.DLLHandler import DLLHandler
+from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException
 
 
 class WebFramework:
