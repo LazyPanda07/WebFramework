@@ -700,8 +700,7 @@ jobs:
       linux-python-tests,
       windows-cc-tests,
       linux-cc-tests,
-      windows-android-build,
-      linux-android-build,
+      android-build,
       windows-flutter-build,
       linux-flutter-build,
       android-flutter-build
