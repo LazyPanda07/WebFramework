@@ -78,8 +78,7 @@ jobs:
     - name: Create package folder
       shell: bash
       run: |
-          mkdir package
-          mkdir -p lib/net${{ env.dotnet-version }}
+          mkdir -p package/lib/net${{ env.dotnet-version }}
           mv ReleaseDLL_Windows/api/csharp/WebFrameworkCSharpAPI.dll package/lib/net${{ env.dotnet-version }}
           mv ReleaseDLL_Windows/dll/*.dll package/lib/net${{ env.dotnet-version }}
           mv ReleaseDLL_Linux/lib/*.so package/lib/net${{ env.dotnet-version }}
