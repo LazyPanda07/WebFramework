@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>LazyPanda07.WebFramework</id>
+    <version>1.0.0</version>
+    
+    <authors>LazyPanda07</authors>
+    <owners>LazyPanda07</owners>
+
+    <projectUrl>http://github.com/LazyPanda07/WebFramework</projectUrl>
+
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+    <releaseNotes>Release C# WebFramework API</releaseNotes>
+    <description>WebFramework</description>
+    <copyright>Copyright ©2024 LazyPanda07</copyright>
+
+    <tags>web</tags>
+
+  </metadata>
+</package>

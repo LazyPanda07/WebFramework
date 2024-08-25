@@ -6,6 +6,10 @@ on:
   workflow_dispatch:
 
 
+env:
+  dotnet-version: 8.0
+
+
 jobs:
   pip-package:
     runs-on: ubuntu-latest
@@ -48,9 +52,13 @@ jobs:
 
 
   nuget-package:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
     - name: Get Linux latest release
       uses: robinraju/release-downloader@v1.11
       with:
@@ -67,3 +75,20 @@ jobs:
         extract: true
         fileName: windows.zip
         
+    - name: Create package folder
+      shell: bash
+      run: |
+          mkdir package
+          mkdir -p lib/net${{ env.dotnet-version }}
+          mv ReleaseDLL_Windows/api/csharp/WebFrameworkCSharpAPI.dll package/lib/net${{ env.dotnet-version }}
+          mv ReleaseDLL_Windows/dll/*.dll package/lib/net${{ env.dotnet-version }}
+          mv ReleaseDLL_Linux/lib/*.so package/lib/net${{ env.dotnet-version }}
+          cp API/CSharp_API/WebFramework.nuspec package
+          cd package
+          nuget pack WebFramework.nuspec
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-package
+        path: package/*.nupkg
