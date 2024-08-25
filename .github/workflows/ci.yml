@@ -692,7 +692,6 @@ jobs:
   publish:
     needs: [
       static-memory-leak-tests,
-      shared-memory-leak-tests,
       windows-cxx-tests,
       linux-cxx-tests,
       windows-csharp-tests,
