@@ -8,6 +8,8 @@ on:
 
 env:
   dotnet-version: 8.0
+  deb-package-version: 1.0.0
+  deb-package-release-number: 1
 
 
 jobs:
@@ -91,3 +93,42 @@ jobs:
       with:
         name: nuget-package
         path: package/*.nupkg
+
+
+  deb-package:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Get Linux latest release
+      uses: robinraju/release-downloader@v1.11
+      with:
+        repository: ${{ github.repository }}
+        latest: true
+        extract: true
+        fileName: linux.zip
+
+    - name: Create deb package
+      run: |
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64/web-framework
+          mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
+          cd web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+    
+    - name: Create deb dev package
+      run: |
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/include/web-framework/
+          mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
+          mv ReleaseDLL_Linux/include/* web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/include/web-framework/
+          cd web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+
+    - name: Create deb static dev package
+      run: |
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/include/web-framework/
+          mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
+          mv ReleaseDLL_Linux/include/* web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/include/web-framework/
+          cd web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
