@@ -36,6 +36,13 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
     add_definitions(-D__ANDROID__)
 endif()
 
+include_directories(
+    BEFORE
+    ${WEB_FRAMEWORK_SDK}/include/
+    ${WEB_FRAMEWORK_SDK}/include/vendor/OpenSSL/
+    ${WEB_FRAMEWORK_SDK}/include/vendor/sqlite3/
+)
+
 set(
     WEB_FRAMEWORK_LIBS
     WebFramework
@@ -105,13 +112,6 @@ if (${IS_WEB_FRAMEWORK_SHARED})
             ${WEB_FRAMEWORK_SDK}/api/cxx/include/
         )
     endif()
-else()
-    include_directories(
-        BEFORE
-        ${WEB_FRAMEWORK_SDK}/include/
-        ${WEB_FRAMEWORK_SDK}/include/vendor/OpenSSL/
-        ${WEB_FRAMEWORK_SDK}/include/vendor/sqlite3/
-    )
 endif()
 
 if (NOT TARGET generate_localization)
