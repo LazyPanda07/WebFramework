@@ -113,22 +113,36 @@ jobs:
 
     - name: Create deb package
       run: |
-          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64/web-framework
-          mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
-          cd web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+          mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          dpkg --build web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
     
     - name: Create deb dev package
       run: |
-          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
-          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/include/web-framework/
-          mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
-          mv ReleaseDLL_Linux/include/* web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/include/web-framework/
-          cd web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framwework/lib
+          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
+          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
+          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
+          mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+          mv ReleaseDLL_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          mv ReleaseDLL_Linux/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
+          mv ReleaseDLL_Linux/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
+          mv ReleaseDLL_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
+          mv ReleaseDLL_Linux/WebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
 
     - name: Create deb static dev package
       run: |
-          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
-          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/include/web-framework/
-          mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib64
-          mv ReleaseDLL_Linux/include/* web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/include/web-framework/
-          cd web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+          mkdir -p web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          mkdir -p web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
+          mv ReleaseDLL_Linux/lib/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          mv ReleaseDLL_Linux/include/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
+          mv ReleaseDLL_Linux/WebFramework.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          dpkg --build web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: deb-packages
+        path: ${{ github.workspace }}/*.deb
