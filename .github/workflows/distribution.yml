@@ -116,6 +116,8 @@ jobs:
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          mv ReleaseDLL_Linux/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          mv ReleaseDLL_Linux/localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
     
     - name: Create deb dev package
@@ -130,6 +132,8 @@ jobs:
           mv ReleaseDLL_Linux/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mv ReleaseDLL_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           mv ReleaseDLL_Linux/WebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          mv ReleaseDLL_Linux/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          mv ReleaseDLL_Linux/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
 
     - name: Create deb static dev package
@@ -139,6 +143,8 @@ jobs:
           mv ReleaseDLL_Linux/lib/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mv ReleaseDLL_Linux/include/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           mv ReleaseDLL_Linux/WebFramework.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          mv ReleaseDLL_Linux/WebFrameworkAssets web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          mv ReleaseDLL_Linux/localization_modules.json web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
 
     - name: Upload artifacts
