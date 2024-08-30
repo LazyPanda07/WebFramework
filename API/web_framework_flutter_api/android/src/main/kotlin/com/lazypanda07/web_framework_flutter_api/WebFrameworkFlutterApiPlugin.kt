@@ -43,11 +43,11 @@ class WebFrameworkFlutterApiPlugin : FlutterPlugin, MethodCallHandler, ActivityA
     }
 
     override fun onDetachedFromActivity() {
-        TODO("Not yet implemented")
+        
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -55,6 +55,6 @@ class WebFrameworkFlutterApiPlugin : FlutterPlugin, MethodCallHandler, ActivityA
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        TODO("Not yet implemented")
+
     }
 }

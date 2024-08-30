@@ -23,7 +23,7 @@
     "defaultAssetsPath": "WebFrameworkAssets"
   },
   "Logging": {
-    "usingLogging": true,
+    "usingLogging": false,
     "dateFormat": "DMY",
     "logFileSize": 134217728
   },

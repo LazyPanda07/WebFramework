@@ -34,6 +34,10 @@ class _MyAppState extends State<MyApp> {
 
       WebFramework server = await WebFramework.fromConfig(config);
 
+      setState(() {
+        _message = "Server is running";
+      });
+
       await server.start(wait: true);
     } on WebFrameworkException catch (e) {
       _message = e.toString();
