@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
     try {
-      Config config = await Config.fromPath("configs/multi_threaded_config.json");
+      Config config = await Config.fromPath("configs/config.json");
 
       config.overrideBasePath("${config.handler.assetsPath}/executors");
 
