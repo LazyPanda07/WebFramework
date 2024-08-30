@@ -71,7 +71,7 @@ link_directories(
     ${WEB_FRAMEWORK_SDK}/lib/vendor/sqlite3/
 )
 
-if (UNIX)
+if (UNIX AND ${CMAKE_SYSTEM_NAME} NOT STREQUAL "Android")
     set(
         WEB_FRAMEWORK_LIBS
         ${WEB_FRAMEWORK_LIBS}
