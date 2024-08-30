@@ -4,6 +4,6 @@ project(samples)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 set(WEB_FRAMEWORK_SDK ../WebFrameworkLibrary)
-include(${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary/WebFramework.cmake)
+include(../WebFrameworkLibrary/WebFramework.cmake)
 
 add_subdirectory(hello)
