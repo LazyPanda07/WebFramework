@@ -6,7 +6,7 @@
 #include "Import/Config.h"
 #include "Log.h"
 
-#define LOG_EXCEPTION() Log::error("Exception: {}", "C_API", e.what())
+#define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
 

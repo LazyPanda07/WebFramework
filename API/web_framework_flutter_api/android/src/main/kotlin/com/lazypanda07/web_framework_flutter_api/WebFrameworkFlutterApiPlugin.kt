@@ -32,7 +32,7 @@ class WebFrameworkFlutterApiPlugin : FlutterPlugin, MethodCallHandler, ActivityA
         if (call.method == "getLibraryPath") {
             result.success(context.getApplicationInfo().nativeLibraryDir + "/libWebFramework.so")
         } else if (call.method == "getAssetsPath") {
-            result.success(context.getApplicationInfo().dataDir + "/flutter_assets")
+            result.success(context.getApplicationInfo().dataDir + "/app_flutter/assets")
         } else {
             result.notImplemented()
         }

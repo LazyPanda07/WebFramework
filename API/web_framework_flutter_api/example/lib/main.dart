@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -5,8 +8,36 @@ import 'package:flutter/services.dart';
 import 'package:web_framework_flutter_api/config.dart';
 import 'package:web_framework_flutter_api/web_framework.dart';
 import 'package:web_framework_flutter_api/web_framework_exception.dart';
+import 'package:web_framework_flutter_api/web_framework_flutter_api_platform_interface.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+Future<String> loadAsset() async {
+  String manifestContent = await rootBundle.loadString("AssetManifest.json");
+  Map<String, dynamic> manifestMap = jsonDecode(manifestContent);
+  Directory docDirectory = await getApplicationDocumentsDirectory();
+
+  for (String key in manifestMap.keys) {
+    String dbPath = "${docDirectory.path}/$key";
+
+    if (FileSystemEntity.typeSync(dbPath) == FileSystemEntityType.notFound) {
+      ByteData data = await rootBundle.load(key);
+      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      File file = File(dbPath);
+
+      file.createSync(recursive: true);
+
+      await file.writeAsBytes(bytes);
+    }
+  }
+
+  return "${docDirectory.path}/assets";
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await loadAsset();
+
   runApp(const MyApp());
 }
 
