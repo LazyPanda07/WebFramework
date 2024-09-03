@@ -9,6 +9,9 @@
 
 namespace framework
 {
+	/**
+	 * @brief Web server
+	 */
 	class WebFramework
 	{
 	private:
@@ -17,10 +20,23 @@ namespace framework
 		bool weak;
 
 	public:
+		/**
+		 * @brief 
+		 * @param configPath Path to *.json config
+		 */
 		WebFramework(const std::string& configPath);
 
+		/**
+		 * @brief 
+		 * @param serverConfiguration *.json config file content 
+		 * @param applicationDirectory Working directory
+		 */
 		WebFramework(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
+		/**
+		 * @brief 
+		 * @param config Config instance
+		 */
 		WebFramework(const utility::Config& config);
 
 		WebFramework(const WebFramework& other);
@@ -31,8 +47,17 @@ namespace framework
 
 		WebFramework& operator = (WebFramework&& other) noexcept = delete;
 
+		/**
+		 * @brief Start server
+		 * @param wait Wait until server stop
+		 * @param onStartServer On start server callback
+		 */
 		void start(bool wait = false, const std::function<void()>& onStartServer = []() {});
 
+		/**
+		 * @brief Stop server
+		 * @param wait Wait until server stop
+		 */
 		void stop(bool wait = true);
 
 		~WebFramework();

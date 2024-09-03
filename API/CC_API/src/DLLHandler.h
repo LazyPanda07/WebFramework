@@ -23,7 +23,7 @@ typedef void* WebFrameworkString;
 
 /**
  * @brief Load WebFramework shared library
- * @param pathToDLL Path to shared library
+ * @param pathToDLL Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so)
  */
 void initializeWebFramework(const char* pathToDLL);
 

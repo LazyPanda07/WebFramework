@@ -1,6 +1,6 @@
 name: web_framework_flutter_api
 description: "Flutter API for WebFramework"
-version: 1.0.0
+version: 0.1.0
 homepage: https://github.com/Lazypanda07/WebFramework
 
 environment:

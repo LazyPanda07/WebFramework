@@ -21,6 +21,10 @@ namespace framework
 {
 	namespace utility
 	{
+		/**
+		 * @brief Load WebFramework shared library
+		 * @param pathToDLL Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so)
+		 */
 		void initializeWebFramework(const std::filesystem::path& pathToDLL);
 
 		class DLLHandler

@@ -8,6 +8,9 @@ namespace framework
 {
 	namespace exceptions
 	{
+		/**
+		 * @brief Exception class for WebFramework exceptions
+		 */
 		class WebFrameworkException : public std::exception
 		{
 		private:

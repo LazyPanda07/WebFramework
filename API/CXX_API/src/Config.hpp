@@ -9,6 +9,9 @@ namespace framework
 {
 	namespace utility
 	{
+		/**
+		 * @brief Configuring WebFramework server
+		 */
 		class Config
 		{
 		private:
@@ -16,8 +19,17 @@ namespace framework
 			bool weak;
 
 		public:
+			/**
+			 * @brief 
+			 * @param configPath Path to *.json config file
+			 */
 			Config(const std::filesystem::path& configPath);
 
+			/**
+			 * @brief 
+			 * @param serverConfiguration  *.json config file content
+			 * @param applicationDirectory Working directory
+			 */
 			Config(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
 			Config(const Config& other);
@@ -28,20 +40,62 @@ namespace framework
 
 			Config& operator = (Config&& other) noexcept = delete;
 
+			/**
+			 * @brief Override string
+			 * @tparam T 
+			 * @param key JSON key
+			 * @param value New string value
+			 * @param recursive Recursive search for key
+			 * @return Self
+			 */
 			template<std::convertible_to<std::string_view> T>
 			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
 
+			/**
+			 * @brief Override integer
+			 * @tparam T 
+			 * @param key JSON key
+			 * @param value New integer value
+			 * @param recursive Recursive search for key
+			 * @return Self
+			 */
 			template<std::convertible_to<int64_t> T>
 			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
 
+			/**
+			 * @brief Override string array
+			 * @param key JSON key
+			 * @param value New string array value
+			 * @param recursive Recursive search for key
+			 * @return Self
+			 */
 			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
 
+			/**
+			 * @brief Override integer array
+			 * @param key JSON key
+			 * @param value New integer array value
+			 * @param recursive Recursive search for key
+			 * @return Self
+			 */
 			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
 
+			/**
+			 * @brief Get config file directory
+			 * @return 
+			 */
 			std::string getBasePath() const;
 
+			/**
+			 * @brief Get current config JSON string data
+			 * @return 
+			 */
 			std::string getConfiguration() const;
 
+			/**
+			 * @brief Get raw config JSON string data
+			 * @return 
+			 */
 			std::string_view getRawConfiguration() const;
 
 			void* getImplementation() const;
