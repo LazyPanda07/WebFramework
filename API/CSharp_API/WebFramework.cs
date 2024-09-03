@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 using Framework.Utility;
 using Framework.Exceptions;
 
+/// <summary>
+/// Web server
+/// </summary>
 public sealed unsafe partial class WebFramework : IDisposable
 {
 	private readonly unsafe void* implementation;
@@ -27,7 +30,13 @@ public sealed unsafe partial class WebFramework : IDisposable
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void deleteWebFrameworkObject(void* implementation);
 
-	public unsafe WebFramework(string configPath)
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="configPath">Path to *.json config</param>
+	/// <exception cref="Exception"></exception>
+	/// <exception cref="WebFrameworkException"></exception>
+	public WebFramework(string configPath)
 	{
 		if (!Path.Exists(configPath))
 		{
@@ -44,7 +53,13 @@ public sealed unsafe partial class WebFramework : IDisposable
 		}
 	}
 
-	public unsafe WebFramework(string serverConfiguration, string applicationDirectory)
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="serverConfiguration">*.json config file content </param>
+	/// <param name="applicationDirectory">Working directory</param>
+	/// <exception cref="WebFrameworkException"></exception>
+	public WebFramework(string serverConfiguration, string applicationDirectory)
 	{
 		void* exception = null;
 
@@ -56,7 +71,12 @@ public sealed unsafe partial class WebFramework : IDisposable
 		}
 	}
 
-	public unsafe WebFramework(Config config)
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="config">Config instance</param>
+	/// <exception cref="WebFrameworkException"></exception>
+	public WebFramework(Config config)
 	{
 		void* exception = null;
 
@@ -70,7 +90,13 @@ public sealed unsafe partial class WebFramework : IDisposable
 
 	public delegate void OnStartServer();
 
-	public unsafe void Start(bool wait = false, OnStartServer? callback = null)
+	/// <summary>
+	/// Start server
+	/// </summary>
+	/// <param name="wait">Wait until server stop</param>
+	/// <param name="callback">On start server callback</param>
+	/// <exception cref="WebFrameworkException"></exception>
+	public void Start(bool wait = false, OnStartServer? callback = null)
 	{
 		void* exception = null;
 
@@ -82,7 +108,12 @@ public sealed unsafe partial class WebFramework : IDisposable
 		}
 	}
 
-	public unsafe void Stop(bool wait = true)
+	/// <summary>
+	/// Stop server
+	/// </summary>
+	/// <param name="wait">Wait until server stop</param>
+	/// <exception cref="WebFrameworkException"></exception>
+	public void Stop(bool wait = true)
 	{
 		void* exception = null;
 

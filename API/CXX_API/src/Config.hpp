@@ -27,7 +27,7 @@ namespace framework
 
 			/**
 			 * @brief 
-			 * @param serverConfiguration  *.json config file content
+			 * @param serverConfiguration *.json config file content
 			 * @param applicationDirectory Working directory
 			 */
 			Config(std::string_view serverConfiguration, std::string_view applicationDirectory);

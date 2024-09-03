@@ -33,7 +33,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -G "NMake Makefiles" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ..
           nmake install
 
     - name: Upload artifacts
@@ -59,7 +59,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
           make install -j $(nproc)
 
     - name: Build samples

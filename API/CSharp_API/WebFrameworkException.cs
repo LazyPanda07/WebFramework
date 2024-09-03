@@ -4,6 +4,10 @@ using System.Runtime.InteropServices;
 
 using Framework.Utility;
 
+/// <summary>
+/// Exception class for WebFramework exceptions
+/// </summary>
+/// <param name="implementation"></param>
 public sealed unsafe partial class WebFrameworkException(void* implementation) : Exception, IDisposable
 {
 	private readonly unsafe void* implementation = implementation;
