@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       android-version: android-34
-      android-platform: android-28
+      android-api-version: android-34
       sdk-install-name: platforms;android-34
       ndk-version: 27.0.12077973
       ndk-install-name: ndk;27.0.12077973
@@ -132,7 +132,7 @@ jobs:
         make sqlite3.c -j $(nproc)
         export CC=${NDK_PATH}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-${{ env.android-version }}-clang
         export CXX=${NDK_PATH}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-${{ env.android-version }}-clang++
-        cmake -DCMAKE_INSTALL_PREFIX=../sqlite_android -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=${{ env.android-platform }} -DCMAKE_TOOLCHAIN_FILE=${NDK_PATH}/build/cmake/android.toolchain.cmake ..
+        cmake -DCMAKE_INSTALL_PREFIX=../sqlite_android -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=${{ env.android-api-version }} -DCMAKE_TOOLCHAIN_FILE=${NDK_PATH}/build/cmake/android.toolchain.cmake ..
         make install -j $(nproc)
 
     - name: Upload SQLite
