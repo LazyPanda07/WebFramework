@@ -2,7 +2,7 @@ name: Samples
 
 
 on:
-  workflow_dispatch:
+  push:
   
   
 jobs:
