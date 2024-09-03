@@ -19,12 +19,16 @@ typedef StartWebFrameworkServerDart = void Function(Pointer<Void> implementation
 typedef StopWebFrameworkServerC = Void Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 typedef StopWebFrameworkServerDart = void Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 
+/// Web server
 class WebFramework {
   final Pointer<Void> _implementation;
   final DllHandler _handler;
 
   WebFramework._constructor(this._implementation, this._handler);
 
+  /// Create WebFramework
+  ///
+  /// [configPath] Path to *.json config
   static Future<WebFramework> fromPath(String configPath) async {
     DllHandler handler = await DllHandler.create();
 
@@ -44,6 +48,11 @@ class WebFramework {
     return WebFramework._constructor(implementation, handler);
   }
 
+  /// Create WebFramework
+  ///
+  /// [serverConfiguration] *.json config file content
+  ///
+  /// [applicationDirectory] Working directory
   static Future<WebFramework> fromString(String serverConfiguration, String applicationDirectory) async {
     DllHandler handler = await DllHandler.create();
 
@@ -65,6 +74,9 @@ class WebFramework {
     return WebFramework._constructor(implementation, handler);
   }
 
+  /// Create WebFramework
+  ///
+  /// [config] Config instance
   static Future<WebFramework> fromConfig(Config config) async {
     DllHandler handler = await DllHandler.create();
 
@@ -80,6 +92,9 @@ class WebFramework {
     return WebFramework._constructor(implementation, handler);
   }
 
+  /// Start server
+  ///
+  /// [wait] Wait until server stop
   Future<void> start({bool wait = false}) async {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     StartWebFrameworkServerDart function = _handler.instance
@@ -90,6 +105,9 @@ class WebFramework {
     WebFrameworkException.checkException(exception, _handler);
   }
 
+  /// Stop server
+  ///
+  /// [wait] Wait until server stop
   Future<void> stop({bool wait = false}) async {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 

@@ -6,6 +6,7 @@ import 'dll_handler.dart';
 
 typedef GetErrorMessage = Pointer<Utf8> Function(Pointer<Void> implementation);
 
+/// Exception class for WebFramework exceptions
 class WebFrameworkException implements Exception {
   final Pointer<Pointer<Void>> _implementation;
   final DllHandler _handler;

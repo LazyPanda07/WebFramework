@@ -39,12 +39,16 @@ typedef GetBasePath = Pointer<Void> Function(Pointer<Void> implementation, Point
 typedef GetConfiguration = Pointer<Void> Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 typedef GetRawConfiguration = Pointer<Utf8> Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 
+/// Configuring WebFramework server
 class Config {
   final Pointer<Void> implementation;
   final DllHandler handler;
 
   Config._constructor(this.implementation, this.handler);
 
+  /// Create config
+  ///
+  /// [configPath] Path to *.json config file
   static Future<Config> fromPath(String configPath) async {
     DllHandler handler = await DllHandler.create();
 
@@ -65,6 +69,11 @@ class Config {
     return Config._constructor(implementation, handler);
   }
 
+  /// Create config
+  ///
+  /// [serverConfiguration] *.json config file content
+  ///
+  /// [applicationDirectory] Working directory
   static Future<Config> fromString(String serverConfiguration, String applicationDirectory) async {
     DllHandler handler = await DllHandler.create();
 
@@ -87,6 +96,13 @@ class Config {
     return Config._constructor(implementation, handler);
   }
 
+  /// Override string
+  ///
+  /// [key] JSON key
+  ///
+  /// [value] New string value
+  ///
+  /// [recursive] Recursive search for key
   void overrideConfigurationString(String key, String value, {bool recursive = false}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
@@ -103,6 +119,13 @@ class Config {
     WebFrameworkException.checkException(exception, handler);
   }
 
+  /// Override integer
+  ///
+  /// [key] JSON key
+  ///
+  /// [value] New integer value
+  ///
+  /// [recursive] Recursive search for key
   void overrideConfigurationInteger(String key, int value, {bool recursive = false}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
@@ -118,6 +141,13 @@ class Config {
     WebFrameworkException.checkException(exception, handler);
   }
 
+  /// Override bool
+  ///
+  /// [key] JSON key
+  ///
+  /// [value] New bool value
+  ///
+  /// [recursive] Recursive search for key
   void overrideConfigurationBoolean(String key, bool value, {bool recursive = false}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
@@ -133,6 +163,13 @@ class Config {
     WebFrameworkException.checkException(exception, handler);
   }
 
+  /// Override string array
+  ///
+  /// [key] JSON key
+  ///
+  /// [value] New string array value
+  ///
+  /// [recursive] Recursive search for key
   void overrideConfigurationStringArray(String key, List<String> value, {bool recursive = false}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
@@ -159,6 +196,13 @@ class Config {
     WebFrameworkException.checkException(exception, handler);
   }
 
+  /// Override integer array
+  ///
+  /// [key] JSON key
+  ///
+  /// [value] New integer array value
+  ///
+  /// [recursive] Recursive search for key
   void overrideConfigurationIntegerArray(String key, List<int> value, {bool recursive = false}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
@@ -180,6 +224,7 @@ class Config {
     WebFrameworkException.checkException(exception, handler);
   }
 
+  /// Override config file directory
   void overrideBasePath(String basePath) {
     Pointer<Utf8> data = basePath.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
@@ -194,6 +239,7 @@ class Config {
     WebFrameworkException.checkException(exception, handler);
   }
 
+  /// Get current config JSON string data
   String getConfiguration() {
     GetConfiguration function = handler.instance.lookupFunction<GetConfiguration, GetConfiguration>("getConfiguration");
 
@@ -209,6 +255,7 @@ class Config {
     return result;
   }
 
+  /// Get raw config JSON string data
   String getRawConfiguration() {
     GetRawConfiguration function =
         handler.instance.lookupFunction<GetRawConfiguration, GetRawConfiguration>("getRawConfiguration");
@@ -221,6 +268,7 @@ class Config {
     return result.toDartString();
   }
 
+  /// Get config file directory
   String getBasePath() {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 

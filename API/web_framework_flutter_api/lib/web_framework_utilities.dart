@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:crypto/crypto.dart';
 
+/// Extract assets from *.apk file
 Future<String> unpackAndroidAssets() async {
   String manifest = await rootBundle.loadString("AssetManifest.json");
   Map<String, dynamic> manifestContent = jsonDecode(manifest);
