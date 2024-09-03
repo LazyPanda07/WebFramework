@@ -6,10 +6,6 @@ on:
   workflow_dispatch:
 
 
-env:
-  flutter-version: 3.24.0
-
-
 jobs:
   windows-build:
     runs-on: windows-latest
