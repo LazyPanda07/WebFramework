@@ -2,10 +2,74 @@ name: Samples
 
 
 on:
-  push:
+  workflow_dispatch:
   
   
 jobs:
+  windows-hello-executor:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: HelloExecutorWindows
+        path: |
+            samples/build/bin/*.dll
+            samples/build/bin/*.json
+
+
+  linux-hello-executor:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+          make install -j $(nproc)
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: HelloExecutorLinux
+        path: samples/build/bin
+
+
   android-hello-executor:
     runs-on: ubuntu-latest
     container:
@@ -36,4 +100,96 @@ jobs:
       with:
         name: HelloExecutorAndroid
         path: samples/build/bin
+
+
+  windows-flutter-build:
+    runs-on: windows-latest
+    needs: windows-hello-executor
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2.16.0
+      with:
+        channel: stable
+        flutter-version: ${{ env.flutter-version }}
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+      
+    - name: Build
+      working-directory: API/web_framework_flutter_api/example
+      shell: bash
+      run: |
+          mkdir -p assets/configs
+          mkdir assets/executors
+          flutter build windows --release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: WindowsFlutterSample
+        path: API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
+
+
+  linux-flutter-build:
+    runs-on: ubuntu-latest
+    needs: linux-hello-executor
+    container:
+      image: lazypanda07/ubuntu_cxx20:android
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        
+    - name: Install Clang
+      run: |
+          sudo apt update
+          sudo apt install -y clang ninja-build
+        
+    - name: Build
+      working-directory: API/web_framework_flutter_api/example
+      run: |
+          export CC=/usr/bin/clang
+          export CXX=/usr/bin/clang++
+          git config --global --add safe.directory /opt/flutter
+          mkdir -p assets/configs
+          mkdir assets/executors
+          flutter build linux --release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: LinuxFlutterSample
+        path: API/web_framework_flutter_api/example/build/linux/x64/release/bundle/
+
+
+  android-flutter-build:
+    runs-on: ubuntu-latest
+    needs: android-hello-executor
+    container:
+      image: lazypanda07/ubuntu_cxx20:android
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build
+      working-directory: API/web_framework_flutter_api/example
+      run: |
+          git config --global --add safe.directory /opt/flutter
+          mkdir -p assets/configs
+          mkdir assets/executors
+          flutter build apk --release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: AndroidFlutterSample
+        path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/
         

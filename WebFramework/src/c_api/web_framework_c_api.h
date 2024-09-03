@@ -10,50 +10,55 @@
 #define EXPORT extern "C" __declspec(dllexport)
 #endif
 
+typedef void* String;
+typedef void* Config;
+typedef void* WebFramework;
+typedef void* Exception;
+
 EXPORT void deleteWebFrameworkObject(void* implementation);
 
-EXPORT const char* getDataFromString(void* implementation);
+EXPORT const char* getDataFromString(String string);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-EXPORT void* createWebFrameworkFromPath(const char* configPath, void** exception);
+EXPORT WebFramework createWebFrameworkFromPath(const char* configPath, Exception* exception);
 
-EXPORT void* createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception);
+EXPORT WebFramework createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, Exception* exception);
 
-EXPORT void* createWebFrameworkFromConfig(void* config, void** exception);
+EXPORT WebFramework createWebFrameworkFromConfig(Config config, Exception* exception);
 
-EXPORT void* createConfigFromPath(const char* configPath, void** exception);
+EXPORT Config createConfigFromPath(const char* configPath, Exception* exception);
 
-EXPORT void* createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-EXPORT void startWebFrameworkServerCXX(void* implementation, bool wait, void* onStartServer, void** exception);
-
-EXPORT void startWebFrameworkServer(void* implementation, bool wait, void (*onStartServer)(), void** exception);
-
-EXPORT void stopWebFrameworkServer(void* implementation, bool wait, void** exception);
-
-EXPORT void overrideConfigurationString(void* implementation, const char* key, const char* value, bool recursive, void** exception);
-
-EXPORT void overrideConfigurationInteger(void* implementation, const char* key, int64_t value, bool recursive, void** exception);
-
-EXPORT void overrideConfigurationBoolean(void* implementation, const char* key, bool value, bool recursive, void** exception);
-
-EXPORT void overrideConfigurationStringArray(void* implementation, const char* key, const char** value, bool recursive, int64_t size, void** exception);
-
-EXPORT void overrideConfigurationIntegerArray(void* implementation, const char* key, const int64_t* value, bool recursive, int64_t size, void** exception);
-
-EXPORT void overrideBasePath(void* implementation, const char* basePath, void** exception);
-
-EXPORT void* getConfiguration(void* implementation, void** exception);
-
-EXPORT const char* getRawConfiguration(void* implementation, void** exception);
-
-EXPORT void* getBasePath(void* implementation, void** exception);
+EXPORT Config createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-EXPORT const char* getErrorMessage(void* exception);
+EXPORT void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartServer, Exception* exception);
+
+EXPORT void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServer)(), Exception* exception);
+
+EXPORT void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception);
+
+EXPORT void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception);
+
+EXPORT void overrideConfigurationInteger(Config config, const char* key, int64_t value, bool recursive, Exception* exception);
+
+EXPORT void overrideConfigurationBoolean(Config config, const char* key, bool value, bool recursive, Exception* exception);
+
+EXPORT void overrideConfigurationStringArray(Config config, const char* key, const char** value, bool recursive, int64_t size, Exception* exception);
+
+EXPORT void overrideConfigurationIntegerArray(Config config, const char* key, const int64_t* value, bool recursive, int64_t size, Exception* exception);
+
+EXPORT void overrideBasePath(Config config, const char* basePath, Exception* exception);
+
+EXPORT void* getConfiguration(Config config, Exception* exception);
+
+EXPORT const char* getRawConfiguration(Config config, Exception* exception);
+
+EXPORT void* getBasePath(Config config, Exception* exception);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+EXPORT const char* getErrorMessage(Exception exception);
 
 #endif

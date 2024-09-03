@@ -15,14 +15,14 @@ void deleteWebFrameworkObject(void* implementation)
 	delete implementation;
 }
 
-const char* getDataFromString(void* implementation)
+const char* getDataFromString(String string)
 {
-	return static_cast<std::string*>(implementation)->data();
+	return static_cast<std::string*>(string)->data();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void* createWebFrameworkFromPath(const char* configPath, void** exception)
+WebFramework createWebFrameworkFromPath(const char* configPath, Exception* exception)
 {
 	try
 	{
@@ -36,7 +36,7 @@ void* createWebFrameworkFromPath(const char* configPath, void** exception)
 	return nullptr;
 }
 
-void* createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception)
+WebFramework createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, Exception* exception)
 {
 	try
 	{
@@ -50,7 +50,7 @@ void* createWebFrameworkFromString(const char* serverConfiguration, const char* 
 	return nullptr;
 }
 
-void* createWebFrameworkFromConfig(void* config, void** exception)
+WebFramework createWebFrameworkFromConfig(Config config, Exception* exception)
 {
 	try
 	{
@@ -64,7 +64,7 @@ void* createWebFrameworkFromConfig(void* config, void** exception)
 	return nullptr;
 }
 
-void* createConfigFromPath(const char* configPath, void** exception)
+Config createConfigFromPath(const char* configPath, Exception* exception)
 {
 	try
 	{
@@ -78,7 +78,7 @@ void* createConfigFromPath(const char* configPath, void** exception)
 	return nullptr;
 }
 
-void* createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, void** exception)
+Config createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, Exception* exception)
 {
 	try
 	{
@@ -94,13 +94,13 @@ void* createConfigFromString(const char* serverConfiguration, const char* applic
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void startWebFrameworkServerCXX(void* implementation, bool wait, void* onStartServer, void** exception)
+void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartServer, Exception* exception)
 {
 	try
 	{
 		std::function<void()>* lambda = static_cast<std::function<void()>*>(onStartServer);
 
-		static_cast<framework::WebFramework*>(implementation)->start(wait, *lambda);
+		static_cast<framework::WebFramework*>(server)->start(wait, *lambda);
 	}
 	catch (const std::exception& e)
 	{
@@ -108,11 +108,11 @@ void startWebFrameworkServerCXX(void* implementation, bool wait, void* onStartSe
 	}
 }
 
-void startWebFrameworkServer(void* implementation, bool wait, void (*onStartServer)(), void** exception)
+void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServer)(), Exception* exception)
 {
 	try
 	{
-		static_cast<framework::WebFramework*>(implementation)->start(wait, onStartServer);
+		static_cast<framework::WebFramework*>(server)->start(wait, onStartServer);
 	}
 	catch (const std::exception& e)
 	{
@@ -120,11 +120,11 @@ void startWebFrameworkServer(void* implementation, bool wait, void (*onStartServ
 	}
 }
 
-void stopWebFrameworkServer(void* implementation, bool wait, void** exception)
+void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::WebFramework*>(implementation)->stop(wait);
+		static_cast<framework::WebFramework*>(server)->stop(wait);
 	}
 	catch (const std::exception& e)
 	{
@@ -132,11 +132,11 @@ void stopWebFrameworkServer(void* implementation, bool wait, void** exception)
 	}
 }
 
-void overrideConfigurationString(void* implementation, const char* key, const char* value, bool recursive, void** exception)
+void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, std::string(value), recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, std::string(value), recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -144,11 +144,11 @@ void overrideConfigurationString(void* implementation, const char* key, const ch
 	}
 }
 
-void overrideConfigurationInteger(void* implementation, const char* key, int64_t value, bool recursive, void** exception)
+void overrideConfigurationInteger(Config config, const char* key, int64_t value, bool recursive, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, value, recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -156,11 +156,11 @@ void overrideConfigurationInteger(void* implementation, const char* key, int64_t
 	}
 }
 
-void overrideConfigurationBoolean(void* implementation, const char* key, bool value, bool recursive, void** exception)
+void overrideConfigurationBoolean(Config config, const char* key, bool value, bool recursive, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, value, recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -168,7 +168,7 @@ void overrideConfigurationBoolean(void* implementation, const char* key, bool va
 	}
 }
 
-void overrideConfigurationStringArray(void* implementation, const char* key, const char** value, bool recursive, int64_t size, void** exception)
+void overrideConfigurationStringArray(Config config, const char* key, const char** value, bool recursive, int64_t size, Exception* exception)
 {
 	try
 	{
@@ -181,7 +181,7 @@ void overrideConfigurationStringArray(void* implementation, const char* key, con
 			json::utility::appendArray(std::string(value[i]), data);
 		}
 
-		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, data, recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -189,7 +189,7 @@ void overrideConfigurationStringArray(void* implementation, const char* key, con
 	}
 }
 
-void overrideConfigurationIntegerArray(void* implementation, const char* key, const int64_t* value, bool recursive, int64_t size, void** exception)
+void overrideConfigurationIntegerArray(Config config, const char* key, const int64_t* value, bool recursive, int64_t size, Exception* exception)
 {
 	try
 	{
@@ -202,7 +202,7 @@ void overrideConfigurationIntegerArray(void* implementation, const char* key, co
 			json::utility::appendArray(value[i], data);
 		}
 
-		static_cast<framework::utility::Config*>(implementation)->overrideConfiguration(key, data, recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -210,11 +210,11 @@ void overrideConfigurationIntegerArray(void* implementation, const char* key, co
 	}
 }
 
-void overrideBasePath(void* implementation, const char* basePath, void** exception)
+void overrideBasePath(Config config, const char* basePath, Exception* exception)
 {
 	try
 	{
-		reinterpret_cast<framework::utility::Config*>(implementation)->overrideBasePath(basePath);
+		reinterpret_cast<framework::utility::Config*>(config)->overrideBasePath(basePath);
 	}
 	catch (const std::exception& e)
 	{
@@ -222,14 +222,13 @@ void overrideBasePath(void* implementation, const char* basePath, void** excepti
 	}
 }
 
-void* getConfiguration(void* implementation, void** exception)
+void* getConfiguration(Config config, Exception* exception)
 {
 	try
 	{
-		framework::utility::Config& config = *static_cast<framework::utility::Config*>(implementation);
 		std::ostringstream result;
 
-		result << *config;
+		result << **static_cast<framework::utility::Config*>(config);
 
 		return new std::string(result.str());
 	}
@@ -241,11 +240,11 @@ void* getConfiguration(void* implementation, void** exception)
 	return nullptr;
 }
 
-const char* getRawConfiguration(void* implementation, void** exception)
+const char* getRawConfiguration(Config config, Exception* exception)
 {
 	try
 	{
-		return (*(*static_cast<framework::utility::Config*>(implementation))).getRawData().data();
+		return (*(*static_cast<framework::utility::Config*>(config))).getRawData().data();
 	}
 	catch (const std::exception& e)
 	{
@@ -255,11 +254,11 @@ const char* getRawConfiguration(void* implementation, void** exception)
 	return nullptr;
 }
 
-void* getBasePath(void* implementation, void** exception)
+void* getBasePath(Config config, Exception* exception)
 {
 	try
 	{
-		return new std::string(static_cast<framework::utility::Config*>(implementation)->getBasePath().string());
+		return new std::string(static_cast<framework::utility::Config*>(config)->getBasePath().string());
 	}
 	catch (const std::exception& e)
 	{
@@ -271,7 +270,7 @@ void* getBasePath(void* implementation, void** exception)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const char* getErrorMessage(void* exception)
+const char* getErrorMessage(Exception exception)
 {
 	return static_cast<std::runtime_error*>(exception)->what();
 }

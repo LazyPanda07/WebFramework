@@ -71,18 +71,18 @@ link_directories(
     ${WEB_FRAMEWORK_SDK}/lib/vendor/sqlite3/
 )
 
-if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-    set(
-        WEB_FRAMEWORK_LIBS
-        ${WEB_FRAMEWORK_LIBS}
-        uuid
-    )
-elseif (WIN32)
+if (WIN32)
     set(
         WEB_FRAMEWORK_LIBS
         ${WEB_FRAMEWORK_LIBS}
         crypt32
         Rpcrt4
+    )
+elseif (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+    set(
+        WEB_FRAMEWORK_LIBS
+        ${WEB_FRAMEWORK_LIBS}
+        uuid
     )
 endif()
 
