@@ -6,6 +6,11 @@ from pathlib import Path
 
 
 def initialize_web_framework(path_to_dll: str):
+    """
+    Load WebFramework shared library
+    :param path_to_dll: Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so)
+    :return:
+    """
     if DLLHandler.instance is not None:
         return
 

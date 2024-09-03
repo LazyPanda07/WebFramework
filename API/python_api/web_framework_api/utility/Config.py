@@ -8,11 +8,19 @@ from web_framework_api.exceptions.WebFrameworkException import WebFrameworkExcep
 
 
 class Config:
+    """
+    Configuring WebFramework server
+    """
     def __init__(self, implementation: ctypes.c_void_p):
         self.implementation = implementation
 
     @classmethod
     def from_path(cls, config_path: str) -> "Config":
+        """
+
+        :param config_path: Path to *.json config file
+        :return:
+        """
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createConfigFromPath", ctypes.c_void_p,
                                                                  ctypes.c_char_p(config_path.encode()),
@@ -25,6 +33,12 @@ class Config:
 
     @classmethod
     def from_string(cls, server_configuration: str, application_directory: str) -> "Config":
+        """
+
+        :param server_configuration: *.json config file content
+        :param application_directory: Working directory
+        :return:
+        """
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createConfigFromString", ctypes.c_void_p,
                                                                  ctypes.c_char_p(server_configuration.encode()),
@@ -38,6 +52,13 @@ class Config:
 
     @dispatch(str, str, bool)
     def override_configuration(self, key: str, value: str, recursive: bool = False) -> "Config":
+        """
+        Override string
+        :param key: JSON key
+        :param value: New string value
+        :param recursive: Recursive search for key
+        :return: self
+        """
         exception = ctypes.c_void_p(0)
 
         DLLHandler.get_instance().call_class_member_function("overrideConfigurationString", None, self.implementation,
@@ -52,6 +73,13 @@ class Config:
 
     @dispatch(str, int, bool)
     def override_configuration(self, key: str, value: int, recursive: bool = False) -> "Config":
+        """
+        Override integer
+        :param key: JSON key
+        :param value: New integer value
+        :param recursive: Recursive search for key
+        :return: self
+        """
         exception = ctypes.c_void_p(0)
 
         DLLHandler.get_instance().call_class_member_function("overrideConfigurationInteger", None, self.implementation,
@@ -65,6 +93,13 @@ class Config:
 
     @dispatch(str, bool, bool)
     def override_configuration(self, key: str, value: bool, recursive: bool = False) -> "Config":
+        """
+        Override bool
+        :param key: JSON key
+        :param value: New bool value
+        :param recursive: Recursive search for key
+        :return: self
+        """
         exception = ctypes.c_void_p(0)
 
         DLLHandler.get_instance().call_class_member_function("overrideConfigurationBoolean", None, self.implementation,
@@ -77,6 +112,13 @@ class Config:
         return self
 
     def override_configuration_string_array(self, key: str, value: List[str], recursive: bool = False) -> "Config":
+        """
+        Override string array
+        :param key: JSON key
+        :param value: New string array value
+        :param recursive: Recursive search for key
+        :return: self
+        """
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_char_p * len(value))()
@@ -96,6 +138,13 @@ class Config:
         return self
 
     def override_configuration_integer_array(self, key: str, value: List[int], recursive: bool = False) -> "Config":
+        """
+        Override integer array
+        :param key: JSON key
+        :param value: New integer array value
+        :param recursive: Recursive search for key
+        :return: self
+        """
         exception = ctypes.c_void_p(0)
 
         data = (ctypes.c_int64 * len(value))()
@@ -115,6 +164,10 @@ class Config:
         return self
 
     def get_configuration(self) -> str:
+        """
+        Get current config JSON string data
+        :return:
+        """
         exception = ctypes.c_void_p(0)
 
         handler = DLLHandler.get_instance()
@@ -135,6 +188,10 @@ class Config:
         return result
 
     def get_base_path(self) -> str:
+        """
+        Get config file directory
+        :return:
+        """
         exception = ctypes.c_void_p(0)
 
         handler = DLLHandler.get_instance()
@@ -155,6 +212,10 @@ class Config:
         return result
 
     def get_raw_configuration(self) -> str:
+        """
+        Get raw config JSON string data
+        :return:
+        """
         exception = ctypes.c_void_p(0)
 
         result = DLLHandler.get_instance().call_class_member_function("getRawConfiguration", ctypes.c_char_p,

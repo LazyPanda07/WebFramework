@@ -4,6 +4,9 @@ from web_framework_api.utility.DLLHandler import DLLHandler
 
 
 class WebFrameworkException(Exception):
+    """
+    Exception class for WebFramework exceptions
+    """
     def __init__(self, implementation: ctypes.c_void_p):
         self.__implementation = implementation
 

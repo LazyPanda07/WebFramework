@@ -8,6 +8,9 @@ from web_framework_api.exceptions.WebFrameworkException import WebFrameworkExcep
 
 
 class WebFramework:
+    """
+    Web server
+    """
     def __init__(self, implementation: ctypes.c_void_p):
         self.__implementation = implementation
         self.__function_signature = ctypes.CFUNCTYPE(None)
@@ -15,6 +18,11 @@ class WebFramework:
 
     @classmethod
     def from_path(cls, config_path: str) -> "WebFramework":
+        """
+
+        :param config_path: Path to *.json config
+        :return:
+        """
         config_path = os.path.abspath(config_path)
 
         if not os.path.exists(config_path):
@@ -32,6 +40,12 @@ class WebFramework:
 
     @classmethod
     def from_string(cls, server_configuration: str, application_directory: str) -> "WebFramework":
+        """
+
+        :param server_configuration: *.json config file content
+        :param application_directory: Working directory
+        :return:
+        """
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createWebFrameworkFromString", ctypes.c_void_p,
                                                                  ctypes.c_char_p(server_configuration.encode()),
@@ -45,6 +59,11 @@ class WebFramework:
 
     @classmethod
     def from_config(cls, config: Config) -> "WebFramework":
+        """
+
+        :param config: Config instance
+        :return:
+        """
         exception = ctypes.c_void_p(0)
         implementation = DLLHandler.get_instance().call_function("createWebFrameworkFromConfig", ctypes.c_void_p,
                                                                  ctypes.c_uint64(config.implementation),
@@ -56,6 +75,12 @@ class WebFramework:
         return cls(implementation)
 
     def start(self, wait: bool = False, on_start_server: Callable[[], None] = None):
+        """
+        Start server
+        :param wait: Wait until server stop(False doesn't work)
+        :param on_start_server: On start server callback
+        :return:
+        """
         if on_start_server is None:
             def default_function():
                 pass
@@ -74,6 +99,11 @@ class WebFramework:
             raise WebFrameworkException(exception.value)
 
     def stop(self, wait: bool = True):
+        """
+        Stop server
+        :param wait: Wait until server stop
+        :return:
+        """
         exception = ctypes.c_void_p(0)
         DLLHandler.get_instance().call_class_member_function("stopWebFrameworkServer", None, self.__implementation,
                                                              wait,
