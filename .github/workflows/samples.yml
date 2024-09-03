@@ -25,7 +25,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "NMake Makefiles" ..
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "NMake Makefiles" ..
           nmake install
 
     - name: Build samples

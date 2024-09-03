@@ -21,14 +21,27 @@ typedef void* HMODULE;
 typedef HMODULE DLLHandler;
 typedef void* WebFrameworkString;
 
+/**
+ * @brief Load WebFramework shared library
+ * @param pathToDLL Path to shared library
+ */
 void initializeWebFramework(const char* pathToDLL);
 
 HMODULE getInstance(const char* pathToDLL);
 
 void* findFunction(const char* name);
 
+/**
+ * @brief Free memory for any WebFramework object
+ * @param object WebFramework object
+ */
 void deleteWebFrameworkObject(void* object);
 
+/**
+ * @brief Get string from WebFrameworkString
+ * @param string WebFrameworkString
+ * @return String data
+ */
 const char* getDataFromString(WebFrameworkString string);
 
 size_t findLastChar(char* ptr, char c);
