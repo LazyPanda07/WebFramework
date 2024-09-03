@@ -120,13 +120,28 @@ jobs:
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
+    - name: Download executors
+      uses: actions/download-artifact@v4
+      with:
+        name: HelloExecutorWindows
+        path: HelloExecutor
+
+    - name: Move assets
+      shell: bash
+      run: |
+          mkdir -p API/web_framework_flutter_api/example/assets/configs
+          mkdir -p API/web_framework_flutter_api/example/assets/executors
+          mv HelloExecutor/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv HelloExecutor/executors/*.* API/web_framework_flutter_api/example/assets/executors
+
     - name: Build
       working-directory: API/web_framework_flutter_api/example
       shell: bash
-      run: |
-          mkdir -p assets/configs
-          mkdir assets/executors
-          flutter build windows --release
+      run: flutter build windows --release
+
+    - name: Move WebFramework
+      shell: bash
+      run: mv HelloExecutor/*.dll API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -151,15 +166,29 @@ jobs:
           sudo apt update
           sudo apt install -y clang ninja-build
         
+    - name: Download executors
+      uses: actions/download-artifact@v4
+      with:
+        name: HelloExecutorLinux
+        path: HelloExecutor
+
+    - name: Move assets
+      run: |
+          mkdir -p API/web_framework_flutter_api/example/assets/configs
+          mkdir -p API/web_framework_flutter_api/example/assets/executors
+          mv HelloExecutor/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv HelloExecutor/executors/*.* API/web_framework_flutter_api/example/assets/executors
+
     - name: Build
       working-directory: API/web_framework_flutter_api/example
       run: |
           export CC=/usr/bin/clang
           export CXX=/usr/bin/clang++
           git config --global --add safe.directory /opt/flutter
-          mkdir -p assets/configs
-          mkdir assets/executors
           flutter build linux --release
+
+    - name: Move WebFramework
+      run: mv HelloExecutor/*.so API/web_framework_flutter_api/example/build/linux/x64/release/bundle/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -179,12 +208,28 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Download executors
+      uses: actions/download-artifact@v4
+      with:
+        name: HelloExecutorAndroid
+        path: HelloExecutor
+
+    - name: Move assets
+      run: |
+          mkdir -p API/web_framework_flutter_api/example/assets/configs
+          mkdir -p API/web_framework_flutter_api/example/assets/executors
+          mv HelloExecutor/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv HelloExecutor/executors/*.* API/web_framework_flutter_api/example/assets/executors
+
+    - name: Move WebFramework
+      run: |
+          mkdir -p API/web_framework_flutter_api/example/assets/lib/arm64-v8a
+          mv HelloExecutor/*.so API/web_framework_flutter_api/example/assets/lib/arm64-v8a
+
     - name: Build
       working-directory: API/web_framework_flutter_api/example
       run: |
           git config --global --add safe.directory /opt/flutter
-          mkdir -p assets/configs
-          mkdir assets/executors
           flutter build apk --release
 
     - name: Upload artifacts

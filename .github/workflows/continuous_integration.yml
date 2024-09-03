@@ -93,69 +93,6 @@ jobs:
       with:
         name: ${{ matrix.configuration }}_Android
         path: build/WebFrameworkLibrary
-  
-        
-  windows-flutter-build:
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Install Flutter
-      uses: subosito/flutter-action@v2.16.0
-      with:
-        channel: stable
-        flutter-version: ${{ env.flutter-version }}
-
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-      
-    - name: Build
-      working-directory: API/web_framework_flutter_api/example
-      run: flutter build windows --release
-
-
-  linux-flutter-build:
-    runs-on: ubuntu-latest
-    container:
-      image: lazypanda07/ubuntu_cxx20:android
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-        
-    - name: Install Clang
-      run: |
-          sudo apt update
-          sudo apt install -y clang ninja-build
-        
-    - name: Build
-      working-directory: API/web_framework_flutter_api/example
-      run: |
-          export CC=/usr/bin/clang
-          export CXX=/usr/bin/clang++
-          git config --global --add safe.directory /opt/flutter
-          flutter build linux --release
-
-
-  android-flutter-build:
-    runs-on: ubuntu-latest
-    container:
-      image: lazypanda07/ubuntu_cxx20:android
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Build
-      working-directory: API/web_framework_flutter_api/example
-      run: |
-          git config --global --add safe.directory /opt/flutter
-          flutter build apk --release
 
 
   static-windows-tests:
