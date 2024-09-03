@@ -636,10 +636,7 @@ jobs:
       linux-python-tests,
       windows-cc-tests,
       linux-cc-tests,
-      android-build,
-      windows-flutter-build,
-      linux-flutter-build,
-      android-flutter-build
+      android-build
     ]
     runs-on: ubuntu-latest
 
