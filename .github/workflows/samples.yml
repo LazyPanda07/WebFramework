@@ -42,7 +42,9 @@ jobs:
         name: HelloExecutorWindows
         path: |
             samples/build/bin/*.dll
-            samples/build/bin/*.json
+            samples/build/bin/configs/*.json
+            samples/build/bin/executors/*.json
+            samples/build/bin/executors/*.dll
 
 
   linux-hello-executor:
