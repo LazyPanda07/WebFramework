@@ -75,7 +75,7 @@ inline void initializeWebFramework(const char* pathToDLL)
 	memcpy(directory, fullPath, directorySize);
 	memcpy(fileName, fullPath + index + 1, fileNameSize);
 
-	sprintf_s(realPath, MAX_PATH_SIZE, "%s/lib%s.so", directory, fileName);
+	sprintf(realPath, "%s/lib%s.so", directory, fileName);
 
 	free(directory);
 	free(fileName);
