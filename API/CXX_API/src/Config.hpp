@@ -81,6 +81,13 @@ namespace framework
 			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
 
 			/**
+			 * @brief Override config file directory
+			 * @param basePath New base path
+			 * @return Self
+			 */
+			Config& overrideBasePath(std::string_view basePath);
+
+			/**
 			 * @brief Get config file directory
 			 * @return 
 			 */
@@ -263,6 +270,21 @@ namespace framework
 			DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationIntegerArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
 
 			delete[] data;
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return *this;
+		}
+
+		inline Config& Config::overrideBasePath(std::string_view basePath)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(overrideBasePath, void, const char* basePath, void** exception);
+			void* exception = nullptr;
+
+			DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideBasePath, basePath.data(), &exception);
 
 			if (exception)
 			{

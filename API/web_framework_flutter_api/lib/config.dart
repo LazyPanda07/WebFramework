@@ -225,6 +225,8 @@ class Config {
   }
 
   /// Override config file directory
+  ///
+  /// [basePath] New base path
   void overrideBasePath(String basePath) {
     Pointer<Utf8> data = basePath.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();

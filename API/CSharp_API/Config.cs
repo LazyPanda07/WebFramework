@@ -32,6 +32,9 @@ public sealed unsafe partial class Config : IDisposable
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void overrideConfigurationIntegerArray(void* implementation, string key, [In] long[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
 
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void overrideBasePath(void* implementation, string basePath, ref void* exception);
+
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void* getConfiguration(void* implementation, ref void* exception);
 
@@ -192,6 +195,26 @@ public sealed unsafe partial class Config : IDisposable
 		{
 			overrideConfigurationIntegerArray(implementation, key, [.. value], recursive, value.Count, ref exception);
 		}
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return this;
+	}
+
+	/// <summary>
+	/// Override config file directory
+	/// </summary>
+	/// <param name="basePath">New base path</param>
+	/// <returns>Self</returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public Config OverrideBasePath(string basePath)
+	{
+		void* exception = null;
+
+		overrideBasePath(implementation, basePath, ref exception);
 
 		if (exception != null)
 		{

@@ -1,4 +1,5 @@
 import ctypes
+from sys import exception
 from typing import List
 
 from multipledispatch import dispatch
@@ -11,6 +12,7 @@ class Config:
     """
     Configuring WebFramework server
     """
+
     def __init__(self, implementation: ctypes.c_void_p):
         self.implementation = implementation
 
@@ -156,6 +158,24 @@ class Config:
                                                              self.implementation,
                                                              ctypes.c_char_p(key.encode()), ctypes.pointer(data),
                                                              recursive, ctypes.c_int64(len(value)),
+                                                             ctypes.byref(exception))
+
+        if exception:
+            raise WebFrameworkException(exception.value)
+
+        return self
+
+    def override_base_path(self, base_path: str) -> "Config":
+        """
+        Override config file directory
+        :param base_path: New base path
+        :return: self
+        """
+
+        exception = ctypes.c_void_p(0)
+
+        DLLHandler.get_instance().call_class_member_function("overrideBasePath", None, self.implementation,
+                                                             ctypes.c_char_p(base_path.encode()),
                                                              ctypes.byref(exception))
 
         if exception:

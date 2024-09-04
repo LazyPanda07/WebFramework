@@ -72,6 +72,14 @@ WebFrameworkException overrideConfigurationStringArray(Config implementation, co
 WebFrameworkException overrideConfigurationIntegerArray(Config implementation, const char* key, int64_t* value, bool recursive, int64_t size);
 
 /**
+ * @brief Override config file directory
+ * @param implementation Config
+ * @param basePath New base path
+ * @return NULL if no errors. Call getErrorMessage for getting error message
+ */
+WebFrameworkException overrideBasePath(Config implementation, const char* basePath);
+
+/**
  * @brief Get current config JSON string data
  * @param implementation Config
  * @param configuration Result string
@@ -168,6 +176,17 @@ inline WebFrameworkException overrideConfigurationIntegerArray(Config implementa
 	typedef void (*overrideConfigurationIntegerArray)(void* implementation, const char* key, int64_t* value, bool recursive, size_t size, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationIntegerArray, key, value, recursive, size, &exception);
+
+	return exception;
+}
+
+WebFrameworkException overrideBasePath(Config implementation, const char* basePath)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*overrideBasePath)(void* implementation, const char* basePath, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideBasePath, basePath, &exception);
 
 	return exception;
 }
