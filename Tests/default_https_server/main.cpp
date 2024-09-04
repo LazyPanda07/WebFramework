@@ -4,7 +4,7 @@ int main(int argc, char** argv) try
 {
 	framework::WebFramework server("default_https_server_config.json");
 
-	server.startServer(true);
+	server.start(true);
 
 	return 0;
 }
