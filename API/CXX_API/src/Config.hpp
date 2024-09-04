@@ -10,7 +10,7 @@ namespace framework
 	namespace utility
 	{
 		/**
-		 * @brief Configuring WebFramework server
+		 * @brief Config file representation
 		 */
 		class Config
 		{

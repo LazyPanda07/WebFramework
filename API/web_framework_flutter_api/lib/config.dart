@@ -39,7 +39,7 @@ typedef GetBasePath = Pointer<Void> Function(Pointer<Void> implementation, Point
 typedef GetConfiguration = Pointer<Void> Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 typedef GetRawConfiguration = Pointer<Utf8> Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 
-/// Configuring WebFramework server
+/// Config file representation
 class Config {
   final Pointer<Void> implementation;
   final DllHandler handler;

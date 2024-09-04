@@ -10,7 +10,7 @@ from web_framework_api.exceptions.WebFrameworkException import WebFrameworkExcep
 
 class Config:
     """
-    Configuring WebFramework server
+    Config file representation
     """
 
     def __init__(self, implementation: ctypes.c_void_p):

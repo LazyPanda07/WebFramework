@@ -25,6 +25,10 @@ namespace framework
 			Config() = default;
 
 		public:
+			/**
+			 * @brief 
+			 * @param configPath Path to *.json config file
+			 */
 			Config(const std::filesystem::path& configPath);
 
 			/**
@@ -70,6 +74,11 @@ namespace framework
 			 */
 			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
 
+			/**
+			 * @brief Override config file directory
+			 * @param basePath New base path
+			 * @return Self
+			 */
 			Config& overrideBasePath(const std::filesystem::path& basePath);
 
 			/**
@@ -78,8 +87,16 @@ namespace framework
 			 */
 			const std::filesystem::path& getBasePath() const;
 
+			/**
+			 * @brief Get current config JSON string data
+			 * @return 
+			 */
 			std::string getConfiguration() const;
 
+			/**
+			 * @brief Get raw config JSON string data
+			 * @return 
+			 */
 			std::string_view getRawConfiguration() const;
 
 			/**

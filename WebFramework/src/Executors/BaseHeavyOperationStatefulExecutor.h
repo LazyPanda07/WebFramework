@@ -19,6 +19,10 @@ namespace framework
 		/// @return executorType::heavyOperationStateful
 		virtual executorType getType() const final override;
 
+		/// <summary>
+		/// <para>Destroy and unload executor</para>
+		/// <para>Executors inherited from BaseStatelessExecutor no need this method</para>
+		/// </summary>
 		virtual void destroy() override;
 
 		virtual ~BaseHeavyOperationStatefulExecutor() = default;

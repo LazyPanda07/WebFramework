@@ -251,16 +251,6 @@ namespace framework
 
 	}
 
-	void WebFramework::startServer(bool wait, const function<void()>& onStartServer)
-	{
-		this->start(wait, onStartServer);
-	}
-
-	void WebFramework::stopServer(bool wait)
-	{
-		this->stop(wait);
-	}
-
 	void WebFramework::start(bool wait, const function<void()>& onStartServer)
 	{
 		server->start(wait, onStartServer);

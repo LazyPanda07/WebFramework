@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Framework.Exceptions;
 
 /// <summary>
-/// Configuring WebFramework server
+/// Config file representation
 /// </summary>
 public sealed unsafe partial class Config : IDisposable
 {

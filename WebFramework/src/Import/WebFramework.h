@@ -47,30 +47,15 @@ namespace framework
 		WebFramework(const std::filesystem::path& webFrameworkConfigPath);
 
 		/**
-		 * @deprecated
 		 * @brief Start server
-		 * @param wait
-		 * @param onStartServer
-		 */
-		void startServer(bool wait = false, const std::function<void()>& onStartServer = []() {});
-
-		/**
-		 * @deprecated
-		 * @brief Stop server
-		 * @param wait
-		 */
-		void stopServer(bool wait = true);
-
-		/**
-		 * @brief Start server
-		 * @param wait 
-		 * @param onStartServer 
+		 * @param wait Wait until server stop
+		 * @param onStartServer On start server callback
 		 */
 		void start(bool wait = false, const std::function<void()>& onStartServer = []() {});
 		
 		/**
 		 * @brief Stop server
-		 * @param wait 
+		 * @param wait Wait until server stop
 		 */
 		void stop(bool wait = true);
 

@@ -29,7 +29,6 @@ project(WebFramework)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
-	add_compile_options(-rdynamic)
 	add_compile_options(-fvisibility=hidden)
 	
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)
@@ -45,6 +44,8 @@ if (UNIX)
 	else()
 		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
+
+		add_compile_options(-rdynamic)
 
 		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	endif()

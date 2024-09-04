@@ -6,6 +6,9 @@ namespace framework
 {
 	namespace load_balancer
 	{
+		/**
+		 * @brief Determine which server use
+		 */
 		class WEB_FRAMEWORK_API BaseLoadBalancerHeuristic
 		{
 		private:
@@ -16,16 +19,38 @@ namespace framework
 		public:
 			BaseLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
 
+			/**
+			 * @brief Calculate load score(choose server with lowest score)
+			 * @return Load score
+			 */
 			virtual uint64_t operator ()() const = 0;
 
+			/**
+			 * @brief On start event
+			 */
 			virtual void onStart();
 
+			/**
+			 * @brief On end event
+			 */
 			virtual void onEnd();
 
+			/**
+			 * @brief Get server ip
+			 * @return 
+			 */
 			const std::string& getIp() const;
 
+			/**
+			 * @brief Get server port
+			 * @return 
+			 */
 			const std::string& getPort() const;
 
+			/**
+			 * @brief Is server using HTTPS
+			 * @return 
+			 */
 			bool getUseHTTPS() const;
 
 			virtual ~BaseLoadBalancerHeuristic() = default;
