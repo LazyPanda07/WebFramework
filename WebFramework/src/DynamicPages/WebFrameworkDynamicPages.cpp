@@ -126,7 +126,10 @@ namespace framework
 			}
 			catch (const exception& e)
 			{
-				Log::error("WebFrameworkDynamicPages execute exception: {}", "LogWebFrameworkDynamicPages", e.what());
+				if (Log::isValid())
+				{
+					Log::error("WebFrameworkDynamicPages execute exception: {}", "LogWebFrameworkDynamicPages", e.what());
+				}
 
 				throw;
 			}

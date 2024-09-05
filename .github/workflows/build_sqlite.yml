@@ -5,7 +5,7 @@ on: workflow_dispatch
 
   
 env:
-  SQLITE_TAG: version-3.45.2
+  SQLITE_TAG: version-3.46.1
 
 
 jobs:

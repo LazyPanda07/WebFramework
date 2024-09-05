@@ -204,19 +204,28 @@ namespace framework
 		}
 		catch (const exceptions::BaseExecutorException& e)
 		{
-			Log::error("Executor exception: {}", "LogExecutor", e.what());
+			if (Log::isValid())
+			{
+				Log::error("Executor exception: {}", "LogExecutor", e.what());
+			}
 
 			throw;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e)
 		{
-			Log::error("File request exception. {}", "LogExecutor", e.what());
+			if (Log::isValid())
+			{
+				Log::error("File request exception. {}", "LogExecutor", e.what());
+			}
 
 			throw;
 		}
 		catch (const out_of_range&)
 		{
-			Log::error("Out of range", "LogExecutor");
+			if (Log::isValid())
+			{
+				Log::error("Out of range", "LogExecutor");
+			}
 
 			throw;
 		}

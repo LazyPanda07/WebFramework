@@ -51,7 +51,10 @@ namespace framework
 		}
 		catch (const web::exceptions::SSLException& e)
 		{
-			Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+			if (Log::isValid())
+			{
+				Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+			}
 
 			return;
 		}
@@ -94,7 +97,10 @@ namespace framework
 			}
 			catch (const web::exceptions::WebException& e)
 			{
-				Log::error("Multithreaded serve exception: {}", "Multithreaded", e.what());
+				if (Log::isValid())
+				{
+					Log::error("Multithreaded serve exception: {}", "Multithreaded", e.what());
+				}
 
 				break;
 			}

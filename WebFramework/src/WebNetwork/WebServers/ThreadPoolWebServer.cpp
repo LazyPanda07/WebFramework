@@ -84,7 +84,10 @@ namespace framework
 						}
 						catch (const web::exceptions::WebException& e)
 						{
-							Log::error("Thread pool serve exception: {}", "ThreadPool", e.what());
+							if (Log::isValid())
+							{
+								Log::error("Thread pool serve exception: {}", "ThreadPool", e.what());
+							}
 
 							webExceptionAcquired = true;
 						}
@@ -134,7 +137,10 @@ namespace framework
 		}
 		catch (const web::exceptions::WebException& e)
 		{
-			Log::error("Serve exception: {}", "ThreadPool", e.what());
+			if (Log::isValid())
+			{
+				Log::error("Serve exception: {}", "ThreadPool", e.what());
+			}
 
 			return true;
 		}
@@ -258,7 +264,10 @@ namespace framework
 		}
 		catch (const web::exceptions::SSLException& e)
 		{
-			Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+			if (Log::isValid())
+			{
+				Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+			}
 		}
 
 		this->serveClients();

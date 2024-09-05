@@ -45,14 +45,20 @@ namespace framework
 				}
 				else
 				{
-					Log::error("Can't find source {}", "LogWebFrameworkSources", pathToSource);
+					if (Log::isValid())
+					{
+						Log::error("Can't find source {}", "LogWebFrameworkSources", pathToSource);
+					}
 
 					throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 				}
 
 				if (!result.back())
 				{
-					Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
+					if (Log::isValid())
+					{
+						Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
+					}
 
 					throw exceptions::CantLoadSourceException(pathToSource);
 				}
