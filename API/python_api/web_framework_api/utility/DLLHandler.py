@@ -1,11 +1,12 @@
 import ctypes
 import platform
+import sys
 import os
 
 from pathlib import Path
 
 
-def initialize_web_framework(path_to_dll: str):
+def initialize_web_framework(path_to_dll: str = ""):
     """
     Load WebFramework shared library
     :param path_to_dll: Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so)
@@ -13,6 +14,18 @@ def initialize_web_framework(path_to_dll: str):
     """
     if DLLHandler.instance is not None:
         return
+
+    if len(path_to_dll) == 0:
+        package_path = Path(__file__).parent.parent
+        binaries_path = os.path.join(
+            package_path,
+            "dll" if sys.platform == "win32" else "lib"
+        )
+        sdk_library_path = os.path.join(
+            binaries_path,
+            "WebFramework.dll" if sys.platform == "win32" else "libWebFramework.so"
+        )
+        path_to_dll = sdk_library_path
 
     path_to_dll = os.path.abspath(path_to_dll)
 
