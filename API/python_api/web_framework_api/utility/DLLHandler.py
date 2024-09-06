@@ -9,23 +9,18 @@ from pathlib import Path
 def initialize_web_framework(path_to_dll: str = ""):
     """
     Load WebFramework shared library
-    :param path_to_dll: Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so)
+    :param path_to_dll: Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so). By default, take path to WebFramework library from pip package
     :return:
     """
     if DLLHandler.instance is not None:
         return
 
     if len(path_to_dll) == 0:
-        package_path = Path(__file__).parent.parent
-        binaries_path = os.path.join(
-            package_path,
-            "dll" if sys.platform == "win32" else "lib"
+        path_to_dll = os.path.join(
+            Path(__file__).parent.parent,
+            "dll" if sys.platform == "win32" else "lib",
+            "WebFramework"
         )
-        sdk_library_path = os.path.join(
-            binaries_path,
-            "WebFramework.dll" if sys.platform == "win32" else "libWebFramework.so"
-        )
-        path_to_dll = sdk_library_path
 
     path_to_dll = os.path.abspath(path_to_dll)
 

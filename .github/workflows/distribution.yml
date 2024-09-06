@@ -37,10 +37,10 @@ jobs:
       run: |
           mkdir package
           mv ReleaseDLL_Linux/api/python_api/* package/
-          mkdir package/web_framework_api/dll
-          mkdir package/web_framework_api/lib
-          mv ReleaseDLL_Windows/dll/*.dll package/web_framework_api/dll/
-          mv ReleaseDLL_Linux/lib/*.so package/web_framework_api/lib/
+          mkdir package/dll
+          mkdir package/lib
+          mv ReleaseDLL_Windows/dll/*.dll package/dll/
+          mv ReleaseDLL_Linux/lib/*.so package/lib/
 
     - name: Build wheel
       working-directory: package
