@@ -2,7 +2,7 @@
 
 #ifdef WEB_FRAMEWORK_DLL
 
-#include <cstdint>
+#include <stdint.h>
 
 #ifdef __LINUX__
 #define EXPORT extern "C" __attribute__((visibility("default")))

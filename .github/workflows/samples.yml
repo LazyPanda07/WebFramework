@@ -6,8 +6,8 @@ on:
   
   
 env:
-  flutter-version: 3.24.1
-  android-api-version: 34
+  flutter-version: 3.24.2
+  android-api-version: 35
 
 
 jobs:

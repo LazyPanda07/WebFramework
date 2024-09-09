@@ -7,7 +7,7 @@ on:
 
 
 env:
-  android-api-version: 34
+  android-api-version: 35
 
 jobs:
   windows-build:
