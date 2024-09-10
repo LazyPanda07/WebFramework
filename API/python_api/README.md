@@ -16,7 +16,7 @@ Project structure:
 * main.py
 * config.json
 * web.json
-* hello.dll or libhello.so
+* hello_executor.dll or libhello_executor.so
 
 
 ### Settings
@@ -72,21 +72,21 @@ Project structure:
 
 ### main.py
 ```python
-from web_framework_api.WebFramework import WebFramework # Server
-from web_framework_api.utility.DLLHandler import initialize_web_framework # WebFramework initialization 
-from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException # Exception
+from web_framework_api.WebFramework import WebFramework  # Server
+from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization 
+from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
 
 if __name__ == '__main__':
-    try:
-        initialize_web_framework() # Load WebFramework shared library
-        
-        server = WebFramework.from_path("config.json") # Create server
-        
-        server.start(True) # Wait
-    except WebFrameworkException as exception:
-        print(exception)
-        
-        exit(-1)
+  try:
+    initialize_web_framework()  # Load WebFramework shared library
+
+    server = WebFramework.from_path("config.json")  # Create server
+
+    server.start(True)  # Wait
+  except WebFrameworkException as exception:
+    print(exception)
+
+    exit(-1)
 ```
 
 
