@@ -12,7 +12,7 @@ int main(int argc, char** argv) try
 
 	framework::WebFramework server(config); // Create server
 
-	server.start(true); // Wait
+	server.start(true); // Start server and wait
 
 	return 0;
 }

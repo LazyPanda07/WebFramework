@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
         server = WebFramework.from_config(config)  # Create server
 
-        server.start(True)  # Wait
+        server.start(True)  # Start server and wait
     except WebFrameworkException as exception:
         print(exception)
 

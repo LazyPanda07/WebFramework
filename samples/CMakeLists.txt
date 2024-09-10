@@ -3,12 +3,15 @@ cmake_minimum_required(VERSION 3.27.0)
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 option(PYTHON_SAMPLE "Build Python sample" ON)
 option(CXX_SAMPLE "Build C++ sample" ON)
+option(CC_SAMPLE "Build C sample" ON)
 
 project(samples)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 set(WEB_FRAMEWORK_SDK ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary)
-include(${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary/WebFramework.cmake)
+set(WEB_FRAMEWORK_DIRECTORY ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE STRING "")
+
+include(${WEB_FRAMEWORK_DIRECTORY}/WebFramework.cmake)
 
 add_subdirectory(hello_executor)
 
@@ -18,4 +21,8 @@ endif()
 
 if (${CXX_SAMPLE})
 	add_subdirectory(hello_cpp)
+endif()
+
+if (${CC_SAMPLE})
+	add_subdirectory(hello_c)
 endif()
