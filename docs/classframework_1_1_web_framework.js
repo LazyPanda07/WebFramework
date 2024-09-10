@@ -6,6 +6,6 @@ var classframework_1_1_web_framework =
     [ "getWebFrameworkVersion", "classframework_1_1_web_framework.html#a07eb7ad3aa5343af50cdcbb4929072af", null ],
     [ "isServerRunning", "classframework_1_1_web_framework.html#a8f05f2df041988db234fe29db01cf8f4", null ],
     [ "kick", "classframework_1_1_web_framework.html#a1769850b51af4ffc461d4ab4764392d1", null ],
-    [ "startServer", "classframework_1_1_web_framework.html#a3bbf15447e6bfd92443bdeacebf74c1a", null ],
-    [ "stopServer", "classframework_1_1_web_framework.html#a845222e098196847a27b1a25cd8243a7", null ]
+    [ "start", "classframework_1_1_web_framework.html#a6171835a68e37f47b2fbd588a9969744", null ],
+    [ "stop", "classframework_1_1_web_framework.html#a36f821acabcbf384c19390c6aead5866", null ]
 ];

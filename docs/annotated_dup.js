@@ -20,8 +20,8 @@ var annotated_dup =
         [ "IStaticFile", "classframework_1_1interfaces_1_1_i_static_file.html", "classframework_1_1interfaces_1_1_i_static_file" ]
       ] ],
       [ "load_balancer", null, [
-        [ "BaseLoadBalancerHeuristic", "classframework_1_1load__balancer_1_1_base_load_balancer_heuristic.html", null ],
-        [ "Connections", "classframework_1_1load__balancer_1_1_connections.html", null ],
+        [ "BaseLoadBalancerHeuristic", "classframework_1_1load__balancer_1_1_base_load_balancer_heuristic.html", "classframework_1_1load__balancer_1_1_base_load_balancer_heuristic" ],
+        [ "Connections", "classframework_1_1load__balancer_1_1_connections.html", "classframework_1_1load__balancer_1_1_connections" ],
         [ "LoadBalancerServer", "classframework_1_1load__balancer_1_1_load_balancer_server.html", null ]
       ] ],
       [ "proxy", null, [
