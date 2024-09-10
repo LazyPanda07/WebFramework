@@ -4,6 +4,7 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 option(PYTHON_SAMPLE "Build Python sample" ON)
 option(CXX_SAMPLE "Build C++ sample" ON)
 option(CC_SAMPLE "Build C sample" ON)
+option(CSHARP_SAMPLE "Build C# sample" ON)
 
 project(samples)
 
@@ -25,4 +26,8 @@ endif()
 
 if (${CC_SAMPLE})
 	add_subdirectory(hello_c)
+endif()
+
+if (${CSHARP_SAMPLE})
+	add_subdirectory(hello_csharp)
 endif()

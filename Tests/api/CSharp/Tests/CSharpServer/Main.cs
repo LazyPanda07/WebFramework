@@ -23,7 +23,7 @@ class Server
 		}
 		catch (Exception exception)
 		{
-			Console.WriteLine(exception);
+			Console.WriteLine(exception.Message);
 
 			return -1;
 		}
