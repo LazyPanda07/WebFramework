@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-project(hello)
+project(hello_executor)
 
 add_library(
 	${PROJECT_NAME} SHARED

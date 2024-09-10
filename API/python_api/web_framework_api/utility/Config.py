@@ -1,5 +1,4 @@
 import ctypes
-from sys import exception
 from typing import List
 
 from multipledispatch import dispatch

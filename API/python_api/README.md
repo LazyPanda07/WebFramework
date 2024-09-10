@@ -8,6 +8,7 @@ C++ HTTP/HTTPS server with Python API
 * [Executors](#executors)
   * [Hello executor](#hello-executor)
 
+
 ## Quick start
 Server needs few files to run. [Settings file](#settings) with routes and [executors](#executors). [Config file](#config) with server settings.  
 For quick start project also you will need [executor](#hello-executor) shared library.  
@@ -16,6 +17,7 @@ Project structure:
 * config.json
 * web.json
 * hello.dll or libhello.so
+
 
 ### Settings
 ```web.json```
@@ -43,7 +45,7 @@ Project structure:
       "web.json"
     ],
     "loadSources": [
-      "hello"
+      "hello_executor"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",
@@ -85,7 +87,6 @@ if __name__ == '__main__':
         print(exception)
         
         exit(-1)
-
 ```
 
 
@@ -97,6 +98,7 @@ You will see response from server
   "message": "Hello, World!"
 }
 ```
+
 
 ## Executors
 Executors are C++ classes that responsible for giving responses for their route(url).  
@@ -137,6 +139,7 @@ namespace executors
 }
 ```
 More information you can find in [wiki](https://github.com/LazyPanda07/WebFramework/wiki/Executors).
+
 
 ### Hello executor
 * Links

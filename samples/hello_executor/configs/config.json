@@ -9,7 +9,7 @@
       "web.json"
     ],
     "loadSources": [
-      "hello"
+      "hello_executor"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",
