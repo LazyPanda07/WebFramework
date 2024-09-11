@@ -10,11 +10,11 @@ namespace hello_csharp
 		{
 			try
 			{
-				Config config = new("configs/config.json"); // Load config.json
+				using Config config = new("configs/config.json"); // Load config.json
 
 				config.OverrideBasePath("executors"); // Override base path for loading executors
 
-				WebFramework server = new(config); // Create server
+				using WebFramework server = new(config); // Create server
 
 				server.Start(true); // Start server and wait
 			}

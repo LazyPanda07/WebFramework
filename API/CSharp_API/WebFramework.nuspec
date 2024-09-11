@@ -10,12 +10,12 @@
     <projectUrl>http://github.com/LazyPanda07/WebFramework</projectUrl>
 
     <license type="expression">MIT</license>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
 
     <releaseNotes>Release C# WebFramework API</releaseNotes>
     <description>WebFramework</description>
     <copyright>Copyright ©2024 LazyPanda07</copyright>
 
-    <tags>web</tags>
+    <tags>web;server;framework</tags>
   </metadata>
 </package>

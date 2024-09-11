@@ -1,9 +1,9 @@
-C++ HTTP/HTTPS server with Python API
+C++ HTTP/HTTPS server with C# API
 
 * [Quick start](#quick-start)
   * [Settings](#settings)
   * [Config](#config)
-  * [main.py](#mainpy)
+  * [Main.cs](#maincs)
   * [Run sample](#run-sample)
 * [Executors](#executors)
   * [Hello executor](#hello-executor)
@@ -12,11 +12,7 @@ C++ HTTP/HTTPS server with Python API
 ## Quick start
 Server needs few files to run. [Settings file](#settings) with routes and [executors](#executors). [Config file](#config) with server settings.  
 For quick start project also you will need [executor](#hello-executor) shared library.  
-Project structure:
-* main.py
-* config.json
-* web.json
-* hello_executor.dll or libhello_executor.so
+config.json, web.json, hello_executor.dll or libhello_executor.so files must be in the same directory as executable
 
 
 ### Settings
@@ -70,23 +66,39 @@ Project structure:
 ```
 
 
-### main.py
-```python
-from web_framework_api.WebFramework import WebFramework  # Server
-from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization 
-from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
+### Main.cs
+```cs
+using Framework;
+using Framework.Exceptions;
+using Framework.Utility;
 
-if __name__ == '__main__':
-  try:
-    initialize_web_framework()  # Load WebFramework shared library
+namespace hello_csharp
+{
+	internal class Program
+	{
+		static void Main(string[] args)
+		{
+			try
+			{
+				using WebFramework server = new("config.json"); // Create server
 
-    server = WebFramework.from_path("config.json")  # Create server
+				server.Start(true); // Start server and wait
+			}
+			catch (WebFrameworkException e)
+			{
+				Console.WriteLine(e.Message);
 
-    server.start(True)  # Start server and wait
-  except WebFrameworkException as exception:
-    print(exception)
+				Environment.Exit(-1);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
 
-    exit(-1)
+				Environment.Exit(-2);
+			}
+		}
+	}
+}
 ```
 
 
