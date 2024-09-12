@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:ffi';
+import 'dart:isolate';
 
 import 'package:ffi/ffi.dart';
 import 'package:web_framework_flutter_api/dll_handler.dart';
@@ -12,10 +14,10 @@ typedef CreateWebFrameworkFromConfig = Pointer<Void> Function(Pointer<Void> conf
 typedef CreateWebFrameworkFromString = Pointer<Void> Function(
     Pointer<Utf8> serverConfiguration, Pointer<Utf8> applicationDirectory, Pointer<Pointer<Void>> exception);
 typedef CreateWebFrameworkFromPath = Pointer<Void> Function(Pointer<Utf8> configPath, Pointer<Pointer<Void>> exception);
-typedef StartWebFrameworkServerC = Void Function(Pointer<Void> implementation, Bool wait,
-    Pointer<NativeFunction<OnStartServerC>> callback, Pointer<Pointer<Void>> exception);
-typedef StartWebFrameworkServerDart = void Function(Pointer<Void> implementation, bool wait,
-    Pointer<NativeFunction<OnStartServerC>> callback, Pointer<Pointer<Void>> exception);
+typedef StartWebFrameworkServerC = Void Function(
+    Pointer<Void> implementation, Bool wait, Pointer<NativeFunction<OnStartServerC>> callback, Pointer<Pointer<Void>> exception);
+typedef StartWebFrameworkServerDart = void Function(
+    Pointer<Void> implementation, bool wait, Pointer<NativeFunction<OnStartServerC>> callback, Pointer<Pointer<Void>> exception);
 typedef StopWebFrameworkServerC = Void Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 typedef StopWebFrameworkServerDart = void Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 
@@ -36,8 +38,7 @@ class WebFramework {
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> data = configPath.toNativeUtf8();
-    CreateWebFrameworkFromPath function = handler.instance
-        .lookupFunction<CreateWebFrameworkFromPath, CreateWebFrameworkFromPath>("createWebFrameworkFromPath");
+    CreateWebFrameworkFromPath function = handler.instance.lookupFunction<CreateWebFrameworkFromPath, CreateWebFrameworkFromPath>("createWebFrameworkFromPath");
 
     Pointer<Void> implementation = function.call(data, exception);
 
@@ -61,8 +62,8 @@ class WebFramework {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> serverConfigurationData = serverConfiguration.toNativeUtf8();
     Pointer<Utf8> applicationDirectoryData = applicationDirectory.toNativeUtf8();
-    CreateWebFrameworkFromString function = handler.instance
-        .lookupFunction<CreateWebFrameworkFromString, CreateWebFrameworkFromString>("createWebFrameworkFromString");
+    CreateWebFrameworkFromString function =
+        handler.instance.lookupFunction<CreateWebFrameworkFromString, CreateWebFrameworkFromString>("createWebFrameworkFromString");
 
     Pointer<Void> implementation = function.call(serverConfigurationData, applicationDirectoryData, exception);
 
@@ -82,8 +83,8 @@ class WebFramework {
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    CreateWebFrameworkFromConfig function = handler.instance
-        .lookupFunction<CreateWebFrameworkFromConfig, CreateWebFrameworkFromConfig>("createWebFrameworkFromConfig");
+    CreateWebFrameworkFromConfig function =
+        handler.instance.lookupFunction<CreateWebFrameworkFromConfig, CreateWebFrameworkFromConfig>("createWebFrameworkFromConfig");
 
     Pointer<Void> implementation = function.call(config.implementation, exception);
 
@@ -96,13 +97,16 @@ class WebFramework {
   ///
   /// [wait] Wait until server stop
   Future<void> start({bool wait = false}) async {
-    Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
-    StartWebFrameworkServerDart function = _handler.instance
-        .lookupFunction<StartWebFrameworkServerC, StartWebFrameworkServerDart>("startWebFrameworkServer");
+    Isolate.spawn((Map data) {
+      Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
+      Pointer<Void> implementation = Pointer<Void>.fromAddress(data["implementation"] as int);
+      DynamicLibrary library = DynamicLibrary.open(data["libraryPath"] as String);
+      StartWebFrameworkServerDart function = library.lookupFunction<StartWebFrameworkServerC, StartWebFrameworkServerDart>("startWebFrameworkServer");
 
-    function.call(_implementation, wait, nullptr, exception);
+      function.call(implementation, true, nullptr, exception);
 
-    WebFrameworkException.checkException(exception, _handler);
+      // WebFrameworkException.checkException(exception, _handler);
+    }, {"implementation": _implementation.address, "libraryPath": _handler.libraryPath});
   }
 
   /// Stop server
@@ -111,8 +115,7 @@ class WebFramework {
   Future<void> stop({bool wait = false}) async {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    StopWebFrameworkServerDart function =
-        _handler.instance.lookupFunction<StopWebFrameworkServerC, StopWebFrameworkServerDart>("stopWebFrameworkServer");
+    StopWebFrameworkServerDart function = _handler.instance.lookupFunction<StopWebFrameworkServerC, StopWebFrameworkServerDart>("stopWebFrameworkServer");
 
     function.call(_implementation, exception);
 

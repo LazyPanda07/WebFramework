@@ -42,7 +42,7 @@ namespace framework
 			currentConfiguration(serverConfiguration),
 			basePath(filesystem::absolute(applicationDirectory))
 		{
-			
+
 		}
 
 		Config& Config::overrideConfiguration(string_view key, const json::utility::jsonObject::variantType& value, bool recursive)
@@ -62,7 +62,7 @@ namespace framework
 			return this->overrideConfigurationArray(key, value, recursive);
 		}
 
-		Config& Config::overrideBasePath(const std::filesystem::path& basePath)
+		Config& Config::overrideBasePath(const filesystem::path& basePath)
 		{
 			if (!filesystem::exists(basePath))
 			{
@@ -72,6 +72,21 @@ namespace framework
 			this->basePath = basePath;
 
 			return *this;
+		}
+
+		const string& Config::getConfigurationString(string_view key, bool recursive) const
+		{
+			return currentConfiguration.getString(key, recursive);
+		}
+
+		int64_t Config::getConfigurationInteger(string_view key, bool recursive) const
+		{
+			return currentConfiguration.getInt(key, recursive);
+		}
+
+		bool Config::getConfigurationBoolean(string_view key, bool recursive) const
+		{
+			return currentConfiguration.getBool(key, recursive);
 		}
 
 		const filesystem::path& Config::getBasePath() const

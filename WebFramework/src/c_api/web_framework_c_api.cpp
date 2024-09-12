@@ -132,6 +132,18 @@ void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception
 	}
 }
 
+bool isServerRunning(WebFramework server, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::WebFramework*>(server)->isServerRunning();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
 void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception)
 {
 	try
@@ -208,6 +220,48 @@ void overrideConfigurationIntegerArray(Config config, const char* key, const int
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+}
+
+String getConfigurationString(Config config, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return new std::string(static_cast<framework::utility::Config*>(config)->getConfigurationString(key, recursive));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+int64_t getConfigurationInteger(Config config, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::utility::Config*>(config)->getConfigurationInteger(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return -1;
+}
+
+bool getConfigurationBoolean(Config config, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::utility::Config*>(config)->getConfigurationBoolean(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return false;
 }
 
 void overrideBasePath(Config config, const char* basePath, Exception* exception)

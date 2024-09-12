@@ -39,6 +39,8 @@ EXPORT void startWebFrameworkServer(WebFramework server, bool wait, void (*onSta
 
 EXPORT void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception);
 
+EXPORT bool isServerRunning(WebFramework server, Exception* exception);
+
 EXPORT void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception);
 
 EXPORT void overrideConfigurationInteger(Config config, const char* key, int64_t value, bool recursive, Exception* exception);
@@ -50,6 +52,12 @@ EXPORT void overrideConfigurationStringArray(Config config, const char* key, con
 EXPORT void overrideConfigurationIntegerArray(Config config, const char* key, const int64_t* value, bool recursive, int64_t size, Exception* exception);
 
 EXPORT void overrideBasePath(Config config, const char* basePath, Exception* exception);
+
+EXPORT String getConfigurationString(Config config, const char* key, bool recursive, Exception* exception);
+
+EXPORT int64_t getConfigurationInteger(Config config, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool getConfigurationBoolean(Config config, const char* key, bool recursive, Exception* exception);
 
 EXPORT void* getConfiguration(Config config, Exception* exception);
 

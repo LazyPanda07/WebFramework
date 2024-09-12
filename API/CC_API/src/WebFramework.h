@@ -48,6 +48,14 @@ WebFrameworkException startWebFrameworkServer(WebFramework implementation, bool 
  */
 WebFrameworkException stopWebFrameworkServer(WebFramework implementation, bool wait);
 
+/**
+ * @brief Is server running
+ * @param implementation WebFramework
+ * @param isServerRunning Result
+ * @return NULL if no errors. Call getErrorMessage for getting error message
+ */
+WebFrameworkException isServerRunning(WebFramework implementation, bool* result);
+
 inline WebFrameworkException createWebFrameworkFromPath(const char* configPath, WebFramework* server)
 {
     WebFrameworkException exception = NULL;
@@ -99,6 +107,17 @@ inline WebFrameworkException stopWebFrameworkServer(WebFramework implementation,
     typedef void (*stopWebFrameworkServer)(void* implementation, bool wait, void** exception);
 
     CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(stopWebFrameworkServer, wait, &exception);
+
+    return exception;
+}
+
+inline WebFrameworkException isServerRunning(WebFramework implementation, bool* result)
+{
+    WebFrameworkException* exception = NULL;
+
+    typedef bool (*isServerRunning)(void* implementation, void** exception);
+
+    *result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isServerRunning, &exception);
 
     return exception;
 }

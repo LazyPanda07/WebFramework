@@ -1,4 +1,5 @@
 import ctypes
+from sys import exception
 from typing import List
 
 from multipledispatch import dispatch
@@ -52,7 +53,7 @@ class Config:
         return cls(implementation)
 
     @dispatch(str, str, bool)
-    def override_configuration(self, key: str, value: str, recursive: bool = False) -> "Config":
+    def override_configuration(self, key: str, value: str, recursive: bool = True) -> "Config":
         """
         Override string
         :param key: JSON key
@@ -73,7 +74,7 @@ class Config:
         return self
 
     @dispatch(str, int, bool)
-    def override_configuration(self, key: str, value: int, recursive: bool = False) -> "Config":
+    def override_configuration(self, key: str, value: int, recursive: bool = True) -> "Config":
         """
         Override integer
         :param key: JSON key
@@ -93,7 +94,7 @@ class Config:
         return self
 
     @dispatch(str, bool, bool)
-    def override_configuration(self, key: str, value: bool, recursive: bool = False) -> "Config":
+    def override_configuration(self, key: str, value: bool, recursive: bool = True) -> "Config":
         """
         Override bool
         :param key: JSON key
@@ -112,7 +113,7 @@ class Config:
 
         return self
 
-    def override_configuration_string_array(self, key: str, value: List[str], recursive: bool = False) -> "Config":
+    def override_configuration_string_array(self, key: str, value: List[str], recursive: bool = True) -> "Config":
         """
         Override string array
         :param key: JSON key
@@ -138,7 +139,7 @@ class Config:
 
         return self
 
-    def override_configuration_integer_array(self, key: str, value: List[int], recursive: bool = False) -> "Config":
+    def override_configuration_integer_array(self, key: str, value: List[int], recursive: bool = True) -> "Config":
         """
         Override integer array
         :param key: JSON key
@@ -181,6 +182,75 @@ class Config:
             raise WebFrameworkException(exception.value)
 
         return self
+
+    def get_configuration_string(self, key: str, recursive: bool = True) -> str:
+        """
+        Get string from config
+        :param key: Config key
+        :param recursive: Search recursively
+        :return: Config string value
+        """
+
+        exception = ctypes.c_void_p(0)
+
+        handler = DLLHandler.get_instance()
+        string_implementation = handler.call_class_member_function("getConfigurationString",
+                                                                   ctypes.c_void_p,
+                                                                   self.implementation,
+                                                                   ctypes.c_char_p(key.encode()),
+                                                                   recursive, ctypes.byref(exception))
+
+        if exception:
+            raise WebFrameworkException(exception.value)
+
+        result_ptr = handler.call_function("getDataFromString", ctypes.c_char_p,
+                                           ctypes.c_uint64(string_implementation))
+
+        result = str(result_ptr.decode())
+
+        handler.free(string_implementation)
+
+        return result
+
+    def get_configuration_integer(self, key: str, recursive: bool = True) -> int:
+        """
+        Get integer from config
+        :param key: Config key
+        :param recursive: Search recursively
+        :return: Config integer value
+        """
+
+        exception = ctypes.c_void_p(0)
+
+        result = DLLHandler.get_instance().call_class_member_function("getConfigurationInteger",
+                                                                      ctypes.c_int64,
+                                                                      self.implementation,
+                                                                      ctypes.c_char_p(key.encode()),
+                                                                      recursive, ctypes.byref(exception))
+        if exception:
+            raise WebFrameworkException(exception.value)
+
+        return result
+
+    def get_configuration_boolean(self, key: str, recursive: bool = True) -> bool:
+        """
+        Get boolean from config
+        :param key: Config key
+        :param recursive: Search recursively
+        :return: Config boolean value
+        """
+
+        exception = ctypes.c_void_p(0)
+
+        result = DLLHandler.get_instance().call_class_member_function("getConfigurationBoolean",
+                                                                      ctypes.c_bool,
+                                                                      self.implementation,
+                                                                      ctypes.c_char_p(key.encode()),
+                                                                      recursive, ctypes.byref(exception))
+        if exception:
+            raise WebFrameworkException(exception.value)
+
+        return result
 
     def get_configuration(self) -> str:
         """

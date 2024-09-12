@@ -80,6 +80,36 @@ WebFrameworkException overrideConfigurationIntegerArray(Config implementation, c
 WebFrameworkException overrideBasePath(Config implementation, const char* basePath);
 
 /**
+ * @brief Get string from config
+ * @param implementation Config
+ * @param key Config key
+ * @param recursive Search recursively
+ * @param result Config string value
+ * @return NULL if no errors. Call getErrorMessage for getting error message
+ */
+WebFrameworkException getConfigurationString(Config implementation, const char* key, bool recursive, WebFrameworkString* result);
+
+/**
+ * @brief Get integer from config
+ * @param implementation Config
+ * @param key Config key
+ * @param recursive Search recursively
+ * @param result Config integer value
+ * @return NULL if no errors. Call getErrorMessage for getting error message
+ */
+WebFrameworkException getConfigurationInteger(Config implementation, const char* key, bool recursive, int64_t* result);
+
+/**
+ * @brief Get boolean from config
+ * @param implementation Config
+ * @param key Config key
+ * @param recursive Search recursively
+ * @param result Config boolean value
+ * @return NULL if no errors. Call getErrorMessage for getting error message
+ */
+WebFrameworkException getConfigurationBoolean(Config implementation, const char* key, bool recursive, bool* result);
+
+/**
  * @brief Get current config JSON string data
  * @param implementation Config
  * @param configuration Result string
@@ -89,8 +119,8 @@ WebFrameworkException getConfiguration(Config implementation, WebFrameworkString
 
 /**
  * @brief Get raw config JSON string data
- * @param implementation 
- * @param rawConfiguration 
+ * @param implementation
+ * @param rawConfiguration
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
 WebFrameworkException getRawConfiguration(Config implementation, const char** rawConfiguration);
@@ -180,7 +210,7 @@ inline WebFrameworkException overrideConfigurationIntegerArray(Config implementa
 	return exception;
 }
 
-WebFrameworkException overrideBasePath(Config implementation, const char* basePath)
+inline WebFrameworkException overrideBasePath(Config implementation, const char* basePath)
 {
 	WebFrameworkException exception = NULL;
 
@@ -191,7 +221,40 @@ WebFrameworkException overrideBasePath(Config implementation, const char* basePa
 	return exception;
 }
 
-WebFrameworkException getConfiguration(Config implementation, WebFrameworkString* configuration)
+inline WebFrameworkException getConfigurationString(Config implementation, const char* key, bool recursive, WebFrameworkString* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void* (*getConfigurationString)(void* implementation, const char* key, bool recursive, WebFrameworkException* exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationString, key, recursive, exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getConfigurationInteger(Config implementation, const char* key, bool recursive, int64_t* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef int64_t(*getConfigurationInteger)(void* implementation, const char* key, bool recursive, WebFrameworkException* exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationInteger, key, recursive, exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getConfigurationBoolean(Config implementation, const char* key, bool recursive, bool* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef bool(*getConfigurationBoolean)(void* implementation, const char* key, bool recursive, WebFrameworkException* exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationBoolean, key, recursive, exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getConfiguration(Config implementation, WebFrameworkString* configuration)
 {
 	WebFrameworkException exception = NULL;
 
@@ -202,7 +265,7 @@ WebFrameworkException getConfiguration(Config implementation, WebFrameworkString
 	return exception;
 }
 
-WebFrameworkException getRawConfiguration(Config implementation, const char** rawConfiguration)
+inline WebFrameworkException getRawConfiguration(Config implementation, const char** rawConfiguration)
 {
 	WebFrameworkException exception = NULL;
 
@@ -213,7 +276,7 @@ WebFrameworkException getRawConfiguration(Config implementation, const char** ra
 	return exception;
 }
 
-WebFrameworkException getBasePath(Config implementation, WebFrameworkString* basePath)
+inline WebFrameworkException getBasePath(Config implementation, WebFrameworkString* basePath)
 {
 	WebFrameworkException exception = NULL;
 

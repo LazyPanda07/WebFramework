@@ -1,5 +1,6 @@
 ﻿namespace Framework.Utility;
 
+using System;
 using System.Runtime.InteropServices;
 
 using Framework.Exceptions;
@@ -34,6 +35,16 @@ public sealed unsafe partial class Config : IDisposable
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void overrideBasePath(void* implementation, string basePath, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void* getConfigurationString(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial long getConfigurationInteger(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static unsafe partial bool getConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void* getConfiguration(void* implementation, ref void* exception);
@@ -99,7 +110,7 @@ public sealed unsafe partial class Config : IDisposable
 	/// <param name="recursive">Recursive search for key</param>
 	/// <returns>Self</returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public Config OverrideConfiguration(string key, string value, bool recursive = false)
+	public Config OverrideConfiguration(string key, string value, bool recursive = true)
 	{
 		void* exception = null;
 
@@ -121,7 +132,7 @@ public sealed unsafe partial class Config : IDisposable
 	/// <param name="recursive">Recursive search for key</param>
 	/// <returns>Self</returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public Config OverrideConfiguration(string key, long value, bool recursive = false)
+	public Config OverrideConfiguration(string key, long value, bool recursive = true)
 	{
 		void* exception = null;
 
@@ -143,7 +154,7 @@ public sealed unsafe partial class Config : IDisposable
 	/// <param name="recursive">Recursive search for key</param>
 	/// <returns>Self</returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public Config OverrideConfiguration(string key, bool value, bool recursive = false)
+	public Config OverrideConfiguration(string key, bool value, bool recursive = true)
 	{
 		void* exception = null;
 
@@ -165,7 +176,7 @@ public sealed unsafe partial class Config : IDisposable
 	/// <param name="recursive">Recursive search for key</param>
 	/// <returns>Self</returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public Config OverrideConfiguration(string key, List<string> value, bool recursive = false)
+	public Config OverrideConfiguration(string key, List<string> value, bool recursive = true)
 	{
 		void* exception = null;
 
@@ -187,7 +198,7 @@ public sealed unsafe partial class Config : IDisposable
 	/// <param name="recursive">Recursive search for key</param>
 	/// <returns>Self</returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public Config OverrideConfiguration(string key, List<long> value, bool recursive = false)
+	public Config OverrideConfiguration(string key, List<long> value, bool recursive = true)
 	{
 		void* exception = null;
 
@@ -222,6 +233,73 @@ public sealed unsafe partial class Config : IDisposable
 		}
 
 		return this;
+	}
+
+	/// <summary>
+	/// Get string from config
+	/// </summary>
+	/// <param name="key">Config key</param>
+	/// <param name="recursive">Search recursively</param>
+	/// <returns>Config string value</returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public string GetConfigurationString(string key, bool recursive = true)
+	{
+		void* exception = null;
+
+		void* stringPointer = getConfigurationString(implementation, key, recursive, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
+
+		deleteWebFrameworkObject(stringPointer);
+
+		return result;
+	}
+
+	/// <summary>
+	/// Get integer from config
+	/// </summary>
+	/// <param name="key">Config key</param>
+	/// <param name="recursive">Search recursively</param>
+	/// <returns>Config integer value</returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public long GetConfigurationInteger(string key, bool recursive = true)
+	{
+		void* exception = null;
+
+		long result = getConfigurationInteger(implementation, key, recursive, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return result;
+	}
+
+	/// <summary>
+	/// Get boolean from config
+	/// </summary>
+	/// <param name="key">Config key</param>
+	/// <param name="recursive">Search recursively</param>
+	/// <returns>Config boolean value</returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public bool GetConfigurationBoolean(string key, bool recursive = true)
+	{
+		void* exception = null;
+
+		bool result = getConfigurationBoolean(implementation, key, recursive, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return result;
 	}
 
 	/// <summary>

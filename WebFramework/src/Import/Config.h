@@ -54,7 +54,7 @@ namespace framework
 			 * @param recursive Search recursively
 			 * @return 
 			 */
-			Config& overrideConfiguration(std::string_view key, const json::utility::jsonObject::variantType& value, bool recursive = false);
+			Config& overrideConfiguration(std::string_view key, const json::utility::jsonObject::variantType& value, bool recursive = true);
 
 			/**
 			 * @brief Override specific config value
@@ -63,7 +63,7 @@ namespace framework
 			 * @param recursive Search recursively
 			 * @return
 			 */
-			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
+			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = true);
 
 			/**
 			 * @brief Override specific config value
@@ -72,7 +72,7 @@ namespace framework
 			 * @param recursive Search recursively
 			 * @return
 			 */
-			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
+			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = true);
 
 			/**
 			 * @brief Override config file directory
@@ -80,6 +80,30 @@ namespace framework
 			 * @return Self
 			 */
 			Config& overrideBasePath(const std::filesystem::path& basePath);
+
+			/**
+			 * @brief Get string from config
+			 * @param key Config key
+			 * @param recursive Search recursively
+			 * @return Config string value
+			 */
+			const std::string& getConfigurationString(std::string_view key, bool recursive = true) const;
+
+			/**
+			 * @brief Get integer from config
+			 * @param key Config key
+			 * @param recursive Search recursively
+			 * @return Config integer value
+			 */
+			int64_t getConfigurationInteger(std::string_view key, bool recursive = true) const;
+
+			/**
+			 * @brief Get boolean from config
+			 * @param key Config key
+			 * @param recursive Search recursively
+			 * @return Config boolean value
+			 */
+			bool getConfigurationBoolean(std::string_view key, bool recursive = true) const;
 
 			/**
 			 * @brief Config file directory

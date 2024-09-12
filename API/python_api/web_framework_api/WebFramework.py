@@ -11,6 +11,7 @@ class WebFramework:
     """
     Web server
     """
+
     def __init__(self, implementation: ctypes.c_void_p):
         self.__implementation = implementation
         self.__function_signature = ctypes.CFUNCTYPE(None)
@@ -111,6 +112,22 @@ class WebFramework:
 
         if exception:
             raise WebFrameworkException(exception.value)
+
+    def is_server_running(self) -> bool:
+        """
+        Is server running
+        :return:
+        """
+
+        exception = ctypes.c_void_p(0)
+        result = DLLHandler.get_instance().call_class_member_function("isServerRunning", ctypes.c_bool,
+                                                                      self.__implementation,
+                                                                      ctypes.byref(exception))
+
+        if exception:
+            raise WebFrameworkException(exception.value)
+
+        return result
 
     def __del__(self):
         DLLHandler.get_instance().free(self.__implementation)

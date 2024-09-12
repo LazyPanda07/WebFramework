@@ -3,54 +3,51 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter/services.dart';
 import 'package:web_framework_flutter_api/config.dart';
 import 'package:web_framework_flutter_api/web_framework.dart';
 import 'package:web_framework_flutter_api/web_framework_exception.dart';
 import 'package:web_framework_flutter_api/web_framework_utilities.dart';
 
-void main() async {
+Future<void> main() async {
   if (Platform.isAndroid) {
     await unpackAndroidAssets();
   }
 
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class App extends StatefulWidget {
+  const App({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<App> createState() => _AppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  String _message = "";
+class _AppState extends State<App> {
+  String _message = "Server is not running";
+  WebFramework? _server;
+  bool _isRunning = false;
 
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
+  Future<void> start() async {
     try {
       Config config = await Config.fromPath("configs/config.json");
 
       config.overrideBasePath("${config.handler.assetsPath}/executors");
 
-      WebFramework server = await WebFramework.fromConfig(config);
+      _server = await WebFramework.fromConfig(config);
+
+      await _server!.start();
 
       setState(() {
+        _isRunning = true;
+
         _message = "Server is running";
       });
-
-      await server.start(wait: true);
     } on WebFrameworkException catch (e) {
       _message = e.toString();
 
       e.dispose();
-    } on PlatformException catch (e) {
+    } on Exception catch (e) {
       _message = e.toString();
     }
 
@@ -62,16 +59,54 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
 
+  Future<void> stop() async {
+    try {
+      if (_server == null) {
+        return;
+      }
+
+      await _server!.stop(wait: true);
+
+      setState(() {
+        _isRunning = false;
+
+        _message = "Server is not running";
+      });
+    } on WebFrameworkException catch (e) {
+      _message = e.toString();
+    } on Exception catch (e) {
+      _message = e.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text("Plugin example app"),
         ),
-        body: Center(
-          child: Text(_message),
-        ),
+        body: Column(children: [
+          Center(
+            child: Text(_message),
+          ),
+          if (_isRunning)
+            Center(
+                child: TextButton(
+                    onPressed: () async => stop(),
+                    style: const ButtonStyle(
+                      foregroundColor: WidgetStatePropertyAll(Colors.blue),
+                    ),
+                    child: const Text("Stop server")))
+          else
+            Center(
+                child: TextButton(
+                    onPressed: () async => start(),
+                    style: const ButtonStyle(
+                      foregroundColor: WidgetStatePropertyAll(Colors.blue),
+                    ),
+                    child: const Text("Start server")))
+        ]),
       ),
     );
   }

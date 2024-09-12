@@ -20,13 +20,13 @@ namespace framework
 
 		public:
 			/**
-			 * @brief 
+			 * @brief
 			 * @param configPath Path to *.json config file
 			 */
 			Config(const std::filesystem::path& configPath);
 
 			/**
-			 * @brief 
+			 * @brief
 			 * @param serverConfiguration *.json config file content
 			 * @param applicationDirectory Working directory
 			 */
@@ -42,7 +42,7 @@ namespace framework
 
 			/**
 			 * @brief Override string
-			 * @tparam T 
+			 * @tparam T
 			 * @param key JSON key
 			 * @param value New string value
 			 * @param recursive Recursive search for key
@@ -53,7 +53,7 @@ namespace framework
 
 			/**
 			 * @brief Override integer
-			 * @tparam T 
+			 * @tparam T
 			 * @param key JSON key
 			 * @param value New integer value
 			 * @param recursive Recursive search for key
@@ -88,20 +88,44 @@ namespace framework
 			Config& overrideBasePath(std::string_view basePath);
 
 			/**
+			 * @brief Get string from config
+			 * @param key Config key
+			 * @param recursive Search recursively
+			 * @return Config string value
+			 */
+			std::string getConfigurationString(std::string_view key, bool recursive = true) const;
+
+			/**
+			 * @brief Get integer from config
+			 * @param key Config key
+			 * @param recursive Search recursively
+			 * @return Config integer value
+			 */
+			int64_t getConfigurationInteger(std::string_view key, bool recursive = true) const;
+
+			/**
+			 * @brief Get boolean from config
+			 * @param key Config key
+			 * @param recursive Search recursively
+			 * @return Config boolean value
+			 */
+			bool getConfigurationBoolean(std::string_view key, bool recursive = true) const;
+
+			/**
 			 * @brief Get config file directory
-			 * @return 
+			 * @return
 			 */
 			std::string getBasePath() const;
 
 			/**
 			 * @brief Get current config JSON string data
-			 * @return 
+			 * @return
 			 */
 			std::string getConfiguration() const;
 
 			/**
 			 * @brief Get raw config JSON string data
-			 * @return 
+			 * @return
 			 */
 			std::string_view getRawConfiguration() const;
 
@@ -248,7 +272,7 @@ namespace framework
 
 		inline Config& Config::overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationIntegerArray, void, const char* key, const int64_t* value, bool recursive, int64_t size, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationIntegerArray, void, const char* key, const int64_t * value, bool recursive, int64_t size, void** exception);
 			void* exception = nullptr;
 
 			int64_t* data = new int64_t[value.size()];
@@ -292,6 +316,57 @@ namespace framework
 			}
 
 			return *this;
+		}
+
+		inline std::string Config::getConfigurationString(std::string_view key, bool recursive) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationString, void*, const char* key, bool recursive, void** exception);
+			using getDataFromString = const char* (*)(void* implementation);
+			void* exception = nullptr;
+			DLLHandler& handler = DLLHandler::getInstance();
+			
+			void* stringPtr = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationString, key.data(), recursive, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			std::string result(handler.CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, stringPtr));
+
+			handler.free(stringPtr);
+
+			return result;
+		}
+
+		inline int64_t Config::getConfigurationInteger(std::string_view key, bool recursive) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationInteger, int64_t, const char* key, bool recursive, void** exception);
+			void* exception = nullptr;
+
+			int64_t result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationInteger, key.data(), recursive, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		inline bool Config::getConfigurationBoolean(std::string_view key, bool recursive) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationBoolean, bool, const char* key, bool recursive, void** exception);
+			void* exception = nullptr;
+
+			bool result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationBoolean, key.data(), recursive, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
 		}
 
 		inline std::string Config::getBasePath() const

@@ -60,6 +60,12 @@ namespace framework
 		 */
 		void stop(bool wait = true);
 
+		/**
+		 * @brief Is server running
+		 * @return 
+		 */
+		bool isServerRunning() const;
+
 		~WebFramework();
 	};
 }
@@ -153,6 +159,21 @@ namespace framework
 		{
 			throw exceptions::WebFrameworkException(exception);
 		}
+	}
+
+	inline bool WebFramework::isServerRunning() const
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(isServerRunning, bool, void** exception);
+		void* exception = nullptr;
+
+		bool result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isServerRunning, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return result;
 	}
 
 	inline WebFramework::~WebFramework()

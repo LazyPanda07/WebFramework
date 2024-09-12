@@ -9,9 +9,10 @@ typedef GetDataFromString = Pointer<Utf8> Function(Pointer<Void> implementation)
 
 class DllHandler {
   final DynamicLibrary _library;
+  final String _libraryPath;
   final String _assetsPath;
 
-  DllHandler._constructor(this._library, this._assetsPath);
+  DllHandler._constructor(this._library, this._libraryPath, this._assetsPath);
 
   static Future<DllHandler> create() async {
     String? libraryPath = await WebFrameworkFlutterApiPlatform.instance.getLibraryPath();
@@ -25,10 +26,12 @@ class DllHandler {
       throw Exception("Can't get assets path");
     }
 
-    return DllHandler._constructor(DynamicLibrary.open(libraryPath), assetsPath);
+    return DllHandler._constructor(DynamicLibrary.open(libraryPath), libraryPath, assetsPath);
   }
 
   DynamicLibrary get instance => _library;
+
+  String get libraryPath => _libraryPath;
 
   String get assetsPath => _assetsPath;
 
