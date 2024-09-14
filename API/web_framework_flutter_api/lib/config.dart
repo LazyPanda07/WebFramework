@@ -1,43 +1,11 @@
 import 'dart:ffi';
 
 import 'package:web_framework_flutter_api/web_framework_exception.dart';
+import 'package:web_framework_flutter_api/web_framework_signatures.dart';
 
 import 'dll_handler.dart';
 
 import 'package:ffi/ffi.dart';
-
-typedef CreateConfigFromPath = Pointer<Void> Function(Pointer<Utf8> configPath, Pointer<Pointer<Void>> exception);
-typedef CreateConfigFromString = Pointer<Void> Function(
-    Pointer<Utf8> serverConfiguration, Pointer<Utf8> applicationDirectory, Pointer<Pointer<Void>> exception);
-
-typedef OverrideConfigurationStringC = Void Function(Pointer<Void> implementation, Pointer<Utf8> key,
-    Pointer<Utf8> value, Bool recursive, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationStringDart = void Function(Pointer<Void> implementation, Pointer<Utf8> key,
-    Pointer<Utf8> value, bool recursive, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationIntegerC = Void Function(
-    Pointer<Void> implementation, Pointer<Utf8> key, Int64 value, Bool recursive, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationIntegerDart = void Function(
-    Pointer<Void> implementation, Pointer<Utf8> key, int value, bool recursive, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationBooleanC = Void Function(
-    Pointer<Void> implementation, Pointer<Utf8> key, Bool value, Bool recursive, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationBooleanDart = void Function(
-    Pointer<Void> implementation, Pointer<Utf8> key, bool value, bool recursive, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationStringArrayC = Void Function(Pointer<Void> implementation, Pointer<Utf8> key,
-    Pointer<Pointer<Utf8>> value, Bool recursive, Int64 size, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationStringArrayDart = void Function(Pointer<Void> implementation, Pointer<Utf8> key,
-    Pointer<Pointer<Utf8>> value, bool recursive, int size, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationIntegerArrayC = Void Function(Pointer<Void> implementation, Pointer<Utf8> key,
-    Pointer<Int64> value, Bool recursive, Int64 size, Pointer<Pointer<Void>> exception);
-typedef OverrideConfigurationIntegerArrayDart = void Function(Pointer<Void> implementation, Pointer<Utf8> key,
-    Pointer<Int64> value, bool recursive, int size, Pointer<Pointer<Void>> exception);
-typedef OverrideBasePathC = Void Function(
-    Pointer<Void> implementation, Pointer<Utf8> basePath, Pointer<Pointer<Void>> exception);
-typedef OverrideBasePathDart = void Function(
-    Pointer<Void> implementation, Pointer<Utf8> basePath, Pointer<Pointer<Void>> exception);
-
-typedef GetBasePath = Pointer<Void> Function(Pointer<Void> implementation, Pointer<Pointer<Void>>);
-typedef GetConfiguration = Pointer<Void> Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
-typedef GetRawConfiguration = Pointer<Utf8> Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 
 /// Config file representation
 class Config {
@@ -57,8 +25,7 @@ class Config {
     Pointer<Utf8> data = configPath.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    CreateConfigFromPath function =
-        handler.instance.lookupFunction<CreateConfigFromPath, CreateConfigFromPath>("createConfigFromPath");
+    CreateConfigFromPath function = handler.instance.lookupFunction<CreateConfigFromPath, CreateConfigFromPath>("createConfigFromPath");
 
     Pointer<Void> implementation = function.call(data, exception);
 
@@ -83,8 +50,7 @@ class Config {
     Pointer<Utf8> applicationDirectoryData = applicationDirectory.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    CreateConfigFromString function =
-        handler.instance.lookupFunction<CreateConfigFromString, CreateConfigFromString>("createConfigFromString");
+    CreateConfigFromString function = handler.instance.lookupFunction<CreateConfigFromString, CreateConfigFromString>("createConfigFromString");
 
     Pointer<Void> implementation = function.call(serverConfigurationData, applicationDirectoryData, exception);
 
@@ -103,13 +69,13 @@ class Config {
   /// [value] New string value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationString(String key, String value, {bool recursive = false}) {
+  void overrideConfigurationString(String key, String value, {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
     Pointer<Utf8> valueData = value.toNativeUtf8();
 
-    OverrideConfigurationStringDart function = handler.instance
-        .lookupFunction<OverrideConfigurationStringC, OverrideConfigurationStringDart>("overrideConfigurationString");
+    OverrideConfigurationStringDart function =
+        handler.instance.lookupFunction<OverrideConfigurationStringC, OverrideConfigurationStringDart>("overrideConfigurationString");
 
     function.call(implementation, keyData, valueData, recursive, exception);
 
@@ -126,13 +92,12 @@ class Config {
   /// [value] New integer value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationInteger(String key, int value, {bool recursive = false}) {
+  void overrideConfigurationInteger(String key, int value, {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
 
-    OverrideConfigurationIntegerDart function = handler.instance
-        .lookupFunction<OverrideConfigurationIntegerC, OverrideConfigurationIntegerDart>(
-            "overrideConfigurationInteger");
+    OverrideConfigurationIntegerDart function =
+        handler.instance.lookupFunction<OverrideConfigurationIntegerC, OverrideConfigurationIntegerDart>("overrideConfigurationInteger");
 
     function.call(implementation, keyData, value, recursive, exception);
 
@@ -148,13 +113,12 @@ class Config {
   /// [value] New bool value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationBoolean(String key, bool value, {bool recursive = false}) {
+  void overrideConfigurationBoolean(String key, bool value, {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
 
-    OverrideConfigurationBooleanDart function = handler.instance
-        .lookupFunction<OverrideConfigurationBooleanC, OverrideConfigurationBooleanDart>(
-            "overrideConfigurationBoolean");
+    OverrideConfigurationBooleanDart function =
+        handler.instance.lookupFunction<OverrideConfigurationBooleanC, OverrideConfigurationBooleanDart>("overrideConfigurationBoolean");
 
     function.call(implementation, keyData, value, recursive, exception);
 
@@ -170,7 +134,7 @@ class Config {
   /// [value] New string array value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationStringArray(String key, List<String> value, {bool recursive = false}) {
+  void overrideConfigurationStringArray(String key, List<String> value, {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
     Pointer<Pointer<Utf8>> valueData = malloc.allocate(sizeOf<Pointer<Utf8>>() * value.length);
@@ -179,9 +143,8 @@ class Config {
       valueData[i] = value[i].toNativeUtf8();
     }
 
-    OverrideConfigurationStringArrayDart function = handler.instance
-        .lookupFunction<OverrideConfigurationStringArrayC, OverrideConfigurationStringArrayDart>(
-            "overrideConfigurationStringArray");
+    OverrideConfigurationStringArrayDart function =
+        handler.instance.lookupFunction<OverrideConfigurationStringArrayC, OverrideConfigurationStringArrayDart>("overrideConfigurationStringArray");
 
     function(implementation, keyData, valueData, recursive, value.length, exception);
 
@@ -203,7 +166,7 @@ class Config {
   /// [value] New integer array value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationIntegerArray(String key, List<int> value, {bool recursive = false}) {
+  void overrideConfigurationIntegerArray(String key, List<int> value, {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
     Pointer<Int64> valueData = malloc.allocate(sizeOf<Int64>() * value.length);
@@ -212,9 +175,8 @@ class Config {
       valueData[i] = value[i];
     }
 
-    OverrideConfigurationIntegerArrayDart function = handler.instance
-        .lookupFunction<OverrideConfigurationIntegerArrayC, OverrideConfigurationIntegerArrayDart>(
-            "overrideConfigurationIntegerArray");
+    OverrideConfigurationIntegerArrayDart function =
+        handler.instance.lookupFunction<OverrideConfigurationIntegerArrayC, OverrideConfigurationIntegerArrayDart>("overrideConfigurationIntegerArray");
 
     function(implementation, keyData, valueData, recursive, value.length, exception);
 
@@ -231,14 +193,77 @@ class Config {
     Pointer<Utf8> data = basePath.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    OverrideBasePathDart function =
-        handler.instance.lookupFunction<OverrideBasePathC, OverrideBasePathDart>("overrideBasePath");
+    OverrideBasePathDart function = handler.instance.lookupFunction<OverrideBasePathC, OverrideBasePathDart>("overrideBasePath");
 
     function.call(implementation, data, exception);
 
     malloc.free(data);
 
     WebFrameworkException.checkException(exception, handler);
+  }
+
+  /// Get string from config
+  ///
+  /// [key] Config key
+  ///
+  /// [recursive] Search recursively
+  String getConfigurationString(String key, {bool recursive = true}) {
+    Pointer<Utf8> data = key.toNativeUtf8();
+    Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
+
+    GetConfigurationStringDart function = handler.instance.lookupFunction<GetConfigurationStringC, GetConfigurationStringDart>("getConfigurationString");
+
+    Pointer<Void> temp = function.call(implementation, data, recursive, exception);
+
+    malloc.free(data);
+
+    WebFrameworkException.checkException(exception, handler);
+
+    String result = handler.getDataFromString(temp);
+
+    handler.deleteWebFrameworkObject(temp);
+
+    return result;
+  }
+
+  /// Get integer from config
+  ///
+  /// [key] Config key
+  ///
+  /// [recursive] Search recursively
+  int getConfigurationInteger(String key, {bool recursive = true}) {
+    Pointer<Utf8> data = key.toNativeUtf8();
+    Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
+
+    GetConfigurationIntegerDart function = handler.instance.lookupFunction<GetConfigurationIntegerC, GetConfigurationIntegerDart>("getConfigurationInteger");
+
+    int result = function.call(implementation, data, recursive, exception);
+
+    malloc.free(data);
+
+    WebFrameworkException.checkException(exception, handler);
+
+    return result;
+  }
+
+  /// Get boolean from config
+  ///
+  /// [key] Config key
+  ///
+  /// [recursive] Search recursively
+  bool getConfigurationBoolean(String key, {bool recursive = true}) {
+    Pointer<Utf8> data = key.toNativeUtf8();
+    Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
+
+    GetConfigurationBooleanDart function = handler.instance.lookupFunction<GetConfigurationBooleanC, GetConfigurationBooleanDart>("getConfigurationBoolean");
+
+    bool result = function.call(implementation, data, recursive, exception);
+
+    malloc.free(data);
+
+    WebFrameworkException.checkException(exception, handler);
+
+    return result;
   }
 
   /// Get current config JSON string data
@@ -259,8 +284,7 @@ class Config {
 
   /// Get raw config JSON string data
   String getRawConfiguration() {
-    GetRawConfiguration function =
-        handler.instance.lookupFunction<GetRawConfiguration, GetRawConfiguration>("getRawConfiguration");
+    GetRawConfiguration function = handler.instance.lookupFunction<GetRawConfiguration, GetRawConfiguration>("getRawConfiguration");
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> result = function.call(implementation, exception);

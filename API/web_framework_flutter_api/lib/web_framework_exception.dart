@@ -1,10 +1,9 @@
 import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
+import 'package:web_framework_flutter_api/web_framework_signatures.dart';
 
 import 'dll_handler.dart';
-
-typedef GetErrorMessage = Pointer<Utf8> Function(Pointer<Void> implementation);
 
 /// Exception class for WebFramework exceptions
 class WebFrameworkException implements Exception {

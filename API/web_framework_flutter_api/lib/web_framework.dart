@@ -5,26 +5,18 @@ import 'dart:isolate';
 import 'package:ffi/ffi.dart';
 import 'package:web_framework_flutter_api/dll_handler.dart';
 import 'package:web_framework_flutter_api/web_framework_exception.dart';
+import 'package:web_framework_flutter_api/web_framework_signatures.dart';
 
 import 'config.dart';
-
-typedef OnStartServerC = Void Function();
-typedef OnStartServerDart = void Function();
-typedef CreateWebFrameworkFromConfig = Pointer<Void> Function(Pointer<Void> config, Pointer<Pointer<Void>> exception);
-typedef CreateWebFrameworkFromString = Pointer<Void> Function(
-    Pointer<Utf8> serverConfiguration, Pointer<Utf8> applicationDirectory, Pointer<Pointer<Void>> exception);
-typedef CreateWebFrameworkFromPath = Pointer<Void> Function(Pointer<Utf8> configPath, Pointer<Pointer<Void>> exception);
-typedef StartWebFrameworkServerC = Void Function(
-    Pointer<Void> implementation, Bool wait, Pointer<NativeFunction<OnStartServerC>> callback, Pointer<Pointer<Void>> exception);
-typedef StartWebFrameworkServerDart = void Function(
-    Pointer<Void> implementation, bool wait, Pointer<NativeFunction<OnStartServerC>> callback, Pointer<Pointer<Void>> exception);
-typedef StopWebFrameworkServerC = Void Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
-typedef StopWebFrameworkServerDart = void Function(Pointer<Void> implementation, Pointer<Pointer<Void>> exception);
 
 /// Web server
 class WebFramework {
   final Pointer<Void> _implementation;
   final DllHandler _handler;
+  Isolate? _startIsolate;
+  Isolate? _stopIsolate;
+  final ReceivePort _startPort = ReceivePort();
+  final ReceivePort _stopPort = ReceivePort();
 
   WebFramework._constructor(this._implementation, this._handler);
 
@@ -94,32 +86,92 @@ class WebFramework {
   }
 
   /// Start server
-  ///
-  /// [wait] Wait until server stop
   Future<void> start({bool wait = false}) async {
-    Isolate.spawn((Map data) {
-      Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
+    if (_startIsolate != null || _stopIsolate != null) {
+      return;
+    }
+
+    _startIsolate = await Isolate.spawn((Map data) {
       Pointer<Void> implementation = Pointer<Void>.fromAddress(data["implementation"] as int);
       DynamicLibrary library = DynamicLibrary.open(data["libraryPath"] as String);
+      SendPort port = data["port"] as SendPort;
+
+      Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
       StartWebFrameworkServerDart function = library.lookupFunction<StartWebFrameworkServerC, StartWebFrameworkServerDart>("startWebFrameworkServer");
 
       function.call(implementation, true, nullptr, exception);
 
-      // WebFrameworkException.checkException(exception, _handler);
-    }, {"implementation": _implementation.address, "libraryPath": _handler.libraryPath});
+      port.send(exception.address);
+    }, {"implementation": _implementation.address, "libraryPath": _handler.libraryPath, "port": _startPort.sendPort});
+
+    if (wait) {
+      Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(await _startPort.first as int);
+
+      _startIsolate?.kill(priority: Isolate.immediate);
+      _startIsolate = null;
+
+      WebFrameworkException.checkException(exception, _handler);
+    } else {
+      _startPort.first.then((address) {
+        Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(address as int);
+
+        _startIsolate?.kill(priority: Isolate.immediate);
+        _startIsolate = null;
+
+        WebFrameworkException.checkException(exception, _handler);
+      });
+    }
   }
 
   /// Stop server
-  ///
-  /// [wait] Wait until server stop
-  Future<void> stop({bool wait = false}) async {
+  Future<void> stop({bool wait = true}) async {
+    if (_startIsolate == null || _stopIsolate != null) {
+      return;
+    }
+
+    _stopIsolate = await Isolate.spawn((Map data) {
+      Pointer<Void> implementation = Pointer<Void>.fromAddress(data["implementation"] as int);
+      SendPort port = data["port"] as SendPort;
+      DynamicLibrary library = DynamicLibrary.open(data["libraryPath"] as String);
+
+      Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
+      StopWebFrameworkServerDart function = library.lookupFunction<StopWebFrameworkServerC, StopWebFrameworkServerDart>("stopWebFrameworkServer");
+
+      function.call(implementation, true, exception);
+
+      port.send(exception.address);
+    }, {"implementation": _implementation.address, "libraryPath": _handler.libraryPath, "port": _stopPort.sendPort});
+
+    if (wait) {
+      Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(await _stopPort.first as int);
+
+      _stopIsolate?.kill(priority: Isolate.immediate);
+      _stopIsolate = null;
+
+      WebFrameworkException.checkException(exception, _handler);
+    } else {
+      _stopPort.first.then((address) {
+        Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(address as int);
+
+        _stopIsolate?.kill(priority: Isolate.immediate);
+        _stopIsolate = null;
+
+        WebFrameworkException.checkException(exception, _handler);
+      });
+    }
+  }
+
+  /// Is server running
+  bool isServerRunning() {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    StopWebFrameworkServerDart function = _handler.instance.lookupFunction<StopWebFrameworkServerC, StopWebFrameworkServerDart>("stopWebFrameworkServer");
+    IsServerRunningDart function = _handler.instance.lookupFunction<IsServerRunningC, IsServerRunningDart>("isServerRunning");
 
-    function.call(_implementation, exception);
+    bool result = function.call(_implementation, exception);
 
     WebFrameworkException.checkException(exception, _handler);
+
+    return result;
   }
 
   void dispose() {

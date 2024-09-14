@@ -93,18 +93,14 @@ class _AppState extends State<App> {
           if (_isRunning)
             Center(
                 child: TextButton(
-                    onPressed: () async => stop(),
-                    style: const ButtonStyle(
-                      foregroundColor: WidgetStatePropertyAll(Colors.blue),
-                    ),
+                    onPressed: stop,
+                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.blue), foregroundColor: WidgetStatePropertyAll(Colors.white)),
                     child: const Text("Stop server")))
           else
             Center(
                 child: TextButton(
-                    onPressed: () async => start(),
-                    style: const ButtonStyle(
-                      foregroundColor: WidgetStatePropertyAll(Colors.blue),
-                    ),
+                    onPressed: start,
+                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.blue), foregroundColor: WidgetStatePropertyAll(Colors.white)),
                     child: const Text("Start server")))
         ]),
       ),
