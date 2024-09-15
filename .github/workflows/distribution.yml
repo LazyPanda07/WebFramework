@@ -117,6 +117,7 @@ jobs:
     - name: Create deb package
       run: |
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          chmod 0755 deb_packages/web-framework/DEBIAN/postinst
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           mv ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mv ReleaseDLL_Linux/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
@@ -125,10 +126,11 @@ jobs:
     
     - name: Create deb dev package
       run: |
-          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framwework/lib
+          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
+          chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
           mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           mv ReleaseDLL_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mv ReleaseDLL_Linux/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
@@ -143,6 +145,8 @@ jobs:
       run: |
           mkdir -p web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mkdir -p web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
+          chmod 0755 deb_packages/web-framework-static-dev/DEBIAN/postinst
+          mv deb_packages/web-framework-static-dev/DEBIAN web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           mv ReleaseDLL_Linux/lib/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mv ReleaseDLL_Linux/include/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           mv ReleaseDLL_Linux/WebFramework.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
