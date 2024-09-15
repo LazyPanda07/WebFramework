@@ -3,6 +3,9 @@ from web_framework_api.utility.Config import Config  # Config file
 from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization
 from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
 
+def on_start():
+   print("Server is running")
+
 if __name__ == '__main__':
     try:
         initialize_web_framework("WebFramework")  # Load WebFramework shared library
@@ -13,7 +16,7 @@ if __name__ == '__main__':
 
         server = WebFramework.from_config(config)  # Create server
 
-        server.start(True)  # Start server and wait
+        server.start(True, on_start)  # Start server and wait
     except WebFrameworkException as exception:
         print(exception)
 

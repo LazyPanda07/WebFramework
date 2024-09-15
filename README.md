@@ -3,7 +3,7 @@
 * Supports easy scalability
 * Allows parallel development(each member can develop single isolated module)
 * Server functionality development available on ```C++ in Windows and Linux```
-* Server running API available on [C++ Windows and Linux](https://github.com/LazyPanda07/WebFramework/wiki/API#c), [C Windows and Linux](https://github.com/LazyPanda07/WebFramework/wiki/API#c-1), [Python](https://github.com/LazyPanda07/WebFramework/wiki/API#python), [C# .NET 8.0](https://github.com/LazyPanda07/WebFramework/wiki/API#c-net-80), [Flutter(beta) Windows, Linux, Android](https://github.com/LazyPanda07/WebFramework/wiki/API#flutter-windows-linux-android)
+* Server running API available on [C++ Windows and Linux](https://github.com/LazyPanda07/WebFramework/wiki/API#c), [C Windows and Linux](https://github.com/LazyPanda07/WebFramework/wiki/API#c-1), [Python](https://github.com/LazyPanda07/WebFramework/wiki/API#python), [C# .NET 8.0](https://github.com/LazyPanda07/WebFramework/wiki/API#c-net-80), [Flutter (Windows, Android)](https://github.com/LazyPanda07/WebFramework/wiki/API#flutter-windows-android)
 
 ## Getting Started Build
 Start by cloning the repository
@@ -11,7 +11,7 @@ Start by cloning the repository
 git clone https://github.com/LazyPanda07/WebFramework.git WebFrameworkLibrary --recursive
 ```
 
-## Requirements
+## Build requirements
 * CMake >= 3.27.0
 * Compiler with C++20 support(MSVC, GCC, Clang)
 ### Windows
@@ -41,10 +41,13 @@ cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "NMake Makefiles" .. && n
 ***NMake doesn't support multithreaded builds***
 * ```WebFramework``` will be installed in ```WebFrameworkLibrary``` directory in project directory
 
-### Use as project in Visual Studio
+### Samples
+[Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 8.0, Python
+
+### Use as project in Visual Studio(deprecated)
 Run ```WebFrameworkBuilder.exe``` and choose your .sln file and .vcxproj file. This program modify your files (added dependencies, link with WebFrameworkLibrary).
 
-#### WebFrameworkBuilder
+#### WebFrameworkBuilder(deprecated)
 Link to [WebFrameworkBuilder](https://github.com/LazyPanda07/WebFrameworkBuilder)
 
 ## Linux

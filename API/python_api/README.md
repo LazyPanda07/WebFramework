@@ -1,22 +1,45 @@
 C++ HTTP/HTTPS server with Python API
 
+
 * [Quick start](#quick-start)
+  * [main.py](#mainpy)
   * [Settings](#settings)
   * [Config](#config)
-  * [main.py](#mainpy)
   * [Run sample](#run-sample)
 * [Executors](#executors)
-  * [Hello executor](#hello-executor)
 
 
 ## Quick start
-Server needs few files to run. [Settings file](#settings) with routes and [executors](#executors). [Config file](#config) with server settings.  
-For quick start project also you will need [executor](#hello-executor) shared library.  
-Project structure:
-* main.py
-* config.json
-* web.json
-* hello_executor.dll or libhello_executor.so
+Server needs few files to run: 
+* [web.json](#settings) with routes
+* [Executors](#executors)
+	* [Windows](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/windows.zip)
+	* [Linux](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/linux.zip)
+* [config.json](#config) with server settings  
+All these files must be in the same directory as ```main.py```
+
+
+### main.py
+```python
+from web_framework_api.WebFramework import WebFramework  # Server
+from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization 
+from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
+
+def on_start():
+  print("Server is running")
+
+if __name__ == '__main__':
+  try:
+    initialize_web_framework()  # Load WebFramework shared library
+
+    server = WebFramework.from_path("config.json")  # Create server
+
+    server.start(True, on_start)  # Start server and wait
+  except WebFrameworkException as exception:
+    print(exception)
+
+    exit(-1)
+```
 
 
 ### Settings
@@ -67,26 +90,6 @@ Project structure:
     "threadCount": 0
   }
 }
-```
-
-
-### main.py
-```python
-from web_framework_api.WebFramework import WebFramework  # Server
-from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization 
-from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
-
-if __name__ == '__main__':
-  try:
-    initialize_web_framework()  # Load WebFramework shared library
-
-    server = WebFramework.from_path("config.json")  # Create server
-
-    server.start(True)  # Start server and wait
-  except WebFrameworkException as exception:
-    print(exception)
-
-    exit(-1)
 ```
 
 

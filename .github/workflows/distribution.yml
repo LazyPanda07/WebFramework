@@ -2,8 +2,9 @@ name: Distribution
 
 
 on:
-  release:
   workflow_dispatch:
+  release:
+    types: [published]
 
 
 env:

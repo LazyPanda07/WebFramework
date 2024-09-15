@@ -11,13 +11,22 @@
 	```cmd
 	mkdir build
 	cd build
-	cmake -DWEB_FRAMEWORK_DIRECTORY=path to directory with WebFramework.cmake file -G "NMake Makefiles" ..
+	cmake -DWEB_FRAMEWORK_SDK=<path to WebFramework directory> -DWEB_FRAMEWORK_DIRECTORY=<path to directory with WebFramework.cmake file> -G "NMake Makefiles" ..
 	nmake install
 	```
 	* Linux
 	```bash
 	mkdir build
 	cd build
-	cmake -DWEB_FRAMEWORK_DIRECTORY=path to directory with WebFramework.cmake ..
+	cmake -DWEB_FRAMEWORK_SDK=<path to WebFramework directory> -DWEB_FRAMEWORK_DIRECTORY=<path to directory with WebFramework.cmake file> ..
 	make install -j $(nproc)
 	```
+---
+**NOTE**
+
+By default all samples will be builded. If you want to build specific sample you need to disable all other samples.
+* -DPYTHON_SAMPLE=ON (by default)
+* -DCXX_SAMPLE=ON (by default)
+* -DCC_SAMPLE=ON (by default)
+* -DCSHARP_SAMPLE=ON (by default)
+---

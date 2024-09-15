@@ -1,6 +1,5 @@
 ﻿using Framework;
 using Framework.Exceptions;
-using Framework.Utility;
 
 namespace hello_csharp
 {
@@ -16,7 +15,7 @@ namespace hello_csharp
 
 				using WebFramework server = new(config); // Create server
 
-				server.Start(true); // Start server and wait
+				server.Start(true, () => Console.WriteLine("Server is running")); // Start server and wait
 			}
 			catch (WebFrameworkException e)
 			{

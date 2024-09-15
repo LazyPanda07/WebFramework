@@ -1,18 +1,57 @@
 C++ HTTP/HTTPS server with C# API
 
+
 * [Quick start](#quick-start)
+  * [Main.cs](#maincs)
   * [Settings](#settings)
   * [Config](#config)
-  * [Main.cs](#maincs)
   * [Run sample](#run-sample)
 * [Executors](#executors)
-  * [Hello executor](#hello-executor)
 
 
 ## Quick start
-Server needs few files to run. [Settings file](#settings) with routes and [executors](#executors). [Config file](#config) with server settings.  
-For quick start project also you will need [executor](#hello-executor) shared library.  
-config.json, web.json, hello_executor.dll or libhello_executor.so files must be in the same directory as executable
+Server needs few files to run: 
+* [web.json](#settings) with routes
+* [Executors](#executors)
+	* [Windows](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/windows.zip)
+	* [Linux](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/linux.zip)
+* [config.json](#config) with server settings  
+All these files must be in the same directory as executable
+
+
+### Main.cs
+```cs
+using Framework;
+using Framework.Exceptions;
+
+namespace hello_csharp
+{
+	internal class Program
+	{
+		static void Main(string[] args)
+		{
+			try
+			{
+				using WebFramework server = new("config.json"); // Create server
+
+				server.Start(true, () => Console.WriteLine()); // Start server and wait
+			}
+			catch (WebFrameworkException e)
+			{
+				Console.WriteLine(e.Message);
+
+				Environment.Exit(-1);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+
+				Environment.Exit(-2);
+			}
+		}
+	}
+}
+```
 
 
 ### Settings
@@ -66,42 +105,6 @@ config.json, web.json, hello_executor.dll or libhello_executor.so files must be 
 ```
 
 
-### Main.cs
-```cs
-using Framework;
-using Framework.Exceptions;
-using Framework.Utility;
-
-namespace hello_csharp
-{
-	internal class Program
-	{
-		static void Main(string[] args)
-		{
-			try
-			{
-				using WebFramework server = new("config.json"); // Create server
-
-				server.Start(true); // Start server and wait
-			}
-			catch (WebFrameworkException e)
-			{
-				Console.WriteLine(e.Message);
-
-				Environment.Exit(-1);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-
-				Environment.Exit(-2);
-			}
-		}
-	}
-}
-```
-
-
 ### Run sample
 After running server open url [127.0.0.1:8080](http://127.0.0.1:8080).  
 You will see response from server
@@ -151,9 +154,3 @@ namespace executors
 }
 ```
 More information you can find in [wiki](https://github.com/LazyPanda07/WebFramework/wiki/Executors).
-
-
-### Hello executor
-* Links
-  * [Windows](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/windows.zip)
-  * [Linux](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/linux.zip)
