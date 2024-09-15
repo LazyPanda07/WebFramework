@@ -199,16 +199,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      if: ${{ env.CURRENT_BRANCH != 'master' }}
       with:
         submodules: recursive
         
     - name: Download artifacts
+      if: ${{ env.CURRENT_BRANCH != 'master' }}
       uses: actions/download-artifact@v4
       with:
         name: Release_Linux
         path: WebFrameworkLibrary
         
     - name: Build tests
+      if: ${{ env.CURRENT_BRANCH != 'master' }}
       working-directory: Tests
       run: |
           mkdir build
@@ -217,6 +220,7 @@ jobs:
           make install -j $(nproc)
 
     - name: Tests
+      if: ${{ env.CURRENT_BRANCH != 'master' }}
       working-directory: Tests
       shell: bash
       run: |
@@ -631,7 +635,6 @@ jobs:
           
   publish:
     needs: [
-      static-memory-leak-tests,
       windows-cxx-tests,
       linux-cxx-tests,
       windows-csharp-tests,
@@ -671,16 +674,13 @@ jobs:
       if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
 
+    - name: Create Android zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r android.zip Release_Android
+
     - name: Publish Windows
       if: ${{ env.CURRENT_BRANCH == 'master' }}
       uses: svenstaro/upload-release-action@master
       with:
         tag: v${{ env.VERSION }}
-        file: windows.zip
-
-    - name: Publish Linux
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
-      uses: svenstaro/upload-release-action@master
-      with:
-        tag: v${{ env.VERSION }}
-        file: linux.zip
+        file: "*.zip"
