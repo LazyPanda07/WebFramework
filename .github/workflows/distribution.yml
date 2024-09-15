@@ -44,7 +44,9 @@ jobs:
 
     - name: Build wheel
       working-directory: package
-      run: python3 -m build
+      run: |
+          python3 -m pip install build
+          python3 -m build
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
