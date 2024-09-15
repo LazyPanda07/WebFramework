@@ -683,4 +683,5 @@ jobs:
       uses: svenstaro/upload-release-action@master
       with:
         tag: v${{ env.VERSION }}
+        file_glob: true
         file: "*.zip"
