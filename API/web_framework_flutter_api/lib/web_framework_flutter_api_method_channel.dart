@@ -7,7 +7,7 @@ import 'web_framework_flutter_api_platform_interface.dart';
 class MethodChannelWebFrameworkFlutterApi extends WebFrameworkFlutterApiPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('web_framework_flutter_api');
+  final methodChannel = const MethodChannel("web_framework_flutter_api");
 
   @override
   Future<String?> getLibraryPath() async {
