@@ -94,6 +94,7 @@ jobs:
           mkdir arm64-v8a
           mv *.so arm64-v8a
           rm -rf *.a
+          rm -rf vendor
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

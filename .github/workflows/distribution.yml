@@ -160,3 +160,24 @@ jobs:
       with:
         name: deb-packages
         path: ${{ github.workspace }}/*.deb
+
+
+  flutter-package:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:android
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Dry run
+      working-directory: API/web_framework_flutter_api
+      run: dart pub publish --dry-run
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: flutter-package
+        path: API/web_framework_flutter_api
