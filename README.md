@@ -8,7 +8,7 @@
 ## Getting Started Build
 Start by cloning the repository
 ```console
-git clone https://github.com/LazyPanda07/WebFramework.git WebFrameworkLibrary --recursive
+git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 ```
 
 ## Build requirements
@@ -43,12 +43,6 @@ cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "NMake Makefiles" .. && n
 
 ### Samples
 [Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 8.0, Python
-
-### Use as project in Visual Studio(deprecated)
-Run ```WebFrameworkBuilder.exe``` and choose your .sln file and .vcxproj file. This program modify your files (added dependencies, link with WebFrameworkLibrary).
-
-#### WebFrameworkBuilder(deprecated)
-Link to [WebFrameworkBuilder](https://github.com/LazyPanda07/WebFrameworkBuilder)
 
 ## Linux
 ### Build
