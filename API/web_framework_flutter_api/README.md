@@ -238,7 +238,7 @@ class _AppState extends State<App> {
 
 
 ### Run sample 
-Build and run sample in Android Studio
+Build and run sample in Android Studio.  
 You will see response from server
 ```json
 {
