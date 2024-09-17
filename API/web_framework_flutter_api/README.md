@@ -18,9 +18,6 @@ Server needs few files to run:
     * [assets/executors/hello_executor.dll](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/windows.zip) (for Windows)
     * [assets/executors/libhello_executor.so](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/android.zip) (for Android)
 * [assets/configs/config.json](#config) with server settings  
-* Native libraries
-  * __assets/lib__ (for Windows *.dll from dll directory) 
-  * __assets/lib/arm64-v8a__ (for Android *.so from lib directory)
 
 
 ### main.dart

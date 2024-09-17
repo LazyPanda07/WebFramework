@@ -172,6 +172,28 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Get Windows latest release
+      uses: robinraju/release-downloader@v1.11
+      with:
+        repository: ${{ github.repository }}
+        latest: true
+        extract: true
+        fileName: windows.zip
+
+    - name: Get Android latest release
+      uses: robinraju/release-downloader@v1.11
+      with:
+        repository: ${{ github.repository }}
+        latest: true
+        extract: true
+        fileName: android.zip
+
+    - name: Copy libraries
+      run: |
+          mkdir -p API/web_framework_flutter_api/assets/lib/arm64-v8a
+          cp -r ReleaseDLL_Windows/dll/*.dll API/web_framework_flutter_api/assets/lib
+          cp -r Release_Android/lib/arm64-v8a/*.so API/web_framework_flutter_api/assets/lib/arm64-v8a
+
     - name: Dry run
       working-directory: API/web_framework_flutter_api
       run: dart pub publish --dry-run

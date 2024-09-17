@@ -43,9 +43,6 @@ WebFrameworkLibrary/
 # Google Test
 gtest/
 
-# Build executable
-!WebFrameworkBuilder.exe
-
 # Log files
 *.log
 

@@ -1,3 +1,2 @@
-## 0.0.1
-
-* TODO: Describe initial release.
+## 1.0.0
+* Release Flutter API for [WebFramework](https://github.com/Lazypanda07/WebFramework/)
