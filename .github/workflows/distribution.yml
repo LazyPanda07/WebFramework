@@ -44,7 +44,8 @@ jobs:
     - name: Build wheel
       working-directory: package
       run: |
-          ls
+          ls dll
+          ls lib
           python3 -m pip install build
           python3 -m build
 

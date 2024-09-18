@@ -15,20 +15,23 @@ def initialize_web_framework(path_to_dll: str = ""):
     if DLLHandler.instance is not None:
         return
 
+    shared_libraries_dir = os.path.abspath(
+        os.path.join(Path(__file__).parent.parent, "dll" if sys.platform == "win32" else "lib"))
+
     if len(path_to_dll) == 0:
-        path_to_dll = os.path.join(
-            Path(__file__).parent.parent,
-            "dll" if sys.platform == "win32" else "lib",
-            "WebFramework"
-        )
+        path_to_dll = os.path.join(shared_libraries_dir, "WebFramework")
 
     path_to_dll = os.path.abspath(path_to_dll)
 
     if platform.system() == "Windows":
         path_to_dll = f"{path_to_dll}.dll"
+
+        os.environ["PATH"] += os.pathsep + f"{shared_libraries_dir}"
     else:
         path = Path(path_to_dll)
         path_to_dll = f"{path.parent}/lib{path.name}.so"
+
+        os.environ["LD_LIBRARY_PATH"] += os.pathsep + f"{shared_libraries_dir}"
 
     if not os.path.exists(path_to_dll):
         raise FileNotFoundError(f"Path {path_to_dll} doesn't exist")
