@@ -35,6 +35,9 @@ def initialize_web_framework(path_to_dll: str = ""):
         path = Path(path_to_dll)
         path_to_dll = f"{path.parent}/lib{path.name}.so"
 
+        if "LD_LIBRARY_PATH" not in os.environ:
+            os.environ.setdefault("LD_LIBRARY_PATH", "")
+
         os.environ["LD_LIBRARY_PATH"] += os.pathsep + f"{shared_libraries_dir}"
 
     if not download:

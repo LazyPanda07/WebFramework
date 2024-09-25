@@ -49,7 +49,8 @@ def copy_libraries(libraries_directory: str):
         directory_path = os.path.join(libraries_directory, "ReleaseDLL_Linux", "lib")
 
         for file in os.listdir(directory_path):
-            shutil.copy(os.path.join(directory_path, file), libraries_directory)
+            if file.endswith(".so"):
+                shutil.copy(os.path.join(directory_path, file), libraries_directory)
 
 
 def remove_files(libraries_directory: str):
