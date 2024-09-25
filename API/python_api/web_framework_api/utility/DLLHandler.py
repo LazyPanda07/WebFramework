@@ -8,10 +8,11 @@ from pathlib import Path
 from web_framework_api.utility.Utils import get_libraries
 
 
-def initialize_web_framework(path_to_dll: str = ""):
+def initialize_web_framework(path_to_dll: str = "", restart_application_if_not_in_ld_library_path: bool = True):
     """
     Load WebFramework shared library
     :param path_to_dll: Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so). By default, take path to WebFramework library from pip package
+    :param restart_application_if_not_in_ld_library_path: Restart application with modified LD_LIBRARY_PATH on linux
     :return:
     """
     if DLLHandler.instance is not None:
@@ -38,13 +39,18 @@ def initialize_web_framework(path_to_dll: str = ""):
         if "LD_LIBRARY_PATH" not in os.environ:
             os.environ.setdefault("LD_LIBRARY_PATH", "")
 
+        current_value = os.environ["LD_LIBRARY_PATH"]
+
         os.environ["LD_LIBRARY_PATH"] += os.pathsep + f"{shared_libraries_dir}"
 
-    if not download:
-        if not os.path.exists(path_to_dll):
+        if restart_application_if_not_in_ld_library_path and os.pathsep + f"{shared_libraries_dir}" not in current_value:
+            os.execv(sys.argv[0], sys.argv)
+
+    if not os.path.exists(path_to_dll):
+        if not download:
             raise FileNotFoundError(f"Path {path_to_dll} doesn't exist")
-    else:
-        get_libraries(shared_libraries_dir)
+        else:
+            get_libraries(shared_libraries_dir)
 
     DLLHandler.instance = DLLHandler(path_to_dll)
 
