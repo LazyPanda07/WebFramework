@@ -671,6 +671,9 @@ jobs:
     - name: Download artifacts
       if: ${{ env.CURRENT_BRANCH == 'master' }}
       uses: actions/download-artifact@v4
+
+    - name: Remove Windows tests
+      run: rm -rf Tests_Windows
       
     - name: Setup Windows build list
       run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}

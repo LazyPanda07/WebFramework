@@ -16,7 +16,9 @@ license = { text = "MIT License" }
 keywords = ["Web"]
 version = "1.0.0"
 dependencies = [
-    "multipledispatch"
+    "multipledispatch",
+    "requests",
+    "tqdm"
 ]
 
 [project.urls]

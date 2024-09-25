@@ -5,6 +5,8 @@ import os
 
 from pathlib import Path
 
+from web_framework_api.utility.Utils import get_libraries
+
 
 def initialize_web_framework(path_to_dll: str = ""):
     """
@@ -17,9 +19,11 @@ def initialize_web_framework(path_to_dll: str = ""):
 
     shared_libraries_dir = os.path.abspath(
         os.path.join(Path(__file__).parent.parent, "dll" if sys.platform == "win32" else "lib"))
+    download = False
 
     if len(path_to_dll) == 0:
         path_to_dll = os.path.join(shared_libraries_dir, "WebFramework")
+        download = True
 
     path_to_dll = os.path.abspath(path_to_dll)
 
@@ -33,8 +37,11 @@ def initialize_web_framework(path_to_dll: str = ""):
 
         os.environ["LD_LIBRARY_PATH"] += os.pathsep + f"{shared_libraries_dir}"
 
-    if not os.path.exists(path_to_dll):
-        raise FileNotFoundError(f"Path {path_to_dll} doesn't exist")
+    if not download:
+        if not os.path.exists(path_to_dll):
+            raise FileNotFoundError(f"Path {path_to_dll} doesn't exist")
+    else:
+        get_libraries(shared_libraries_dir)
 
     DLLHandler.instance = DLLHandler(path_to_dll)
 
