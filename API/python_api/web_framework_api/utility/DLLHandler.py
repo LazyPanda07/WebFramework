@@ -12,7 +12,6 @@ def initialize_web_framework(path_to_dll: str = ""):
     """
     Load WebFramework shared library
     :param path_to_dll: Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so). By default, take path to WebFramework library from pip package
-    :param restart_application_if_not_in_ld_library_path: Restart application with modified LD_LIBRARY_PATH on linux
     :return:
     """
     if DLLHandler.instance is not None:
@@ -37,9 +36,9 @@ def initialize_web_framework(path_to_dll: str = ""):
         path = Path(path_to_dll)
         path_to_dll = f"{path.parent}/lib{path.name}.so"
 
-        if empty_path_to_dll and "LD_LIBRARY_PATH" in os.environ and shared_libraries_dir not in os.environ["LD_LIBRARY_PATH"]:
+        if empty_path_to_dll and ("LD_LIBRARY_PATH" in os.environ and shared_libraries_dir not in os.environ[
+            "LD_LIBRARY_PATH"]) or "LD_LIBRARY_PATH" not in os.environ:
             raise Exception(f"{shared_libraries_dir} not in LD_LIBRARY_PATH")
-
 
     if not os.path.exists(path_to_dll):
         if not download:
