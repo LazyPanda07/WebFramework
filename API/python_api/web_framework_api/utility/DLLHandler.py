@@ -8,7 +8,7 @@ from pathlib import Path
 from web_framework_api.utility.Utils import get_libraries
 
 
-def initialize_web_framework(path_to_dll: str = "", restart_application_if_not_in_ld_library_path: bool = True):
+def initialize_web_framework(path_to_dll: str = ""):
     """
     Load WebFramework shared library
     :param path_to_dll: Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so). By default, take path to WebFramework library from pip package
@@ -21,6 +21,7 @@ def initialize_web_framework(path_to_dll: str = "", restart_application_if_not_i
     shared_libraries_dir = os.path.abspath(
         os.path.join(Path(__file__).parent.parent, "dll" if sys.platform == "win32" else "lib"))
     download = False
+    empty_path_to_dll = len(path_to_dll) == 0
 
     if len(path_to_dll) == 0:
         path_to_dll = os.path.join(shared_libraries_dir, "WebFramework")
@@ -28,7 +29,7 @@ def initialize_web_framework(path_to_dll: str = "", restart_application_if_not_i
 
     path_to_dll = os.path.abspath(path_to_dll)
 
-    if platform.system() == "Windows":
+    if sys.platform == "win32":
         path_to_dll = f"{path_to_dll}.dll"
 
         os.environ["PATH"] += os.pathsep + f"{shared_libraries_dir}"
@@ -36,15 +37,9 @@ def initialize_web_framework(path_to_dll: str = "", restart_application_if_not_i
         path = Path(path_to_dll)
         path_to_dll = f"{path.parent}/lib{path.name}.so"
 
-        if "LD_LIBRARY_PATH" not in os.environ:
-            os.environ.setdefault("LD_LIBRARY_PATH", "")
+        if empty_path_to_dll and "LD_LIBRARY_PATH" in os.environ and shared_libraries_dir not in os.environ["LD_LIBRARY_PATH"]:
+            raise Exception(f"{shared_libraries_dir} not in LD_LIBRARY_PATH")
 
-        current_value = os.environ["LD_LIBRARY_PATH"]
-
-        os.environ["LD_LIBRARY_PATH"] += os.pathsep + f"{shared_libraries_dir}"
-
-        if restart_application_if_not_in_ld_library_path and os.pathsep + f"{shared_libraries_dir}" not in current_value:
-            os.execv(sys.argv[0], sys.argv)
 
     if not os.path.exists(path_to_dll):
         if not download:
