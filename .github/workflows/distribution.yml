@@ -194,7 +194,9 @@ jobs:
 
     - name: Dry run
       working-directory: API/web_framework_flutter_api
-      run: dart pub publish --dry-run
+      run: |
+          git config --global --add safe.directory ${FLUTTER_PATH}
+          dart pub publish --dry-run
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
