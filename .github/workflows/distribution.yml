@@ -219,9 +219,11 @@ jobs:
         path: python_api
 
     - name: Install Python API
+      shell: bash
       run: pip3 install python_api/
 
     - name: Build
+      shell: bash
       working-directory: DistributionTests
       run: |
         mkdir build
