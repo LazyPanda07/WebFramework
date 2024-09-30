@@ -203,3 +203,29 @@ jobs:
       with:
         name: flutter-package
         path: API/web_framework_flutter_api
+
+
+  pip-package-test:
+    runs-on: ubuntu-latest
+    needs: [pip-package]
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+
+    steps:
+    - name: Download pip package
+      uses: actions/download-artifact@v4
+      with:
+        name: pip-package
+        path: python_api
+
+    - name: Install Python API
+      run: pip3 install python_api/
+
+    - name: Build
+      working-directory: DistributionTests
+      run: |
+        mkdir build
+        cd build
+        cmake -DTEST_PYTHON=ON .. && make install
+        cd bin
+        source run_python_test.sh

@@ -30,3 +30,4 @@ FetchContent_MakeAvailable(
 )
 
 install(DIRECTORY ${hello_executor_SOURCE_DIR}/ DESTINATION bin)
+install(FILES reference.json DESTINATION bin)
