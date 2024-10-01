@@ -23,23 +23,11 @@ jobs:
         latest: true
         extract: true
         fileName: linux.zip
-
-    - name: Get Windows latest release
-      uses: robinraju/release-downloader@v1.11
-      with:
-        repository: ${{ github.repository }}
-        latest: true
-        extract: true
-        fileName: windows.zip
-
+        
     - name: Create package folder
       run: |
           mkdir package
           mv ReleaseDLL_Linux/api/python_api/* package/
-          mkdir package/dll
-          mkdir package/lib
-          mv ReleaseDLL_Windows/dll/*.dll package/dll/
-          mv ReleaseDLL_Linux/lib/*.so package/lib/
 
     - name: Build wheel
       working-directory: package
@@ -220,7 +208,9 @@ jobs:
 
     - name: Install Python API
       shell: bash
-      run: pip3 install python_api/
+      run: |
+          ls python_api
+          pip3 install python_api/
 
     - name: Build
       shell: bash
