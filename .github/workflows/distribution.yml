@@ -209,8 +209,8 @@ jobs:
     - name: Install Python API
       shell: bash
       run: |
-          ls python_api
-          pip3 install python_api/
+          export PYTHON_API_NAME=$(ls python_api | grep .whl)
+          pip3 install ${PYTHON_API_NAME}
 
     - name: Build
       shell: bash
