@@ -210,7 +210,7 @@ jobs:
       shell: bash
       run: |
           export PYTHON_API_NAME=$(ls python_api | grep .whl)
-          pip3 install ${PYTHON_API_NAME}
+          pip3 install python_api/${PYTHON_API_NAME}
 
     - name: Build
       shell: bash
