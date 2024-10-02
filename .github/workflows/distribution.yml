@@ -193,7 +193,7 @@ jobs:
         path: API/web_framework_flutter_api
 
 
-  pip-package-test:
+  linux-pip-package-test:
     runs-on: ubuntu-latest
     needs: [pip-package]
     container:
@@ -212,13 +212,42 @@ jobs:
           export PYTHON_API_NAME=$(ls python_api | grep .whl)
           pip3 install python_api/${PYTHON_API_NAME}
 
-    - name: Build
+    - name: Build and test
       shell: bash
-      working-directory: DistributionTests
       run: |
+        ls
+        cd DistributionTests
         mkdir build
         cd build
         cmake -DTEST_PYTHON=ON .. && make install
         cd bin
         python3 main.py
         source run_python_test.sh
+        diff reference.json out.json
+
+  windows-pip-package-test:
+    runs-on: windows-latest
+    needs: [pip-package]
+    
+    steps:
+    - name: Download pip package
+      uses: actions/download-artifact@v4
+      with:
+        name: pip-package
+        path: python_api
+
+    - name: Install Python API
+      shell: bash
+      run: |
+          export PYTHON_API_NAME=$(ls python_api | grep .whl)
+          pip install python_api/${PYTHON_API_NAME}
+
+    - name: Build and test
+      run: |
+        cd DistributionTests
+        mkdir build
+        cd build
+        cmake -DTEST_PYTHON=ON -G "NMake Makefiles" .. && nmake install
+        cd bin
+        .\run_python_test.bat
+        Compare-Object (Get-Content reference.json) (Get-Content out.json)
