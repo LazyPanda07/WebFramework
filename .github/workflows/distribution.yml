@@ -217,13 +217,12 @@ jobs:
     - name: Build and test
       shell: bash
       run: |
-        ls
         cd DistributionTests
         mkdir build
         cd build
         cmake -DTEST_PYTHON=ON .. && make install
         cd bin
-        python3 main.py
+        export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/python3.${PYTHON_MAJOR_VERSION}t/site-packages/web_framework_api/lib
         source run_python_test.sh
         diff reference.json out.json
 
@@ -245,6 +244,9 @@ jobs:
       run: |
           export PYTHON_API_NAME=$(ls python_api | grep .whl)
           pip install python_api/${PYTHON_API_NAME}
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build and test
       run: |
