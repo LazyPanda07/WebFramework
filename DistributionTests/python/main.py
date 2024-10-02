@@ -19,5 +19,3 @@ if __name__ == '__main__':
         server.start(True, on_start)
     except WebFrameworkException as exception:
         print(exception)
-
-        exit(-1)
