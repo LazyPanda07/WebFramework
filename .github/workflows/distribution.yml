@@ -200,6 +200,8 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:24.04
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Download pip package
       uses: actions/download-artifact@v4
       with:
@@ -230,6 +232,8 @@ jobs:
     needs: [pip-package]
     
     steps:
+    - uses: actions/checkout@v4
+
     - name: Download pip package
       uses: actions/download-artifact@v4
       with:
