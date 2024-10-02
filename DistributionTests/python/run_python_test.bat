@@ -3,7 +3,7 @@
 start python main.py
 
 :loop
-if not exist start.txt(
+if not exist "start.txt" (
     ping 127.0.0.1 -n 2 > nul
     goto loop
 )
