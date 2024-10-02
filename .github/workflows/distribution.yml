@@ -220,4 +220,5 @@ jobs:
         cd build
         cmake -DTEST_PYTHON=ON .. && make install
         cd bin
+        python3 main.py
         source run_python_test.sh
