@@ -222,7 +222,7 @@ jobs:
         cd build
         cmake -DTEST_PYTHON=ON .. && make install
         cd bin
-        export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/python3.${PYTHON_MAJOR_VERSION}t/site-packages/web_framework_api/lib
+        export LD_LIBRARY_PATH=/usr/local/lib/python3.${PYTHON_MAJOR_VERSION}t/site-packages/web_framework_api/lib:${LD_LIBRARY_PATH}
         source run_python_test.sh
         diff reference.json out.json
 
