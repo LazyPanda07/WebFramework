@@ -4,6 +4,8 @@ set -e
 
 if [ configure = "$1" ]; then
   echo "/usr/lib/web-framework/lib" >> /etc/ld.so.conf
+  echo "WEB_FRAMEWORK_SDK=/usr/lib/web-framework" >> /etc/environment
+  echo "WEB_FRAMEWORK_CMAKE_FILE=/usr/lib/web-framework/WebFramework.cmake" >> /etc/environment
 
   ldconfig
 fi
