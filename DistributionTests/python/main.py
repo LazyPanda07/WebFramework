@@ -17,7 +17,5 @@ if __name__ == '__main__':
         server = WebFramework.from_path("config.json")
 
         server.start(True, on_start)
-    except WebFrameworkException as exception:
+    except Exception as exception:
         print(exception)
-
-        exit(-1)
