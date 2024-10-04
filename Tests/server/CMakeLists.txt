@@ -9,7 +9,7 @@ if(UNIX)
 	file(CHMOD ${WEB_FRAMEWORK_LIBRARY_DIR}/assets/LocalizationUtils PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 endif(UNIX)
 
-include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFramework.cmake)
+include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
 
 project(Server)
 

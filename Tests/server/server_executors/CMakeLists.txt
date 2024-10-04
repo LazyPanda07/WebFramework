@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 project(ServerExecutors)
 
-include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFramework.cmake)
+include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
 
 add_library(
 	${PROJECT_NAME} SHARED

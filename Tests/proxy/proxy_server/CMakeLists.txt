@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFramework.cmake)
+include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
 
 project(ProxyServer)
 

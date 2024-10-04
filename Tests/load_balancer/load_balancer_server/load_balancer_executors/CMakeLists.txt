@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFramework.cmake)
+include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
 
 project(LoadBalancerExecutors)
 
