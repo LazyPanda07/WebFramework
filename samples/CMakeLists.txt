@@ -12,7 +12,7 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 set(WEB_FRAMEWORK_SDK ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary)
 set(WEB_FRAMEWORK_DIRECTORY ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE STRING "")
 
-include(${WEB_FRAMEWORK_DIRECTORY}/WebFramework.cmake)
+include(${WEB_FRAMEWORK_DIRECTORY}/WebFrameworkConfig.cmake)
 
 add_subdirectory(hello_executor)
 

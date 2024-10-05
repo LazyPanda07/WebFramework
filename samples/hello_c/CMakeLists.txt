@@ -4,7 +4,7 @@ set(WEB_FRAMEWORK_CC_API ON)
 
 project(hello_c)
 
-include(${WEB_FRAMEWORK_DIRECTORY}/WebFramework.cmake)
+include(${WEB_FRAMEWORK_DIRECTORY}/WebFrameworkConfig.cmake)
 
 add_executable(
 	${PROJECT_NAME}
