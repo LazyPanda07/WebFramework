@@ -259,7 +259,7 @@ jobs:
 
   
   deb-packages-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [deb-package]
 
     steps:
