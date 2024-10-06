@@ -256,3 +256,36 @@ jobs:
         cd bin
         .\run_python_test.bat
         Compare-Object (Get-Content reference.json) (Get-Content out.json)
+
+  
+  deb-packages-test:
+    runs-on: ubuntu-latest
+    needs: [deb-package]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download deb packages
+      uses: actions/download-artifact@v4
+      with:
+        name: deb-packages
+        path: packages
+
+    - name: Install deb package
+      run: sudo apt install -y packages/web-framework-dev_${{ deb-package-version} }-${{ deb-package-release-number }}_amd64.deb
+      
+    - name: Build test
+      working-directory: DistributionTests
+      run: |
+          mkdir build
+          cd build
+          cmake -DTEST_CC=ON .. && make install -j $(nproc)
+
+    - name: Run test
+      working-directory: DistributionTests/build/bin
+      run: |
+          source run_cc_test.sh
+          diff reference.json out.json
+

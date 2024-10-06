@@ -7,9 +7,14 @@ project(distribution)
 include(FetchContent)
 
 option(TEST_PYTHON "" OFF)
+option(TEST_CC "" OFF)
 
 if (${TEST_PYTHON})
 	add_subdirectory(python)
+endif()
+
+if (${TEST_CC})
+	add_subdirectory(cc)
 endif()
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/configs/ DESTINATION bin)
