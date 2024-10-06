@@ -274,7 +274,7 @@ jobs:
         path: packages
 
     - name: Install deb package
-      run: sudo apt install -y packages/web-framework-dev_${{ deb-package-version} }-${{ deb-package-release-number }}_amd64.deb
+      run: sudo apt install -y packages/web-framework-dev_${{ deb-package-version }}-${{ deb-package-release-number }}_amd64.deb
       
     - name: Build test
       working-directory: DistributionTests
