@@ -113,7 +113,7 @@ inline WebFrameworkException stopWebFrameworkServer(WebFramework implementation,
 
 inline WebFrameworkException isServerRunning(WebFramework implementation, bool* result)
 {
-    WebFrameworkException* exception = NULL;
+    WebFrameworkException exception = NULL;
 
     typedef bool (*isServerRunning)(void* implementation, void** exception);
 
