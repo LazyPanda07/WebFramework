@@ -5,9 +5,6 @@
 #include <memory>
 #include <cstdint>
 
-inline const std::string contentLengthHeader = "Content-Length";
-inline const std::string crlfcrlf = "\r\n\r\n";
-
 /// <summary>
 /// <para>Session life time for client session in nanoseconds</para>
 /// <para>If session stands equals or more this value, it must be deleted</para>
