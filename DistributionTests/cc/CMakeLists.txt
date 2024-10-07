@@ -13,5 +13,5 @@ add_executable(
 	main.c
 )
 
-install(TARGET ${PROJECT_NAME} DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(FILES run_cc_test.sh DESTINATION bin)
