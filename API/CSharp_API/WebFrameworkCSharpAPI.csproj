@@ -9,4 +9,18 @@
     <RootNamespace>Framework</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <None Include="WebFramework.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="FileManager.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Localization.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Log.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="sqlite3.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+
+    <None Include="libWebFramework.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="libFileManager.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="libLocalization.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="libLog.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="libsqlite3.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+  </ItemGroup>
+
 </Project>
