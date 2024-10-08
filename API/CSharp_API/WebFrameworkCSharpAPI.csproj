@@ -7,6 +7,14 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <RootNamespace>Framework</RootNamespace>
+    <Title>WebFramework API</Title>
+    <Authors>LazyPanda07</Authors>
+    <Description>C++ HTTP/HTTPS server with C# API</Description>
+    <PackageProjectUrl>https://github.com/LazyPanda07/WebFramework</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>Copyright ©2024 LazyPanda07</Copyright>
+    <RepositoryUrl>https://github.com/LazyPanda07/WebFramework</RepositoryUrl>
+    <PackageTags>web;server;framework</PackageTags>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
@@ -21,6 +29,13 @@
     <None Include="libLocalization.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
     <None Include="libLog.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
     <None Include="libsqlite3.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
