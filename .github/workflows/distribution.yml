@@ -386,7 +386,7 @@ jobs:
     needs: [nuget-package]
     strategy:
       matrix:
-        os: [[ubuntu-latest, run_csharp_test.sh, "source "], [windows-latest, run_csharp_test.bat, ".\\"]]
+        os: [[ubuntu-24.04, run_csharp_test.sh, "source "], [windows-latest, run_csharp_test.bat, ".\\"]]
     runs-on: ${{ matrix.os[0] }}
 
     steps:
