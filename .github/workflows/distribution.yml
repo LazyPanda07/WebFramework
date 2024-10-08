@@ -386,7 +386,7 @@ jobs:
     needs: [nuget-package]
     strategy:
       matrix:
-        os: [[ubuntu-latest, run_csharp_test.sh], [windows-latest, run_csharp_test.bat]]
+        os: [[ubuntu-latest, run_csharp_test.sh, source ], [windows-latest, run_csharp_test.bat, .\]]
     runs-on: ${{ matrix.os[0] }}
 
     steps:
@@ -407,5 +407,5 @@ jobs:
           cd build
           cmake -DTEST_CSHARP=ON .. && cmake --build . && cmake --install .
           cd bin
-          source ${{ matrix.os[1] }}
+          ${{ matrix.os[2] }}${{ matrix.os[1] }}
           diff reference.json out.json
