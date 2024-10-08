@@ -292,6 +292,17 @@ jobs:
       run: |
           source run_cc_test.sh
           diff reference.json out.json
+          
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: binaries
+        path: |
+            DistributionTests/build/bin/libhello_excutor.so
+            DistributionTests/build/bin/cc_test
+            DistributionTests/build/bin/config.json
+            DistributionTests/build/bin/web.json
+            DistributionTests/build/bin/reference.json
 
 
   static-dev-deb-package-test:
@@ -321,9 +332,49 @@ jobs:
           cd build
           cmake -DTEST_STATIC_DEV_CXX=ON .. && make install -j $(nproc)
 
+    - name: Build hello_executor
+      working-directory: samples
+      run: |
+          mkdir build
+          cd build
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DWEB_FRAMEWORK_SDK=/usr/lib/web-framework -DWEB_FRAMEWORK_DIRECTORY=/usr/lib/web-framework .. && make install -j $(nproc)
+          cd bin
+          mv libhello_executor.so ../../../DistributionTests/build/bin
+
     - name: Run test
       working-directory: DistributionTests/build/bin
       run: |
           source run_cxx_test.sh
           diff reference.json out.json
 
+
+  deb-package-test:
+    runs-on: ubuntu-24.04
+    needs: [dev-deb-package-test]
+
+    steps:
+    - name: Download deb packages
+      uses: actions/download-artifact@v4
+      with:
+        name: deb-packages
+        path: packages
+
+    - name: Install deb package
+      run: |
+          cd packages
+          sudo apt install -y ./web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64.deb
+
+    - name: Download binaries
+      uses: actions/download-artifact@v4
+      with:
+        name: binaries
+
+    - name: Run test
+      run: |
+        chmod +x cc_test
+        ./cc_test & sleep 1
+        curl http://127.0.0.1:8080 > out.json
+        md5sum reference.json
+        md5sum out.json
+        diff reference.json out.json
+      

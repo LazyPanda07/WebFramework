@@ -9,7 +9,7 @@ option(CSHARP_SAMPLE "Build C# sample" ON)
 project(samples)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
-set(WEB_FRAMEWORK_SDK ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary)
+set(WEB_FRAMEWORK_SDK ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE STRING "")
 set(WEB_FRAMEWORK_DIRECTORY ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE STRING "")
 
 include(${WEB_FRAMEWORK_DIRECTORY}/WebFrameworkConfig.cmake)
