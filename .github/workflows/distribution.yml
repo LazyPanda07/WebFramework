@@ -85,7 +85,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nuget-package
-        path: API/CSharp_API/Release/*.nupkg
+        path: API/CSharp_API/bin/Release/*.nupkg
 
 
   deb-package:
