@@ -1,30 +1,18 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
 
-#include "import.h"
+#include "Import/WebFramework.h"
 
-int main(int argc, char** argv)
+int main(int argc, char** argv) try
 {
-	initializeWebFramework("WebFramework");
+	framework::WebFramework server("config.json");
 
-	WebFramework server;
-	WebFrameworkException exception = createWebFrameworkFromPath("config.json", &server);
-
-	if (exception)
-	{
-		printf("%s\n", getErrorMessage(exception));
-
-		return -1;
-	}
-
-	exception = startWebFrameworkServer(server, true, NULL);
-
-	if (exception)
-	{
-		printf("%s\n", getErrorMessage(exception));
-
-		return -2;
-	}
+	server.start(true);
 
 	return 0;
+}
+catch (const std::exception& e)
+{
+	std::cerr << e.what() << std::endl;
+
+	exit(-1);
 }
