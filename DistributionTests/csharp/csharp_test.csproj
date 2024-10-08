@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LazyPanda07.WebFramework" Version="1.0.0" />
+    <PackageReference Include="WebFrameworkCSharpAPI" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
