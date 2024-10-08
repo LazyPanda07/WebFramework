@@ -5,7 +5,14 @@
 
 int main(int argc, char** argv)
 {
-	initializeWebFramework("WebFramework");
+	if (argc == 2)
+	{
+		initializeWebFramework(argv[1]);
+	}
+	else
+	{
+		initializeWebFramework(NULL);
+	}
 
 	WebFramework server;
 	WebFrameworkException exception = createWebFrameworkFromPath("config.json", &server);

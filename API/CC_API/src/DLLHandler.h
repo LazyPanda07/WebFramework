@@ -48,6 +48,17 @@ size_t findLastChar(char* ptr, char c);
 
 inline void initializeWebFramework(const char* pathToDLL)
 {
+	if (pathToDLL == NULL)
+	{
+#ifdef __LINUX__
+		getInstance("libWebFramework.so");
+#else
+		getInstance("WebFramework.dll");
+#endif
+
+		return;
+	}
+
 #define MAX_PATH_SIZE 4096
 
 	char fullPath[MAX_PATH_SIZE];

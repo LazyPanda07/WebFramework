@@ -339,7 +339,7 @@ jobs:
           cd build
           cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DWEB_FRAMEWORK_SDK=/usr/lib/web-framework -DWEB_FRAMEWORK_DIRECTORY=/usr/lib/web-framework .. && make install -j $(nproc)
           cd bin
-          mv libhello_executor.so ../../../DistributionTests/build/bin
+          mv executors/libhello_executor.so ../../../DistributionTests/build/bin
 
     - name: Run test
       working-directory: DistributionTests/build/bin

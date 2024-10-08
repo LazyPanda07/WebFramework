@@ -4,7 +4,7 @@ set -e
 
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
-./cc_test & sleep 1
+./cc_test WebFramework & sleep 1
 
 curl http://127.0.0.1:8080 > out.json
 
