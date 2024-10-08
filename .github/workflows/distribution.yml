@@ -298,7 +298,7 @@ jobs:
       with:
         name: binaries
         path: |
-            DistributionTests/build/bin/libhello_excutor.so
+            DistributionTests/build/bin/libhello_executor.so
             DistributionTests/build/bin/cc_test
             DistributionTests/build/bin/config.json
             DistributionTests/build/bin/web.json
