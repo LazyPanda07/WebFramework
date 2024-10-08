@@ -386,7 +386,7 @@ jobs:
     needs: [nuget-package]
     strategy:
       matrix:
-        os: [[ubuntu-latest, run_csharp_test.sh, "source "], [windows-latest, run_csharp_test.bat, ".\""]]
+        os: [[ubuntu-latest, run_csharp_test.sh, "source "], [windows-latest, run_csharp_test.bat, ".\\"]]
     runs-on: ${{ matrix.os[0] }}
 
     steps:
@@ -401,7 +401,6 @@ jobs:
 
     - name: Build test
       working-directory: DistributionTests
-      shell: bash
       run: |
           mkdir build
           cd build
