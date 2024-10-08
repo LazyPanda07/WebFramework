@@ -79,7 +79,7 @@ jobs:
       run: |
           cd API/CSharp_API/
           dotnet build --configuration Release
-          msbuild -t:pack /p:Configuration=Release
+          msbuild -t:pack -p:Configuration=Release
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -220,9 +220,9 @@ jobs:
           pip3 install python_api/${PYTHON_API_NAME}
 
     - name: Build and test
+      working-directory: DistributionTests
       shell: bash
       run: |
-        cd DistributionTests
         mkdir build
         cd build
         cmake -DTEST_PYTHON=ON .. && make install
@@ -381,3 +381,31 @@ jobs:
         md5sum out.json
         diff reference.json out.json
       
+  
+  nuget-package-test:
+    needs: [nuget-package]
+    strategy:
+      matrix:
+        os: [[ubuntu-latest, run_csharp_test.sh], [windows-latest, run_csharp_test.bat]]
+    runs-on: ${{ matrix.os[0] }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download nuget package
+      uses: actions/download-artifact@v4
+      with:
+        name: nuget-package
+
+    - name: Build test
+      working-directory: DistributionTests
+      shell: bash
+      run: |
+          mkdir build
+          cd build
+          cmake -DTEST_CSHARP=ON .. && cmake --build . && cmake --install .
+          cd bin
+          source ${{ matrix.os[1] }}
+          diff reference.json out.json

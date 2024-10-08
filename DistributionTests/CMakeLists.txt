@@ -7,11 +7,16 @@ project(distribution)
 include(FetchContent)
 
 option(TEST_PYTHON "" OFF)
+option(TEST_CSHARP "" OFF)
 option(TEST_DEV_CC "" OFF)
 option(TEST_STATIC_DEV_CXX "" OFF)
 
 if (${TEST_PYTHON})
 	add_subdirectory(python)
+endif()
+
+if (${TEST_CSHARP})
+	add_subdirectory(csharp)
 endif()
 
 if (${TEST_DEV_CC})
