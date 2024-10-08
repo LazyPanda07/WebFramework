@@ -66,15 +66,17 @@ jobs:
         extract: true
         fileName: windows.zip
         
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
 
-    - name: Create nuget package
+    - name: Copy libraries
       shell: bash
       run: |
-          mkdir -p package/lib/net${{ env.dotnet-version }}
           mv ReleaseDLL_Windows/dll/*.dll API/CSharp_API/
           mv ReleaseDLL_Linux/lib/*.so API/CSharp_API/
+
+    - name: Create nuget package
+      run: |
           cd API/CSharp_API/
           msbuild -t:pack /p:Configuration=Release
 
