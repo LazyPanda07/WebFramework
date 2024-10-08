@@ -135,12 +135,12 @@ jobs:
           mkdir -p web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           chmod 0755 deb_packages/web-framework-static-dev/DEBIAN/postinst
           mv deb_packages/web-framework-static-dev/DEBIAN web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r ReleaseDLL_Linux/lib/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r ReleaseDLL_Linux/include/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
-          cp -r ReleaseDLL_Linux/WebFrameworkConfig.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r ReleaseDLL_Linux/FindWebFramework.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r ReleaseDLL_Linux/WebFrameworkAssets web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r ReleaseDLL_Linux/localization_modules.json web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/lib/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          cp -r Release_Linux/include/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
+          cp -r Release_Linux/WebFrameworkConfig.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/FindWebFramework.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/WebFrameworkAssets web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/localization_modules.json web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
 
     - name: Upload artifacts
@@ -260,7 +260,7 @@ jobs:
         Compare-Object (Get-Content reference.json) (Get-Content out.json)
 
   
-  deb-packages-test:
+  dev-deb-package-test:
     runs-on: ubuntu-24.04
     needs: [deb-package]
 
@@ -285,11 +285,45 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DTEST_CC=ON .. && make install -j $(nproc)
+          cmake -DTEST_DEV_CC=ON .. && make install -j $(nproc)
 
     - name: Run test
       working-directory: DistributionTests/build/bin
       run: |
           source run_cc_test.sh
+          diff reference.json out.json
+
+
+  static-dev-deb-package-test:
+    runs-on: ubuntu-24.04
+    needs: [deb-package]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download deb packages
+      uses: actions/download-artifact@v4
+      with:
+        name: deb-packages
+        path: packages
+
+    - name: Install deb package
+      run: |
+          cd packages
+          sudo apt install -y ./web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+      
+    - name: Build test
+      working-directory: DistributionTests
+      run: |
+          mkdir build
+          cd build
+          cmake -DTEST_STATIC_DEV_CXX=ON .. && make install -j $(nproc)
+
+    - name: Run test
+      working-directory: DistributionTests/build/bin
+      run: |
+          source run_cxx_test.sh
           diff reference.json out.json
 
