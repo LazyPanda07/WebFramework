@@ -78,6 +78,7 @@ jobs:
     - name: Create nuget package
       run: |
           cd API/CSharp_API/
+          dotnet build --configuration Release
           msbuild -t:pack /p:Configuration=Release
 
     - name: Upload artifacts
