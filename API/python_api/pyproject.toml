@@ -12,7 +12,7 @@ authors = [
 maintainers = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
 ]
-license = { text = "MIT License" }
+license = { file = "../../LICENSE" }
 keywords = ["Web"]
 version = "1.0.0"
 dependencies = [

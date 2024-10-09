@@ -15,6 +15,7 @@
     <Copyright>Copyright ©2024 LazyPanda07</Copyright>
     <RepositoryUrl>https://github.com/LazyPanda07/WebFramework</RepositoryUrl>
     <PackageTags>web;server;framework</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
@@ -29,6 +30,13 @@
     <None Include="libLocalization.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
     <None Include="libLog.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
     <None Include="libsqlite3.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
