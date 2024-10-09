@@ -448,8 +448,10 @@ jobs:
         name: pip-package
         path: dist
 
-    - name: Install twine
-      run: python3 -m pip install twine
+    - name: Install dependencies
+      run: |
+          sudo apt install gnome-keyring
+          python3 -m pip install twine
       
     - name: Publish
       run: |
