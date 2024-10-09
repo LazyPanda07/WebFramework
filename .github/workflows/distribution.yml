@@ -448,17 +448,12 @@ jobs:
         name: pip-package
         path: dist
 
-    - name: Install dependencies
+    - name: Prepare
       run: |
-          sudo apt update
-          sudo apt install gnome-keyring libsecret-1-0 libsecret-tools
-          python3 -m pip install twine
-
-          /usr/bin/gnome-keyring-daemon --start --components=secrets
+          python3 -m pip install requests
+          mv scripts/publish_python_package.py .
       
     - name: Publish
       run: |
-          python3 -c "import keyring; keyring.set_password('https://upload.pypi.org/legacy/', '__token__', '${{ secrets.PYPI_API_KEY }}')"
-          chmod 600 .pypirc
-          twine check dist/*
-          twine upload dist/*
+          export PYPI_API_KEY=${{ secrets.PYPI_API_KEY }}
+          python3 publish_python_package.py
