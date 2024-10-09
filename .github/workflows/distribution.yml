@@ -450,11 +450,10 @@ jobs:
 
     - name: Install twine
       run: python3 -m pip install twine
-
+      
     - name: Publish
       run: |
-          echo [pypi] >> .pypirc
-          echo "username = __token__" >> .pypirc
-          echo "password = ${{ secrets.PYPI_API_KEY }}" >> .pypirc
+          python3 -c "import keyring; keyring.set_password('https://upload.pypi.org/legacy/', '__token__', '${{ secrets.PYPI_API_KEY }}')"
+          chmod 600 .pypirc
           twine check dist/*
           twine upload dist/*
