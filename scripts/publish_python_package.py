@@ -20,15 +20,16 @@ headers = {
 }
 
 # Upload each file
-for path, _, file_name in os.walk("dist"):
-    with open(f"{path}/{file_name}", "rb") as file_content:
-        files = {"content": (file_name, file_content)}
-        response = requests.post(url, data=data, headers=headers, files=files)
+for path, _, file_names in os.walk("dist"):
+    for file_name in file_name:
+        with open(f"{path}/{file_name}", "rb") as file_content:
+            files = {"content": (file_name, file_content)}
+            response = requests.post(url, data=data, headers=headers, files=files)
         
-        if response.status_code == 200:
-            print(f"Successfully uploaded {file_name} to PyPI.")
-        else:
-            print(f"Failed to upload {file_name}. Status code: {response.status_code}")
-            print(response.text)
+            if response.status_code == 200:
+                print(f"Successfully uploaded {file_name} to PyPI.")
+            else:
+                print(f"Failed to upload {file_name}. Status code: {response.status_code}")
+                print(response.text)
 
-            exit(1)
+                exit(1)
