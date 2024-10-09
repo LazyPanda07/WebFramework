@@ -407,3 +407,17 @@ jobs:
           cmake -DTEST_CSHARP=ON .. && cmake --build . && cmake --install .
           cd bin
           ${{ matrix.os[2] }}${{ matrix.os[1] }}
+
+
+  publish-nuget-package:
+    runs-on: ubuntu-latest
+    needs: [nuget-package-test]
+
+    steps:
+    - name: Download nuget package
+      uses: actions/download-artifact@v4
+      with:
+        name: nuget-package
+
+    - name: Publish
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }}
