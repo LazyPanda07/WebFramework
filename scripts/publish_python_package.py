@@ -3,23 +3,18 @@ import os
 
 from pathlib import Path
 
-# PyPI API URL for uploads
 url = "https://upload.pypi.org/legacy/"
 
-# API token (replace this with your actual API token)
 api_token = os.environ["PYPI_API_KEY"]
 
-# Prepare the payload for the request
 data = {
     ":action": "file_upload",
 }
 
-# Prepare headers
 headers = {
-    "Authorization": f"Bearer {api_token}"
+    "Authorization": f"Basic {api_token}"
 }
 
-# Upload each file
 for path, _, file_names in os.walk("dist"):
     for file_name in file_names:
         with open(f"{path}/{file_name}", "rb") as file_content:

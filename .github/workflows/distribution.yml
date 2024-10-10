@@ -454,10 +454,12 @@ jobs:
 
     - name: Prepare
       run: |
-          python3 -m pip install requests
+          python3 -m pip install requests twine
           mv scripts/publish_python_package.py .
       
     - name: Publish
       run: |
-          export PYPI_API_KEY=${{ secrets.PYPI_API_KEY }}
-          python3 publish_python_package.py
+          export TWINE_USERNAME="__token__"
+          export TWINE_PASSWORD="${{ secrets.PYPI_API_KEY }}"
+          twine check dist/*
+          twine upload dist/*
