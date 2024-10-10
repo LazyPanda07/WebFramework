@@ -476,6 +476,9 @@ jobs:
       static-dev-deb-package-test,
       dev-deb-package-test
     ]
+    permissions:
+      contents: write
+      pages: write
 
     env:
       EMAIL: semengricenko@gmail.com
