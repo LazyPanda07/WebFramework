@@ -482,7 +482,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        repository: LazyPanda07/web-framework-apt
+        repository: LazyPanda07/web_framework_ppa
 
     - name: Download deb packages
       uses: actions/download-artifact@v4
