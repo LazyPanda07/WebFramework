@@ -476,6 +476,8 @@ jobs:
       static-dev-deb-package-test,
       dev-deb-package-test
     ]
+    env:
+      EMAIL: semengricenko@gmail.com
 
     steps:
     - uses: actions/checkout@v4
@@ -494,6 +496,13 @@ jobs:
         
     - name: Publish
       run: |
+          dpkg-scanpackages --multiversion . > Packages
+          gzip -k -f Packages
+          
+          apt-ftparchive release . > Release
+          gpg --default-key "${{ env.EMAIL }}" -abs -o - Release > Release.gpg
+          gpg --default-key "${{ env.EMAIL }}" --clearsign -o - Release > InRelease
+
           git add .
           git commit -m "Update deb packages"
           git push
