@@ -16,7 +16,7 @@ data = {
 
 # Prepare headers
 headers = {
-    "Authorization": f"Basic {api_token}"
+    "Authorization": f"Bearer {api_token}"
 }
 
 # Upload each file
