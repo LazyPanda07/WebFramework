@@ -108,6 +108,7 @@ jobs:
       run: |
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           chmod 0755 deb_packages/web-framework/DEBIAN/postinst
+          cp ./LICENSE deb_packages/web-framework/DEBIAN/copyright
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           cp -r ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           cp -r ReleaseDLL_Linux/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
@@ -121,6 +122,7 @@ jobs:
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
+          cp ./LICENSE deb_packages/web-framework/DEBIAN/copyright
           mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           cp -r ReleaseDLL_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           cp -r ReleaseDLL_Linux/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
@@ -137,6 +139,7 @@ jobs:
           mkdir -p web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           mkdir -p web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           chmod 0755 deb_packages/web-framework-static-dev/DEBIAN/postinst
+          cp ./LICENSE deb_packages/web-framework/DEBIAN/copyright
           mv deb_packages/web-framework-static-dev/DEBIAN web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           cp -r Release_Linux/lib/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           cp -r Release_Linux/include/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
@@ -453,13 +456,45 @@ jobs:
         path: dist
 
     - name: Prepare
-      run: |
-          python3 -m pip install requests twine
-          mv scripts/publish_python_package.py .
+      run: python3 -m pip install twine
       
     - name: Publish
+      if: false
       run: |
           export TWINE_USERNAME="__token__"
           export TWINE_PASSWORD="${{ secrets.PYPI_API_KEY }}"
           twine check dist/*
           twine upload dist/*
+
+  publish-deb-packages:
+    runs-on: ubuntu-latest
+    needs: [
+      linux-pip-package-test,
+      windows-pip-package-test,
+      nuget-package-test,
+      deb-package-test,
+      static-dev-deb-package-test,
+      dev-deb-package-test
+    ]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: LazyPanda07/web-framework-apt
+
+    - name: Download deb packages
+      uses: actions/download-artifact@v4
+      with:
+        name: deb-packages
+
+    - name: Setup git config
+      run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "<>"
+        
+    - name: Publish
+      run: |
+          git add .
+          git commit -m "Update deb packages"
+          git push
+          
