@@ -21,7 +21,7 @@ headers = {
 
 # Upload each file
 for path, _, file_names in os.walk("dist"):
-    for file_name in file_name:
+    for file_name in file_names:
         with open(f"{path}/{file_name}", "rb") as file_content:
             files = {"content": (file_name, file_content)}
             response = requests.post(url, data=data, headers=headers, files=files)
