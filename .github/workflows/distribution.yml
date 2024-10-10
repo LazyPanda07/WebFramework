@@ -477,6 +477,9 @@ jobs:
       dev-deb-package-test
     ]
 
+    env:
+      EMAIL: semengricenko@gmail.com
+
     steps:
     - uses: actions/checkout@v4
       with:
