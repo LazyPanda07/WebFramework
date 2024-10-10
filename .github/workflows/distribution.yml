@@ -476,8 +476,6 @@ jobs:
       static-dev-deb-package-test,
       dev-deb-package-test
     ]
-    env:
-      EMAIL: semengricenko@gmail.com
 
     steps:
     - uses: actions/checkout@v4
@@ -494,6 +492,15 @@ jobs:
           git config --global user.name "Github Actions"
           git config --global user.email "<>"
         
+    - name: Import GPG key
+      uses: crazy-max/ghaction-import-gpg@v6
+      with:
+        gpg_private_key: ${{ secrets.DEB_GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+
+    - name: List keys
+      run: gpg -K
+
     - name: Publish
       run: |
           dpkg-scanpackages --multiversion . > Packages
