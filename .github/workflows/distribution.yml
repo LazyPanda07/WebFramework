@@ -511,5 +511,7 @@ jobs:
 
           git add .
           git commit -m "Update deb packages"
-          git push
+
+          git config --unset-all http.https://github.com/.extraheader
+          git push https://${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa
           
