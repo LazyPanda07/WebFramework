@@ -489,11 +489,6 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: deb-packages
-
-    - name: Setup git config
-      run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
         
     - name: Import GPG key
       uses: crazy-max/ghaction-import-gpg@v6
@@ -502,8 +497,6 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         
     - name: Publish
-      env:
-        TOKEN: ${{ secrets.COMMIT_TOKEN }}
       run: |
           dpkg-scanpackages --multiversion . > Packages
           gzip -k -f Packages
@@ -514,5 +507,5 @@ jobs:
 
           git add .
           git commit -m "Update deb packages"
-          git push https://$TOKEN@github.com/LazyPanda07/web_framework_ppa.git
+          git push https://${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa.git
           
