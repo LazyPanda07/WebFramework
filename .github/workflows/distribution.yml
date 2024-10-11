@@ -490,6 +490,11 @@ jobs:
       with:
         name: deb-packages
         
+    - name: Setup git config
+      run: |
+          git config user.name LazyPanda07
+          git config user.email semengricenko@gmail.com
+
     - name: Import GPG key
       uses: crazy-max/ghaction-import-gpg@v6
       with:
