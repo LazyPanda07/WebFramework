@@ -476,9 +476,6 @@ jobs:
       static-dev-deb-package-test,
       dev-deb-package-test
     ]
-    permissions:
-      contents: write
-      pages: write
 
     env:
       EMAIL: semengricenko@gmail.com
@@ -495,8 +492,8 @@ jobs:
 
     - name: Setup git config
       run: |
-          git config --global user.name "Github Actions"
-          git config --global user.email "<>"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
         
     - name: Import GPG key
       uses: crazy-max/ghaction-import-gpg@v6
@@ -518,5 +515,5 @@ jobs:
 
           git add .
           git commit -m "Update deb packages"
-          git push
+          git push https://${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa.git
           

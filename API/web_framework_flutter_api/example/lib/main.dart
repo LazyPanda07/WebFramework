@@ -12,6 +12,8 @@ import 'package:web_framework_flutter_api/web_framework_utilities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   if (Platform.isAndroid) {
     await unpackAndroidAssets();
   }
