@@ -528,6 +528,8 @@ jobs:
       # dev-deb-package-test,
       flutter-package
     ]
+    container:
+      image: lazypanda07/ubuntu_cxx20:android
     permissions:
       id-token: write
 
@@ -536,11 +538,6 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: flutter-package
-
-    - uses: dart-lang/setup-dart@v1
-
-    - name: Install dependencies
-      run: dart pub get
-    
+        
     - name: Publish
       run: dart pub publish --force
