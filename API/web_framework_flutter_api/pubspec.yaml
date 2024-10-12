@@ -1,5 +1,5 @@
 name: web_framework_flutter_api
-description: "Flutter API for WebFramework"
+description: "C++ HTTP/HTTPS web server with Flutter API for Android and Windows"
 version: 1.0.0
 homepage: https://github.com/Lazypanda07/WebFramework
 

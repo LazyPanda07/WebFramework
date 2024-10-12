@@ -8,7 +8,8 @@ abstract class WebFrameworkFlutterApiPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static WebFrameworkFlutterApiPlatform _instance = MethodChannelWebFrameworkFlutterApi();
+  static WebFrameworkFlutterApiPlatform _instance =
+      MethodChannelWebFrameworkFlutterApi();
 
   /// The default instance of [WebFrameworkFlutterApiPlatform] to use.
   ///

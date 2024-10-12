@@ -14,7 +14,8 @@ Future<String> unpackAndroidAssets() async {
   for (String key in manifestContent.keys) {
     String filePath = "${documentsDirectory.path}/$key";
     ByteData data = await rootBundle.load(key);
-    List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    List<int> bytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     File file = File(filePath);
     FileSystemEntityType type = FileSystemEntity.typeSync(filePath);
 

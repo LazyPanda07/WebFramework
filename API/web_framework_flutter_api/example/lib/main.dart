@@ -114,7 +114,8 @@ class _AppState extends State<App> {
     _recognizer?.dispose();
 
     if (_address.isNotEmpty) {
-      _recognizer = TapGestureRecognizer()..onTap = () => launchUrl(Uri.parse(_address));
+      _recognizer = TapGestureRecognizer()
+        ..onTap = () => launchUrl(Uri.parse(_address));
     } else {
       _recognizer = TapGestureRecognizer();
     }
@@ -128,7 +129,8 @@ class _AppState extends State<App> {
           Center(
             child: RichText(
                 text: TextSpan(children: [
-              TextSpan(text: _message, style: const TextStyle(color: Colors.black)),
+              TextSpan(
+                  text: _message, style: const TextStyle(color: Colors.black)),
               TextSpan(
                 text: _address,
                 style: const TextStyle(color: Colors.blue),
@@ -140,13 +142,17 @@ class _AppState extends State<App> {
             Center(
                 child: TextButton(
                     onPressed: stop,
-                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.blue), foregroundColor: WidgetStatePropertyAll(Colors.white)),
+                    style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                        foregroundColor: WidgetStatePropertyAll(Colors.white)),
                     child: const Text("Stop server")))
           else
             Center(
                 child: TextButton(
                     onPressed: start,
-                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.blue), foregroundColor: WidgetStatePropertyAll(Colors.white)),
+                    style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                        foregroundColor: WidgetStatePropertyAll(Colors.white)),
                     child: const Text("Start server")))
         ]),
       ),

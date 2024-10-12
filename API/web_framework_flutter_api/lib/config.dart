@@ -25,7 +25,9 @@ class Config {
     Pointer<Utf8> data = configPath.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    CreateConfigFromPath function = handler.instance.lookupFunction<CreateConfigFromPath, CreateConfigFromPath>("createConfigFromPath");
+    CreateConfigFromPath function = handler.instance
+        .lookupFunction<CreateConfigFromPath, CreateConfigFromPath>(
+            "createConfigFromPath");
 
     Pointer<Void> implementation = function.call(data, exception);
 
@@ -41,18 +43,23 @@ class Config {
   /// [serverConfiguration] *.json config file content
   ///
   /// [applicationDirectory] Working directory
-  static Future<Config> fromString(String serverConfiguration, String applicationDirectory) async {
+  static Future<Config> fromString(
+      String serverConfiguration, String applicationDirectory) async {
     DllHandler handler = await DllHandler.create();
 
     applicationDirectory = "${handler.assetsPath}/$applicationDirectory";
 
     Pointer<Utf8> serverConfigurationData = serverConfiguration.toNativeUtf8();
-    Pointer<Utf8> applicationDirectoryData = applicationDirectory.toNativeUtf8();
+    Pointer<Utf8> applicationDirectoryData =
+        applicationDirectory.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    CreateConfigFromString function = handler.instance.lookupFunction<CreateConfigFromString, CreateConfigFromString>("createConfigFromString");
+    CreateConfigFromString function = handler.instance
+        .lookupFunction<CreateConfigFromString, CreateConfigFromString>(
+            "createConfigFromString");
 
-    Pointer<Void> implementation = function.call(serverConfigurationData, applicationDirectoryData, exception);
+    Pointer<Void> implementation = function.call(
+        serverConfigurationData, applicationDirectoryData, exception);
 
     malloc.free(serverConfigurationData);
     malloc.free(applicationDirectoryData);
@@ -69,13 +76,15 @@ class Config {
   /// [value] New string value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationString(String key, String value, {bool recursive = true}) {
+  void overrideConfigurationString(String key, String value,
+      {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
     Pointer<Utf8> valueData = value.toNativeUtf8();
 
-    OverrideConfigurationStringDart function =
-        handler.instance.lookupFunction<OverrideConfigurationStringC, OverrideConfigurationStringDart>("overrideConfigurationString");
+    OverrideConfigurationStringDart function = handler.instance.lookupFunction<
+        OverrideConfigurationStringC,
+        OverrideConfigurationStringDart>("overrideConfigurationString");
 
     function.call(implementation, keyData, valueData, recursive, exception);
 
@@ -92,12 +101,14 @@ class Config {
   /// [value] New integer value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationInteger(String key, int value, {bool recursive = true}) {
+  void overrideConfigurationInteger(String key, int value,
+      {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
 
-    OverrideConfigurationIntegerDart function =
-        handler.instance.lookupFunction<OverrideConfigurationIntegerC, OverrideConfigurationIntegerDart>("overrideConfigurationInteger");
+    OverrideConfigurationIntegerDart function = handler.instance.lookupFunction<
+        OverrideConfigurationIntegerC,
+        OverrideConfigurationIntegerDart>("overrideConfigurationInteger");
 
     function.call(implementation, keyData, value, recursive, exception);
 
@@ -113,12 +124,14 @@ class Config {
   /// [value] New bool value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationBoolean(String key, bool value, {bool recursive = true}) {
+  void overrideConfigurationBoolean(String key, bool value,
+      {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
 
-    OverrideConfigurationBooleanDart function =
-        handler.instance.lookupFunction<OverrideConfigurationBooleanC, OverrideConfigurationBooleanDart>("overrideConfigurationBoolean");
+    OverrideConfigurationBooleanDart function = handler.instance.lookupFunction<
+        OverrideConfigurationBooleanC,
+        OverrideConfigurationBooleanDart>("overrideConfigurationBoolean");
 
     function.call(implementation, keyData, value, recursive, exception);
 
@@ -134,19 +147,24 @@ class Config {
   /// [value] New string array value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationStringArray(String key, List<String> value, {bool recursive = true}) {
+  void overrideConfigurationStringArray(String key, List<String> value,
+      {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
-    Pointer<Pointer<Utf8>> valueData = malloc.allocate(sizeOf<Pointer<Utf8>>() * value.length);
+    Pointer<Pointer<Utf8>> valueData =
+        malloc.allocate(sizeOf<Pointer<Utf8>>() * value.length);
 
     for (int i = 0; i < value.length; i++) {
       valueData[i] = value[i].toNativeUtf8();
     }
 
-    OverrideConfigurationStringArrayDart function =
-        handler.instance.lookupFunction<OverrideConfigurationStringArrayC, OverrideConfigurationStringArrayDart>("overrideConfigurationStringArray");
+    OverrideConfigurationStringArrayDart function = handler.instance
+        .lookupFunction<OverrideConfigurationStringArrayC,
+                OverrideConfigurationStringArrayDart>(
+            "overrideConfigurationStringArray");
 
-    function(implementation, keyData, valueData, recursive, value.length, exception);
+    function(
+        implementation, keyData, valueData, recursive, value.length, exception);
 
     malloc.free(keyData);
 
@@ -166,7 +184,8 @@ class Config {
   /// [value] New integer array value
   ///
   /// [recursive] Recursive search for key
-  void overrideConfigurationIntegerArray(String key, List<int> value, {bool recursive = true}) {
+  void overrideConfigurationIntegerArray(String key, List<int> value,
+      {bool recursive = true}) {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> keyData = key.toNativeUtf8();
     Pointer<Int64> valueData = malloc.allocate(sizeOf<Int64>() * value.length);
@@ -175,10 +194,13 @@ class Config {
       valueData[i] = value[i];
     }
 
-    OverrideConfigurationIntegerArrayDart function =
-        handler.instance.lookupFunction<OverrideConfigurationIntegerArrayC, OverrideConfigurationIntegerArrayDart>("overrideConfigurationIntegerArray");
+    OverrideConfigurationIntegerArrayDart function = handler.instance
+        .lookupFunction<OverrideConfigurationIntegerArrayC,
+                OverrideConfigurationIntegerArrayDart>(
+            "overrideConfigurationIntegerArray");
 
-    function(implementation, keyData, valueData, recursive, value.length, exception);
+    function(
+        implementation, keyData, valueData, recursive, value.length, exception);
 
     malloc.free(keyData);
     malloc.free(valueData);
@@ -193,7 +215,9 @@ class Config {
     Pointer<Utf8> data = basePath.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    OverrideBasePathDart function = handler.instance.lookupFunction<OverrideBasePathC, OverrideBasePathDart>("overrideBasePath");
+    OverrideBasePathDart function = handler.instance
+        .lookupFunction<OverrideBasePathC, OverrideBasePathDart>(
+            "overrideBasePath");
 
     function.call(implementation, data, exception);
 
@@ -211,9 +235,12 @@ class Config {
     Pointer<Utf8> data = key.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    GetConfigurationStringDart function = handler.instance.lookupFunction<GetConfigurationStringC, GetConfigurationStringDart>("getConfigurationString");
+    GetConfigurationStringDart function = handler.instance
+        .lookupFunction<GetConfigurationStringC, GetConfigurationStringDart>(
+            "getConfigurationString");
 
-    Pointer<Void> temp = function.call(implementation, data, recursive, exception);
+    Pointer<Void> temp =
+        function.call(implementation, data, recursive, exception);
 
     malloc.free(data);
 
@@ -235,7 +262,9 @@ class Config {
     Pointer<Utf8> data = key.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    GetConfigurationIntegerDart function = handler.instance.lookupFunction<GetConfigurationIntegerC, GetConfigurationIntegerDart>("getConfigurationInteger");
+    GetConfigurationIntegerDart function = handler.instance
+        .lookupFunction<GetConfigurationIntegerC, GetConfigurationIntegerDart>(
+            "getConfigurationInteger");
 
     int result = function.call(implementation, data, recursive, exception);
 
@@ -255,7 +284,9 @@ class Config {
     Pointer<Utf8> data = key.toNativeUtf8();
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    GetConfigurationBooleanDart function = handler.instance.lookupFunction<GetConfigurationBooleanC, GetConfigurationBooleanDart>("getConfigurationBoolean");
+    GetConfigurationBooleanDart function = handler.instance
+        .lookupFunction<GetConfigurationBooleanC, GetConfigurationBooleanDart>(
+            "getConfigurationBoolean");
 
     bool result = function.call(implementation, data, recursive, exception);
 
@@ -268,7 +299,8 @@ class Config {
 
   /// Get current config JSON string data
   String getConfiguration() {
-    GetConfiguration function = handler.instance.lookupFunction<GetConfiguration, GetConfiguration>("getConfiguration");
+    GetConfiguration function = handler.instance
+        .lookupFunction<GetConfiguration, GetConfiguration>("getConfiguration");
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Void> temp = function.call(implementation, exception);
@@ -284,7 +316,9 @@ class Config {
 
   /// Get raw config JSON string data
   String getRawConfiguration() {
-    GetRawConfiguration function = handler.instance.lookupFunction<GetRawConfiguration, GetRawConfiguration>("getRawConfiguration");
+    GetRawConfiguration function = handler.instance
+        .lookupFunction<GetRawConfiguration, GetRawConfiguration>(
+            "getRawConfiguration");
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> result = function.call(implementation, exception);
@@ -298,7 +332,8 @@ class Config {
   String getBasePath() {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    GetBasePath function = handler.instance.lookupFunction<GetBasePath, GetBasePath>("getBasePath");
+    GetBasePath function = handler.instance
+        .lookupFunction<GetBasePath, GetBasePath>("getBasePath");
 
     Pointer<Void> string = function.call(implementation, exception);
 

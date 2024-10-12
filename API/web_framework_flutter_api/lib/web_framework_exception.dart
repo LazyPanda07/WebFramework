@@ -19,7 +19,8 @@ class WebFrameworkException implements Exception {
     return exception;
   }
 
-  static void checkException(Pointer<Pointer<Void>> exception, DllHandler handler) {
+  static void checkException(
+      Pointer<Pointer<Void>> exception, DllHandler handler) {
     if (exception.value.address != 0) {
       throw WebFrameworkException(exception, handler);
     }

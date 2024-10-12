@@ -30,7 +30,9 @@ class WebFramework {
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> data = configPath.toNativeUtf8();
-    CreateWebFrameworkFromPath function = handler.instance.lookupFunction<CreateWebFrameworkFromPath, CreateWebFrameworkFromPath>("createWebFrameworkFromPath");
+    CreateWebFrameworkFromPath function = handler.instance
+        .lookupFunction<CreateWebFrameworkFromPath, CreateWebFrameworkFromPath>(
+            "createWebFrameworkFromPath");
 
     Pointer<Void> implementation = function.call(data, exception);
 
@@ -46,18 +48,22 @@ class WebFramework {
   /// [serverConfiguration] *.json config file content
   ///
   /// [applicationDirectory] Working directory
-  static Future<WebFramework> fromString(String serverConfiguration, String applicationDirectory) async {
+  static Future<WebFramework> fromString(
+      String serverConfiguration, String applicationDirectory) async {
     DllHandler handler = await DllHandler.create();
 
     applicationDirectory = "${handler.assetsPath}/$applicationDirectory";
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
     Pointer<Utf8> serverConfigurationData = serverConfiguration.toNativeUtf8();
-    Pointer<Utf8> applicationDirectoryData = applicationDirectory.toNativeUtf8();
-    CreateWebFrameworkFromString function =
-        handler.instance.lookupFunction<CreateWebFrameworkFromString, CreateWebFrameworkFromString>("createWebFrameworkFromString");
+    Pointer<Utf8> applicationDirectoryData =
+        applicationDirectory.toNativeUtf8();
+    CreateWebFrameworkFromString function = handler.instance.lookupFunction<
+        CreateWebFrameworkFromString,
+        CreateWebFrameworkFromString>("createWebFrameworkFromString");
 
-    Pointer<Void> implementation = function.call(serverConfigurationData, applicationDirectoryData, exception);
+    Pointer<Void> implementation = function.call(
+        serverConfigurationData, applicationDirectoryData, exception);
 
     malloc.free(serverConfigurationData);
     malloc.free(applicationDirectoryData);
@@ -75,10 +81,12 @@ class WebFramework {
 
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    CreateWebFrameworkFromConfig function =
-        handler.instance.lookupFunction<CreateWebFrameworkFromConfig, CreateWebFrameworkFromConfig>("createWebFrameworkFromConfig");
+    CreateWebFrameworkFromConfig function = handler.instance.lookupFunction<
+        CreateWebFrameworkFromConfig,
+        CreateWebFrameworkFromConfig>("createWebFrameworkFromConfig");
 
-    Pointer<Void> implementation = function.call(config.implementation, exception);
+    Pointer<Void> implementation =
+        function.call(config.implementation, exception);
 
     WebFrameworkException.checkException(exception, handler);
 
@@ -92,20 +100,30 @@ class WebFramework {
     }
 
     _startIsolate = await Isolate.spawn((Map data) {
-      Pointer<Void> implementation = Pointer<Void>.fromAddress(data["implementation"] as int);
-      DynamicLibrary library = DynamicLibrary.open(data["libraryPath"] as String);
+      Pointer<Void> implementation =
+          Pointer<Void>.fromAddress(data["implementation"] as int);
+      DynamicLibrary library =
+          DynamicLibrary.open(data["libraryPath"] as String);
       SendPort port = data["port"] as SendPort;
 
-      Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
-      StartWebFrameworkServerDart function = library.lookupFunction<StartWebFrameworkServerC, StartWebFrameworkServerDart>("startWebFrameworkServer");
+      Pointer<Pointer<Void>> exception =
+          WebFrameworkException.createException();
+      StartWebFrameworkServerDart function = library.lookupFunction<
+          StartWebFrameworkServerC,
+          StartWebFrameworkServerDart>("startWebFrameworkServer");
 
       function.call(implementation, true, nullptr, exception);
 
       port.send(exception.address);
-    }, {"implementation": _implementation.address, "libraryPath": _handler.libraryPath, "port": _startPort.sendPort});
+    }, {
+      "implementation": _implementation.address,
+      "libraryPath": _handler.libraryPath,
+      "port": _startPort.sendPort
+    });
 
     if (wait) {
-      Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(await _startPort.first as int);
+      Pointer<Pointer<Void>> exception =
+          Pointer<Pointer<Void>>.fromAddress(await _startPort.first as int);
 
       _startIsolate?.kill(priority: Isolate.immediate);
       _startIsolate = null;
@@ -113,7 +131,8 @@ class WebFramework {
       WebFrameworkException.checkException(exception, _handler);
     } else {
       _startPort.first.then((address) {
-        Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(address as int);
+        Pointer<Pointer<Void>> exception =
+            Pointer<Pointer<Void>>.fromAddress(address as int);
 
         _startIsolate?.kill(priority: Isolate.immediate);
         _startIsolate = null;
@@ -130,20 +149,30 @@ class WebFramework {
     }
 
     _stopIsolate = await Isolate.spawn((Map data) {
-      Pointer<Void> implementation = Pointer<Void>.fromAddress(data["implementation"] as int);
+      Pointer<Void> implementation =
+          Pointer<Void>.fromAddress(data["implementation"] as int);
       SendPort port = data["port"] as SendPort;
-      DynamicLibrary library = DynamicLibrary.open(data["libraryPath"] as String);
+      DynamicLibrary library =
+          DynamicLibrary.open(data["libraryPath"] as String);
 
-      Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
-      StopWebFrameworkServerDart function = library.lookupFunction<StopWebFrameworkServerC, StopWebFrameworkServerDart>("stopWebFrameworkServer");
+      Pointer<Pointer<Void>> exception =
+          WebFrameworkException.createException();
+      StopWebFrameworkServerDart function = library.lookupFunction<
+          StopWebFrameworkServerC,
+          StopWebFrameworkServerDart>("stopWebFrameworkServer");
 
       function.call(implementation, true, exception);
 
       port.send(exception.address);
-    }, {"implementation": _implementation.address, "libraryPath": _handler.libraryPath, "port": _stopPort.sendPort});
+    }, {
+      "implementation": _implementation.address,
+      "libraryPath": _handler.libraryPath,
+      "port": _stopPort.sendPort
+    });
 
     if (wait) {
-      Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(await _stopPort.first as int);
+      Pointer<Pointer<Void>> exception =
+          Pointer<Pointer<Void>>.fromAddress(await _stopPort.first as int);
 
       _stopIsolate?.kill(priority: Isolate.immediate);
       _stopIsolate = null;
@@ -151,7 +180,8 @@ class WebFramework {
       WebFrameworkException.checkException(exception, _handler);
     } else {
       _stopPort.first.then((address) {
-        Pointer<Pointer<Void>> exception = Pointer<Pointer<Void>>.fromAddress(address as int);
+        Pointer<Pointer<Void>> exception =
+            Pointer<Pointer<Void>>.fromAddress(address as int);
 
         _stopIsolate?.kill(priority: Isolate.immediate);
         _stopIsolate = null;
@@ -165,7 +195,9 @@ class WebFramework {
   bool isServerRunning() {
     Pointer<Pointer<Void>> exception = WebFrameworkException.createException();
 
-    IsServerRunningDart function = _handler.instance.lookupFunction<IsServerRunningC, IsServerRunningDart>("isServerRunning");
+    IsServerRunningDart function = _handler.instance
+        .lookupFunction<IsServerRunningC, IsServerRunningDart>(
+            "isServerRunning");
 
     bool result = function.call(_implementation, exception);
 
