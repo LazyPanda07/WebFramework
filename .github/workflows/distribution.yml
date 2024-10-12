@@ -532,12 +532,15 @@ jobs:
       id-token: write
 
     steps:
-    - uses: dart-lang/setup-dart@v1
-
     - name: Download flutter package
       uses: actions/download-artifact@v4
       with:
         name: flutter-package
+
+    - uses: dart-lang/setup-dart@v1
+
+    - name: Install dependencies
+      run: dart pub get
     
     - name: Publish
       run: dart pub publish --force
