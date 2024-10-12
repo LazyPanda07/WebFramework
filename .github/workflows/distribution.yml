@@ -540,4 +540,6 @@ jobs:
         name: flutter-package
         
     - name: Publish
-      run: dart pub publish --force
+      run: |
+          git config --global --add safe.directory ${FLUTTER_PATH}
+          dart pub publish --force
