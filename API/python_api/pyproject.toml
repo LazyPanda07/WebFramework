@@ -12,13 +12,15 @@ authors = [
 maintainers = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
 ]
-license = { file = "../../LICENSE" }
 keywords = ["Web"]
 version = "1.0.0"
 dependencies = [
     "multipledispatch",
     "requests",
     "tqdm"
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License"
 ]
 
 [project.urls]
