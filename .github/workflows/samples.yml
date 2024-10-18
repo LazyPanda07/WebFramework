@@ -6,7 +6,7 @@ on:
   
   
 env:
-  flutter-version: 3.24.2
+  flutter-version: 3.24.3
   android-api-version: 35
 
 

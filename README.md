@@ -19,6 +19,9 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 ### Linux
 * uuid-dev
 
+### Samples
+[Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 8.0, Python
+
 ## Windows
 ### Build
 1. Visual Studio
@@ -40,9 +43,6 @@ cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "NMake Makefiles" .. && n
 ```
 ***NMake doesn't support multithreaded builds***
 * ```WebFramework``` will be installed in ```WebFrameworkLibrary``` directory in project directory
-
-### Samples
-[Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 8.0, Python
 
 ## Linux
 ### Build
