@@ -1,7 +1,6 @@
 Package: web-framework
 Version: 1.0.0
 Maintainer: lazypanda07 semengricenko@gmail.com
-Depends: gcc-13 | clang-18
 Architecture: amd64
 Homepage: https://github.com/LazyPanda07/WebFramework
 Description: Web framework for C++
