@@ -23,7 +23,7 @@ set(
 	ssl
 	crypto
 )
-option(SHARED_WEB_FRAMEWORK "" ON)
+option(SHARED_WEB_FRAMEWORK "Build WebFramework shared library for using in different APIs" ON)
 
 project(WebFramework)
 
