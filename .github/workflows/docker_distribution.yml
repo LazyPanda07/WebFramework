@@ -1,0 +1,45 @@
+name: "Docker Distribution"
+
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+          make install -j $(nproc)
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../../DockerTests/app -DPYTHON_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF .. && make install -j $(nproc)
+    
+    - name: Build base image
+      working-directory: Docker
+      run: sudo docker build . -t base_image
+
+    - name: Build image
+      working-directory: DockerTests
+      run: sudo docker build . -t test_image
+
+    - name: Run container
+      run: |
+          sudo docker run -p 8080:8080 test_image:latest
+          curl http://127.0.0.1:8080 > out.json
+          cat out.json
