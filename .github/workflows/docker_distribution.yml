@@ -43,4 +43,23 @@ jobs:
       run: |
           sudo docker run -d -p 8080:8080 test_image:latest
           curl http://127.0.0.1:8080 > out.json
-          cat out.json
+          diff out.json DistributionTests/reference.json
+
+
+  docker-publish:
+    runs-on: ubuntu-latest
+    needs: docker-test
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Build web_framework_deploy
+        working-directory: Docker
+        run: sudo docker build . -t lazypanda07/web_framework_deploy:1.0.1
+          
+      - name: Push web_framework_deploy
+        run: |
+            sudo docker login -u "${{ secrets.DOCKER_HUB_LOGIN }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+            sudo docker push lazypanda07/web_framework_deploy:1.0.1
