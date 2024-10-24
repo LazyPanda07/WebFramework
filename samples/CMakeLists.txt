@@ -6,9 +6,10 @@ option(CXX_SAMPLE "Build C++ sample" ON)
 option(CC_SAMPLE "Build C sample" ON)
 option(CSHARP_SAMPLE "Build C# sample" ON)
 
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
+
 project(samples)
 
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 set(WEB_FRAMEWORK_SDK ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE STRING "")
 set(WEB_FRAMEWORK_DIRECTORY ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE STRING "")
 
