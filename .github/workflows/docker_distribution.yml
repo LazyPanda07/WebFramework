@@ -41,6 +41,6 @@ jobs:
 
     - name: Run container
       run: |
-          sudo docker run -p 8080:8080 test_image:latest
+          sudo docker run -d -p 8080:8080 test_image:latest
           curl http://127.0.0.1:8080 > out.json
           cat out.json

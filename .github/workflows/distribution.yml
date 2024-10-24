@@ -414,7 +414,6 @@ jobs:
 
 
   publish-nuget-package:
-    if: false
     runs-on: ubuntu-latest
     needs: [
       linux-pip-package-test,
@@ -436,7 +435,6 @@ jobs:
 
 
   publish-pip-package:
-    if: false
     runs-on: ubuntu-latest
     needs: [
       linux-pip-package-test,
