@@ -13,5 +13,5 @@
 
 ## API versions update
 - [ ] C#
-- [ ] Flutter
+- [ ] Flutter(pubspec.yml, CHANGELOG.md)
 - [ ] Python
