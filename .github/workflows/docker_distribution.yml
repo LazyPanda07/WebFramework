@@ -38,7 +38,7 @@ jobs:
           cmake -DCMAKE_INSTALL_PREFIX=../../DockerTests/app -DPYTHON_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF .. && make install -j $(nproc)
     
     - name: Build base image
-      working-directory: Docker
+      working-directory: Docker/web_framework_deploy
       run: sudo docker build . -t base_image
 
     - name: Build image
