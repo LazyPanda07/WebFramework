@@ -2,7 +2,7 @@ FROM ubuntu:24.10 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV WEB_FRAMEWORK_VERSION=1.0.1
+ENV WEB_FRAMEWORK_VERSION=1.0.2
 
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev
@@ -12,7 +12,7 @@ RUN mkdir -p web_framework_server/build
 
 WORKDIR /web_framework_server/build
 
-RUN cmake -DWEB_FRAMEWORK_TAG=v3.0.6 ..
+RUN cmake -DWEB_FRAMEWORK_TAG=v3.0.7 ..
 RUN make install -j $(nproc)
 RUN mkdir /opt/web_framework_server && cp /web_framework_server/build/bin/web_framework_server /opt/web_framework_server
 

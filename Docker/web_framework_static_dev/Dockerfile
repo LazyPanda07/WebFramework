@@ -2,7 +2,7 @@ FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV WEB_FRAMEWORK_STATIC_DEV_VERSION=1.0.1
+ENV WEB_FRAMEWORK_STATIC_DEV_VERSION=1.0.2
 
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo

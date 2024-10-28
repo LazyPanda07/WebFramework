@@ -2,15 +2,13 @@ name: Distribution
 
 
 on:
-  push:
-    branches: [master]
   workflow_dispatch:
 
 
 env:
   dotnet-version: 8.0
-  deb-package-version: 1.0.1
-  deb-package-release-number: 2
+  deb-package-version: 1.0.2
+  deb-package-release-number: 3
 
 
 jobs:

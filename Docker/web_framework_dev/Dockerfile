@@ -8,7 +8,7 @@ ENV FLUTTER_VERSION=3.24.4
 ENV FLUTTER_PATH=/opt/flutter
 ENV FLUTTER_BIN_PATH=${FLUTTER_PATH}/bin
 
-ENV WEB_FRAMEWORK_DEV_VERSION=1.0.1
+ENV WEB_FRAMEWORK_DEV_VERSION=1.0.2
 
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo wget unzip zip openjdk-21-jdk
