@@ -2,8 +2,6 @@
 
 #include "DLLHandler.h"
 
-typedef void* WebFrameworkException;
-
 /**
  * @brief Get error message from exception or NULL if exception is NULL
  * @param exception WebFrameworkException

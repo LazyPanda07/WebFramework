@@ -86,7 +86,7 @@ namespace framework
 
 		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, configPath.data(), &exception);
 
-		if (exception)
+		if (exception) //-V547
 		{
 			throw exceptions::WebFrameworkException(exception);
 		}
@@ -100,7 +100,7 @@ namespace framework
 
 		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
 
-		if (exception)
+		if (exception) //-V547
 		{
 			throw exceptions::WebFrameworkException(exception);
 		}
@@ -114,7 +114,7 @@ namespace framework
 
 		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
 
-		if (exception)
+		if (exception) //-V547
 		{
 			throw exceptions::WebFrameworkException(exception);
 		}
@@ -142,7 +142,7 @@ namespace framework
 
 		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
 
-		if (exception)
+		if (exception) //-V547
 		{
 			throw exceptions::WebFrameworkException(exception);
 		}
@@ -155,7 +155,7 @@ namespace framework
 
 		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(stopWebFrameworkServer, wait, &exception);
 
-		if (exception)
+		if (exception) //-V547
 		{
 			throw exceptions::WebFrameworkException(exception);
 		}
@@ -180,7 +180,7 @@ namespace framework
 	{
 		if (!weak)
 		{
-			utility::DLLHandler::getInstance().free(implementation);
+			utility::DLLHandler::getInstance().deleteWebFramework(implementation);
 		}
 	}
 }

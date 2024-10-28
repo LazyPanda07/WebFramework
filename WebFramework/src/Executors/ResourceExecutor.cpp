@@ -158,7 +158,7 @@ namespace framework
 
 	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
-		request.sendAssetFile(request.getRawParameters(), response);
+		
 	}
 
 	const filesystem::path& ResourceExecutor::getPathToAssets() const

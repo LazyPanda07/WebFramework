@@ -59,7 +59,10 @@ public sealed unsafe partial class Config : IDisposable
 	private static unsafe partial void* getBasePath(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteWebFrameworkObject(void* implementation);
+	private static unsafe partial void deleteWebFrameworkConfig(void* implementation);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void deleteWebFrameworkString(void* implementation);
 
 	/// <summary>
 	/// 
@@ -255,7 +258,7 @@ public sealed unsafe partial class Config : IDisposable
 
 		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
 
-		deleteWebFrameworkObject(stringPointer);
+		deleteWebFrameworkString(stringPointer);
 
 		return result;
 	}
@@ -320,7 +323,7 @@ public sealed unsafe partial class Config : IDisposable
 
 		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
 
-		deleteWebFrameworkObject(stringPointer);
+		deleteWebFrameworkString(stringPointer);
 
 		return result;
 	}
@@ -362,10 +365,10 @@ public sealed unsafe partial class Config : IDisposable
 
 		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
 
-		deleteWebFrameworkObject(stringPointer);
+		deleteWebFrameworkString(stringPointer);
 
 		return result;
 	}
 
-	public void Dispose() => deleteWebFrameworkObject(implementation);
+	public void Dispose() => deleteWebFrameworkConfig(implementation);
 }

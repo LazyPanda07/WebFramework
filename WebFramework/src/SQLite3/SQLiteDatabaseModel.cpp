@@ -77,23 +77,10 @@ namespace framework
 
 			if (query.find("INSERT") != string::npos)
 			{
-				try
-				{
-					return this->execute(format("SELECT * FROM {} WHERE id = {}", this->getTableName(), to_string(sqlite3_last_insert_rowid(**database))));
-				}
-				catch (const exceptions::SQLite3Exception&)
-				{
-
-				}
+				return this->execute(format("SELECT * FROM {} WHERE id = {}", this->getTableName(), to_string(sqlite3_last_insert_rowid(**database))));
 			}
 
 			return utility::SQLiteResult(move(output));
-		}
-
-		SQLiteDatabaseModel::SQLiteDatabaseModel() :
-			database(databaseConstructor)
-		{
-
 		}
 
 		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query)

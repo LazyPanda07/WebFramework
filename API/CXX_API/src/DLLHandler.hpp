@@ -50,7 +50,13 @@ namespace framework
 			template<typename T, typename... Args>
 			auto callClassMemberFunction(std::string_view functionName, void* implementation, Args&&... args);
 
-			void free(void* implementation);
+			void deleteString(void* implementation);
+
+			void deleteConfig(void* implementation);
+
+			void deleteWebFramework(void* implementation);
+
+			void deleteException(void* implementation);
 
 			friend void utility::initializeWebFramework(const std::filesystem::path& pathToDLL);
 			friend struct std::default_delete<DLLHandler>;
@@ -79,7 +85,7 @@ namespace framework
 
 						return std::format("{}/lib{}.so", parent.string(), fileName.string());
 					}
-					
+
 					return std::format("lib{}.so", pathToSource.string());
 #else
 					return std::format("{}.dll", pathToSource.string());
@@ -153,11 +159,32 @@ namespace framework
 			return function(implementation, std::forward<Args>(args)...);
 		}
 
-		inline void DLLHandler::free(void* implementation)
+		inline void DLLHandler::deleteString(void* implementation)
 		{
-			using deleteWebFrameworkObject = void (*)(void* implementation);
+			using deleteWebFrameworkString = void (*)(void* implementation);
 
-			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkObject, implementation);
+			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, implementation);
+		}
+
+		inline void DLLHandler::deleteConfig(void* implementation)
+		{
+			using deleteWebFrameworkConfig = void (*)(void* implementation);
+
+			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkConfig, implementation);
+		}
+
+		inline void DLLHandler::deleteWebFramework(void* implementation)
+		{
+			using deleteWebFramework = void (*)(void* implementation);
+
+			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, implementation);
+		}
+
+		inline void DLLHandler::deleteException(void* implementation)
+		{
+			using deleteWebFrameworkException = void (*)(void* implementation);
+
+			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, implementation);
 		}
 	}
 }

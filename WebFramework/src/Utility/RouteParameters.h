@@ -25,7 +25,9 @@ namespace framework
 
 			RouteParameters(const std::string& jsonRoute);
 
-			RouteParameters(RouteParameters&& other) noexcept;
+			RouteParameters(RouteParameters&& other) noexcept = default;
+
+			RouteParameters& operator =(RouteParameters&& other) noexcept = default;
 		};
 	}
 }

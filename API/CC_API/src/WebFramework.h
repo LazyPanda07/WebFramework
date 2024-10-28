@@ -4,8 +4,6 @@
 #include "Config.h"
 #include "WebFrameworkException.h"
 
-typedef void* WebFramework;
-
 /**
  * @brief Create WebFramework
  * @param configPath Path to *.json config

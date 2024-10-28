@@ -26,9 +26,6 @@ namespace framework
 		protected:
 			std::shared_ptr<SQLiteDatabase> database;
 
-		private:
-			std::shared_ptr<SQLiteDatabase> databaseConstructor;
-
 		protected:
 			/**
 			 * @brief Check that string represent number
@@ -53,7 +50,7 @@ namespace framework
 			utility::SQLiteResult execute(const std::string& query);
 
 		public:
-			SQLiteDatabaseModel();
+			SQLiteDatabaseModel() = default;
 
 			SQLiteDatabaseModel(const SQLiteDatabaseModel&) = delete;
 

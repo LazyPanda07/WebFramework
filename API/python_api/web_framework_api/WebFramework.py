@@ -130,4 +130,4 @@ class WebFramework:
         return result
 
     def __del__(self):
-        DLLHandler.get_instance().free(self.__implementation)
+        DLLHandler.get_instance().delete_web_framework(self.__implementation)

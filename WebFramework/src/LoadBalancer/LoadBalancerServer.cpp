@@ -20,15 +20,15 @@ namespace framework
 
 		}
 
-		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
+		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup) //-V688
 		{
 			static mutex dataMutex;
-			const ServerData* data = nullptr;
+			const ServerData* serveData = nullptr;
 
 			{
 				unique_lock<mutex> lock(dataMutex);
 
-				data = &*min_element
+				serveData = &*min_element
 				(
 					allServers.begin(), allServers.end(),
 					[](const ServerData& left, const ServerData& right)
@@ -37,10 +37,10 @@ namespace framework
 					}
 				);
 
-				data->heuristic->onStart();
+				serveData->heuristic->onStart();
 			}
 
-			const auto& [connectionData, heuristic] = *data;
+			const auto& [connectionData, heuristic] = *serveData;
 			SSL* ssl = nullptr;
 
 			if (useHTTPS)
@@ -119,7 +119,7 @@ namespace framework
 		(
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
 			string_view heuristicName, const vector<HMODULE>& loadSources,
-			const unordered_map<string, vector<int64_t>>& allServers,
+			const unordered_map<string, vector<int64_t>>& allServers, //-V688
 			const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const filesystem::path& pathToTemplates
 		) :
 			BaseTCPServer

@@ -81,6 +81,11 @@ namespace framework
 
 			T* model = static_cast<T*>(malloc(sizeof(T)));
 
+			if (!model)
+			{
+				throw std::bad_alloc();
+			}
+
 			memset(model, 0, sizeof(T));
 
 			model->databaseConstructor = database;

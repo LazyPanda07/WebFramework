@@ -32,7 +32,7 @@ public sealed unsafe partial class WebFramework : IDisposable
 	private static unsafe partial bool isServerRunning(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteWebFrameworkObject(void* implementation);
+	private static unsafe partial void deleteWebFramework(void* implementation);
 
 	/// <summary>
 	/// 
@@ -148,5 +148,5 @@ public sealed unsafe partial class WebFramework : IDisposable
 		return result;
 	}
 
-	public void Dispose() => deleteWebFrameworkObject(implementation);
+	public void Dispose() => deleteWebFramework(implementation);
 }

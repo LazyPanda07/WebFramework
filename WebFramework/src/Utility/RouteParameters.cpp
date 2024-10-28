@@ -45,13 +45,5 @@ namespace framework
 				parameter += jsonRoute[i];
 			}
 		}
-
-		RouteParameters::RouteParameters(RouteParameters&& other) noexcept :
-			baseRoute(move(other.baseRoute)),
-			parameters(move(other.parameters)),
-			indices(move(other.indices))
-		{
-
-		}
 	}
 }

@@ -20,6 +20,9 @@ typedef void* HMODULE;
 
 typedef HMODULE DLLHandler;
 typedef void* WebFrameworkString;
+typedef void* Config;
+typedef void* WebFramework;
+typedef void* WebFrameworkException;
 
 /**
  * @brief Load WebFramework shared library
@@ -32,10 +35,28 @@ HMODULE getInstance(const char* pathToDLL);
 void* findFunction(const char* name);
 
 /**
- * @brief Free memory for any WebFramework object
- * @param object WebFramework object
+ * @brief Free memory
+ * @param string String object
  */
-void deleteWebFrameworkObject(void* object);
+void deleteWebFrameworkString(WebFrameworkString string);
+
+/**
+ * @brief Free memory
+ * @param config Config object
+ */
+void deleteWebFrameworkConfig(Config config);
+
+/**
+ * @brief Free memory
+ * @param webFramework WebFramework object
+ */
+void deleteWebFramework(WebFramework webFramework);
+
+/**
+ * @brief Free memory
+ * @param exception Exception object
+ */
+void deleteWebFrameworkException(WebFrameworkException exception);
 
 /**
  * @brief Get string from WebFrameworkString
@@ -117,9 +138,8 @@ inline HMODULE getInstance(const char* pathToDLL)
 #ifdef __LINUX__
 				printf("Can't load %s or its dependencies\n", pathToDLL);
 #else
-				printf("GetLastError(): %zd\n", (uint64_t)GetLastError());
+				printf("GetLastError(): %llu\n", (uint64_t)GetLastError());
 #endif
-
 				exit(-1);
 			}
 
@@ -146,11 +166,32 @@ inline void* findFunction(const char* name)
 #endif
 }
 
-inline void deleteWebFrameworkObject(void* object)
+inline void deleteWebFrameworkString(WebFrameworkString string)
 {
-	typedef void* (*deleteWebFrameworkObject)(void* object);
+	typedef void (*deleteWebFrameworkString)(void* string);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkObject, object);
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, string);
+}
+
+inline void deleteWebFrameworkConfig(Config config)
+{
+	typedef void (*deleteWebFrameworkConfig)(void* config);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkConfig, config);
+}
+
+inline void deleteWebFramework(WebFramework webFramework)
+{
+	typedef void (*deleteWebFramework)(void* webFramework);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, webFramework);
+}
+
+inline void deleteWebFrameworkException(WebFrameworkException exception)
+{
+	typedef void (*deleteWebFrameworkException)(void* exception);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
 }
 
 inline const char* getDataFromString(WebFrameworkString string)

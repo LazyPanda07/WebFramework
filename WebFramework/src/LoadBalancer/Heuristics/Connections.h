@@ -9,7 +9,7 @@ namespace framework
 		class Connections : public BaseLoadBalancerHeuristic
 		{
 		private:
-			std::atomic_uint64_t connectons;
+			std::atomic_uint64_t connections;
 
 		public:
 			Connections(std::string_view ip, std::string_view port, bool useHTTPS);

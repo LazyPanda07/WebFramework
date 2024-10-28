@@ -32,7 +32,11 @@ namespace framework
 
 				ExecutorSettings();
 
-				ExecutorSettings(ExecutorSettings&& other) noexcept;
+				ExecutorSettings(ExecutorSettings&& other) noexcept = default;
+
+				ExecutorSettings& operator =(ExecutorSettings&& other) noexcept = default;
+
+				~ExecutorSettings() = default;
 			};
 
 		private:
