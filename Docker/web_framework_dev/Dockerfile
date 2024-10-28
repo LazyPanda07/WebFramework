@@ -8,8 +8,6 @@ ENV FLUTTER_VERSION=3.24.4
 ENV FLUTTER_PATH=/opt/flutter
 ENV FLUTTER_BIN_PATH=${FLUTTER_PATH}/bin
 
-ENV WEB_FRAMEWORK_DEV_VERSION="1.0.2"
-
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo wget unzip zip openjdk-21-jdk
 RUN apt install -y dotnet-sdk-8.0 python3
@@ -35,4 +33,4 @@ RUN curl -s --compressed "https://LazyPanda07.github.io/web_framework_ppa/KEY.gp
 RUN curl -s --compressed -o /etc/apt/sources.list.d/web_framework.list "https://LazyPanda07.github.io/web_framework_ppa/web_framework.list"
 RUN apt update
 
-RUN apt install -y web-framework-dev=${WEB_FRAMEWORK_DEV_VERSION}
+RUN apt install -y web-framework-dev=1.0.2
