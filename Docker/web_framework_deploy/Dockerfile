@@ -2,7 +2,7 @@ FROM ubuntu:24.10 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV WEB_FRAMEWORK_VERSION=1.0.2
+ENV WEB_FRAMEWORK_VERSION="1.0.2"
 
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev
