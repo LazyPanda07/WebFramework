@@ -5,6 +5,12 @@ on:
   workflow_dispatch:
 
 
+env:
+  WEB_FRAMEWORK_DEPLOY_VERSION: 1.0.2
+  WEB_FRAMEWORK_DEV_VERSION: 1.0.2
+  WEB_FRAMEWORK_STATIC_DEV_VERSION: 1.0.2
+
+
 jobs:
   docker-test:
     runs-on: ubuntu-24.04
@@ -41,6 +47,62 @@ jobs:
 
     - name: Run container
       run: |
-          sudo docker run -p 8080:8080 test_image:latest
-          curl http://127.0.0.1:8080 > out.json
-          cat out.json
+          sudo docker run -d -p 8080:8080 test_image:latest
+          curl http://127.0.0.1:8080
+
+
+  docker-publish-deploy:
+    runs-on: ubuntu-latest
+    needs: docker-test
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Build web_framework_deploy
+        working-directory: Docker/web_framework_deploy
+        run: sudo docker build . -t lazypanda07/web_framework_deploy:${WEB_FRAMEWORK_DEPLOY_VERSION}
+          
+      - name: Push web_framework_deploy
+        run: |
+            sudo docker login -u "${{ secrets.DOCKER_HUB_LOGIN }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+            sudo docker push lazypanda07/web_framework_deploy:${WEB_FRAMEWORK_DEPLOY_VERSION}
+
+
+  docker-publish-dev:
+    runs-on: ubuntu-latest
+    needs: docker-publish-deploy
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Build web_framework_dev
+        working-directory: Docker/web_framework_dev
+        run: sudo docker build . -t lazypanda07/web_framework_dev:${WEB_FRAMEWORK_DEV_VERSION}
+          
+      - name: Push web_framework_deploy
+        run: |
+            sudo docker login -u "${{ secrets.DOCKER_HUB_LOGIN }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+            sudo docker push lazypanda07/web_framework_dev:${WEB_FRAMEWORK_DEV_VERSION}
+
+
+  docker-publish-static-dev:
+    runs-on: ubuntu-latest
+    needs: docker-publish-deploy
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Build web_framework_static_dev
+        working-directory: Docker/web_framework_static_dev
+        run: sudo docker build . -t lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
+          
+      - name: Push web_framework_deploy
+        run: |
+            sudo docker login -u "${{ secrets.DOCKER_HUB_LOGIN }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+            sudo docker push lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}

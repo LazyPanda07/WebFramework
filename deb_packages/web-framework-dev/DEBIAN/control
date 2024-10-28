@@ -1,5 +1,5 @@
 Package: web-framework-dev
-Version: 1.0.0
+Version: 1.0.2
 Maintainer: lazypanda07 semengricenko@gmail.com
 Depends: build-essential | clang, uuid-dev
 Architecture: amd64
