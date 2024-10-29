@@ -173,7 +173,9 @@ namespace framework
 						).first;
 						executor->second->init(executorSettings->second);
 
-						if (executor->second->getType() == BaseExecutor::executorType::stateful || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful)
+						BaseExecutor::executorType executorType = executor->second->getType();
+
+						if (executorType == BaseExecutor::executorType::stateful || executorType == BaseExecutor::executorType::heavyOperationStateful)
 						{
 							executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
 						}
@@ -181,11 +183,16 @@ namespace framework
 				}
 			}
 
+			auto isHeavyOperation = [&executor]()
+				{
+					BaseExecutor::executorType executorType = executor->second->getType();
+
+					return executorType == BaseExecutor::executorType::heavyOperationStateless ||
+						executorType == BaseExecutor::executorType::heavyOperationStateful;
+				};
+
 			void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
-			BaseExecutor::executorType executorType = executor->second->getType();
-			bool isThreadPoolTask = fileRequest ? false :
-				(executorType == BaseExecutor::executorType::heavyOperationStateless ||
-					executorType == BaseExecutor::executorType::heavyOperationStateful);
+			bool isThreadPoolTask = fileRequest ? false : isHeavyOperation();
 
 			if (serverType == webServerType::threadPool && isThreadPoolTask)
 			{

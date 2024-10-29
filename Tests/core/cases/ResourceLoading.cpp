@@ -47,7 +47,5 @@ TEST(ResourceLoading, Index)
 
 	stream >> response;
 
-	std::cout << response.size() << ' ' << response << std::endl;
-
 	ASSERT_EQ(web::HTTPParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str());
 }

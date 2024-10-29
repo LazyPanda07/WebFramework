@@ -37,7 +37,7 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, const sockaddr& clientAddr, streams::IOSocketStream& stream) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
 		stream(stream),
@@ -118,7 +118,7 @@ namespace framework
 				string::const_iterator startValue = endKey + 1;
 				string::const_iterator endValue = findValue != string::npos ? (cookies.begin() + findValue) : (cookies.end());
 
-				result.insert(make_pair(string(startKey, endKey), string(startValue, endValue)));
+				result.try_emplace(string(startKey, endKey), string(startValue, endValue));
 
 				if (findValue == string::npos)
 				{
