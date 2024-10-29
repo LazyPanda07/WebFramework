@@ -94,7 +94,7 @@ namespace framework
 
 			if (!model->database)
 			{
-				model->databaseConstructor = database;
+				model->database = database;
 			}
 
 			return std::dynamic_pointer_cast<T>(data.emplace_back(std::shared_ptr<T>(model), typeHash).first);
