@@ -83,6 +83,12 @@ namespace framework
 			return utility::SQLiteResult(move(output));
 		}
 
+		SQLiteDatabaseModel::SQLiteDatabaseModel() :
+			database(databaseConstructor)
+		{
+
+		}
+
 		utility::SQLiteResult SQLiteDatabaseModel::raw(const string& query)
 		{
 			return this->execute(query);
