@@ -46,7 +46,7 @@ namespace framework
 		staticResources(staticResources),
 		dynamicResources(dynamicResources)
 	{
-		
+
 	}
 
 	const string& HTTPRequest::getRawParameters() const
@@ -102,10 +102,11 @@ namespace framework
 	unordered_map<string, string> HTTPRequest::getCookies() const
 	{
 		unordered_map<string, string> result;
+		const web::HeadersMap& headers = parser.getHeaders();
 
-		try
+		if (auto it = headers.find("Cookie"); it != headers.end())
 		{
-			const string& cookies = parser.getHeaders().at("Cookie");
+			const string& cookies = it->second;
 			size_t offset = 0;
 
 			while (true)
@@ -126,11 +127,6 @@ namespace framework
 
 				offset = findValue + 2;
 			}
-
-		}
-		catch (const out_of_range&)
-		{
-
 		}
 
 		return result;
@@ -157,7 +153,7 @@ namespace framework
 	{
 		filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
 		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
-		
+
 		if (!filesystem::exists(assetFilePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
@@ -180,7 +176,7 @@ namespace framework
 #pragma warning(push)
 #pragma warning(disable: 26800)
 
-		try
+		if (cache.contains(assetFilePath))
 		{
 			const string& data = cache[assetFilePath];
 
@@ -192,10 +188,6 @@ namespace framework
 			stream << builder.build(data);
 
 			return;
-		}
-		catch (const file_manager::exceptions::FileDoesNotExistException&)
-		{
-
 		}
 
 		ifstream fileStream(assetFilePath, ios_base::binary);
