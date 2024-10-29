@@ -4,7 +4,12 @@
 
 MultiUserDatabaseModel::MultiUserDatabaseModel()
 {
-	framework::sqlite::utility::SQLiteResult result = this->selectAll();
-
-	std::cout << "Select all: " << result.size() << std::endl;
+	this->createTable
+	(
+		{
+			{ "id", "INTEGER PRIMARY KEY AUTOINCREMENT" },
+			{ "user_id", "TEXT NOT NULL" },
+			{ "data", "TEXT NOT NULL" }
+		}
+	);
 }

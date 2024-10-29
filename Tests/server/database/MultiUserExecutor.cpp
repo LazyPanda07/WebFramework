@@ -31,14 +31,12 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 
 void MultiUserExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.createModel<MultiUserDatabaseModel>()->createTable
-	(
-		{
-			{ "id", "INTEGER PRIMARY KEY AUTOINCREMENT" },
-			{ "user_id", "TEXT NOT NULL" },
-			{ "data", "TEXT NOT NULL" }
-		}
-	);
+	std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
+
+	if (!model)
+	{
+		throw std::runtime_error(std::format("No model for {} in {}", MultiUserDatabaseModel::tableName, MultiUserDatabaseModel::databaseName));
+	}
 }
 
 void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
