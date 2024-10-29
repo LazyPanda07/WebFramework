@@ -156,7 +156,7 @@ namespace framework
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
-	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
+	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response) //-V524
 	{
 		request.sendAssetFile(request.getRawParameters(), response);
 	}

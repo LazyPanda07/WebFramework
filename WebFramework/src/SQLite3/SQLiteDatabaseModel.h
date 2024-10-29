@@ -23,11 +23,11 @@ namespace framework
 			static constexpr std::string_view databaseName = "";
 			static constexpr std::string_view tableName = "";
 
-		private:
-			std::shared_ptr<SQLiteDatabase> databaseConstructor;
-
 		protected:
 			std::shared_ptr<SQLiteDatabase> database;
+
+		private:
+			std::shared_ptr<SQLiteDatabase> databaseConstructor;
 
 		protected:
 			/**

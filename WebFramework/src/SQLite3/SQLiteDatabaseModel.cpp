@@ -84,7 +84,7 @@ namespace framework
 		}
 
 		SQLiteDatabaseModel::SQLiteDatabaseModel() :
-			database(databaseConstructor)
+			database(databaseConstructor) //-V670
 		{
 
 		}
