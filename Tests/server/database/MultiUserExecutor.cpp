@@ -31,12 +31,7 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 
 void MultiUserExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
-
-	if (!model)
-	{
-		throw std::runtime_error(std::format("No model for {} in {}", MultiUserDatabaseModel::tableName, MultiUserDatabaseModel::databaseName));
-	}
+	request.createModel<MultiUserDatabaseModel>();
 }
 
 void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
