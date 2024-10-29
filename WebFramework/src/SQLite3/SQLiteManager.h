@@ -88,9 +88,14 @@ namespace framework
 
 			memset(model, 0, sizeof(T));
 
-			model->databaseConstructor = database;
+			model->database = database;
 
 			model = new (model)(T)(std::forward<Args>(args)...);
+
+			if (!model->database)
+			{
+				model->database = database;
+			}
 
 			return std::dynamic_pointer_cast<T>(data.emplace_back(std::shared_ptr<T>(model), typeHash).first);
 		}
