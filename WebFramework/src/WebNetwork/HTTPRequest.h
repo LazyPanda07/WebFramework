@@ -27,7 +27,7 @@ namespace framework
 		streams::IOSocketStream& stream;
 		sqlite::SQLiteManager& database;
 		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
-		const sockaddr& clientAddr;
+		sockaddr clientAddr;
 		web::HTTPParser parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
@@ -115,7 +115,7 @@ namespace framework
 		/// Client's cookies
 		/// </summary>
 		/// <returns>HTTP cookies as map</returns>
-		std::unordered_map<std::string, std::string> getCookies() const;
+		web::HeadersMap getCookies() const;
 
 		/// <summary>
 		/// ResourceExecutor wrapper

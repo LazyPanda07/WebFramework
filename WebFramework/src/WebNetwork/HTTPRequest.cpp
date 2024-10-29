@@ -99,9 +99,9 @@ namespace framework
 		session.deleteAttribute(this->getClientIpV4(), name);
 	}
 
-	unordered_map<string, string> HTTPRequest::getCookies() const
+	web::HeadersMap HTTPRequest::getCookies() const
 	{
-		unordered_map<string, string> result;
+		web::HeadersMap result;
 		const web::HeadersMap& headers = parser.getHeaders();
 
 		if (auto it = headers.find("Cookie"); it != headers.end())
@@ -175,7 +175,6 @@ namespace framework
 
 #pragma warning(push)
 #pragma warning(disable: 26800)
-
 		if (cache.contains(assetFilePath))
 		{
 			const string& data = cache[assetFilePath];
@@ -208,7 +207,6 @@ namespace framework
 		);
 
 		stream << builder.build() + chunk;
-
 #pragma warning(pop)
 
 		while (!fileStream.eof())
