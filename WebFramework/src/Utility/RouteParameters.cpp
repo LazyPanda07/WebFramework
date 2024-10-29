@@ -24,15 +24,15 @@ namespace framework
 				{
 					if (parameter.find(stringType) != string::npos)
 					{
-						indices.push_back(parameters.insert(make_pair(parameter.substr(stringType.size()), string())).first->first);
+						indices.push_back(parameters.try_emplace(parameter.substr(stringType.size()), string()).first->first);
 					}
 					else if (parameter.find(integerType) != string::npos)
 					{
-						indices.push_back(parameters.insert(make_pair(parameter.substr(integerType.size()), int64_t())).first->first);
+						indices.push_back(parameters.try_emplace(parameter.substr(integerType.size()), int64_t()).first->first);
 					}
 					else
 					{
-						indices.push_back(parameters.insert(make_pair(move(parameter), string())).first->first);
+						indices.push_back(parameters.try_emplace(move(parameter), string()).first->first);
 					}
 
 					parameter.clear();

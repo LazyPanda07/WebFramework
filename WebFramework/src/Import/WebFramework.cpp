@@ -172,7 +172,7 @@ namespace framework
 
 			for (const auto& [key, value] : listOfServers)
 			{
-				allServers.emplace
+				allServers.try_emplace
 				(
 					key,
 					json::utility::JSONArrayWrapper(get<vector<json::utility::jsonObject>>(value)).getAsInt64_tArray()

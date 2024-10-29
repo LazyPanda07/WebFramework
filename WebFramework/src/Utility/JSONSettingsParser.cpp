@@ -56,7 +56,7 @@ namespace framework
 					throw runtime_error("Wrong loadType");
 				}
 
-				settings.insert(make_pair(::utility::strings::replaceAll(data.getString("route"), " ", "%20"), move(executorSettings)));
+				settings.try_emplace(::utility::strings::replaceAll(data.getString("route"), " ", "%20"), move(executorSettings));
 			}
 		}
 

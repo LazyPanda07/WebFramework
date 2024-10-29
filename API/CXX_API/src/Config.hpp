@@ -222,7 +222,7 @@ namespace framework
 		}
 
 		template<>
-		inline Config& Config::overrideConfiguration<bool>(std::string_view key, const bool& value, bool recursive)
+		inline Config& Config::overrideConfiguration<bool>(std::string_view key, const bool& value, bool recursive) //-V835
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, void, const char* key, bool value, bool recursive, void** exception);
 			void* exception = nullptr;

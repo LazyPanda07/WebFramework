@@ -128,7 +128,7 @@ namespace framework
 			}
 			else
 			{
-				modelsData = models.emplace(T::tableName, ModelsData()).first;
+				modelsData = models.try_emplace(T::tableName, ModelsData()).first;
 
 				data = &modelsData->second;
 			}
@@ -166,7 +166,7 @@ namespace framework
 			}
 			else
 			{
-				it = databases.emplace(T::databaseName, std::make_unique<Database>(std::string(T::databaseName))).first;
+				it = databases.try_emplace(T::databaseName, std::make_unique<Database>(std::string(T::databaseName))).first;
 
 				database = &it->second;
 			}

@@ -166,28 +166,26 @@ namespace framework
 							parameters = it->baseRoute;
 						}
 
-						executor = routes.insert
+						executor = routes.try_emplace
 						(
-							make_pair
-							(
-								move(parameters),
-								unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
-							)
+							move(parameters),
+							unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
 						).first;
 						executor->second->init(executorSettings->second);
 
 						if (executor->second->getType() == BaseExecutor::executorType::stateful || executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful)
 						{
-							executor = statefulExecutors.insert(routes.extract(executor)).position;
+							executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
 						}
 					}
 				}
 			}
 
-			void (BaseExecutor::* method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
+			void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
+			BaseExecutor::executorType executorType = executor->second->getType();
 			bool isThreadPoolTask = fileRequest ? false :
-				(executor->second->getType() == BaseExecutor::executorType::heavyOperationStateless ||
-					executor->second->getType() == BaseExecutor::executorType::heavyOperationStateful);
+				(executorType == BaseExecutor::executorType::heavyOperationStateless ||
+					executorType == BaseExecutor::executorType::heavyOperationStateful);
 
 			if (serverType == webServerType::threadPool && isThreadPoolTask)
 			{

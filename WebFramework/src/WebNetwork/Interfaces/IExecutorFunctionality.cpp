@@ -29,7 +29,7 @@ namespace framework
 						executorSettings.initParameters = json::utility::jsonObject(value.initParameters);
 					}
 
-					result.insert(make_pair(key, move(executorSettings)));
+					result.try_emplace(key, move(executorSettings));
 				}
 			}
 
@@ -84,13 +84,10 @@ namespace framework
 				case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
 					if (i.find('{') == string::npos)
 					{
-						auto [it, success] = routes.emplace
+						auto [it, success] = routes.try_emplace
 						(
-							make_pair
-							(
-								i,
-								unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
-							)
+							i,
+							unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
 						);
 
 						if (success)
@@ -109,16 +106,13 @@ namespace framework
 					{
 						routeParameters.push_back(i);
 
-						auto [it, success] = routes.emplace
+						auto [it, success] = routes.try_emplace
 						(
-							make_pair
-							(
-								routeParameters.back().baseRoute,
-								unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
-							)
+							routeParameters.back().baseRoute,
+							unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
 						);
 
-						nodes.push_back(make_pair(i, routeParameters.back().baseRoute));
+						nodes.emplace_back(i, routeParameters.back().baseRoute);
 
 						if (success)
 						{
@@ -133,7 +127,7 @@ namespace framework
 					{
 						routeParameters.push_back(i);
 
-						nodes.push_back(make_pair(i, routeParameters.back().baseRoute));
+						nodes.emplace_back(i, routeParameters.back().baseRoute);
 					}
 
 					break;
@@ -144,7 +138,7 @@ namespace framework
 					break;
 				}
 
-				creators.emplace(j.name, creator);
+				creators.try_emplace(j.name, creator);
 			}
 
 			for (auto&& [i, j] : nodes)
@@ -153,7 +147,7 @@ namespace framework
 
 				node.key() = move(j);
 
-				settings.insert(move(node));
+				settings.insert(move(node)); //-V837
 			}
 
 			executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters));

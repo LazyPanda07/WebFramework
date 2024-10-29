@@ -100,7 +100,7 @@ namespace framework
 			string_view line(code.data() + startLine, endLine - startLine);
 			size_t openBracket = line.find('(');
 			string functionName(line.substr(0, openBracket));
-			
+
 			result.emplace_back
 			(
 				move(functionName),
@@ -141,9 +141,9 @@ namespace framework
 	WebFrameworkDynamicPages::WebFrameworkDynamicPages(const filesystem::path& pathToTemplates) :
 		pathToTemplates(pathToTemplates)
 	{
-		dynamicPagesFunctions.insert({ "print", print });
-		dynamicPagesFunctions.insert({ "include", bind(include, placeholders::_1, pathToTemplates.string()) });
-		dynamicPagesFunctions.insert({ "for", bind(forWFDP, placeholders::_1, ref(dynamicPagesFunctions)) });
+		dynamicPagesFunctions.try_emplace("print", print);
+		dynamicPagesFunctions.try_emplace("include", bind(include, placeholders::_1, pathToTemplates.string()));
+		dynamicPagesFunctions.try_emplace("for", bind(forWFDP, placeholders::_1, ref(dynamicPagesFunctions)));
 	}
 
 	void WebFrameworkDynamicPages::run(const unordered_map<string, string>& variables, string& source)
@@ -183,7 +183,7 @@ namespace framework
 
 	void WebFrameworkDynamicPages::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
 	{
-		dynamicPagesFunctions.insert(make_pair(functionName, move(function)));
+		dynamicPagesFunctions.try_emplace(functionName, move(function));
 	}
 
 	void WebFrameworkDynamicPages::unregisterDynamicFunction(const string& functionName)

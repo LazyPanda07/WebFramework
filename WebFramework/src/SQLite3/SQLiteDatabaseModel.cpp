@@ -60,7 +60,7 @@ namespace framework
 
 				for (int i = 0; i < columnCount; i++)
 				{
-					row.emplace
+					row.try_emplace
 					(
 						sqlite3_column_name(result, i),
 						reinterpret_cast<const char*>(sqlite3_column_text(result, i))

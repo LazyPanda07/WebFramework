@@ -11,7 +11,7 @@ using namespace std;
 
 namespace framework
 {
-	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, const sockaddr& address, function<void()>&& cleanup) :
+	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup) :
 		stream
 		(
 			ssl ?
