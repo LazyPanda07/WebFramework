@@ -28,7 +28,7 @@ namespace framework
 			std::vector<ProxyData> proxyData;
 
 		private:
-			void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr, std::function<void()>&& cleanup) override;
+			void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>&& cleanup) override;
 
 		public:
 			ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::utility::jsonObject& proxySettings);

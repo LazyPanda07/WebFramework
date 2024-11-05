@@ -61,7 +61,7 @@ namespace framework
 		void serveClients();
 
 	private:
-		void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& address, std::function<void()>&& cleanup) override;
+		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup) override;
 
 		void onInvalidConnectionReceive() override;
 
