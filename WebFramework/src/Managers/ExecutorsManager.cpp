@@ -20,6 +20,11 @@ namespace framework
 
 		string_view fileExtension(parameters.begin() + index, parameters.end());
 
+		if (Log::isValid())
+		{
+			Log::info("File request parameters: {} and file extension: {}", "LogFileRequest", parameters, fileExtension);
+		}
+
 		return fileExtension.size() > 1 && ranges::none_of(fileExtension, [](char c) { return c != '/'; });
 	}
 
