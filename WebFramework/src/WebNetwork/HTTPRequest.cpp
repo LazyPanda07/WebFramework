@@ -270,19 +270,19 @@ namespace framework
 	}
 
 	template<>
-	const string& HTTPRequest::getRouteParameter<string>(const string& routeParameterName)
+	WEB_FRAMEWORK_API const string& HTTPRequest::getRouteParameter<string>(const string& routeParameterName)
 	{
 		return get<string>(routeParameters.at(routeParameterName));
 	}
 
 	template<>
-	const int64_t& HTTPRequest::getRouteParameter<int64_t>(const string& routeParameterName)
+	WEB_FRAMEWORK_API const int64_t& HTTPRequest::getRouteParameter<int64_t>(const string& routeParameterName)
 	{
 		return get<int64_t>(routeParameters.at(routeParameterName));
 	}
 
 	template<>
-	const double& HTTPRequest::getRouteParameter<double>(const string& routeParameterName)
+	WEB_FRAMEWORK_API const double& HTTPRequest::getRouteParameter<double>(const string& routeParameterName)
 	{
 		return get<double>(routeParameters.at(routeParameterName));
 	}

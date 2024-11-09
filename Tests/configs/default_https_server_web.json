@@ -4,7 +4,7 @@
     "loadType": "initialization"
   },
   "RoutePatternExecutor": {
-    "route": "pattern/{stringValue:string}/{integerValue:int}/{doubleValue:double}",
+    "route": "pattern/{string:stringValue}/{int:integerValue}/{double:doubleValue}",
     "loadType": "initialization"
   }
 }
