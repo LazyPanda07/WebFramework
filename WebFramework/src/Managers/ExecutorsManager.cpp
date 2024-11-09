@@ -22,10 +22,10 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info("File request parameters: {} and file extension: {} and result: ", "LogFileRequest", parameters, fileExtension, ranges::none_of(fileExtension, [](char c) { return c != '/'; }));
+			Log::info("File request parameters: {} and file extension: {} and result: {}", "LogFileRequest", parameters, fileExtension, ranges::all_of(fileExtension, [](char c) { return c != '/'; }));
 		}
 
-		return fileExtension.size() > 1 && ranges::none_of(fileExtension, [](char c) { return c != '/'; });
+		return fileExtension.size() > 1 && ranges::all_of(fileExtension, [](char c) { return c != '/'; });
 	}
 
 	ExecutorsManager::ExecutorsManager() :
