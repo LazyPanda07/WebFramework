@@ -281,6 +281,12 @@ namespace framework
 		return get<int64_t>(routeParameters.at(routeParameterName));
 	}
 
+	template<>
+	const double& HTTPRequest::getRouteParameter<double>(const string& routeParameterName)
+	{
+		return get<double>(routeParameters.at(routeParameterName));
+	}
+
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)
 	{
 		string data;
