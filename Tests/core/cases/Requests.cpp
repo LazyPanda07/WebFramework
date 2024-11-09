@@ -4,6 +4,8 @@
 #include "HTTPParser.h"
 #include "JSONParser.h"
 
+#include "HTTPSNetwork.h"
+
 #include "utilities.h"
 
 static inline constexpr size_t requestsNumber = 100;
@@ -149,3 +151,23 @@ BASIC_TEST(DELETE)
 BASIC_TEST(PATCH)
 
 BASIC_TEST(CONNECT)
+
+TEST(RoutePattern, PassingValues)
+{
+	static constexpr DWORD timeout = 600'000;
+	streams::IOSocketStream stream = streams::IOSocketStream(std::make_unique<web::HTTPSNetwork>("127.0.0.1", "20000", timeout));
+	std::string request;
+	std::string response;
+
+	request = web::HTTPBuilder().getRequest().parameters(std::format("pattern/{}/{}/{}", "qwe", 200, 25.5)).build();
+
+	stream << request;
+
+	stream >> response;
+
+	json::JSONParser parser = web::HTTPParser(response).getJSON();
+
+	ASSERT_EQ(parser.getString("stringValue"), "qwe");
+	ASSERT_EQ(parser.getInt("integerValue"), 200);
+	ASSERT_FLOAT_EQ(parser.getDouble("doubleValue"), 25.5);
+}

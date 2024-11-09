@@ -33,6 +33,7 @@
 
 # VS folders
 .vs/
+*.vcxproj.user
 
 # Binaries
 bin/

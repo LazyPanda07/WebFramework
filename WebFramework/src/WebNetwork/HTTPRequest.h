@@ -26,7 +26,7 @@ namespace framework
 		const web::BaseTCPServer& serverReference;
 		streams::IOSocketStream& stream;
 		sqlite::SQLiteManager& database;
-		std::unordered_map<std::string, std::variant<std::string, int64_t>> routeParameters;
+		std::unordered_map<std::string, std::variant<std::string, int64_t, double>> routeParameters;
 		sockaddr clientAddr;
 		web::HTTPParser parser;
 		interfaces::IStaticFile& staticResources;
@@ -204,7 +204,7 @@ namespace framework
 		/// <summary>
 		/// Getter for route parameters
 		/// </summary>
-		/// <typeparam name="T">can be int64_t or std::string</typeparam>
+		/// <typeparam name="T">can be std::string, int64_t, double</typeparam>
 		/// <param name="routeParameterName"><para>name of route parameter</para><para>T can be int64_t or std::string</para></param>
 		/// <returns>route parameter</returns>
 		/// <exception cref="std::out_of_range">can't find route parameter with this routeParameterName</exception>

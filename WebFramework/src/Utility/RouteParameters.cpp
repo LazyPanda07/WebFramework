@@ -30,6 +30,10 @@ namespace framework
 					{
 						indices.push_back(parameters.try_emplace(parameter.substr(integerType.size()), int64_t()).first->first);
 					}
+					else if (parameter.find(doubleType) != string::npos)
+					{
+						indices.push_back(parameters.try_emplace(parameter.substr(doubleType.size()), double()).first->first);
+					}
 					else
 					{
 						indices.push_back(parameters.try_emplace(move(parameter), string()).first->first);

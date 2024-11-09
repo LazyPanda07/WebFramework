@@ -158,6 +158,25 @@ namespace framework
 									}
 
 									break;
+
+								case utility::RouteParameters::routeParametersType::doubleTypeIndex:
+									try
+									{
+										request.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
+									}
+									catch (const invalid_argument&)
+									{
+										throw exceptions::BadRequestException("Can't convert to double"); // 400
+									}
+									catch (const out_of_range&)
+									{
+										throw exceptions::BadRequestException("Out of range of double"); // 400
+									}
+
+									break;
+
+								default:
+									throw runtime_error("Wrong routeParametersType");
 								}
 
 								startParameter = endParameter + 1;

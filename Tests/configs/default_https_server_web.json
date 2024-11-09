@@ -2,5 +2,9 @@
   "Executor": {
     "route": "default_request",
     "loadType": "initialization"
+  },
+  "RoutePatternExecutor": {
+    "route": "pattern/{stringValue:string}/{integerValue:int}/{doubleValue:double}",
+    "loadType": "initialization"
   }
 }
