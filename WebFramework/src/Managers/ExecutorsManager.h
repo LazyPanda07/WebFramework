@@ -29,6 +29,9 @@ namespace framework
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
 		webServerType serverType;
 
+	private:
+		static bool isFileRequest(std::string_view parameters);
+
 	public:
 		ExecutorsManager();
 

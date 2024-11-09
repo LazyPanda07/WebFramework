@@ -9,6 +9,20 @@ using namespace std;
 
 namespace framework
 {
+	bool ExecutorsManager::isFileRequest(string_view parameters)
+	{
+		size_t index = parameters.find('.');
+
+		if (index == string_view::npos)
+		{
+			return false;
+		}
+
+		string_view fileExtension(parameters.begin() + index, parameters.end());
+
+		return fileExtension.size() > 1 && ranges::none_of(fileExtension, [](char c) { return c != '/'; });
+	}
+
 	ExecutorsManager::ExecutorsManager() :
 		serverType(webServerType::multiThreaded)
 	{
@@ -90,7 +104,7 @@ namespace framework
 		{
 			string parameters = request.getRawParameters();
 			decltype(routes.find("")) executor;
-			bool fileRequest = parameters.find('.') != string::npos;
+			bool fileRequest = ExecutorsManager::isFileRequest(parameters);
 
 			if (parameters.find('?') != string::npos)
 			{

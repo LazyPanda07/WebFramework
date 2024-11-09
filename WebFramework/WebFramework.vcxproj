@@ -333,6 +333,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
     <ClInclude Include="src\Utility\BaseConnectionData.h" />
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
+    <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
     <ClInclude Include="src\Import\WebFrameworkConstants.h" />

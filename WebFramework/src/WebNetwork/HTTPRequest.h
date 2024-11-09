@@ -11,6 +11,7 @@
 #include "Interfaces/IStaticFile.h"
 #include "Interfaces/IDynamicFile.h"
 #include "Utility/ChunkGenerator.h"
+#include "Utility/WebFrameworkConcepts.h"
 
 namespace framework
 {
@@ -201,14 +202,14 @@ namespace framework
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const;
 
-		/// <summary>
-		/// Getter for route parameters
-		/// </summary>
-		/// <typeparam name="T">can be std::string, int64_t, double</typeparam>
-		/// <param name="routeParameterName"><para>name of route parameter</para><para>T can be int64_t or std::string</para></param>
-		/// <returns>route parameter</returns>
-		/// <exception cref="std::out_of_range">can't find route parameter with this routeParameterName</exception>
-		template<typename T>
+		/**
+		 * @brief Getter for route parameters
+		 * @tparam T RouteParameterType type
+		 * @param routeParameterName Name of route parameter
+		 * @return route parameter
+		 * @exception std::out_of_range Can't find route parameter with this routeParameterName
+		 */
+		template<utility::concepts::RouteParameterType T>
 		const T& getRouteParameter(const std::string& routeParameterName);
 
 		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
