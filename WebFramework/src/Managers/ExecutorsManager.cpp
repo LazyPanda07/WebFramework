@@ -20,12 +20,119 @@ namespace framework
 
 		string_view fileExtension(parameters.begin() + index, parameters.end());
 
-		if (Log::isValid())
+		return fileExtension.size() > 1 && ranges::all_of(fileExtension, [](char c) { return c != '/'; });
+	}
+
+	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequest& request, vector<utility::RouteParameters>::iterator it)
+	{
+		size_t i = 0;
+		size_t startParameter = it->baseRoute.size() + 1;
+		size_t endParameter;
+
+		do
 		{
-			Log::info("File request parameters: {} and file extension: {} and result: {}", "LogFileRequest", parameters, fileExtension, ranges::all_of(fileExtension, [](char c) { return c != '/'; }));
+			endParameter = parameters.find('/', startParameter);
+
+			switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[i]].index()))
+			{
+			case utility::RouteParameters::routeParametersType::stringTypeIndex:
+				request.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
+
+				break;
+
+			case utility::RouteParameters::routeParametersType::integerTypeIndex:
+				try
+				{
+					request.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
+				}
+				catch (const invalid_argument&)
+				{
+					throw exceptions::BadRequestException("Can't convert to int64_t"); // 400
+				}
+				catch (const out_of_range&)
+				{
+					throw exceptions::BadRequestException("Out of range of int64_t"); // 400
+				}
+
+				break;
+
+			case utility::RouteParameters::routeParametersType::doubleTypeIndex:
+				try
+				{
+					request.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
+				}
+				catch (const invalid_argument&)
+				{
+					throw exceptions::BadRequestException("Can't convert to double"); // 400
+				}
+				catch (const out_of_range&)
+				{
+					throw exceptions::BadRequestException("Out of range of double"); // 400
+				}
+
+				break;
+
+			default:
+				throw runtime_error("Wrong routeParametersType");
+			}
+
+			startParameter = endParameter + 1;
+		} while (endParameter != string::npos);
+	}
+
+	BaseExecutor* ExecutorsManager::getExecutor(string& parameters, HTTPRequest& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	{
+		auto executor = statefulExecutors.find(parameters);
+
+		if (executor == statefulExecutors.end())
+		{
+			unique_lock<mutex> scopeLock(checkExecutor);
+
+			executor = routes.find(parameters);
+
+			if (executor == routes.end())
+			{
+				auto executorSettings = settings.find(parameters);
+
+				if (executorSettings == settings.end())
+				{
+					auto it = find_if(routeParameters.begin(), routeParameters.end(),
+						[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) != string::npos; });
+
+					if (it == routeParameters.end())
+					{
+						return nullptr;
+					}
+
+					executorSettings = settings.find(it->baseRoute);
+
+					if (executorSettings == settings.end())
+					{
+						return nullptr;
+					}
+
+					ExecutorsManager::parseRouteParameters(parameters, request, it);
+
+					parameters = it->baseRoute;
+				}
+
+				executor = routes.try_emplace
+				(
+					move(parameters),
+					unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
+				).first;
+				executor->second->init(executorSettings->second);
+
+				BaseExecutor::executorType executorType = executor->second->getType();
+
+				if (executorType == BaseExecutor::executorType::stateful || executorType == BaseExecutor::executorType::heavyOperationStateful)
+				{
+					executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
+				}
+			}
 		}
 
-		return fileExtension.size() > 1 && ranges::all_of(fileExtension, [](char c) { return c != '/'; });
+		return executor->second.get();
 	}
 
 	ExecutorsManager::ExecutorsManager() :
@@ -108,7 +215,7 @@ namespace framework
 		try
 		{
 			string parameters = request.getRawParameters();
-			decltype(routes.find("")) executor;
+			BaseExecutor* executor = nullptr;
 			bool fileRequest = ExecutorsManager::isFileRequest(parameters);
 
 			if (parameters.find('?') != string::npos)
@@ -116,131 +223,38 @@ namespace framework
 				parameters.resize(parameters.find('?'));
 			}
 
-			if (!fileRequest)
-			{
-				executor = statefulExecutors.find(parameters);
+			executor = getExecutor(parameters, request, statefulExecutors);
 
-				if (executor == statefulExecutors.end())
+			auto isHeavyOperation = [executor]()
 				{
-					unique_lock<mutex> scopeLock(checkExecutor);
-
-					executor = routes.find(parameters);
-
-					if (executor == routes.end())
-					{
-						auto executorSettings = settings.find(parameters);
-
-						if (executorSettings == settings.end())
-						{
-							auto it = find_if(routeParameters.begin(), routeParameters.end(),
-								[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) != string::npos; });
-
-							if (it == routeParameters.end())
-							{
-								throw exceptions::BadRequestException(); // 400
-							}
-
-							executorSettings = settings.find(it->baseRoute);
-
-							if (executorSettings == settings.end())
-							{
-								throw exceptions::BadRequestException(); // 400
-							}
-
-							size_t i = 0;
-							size_t startParameter = it->baseRoute.size() + 1;
-							size_t endParameter;
-
-							do
-							{
-								endParameter = parameters.find('/', startParameter);
-
-								switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[i]].index()))
-								{
-								case utility::RouteParameters::routeParametersType::stringTypeIndex:
-									request.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
-
-									break;
-
-								case utility::RouteParameters::routeParametersType::integerTypeIndex:
-									try
-									{
-										request.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
-									}
-									catch (const invalid_argument&)
-									{
-										throw exceptions::BadRequestException("Can't convert to int64_t"); // 400
-									}
-									catch (const out_of_range&)
-									{
-										throw exceptions::BadRequestException("Out of range of int64_t"); // 400
-									}
-
-									break;
-
-								case utility::RouteParameters::routeParametersType::doubleTypeIndex:
-									try
-									{
-										request.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
-									}
-									catch (const invalid_argument&)
-									{
-										throw exceptions::BadRequestException("Can't convert to double"); // 400
-									}
-									catch (const out_of_range&)
-									{
-										throw exceptions::BadRequestException("Out of range of double"); // 400
-									}
-
-									break;
-
-								default:
-									throw runtime_error("Wrong routeParametersType");
-								}
-
-								startParameter = endParameter + 1;
-							} while (endParameter != string::npos);
-
-							parameters = it->baseRoute;
-						}
-
-						executor = routes.try_emplace
-						(
-							move(parameters),
-							unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
-						).first;
-						executor->second->init(executorSettings->second);
-
-						BaseExecutor::executorType executorType = executor->second->getType();
-
-						if (executorType == BaseExecutor::executorType::stateful || executorType == BaseExecutor::executorType::heavyOperationStateful)
-						{
-							executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
-						}
-					}
-				}
-			}
-
-			auto isHeavyOperation = [&executor]()
-				{
-					BaseExecutor::executorType executorType = executor->second->getType();
+					BaseExecutor::executorType executorType = executor->getType();
 
 					return executorType == BaseExecutor::executorType::heavyOperationStateless ||
 						executorType == BaseExecutor::executorType::heavyOperationStateful;
 				};
+
+			if (!fileRequest && !executor)
+			{
+				throw exceptions::BadRequestException(); // 400
+			}
+
+			if (fileRequest && executor)
+			{
+				fileRequest = false;
+			}
 
 			void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
 			bool isThreadPoolTask = fileRequest ? false : isHeavyOperation();
 
 			if (serverType == webServerType::threadPool && isThreadPoolTask)
 			{
-				return bind(method, executor->second.get(), placeholders::_1, placeholders::_2);
+				return bind(method, executor, placeholders::_1, placeholders::_2);
 			}
 			else
 			{
 				fileRequest ?
 					invoke(method, resources.get(), request, response) :
-					invoke(method, executor->second.get(), request, response);
+					invoke(method, executor, request, response);
 			}
 
 			return {};
