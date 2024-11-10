@@ -56,7 +56,7 @@ namespace framework
 
 			ipTime[i.second] = next;
 
-			tem.insert(make_pair(move(next), i.second));
+			tem.emplace(move(next), i.second);
 		}
 
 		timeIp = move(tem);
@@ -91,7 +91,7 @@ namespace framework
 
 		ipTime[ip] = start;
 
-		timeIp.insert(make_pair(move(start), ip));
+		timeIp.emplace(move(start), ip);
 	}
 
 	SessionsManager::SessionsManager() :

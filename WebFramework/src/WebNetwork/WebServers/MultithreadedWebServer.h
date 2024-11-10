@@ -12,7 +12,7 @@ namespace framework
 		public interfaces::IExecutorFunctionality
 	{
 	private:
-		void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& addr, std::function<void()>&& cleanup) override;
+		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>&& cleanup) override;
 
 	public:
 		MultithreadedWebServer

@@ -155,7 +155,7 @@ namespace framework
 
 			implementation = DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createConfigFromPath, configPath.string().data(), &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -170,7 +170,7 @@ namespace framework
 
 			implementation = DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createConfigFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -197,7 +197,7 @@ namespace framework
 
 			DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -213,7 +213,7 @@ namespace framework
 
 			DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationInteger, key.data(), static_cast<int64_t>(value), recursive, &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -222,14 +222,14 @@ namespace framework
 		}
 
 		template<>
-		inline Config& Config::overrideConfiguration<bool>(std::string_view key, const bool& value, bool recursive)
+		inline Config& Config::overrideConfiguration<bool>(std::string_view key, const bool& value, bool recursive) //-V835
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, void, const char* key, bool value, bool recursive, void** exception);
 			void* exception = nullptr;
 
 			DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationBoolean, key.data(), value, recursive, &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -262,7 +262,7 @@ namespace framework
 
 			delete[] data;
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -295,7 +295,7 @@ namespace framework
 
 			delete[] data;
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -310,7 +310,7 @@ namespace framework
 
 			DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideBasePath, basePath.data(), &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -327,14 +327,14 @@ namespace framework
 			
 			void* stringPtr = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationString, key.data(), recursive, &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
 
 			std::string result(handler.CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, stringPtr));
 
-			handler.free(stringPtr);
+			handler.deleteString(stringPtr);
 
 			return result;
 		}
@@ -346,7 +346,7 @@ namespace framework
 
 			int64_t result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationInteger, key.data(), recursive, &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -361,7 +361,7 @@ namespace framework
 
 			bool result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationBoolean, key.data(), recursive, &exception);
 
-			if (exception)
+			if (exception) //-V547
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
@@ -385,7 +385,7 @@ namespace framework
 
 			std::string result(handler.CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, stringPtr));
 
-			handler.free(stringPtr);
+			handler.deleteString(stringPtr);
 
 			return result;
 		}
@@ -406,7 +406,7 @@ namespace framework
 
 			std::string result(handler.CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, stringPtr));
 
-			handler.free(stringPtr);
+			handler.deleteString(stringPtr);
 
 			return result;
 		}
@@ -435,7 +435,7 @@ namespace framework
 		{
 			if (!weak)
 			{
-				DLLHandler::getInstance().free(implementation);
+				DLLHandler::getInstance().deleteConfig(implementation);
 			}
 		}
 	}

@@ -15,7 +15,13 @@ typedef void* Config;
 typedef void* WebFramework;
 typedef void* Exception;
 
-EXPORT void deleteWebFrameworkObject(void* implementation);
+EXPORT void deleteWebFrameworkString(String string);
+
+EXPORT void deleteWebFrameworkConfig(Config config);
+
+EXPORT void deleteWebFramework(WebFramework webFramework);
+
+EXPORT void deleteWebFrameworkException(Exception exception);
 
 EXPORT const char* getDataFromString(String string);
 

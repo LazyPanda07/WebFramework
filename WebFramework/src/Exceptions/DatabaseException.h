@@ -10,7 +10,7 @@ namespace framework
 		class WEB_FRAMEWORK_API DatabaseException : public BaseWebFrameworkException
 		{
 		public:
-			DatabaseException(const std::string& errorMessage);
+			DatabaseException(std::string_view errorMessage);
 
 			virtual ~DatabaseException() = default;
 		};

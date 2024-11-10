@@ -60,7 +60,7 @@ namespace framework
 
 				for (int i = 0; i < columnCount; i++)
 				{
-					row.emplace
+					row.try_emplace
 					(
 						sqlite3_column_name(result, i),
 						reinterpret_cast<const char*>(sqlite3_column_text(result, i))
@@ -77,21 +77,14 @@ namespace framework
 
 			if (query.find("INSERT") != string::npos)
 			{
-				try
-				{
-					return this->execute(format("SELECT * FROM {} WHERE id = {}", this->getTableName(), to_string(sqlite3_last_insert_rowid(**database))));
-				}
-				catch (const exceptions::SQLite3Exception&)
-				{
-
-				}
+				return this->execute(format("SELECT * FROM {} WHERE id = {}", this->getTableName(), to_string(sqlite3_last_insert_rowid(**database))));
 			}
 
 			return utility::SQLiteResult(move(output));
 		}
 
 		SQLiteDatabaseModel::SQLiteDatabaseModel() :
-			database(databaseConstructor)
+			database(databaseConstructor) //-V670
 		{
 
 		}

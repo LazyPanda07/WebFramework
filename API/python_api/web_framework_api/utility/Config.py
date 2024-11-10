@@ -207,7 +207,7 @@ class Config:
 
         result = str(result_ptr.decode())
 
-        handler.free(string_implementation)
+        handler.delete_web_framework_string(string_implementation)
 
         return result
 
@@ -271,7 +271,7 @@ class Config:
 
         result = str(result_ptr.decode())
 
-        handler.free(string_implementation)
+        handler.delete_web_framework_string(string_implementation)
 
         return result
 
@@ -295,7 +295,7 @@ class Config:
 
         result = str(result_ptr.decode())
 
-        handler.free(string_implementation)
+        handler.delete_web_framework_string(string_implementation)
 
         return result
 
@@ -314,3 +314,6 @@ class Config:
             raise WebFrameworkException(exception.value)
 
         return result.decode()
+
+    def __del__(self):
+        DLLHandler.get_instance().delete_web_framework_config(self.implementation)

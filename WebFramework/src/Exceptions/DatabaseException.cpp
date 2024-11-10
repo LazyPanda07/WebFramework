@@ -6,7 +6,7 @@ namespace framework
 {
 	namespace exceptions
 	{
-		DatabaseException::DatabaseException(const string& errorMessage) :
+		DatabaseException::DatabaseException(string_view errorMessage) :
 			BaseWebFrameworkException(errorMessage)
 		{
 

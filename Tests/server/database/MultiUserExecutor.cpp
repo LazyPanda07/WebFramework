@@ -31,14 +31,7 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 
 void MultiUserExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.createModel<MultiUserDatabaseModel>()->createTable
-	(
-		{
-			{ "id", "INTEGER PRIMARY KEY AUTOINCREMENT" },
-			{ "user_id", "TEXT NOT NULL" },
-			{ "data", "TEXT NOT NULL" }
-		}
-	);
+	request.createModel<MultiUserDatabaseModel>();
 }
 
 void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)

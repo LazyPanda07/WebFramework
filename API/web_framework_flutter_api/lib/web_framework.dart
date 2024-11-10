@@ -207,7 +207,7 @@ class WebFramework {
   }
 
   void dispose() {
-    _handler.deleteWebFrameworkObject(_implementation);
+    _handler.deleteWebFramework(_implementation);
 
     _handler.dispose();
   }

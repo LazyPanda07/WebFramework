@@ -2,8 +2,6 @@ FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV WEB_FRAMEWORK_STATIC_DEV_VERSION=1.0.2
-
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo
 
@@ -11,4 +9,4 @@ RUN curl -s --compressed "https://LazyPanda07.github.io/web_framework_ppa/KEY.gp
 RUN curl -s --compressed -o /etc/apt/sources.list.d/web_framework.list "https://LazyPanda07.github.io/web_framework_ppa/web_framework.list"
 RUN apt update
 
-RUN apt install -y web-framework-static-dev=${WEB_FRAMEWORK_STATIC_DEV_VERSION}
+RUN apt install -y web-framework-static-dev=1.0.3

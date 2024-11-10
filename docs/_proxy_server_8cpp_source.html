@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.7</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.8</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -120,7 +120,7 @@ $(function(){initNavTree('_proxy_server_8cpp_source.html',''); initResizable(tru
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        }</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keywordtype">void</span> ProxyServer::clientConnection(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, SOCKET clientSocket, <span class="keyword">const</span> sockaddr&amp; addr, function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keywordtype">void</span> ProxyServer::clientConnection(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, SOCKET clientSocket, sockaddr addr, function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup) <span class="comment">//-V688</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        {</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            SSL* ssl = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
@@ -167,13 +167,13 @@ $(function(){initNavTree('_proxy_server_8cpp_source.html',''); initResizable(tru
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                route.resize(route.find(<span class="charliteral">&#39;?&#39;</span>));</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            }</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="keyword">const</span> ProxyData&amp; data = *routes.at(route);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="keyword">const</span> ProxyData&amp; proxyData = *routes.at(route);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            streams::IOSocketStream serverStream</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            (</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                data.isHTTPS ?</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                make_unique&lt;web::HTTPSNetwork&gt;(data.ip, data.port, data.timeout) :</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                make_unique&lt;web::HTTPNetwork&gt;(data.ip, data.port, data.timeout)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                proxyData.isHTTPS ?</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                make_unique&lt;web::HTTPSNetwork&gt;(proxyData.ip, proxyData.port, proxyData.timeout) :</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                make_unique&lt;web::HTTPNetwork&gt;(proxyData.ip, proxyData.port, proxyData.timeout)</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            );</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            serverStream &lt;&lt; request;</div>
@@ -200,13 +200,13 @@ $(function(){initNavTree('_proxy_server_8cpp_source.html',''); initResizable(tru
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> json::utility::jsonObject&amp; proxiedServer : servers)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip = proxiedServer.getString(<span class="stringliteral">&quot;ip&quot;</span>);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                int64_t port = proxiedServer.getInt(<span class="stringliteral">&quot;port&quot;</span>);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                uint64_t timeout = proxiedServer.getUnsignedInt(<span class="stringliteral">&quot;timeout&quot;</span>);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip = proxiedServer.getString(<span class="stringliteral">&quot;ip&quot;</span>); <span class="comment">//-V688</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                int64_t port = proxiedServer.getInt(<span class="stringliteral">&quot;port&quot;</span>); <span class="comment">//-V688</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                uint64_t timeout = proxiedServer.getUnsignedInt(<span class="stringliteral">&quot;timeout&quot;</span>); <span class="comment">//-V688</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                <span class="keywordtype">bool</span> isHTTPS = proxiedServer.getBool(<span class="stringliteral">&quot;isHTTPS&quot;</span>);</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                vector&lt;string&gt; serverRoutes = json::utility::JSONArrayWrapper(proxiedServer.getArray(<span class="stringliteral">&quot;routes&quot;</span>)).getAsStringArray();</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                <span class="keyword">const</span> ProxyData&amp; data = proxyData.emplace_back(ip, to_string(port), <span class="keyword">static_cast&lt;</span>DWORD<span class="keyword">&gt;</span>(timeout), isHTTPS);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                <span class="keyword">const</span> ProxyData&amp; data = proxyData.emplace_back(ip, to_string(port), <span class="keyword">static_cast&lt;</span>DWORD<span class="keyword">&gt;</span>(timeout), isHTTPS); <span class="comment">//-V688</span></div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; route : serverRoutes)</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                {</div>

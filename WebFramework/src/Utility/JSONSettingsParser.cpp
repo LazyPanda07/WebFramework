@@ -18,14 +18,6 @@ namespace framework
 
 		}
 
-		JSONSettingsParser::ExecutorSettings::ExecutorSettings(ExecutorSettings&& other) noexcept :
-			initParameters(move(other.initParameters)),
-			name(move(other.name)),
-			executorLoadType(other.executorLoadType)
-		{
-
-		}
-
 		JSONSettingsParser::JSONSettingsParser(const string& JSONSettings)
 		{
 			ifstream in(JSONSettings);
@@ -47,14 +39,7 @@ namespace framework
 				const string& loadType = data.getString("loadType");
 				ExecutorSettings executorSettings;
 
-				try
-				{
-					executorSettings.initParameters = data.getObject("initParameters");
-				}
-				catch (const json::exceptions::CantFindValueException&)
-				{
-
-				}
+				data.tryGetObject("initParameters", executorSettings.initParameters);
 
 				executorSettings.name = name;
 
@@ -71,7 +56,7 @@ namespace framework
 					throw runtime_error("Wrong loadType");
 				}
 
-				settings.insert(make_pair(::utility::strings::replaceAll(data.getString("route"), " ", "%20"), move(executorSettings)));
+				settings.try_emplace(::utility::strings::replaceAll(data.getString("route"), " ", "%20"), move(executorSettings));
 			}
 		}
 

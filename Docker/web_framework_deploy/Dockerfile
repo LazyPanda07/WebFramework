@@ -2,8 +2,6 @@ FROM ubuntu:24.10 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV WEB_FRAMEWORK_VERSION=1.0.2
-
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev
 
@@ -12,7 +10,7 @@ RUN mkdir -p web_framework_server/build
 
 WORKDIR /web_framework_server/build
 
-RUN cmake -DWEB_FRAMEWORK_TAG=v3.0.7 ..
+RUN cmake -DWEB_FRAMEWORK_TAG=v3.0.8 ..
 RUN make install -j $(nproc)
 RUN mkdir /opt/web_framework_server && cp /web_framework_server/build/bin/web_framework_server /opt/web_framework_server
 
@@ -31,7 +29,7 @@ RUN curl -s --compressed "https://LazyPanda07.github.io/web_framework_ppa/KEY.gp
 RUN curl -s --compressed -o /etc/apt/sources.list.d/web_framework.list "https://LazyPanda07.github.io/web_framework_ppa/web_framework.list"
 RUN apt update
 
-RUN apt install -y web-framework=${WEB_FRAMEWORK_VERSION}
+RUN apt install -y web-framework=1.0.3
 
 WORKDIR /opt/web_framework_server
 

@@ -62,7 +62,7 @@ namespace framework
 			return this->overrideConfigurationArray(key, value, recursive);
 		}
 
-		Config& Config::overrideBasePath(const filesystem::path& basePath)
+		Config& Config::overrideBasePath(const filesystem::path& basePath) //-V688
 		{
 			if (!filesystem::exists(basePath))
 			{

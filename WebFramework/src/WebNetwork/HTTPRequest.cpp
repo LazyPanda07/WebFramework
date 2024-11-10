@@ -37,7 +37,7 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, const sockaddr& clientAddr, streams::IOSocketStream& stream) :
+	HTTPRequest::HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
 		stream(stream),
@@ -46,7 +46,7 @@ namespace framework
 		staticResources(staticResources),
 		dynamicResources(dynamicResources)
 	{
-		
+
 	}
 
 	const string& HTTPRequest::getRawParameters() const
@@ -99,13 +99,14 @@ namespace framework
 		session.deleteAttribute(this->getClientIpV4(), name);
 	}
 
-	unordered_map<string, string> HTTPRequest::getCookies() const
+	web::HeadersMap HTTPRequest::getCookies() const
 	{
-		unordered_map<string, string> result;
+		web::HeadersMap result;
+		const web::HeadersMap& headers = parser.getHeaders();
 
-		try
+		if (auto it = headers.find("Cookie"); it != headers.end())
 		{
-			const string& cookies = parser.getHeaders().at("Cookie");
+			const string& cookies = it->second;
 			size_t offset = 0;
 
 			while (true)
@@ -117,7 +118,7 @@ namespace framework
 				string::const_iterator startValue = endKey + 1;
 				string::const_iterator endValue = findValue != string::npos ? (cookies.begin() + findValue) : (cookies.end());
 
-				result.insert(make_pair(string(startKey, endKey), string(startValue, endValue)));
+				result.try_emplace(string(startKey, endKey), string(startValue, endValue));
 
 				if (findValue == string::npos)
 				{
@@ -126,11 +127,6 @@ namespace framework
 
 				offset = findValue + 2;
 			}
-
-		}
-		catch (const out_of_range&)
-		{
-
 		}
 
 		return result;
@@ -157,7 +153,7 @@ namespace framework
 	{
 		filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
 		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
-		
+
 		if (!filesystem::exists(assetFilePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
@@ -179,8 +175,7 @@ namespace framework
 
 #pragma warning(push)
 #pragma warning(disable: 26800)
-
-		try
+		if (cache.contains(assetFilePath))
 		{
 			const string& data = cache[assetFilePath];
 
@@ -192,10 +187,6 @@ namespace framework
 			stream << builder.build(data);
 
 			return;
-		}
-		catch (const file_manager::exceptions::FileDoesNotExistException&)
-		{
-
 		}
 
 		ifstream fileStream(assetFilePath, ios_base::binary);
@@ -216,7 +207,6 @@ namespace framework
 		);
 
 		stream << builder.build() + chunk;
-
 #pragma warning(pop)
 
 		while (!fileStream.eof())
@@ -280,15 +270,21 @@ namespace framework
 	}
 
 	template<>
-	const string& HTTPRequest::getRouteParameter<string>(const string& routeParameterName)
+	WEB_FRAMEWORK_API const string& HTTPRequest::getRouteParameter<string>(const string& routeParameterName)
 	{
 		return get<string>(routeParameters.at(routeParameterName));
 	}
 
 	template<>
-	const int64_t& HTTPRequest::getRouteParameter<int64_t>(const string& routeParameterName)
+	WEB_FRAMEWORK_API const int64_t& HTTPRequest::getRouteParameter<int64_t>(const string& routeParameterName)
 	{
 		return get<int64_t>(routeParameters.at(routeParameterName));
+	}
+
+	template<>
+	WEB_FRAMEWORK_API const double& HTTPRequest::getRouteParameter<double>(const string& routeParameterName)
+	{
+		return get<double>(routeParameters.at(routeParameterName));
 	}
 
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)

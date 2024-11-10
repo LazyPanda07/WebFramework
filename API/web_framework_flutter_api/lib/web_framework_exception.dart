@@ -27,7 +27,7 @@ class WebFrameworkException implements Exception {
   }
 
   void dispose() {
-    _handler.deleteWebFrameworkObject(_implementation.value);
+    _handler.deleteWebFrameworkException(_implementation.value);
 
     malloc.free(_implementation);
 

@@ -6,7 +6,7 @@ var classframework_1_1_h_t_t_p_request =
     [ "getBody", "classframework_1_1_h_t_t_p_request.html#a2e7a1b3895052820d1e11f90d5152dce", null ],
     [ "getClientIpV4", "classframework_1_1_h_t_t_p_request.html#ae286e5725e5775081b2f0a3a650d1527", null ],
     [ "getClientPort", "classframework_1_1_h_t_t_p_request.html#ad2d745e251902e8f3792647239f8043d", null ],
-    [ "getCookies", "classframework_1_1_h_t_t_p_request.html#a0faf91b7585442167d9abb7e8d23194b", null ],
+    [ "getCookies", "classframework_1_1_h_t_t_p_request.html#a05dc92b8a8dafb5a7a3c9812f36126f8", null ],
     [ "getHeaders", "classframework_1_1_h_t_t_p_request.html#a13dc613849b72b7098005dd7a55a43e8", null ],
     [ "getHTTPVersion", "classframework_1_1_h_t_t_p_request.html#a85034dc45ad99c673367a7ffd8fbd5d9", null ],
     [ "getJSON", "classframework_1_1_h_t_t_p_request.html#a54455bdedde69ca8e954d03933a5b5a6", null ],

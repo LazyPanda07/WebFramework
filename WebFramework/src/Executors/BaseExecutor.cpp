@@ -112,7 +112,7 @@ inline void isImplemented
 		result.push_back(methodName);
 	}
 	catch (const framework::exceptions::NotImplementedException&)
-	{
+	{ //-V565
 
 	}
 	catch (...)

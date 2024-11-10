@@ -28,7 +28,7 @@ namespace framework
 			bool webExceptionAcquired;
 
 		public:
-			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, const sockaddr& address, std::function<void()>&& cleanup);
+			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup);
 
 			Client(const Client&) = delete;
 
@@ -61,7 +61,7 @@ namespace framework
 		void serveClients();
 
 	private:
-		void clientConnection(const std::string& ip, SOCKET clientSocket, const sockaddr& address, std::function<void()>&& cleanup) override;
+		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup) override;
 
 		void onInvalidConnectionReceive() override;
 

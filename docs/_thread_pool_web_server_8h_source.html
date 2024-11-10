@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.7</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.8</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -131,7 +131,7 @@ $(function(){initNavTree('_thread_pool_web_server_8h_source.html',''); initResiz
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            <span class="keywordtype">bool</span> webExceptionAcquired;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, <span class="keyword">const</span> sockaddr&amp; address, std::function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            Client(<span class="keyword">const</span> Client&amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
@@ -164,7 +164,7 @@ $(function(){initNavTree('_thread_pool_web_server_8h_source.html',''); initResiz
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordtype">void</span> serveClients();</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordtype">void</span> clientConnection(<span class="keyword">const</span> std::string&amp; ip, SOCKET clientSocket, <span class="keyword">const</span> sockaddr&amp; address, std::function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordtype">void</span> clientConnection(<span class="keyword">const</span> std::string&amp; ip, SOCKET clientSocket, sockaddr address, std::function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordtype">void</span> onInvalidConnectionReceive() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>

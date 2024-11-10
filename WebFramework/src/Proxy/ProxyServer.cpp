@@ -18,7 +18,7 @@ namespace framework
 
 		}
 
-		void ProxyServer::clientConnection(const string& ip, SOCKET clientSocket, const sockaddr& addr, function<void()>&& cleanup)
+		void ProxyServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>&& cleanup) //-V688
 		{
 			SSL* ssl = nullptr;
 
@@ -65,13 +65,13 @@ namespace framework
 				route.resize(route.find('?'));
 			}
 
-			const ProxyData& data = *routes.at(route);
+			const ProxyData& proxyData = *routes.at(route);
 
 			streams::IOSocketStream serverStream
 			(
-				data.isHTTPS ?
-				make_unique<web::HTTPSNetwork>(data.ip, data.port, data.timeout) :
-				make_unique<web::HTTPNetwork>(data.ip, data.port, data.timeout)
+				proxyData.isHTTPS ?
+				make_unique<web::HTTPSNetwork>(proxyData.ip, proxyData.port, proxyData.timeout) :
+				make_unique<web::HTTPNetwork>(proxyData.ip, proxyData.port, proxyData.timeout)
 			);
 
 			serverStream << request;
@@ -98,13 +98,13 @@ namespace framework
 
 			for (const json::utility::jsonObject& proxiedServer : servers)
 			{
-				const string& ip = proxiedServer.getString("ip");
-				int64_t port = proxiedServer.getInt("port");
-				uint64_t timeout = proxiedServer.getUnsignedInt("timeout");
+				const string& ip = proxiedServer.getString("ip"); //-V688
+				int64_t port = proxiedServer.getInt("port"); //-V688
+				uint64_t timeout = proxiedServer.getUnsignedInt("timeout"); //-V688
 				bool isHTTPS = proxiedServer.getBool("isHTTPS");
 				vector<string> serverRoutes = json::utility::JSONArrayWrapper(proxiedServer.getArray("routes")).getAsStringArray();
 
-				const ProxyData& data = proxyData.emplace_back(ip, to_string(port), static_cast<DWORD>(timeout), isHTTPS);
+				const ProxyData& data = proxyData.emplace_back(ip, to_string(port), static_cast<DWORD>(timeout), isHTTPS); //-V688
 
 				for (const string& route : serverRoutes)
 				{

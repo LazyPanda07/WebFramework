@@ -6,9 +6,9 @@ on:
 
 
 env:
-  WEB_FRAMEWORK_DEPLOY_VERSION: 1.0.2
-  WEB_FRAMEWORK_DEV_VERSION: 1.0.2
-  WEB_FRAMEWORK_STATIC_DEV_VERSION: 1.0.2
+  WEB_FRAMEWORK_DEPLOY_VERSION: 1.0.3
+  WEB_FRAMEWORK_DEV_VERSION: 1.0.3
+  WEB_FRAMEWORK_STATIC_DEV_VERSION: 1.0.3
 
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
           cmake -DCMAKE_INSTALL_PREFIX=../../DockerTests/app -DPYTHON_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF .. && make install -j $(nproc)
     
     - name: Build base image
-      working-directory: Docker
+      working-directory: Docker/web_framework_deploy
       run: sudo docker build . -t base_image
 
     - name: Build image

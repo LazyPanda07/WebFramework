@@ -296,6 +296,9 @@
     <ClInclude Include="src\Utility\DynamicLibraries.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utility\WebFrameworkConcepts.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\404.html" />

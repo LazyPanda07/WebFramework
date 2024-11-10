@@ -16,9 +16,9 @@ public sealed unsafe partial class WebFrameworkException(void* implementation) :
 	private static unsafe partial char* getErrorMessage(void* implementation);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteWebFrameworkObject(void* implementation);
+	private static unsafe partial void deleteWebFrameworkException(void* implementation);
 
-	public void Dispose() => deleteWebFrameworkObject(implementation);
+	public void Dispose() => deleteWebFrameworkException(implementation);
 
 	public override string Message
 	{

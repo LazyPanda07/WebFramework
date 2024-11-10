@@ -93,8 +93,8 @@ void configConstructors(bool* configuration, bool* basePath, bool* rawConfigurat
 
 		*configuration = strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString));
 
-		deleteWebFrameworkObject(fromPathString);
-		deleteWebFrameworkObject(fromStringsString);
+		deleteWebFrameworkString(fromPathString);
+		deleteWebFrameworkString(fromStringsString);
 	}
 
 	{
@@ -106,8 +106,8 @@ void configConstructors(bool* configuration, bool* basePath, bool* rawConfigurat
 
 		*basePath = strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString));
 
-		deleteWebFrameworkObject(fromPathString);
-		deleteWebFrameworkObject(fromStringsString);
+		deleteWebFrameworkString(fromPathString);
+		deleteWebFrameworkString(fromStringsString);
 	}
 
 	{
@@ -120,8 +120,8 @@ void configConstructors(bool* configuration, bool* basePath, bool* rawConfigurat
 		*rawConfiguration = strcmp(fromPathString, fromStringsString);
 	}
 
-	deleteWebFrameworkObject(configFromPath);
-	deleteWebFrameworkObject(configFromStrings);
+	deleteWebFrameworkConfig(configFromPath);
+	deleteWebFrameworkConfig(configFromStrings);
 }
 
 void configOverrideString(bool* assertTrue)
@@ -135,8 +135,8 @@ void configOverrideString(bool* assertTrue)
 
 	*assertTrue = strstr(getDataFromString(data), "\"webServerType\": \"threadPool\"");
 
-	deleteWebFrameworkObject(data);
-	deleteWebFrameworkObject(config);
+	deleteWebFrameworkString(data);
+	deleteWebFrameworkConfig(config);
 }
 
 void configOverrideInteger(bool* assertTrue)
@@ -150,8 +150,8 @@ void configOverrideInteger(bool* assertTrue)
 
 	*assertTrue = strstr(getDataFromString(data), "\"cachingSize\": 0");
 
-	deleteWebFrameworkObject(data);
-	deleteWebFrameworkObject(config);
+	deleteWebFrameworkString(data);
+	deleteWebFrameworkConfig(config);
 }
 
 void configOverrideBool(bool* assertTrue)
@@ -165,8 +165,8 @@ void configOverrideBool(bool* assertTrue)
 
 	*assertTrue = strstr(getDataFromString(data), "\"usingLogging\": false");
 
-	deleteWebFrameworkObject(data);
-	deleteWebFrameworkObject(config);
+	deleteWebFrameworkString(data);
+	deleteWebFrameworkConfig(config);
 }
 
 void configOverrideStringArray(bool* assertFalse)
@@ -185,9 +185,9 @@ void configOverrideStringArray(bool* assertFalse)
 
 	*assertFalse = strcmp(getDataFromString(data), getDataFromString(rawData));
 
-	deleteWebFrameworkObject(data);
-	deleteWebFrameworkObject(rawData);
-	deleteWebFrameworkObject(config);
+	deleteWebFrameworkString(data);
+	deleteWebFrameworkString(rawData);
+	deleteWebFrameworkConfig(config);
 
 	free(values);
 }
@@ -208,9 +208,9 @@ void configOverrideIntegerArray(bool* assertFalse)
 
 	*assertFalse = strcmp(getDataFromString(data), getDataFromString(rawData));
 
-	deleteWebFrameworkObject(data);
-	deleteWebFrameworkObject(rawData);
-	deleteWebFrameworkObject(config);
+	deleteWebFrameworkString(data);
+	deleteWebFrameworkString(rawData);
+	deleteWebFrameworkConfig(config);
 
 	free(values);
 }

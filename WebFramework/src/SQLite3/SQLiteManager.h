@@ -81,11 +81,21 @@ namespace framework
 
 			T* model = static_cast<T*>(malloc(sizeof(T)));
 
+			if (!model)
+			{
+				throw std::bad_alloc();
+			}
+
 			memset(model, 0, sizeof(T));
 
 			model->databaseConstructor = database;
 
 			model = new (model)(T)(std::forward<Args>(args)...);
+
+			if (!model->database)
+			{
+				model->database = database;
+			}
 
 			return std::dynamic_pointer_cast<T>(data.emplace_back(std::shared_ptr<T>(model), typeHash).first);
 		}
@@ -118,7 +128,7 @@ namespace framework
 			}
 			else
 			{
-				modelsData = models.emplace(T::tableName, ModelsData()).first;
+				modelsData = models.try_emplace(T::tableName, ModelsData()).first;
 
 				data = &modelsData->second;
 			}
@@ -156,7 +166,7 @@ namespace framework
 			}
 			else
 			{
-				it = databases.emplace(T::databaseName, std::make_unique<Database>(std::string(T::databaseName))).first;
+				it = databases.try_emplace(T::databaseName, std::make_unique<Database>(std::string(T::databaseName))).first;
 
 				database = &it->second;
 			}

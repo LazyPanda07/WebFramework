@@ -248,7 +248,7 @@ class Config {
 
     String result = handler.getDataFromString(temp);
 
-    handler.deleteWebFrameworkObject(temp);
+    handler.deleteWebFrameworkString(temp);
 
     return result;
   }
@@ -309,7 +309,7 @@ class Config {
 
     String result = handler.getDataFromString(temp);
 
-    handler.deleteWebFrameworkObject(temp);
+    handler.deleteWebFrameworkString(temp);
 
     return result;
   }
@@ -341,13 +341,13 @@ class Config {
 
     String result = handler.getDataFromString(string);
 
-    handler.deleteWebFrameworkObject(string);
+    handler.deleteWebFrameworkString(string);
 
     return result;
   }
 
   void dispose() {
-    handler.deleteWebFrameworkObject(implementation);
+    handler.deleteWebFrameworkConfig(implementation);
 
     handler.dispose();
   }

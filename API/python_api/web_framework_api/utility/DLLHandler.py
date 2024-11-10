@@ -75,5 +75,14 @@ class DLLHandler:
 
         return function(ctypes.c_uint64(implementation), *args)
 
-    def free(self, implementation: ctypes.c_void_p):
-        self.call_function("deleteWebFrameworkObject", None, ctypes.c_uint64(implementation))
+    def delete_web_framework_string(self, implementation: ctypes.c_void_p):
+        self.call_function("deleteWebFrameworkString", None, ctypes.c_uint64(implementation))
+
+    def delete_web_framework_config(self, implementation: ctypes.c_void_p):
+        self.call_function("deleteWebFrameworkConfig", None, ctypes.c_uint64(implementation))
+
+    def delete_web_framework(self, implementation: ctypes.c_void_p):
+        self.call_function("deleteWebFramework", None, ctypes.c_uint64(implementation))
+
+    def delete_web_framework_exception(self, implementation: ctypes.c_void_p):
+        self.call_function("deleteWebFrameworkException", None, ctypes.c_uint64(implementation))

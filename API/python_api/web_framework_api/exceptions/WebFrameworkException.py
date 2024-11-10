@@ -15,4 +15,4 @@ class WebFrameworkException(Exception):
                                                        ctypes.c_uint64(self.__implementation)).decode()
 
     def __del__(self):
-        DLLHandler.get_instance().free(self.__implementation)
+        DLLHandler.get_instance().delete_web_framework_exception(self.__implementation)

@@ -27,6 +27,7 @@ add_executable(
 	${PROJECT_NAME}
 	main.cpp
 	Executor.cpp
+	RoutePatternExecutor.cpp
 )
 
 target_include_directories(

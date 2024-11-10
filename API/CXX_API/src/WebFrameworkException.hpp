@@ -32,7 +32,7 @@ namespace framework
 					implementation,
 					[this](void* block)
 					{
-						utility::DLLHandler::getInstance().free(block);
+						utility::DLLHandler::getInstance().deleteException(block); //-V1067
 					}
 				)
 			)
@@ -44,7 +44,7 @@ namespace framework
 		{
 			using getErrorMessage = const char* (*)(void* implementation);
 
-			return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getErrorMessage, implementation.get());
+			return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getErrorMessage, implementation.get()); //-V509
 		}
 	}
 }

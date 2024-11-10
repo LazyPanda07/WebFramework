@@ -10,9 +10,24 @@
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
 
-void deleteWebFrameworkObject(void* implementation)
+void deleteWebFrameworkString(String string)
 {
-	delete implementation;
+	delete static_cast<std::string*>(string);
+}
+
+void deleteWebFrameworkConfig(Config config)
+{
+	delete static_cast<framework::utility::Config*>(config);
+}
+
+void deleteWebFramework(WebFramework webFramework)
+{
+	delete static_cast<framework::WebFramework*>(webFramework);
+}
+
+void deleteWebFrameworkException(Exception exception)
+{
+	delete static_cast<std::runtime_error*>(exception);
 }
 
 const char* getDataFromString(String string)
@@ -142,6 +157,8 @@ bool isServerRunning(WebFramework server, Exception* exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+
+	return false;
 }
 
 void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception)
@@ -172,7 +189,7 @@ void overrideConfigurationBoolean(Config config, const char* key, bool value, bo
 {
 	try
 	{
-		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, value, recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, static_cast<json::utility::jsonObject::variantType>(value), recursive);
 	}
 	catch (const std::exception& e)
 	{

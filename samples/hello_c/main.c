@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
 
-		deleteWebFrameworkObject(exception); // Free WebFrameworkException memory
+		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
 
 		return -1;
 	}
@@ -25,8 +25,8 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
 
-		deleteWebFrameworkObject(config); // Free Config memory
-		deleteWebFrameworkObject(exception); // Free WebFrameworkException memory
+		deleteWebFrameworkConfig(config); // Free Config memory
+		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
 
 		return -2;
 	}
@@ -37,8 +37,8 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
 
-		deleteWebFrameworkObject(config); // Free Config memory
-		deleteWebFrameworkObject(exception); // Free WebFrameworkException memory
+		deleteWebFrameworkConfig(config); // Free Config memory
+		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
 
 		return -3;
 	}
@@ -49,15 +49,15 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
 
-		deleteWebFrameworkObject(config); // Free Config memory
-		deleteWebFrameworkObject(server); // Free WebFramework memory
-		deleteWebFrameworkObject(exception); // Free WebFrameworkException memory
+		deleteWebFrameworkConfig(config); // Free Config memory
+		deleteWebFramework(server); // Free WebFramework memory
+		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
 
 		return -4;
 	}
 
-	deleteWebFrameworkObject(config); // Free Config memory
-	deleteWebFrameworkObject(server); // Free WebFramework memory
+	deleteWebFrameworkConfig(config); // Free Config memory
+	deleteWebFramework(server); // Free WebFramework memory
 
 	return 0;
 }
