@@ -25,8 +25,7 @@ int main(int argc, char** argv) try
 	framework::utility::initializeWebFramework("WebFramework");
 #endif
 
-	// framework::WebFramework server(argv[1]);
-	framework::WebFramework server("multi_threaded_config.json");
+	framework::WebFramework server(argv[1]);
 	
 	server.start
 	(
