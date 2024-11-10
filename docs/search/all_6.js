@@ -11,7 +11,7 @@ var searchData=
   ['getconfigurationboolean_8',['getConfigurationBoolean',['../classframework_1_1utility_1_1_config.html#a216da4b0aef0a6c7d8c32fe0ea748d12',1,'framework::utility::Config']]],
   ['getconfigurationinteger_9',['getConfigurationInteger',['../classframework_1_1utility_1_1_config.html#acc9a1ac89ed5df0caf2b085ff1f38c99',1,'framework::utility::Config']]],
   ['getconfigurationstring_10',['getConfigurationString',['../classframework_1_1utility_1_1_config.html#a9eb22ea2c230974e2116b5087ae0ad9c',1,'framework::utility::Config']]],
-  ['getcookies_11',['getCookies',['../classframework_1_1_h_t_t_p_request.html#a0faf91b7585442167d9abb7e8d23194b',1,'framework::HTTPRequest']]],
+  ['getcookies_11',['getCookies',['../classframework_1_1_h_t_t_p_request.html#a05dc92b8a8dafb5a7a3c9812f36126f8',1,'framework::HTTPRequest']]],
   ['getcurrentconfiguration_12',['getCurrentConfiguration',['../classframework_1_1_web_framework.html#aa0d4aa6c4ac0d21845d09ab8d00142bc',1,'framework::WebFramework']]],
   ['getdatabasename_13',['getDatabaseName',['../classframework_1_1sqlite_1_1_s_q_lite_database.html#aebc8c1fa0b18765f69f614018d3c2d13',1,'framework::sqlite::SQLiteDatabase']]],
   ['getexecutorsettings_14',['getExecutorSettings',['../classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#a615cdadab296902a1c5069a853ab52d2',1,'framework::utility::JSONSettingsParser']]],

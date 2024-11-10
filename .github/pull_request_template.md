@@ -14,4 +14,4 @@
 ## API versions update
 - [ ] C#
 - [ ] Flutter(pubspec.yml, CHANGELOG.md)
-- [ ] Python
+- [ ] Python(Utils.py, pyproject.toml)

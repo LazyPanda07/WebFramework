@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.7</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.8</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -130,27 +130,31 @@ $(function(){initNavTree('_j_s_o_n_settings_parser_8h_source.html',''); initResi
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                <a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>();</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                <a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>(<a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>&amp;&amp; other) <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            };</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                <a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>(<a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                <a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>&amp; operator =(<a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                <a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">~ExecutorSettings</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            };</div>
 </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            std::unordered_map&lt;std::string, ExecutorSettings&gt; settings; <span class="comment">//route - settings</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#ac31d4d725a200ae83840c3455ad384ee">   48</a></span>            <a class="code hl_function" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#ac31d4d725a200ae83840c3455ad384ee">JSONSettingsParser</a>(<span class="keyword">const</span> std::string&amp; JSONSettings);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#a2fb44797af60c81cd89975d765880891">   52</a></span>            <a class="code hl_function" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#a2fb44797af60c81cd89975d765880891">JSONSettingsParser</a>(<a class="code hl_class" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">JSONSettingsParser</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            std::unordered_map&lt;std::string, ExecutorSettings&gt; settings; <span class="comment">//route - settings</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#ac31d4d725a200ae83840c3455ad384ee">   52</a></span>            <a class="code hl_function" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#ac31d4d725a200ae83840c3455ad384ee">JSONSettingsParser</a>(<span class="keyword">const</span> std::string&amp; JSONSettings);</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="keyword">const</span> std::unordered_map&lt;std::string, ExecutorSettings&gt;&amp; getSettings() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            <span class="keyword">const</span> <a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>&amp; getExecutorSettings(<span class="keyword">const</span> std::string&amp; executorName) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <a class="code hl_class" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">~JSONSettingsParser</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        };</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#a2fb44797af60c81cd89975d765880891">   56</a></span>            <a class="code hl_function" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#a2fb44797af60c81cd89975d765880891">JSONSettingsParser</a>(<a class="code hl_class" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">JSONSettingsParser</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            <span class="keyword">const</span> std::unordered_map&lt;std::string, ExecutorSettings&gt;&amp; getSettings() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            <span class="keyword">const</span> <a class="code hl_struct" href="structframework_1_1utility_1_1_j_s_o_n_settings_parser_1_1_executor_settings.html">ExecutorSettings</a>&amp; getExecutorSettings(<span class="keyword">const</span> std::string&amp; executorName) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            <a class="code hl_class" href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">~JSONSettingsParser</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        };</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
 <div class="ttc" id="aclassframework_1_1utility_1_1_j_s_o_n_settings_parser_html"><div class="ttname"><a href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html">framework::utility::JSONSettingsParser</a></div><div class="ttdoc">Parser for .json settings file.</div><div class="ttdef"><b>Definition</b> <a href="#l00014">JSONSettingsParser.h:15</a></div></div>
 <div class="ttc" id="aclassframework_1_1utility_1_1_j_s_o_n_settings_parser_html_a2fb44797af60c81cd89975d765880891"><div class="ttname"><a href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#a2fb44797af60c81cd89975d765880891">framework::utility::JSONSettingsParser::JSONSettingsParser</a></div><div class="ttdeci">JSONSettingsParser(JSONSettingsParser &amp;&amp;other) noexcept=default</div><div class="ttdoc">Move constructor.</div></div>
 <div class="ttc" id="aclassframework_1_1utility_1_1_j_s_o_n_settings_parser_html_ac31d4d725a200ae83840c3455ad384ee"><div class="ttname"><a href="classframework_1_1utility_1_1_j_s_o_n_settings_parser.html#ac31d4d725a200ae83840c3455ad384ee">framework::utility::JSONSettingsParser::JSONSettingsParser</a></div><div class="ttdeci">JSONSettingsParser(const std::string &amp;JSONSettings)</div><div class="ttdoc">Construct JSONSettingsParser from .json file.</div></div>

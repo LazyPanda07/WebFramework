@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.7</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.8</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -113,7 +113,7 @@ $(function(){initNavTree('_thread_pool_web_server_8cpp_source.html',''); initRes
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceframework.html">framework</a></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, <span class="keyword">const</span> sockaddr&amp; address, function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup) :</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup) :</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        stream</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        (</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            ssl ?</div>
@@ -334,7 +334,7 @@ $(function(){initNavTree('_thread_pool_web_server_8cpp_source.html',''); initRes
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        }</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    }</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordtype">void</span> ThreadPoolWebServer::clientConnection(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, SOCKET clientSocket, <span class="keyword">const</span> sockaddr&amp; address, function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup)</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordtype">void</span> ThreadPoolWebServer::clientConnection(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; ip, SOCKET clientSocket, sockaddr address, function&lt;<span class="keywordtype">void</span>()&gt;&amp;&amp; cleanup) <span class="comment">//-V688</span></div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    {</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        SSL* ssl = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
