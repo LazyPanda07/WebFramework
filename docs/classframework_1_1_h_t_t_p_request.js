@@ -1,5 +1,6 @@
 var classframework_1_1_h_t_t_p_request =
 [
+    [ "createModel", "classframework_1_1_h_t_t_p_request.html#a960c680cc97e59e1615cef7c27906135", null ],
     [ "deleteAttribute", "classframework_1_1_h_t_t_p_request.html#a09f892844c5fb7bc690374542730814d", null ],
     [ "deleteSession", "classframework_1_1_h_t_t_p_request.html#abaf4720cdb6e24ff2e69677b71496658", null ],
     [ "getAttribute", "classframework_1_1_h_t_t_p_request.html#ae9338bd301a24307f2d711b163ab8b53", null ],
@@ -12,6 +13,7 @@ var classframework_1_1_h_t_t_p_request =
     [ "getJSON", "classframework_1_1_h_t_t_p_request.html#a54455bdedde69ca8e954d03933a5b5a6", null ],
     [ "getKeyValueParameters", "classframework_1_1_h_t_t_p_request.html#aaeaa585ebefd1138941e4d197962d515", null ],
     [ "getMethod", "classframework_1_1_h_t_t_p_request.html#a8889654fdfd4cac12f6ea844cf3a5521", null ],
+    [ "getModel", "classframework_1_1_h_t_t_p_request.html#aa343866da248ace02b3f322901afeb13", null ],
     [ "getParser", "classframework_1_1_h_t_t_p_request.html#a3e23e04a4b3d8b8938f7cdf2a70cc8ff", null ],
     [ "getRawParameters", "classframework_1_1_h_t_t_p_request.html#a66235136733458e8d392aa522502d7a0", null ],
     [ "getRouteParameter", "classframework_1_1_h_t_t_p_request.html#a1346838155746a003164fbbb12a0fc7d", null ],
@@ -20,7 +22,9 @@ var classframework_1_1_h_t_t_p_request =
     [ "isDynamicFunctionRegistered", "classframework_1_1_h_t_t_p_request.html#a93df70f4ed8ee0ef665b13dcc6b6f354", null ],
     [ "registerDynamicFunction", "classframework_1_1_h_t_t_p_request.html#add8e04b584ee3657e62a2daa99d44022", null ],
     [ "sendAssetFile", "classframework_1_1_h_t_t_p_request.html#a93c5072ed80f26fd90b535b43393ef92", null ],
+    [ "sendChunks", "classframework_1_1_h_t_t_p_request.html#a36ef738eca699276a24eede8036957fb", null ],
     [ "sendDynamicFile", "classframework_1_1_h_t_t_p_request.html#a14399aa61bfb19429b8e033782437f2d", null ],
+    [ "sendFileChunks", "classframework_1_1_h_t_t_p_request.html#a5a509bf0988c68223867ceb906f204fe", null ],
     [ "sendStaticFile", "classframework_1_1_h_t_t_p_request.html#aa61e6afd780ebf369f63c1d520f04be7", null ],
     [ "setAttribute", "classframework_1_1_h_t_t_p_request.html#a46690b9fff334a4ee435d491b31dc18b", null ],
     [ "streamFile", "classframework_1_1_h_t_t_p_request.html#a1f1c6f677f15a9932f77cccab62d7f20", null ],

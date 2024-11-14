@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.8</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.9</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -202,15 +202,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1346838155746a003164fbbb12a0fc7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a960c680cc97e59e1615cef7c27906135" id="r_a960c680cc97e59e1615cef7c27906135"><td class="memTemplParams" colspan="2">template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">sqlite::SQLiteDatabaseModel</a> &gt; T, typename... Args&gt; </td></tr>
 <tr class="memitem:a960c680cc97e59e1615cef7c27906135"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a960c680cc97e59e1615cef7c27906135">createModel</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a960c680cc97e59e1615cef7c27906135"><td class="mdescLeft">&#160;</td><td class="mdescRight">First call creates model with arguments other calls returns created model.  <br /></td></tr>
 <tr class="separator:a960c680cc97e59e1615cef7c27906135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa343866da248ace02b3f322901afeb13" id="r_aa343866da248ace02b3f322901afeb13"><td class="memTemplParams" colspan="2">template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1_1_s_q_lite_database_model.html">sqlite::SQLiteDatabaseModel</a> &gt; T&gt; </td></tr>
 <tr class="memitem:aa343866da248ace02b3f322901afeb13"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa343866da248ace02b3f322901afeb13">getModel</a> () const</td></tr>
+<tr class="memdesc:aa343866da248ace02b3f322901afeb13"><td class="mdescLeft">&#160;</td><td class="mdescRight">First call creates model without arguments other calls returns created model.  <br /></td></tr>
 <tr class="separator:aa343866da248ace02b3f322901afeb13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36ef738eca699276a24eede8036957fb" id="r_a36ef738eca699276a24eede8036957fb"><td class="memTemplParams" colspan="2">template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_1_1_chunk_generator.html">utility::ChunkGenerator</a> &gt; T, typename... Args&gt; </td></tr>
 <tr class="memitem:a36ef738eca699276a24eede8036957fb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a36ef738eca699276a24eede8036957fb">sendChunks</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a36ef738eca699276a24eede8036957fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send runtime generated content.  <br /></td></tr>
 <tr class="separator:a36ef738eca699276a24eede8036957fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a509bf0988c68223867ceb906f204fe" id="r_a5a509bf0988c68223867ceb906f204fe"><td class="memTemplParams" colspan="2">template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_1_1_chunk_generator.html">utility::ChunkGenerator</a> &gt; T, typename... Args&gt; </td></tr>
 <tr class="memitem:a5a509bf0988c68223867ceb906f204fe"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5a509bf0988c68223867ceb906f204fe">sendFileChunks</a> (<a class="el" href="classframework_1_1_h_t_t_p_response.html">HTTPResponse</a> &amp;response, std::string_view fileName, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a5a509bf0988c68223867ceb906f204fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send file.  <br /></td></tr>
 <tr class="separator:a5a509bf0988c68223867ceb906f204fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afac28e69cbad11aad1316f60f90d18c2" id="r_afac28e69cbad11aad1316f60f90d18c2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:afac28e69cbad11aad1316f60f90d18c2"><td class="memTemplItemLeft" align="right" valign="top">WEB_FRAMEWORK_API const string &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afac28e69cbad11aad1316f60f90d18c2">getRouteParameter</a> (const string &amp;routeParameterName)</td></tr>
@@ -243,7 +247,7 @@ Friends</h2></td></tr>
 <p>Accessing to sessions</p>
 <p>Overriding input stream operator for simplify HTTP request initializing</p>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00023">23</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00024">24</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1f0f77ed329670dc007ae0740dcaf467" name="a1f0f77ed329670dc007ae0740dcaf467"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f0f77ed329670dc007ae0740dcaf467">&#9670;&#160;</a></span>HTTPRequest()</h2>
@@ -311,7 +315,23 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00250">250</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p>First call creates model with arguments other calls returns created model. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">...Args</td><td></td></tr>
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">...args</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00278">278</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -612,7 +632,16 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00256">256</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p>First call creates model without arguments other calls returns created model. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00284">284</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -942,7 +971,23 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00262">262</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p>Send runtime generated content. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">...Args</td><td></td></tr>
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">response</td><td></td></tr>
+    <tr><td class="paramname">...args</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00307">307</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -1024,7 +1069,24 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00268">268</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p>Send file. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">...Args</td><td></td></tr>
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">response</td><td></td></tr>
+    <tr><td class="paramname">fileName</td><td></td></tr>
+    <tr><td class="paramname">...args</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00313">313</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -1241,7 +1303,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00244">244</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00272">272</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
