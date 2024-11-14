@@ -32,6 +32,8 @@ namespace framework
 	private:
 		static bool isFileRequest(std::string_view parameters);
 
+		static bool isHeavyOperation(BaseExecutor* executor);
+
 		static void parseRouteParameters(const std::string& parameters, HTTPRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:

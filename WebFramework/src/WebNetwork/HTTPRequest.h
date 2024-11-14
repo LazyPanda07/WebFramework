@@ -5,6 +5,7 @@
 #include "BaseTCPServer.h"
 #include "HTTPParser.h"
 #include "MultiLocalizationManager.h"
+#include "Log.h"
 
 #include "Managers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
@@ -212,15 +213,42 @@ namespace framework
 		template<utility::concepts::RouteParameterType T>
 		const T& getRouteParameter(const std::string& routeParameterName);
 
+		/**
+		 * @brief First call creates model with arguments other calls returns created model
+		 * @tparam ...Args
+		 * @tparam T
+		 * @param ...args
+		 * @return
+		 */
 		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
 		std::shared_ptr<T> createModel(Args&&... args);
 
+		/**
+		 * @brief First call creates model without arguments other calls returns created model
+		 * @tparam T
+		 * @return
+		 */
 		template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
 		std::shared_ptr<T> getModel() const;
 
+		/**
+		 * @brief Send runtime generated content
+		 * @tparam ...Args 
+		 * @tparam T 
+		 * @param response 
+		 * @param ...args 
+		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 		void sendChunks(HTTPResponse& response, Args&&... args);
 
+		/**
+		 * @brief Send file
+		 * @tparam ...Args 
+		 * @tparam T 
+		 * @param response 
+		 * @param fileName 
+		 * @param ...args 
+		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
 
@@ -255,7 +283,24 @@ namespace framework
 	template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
 	std::shared_ptr<T> HTTPRequest::getModel() const
 	{
-		return database.get<T>();
+		std::shared_ptr<T> result = database.get<T>();
+
+		if constexpr (std::is_default_constructible_v<T>)
+		{
+			if (!result)
+			{
+				result = database.add<T>();
+			}
+		}
+		else if (!result)
+		{
+			if (Log::isValid())
+			{
+				Log::error("Can't get or create model in HTTPRequest::getModel<T> function where T is {}", "LogWebFrameworkModels", typeid(T).name());
+			}
+		}
+
+		return result;
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>

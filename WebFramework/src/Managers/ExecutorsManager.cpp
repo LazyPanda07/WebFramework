@@ -23,6 +23,19 @@ namespace framework
 		return fileExtension.size() > 1 && ranges::all_of(fileExtension, [](char c) { return c != '/'; });
 	}
 
+	bool ExecutorsManager::isHeavyOperation(BaseExecutor* executor)
+	{
+		if (!executor)
+		{
+			throw exceptions::BadRequestException(); // 400
+		}
+
+		BaseExecutor::executorType executorType = executor->getType();
+
+		return executorType == BaseExecutor::executorType::heavyOperationStateless ||
+			executorType == BaseExecutor::executorType::heavyOperationStateful;
+	}
+
 	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequest& request, vector<utility::RouteParameters>::iterator it)
 	{
 		size_t i = 0;
@@ -225,14 +238,6 @@ namespace framework
 
 			executor = getExecutor(parameters, request, statefulExecutors);
 
-			auto isHeavyOperation = [executor]()
-				{
-					BaseExecutor::executorType executorType = executor->getType();
-
-					return executorType == BaseExecutor::executorType::heavyOperationStateless ||
-						executorType == BaseExecutor::executorType::heavyOperationStateful;
-				};
-
 			if (!fileRequest && !executor)
 			{
 				throw exceptions::BadRequestException(); // 400
@@ -244,9 +249,8 @@ namespace framework
 			}
 
 			void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
-			bool isThreadPoolTask = fileRequest ? false : isHeavyOperation();
 
-			if (serverType == webServerType::threadPool && isThreadPoolTask)
+			if (serverType == webServerType::threadPool && (fileRequest ? false : ExecutorsManager::isHeavyOperation(executor)))
 			{
 				return bind(method, executor, placeholders::_1, placeholders::_2);
 			}
