@@ -180,8 +180,16 @@ namespace framework
 		unordered_map<string, createExecutorFunction>&& creators,
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 		vector<utility::RouteParameters>&& routeParameters
-	) noexcept
+	)
 	{
+		const unordered_map<string_view, webServerType> types =
+		{
+			{ json_settings::multiThreadedWebServerTypeValue, webServerType::multiThreaded },
+			{ json_settings::threadPoolWebServerTypeValue, webServerType::threadPool },
+			{ json_settings::loadBalancerWebServerTypeValue, webServerType::loadBalancer },
+			{ json_settings::proxyWebServerTypeValue, webServerType::proxy }
+		};
+
 		this->routes = move(routes);
 		this->creators = move(creators);
 		this->settings = move(settings);
@@ -191,29 +199,12 @@ namespace framework
 
 		resources->init(utility::JSONSettingsParser::ExecutorSettings());
 
-		const string& webServerType = configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey);
-
-		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
-		{
-			serverType = webServerType::multiThreaded;
-		}
-		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
-		{
-			serverType = webServerType::threadPool;
-		}
-		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
-		{
-			serverType = webServerType::loadBalancer;
-		}
-		else if (webServerType == json_settings::proxyWebServerTypeValue)
-		{
-			serverType = webServerType::proxy;
-		}
+		serverType = types.at(configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey));
 	}
 
 	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
-		static const unordered_map<string, decltype(&BaseExecutor::doGet)> methods =
+		static const unordered_map<string, void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> methods =
 		{
 			{ "GET", &BaseExecutor::doGet },
 			{ "POST", &BaseExecutor::doPost },
@@ -237,7 +228,7 @@ namespace framework
 				parameters.resize(parameters.find('?'));
 			}
 
-			executor = getExecutor(parameters, request, statefulExecutors);
+			executor = this->getExecutor(parameters, request, statefulExecutors);
 
 			if (!fileRequest && !executor)
 			{
@@ -282,15 +273,6 @@ namespace framework
 
 			throw;
 		}
-		catch (const out_of_range&)
-		{
-			if (Log::isValid())
-			{
-				Log::error("Out of range", "LogExecutor");
-			}
-
-			throw;
-		}
 		catch (const exceptions::DatabaseException& e)
 		{
 			if (Log::isValid())
@@ -300,9 +282,18 @@ namespace framework
 
 			throw;
 		}
+		catch (const out_of_range&)
+		{
+			if (Log::isValid())
+			{
+				Log::error("Out of range", "LogExecutor");
+			}
+
+			throw;
+		}
 	}
 
-	shared_ptr<ResourceExecutor> ExecutorsManager::getResourceExecutor()
+	shared_ptr<ResourceExecutor> ExecutorsManager::getResourceExecutor() const
 	{
 		return resources;
 	}

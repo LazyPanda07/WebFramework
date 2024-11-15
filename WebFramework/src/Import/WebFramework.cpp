@@ -21,7 +21,7 @@ namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
 	{
-		string version = "3.0.9";
+		string version = "3.0.10";
 
 		return version;
 	}

@@ -60,11 +60,11 @@ namespace framework
 			std::unordered_map<std::string, createExecutorFunction>&& creators,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 			std::vector<utility::RouteParameters>&& routeParameters
-		) noexcept;
+		);
 
 		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
-		std::shared_ptr<ResourceExecutor> getResourceExecutor();
+		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 
 		~ExecutorsManager() = default;
 	};
