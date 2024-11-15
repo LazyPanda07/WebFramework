@@ -75,11 +75,6 @@ namespace framework
 
 			sqlite3_finalize(result);
 
-			if (query.find("INSERT") != string::npos)
-			{
-				return this->execute(format("SELECT * FROM {} WHERE id = {}", this->getTableName(), to_string(sqlite3_last_insert_rowid(**database))));
-			}
-
 			return utility::SQLiteResult(move(output));
 		}
 

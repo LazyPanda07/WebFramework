@@ -4,6 +4,7 @@
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
+#include "Exceptions/DatabaseException.h"
 
 using namespace std;
 
@@ -286,6 +287,15 @@ namespace framework
 			if (Log::isValid())
 			{
 				Log::error("Out of range", "LogExecutor");
+			}
+
+			throw;
+		}
+		catch (const exceptions::DatabaseException& e)
+		{
+			if (Log::isValid())
+			{
+				Log::error("Database exception: {}", "LogWebFrameworkDatabase", e.what());
 			}
 
 			throw;
