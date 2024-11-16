@@ -13,7 +13,7 @@ maintainers = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
 ]
 keywords = ["Web"]
-version = "1.0.4"
+version = "1.0.5"
 dependencies = [
     "multipledispatch",
     "requests",

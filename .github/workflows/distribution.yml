@@ -7,8 +7,8 @@ on:
 
 env:
   dotnet-version: 8.0
-  deb-package-version: 1.0.4
-  deb-package-release-number: 5
+  deb-package-version: 1.0.5
+  deb-package-release-number: 6
 
 
 jobs:
