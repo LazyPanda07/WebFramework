@@ -174,6 +174,12 @@ namespace framework
 		const json::JSONParser& getJSON() const;
 
 		/**
+		 * @brief Get chunks
+		 * @return 
+		 */
+		const std::vector<std::string>& getChunks() const;
+
+		/**
 		 * @brief HTTP parser getter
 		 * @return
 		 */

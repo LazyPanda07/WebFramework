@@ -31,6 +31,15 @@ namespace framework
 		return utility::HTTPSSingleton::get().getUseHTTPS();
 	}
 
+	uint64_t WebFramework::parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const
+	{
+		vector<json::utility::jsonObject> flags;
+
+		return loggingSettings.tryGetArray(json_settings::logFlagsKey, flags) ?
+			Log::createFlags(json::utility::JSONArrayWrapper(flags).getAsStringArray()) :
+			(numeric_limits<uint64_t>::max)();
+	}
+
 	string WebFramework::initLogging() const
 	{
 		json::utility::jsonObject loggingSettings;
@@ -55,6 +64,7 @@ namespace framework
 			loggingSettings.tryGetBool(json_settings::duplicateErrorOutputKey, duplicateErrorOutput);
 
 			uint64_t logFileSize = 0;
+			uint64_t flags = this->parseLoggingFlags(loggingSettings);
 
 			if (loggingSettings.tryGetUnsignedInt(json_settings::logFileSizeKey, logFileSize))
 			{

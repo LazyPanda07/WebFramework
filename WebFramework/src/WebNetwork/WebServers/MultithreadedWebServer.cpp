@@ -5,6 +5,7 @@
 
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/NotFoundException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
@@ -111,6 +112,12 @@ namespace framework
 				stream << response;
 			}
 			catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
+			{
+				resources->notFoundError(response, &e);
+
+				stream << response;
+			}
+			catch (const exceptions::NotFoundException& e) // 404
 			{
 				resources->notFoundError(response, &e);
 

@@ -72,6 +72,7 @@ add_library(
 	WebFramework/src/DynamicPages/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/DynamicPages/WebFrameworkDynamicPages.cpp
 	WebFramework/src/Exceptions/BadRequestException.cpp
+	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/BaseExecutorException.cpp
 	WebFramework/src/Exceptions/BaseWebFrameworkException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
