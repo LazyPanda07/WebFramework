@@ -68,11 +68,25 @@ namespace framework
 
 			if (loggingSettings.tryGetUnsignedInt(json_settings::logFileSizeKey, logFileSize))
 			{
-				Log::configure(dateFormat, logsPath, logFileSize, flags);
+				if (flags == (numeric_limits<uint64_t>::max)())
+				{
+					Log::configure(dateFormat, logsPath, logFileSize);
+				}
+				else
+				{
+					Log::configure(dateFormat, logsPath, logFileSize, flags);
+				}
 			}
 			else
 			{
-				Log::configure(dateFormat, logsPath, flags);
+				if (flags == (numeric_limits<uint64_t>::max)())
+				{
+					Log::configure(dateFormat, logsPath);
+				}
+				else
+				{
+					Log::configure(dateFormat, logsPath, Log::logFileSize, flags);
+				}
 			}
 
 			if (duplicateOutput)
