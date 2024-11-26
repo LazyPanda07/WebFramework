@@ -30,6 +30,9 @@ namespace framework
 		std::unique_ptr<web::BaseTCPServer> server;
 
 	private:
+		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
+
+	private:
 		std::string initLogging() const;
 
 		void initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const;

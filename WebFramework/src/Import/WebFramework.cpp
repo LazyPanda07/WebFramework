@@ -21,7 +21,7 @@ namespace framework
 {
 	string WebFramework::getWebFrameworkVersion()
 	{
-		string version = "3.0.10";
+		string version = "3.0.11";
 
 		return version;
 	}
@@ -29,6 +29,15 @@ namespace framework
 	bool WebFramework::getUseHTTPS()
 	{
 		return utility::HTTPSSingleton::get().getUseHTTPS();
+	}
+
+	uint64_t WebFramework::parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const
+	{
+		vector<json::utility::jsonObject> flags;
+
+		return loggingSettings.tryGetArray(json_settings::logFlagsKey, flags) ?
+			Log::createFlags(json::utility::JSONArrayWrapper(flags).getAsStringArray()) :
+			(numeric_limits<uint64_t>::max)();
 	}
 
 	string WebFramework::initLogging() const
@@ -55,14 +64,29 @@ namespace framework
 			loggingSettings.tryGetBool(json_settings::duplicateErrorOutputKey, duplicateErrorOutput);
 
 			uint64_t logFileSize = 0;
+			uint64_t flags = this->parseLoggingFlags(loggingSettings);
 
 			if (loggingSettings.tryGetUnsignedInt(json_settings::logFileSizeKey, logFileSize))
 			{
-				Log::configure(dateFormat, logsPath, logFileSize);
+				if (flags == (numeric_limits<uint64_t>::max)())
+				{
+					Log::configure(dateFormat, logsPath, logFileSize);
+				}
+				else
+				{
+					Log::configure(dateFormat, logsPath, logFileSize, flags);
+				}
 			}
 			else
 			{
-				Log::configure(dateFormat, logsPath);
+				if (flags == (numeric_limits<uint64_t>::max)())
+				{
+					Log::configure(dateFormat, logsPath);
+				}
+				else
+				{
+					Log::configure(dateFormat, logsPath, Log::logFileSize, flags);
+				}
 			}
 
 			if (duplicateOutput)

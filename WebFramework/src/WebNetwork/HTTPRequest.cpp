@@ -244,6 +244,11 @@ namespace framework
 		return parser.getJSON();
 	}
 
+	const vector<string>& HTTPRequest::getChunks() const
+	{
+		return parser.getChunks();
+	}
+
 	const web::HTTPParser& HTTPRequest::getParser() const
 	{
 		return parser;

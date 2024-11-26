@@ -41,6 +41,7 @@ namespace json_settings
 	inline constexpr std::string_view cachingSize = "cachingSize";
 	inline constexpr std::string_view dateFormatKey = "dateFormat";
 	inline constexpr std::string_view logFileSizeKey = "logFileSize";
+	inline constexpr std::string_view logFlagsKey = "flags";
 	inline constexpr std::string_view webServerTypeKey = "webServerType";
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
@@ -85,6 +86,7 @@ namespace exceptions
 
 	inline constexpr std::string_view stringConversionErrorCode = "String conversion error code ";
 
+	inline constexpr std::string_view notFound = "Not found";
 	inline constexpr std::string_view badRequest = "Bad request from client";
 }
 

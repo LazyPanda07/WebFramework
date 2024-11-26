@@ -147,6 +147,9 @@
     <ClCompile Include="src\Utility\DynamicLibraries.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Exceptions\NotFoundException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Import\WebFramework.h">
@@ -297,6 +300,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\WebFrameworkConcepts.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\NotFoundException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

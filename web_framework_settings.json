@@ -55,7 +55,12 @@
     "logFileSize": 134217728,
     "logsPath": "",
     "duplicateOutput": false,
-    "duplicateErrorOutput": false
+    "duplicateErrorOutput": false,
+    "flags": [
+      "utcDate",
+      "processName", 
+      "processId"
+    ]
   },
   "ThreadPoolServer": {
     "threadCount": 0

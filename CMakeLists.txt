@@ -25,7 +25,7 @@ set(
 )
 option(SHARED_WEB_FRAMEWORK "Build WebFramework shared library for using in different APIs" ON)
 
-project(WebFramework VERSION 3.0.10)
+project(WebFramework VERSION 3.0.11)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
@@ -72,6 +72,7 @@ add_library(
 	WebFramework/src/DynamicPages/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/DynamicPages/WebFrameworkDynamicPages.cpp
 	WebFramework/src/Exceptions/BadRequestException.cpp
+	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/BaseExecutorException.cpp
 	WebFramework/src/Exceptions/BaseWebFrameworkException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp

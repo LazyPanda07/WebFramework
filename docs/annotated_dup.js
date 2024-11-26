@@ -10,6 +10,7 @@ var annotated_dup =
         [ "DatabaseException", "classframework_1_1exceptions_1_1_database_exception.html", null ],
         [ "DynamicPagesSyntaxException", "classframework_1_1exceptions_1_1_dynamic_pages_syntax_exception.html", null ],
         [ "MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", null ],
+        [ "NotFoundException", "classframework_1_1exceptions_1_1_not_found_exception.html", null ],
         [ "NotImplementedException", "classframework_1_1exceptions_1_1_not_implemented_exception.html", null ],
         [ "SQLite3Exception", "classframework_1_1exceptions_1_1_s_q_lite3_exception.html", null ]
       ] ],

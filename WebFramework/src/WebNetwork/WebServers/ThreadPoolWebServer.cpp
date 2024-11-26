@@ -3,6 +3,7 @@
 #include "Log.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Exceptions/NotFoundException.h"
 #include "Exceptions/SSLException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "HTTPSNetwork.h"
@@ -103,6 +104,12 @@ namespace framework
 
 							stream << response;
 						}
+						catch (const exceptions::NotFoundException& e) // 404
+						{
+							resourceExecutor.notFoundError(response, &e);
+
+							stream << response;
+						}
 						catch (const exceptions::BaseExecutorException& e) // 500
 						{
 							resourceExecutor.internalServerError(response, &e);
@@ -153,6 +160,14 @@ namespace framework
 			stream << response;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
+		{
+			HTTPResponse response;
+
+			resourceExecutor.notFoundError(response, &e);
+
+			stream << response;
+		}
+		catch (const exceptions::NotFoundException& e) // 404
 		{
 			HTTPResponse response;
 
