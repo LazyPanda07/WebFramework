@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.10</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.11</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -181,6 +181,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a54455bdedde69ca8e954d03933a5b5a6" id="r_a54455bdedde69ca8e954d03933a5b5a6"><td class="memItemLeft" align="right" valign="top">const json::JSONParser &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54455bdedde69ca8e954d03933a5b5a6">getJSON</a> () const</td></tr>
 <tr class="memdesc:a54455bdedde69ca8e954d03933a5b5a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for JSONParser.  <br /></td></tr>
 <tr class="separator:a54455bdedde69ca8e954d03933a5b5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05c2fe665e2fc8eebd939a8e6738730e" id="r_a05c2fe665e2fc8eebd939a8e6738730e"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05c2fe665e2fc8eebd939a8e6738730e">getChunks</a> () const</td></tr>
+<tr class="memdesc:a05c2fe665e2fc8eebd939a8e6738730e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get chunks.  <br /></td></tr>
+<tr class="separator:a05c2fe665e2fc8eebd939a8e6738730e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e23e04a4b3d8b8938f7cdf2a70cc8ff" id="r_a3e23e04a4b3d8b8938f7cdf2a70cc8ff"><td class="memItemLeft" align="right" valign="top">const web::HTTPParser &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e23e04a4b3d8b8938f7cdf2a70cc8ff">getParser</a> () const</td></tr>
 <tr class="memdesc:a3e23e04a4b3d8b8938f7cdf2a70cc8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP parser getter.  <br /></td></tr>
 <tr class="separator:a3e23e04a4b3d8b8938f7cdf2a70cc8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -331,7 +334,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00278">278</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00284">284</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -439,6 +442,28 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
 
 </div>
 </div>
+<a id="a05c2fe665e2fc8eebd939a8e6738730e" name="a05c2fe665e2fc8eebd939a8e6738730e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05c2fe665e2fc8eebd939a8e6738730e">&#9670;&#160;</a></span>getChunks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const vector&lt; string &gt; &amp; framework::HTTPRequest::getChunks </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get chunks. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00247">247</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ae286e5725e5775081b2f0a3a650d1527" name="ae286e5725e5775081b2f0a3a650d1527"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae286e5725e5775081b2f0a3a650d1527">&#9670;&#160;</a></span>getClientIpV4()</h2>
 
@@ -457,7 +482,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
 <p>Get client's address. </p>
 <dl class="section return"><dt>Returns</dt><dd>client's address</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00252">252</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00257">257</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -479,7 +504,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
 <p>Get client's port. </p>
 <dl class="section return"><dt>Returns</dt><dd>client's port</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00262">262</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00267">267</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -641,7 +666,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00284">284</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00290">290</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -663,7 +688,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1sqlite_1
 <p>HTTP parser getter. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00247">247</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00252">252</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -746,7 +771,7 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00273">273</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00278">278</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -767,7 +792,7 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00279">279</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00284">284</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -788,7 +813,7 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00285">285</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00290">290</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -810,7 +835,7 @@ template&lt;&gt; </div>
 <p>Get server's address. </p>
 <dl class="section return"><dt>Returns</dt><dd>server's address</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00257">257</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00262">262</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -832,7 +857,7 @@ template&lt;&gt; </div>
 <p>Get server's port. </p>
 <dl class="section return"><dt>Returns</dt><dd>server's port</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00267">267</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00272">272</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>
@@ -987,7 +1012,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00307">307</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00313">313</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1111,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00313">313</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00319">319</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -1303,7 +1328,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00272">272</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8h_source.html#l00278">278</a> of file <a class="el" href="_h_t_t_p_request_8h_source.html">HTTPRequest.h</a>.</p>
 
 </div>
 </div>
@@ -1389,7 +1414,7 @@ template&lt;std::derived_from&lt; <a class="el" href="classframework_1_1utility_
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00290">290</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_h_t_t_p_request_8cpp_source.html#l00295">295</a> of file <a class="el" href="_h_t_t_p_request_8cpp_source.html">HTTPRequest.cpp</a>.</p>
 
 </div>
 </div>

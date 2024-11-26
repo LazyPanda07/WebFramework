@@ -5,6 +5,7 @@ var classframework_1_1_h_t_t_p_request =
     [ "deleteSession", "classframework_1_1_h_t_t_p_request.html#abaf4720cdb6e24ff2e69677b71496658", null ],
     [ "getAttribute", "classframework_1_1_h_t_t_p_request.html#ae9338bd301a24307f2d711b163ab8b53", null ],
     [ "getBody", "classframework_1_1_h_t_t_p_request.html#a2e7a1b3895052820d1e11f90d5152dce", null ],
+    [ "getChunks", "classframework_1_1_h_t_t_p_request.html#a05c2fe665e2fc8eebd939a8e6738730e", null ],
     [ "getClientIpV4", "classframework_1_1_h_t_t_p_request.html#ae286e5725e5775081b2f0a3a650d1527", null ],
     [ "getClientPort", "classframework_1_1_h_t_t_p_request.html#ad2d745e251902e8f3792647239f8043d", null ],
     [ "getCookies", "classframework_1_1_h_t_t_p_request.html#a05dc92b8a8dafb5a7a3c9812f36126f8", null ],

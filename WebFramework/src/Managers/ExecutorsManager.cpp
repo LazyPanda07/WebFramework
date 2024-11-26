@@ -291,6 +291,15 @@ namespace framework
 
 			throw;
 		}
+		catch (const exception& e)
+		{
+			if (Log::isValid())
+			{
+				Log::error("Executor manager exception: {}", "LogExecutorsManager", e.what());
+			}
+
+			throw;
+		}
 	}
 
 	shared_ptr<ResourceExecutor> ExecutorsManager::getResourceExecutor() const

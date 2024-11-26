@@ -16,6 +16,8 @@ var dir_ab50e2bdbfb89183d438c902c588a296 =
     [ "DynamicPagesSyntaxException.h", "_dynamic_pages_syntax_exception_8h_source.html", null ],
     [ "MissingLoadTypeException.cpp", "_missing_load_type_exception_8cpp_source.html", null ],
     [ "MissingLoadTypeException.h", "_missing_load_type_exception_8h_source.html", null ],
+    [ "NotFoundException.cpp", "_not_found_exception_8cpp_source.html", null ],
+    [ "NotFoundException.h", "_not_found_exception_8h_source.html", null ],
     [ "NotImplementedException.cpp", "_not_implemented_exception_8cpp_source.html", null ],
     [ "NotImplementedException.h", "_not_implemented_exception_8h_source.html", null ],
     [ "SQLite3Exception.cpp", "_s_q_lite3_exception_8cpp_source.html", null ],

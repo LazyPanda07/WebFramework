@@ -53,7 +53,8 @@ var hierarchy =
             [ "framework::exceptions::NotImplementedException", "classframework_1_1exceptions_1_1_not_implemented_exception.html", null ]
           ] ],
           [ "framework::exceptions::CantFindFunctionException", "classframework_1_1exceptions_1_1_cant_find_function_exception.html", null ],
-          [ "framework::exceptions::MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", null ]
+          [ "framework::exceptions::MissingLoadTypeException", "classframework_1_1exceptions_1_1_missing_load_type_exception.html", null ],
+          [ "framework::exceptions::NotFoundException", "classframework_1_1exceptions_1_1_not_found_exception.html", null ]
         ] ],
         [ "framework::exceptions::CantLoadSourceException", "classframework_1_1exceptions_1_1_cant_load_source_exception.html", null ],
         [ "framework::exceptions::DatabaseException", "classframework_1_1exceptions_1_1_database_exception.html", [
