@@ -247,7 +247,7 @@ namespace framework
 		}
 	}
 
-	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup) //-V688
+	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr address, function<void()>& cleanup) //-V688
 	{
 		SSL* ssl = nullptr;
 
