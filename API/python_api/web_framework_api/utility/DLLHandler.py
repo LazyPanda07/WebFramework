@@ -55,7 +55,7 @@ class DLLHandler:
         self.__handle = ctypes.CDLL(path_to_dll)
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls) -> "DLLHandler":
         if cls.instance is None:
             raise Exception("WebFramework must be initialized with initialize_web_framework function")
 
