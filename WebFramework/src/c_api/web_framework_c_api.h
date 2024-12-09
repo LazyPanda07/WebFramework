@@ -47,6 +47,8 @@ EXPORT void stopWebFrameworkServer(WebFramework server, bool wait, Exception* ex
 
 EXPORT bool isServerRunning(WebFramework server, Exception* exception);
 
+EXPORT const char* getWebFrameworkVersion();
+
 EXPORT void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception);
 
 EXPORT void overrideConfigurationInteger(Config config, const char* key, int64_t value, bool recursive, Exception* exception);

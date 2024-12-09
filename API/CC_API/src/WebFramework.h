@@ -54,6 +54,12 @@ WebFrameworkException stopWebFrameworkServer(WebFramework implementation, bool w
  */
 WebFrameworkException isServerRunning(WebFramework implementation, bool* result);
 
+/**
+ * @brief Get WebFramework version
+ * @return String representation of version in format {major}.{minor}.{patch}
+ */
+const char* getWebFrameworkVersion();
+
 inline WebFrameworkException createWebFrameworkFromPath(const char* configPath, WebFramework* server)
 {
     WebFrameworkException exception = NULL;
@@ -118,4 +124,11 @@ inline WebFrameworkException isServerRunning(WebFramework implementation, bool* 
     *result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isServerRunning, &exception);
 
     return exception;
+}
+
+inline const char* getWebFrameworkVersion()
+{
+    typedef const char* (*getWebFrameworkVersion)();
+
+    return CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkVersion);
 }

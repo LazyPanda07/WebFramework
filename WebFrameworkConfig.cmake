@@ -24,8 +24,18 @@ if (UNIX)
     add_definitions(-D__LINUX__)
 endif(UNIX)
 
+if (NOT DEFINED CMAKE_SYSTEM_NAME)
+    set(CMAKE_SYSTEM_NAME " ")
+endif()
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
     add_definitions(-D__ANDROID__)
+endif()
+
+get_property(ANY_TARGET GLOBAL PROPERTY TARGETS)
+
+if (NOT ANY_TARGET)
+    return()
 endif()
 
 include_directories(

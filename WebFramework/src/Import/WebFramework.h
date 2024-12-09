@@ -17,7 +17,7 @@ namespace framework
 	public:
 		/// @brief Get current WebFramework version
 		/// @return Current WebFramework version
-		static std::string getWebFrameworkVersion();
+		static std::string_view getWebFrameworkVersion();
 
 		/**
 		 * @brief Is server use HTTPS

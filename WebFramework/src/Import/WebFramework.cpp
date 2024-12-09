@@ -19,9 +19,9 @@ using namespace std;
 
 namespace framework
 {
-	string WebFramework::getWebFrameworkVersion()
+	string_view WebFramework::getWebFrameworkVersion()
 	{
-		string version = "3.0.11";
+		static string version = "3.0.11";
 
 		return version;
 	}
