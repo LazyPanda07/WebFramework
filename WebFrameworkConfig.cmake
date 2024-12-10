@@ -36,7 +36,7 @@ get_property(ANY_TARGET GLOBAL PROPERTY TARGETS)
 
 message("Any target: ${ANY_TARGET}")
 
-if (${ANY_TARGET} STREQUAL "")
+if (NOT DEFINED ANY_TARGET)
     message("Can't find any target")
 
     return()
