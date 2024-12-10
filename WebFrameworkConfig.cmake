@@ -34,7 +34,9 @@ endif()
 
 get_property(ANY_TARGET GLOBAL PROPERTY TARGETS)
 
-if (NOT ANY_TARGET)
+message("Any target: ${ANY_TARGET}")
+
+if (${ANY_TARGET} STREQUAL "")
     message("Can't find any target")
 
     return()
