@@ -32,15 +32,13 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
     add_definitions(-D__ANDROID__)
 endif()
 
-get_property(ANY_TARGET GLOBAL PROPERTY TARGETS)
+#get_property(ANY_TARGET GLOBAL PROPERTY TARGETS)
 
-message("Any target: ${ANY_TARGET}")
+#if (NOT DEFINED ANY_TARGET)
+    #message("Can't find any target")
 
-if (NOT DEFINED ANY_TARGET)
-    message("Can't find any target")
-
-    return()
-endif()
+    #return()
+#endif()
 
 include_directories(
     BEFORE
