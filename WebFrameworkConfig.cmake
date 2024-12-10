@@ -35,7 +35,7 @@ endif()
 get_property(ANY_TARGET GLOBAL PROPERTY TARGETS)
 
 if (NOT ANY_TARGET)
-    message("Can't find any target)
+    message("Can't find any target")
 
     return()
 endif()
