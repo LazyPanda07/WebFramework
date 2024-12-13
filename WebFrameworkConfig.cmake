@@ -32,13 +32,11 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
     add_definitions(-D__ANDROID__)
 endif()
 
-#get_property(ANY_TARGET GLOBAL PROPERTY TARGETS)
+if (NOT CMAKE_SCRIPT_MODE_FILE)
+    message("Script mode doesn't supported")
 
-#if (NOT DEFINED ANY_TARGET)
-    #message("Can't find any target")
-
-    #return()
-#endif()
+    return()
+endif()
 
 include_directories(
     BEFORE
