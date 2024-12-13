@@ -32,7 +32,7 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
     add_definitions(-D__ANDROID__)
 endif()
 
-if (NOT CMAKE_SCRIPT_MODE_FILE)
+if (CMAKE_SCRIPT_MODE_FILE)
     message("Script mode doesn't supported")
 
     return()
