@@ -44,6 +44,8 @@ namespace framework
 			const std::vector<std::string>& pathToSources
 		);
 
+		void init();
+
 	public:
 		WebFramework(const utility::Config& webFrameworkConfig);
 

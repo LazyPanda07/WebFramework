@@ -7,10 +7,33 @@ on:
   
   
 env:
-  flutter-version: 3.24.4
+  flutter-version: 3.27.1
 
 
 jobs:
+  windows-static-build:
+   runs-on: windows-latest
+
+   steps:
+   - uses: actions/checkout@v4
+     with:
+       submodules: recursive
+   
+   - name: Setup MSBuild
+     uses: microsoft/setup-msbuild@v2
+
+   - name: Build StaticWindowsOnly
+     run: |
+         cd samples\StaticWindowsOnly
+         msbuild StaticWindowsOnly.sln -property:Configuration=Release
+   
+   - name: Upload artifacts
+     uses: actions/upload-artifact@v4
+     with:
+        name: StaticWindowsOnly
+        path: samples/StaticWindowsOnly/bin/Release-x64/StaticWindowsOnly
+          
+
   windows-hello-executor:
     runs-on: windows-latest
 
@@ -199,3 +222,43 @@ jobs:
         name: AndroidFlutterSample
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
         
+
+  publish:
+    needs: [
+      windows-static-build,
+      windows-hello-executor,
+      linux-hello-executor,
+      android-hello-executor,
+      windows-flutter-build,
+      android-flutter-build
+    ]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
+    
+    - name: Setup release version variable
+      shell: pwsh
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\Import\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+
+    - name: Download artifacts
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: actions/download-artifact@v4
+      
+    - name: Create Android zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r android.zip Release_Android
+
+    - name: Publish
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: svenstaro/upload-release-action@2.9.0
+      with:
+        tag: v${{ env.VERSION }}
+        release_name: v${{ env.VERSION }}
+        file_glob: true
+        file: "*.zip"

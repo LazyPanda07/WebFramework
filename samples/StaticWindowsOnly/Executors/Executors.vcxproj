@@ -66,8 +66,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(OutDir)..\StaticWindowsOnly\configs" mkdir "$(OutDir)..\StaticWindowsOnly\configs" &amp;&amp; xcopy  /y "$(ProjectDir)configs" "$(OutDir)..\StaticWindowsOnly\configs"
-if not exist "$(OutDir)..\StaticWindowsOnly\executors" mkdir "$(OutDir)..\StaticWindowsOnly\executors" &amp;&amp; xcopy /y "$(ProjectDir)settings" "$(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors"</Command>
+      <Command>if not exist $(OutDir)..\StaticWindowsOnly\configs mkdir $(OutDir)..\StaticWindowsOnly\configs &amp;&amp; xcopy  /y $(ProjectDir)configs $(OutDir)..\StaticWindowsOnly\configs
+if not exist $(OutDir)..\StaticWindowsOnly\executors mkdir $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(ProjectDir)settings $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -89,8 +89,8 @@ if not exist "$(OutDir)..\StaticWindowsOnly\executors" mkdir "$(OutDir)..\Static
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(OutDir)..\StaticWindowsOnly\configs" mkdir "$(OutDir)..\StaticWindowsOnly\configs" &amp;&amp; xcopy  /y "$(ProjectDir)configs" "$(OutDir)..\StaticWindowsOnly\configs"
-if not exist "$(OutDir)..\StaticWindowsOnly\executors" mkdir "$(OutDir)..\StaticWindowsOnly\executors" &amp;&amp; xcopy /y "$(ProjectDir)settings" "$(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors"</Command>
+      <Command>if not exist $(OutDir)..\StaticWindowsOnly\configs mkdir $(OutDir)..\StaticWindowsOnly\configs &amp;&amp; xcopy  /y $(ProjectDir)configs $(OutDir)..\StaticWindowsOnly\configs
+if not exist $(OutDir)..\StaticWindowsOnly\executors mkdir $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(ProjectDir)settings $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

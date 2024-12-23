@@ -81,16 +81,17 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFramework\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir)</Command>
+      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir) &amp;&amp; del $(OutDir)$(ProjectName).lib &amp;&amp; del $(OutDir)$(ProjectName).exp</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

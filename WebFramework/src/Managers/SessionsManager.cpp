@@ -22,12 +22,12 @@ namespace framework
 			}
 		}
 
-		for (const auto& i : deleteVariants)
+		for (const auto& [time, ip] : deleteVariants)
 		{
-			timeIp.erase(i.first);
-			ipTime.erase(i.second);
+			timeIp.erase(time);
+			ipTime.erase(ip);
 
-			userSessionSynchronization->deleteSession(i.second);
+			userSessionSynchronization->deleteSession(ip);
 		}
 
 		this->nextPeriod();
@@ -48,25 +48,24 @@ namespace framework
 		multimap<SessionTimePoint, string, greater<SessionTimePoint>> tem;
 		const SessionTimePoint period = chrono::high_resolution_clock::now();
 
-		for (const auto& i : timeIp)
+		for (const auto& [time, ip] : timeIp)
 		{
-			SessionTimePoint next = i.first;
+			SessionTimePoint next = time;
 
 			next += period - next;
 
-			ipTime[i.second] = next;
+			ipTime[ip] = next;
 
-			tem.emplace(move(next), i.second);
+			tem.emplace(move(next), ip);
 		}
 
 		timeIp = move(tem);
 	}
 
 	SessionsManager::SessionTime::SessionTime(SessionsManager* userSession) :
-		userSessionSynchronization(userSession),
-		handle(async(launch::async, &SessionTime::runAsyncCheck, this))
+		userSessionSynchronization(userSession)
 	{
-		
+		thread(&SessionTime::runAsyncCheck, this).detach();
 	}
 
 	void SessionsManager::SessionTime::updateSessionTime(const string& ip)

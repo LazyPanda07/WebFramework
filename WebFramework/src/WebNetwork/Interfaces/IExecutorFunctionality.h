@@ -26,8 +26,8 @@ namespace framework
 		public:
 			IExecutorFunctionality
 			(
-				const json::JSONParser& configuration, 
-				const std::filesystem::path& assets, 
+				const json::JSONParser& configuration,
+				const std::filesystem::path& assets,
 				const std::filesystem::path& pathToTemplates,
 				uint64_t cachingSize,
 				const std::vector<utility::JSONSettingsParser>& parsers,
