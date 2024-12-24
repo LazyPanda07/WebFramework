@@ -99,10 +99,8 @@ jobs:
         path: samples/build/bin/executors/*.dll
             
 
-  linux-build:
+  login-job:
     runs-on: ubuntu-latest
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
 
     steps:
     - name: Login
@@ -110,6 +108,12 @@ jobs:
           sudo apt install -y docker.io
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u LazyPanda07 --password-stdin
 
+  linux-build:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+
+    steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
