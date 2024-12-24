@@ -107,7 +107,7 @@ jobs:
     steps:
     - name: Login
       run: |
-          sudo apt install docker
+          sudo apt install docker.io
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u LazyPanda07 --password-stdin
 
     - uses: actions/checkout@v4
