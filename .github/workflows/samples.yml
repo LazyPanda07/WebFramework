@@ -62,7 +62,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: HelloExecutorWindows
+        name: Windows
         path: samples/build/bin
 
 
@@ -127,7 +127,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: HelloExecutorLinux
+        name: Linux
         path: samples/build/bin
 
 
