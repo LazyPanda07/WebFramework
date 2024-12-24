@@ -163,6 +163,38 @@ jobs:
         path: samples/build/bin/executors/*.so
 
 
+  android-build:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:android
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          make install -j $(nproc)
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: HelloExecutorAndroid
+        path: samples/build/bin
+
+
   android-hello-executor:
     runs-on: ubuntu-latest
     container:
@@ -197,7 +229,7 @@ jobs:
 
   windows-flutter-build:
     runs-on: windows-latest
-    needs: windows-hello-executor
+    needs: windows-build
 
     steps:
     - uses: actions/checkout@v4
@@ -213,20 +245,19 @@ jobs:
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
-    - name: Download executors
+    - name: Download assets
       uses: actions/download-artifact@v4
       with:
-        name: HelloExecutorWindows
-        path: HelloExecutor
+        name: Windows
+        path: Windows
 
     - name: Move assets
       shell: bash
       run: |
           mkdir -p API/web_framework_flutter_api/example/assets/configs
           mkdir -p API/web_framework_flutter_api/example/assets/executors
-          mv samples/hello_executor/configs/*.json API/web_framework_flutter_api/example/assets/configs
-          mv samples/hello_executor/settings/*.json API/web_framework_flutter_api/example/assets/executors
-          mv HelloExecutor/*.dll API/web_framework_flutter_api/example/assets/executors
+          mv Windows/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv Windows/executors/*.* API/web_framework_flutter_api/example/assets/executors
 
     - name: Build
       working-directory: API/web_framework_flutter_api/example
@@ -246,7 +277,7 @@ jobs:
         
   android-flutter-build:
     runs-on: ubuntu-latest
-    needs: android-hello-executor
+    needs: android-build
     container:
       image: lazypanda07/ubuntu_cxx20:android
 
@@ -258,16 +289,15 @@ jobs:
     - name: Download executors
       uses: actions/download-artifact@v4
       with:
-        name: HelloExecutorAndroid
-        path: HelloExecutor
+        name: Android
+        path: Android
 
     - name: Move assets
       run: |
           mkdir -p API/web_framework_flutter_api/example/assets/configs
           mkdir -p API/web_framework_flutter_api/example/assets/executors
-          mv samples/hello_executor/configs/*.json API/web_framework_flutter_api/example/assets/configs
-          mv samples/hello_executor/settings/*.json API/web_framework_flutter_api/example/assets/executors
-          mv HelloExecutor/*.so API/web_framework_flutter_api/example/assets/executors
+          mv Android/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv Android/executors/*.* API/web_framework_flutter_api/example/assets/executors
 
     - name: Move WebFramework
       run: |
@@ -293,6 +323,7 @@ jobs:
       android-hello-executor,
       windows-build,
       linux-build,
+      android-build,
       windows-flutter-build,
       android-flutter-build
     ]
