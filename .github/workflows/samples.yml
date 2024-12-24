@@ -32,9 +32,8 @@ jobs:
      with:
         name: StaticWindowsOnly
         path: samples/StaticWindowsOnly/bin/Release-x64/StaticWindowsOnly
-          
 
-  windows-hello-executor:
+  windows-build:
     runs-on: windows-latest
 
     steps:
@@ -64,14 +63,43 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: HelloExecutorWindows
-        path: |
-            samples/build/bin/*.dll
-            samples/build/bin/configs/*.json
-            samples/build/bin/executors/*.json
-            samples/build/bin/executors/*.dll
+        path: samples/build/bin
 
 
-  linux-hello-executor:
+  windows-hello-executor:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: HelloExecutorWindows
+        path: samples/build/bin/executors/*.dll
+            
+
+  linux-build:
     runs-on: ubuntu-latest
     container:
       image: lazypanda07/ubuntu_cxx20:24.04
@@ -103,6 +131,38 @@ jobs:
         path: samples/build/bin
 
 
+  linux-hello-executor:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+          make install -j $(nproc)
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: HelloExecutorLinux
+        path: samples/build/bin/executors/*.so
+
+
   android-hello-executor:
     runs-on: ubuntu-latest
     container:
@@ -125,14 +185,14 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           make install -j $(nproc)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: HelloExecutorAndroid
-        path: samples/build/bin
+        path: samples/build/bin/executors/*.so
 
 
   windows-flutter-build:
@@ -164,8 +224,9 @@ jobs:
       run: |
           mkdir -p API/web_framework_flutter_api/example/assets/configs
           mkdir -p API/web_framework_flutter_api/example/assets/executors
-          mv HelloExecutor/configs/*.json API/web_framework_flutter_api/example/assets/configs
-          mv HelloExecutor/executors/*.* API/web_framework_flutter_api/example/assets/executors
+          mv samples/hello_executor/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv samples/hello_executor/settings/*.json API/web_framework_flutter_api/example/assets/executors
+          mv HelloExecutor/*.dll API/web_framework_flutter_api/example/assets/executors
 
     - name: Build
       working-directory: API/web_framework_flutter_api/example
@@ -204,8 +265,9 @@ jobs:
       run: |
           mkdir -p API/web_framework_flutter_api/example/assets/configs
           mkdir -p API/web_framework_flutter_api/example/assets/executors
-          mv HelloExecutor/configs/*.json API/web_framework_flutter_api/example/assets/configs
-          mv HelloExecutor/executors/*.* API/web_framework_flutter_api/example/assets/executors
+          mv samples/hello_executor/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv samples/hello_executor/settings/*.json API/web_framework_flutter_api/example/assets/executors
+          mv HelloExecutor/*.so API/web_framework_flutter_api/example/assets/executors
 
     - name: Move WebFramework
       run: |
@@ -229,6 +291,8 @@ jobs:
       windows-hello-executor,
       linux-hello-executor,
       android-hello-executor,
+      windows-build,
+      linux-build,
       windows-flutter-build,
       android-flutter-build
     ]
