@@ -364,11 +364,11 @@ jobs:
     - name: Create samples zip
       run: zip -r samples.zip samples
 
-    - name: Create hello executors zips
+    - name: Create hello executors zip archives
       run: |
-          zip hello_executor_windows.zip HelloExecutorWindows/*
-          zip hello_executor_linux.zip HelloExecutorLinux/*
-          zip hello_executor_android.zip HelloExecutorAndroid/*
+          cd HelloExecutorWindows && zip ../hello_executor_windows.zip *.* && cd ..
+          cd HelloExecutorLinux && zip ../hello_executor_linux.zip *.* && cd ..
+          cd HelloExecutorAndroid && zip ../hello_executor_android.zip *.* && cd ..
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

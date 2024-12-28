@@ -512,3 +512,21 @@ jobs:
           git config --unset-all http.https://github.com/.extraheader
           git push https://${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa
           
+
+  publish-dart-package:
+    runs-on: ubuntu-latest
+    needs: flutter-package
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Download Flutter package
+      uses: actions/download-artifact@v4
+      with:
+        name: flutter-package
+        path: package
+
+    - name: Publish dart package
+      uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+      with:
+        working-directory: package
