@@ -33,6 +33,7 @@ jobs:
         name: StaticWindowsOnly
         path: samples/StaticWindowsOnly/bin/Release-x64/StaticWindowsOnly
 
+
   windows-build:
     runs-on: windows-latest
 

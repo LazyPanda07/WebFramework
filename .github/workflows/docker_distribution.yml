@@ -62,7 +62,9 @@ jobs:
       
       - name: Build web_framework_deploy
         working-directory: Docker/web_framework_deploy
-        run: sudo docker build . -t lazypanda07/web_framework_deploy:${WEB_FRAMEWORK_DEPLOY_VERSION}
+        run: |
+            sudo docker build . -t lazypanda07/web_framework_deploy:${WEB_FRAMEWORK_DEPLOY_VERSION}
+            sudo docker build . -t ghcr.io/lazypanda07/web_framework_deploy:${WEB_FRAMEWORK_DEPLOY_VERSION}
           
       - name: Push web_framework_deploy
         run: |
@@ -83,7 +85,9 @@ jobs:
       
       - name: Build web_framework_dev
         working-directory: Docker/web_framework_dev
-        run: sudo docker build . -t lazypanda07/web_framework_dev:${WEB_FRAMEWORK_DEV_VERSION}
+        run: |
+            sudo docker build . -t lazypanda07/web_framework_dev:${WEB_FRAMEWORK_DEV_VERSION}
+            sudo docker build . -t ghcr.io/lazypanda07/web_framework_dev:${WEB_FRAMEWORK_DEV_VERSION}
           
       - name: Push web_framework_deploy
         run: |
@@ -104,7 +108,9 @@ jobs:
       
       - name: Build web_framework_static_dev
         working-directory: Docker/web_framework_static_dev
-        run: sudo docker build . -t lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
+        run: |
+            sudo docker build . -t lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
+            sudo docker build . -t ghcr.io/lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
           
       - name: Push web_framework_deploy
         run: |
