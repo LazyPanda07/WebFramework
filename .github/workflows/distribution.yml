@@ -418,7 +418,8 @@ jobs:
       nuget-package-test,
       deb-package-test,
       static-dev-deb-package-test,
-      dev-deb-package-test
+      dev-deb-package-test,
+      flutter-package
     ]
 
     steps:
@@ -439,7 +440,8 @@ jobs:
       nuget-package-test,
       deb-package-test,
       static-dev-deb-package-test,
-      dev-deb-package-test
+      dev-deb-package-test,
+      flutter-package
     ]
 
     steps:
@@ -472,7 +474,8 @@ jobs:
       nuget-package-test,
       deb-package-test,
       static-dev-deb-package-test,
-      dev-deb-package-test
+      dev-deb-package-test,
+      flutter-package
     ]
     env:
       EMAIL: semengricenko@gmail.com
@@ -514,13 +517,29 @@ jobs:
 
   publish-dart-package:
     runs-on: ubuntu-latest
-    needs: flutter-package
+    needs: [
+      linux-pip-package-test,
+      windows-pip-package-test,
+      nuget-package-test,
+      deb-package-test,
+      static-dev-deb-package-test,
+      dev-deb-package-test,
+      flutter-package
+    ]
     permissions:
       id-token: write
+    env:
+      flutter-version: 3.27.1
 
     steps:
     - uses: dart-lang/setup-dart@v1
   
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2.16.0
+      with:
+        channel: stable
+        flutter-version: ${{ env.flutter-version }}
+
     - name: Download Flutter package
       uses: actions/download-artifact@v4
       with:

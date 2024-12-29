@@ -13,8 +13,8 @@ C++ HTTP/HTTPS server with C# API
 Server needs few files to run: 
 * [web.json](#settings) with routes
 * [Executors](#executors)
-	* [Windows](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/windows.zip)
-	* [Linux](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/linux.zip)
+	* [Windows](https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_windows.zip)
+	* [Linux](https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_linux.zip)
 * [config.json](#config) with server settings  
 All these files must be in the same directory as executable
 
