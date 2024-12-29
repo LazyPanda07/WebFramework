@@ -65,6 +65,7 @@ var annotated_dup =
     ] ],
     [ "fts5_api", "structfts5__api.html", null ],
     [ "fts5_tokenizer", "structfts5__tokenizer.html", null ],
+    [ "fts5_tokenizer_v2", "structfts5__tokenizer__v2.html", null ],
     [ "Fts5ExtensionApi", "struct_fts5_extension_api.html", null ],
     [ "Fts5PhraseIter", "struct_fts5_phrase_iter.html", null ],
     [ "sqlite3_file", "structsqlite3__file.html", null ],

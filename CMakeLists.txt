@@ -25,7 +25,7 @@ set(
 )
 option(SHARED_WEB_FRAMEWORK "Build WebFramework shared library for using in different APIs" ON)
 
-project(WebFramework VERSION 3.0.11)
+project(WebFramework VERSION 3.0.12)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)

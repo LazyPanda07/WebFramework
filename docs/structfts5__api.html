@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.11</span>
+   <div id="projectname">WebFramework<span id="projectnumber">&#160;v3.0.12</span>
    </div>
    <div id="projectbrief">Web framework for C++.</div>
   </td>
@@ -114,10 +114,14 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7b7a0bdef55f410d0165d62c82252fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e341a658c89e3d656897691b41d50f7" id="r_a0e341a658c89e3d656897691b41d50f7"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e341a658c89e3d656897691b41d50f7">xCreateFunction</a> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pUserData, fts5_extension_function xFunction, void(*xDestroy)(void *))</td></tr>
 <tr class="separator:a0e341a658c89e3d656897691b41d50f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b17f67537402798793b4436a1583f1" id="r_aa2b17f67537402798793b4436a1583f1"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2b17f67537402798793b4436a1583f1">xCreateTokenizer_v2</a> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pUserData, <a class="el" href="structfts5__tokenizer__v2.html">fts5_tokenizer_v2</a> *pTokenizer, void(*xDestroy)(void *))</td></tr>
+<tr class="separator:aa2b17f67537402798793b4436a1583f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba18512100de6714e4193bd94afee9ea" id="r_aba18512100de6714e4193bd94afee9ea"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba18512100de6714e4193bd94afee9ea">xFindTokenizer_v2</a> )(<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void **ppUserData, <a class="el" href="structfts5__tokenizer__v2.html">fts5_tokenizer_v2</a> **ppTokenizer)</td></tr>
+<tr class="separator:aba18512100de6714e4193bd94afee9ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13385">13385</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13524">13524</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a3c338289abb33e1805da870172956a7c" name="a3c338289abb33e1805da870172956a7c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c338289abb33e1805da870172956a7c">&#9670;&#160;</a></span>iVersion</h2>
@@ -131,7 +135,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13386">13386</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13525">13525</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
 
 </div>
 </div>
@@ -147,7 +151,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13406">13406</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13545">13545</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
 
 </div>
 </div>
@@ -163,7 +167,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13389">13389</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13528">13528</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
+
+</div>
+</div>
+<a id="aa2b17f67537402798793b4436a1583f1" name="aa2b17f67537402798793b4436a1583f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2b17f67537402798793b4436a1583f1">&#9670;&#160;</a></span>xCreateTokenizer_v2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int(* fts5_api::xCreateTokenizer_v2) (<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void *pUserData, <a class="el" href="structfts5__tokenizer__v2.html">fts5_tokenizer_v2</a> *pTokenizer, void(*xDestroy)(void *))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13556">13556</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
 
 </div>
 </div>
@@ -179,7 +199,23 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13398">13398</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13537">13537</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
+
+</div>
+</div>
+<a id="aba18512100de6714e4193bd94afee9ea" name="aba18512100de6714e4193bd94afee9ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba18512100de6714e4193bd94afee9ea">&#9670;&#160;</a></span>xFindTokenizer_v2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int(* fts5_api::xFindTokenizer_v2) (<a class="el" href="structfts5__api.html">fts5_api</a> *pApi, const char *zName, void **ppUserData, <a class="el" href="structfts5__tokenizer__v2.html">fts5_tokenizer_v2</a> **ppTokenizer)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sqlite3_8h_source.html#l13565">13565</a> of file <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a>.</p>
 
 </div>
 </div>

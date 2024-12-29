@@ -1,14 +1,13 @@
 name: Distribution
 
 
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 
 env:
   dotnet-version: 8.0
-  deb-package-version: 1.0.6
-  deb-package-release-number: 7
+  deb-package-version: 1.0.7
+  deb-package-release-number: 8
 
 
 jobs:
@@ -520,13 +519,18 @@ jobs:
       id-token: write
 
     steps:
+    - uses: dart-lang/setup-dart@v1
+  
     - name: Download Flutter package
       uses: actions/download-artifact@v4
       with:
         name: flutter-package
         path: package
 
+    - name: Install dependencies
+      working-directory: package
+      run: dart pub get
+
     - name: Publish dart package
-      uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-      with:
-        working-directory: package
+      working-directory: package
+      run: dart pub publish --force

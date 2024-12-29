@@ -21,7 +21,7 @@ namespace framework
 {
 	string_view WebFramework::getWebFrameworkVersion()
 	{
-		static string version = "3.0.11";
+		static string version = "3.0.12";
 
 		return version;
 	}
