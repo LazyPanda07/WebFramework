@@ -348,17 +348,17 @@ jobs:
       run: |
           mkdir samples_dir
           
-          mkdir samples/windows
-          mv Windows/* samples/windows
+          mkdir samples_dir/windows
+          mv Windows/* samples_dir/windows
           
-          mkdir samples/windows_flutter
-          mv WindowsFlutterSample/* samples/windows_flutter
+          mkdir samples_dir/windows_flutter
+          mv WindowsFlutterSample/* samples_dir/windows_flutter
 
-          mkdir samples/linux
-          mv Linux/* samples/linux
+          mkdir samples_dir/linux
+          mv Linux/* samples_dir/linux
 
-          mkdir samples/android_flutter
-          mv AndroidFlutterSample/* samples/android_flutter
+          mkdir samples_dir/android_flutter
+          mv AndroidFlutterSample/* samples_dir/android_flutter
 
     - name: Create samples.zip
       working-directory: samples_dir
@@ -369,13 +369,7 @@ jobs:
           cd HelloExecutorWindows && zip ../hello_executor_windows.zip *.* && cd ..
           cd HelloExecutorLinux && zip ../hello_executor_linux.zip *.* && cd ..
           cd HelloExecutorAndroid && zip ../hello_executor_android.zip *.* && cd ..
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: Test
-        path: "*.zip"
-
+          
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}
       uses: svenstaro/upload-release-action@2.9.0
