@@ -15,8 +15,8 @@ If you want to run sample on Android you will need physical device or arm64-v8a 
 Server needs few files to run:
 * [assets/executors/web.json](#settings) with routes
 * [Executors](#executors)
-    * [assets/executors/hello_executor.dll](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/windows.zip) (for Windows)
-    * [assets/executors/libhello_executor.so](https://github.com/LazyPanda07/WebFramework/releases/download/Assets/android.zip) (for Android)
+    * [assets/executors/hello_executor.dll](https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_windows.zip) (for Windows)
+    * [assets/executors/libhello_executor.so](https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_android.zip) (for Android)
 * [assets/configs/config.json](#config) with server settings  
 
 

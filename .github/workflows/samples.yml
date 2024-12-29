@@ -346,8 +346,7 @@ jobs:
       
     - name: Move samples
       run: |
-          rm -rf samples
-          mkdir samples
+          mkdir samples_dir
           
           mkdir samples/windows
           mv Windows/* samples/windows
@@ -361,8 +360,9 @@ jobs:
           mkdir samples/android_flutter
           mv AndroidFlutterSample/* samples/android_flutter
 
-    - name: Create samples zip
-      run: zip -r samples.zip samples
+    - name: Create samples.zip
+      working-directory: samples_dir
+      run: zip -r ../samples.zip *.*
 
     - name: Create hello executors zip archives
       run: |
