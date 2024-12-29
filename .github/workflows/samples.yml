@@ -362,7 +362,7 @@ jobs:
 
     - name: Create samples.zip
       working-directory: samples_dir
-      run: zip -r ../samples.zip *.*
+      run: zip -r ../samples.zip . -i *.*
 
     - name: Create hello executors zip archives
       run: |
