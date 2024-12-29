@@ -5,7 +5,7 @@ on: workflow_dispatch
 
   
 env:
-  SQLITE_TAG: version-3.46.1
+  SQLITE_TAG: version-3.47.2
 
 
 jobs:
@@ -82,11 +82,11 @@ jobs:
   android-build:
     runs-on: ubuntu-latest
     env:
-      android-version: android-34
-      android-api-version: android-34
-      sdk-install-name: platforms;android-34
-      ndk-version: 27.0.12077973
-      ndk-install-name: ndk;27.0.12077973
+      android-version: android-35
+      android-api-version: android-35
+      sdk-install-name: platforms;android-35
+      ndk-version: 28.0.12433566
+      ndk-install-name: ndk;28.0.12433566
 
     steps:
     - name: Setup JDK 17

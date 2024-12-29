@@ -161,6 +161,11 @@ bool isServerRunning(WebFramework server, Exception* exception)
 	return false;
 }
 
+const char* getWebFrameworkVersion()
+{
+	return framework::WebFramework::getWebFrameworkVersion().data();
+}
+
 void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception)
 {
 	try

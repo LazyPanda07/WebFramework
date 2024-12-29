@@ -13,6 +13,9 @@ public sealed unsafe partial class WebFramework : IDisposable
 	private readonly unsafe void* implementation;
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial char* getWebFrameworkVersion();
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void* createWebFrameworkFromPath(string configPath, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
@@ -33,6 +36,15 @@ public sealed unsafe partial class WebFramework : IDisposable
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void deleteWebFramework(void* implementation);
+
+	/// <summary>
+	/// Get WebFramework version
+	/// </summary>
+	/// <returns>String representation of version in format {major}.{minor}.{patch}</returns>
+	public static string GetWebFrameworkVersion()
+	{
+		return Marshal.PtrToStringUTF8((IntPtr)getWebFrameworkVersion())!;
+	}
 
 	/// <summary>
 	/// 

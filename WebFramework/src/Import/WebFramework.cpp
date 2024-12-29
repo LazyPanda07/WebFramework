@@ -19,9 +19,9 @@ using namespace std;
 
 namespace framework
 {
-	string WebFramework::getWebFrameworkVersion()
+	string_view WebFramework::getWebFrameworkVersion()
 	{
-		string version = "3.0.11";
+		static string version = "3.0.12";
 
 		return version;
 	}
@@ -222,6 +222,10 @@ namespace framework
 		{
 			server = make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).getObject(json_settings::proxyObject));
 		}
+		else
+		{
+			throw runtime_error(::exceptions::wrongWebServerType);
+		}
 	}
 
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
@@ -262,11 +266,6 @@ namespace framework
 			jsonSettings,
 			pathToSources
 		);
-
-		if (!server)
-		{
-			throw runtime_error(::exceptions::wrongWebServerType);
-		}
 	}
 
 	WebFramework::WebFramework(const filesystem::path& webFrameworkConfigPath) :

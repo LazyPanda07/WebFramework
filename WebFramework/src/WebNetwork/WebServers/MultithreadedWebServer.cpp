@@ -22,7 +22,7 @@ using namespace std;
 
 namespace framework
 {
-	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>&& cleanup) //-V688
+	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup) //-V688
 	{
 		SSL* ssl = nullptr;
 

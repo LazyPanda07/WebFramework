@@ -27,6 +27,7 @@ var hierarchy =
     [ "framework::ExecutorsManager", "classframework_1_1_executors_manager.html", null ],
     [ "fts5_api", "structfts5__api.html", null ],
     [ "fts5_tokenizer", "structfts5__tokenizer.html", null ],
+    [ "fts5_tokenizer_v2", "structfts5__tokenizer__v2.html", null ],
     [ "Fts5ExtensionApi", "struct_fts5_extension_api.html", null ],
     [ "Fts5PhraseIter", "struct_fts5_phrase_iter.html", null ],
     [ "framework::HTTPRequest", "classframework_1_1_h_t_t_p_request.html", null ],

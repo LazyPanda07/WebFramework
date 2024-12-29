@@ -117,6 +117,7 @@ typedef CreateWebFrameworkFromString = Pointer<Void> Function(
     Pointer<Utf8> serverConfiguration,
     Pointer<Utf8> applicationDirectory,
     Pointer<Pointer<Void>> exception);
+typedef GetWebFrameworkVersion = Pointer<Utf8> Function();
 typedef CreateWebFrameworkFromPath = Pointer<Void> Function(
     Pointer<Utf8> configPath, Pointer<Pointer<Void>> exception);
 typedef StartWebFrameworkServerC = Void Function(

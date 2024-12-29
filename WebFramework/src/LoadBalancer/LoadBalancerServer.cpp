@@ -20,7 +20,7 @@ namespace framework
 
 		}
 
-		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>&& cleanup) //-V688
+		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup) //-V688
 		{
 			static mutex dataMutex;
 			const ServerData* serveData = nullptr;

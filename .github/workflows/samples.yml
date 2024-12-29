@@ -7,11 +7,33 @@ on:
   
   
 env:
-  flutter-version: 3.24.4
+  flutter-version: 3.27.1
 
 
 jobs:
-  windows-hello-executor:
+  windows-static-build:
+   runs-on: windows-latest
+
+   steps:
+   - uses: actions/checkout@v4
+     with:
+       submodules: recursive
+   
+   - name: Setup MSBuild
+     uses: microsoft/setup-msbuild@v2
+
+   - name: Build StaticWindowsOnly
+     run: |
+         cd samples\StaticWindowsOnly
+         msbuild StaticWindowsOnly.sln -property:Configuration=Release
+   
+   - name: Upload artifacts
+     uses: actions/upload-artifact@v4
+     with:
+        name: StaticWindowsOnly
+        path: samples/StaticWindowsOnly/bin/Release-x64/StaticWindowsOnly
+
+  windows-build:
     runs-on: windows-latest
 
     steps:
@@ -40,15 +62,44 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
+        name: Windows
+        path: samples/build/bin
+
+
+  windows-hello-executor:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
         name: HelloExecutorWindows
-        path: |
-            samples/build/bin/*.dll
-            samples/build/bin/configs/*.json
-            samples/build/bin/executors/*.json
-            samples/build/bin/executors/*.dll
-
-
-  linux-hello-executor:
+        path: samples/build/bin/executors/*.dll
+            
+        
+  linux-build:
     runs-on: ubuntu-latest
     container:
       image: lazypanda07/ubuntu_cxx20:24.04
@@ -76,7 +127,71 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
+        name: Linux
+        path: samples/build/bin
+
+
+  linux-hello-executor:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+          make install -j $(nproc)
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
         name: HelloExecutorLinux
+        path: samples/build/bin/executors/*.so
+
+
+  android-build:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:android
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          make install -j $(nproc)
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Android
         path: samples/build/bin
 
 
@@ -102,19 +217,19 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           make install -j $(nproc)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: HelloExecutorAndroid
-        path: samples/build/bin
+        path: samples/build/bin/executors/*.so
 
 
   windows-flutter-build:
     runs-on: windows-latest
-    needs: windows-hello-executor
+    needs: windows-build
 
     steps:
     - uses: actions/checkout@v4
@@ -130,19 +245,19 @@ jobs:
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
-    - name: Download executors
+    - name: Download assets
       uses: actions/download-artifact@v4
       with:
-        name: HelloExecutorWindows
-        path: HelloExecutor
+        name: Windows
+        path: Windows
 
     - name: Move assets
       shell: bash
       run: |
           mkdir -p API/web_framework_flutter_api/example/assets/configs
           mkdir -p API/web_framework_flutter_api/example/assets/executors
-          mv HelloExecutor/configs/*.json API/web_framework_flutter_api/example/assets/configs
-          mv HelloExecutor/executors/*.* API/web_framework_flutter_api/example/assets/executors
+          mv Windows/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv Windows/executors/*.* API/web_framework_flutter_api/example/assets/executors
 
     - name: Build
       working-directory: API/web_framework_flutter_api/example
@@ -151,7 +266,7 @@ jobs:
 
     - name: Move WebFramework
       shell: bash
-      run: mv HelloExecutor/*.dll API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
+      run: mv Windows/*.dll API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -162,7 +277,7 @@ jobs:
         
   android-flutter-build:
     runs-on: ubuntu-latest
-    needs: android-hello-executor
+    needs: android-build
     container:
       image: lazypanda07/ubuntu_cxx20:android
 
@@ -174,20 +289,20 @@ jobs:
     - name: Download executors
       uses: actions/download-artifact@v4
       with:
-        name: HelloExecutorAndroid
-        path: HelloExecutor
+        name: Android
+        path: Android
 
     - name: Move assets
       run: |
           mkdir -p API/web_framework_flutter_api/example/assets/configs
           mkdir -p API/web_framework_flutter_api/example/assets/executors
-          mv HelloExecutor/configs/*.json API/web_framework_flutter_api/example/assets/configs
-          mv HelloExecutor/executors/*.* API/web_framework_flutter_api/example/assets/executors
+          mv Android/configs/*.json API/web_framework_flutter_api/example/assets/configs
+          mv Android/executors/*.* API/web_framework_flutter_api/example/assets/executors
 
     - name: Move WebFramework
       run: |
           mkdir -p API/web_framework_flutter_api/example/assets/lib/arm64-v8a
-          mv HelloExecutor/*.so API/web_framework_flutter_api/example/assets/lib/arm64-v8a
+          mv Android/*.so API/web_framework_flutter_api/example/assets/lib/arm64-v8a
 
     - name: Build
       working-directory: API/web_framework_flutter_api/example
@@ -199,3 +314,73 @@ jobs:
         name: AndroidFlutterSample
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
         
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [
+      windows-static-build,
+      windows-hello-executor,
+      linux-hello-executor,
+      android-hello-executor,
+      windows-build,
+      linux-build,
+      android-build,
+      windows-flutter-build,
+      android-flutter-build
+    ]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
+    
+    - name: Setup release version variable
+      shell: pwsh
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\Import\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      
+    - name: Move samples
+      run: |
+          rm -rf samples
+          mkdir samples
+          
+          mkdir samples/windows
+          mv Windows/* samples/windows
+          
+          mkdir samples/windows_flutter
+          mv WindowsFlutterSample/* samples/windows_flutter
+
+          mkdir samples/linux
+          mv Linux/* samples/linux
+
+          mkdir samples/android_flutter
+          mv AndroidFlutterSample/* samples/android_flutter
+
+    - name: Create samples zip
+      run: zip -r samples.zip samples
+
+    - name: Create hello executors zip archives
+      run: |
+          cd HelloExecutorWindows && zip ../hello_executor_windows.zip *.* && cd ..
+          cd HelloExecutorLinux && zip ../hello_executor_linux.zip *.* && cd ..
+          cd HelloExecutorAndroid && zip ../hello_executor_android.zip *.* && cd ..
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Test
+        path: "*.zip"
+
+    - name: Publish
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: svenstaro/upload-release-action@2.9.0
+      with:
+        tag: v${{ env.VERSION }}
+        release_name: v${{ env.VERSION }}
+        file_glob: true
+        file: "*.zip"

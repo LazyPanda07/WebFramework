@@ -60,7 +60,6 @@ namespace framework
 						Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
 					}
 
-					// TODO: Fix can't catch exception
 					throw exceptions::CantLoadSourceException(pathToSource);
 				}
 			}

@@ -18,7 +18,7 @@ namespace framework
 
 		}
 
-		void ProxyServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>&& cleanup) //-V688
+		void ProxyServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup) //-V688
 		{
 			SSL* ssl = nullptr;
 

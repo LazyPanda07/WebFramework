@@ -12,6 +12,16 @@ class WebFramework:
     Web server
     """
 
+    @staticmethod
+    def get_web_framework_version() -> str:
+        """
+        Get WebFramework version
+        :return: String representation of version in format {major}.{minor}.{patch}
+        """
+        version = DLLHandler.get_instance().call_function("getWebFrameworkVersion", ctypes.c_char_p)
+
+        return str(version.decode())
+
     def __init__(self, implementation: ctypes.c_void_p):
         self.__implementation = implementation
         self.__function_signature = ctypes.CFUNCTYPE(None)

@@ -24,8 +24,18 @@ if (UNIX)
     add_definitions(-D__LINUX__)
 endif(UNIX)
 
+if (NOT DEFINED CMAKE_SYSTEM_NAME)
+    set(CMAKE_SYSTEM_NAME " ")
+endif()
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
     add_definitions(-D__ANDROID__)
+endif()
+
+if (CMAKE_SCRIPT_MODE_FILE)
+    message("Script mode doesn't supported")
+
+    return()
 endif()
 
 include_directories(

@@ -17,7 +17,7 @@ namespace framework
 	public:
 		/// @brief Get current WebFramework version
 		/// @return Current WebFramework version
-		static std::string getWebFrameworkVersion();
+		static std::string_view getWebFrameworkVersion();
 
 		/**
 		 * @brief Is server use HTTPS
@@ -43,6 +43,8 @@ namespace framework
 			const std::vector<utility::JSONSettingsParser>& jsonSettings,
 			const std::vector<std::string>& pathToSources
 		);
+
+		void init();
 
 	public:
 		WebFramework(const utility::Config& webFrameworkConfig);

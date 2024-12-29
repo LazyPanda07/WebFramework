@@ -21,6 +21,13 @@ namespace framework
 
 	public:
 		/**
+		 * @brief Get WebFramework version
+		 * @return String representation of version in format {major}.{minor}.{patch}
+		 */
+		static std::string_view getWebFrameworkVersion();
+
+	public:
+		/**
 		 * @brief 
 		 * @param configPath Path to *.json config
 		 */
@@ -72,6 +79,11 @@ namespace framework
 
 namespace framework
 {
+	inline std::string_view WebFramework::getWebFrameworkVersion()
+	{
+		return utility::DLLHandler::getInstance().callFunction<const char* (*)()>("getWebFrameworkVersion");
+	}
+
 	inline WebFramework::WebFramework(const std::string& configPath) :
 		weak(false)
 	{

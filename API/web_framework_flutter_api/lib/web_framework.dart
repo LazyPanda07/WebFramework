@@ -20,6 +20,15 @@ class WebFramework {
 
   WebFramework._constructor(this._implementation, this._handler);
 
+  /// Get WebFramework version
+  ///
+  /// String representation of version in format {major}.{minor}.{patch}
+  static Future<String> getWebFrameworkVersion() async {
+    DllHandler handler = await DllHandler.create();
+
+    return handler.instance.lookupFunction<GetWebFrameworkVersion, GetWebFrameworkVersion>("getWebFrameworkVersion")().toDartString();
+  }
+
   /// Create WebFramework
   ///
   /// [configPath] Path to *.json config
