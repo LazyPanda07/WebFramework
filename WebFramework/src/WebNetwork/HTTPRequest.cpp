@@ -23,12 +23,9 @@ namespace framework
 
 	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(string_view ip, string_view port, string_view request, DWORD timeout, bool useHTTPS)
 	{
-		streams::IOSocketStream stream
-		(
-			useHTTPS ?
-			make_unique<web::HTTPSNetwork>(ip, port, timeout) :
-			make_unique<web::HTTPNetwork>(ip, port, timeout)
-		);
+		streams::IOSocketStream stream = useHTTPS ?
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(ip, port, timeout) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(ip, port, timeout);
 		string response;
 
 		stream << request;
@@ -169,7 +166,7 @@ namespace framework
 				"Connection", "keep-alive",
 				"Content-Length", filesystem::file_size(assetFilePath)
 			).
-			responseCode(web::responseCodes::ok);
+			responseCode(web::ResponseCodes::ok);
 
 		response.setIsValid(false);
 

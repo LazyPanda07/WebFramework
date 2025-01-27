@@ -183,7 +183,7 @@ namespace framework
 		}
 #endif
 
-		response.setResponseCode(web::responseCodes::notFound);
+		response.setResponseCode(web::ResponseCodes::notFound);
 	}
 
 	void ResourceExecutor::badRequestError(HTTPResponse& response, const exception* exception)
@@ -203,7 +203,7 @@ namespace framework
 		}
 #endif
 
-		response.setResponseCode(web::responseCodes::badRequest);
+		response.setResponseCode(web::ResponseCodes::badRequest);
 	}
 
 	void ResourceExecutor::internalServerError(HTTPResponse& response, const exception* exception)
@@ -223,7 +223,7 @@ namespace framework
 		}
 #endif
 
-		response.setResponseCode(web::responseCodes::internalServerError);
+		response.setResponseCode(web::ResponseCodes::internalServerError);
 	}
 
 	bool ResourceExecutor::getIsCaching() const

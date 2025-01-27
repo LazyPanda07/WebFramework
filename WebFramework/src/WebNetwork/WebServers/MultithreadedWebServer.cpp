@@ -60,12 +60,9 @@ namespace framework
 			return;
 		}
 
-		streams::IOSocketStream stream
-		(
-			useHTTPS ?
-			make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
-			make_unique<web::HTTPNetwork>(clientSocket)
-		);
+		streams::IOSocketStream stream = useHTTPS ?
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 

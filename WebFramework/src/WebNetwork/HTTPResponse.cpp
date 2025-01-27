@@ -26,7 +26,7 @@ namespace framework
 		builder.HTTPVersion(version);
 	}
 
-	void HTTPResponse::setResponseCode(web::responseCodes code)
+	void HTTPResponse::setResponseCode(web::ResponseCodes code)
 	{
 		builder.responseCode(code);
 	}
@@ -78,7 +78,7 @@ namespace framework
 	{
 		builder.clear();
 
-		builder.responseCode(web::responseCodes::ok);
+		builder.responseCode(web::ResponseCodes::ok);
 
 		body.clear();
 

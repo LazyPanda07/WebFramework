@@ -44,12 +44,9 @@ namespace framework
 				}
 			}
 
-			streams::IOSocketStream clientStream
-			(
-				ssl ?
-				make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
-				make_unique<web::HTTPNetwork>(clientSocket)
-			);
+			streams::IOSocketStream clientStream = ssl ?
+				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
+				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
 
 			string request;
 			string response;
@@ -67,12 +64,9 @@ namespace framework
 
 			const ProxyData& proxyData = *routes.at(route);
 
-			streams::IOSocketStream serverStream
-			(
-				proxyData.isHTTPS ?
-				make_unique<web::HTTPSNetwork>(proxyData.ip, proxyData.port, proxyData.timeout) :
-				make_unique<web::HTTPNetwork>(proxyData.ip, proxyData.port, proxyData.timeout)
-			);
+			streams::IOSocketStream serverStream = proxyData.isHTTPS ?
+				streams::IOSocketStream::createStream<web::HTTPSNetwork>(proxyData.ip, proxyData.port, proxyData.timeout) :
+				streams::IOSocketStream::createStream<web::HTTPNetwork>(proxyData.ip, proxyData.port, proxyData.timeout);
 
 			serverStream << request;
 

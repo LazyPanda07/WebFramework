@@ -16,8 +16,8 @@ namespace framework
 		stream
 		(
 			ssl ?
-			make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
-			make_unique<web::HTTPNetwork>(clientSocket)
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket)
 		),
 		cleanup(move(cleanup)),
 		address(address),

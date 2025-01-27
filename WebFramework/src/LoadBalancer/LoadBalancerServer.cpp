@@ -64,19 +64,13 @@ namespace framework
 					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
-			
-			streams::IOSocketStream clientStream
-			(
-				ssl ?
-				make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
-				make_unique<web::HTTPNetwork>(clientSocket)
-			);
-			streams::IOSocketStream serverStream
-			(
-				serversHTTPS ?
-				make_unique<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeout) :
-				make_unique<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeout)
-			);
+
+			streams::IOSocketStream clientStream = ssl ?
+				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
+				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
+			streams::IOSocketStream serverStream = serversHTTPS ?
+				streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeout) :
+				streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeout);
 
 			while (isRunning)
 			{
