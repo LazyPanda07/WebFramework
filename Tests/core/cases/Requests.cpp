@@ -93,7 +93,7 @@ TEST(HelloExecutor, OPTIONS)
 		web::HTTPParser parser(response);
 
 #ifdef NDEBUG
-		ASSERT_EQ(parser.getResponseCode(), web::responseCodes::badRequest);
+		ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::badRequest);
 #else
 		ASSERT_EQ(parser.getHeaders().at("Allow"), "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT");
 #endif
@@ -116,7 +116,7 @@ TEST(HelloExecutor, TRACE)
 		web::HTTPParser parser(response);
 
 #ifdef NDEBUG
-		ASSERT_EQ(parser.getResponseCode(), web::responseCodes::badRequest);
+		ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::badRequest);
 #else
 		std::istringstream is(request);
 		std::string temp;
