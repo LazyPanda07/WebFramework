@@ -40,7 +40,7 @@ TEST(Database, MultiUser)
 
 			stream >> response;
 
-			ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+			ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 
 			for (size_t i = 0; i < requestsNumber; i++)
 			{
@@ -50,7 +50,7 @@ TEST(Database, MultiUser)
 
 				stream >> response;
 
-				ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+				ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 			}
 
 			request = web::HTTPBuilder().getRequest().parameters("multi_user_database").build();
@@ -61,7 +61,7 @@ TEST(Database, MultiUser)
 
 			web::HTTPParser parser(response);
 
-			ASSERT_EQ(parser.getResponseCode(), web::responseCodes::ok) << response;
+			ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::ok) << response;
 
 			ASSERT_EQ(parser.getJSON().getArray("data").size(), requestsNumber) << response;
 		};

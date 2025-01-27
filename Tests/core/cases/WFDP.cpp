@@ -90,7 +90,7 @@ TEST(WFDP, CustomFunction)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok);
+		ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok);
 	}
 
 	{
@@ -121,6 +121,6 @@ TEST(WFDP, CustomFunction)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok);
+		ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok);
 	}
 }

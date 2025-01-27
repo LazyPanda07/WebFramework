@@ -16,7 +16,7 @@ TEST(Database, Create)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 }
 
 TEST(Database, Insert)
@@ -29,7 +29,7 @@ TEST(Database, Insert)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 }
 
 TEST(Database, Select)
@@ -68,5 +68,5 @@ TEST(Database, Delete)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::responseCodes::ok) << response;
+	ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 }

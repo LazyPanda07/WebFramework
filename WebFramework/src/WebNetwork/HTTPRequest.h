@@ -119,6 +119,12 @@ namespace framework
 		/// <returns>HTTP cookies as map</returns>
 		web::HeadersMap getCookies() const;
 
+		/**
+		 * @brief Get data from multipart/form-data
+		 * @return 
+		 */
+		const std::vector<web::Multipart>& getMultiparts() const;
+
 		/// <summary>
 		/// ResourceExecutor wrapper
 		/// </summary>
@@ -275,9 +281,9 @@ namespace framework
 		/// <returns>self for builder pattern</returns>
 		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
 
-		friend class ExecutorsManager;
-
 		~HTTPRequest() = default;
+
+		friend class ExecutorsManager;
 	};
 
 	template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>

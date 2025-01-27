@@ -129,6 +129,11 @@ namespace framework
 		return result;
 	}
 
+	const vector<web::Multipart>& HTTPRequest::getMultiparts() const
+	{
+		return parser.getMultiparts();
+	}
+
 	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
 	{
 		HTTPRequest::isWebFrameworkDynamicPages(filePath) ?

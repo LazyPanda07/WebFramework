@@ -10,11 +10,8 @@ namespace utility
 	{
 		static constexpr DWORD timeout = 600'000;
 
-		return streams::IOSocketStream
-		(
-			useHTTPS ?
-			std::make_unique<web::HTTPSNetwork>("127.0.0.1", "8080", timeout) :
-			std::make_unique<web::HTTPNetwork>("127.0.0.1", "8080", timeout)
-		);
+		return useHTTPS ?
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080", timeout) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080", timeout);
 	}
 }
