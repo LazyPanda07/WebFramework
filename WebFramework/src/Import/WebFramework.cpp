@@ -145,6 +145,9 @@ namespace framework
 		string assetsPath = (basePath / webFrameworkSettings.getString(json_settings::assetsPathKey)).string();
 		string templatesPath = (basePath / webFrameworkSettings.getString(json_settings::templatesPathKey)).string();
 		uint64_t cachingSize = webFrameworkSettings.getUnsignedInt(json_settings::cachingSize);
+		string userAgentFilter;
+
+		webFrameworkSettings.tryGetString(json_settings::userAgentFilterKey, userAgentFilter);
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
@@ -158,7 +161,8 @@ namespace framework
 					ip,
 					port,
 					timeout,
-					pathToSources
+					pathToSources,
+					userAgentFilter
 				);
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
@@ -182,7 +186,8 @@ namespace framework
 					port,
 					timeout,
 					pathToSources,
-					static_cast<uint32_t>(threadCount)
+					static_cast<uint32_t>(threadCount),
+					userAgentFilter
 				);
 		}
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)

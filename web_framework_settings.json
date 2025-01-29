@@ -42,6 +42,7 @@
     "templatesPath": "templates",
     "cachingSize": 536870912,
     "webServerType": "multiThreaded",
+    "userAgentFilter": "",
     "HTTPS": {
       "useHTTPS": false,
       "pathToCertificate": "certificates/cert.pem",
@@ -58,7 +59,7 @@
     "duplicateErrorOutput": false,
     "flags": [
       "utcDate",
-      "processName", 
+      "processName",
       "processId"
     ]
   },

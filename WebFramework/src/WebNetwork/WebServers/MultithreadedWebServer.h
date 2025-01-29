@@ -25,7 +25,8 @@ namespace framework
 			std::string_view ip,
 			std::string_view port,
 			DWORD timeout,
-			const std::vector<std::string>& pathToSources
+			const std::vector<std::string>& pathToSources,
+			std::string_view userAgentFilter
 		);
 
 		~MultithreadedWebServer() = default;

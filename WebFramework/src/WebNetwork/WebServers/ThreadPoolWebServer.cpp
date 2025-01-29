@@ -304,7 +304,8 @@ namespace framework
 		string_view port,
 		DWORD timeout,
 		const vector<string>& pathToSources,
-		uint32_t threadCount
+		uint32_t threadCount,
+		string_view userAgentFilter
 	) :
 		BaseTCPServer
 		(
@@ -322,7 +323,8 @@ namespace framework
 			pathToTemplates,
 			cachingSize,
 			parsers,
-			pathToSources
+			pathToSources,
+			userAgentFilter
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{

@@ -151,7 +151,8 @@ namespace framework
 		string_view ip,
 		string_view port,
 		DWORD timeout,
-		const vector<string>& pathToSources
+		const vector<string>& pathToSources,
+		string_view userAgentFilter
 	) :
 		BaseTCPServer
 		(
@@ -169,7 +170,8 @@ namespace framework
 			pathToTemplates,
 			cachingSize,
 			parsers,
-			pathToSources
+			pathToSources,
+			userAgentFilter
 		)
 	{
 

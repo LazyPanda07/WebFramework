@@ -16,23 +16,27 @@ namespace framework
 		filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
 		ifstream html(allErrorsFolder / web_framework_assets::badRequest);
 		auto readFile = [](ifstream& html) -> string
-		{
-			string result;
-			string tem;
-
-			while (getline(html, tem))
 			{
-				result += tem + '\n';
-			}
+				string result;
+				string tem;
 
-			html.close();
+				while (getline(html, tem))
+				{
+					result += tem + '\n';
+				}
 
-			return result;
-		};
+				html.close();
+
+				return result;
+			};
 
 		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(html);
 
 		html.open(allErrorsFolder / web_framework_assets::notFound);
+
+		HTMLErrorsData[HTMLErrors::forbidden403] = readFile(html);
+
+		html.open(allErrorsFolder / web_framework_assets::forbidden);
 
 		HTMLErrorsData[HTMLErrors::notFound404] = readFile(html);
 
@@ -54,7 +58,7 @@ namespace framework
 	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const filesystem::path& pathToTemplates) :
 		defaultAssets
 		(
-			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ? 
+			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ?
 			configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webFrameworkDefaultAssetsPath) :
 			webFrameworkDefaultAssests
 		),
@@ -206,8 +210,28 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::badRequest);
 	}
 
+	void ResourceExecutor::forbiddenError(HTTPResponse& response, const std::exception* exception)
+	{
+		const string& message = HTMLErrorsData[HTMLErrors::forbidden403];
+
+#ifdef NDEBUG
+		response.addBody(message);
+#else
+		if (exception)
+		{
+			response.addBody(format("{} Exception: {}", message, exception->what()));
+		}
+		else
+		{
+			response.addBody(message);
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::forbidden);
+	}
+
 	void ResourceExecutor::internalServerError(HTTPResponse& response, const exception* exception)
-	{		
+	{
 		const string& message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
 #ifdef NDEBUG

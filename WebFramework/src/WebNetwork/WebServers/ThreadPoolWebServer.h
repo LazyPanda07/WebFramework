@@ -77,7 +77,8 @@ namespace framework
 			std::string_view port,
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
-			uint32_t threadCount
+			uint32_t threadCount,
+			std::string_view userAgentFilter
 		);
 
 		~ThreadPoolWebServer() = default;

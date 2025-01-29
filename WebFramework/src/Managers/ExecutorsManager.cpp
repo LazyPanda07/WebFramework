@@ -179,7 +179,8 @@ namespace framework
 		unordered_map<string, unique_ptr<BaseExecutor>>&& routes,
 		unordered_map<string, createExecutorFunction>&& creators,
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
-		vector<utility::RouteParameters>&& routeParameters
+		vector<utility::RouteParameters>&& routeParameters,
+		string_view userAgentFilter
 	)
 	{
 		const unordered_map<string_view, webServerType> types =
@@ -194,6 +195,7 @@ namespace framework
 		this->creators = move(creators);
 		this->settings = move(settings);
 		this->routeParameters = move(routeParameters);
+		this->userAgentFilter = userAgentFilter;
 
 		resources = make_shared<ResourceExecutor>(configuraion, assets, cachingSize, pathToTemplates);
 
@@ -219,6 +221,26 @@ namespace framework
 
 		try
 		{
+			if (userAgentFilter.size())
+			{
+				const web::HeadersMap& headers = request.parser.getHeaders();
+
+				if (auto it = headers.find("User-Agent"); it != headers.end())
+				{
+					if (userAgentFilter != it->second)
+					{
+						if (Log::isValid())
+						{
+							Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
+						}
+
+						resources->forbiddenError(response, nullptr);
+
+						return {};
+					}
+				}
+			}
+
 			string parameters = request.getRawParameters();
 			BaseExecutor* executor = nullptr;
 			bool fileRequest = ExecutorsManager::isFileRequest(parameters);

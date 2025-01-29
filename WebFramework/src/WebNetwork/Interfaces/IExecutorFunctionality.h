@@ -31,7 +31,8 @@ namespace framework
 				const std::filesystem::path& pathToTemplates,
 				uint64_t cachingSize,
 				const std::vector<utility::JSONSettingsParser>& parsers,
-				const std::vector<std::string>& pathToSources
+				const std::vector<std::string>& pathToSources,
+				std::string_view userAgentFilter
 			);
 
 			virtual ~IExecutorFunctionality() = default;

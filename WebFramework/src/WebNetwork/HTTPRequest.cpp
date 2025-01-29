@@ -296,16 +296,12 @@ namespace framework
 
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)
 	{
-		string data;
-
-		stream >> data;
+		stream >> request.parser;
 
 		if (stream.eof() || stream.bad())
 		{
 			return stream;
 		}
-
-		request.parser.parse(data);
 
 		return stream;
 	}

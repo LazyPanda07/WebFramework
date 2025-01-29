@@ -43,6 +43,7 @@ namespace json_settings
 	inline constexpr std::string_view logFileSizeKey = "logFileSize";
 	inline constexpr std::string_view logFlagsKey = "flags";
 	inline constexpr std::string_view webServerTypeKey = "webServerType";
+	inline constexpr std::string_view userAgentFilterKey = "userAgentFilter";
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
 	inline constexpr std::string_view pathToKey = "pathToKey";
@@ -101,6 +102,7 @@ namespace web_framework_assets
 	inline constexpr std::string_view errorsFolder = "Errors";
 
 	inline constexpr std::string_view badRequest = "400.html";
+	inline constexpr std::string_view forbidden = "403.html";
 	inline constexpr std::string_view notFound = "404.html";
 	inline constexpr std::string_view internalServerError = "500.html";
 }

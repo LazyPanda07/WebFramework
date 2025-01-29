@@ -20,6 +20,7 @@ namespace framework
 		enum HTMLErrors
 		{
 			badRequest400,
+			forbidden403,
 			notFound404,
 			internalServerError500,
 			HTMLErrorsSize
@@ -107,6 +108,13 @@ namespace framework
 		/// </summary>
 		/// <param name="response">response with error file</param>
 		void badRequestError(HTTPResponse& response, const std::exception* exception);
+
+		/**
+		 * @brief Send 403.html from WebFrameworkAssets
+		 * @param response Response with error file
+		 * @param exception
+		 */
+		void forbiddenError(HTTPResponse& response, const std::exception* exception);
 
 		/// <summary>
 		/// Send 500.html from WebFrameworkAssets

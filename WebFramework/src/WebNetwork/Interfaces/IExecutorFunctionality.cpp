@@ -43,7 +43,8 @@ namespace framework
 			const filesystem::path& pathToTemplates,
 			uint64_t cachingSize,
 			const vector<utility::JSONSettingsParser>& parsers,
-			const vector<string>& pathToSources
+			const vector<string>& pathToSources,
+			string_view userAgentFilter
 		)
 		{
 			unordered_map<string, unique_ptr<BaseExecutor>> routes;
@@ -150,7 +151,7 @@ namespace framework
 				settings.insert(move(node)); //-V837
 			}
 
-			executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters));
+			executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters), userAgentFilter);
 
 			resources = executorsManager.getResourceExecutor();
 		}

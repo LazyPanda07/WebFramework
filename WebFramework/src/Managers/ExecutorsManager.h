@@ -27,6 +27,7 @@ namespace framework
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
+		std::string userAgentFilter;
 		webServerType serverType;
 
 	private:
@@ -59,7 +60,8 @@ namespace framework
 			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes,
 			std::unordered_map<std::string, createExecutorFunction>&& creators,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
-			std::vector<utility::RouteParameters>&& routeParameters
+			std::vector<utility::RouteParameters>&& routeParameters,
+			std::string_view userAgentFilter
 		);
 
 		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
