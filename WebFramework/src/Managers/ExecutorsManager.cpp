@@ -149,9 +149,9 @@ namespace framework
 		return executor->second.get();
 	}
 
-	bool ExecutorsManager::filterUserAgent(const string& parameters, const web::HeadersMap& headers) const
+	bool ExecutorsManager::filterUserAgent(const string& parameters, const web::HeadersMap& headers, HTTPResponse& response) const
 	{
-		const string& executorUserAgentFilter = settings.at(parameters).second.userAgentFilter;
+		const string& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
 
 		if (executorUserAgentFilter.size())
 		{
@@ -295,14 +295,14 @@ namespace framework
 			}
 			else if (serverType == webServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 			{
-				if (this->filterUserAgent(parameters, headers))
+				if (this->filterUserAgent(parameters, headers, response))
 				{
 					return bind(method, executor, placeholders::_1, placeholders::_2);
 				}
 			}
 			else
 			{
-				if (this->filterUserAgent(parameters, headers))
+				if (this->filterUserAgent(parameters, headers, response))
 				{
 					invoke(method, executor, request, response);
 				}
