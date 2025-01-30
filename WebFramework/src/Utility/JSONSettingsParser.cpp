@@ -40,6 +40,7 @@ namespace framework
 				ExecutorSettings executorSettings;
 
 				data.tryGetObject("initParameters", executorSettings.initParameters);
+				data.tryGetString("userAgentFilter", executorSettings.userAgentFilter);
 
 				executorSettings.name = name;
 

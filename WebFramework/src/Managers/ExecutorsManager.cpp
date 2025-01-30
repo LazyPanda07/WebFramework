@@ -149,6 +149,31 @@ namespace framework
 		return executor->second.get();
 	}
 
+	bool ExecutorsManager::filterUserAgent(const string& parameters, const web::HeadersMap& headers) const
+	{
+		const string& executorUserAgentFilter = settings.at(parameters).second.userAgentFilter;
+
+		if (executorUserAgentFilter.size())
+		{
+			if (auto it = headers.find("User-Agent"); it != headers.end())
+			{
+				if (executorUserAgentFilter != it->second)
+				{
+					if (Log::isValid())
+					{
+						Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
+					}
+
+					resources->forbiddenError(response, nullptr);
+
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
 	ExecutorsManager::ExecutorsManager() :
 		serverType(webServerType::multiThreaded)
 	{
@@ -221,10 +246,10 @@ namespace framework
 
 		try
 		{
+			const web::HeadersMap& headers = request.getHeaders();
+
 			if (userAgentFilter.size())
 			{
-				const web::HeadersMap& headers = request.parser.getHeaders();
-
 				if (auto it = headers.find("User-Agent"); it != headers.end())
 				{
 					if (userAgentFilter != it->second)
@@ -262,17 +287,25 @@ namespace framework
 				fileRequest = false;
 			}
 
-			void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
+			void (BaseExecutor::* method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
 
-			if (serverType == webServerType::threadPool && (fileRequest ? false : ExecutorsManager::isHeavyOperation(executor)))
+			if (fileRequest)
 			{
-				return bind(method, executor, placeholders::_1, placeholders::_2);
+				invoke(method, resources.get(), request, response);
+			}
+			else if (serverType == webServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
+			{
+				if (this->filterUserAgent(parameters, headers))
+				{
+					return bind(method, executor, placeholders::_1, placeholders::_2);
+				}
 			}
 			else
 			{
-				fileRequest ?
-					invoke(method, resources.get(), request, response) :
+				if (this->filterUserAgent(parameters, headers))
+				{
 					invoke(method, executor, request, response);
+				}
 			}
 
 			return {};

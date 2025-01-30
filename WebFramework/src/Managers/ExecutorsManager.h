@@ -40,6 +40,8 @@ namespace framework
 	private:
 		BaseExecutor* getExecutor(std::string& parameters, HTTPRequest& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
+		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers) const;
+
 	public:
 		ExecutorsManager();
 
