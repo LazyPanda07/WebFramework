@@ -296,7 +296,11 @@ namespace framework
 
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request)
 	{
-		stream >> request.parser;
+		web::HTTPParser parser;
+
+		stream >> parser;
+
+		request.parser = move(parser);
 
 		if (stream.eof() || stream.bad())
 		{
