@@ -169,6 +169,17 @@ namespace framework
 					return false;
 				}
 			}
+			else
+			{
+				if (Log::isValid())
+				{
+					Log::info("No User-Agent provided", "LogFilter");
+				}
+
+				resources->forbiddenError(response, nullptr);
+
+				return false;
+			}
 		}
 
 		return true;
@@ -263,6 +274,17 @@ namespace framework
 
 						return {};
 					}
+				}
+				else
+				{
+					if (Log::isValid())
+					{
+						Log::info("No User-Agent provided", "LogFilter");
+					}
+
+					resources->forbiddenError(response, nullptr);
+
+					return {};
 				}
 			}
 
