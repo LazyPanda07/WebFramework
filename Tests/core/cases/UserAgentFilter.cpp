@@ -4,8 +4,8 @@
 
 #include "HTTPBuilder.h"
 #include "HTTPParser.h"
-
-#include "utilities.h"
+#include "IOSocketStream.h"
+#include "HTTPSNetwork.h"
 
 TEST(UserAgentFilter, PerExecutor)
 {
