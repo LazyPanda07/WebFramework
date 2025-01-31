@@ -19,6 +19,7 @@ add_executable(
 	cases/ResourceLoading.cpp
 	cases/Chunks.cpp
 	cases/Localization.cpp
+	cases/UserAgentFilter.cpp
 )
 
 target_include_directories(

@@ -6,5 +6,10 @@
   "RoutePatternExecutor": {
     "route": "pattern/{string:stringValue}/{int:integerValue}/{double:doubleValue}",
     "loadType": "initialization"
+  },
+  "UserAgentExecutor": {
+    "route": "user_agent",
+    "loadType": "initialization",
+    "userAgentFilter": "CustomUserAgent"
   }
 }
