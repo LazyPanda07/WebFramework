@@ -19,17 +19,7 @@ namespace framework
 			{
 				for (const auto& [key, value] : parser.getSettings())
 				{
-					utility::JSONSettingsParser::ExecutorSettings executorSettings;
-
-					executorSettings.name = value.name;
-					executorSettings.executorLoadType = value.executorLoadType;
-
-					if (value.initParameters.data.size())
-					{
-						executorSettings.initParameters = json::utility::jsonObject(value.initParameters);
-					}
-
-					result.try_emplace(key, move(executorSettings));
+					result.try_emplace(key, value);
 				}
 			}
 

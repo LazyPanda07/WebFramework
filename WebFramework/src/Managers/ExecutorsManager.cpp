@@ -235,7 +235,7 @@ namespace framework
 
 		resources = make_shared<ResourceExecutor>(configuraion, assets, cachingSize, pathToTemplates);
 
-		resources->init(utility::JSONSettingsParser::ExecutorSettings());
+		resources->init();
 
 		serverType = types.at(configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey));
 	}

@@ -2,8 +2,16 @@
 
 int main(int argc, char** argv) try
 {
-	framework::WebFramework server("default_https_server_config.json");
+	framework::utility::Config config("default_https_server_config.json");
+	framework::WebFramework server(config);
 
+	config.overrideConfiguration("userAgentFilter", "CustomUserAgent");
+
+	config.overrideConfiguration("port", 20001);
+
+	framework::WebFramework customUserAgentServer(config);
+
+	customUserAgentServer.start();
 	server.start(true);
 
 	return 0;

@@ -48,7 +48,7 @@ namespace framework
 		/// Create assets folder
 		/// </summary>
 		/// <param name="settings">not used</param>
-		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
+		void init(const utility::JSONSettingsParser::ExecutorSettings& settings = utility::JSONSettingsParser::ExecutorSettings()) override;
 
 		/// <summary>
 		/// Override from IStaticFile interface

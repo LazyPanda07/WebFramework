@@ -31,9 +31,16 @@ namespace framework
 				std::string userAgentFilter;
 				loadType executorLoadType;
 
+			public:
 				ExecutorSettings();
 
+				ExecutorSettings(std::string_view name);
+
+				ExecutorSettings(const ExecutorSettings& other) = default;
+
 				ExecutorSettings(ExecutorSettings&& other) noexcept = default;
+
+				ExecutorSettings& operator =(const ExecutorSettings& other) = default;
 
 				ExecutorSettings& operator =(ExecutorSettings&& other) noexcept = default;
 

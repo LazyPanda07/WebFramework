@@ -1,5 +1,7 @@
 #include "JSONSettingsParser.h"
 
+#include <iostream>
+
 #include "JSONParser.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
@@ -13,6 +15,13 @@ namespace framework
 	namespace utility
 	{
 		JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
+			executorLoadType(loadType::none)
+		{
+
+		}
+
+		JSONSettingsParser::ExecutorSettings::ExecutorSettings(string_view name) :
+			name(name),
 			executorLoadType(loadType::none)
 		{
 
@@ -37,12 +46,10 @@ namespace framework
 			{
 				const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
 				const string& loadType = data.getString("loadType");
-				ExecutorSettings executorSettings;
+				ExecutorSettings executorSettings(name);
 
 				data.tryGetObject("initParameters", executorSettings.initParameters);
 				data.tryGetString("userAgentFilter", executorSettings.userAgentFilter);
-
-				executorSettings.name = name;
 
 				if (loadType == json_settings_values::initializationLoadTypeValue)
 				{
