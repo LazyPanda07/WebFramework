@@ -139,15 +139,38 @@ namespace framework
 		const json::utility::jsonObject& webServerSettings = (*config).getObject(json_settings::webServerObject);
 		const string& ip = webServerSettings.getString(json_settings::ipKey);
 		string port = to_string(webServerSettings.getInt(json_settings::portKey));
-		DWORD timeout = static_cast<DWORD>(webServerSettings.getInt(json_settings::timeoutKey));
+		DWORD timeout = 0;
 
 		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
-		string assetsPath = (basePath / webFrameworkSettings.getString(json_settings::assetsPathKey)).string();
-		string templatesPath = (basePath / webFrameworkSettings.getString(json_settings::templatesPathKey)).string();
-		uint64_t cachingSize = webFrameworkSettings.getUnsignedInt(json_settings::cachingSize);
+		uint64_t cachingSize = 0;
 		string userAgentFilter;
+		string assetsPath;
+		string templatesPath;
+
+		webFrameworkSettings.tryGetUnsignedInt(json_settings::cachingSize, cachingSize);
+
+		{
+			filesystem::path temp = webFrameworkSettings.getString(json_settings::assetsPathKey);
+
+			assetsPath = temp.is_absolute() ? temp.string() : (basePath / temp).string();
+		}
+
+		{
+			filesystem::path temp = webFrameworkSettings.getString(json_settings::templatesPathKey);
+
+			templatesPath = temp.is_absolute() ? temp.string() : (basePath / temp).string();
+		}
 
 		webFrameworkSettings.tryGetString(json_settings::userAgentFilterKey, userAgentFilter);
+
+		{
+			int64_t temp = 0;
+
+			if (webServerSettings.tryGetInt(json_settings::timeoutKey, temp))
+			{
+				timeout = static_cast<DWORD>(temp);
+			}
+		}
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
@@ -193,11 +216,14 @@ namespace framework
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
 		{
 			const json::utility::jsonObject& loadBalancerSettings = (*config).getObject(json_settings::loadBalancerObject);
-			const string& heuristic = loadBalancerSettings.getString(json_settings::heuristicKey);
-			const string& loadSource = loadBalancerSettings.getString(json_settings::loadSourceKey);
+			string heuristic = "Connections";
+			string loadSource = "current";
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject("listOfServers");
 			unordered_map<string, vector<int64_t>> allServers;
+
+			loadBalancerSettings.tryGetString(json_settings::heuristicKey, heuristic);
+			loadBalancerSettings.tryGetString(json_settings::loadSourceKey, loadSource);
 
 			for (const auto& [key, value] : listOfServers)
 			{

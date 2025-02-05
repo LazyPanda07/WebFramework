@@ -15,7 +15,14 @@ namespace framework
         {
             vector<HMODULE> result;
 
-			result.reserve(pathToSources.size());
+			if (pathToSources.size())
+			{
+				result.reserve(pathToSources.size());
+			}
+			else
+			{
+				result.push_back(nullptr);
+			}
 
 			for (const string& temp : pathToSources)
 			{
