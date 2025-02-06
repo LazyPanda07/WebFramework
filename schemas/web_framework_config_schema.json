@@ -179,37 +179,41 @@
       "required": [ "settingsPaths", "loadSources", "assetsPath", "templatesPath", "webServerType" ]
     },
     "Logging": {
-      "usingLogging": {
-        "type": "boolean",
-        "description": "Use logging"
-      },
-      "dateFormat": {
-        "type": "string",
-        "description": "Date format in logging files",
-        "enum": [ "DMY", "MDY", "YMD" ]
-      },
-      "logFileSize": {
-        "type": "integer",
-        "description": "Each log file size in bytes"
-      },
-      "logsPath": {
-        "type": "string",
-        "description": "Base logs files path"
-      },
-      "duplicateOutput": {
-        "type": "boolean",
-        "description": "Also logging to standard output"
-      },
-      "duplicateErrorOutput": {
-        "type": "boolean",
-        "description": "Also logging error level to standard error output"
-      },
-      "flags": {
-        "type": "array",
-        "description": "Logging flags",
-        "items": {
+      "type": "object",
+      "description": "Logging settings",
+      "properties": {
+        "usingLogging": {
+          "type": "boolean",
+          "description": "Use logging"
+        },
+        "dateFormat": {
           "type": "string",
-          "enum": [ "utcDate", "localDate", "processName", "processId", "threadId" ]
+          "description": "Date format in logging files",
+          "enum": [ "DMY", "MDY", "YMD" ]
+        },
+        "logFileSize": {
+          "type": "integer",
+          "description": "Each log file size in bytes"
+        },
+        "logsPath": {
+          "type": "string",
+          "description": "Base logs files path"
+        },
+        "duplicateOutput": {
+          "type": "boolean",
+          "description": "Also logging to standard output"
+        },
+        "duplicateErrorOutput": {
+          "type": "boolean",
+          "description": "Also logging error level to standard error output"
+        },
+        "flags": {
+          "type": "array",
+          "description": "Logging flags",
+          "items": {
+            "type": "string",
+            "enum": [ "utcDate", "localDate", "processName", "processId", "threadId" ]
+          }
         }
       },
       "required": [ "dateFormat", "flags" ]
