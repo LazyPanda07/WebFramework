@@ -46,10 +46,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -66,9 +68,19 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist $(OutDir)..\StaticWindowsOnly\configs mkdir $(OutDir)..\StaticWindowsOnly\configs &amp;&amp; xcopy  /y $(ProjectDir)configs $(OutDir)..\StaticWindowsOnly\configs
-if not exist $(OutDir)..\StaticWindowsOnly\executors mkdir $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(ProjectDir)settings $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>if not exist $(OutDir)..\StaticWindowsOnly\configs mkdir $(OutDir)..\StaticWindowsOnly\configs
+if not exist $(OutDir)..\StaticWindowsOnly\executors mkdir $(OutDir)..\StaticWindowsOnly\executors
+xcopy  /y $(ProjectDir)configs $(OutDir)..\StaticWindowsOnly\configs
+xcopy /y $(ProjectDir)settings $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>output.txt</Outputs>
+      <Message>Copying executors</Message>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -89,9 +101,19 @@ if not exist $(OutDir)..\StaticWindowsOnly\executors mkdir $(OutDir)..\StaticWin
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist $(OutDir)..\StaticWindowsOnly\configs mkdir $(OutDir)..\StaticWindowsOnly\configs &amp;&amp; xcopy  /y $(ProjectDir)configs $(OutDir)..\StaticWindowsOnly\configs
-if not exist $(OutDir)..\StaticWindowsOnly\executors mkdir $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(ProjectDir)settings $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>if not exist $(OutDir)..\StaticWindowsOnly\configs mkdir $(OutDir)..\StaticWindowsOnly\configs
+if not exist $(OutDir)..\StaticWindowsOnly\executors mkdir $(OutDir)..\StaticWindowsOnly\executors
+xcopy  /y $(ProjectDir)configs $(OutDir)..\StaticWindowsOnly\configs
+xcopy /y $(ProjectDir)settings $(OutDir)..\StaticWindowsOnly\executors &amp;&amp; xcopy /y $(OutDir)Executors.dll $(OutDir)..\StaticWindowsOnly\executors</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>output.txt</Outputs>
+      <Message>Copying executors</Message>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\HelloExecutor.cpp" />
