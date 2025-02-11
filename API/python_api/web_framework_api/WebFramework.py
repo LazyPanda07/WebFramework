@@ -92,6 +92,12 @@ class WebFramework:
         :param on_start_server: On start server callback
         :return:
         """
+        if on_start_server is None:
+            def default_function():
+                pass
+
+            on_start_server = default_function
+
         self.__on_start_server = on_start_server
         exception = ctypes.c_void_p(0)
 
