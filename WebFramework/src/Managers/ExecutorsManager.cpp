@@ -254,7 +254,7 @@ namespace framework
 
 		if (!executor)
 		{
-			throw exceptions::BadRequestException(); // 400
+			return {};
 		}
 
 		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
@@ -333,6 +333,8 @@ namespace framework
 			{
 				return executor;
 			}
+
+			resources->forbiddenError(response, nullptr);
 
 			return nullptr;
 		}
