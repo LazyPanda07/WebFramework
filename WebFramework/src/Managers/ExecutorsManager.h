@@ -21,7 +21,7 @@ namespace framework
 		};
 
 	private:
-		std::mutex checkExecutor;
+		mutable std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
 		std::unordered_map<std::string, createExecutorFunction> creators; // executor name - create function
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
@@ -38,7 +38,7 @@ namespace framework
 		static void parseRouteParameters(const std::string& parameters, HTTPRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		BaseExecutor* getExecutor(std::string& parameters, HTTPRequest& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequest& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponse& response) const;
 
@@ -67,6 +67,8 @@ namespace framework
 		);
 
 		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+
+		BaseExecutor* getOrCreateExecutor(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

@@ -23,6 +23,18 @@
     "route": "download",
     "loadType": "initialization"
   },
+  "UploadMultipartExecutor": {
+    "route": "upload_multipart",
+    "loadType": "initialization"
+  },
+  "UploadChunkedExecutor": {
+    "route": "upload_chunked",
+    "loadType": "initialization"
+  },
+  "UploadOctetStreamExecutor": {
+    "route": "upload_octet_stream",
+    "loadType": "initialization"
+  },
   "LocalizationExecutor": {
     "route": "localization",
     "loadType": "initialization"

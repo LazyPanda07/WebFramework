@@ -14,6 +14,9 @@ add_library(
 	executors/ChunksExecutor.cpp
 	executors/DownloadExecutor.cpp
 	executors/LocalizationExecutor.cpp
+	executors/UploadMultipartExecutor.cpp
+	executors/UploadChunkedExecutor.cpp
+	executors/UploadOctetStreamExecutor.cpp
 )
 
 target_include_directories(

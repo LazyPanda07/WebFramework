@@ -26,11 +26,6 @@ namespace framework
 
 	bool ExecutorsManager::isHeavyOperation(BaseExecutor* executor)
 	{
-		if (!executor)
-		{
-			throw exceptions::BadRequestException(); // 400
-		}
-
 		BaseExecutor::executorType executorType = executor->getType();
 
 		return executorType == BaseExecutor::executorType::heavyOperationStateless ||
@@ -94,7 +89,7 @@ namespace framework
 		} while (endParameter != string::npos);
 	}
 
-	BaseExecutor* ExecutorsManager::getExecutor(string& parameters, HTTPRequest& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(string& parameters, HTTPRequest& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		auto executor = statefulExecutors.find(parameters);
 
@@ -255,6 +250,27 @@ namespace framework
 			{ "CONNECT", &BaseExecutor::doConnect }
 		};
 
+		BaseExecutor* executor = this->getOrCreateExecutor(request, response, statefulExecutors);
+
+		if (!executor)
+		{
+			throw exceptions::BadRequestException(); // 400
+		}
+
+		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
+
+		if (serverType == webServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
+		{
+			return bind(method, executor, placeholders::_1, placeholders::_2);
+		}
+
+		invoke(method, executor, request, response);
+
+		return {};
+	}
+
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	{
 		try
 		{
 			const web::HeadersMap& headers = request.getHeaders();
@@ -272,7 +288,7 @@ namespace framework
 
 						resources->forbiddenError(response, nullptr);
 
-						return {};
+						return nullptr;
 					}
 				}
 				else
@@ -284,7 +300,7 @@ namespace framework
 
 					resources->forbiddenError(response, nullptr);
 
-					return {};
+					return nullptr;
 				}
 			}
 
@@ -297,7 +313,7 @@ namespace framework
 				parameters.resize(parameters.find('?'));
 			}
 
-			executor = this->getExecutor(parameters, request, statefulExecutors);
+			executor = this->getOrCreateExecutor(parameters, request, statefulExecutors);
 
 			if (!fileRequest && !executor)
 			{
@@ -309,28 +325,16 @@ namespace framework
 				fileRequest = false;
 			}
 
-			void (BaseExecutor::* method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
-
 			if (fileRequest)
 			{
-				invoke(method, resources.get(), request, response);
+				return resources.get();
 			}
-			else if (serverType == webServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
+			else if (this->filterUserAgent(parameters, headers, response))
 			{
-				if (this->filterUserAgent(parameters, headers, response))
-				{
-					return bind(method, executor, placeholders::_1, placeholders::_2);
-				}
-			}
-			else
-			{
-				if (this->filterUserAgent(parameters, headers, response))
-				{
-					invoke(method, executor, request, response);
-				}
+				return executor;
 			}
 
-			return {};
+			return nullptr;
 		}
 		catch (const exceptions::BaseExecutorException& e)
 		{
