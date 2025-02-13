@@ -68,7 +68,7 @@ namespace framework
 		HTTPRequest request(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
 		bool skip = false;;
 
-		stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
+		/*stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
 		(
 			[](string_view data) -> bool
 			{
@@ -78,7 +78,7 @@ namespace framework
 			{
 				const_cast<web::HTTPParser&>(request.getParser()).parse(headers.data());
 			}
-		);
+		);*/
 
 		while (isRunning)
 		{

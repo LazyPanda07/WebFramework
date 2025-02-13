@@ -254,7 +254,7 @@ namespace framework
 
 		if (!executor)
 		{
-			return {};
+			return nullopt;
 		}
 
 		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
@@ -266,7 +266,7 @@ namespace framework
 
 		invoke(method, executor, request, response);
 
-		return {};
+		return nullopt;
 	}
 
 	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
