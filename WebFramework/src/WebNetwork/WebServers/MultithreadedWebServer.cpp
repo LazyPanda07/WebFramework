@@ -65,10 +65,8 @@ namespace framework
 			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
-		HTTPRequest request(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
-		bool skip = false;;
 
-		stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
+		/*stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
 		(
 			[](string_view data) -> bool
 			{
@@ -78,12 +76,14 @@ namespace framework
 			{
 				const_cast<web::HTTPParser&>(request.getParser()).parse(headers.data());
 			}
-		);
+		);*/
 
 		while (isRunning)
 		{
 			try
 			{
+				HTTPRequest request(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
+
 				response.setDefault();
 
 				stream >> request;

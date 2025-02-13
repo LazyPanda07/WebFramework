@@ -334,11 +334,6 @@ namespace framework
 				return executor;
 			}
 
-			if (Log::isValid())
-			{
-				Log::error("Forbidden", "LogInfo");
-			}
-
 			resources->forbiddenError(response, nullptr);
 
 			return nullptr;
