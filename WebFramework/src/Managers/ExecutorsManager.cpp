@@ -237,19 +237,6 @@ namespace framework
 
 	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
-		static const unordered_map<string, void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> methods =
-		{
-			{ "GET", &BaseExecutor::doGet },
-			{ "POST", &BaseExecutor::doPost },
-			{ "HEAD", &BaseExecutor::doHead },
-			{ "PUT", &BaseExecutor::doPut },
-			{ "DELETE", &BaseExecutor::doDelete },
-			{ "PATCH", &BaseExecutor::doPatch },
-			{ "OPTIONS",&BaseExecutor::doOptions },
-			{ "TRACE", &BaseExecutor::doTrace },
-			{ "CONNECT", &BaseExecutor::doConnect }
-		};
-
 		BaseExecutor* executor = this->getOrCreateExecutor(request, response, statefulExecutors);
 
 		if (!executor)
@@ -257,7 +244,7 @@ namespace framework
 			return nullopt;
 		}
 
-		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
+		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = BaseExecutor::methods.at(request.getMethod());
 
 		if (serverType == webServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 		{

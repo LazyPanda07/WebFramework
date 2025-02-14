@@ -124,6 +124,20 @@ namespace framework
 		virtual executorType getType() const = 0;
 
 		virtual ~BaseExecutor() = default;
+
+	public:
+		static inline const std::unordered_map<std::string, void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> methods =
+		{
+			{ "GET", &BaseExecutor::doGet },
+			{ "POST", &BaseExecutor::doPost },
+			{ "HEAD", &BaseExecutor::doHead },
+			{ "PUT", &BaseExecutor::doPut },
+			{ "DELETE", &BaseExecutor::doDelete },
+			{ "PATCH", &BaseExecutor::doPatch },
+			{ "OPTIONS",&BaseExecutor::doOptions },
+			{ "TRACE", &BaseExecutor::doTrace },
+			{ "CONNECT", &BaseExecutor::doConnect }
+		};
 	};
 
 	using createExecutorFunction = void* (*)();

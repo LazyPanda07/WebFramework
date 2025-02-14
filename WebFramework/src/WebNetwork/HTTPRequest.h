@@ -33,6 +33,7 @@ namespace framework
 		web::HTTPParser parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
+		std::string_view largeDataPart;
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
@@ -74,6 +75,10 @@ namespace framework
 		/// </summary>
 		/// <returns>HTTP version</returns>
 		std::string getHTTPVersion() const;
+
+		void setLargeDataPart(std::string_view largeDataPart);
+
+		std::string_view getLargeDataPart() const;
 
 		/// <summary>
 		/// All HTTP headers

@@ -7,8 +7,9 @@ plugins {
 
 android {
     namespace = "com.lazypanda07.web_framework_flutter_api_example"
-    compileSdk = flutter.compileSdkVersion
     ndkVersion = "28.0.13004108"
+
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

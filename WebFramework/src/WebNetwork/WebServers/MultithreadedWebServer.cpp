@@ -65,18 +65,31 @@ namespace framework
 			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
+		unique_ptr<HTTPRequest> largeRequest;
+		BaseExecutor* largeExecutor = nullptr;
+		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = nullptr;
 
-		/*stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
+		stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
 		(
-			[](string_view data) -> bool
+			[largeExecutor, &method, &response, &largeRequest](string_view data) -> bool
 			{
-				return true;
+				largeRequest->setLargeDataPart(data);
+
+				invoke(method, largeExecutor, *largeRequest, response);
+
+				return !static_cast<bool>(response);
 			},
-			[&request](web::utility::ContainerWrapper& headers)
+			[&](web::utility::ContainerWrapper& headers)
 			{
-				const_cast<web::HTTPParser&>(request.getParser()).parse(headers.data());
+				largeRequest = make_unique<HTTPRequest>(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
+
+				const_cast<web::HTTPParser&>(largeRequest->getParser()).parse(headers.data());
+
+				method = BaseExecutor::methods.at(largeRequest->getMethod());
+
+				largeExecutor = executorsManager.getOrCreateExecutor(*largeRequest, response, statefulExecutors);
 			}
-		);*/
+		);
 
 		while (isRunning)
 		{
