@@ -13,6 +13,19 @@ static void isImplemented
 
 namespace framework
 {
+	const unordered_map<string, void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> BaseExecutor::methods =
+	{
+		{ "GET", &BaseExecutor::doGet },
+		{ "POST", &BaseExecutor::doPost },
+		{ "HEAD", &BaseExecutor::doHead },
+		{ "PUT", &BaseExecutor::doPut },
+		{ "DELETE", &BaseExecutor::doDelete },
+		{ "PATCH", &BaseExecutor::doPatch },
+		{ "OPTIONS",&BaseExecutor::doOptions },
+		{ "TRACE", &BaseExecutor::doTrace },
+		{ "CONNECT", &BaseExecutor::doConnect }
+	};
+
 	void BaseExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
 
