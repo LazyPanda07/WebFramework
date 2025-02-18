@@ -253,8 +253,12 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\Import\Config.cpp" />
     <ClCompile Include="src\c_api\web_framework_c_api.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
+    <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\ChunkGenerator.cpp" />
+    <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
+    <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
+    <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
     <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp" />
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
@@ -324,8 +328,12 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\Proxy\ProxyServer.h" />
     <ClInclude Include="src\SQLite3\SQLiteManager.h" />
     <ClInclude Include="src\SQLite3\SQLiteResult.h" />
+    <ClInclude Include="src\Utility\AdditionalServerSettings.h" />
     <ClInclude Include="src\Utility\ChunkGenerator.h" />
+    <ClInclude Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.h" />
     <ClInclude Include="src\Utility\DynamicLibraries.h" />
+    <ClInclude Include="src\Utility\LargeFileHandlers\MultithreadedHandler.h" />
+    <ClInclude Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.h" />
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
     <ClInclude Include="src\Utility\Sources.h" />

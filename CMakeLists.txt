@@ -113,6 +113,10 @@ add_library(
 	WebFramework/src/Import/Config.cpp
 	WebFramework/src/Import/WebFramework.cpp
 	WebFramework/src/c_api/web_framework_c_api.cpp
+	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
+	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
+	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
+	WebFramework/src/Utility/AdditionalServerSettings.cpp
 )
 
 if (WIN32)

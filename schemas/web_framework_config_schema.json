@@ -151,6 +151,14 @@
           "type": "string",
           "description": "Filter input requests by User-Agent"
         },
+        "largeBodySizeThreshold": {
+          "type": "integer",
+          "description": "Size of message body to trigger large messages handling"
+        },
+        "largeBodyPacketSize": {
+          "type": "integer",
+          "description": "Size of single packet from large message"
+        },
         "HTTPS": {
           "type": "object",
           "description": "HTTPS settings",

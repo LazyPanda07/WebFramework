@@ -27,7 +27,26 @@ namespace framework
 		isBusy(false),
 		webExceptionAcquired(false)
 	{
+		/*stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
+		(
+			[this](string_view data) -> bool
+			{
+				largeRequest->setLargeDataPart(data);
 
+				invoke(method, largeExecutor, *largeRequest, response);
+
+				return !static_cast<bool>(response);
+			},
+			[&](web::utility::ContainerWrapper& headers)
+			{
+				largeRequest = make_unique<HTTPRequest>(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
+
+				const_cast<web::HTTPParser&>(largeRequest->getParser()).parse(headers.data());
+
+				method = BaseExecutor::methods.at(largeRequest->getMethod());
+				largeExecutor = executorsManager.getOrCreateExecutor(*largeRequest, response, statefulExecutors);
+			}
+		);*/
 	}
 
 	bool ThreadPoolWebServer::Client::serve
@@ -87,7 +106,7 @@ namespace framework
 						{
 							if (Log::isValid())
 							{
-								Log::error("Thread pool serve exception: {}", "ThreadPool", e.what());
+								Log::error("Thread pool serve exception: {}", "LogThreadPool", e.what());
 							}
 
 							webExceptionAcquired = true;
@@ -305,7 +324,7 @@ namespace framework
 		DWORD timeout,
 		const vector<string>& pathToSources,
 		uint32_t threadCount,
-		string_view userAgentFilter
+		const utility::AdditionalServerSettings& additionalSettings
 	) :
 		BaseTCPServer
 		(
@@ -324,7 +343,7 @@ namespace framework
 			cachingSize,
 			parsers,
 			pathToSources,
-			userAgentFilter
+			additionalSettings
 		),
 		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
 	{

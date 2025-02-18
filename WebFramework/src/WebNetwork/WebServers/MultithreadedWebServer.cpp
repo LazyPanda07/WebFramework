@@ -13,6 +13,7 @@
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SSLException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
+#include "Utility/LargeFileHandlers/MultithreadedHandler.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6387)
@@ -65,31 +66,10 @@ namespace framework
 			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
-		unique_ptr<HTTPRequest> largeRequest;
-		BaseExecutor* largeExecutor = nullptr;
-		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = nullptr;
-
-		stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
-		(
-			[largeExecutor, &method, &response, &largeRequest](string_view data) -> bool
-			{
-				largeRequest->setLargeDataPart(data);
-
-				invoke(method, largeExecutor, *largeRequest, response);
-
-				return !static_cast<bool>(response);
-			},
-			[&](web::utility::ContainerWrapper& headers)
-			{
-				largeRequest = make_unique<HTTPRequest>(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
-
-				const_cast<web::HTTPParser&>(largeRequest->getParser()).parse(headers.data());
-
-				method = BaseExecutor::methods.at(largeRequest->getMethod());
-
-				largeExecutor = executorsManager.getOrCreateExecutor(*largeRequest, response, statefulExecutors);
-			}
-		);
+		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
+		
+		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network);
+		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
 		while (isRunning)
 		{
@@ -177,7 +157,7 @@ namespace framework
 		string_view port,
 		DWORD timeout,
 		const vector<string>& pathToSources,
-		string_view userAgentFilter
+		const utility::AdditionalServerSettings& additionalSettings
 	) :
 		BaseTCPServer
 		(
@@ -196,7 +176,7 @@ namespace framework
 			cachingSize,
 			parsers,
 			pathToSources,
-			userAgentFilter
+			additionalSettings
 		)
 	{
 

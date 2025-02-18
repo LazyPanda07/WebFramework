@@ -211,7 +211,7 @@ namespace framework
 		unordered_map<string, createExecutorFunction>&& creators,
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 		vector<utility::RouteParameters>&& routeParameters,
-		string_view userAgentFilter
+		const utility::AdditionalServerSettings& additionalSettings
 	)
 	{
 		const unordered_map<string_view, webServerType> types =
@@ -226,7 +226,7 @@ namespace framework
 		this->creators = move(creators);
 		this->settings = move(settings);
 		this->routeParameters = move(routeParameters);
-		this->userAgentFilter = userAgentFilter;
+		this->userAgentFilter = additionalSettings.userAgentFilter;
 
 		resources = make_shared<ResourceExecutor>(configuraion, assets, cachingSize, pathToTemplates);
 

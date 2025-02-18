@@ -143,9 +143,9 @@ namespace framework
 
 		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
 		uint64_t cachingSize = 0;
-		string userAgentFilter;
 		string assetsPath;
 		string templatesPath;
+		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings);
 
 		webFrameworkSettings.tryGetUnsignedInt(json_settings::cachingSize, cachingSize);
 
@@ -160,8 +160,6 @@ namespace framework
 
 			templatesPath = temp.is_absolute() ? temp.string() : (basePath / temp).string();
 		}
-
-		webFrameworkSettings.tryGetString(json_settings::userAgentFilterKey, userAgentFilter);
 
 		{
 			int64_t temp = 0;
@@ -185,7 +183,7 @@ namespace framework
 					port,
 					timeout,
 					pathToSources,
-					userAgentFilter
+					additionalSettings
 				);
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
@@ -210,16 +208,16 @@ namespace framework
 					timeout,
 					pathToSources,
 					static_cast<uint32_t>(threadCount),
-					userAgentFilter
+					additionalSettings
 				);
 		}
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
 		{
 			const json::utility::jsonObject& loadBalancerSettings = (*config).getObject(json_settings::loadBalancerObject);
-			string heuristic = "Connections";
-			string loadSource = "current";
+			string heuristic(json_settings::defaultHeuristicValue);
+			string loadSource(json_settings::defaultLoadSourceValue);
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
-			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject("listOfServers");
+			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject(json_settings::listOfServersKey);
 			unordered_map<string, vector<int64_t>> allServers;
 
 			loadBalancerSettings.tryGetString(json_settings::heuristicKey, heuristic);
@@ -270,7 +268,7 @@ namespace framework
 		ranges::for_each(settingsPaths, [this, &basePath](string& path) { path = (basePath / path).string(); });
 		ranges::for_each(pathToSources, [this, &basePath](string& source)
 			{
-				if (source == "current")
+				if (source == json_settings::defaultLoadSourceValue)
 				{
 					return;
 				}

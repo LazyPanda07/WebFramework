@@ -48,6 +48,8 @@ namespace json_settings
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
 	inline constexpr std::string_view pathToKey = "pathToKey";
 	inline constexpr std::string_view webFrameworkDefaultAssetsPath = "defaultAssetsPath";
+	inline constexpr std::string_view largeBodySizeThresholdKey = "largeBodySizeThreshold";
+	inline constexpr std::string_view largeBodyPacketSizeKey = "largeBodyPacketSize";
 
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
 	inline constexpr std::string_view heuristicKey = "heuristic";
@@ -60,6 +62,7 @@ namespace json_settings
 	inline constexpr std::string_view duplicateErrorOutputKey = "duplicateErrorOutput";
 
 	inline constexpr std::string_view defaultLoadSourceValue = "current";
+	inline constexpr std::string_view defaultHeuristicValue = "Connections";
 
 	inline constexpr std::string_view threadCountKey = "threadCount";
 
@@ -67,6 +70,10 @@ namespace json_settings
 	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";
 	inline constexpr std::string_view loadBalancerWebServerTypeValue = "loadBalancer";
 	inline constexpr std::string_view proxyWebServerTypeValue = "proxy";
+
+	inline constexpr std::string_view initParametersKey = "initParameters";
+	inline constexpr std::string_view loadTypeKey = "loadType";
+	inline constexpr std::string_view routeKey = "route";
 }
 
 namespace exceptions
@@ -95,6 +102,8 @@ namespace json_settings_values
 {
 	inline constexpr std::string_view initializationLoadTypeValue = "initialization";
 	inline constexpr std::string_view dynamicLoadTypeValue = "dynamic";
+	inline constexpr size_t largeBodySizeThresholdValue = 165 * 1024 * 1024;
+	inline constexpr size_t largeBodyPacketSizeValue = 11 * 1024 * 1024;
 }
 
 namespace web_framework_assets

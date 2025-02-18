@@ -6,6 +6,7 @@
 #include "Utility/JSONSettingsParser.h"
 #include "Executors/ResourceExecutor.h"
 #include "Utility/RouteParameters.h"
+#include "Utility/AdditionalServerSettings.h"
 
 namespace framework
 {
@@ -63,7 +64,7 @@ namespace framework
 			std::unordered_map<std::string, createExecutorFunction>&& creators,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 			std::vector<utility::RouteParameters>&& routeParameters,
-			std::string_view userAgentFilter
+			const utility::AdditionalServerSettings& additionalSettings
 		);
 
 		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);

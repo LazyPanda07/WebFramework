@@ -7,6 +7,7 @@
 #include "Managers/ExecutorsManager.h"
 #include "Managers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
+#include "Utility/AdditionalServerSettings.h"
 
 namespace framework
 {
@@ -19,6 +20,7 @@ namespace framework
 			SessionsManager sessionsManager;
 			sqlite::SQLiteManager databaseManager;
 			std::shared_ptr<ResourceExecutor> resources;
+			utility::AdditionalServerSettings additionalSettings;
 
 		private:
 			static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorSettings(const std::vector<utility::JSONSettingsParser>& parsers);
@@ -32,7 +34,7 @@ namespace framework
 				uint64_t cachingSize,
 				const std::vector<utility::JSONSettingsParser>& parsers,
 				const std::vector<std::string>& pathToSources,
-				std::string_view userAgentFilter
+				const utility::AdditionalServerSettings& additionalSettings
 			);
 
 			virtual ~IExecutorFunctionality() = default;

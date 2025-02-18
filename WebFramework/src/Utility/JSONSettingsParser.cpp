@@ -45,11 +45,11 @@ namespace framework
 			for (const auto& [name, description] : parser)
 			{
 				const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
-				const string& loadType = data.getString("loadType");
+				const string& loadType = data.getString(json_settings::loadTypeKey);
 				ExecutorSettings executorSettings(name);
 
-				data.tryGetObject("initParameters", executorSettings.initParameters);
-				data.tryGetString("userAgentFilter", executorSettings.userAgentFilter);
+				data.tryGetObject(json_settings::initParametersKey, executorSettings.initParameters);
+				data.tryGetString(json_settings::userAgentFilterKey, executorSettings.userAgentFilter);
 
 				if (loadType == json_settings_values::initializationLoadTypeValue)
 				{
@@ -64,7 +64,7 @@ namespace framework
 					throw runtime_error("Wrong loadType");
 				}
 
-				settings.try_emplace(::utility::strings::replaceAll(data.getString("route"), " ", "%20"), move(executorSettings));
+				settings.try_emplace(::utility::strings::replaceAll(data.getString(json_settings::routeKey), " ", "%20"), move(executorSettings));
 			}
 		}
 

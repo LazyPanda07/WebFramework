@@ -26,6 +26,9 @@ namespace framework
 			SOCKET clientSocket;
 			bool isBusy;
 			bool webExceptionAcquired;
+			std::unique_ptr<HTTPRequest> largeRequest;
+			BaseExecutor* largeExecutor = nullptr;
+			void (BaseExecutor::* method)(HTTPRequest&, HTTPResponse&) = nullptr;
 
 		public:
 			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup);
@@ -78,7 +81,7 @@ namespace framework
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
 			uint32_t threadCount,
-			std::string_view userAgentFilter
+			const utility::AdditionalServerSettings& additionalSettings
 		);
 
 		~ThreadPoolWebServer() = default;
