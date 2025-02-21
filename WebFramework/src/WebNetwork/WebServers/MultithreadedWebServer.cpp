@@ -68,8 +68,10 @@ namespace framework
 		HTTPResponse response;
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
 		
-		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network);
+		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, addr, stream, executorsManager, statefulExecutors);
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
+
+		utility::MultithreadedHandler& largeBodyHandler = network.getLargeBodyHandler<utility::MultithreadedHandler>();
 
 		while (isRunning)
 		{
@@ -80,6 +82,11 @@ namespace framework
 				response.setDefault();
 
 				stream >> request;
+
+				if (response || largeBodyHandler.isRunning())
+				{
+					continue;
+				}
 
 				if (stream.eof())
 				{
@@ -102,7 +109,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::error("Multithreaded serve exception: {}", "Multithreaded", e.what());
+					Log::error("Multithreaded serve exception: {}", "LogMultithreaded", e.what());
 				}
 
 				break;

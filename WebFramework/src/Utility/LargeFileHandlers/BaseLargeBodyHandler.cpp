@@ -9,9 +9,4 @@ namespace framework::utility
 	{
 
 	}
-
-	bool BaseLargeBodyHandler::handleChunk(string_view data, size_t& bodySize)
-	{
-		return true;
-	}
 }

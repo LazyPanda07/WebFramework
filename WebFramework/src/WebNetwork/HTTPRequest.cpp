@@ -66,14 +66,20 @@ namespace framework
 		return "HTTP/" + to_string(parser.getHTTPVersion());
 	}
 
-	void HTTPRequest::setLargeDataPart(string_view largeDataPart)
+	void HTTPRequest::setLargeDataPart(string_view largeDataPart, size_t bodySize)
 	{
 		this->largeDataPart = largeDataPart;
+		this->bodySize = bodySize;
 	}
 
 	string_view HTTPRequest::getLargeDataPart() const
 	{
 		return largeDataPart;
+	}
+
+	size_t HTTPRequest::getBodySize() const
+	{
+		return bodySize;
 	}
 
 	const web::HeadersMap& HTTPRequest::getHeaders() const

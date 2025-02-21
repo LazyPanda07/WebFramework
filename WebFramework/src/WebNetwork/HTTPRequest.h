@@ -34,6 +34,7 @@ namespace framework
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
 		std::string_view largeDataPart;
+		size_t bodySize;
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
@@ -76,9 +77,11 @@ namespace framework
 		/// <returns>HTTP version</returns>
 		std::string getHTTPVersion() const;
 
-		void setLargeDataPart(std::string_view largeDataPart);
+		void setLargeDataPart(std::string_view largeDataPart, size_t bodySize);
 
 		std::string_view getLargeDataPart() const;
+
+		size_t getBodySize() const;
 
 		/// <summary>
 		/// All HTTP headers
