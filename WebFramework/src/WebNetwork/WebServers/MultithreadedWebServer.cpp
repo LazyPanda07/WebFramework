@@ -68,11 +68,6 @@ namespace framework
 		HTTPResponse response;
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
 		
-		/*network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, addr, stream, executorsManager, statefulExecutors);
-		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
-
-		utility::MultithreadedHandler& largeBodyHandler = network.getLargeBodyHandler<utility::MultithreadedHandler>();*/
-
 		while (isRunning)
 		{
 			try
@@ -83,7 +78,7 @@ namespace framework
 
 				stream >> request;
 
-				if (response /*|| largeBodyHandler.isRunning()*/)
+				if (response)
 				{
 					continue;
 				}

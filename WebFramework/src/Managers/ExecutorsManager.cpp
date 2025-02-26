@@ -241,6 +241,11 @@ namespace framework
 
 		if (!executor)
 		{
+			if (Log::isValid())
+			{
+				Log::error("Empty executor: {}", "LogExecutorsManager", request.getRawParameters());
+			}
+
 			return nullopt;
 		}
 
