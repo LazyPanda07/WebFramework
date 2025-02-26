@@ -241,11 +241,6 @@ namespace framework
 
 		if (!executor)
 		{
-			if (Log::isValid())
-			{
-				Log::error("Empty executor: {}", "LogExecutorsManager", request.getRawParameters());
-			}
-
 			return nullopt;
 		}
 
@@ -321,12 +316,21 @@ namespace framework
 			{
 				return resources.get();
 			}
-			else if (this->filterUserAgent(parameters, headers, response))
+			else if (executor)
 			{
-				return executor;
+				if (this->filterUserAgent(parameters, headers, response))
+				{
+					return executor;
+				}
+				else
+				{
+					resources->forbiddenError(response, nullptr);
+				}
 			}
-
-			resources->forbiddenError(response, nullptr);
+			else
+			{
+				throw exceptions::BadRequestException(); // 400
+			}
 
 			return nullptr;
 		}

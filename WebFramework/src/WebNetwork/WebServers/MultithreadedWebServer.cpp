@@ -78,11 +78,6 @@ namespace framework
 
 				stream >> request;
 
-				if (response)
-				{
-					continue;
-				}
-
 				if (stream.eof())
 				{
 					break;
