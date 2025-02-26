@@ -10,7 +10,7 @@ int main(int argc, char** argv) try
 
 	framework::WebFramework server(config); // Create server
 
-	server.start(true); // Start server and wait
+	server.start(true, []() { std::cout << "Server is running" << std::endl; }); // Start server and wait
 
 	return 0;
 }

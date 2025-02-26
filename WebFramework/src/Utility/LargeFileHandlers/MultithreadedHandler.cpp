@@ -29,6 +29,8 @@ namespace framework::utility
 	{
 		request = make_unique<HTTPRequest>(sessionsManager, serverReference, staticResources, dynamicResources, database, clientAddr, stream);
 		response.setDefault();
+		
+		response.setIsValid(false);
 
 		const_cast<web::HTTPParser&>(request->getParser()) = parser;
 
@@ -38,6 +40,8 @@ namespace framework::utility
 
 	void MultithreadedHandler::onFinishHandleChunks()
 	{
+		response.setIsValid(true);
+
 		stream << response;
 	}
 
