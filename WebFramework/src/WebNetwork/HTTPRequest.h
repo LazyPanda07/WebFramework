@@ -16,6 +16,15 @@
 
 namespace framework
 {
+	struct WEB_FRAMEWORK_API LargeData
+	{
+		std::string_view dataPart;
+		size_t size;
+		bool isLastPacket;
+
+		LargeData();
+	};
+
 	/// <summary>
 	/// Parsing HTTP request
 	/// <para>Accessing to sessions</para>
@@ -33,8 +42,7 @@ namespace framework
 		web::HTTPParser parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
-		std::string_view largeDataPart;
-		size_t bodySize;
+		LargeData largeData;
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
@@ -52,6 +60,8 @@ namespace framework
 		HTTPRequest& operator =(HTTPRequest&&) noexcept = default;
 
 		HTTPRequest& operator =(const HTTPRequest&) = default;
+
+		void updateLargeData(std::string_view dataPart, size_t size);
 
 		/// <summary>
 		/// Parameters string from HTTP
@@ -76,12 +86,6 @@ namespace framework
 		/// </summary>
 		/// <returns>HTTP version</returns>
 		std::string getHTTPVersion() const;
-
-		void setLargeDataPart(std::string_view largeDataPart, size_t bodySize);
-
-		std::string_view getLargeDataPart() const;
-
-		size_t getBodySize() const;
 
 		/// <summary>
 		/// All HTTP headers
@@ -132,6 +136,8 @@ namespace framework
 		 * @return 
 		 */
 		const std::vector<web::Multipart>& getMultiparts() const;
+
+		const LargeData& getLargeData() const;
 
 		/// <summary>
 		/// ResourceExecutor wrapper

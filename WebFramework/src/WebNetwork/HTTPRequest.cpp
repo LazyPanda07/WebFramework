@@ -9,6 +9,13 @@ using namespace std;
 
 namespace framework
 {
+	LargeData::LargeData() :
+		size(0),
+		isLastPacket(true)
+	{
+
+	}
+
 	bool HTTPRequest::isWebFrameworkDynamicPages(const string& filePath)
 	{
 		size_t extension = filePath.find('.');
@@ -46,6 +53,13 @@ namespace framework
 
 	}
 
+	void HTTPRequest::updateLargeData(string_view dataPart, size_t size)
+	{
+		largeData.dataPart = dataPart;
+		largeData.size = size;
+		largeData.isLastPacket = !size;
+	}
+
 	const string& HTTPRequest::getRawParameters() const
 	{
 		return parser.getParameters();
@@ -64,22 +78,6 @@ namespace framework
 	string HTTPRequest::getHTTPVersion() const
 	{
 		return "HTTP/" + to_string(parser.getHTTPVersion());
-	}
-
-	void HTTPRequest::setLargeDataPart(string_view largeDataPart, size_t bodySize)
-	{
-		this->largeDataPart = largeDataPart;
-		this->bodySize = bodySize;
-	}
-
-	string_view HTTPRequest::getLargeDataPart() const
-	{
-		return largeDataPart;
-	}
-
-	size_t HTTPRequest::getBodySize() const
-	{
-		return bodySize;
 	}
 
 	const web::HeadersMap& HTTPRequest::getHeaders() const
@@ -148,6 +146,11 @@ namespace framework
 	const vector<web::Multipart>& HTTPRequest::getMultiparts() const
 	{
 		return parser.getMultiparts();
+	}
+
+	const LargeData& HTTPRequest::getLargeData() const
+	{
+		return largeData;
 	}
 
 	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)

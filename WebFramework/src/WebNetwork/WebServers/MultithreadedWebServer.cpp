@@ -67,6 +67,11 @@ namespace framework
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponse response;
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
+
+		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, addr, stream, executorsManager, statefulExecutors);
+		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
+
+		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler<web::LargeBodyHandler>();
 		
 		while (isRunning)
 		{
@@ -77,6 +82,11 @@ namespace framework
 				response.setDefault();
 
 				stream >> request;
+
+				if (largeBodyHandler.isRunning())
+				{
+					continue;
+				}
 
 				if (stream.eof())
 				{
