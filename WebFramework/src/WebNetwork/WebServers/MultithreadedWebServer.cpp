@@ -71,7 +71,7 @@ namespace framework
 		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, addr, stream, executorsManager, statefulExecutors);
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
-		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler<web::LargeBodyHandler>();
+		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
 		
 		while (isRunning)
 		{
