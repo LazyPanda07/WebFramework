@@ -1,6 +1,7 @@
 #include <fstream>
 #include <filesystem>
 #include <chrono>
+#include <random>
 
 #include "JSONParser.h"
 
@@ -9,6 +10,9 @@
 #include "settings.h"
 
 bool useHTTPS;
+constexpr size_t largeFileSize = 200 * 1024 * 1024;
+constexpr size_t fileChunkSize = largeFileSize / 256;
+constexpr size_t randomNumbers = fileChunkSize / sizeof(size_t);
 
 void printLog()
 {
@@ -23,9 +27,41 @@ void printLog()
 	}
 }
 
+void createLargeFile()
+{
+	std::ofstream out(LARGE_FILE_NAME, std::ios::binary);
+	size_t currentSize = 0;
+	std::string data(fileChunkSize, '\0');
+	std::mt19937_64 random;
+
+	auto start = std::chrono::high_resolution_clock::now();
+
+	while (currentSize != largeFileSize)
+	{
+		for (size_t i = 0; i < randomNumbers; i++)
+		{
+			size_t number = random();
+			const char* ptr = reinterpret_cast<const char*>(&number);
+
+			std::copy(ptr, ptr + sizeof(size_t), data.data() + i * sizeof(size_t));
+		}
+
+		out.write(data.data(), data.size());
+
+		currentSize += fileChunkSize;
+	}
+
+	std::cout << "Generation time: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count() << " ms" << std::endl;
+}
+
 int main(int argc, char** argv)
 {
 	useHTTPS = json::JSONParser(std::ifstream(argv[1])).getObject("WebFramework").getObject("HTTPS").getBool("useHTTPS");
+
+	if (!std::filesystem::exists(LARGE_FILE_NAME))
+	{
+		createLargeFile();
+	}
 
 	testing::InitGoogleTest(&argc, argv);
 

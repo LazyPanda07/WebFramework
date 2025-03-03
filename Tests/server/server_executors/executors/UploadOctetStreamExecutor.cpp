@@ -4,7 +4,19 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 {
 	const auto& [data, size, last] = request.getLargeData();
 
+	if (!stream.is_open())
+	{
+		stream.open(request.getHeaders().at("File-Name"), std::ios::binary);
+	}
+	
+	stream.write(data.data(), data.size());
 
+	if (last)
+	{
+		response.setResponseCode(web::ResponseCodes::created);
+
+		response.addBody("Finish uploading file");
+	}
 }
 
 DECLARE_EXECUTOR(UploadOctetStreamExecutor)

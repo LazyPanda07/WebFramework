@@ -1,9 +1,14 @@
 #pragma once
 
-#include "Executors/BaseHeavyOperationStatelessExecutor.h"
+#include "Executors/BaseHeavyOperationStatefulExecutor.h"
 
-class UploadOctetStreamExecutor : public framework::BaseHeavyOperationStatelessExecutor
+#include <fstream>
+
+class UploadOctetStreamExecutor : public framework::BaseHeavyOperationStatefulExecutor
 {
+private:
+	std::ofstream stream;
+
 public:
 	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 };
