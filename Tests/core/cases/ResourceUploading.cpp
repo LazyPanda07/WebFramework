@@ -23,4 +23,5 @@ TEST(ResourceUploading, OctetStream)
 	int errorCode = std::system(std::format(R"(curl --insecure --header "Content-Type: application/octet-stream" --header "File-Name: octet_stream.bin" --data-binary @{} {})", LARGE_FILE_NAME, (useHTTPS ? httpsUrl : httpUrl)).data());
 
 	ASSERT_EQ(errorCode, 0);
+	ASSERT_TRUE(utility::compareFiles(LARGE_FILE_NAME, "octet_stream.bin"));
 }
