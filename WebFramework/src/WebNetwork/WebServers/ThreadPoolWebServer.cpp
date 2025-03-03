@@ -7,46 +7,22 @@
 #include "Exceptions/SSLException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "HTTPSNetwork.h"
+#include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 
 using namespace std;
 
 namespace framework
 {
-	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup) :
-		stream
-		(
-			ssl ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket)
-		),
+	ThreadPoolWebServer::Client::Client(streams::IOSocketStream&& stream, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup) :
+		stream(move(stream)),
 		cleanup(move(cleanup)),
 		address(address),
-		ssl(ssl),
-		context(context),
 		clientSocket(clientSocket),
 		isBusy(false),
-		webExceptionAcquired(false)
+		webExceptionAcquired(false),
+		largeBodyHandler(stream.getNetwork<web::HTTPNetwork>().getLargeBodyHandler<utility::BaseLargeBodyHandler>())
 	{
-		/*stream.getNetwork<web::HTTPNetwork>().setLargeBodyHandler
-		(
-			[this](string_view data) -> bool
-			{
-				largeRequest->setLargeDataPart(data);
-
-				invoke(method, largeExecutor, *largeRequest, response);
-
-				return !static_cast<bool>(response);
-			},
-			[&](web::utility::ContainerWrapper& headers)
-			{
-				largeRequest = make_unique<HTTPRequest>(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
-
-				const_cast<web::HTTPParser&>(largeRequest->getParser()).parse(headers.data());
-
-				method = BaseExecutor::methods.at(largeRequest->getMethod());
-				largeExecutor = executorsManager.getOrCreateExecutor(*largeRequest, response, statefulExecutors);
-			}
-		);*/
+		largeBodyHandler.setStatefulExecutors(statefulExecutors);
 	}
 
 	bool ThreadPoolWebServer::Client::serve
@@ -66,7 +42,7 @@ namespace framework
 			return true;
 		}
 
-		if (isBusy)
+		if (isBusy || largeBodyHandler.isRunning())
 		{
 			return false;
 		}
@@ -294,7 +270,16 @@ namespace framework
 				}
 			}
 
-			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup)));
+			streams::IOSocketStream stream = ssl ?
+				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
+				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
+
+			web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
+
+			network.setLargeBodyHandler<utility::ThreadPoolHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, address, stream, executorsManager);
+			network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
+
+			clients.push_back(new Client(move(stream), clientSocket, address, move(cleanup)));
 		}
 		catch (const web::exceptions::SSLException& e)
 		{

@@ -6,6 +6,7 @@
 
 #include "BaseWebServer.h"
 #include "WebNetwork/Interfaces/IExecutorFunctionality.h"
+#include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 
 namespace framework
 {
@@ -21,17 +22,13 @@ namespace framework
 			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
 			std::function<void()> cleanup;
 			sockaddr address;
-			SSL* ssl;
-			SSL_CTX* context;
 			SOCKET clientSocket;
 			bool isBusy;
 			bool webExceptionAcquired;
-			std::unique_ptr<HTTPRequest> largeRequest;
-			BaseExecutor* largeExecutor = nullptr;
-			void (BaseExecutor::* method)(HTTPRequest&, HTTPResponse&) = nullptr;
+			utility::BaseLargeBodyHandler& largeBodyHandler;
 
 		public:
-			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup);
+			Client(streams::IOSocketStream&& stream, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup);
 
 			Client(const Client&) = delete;
 
