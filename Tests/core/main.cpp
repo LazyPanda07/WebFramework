@@ -34,8 +34,6 @@ void createLargeFile()
 	std::string data(fileChunkSize, '\0');
 	std::mt19937_64 random;
 
-	auto start = std::chrono::high_resolution_clock::now();
-
 	while (currentSize != largeFileSize)
 	{
 		for (size_t i = 0; i < randomNumbers; i++)
@@ -50,8 +48,6 @@ void createLargeFile()
 
 		currentSize += fileChunkSize;
 	}
-
-	std::cout << "Generation time: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count() << " ms" << std::endl;
 }
 
 int main(int argc, char** argv)
