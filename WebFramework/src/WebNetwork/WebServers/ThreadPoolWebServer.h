@@ -22,13 +22,12 @@ namespace framework
 			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
 			std::function<void()> cleanup;
 			sockaddr address;
-			SOCKET clientSocket;
 			bool isBusy;
 			bool webExceptionAcquired;
-			utility::BaseLargeBodyHandler& largeBodyHandler;
+			web::LargeBodyHandler* largeBodyHandler;
 
 		public:
-			Client(streams::IOSocketStream&& stream, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup);
+			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup, ThreadPoolWebServer& server);
 
 			Client(const Client&) = delete;
 

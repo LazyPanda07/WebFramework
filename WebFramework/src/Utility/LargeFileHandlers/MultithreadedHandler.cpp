@@ -10,9 +10,9 @@ namespace framework::utility
 		sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream,
 		ExecutorsManager& executorsManager, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors
 	) :
-		BaseLargeBodyHandler(network, session, serverReference, staticResources, dynamicResources, database, clientAddr, stream, executorsManager)
+		BaseLargeBodyHandler(network, session, serverReference, staticResources, dynamicResources, database, clientAddr, stream, executorsManager, statefulExecutors)
 	{
-		this->setStatefulExecutors(statefulExecutors);
+		
 	}
 
 	MultithreadedHandler::WaitBehavior MultithreadedHandler::getWaitBehavior() const

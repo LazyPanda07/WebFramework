@@ -13,16 +13,29 @@ using namespace std;
 
 namespace framework
 {
-	ThreadPoolWebServer::Client::Client(streams::IOSocketStream&& stream, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup) :
-		stream(move(stream)),
+	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup, ThreadPoolWebServer& server) :
+		stream
+		(
+			ssl ?
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket)
+		),
 		cleanup(move(cleanup)),
 		address(address),
-		clientSocket(clientSocket),
 		isBusy(false),
-		webExceptionAcquired(false),
-		largeBodyHandler(stream.getNetwork<web::HTTPNetwork>().getLargeBodyHandler<utility::BaseLargeBodyHandler>())
+		webExceptionAcquired(false)
 	{
-		largeBodyHandler.setStatefulExecutors(statefulExecutors);
+		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
+
+		network.setLargeBodyHandler<utility::ThreadPoolHandler>
+			(
+				server.additionalSettings.largeBodyPacketSize, network, server.sessionsManager, server,
+				*server.resources, *server.resources, server.databaseManager,
+				address, stream, server.executorsManager, statefulExecutors
+			);
+		network.setLargeBodySizeThreshold(server.additionalSettings.largeBodySizeThreshold);
+
+		largeBodyHandler = &network.getLargeBodyHandler();
 	}
 
 	bool ThreadPoolWebServer::Client::serve
@@ -42,7 +55,7 @@ namespace framework
 			return true;
 		}
 
-		if (isBusy || largeBodyHandler.isRunning())
+		if (isBusy || largeBodyHandler->isRunning())
 		{
 			return false;
 		}
@@ -270,16 +283,7 @@ namespace framework
 				}
 			}
 
-			streams::IOSocketStream stream = ssl ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
-
-			web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
-
-			network.setLargeBodyHandler<utility::ThreadPoolHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, address, stream, executorsManager);
-			network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
-
-			clients.push_back(new Client(move(stream), clientSocket, address, move(cleanup)));
+			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup), *this));
 		}
 		catch (const web::exceptions::SSLException& e)
 		{

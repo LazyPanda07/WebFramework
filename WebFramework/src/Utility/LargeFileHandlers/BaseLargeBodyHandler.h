@@ -22,7 +22,7 @@ namespace framework::utility
 		sockaddr clientAddr;
 		streams::IOSocketStream& stream;
 		ExecutorsManager& executorsManager;
-		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>* statefulExecutors;
+		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors;
 		std::unique_ptr<HTTPRequest> request;
 		HTTPResponse response;
 		BaseExecutor* executor;
@@ -40,10 +40,8 @@ namespace framework::utility
 		(
 			web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
 			sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream,
-			ExecutorsManager& executorsManager
+			ExecutorsManager& executorsManager, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors
 		);
-
-		void setStatefulExecutors(std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		~BaseLargeBodyHandler() = default;
 	};

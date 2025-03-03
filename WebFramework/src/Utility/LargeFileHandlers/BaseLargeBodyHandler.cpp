@@ -34,7 +34,7 @@ namespace framework::utility
 
 		const_cast<web::HTTPParser&>(request->getParser()) = parser;
 
-		executor = executorsManager.getOrCreateExecutor(*request, response, *statefulExecutors);
+		executor = executorsManager.getOrCreateExecutor(*request, response, statefulExecutors);
 		method = BaseExecutor::methods.at(parser.getMethod());
 	}
 
@@ -49,7 +49,7 @@ namespace framework::utility
 	(
 		web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
 		sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream,
-		ExecutorsManager& executorsManager
+		ExecutorsManager& executorsManager, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors
 	) :
 		LargeBodyHandler(network),
 		sessionsManager(session),
@@ -60,15 +60,10 @@ namespace framework::utility
 		clientAddr(clientAddr),
 		stream(stream),
 		executorsManager(executorsManager),
-		statefulExecutors(nullptr),
+		statefulExecutors(statefulExecutors),
 		executor(nullptr),
 		method(nullptr)
 	{
 
-	}
-
-	void BaseLargeBodyHandler::setStatefulExecutors(std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
-	{
-		this->statefulExecutors = &statefulExecutors;
 	}
 }
