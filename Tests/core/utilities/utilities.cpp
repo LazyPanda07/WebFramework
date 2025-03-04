@@ -50,4 +50,11 @@ namespace utility
 
 		return true;
 	}
+
+	std::string_view removeUploadedPrefix(std::string_view data)
+	{
+		constexpr std::string_view prefix = "uploaded_";
+
+		return data.substr(prefix.size());
+	}
 }

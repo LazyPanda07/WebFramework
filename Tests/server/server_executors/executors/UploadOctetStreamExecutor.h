@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Executors/BaseHeavyOperationStatefulExecutor.h"
+#include "Executors/BaseStatefulExecutor.h"
 
 #include <fstream>
 
-class UploadOctetStreamExecutor : public framework::BaseHeavyOperationStatefulExecutor
+class UploadOctetStreamExecutor : public framework::BaseStatefulExecutor
 {
 private:
 	std::ofstream stream;

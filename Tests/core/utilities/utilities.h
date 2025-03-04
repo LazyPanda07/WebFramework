@@ -10,4 +10,6 @@ namespace utility
 	streams::IOSocketStream createSocketStream();
 
 	bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second);
+
+	std::string_view removeUploadedPrefix(std::string_view data);
 }
