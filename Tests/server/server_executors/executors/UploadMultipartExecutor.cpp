@@ -6,17 +6,8 @@ void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework:
 
 	for (const web::Multipart& multipart : request.getMultiparts())
 	{
-		std::ofstream file;
+		std::ofstream file(currentPath / multipart.getName(), std::ios::binary);
 		const std::string& data = multipart.getData();
-
-		if (multipart.getContentType() == "application/json" || multipart.getContentType() == "text/plain")
-		{
-			file.open(currentPath / multipart.getName());
-		}
-		else
-		{
-			file.open(currentPath / multipart.getName(), std::ios::binary);
-		}
 
 		file.write(data.data(), data.size());
 	}
