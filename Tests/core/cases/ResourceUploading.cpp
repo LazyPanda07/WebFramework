@@ -12,7 +12,7 @@ TEST(ResourceUploading, Chunk)
 	constexpr std::string_view httpsUrl = "https://127.0.0.1:8080/upload_chunked";
 	constexpr std::string_view uploadFileName = "load_balancer_server.py";
 
-	int errorCode = std::system(std::format(R"(curl --insecure --header "File-Name: uploaded_{}" --chunked --data-binary @{} {})", uploadFileName, uploadFileName, (useHTTPS ? httpsUrl : httpUrl)).data());
+	int errorCode = std::system(std::format(R"(curl --insecure --header "Transfer-Encoding: chunked" --header "File-Name: uploaded_{}" --data-binary @{} {})", uploadFileName, uploadFileName, (useHTTPS ? httpsUrl : httpUrl)).data());
 
 	ASSERT_EQ(errorCode, 0);
 	ASSERT_TRUE(utility::compareFiles(std::format("uploaded_{}", uploadFileName), uploadFileName));
