@@ -14,7 +14,6 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 	if (last)
 	{
 		response.setResponseCode(web::ResponseCodes::created);
-
 		response.addBody("Finish uploading file");
 	}
 }

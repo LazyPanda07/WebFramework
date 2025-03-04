@@ -15,13 +15,11 @@ TEST(ResourceUploading, Multipart)
 {
 	constexpr std::string_view httpUrl = "http://127.0.0.1:8080/upload_multipart";
 	constexpr std::string_view httpsUrl = "https://127.0.0.1:8080/upload_multipart";
-	constexpr std::string_view firstFileName = "uploaded_api_test.py.py";
+	constexpr std::string_view firstFileName = "uploaded_api_test.py";
 	constexpr std::string_view secondFileName = "uploaded_sqlite3.dll";
 	constexpr std::string_view thirdFileName = "uploaded_web.json";
 
 	int errorCode = std::system(std::format(R"(curl --insecure -X POST -F "{}=@api_test.py;type=text/plain" -F "{}=@sqlite3.dll" -F "{}=@web.json;type=application/json" {})", firstFileName, secondFileName, thirdFileName, (useHTTPS ? httpsUrl : httpUrl)).data());
-
-	std::cout << utility::removeUploadedPrefix(firstFileName) << std::endl;
 
 	ASSERT_EQ(errorCode, 0);
 	ASSERT_TRUE(utility::compareFiles(firstFileName, utility::removeUploadedPrefix(firstFileName)));
