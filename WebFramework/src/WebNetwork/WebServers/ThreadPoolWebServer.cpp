@@ -72,6 +72,11 @@ namespace framework
 				return true;
 			}
 
+			if (largeBodyHandler->isRunning())
+			{
+				return false;
+			}
+
 			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(request, response, statefulExecutors);
 
 			if (threadPoolFunction)

@@ -23,11 +23,15 @@ namespace utility
 
 		if (!std::filesystem::exists(first) || !std::filesystem::exists(second))
 		{
+			std::cout << "Exists error: " << std::filesystem::exists(first) << ' ' << std::filesystem::exists(second) << std::endl;
+
 			return false;
 		}
 
 		if (std::filesystem::file_size(first) != std::filesystem::file_size(second))
 		{
+			std::cout << "Different file sizes: " << std::filesystem::file_size(first) << ' ' << std::filesystem::file_size(second) << std::endl;
+
 			return false;
 		}
 
@@ -38,6 +42,8 @@ namespace utility
 		{
 			if (firstIn.get() != secondIn.get())
 			{
+				std::cout << "Wrong file content" << std::endl;
+
 				return false;
 			}
 		}

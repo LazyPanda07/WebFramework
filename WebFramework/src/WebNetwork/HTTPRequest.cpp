@@ -321,11 +321,6 @@ namespace framework
 
 		request.parser.parse(data);
 
-		if (stream.eof() || stream.bad())
-		{
-			return stream;
-		}
-
 		return stream;
 	}
 
