@@ -52,7 +52,7 @@ TEST(ResourceUploading, OctetStream)
 	std::ifstream in(LARGE_FILE_NAME, std::ios::binary);
 	std::string data(chunkSize, '\0');
 
-	for (uintmax_t i = 0; i < fileSize; i++)
+	for (uintmax_t i = 0; i < fileSize;)
 	{
 		size_t readSize = std::min<size_t>(chunkSize, fileSize - i);
 		
@@ -61,6 +61,8 @@ TEST(ResourceUploading, OctetStream)
 		in.read(data.data(), readSize);
 
 		stream << data;
+
+		i += readSize;
 	}
 
 	ASSERT_TRUE(utility::compareFiles(LARGE_FILE_NAME, uploadFileName));
