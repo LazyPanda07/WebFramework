@@ -2,6 +2,7 @@
 #include <format>
 
 #include "gtest/gtest.h"
+#include "HTTPBuilder.h"
 
 #include "settings.h"
 #include "utilities.h"
@@ -34,12 +35,33 @@ TEST(ResourceUploading, Multipart)
 
 TEST(ResourceUploading, OctetStream)
 {
-	constexpr std::string_view httpUrl = "http://127.0.0.1:8080/upload_octet_stream";
-	constexpr std::string_view httpsUrl = "https://127.0.0.1:8080/upload_octet_stream";
 	constexpr std::string_view uploadFileName = "octet_stream.bin";
+	uintmax_t fileSize = std::filesystem::file_size(LARGE_FILE_NAME);
+	constexpr size_t chunkSize = 10ULL * 1024 * 1024;
 
-	int errorCode = std::system(std::format(R"(curl --insecure --header "Content-Type: application/octet-stream" --header "File-Name: {}" --data-binary @{} {})", uploadFileName, LARGE_FILE_NAME, (useHTTPS ? httpsUrl : httpUrl)).data());
+	streams::IOSocketStream stream = utility::createSocketStream();
+	std::string headers = web::HTTPBuilder().postRequest().parameters("upload_octet_stream").headers
+	(
+		"File-Name", LARGE_FILE_NAME,
+		"Content-Type", "application/octet-stream",
+		"Content-Length", fileSize
+	).build();
 
-	ASSERT_EQ(errorCode, 0);
+	stream << headers;
+
+	std::ifstream in(LARGE_FILE_NAME, std::ios::binary);
+	std::string data(chunkSize, '\0');
+
+	for (uintmax_t i = 0; i < fileSize; i++)
+	{
+		size_t readSize = std::min<size_t>(chunkSize, fileSize - i);
+		
+		data.reserve(readSize);
+
+		in.read(data.data(), readSize);
+
+		stream << data;
+	}
+
 	ASSERT_TRUE(utility::compareFiles(LARGE_FILE_NAME, uploadFileName));
 }
