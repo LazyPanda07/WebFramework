@@ -51,8 +51,7 @@ namespace framework
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
 
-	private:
-		void logWebFrameworkModelsError(std::string_view typeName);
+		static void logWebFrameworkModelsError(std::string_view typeName);
 
 	public:
 		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
@@ -327,7 +326,7 @@ namespace framework
 		}
 		else if (!result)
 		{
-			this->logWebFrameworkModelsError(typeid(T).name());
+			HTTPRequest::logWebFrameworkModelsError(typeid(T).name());
 		}
 
 		return result;
