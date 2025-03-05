@@ -37,15 +37,18 @@ namespace utility
 
 		std::ifstream firstIn(first, std::ios::binary);
 		std::ifstream secondIn(second, std::ios::binary);
+		size_t index = 0;
 		
 		while (!firstIn.eof())
 		{
 			if (firstIn.get() != secondIn.get())
 			{
-				std::cout << "Wrong file content" << std::endl;
+				std::cout << "Wrong file content at " << index << std::endl;
 
 				return false;
 			}
+
+			index++;
 		}
 
 		return true;

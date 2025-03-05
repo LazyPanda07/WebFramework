@@ -13,6 +13,8 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 
 	if (last)
 	{
+		stream.close();
+
 		response.setResponseCode(web::ResponseCodes::created);
 		response.addBody("Finish uploading file");
 	}

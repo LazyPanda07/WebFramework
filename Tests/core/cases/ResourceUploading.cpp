@@ -3,6 +3,7 @@
 
 #include "gtest/gtest.h"
 #include "HTTPBuilder.h"
+#include "HTTPParser.h"
 
 #include "settings.h"
 #include "utilities.h"
@@ -38,11 +39,12 @@ TEST(ResourceUploading, OctetStream)
 	constexpr std::string_view uploadFileName = "octet_stream.bin";
 	uintmax_t fileSize = std::filesystem::file_size(LARGE_FILE_NAME);
 	constexpr size_t chunkSize = 10ULL * 1024 * 1024;
+	std::string response;
 
 	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string headers = web::HTTPBuilder().postRequest().parameters("upload_octet_stream").headers
 	(
-		"File-Name", LARGE_FILE_NAME,
+		"File-Name", uploadFileName,
 		"Content-Type", "application/octet-stream",
 		"Content-Length", fileSize
 	).build();
@@ -56,7 +58,7 @@ TEST(ResourceUploading, OctetStream)
 	{
 		size_t readSize = std::min<size_t>(chunkSize, fileSize - i);
 		
-		data.reserve(readSize);
+		data.resize(readSize);
 
 		in.read(data.data(), readSize);
 
@@ -65,5 +67,10 @@ TEST(ResourceUploading, OctetStream)
 		i += readSize;
 	}
 
+	stream >> response;
+
+	web::HTTPParser parser(response);
+
+	ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::created);
 	ASSERT_TRUE(utility::compareFiles(LARGE_FILE_NAME, uploadFileName));
 }
