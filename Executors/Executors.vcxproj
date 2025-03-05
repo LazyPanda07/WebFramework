@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\vendor\sqlite3\include\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -75,7 +75,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\vendor\sqlite3\include\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -86,22 +86,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\BaseExecutor.cpp" />
-    <ClCompile Include="src\BaseHeavyOperationStatefulExecutor.cpp" />
-    <ClCompile Include="src\BaseHeavyOperationStatelessExecutor.cpp" />
-    <ClCompile Include="src\BaseStatefulExecutor.cpp" />
-    <ClCompile Include="src\BaseStatelessExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Exceptions\BadRequestException.cpp" />
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BaseExecutor.h" />
-    <ClInclude Include="src\BaseHeavyOperationStatefulExecutor.h" />
-    <ClInclude Include="src\BaseHeavyOperationStatelessExecutor.h" />
-    <ClInclude Include="src\BaseStatefulExecutor.h" />
-    <ClInclude Include="src\BaseStatelessExecutor.h" />
+    <ClInclude Include="src\Executors\BaseExecutor.h" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h" />
+    <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
+    <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Exceptions\BadRequestException.h" />
     <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
@@ -109,6 +109,33 @@
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">
+      <Project>{d29045d5-a3e0-4b1f-bf3f-7a7395a22b13}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\FileManager\FileManager.vcxproj">
+      <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Localization\Localization.vcxproj">
+      <Project>{d2968ac9-bac3-4f25-9698-5c1cf6c4fa35}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Log\Log.vcxproj">
+      <Project>{89755e92-d5a7-4fa6-b227-7ddc3bba9aa1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\HTTP\HTTP.vcxproj">
+      <Project>{cd88b391-b7b9-47d5-af8d-153fcb2b5a2b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\HTTP\JSON\JSON.vcxproj">
+      <Project>{f6b57139-d9f3-4b02-aa92-4e1f417649da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\Networks.vcxproj">
+      <Project>{e3c5b070-57f3-4e11-9701-fdcc108aecb3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\SocketStreams\SocketStreams.vcxproj">
+      <Project>{8bb9f3bd-68f4-403a-acc6-f85c75f5d14f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.vcxproj">
+      <Project>{f71a5e4a-5242-4fa9-b614-5c0603adc678}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\WebFrameworkCore\WebFrameworkCore.vcxproj">
       <Project>{e852aa58-2286-41f3-8a93-44e08c0efc97}</Project>
     </ProjectReference>

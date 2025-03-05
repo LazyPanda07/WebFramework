@@ -4,13 +4,12 @@ project(Executors)
 
 add_library(
 	${PROJECT_NAME} SHARED
-	src/BaseExecutor.cpp
-	src/BaseHeavyOperationStatefulExecutor.cpp
-	src/BaseHeavyOperationStatelessExecutor.cpp
-	src/BaseStatefulExecutor.cpp
-	src/BaseStatelessExecutor.cpp
+	src/Executors/BaseExecutor.cpp
+	src/Executors/BaseHeavyOperationStatefulExecutor.cpp
+	src/Executors/BaseHeavyOperationStatelessExecutor.cpp
+	src/Executors/BaseStatefulExecutor.cpp
+	src/Executors/BaseStatelessExecutor.cpp
 	src/Utility/JSONSettingsParser.cpp
-	src/Exceptions/BaseWebFrameworkException.cpp
 	src/Exceptions/BaseExecutorException.cpp
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
@@ -24,6 +23,15 @@ target_include_directories(
 target_link_libraries(
 	${PROJECT_NAME}
 	WebFrameworkCore
+	JSON
+	FileManager
+	HTTP
+	UtilityLibrary
+	SocketStreams
+	Networks
+	Log
+	Localization
+	BaseTCPServer
 )
 
 install(

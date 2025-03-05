@@ -75,7 +75,6 @@ namespace exceptions
 	inline constexpr std::string_view stringConversionErrorCode = "String conversion error code ";
 
 	inline constexpr std::string_view notFound = "Not found";
-	inline constexpr std::string_view badRequest = "Bad request from client";
 }
 
 namespace json_settings_values

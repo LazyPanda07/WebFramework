@@ -1,5 +1,7 @@
 #include "BaseLargeBodyHandler.h"
 
+#include "Log.h"
+
 using namespace std;
 
 namespace framework::utility

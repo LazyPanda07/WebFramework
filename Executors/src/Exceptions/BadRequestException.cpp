@@ -2,14 +2,11 @@
 
 using namespace std;
 
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	BadRequestException::BadRequestException(string_view additionalInformation) :
+		BaseExecutorException(format("Bad request from client. {}", additionalInformation))
 	{
-		BadRequestException::BadRequestException(string_view additionalInformation) :
-			BaseExecutorException(format("{}. {}", ::exceptions::badRequest, additionalInformation))
-		{
 
-		}
 	}
 }

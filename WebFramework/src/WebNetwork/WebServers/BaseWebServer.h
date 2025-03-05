@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include "BaseTCPServer.h"
 
+#include "Import/WebFrameworkCore.h"
 #include "Utility/JSONSettingsParser.h"
 #include "WebNetwork/Interfaces/IExecutorFunctionality.h"
 

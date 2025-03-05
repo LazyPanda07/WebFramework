@@ -16,7 +16,10 @@ namespace json_settings_values
 }
 
 #ifdef __LINUX__
-#define EXECUTORS_API __attribute__((visibility("hidden")))
+#define EXECUTORS_API __attribute__((visibility("default")))
 #else
-#define EXECUTORS_API
+#define EXECUTORS_API __declspec(dllexport)
+
+#pragma warning(disable: 4275)
+#pragma warning(disable: 4251)
 #endif

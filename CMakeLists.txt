@@ -104,12 +104,13 @@ add_library(
 
 if (CMAKE_GENERATOR MATCHES "Visual Studio")
 	target_compile_options(${PROJECT_NAME} PRIVATE "/MP")
-endif (WIN32)
+endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	WebFramework/src/
 	WebFrameworkCore/src/
+	WebFrameworkCore/vendor/sqlite3/include/
 	Executors/src/
 	BaseTCPServer/src/
 	FileManager/src/
@@ -164,6 +165,6 @@ if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 endif ()
 
 install(DIRECTORY WebFramework/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY WebFramework/vendor/sqlite3/include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/vendor/sqlite3/)
 install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY schemas DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY WebFrameworkCore/vendor/sqlite3/include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/vendor/sqlite3/)

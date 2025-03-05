@@ -4,7 +4,6 @@ project(WebFrameworkCore)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/Utility/JSONSettingsParser.cpp
 	src/Exceptions/BaseWebFrameworkException.cpp
 	src/Exceptions/DatabaseException.cpp
 	src/Exceptions/SQLite3Exception.cpp
@@ -21,6 +20,15 @@ target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	src/
 	vendor/sqlite3/include/
+	${CMAKE_SOURCE_DIR}/Networks/src/
+	${CMAKE_SOURCE_DIR}/Networks/HTTP/src/
+	${CMAKE_SOURCE_DIR}/Networks/HTTP/JSON/src/
+	${CMAKE_SOURCE_DIR}/Networks/SocketStreams/src/
+	${CMAKE_SOURCE_DIR}/Networks/vendor/OpenSSL/include/
+	${CMAKE_SOURCE_DIR}/Log/src/
+	${CMAKE_SOURCE_DIR}/Localization/src/
+	${CMAKE_SOURCE_DIR}/BaseTCPServer/src/
+	${CMAKE_SOURCE_DIR}/FileManager/src/
 )
 
 install(

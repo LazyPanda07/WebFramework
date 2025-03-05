@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BaseExecutor.cpp">
+    <ClCompile Include="src\Executors\BaseExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseHeavyOperationStatefulExecutor.cpp">
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseHeavyOperationStatelessExecutor.cpp">
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseStatefulExecutor.cpp">
+    <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BaseStatelessExecutor.cpp">
+    <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp">
@@ -44,19 +44,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BaseExecutor.h">
+    <ClInclude Include="src\Executors\BaseExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseHeavyOperationStatefulExecutor.h">
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseHeavyOperationStatelessExecutor.h">
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseStatefulExecutor.h">
+    <ClInclude Include="src\Executors\BaseStatefulExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseStatelessExecutor.h">
+    <ClInclude Include="src\Executors\BaseStatelessExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\JSONSettingsParser.h">
