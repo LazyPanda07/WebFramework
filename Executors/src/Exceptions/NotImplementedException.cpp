@@ -1,15 +1,14 @@
 #include "NotImplementedException.h"
 
+#include <format>
+
 using namespace std;
 
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	NotImplementedException::NotImplementedException(string_view className, string_view methodName) :
+		BadRequestException(format("Not implemented method {} in {}", methodName, className))
 	{
-		NotImplementedException::NotImplementedException(string_view className, string_view methodName) :
-			BadRequestException(format("{} method {} in {}", ::exceptions::notImplemented, methodName, className))
-		{
 
-		}
 	}
 }

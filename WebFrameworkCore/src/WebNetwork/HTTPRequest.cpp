@@ -1,7 +1,12 @@
 #include "HTTPRequest.h"
 
+#include "Log.h"
+#include "MultiLocalizationManager.h"
+
+#include "BaseTCPServer.h"
 #include "FileManager.h"
 #include "HTTPSNetwork.h"
+#include "Managers/SessionsManager.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -26,6 +31,14 @@ namespace framework
 		}
 
 		return string_view(filePath.data() + extension) == webFrameworkDynamicPagesExtension;
+	}
+
+	void HTTPRequest::logWebFrameworkModelsError(string_view typeName)
+	{
+		if (Log::isValid())
+		{
+			Log::error("Can't get or create model in HTTPRequest::getModel<T> function where T is {}", "LogWebFrameworkModels", typeName);
+		}
 	}
 
 	web::HTTPParser HTTPRequest::sendRequestToAnotherServer(string_view ip, string_view port, string_view request, DWORD timeout, bool useHTTPS)
@@ -296,19 +309,19 @@ namespace framework
 	}
 
 	template<>
-	EXECUTORS_API const string& HTTPRequest::getRouteParameter<string>(const string& routeParameterName)
+	WEB_FRAMEWORK_CORE_API const string& HTTPRequest::getRouteParameter<string>(const string& routeParameterName)
 	{
 		return get<string>(routeParameters.at(routeParameterName));
 	}
 
 	template<>
-	EXECUTORS_API const int64_t& HTTPRequest::getRouteParameter<int64_t>(const string& routeParameterName)
+	WEB_FRAMEWORK_CORE_API const int64_t& HTTPRequest::getRouteParameter<int64_t>(const string& routeParameterName)
 	{
 		return get<int64_t>(routeParameters.at(routeParameterName));
 	}
 
 	template<>
-	EXECUTORS_API const double& HTTPRequest::getRouteParameter<double>(const string& routeParameterName)
+	WEB_FRAMEWORK_CORE_API const double& HTTPRequest::getRouteParameter<double>(const string& routeParameterName)
 	{
 		return get<double>(routeParameters.at(routeParameterName));
 	}

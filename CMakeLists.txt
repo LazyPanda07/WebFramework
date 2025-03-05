@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3/lib)
-set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3)
+set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFrameworkCore/vendor/sqlite3/lib)
+set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFrameworkCore/vendor/sqlite3)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
@@ -42,14 +42,14 @@ if (UNIX)
 		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
 		
-		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+		install(DIRECTORY WebFrameworkCore/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	else()
 		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
 		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
 
 		add_compile_options(-rdynamic)
 
-		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+		install(DIRECTORY WebFrameworkCore/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	endif()
 else ()
 	add_definitions(-DNOMINMAX)
@@ -60,7 +60,7 @@ else ()
 	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
 	set(LIBS ${LIBS} crypt32)
 
-	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
+	install(DIRECTORY WebFrameworkCore/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
 endif ()
 
 if (${SHARED_WEB_FRAMEWORK})
@@ -76,26 +76,19 @@ add_library(
 	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
-	WebFramework/src/Exceptions/DatabaseException.cpp
 	WebFramework/src/Exceptions/DynamicPagesSyntaxException.cpp
 	WebFramework/src/Exceptions/MissingLoadTypeException.cpp
-	WebFramework/src/Exceptions/SQLite3Exception.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
 	WebFramework/src/Proxy/ProxyServer.cpp
-	WebFramework/src/SQLite3/SQLiteDatabase.cpp
-	WebFramework/src/SQLite3/SQLiteDatabaseModel.cpp
-	WebFramework/src/SQLite3/SQLiteResult.cpp
-	WebFramework/src/SQLite3/SQLiteManager.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/BaseConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
-	WebFramework/src/Managers/SessionsManager.cpp
 	WebFramework/src/WebNetwork/WebServers/BaseWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/ThreadPoolWebServer.cpp
@@ -116,9 +109,8 @@ endif (WIN32)
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	WebFramework/src/
-	WebFramework/vendor/sqlite3/include/
-	Executors/src/
 	WebFrameworkCore/src/
+	Executors/src/
 	BaseTCPServer/src/
 	FileManager/src/
 	INIParser/src/

@@ -2,79 +2,78 @@
 
 #include "JSONUtility.h"
 
-namespace framework
+#include "ExecutorsConstants.h"
+
+namespace framework::utility
 {
-	namespace utility
+	/// <summary>
+	/// Parser for .json settings file
+	/// </summary>
+	class EXECUTORS_API JSONSettingsParser
 	{
+	public:
 		/// <summary>
-		/// Parser for .json settings file
+		/// Settings for executor
 		/// </summary>
-		class EXECUTORS_API JSONSettingsParser
+		struct EXECUTORS_API ExecutorSettings
 		{
-		public:
-			/// <summary>
-			/// Settings for executor
-			/// </summary>
-			struct EXECUTORS_API ExecutorSettings
+			enum class loadType
 			{
-				enum class loadType
-				{
-					initialization,
-					dynamic,
-					none
-				};
-
-				json::utility::jsonObject initParameters;
-				std::string name;
-				std::string userAgentFilter;
-				loadType executorLoadType;
-
-			public:
-				ExecutorSettings();
-
-				ExecutorSettings(std::string_view name);
-
-				ExecutorSettings(const ExecutorSettings& other) = default;
-
-				ExecutorSettings(ExecutorSettings&& other) noexcept = default;
-
-				ExecutorSettings& operator =(const ExecutorSettings& other) = default;
-
-				ExecutorSettings& operator =(ExecutorSettings&& other) noexcept = default;
-
-				~ExecutorSettings() = default;
+				initialization,
+				dynamic,
+				none
 			};
 
-		private:
-			std::unordered_map<std::string, ExecutorSettings> settings;	//route - settings
+			json::utility::jsonObject initParameters;
+			std::string name;
+			std::string userAgentFilter;
+			loadType executorLoadType;
 
 		public:
-			/// <summary>
-			/// Construct JSONSettingsParser from .json file
-			/// </summary>
-			/// <param name="JSONSettings">path to .json settings file</param>
-			/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-			/// <exception cref="std::runtime_error"></exception>
-			JSONSettingsParser(const std::string& JSONSettings);
+			ExecutorSettings();
 
-			/// @brief Move constructor
-			/// @param other Another JSONSettingsParser
-			JSONSettingsParser(JSONSettingsParser&& other) noexcept = default;
+			ExecutorSettings(std::string_view name);
 
-			/// <summary>
-			/// Get all settings from .json
-			/// </summary>
-			/// <returns>route - settings as map</returns>
-			const std::unordered_map<std::string, ExecutorSettings>& getSettings() const;
+			ExecutorSettings(const ExecutorSettings& other) = default;
 
-			/// <summary>
-			/// Get settings for specific executor
-			/// </summary>
-			/// <param name="executorName">executor class name</param>
-			/// <returns></returns>
-			const ExecutorSettings& getExecutorSettings(const std::string& executorName) const;
+			ExecutorSettings(ExecutorSettings&& other) noexcept = default;
 
-			~JSONSettingsParser() = default;
+			ExecutorSettings& operator =(const ExecutorSettings& other) = default;
+
+			ExecutorSettings& operator =(ExecutorSettings&& other) noexcept = default;
+
+			~ExecutorSettings() = default;
 		};
-	}
+
+	private:
+		std::unordered_map<std::string, ExecutorSettings> settings;	//route - settings
+
+	public:
+		/// <summary>
+		/// Construct JSONSettingsParser from .json file
+		/// </summary>
+		/// <param name="JSONSettings">path to .json settings file</param>
+		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
+		/// <exception cref="std::runtime_error"></exception>
+		JSONSettingsParser(const std::string& JSONSettings);
+
+		/// @brief Move constructor
+		/// @param other Another JSONSettingsParser
+		JSONSettingsParser(JSONSettingsParser&& other) noexcept = default;
+
+		/// <summary>
+		/// Get all settings from .json
+		/// </summary>
+		/// <returns>route - settings as map</returns>
+		const std::unordered_map<std::string, ExecutorSettings>& getSettings() const;
+
+		/// <summary>
+		/// Get settings for specific executor
+		/// </summary>
+		/// <param name="executorName">executor class name</param>
+		/// <returns></returns>
+		const ExecutorSettings& getExecutorSettings(const std::string& executorName) const;
+
+		~JSONSettingsParser() = default;
+	};
 }

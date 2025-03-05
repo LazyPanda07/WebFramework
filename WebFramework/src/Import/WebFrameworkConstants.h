@@ -5,21 +5,7 @@
 #include <memory>
 #include <cstdint>
 
-/// <summary>
-/// <para>Session life time for client session in nanoseconds</para>
-/// <para>If session stands equals or more this value, it must be deleted</para>
-/// </summary>
-inline constexpr uint64_t sessionLifeTime = 10 * 60 * 1'000'000'000ULL;
-/// <summary>
-/// Check session life time period in seconds
-/// </summary>
-inline constexpr std::chrono::duration<uint32_t> sessionCheckPeriod(60);
-
 inline const std::string webFrameworkDefaultAssests = "WebFrameworkAssets";
-
-inline constexpr std::string_view webFrameworkDynamicPagesExtension = ".wfdp";
-
-inline constexpr size_t defaultChunkSize = 14 * 1024 * 1024;
 
 namespace json_settings
 {
@@ -43,7 +29,6 @@ namespace json_settings
 	inline constexpr std::string_view logFileSizeKey = "logFileSize";
 	inline constexpr std::string_view logFlagsKey = "flags";
 	inline constexpr std::string_view webServerTypeKey = "webServerType";
-	inline constexpr std::string_view userAgentFilterKey = "userAgentFilter";
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
 	inline constexpr std::string_view pathToKey = "pathToKey";
@@ -70,15 +55,10 @@ namespace json_settings
 	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";
 	inline constexpr std::string_view loadBalancerWebServerTypeValue = "loadBalancer";
 	inline constexpr std::string_view proxyWebServerTypeValue = "proxy";
-
-	inline constexpr std::string_view initParametersKey = "initParameters";
-	inline constexpr std::string_view loadTypeKey = "loadType";
-	inline constexpr std::string_view routeKey = "route";
 }
 
 namespace exceptions
 {
-	inline constexpr std::string_view notImplemented = "Not implemented";
 	inline constexpr std::string_view fileDoesNotExist = "file does not exist";
 	inline constexpr std::string_view cantFindFunction = "Can't find ";
 	inline constexpr std::string_view useMacroToMakeCreationFunction = "Make sure that you add DECLARE_EXECUTOR macro for executor class";
@@ -100,8 +80,6 @@ namespace exceptions
 
 namespace json_settings_values
 {
-	inline constexpr std::string_view initializationLoadTypeValue = "initialization";
-	inline constexpr std::string_view dynamicLoadTypeValue = "dynamic";
 	inline constexpr size_t largeBodySizeThresholdValue = 165 * 1024 * 1024;
 	inline constexpr size_t largeBodyPacketSizeValue = 11 * 1024 * 1024;
 }

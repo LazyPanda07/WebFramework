@@ -1,23 +1,26 @@
 #pragma once
 
-#include "BaseTCPServer.h"
 #include "HTTPParser.h"
-#include "MultiLocalizationManager.h"
-#include "Log.h"
 
-#include "Managers/SessionsManager.h"
 #include "SQLite3/SQLiteManager.h"
 #include "Interfaces/IStaticFile.h"
 #include "Interfaces/IDynamicFile.h"
 #include "Utility/ChunkGenerator.h"
-#include "ExecutorsConstants.h"
+#include "WebFrameworkCoreConstants.h"
+
+namespace web
+{
+	class BaseTCPServer;
+}
 
 namespace framework
 {
+	class SessionsManager;
+
 	template<typename T>
 	concept RouteParameterType = std::same_as<T, std::string> || std::same_as<T, int64_t> || std::same_as<T, double>;
 
-	struct EXECUTORS_API LargeData
+	struct WEB_FRAMEWORK_CORE_API LargeData
 	{
 		std::string_view dataPart;
 		size_t size;
@@ -31,7 +34,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class EXECUTORS_API HTTPRequest
+	class WEB_FRAMEWORK_CORE_API HTTPRequest
 	{
 	private:
 		SessionsManager& session;
@@ -47,6 +50,9 @@ namespace framework
 
 	private:
 		static bool isWebFrameworkDynamicPages(const std::string& filePath);
+
+	private:
+		void logWebFrameworkModelsError(std::string_view typeName);
 
 	public:
 		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
@@ -134,7 +140,7 @@ namespace framework
 
 		/**
 		 * @brief Get data from multipart/form-data
-		 * @return 
+		 * @return
 		 */
 		const std::vector<web::Multipart>& getMultiparts() const;
 
@@ -196,7 +202,7 @@ namespace framework
 
 		/**
 		 * @brief Get chunks
-		 * @return 
+		 * @return
 		 */
 		const std::vector<std::string>& getChunks() const;
 
@@ -237,7 +243,7 @@ namespace framework
 		 * @return route parameter
 		 * @exception std::out_of_range Can't find route parameter with this routeParameterName
 		 */
-		template<utility::concepts::RouteParameterType T>
+		template<RouteParameterType T>
 		const T& getRouteParameter(const std::string& routeParameterName);
 
 		/**
@@ -260,21 +266,21 @@ namespace framework
 
 		/**
 		 * @brief Send runtime generated content
-		 * @tparam ...Args 
-		 * @tparam T 
-		 * @param response 
-		 * @param ...args 
+		 * @tparam ...Args
+		 * @tparam T
+		 * @param response
+		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 		void sendChunks(HTTPResponse& response, Args&&... args);
 
 		/**
 		 * @brief Send file
-		 * @tparam ...Args 
-		 * @tparam T 
-		 * @param response 
-		 * @param fileName 
-		 * @param ...args 
+		 * @tparam ...Args
+		 * @tparam T
+		 * @param response
+		 * @param fileName
+		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
@@ -321,10 +327,7 @@ namespace framework
 		}
 		else if (!result)
 		{
-			if (Log::isValid())
-			{
-				Log::error("Can't get or create model in HTTPRequest::getModel<T> function where T is {}", "LogWebFrameworkModels", typeid(T).name());
-			}
+			this->logWebFrameworkModelsError(typeid(T).name());
 		}
 
 		return result;

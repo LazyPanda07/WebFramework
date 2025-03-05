@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
-
 #include "HTTPBuilder.h"
 #include "IOSocketStream.h"
+
+#include "WebFrameworkCoreConstants.h"
 
 namespace framework
 {
@@ -11,7 +11,7 @@ namespace framework
 	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class EXECUTORS_API HTTPResponse
+	class WEB_FRAMEWORK_CORE_API HTTPResponse
 	{
 	private:
 		web::HTTPBuilder builder;

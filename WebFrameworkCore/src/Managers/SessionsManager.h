@@ -1,13 +1,18 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include <chrono>
+#include <map>
+#include <mutex>
+#include <unordered_map>
+
+#include "WebFrameworkCoreConstants.h"
 
 namespace framework
 {
-	class SessionsManager
+	class WEB_FRAMEWORK_CORE_API SessionsManager
 	{
 	private:
-		class SessionTime
+		class WEB_FRAMEWORK_CORE_API SessionTime
 		{
 		public:
 			using SessionTimePoint = std::chrono::high_resolution_clock::time_point;

@@ -2,20 +2,17 @@
 
 #include "BadRequestException.h"
 
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	/// <summary>
+	/// Default exception for all HTTP methods in BaseExecutor
+	/// <para>Server throws 400 error</para>
+	/// </summary>
+	class EXECUTORS_API NotImplementedException : public BadRequestException
 	{
-		/// <summary>
-		/// Default exception for all HTTP methods in BaseExecutor
-		/// <para>Server throws 400 error</para>
-		/// </summary>
-		class EXECUTORS_API NotImplementedException : public BadRequestException
-		{
-		public:
-			NotImplementedException(std::string_view className, std::string_view methodName);
+	public:
+		NotImplementedException(std::string_view className, std::string_view methodName);
 
-			~NotImplementedException() = default;
-		};
-	}
+		~NotImplementedException() = default;
+	};
 }
