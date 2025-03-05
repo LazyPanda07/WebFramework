@@ -26,10 +26,10 @@ namespace framework
 
 	bool ExecutorsManager::isHeavyOperation(BaseExecutor* executor)
 	{
-		BaseExecutor::executorType executorType = executor->getType();
+		BaseExecutor::ExecutorType ExecutorType = executor->getType();
 
-		return executorType == BaseExecutor::executorType::heavyOperationStateless ||
-			executorType == BaseExecutor::executorType::heavyOperationStateful;
+		return ExecutorType == BaseExecutor::ExecutorType::heavyOperationStateless ||
+			ExecutorType == BaseExecutor::ExecutorType::heavyOperationStateful;
 	}
 
 	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequest& request, vector<utility::RouteParameters>::iterator it)
@@ -132,9 +132,9 @@ namespace framework
 				).first;
 				executor->second->init(executorSettings->second);
 
-				BaseExecutor::executorType executorType = executor->second->getType();
+				BaseExecutor::ExecutorType ExecutorType = executor->second->getType();
 
-				if (executorType == BaseExecutor::executorType::stateful || executorType == BaseExecutor::executorType::heavyOperationStateful)
+				if (ExecutorType == BaseExecutor::ExecutorType::stateful || ExecutorType == BaseExecutor::ExecutorType::heavyOperationStateful)
 				{
 					executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
 				}

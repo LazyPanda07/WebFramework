@@ -6,22 +6,21 @@
 */
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
-
 #include "WebNetwork/HTTPRequest.h"
 #include "WebNetwork/HTTPResponse.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/JSONSettingsParser.h"
+#include "ExecutorsConstants.h"
 
 namespace framework
 {
 	/// <summary>
 	/// Base class for all executors
 	/// </summary>
-	class WEB_FRAMEWORK_API BaseExecutor
+	class EXECUTORS_API BaseExecutor
 	{
 	public:
-		enum class executorType
+		enum class ExecutorType
 		{
 			none,
 			stateful,
@@ -118,12 +117,12 @@ namespace framework
 
 		/// <summary>
 		/// <para>By default all executors must be inherited from BaseStatelessExecutor or BaseStatefullExecutor</para>
-		/// <para>BaseStatelessExecutor override this method by getting executorType::stateless</para>
-		/// <para>BaseStatefulExecutor override this method by getting executorType::stateful</para>
-		/// <para>ExecutorsManager can manage executors by getting type of executorType enum class</para>
+		/// <para>BaseStatelessExecutor override this method by getting ExecutorType::stateless</para>
+		/// <para>BaseStatefulExecutor override this method by getting ExecutorType::stateful</para>
+		/// <para>ExecutorsManager can manage executors by getting type of ExecutorType enum class</para>
 		/// </summary>
 		/// <returns>stateful, stateless or none value</returns>
-		virtual executorType getType() const = 0;
+		virtual ExecutorType getType() const = 0;
 
 		virtual ~BaseExecutor() = default;
 	};

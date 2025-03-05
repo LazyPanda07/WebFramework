@@ -116,15 +116,8 @@ namespace web_framework_assets
 	inline constexpr std::string_view internalServerError = "500.html";
 }
 
-#ifdef WEB_FRAMEWORK_DLL
 #ifdef __LINUX__
-#define WEB_FRAMEWORK_API __attribute__((visibility("default")))
-#else
-#define WEB_FRAMEWORK_API __declspec(dllexport)
-
-#pragma warning(disable: 4275)
-#pragma warning(disable: 4251)
-#endif
+#define WEB_FRAMEWORK_API __attribute__((visibility("hidden")))
 #else
 #define WEB_FRAMEWORK_API
 #endif

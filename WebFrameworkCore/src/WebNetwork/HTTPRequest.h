@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
-
 #include "BaseTCPServer.h"
 #include "HTTPParser.h"
 #include "MultiLocalizationManager.h"
@@ -12,11 +10,14 @@
 #include "Interfaces/IStaticFile.h"
 #include "Interfaces/IDynamicFile.h"
 #include "Utility/ChunkGenerator.h"
-#include "Utility/WebFrameworkConcepts.h"
+#include "ExecutorsConstants.h"
 
 namespace framework
 {
-	struct WEB_FRAMEWORK_API LargeData
+	template<typename T>
+	concept RouteParameterType = std::same_as<T, std::string> || std::same_as<T, int64_t> || std::same_as<T, double>;
+
+	struct EXECUTORS_API LargeData
 	{
 		std::string_view dataPart;
 		size_t size;
@@ -30,7 +31,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API HTTPRequest
+	class EXECUTORS_API HTTPRequest
 	{
 	private:
 		SessionsManager& session;

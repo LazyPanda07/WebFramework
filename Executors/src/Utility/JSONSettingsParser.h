@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
-
 #include "JSONUtility.h"
 
 namespace framework
@@ -11,13 +9,13 @@ namespace framework
 		/// <summary>
 		/// Parser for .json settings file
 		/// </summary>
-		class WEB_FRAMEWORK_API JSONSettingsParser
+		class EXECUTORS_API JSONSettingsParser
 		{
 		public:
 			/// <summary>
 			/// Settings for executor
 			/// </summary>
-			struct WEB_FRAMEWORK_API ExecutorSettings
+			struct EXECUTORS_API ExecutorSettings
 			{
 				enum class loadType
 				{

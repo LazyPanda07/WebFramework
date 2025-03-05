@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -115,7 +115,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)..\Executors\src\;$(ProjectDir)..\WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -147,7 +147,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)..\Executors\src\;$(ProjectDir)..\WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -183,7 +183,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)..\Executors\src\;$(ProjectDir)..\WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -219,7 +219,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;$(ProjectDir)..\Executors\src\;$(ProjectDir)..\WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -262,21 +262,12 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp" />
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
-    <ClCompile Include="src\Exceptions\BadRequestException.cpp" />
-    <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
     <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
-    <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
     <ClCompile Include="src\Exceptions\SQLite3Exception.cpp" />
-    <ClCompile Include="src\Executors\BaseExecutor.cpp" />
-    <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp" />
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp" />
-    <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
-    <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp" />
@@ -291,10 +282,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
     <ClCompile Include="src\Utility\BaseConnectionData.cpp" />
-    <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
     <ClCompile Include="src\Import\WebFramework.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp" />
     <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
@@ -305,21 +293,12 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\c_api\web_framework_c_api.h" />
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
     <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h" />
-    <ClInclude Include="src\Exceptions\BadRequestException.h" />
-    <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
     <ClInclude Include="src\Exceptions\DatabaseException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
-    <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="src\Exceptions\SQLite3Exception.h" />
-    <ClInclude Include="src\Executors\BaseExecutor.h" />
-    <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h" />
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h" />
-    <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
-    <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
     <ClInclude Include="src\Import\WebFrameworkCore.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
@@ -342,14 +321,11 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
     <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
     <ClInclude Include="src\Utility\BaseConnectionData.h" />
-    <ClInclude Include="src\Utility\JSONSettingsParser.h" />
     <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
     <ClInclude Include="src\Import\WebFrameworkConstants.h" />
     <ClInclude Include="src\Import\WebFramework.h" />
-    <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
-    <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
     <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
@@ -357,6 +333,9 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Executors\Executors.vcxproj">
+      <Project>{fa69e899-f0d2-4c8e-96dc-2aa61854665c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\FileManager\FileManager.vcxproj">
       <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
     </ProjectReference>
@@ -392,6 +371,9 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     </ProjectReference>
     <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.vcxproj">
       <Project>{f71a5e4a-5242-4fa9-b614-5c0603adc678}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFrameworkCore\WebFrameworkCore.vcxproj">
+      <Project>{e852aa58-2286-41f3-8a93-44e08c0efc97}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

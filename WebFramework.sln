@@ -42,6 +42,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebFrameworkCSharpAPI", "AP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CC_API", "API\CC_API\CC_API.vcxproj", "{3D090049-A939-49CF-B7CB-434E4197B940}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Executors", "Executors\Executors.vcxproj", "{FA69E899-F0D2-4C8E-96DC-2AA61854665C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebFrameworkCore", "WebFrameworkCore\WebFrameworkCore.vcxproj", "{E852AA58-2286-41F3-8A93-44E08C0EFC97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -178,6 +182,22 @@ Global
 		{3D090049-A939-49CF-B7CB-434E4197B940}.StaticDebug|x64.Build.0 = Debug|x64
 		{3D090049-A939-49CF-B7CB-434E4197B940}.StaticRelease|x64.ActiveCfg = Release|x64
 		{3D090049-A939-49CF-B7CB-434E4197B940}.StaticRelease|x64.Build.0 = Release|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.Debug|x64.ActiveCfg = Debug|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.Debug|x64.Build.0 = Debug|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.Release|x64.ActiveCfg = Release|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.Release|x64.Build.0 = Release|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.StaticDebug|x64.ActiveCfg = Debug|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.StaticDebug|x64.Build.0 = Debug|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.StaticRelease|x64.ActiveCfg = Release|x64
+		{FA69E899-F0D2-4C8E-96DC-2AA61854665C}.StaticRelease|x64.Build.0 = Release|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.Debug|x64.ActiveCfg = Debug|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.Debug|x64.Build.0 = Debug|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.Release|x64.ActiveCfg = Release|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.Release|x64.Build.0 = Release|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.StaticDebug|x64.ActiveCfg = Debug|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.StaticDebug|x64.Build.0 = Debug|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.StaticRelease|x64.ActiveCfg = Release|x64
+		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.StaticRelease|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

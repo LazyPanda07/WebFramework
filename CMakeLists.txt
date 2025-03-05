@@ -8,6 +8,8 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
 set(
 	LIBS
+	WebFrameworkCore
+	Executors
 	BaseTCPServer
 	FileManager
 	INIParser
@@ -71,22 +73,13 @@ add_library(
 	${PROJECT_NAME} ${WEB_FRAMEWORK_LIBRARY_TYPE}
 	WebFramework/src/DynamicPages/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/DynamicPages/WebFrameworkDynamicPages.cpp
-	WebFramework/src/Exceptions/BadRequestException.cpp
 	WebFramework/src/Exceptions/NotFoundException.cpp
-	WebFramework/src/Exceptions/BaseExecutorException.cpp
-	WebFramework/src/Exceptions/BaseWebFrameworkException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
 	WebFramework/src/Exceptions/DatabaseException.cpp
 	WebFramework/src/Exceptions/DynamicPagesSyntaxException.cpp
 	WebFramework/src/Exceptions/MissingLoadTypeException.cpp
-	WebFramework/src/Exceptions/NotImplementedException.cpp
 	WebFramework/src/Exceptions/SQLite3Exception.cpp
-	WebFramework/src/Executors/BaseExecutor.cpp
-	WebFramework/src/Executors/BaseHeavyOperationStatefulExecutor.cpp
-	WebFramework/src/Executors/BaseHeavyOperationStatelessExecutor.cpp
-	WebFramework/src/Executors/BaseStatefulExecutor.cpp
-	WebFramework/src/Executors/BaseStatelessExecutor.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
@@ -98,14 +91,11 @@ add_library(
 	WebFramework/src/SQLite3/SQLiteManager.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
-	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/BaseConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
 	WebFramework/src/Managers/SessionsManager.cpp
-	WebFramework/src/WebNetwork/HTTPRequest.cpp
-	WebFramework/src/WebNetwork/HTTPResponse.cpp
 	WebFramework/src/WebNetwork/WebServers/BaseWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/ThreadPoolWebServer.cpp
@@ -119,14 +109,16 @@ add_library(
 	WebFramework/src/Utility/AdditionalServerSettings.cpp
 )
 
-if (WIN32)
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
 	target_compile_options(${PROJECT_NAME} PRIVATE "/MP")
 endif (WIN32)
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	WebFramework/vendor/sqlite3/include/
 	WebFramework/src/
+	WebFramework/vendor/sqlite3/include/
+	Executors/src/
+	WebFrameworkCore/src/
 	BaseTCPServer/src/
 	FileManager/src/
 	INIParser/src/
@@ -140,6 +132,8 @@ target_include_directories(
 	UtilityLibrary/include/
 )
 
+add_subdirectory(WebFrameworkCore)
+add_subdirectory(Executors)
 add_subdirectory(BaseTCPServer)
 add_subdirectory(FileManager)
 add_subdirectory(INIParser)

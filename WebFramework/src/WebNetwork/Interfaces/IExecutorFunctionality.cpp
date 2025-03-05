@@ -84,7 +84,7 @@ namespace framework
 
 						if (success)
 						{
-							if (it->second->getType() == BaseExecutor::executorType::stateful || it->second->getType() == BaseExecutor::executorType::heavyOperationStateful)
+							if (it->second->getType() == BaseExecutor::ExecutorType::stateful || it->second->getType() == BaseExecutor::ExecutorType::heavyOperationStateful)
 							{
 								routes.erase(i);
 							}
