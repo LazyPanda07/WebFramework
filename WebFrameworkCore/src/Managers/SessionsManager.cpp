@@ -1,5 +1,7 @@
 #include "SessionsManager.h"
 
+#include <thread>
+
 using namespace std;
 
 namespace framework
