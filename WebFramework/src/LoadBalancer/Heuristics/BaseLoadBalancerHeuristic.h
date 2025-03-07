@@ -2,62 +2,69 @@
 
 #include "Import/WebFrameworkCore.h"
 
-namespace framework
+#ifdef WEB_FRAMEWORK_DLL
+#ifdef __LINUX__
+#define WEB_FRAMEWORK_EXPORT_API __attribute__((visibility("default")))
+#else
+#define WEB_FRAMEWORK_EXPORT_API __declspec(dllexport)
+#endif
+#else
+#define WEB_FRAMEWORK_EXPORT_API
+#endif
+
+namespace framework::load_balancer
 {
-	namespace load_balancer
+	/**
+	 * @brief Determine which server use
+	 */
+	class WEB_FRAMEWORK_EXPORT_API BaseLoadBalancerHeuristic
 	{
+	private:
+		std::string ip;
+		std::string port;
+		bool useHTTPS;
+
+	public:
+		BaseLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
+
 		/**
-		 * @brief Determine which server use
+		 * @brief Calculate load score(choose server with lowest score)
+		 * @return Load score
 		 */
-		class WEB_FRAMEWORK_API BaseLoadBalancerHeuristic
-		{
-		private:
-			std::string ip;
-			std::string port;
-			bool useHTTPS;
+		virtual uint64_t operator ()() const = 0;
 
-		public:
-			BaseLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
+		/**
+		 * @brief On start event
+		 */
+		virtual void onStart();
 
-			/**
-			 * @brief Calculate load score(choose server with lowest score)
-			 * @return Load score
-			 */
-			virtual uint64_t operator ()() const = 0;
+		/**
+		 * @brief On end event
+		 */
+		virtual void onEnd();
 
-			/**
-			 * @brief On start event
-			 */
-			virtual void onStart();
+		/**
+		 * @brief Get server ip
+		 * @return
+		 */
+		const std::string& getIp() const;
 
-			/**
-			 * @brief On end event
-			 */
-			virtual void onEnd();
+		/**
+		 * @brief Get server port
+		 * @return
+		 */
+		const std::string& getPort() const;
 
-			/**
-			 * @brief Get server ip
-			 * @return 
-			 */
-			const std::string& getIp() const;
+		/**
+		 * @brief Is server using HTTPS
+		 * @return
+		 */
+		bool getUseHTTPS() const;
 
-			/**
-			 * @brief Get server port
-			 * @return 
-			 */
-			const std::string& getPort() const;
+		virtual ~BaseLoadBalancerHeuristic() = default;
+	};
 
-			/**
-			 * @brief Is server using HTTPS
-			 * @return 
-			 */
-			bool getUseHTTPS() const;
-
-			virtual ~BaseLoadBalancerHeuristic() = default;
-		};
-
-		using createHeuristicFunction = void* (*)(std::string_view ip, std::string_view port, bool useHTTPS);
-	}
+	using createHeuristicFunction = void* (*)(std::string_view ip, std::string_view port, bool useHTTPS);
 }
 
 #ifdef __LINUX__
