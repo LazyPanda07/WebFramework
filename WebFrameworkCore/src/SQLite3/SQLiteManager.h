@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <shared_mutex>
+#include <cstring>
 
 #include "WebFrameworkCoreConstants.h"
 #include "SQLiteDatabaseModel.h"
@@ -86,7 +87,7 @@ namespace framework::sqlite
 			throw std::bad_alloc();
 		}
 
-		memset(model, 0, sizeof(T));
+		std::memset(model, 0, sizeof(T));
 
 		model->databaseConstructor = database;
 

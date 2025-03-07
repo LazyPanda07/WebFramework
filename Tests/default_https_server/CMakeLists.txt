@@ -37,7 +37,7 @@ target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${WEB_FRAMEWORK_DIR}/WebFramework/src/
 	${WEB_FRAMEWORK_DIR}/WebFrameworkCore/src/
-	${WEB_FRAMEWORK_DIR}/Executors/src/
+	${WEB_FRAMEWORK_DIR}/WebFrameworkExecutors/src/
 	${WEB_FRAMEWORK_DIR}/BaseTCPServer/src/
 	${WEB_FRAMEWORK_DIR}/Networks/src/
 	${WEB_FRAMEWORK_DIR}/Networks/HTTP/src/
