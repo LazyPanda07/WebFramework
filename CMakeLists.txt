@@ -9,7 +9,7 @@ set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
 set(
 	LIBS
 	WebFrameworkCore
-	Executors
+	WebFrameworkExecutors
 	BaseTCPServer
 	FileManager
 	INIParser
@@ -111,7 +111,7 @@ target_include_directories(
 	WebFramework/src/
 	WebFrameworkCore/src/
 	WebFrameworkCore/vendor/sqlite3/include/
-	Executors/src/
+	WebFrameworkExecutors/src/
 	BaseTCPServer/src/
 	FileManager/src/
 	INIParser/src/
@@ -126,7 +126,7 @@ target_include_directories(
 )
 
 add_subdirectory(WebFrameworkCore)
-add_subdirectory(Executors)
+add_subdirectory(WebFrameworkExecutors)
 add_subdirectory(BaseTCPServer)
 add_subdirectory(FileManager)
 add_subdirectory(INIParser)
