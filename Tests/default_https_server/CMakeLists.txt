@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(
 	LIBS
 	WebFramework
+	WebFrameworkCore
+	Executors
 	BaseTCPServer
 	FileManager
 	ThreadPool
@@ -34,6 +36,8 @@ add_executable(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${WEB_FRAMEWORK_DIR}/WebFramework/src/
+	${WEB_FRAMEWORK_DIR}/WebFrameworkCore/src/
+	${WEB_FRAMEWORK_DIR}/Executors/src/
 	${WEB_FRAMEWORK_DIR}/BaseTCPServer/src/
 	${WEB_FRAMEWORK_DIR}/Networks/src/
 	${WEB_FRAMEWORK_DIR}/Networks/HTTP/src/
@@ -47,7 +51,7 @@ target_include_directories(
 	${WEB_FRAMEWORK_DIR}/Localization/src/
 	${WEB_FRAMEWORK_DIR}/UtilityLibrary/include/
 	${WEB_FRAMEWORK_DIR}/Networks/vendor/OpenSSL/include/
-	${WEB_FRAMEWORK_DIR}/WebFramework/vendor/sqlite3/include/
+	${WEB_FRAMEWORK_DIR}/WebFrameworkCore/vendor/sqlite3/include/
 )
 
 target_link_directories(

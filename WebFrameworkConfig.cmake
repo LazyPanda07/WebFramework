@@ -48,6 +48,8 @@ include_directories(
 set(
     WEB_FRAMEWORK_LIBS
     WebFramework
+    WebFrameworkCore
+    Executors
     BaseTCPServer
     FileManager
     Log

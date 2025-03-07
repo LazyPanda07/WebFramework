@@ -1,5 +1,7 @@
 #include "UploadMultipartExecutor.h"
 
+#include <fstream>
+
 void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	std::filesystem::path currentPath = std::filesystem::current_path();

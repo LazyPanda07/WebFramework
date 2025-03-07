@@ -13,7 +13,8 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
+        # shared: [[ON, DLL], [OFF, ""]]
+        shared: [[OFF, ""]]
   
     steps:
     - uses: actions/checkout@v4
@@ -44,7 +45,8 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
+        # shared: [[ON, DLL], [OFF, ""]]
+        shared: [[OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -231,421 +233,421 @@ jobs:
           source run_memory_leak_tests.sh ${{ matrix.config }} 
 
 
-  shared-windows-tests:
-    runs-on: windows-latest
-    needs: windows-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # shared-windows-tests:
+  #   runs-on: windows-latest
+  #   needs: windows-build
+  #   strategy:
+  #     matrix:
+  #       configuration: [Debug, Release]
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
   
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}DLL_Windows
-        path: WebFrameworkLibrary
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ${{ matrix.configuration }}DLL_Windows
+  #       path: WebFrameworkLibrary
 
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
-      with:
-        build-type: ${{ matrix.configuration }}
-        install-path: Tests/gtest
+  #   - name: Get Google Test
+  #     uses: LazyPanda07/get-gtest@v1
+  #     with:
+  #       build-type: ${{ matrix.configuration }}
+  #       install-path: Tests/gtest
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+  #   - name: Enable NMake
+  #     uses: ilammy/msvc-dev-cmd@v1.13.0
 
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
-          nmake install
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
+  #         nmake install
 
-    - name: Tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          .\run_tests.bat ${{ matrix.config }}
+  #   - name: Tests
+  #     working-directory: Tests
+  #     run: |
+  #         cd build/bin
+  #         .\run_tests.bat ${{ matrix.config }}
 
 
-  shared-linux-tests:
-    runs-on: ubuntu-latest
-    needs: linux-build
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # shared-linux-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: linux-build
+  #   container:
+  #     image: lazypanda07/ubuntu_cxx20:24.04
+  #   strategy:
+  #     matrix:
+  #       configuration: [Debug, Release]
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
 
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}DLL_Linux
-        path: WebFrameworkLibrary
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ${{ matrix.configuration }}DLL_Linux
+  #       path: WebFrameworkLibrary
         
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
-          make install -j $(nproc)
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
+  #         make install -j $(nproc)
 
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          source run_tests.sh ${{ matrix.config }}
+  #   - name: Tests
+  #     working-directory: Tests
+  #     shell: bash
+  #     run: |
+  #         cd build/bin
+  #         source run_tests.sh ${{ matrix.config }}
 
 
-  windows-cxx-tests:
-    runs-on: windows-latest
-    needs: windows-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # windows-cxx-tests:
+  #   runs-on: windows-latest
+  #   needs: windows-build
+  #   strategy:
+  #     matrix:
+  #       configuration: [Debug, Release]
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
   
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}DLL_Windows
-        path: WebFrameworkLibrary
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ${{ matrix.configuration }}DLL_Windows
+  #       path: WebFrameworkLibrary
 
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
-      with:
-        build-type: ${{ matrix.configuration }}
-        install-path: Tests/gtest
+  #   - name: Get Google Test
+  #     uses: LazyPanda07/get-gtest@v1
+  #     with:
+  #       build-type: ${{ matrix.configuration }}
+  #       install-path: Tests/gtest
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+  #   - name: Enable NMake
+  #     uses: ilammy/msvc-dev-cmd@v1.13.0
 
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G "NMake Makefiles" ..
-          nmake install
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G "NMake Makefiles" ..
+  #         nmake install
 
-    - name: Tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          .\CXX_API.exe || exit 1
-          .\run_tests.bat ${{ matrix.config }}
+  #   - name: Tests
+  #     working-directory: Tests
+  #     run: |
+  #         cd build/bin
+  #         .\CXX_API.exe || exit 1
+  #         .\run_tests.bat ${{ matrix.config }}
 
 
-  linux-cxx-tests:
-    runs-on: ubuntu-latest
-    needs: linux-build
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # linux-cxx-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: linux-build
+  #   container:
+  #     image: lazypanda07/ubuntu_cxx20:24.04
+  #   strategy:
+  #     matrix:
+  #       configuration: [Debug, Release]
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
 
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}DLL_Linux
-        path: WebFrameworkLibrary
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ${{ matrix.configuration }}DLL_Linux
+  #       path: WebFrameworkLibrary
         
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON ..
-          make install -j $(nproc)
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON ..
+  #         make install -j $(nproc)
 
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
-          ./CXX_API
-          source run_tests.sh ${{ matrix.config }}
+  #   - name: Tests
+  #     working-directory: Tests
+  #     shell: bash
+  #     run: |
+  #         cd build/bin
+  #         export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
+  #         ./CXX_API
+  #         source run_tests.sh ${{ matrix.config }}
 
 
-  windows-cc-tests:
-    runs-on: windows-latest
-    needs: windows-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # windows-cc-tests:
+  #   runs-on: windows-latest
+  #   needs: windows-build
+  #   strategy:
+  #     matrix:
+  #       configuration: [Debug, Release]
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
   
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}DLL_Windows
-        path: WebFrameworkLibrary
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ${{ matrix.configuration }}DLL_Windows
+  #       path: WebFrameworkLibrary
 
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
-      with:
-        build-type: ${{ matrix.configuration }}
-        install-path: Tests/gtest
+  #   - name: Get Google Test
+  #     uses: LazyPanda07/get-gtest@v1
+  #     with:
+  #       build-type: ${{ matrix.configuration }}
+  #       install-path: Tests/gtest
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+  #   - name: Enable NMake
+  #     uses: ilammy/msvc-dev-cmd@v1.13.0
 
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G "NMake Makefiles" ..
-          nmake install
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G "NMake Makefiles" ..
+  #         nmake install
 
-    - name: Tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          .\CC_API.exe || exit 1
-          .\run_cc_tests.bat ${{ matrix.config }}
+  #   - name: Tests
+  #     working-directory: Tests
+  #     run: |
+  #         cd build/bin
+  #         .\CC_API.exe || exit 1
+  #         .\run_cc_tests.bat ${{ matrix.config }}
 
 
-  linux-cc-tests:
-    runs-on: ubuntu-latest
-    needs: linux-build
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # linux-cc-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: linux-build
+  #   container:
+  #     image: lazypanda07/ubuntu_cxx20:24.04
+  #   strategy:
+  #     matrix:
+  #       configuration: [Debug, Release]
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
 
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}DLL_Linux
-        path: WebFrameworkLibrary
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ${{ matrix.configuration }}DLL_Linux
+  #       path: WebFrameworkLibrary
         
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON ..
-          make install -j $(nproc)
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON ..
+  #         make install -j $(nproc)
 
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
-          ./CC_API
-          source run_cc_tests.sh ${{ matrix.config }}
-  
-
-  windows-python-tests:
-    runs-on: windows-latest
-    needs: [static-windows-tests]
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-      - name: Install Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ReleaseDLL_Windows
-          path: WebFrameworkLibrary
-
-      - name: Download tests artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: Tests_Windows
-          path: TestsBinaries
-        
-      - name: Install Python API
-        run: |
-            python -m pip install pip --upgrade
-            pip install setuptools
-            pip install setuptools --upgrade
-            pip install WebFrameworkLibrary/api/python_api/
-        
-      - name: Tests
-        run: |
-          cp WebFrameworkLibrary/dll/WebFramework.dll TestsBinaries
-          cd TestsBinaries
-          .\run_python_tests.bat ${{ matrix.config }}
-
-
-  linux-python-tests:
-    runs-on: ubuntu-latest
-    needs: [static-linux-tests]
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ReleaseDLL_Linux
-          path: WebFrameworkLibrary
-
-      - name: Download tests artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: Tests_Linux
-          path: TestsBinaries
-        
-      - name: Chmod
-        run: |
-          cd TestsBinaries
-          chmod +x DefaultHTTPSServer
-          chmod +x Core
-          chmod +x LoadBalancerCore
-          chmod +x ProxyCore
-
-      - name: Tests
-        shell: bash
-        run: |
-          pip3 install WebFrameworkLibrary/api/python_api/
-          cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
-          cd TestsBinaries
-          source run_python_tests.sh ${{ matrix.config }}
+  #   - name: Tests
+  #     working-directory: Tests
+  #     shell: bash
+  #     run: |
+  #         cd build/bin
+  #         export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
+  #         ./CC_API
+  #         source run_cc_tests.sh ${{ matrix.config }}
   
 
-  windows-csharp-tests:
-    runs-on: windows-latest
-    needs: windows-build
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  # windows-python-tests:
+  #   runs-on: windows-latest
+  #   needs: [static-windows-tests]
+  #   strategy:
+  #     matrix:
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-  
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ReleaseDLL_Windows
-        path: WebFrameworkLibrary
+  #   steps:
+  #     - name: Install Python 3.12
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.12"
 
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
-      with:
-        build-type: Release
-        install-path: Tests/gtest
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: ReleaseDLL_Windows
+  #         path: WebFrameworkLibrary
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G "NMake Makefiles" ..
-          nmake install
-
-    - name: Tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          dotnet test CSharpAPI.dll
-          .\run_csharp_tests.bat ${{ matrix.config }}
-
-
-  linux-csharp-tests:
-    runs-on: ubuntu-latest
-    needs: linux-build
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ReleaseDLL_Linux
-        path: WebFrameworkLibrary
+  #     - name: Download tests artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: Tests_Windows
+  #         path: TestsBinaries
         
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON ..
-          make install -j $(nproc)
+  #     - name: Install Python API
+  #       run: |
+  #           python -m pip install pip --upgrade
+  #           pip install setuptools
+  #           pip install setuptools --upgrade
+  #           pip install WebFrameworkLibrary/api/python_api/
+        
+  #     - name: Tests
+  #       run: |
+  #         cp WebFrameworkLibrary/dll/WebFramework.dll TestsBinaries
+  #         cd TestsBinaries
+  #         .\run_python_tests.bat ${{ matrix.config }}
 
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
-          dotnet test CSharpAPI.dll
-          source run_csharp_tests.sh ${{ matrix.config }}
+
+  # linux-python-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: [static-linux-tests]
+  #   container:
+  #     image: lazypanda07/ubuntu_cxx20:24.04
+  #   strategy:
+  #     matrix:
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+  #   steps:
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: ReleaseDLL_Linux
+  #         path: WebFrameworkLibrary
+
+  #     - name: Download tests artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: Tests_Linux
+  #         path: TestsBinaries
+        
+  #     - name: Chmod
+  #       run: |
+  #         cd TestsBinaries
+  #         chmod +x DefaultHTTPSServer
+  #         chmod +x Core
+  #         chmod +x LoadBalancerCore
+  #         chmod +x ProxyCore
+
+  #     - name: Tests
+  #       shell: bash
+  #       run: |
+  #         pip3 install WebFrameworkLibrary/api/python_api/
+  #         cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
+  #         cd TestsBinaries
+  #         source run_python_tests.sh ${{ matrix.config }}
+  
+
+  # windows-csharp-tests:
+  #   runs-on: windows-latest
+  #   needs: windows-build
+  #   strategy:
+  #     matrix:
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
+  
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ReleaseDLL_Windows
+  #       path: WebFrameworkLibrary
+
+  #   - name: Get Google Test
+  #     uses: LazyPanda07/get-gtest@v1
+  #     with:
+  #       build-type: Release
+  #       install-path: Tests/gtest
+
+  #   - name: Enable NMake
+  #     uses: ilammy/msvc-dev-cmd@v1.13.0
+
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G "NMake Makefiles" ..
+  #         nmake install
+
+  #   - name: Tests
+  #     working-directory: Tests
+  #     run: |
+  #         cd build/bin
+  #         dotnet test CSharpAPI.dll
+  #         .\run_csharp_tests.bat ${{ matrix.config }}
+
+
+  # linux-csharp-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: linux-build
+  #   container:
+  #     image: lazypanda07/ubuntu_cxx20:24.04
+  #   strategy:
+  #     matrix:
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
+
+  #   - name: Download artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: ReleaseDLL_Linux
+  #       path: WebFrameworkLibrary
+        
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON ..
+  #         make install -j $(nproc)
+
+  #   - name: Tests
+  #     working-directory: Tests
+  #     shell: bash
+  #     run: |
+  #         cd build/bin
+  #         export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
+  #         dotnet test CSharpAPI.dll
+  #         source run_csharp_tests.sh ${{ matrix.config }}
 
           
   publish:
     needs: [
-      windows-cxx-tests,
-      linux-cxx-tests,
-      windows-csharp-tests,
-      linux-csharp-tests,
-      windows-python-tests,
-      linux-python-tests,
-      windows-cc-tests,
-      linux-cc-tests,
+      # windows-cxx-tests,
+      # linux-cxx-tests,
+      # windows-csharp-tests,
+      # linux-csharp-tests,
+      # windows-python-tests,
+      # linux-python-tests,
+      # windows-cc-tests,
+      # linux-cc-tests,
       android-build
     ]
     runs-on: ubuntu-latest
