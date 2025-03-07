@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFramework\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFrameworkCore\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\WebFrameworkCore\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -90,7 +90,7 @@ xcopy /y $(ProjectDir)settings $(OutDir)..\StaticWindowsOnly\executors &amp;&amp
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFramework\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFrameworkCore\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\WebFrameworkCore\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>

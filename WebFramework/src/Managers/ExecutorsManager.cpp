@@ -244,7 +244,7 @@ namespace framework
 			return nullopt;
 		}
 
-		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = BaseExecutor::methods.at(request.getMethod());
+		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = BaseExecutor::getMethod(request.getMethod());
 
 		if (serverType == webServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 		{

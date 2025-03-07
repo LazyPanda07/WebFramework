@@ -37,7 +37,7 @@ namespace framework::utility
 		const_cast<web::HTTPParser&>(request->getParser()) = parser;
 
 		executor = executorsManager.getOrCreateExecutor(*request, response, statefulExecutors);
-		method = BaseExecutor::methods.at(parser.getMethod());
+		method = BaseExecutor::getMethod(parser.getMethod());
 	}
 
 	void BaseLargeBodyHandler::onFinishHandleChunks()

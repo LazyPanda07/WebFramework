@@ -5,7 +5,7 @@ set(
 	LIBS
 	WebFramework
 	WebFrameworkCore
-	Executors
+	WebFrameworkExecutors
 	BaseTCPServer
 	FileManager
 	ThreadPool

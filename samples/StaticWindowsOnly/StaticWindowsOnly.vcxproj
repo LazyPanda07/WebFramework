@@ -57,7 +57,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFramework\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFrameworkCore\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -67,7 +67,7 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir)</Command>
+      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\WebFrameworkExecutors\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,7 +78,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFramework\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFrameworkCore\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -91,7 +91,7 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir) &amp;&amp; del $(OutDir)$(ProjectName).lib &amp;&amp; del $(OutDir)$(ProjectName).exp</Command>
+      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\WebFrameworkExecutors\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

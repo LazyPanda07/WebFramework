@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-project(Executors)
+project(WebFrameworkExecutors)
 
 add_library(
 	${PROJECT_NAME} SHARED

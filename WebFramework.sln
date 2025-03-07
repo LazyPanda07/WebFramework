@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebFrameworkCSharpAPI", "AP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CC_API", "API\CC_API\CC_API.vcxproj", "{3D090049-A939-49CF-B7CB-434E4197B940}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Executors", "Executors\Executors.vcxproj", "{FA69E899-F0D2-4C8E-96DC-2AA61854665C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebFrameworkExecutors", "WebFrameworkExecutors\WebFrameworkExecutors.vcxproj", "{FA69E899-F0D2-4C8E-96DC-2AA61854665C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebFrameworkCore", "WebFrameworkCore\WebFrameworkCore.vcxproj", "{E852AA58-2286-41F3-8A93-44E08C0EFC97}"
 EndProject

@@ -49,7 +49,7 @@ set(
     WEB_FRAMEWORK_LIBS
     WebFramework
     WebFrameworkCore
-    Executors
+    WebFrameworkExecutors
     BaseTCPServer
     FileManager
     Log
