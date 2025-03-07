@@ -36,15 +36,19 @@ add_definitions(-DSTART_LOAD_BALANCER_9092_SERVER_FILE="start_load_balancer_9092
 add_definitions(-DSTART_LOAD_BALANCER_9093_SERVER_FILE="start_load_balancer_9093_server.txt")
 add_definitions(-DLARGE_FILE_NAME="large_file.bin")
 
+if (UNIX)
+    set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/libWebFramework.so)
+else()
+    set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/dll/WebFramework.dll)
+endif()
+
+if (EXISTS ${SHARED_LIBRARY_WEB_FRAMEWORK_PATH})
+    add_definitions(-DPUBLIC_API)
+endif()
+
 if(WIN32)
 	set(LIBS ${LIBS} crypt32)
-
-    add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
 endif(WIN32)
-
-if (${CXX_API})
-    add_definitions(-DCXX_API)
-endif()
 
 if (${FLUTTER_API})
     add_definitions(-DFLUTTER_API)
@@ -71,14 +75,7 @@ install(DIRECTORY scripts/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY templates DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY assets DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-
 install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-if (UNIX)
-    set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/libWebFrameworkLibrary.so)
-else()
-    set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/dll/WebFrameworkLibrary.dll)
-endif()
 
 if (EXISTS ${SHARED_LIBRARY_WEB_FRAMEWORK_PATH})
     install(FILES ${SHARED_LIBRARY_WEB_FRAMEWORK_PATH} DESTINATION ${CMAKE_INSTALL_PREFIX})

@@ -5,7 +5,7 @@
 #include <unistd.h>
 #endif
 
-#ifdef CXX_API
+#ifdef PUBLIC_API
 #include "import.h"
 #else
 #include "Import/WebFramework.h"
@@ -17,7 +17,7 @@ int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 
-#ifdef CXX_API
+#ifdef PUBLIC_API
 	framework::utility::initializeWebFramework("WebFramework");
 #endif
 

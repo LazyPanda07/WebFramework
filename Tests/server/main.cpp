@@ -2,7 +2,7 @@
 #include <fstream>
 #include <filesystem>
 
-#ifdef CXX_API
+#ifdef PUBLIC_API
 #include "import.h"
 #else
 #include "Import/WebFramework.h"
@@ -21,7 +21,7 @@ int main(int argc, char** argv) try
 		std::filesystem::remove("test_database.sqlite");
 	}
 
-#ifdef CXX_API
+#ifdef PUBLIC_API
 	framework::utility::initializeWebFramework("WebFramework");
 #endif
 

@@ -1,7 +1,11 @@
-#include "Import/WebFramework.h"
+#include <iostream>
+
+#include "import.h"
 
 int main(int argc, char** argv) try
 {
+	framework::utility::initializeWebFramework("WebFramework");
+
 	framework::utility::Config config("default_https_server_config.json");
 	framework::WebFramework server(config);
 
