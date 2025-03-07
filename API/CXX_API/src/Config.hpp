@@ -49,7 +49,7 @@ namespace framework
 			 * @return Self
 			 */
 			template<std::convertible_to<std::string_view> T>
-			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
+			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = true);
 
 			/**
 			 * @brief Override integer
@@ -60,7 +60,7 @@ namespace framework
 			 * @return Self
 			 */
 			template<std::convertible_to<int64_t> T>
-			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = false);
+			Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = true);
 
 			/**
 			 * @brief Override string array
@@ -69,7 +69,7 @@ namespace framework
 			 * @param recursive Recursive search for key
 			 * @return Self
 			 */
-			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = false);
+			Config& overrideConfiguration(std::string_view key, const std::vector<std::string>& value, bool recursive = true);
 
 			/**
 			 * @brief Override integer array
@@ -78,7 +78,7 @@ namespace framework
 			 * @param recursive Recursive search for key
 			 * @return Self
 			 */
-			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = false);
+			Config& overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive = true);
 
 			/**
 			 * @brief Override config file directory
