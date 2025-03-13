@@ -45,7 +45,7 @@ TEST(API, ConfigOverrideString)
 {
 	framework::utility::Config config = createConfig();
 
-	config.overrideConfiguration("webServerType", "threadPool", true);
+	config.overrideConfiguration("webServerType", "threadPool");
 
 	ASSERT_NE(config.getConfiguration().find(R"("webServerType": "threadPool")"), std::string::npos);
 }
@@ -54,7 +54,7 @@ TEST(API, ConfigOverrideInteger)
 {
 	framework::utility::Config config = createConfig();
 
-	config.overrideConfiguration("cachingSize", 0LL, true);
+	config.overrideConfiguration("cachingSize", 0LL);
 
 	ASSERT_NE(config.getConfiguration().find(R"("cachingSize": 0)"), std::string::npos);
 }
@@ -63,7 +63,7 @@ TEST(API, ConfigOverrideBool)
 {
 	framework::utility::Config config = createConfig();
 
-	config.overrideConfiguration("usingLogging", false, true);
+	config.overrideConfiguration("usingLogging", false);
 
 	ASSERT_NE(config.getConfiguration().find(R"("usingLogging": false)"), std::string::npos);
 }
@@ -72,7 +72,7 @@ TEST(API, ConfigOverrideStringArray)
 {
 	framework::utility::Config config = createConfig();
 
-	config.overrideConfiguration("loadSources", std::vector<std::string>{ "anotherSource" }, true);
+	config.overrideConfiguration("loadSources", std::vector<std::string>{ "anotherSource" });
 
 	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
 }
@@ -81,7 +81,7 @@ TEST(API, ConfigOverrideIntegerArray)
 {
 	framework::utility::Config config = createConfig();
 
-	config.overrideConfiguration("port", std::vector<int64_t>{ 15 }, true);
+	config.overrideConfiguration("port", std::vector<int64_t>{ 15 });
 
 	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
 }

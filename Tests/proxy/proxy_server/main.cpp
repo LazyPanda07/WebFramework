@@ -25,8 +25,8 @@ int main(int argc, char** argv) try
 
 	int64_t port = parser.get<int64_t>("--port");
 
-	config.overrideConfiguration("useHTTPS", parser.get<bool>("--useHTTPS"), true);
-	config.overrideConfiguration("port", port, true);
+	config.overrideConfiguration("useHTTPS", parser.get<bool>("--useHTTPS"));
+	config.overrideConfiguration("port", port);
 
 	framework::WebFramework server(config);
 

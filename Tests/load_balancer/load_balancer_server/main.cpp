@@ -26,27 +26,27 @@ int main(int argc, char** argv) try
 	framework::utility::Config config(parser.get<std::string>("--config"));
 	int64_t port = parser.get<int64_t>("--port");
 
-	config.overrideConfiguration("port", port, true);
+	config.overrideConfiguration("port", port);
 
 	if (parser.get<bool>("--custom_heuristic"))
 	{
-		config.overrideConfiguration("heuristic", "CustomHeuristic", true);
+		config.overrideConfiguration("heuristic", "CustomHeuristic");
 	}
 
 	if (std::string type = parser.get<std::string>("--type"); type == "server")
 	{
 		std::vector<std::string> settingsPaths = { "load_balancer_web.json" };
 
-		config.overrideConfiguration("webServerType", "multiThreaded", true);
+		config.overrideConfiguration("webServerType", "multiThreaded");
 
-		config.overrideConfiguration("settingsPaths", settingsPaths, true);
+		config.overrideConfiguration("settingsPaths", settingsPaths);
 	}
 	else
 	{
 		bool serversHTTPS = parser.get<bool>("--serversHTTPS");
 		std::vector<int64_t> listOfServers;
 
-		config.overrideConfiguration("serversHTTPS", serversHTTPS, true);
+		config.overrideConfiguration("serversHTTPS", serversHTTPS);
 
 		if (serversHTTPS)
 		{
@@ -65,7 +65,7 @@ int main(int argc, char** argv) try
 			};
 		}
 
-		config.overrideConfiguration("127.0.0.1", listOfServers, true);
+		config.overrideConfiguration("127.0.0.1", listOfServers);
 	}
 
 	framework::WebFramework server(config);

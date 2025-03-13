@@ -13,7 +13,7 @@ namespace framework
 	class ExecutorsManager
 	{
 	private:
-		enum class webServerType
+		enum class WebServerType
 		{
 			multiThreaded,
 			threadPool,
@@ -29,7 +29,7 @@ namespace framework
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
 		std::string userAgentFilter;
-		webServerType serverType;
+		WebServerType serverType;
 
 	private:
 		static bool isFileRequest(std::string_view parameters);

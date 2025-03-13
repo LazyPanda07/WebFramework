@@ -181,7 +181,7 @@ namespace framework
 	}
 
 	ExecutorsManager::ExecutorsManager() :
-		serverType(webServerType::multiThreaded)
+		serverType(WebServerType::multiThreaded)
 	{
 
 	}
@@ -214,12 +214,12 @@ namespace framework
 		const utility::AdditionalServerSettings& additionalSettings
 	)
 	{
-		const unordered_map<string_view, webServerType> types =
+		const unordered_map<string_view, WebServerType> types =
 		{
-			{ json_settings::multiThreadedWebServerTypeValue, webServerType::multiThreaded },
-			{ json_settings::threadPoolWebServerTypeValue, webServerType::threadPool },
-			{ json_settings::loadBalancerWebServerTypeValue, webServerType::loadBalancer },
-			{ json_settings::proxyWebServerTypeValue, webServerType::proxy }
+			{ json_settings::multiThreadedWebServerTypeValue, WebServerType::multiThreaded },
+			{ json_settings::threadPoolWebServerTypeValue, WebServerType::threadPool },
+			{ json_settings::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
+			{ json_settings::proxyWebServerTypeValue, WebServerType::proxy }
 		};
 
 		this->routes = move(routes);
@@ -246,7 +246,7 @@ namespace framework
 
 		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = BaseExecutor::getMethod(request.getMethod());
 
-		if (serverType == webServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
+		if (serverType == WebServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 		{
 			return bind(method, executor, placeholders::_1, placeholders::_2);
 		}

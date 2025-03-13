@@ -13,6 +13,7 @@ add_library(
 	src/Exceptions/BaseExecutorException.cpp
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
+	src/c_api/executors_c_api.cpp
 )
 
 target_include_directories(

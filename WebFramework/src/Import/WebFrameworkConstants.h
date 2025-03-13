@@ -28,7 +28,7 @@ namespace json_settings
 	inline constexpr std::string_view dateFormatKey = "dateFormat";
 	inline constexpr std::string_view logFileSizeKey = "logFileSize";
 	inline constexpr std::string_view logFlagsKey = "flags";
-	inline constexpr std::string_view webServerTypeKey = "webServerType";
+	inline constexpr std::string_view webServerTypeKey = "WebServerType";
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
 	inline constexpr std::string_view pathToKey = "pathToKey";
@@ -66,7 +66,7 @@ namespace exceptions
 	inline constexpr std::string_view cantLoadSource = "Can't load ";
 	inline constexpr std::string_view missingOtherDLLs = "That load source requires to load other dlls";
 
-	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
+	inline const std::string wrongWebServerType = "Wrong type of WebServerType option";
 
 	inline constexpr std::string_view variableDeclarationSyntaxError = "Wrong variable declaration";
 	inline constexpr std::string_view sectionDeclarationSyntaxError = "Wrong section declaration";

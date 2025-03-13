@@ -141,7 +141,7 @@ namespace framework
 		string port = to_string(webServerSettings.getInt(json_settings::portKey));
 		DWORD timeout = 0;
 
-		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
+		const string& WebServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
 		uint64_t cachingSize = 0;
 		string assetsPath;
 		string templatesPath;
@@ -170,7 +170,7 @@ namespace framework
 			}
 		}
 
-		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
+		if (WebServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
@@ -186,7 +186,7 @@ namespace framework
 					additionalSettings
 				);
 		}
-		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
+		else if (WebServerType == json_settings::threadPoolWebServerTypeValue)
 		{
 			int64_t threadCount = 0;
 			json::utility::jsonObject threadPoolServerObject;
@@ -211,7 +211,7 @@ namespace framework
 					additionalSettings
 				);
 		}
-		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
+		else if (WebServerType == json_settings::loadBalancerWebServerTypeValue)
 		{
 			const json::utility::jsonObject& loadBalancerSettings = (*config).getObject(json_settings::loadBalancerObject);
 			string heuristic(json_settings::defaultHeuristicValue);
@@ -247,7 +247,7 @@ namespace framework
 					templatesPath
 				);
 		}
-		else if (webServerType == json_settings::proxyWebServerTypeValue)
+		else if (WebServerType == json_settings::proxyWebServerTypeValue)
 		{
 			server = make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).getObject(json_settings::proxyObject));
 		}
