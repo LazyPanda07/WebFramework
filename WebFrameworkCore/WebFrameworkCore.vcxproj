@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -78,7 +78,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>

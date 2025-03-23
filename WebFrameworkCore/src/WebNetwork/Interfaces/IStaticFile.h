@@ -13,7 +13,7 @@ namespace framework
 			/**
 			* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
 			*/
-			virtual void sendStaticFile(const std::string& filePath, HTTPResponse& response, bool isBinary, const std::string& fileName) = 0;
+			virtual void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary, std::string_view fileName) = 0;
 
 			virtual ~IStaticFile() = default;
 		};

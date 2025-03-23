@@ -64,7 +64,7 @@ namespace framework::load_balancer
 		virtual ~BaseLoadBalancerHeuristic() = default;
 	};
 
-	using createHeuristicFunction = void* (*)(std::string_view ip, std::string_view port, bool useHTTPS);
+	using CreateHeuristicFunction = void* (*)(std::string_view ip, std::string_view port, bool useHTTPS);
 }
 
 #ifdef __LINUX__

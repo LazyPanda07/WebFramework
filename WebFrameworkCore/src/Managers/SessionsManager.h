@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "WebFrameworkCoreConstants.h"
+#include "Strings.h"
 
 namespace framework
 {
@@ -19,7 +20,7 @@ namespace framework
 
 		private:
 			std::multimap<SessionTimePoint, std::string, std::greater<SessionTimePoint>> timeIp;
-			std::unordered_map<std::string, SessionTimePoint> ipTime;
+			::utility::strings::string_based_unordered_map<SessionTimePoint> ipTime;
 			std::mutex checkLock;
 			SessionsManager* userSessionSynchronization;
 
@@ -33,26 +34,26 @@ namespace framework
 		public:
 			SessionTime(SessionsManager* userSession);
 
-			void updateSessionTime(const std::string& ip);
+			void updateSessionTime(std::string_view ip);
 
 			~SessionTime() = default;
 		};
 
 	private:
 		SessionTime time;
-		std::unordered_map<std::string, std::unordered_map<std::string, std::string>> userSession;	// ip - (key - value)
+		::utility::strings::string_based_unordered_map<::utility::strings::string_based_unordered_map<std::string>> userSession; // ip - (key - value)
 		std::mutex lock;
 
 	public:
 		SessionsManager();
 
-		void setAttribute(const std::string& ip, const std::string& name, const std::string& value);
+		void setAttribute(const std::string& ip, std::string_view name, std::string_view value);
 
-		std::string getAttribute(const std::string& ip, const std::string& name);
+		std::string getAttribute(std::string_view ip, std::string_view name);
 
-		void deleteSession(const std::string& ip);
+		void deleteSession(std::string_view ip);
 
-		void deleteAttribute(const std::string& ip, const std::string& name);
+		void deleteAttribute(std::string_view ip, std::string_view name);
 
 		~SessionsManager() = default;
 	};

@@ -2,6 +2,8 @@
 
 #include "Import/WebFrameworkCore.h"
 
+#include "Strings.h"
+
 namespace framework
 {
 	class WebFrameworkDynamicPages
@@ -16,7 +18,7 @@ namespace framework
 		};
 
 	private:
-		std::unordered_map<std::string, std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
+		utility::strings::string_based_unordered_map<std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
 		const std::filesystem::path pathToTemplates;
 
 	private:
@@ -26,7 +28,7 @@ namespace framework
 
 		static std::string insertVariables(const std::unordered_map<std::string, std::string>& variables, std::string code);
 
-		static std::vector<ExecutionUnit> preExecute(const std::string& code);
+		static std::vector<ExecutionUnit> preExecute(std::string_view code);
 
 		std::string execute(const std::vector<ExecutionUnit>& codes);
 
@@ -35,11 +37,11 @@ namespace framework
 
 		void run(const std::unordered_map<std::string, std::string>& variables, std::string& source);
 
-		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
 
-		void unregisterDynamicFunction(const std::string& functionName);
+		void unregisterDynamicFunction(std::string_view functionName);
 
-		bool isDynamicFunctionRegistered(const std::string& functionName);
+		bool isDynamicFunctionRegistered(std::string_view functionName);
 
 		const std::filesystem::path& getPathToTemplates() const;
 

@@ -132,21 +132,21 @@ namespace framework
 }
 
 #ifdef __LINUX__
-/**
-* Macro for each BaseExecutor subclass
-* Used for loading function that creates BaseExecutor subclass
-*/
-#define DECLARE_EXECUTOR(subclassName) extern "C" __attribute__((visibility("default"))) void* create##subclassName##Instance()	\
-{	\
-	return new subclassName();	\
-}
+#define EXPORT_EXECUTOR_FUNCTION extern "C" __attribute__((visibility("default")))
 #else
+#define EXPORT_EXECUTOR_FUNCTION extern "C" __declspec(dllexport)
+#endif
+
 /**
 * Macro for each BaseExecutor subclass
 * Used for loading function that creates BaseExecutor subclass
 */
-#define DECLARE_EXECUTOR(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Instance()	\
+#define DECLARE_EXECUTOR(subclassName) EXPORT_EXECUTOR_FUNCTION framework::BaseExecutor* create##subclassName##Instance()	\
 {	\
 	return new subclassName();	\
+} \
+\
+EXPORT_EXECUTOR_FUNCTION ExecutorType getType##subclassName##(framework::BaseExecutor* executor) \
+{	\
+	return executor->getType(); \
 }
-#endif

@@ -80,7 +80,7 @@ namespace framework
 		return code;
 	}
 
-	vector<WebFrameworkDynamicPages::ExecutionUnit> WebFrameworkDynamicPages::preExecute(const string& code)
+	vector<WebFrameworkDynamicPages::ExecutionUnit> WebFrameworkDynamicPages::preExecute(string_view code)
 	{
 		vector<ExecutionUnit> result;
 		size_t startLine = 0;
@@ -181,17 +181,20 @@ namespace framework
 		}
 	}
 
-	void WebFrameworkDynamicPages::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	void WebFrameworkDynamicPages::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
-		dynamicPagesFunctions.try_emplace(functionName, move(function));
+		dynamicPagesFunctions.emplace(functionName, move(function));
 	}
 
-	void WebFrameworkDynamicPages::unregisterDynamicFunction(const string& functionName)
+	void WebFrameworkDynamicPages::unregisterDynamicFunction(string_view functionName)
 	{
-		dynamicPagesFunctions.erase(functionName);
+		if (auto it = dynamicPagesFunctions.find(functionName); it != dynamicPagesFunctions.end())
+		{
+			dynamicPagesFunctions.erase(it);
+		}
 	}
 
-	bool WebFrameworkDynamicPages::isDynamicFunctionRegistered(const string& functionName)
+	bool WebFrameworkDynamicPages::isDynamicFunctionRegistered(string_view functionName)
 	{
 		return dynamicPagesFunctions.find(functionName) != dynamicPagesFunctions.end();
 	}

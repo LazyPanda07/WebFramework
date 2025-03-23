@@ -55,7 +55,7 @@ namespace framework
 
 				for (const auto& source : sources)
 				{
-					if (creator = reinterpret_cast<createExecutorFunction>(utility::load(source, format("create{}Instance", j.name))))
+					if (creator = utility::load<createExecutorFunction>(source, format("create{}Instance", j.name)))
 					{
 						break;
 					}

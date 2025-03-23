@@ -21,7 +21,7 @@ namespace framework
 
 	}
 
-	bool HTTPRequest::isWebFrameworkDynamicPages(const string& filePath)
+	bool HTTPRequest::isWebFrameworkDynamicPages(string_view filePath)
 	{
 		size_t extension = filePath.find('.');
 
@@ -30,7 +30,7 @@ namespace framework
 			return false;
 		}
 
-		return string_view(filePath.data() + extension) == webFrameworkDynamicPagesExtension;
+		return filePath.substr(extension) == webFrameworkDynamicPagesExtension;
 	}
 
 	void HTTPRequest::logWebFrameworkModelsError(string_view typeName)
@@ -73,12 +73,12 @@ namespace framework
 		largeData.isLastPacket = !size;
 	}
 
-	const string& HTTPRequest::getRawParameters() const
+	string_view HTTPRequest::getRawParameters() const
 	{
 		return parser.getParameters();
 	}
 
-	const string& HTTPRequest::getMethod() const
+	string_view HTTPRequest::getMethod() const
 	{
 		return parser.getMethod();
 	}
@@ -98,17 +98,17 @@ namespace framework
 		return parser.getHeaders();
 	}
 
-	const string& HTTPRequest::getBody() const
+	string_view HTTPRequest::getBody() const
 	{
 		return parser.getBody();
 	}
 
-	void HTTPRequest::setAttribute(const string& name, const string& value)
+	void HTTPRequest::setAttribute(string_view name, string_view value)
 	{
 		session.setAttribute(this->getClientIpV4(), name, value);
 	}
 
-	string HTTPRequest::getAttribute(const string& name)
+	string HTTPRequest::getAttribute(string_view name)
 	{
 		return session.getAttribute(this->getClientIpV4(), name);
 	}
@@ -118,7 +118,7 @@ namespace framework
 		session.deleteSession(this->getClientIpV4());
 	}
 
-	void HTTPRequest::deleteAttribute(const string& name)
+	void HTTPRequest::deleteAttribute(string_view name)
 	{
 		session.deleteAttribute(this->getClientIpV4(), name);
 	}
@@ -166,19 +166,19 @@ namespace framework
 		return largeData;
 	}
 
-	void HTTPRequest::sendAssetFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
+	void HTTPRequest::sendAssetFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
 	{
 		HTTPRequest::isWebFrameworkDynamicPages(filePath) ?
 			this->sendDynamicFile(filePath, response, variables, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
-	void HTTPRequest::sendStaticFile(const string& filePath, HTTPResponse& response, bool isBinary, const string& fileName)
+	void HTTPRequest::sendStaticFile(string_view filePath, HTTPResponse& response, bool isBinary, string_view fileName)
 	{
 		staticResources.sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
-	void HTTPRequest::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
+	void HTTPRequest::sendDynamicFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, response, variables, isBinary, fileName);
 	}
@@ -258,17 +258,17 @@ namespace framework
 		}
 	}
 
-	void HTTPRequest::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	void HTTPRequest::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
 		dynamicResources.registerDynamicFunction(functionName, move(function));
 	}
 
-	void HTTPRequest::unregisterDynamicFunction(const string& functionName)
+	void HTTPRequest::unregisterDynamicFunction(string_view functionName)
 	{
 		dynamicResources.unregisterDynamicFunction(functionName);
 	}
 
-	bool HTTPRequest::isDynamicFunctionRegistered(const string& functionName)
+	bool HTTPRequest::isDynamicFunctionRegistered(string_view functionName)
 	{
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}

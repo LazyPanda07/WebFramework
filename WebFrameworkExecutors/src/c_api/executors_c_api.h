@@ -8,4 +8,8 @@
 #define EXPORT extern "C" __declspec(dllexport)
 #endif
 
+typedef void* Executor;
 
+EXPORT int getExecutorType(Executor executor, const char* executorName);
+
+EXPORT void destroy(Executor executor, const char* executorName);

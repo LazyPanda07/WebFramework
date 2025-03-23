@@ -49,7 +49,7 @@ namespace framework
 		LargeData largeData;
 
 	private:
-		static bool isWebFrameworkDynamicPages(const std::string& filePath);
+		static bool isWebFrameworkDynamicPages(std::string_view filePath);
 
 		static void logWebFrameworkModelsError(std::string_view typeName);
 
@@ -73,13 +73,13 @@ namespace framework
 		/// Parameters string from HTTP
 		/// </summary>
 		/// <returns>HTTP parameters</returns>
-		const std::string& getRawParameters() const;
+		std::string_view getRawParameters() const;
 
 		/// <summary>
 		/// HTTP request method
 		/// </summary>
 		/// <returns>HTTP method</returns>
-		const std::string& getMethod() const;
+		std::string_view getMethod() const;
 
 		/// <summary>
 		/// GET parameters
@@ -103,14 +103,14 @@ namespace framework
 		/// HTTP request body
 		/// </summary>
 		/// <returns>HTTP request body</returns>
-		const std::string& getBody() const;
+		std::string_view getBody() const;
 
 		/// <summary>
 		/// Session wrapper
 		/// </summary>
 		/// <param name="name">attribute name</param>
 		/// <param name="value">attribute value</param>
-		void setAttribute(const std::string& name, const std::string& value);
+		void setAttribute(std::string_view name, std::string_view value);
 
 		/// <summary>
 		/// Session wrapper
@@ -118,7 +118,7 @@ namespace framework
 		/// <param name="name">attribute name</param>
 		/// <returns>attribute value</returns>
 		/// <exception cref="std::out_of_range"></exception>
-		std::string getAttribute(const std::string& name);
+		std::string getAttribute(std::string_view name);
 
 		/// <summary>
 		/// Session wrapper
@@ -129,7 +129,7 @@ namespace framework
 		/// Session wrapper
 		/// </summary>
 		/// <param name="name"></param>
-		void deleteAttribute(const std::string& name);
+		void deleteAttribute(std::string_view name);
 
 		/// <summary>
 		/// Client's cookies
@@ -152,7 +152,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, const std::string& fileName = "");
+		void sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
 
 		/**
 		* Send non dynamic file
@@ -160,7 +160,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(const std::string& filePath, HTTPResponse& response, bool isBinary = true, const std::string& fileName = "");
+		void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary = true, std::string_view fileName = "");
 
 		/**
 		* Send dynamic file(.wfdp)
@@ -169,7 +169,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, const std::string& fileName = "");
+		void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
 
 		/**
 		* Send large files
@@ -182,16 +182,16 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterDynamicFunction(const std::string& functionName);
+		void unregisterDynamicFunction(std::string_view functionName);
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isDynamicFunctionRegistered(const std::string& functionName);
+		bool isDynamicFunctionRegistered(std::string_view functionName);
 
 		/// <summary>
 		/// Getter for JSONParser

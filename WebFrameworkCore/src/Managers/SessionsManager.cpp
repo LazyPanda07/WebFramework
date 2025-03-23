@@ -70,7 +70,7 @@ namespace framework
 		thread(&SessionTime::runAsyncCheck, this).detach();
 	}
 
-	void SessionsManager::SessionTime::updateSessionTime(const string& ip)
+	void SessionsManager::SessionTime::updateSessionTime(string_view ip)
 	{
 		unique_lock<mutex> guard(checkLock);
 
@@ -90,8 +90,7 @@ namespace framework
 
 		SessionTimePoint start = chrono::high_resolution_clock::now();
 
-		ipTime[ip] = start;
-
+		ipTime.emplace(ip, start);
 		timeIp.emplace(move(start), ip);
 	}
 
@@ -101,35 +100,53 @@ namespace framework
 
 	}
 
-	void SessionsManager::setAttribute(const string& ip, const string& name, const string& value)
+	void SessionsManager::setAttribute(const string& ip, string_view name, string_view value)
 	{
 		unique_lock<mutex> guard(lock);
 
-		userSession[ip][name] = value;
+		userSession[ip].emplace(name, value);
 
 		time.updateSessionTime(ip);
 	}
 
-	string SessionsManager::getAttribute(const string& ip, const string& name)
+	string SessionsManager::getAttribute(string_view ip, string_view name)
 	{
 		unique_lock guard(lock);
 
 		time.updateSessionTime(ip);
 
-		return userSession.at(ip).at(name);
+		if (auto ipIt = userSession.find(ip); ipIt != userSession.end())
+		{
+			if (auto it = ipIt->second.find(name); it != ipIt->second.end())
+			{
+				return it->second;
+			}
+			
+			throw runtime_error(format("Wrong attribute name: {}", name));
+		}
+
+		throw runtime_error(format("Can't find ip: {}", ip));
+
+		return {};
 	}
 
-	void SessionsManager::deleteSession(const string& ip)
+	void SessionsManager::deleteSession(string_view ip)
 	{
 		unique_lock guard(lock);
 
-		userSession.erase(ip);
+		userSession.erase(userSession.find(ip));
 	}
 
-	void SessionsManager::deleteAttribute(const string& ip, const string& name)
+	void SessionsManager::deleteAttribute(string_view ip, string_view name)
 	{
 		unique_lock guard(lock);
 
-		userSession[ip].erase(name);
+		if (auto it = userSession.find(ip); it != userSession.end())
+		{
+			if (auto eraseIt = it->second.find(name); eraseIt != it->second.end())
+			{
+				it->second.erase(eraseIt);
+			}
+		}
 	}
 }

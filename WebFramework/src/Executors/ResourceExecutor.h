@@ -56,7 +56,7 @@ namespace framework
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendStaticFile(const std::string& filePath, HTTPResponse& response, bool isBinary = true, const std::string& fileName = "") override;
+		void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary = true, std::string_view fileName = "") override;
 
 		/// <summary>
 		/// Override from IDynamicFile interface
@@ -64,21 +64,21 @@ namespace framework
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendDynamicFile(const std::string& filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, const std::string& fileName = "") override;
+		void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "") override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerDynamicFunction(const std::string& functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
+		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterDynamicFunction(const std::string& functionName) override;
+		void unregisterDynamicFunction(std::string_view functionName) override;
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isDynamicFunctionRegistered(const std::string& functionName) override;
+		bool isDynamicFunctionRegistered(std::string_view functionName) override;
 
 		/// <summary>
 		/// Send file via GET request

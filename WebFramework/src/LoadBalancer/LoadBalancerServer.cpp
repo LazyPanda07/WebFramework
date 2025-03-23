@@ -129,7 +129,7 @@ namespace framework
 			serversHTTPS(serversHTTPS)
 		{
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
-			createHeuristicFunction heuristicCreateFunction = nullptr;
+			CreateHeuristicFunction heuristicCreateFunction = nullptr;
 
 			if (heuristicName == "Connections")
 			{
@@ -139,7 +139,7 @@ namespace framework
 			{
 				for (HMODULE source : loadSources)
 				{
-					if (heuristicCreateFunction = reinterpret_cast<createHeuristicFunction>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
+					if (heuristicCreateFunction = utility::load<CreateHeuristicFunction>(source, createHeuristicFunctionName); heuristicCreateFunction)
 					{
 						break;
 					}

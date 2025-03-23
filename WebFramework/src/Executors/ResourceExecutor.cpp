@@ -84,7 +84,7 @@ namespace framework
 		this->loadHTMLErrorsData();
 	}
 
-	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response, bool isBinary, const string& fileName)
+	void ResourceExecutor::sendStaticFile(string_view filePath, HTTPResponse& response, bool isBinary, string_view fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -111,7 +111,7 @@ namespace framework
 		response.addBody(move(result));
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
+	void ResourceExecutor::sendDynamicFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -140,17 +140,17 @@ namespace framework
 		response.addBody(move(result));
 	}
 
-	void ResourceExecutor::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	void ResourceExecutor::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
 		dynamicPages.registerDynamicFunction(functionName, move(function));
 	}
 
-	void ResourceExecutor::unregisterDynamicFunction(const string& functionName)
+	void ResourceExecutor::unregisterDynamicFunction(string_view functionName)
 	{
 		dynamicPages.unregisterDynamicFunction(functionName);
 	}
 
-	bool ResourceExecutor::isDynamicFunctionRegistered(const string& functionName)
+	bool ResourceExecutor::isDynamicFunctionRegistered(string_view functionName)
 	{
 		return dynamicPages.isDynamicFunctionRegistered(functionName);
 	}
@@ -172,7 +172,7 @@ namespace framework
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response, const exception* exception)
 	{
-		const string& message = HTMLErrorsData[HTMLErrors::notFound404];
+		string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
 #ifdef NDEBUG
 		response.addBody(message);
@@ -192,7 +192,7 @@ namespace framework
 
 	void ResourceExecutor::badRequestError(HTTPResponse& response, const exception* exception)
 	{
-		const string& message = HTMLErrorsData[HTMLErrors::badRequest400];
+		string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
 #ifdef NDEBUG
 		response.addBody(message);
@@ -212,7 +212,7 @@ namespace framework
 
 	void ResourceExecutor::forbiddenError(HTTPResponse& response, const std::exception* exception)
 	{
-		const string& message = HTMLErrorsData[HTMLErrors::forbidden403];
+		string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
 #ifdef NDEBUG
 		response.addBody(message);
@@ -232,7 +232,7 @@ namespace framework
 
 	void ResourceExecutor::internalServerError(HTTPResponse& response, const exception* exception)
 	{
-		const string& message = HTMLErrorsData[HTMLErrors::internalServerError500];
+		string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
 #ifdef NDEBUG
 		response.addBody(message);
