@@ -2,6 +2,7 @@
 
 #include "HTTPBuilder.h"
 #include "IOSocketStream.h"
+#include "WebNetwork/Interfaces/IHTTPResponse.h"
 
 #include "WebFrameworkCoreConstants.h"
 
@@ -11,7 +12,7 @@ namespace framework
 	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class WEB_FRAMEWORK_CORE_API HTTPResponse
+	class WEB_FRAMEWORK_CORE_API HTTPResponse : public interfaces::IHTTPResponse
 	{
 	private:
 		web::HTTPBuilder builder;
@@ -40,41 +41,27 @@ namespace framework
 		/// <para>Default is HTTP/1.1</para>
 		/// </summary>
 		/// <param name="version">full HTTP version like HTTP/1.1</param>
-		void setHTTPVersion(const std::string& version);
+		void setHTTPVersion(const char* version) override;
 
 		/// <summary>
 		/// Set HTTP response code
 		/// </summary>
 		/// <param name="code">value from web::responseCodes</param>
-		void setResponseCode(web::ResponseCodes code);
+		void setResponseCode(web::ResponseCodes code) override;
 
 		/// <summary>
 		/// Set additional HTTP header
 		/// </summary>
 		/// <param name="name">of HTTP header</param>
 		/// <param name="value">of HTTP header</param>
-		void addHeader(const std::string& name, const std::string& value);
+		void addHeader(const char* name, const char* value) override;
 
 		/// <summary>
 		/// <para>Some data with HTTP response</para>
 		/// <para>Content-Length header setting automatically</para>
 		/// </summary>
 		/// <param name="body">data</param>
-		void addBody(const std::string& body);
-
-		/// <summary>
-		/// <para>Some JSON data with HTTP response</para>
-		/// <para>Content-Length and Content-Type headers setting automatically</para>
-		/// </summary>
-		/// <param name="json">JSON data</param>
-		void addBody(const json::JSONBuilder& json);
-
-		/// <summary>
-		/// <para>Some data with HTTP response</para>
-		/// <para>Content-Length header setting automatically</para>
-		/// </summary>
-		/// <param name="body">data</param>
-		void addBody(std::string&& body) noexcept;
+		void setBody(const char* body) override;
 
 		/// <summary>
 		/// <para>Some data with HTTP response</para>
@@ -82,21 +69,21 @@ namespace framework
 		/// </summary>
 		/// <param name="body">data</param>
 		/// <returns>reference to self</returns>
-		HTTPResponse& appendBody(const std::string& body);
+		interfaces::IHTTPResponse* appendBody(const char* body) override;
 
 		/// <summary>
 		/// Add cookie to HTTP response
 		/// </summary>
 		/// <param name="name">of cookie</param>
 		/// <param name="value">of cookie</param>
-		void addCookie(const std::string& name, const std::string& value);
+		void addCookie(const char* name, const char* value) override;
 
 		/// <summary>
 		/// Clears HTTPResponse
 		/// </summary>
-		void setDefault();
+		void setDefault() override;
 
-		void setIsValid(bool isValid);
+		void setIsValid(bool isValid) override;
 
 		/**
 		* isValid getter

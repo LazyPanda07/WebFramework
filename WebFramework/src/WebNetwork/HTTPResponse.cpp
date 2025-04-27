@@ -21,7 +21,7 @@ namespace framework
 		return *this;
 	}
 
-	void HTTPResponse::setHTTPVersion(const string& version)
+	void HTTPResponse::setHTTPVersion(const char* version)
 	{
 		builder.HTTPVersion(version);
 	}
@@ -31,46 +31,29 @@ namespace framework
 		builder.responseCode(code);
 	}
 
-	void HTTPResponse::addHeader(const string& name, const string& value)
+	void HTTPResponse::addHeader(const char* name, const char* value)
 	{
-		builder.headers
-		(
-			name, value
-		);
+		builder.headers(name, value);
 	}
 
-	void HTTPResponse::addBody(const string& body)
+	void HTTPResponse::setBody(const char* body)
 	{
 		this->body = body;
 	}
 
-	void HTTPResponse::addBody(const json::JSONBuilder& json)
-	{
-		builder.headers
-		(
-			"Content-Type", "application/json"
-		);
 
-		this->body = json.build();
-	}
-
-	void HTTPResponse::addBody(string&& body) noexcept
-	{
-		this->body = move(body);
-	}
-
-	HTTPResponse& HTTPResponse::appendBody(const std::string& body)
+	interfaces::IHTTPResponse* HTTPResponse::appendBody(const char* body)
 	{
 		this->body += body;
 
-		return *this;
+		return this;
 	}
 
-	void HTTPResponse::addCookie(const std::string& name, const std::string& value)
+	void HTTPResponse::addCookie(const char* name, const char* value)
 	{
 		builder.headers
 		(
-			"Set-Cookie", name + "=" + value
+			"Set-Cookie", format("{}={}", name, value)
 		);
 	}
 

@@ -3,10 +3,12 @@
 #include "HTTPParser.h"
 
 #include "SQLite3/SQLiteManager.h"
-#include "Interfaces/IStaticFile.h"
-#include "Interfaces/IDynamicFile.h"
+#include "WebNetwork/Interfaces/IStaticFile.h"
+#include "WebNetwork/Interfaces/IDynamicFile.h"
+#include "WebNetwork/Interfaces/IHTTPRequest.h"
 #include "Utility/ChunkGenerator.h"
 #include "WebFrameworkCoreConstants.h"
+#include "IOSocketStream.h"
 
 namespace web
 {
@@ -20,21 +22,12 @@ namespace framework
 	template<typename T>
 	concept RouteParameterType = std::same_as<T, std::string> || std::same_as<T, int64_t> || std::same_as<T, double>;
 
-	struct WEB_FRAMEWORK_CORE_API LargeData
-	{
-		std::string_view dataPart;
-		size_t size;
-		bool isLastPacket;
-
-		LargeData();
-	};
-
 	/// <summary>
 	/// Parsing HTTP request
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class WEB_FRAMEWORK_CORE_API HTTPRequest
+	class WEB_FRAMEWORK_CORE_API HTTPRequest : public interfaces::IHTTPRequest
 	{
 	private:
 		SessionsManager& session;
@@ -46,7 +39,7 @@ namespace framework
 		web::HTTPParser parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
-		LargeData largeData;
+		interfaces::CLargeData largeData;
 
 	private:
 		static bool isWebFrameworkDynamicPages(std::string_view filePath);
@@ -67,50 +60,50 @@ namespace framework
 
 		HTTPRequest& operator =(const HTTPRequest&) = default;
 
-		void updateLargeData(std::string_view dataPart, size_t size);
+		void updateLargeData(const char* dataPart, size_t dataPartSize, size_t bodySize) override;
 
 		/// <summary>
 		/// Parameters string from HTTP
 		/// </summary>
 		/// <returns>HTTP parameters</returns>
-		std::string_view getRawParameters() const;
+		const char* getRawParameters() const override;
 
 		/// <summary>
 		/// HTTP request method
 		/// </summary>
 		/// <returns>HTTP method</returns>
-		std::string_view getMethod() const;
+		const char* getMethod() const override;
 
 		/// <summary>
 		/// GET parameters
 		/// </summary>
 		/// <returns>GET parameters as map</returns>
-		const std::unordered_map<std::string, std::string>& getKeyValueParameters() const;
+		const char* getKeyValueParameter(const char* key) const override;
 
 		/// <summary>
 		/// HTTP version
 		/// </summary>
 		/// <returns>HTTP version</returns>
-		std::string getHTTPVersion() const;
+		double getHTTPVersion() const override;
 
 		/// <summary>
 		/// All HTTP headers
 		/// </summary>
 		/// <returns>HTTP headers as map</returns>
-		const web::HeadersMap& getHeaders() const;
+		const char* getHeaderValue(const char* headerName) const override;
 
 		/// <summary>
 		/// HTTP request body
 		/// </summary>
 		/// <returns>HTTP request body</returns>
-		std::string_view getBody() const;
+		const char* getBody() const override;
 
 		/// <summary>
 		/// Session wrapper
 		/// </summary>
 		/// <param name="name">attribute name</param>
 		/// <param name="value">attribute value</param>
-		void setAttribute(std::string_view name, std::string_view value);
+		void setAttribute(const char* name, const char* value) override;
 
 		/// <summary>
 		/// Session wrapper
@@ -118,7 +111,9 @@ namespace framework
 		/// <param name="name">attribute name</param>
 		/// <returns>attribute value</returns>
 		/// <exception cref="std::out_of_range"></exception>
-		std::string getAttribute(std::string_view name);
+		const char* getAttribute(const char* name) override;
+
+		void deleteAttribute(const char* attribute) override;
 
 		/// <summary>
 		/// Session wrapper
@@ -129,21 +124,21 @@ namespace framework
 		/// Session wrapper
 		/// </summary>
 		/// <param name="name"></param>
-		void deleteAttribute(std::string_view name);
+		void removeAttribute(const char* name) override;
 
 		/// <summary>
 		/// Client's cookies
 		/// </summary>
 		/// <returns>HTTP cookies as map</returns>
-		web::HeadersMap getCookies() const;
+		void getCookies(void(*addCookie)(const char* key, const char* value)) const override;
 
 		/**
 		 * @brief Get data from multipart/form-data
 		 * @return
 		 */
-		const std::vector<web::Multipart>& getMultiparts() const;
+		void getMultiparts(void(*addMultipart)(const interfaces::CMultipart* part)) const override;
 
-		const LargeData& getLargeData() const;
+		const interfaces::CLargeData* getLargeData() const override;
 
 		/// <summary>
 		/// ResourceExecutor wrapper
@@ -152,7 +147,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
+		void sendAssetFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize = 0, const interfaces::CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") override;
 
 		/**
 		* Send non dynamic file
@@ -160,7 +155,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary = true, std::string_view fileName = "");
+		void sendStaticFile(const char* filePath, interfaces::IHTTPResponse* response, bool isBinary = true, const char* fileName = "") override;
 
 		/**
 		* Send dynamic file(.wfdp)
@@ -169,7 +164,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
+		void sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary = false, const char* fileName = "") override;
 
 		/**
 		* Send large files
@@ -177,51 +172,51 @@ namespace framework
 		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
 		* @param chunkSize Desired size of read data before sending
 		*/
-		void streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize = defaultChunkSize);
+		void streamFile(const char* filePath, interfaces::IHTTPResponse* response, const char* fileName, size_t chunkSize = defaultChunkSize) override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+		// void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(const char* result)) override;
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterDynamicFunction(std::string_view functionName);
+		void unregisterDynamicFunction(const char* functionName) override;
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isDynamicFunctionRegistered(std::string_view functionName);
+		bool isDynamicFunctionRegistered(const char* functionName) override;
+		
+		/**
+		 * @brief Get chunks
+		 * @return
+		 */
+		void getChunks(void(*getChunk)(const char* chunk, size_t chunkSize)) const;
 
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
 		/// <returns>JSONParser</returns>
-		const json::JSONParser& getJSON() const;
+		const char* getJSON() const override;
 
-		/**
-		 * @brief Get chunks
-		 * @return
-		 */
-		const std::vector<std::string>& getChunks() const;
-
-		/**
-		 * @brief HTTP parser getter
-		 * @return
-		 */
-		const web::HTTPParser& getParser() const;
+		const char* getRawRequest() const override;
 
 		/// <summary>
 		/// Get client's address
 		/// </summary>
 		/// <returns>client's address</returns>
-		std::string getClientIpV4() const;
+		const char* getClientIpV4() const override;
+
+		void deleteClientIpV4(const char* ip) const override;
 
 		/// <summary>
 		/// Get server's address
 		/// </summary>
 		/// <returns>server's address</returns>
-		std::string getServerIpV4() const;
+		const char* getServerIpV4() const override;
+
+		void deleteServerIpV4(const char* ip) const override;
 
 		/// <summary>
 		/// Get client's port
@@ -271,7 +266,7 @@ namespace framework
 		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendChunks(HTTPResponse& response, Args&&... args);
+		void sendChunks(interfaces::IHTTPResponse& response, Args&&... args);
 
 		/**
 		 * @brief Send file
@@ -282,7 +277,7 @@ namespace framework
 		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
+		void sendFileChunks(interfaces::IHTTPResponse& response, std::string_view fileName, Args&&... args);
 
 		/// <summary>
 		/// Reading HTTP request from network
@@ -333,13 +328,13 @@ namespace framework
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendChunks(HTTPResponse& response, Args&&... args)
+	void HTTPRequest::sendChunks(interfaces::IHTTPResponse& response, Args&&... args)
 	{
 		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
+	void HTTPRequest::sendFileChunks(interfaces::IHTTPResponse& response, std::string_view fileName, Args&&... args)
 	{
 		T generator(std::forward<Args>(args)...);
 

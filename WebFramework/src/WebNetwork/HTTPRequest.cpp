@@ -7,6 +7,7 @@
 #include "FileManager.h"
 #include "HTTPSNetwork.h"
 #include "Managers/SessionsManager.h"
+#include "HTTPResponse.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -14,13 +15,6 @@ using namespace std;
 
 namespace framework
 {
-	LargeData::LargeData() :
-		size(0),
-		isLastPacket(true)
-	{
-
-	}
-
 	bool HTTPRequest::isWebFrameworkDynamicPages(string_view filePath)
 	{
 		size_t extension = filePath.find('.');
@@ -66,51 +60,64 @@ namespace framework
 
 	}
 
-	void HTTPRequest::updateLargeData(string_view dataPart, size_t size)
+	void HTTPRequest::updateLargeData(const char* dataPart, size_t dataPartSize, size_t bodySize)
 	{
 		largeData.dataPart = dataPart;
-		largeData.size = size;
-		largeData.isLastPacket = !size;
+		largeData.dataPartSize = dataPartSize;
+		largeData.bodySize = bodySize;
+		largeData.isLastPacket = !bodySize;
 	}
 
-	string_view HTTPRequest::getRawParameters() const
+	const char* HTTPRequest::getRawParameters() const
 	{
-		return parser.getParameters();
+		return parser.getParameters().data();
 	}
 
-	string_view HTTPRequest::getMethod() const
+	const char* HTTPRequest::getMethod() const
 	{
-		return parser.getMethod();
+		return parser.getMethod().data();
 	}
 
-	const unordered_map<string, string>& HTTPRequest::getKeyValueParameters() const
+	const char* HTTPRequest::getKeyValueParameter(const char* key) const
 	{
-		return parser.getKeyValueParameters();
+		return parser.getKeyValueParameters().at(key).data();
 	}
 
-	string HTTPRequest::getHTTPVersion() const
+	double HTTPRequest::getHTTPVersion() const
 	{
-		return "HTTP/" + to_string(parser.getHTTPVersion());
+		return parser.getHTTPVersion();
 	}
 
-	const web::HeadersMap& HTTPRequest::getHeaders() const
+	const char* HTTPRequest::getHeaderValue(const char* headerName) const
 	{
-		return parser.getHeaders();
+		return parser.getHeaders().at(headerName).data();
 	}
 
-	string_view HTTPRequest::getBody() const
+	const char* HTTPRequest::getBody() const
 	{
-		return parser.getBody();
+		return parser.getBody().data();
 	}
 
-	void HTTPRequest::setAttribute(string_view name, string_view value)
+	void HTTPRequest::setAttribute(const char* name, const char* value)
 	{
 		session.setAttribute(this->getClientIpV4(), name, value);
 	}
 
-	string HTTPRequest::getAttribute(string_view name)
+	const char* HTTPRequest::getAttribute(const char* name)
 	{
-		return session.getAttribute(this->getClientIpV4(), name);
+		string temp = session.getAttribute(this->getClientIpV4(), name);
+		char* result = new char[temp.size() + 1];
+
+		temp.copy(result, temp.size());
+
+		result[temp.size()] = '\0';
+
+		return result;
+	}
+
+	void HTTPRequest::deleteAttribute(const char* attribute)
+	{
+		delete[] attribute;
 	}
 
 	void HTTPRequest::deleteSession()
@@ -118,14 +125,13 @@ namespace framework
 		session.deleteSession(this->getClientIpV4());
 	}
 
-	void HTTPRequest::deleteAttribute(string_view name)
+	void HTTPRequest::removeAttribute(const char* name)
 	{
 		session.deleteAttribute(this->getClientIpV4(), name);
 	}
 
-	web::HeadersMap HTTPRequest::getCookies() const
+	void HTTPRequest::getCookies(void(*addCookie)(const char* key, const char* value)) const
 	{
-		web::HeadersMap result;
 		const web::HeadersMap& headers = parser.getHeaders();
 
 		if (auto it = headers.find("Cookie"); it != headers.end())
@@ -142,7 +148,7 @@ namespace framework
 				string::const_iterator startValue = endKey + 1;
 				string::const_iterator endValue = findValue != string::npos ? (cookies.begin() + findValue) : (cookies.end());
 
-				result.try_emplace(string(startKey, endKey), string(startValue, endValue));
+				addCookie(string_view(startKey, endKey).data(), string_view(startValue, endValue).data());
 
 				if (findValue == string::npos)
 				{
@@ -152,38 +158,57 @@ namespace framework
 				offset = findValue + 2;
 			}
 		}
-
-		return result;
 	}
 
-	const vector<web::Multipart>& HTTPRequest::getMultiparts() const
+	void HTTPRequest::getMultiparts(void(*addMultipart)(const interfaces::CMultipart* part)) const
 	{
-		return parser.getMultiparts();
+		const vector<web::Multipart>& multiparts = parser.getMultiparts();
+
+		for (const web::Multipart& multipart : multiparts)
+		{
+			interfaces::CMultipart temp;
+
+			temp.name = multipart.getName().data();
+
+			if (const optional<string>& fileName = multipart.getFileName())
+			{
+				temp.fileName = (*fileName).data();
+			}
+
+			if (const optional<string>& contentType = multipart.getContentType())
+			{
+				temp.contentType = (*contentType).data();
+			}
+
+			temp.data = multipart.getData().data();
+
+			addMultipart(&temp);
+		}
 	}
 
-	const LargeData& HTTPRequest::getLargeData() const
+	const interfaces::CLargeData* HTTPRequest::getLargeData() const
 	{
-		return largeData;
+		return &largeData;
 	}
 
-	void HTTPRequest::sendAssetFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
+	void HTTPRequest::sendAssetFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		HTTPRequest::isWebFrameworkDynamicPages(filePath) ?
-			this->sendDynamicFile(filePath, response, variables, isBinary, fileName) :
+			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
-	void HTTPRequest::sendStaticFile(string_view filePath, HTTPResponse& response, bool isBinary, string_view fileName)
+	void HTTPRequest::sendStaticFile(const char* filePath, interfaces::IHTTPResponse* response, bool isBinary, const char* fileName)
 	{
-		staticResources.sendStaticFile(filePath, response, isBinary, fileName);
+		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
 	}
 
-	void HTTPRequest::sendDynamicFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
+	void HTTPRequest::sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
-		dynamicResources.sendDynamicFile(filePath, response, variables, isBinary, fileName);
+		dynamicResources.sendDynamicFile(filePath, *response, variablesSize, variables, isBinary, fileName);
 	}
 
-	void HTTPRequest::streamFile(string_view filePath, HTTPResponse& response, string_view fileName, size_t chunkSize)
+	void HTTPRequest::streamFile(const char* filePath, interfaces::IHTTPResponse* response, const char* fileName, size_t chunkSize)
 	{
 		filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
 		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
@@ -205,7 +230,7 @@ namespace framework
 			).
 			responseCode(web::ResponseCodes::ok);
 
-		response.setIsValid(false);
+		response->setIsValid(false);
 
 #pragma warning(push)
 #pragma warning(disable: 26800)
@@ -258,44 +283,68 @@ namespace framework
 		}
 	}
 
-	void HTTPRequest::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
+	/*void HTTPRequest::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
-		dynamicResources.registerDynamicFunction(functionName, move(function));
-	}
+		dynamicResources.registerDynamicFunction(functionName, function);
+	}*/
 
-	void HTTPRequest::unregisterDynamicFunction(string_view functionName)
+	void HTTPRequest::unregisterDynamicFunction(const char* functionName)
 	{
 		dynamicResources.unregisterDynamicFunction(functionName);
 	}
 
-	bool HTTPRequest::isDynamicFunctionRegistered(string_view functionName)
+	bool HTTPRequest::isDynamicFunctionRegistered(const char* functionName)
 	{
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}
 
-	const json::JSONParser& HTTPRequest::getJSON() const
+	void HTTPRequest::getChunks(void(*getChunk)(const char* chunk, size_t chunkSize)) const
 	{
-		return parser.getJSON();
+		ranges::for_each(parser.getChunks(), [getChunk](const string& chunk) { getChunk(chunk.data(), chunk.size()); });
 	}
 
-	const vector<string>& HTTPRequest::getChunks() const
+	const char* HTTPRequest::getJSON() const
 	{
-		return parser.getChunks();
+		return parser.getJSON().getRawData().data();
 	}
 
-	const web::HTTPParser& HTTPRequest::getParser() const
+	const char* HTTPRequest::getRawRequest() const
 	{
-		return parser;
+		return parser.getRawData().data();
 	}
 
-	string HTTPRequest::getClientIpV4() const
+	const char* HTTPRequest::getClientIpV4() const
 	{
-		return web::BaseTCPServer::getClientIpV4(clientAddr);
+		string ip = web::BaseTCPServer::getClientIpV4(clientAddr);
+		char* result = new char[ip.size() + 1];
+
+		ip.copy(result, ip.size());
+
+		result[ip.size()] = '\0';
+
+		return result;
 	}
 
-	string HTTPRequest::getServerIpV4() const
+	void HTTPRequest::deleteClientIpV4(const char* ip) const
 	{
-		return serverReference.getServerIpV4();
+		delete[] ip;
+	}
+
+	const char* HTTPRequest::getServerIpV4() const
+	{
+		string ip = serverReference.getServerIpV4();
+		char* result = new char[ip.size() + 1];
+
+		ip.copy(result, ip.size());
+
+		result[ip.size()] = '\0';
+
+		return result;
+	}
+
+	void HTTPRequest::deleteServerIpV4(const char* ip) const
+	{
+		delete[] ip;
 	}
 
 	uint16_t HTTPRequest::getClientPort() const

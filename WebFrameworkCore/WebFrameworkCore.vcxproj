@@ -102,10 +102,9 @@
     <ClInclude Include="src\SQLite3\SQLiteResult.h" />
     <ClInclude Include="src\Utility\ChunkGenerator.h" />
     <ClInclude Include="src\WebFrameworkCoreConstants.h" />
-    <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
-    <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
+    <ClInclude Include="src\WebNetwork\Interfaces\IHTTPRequest.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
   </ItemGroup>
   <ItemGroup>
@@ -117,8 +116,7 @@
     <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteManager.cpp" />
     <ClCompile Include="src\SQLite3\SQLiteResult.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
+    <ClCompile Include="src\WebNetwork\Interfaces\IHTTPResponse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

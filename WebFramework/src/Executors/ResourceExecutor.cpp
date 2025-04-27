@@ -84,7 +84,7 @@ namespace framework
 		this->loadHTMLErrorsData();
 	}
 
-	void ResourceExecutor::sendStaticFile(string_view filePath, HTTPResponse& response, bool isBinary, string_view fileName)
+	void ResourceExecutor::sendStaticFile(string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, string_view fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -111,7 +111,7 @@ namespace framework
 		response.addBody(move(result));
 	}
 
-	void ResourceExecutor::sendDynamicFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
+	void ResourceExecutor::sendDynamicFile(string_view filePath, interfaces::IHTTPResponse& response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, string_view fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -140,10 +140,10 @@ namespace framework
 		response.addBody(move(result));
 	}
 
-	void ResourceExecutor::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
+	/*void ResourceExecutor::registerDynamicFunction(const string& functionName, const char* (*function)(const char** arguments, size_t argumentsNumber))
 	{
-		dynamicPages.registerDynamicFunction(functionName, move(function));
-	}
+		dynamicPages.registerDynamicFunction(functionName, function);
+	}*/
 
 	void ResourceExecutor::unregisterDynamicFunction(string_view functionName)
 	{

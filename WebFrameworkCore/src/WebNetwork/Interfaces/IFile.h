@@ -4,16 +4,13 @@
 
 #include "WebFrameworkCoreConstants.h"
 
-namespace framework
+namespace framework::interfaces
 {
-	namespace interfaces
+	class WEB_FRAMEWORK_CORE_API IFile
 	{
-		class WEB_FRAMEWORK_CORE_API IFile
-		{
-		public:
-			virtual const std::filesystem::path& getPathToAssets() const = 0;
+	public:
+		virtual const std::filesystem::path& getPathToAssets() const = 0;
 
-			virtual ~IFile() = default;
-		};
-	}
+		virtual ~IFile() = default;
+	};
 }

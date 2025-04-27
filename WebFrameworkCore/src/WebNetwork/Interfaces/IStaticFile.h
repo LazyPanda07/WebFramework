@@ -1,21 +1,18 @@
 #pragma once
 
 #include "IFile.h"
-#include "WebNetwork/HTTPResponse.h"
+#include "IHTTPResponse.h"
 
-namespace framework
+namespace framework::interfaces
 {
-	namespace interfaces
+	class WEB_FRAMEWORK_CORE_API IStaticFile : virtual public IFile
 	{
-		class WEB_FRAMEWORK_CORE_API IStaticFile : virtual public IFile
-		{
-		public:
-			/**
-			* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
-			*/
-			virtual void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary, std::string_view fileName) = 0;
+	public:
+		/**
+		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
+		*/
+		virtual void sendStaticFile(std::string_view filePath, IHTTPResponse& response, bool isBinary, std::string_view fileName) = 0;
 
-			virtual ~IStaticFile() = default;
-		};
-	}
+		virtual ~IStaticFile() = default;
+	};
 }
