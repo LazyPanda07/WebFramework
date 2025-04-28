@@ -97,6 +97,8 @@
     <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
+    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
+    <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\c_api\executors_c_api.h" />
@@ -110,6 +112,8 @@
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="src\ExecutorsConstants.h" />
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
+    <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
+    <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">

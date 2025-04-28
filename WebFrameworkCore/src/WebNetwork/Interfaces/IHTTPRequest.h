@@ -49,9 +49,9 @@ namespace framework::interfaces
 		const char* name;
 		const char* value;
 
-		CVariable() :
-			name(nullptr),
-			value(nullptr)
+		CVariable(const char* name = nullptr, const char* value = nullptr) :
+			name(name),
+			value(value)
 		{
 
 		}
@@ -68,11 +68,15 @@ namespace framework::interfaces
 
 		virtual const char* getMethod() const = 0;
 
+		virtual void getKeyValueParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
+
 		virtual const char* getKeyValueParameter(const char* key) const = 0;
 
 		virtual double getHTTPVersion() const = 0;
 
-		virtual const char* getHeaderValue(const char* headerName) const = 0;
+		virtual void getHeaders(void(*addHeader)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
+
+		virtual const char* getHeaderValue(const char* headerName, bool throwException = true) const = 0;
 
 		virtual const char* getBody() const = 0;
 
@@ -86,9 +90,9 @@ namespace framework::interfaces
 
 		virtual void removeAttribute(const char* name) = 0;
 
-		virtual void getCookies(void(*addCookie)(const char* key, const char* value)) const = 0;
+		virtual void getCookies(void(*addCookie)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
 
-		virtual void getMultiparts(void(*addMultipart)(const CMultipart* part)) const = 0;
+		virtual void getMultiparts(void(*addMultipart)(const CMultipart* part, void* additionalData), void* additionalData) const = 0;
 
 		virtual const CLargeData* getLargeData() const = 0;
 
@@ -106,7 +110,7 @@ namespace framework::interfaces
 
 		virtual bool isDynamicFunctionRegistered(const char* functionName) = 0;
 
-		virtual void getChunks(void(*getChunk)(const char* chunk, size_t chunkSize)) const = 0;
+		virtual void getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const = 0;
 
 		virtual const char* getJSON() const = 0;
 

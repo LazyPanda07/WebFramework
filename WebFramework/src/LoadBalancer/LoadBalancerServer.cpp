@@ -6,6 +6,7 @@
 
 #include "Utility/Sources.h"
 #include "Heuristics/Connections.h"
+#include "WebNetwork/HTTPResponseImplementation.h"
 
 using namespace std;
 
@@ -88,9 +89,10 @@ namespace framework
 
 				if (serverStream.eof())
 				{
-					HTTPResponse errorResponse;
+					HTTPResponseImplementation errorResponse;
+					HTTPResponse wrapper(&errorResponse);
 
-					resources->internalServerError(errorResponse, nullptr);
+					resources->internalServerError(wrapper, nullptr);
 
 					clientStream << errorResponse;
 

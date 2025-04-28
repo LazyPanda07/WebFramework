@@ -254,8 +254,8 @@
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
+    <ClCompile Include="src\WebNetwork\HTTPRequestImplementation.cpp" />
+    <ClCompile Include="src\WebNetwork\HTTPResponseImplementation.cpp" />
     <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp" />
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
@@ -304,8 +304,8 @@
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
     <ClInclude Include="src\Utility\BaseConnectionData.h" />
     <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
-    <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
-    <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
+    <ClInclude Include="src\WebNetwork\HTTPRequestImplementation.h" />
+    <ClInclude Include="src\WebNetwork\HTTPResponseImplementation.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h" />
     <ClInclude Include="src\Import\WebFrameworkConstants.h" />
     <ClInclude Include="src\Import\WebFramework.h" />

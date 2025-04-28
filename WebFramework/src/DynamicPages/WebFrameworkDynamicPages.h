@@ -18,7 +18,7 @@ namespace framework
 		};
 
 	private:
-		utility::strings::string_based_unordered_map<std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
+		::utility::strings::string_based_unordered_map<std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
 		const std::filesystem::path pathToTemplates;
 
 	private:

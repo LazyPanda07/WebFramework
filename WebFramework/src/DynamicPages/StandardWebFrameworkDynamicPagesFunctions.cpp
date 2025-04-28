@@ -45,7 +45,7 @@ namespace framework
 		return result;
 	}
 
-	string forWFDP(const vector<string>& arguments, const unordered_map<string, function<string(const vector<string>&)>>& dynamicPagesFunctions)
+	string forWFDP(const vector<string>& arguments, const utility::strings::string_based_unordered_map<function<string(const vector<string>&)>>& dynamicPagesFunctions)
 	{
 		int64_t start = stoll(arguments[0]);
 		int64_t end = stoll(arguments[1]);

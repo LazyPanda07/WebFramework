@@ -8,11 +8,13 @@ namespace framework::utility
 {
 	bool BaseLargeBodyHandler::handleChunk(string_view data, size_t bodySize)
 	{
-		request->updateLargeData(data, bodySize);
+		request->updateLargeData(data.data(), data.size(), bodySize);
 
 		try
 		{
-			invoke(method, executor, *request, response);
+			// TODO: invoke
+
+			// invoke(method, executor, *request, response);
 		}
 		catch (const exception& e)
 		{
@@ -29,14 +31,15 @@ namespace framework::utility
 
 	void BaseLargeBodyHandler::onParseHeaders()
 	{
-		request = make_unique<HTTPRequest>(sessionsManager, serverReference, staticResources, dynamicResources, database, clientAddr, stream);
+		request = make_unique<HTTPRequestImplementation>(sessionsManager, serverReference, staticResources, dynamicResources, database, clientAddr, stream);
 		response.setDefault();
 
 		response.setIsValid(false);
 
-		const_cast<web::HTTPParser&>(request->getParser()) = parser;
+		request->setParser(parser);
 
-		executor = executorsManager.getOrCreateExecutor(*request, response, statefulExecutors);
+		// TOOD: getOrCreate
+		// executor = executorsManager.getOrCreateExecutor(*request, response, statefulExecutors);
 		method = BaseExecutor::getMethod(parser.getMethod());
 	}
 

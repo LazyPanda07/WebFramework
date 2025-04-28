@@ -2,6 +2,7 @@
 
 #include "JSONArrayWrapper.h"
 #include "HTTPSNetwork.h"
+#include "IOSocketStream.h"
 
 #include "Exceptions/SSLException.h"
 

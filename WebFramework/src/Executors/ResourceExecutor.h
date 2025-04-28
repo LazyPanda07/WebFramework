@@ -80,6 +80,8 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(std::string_view functionName) override;
 
+		const std::filesystem::path& getPathToAssets() const final override;
+
 		/// <summary>
 		/// Send file via GET request
 		/// </summary>
@@ -95,32 +97,30 @@ namespace framework
 		/// <param name="response">response with asset file</param>
 		void doPost(HTTPRequest& request, HTTPResponse& response) override;
 
-		const std::filesystem::path& getPathToAssets() const final override;
-
 		/// <summary>
 		/// Send 404.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void notFoundError(HTTPResponse& response, const std::exception* exception);
+		void notFoundError(HTTPResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 400.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badRequestError(HTTPResponse& response, const std::exception* exception);
+		void badRequestError(HTTPResponse& response, const std::exception* exception = nullptr);
 
 		/**
 		 * @brief Send 403.html from WebFrameworkAssets
 		 * @param response Response with error file
 		 * @param exception
 		 */
-		void forbiddenError(HTTPResponse& response, const std::exception* exception);
+		void forbiddenError(HTTPResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 500.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void internalServerError(HTTPResponse& response, const std::exception* exception);
+		void internalServerError(HTTPResponse& response, const std::exception* exception = nullptr);
 
 		bool getIsCaching() const;
 

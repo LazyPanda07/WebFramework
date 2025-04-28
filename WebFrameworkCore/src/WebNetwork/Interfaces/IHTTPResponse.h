@@ -27,6 +27,8 @@ namespace framework::interfaces
 
 		virtual void setIsValid(bool isValid) = 0;
 
+		virtual bool getIsValid() const = 0;
+
 		virtual ~IHTTPResponse() = default;
 	};
 }

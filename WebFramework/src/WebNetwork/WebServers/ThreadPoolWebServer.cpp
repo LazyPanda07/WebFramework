@@ -62,8 +62,10 @@ namespace framework
 
 		try
 		{
-			HTTPRequest request(sessionsManager, server, staticResources, dynamicResources, databaseManager, address, stream);
-			HTTPResponse response;
+			HTTPRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, databaseManager, address, stream);
+			HTTPResponseImplementation response;
+			HTTPRequest requestWrapper(&request);
+			HTTPResponse responseWrapper(&response);
 
 			stream >> request;
 
@@ -77,7 +79,7 @@ namespace framework
 				return false;
 			}
 
-			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(request, response, statefulExecutors);
+			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, statefulExecutors);
 
 			if (threadPoolFunction)
 			{
@@ -87,9 +89,12 @@ namespace framework
 				(
 					[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
 					{
+						HTTPRequest requestWrapper(&request);
+						HTTPResponse responseWrapper(&response);
+
 						try
 						{
-							(*threadPoolFunction)(request, response);
+							(*threadPoolFunction)(requestWrapper, responseWrapper);
 
 							if (response)
 							{
@@ -107,37 +112,37 @@ namespace framework
 						}
 						catch (const exceptions::BadRequestException& e) // 400
 						{
-							resourceExecutor.badRequestError(response, &e);
+							resourceExecutor.badRequestError(responseWrapper, &e);
 
 							stream << response;
 						}
 						catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 						{
-							resourceExecutor.notFoundError(response, &e);
+							resourceExecutor.notFoundError(responseWrapper, &e);
 
 							stream << response;
 						}
 						catch (const exceptions::NotFoundException& e) // 404
 						{
-							resourceExecutor.notFoundError(response, &e);
+							resourceExecutor.notFoundError(responseWrapper, &e);
 
 							stream << response;
 						}
 						catch (const exceptions::BaseExecutorException& e) // 500
 						{
-							resourceExecutor.internalServerError(response, &e);
+							resourceExecutor.internalServerError(responseWrapper, &e);
 
 							stream << response;
 						}
 						catch (const exception& e)
 						{
-							resourceExecutor.internalServerError(response, &e);
+							resourceExecutor.internalServerError(responseWrapper, &e);
 
 							stream << response;
 						}
 						catch (...) // 500
 						{
-							resourceExecutor.internalServerError(response, nullptr);
+							resourceExecutor.internalServerError(responseWrapper, nullptr);
 
 							stream << response;
 						}
@@ -166,49 +171,55 @@ namespace framework
 		}
 		catch (const exceptions::BadRequestException& e) // 400
 		{
-			HTTPResponse response;
+			HTTPResponseImplementation response;
+			HTTPResponse responseWrapper(&response);
 
-			resourceExecutor.badRequestError(response, &e);
+			resourceExecutor.badRequestError(responseWrapper, &e);
 
 			stream << response;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
-			HTTPResponse response;
+			HTTPResponseImplementation response;
+			HTTPResponse responseWrapper(&response);
 
-			resourceExecutor.notFoundError(response, &e);
+			resourceExecutor.notFoundError(responseWrapper, &e);
 
 			stream << response;
 		}
 		catch (const exceptions::NotFoundException& e) // 404
 		{
-			HTTPResponse response;
+			HTTPResponseImplementation response;
+			HTTPResponse responseWrapper(&response);
 
-			resourceExecutor.notFoundError(response, &e);
+			resourceExecutor.notFoundError(responseWrapper, &e);
 
 			stream << response;
 		}
 		catch (const exceptions::BaseExecutorException& e) // 500
 		{
-			HTTPResponse response;
+			HTTPResponseImplementation response;
+			HTTPResponse responseWrapper(&response);
 
-			resourceExecutor.internalServerError(response, &e);
+			resourceExecutor.internalServerError(responseWrapper, &e);
 
 			stream << response;
 		}
 		catch (const exception& e)
 		{
-			HTTPResponse response;
+			HTTPResponseImplementation response;
+			HTTPResponse responseWrapper(&response);
 
-			resourceExecutor.internalServerError(response, &e);
+			resourceExecutor.internalServerError(responseWrapper, &e);
 
 			stream << response;
 		}
 		catch (...) // 500
 		{
-			HTTPResponse response;
+			HTTPResponseImplementation response;
+			HTTPResponse responseWrapper(&response);
 
-			resourceExecutor.internalServerError(response, nullptr);
+			resourceExecutor.internalServerError(responseWrapper, nullptr);
 
 			stream << response;
 		}

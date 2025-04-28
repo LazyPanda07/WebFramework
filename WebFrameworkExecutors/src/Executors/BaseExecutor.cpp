@@ -1,5 +1,7 @@
 #include "BaseExecutor.h"
 
+#include "Strings.h"
+
 using namespace std;
 
 static void isImplemented
@@ -13,9 +15,9 @@ static void isImplemented
 
 namespace framework
 {
-	void (BaseExecutor::* BaseExecutor::getMethod(const string& methodName))(HTTPRequest&, HTTPResponse&)
+	void (BaseExecutor::* BaseExecutor::getMethod(string_view methodName))(HTTPRequest&, HTTPResponse&)
 	{
-		static const unordered_map<string, void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> methods =
+		static const ::utility::strings::string_based_unordered_map<void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> methods =
 		{
 			{ "GET", &BaseExecutor::doGet },
 			{ "POST", &BaseExecutor::doPost },
@@ -28,7 +30,7 @@ namespace framework
 			{ "CONNECT", &BaseExecutor::doConnect }
 		};
 
-		return methods.at(methodName);
+		return methods.find(methodName)->second;
 	}
 
 	void BaseExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
@@ -103,7 +105,7 @@ namespace framework
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 #endif
 
-		response.addBody(request.getParser().getRawData());
+		response.setBody(request.getRawRequest());
 	}
 
 	void BaseExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
@@ -121,7 +123,8 @@ inline void isImplemented
 	framework::BaseExecutor& executor
 )
 {
-	framework::HTTPResponse response;
+	// TODO: isImplemented
+	/*framework::HTTPResponse response;
 
 	try
 	{
@@ -130,11 +133,11 @@ inline void isImplemented
 		result.push_back(methodName);
 	}
 	catch (const framework::exceptions::NotImplementedException&)
-	{ //-V565
+	{
 
 	}
 	catch (...)
 	{
 		result.push_back(methodName);
-	}
+	}*/
 }

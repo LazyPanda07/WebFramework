@@ -30,7 +30,7 @@ namespace framework
 		};
 
 	public:
-		static void (BaseExecutor::* getMethod(const std::string& methodName))(HTTPRequest&, HTTPResponse&);
+		static void (BaseExecutor::* getMethod(std::string_view methodName))(HTTPRequest&, HTTPResponse&);
 
 	public:
 		BaseExecutor() = default;

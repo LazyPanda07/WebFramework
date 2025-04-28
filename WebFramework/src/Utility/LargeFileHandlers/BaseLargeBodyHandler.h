@@ -8,6 +8,7 @@
 #include "Managers/ExecutorsManager.h"
 #include "WebNetwork/Interfaces/IStaticFile.h"
 #include "WebNetwork/Interfaces/IDynamicFile.h"
+#include "WebNetwork/HTTPRequestImplementation.h"
 
 namespace framework::utility
 {
@@ -23,8 +24,8 @@ namespace framework::utility
 		streams::IOSocketStream& stream;
 		ExecutorsManager& executorsManager;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors;
-		std::unique_ptr<HTTPRequest> request;
-		HTTPResponse response;
+		std::unique_ptr<HTTPRequestImplementation> request;
+		HTTPResponseImplementation response;
 		BaseExecutor* executor;
 		void(BaseExecutor::* method)(HTTPRequest&, HTTPResponse&);
 

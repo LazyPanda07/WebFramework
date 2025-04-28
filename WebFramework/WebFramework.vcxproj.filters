@@ -102,10 +102,10 @@
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp">
+    <ClCompile Include="src\WebNetwork\HTTPRequestImplementation.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\HTTPResponse.cpp">
+    <ClCompile Include="src\WebNetwork\HTTPResponseImplementation.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,10 +206,10 @@
     <ClInclude Include="src\Utility\AdditionalServerSettings.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\HTTPResponse.h">
+    <ClInclude Include="src\WebNetwork\HTTPResponseImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\HTTPRequest.h">
+    <ClInclude Include="src\WebNetwork\HTTPRequestImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

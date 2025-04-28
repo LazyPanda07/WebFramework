@@ -65,7 +65,8 @@ namespace framework
 			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
 			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
 		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
-		HTTPResponse response;
+		HTTPResponseImplementation response;
+		HTTPResponse responseWrapper(&response);
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
 
 		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, addr, stream, executorsManager, statefulExecutors);
@@ -77,7 +78,7 @@ namespace framework
 		{
 			try
 			{
-				HTTPRequest request(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
+				HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
 
 				response.setDefault();
 
@@ -93,7 +94,9 @@ namespace framework
 					break;
 				}
 
-				executorsManager.service(request, response, statefulExecutors);
+				HTTPRequest requestWrapper(&request);
+
+				executorsManager.service(requestWrapper, responseWrapper, statefulExecutors);
 
 				if (response)
 				{
@@ -116,37 +119,37 @@ namespace framework
 			}
 			catch (const exceptions::BadRequestException& e) // 400
 			{
-				resources->badRequestError(response, &e);
+				resources->badRequestError(responseWrapper, &e);
 
 				stream << response;
 			}
 			catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 			{
-				resources->notFoundError(response, &e);
+				resources->notFoundError(responseWrapper, &e);
 
 				stream << response;
 			}
 			catch (const exceptions::NotFoundException& e) // 404
 			{
-				resources->notFoundError(response, &e);
+				resources->notFoundError(responseWrapper, &e);
 
 				stream << response;
 			}
 			catch (const exceptions::BaseExecutorException& e) // 500
 			{
-				resources->internalServerError(response, &e);
+				resources->internalServerError(responseWrapper, &e);
 
 				stream << response;
 			}
 			catch (const exception& e)
 			{
-				resources->internalServerError(response, &e);
+				resources->internalServerError(responseWrapper, &e);
 
 				stream << response;
 			}
 			catch (...)	// 500
 			{
-				resources->internalServerError(response, nullptr);
+				resources->internalServerError(responseWrapper, nullptr);
 
 				stream << response;
 			}

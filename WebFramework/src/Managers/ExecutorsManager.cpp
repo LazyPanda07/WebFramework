@@ -42,17 +42,19 @@ namespace framework
 		{
 			endParameter = parameters.find('/', startParameter);
 
+			// TODO: routeParameters
+
 			switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[i]].index()))
 			{
 			case utility::RouteParameters::routeParametersType::stringTypeIndex:
-				request.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
+				// request.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
 
 				break;
 
 			case utility::RouteParameters::routeParametersType::integerTypeIndex:
 				try
 				{
-					request.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
+					// request.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const invalid_argument&)
 				{
@@ -68,7 +70,7 @@ namespace framework
 			case utility::RouteParameters::routeParametersType::doubleTypeIndex:
 				try
 				{
-					request.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
+					// request.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const invalid_argument&)
 				{
@@ -291,7 +293,7 @@ namespace framework
 				}
 			}
 
-			string parameters = request.getRawParameters();
+			string parameters(request.getRawParameters());
 			BaseExecutor* executor = nullptr;
 			bool fileRequest = ExecutorsManager::isFileRequest(parameters);
 

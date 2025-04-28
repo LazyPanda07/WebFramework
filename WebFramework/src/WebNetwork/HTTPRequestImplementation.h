@@ -9,10 +9,17 @@
 #include "Utility/ChunkGenerator.h"
 #include "WebFrameworkCoreConstants.h"
 #include "IOSocketStream.h"
+#include "HTTPBuilder.h"
+#include "HTTPResponseImplementation.h"
 
 namespace web
 {
 	class BaseTCPServer;
+}
+
+namespace framework::utility
+{
+	class BaseLargeBodyHandler;
 }
 
 namespace framework
@@ -27,7 +34,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class WEB_FRAMEWORK_CORE_API HTTPRequest : public interfaces::IHTTPRequest
+	class WEB_FRAMEWORK_CORE_API HTTPRequestImplementation : public interfaces::IHTTPRequest
 	{
 	private:
 		SessionsManager& session;
@@ -46,19 +53,22 @@ namespace framework
 
 		static void logWebFrameworkModelsError(std::string_view typeName);
 
+	private:
+		void setParser(const web::HTTPParser& parser);
+
 	public:
 		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
 
 	public:
-		HTTPRequest(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream);
+		HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream);
 
-		HTTPRequest(HTTPRequest&&) noexcept = default;
+		HTTPRequestImplementation(HTTPRequestImplementation&&) noexcept = default;
 
-		HTTPRequest(const HTTPRequest&) = default;
+		HTTPRequestImplementation(const HTTPRequestImplementation&) = default;
 
-		HTTPRequest& operator =(HTTPRequest&&) noexcept = default;
+		HTTPRequestImplementation& operator =(HTTPRequestImplementation&&) noexcept = default;
 
-		HTTPRequest& operator =(const HTTPRequest&) = default;
+		HTTPRequestImplementation& operator =(const HTTPRequestImplementation&) = default;
 
 		void updateLargeData(const char* dataPart, size_t dataPartSize, size_t bodySize) override;
 
@@ -74,6 +84,8 @@ namespace framework
 		/// <returns>HTTP method</returns>
 		const char* getMethod() const override;
 
+		void getKeyValueParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
+
 		/// <summary>
 		/// GET parameters
 		/// </summary>
@@ -86,11 +98,13 @@ namespace framework
 		/// <returns>HTTP version</returns>
 		double getHTTPVersion() const override;
 
+		void getHeaders(void(*addHeader)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
+
 		/// <summary>
 		/// All HTTP headers
 		/// </summary>
 		/// <returns>HTTP headers as map</returns>
-		const char* getHeaderValue(const char* headerName) const override;
+		const char* getHeaderValue(const char* headerName, bool throwException = true) const override;
 
 		/// <summary>
 		/// HTTP request body
@@ -130,13 +144,13 @@ namespace framework
 		/// Client's cookies
 		/// </summary>
 		/// <returns>HTTP cookies as map</returns>
-		void getCookies(void(*addCookie)(const char* key, const char* value)) const override;
+		void getCookies(void(*addCookie)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
 
 		/**
 		 * @brief Get data from multipart/form-data
 		 * @return
 		 */
-		void getMultiparts(void(*addMultipart)(const interfaces::CMultipart* part)) const override;
+		void getMultiparts(void(*addMultipart)(const interfaces::CMultipart* part, void* additionalData), void* additionalData) const override;
 
 		const interfaces::CLargeData* getLargeData() const override;
 
@@ -192,7 +206,7 @@ namespace framework
 		 * @brief Get chunks
 		 * @return
 		 */
-		void getChunks(void(*getChunk)(const char* chunk, size_t chunkSize)) const;
+		void getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const override;
 
 		/// <summary>
 		/// Getter for JSONParser
@@ -286,7 +300,7 @@ namespace framework
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
 		/// <exception cref="web::WebException"></exception>
-		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequest& request);
+		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequestImplementation& request);
 
 		/// <summary>
 		/// Logging operator
@@ -294,21 +308,22 @@ namespace framework
 		/// <param name="stream">any output source</param>
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
-		friend std::ostream& operator << (std::ostream& stream, const HTTPRequest& request);
+		friend std::ostream& operator << (std::ostream& stream, const HTTPRequestImplementation& request);
 
-		~HTTPRequest() = default;
+		~HTTPRequestImplementation() = default;
 
 		friend class ExecutorsManager;
+		friend class utility::BaseLargeBodyHandler;
 	};
 
 	template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
-	std::shared_ptr<T> HTTPRequest::createModel(Args&&... args)
+	std::shared_ptr<T> HTTPRequestImplementation::createModel(Args&&... args)
 	{
 		return database.add<T>(std::forward<Args>(args)...);
 	}
 
 	template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
-	std::shared_ptr<T> HTTPRequest::getModel() const
+	std::shared_ptr<T> HTTPRequestImplementation::getModel() const
 	{
 		std::shared_ptr<T> result = database.get<T>();
 
@@ -321,26 +336,26 @@ namespace framework
 		}
 		else if (!result)
 		{
-			HTTPRequest::logWebFrameworkModelsError(typeid(T).name());
+			HTTPRequestImplementation::logWebFrameworkModelsError(typeid(T).name());
 		}
 
 		return result;
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendChunks(interfaces::IHTTPResponse& response, Args&&... args)
+	void HTTPRequestImplementation::sendChunks(interfaces::IHTTPResponse& response, Args&&... args)
 	{
 		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendFileChunks(interfaces::IHTTPResponse& response, std::string_view fileName, Args&&... args)
+	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse& response, std::string_view fileName, Args&&... args)
 	{
 		T generator(std::forward<Args>(args)...);
 
 		web::HTTPBuilder builder = web::HTTPBuilder().chunk(generator.generate()).partialChunks().responseCode(web::ResponseCodes::ok).headers
 		(
-			"Date", HTTPResponse::getFullDate(),
+			"Date", HTTPResponseImplementation::getFullDate(),
 			"Server", "WebFramework-Server",
 			"Connection", "keep-alive"
 		);

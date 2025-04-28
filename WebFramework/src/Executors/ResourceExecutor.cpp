@@ -105,10 +105,10 @@ namespace framework
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName));
+			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		response.addBody(move(result));
+		response.setBody(result.data());
 	}
 
 	void ResourceExecutor::sendDynamicFile(string_view filePath, interfaces::IHTTPResponse& response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, string_view fileName)
@@ -130,14 +130,15 @@ namespace framework
 			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
 		}
 
-		dynamicPages.run(variables, result);
+		// TODO: Dynamic pages
+		// dynamicPages.run(variables, result);
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName));
+			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		response.addBody(move(result));
+		response.setBody(result.data());
 	}
 
 	/*void ResourceExecutor::registerDynamicFunction(const string& functionName, const char* (*function)(const char** arguments, size_t argumentsNumber))
@@ -155,6 +156,11 @@ namespace framework
 		return dynamicPages.isDynamicFunctionRegistered(functionName);
 	}
 
+	const filesystem::path& ResourceExecutor::getPathToAssets() const
+	{
+		return assets;
+	}
+
 	void ResourceExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
 		request.sendAssetFile(request.getRawParameters(), response);
@@ -163,11 +169,6 @@ namespace framework
 	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response) //-V524
 	{
 		request.sendAssetFile(request.getRawParameters(), response);
-	}
-
-	const filesystem::path& ResourceExecutor::getPathToAssets() const
-	{
-		return assets;
 	}
 
 	void ResourceExecutor::notFoundError(HTTPResponse& response, const exception* exception)
@@ -179,11 +180,11 @@ namespace framework
 #else
 		if (exception)
 		{
-			response.addBody(format("{} Exception: {}", message, exception->what()));
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
-			response.addBody(message);
+			response.setBody(message.data());
 		}
 #endif
 
@@ -199,11 +200,11 @@ namespace framework
 #else
 		if (exception)
 		{
-			response.addBody(format("{} Exception: {}", message, exception->what()));
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
-			response.addBody(message);
+			response.setBody(message.data());
 		}
 #endif
 
@@ -219,11 +220,11 @@ namespace framework
 #else
 		if (exception)
 		{
-			response.addBody(format("{} Exception: {}", message, exception->what()));
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
-			response.addBody(message);
+			response.setBody(message.data());
 		}
 #endif
 
@@ -239,11 +240,11 @@ namespace framework
 #else
 		if (exception)
 		{
-			response.addBody(format("{} Exception: {}", message, exception->what()));
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
-			response.addBody(message);
+			response.setBody(message.data());
 		}
 #endif
 
