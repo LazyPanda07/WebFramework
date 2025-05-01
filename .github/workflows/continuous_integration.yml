@@ -115,7 +115,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}DLL_Windows
+        name: ${{ matrix.configuration }}_Windows
         path: WebFrameworkLibrary
 
     - name: Get Google Test
@@ -168,7 +168,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}DLL_Linux
+        name: ${{ matrix.configuration }}_Linux
         path: WebFrameworkLibrary
         
     - name: Build tests
@@ -212,7 +212,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}DLL_Windows
+        name: ${{ matrix.configuration }}_Windows
         path: WebFrameworkLibrary
 
     - name: Get Google Test
@@ -258,7 +258,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}DLL_Linux
+        name: ${{ matrix.configuration }}_Linux
         path: WebFrameworkLibrary
         
     - name: Build tests
@@ -295,7 +295,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ReleaseDLL_Windows
+          name: Release_Windows
           path: WebFrameworkLibrary
 
       - name: Download tests artifacts
@@ -331,7 +331,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ReleaseDLL_Linux
+          name: Release_Linux
           path: WebFrameworkLibrary
 
       - name: Download tests artifacts
@@ -372,7 +372,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ReleaseDLL_Windows
+        name: Release_Windows
         path: WebFrameworkLibrary
 
     - name: Get Google Test
@@ -417,7 +417,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ReleaseDLL_Linux
+        name: Release_Linux
         path: WebFrameworkLibrary
         
     - name: Build tests
@@ -480,7 +480,7 @@ jobs:
 
     - name: Create Linux zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
+      run: zip -r linux.zip Release_Linux Release_Linux
 
     - name: Create Android zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
