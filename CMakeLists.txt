@@ -5,7 +5,6 @@ set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFrameworkCore/vendor/sqlite3/lib)
 set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFrameworkCore/vendor/sqlite3)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
 set(
 	LIBS
 	WebFrameworkCore
@@ -28,6 +27,8 @@ set(
 option(SHARED_WEB_FRAMEWORK "Build WebFramework shared library for using in different APIs" ON)
 
 project(WebFramework VERSION 3.0.12)
+
+add_definitions(-DWEB_FRAMEWORK_DLL)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
@@ -63,14 +64,8 @@ else ()
 	install(DIRECTORY WebFrameworkCore/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
 endif ()
 
-if (${SHARED_WEB_FRAMEWORK})
-	add_definitions(-DWEB_FRAMEWORK_DLL)
-
-	set(WEB_FRAMEWORK_LIBRARY_TYPE SHARED)
-endif ()
-
 add_library(
-	${PROJECT_NAME} ${WEB_FRAMEWORK_LIBRARY_TYPE}
+	${PROJECT_NAME} SHARED
 	WebFramework/src/DynamicPages/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/DynamicPages/WebFrameworkDynamicPages.cpp
 	WebFramework/src/Exceptions/NotFoundException.cpp

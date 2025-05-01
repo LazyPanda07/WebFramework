@@ -14,6 +14,8 @@ add_library(
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
 	src/c_api/executors_c_api.cpp
+	src/WebNetwork/HTTPRequest.cpp
+	src/WebNetwork/HTTPResponse.cpp
 )
 
 target_include_directories(

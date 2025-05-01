@@ -144,9 +144,4 @@ namespace framework
 #define DECLARE_EXECUTOR(subclassName) EXPORT_EXECUTOR_FUNCTION framework::BaseExecutor* create##subclassName##Instance()	\
 {	\
 	return new subclassName();	\
-} \
-\
-EXPORT_EXECUTOR_FUNCTION ExecutorType getType##subclassName##(framework::BaseExecutor* executor) \
-{	\
-	return executor->getType(); \
 }

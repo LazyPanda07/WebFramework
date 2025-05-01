@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
   
     steps:
     - uses: actions/checkout@v4
@@ -27,13 +26,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} ..
+          cmake ..
           cmake --build . -t INSTALL -j $([Environment]::ProcessorCount) --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
+        name: ${{ matrix.configuration }}_Windows
         path: build/WebFrameworkLibrary
 
 
@@ -44,7 +43,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -55,13 +53,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DSHARED_WEB_FRAMEWORK=${{ matrix.shared[0] }} ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
           make install -j $(nproc)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        name: ${{ matrix.configuration }}_Linux
         path: build/WebFrameworkLibrary
         
 
@@ -405,10 +403,10 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
-      - name: Install Python 3.12
+      - name: Install Python 3.13
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
