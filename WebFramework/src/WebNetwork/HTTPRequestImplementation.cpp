@@ -10,6 +10,10 @@
 
 #include "Exceptions/FileDoesNotExistException.h"
 
+#ifndef __LINUX__
+#pragma warning(disable: 6386)
+#endif
+
 using namespace std;
 
 namespace framework
@@ -238,7 +242,7 @@ namespace framework
 
 	void HTTPRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
-		dynamicResources.sendDynamicFile(filePath, *response, variablesSize, variables, isBinary, fileName);
+		dynamicResources.sendDynamicFile(filePath, *response, span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
 	}
 
 	void HTTPRequestImplementation::streamFile(const char* filePath, interfaces::IHTTPResponse* response, const char* fileName, size_t chunkSize)
@@ -316,10 +320,34 @@ namespace framework
 		}
 	}
 
-	/*void HTTPRequest::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
+	void HTTPRequestImplementation::registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
 	{
-		dynamicResources.registerDynamicFunction(functionName, function);
-	}*/
+		dynamicResources.registerDynamicFunction
+		(
+			functionName,
+			[function, deleter](const vector<string>& arguments) -> string
+			{
+				const char** temp = new const char* [arguments.size()];
+
+				for (size_t i = 0; i < arguments.size(); i++)
+				{
+					temp[i] = arguments[i].data();
+				}
+
+				const char* tempResult = function(temp, arguments.size());
+				string result(tempResult);
+
+				if (deleter)
+				{
+					deleter(tempResult);
+				}
+
+				delete[] temp;
+
+				return result;
+			}
+		);
+	}
 
 	void HTTPRequestImplementation::unregisterDynamicFunction(const char* functionName)
 	{

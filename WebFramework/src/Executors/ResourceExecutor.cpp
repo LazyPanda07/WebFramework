@@ -111,7 +111,7 @@ namespace framework
 		response.setBody(result.data());
 	}
 
-	void ResourceExecutor::sendDynamicFile(string_view filePath, interfaces::IHTTPResponse& response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, string_view fileName)
+	void ResourceExecutor::sendDynamicFile(string_view filePath, interfaces::IHTTPResponse& response, span<const interfaces::CVariable> variables, bool isBinary, string_view fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -130,8 +130,7 @@ namespace framework
 			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
 		}
 
-		// TODO: Dynamic pages
-		// dynamicPages.run(variables, result);
+		dynamicPages.run(variables, result);
 
 		if (fileName.size())
 		{
@@ -141,10 +140,10 @@ namespace framework
 		response.setBody(result.data());
 	}
 
-	/*void ResourceExecutor::registerDynamicFunction(const string& functionName, const char* (*function)(const char** arguments, size_t argumentsNumber))
+	void ResourceExecutor::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
-		dynamicPages.registerDynamicFunction(functionName, function);
-	}*/
+		dynamicPages.registerDynamicFunction(functionName, move(function));
+	}
 
 	void ResourceExecutor::unregisterDynamicFunction(string_view functionName)
 	{
@@ -211,7 +210,7 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::badRequest);
 	}
 
-	void ResourceExecutor::forbiddenError(HTTPResponse& response, const std::exception* exception)
+	void ResourceExecutor::forbiddenError(HTTPResponse& response, const exception* exception)
 	{
 		string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 

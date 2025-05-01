@@ -5,6 +5,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/DatabaseException.h"
+#include "WebNetwork/HTTPRequestImplementation.h"
 
 using namespace std;
 
@@ -37,24 +38,23 @@ namespace framework
 		size_t i = 0;
 		size_t startParameter = it->baseRoute.size() + 1;
 		size_t endParameter;
+		HTTPRequestImplementation& requestImplementation = *static_cast<HTTPRequestImplementation*>(request.getImplementation());
 
 		do
 		{
 			endParameter = parameters.find('/', startParameter);
 
-			// TODO: routeParameters
-
 			switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[i]].index()))
 			{
 			case utility::RouteParameters::routeParametersType::stringTypeIndex:
-				// request.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
+				requestImplementation.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
 
 				break;
 
 			case utility::RouteParameters::routeParametersType::integerTypeIndex:
 				try
 				{
-					// request.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
+					requestImplementation.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const invalid_argument&)
 				{
@@ -70,7 +70,7 @@ namespace framework
 			case utility::RouteParameters::routeParametersType::doubleTypeIndex:
 				try
 				{
-					// request.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
+					requestImplementation.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const invalid_argument&)
 				{

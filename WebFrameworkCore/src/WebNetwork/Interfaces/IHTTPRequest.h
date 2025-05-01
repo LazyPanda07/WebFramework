@@ -104,7 +104,7 @@ namespace framework::interfaces
 
 		virtual void streamFile(const char* filePath, IHTTPResponse* response, const char* fileName, size_t chunkSize = defaultChunkSize) = 0;
 
-		// virtual void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(const char* result)) = 0;
+		virtual void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(const char* result)) = 0;
 
 		virtual void unregisterDynamicFunction(const char* functionName) = 0;
 

@@ -1,6 +1,9 @@
 #pragma once
 
 #include "IFile.h"
+
+#include <span>
+
 #include "IHTTPRequest.h"
 
 namespace framework::interfaces
@@ -11,10 +14,9 @@ namespace framework::interfaces
 		/**
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
 		*/
-		virtual void sendDynamicFile(std::string_view filePath, IHTTPResponse& response, size_t variablesSize, const CVariable* variables, bool isBinary, std::string_view fileName) = 0;
+		virtual void sendDynamicFile(std::string_view filePath, IHTTPResponse& response, std::span<const CVariable> variables, bool isBinary, std::string_view fileName) = 0;
 
-		// TODO: registerDynamic
-		// virtual void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function) = 0;
+		virtual void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function) = 0;
 
 		virtual void unregisterDynamicFunction(std::string_view functionName) = 0;
 

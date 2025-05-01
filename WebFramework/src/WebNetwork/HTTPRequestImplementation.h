@@ -191,7 +191,7 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		// void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(const char* result)) override;
+		void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result)) override;
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function

@@ -55,8 +55,22 @@ namespace framework
 		}
 	}
 
-	string WebFrameworkDynamicPages::insertVariables(const unordered_map<string, string>& variables, string code)
+	string WebFrameworkDynamicPages::insertVariables(span<const interfaces::CVariable> variables, string code)
 	{
+		auto findVariable = [&variables](string_view name) -> string_view
+			{
+				auto it = ranges::find_if(variables, [name](const auto& variable) { return variable.name == name; });
+
+				if (it == variables.end())
+				{
+					// TODO: no variable exception
+
+					throw runtime_error("");
+				}
+
+				return it->value;
+			};
+
 		size_t changeVariableStart = code.find('$');
 
 		while (changeVariableStart != string::npos)
@@ -70,9 +84,9 @@ namespace framework
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
 			}
 
-			const string& variable = variables.at(string(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart));
+			string_view variableName(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart);
 
-			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, variable);
+			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, findVariable(variableName));
 
 			changeVariableStart = code.find('$');
 		}
@@ -146,7 +160,7 @@ namespace framework
 		dynamicPagesFunctions.try_emplace("for", bind(forWFDP, placeholders::_1, ref(dynamicPagesFunctions)));
 	}
 
-	void WebFrameworkDynamicPages::run(const unordered_map<string, string>& variables, string& source)
+	void WebFrameworkDynamicPages::run(span<const interfaces::CVariable> variables, string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
 

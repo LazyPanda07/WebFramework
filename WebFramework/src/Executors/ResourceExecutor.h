@@ -64,12 +64,12 @@ namespace framework
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, size_t variablesSize, const interfaces::CVariable* variables = nullptr, bool isBinary = true, std::string_view fileName = "") override;
+		void sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary = true, std::string_view fileName = "") override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		// void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
+		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function

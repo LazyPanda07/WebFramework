@@ -3,6 +3,7 @@
 #include "Import/WebFrameworkCore.h"
 
 #include "Strings.h"
+#include "WebNetwork/Interfaces/IHTTPRequest.h"
 
 namespace framework
 {
@@ -26,7 +27,7 @@ namespace framework
 
 		static void separateArguments(std::string& code);
 
-		static std::string insertVariables(const std::unordered_map<std::string, std::string>& variables, std::string code);
+		static std::string insertVariables(std::span<const interfaces::CVariable> variables, std::string code);
 
 		static std::vector<ExecutionUnit> preExecute(std::string_view code);
 
@@ -35,7 +36,7 @@ namespace framework
 	public:
 		WebFrameworkDynamicPages(const std::filesystem::path& pathToTemplates);
 
-		void run(const std::unordered_map<std::string, std::string>& variables, std::string& source);
+		void run(std::span<const interfaces::CVariable> variables, std::string& source);
 
 		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
 

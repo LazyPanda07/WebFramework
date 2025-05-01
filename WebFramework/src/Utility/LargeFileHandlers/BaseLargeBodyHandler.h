@@ -26,6 +26,8 @@ namespace framework::utility
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors;
 		std::unique_ptr<HTTPRequestImplementation> request;
 		HTTPResponseImplementation response;
+		std::unique_ptr<HTTPRequest> requestWrapper;
+		HTTPResponse responseWrapper;
 		BaseExecutor* executor;
 		void(BaseExecutor::* method)(HTTPRequest&, HTTPResponse&);
 

@@ -42,6 +42,9 @@ namespace framework
 
 		void initChunks();
 
+	private:
+		interfaces::IHTTPRequest* getImplementation() const;
+
 	public:
 		HTTPRequest(interfaces::IHTTPRequest* implementation, const std::function<void(interfaces::IHTTPRequest*)>& deleter = nullptr);
 
@@ -160,7 +163,7 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+		void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result));
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
@@ -210,5 +213,7 @@ namespace framework
 		uint16_t getServerPort() const;
 
 		~HTTPRequest();
+
+		friend class ExecutorsManager;
 	};
 }

@@ -42,6 +42,11 @@ namespace framework
 		implementation->getChunks(addChunk, &chunks);
 	}
 
+	interfaces::IHTTPRequest* HTTPRequest::getImplementation() const
+	{
+		return implementation;
+	}
+
 	vector<interfaces::CVariable> HTTPRequest::convertVariables(const std::unordered_map<std::string, std::string>& variables)
 	{
 		vector<interfaces::CVariable> result;
@@ -128,7 +133,7 @@ namespace framework
 	web::HeadersMap HTTPRequest::getCookies() const
 	{
 		web::HeadersMap result;
-		
+
 		implementation->getCookies(addCookie, &result);
 
 		return result;
@@ -170,10 +175,9 @@ namespace framework
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
 	}
 
-	void HTTPRequest::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
+	void HTTPRequest::registerDynamicFunction(string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
 	{
-		// TODO: implement
-		// implementation->registerDynamicFunction(functionName, move(function));
+		implementation->registerDynamicFunction(functionName.data(), function, deleter);
 	}
 
 	void HTTPRequest::unregisterDynamicFunction(string_view functionName)

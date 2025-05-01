@@ -8,6 +8,7 @@ static void isImplemented
 (
 	vector<string>& result,
 	framework::HTTPRequest& request, 
+	framework::HTTPResponse& response,
 	const string& methodName, 
 	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
 	framework::BaseExecutor& executor
@@ -77,14 +78,14 @@ namespace framework
 		vector<string> methods = { "OPTIONS" };
 		string allowHeader;
 
-		isImplemented(methods, request, "GET", &BaseExecutor::doGet, *this);
-		isImplemented(methods, request, "POST", &BaseExecutor::doPost, *this);
-		isImplemented(methods, request, "HEAD", &BaseExecutor::doHead, *this);
-		isImplemented(methods, request, "PUT", &BaseExecutor::doPut, *this);
-		isImplemented(methods, request, "DELETE", &BaseExecutor::doDelete, *this);
-		isImplemented(methods, request, "PATCH", &BaseExecutor::doPatch, *this);
-		isImplemented(methods, request, "TRACE", &BaseExecutor::doTrace, *this);
-		isImplemented(methods, request, "CONNECT", &BaseExecutor::doConnect, *this);
+		isImplemented(methods, request, response, "GET", &BaseExecutor::doGet, *this);
+		isImplemented(methods, request, response, "POST", &BaseExecutor::doPost, *this);
+		isImplemented(methods, request, response, "HEAD", &BaseExecutor::doHead, *this);
+		isImplemented(methods, request, response, "PUT", &BaseExecutor::doPut, *this);
+		isImplemented(methods, request, response, "DELETE", &BaseExecutor::doDelete, *this);
+		isImplemented(methods, request, response, "PATCH", &BaseExecutor::doPatch, *this);
+		isImplemented(methods, request, response, "TRACE", &BaseExecutor::doTrace, *this);
+		isImplemented(methods, request, response, "CONNECT", &BaseExecutor::doConnect, *this);
 
 		for (size_t i = 0; i < methods.size(); i++) 
 		{
@@ -118,13 +119,13 @@ inline void isImplemented
 (
 	vector<string>& result,
 	framework::HTTPRequest& request,
+	framework::HTTPResponse& response,
 	const string& methodName, 
 	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
 	framework::BaseExecutor& executor
 )
 {
-	// TODO: isImplemented
-	/*framework::HTTPResponse response;
+	response.setDefault();
 
 	try
 	{
@@ -139,5 +140,5 @@ inline void isImplemented
 	catch (...)
 	{
 		result.push_back(methodName);
-	}*/
+	}
 }

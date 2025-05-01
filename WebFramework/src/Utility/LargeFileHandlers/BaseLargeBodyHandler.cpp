@@ -8,13 +8,11 @@ namespace framework::utility
 {
 	bool BaseLargeBodyHandler::handleChunk(string_view data, size_t bodySize)
 	{
-		request->updateLargeData(data.data(), data.size(), bodySize);
+		requestWrapper->updateLargeData(data, bodySize);
 
 		try
 		{
-			// TODO: invoke
-
-			// invoke(method, executor, *request, response);
+			 invoke(method, executor, *requestWrapper, responseWrapper);
 		}
 		catch (const exception& e)
 		{
@@ -38,8 +36,8 @@ namespace framework::utility
 
 		request->setParser(parser);
 
-		// TOOD: getOrCreate
-		// executor = executorsManager.getOrCreateExecutor(*request, response, statefulExecutors);
+		requestWrapper = make_unique<HTTPRequest>(request.get());
+		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, statefulExecutors);
 		method = BaseExecutor::getMethod(parser.getMethod());
 	}
 
@@ -67,7 +65,8 @@ namespace framework::utility
 		executorsManager(executorsManager),
 		statefulExecutors(statefulExecutors),
 		executor(nullptr),
-		method(nullptr)
+		method(nullptr),
+		responseWrapper(&response)
 	{
 
 	}
