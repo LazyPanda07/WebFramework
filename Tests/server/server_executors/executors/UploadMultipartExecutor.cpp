@@ -1,6 +1,7 @@
 #include "UploadMultipartExecutor.h"
 
 #include <fstream>
+#include <filesystem>
 
 void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
@@ -15,7 +16,7 @@ void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework:
 	}
 
 	response.setResponseCode(web::ResponseCodes::created);
-	response.addBody("Finish uploading files");
+	response.setBody("Finish uploading files");
 }
 
 DECLARE_EXECUTOR(UploadMultipartExecutor)

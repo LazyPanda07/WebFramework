@@ -9,7 +9,7 @@ void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespon
 	builder["message"] = "Hello, World!";
 	builder["randomNumber"] = rand();
 
-	response.addBody(builder);
+	response.setBody(builder);
 }
 
 void HelloExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)

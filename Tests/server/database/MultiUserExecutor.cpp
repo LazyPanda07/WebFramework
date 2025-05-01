@@ -3,15 +3,17 @@
 #include "MultiUserDatabaseModel.h"
 #include "UUID.h"
 
+// TODO: Fix
+
 MultiUserExecutor::MultiUserExecutor() :
-    userId(utility::generateUUID())
+    userId(utility::uuid::generateUUID())
 {
 	
 }
 
 void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
+	/*std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
 	framework::sqlite::utility::SQLiteResult result = model->selectByField("user_id", userId);
 	std::vector<json::utility::jsonObject> data;
 
@@ -26,17 +28,17 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 		json::utility::appendArray(object, data);
 	}
 
-	response.addBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
+	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));*/
 }
 
 void MultiUserExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.createModel<MultiUserDatabaseModel>();
+	// request.createModel<MultiUserDatabaseModel>();
 }
 
 void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
+	/*std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
 
 	model->insert
     (
@@ -44,7 +46,7 @@ void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRe
             { "user_id", userId },
             { "data", request.getJSON().getString("data") }
         }
-    );
+    );*/
 }
 
 DECLARE_EXECUTOR(MultiUserExecutor)

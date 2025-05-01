@@ -97,137 +97,7 @@ jobs:
       with:
         name: ${{ matrix.configuration }}_Android
         path: build/WebFrameworkLibrary
-
-
-  static-windows-tests:
-    runs-on: windows-latest
-    needs: windows-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-  
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_Windows
-        path: WebFrameworkLibrary
-
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
-      with:
-        build-type: ${{ matrix.configuration }}
-        install-path: Tests/gtest
-
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
-          nmake install
-
-    - name: Tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          .\run_tests.bat ${{ matrix.config }}
-
-    - name: Upload tests binaries
-      if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: Tests_Windows
-        path: Tests/build/bin
-
-
-  static-linux-tests:
-    runs-on: ubuntu-latest
-    needs: linux-build
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_Linux
-        path: WebFrameworkLibrary
         
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
-          make install -j $(nproc)
-
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          source run_tests.sh ${{ matrix.config }}
-      
-    - name: Upload tests binaries
-      if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: Tests_Linux
-        path: Tests/build/bin
-
-
-  static-memory-leak-tests:
-    runs-on: ubuntu-latest
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-    needs: linux-build
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-        
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: Release_Linux
-        path: WebFrameworkLibrary
-        
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
-
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          source run_memory_leak_tests.sh ${{ matrix.config }} 
-
 
   windows-cxx-tests:
     runs-on: windows-latest
@@ -272,6 +142,13 @@ jobs:
           .\CXX_API.exe || exit 1
           .\run_tests.bat ${{ matrix.config }}
 
+    - name: Upload tests binaries
+      if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: Tests_Windows
+        path: Tests/build/bin
+
 
   linux-cxx-tests:
     runs-on: ubuntu-latest
@@ -310,6 +187,13 @@ jobs:
           export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
           ./CXX_API
           source run_tests.sh ${{ matrix.config }}
+
+    - name: Upload tests binaries
+      if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: Tests_Linux
+        path: Tests/build/bin
 
 
   windows-cc-tests:
@@ -397,7 +281,7 @@ jobs:
 
   windows-python-tests:
     runs-on: windows-latest
-    needs: [static-windows-tests]
+    needs: [windows-cxx-tests]
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
@@ -436,7 +320,7 @@ jobs:
 
   linux-python-tests:
     runs-on: ubuntu-latest
-    needs: [static-linux-tests]
+    needs: [linux-cxx-tests]
     container:
       image: lazypanda07/ubuntu_cxx20:24.04
     strategy:

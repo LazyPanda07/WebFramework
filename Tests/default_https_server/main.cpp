@@ -1,16 +1,10 @@
 #include <iostream>
 
-#ifdef PUBLIC_API
 #include "import.h"
-#else
-#include "Import/WebFramework.h"
-#endif
 
 int main(int argc, char** argv) try
 {
-#ifdef PUBLIC_API
 	framework::utility::initializeWebFramework("WebFramework");
-#endif
 
 	framework::utility::Config config("default_https_server_config.json");
 	framework::WebFramework server(config);

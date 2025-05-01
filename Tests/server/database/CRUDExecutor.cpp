@@ -5,9 +5,11 @@
 
 #include "DatabaseModel.h"
 
+// TODO: Fix
+
 void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	std::shared_ptr<DatabaseModel> model = request.getModel<DatabaseModel>();
+	/*std::shared_ptr<DatabaseModel> model = request.getModel<DatabaseModel>();
 	framework::sqlite::utility::SQLiteResult result = model->selectByField("name", "glue");
 	std::vector<json::utility::jsonObject> data;
 
@@ -22,24 +24,24 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 		json::utility::appendArray(object, data);
 	}
 
-	response.addBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
+	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));*/
 }
 
 void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.createModel<DatabaseModel>()->createTable
+	/*request.createModel<DatabaseModel>()->createTable
 	(
 		{
 			{ "id", "INTEGER PRIMARY KEY AUTOINCREMENT" },
 			{ "name", "VARCHAR(255) NOT NULL" },
 			{ "amount", "INTEGER NOT NULL" }
 		}
-	);
+	);*/
 }
 
 void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	std::shared_ptr<DatabaseModel> model = request.getModel<DatabaseModel>();
+	/*std::shared_ptr<DatabaseModel> model = request.getModel<DatabaseModel>();
 	std::mt19937_64 random(std::time(nullptr));
 
 	model->insert
@@ -59,12 +61,12 @@ void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRespons
 				{ "amount", std::to_string(random() % 200) }
 			}
 		);
-	}
+	}*/
 }
 
 void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	std::shared_ptr<DatabaseModel> model = request.getModel<DatabaseModel>();
+	/*std::shared_ptr<DatabaseModel> model = request.getModel<DatabaseModel>();
 	model->update
 	(
 		{
@@ -88,12 +90,12 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 		json::utility::appendArray(object, data);
 	}
 
-	response.addBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
+	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));*/
 }
 
 void CRUDExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.getModel<DatabaseModel>()->dropTable();
+	// request.getModel<DatabaseModel>()->dropTable();
 }
 
 DECLARE_EXECUTOR(CRUDExecutor)

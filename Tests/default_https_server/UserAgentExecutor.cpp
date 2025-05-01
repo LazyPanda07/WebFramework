@@ -2,7 +2,7 @@
 
 void UserAgentExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	response.addBody("ok");
+	response.setBody("ok");
 }
 
 DECLARE_EXECUTOR(UserAgentExecutor)

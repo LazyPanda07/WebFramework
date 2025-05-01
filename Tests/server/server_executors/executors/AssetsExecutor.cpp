@@ -3,9 +3,16 @@
 #include <format>
 #include <numeric>
 
-static std::string customFunction(const std::vector<std::string>& args)
+static const char* customFunction(const char** args, size_t agumentsNumber)
 {
-	return std::format("Data: {} {} {}", args[0], args[1], args[2]);
+	std::string temp = std::format("Data: {} {} {}", args[0], args[1], args[2]);
+	char* result = new char[temp.size() + 1];
+	
+	result[temp.size()] = '\0';
+
+	temp.copy(result, temp.size());
+	
+	return result;
 }
 
 void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
@@ -20,7 +27,7 @@ void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespo
 
 void AssetsExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.registerDynamicFunction("customFunction", customFunction);
+	request.registerDynamicFunction("customFunction", customFunction, [](const char* result) { delete[] result; });
 }
 
 void AssetsExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)

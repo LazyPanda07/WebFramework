@@ -12,7 +12,7 @@ void UploadChunkedExecutor::doPost(framework::HTTPRequest& request, framework::H
 	}
 
 	response.setResponseCode(web::ResponseCodes::created);
-	response.addBody("Finish uploading file");
+	response.setBody("Finish uploading file");
 }
 
 DECLARE_EXECUTOR(UploadChunkedExecutor)

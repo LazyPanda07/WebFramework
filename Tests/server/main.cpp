@@ -2,11 +2,7 @@
 #include <fstream>
 #include <filesystem>
 
-#ifdef PUBLIC_API
 #include "import.h"
-#else
-#include "Import/WebFramework.h"
-#endif
 
 #ifdef __LINUX__
 #include <unistd.h> 
@@ -21,9 +17,7 @@ int main(int argc, char** argv) try
 		std::filesystem::remove("test_database.sqlite");
 	}
 
-#ifdef PUBLIC_API
 	framework::utility::initializeWebFramework("WebFramework");
-#endif
 
 	framework::WebFramework server(argv[1]);
 	

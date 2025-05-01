@@ -4,7 +4,7 @@
 
 void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	response.addBody
+	response.setBody
 	(
 		json::JSONBuilder(CP_UTF8).appendString
 		(

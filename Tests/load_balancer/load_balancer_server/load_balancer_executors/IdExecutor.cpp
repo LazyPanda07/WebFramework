@@ -10,7 +10,7 @@ static int64_t getProcessId();
 
 void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	response.addBody
+	response.setBody
 	(
 		json::JSONBuilder(CP_UTF8).appendInt("id", getProcessId())
 	);
