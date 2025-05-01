@@ -175,7 +175,7 @@ namespace framework
 		string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
 #ifdef NDEBUG
-		response.addBody(message);
+		response.setBody(message);
 #else
 		if (exception)
 		{
@@ -195,7 +195,7 @@ namespace framework
 		string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
 #ifdef NDEBUG
-		response.addBody(message);
+		response.setBody(message);
 #else
 		if (exception)
 		{
@@ -215,7 +215,7 @@ namespace framework
 		string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
 #ifdef NDEBUG
-		response.addBody(message);
+		response.setBody(message);
 #else
 		if (exception)
 		{
@@ -235,7 +235,7 @@ namespace framework
 		string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
 #ifdef NDEBUG
-		response.addBody(message);
+		response.setBody(message);
 #else
 		if (exception)
 		{

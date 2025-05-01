@@ -95,6 +95,8 @@ add_library(
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
 	WebFramework/src/Utility/AdditionalServerSettings.cpp
+	WebFramework/src/WebNetwork/HTTPRequestImplementation.cpp
+	WebFramework/src/WebNetwork/HTTPResponseImplementation.cpp
 )
 
 if (CMAKE_GENERATOR MATCHES "Visual Studio")

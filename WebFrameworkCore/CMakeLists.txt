@@ -7,8 +7,6 @@ add_library(
 	src/Exceptions/BaseWebFrameworkException.cpp
 	src/Exceptions/DatabaseException.cpp
 	src/Exceptions/SQLite3Exception.cpp
-	src/WebNetwork/HTTPRequest.cpp
-	src/WebNetwork/HTTPResponse.cpp
 	src/Managers/SessionsManager.cpp
 	src/SQLite3/SQLiteDatabase.cpp
 	src/SQLite3/SQLiteDatabaseModel.cpp
@@ -29,6 +27,7 @@ target_include_directories(
 	${CMAKE_SOURCE_DIR}/Localization/src/
 	${CMAKE_SOURCE_DIR}/BaseTCPServer/src/
 	${CMAKE_SOURCE_DIR}/FileManager/src/
+	${CMAKE_SOURCE_DIR}/UtilityLibrary/include/
 )
 
 install(
