@@ -26,9 +26,6 @@ namespace framework
 {
 	class SessionsManager;
 
-	template<typename T>
-	concept RouteParameterType = std::same_as<T, std::string> || std::same_as<T, int64_t> || std::same_as<T, double>;
-
 	/// <summary>
 	/// Parsing HTTP request
 	/// <para>Accessing to sessions</para>
@@ -236,23 +233,19 @@ namespace framework
 		/// Get client's port
 		/// </summary>
 		/// <returns>client's port</returns>
-		uint16_t getClientPort() const;
+		uint16_t getClientPort() const override;
 
 		/// <summary>
 		/// Get server's port
 		/// </summary>
 		/// <returns>server's port</returns>
-		uint16_t getServerPort() const;
+		uint16_t getServerPort() const override;
 
-		/**
-		 * @brief Getter for route parameters
-		 * @tparam T RouteParameterType type
-		 * @param routeParameterName Name of route parameter
-		 * @return route parameter
-		 * @exception std::out_of_range Can't find route parameter with this routeParameterName
-		 */
-		template<RouteParameterType T>
-		const T& getRouteParameter(const std::string& routeParameterName);
+		const char* getRouteParameterString(const char* routeParameterName) const override;
+
+		int64_t getRouteParameterInteger(const char* routeParameterName) const override;
+
+		double getRouteParameterDouble(const char* routeParameterName) const override;
 
 		/**
 		 * @brief First call creates model with arguments other calls returns created model

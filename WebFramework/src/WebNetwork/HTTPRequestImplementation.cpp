@@ -418,20 +418,17 @@ namespace framework
 		return serverReference.getServerPortV4();
 	}
 
-	template<>
-	WEB_FRAMEWORK_CORE_API const string& HTTPRequestImplementation::getRouteParameter<string>(const string& routeParameterName)
+	const char* HTTPRequestImplementation::getRouteParameterString(const char* routeParameterName) const
 	{
-		return get<string>(routeParameters.at(routeParameterName));
+		return get<string>(routeParameters.at(routeParameterName)).data();
 	}
 
-	template<>
-	WEB_FRAMEWORK_CORE_API const int64_t& HTTPRequestImplementation::getRouteParameter<int64_t>(const string& routeParameterName)
+	int64_t HTTPRequestImplementation::getRouteParameterInteger(const char* routeParameterName) const
 	{
 		return get<int64_t>(routeParameters.at(routeParameterName));
 	}
 
-	template<>
-	WEB_FRAMEWORK_CORE_API const double& HTTPRequestImplementation::getRouteParameter<double>(const string& routeParameterName)
+	double HTTPRequestImplementation::getRouteParameterDouble(const char* routeParameterName) const
 	{
 		return get<double>(routeParameters.at(routeParameterName));
 	}

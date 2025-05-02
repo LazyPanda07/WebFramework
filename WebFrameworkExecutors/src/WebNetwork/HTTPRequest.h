@@ -10,6 +10,9 @@
 
 namespace framework
 {
+	template<typename T>
+	concept RouteParameterType = std::same_as<T, std::string> || std::integral<T> || std::floating_point<T>;
+
 	struct EXECUTORS_API LargeData
 	{
 		std::string_view dataPart;
@@ -212,8 +215,36 @@ namespace framework
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const;
 
+		template<RouteParameterType T>
+		T getRouteParameter(std::string_view routeParameterName) const;
+
 		~HTTPRequest();
 
 		friend class ExecutorsManager;
 	};
+
+	template<RouteParameterType T>
+	T HTTPRequest::getRouteParameter(std::string_view routeParameterName) const
+	{
+		if constexpr (std::is_same_v<T, std::string>)
+		{
+			std::string result(implementation->getRouteParameterString(routeParameterName.data()));
+
+			return result;
+		}
+		else if constexpr (std::is_integral_v<T>)
+		{
+			return static_cast<T>(implementation->getRouteParameterInteger(routeParameterName.data()));
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			return static_cast<T>(implementation->getRouteParameterDouble(routeParameterName.data()));
+		}
+		else
+		{
+			throw std::runtime_error(std::format("Wrong route parameter type: {}", typeid(T).name()));
+
+			return T();
+		}
+	}
 }

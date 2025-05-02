@@ -128,6 +128,12 @@ namespace framework::interfaces
 
 		virtual uint16_t getServerPort() const = 0;
 
+		virtual const char* getRouteParameterString(const char* routeParameterName) const = 0;
+
+		virtual int64_t getRouteParameterInteger(const char* routeParameterName) const = 0;
+
+		virtual double getRouteParameterDouble(const char* routeParameterName) const = 0;
+
 		/*
 		template<RouteParameterType T>
 		const T& getRouteParameter(const std::string& routeParameterName);
