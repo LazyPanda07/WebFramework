@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include <Import/WebFramework.h>
+#include "import.h"
 
-int main(int argc, char** argv) try
+int main(int argc, const char** argv) try
 {
 	framework::utility::Config config("configs/config.json"); // Load config.json
 

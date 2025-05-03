@@ -25,16 +25,13 @@ target_include_directories(
 
 target_link_libraries(
 	${PROJECT_NAME}
-	WebFrameworkCore
-	JSON
 	FileManager
 	HTTP
-	UtilityLibrary
-	SocketStreams
-	Networks
-	Log
+	JSON
 	Localization
-	BaseTCPServer
+	Log
+	UtilityLibrary
+	WebFrameworkCore
 )
 
 install(

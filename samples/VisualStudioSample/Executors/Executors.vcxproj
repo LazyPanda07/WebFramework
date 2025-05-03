@@ -10,22 +10,64 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\HelloExecutor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\HelloExecutor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\FileManager\FileManager.vcxproj">
+      <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\INIParser\INIParser.vcxproj">
+      <Project>{ce5f5455-0e8a-49e8-be46-0a12ed898352}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Localization\Localization.vcxproj">
+      <Project>{d2968ac9-bac3-4f25-9698-5c1cf6c4fa35}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Log\Log.vcxproj">
+      <Project>{89755e92-d5a7-4fa6-b227-7ddc3bba9aa1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Networks\HTTP\HTTP.vcxproj">
+      <Project>{cd88b391-b7b9-47d5-af8d-153fcb2b5a2b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Networks\HTTP\JSON\JSON.vcxproj">
+      <Project>{f6b57139-d9f3-4b02-aa92-4e1f417649da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SHA256\SHA256.vcxproj">
+      <Project>{91f7fb1e-1d8d-4544-99e2-23d409d666ab}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ThreadPool\ThreadPool.vcxproj">
+      <Project>{bde48484-5593-484f-9f84-fc01f8cf83a9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\UtilityLibrary\UtilityLibrary.vcxproj">
+      <Project>{f71a5e4a-5242-4fa9-b614-5c0603adc678}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\WebFrameworkExecutors\WebFrameworkExecutors.vcxproj">
+      <Project>{fa69e899-f0d2-4c8e-96dc-2aa61854665c}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="configs\config.json" />
+    <None Include="settings\web.json" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{2fb3b842-45c4-4ee8-bf78-e50bbd0ccfa4}</ProjectGuid>
-    <RootNamespace>StaticWindowsOnly</RootNamespace>
+    <ProjectGuid>{69729c71-7ef7-4854-a6b4-3a87acd90602}</ProjectGuid>
+    <RootNamespace>Executors</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -57,18 +99,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFrameworkCore\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\WebFrameworkExecutors\*.dll $(OutDir)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -78,33 +116,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Networks\vendor\OpenSSL\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\WebFrameworkCore\vendor\sqlite3\include\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /y $(OutDir)..\Localization\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\Log\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\FileManager\*.dll $(OutDir) &amp;&amp; xcopy /y $(OutDir)..\WebFrameworkExecutors\*.dll $(OutDir)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="source\Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\WebFramework\WebFramework.vcxproj">
-      <Project>{e66352d0-66c8-4bae-85e4-4715d53fd651}</Project>
-    </ProjectReference>
-    <ProjectReference Include="Executors\Executors.vcxproj">
-      <Project>{33aa5b33-6b88-4369-b3da-bfe965a47add}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

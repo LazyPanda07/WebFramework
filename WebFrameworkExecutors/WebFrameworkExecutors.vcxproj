@@ -116,11 +116,11 @@
     <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">
-      <Project>{d29045d5-a3e0-4b1f-bf3f-7a7395a22b13}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\FileManager\FileManager.vcxproj">
       <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\INIParser\INIParser.vcxproj">
+      <Project>{ce5f5455-0e8a-49e8-be46-0a12ed898352}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Localization\Localization.vcxproj">
       <Project>{d2968ac9-bac3-4f25-9698-5c1cf6c4fa35}</Project>
@@ -134,11 +134,11 @@
     <ProjectReference Include="..\Networks\HTTP\JSON\JSON.vcxproj">
       <Project>{f6b57139-d9f3-4b02-aa92-4e1f417649da}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Networks\Networks.vcxproj">
-      <Project>{e3c5b070-57f3-4e11-9701-fdcc108aecb3}</Project>
+    <ProjectReference Include="..\SHA256\SHA256.vcxproj">
+      <Project>{91f7fb1e-1d8d-4544-99e2-23d409d666ab}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Networks\SocketStreams\SocketStreams.vcxproj">
-      <Project>{8bb9f3bd-68f4-403a-acc6-f85c75f5d14f}</Project>
+    <ProjectReference Include="..\ThreadPool\ThreadPool.vcxproj">
+      <Project>{bde48484-5593-484f-9f84-fc01f8cf83a9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.vcxproj">
       <Project>{f71a5e4a-5242-4fa9-b614-5c0603adc678}</Project>
