@@ -2,8 +2,8 @@
 
 #include "web_framework_c_api.h"
 
-#include "Import/WebFramework.h"
-#include "Import/Config.h"
+#include "Framework/WebFramework.h"
+#include "Framework/Config.h"
 #include "Log.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }

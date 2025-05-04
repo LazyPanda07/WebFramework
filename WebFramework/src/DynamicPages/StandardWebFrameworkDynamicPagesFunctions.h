@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include <functional>
+
+#include "Framework/WebFrameworkPlatform.h"
 
 #include "Strings.h"
 

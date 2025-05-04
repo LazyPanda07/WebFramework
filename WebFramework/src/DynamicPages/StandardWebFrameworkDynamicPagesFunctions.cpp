@@ -1,5 +1,7 @@
 #include "StandardWebFrameworkDynamicPagesFunctions.h"
 
+#include <fstream>
+
 #include "Exceptions/FileDoesNotExistException.h"
 
 using namespace std;

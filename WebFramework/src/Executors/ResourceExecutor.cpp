@@ -2,8 +2,7 @@
 
 #include <fstream>
 
-#include "Import/WebFramework.h"
-#include "Import/WebFrameworkConstants.h"
+#include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
 

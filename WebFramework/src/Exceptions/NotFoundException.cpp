@@ -1,5 +1,7 @@
 #include "NotFoundException.h"
 
+#include "Framework/WebFrameworkConstants.h"
+
 namespace framework
 {
 	namespace exceptions

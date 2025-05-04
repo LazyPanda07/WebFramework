@@ -1,5 +1,7 @@
 #include "Config.h"
 
+#include <fstream>
+
 #include "Exceptions/FileDoesNotExistException.h"
 
 using namespace std;

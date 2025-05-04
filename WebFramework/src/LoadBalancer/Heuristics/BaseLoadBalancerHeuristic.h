@@ -1,23 +1,15 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include <string>
 
-#ifdef WEB_FRAMEWORK_DLL
-#ifdef __LINUX__
-#define WEB_FRAMEWORK_EXPORT_API __attribute__((visibility("default")))
-#else
-#define WEB_FRAMEWORK_EXPORT_API __declspec(dllexport)
-#endif
-#else
-#define WEB_FRAMEWORK_EXPORT_API
-#endif
+#include "Framework/WebFrameworkPlatform.h"
 
 namespace framework::load_balancer
 {
 	/**
 	 * @brief Determine which server use
 	 */
-	class WEB_FRAMEWORK_EXPORT_API BaseLoadBalancerHeuristic
+	class WEB_FRAMEWORK_API BaseLoadBalancerHeuristic
 	{
 	private:
 		std::string ip;

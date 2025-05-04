@@ -14,6 +14,7 @@
 #include "Utility/Sources.h"
 #include "Proxy/ProxyServer.h"
 #include "Utility/DynamicLibraries.h"
+#include "Framework/WebFrameworkConstants.h"
 
 using namespace std;
 

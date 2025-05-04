@@ -1,5 +1,7 @@
 #include "CantFindFunctionException.h"
 
+#include "Framework/WebFrameworkConstants.h"
+
 using namespace std;
 
 namespace framework

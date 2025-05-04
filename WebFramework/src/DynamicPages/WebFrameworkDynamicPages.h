@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include <functional>
+#include <filesystem>
+#include <span>
+
+#include "Framework/WebFrameworkPlatform.h"
 
 #include "Strings.h"
 #include "WebNetwork/Interfaces/IHTTPRequest.h"

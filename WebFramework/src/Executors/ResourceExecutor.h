@@ -1,13 +1,15 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include "Executors/BaseStatelessExecutor.h"
+#include "WebNetwork/Interfaces/IStaticFile.h"
+#include "WebNetwork/Interfaces/IDynamicFile.h"
+
+#include <array>
 
 #include "FileManager.h"
 
-#include "Executors/BaseStatelessExecutor.h"
+#include "Framework/WebFrameworkPlatform.h"
 #include "DynamicPages/WebFrameworkDynamicPages.h"
-#include "WebNetwork/Interfaces/IStaticFile.h"
-#include "WebNetwork/Interfaces/IDynamicFile.h"
 
 namespace framework
 {

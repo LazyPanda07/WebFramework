@@ -92,9 +92,3 @@ namespace web_framework_assets
 	inline constexpr std::string_view notFound = "404.html";
 	inline constexpr std::string_view internalServerError = "500.html";
 }
-
-#ifdef __LINUX__
-#define WEB_FRAMEWORK_API __attribute__((visibility("hidden")))
-#else
-#define WEB_FRAMEWORK_API
-#endif

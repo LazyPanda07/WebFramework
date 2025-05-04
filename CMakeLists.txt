@@ -88,8 +88,8 @@ add_library(
 	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/ThreadPoolWebServer.cpp
 	WebFramework/src/WebNetwork/Interfaces/IExecutorFunctionality.cpp
-	WebFramework/src/Import/Config.cpp
-	WebFramework/src/Import/WebFramework.cpp
+	WebFramework/src/Framework/Config.cpp
+	WebFramework/src/Framework/WebFramework.cpp
 	WebFramework/src/c_api/web_framework_c_api.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp

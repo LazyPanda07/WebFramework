@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include "Framework/WebFrameworkPlatform.h"
 
 #include "WebNetwork/WebServers/BaseWebServer.h"
 
@@ -43,8 +43,6 @@ namespace framework
 			const std::vector<utility::JSONSettingsParser>& jsonSettings,
 			const std::vector<std::string>& pathToSources
 		);
-
-		void init();
 
 	public:
 		WebFramework(const utility::Config& webFrameworkConfig);

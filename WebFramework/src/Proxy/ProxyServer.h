@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include "Framework/WebFrameworkPlatform.h"
 
 #include "WebNetwork/WebServers/BaseWebServer.h"
 #include "Utility/BaseConnectionData.h"

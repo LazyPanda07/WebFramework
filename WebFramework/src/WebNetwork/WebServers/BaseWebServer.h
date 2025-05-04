@@ -2,7 +2,9 @@
 
 #include "BaseTCPServer.h"
 
-#include "Import/WebFrameworkCore.h"
+#include <openssl/ssl.h>
+
+#include "Framework/WebFrameworkPlatform.h"
 #include "Utility/JSONSettingsParser.h"
 #include "WebNetwork/Interfaces/IExecutorFunctionality.h"
 

@@ -1,6 +1,11 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include "Framework/WebFrameworkPlatform.h"
+
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <variant>
 
 namespace framework
 {
@@ -13,7 +18,7 @@ namespace framework
 			static constexpr std::string_view integerType = "int:";
 			static constexpr std::string_view doubleType = "double:";
 
-			enum class routeParametersType
+			enum class RouteParametersType
 			{
 				stringTypeIndex,
 				integerTypeIndex,

@@ -2,6 +2,8 @@
 
 #include "BaseLoadBalancerHeuristic.h"
 
+#include <atomic>
+
 namespace framework
 {
 	namespace load_balancer

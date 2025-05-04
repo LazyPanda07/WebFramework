@@ -5,6 +5,7 @@
 
 #include "Exceptions/DynamicPagesSyntaxException.h"
 #include "StandardWebFrameworkDynamicPagesFunctions.h"
+#include "Framework/WebFrameworkConstants.h"
 
 #pragma warning(disable: 26800)
 

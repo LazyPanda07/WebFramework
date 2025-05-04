@@ -6,6 +6,7 @@
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/DatabaseException.h"
 #include "WebNetwork/HTTPRequestImplementation.h"
+#include "Framework/WebFrameworkConstants.h"
 
 using namespace std;
 
@@ -44,14 +45,14 @@ namespace framework
 		{
 			endParameter = parameters.find('/', startParameter);
 
-			switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[i]].index()))
+			switch (static_cast<utility::RouteParameters::RouteParametersType>(it->parameters[it->indices[i]].index()))
 			{
-			case utility::RouteParameters::routeParametersType::stringTypeIndex:
+			case utility::RouteParameters::RouteParametersType::stringTypeIndex:
 				requestImplementation.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
 
 				break;
 
-			case utility::RouteParameters::routeParametersType::integerTypeIndex:
+			case utility::RouteParameters::RouteParametersType::integerTypeIndex:
 				try
 				{
 					requestImplementation.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
@@ -67,7 +68,7 @@ namespace framework
 
 				break;
 
-			case utility::RouteParameters::routeParametersType::doubleTypeIndex:
+			case utility::RouteParameters::RouteParametersType::doubleTypeIndex:
 				try
 				{
 					requestImplementation.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));

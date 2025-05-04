@@ -4,6 +4,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantLoadSourceException.h"
 #include "Log.h"
+#include "Framework/WebFrameworkConstants.h"
 
 using namespace std;
 

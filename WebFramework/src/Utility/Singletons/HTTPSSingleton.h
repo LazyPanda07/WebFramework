@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include "Framework/WebFrameworkPlatform.h"
+
+#include <filesystem>
 
 namespace framework
 {

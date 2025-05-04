@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Import\WebFramework.cpp">
+    <ClCompile Include="src\Framework\WebFramework.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp">
@@ -75,7 +75,7 @@
     <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Import\Config.cpp">
+    <ClCompile Include="src\Framework\Config.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Proxy\ProxyServer.cpp">
@@ -110,10 +110,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Import\WebFramework.h">
+    <ClInclude Include="src\Framework\WebFramework.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Import\WebFrameworkConstants.h">
+    <ClInclude Include="src\Framework\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h">
@@ -161,7 +161,7 @@
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Import\WebFrameworkCore.h">
+    <ClInclude Include="src\Framework\WebFrameworkPlatform.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h">
@@ -173,7 +173,7 @@
     <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Import\Config.h">
+    <ClInclude Include="src\Framework\Config.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Sources.h">

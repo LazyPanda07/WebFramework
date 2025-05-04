@@ -2,7 +2,7 @@
 
 #include "Exceptions/BaseWebFrameworkException.h"
 
-#include "Import/WebFrameworkConstants.h"
+#include "Framework/WebFrameworkPlatform.h"
 
 namespace framework
 {
