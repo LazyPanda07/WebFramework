@@ -4,6 +4,8 @@
 
 int main(int argc, const char** argv) try
 {
+	framework::utility::initializeWebFramework();
+
 	framework::utility::Config config("configs/config.json"); // Load config.json
 
 	config.overrideBasePath("executors"); // Override base path for loading executors
