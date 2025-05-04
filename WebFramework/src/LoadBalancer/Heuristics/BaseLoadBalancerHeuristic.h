@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstdint>
 
 #include "Framework/WebFrameworkPlatform.h"
 
@@ -9,7 +10,7 @@ namespace framework::load_balancer
 	/**
 	 * @brief Determine which server use
 	 */
-	class WEB_FRAMEWORK_API BaseLoadBalancerHeuristic
+	class WEB_FRAMEWORK_EXPORT_API BaseLoadBalancerHeuristic
 	{
 	private:
 		std::string ip;
