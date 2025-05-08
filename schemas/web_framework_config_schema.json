@@ -119,8 +119,7 @@
           "description": "List of settings files with information about executors and routes",
           "items": {
             "type": "string"
-          },
-          "minItems": 1
+          }
         },
         "loadSources": {
           "type": "array",
@@ -129,6 +128,13 @@
             "type": "string"
           },
           "default": [ "current" ]
+        },
+        "additionalConfigs": {
+          "type": "array",
+          "description": "Paths to additional configs with settingsPaths and loadSources arrays",
+          "items": {
+            "type": "string"
+          }
         },
         "assetsPath": {
           "type": "string",
