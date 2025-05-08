@@ -33,6 +33,8 @@ namespace framework
 
 	void HTTPResponse::setBody(const json::JSONBuilder& json)
 	{
+		implementation->addHeader("Content-Type", "application/json");
+
 		implementation->setBody(json.build().data());
 	}
 
