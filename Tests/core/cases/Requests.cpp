@@ -165,6 +165,8 @@ TEST(RoutePattern, PassingValues)
 
 	stream >> response;
 
+	std::cout << response << std::endl;
+
 	json::JSONParser parser = web::HTTPParser(response).getJSON();
 
 	ASSERT_EQ(parser.getString("stringValue"), "qwe");
