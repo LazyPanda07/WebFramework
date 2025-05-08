@@ -190,7 +190,11 @@
           "default": "WebFrameworkAssets"
         }
       },
-      "required": [ "settingsPaths", "loadSources", "assetsPath", "templatesPath", "webServerType" ]
+      "required": [ "assetsPath", "templatesPath", "webServerType" ],
+      "anyOf": [
+        { "required": [ "settingsPaths", "loadSources" ] },
+        { "required": [ "additionalConfigs" ] }
+      ]
     },
     "Logging": {
       "type": "object",
