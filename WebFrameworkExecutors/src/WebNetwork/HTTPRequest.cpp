@@ -68,6 +68,9 @@ namespace framework
 		json.setJSONData(string_view(implementation->getJSON()));
 
 		this->initHeaders();
+		this->initKeyValuesParameters();
+		this->initMultiparts();
+		this->initChunks();
 	}
 
 	void HTTPRequest::updateLargeData(string_view dataPart, size_t size)
