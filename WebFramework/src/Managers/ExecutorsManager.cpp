@@ -1,5 +1,8 @@
 #include "ExecutorsManager.h"
 
+#include <algorithm>
+#include <ranges>
+
 #include "Log.h"
 
 #include "Exceptions/FileDoesNotExistException.h"

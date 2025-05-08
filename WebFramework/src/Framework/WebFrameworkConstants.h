@@ -18,10 +18,11 @@ namespace json_settings
 	inline constexpr std::string_view proxyObject = "Proxy";
 
 	inline constexpr std::string_view settingsPathsKey = "settingsPaths";
+	inline constexpr std::string_view loadSourcesKey = "loadSources";
+	inline constexpr std::string_view additionalConfigsKey = "additionalConfigs";
 	inline constexpr std::string_view ipKey = "ip";
 	inline constexpr std::string_view portKey = "port";
 	inline constexpr std::string_view timeoutKey = "timeout";
-	inline constexpr std::string_view loadSourcesKey = "loadSources";
 	inline constexpr std::string_view assetsPathKey = "assetsPath";
 	inline constexpr std::string_view templatesPathKey = "templatesPath";
 	inline constexpr std::string_view cachingSize = "cachingSize";

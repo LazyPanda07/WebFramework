@@ -7,10 +7,10 @@
   "WebFramework": {
     "webServerType": "multiThreaded",
     "loadSources": [
-      "Executors"
+      "executors/Executors"
     ],
     "settingsPaths": [
-      "web.json"
+      "executors/web.json"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",

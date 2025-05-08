@@ -27,15 +27,14 @@ namespace framework
 			return *this;
 		}
 
-		Config::Config(const filesystem::path& configPath) :
-			basePath(filesystem::absolute(configPath))
+		Config::Config(const filesystem::path& configPath)
 		{
 			if (!filesystem::exists(configPath))
 			{
 				throw file_manager::exceptions::FileDoesNotExistException(configPath.string());
 			}
 
-			basePath = basePath.parent_path();
+			basePath = filesystem::absolute(configPath).parent_path();
 
 			currentConfiguration.setJSONData(ifstream(configPath));
 		}

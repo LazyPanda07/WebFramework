@@ -69,7 +69,8 @@
       <Command>for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
 if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
 move "$(OutDir)Executors.dll" "$(OutDir)executors"
-xcopy /y /s /i "$(OutDir)..\Executors\*.json" "$(OutDir)"
+xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
+move "$(OutDir)web.json" "$(OutDir)executors"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -95,7 +96,8 @@ xcopy /y /s /i "$(OutDir)..\Executors\*.json" "$(OutDir)"
       <Command>for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
 if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
 move "$(OutDir)Executors.dll" "$(OutDir)executors"
-xcopy /y /s /i "$(OutDir)..\Executors\*.json" "$(OutDir)"
+xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
+move "$(OutDir)web.json" "$(OutDir)executors"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

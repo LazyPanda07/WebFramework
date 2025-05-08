@@ -17,13 +17,16 @@ namespace framework
 	public:
 		/// @brief Get current WebFramework version
 		/// @return Current WebFramework version
-		static std::string_view getWebFrameworkVersion();
+		static constexpr std::string_view getWebFrameworkVersion();
 
 		/**
 		 * @brief Is server use HTTPS
 		 * @return 
 		 */
 		static bool getUseHTTPS();
+
+	private:
+		static void parseAdditionalConfigs(const json::utility::jsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources);
 
 	private:
 		utility::Config config;
@@ -86,4 +89,11 @@ namespace framework
 
 		~WebFramework() = default;
 	};
+
+	constexpr std::string_view WebFramework::getWebFrameworkVersion()
+	{
+		constexpr std::string_view version = "3.0.12";
+
+		return version;
+	}
 }

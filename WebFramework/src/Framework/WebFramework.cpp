@@ -20,16 +20,34 @@ using namespace std;
 
 namespace framework
 {
-	string_view WebFramework::getWebFrameworkVersion()
-	{
-		static string version = "3.0.12";
-
-		return version;
-	}
-
 	bool WebFramework::getUseHTTPS()
 	{
 		return utility::HTTPSSingleton::get().getUseHTTPS();
+	}
+
+	void WebFramework::parseAdditionalConfigs(const json::utility::jsonObject& webFrameworkSettings, const filesystem::path& basePath, vector<string>& settingsPaths, vector<string>& loadSources)
+	{
+		vector<json::utility::jsonObject> additionalConfigs;
+
+		if (!webFrameworkSettings.tryGetArray(json_settings::additionalConfigsKey, additionalConfigs))
+		{
+			return;
+		}
+
+		vector<string> configs = json::utility::JSONArrayWrapper(additionalConfigs).getAsStringArray();
+
+		ranges::for_each(configs, [&basePath](string& path) { path = (basePath / path).string(); });
+
+		for (const string& configPath : configs)
+		{
+			utility::Config config(configPath);
+			const json::JSONParser& parser = *config;
+			vector<string> tempSettingsPaths = json::utility::JSONArrayWrapper(parser.getArray(json_settings::settingsPathsKey)).getAsStringArray();
+			vector<string> tempLoadSources = json::utility::JSONArrayWrapper(parser.getArray(json_settings::loadSourcesKey)).getAsStringArray();
+
+			move(tempSettingsPaths.begin(), tempSettingsPaths.end(), back_inserter(settingsPaths));
+			move(tempLoadSources.begin(), tempLoadSources.end(), back_inserter(loadSources));
+		}
 	}
 
 	uint64_t WebFramework::parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const
@@ -263,11 +281,33 @@ namespace framework
 	{
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
 		const filesystem::path& basePath = config.getBasePath();
-		vector<string> settingsPaths = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::settingsPathsKey)).getAsStringArray();
-		vector<string> pathToSources = json::utility::JSONArrayWrapper(webFrameworkSettings.getArray(json_settings::loadSourcesKey)).getAsStringArray();
+		vector<string> settingsPaths;
+		vector<string> pathToSources;
+
+		{
+			vector<json::utility::jsonObject> settings;
+
+			if (webFrameworkSettings.tryGetArray(json_settings::settingsPathsKey, settings))
+			{
+				settingsPaths = json::utility::JSONArrayWrapper(settings).getAsStringArray();
+			}
+		}
+
+		{
+			vector<json::utility::jsonObject> loadSources;
+
+			if (webFrameworkSettings.tryGetArray(json_settings::loadSourcesKey, loadSources))
+			{
+				pathToSources = json::utility::JSONArrayWrapper(loadSources).getAsStringArray();
+			}
+		}
+
+		WebFramework::parseAdditionalConfigs(webFrameworkSettings, basePath, settingsPaths, pathToSources);
 
 		ranges::for_each(settingsPaths, [this, &basePath](string& path) { path = (basePath / path).string(); });
-		ranges::for_each(pathToSources, [this, &basePath](string& source)
+		ranges::for_each
+		(
+			pathToSources, [this, &basePath](string& source)
 			{
 				if (source == json_settings::defaultLoadSourceValue)
 				{
@@ -275,7 +315,18 @@ namespace framework
 				}
 
 				source = (basePath / source).string();
-			});
+			}
+		);
+
+		if (settingsPaths.empty())
+		{
+			throw runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
+		}
+
+		if (pathToSources.empty())
+		{
+			throw runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
+		}
 
 		if (string errorMessage = this->initLogging(); errorMessage.size())
 		{

@@ -49,8 +49,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="configs\config.json" />
-    <None Include="settings\web.json" />
+    <None Include="config.json" />
+    <None Include="web.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -108,7 +108,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /s /i "$(ProjectDir)*.json" $(OutDir)</Command>
+      <Command>xcopy /y "$(ProjectDir)*.json" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,7 +130,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /s /i "$(ProjectDir)*.json" $(OutDir)</Command>
+      <Command>xcopy /y "$(ProjectDir)*.json" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
