@@ -122,6 +122,59 @@ namespace framework
 		return "";
 	}
 
+	void WebFramework::initExecutors(const json::utility::jsonObject& webFrameworkSettings, vector<string>& settingsPaths, vector<string>& pathToSources)
+	{
+		const filesystem::path& basePath = config.getBasePath();
+
+		{
+			vector<json::utility::jsonObject> settings;
+
+			if (webFrameworkSettings.tryGetArray(json_settings::settingsPathsKey, settings))
+			{
+				settingsPaths = json::utility::JSONArrayWrapper(settings).getAsStringArray();
+			}
+		}
+
+		{
+			vector<json::utility::jsonObject> loadSources;
+
+			if (webFrameworkSettings.tryGetArray(json_settings::loadSourcesKey, loadSources))
+			{
+				pathToSources = json::utility::JSONArrayWrapper(loadSources).getAsStringArray();
+			}
+		}
+
+		WebFramework::parseAdditionalConfigs(webFrameworkSettings, basePath, settingsPaths, pathToSources);
+
+		ranges::for_each(settingsPaths, [this, &basePath](string& path) { path = (basePath / path).string(); });
+		ranges::for_each
+		(
+			pathToSources, [this, &basePath](string& source)
+			{
+				if (source == json_settings::defaultLoadSourceValue)
+				{
+					return;
+				}
+
+				source = (basePath / source).string();
+			}
+		);
+
+		if (settingsPaths.empty())
+		{
+			Log::error("Can't find {}", "LogExecutors", json_settings::settingsPathsKey);
+
+			throw runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
+		}
+
+		if (pathToSources.empty())
+		{
+			Log::error("Can't find {}", "LogExecutors", json_settings::loadSourcesKey);
+
+			throw runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
+		}
+	}
+
 	void WebFramework::initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const
 	{
 		json::utility::jsonObject https;
@@ -279,60 +332,16 @@ namespace framework
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig)
 	{
-		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
-		const filesystem::path& basePath = config.getBasePath();
-		vector<string> settingsPaths;
-		vector<string> pathToSources;
-
-		{
-			vector<json::utility::jsonObject> settings;
-
-			if (webFrameworkSettings.tryGetArray(json_settings::settingsPathsKey, settings))
-			{
-				settingsPaths = json::utility::JSONArrayWrapper(settings).getAsStringArray();
-			}
-		}
-
-		{
-			vector<json::utility::jsonObject> loadSources;
-
-			if (webFrameworkSettings.tryGetArray(json_settings::loadSourcesKey, loadSources))
-			{
-				pathToSources = json::utility::JSONArrayWrapper(loadSources).getAsStringArray();
-			}
-		}
-
-		WebFramework::parseAdditionalConfigs(webFrameworkSettings, basePath, settingsPaths, pathToSources);
-
-		ranges::for_each(settingsPaths, [this, &basePath](string& path) { path = (basePath / path).string(); });
-		ranges::for_each
-		(
-			pathToSources, [this, &basePath](string& source)
-			{
-				if (source == json_settings::defaultLoadSourceValue)
-				{
-					return;
-				}
-
-				source = (basePath / source).string();
-			}
-		);
-
-		if (settingsPaths.empty())
-		{
-			throw runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
-		}
-
-		if (pathToSources.empty())
-		{
-			throw runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
-		}
-
 		if (string errorMessage = this->initLogging(); errorMessage.size())
 		{
 			throw runtime_error(errorMessage);
 		}
 
+		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
+		vector<string> settingsPaths;
+		vector<string> pathToSources;
+
+		this->initExecutors(webFrameworkSettings, settingsPaths, pathToSources);
 		this->initHTTPS(webFrameworkSettings);
 
 		vector<utility::JSONSettingsParser> jsonSettings;

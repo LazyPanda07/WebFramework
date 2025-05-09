@@ -38,6 +38,8 @@ namespace framework
 	private:
 		std::string initLogging() const;
 
+		void initExecutors(const json::utility::jsonObject& webFrameworkSettings, std::vector<std::string>& settingsPaths, std::vector<std::string>& pathToSources);
+
 		void initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const;
 
 		void initServer
