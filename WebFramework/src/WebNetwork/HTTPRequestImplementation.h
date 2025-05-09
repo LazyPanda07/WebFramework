@@ -199,6 +199,8 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(const char* functionName) override;
 		
+		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator)) override;
+
 		/**
 		 * @brief Get chunks
 		 * @return
@@ -265,27 +267,6 @@ namespace framework
 		template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
 		std::shared_ptr<T> getModel() const;
 
-		/**
-		 * @brief Send runtime generated content
-		 * @tparam ...Args
-		 * @tparam T
-		 * @param response
-		 * @param ...args
-		 */
-		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendChunks(interfaces::IHTTPResponse& response, Args&&... args);
-
-		/**
-		 * @brief Send file
-		 * @tparam ...Args
-		 * @tparam T
-		 * @param response
-		 * @param fileName
-		 * @param ...args
-		 */
-		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendFileChunks(interfaces::IHTTPResponse& response, std::string_view fileName, Args&&... args);
-
 		/// <summary>
 		/// Reading HTTP request from network
 		/// </summary>
@@ -333,48 +314,5 @@ namespace framework
 		}
 
 		return result;
-	}
-
-	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequestImplementation::sendChunks(interfaces::IHTTPResponse& response, Args&&... args)
-	{
-		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
-	}
-
-	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse& response, std::string_view fileName, Args&&... args)
-	{
-		T generator(std::forward<Args>(args)...);
-
-		web::HTTPBuilder builder = web::HTTPBuilder().chunk(generator.generate()).partialChunks().responseCode(web::ResponseCodes::ok).headers
-		(
-			"Date", HTTPResponseImplementation::getFullDate(),
-			"Server", "WebFramework-Server",
-			"Connection", "keep-alive"
-		);
-
-		if (fileName.size())
-		{
-			builder.headers
-			(
-				"Content-Disposition", std::format(R"(attachment; filename="{}")", fileName)
-			);
-		}
-
-		stream << builder.build();
-
-		response.setIsValid(false);
-
-		while (true)
-		{
-			std::string data = generator.generate();
-
-			stream << web::HTTPBuilder::getChunk(data);
-
-			if (stream.eof() || data.empty())
-			{
-				break;
-			}
-		}
 	}
 }

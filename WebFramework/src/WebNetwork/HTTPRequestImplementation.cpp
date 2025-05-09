@@ -359,6 +359,40 @@ namespace framework
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}
 
+	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator))
+	{
+		web::HTTPBuilder builder = web::HTTPBuilder().chunk(getChunk(chunkGenerator)).partialChunks().responseCode(web::ResponseCodes::ok).headers
+		(
+			"Date", HTTPResponseImplementation::getFullDate(),
+			"Server", "WebFramework-Server",
+			"Connection", "keep-alive"
+		);
+
+		if (fileName)
+		{
+			builder.headers
+			(
+				"Content-Disposition", std::format(R"(attachment; filename="{}")", fileName)
+			);
+		}
+
+		stream << builder.build();
+
+		response->setIsValid(false);
+
+		while (true)
+		{
+			const char* data = getChunk(chunkGenerator);
+
+			stream << web::HTTPBuilder::getChunk(data ? data : "");
+
+			if (stream.eof() || !data)
+			{
+				break;
+			}
+		}
+	}
+
 	void HTTPRequestImplementation::getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const
 	{
 		ranges::for_each(parser.getChunks(), [addChunk, additionalData](const string& chunk) { addChunk(chunk.data(), chunk.size(), additionalData); });

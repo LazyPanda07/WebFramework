@@ -9,16 +9,16 @@ TextGenerator::TextGenerator(std::string_view data) :
 
 }
 
-std::string TextGenerator::generate()
+std::string_view TextGenerator::generate()
 {
 	if (offset >= data.size())
 	{
 		return {};
 	}
 
-	std::string result = data.substr(offset, (std::min)(smallStringSize, data.size() - offset));
+	lastResult = data.substr(offset, (std::min)(smallStringSize, data.size() - offset));
 
-	offset += result.size();
+	offset += lastResult.size();
 
-	return result;
+	return lastResult;
 }

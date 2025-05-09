@@ -110,6 +110,8 @@ namespace framework::interfaces
 
 		virtual bool isDynamicFunctionRegistered(const char* functionName) = 0;
 
+		virtual void sendFileChunks(IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*addChunk)(void* chunkGenerator)) = 0;
+
 		virtual void getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const = 0;
 
 		virtual const char* getJSON() const = 0;
@@ -135,9 +137,6 @@ namespace framework::interfaces
 		virtual double getRouteParameterDouble(const char* routeParameterName) const = 0;
 
 		/*
-		template<RouteParameterType T>
-		const T& getRouteParameter(const std::string& routeParameterName);
-
 		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
 		std::shared_ptr<T> createModel(Args&&... args);
 

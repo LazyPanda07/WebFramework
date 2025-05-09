@@ -7,6 +7,7 @@
 #include "JSONParser.h"
 #include "HTTPParser.h"
 #include "ExecutorsConstants.h"
+#include "Utility/ChunkGenerator.h"
 
 namespace framework
 {
@@ -218,6 +219,27 @@ namespace framework
 		template<RouteParameterType T>
 		T getRouteParameter(std::string_view routeParameterName) const;
 
+		/**
+		 * @brief Send runtime generated content
+		 * @tparam ...Args
+		 * @tparam T
+		 * @param response
+		 * @param ...args
+		 */
+		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+		void sendChunks(HTTPResponse& response, Args&&... args);
+
+		/**
+		 * @brief Send file
+		 * @tparam ...Args
+		 * @tparam T
+		 * @param response
+		 * @param fileName
+		 * @param ...args
+		 */
+		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
+
 		~HTTPRequest();
 
 		friend class ExecutorsManager;
@@ -246,5 +268,19 @@ namespace framework
 
 			return T();
 		}
+	}
+
+	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+	void HTTPRequest::sendChunks(HTTPResponse& response, Args&&... args)
+	{
+		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
+	}
+
+	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
+	void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
+	{
+		T generator(std::forward<Args>(args)...);
+
+		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator) -> const char* { return reinterpret_cast<T*>(chunkGenerator)->generate().data(); });
 	}
 }
