@@ -9,7 +9,6 @@
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/DatabaseException.h"
 #include "WebNetwork/HTTPRequestImplementation.h"
-#include "Framework/WebFrameworkConstants.h"
 
 using namespace std;
 

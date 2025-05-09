@@ -160,7 +160,7 @@ namespace framework
 			}
 		);
 
-		if (static_cast<int>(ExecutorsManager::types.at(webFrameworkSettings.getString(json_settings::webServerTypeKey))) > 1)
+		if (ExecutorsManager::types.at(webFrameworkSettings.getString(json_settings::webServerTypeKey)) > ExecutorsManager::WebServerType::proxy)
 		{
 			if (settingsPaths.empty())
 			{

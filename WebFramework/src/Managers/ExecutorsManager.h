@@ -7,6 +7,7 @@
 #include "Executors/ResourceExecutor.h"
 #include "Utility/RouteParameters.h"
 #include "Utility/AdditionalServerSettings.h"
+#include "Framework/WebFrameworkConstants.h"
 
 namespace framework
 {
