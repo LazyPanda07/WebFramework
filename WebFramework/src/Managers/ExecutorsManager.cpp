@@ -220,14 +220,6 @@ namespace framework
 		const utility::AdditionalServerSettings& additionalSettings
 	)
 	{
-		const unordered_map<string_view, WebServerType> types =
-		{
-			{ json_settings::multiThreadedWebServerTypeValue, WebServerType::multiThreaded },
-			{ json_settings::threadPoolWebServerTypeValue, WebServerType::threadPool },
-			{ json_settings::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
-			{ json_settings::proxyWebServerTypeValue, WebServerType::proxy }
-		};
-
 		this->routes = move(routes);
 		this->creators = move(creators);
 		this->settings = move(settings);
@@ -238,7 +230,7 @@ namespace framework
 
 		resources->init();
 
-		serverType = types.at(configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey));
+		serverType = ExecutorsManager::types.at(configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey));
 	}
 
 	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)

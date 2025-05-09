@@ -160,18 +160,17 @@ namespace framework
 			}
 		);
 
-		if (settingsPaths.empty())
+		if (static_cast<int>(ExecutorsManager::types.at(webFrameworkSettings.getString(json_settings::webServerTypeKey))) > 1)
 		{
-			Log::error("Can't find {}", "LogExecutors", json_settings::settingsPathsKey);
+			if (settingsPaths.empty())
+			{
+				throw runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
+			}
 
-			throw runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
-		}
-
-		if (pathToSources.empty())
-		{
-			Log::error("Can't find {}", "LogExecutors", json_settings::loadSourcesKey);
-
-			throw runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
+			if (pathToSources.empty())
+			{
+				throw runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
+			}
 		}
 	}
 

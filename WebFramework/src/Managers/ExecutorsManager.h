@@ -12,13 +12,21 @@ namespace framework
 {
 	class ExecutorsManager
 	{
-	private:
+	public:
 		enum class WebServerType
 		{
-			multiThreaded,
-			threadPool,
 			loadBalancer,
-			proxy
+			proxy,
+			multiThreaded,
+			threadPool
+		};
+
+		static inline const std::unordered_map<std::string_view, WebServerType> types =
+		{
+			{ json_settings::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
+			{ json_settings::proxyWebServerTypeValue, WebServerType::proxy },
+			{ json_settings::multiThreadedWebServerTypeValue, WebServerType::multiThreaded },
+			{ json_settings::threadPoolWebServerTypeValue, WebServerType::threadPool }
 		};
 
 	private:
