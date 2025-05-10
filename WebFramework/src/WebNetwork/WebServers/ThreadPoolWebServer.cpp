@@ -60,6 +60,11 @@ namespace framework
 			return false;
 		}
 
+		if (!stream.getNetwork<web::HTTPNetwork>().isDataAvailable())
+		{
+			return false;
+		}
+
 		try
 		{
 			HTTPRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, databaseManager, address, stream);
