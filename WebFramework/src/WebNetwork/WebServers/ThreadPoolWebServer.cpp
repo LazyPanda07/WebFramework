@@ -69,8 +69,6 @@ namespace framework
 		{
 			HTTPRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, databaseManager, address, stream);
 			HTTPResponseImplementation response;
-			HTTPRequest requestWrapper(&request);
-			HTTPResponse responseWrapper(&response);
 
 			stream >> request;
 
@@ -83,6 +81,9 @@ namespace framework
 			{
 				return false;
 			}
+
+			HTTPRequest requestWrapper(&request);
+			HTTPResponse responseWrapper(&response);
 
 			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, statefulExecutors);
 
@@ -110,7 +111,7 @@ namespace framework
 						{
 							if (Log::isValid())
 							{
-								Log::error("Thread pool serve exception: {}", "LogThreadPool", e.what());
+								Log::error("Thread pool serve exception: {}", "LogThreadPoolServer", e.what());
 							}
 
 							webExceptionAcquired = true;
@@ -135,12 +136,22 @@ namespace framework
 						}
 						catch (const exceptions::BaseExecutorException& e) // 500
 						{
+							if (Log::isValid())
+							{
+								Log::error("Internal server error: {}", "LogThreadPoolServer", e.what());
+							}
+
 							resourceExecutor.internalServerError(responseWrapper, &e);
 
 							stream << response;
 						}
 						catch (const exception& e)
 						{
+							if (Log::isValid())
+							{
+								Log::error("Internal server error: {}", "LogThreadPoolServer", e.what());
+							}
+
 							resourceExecutor.internalServerError(responseWrapper, &e);
 
 							stream << response;
@@ -169,7 +180,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Serve exception: {}", "ThreadPool", e.what());
+				Log::error("Serve exception: {}", "LogThreadPoolServer", e.what());
 			}
 
 			return true;
@@ -206,6 +217,11 @@ namespace framework
 			HTTPResponseImplementation response;
 			HTTPResponse responseWrapper(&response);
 
+			if (Log::isValid())
+			{
+				Log::error("Internal server error: {}", "LogThreadPoolServer", e.what());
+			}
+
 			resourceExecutor.internalServerError(responseWrapper, &e);
 
 			stream << response;
@@ -214,6 +230,11 @@ namespace framework
 		{
 			HTTPResponseImplementation response;
 			HTTPResponse responseWrapper(&response);
+
+			if (Log::isValid())
+			{
+				Log::error("Internal server error: {}", "LogThreadPoolServer", e.what());
+			}
 
 			resourceExecutor.internalServerError(responseWrapper, &e);
 

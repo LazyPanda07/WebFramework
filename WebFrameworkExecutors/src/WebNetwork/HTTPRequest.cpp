@@ -47,7 +47,7 @@ namespace framework
 		return implementation;
 	}
 
-	vector<interfaces::CVariable> HTTPRequest::convertVariables(const std::unordered_map<std::string, std::string>& variables)
+	vector<interfaces::CVariable> HTTPRequest::convertVariables(const unordered_map<string, string>& variables)
 	{
 		vector<interfaces::CVariable> result;
 
@@ -71,6 +71,27 @@ namespace framework
 		this->initKeyValuesParameters();
 		this->initMultiparts();
 		this->initChunks();
+	}
+
+	HTTPRequest::HTTPRequest(HTTPRequest&& other) noexcept
+	{
+		(*this) = move(other);
+	}
+
+	HTTPRequest& HTTPRequest::operator =(HTTPRequest&& other) noexcept
+	{
+		implementation = other.implementation;
+		deleter = other.deleter;
+		json = move(other.json);
+		headers = move(other.headers);
+		keyValueParameters = move(other.keyValueParameters);
+		multiparts = move(other.multiparts);
+		chunks = move(other.chunks);
+
+		other.implementation = nullptr;
+		other.deleter = nullptr;
+
+		return *this;
 	}
 
 	void HTTPRequest::updateLargeData(string_view dataPart, size_t size)

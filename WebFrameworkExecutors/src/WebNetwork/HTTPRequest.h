@@ -52,6 +52,14 @@ namespace framework
 	public:
 		HTTPRequest(interfaces::IHTTPRequest* implementation, const std::function<void(interfaces::IHTTPRequest*)>& deleter = nullptr);
 
+		HTTPRequest(const HTTPRequest&) = delete;
+
+		HTTPRequest(HTTPRequest&& other) noexcept;
+
+		HTTPRequest& operator =(const HTTPRequest&) = delete;
+
+		HTTPRequest& operator =(HTTPRequest&& other) noexcept;
+
 		void updateLargeData(std::string_view dataPart, size_t size);
 
 		/// <summary>

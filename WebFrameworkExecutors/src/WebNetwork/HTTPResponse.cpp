@@ -11,6 +11,22 @@ namespace framework
 
 	}
 
+	HTTPResponse::HTTPResponse(HTTPResponse&& other) noexcept
+	{
+		(*this) = move(other);
+	}
+
+	HTTPResponse& HTTPResponse::operator =(HTTPResponse&& other) noexcept
+	{
+		implementation = other.implementation;
+		deleter = other.deleter;
+
+		other.implementation = nullptr;
+		other.deleter = nullptr;
+
+		return *this;
+	}
+
 	void HTTPResponse::setHTTPVersion(string_view version)
 	{
 		implementation->setHTTPVersion(version.data());

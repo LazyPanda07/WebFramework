@@ -112,7 +112,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::error("Multithreaded serve exception: {}", "LogMultithreaded", e.what());
+					Log::error("Multithreaded serve exception: {}", "LogMultithreadedServer", e.what());
 				}
 
 				break;
@@ -137,12 +137,22 @@ namespace framework
 			}
 			catch (const exceptions::BaseExecutorException& e) // 500
 			{
+				if (Log::isValid())
+				{
+					Log::error("Internal server error: {}", "LogMultithreadedServer", e.what());
+				}
+
 				resources->internalServerError(responseWrapper, &e);
 
 				stream << response;
 			}
 			catch (const exception& e)
 			{
+				if (Log::isValid())
+				{
+					Log::error("Internal server error: {}", "LogMultithreadedServer", e.what());
+				}
+
 				resources->internalServerError(responseWrapper, &e);
 
 				stream << response;

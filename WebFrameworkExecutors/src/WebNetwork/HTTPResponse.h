@@ -17,6 +17,14 @@ namespace framework
 	public:
 		HTTPResponse(interfaces::IHTTPResponse* implementation, const std::function<void(interfaces::IHTTPResponse*)>& deleter = nullptr);
 
+		HTTPResponse(const HTTPResponse&) = delete;
+
+		HTTPResponse& operator =(const HTTPResponse&) = delete;
+
+		HTTPResponse(HTTPResponse&& other) noexcept;
+
+		HTTPResponse& operator =(HTTPResponse&& other) noexcept;
+
 		void setHTTPVersion(std::string_view version);
 
 		/// <summary>
