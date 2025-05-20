@@ -29,7 +29,7 @@ namespace framework::utility
 
 	void BaseLargeBodyHandler::onParseHeaders()
 	{
-		request = make_unique<HTTPRequestImplementation>(sessionsManager, serverReference, staticResources, dynamicResources, database, clientAddr, stream);
+		request = make_unique<HTTPRequestImplementation>(sessionsManager, serverReference, staticResources, dynamicResources, clientAddr, stream);
 		response.setDefault();
 
 		response.setIsValid(false);
@@ -51,7 +51,7 @@ namespace framework::utility
 	BaseLargeBodyHandler::BaseLargeBodyHandler
 	(
 		web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
-		sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream,
+		sockaddr clientAddr, streams::IOSocketStream& stream,
 		ExecutorsManager& executorsManager, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors
 	) :
 		LargeBodyHandler(network),
@@ -59,7 +59,6 @@ namespace framework::utility
 		serverReference(serverReference),
 		staticResources(staticResources),
 		dynamicResources(dynamicResources),
-		database(database),
 		clientAddr(clientAddr),
 		stream(stream),
 		executorsManager(executorsManager),

@@ -480,7 +480,7 @@ jobs:
 
     - name: Create Linux zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r linux.zip Release_Linux Release_Linux
+      run: zip -r linux.zip Release_Linux
 
     - name: Create Android zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}

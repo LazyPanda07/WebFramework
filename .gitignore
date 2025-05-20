@@ -47,11 +47,6 @@ gtest/
 # Log files
 *.log
 
-# SQLite binaries
-!sqlite3.lib
-!sqlite3.dll
-!libsqlite3.so
-
 # Databases
 *.sqlite3
 *.sqlite

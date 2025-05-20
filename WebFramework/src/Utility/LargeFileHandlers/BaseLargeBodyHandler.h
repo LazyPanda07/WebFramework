@@ -3,7 +3,6 @@
 #include "LargeBodyHandler.h"
 
 #include "BaseTCPServer.h"
-#include "SQLite3/SQLiteManager.h"
 #include "Managers/SessionsManager.h"
 #include "Managers/ExecutorsManager.h"
 #include "WebNetwork/Interfaces/IStaticFile.h"
@@ -19,7 +18,6 @@ namespace framework::utility
 		const web::BaseTCPServer& serverReference;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
-		sqlite::SQLiteManager& database;
 		sockaddr clientAddr;
 		streams::IOSocketStream& stream;
 		ExecutorsManager& executorsManager;
@@ -42,7 +40,7 @@ namespace framework::utility
 		BaseLargeBodyHandler
 		(
 			web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
-			sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream,
+			sockaddr clientAddr, streams::IOSocketStream& stream,
 			ExecutorsManager& executorsManager, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors
 		);
 

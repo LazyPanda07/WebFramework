@@ -30,7 +30,7 @@ namespace framework
 		network.setLargeBodyHandler<utility::ThreadPoolHandler>
 			(
 				server.additionalSettings.largeBodyPacketSize, network, server.sessionsManager, server,
-				*server.resources, *server.resources, server.databaseManager,
+				*server.resources, *server.resources,
 				address, stream, server.executorsManager, statefulExecutors
 			);
 		network.setLargeBodySizeThreshold(server.additionalSettings.largeBodySizeThreshold);
@@ -44,7 +44,6 @@ namespace framework
 		web::BaseTCPServer& server,
 		interfaces::IStaticFile& staticResources,
 		interfaces::IDynamicFile& dynamicResources,
-		sqlite::SQLiteManager& databaseManager,
 		ExecutorsManager& executorsManager,
 		ResourceExecutor& resourceExecutor,
 		threading::ThreadPool& threadPool
@@ -67,7 +66,7 @@ namespace framework
 
 		try
 		{
-			HTTPRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, databaseManager, address, stream);
+			HTTPRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, address, stream);
 			HTTPResponseImplementation response;
 
 			stream >> request;
@@ -273,7 +272,6 @@ namespace framework
 				*this,
 				*resources,
 				*resources,
-				databaseManager,
 				executorsManager,
 				*resources,
 				threadPool

@@ -56,11 +56,10 @@ namespace framework
 		return web::HTTPParser(response);
 	}
 
-	HTTPRequestImplementation::HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream) :
+	HTTPRequestImplementation::HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
 		stream(stream),
-		database(database),
 		clientAddr(clientAddr),
 		staticResources(staticResources),
 		dynamicResources(dynamicResources)

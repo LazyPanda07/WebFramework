@@ -2,7 +2,6 @@
 
 #include "HTTPParser.h"
 
-#include "SQLite3/SQLiteManager.h"
 #include "WebNetwork/Interfaces/IStaticFile.h"
 #include "WebNetwork/Interfaces/IDynamicFile.h"
 #include "WebNetwork/Interfaces/IHTTPRequest.h"
@@ -37,7 +36,6 @@ namespace framework
 		SessionsManager& session;
 		const web::BaseTCPServer& serverReference;
 		streams::IOSocketStream& stream;
-		sqlite::SQLiteManager& database;
 		std::unordered_map<std::string, std::variant<std::string, int64_t, double>> routeParameters;
 		sockaddr clientAddr;
 		web::HTTPParser parser;
@@ -57,7 +55,7 @@ namespace framework
 		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
 
 	public:
-		HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sqlite::SQLiteManager& database, sockaddr clientAddr, streams::IOSocketStream& stream);
+		HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
 
 		HTTPRequestImplementation(HTTPRequestImplementation&&) noexcept = default;
 
@@ -249,24 +247,6 @@ namespace framework
 
 		double getRouteParameterDouble(const char* routeParameterName) const override;
 
-		/**
-		 * @brief First call creates model with arguments other calls returns created model
-		 * @tparam ...Args
-		 * @tparam T
-		 * @param ...args
-		 * @return
-		 */
-		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
-		std::shared_ptr<T> createModel(Args&&... args);
-
-		/**
-		 * @brief First call creates model without arguments other calls returns created model
-		 * @tparam T
-		 * @return
-		 */
-		template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
-		std::shared_ptr<T> getModel() const;
-
 		/// <summary>
 		/// Reading HTTP request from network
 		/// </summary>
@@ -289,30 +269,4 @@ namespace framework
 		friend class ExecutorsManager;
 		friend class utility::BaseLargeBodyHandler;
 	};
-
-	template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
-	std::shared_ptr<T> HTTPRequestImplementation::createModel(Args&&... args)
-	{
-		return database.add<T>(std::forward<Args>(args)...);
-	}
-
-	template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
-	std::shared_ptr<T> HTTPRequestImplementation::getModel() const
-	{
-		std::shared_ptr<T> result = database.get<T>();
-
-		if constexpr (std::is_default_constructible_v<T>)
-		{
-			if (!result)
-			{
-				result = database.add<T>();
-			}
-		}
-		else if (!result)
-		{
-			HTTPRequestImplementation::logWebFrameworkModelsError(typeid(T).name());
-		}
-
-		return result;
-	}
 }

@@ -41,7 +41,6 @@ namespace framework
 				web::BaseTCPServer& server,
 				interfaces::IStaticFile& staticResources,
 				interfaces::IDynamicFile& dynamicResources,
-				sqlite::SQLiteManager& databaseManager,
 				ExecutorsManager& executorsManager,
 				ResourceExecutor& resourceExecutor,
 				threading::ThreadPool& threadPool

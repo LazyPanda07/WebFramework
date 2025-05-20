@@ -5,19 +5,12 @@ project(WebFrameworkCore)
 add_library(
 	${PROJECT_NAME} STATIC
 	src/Exceptions/BaseWebFrameworkException.cpp
-	src/Exceptions/DatabaseException.cpp
-	src/Exceptions/SQLite3Exception.cpp
 	src/Managers/SessionsManager.cpp
-	src/SQLite3/SQLiteDatabase.cpp
-	src/SQLite3/SQLiteDatabaseModel.cpp
-	src/SQLite3/SQLiteResult.cpp
-	src/SQLite3/SQLiteManager.cpp
 )
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	src/
-	vendor/sqlite3/include/
 	${CMAKE_SOURCE_DIR}/Networks/src/
 	${CMAKE_SOURCE_DIR}/Networks/HTTP/src/
 	${CMAKE_SOURCE_DIR}/Networks/HTTP/JSON/src/

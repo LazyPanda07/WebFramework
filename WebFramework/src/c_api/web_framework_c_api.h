@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef WEB_FRAMEWORK_DLL
-
 #include <stdint.h>
 
 #ifdef __LINUX__
@@ -76,5 +74,3 @@ EXPORT void* getBasePath(Config config, Exception* exception);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EXPORT const char* getErrorMessage(Exception exception);
-
-#endif

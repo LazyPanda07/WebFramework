@@ -69,7 +69,7 @@ namespace framework
 		HTTPResponse responseWrapper(&response);
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
 
-		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, databaseManager, addr, stream, executorsManager, statefulExecutors);
+		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, executorsManager, statefulExecutors);
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
 		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
@@ -78,7 +78,7 @@ namespace framework
 		{
 			try
 			{
-				HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, databaseManager, addr, stream);
+				HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 
 				response.setDefault();
 

@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -66,7 +66,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY /Y $(ProjectDir)vendor\sqlite3\dll\sqlite3.dll $(OutDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,7 +79,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -88,18 +89,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY /Y $(ProjectDir)vendor\sqlite3\dll\sqlite3.dll $(OutDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h" />
-    <ClInclude Include="src\Exceptions\DatabaseException.h" />
-    <ClInclude Include="src\Exceptions\SQLite3Exception.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
-    <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
-    <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
-    <ClInclude Include="src\SQLite3\SQLiteManager.h" />
-    <ClInclude Include="src\SQLite3\SQLiteResult.h" />
     <ClInclude Include="src\Utility\ChunkGenerator.h" />
     <ClInclude Include="src\WebFrameworkCoreConstants.h" />
     <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
@@ -109,13 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />
-    <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
-    <ClCompile Include="src\Exceptions\SQLite3Exception.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteManager.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteResult.cpp" />
     <ClCompile Include="src\WebNetwork\Interfaces\IHTTPResponse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

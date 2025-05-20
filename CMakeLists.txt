@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFrameworkCore/vendor/sqlite3/lib)
-set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFrameworkCore/vendor/sqlite3)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(
@@ -20,48 +18,29 @@ set(
 	SHA256
 	ThreadPool
 	UtilityLibrary
+	Databases
 	sqlite3
 	ssl
 	crypto
 )
-option(SHARED_WEB_FRAMEWORK "Build WebFramework shared library for using in different APIs" ON)
 
 project(WebFramework VERSION 3.0.12)
-
-add_definitions(-DWEB_FRAMEWORK_DLL)
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
 	add_compile_options(-fvisibility=hidden)
 	
-	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 		add_definitions(-D__ANDROID__)
-
-		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android)
-		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
-		
-		install(DIRECTORY WebFrameworkCore/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	else()
-		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
-		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
-
 		add_compile_options(-rdynamic)
-
-		install(DIRECTORY WebFrameworkCore/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
 	endif()
 else ()
 	add_definitions(-DNOMINMAX)
-	add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
 
-	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
-	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
-	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
 	set(LIBS ${LIBS} crypt32)
-
-	install(DIRECTORY WebFrameworkCore/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
 endif ()
 
 add_library(
@@ -133,6 +112,7 @@ add_subdirectory(Networks)
 add_subdirectory(SHA256)
 add_subdirectory(ThreadPool)
 add_subdirectory(UtilityLibrary)
+add_subdirectory(Databases)
 
 add_subdirectory(API)
 
@@ -153,7 +133,6 @@ install(
 	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
 )
 
-install(FILES ${SQLITE_DLL_PATH} DESTINATION ${SQLITE_DLL_DESTINATION_PATH})
 install(FILES WebFrameworkConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES FindWebFramework.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
 
@@ -164,4 +143,3 @@ endif ()
 install(DIRECTORY WebFramework/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY schemas DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY WebFrameworkCore/vendor/sqlite3/include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/vendor/sqlite3/)

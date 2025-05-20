@@ -46,6 +46,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebFrameworkExecutors", "We
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebFrameworkCore", "WebFrameworkCore\WebFrameworkCore.vcxproj", "{E852AA58-2286-41F3-8A93-44E08C0EFC97}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Databases", "Databases\Databases.vcxproj", "{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -124,6 +126,10 @@ Global
 		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.Debug|x64.Build.0 = Debug|x64
 		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.Release|x64.ActiveCfg = Release|x64
 		{E852AA58-2286-41F3-8A93-44E08C0EFC97}.Release|x64.Build.0 = Release|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Debug|x64.ActiveCfg = Debug|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Debug|x64.Build.0 = Debug|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Release|x64.ActiveCfg = Release|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,6 +150,7 @@ Global
 		{3F4D262A-28BD-49D4-BB24-A83363263739} = {4DD1875E-103B-4E84-88B7-1B3E5D6A2EDF}
 		{5BBA94D8-A316-40BC-A14C-9D9F4AE4D04C} = {4DD1875E-103B-4E84-88B7-1B3E5D6A2EDF}
 		{3D090049-A939-49CF-B7CB-434E4197B940} = {4DD1875E-103B-4E84-88B7-1B3E5D6A2EDF}
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {155A7728-6396-43E2-9EFF-B3B350E831EA}

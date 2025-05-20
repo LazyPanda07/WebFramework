@@ -349,7 +349,7 @@ namespace framework
 
 			throw;
 		}
-		catch (const exceptions::DatabaseException& e)
+		catch (const database::exception::DatabaseException& e)
 		{
 			if (Log::isValid())
 			{

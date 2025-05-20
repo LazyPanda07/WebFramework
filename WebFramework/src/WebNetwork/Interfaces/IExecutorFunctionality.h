@@ -6,7 +6,6 @@
 
 #include "Managers/ExecutorsManager.h"
 #include "Managers/SessionsManager.h"
-#include "SQLite3/SQLiteManager.h"
 #include "Utility/AdditionalServerSettings.h"
 
 namespace framework
@@ -18,7 +17,6 @@ namespace framework
 		protected:
 			ExecutorsManager executorsManager;
 			SessionsManager sessionsManager;
-			sqlite::SQLiteManager databaseManager;
 			std::shared_ptr<ResourceExecutor> resources;
 			utility::AdditionalServerSettings additionalSettings;
 

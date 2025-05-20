@@ -1,5 +1,3 @@
-#ifdef WEB_FRAMEWORK_DLL
-
 #include "web_framework_c_api.h"
 
 #include "Framework/WebFramework.h"
@@ -350,5 +348,3 @@ const char* getErrorMessage(Exception exception)
 {
 	return static_cast<std::runtime_error*>(exception)->what();
 }
-
-#endif
