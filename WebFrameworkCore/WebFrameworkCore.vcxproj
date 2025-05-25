@@ -94,6 +94,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Databases\Interfaces\IDatabase.h" />
+    <ClInclude Include="src\Databases\Interfaces\ISQLResult.h" />
+    <ClInclude Include="src\Databases\Interfaces\ISQLValue.h" />
+    <ClInclude Include="src\Databases\Interfaces\ITable.h" />
     <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
     <ClInclude Include="src\Utility\ChunkGenerator.h" />

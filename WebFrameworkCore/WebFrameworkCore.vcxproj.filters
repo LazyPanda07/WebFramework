@@ -39,6 +39,18 @@
     <ClInclude Include="src\WebNetwork\Interfaces\IHTTPRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Databases\Interfaces\IDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\Interfaces\ITable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\Interfaces\ISQLResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\Interfaces\ISQLValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp">
