@@ -1,5 +1,7 @@
 #include "SQLResultImplementation.h"
 
+#include "SQLValueImplementation.h"
+
 using namespace std;
 
 namespace framework
