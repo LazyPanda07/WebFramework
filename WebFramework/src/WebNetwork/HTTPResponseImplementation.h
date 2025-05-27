@@ -4,7 +4,7 @@
 #include "IOSocketStream.h"
 #include "WebNetwork/Interfaces/IHTTPResponse.h"
 
-#include "WebFrameworkCoreConstants.h"
+#include "Framework/WebFrameworkPlatform.h"
 
 namespace framework
 {
@@ -12,7 +12,7 @@ namespace framework
 	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class WEB_FRAMEWORK_CORE_API HTTPResponseImplementation : public interfaces::IHTTPResponse
+	class WEB_FRAMEWORK_API HTTPResponseImplementation : public interfaces::IHTTPResponse
 	{
 	private:
 		web::HTTPBuilder builder;

@@ -42,6 +42,8 @@ namespace framework
 
 		void initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const;
 
+		void initDatabase(const json::utility::jsonObject& webFrameworkSettings);
+
 		void initServer
 		(
 			const json::utility::jsonObject& webFrameworkSettings,

@@ -30,7 +30,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class WEB_FRAMEWORK_CORE_API HTTPRequestImplementation : public interfaces::IHTTPRequest
+	class WEB_FRAMEWORK_API HTTPRequestImplementation : public interfaces::IHTTPRequest
 	{
 	private:
 		SessionsManager& session;

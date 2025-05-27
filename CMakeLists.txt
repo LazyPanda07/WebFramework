@@ -62,6 +62,7 @@ add_library(
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/BaseConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
+	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
 	WebFramework/src/WebNetwork/WebServers/BaseWebServer.cpp
 	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
@@ -76,6 +77,7 @@ add_library(
 	WebFramework/src/Utility/AdditionalServerSettings.cpp
 	WebFramework/src/WebNetwork/HTTPRequestImplementation.cpp
 	WebFramework/src/WebNetwork/HTTPResponseImplementation.cpp
+	WebFramework/src/Databases/DatabaseImplementation.cpp
 )
 
 if (CMAKE_GENERATOR MATCHES "Visual Studio")

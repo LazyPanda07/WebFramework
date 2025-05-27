@@ -132,9 +132,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Databases\DatabaseImplementation.cpp" />
+    <ClCompile Include="src\Databases\SQLResultImplementation.cpp" />
+    <ClCompile Include="src\Databases\SQLValueImplementation.cpp" />
+    <ClCompile Include="src\Databases\TableImplementation.cpp" />
     <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
     <ClCompile Include="src\c_api\web_framework_c_api.cpp" />
+    <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
@@ -165,6 +170,10 @@
     <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Databases\DatabaseImplementation.h" />
+    <ClInclude Include="src\Databases\SQLResultImplementation.h" />
+    <ClInclude Include="src\Databases\SQLValueImplementation.h" />
+    <ClInclude Include="src\Databases\TableImplementation.h" />
     <ClInclude Include="src\Exceptions\NotFoundException.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\c_api\web_framework_c_api.h" />
@@ -179,6 +188,7 @@
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h" />
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />
+    <ClInclude Include="src\Managers\DatabasesManager.h" />
     <ClInclude Include="src\Proxy\ProxyServer.h" />
     <ClInclude Include="src\Utility\AdditionalServerSettings.h" />
     <ClInclude Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.h" />

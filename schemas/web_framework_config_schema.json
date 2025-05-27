@@ -165,6 +165,11 @@
           "type": "integer",
           "description": "Size of single packet from large message"
         },
+        "databaseImplementation": {
+          "type": "string",
+          "description": "Database implementation name",
+          "enum": [ "sqlite" ]
+        },
         "HTTPS": {
           "type": "object",
           "description": "HTTPS settings",

@@ -15,6 +15,7 @@
 #include "Proxy/ProxyServer.h"
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "Managers/DatabasesManager.h"
 
 using namespace std;
 
@@ -199,6 +200,18 @@ namespace framework
 		}
 	}
 
+	void WebFramework::initDatabase(const json::utility::jsonObject& webFrameworkSettings)
+	{
+		string databaseImplementationName;
+
+		if (!webFrameworkSettings.tryGetString(json_settings::databaseImplementationKey, databaseImplementationName))
+		{
+			databaseImplementationName = "sqlite";
+		}
+
+		DatabasesManager::get().initDatabaseImplementation(databaseImplementationName);
+	}
+
 	void WebFramework::initServer
 	(
 		const json::utility::jsonObject& webFrameworkSettings,
@@ -340,6 +353,7 @@ namespace framework
 		vector<string> settingsPaths;
 		vector<string> pathToSources;
 
+		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, settingsPaths, pathToSources);
 		this->initHTTPS(webFrameworkSettings);
 
