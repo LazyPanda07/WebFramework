@@ -18,7 +18,7 @@ namespace framework
 
 		size_t size() const override;
 
-		void iterate(const char* columnName, interfaces::ISQLValue* columnValue, size_t index, size_t size) override;
+		void iterate(void (*callback)(const char* columnName, const interfaces::ISQLValue* columnValue, size_t index, size_t size)) override;
 
 		~SQLResultImplementation() = default;
 	};

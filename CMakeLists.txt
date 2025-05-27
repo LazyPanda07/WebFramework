@@ -78,6 +78,9 @@ add_library(
 	WebFramework/src/WebNetwork/HTTPRequestImplementation.cpp
 	WebFramework/src/WebNetwork/HTTPResponseImplementation.cpp
 	WebFramework/src/Databases/DatabaseImplementation.cpp
+	WebFramework/src/Databases/TableImplementation.cpp
+	WebFramework/src/Databases/SQLResultImplementation.cpp
+	WebFramework/src/Databases/SQLValueImplementation.cpp
 )
 
 if (CMAKE_GENERATOR MATCHES "Visual Studio")

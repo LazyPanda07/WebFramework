@@ -15,8 +15,16 @@ namespace framework
 		return result.size();
 	}
 
-	void SQLResultImplementation::iterate(const char* columnName, interfaces::ISQLValue* columnValue, size_t index, size_t size)
+	void SQLResultImplementation::iterate(void (*callback)(const char* columnName, const interfaces::ISQLValue* columnValue, size_t index, size_t size))
 	{
+		for (size_t i = 0; i < result.size(); i++)
+		{
+			for (const auto& [key, value] : result[i])
+			{
+				SQLValueImplementation valueImplementation(value);
 
+				callback(key.data(), &value, i, result.size());
+			}
+		}
 	}
 }

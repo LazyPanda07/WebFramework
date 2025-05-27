@@ -16,6 +16,8 @@ namespace framework
 	public:
 		SQLValueImplementation() = default;
 
+		SQLValueImplementation(const database::SQLValue& value);
+
 		SQLValueImplementation(database::SQLValue&& value);
 
 		void setInt(int64_t value) override;

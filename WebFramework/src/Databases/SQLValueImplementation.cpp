@@ -4,6 +4,12 @@ using namespace std;
 
 namespace framework
 {
+	SQLValueImplementation::SQLValueImplementation(const database::SQLValue& value) :
+		value(value)
+	{
+
+	}
+
 	SQLValueImplementation::SQLValueImplementation(database::SQLValue&& value) :
 		value(move(value))
 	{
