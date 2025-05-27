@@ -23,9 +23,9 @@ namespace framework
 		{
 			for (const auto& [key, value] : result[i])
 			{
-				SQLValueImplementation valueImplementation(value);
+				SQLValueImplementation temp(value);
 
-				callback(key.data(), &value, i, result.size());
+				callback(key.data(), &temp, i, result.size());
 			}
 		}
 	}
