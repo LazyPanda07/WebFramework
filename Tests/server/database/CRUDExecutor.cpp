@@ -62,12 +62,18 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
-	framework::SQLResult result = table.execute
+
+	table.execute
 	(
 		"UPDATE test_table "
 		"SET name = ? "
 		"WHERE amount = ?",
 		{ framework::SQLValue("empty"), framework::SQLValue(-1) }
+	);
+	framework::SQLResult result = table.execute
+	(
+		"SELECT * FROM test_table WHERE name = ?",
+		{ framework::SQLValue("empty") }
 	);
 
 	std::vector<json::utility::jsonObject> data;
