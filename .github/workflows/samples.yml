@@ -7,7 +7,7 @@ on:
   
   
 env:
-  flutter-version: 3.27.1
+  flutter-version: 3.32.1
 
 
 jobs:
@@ -22,16 +22,16 @@ jobs:
    - name: Setup MSBuild
      uses: microsoft/setup-msbuild@v2
 
-   - name: Build StaticWindowsOnly
+   - name: Build VisualStudioSample
      run: |
-         cd samples\StaticWindowsOnly
-         msbuild StaticWindowsOnly.sln -property:Configuration=Release
+         cd samples\VisualStudioSample
+         msbuild VisualStudioSample.sln -property:Configuration=Release
    
    - name: Upload artifacts
      uses: actions/upload-artifact@v4
      with:
-        name: StaticWindowsOnly
-        path: samples/StaticWindowsOnly/bin/Release-x64/StaticWindowsOnly
+        name: VisualStudioSample
+        path: samples/VisualStudioSample/bin/Release-x64/VisualStudioSample
 
 
   windows-build:
