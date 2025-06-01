@@ -13,8 +13,6 @@ namespace framework::interfaces
 
 		virtual ITable* createOrGetTable(const char* tableName, const char* createTableQuery) = 0;
 
-		virtual void deleteTable(ITable* table) const = 0;
-
 		virtual const char* getDatabaseName() const = 0;
 
 		virtual const char* getDatabaseFileName() const = 0;

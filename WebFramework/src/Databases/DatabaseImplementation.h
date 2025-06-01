@@ -12,6 +12,7 @@ namespace framework
 	{
 	private:
 		std::shared_ptr<database::Database> database;
+		mutable std::vector<interfaces::ITable*> tables;
 
 	public:
 		DatabaseImplementation(std::shared_ptr<database::Database> database);
@@ -22,14 +23,12 @@ namespace framework
 
 		interfaces::ITable* createOrGetTable(const char* tableName, const char* createTableQuery) override;
 
-		void deleteTable(interfaces::ITable* table) const override;
-
 		const char* getDatabaseName() const override;
 
 		const char* getDatabaseFileName() const override;
 
 		void deleteDatabaseFileName(const char* ptr) const override;
 
-		~DatabaseImplementation() = default;
+		~DatabaseImplementation();
 	};
 }

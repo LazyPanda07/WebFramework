@@ -1,5 +1,7 @@
 #include "TableImplementation.h"
 
+#include "SQLResultImplementation.h"
+
 using namespace std;
 
 namespace framework
@@ -62,9 +64,12 @@ namespace framework
 			}
 		}
 
-		table->execute<database::RawQuery>(temp, query);
+		return new SQLResultImplementation(table->execute<database::RawQuery>(temp, query));
+	}
 
-		return nullptr;
+	void TableImplementation::deleteResult(interfaces::ISQLResult* ptr) const
+	{
+		delete ptr;
 	}
 
 	const char* TableImplementation::getTableName() const

@@ -1,5 +1,7 @@
 #include "DatabaseImplementation.h"
 
+#include <algorithm>
+
 #include "TableImplementation.h"
 #include "Managers/DatabasesManager.h"
 
@@ -9,7 +11,7 @@ using namespace std;
 
 namespace framework
 {
-	DatabaseImplementation::DatabaseImplementation(std::shared_ptr<database::Database> database) :
+	DatabaseImplementation::DatabaseImplementation(shared_ptr<database::Database> database) :
 		database(database)
 	{
 
@@ -22,7 +24,7 @@ namespace framework
 
 		if (outTable && result)
 		{
-			*outTable = new TableImplementation(table);
+			*outTable = tables.emplace_back(new TableImplementation(table));
 		}
 
 		return result;
@@ -30,26 +32,24 @@ namespace framework
 
 	interfaces::ITable* DatabaseImplementation::get(const char* tableName) const
 	{
-		return new TableImplementation(database->get(tableName).get());
+		return tables.emplace_back(new TableImplementation(database->get(tableName).get()));
 	}
 
 	interfaces::ITable* DatabaseImplementation::createOrGetTable(const char* tableName, const char* createTableQuery)
 	{
-		return new TableImplementation
+		return tables.emplace_back
 		(
-			database::createRawTable
+			new TableImplementation
 			(
-				DatabasesManager::get().getDatabaseImplementationName(), 
-				tableName, 
-				database::CreateTableQuery(createTableQuery), 
-				database.get()
+				database::createRawTable
+				(
+					DatabasesManager::get().getDatabaseImplementationName(),
+					tableName,
+					database::CreateTableQuery(createTableQuery),
+					database.get()
+				)
 			)
 		);
-	}
-
-	void DatabaseImplementation::deleteTable(interfaces::ITable* table) const
-	{
-		delete table;
 	}
 
 	const char* DatabaseImplementation::getDatabaseName() const
@@ -72,5 +72,10 @@ namespace framework
 	void DatabaseImplementation::deleteDatabaseFileName(const char* ptr) const
 	{
 		delete[] ptr;
+	}
+
+	DatabaseImplementation::~DatabaseImplementation()
+	{
+		ranges::for_each(tables, [](interfaces::ITable* table) { delete table; });
 	}
 }

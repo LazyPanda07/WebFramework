@@ -18,6 +18,8 @@ namespace framework
 
 		interfaces::ISQLResult* execute(const char* query, const interfaces::ISQLValue* values, size_t size) override;
 
+		void deleteResult(interfaces::ISQLResult* ptr) const override;
+
 		const char* getTableName() const override;
 
 		~TableImplementation() = default;
