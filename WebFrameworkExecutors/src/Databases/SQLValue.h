@@ -19,8 +19,13 @@ namespace framework
 	private:
 		ValueType value;
 
-	public:
+	private:
 		SQLValue(const interfaces::ISQLValue* implementation);
+
+	public:
+		SQLValue(const ValueType& value);
+
+		SQLValue(ValueType&& value) noexcept;
 
 		template<OneOf T>
 		const T& get() const;
@@ -28,6 +33,8 @@ namespace framework
 		const ValueType& operator *() const;
 
 		~SQLValue() = default;
+
+		friend class SQLResult;
 	};
 
 	template<OneOf T>

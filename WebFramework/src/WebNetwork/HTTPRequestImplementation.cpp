@@ -7,6 +7,8 @@
 #include "FileManager.h"
 #include "HTTPSNetwork.h"
 #include "Managers/SessionsManager.h"
+#include <Managers/DatabasesManager.h>
+#include <Databases/DatabaseImplementation.h>
 
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -464,6 +466,21 @@ namespace framework
 	double HTTPRequestImplementation::getRouteParameterDouble(const char* routeParameterName) const
 	{
 		return get<double>(routeParameters.at(routeParameterName));
+	}
+
+	interfaces::IDatabase* HTTPRequestImplementation::getOrCreateDatabase(const char* databaseName)
+	{
+		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getOrCreateDatabase(databaseName)));
+	}
+
+	interfaces::IDatabase* HTTPRequestImplementation::getDatabase(const char* databaseName) const
+	{
+		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getDatabase(databaseName)));
+	}
+
+	HTTPRequestImplementation::~HTTPRequestImplementation()
+	{
+		ranges::for_each(databases, [](interfaces::IDatabase* database) { delete database; });
 	}
 
 	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequestImplementation& request)

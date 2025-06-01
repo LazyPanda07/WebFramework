@@ -23,12 +23,12 @@ namespace framework
 		return result;
 	}
 
-	Table Database::get(string_view tableName) const
+	Table Database::getTable(string_view tableName) const
 	{
 		return Table(implementation->get(tableName.data()));
 	}
 
-	Table Database::createOrGetTable(string_view tableName, string_view createTableQuery)
+	Table Database::getOrCreateTable(string_view tableName, string_view createTableQuery)
 	{
 		return Table(implementation->createOrGetTable(tableName.data(), createTableQuery.data()));
 	}

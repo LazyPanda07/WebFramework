@@ -2,6 +2,8 @@
 
 #include "IHTTPResponse.h"
 
+#include "Databases/Interfaces/IDatabase.h"
+
 namespace framework::interfaces
 {
 	struct WEB_FRAMEWORK_CORE_API CLargeData
@@ -136,19 +138,9 @@ namespace framework::interfaces
 
 		virtual double getRouteParameterDouble(const char* routeParameterName) const = 0;
 
-		/*
-		template<std::derived_from<sqlite::SQLiteDatabaseModel> T, typename... Args>
-		std::shared_ptr<T> createModel(Args&&... args);
+		virtual IDatabase* getOrCreateDatabase(const char* databaseName) = 0;
 
-		template<std::derived_from<sqlite::SQLiteDatabaseModel> T>
-		std::shared_ptr<T> getModel() const;
-
-		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendChunks(IHTTPResponse& response, Args&&... args);
-
-		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendFileChunks(IHTTPResponse& response, std::string_view fileName, Args&&... args);
-		*/
+		virtual IDatabase* getDatabase(const char* databaseName) const = 0;
 
 		virtual ~IHTTPRequest() = default;
 	};

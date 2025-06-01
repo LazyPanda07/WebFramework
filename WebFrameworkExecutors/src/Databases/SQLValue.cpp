@@ -46,6 +46,18 @@ namespace framework
 		}
 	}
 
+	SQLValue::SQLValue(const ValueType& value) :
+		value(value)
+	{
+
+	}
+
+	SQLValue::SQLValue(ValueType&& value) noexcept :
+		value(move(value))
+	{
+
+	}
+
 	const SQLValue::ValueType& SQLValue::operator *() const
 	{
 		return value;

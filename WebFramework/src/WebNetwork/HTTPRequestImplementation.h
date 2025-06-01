@@ -42,6 +42,7 @@ namespace framework
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
 		interfaces::CLargeData largeData;
+		mutable std::vector<interfaces::IDatabase*> databases;
 
 	private:
 		static bool isWebFrameworkDynamicPages(std::string_view filePath);
@@ -196,7 +197,7 @@ namespace framework
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(const char* functionName) override;
-		
+
 		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator)) override;
 
 		/**
@@ -247,6 +248,12 @@ namespace framework
 
 		double getRouteParameterDouble(const char* routeParameterName) const override;
 
+		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName) override;
+
+		interfaces::IDatabase* getDatabase(const char* databaseName) const override;
+
+		~HTTPRequestImplementation();
+
 		/// <summary>
 		/// Reading HTTP request from network
 		/// </summary>
@@ -263,8 +270,6 @@ namespace framework
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
 		friend std::ostream& operator << (std::ostream& stream, const HTTPRequestImplementation& request);
-
-		~HTTPRequestImplementation() = default;
 
 		friend class ExecutorsManager;
 		friend class utility::BaseLargeBodyHandler;

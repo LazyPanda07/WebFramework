@@ -8,6 +8,7 @@
 #include "HTTPParser.h"
 #include "ExecutorsConstants.h"
 #include "Utility/ChunkGenerator.h"
+#include "Databases/Database.h"
 
 namespace framework
 {
@@ -223,6 +224,14 @@ namespace framework
 		/// </summary>
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const;
+
+		Database getOrCreateDatabase(std::string_view databaseName);
+
+		Database getDatabase(std::string_view databaseName) const;
+
+		Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
+
+		Table getTable(std::string_view databaseName, std::string_view tableName) const;
 
 		template<RouteParameterType T>
 		T getRouteParameter(std::string_view routeParameterName) const;

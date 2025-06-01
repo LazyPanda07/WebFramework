@@ -12,6 +12,7 @@ namespace framework
 	private:
 		std::string databaseImplementationName;
 		::utility::strings::string_based_unordered_map<std::shared_ptr<database::Database>> databases;
+		mutable std::mutex databasesMutex;
 
 	private:
 		DatabasesManager() = default;
@@ -24,6 +25,8 @@ namespace framework
 		void initDatabaseImplementation(std::string_view databaseImplementationName);
 
 		std::shared_ptr<database::Database> getOrCreateDatabase(std::string_view databaseName);
+		
+		std::shared_ptr<database::Database> getDatabase(std::string_view databaseName);
 
 		std::string_view getDatabaseImplementationName() const;
 	};

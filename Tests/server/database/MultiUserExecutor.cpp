@@ -1,9 +1,6 @@
 #include "MultiUserExecutor.h"
 
-#include "MultiUserDatabaseModel.h"
 #include "UUID.h"
-
-// TODO: Fix
 
 MultiUserExecutor::MultiUserExecutor() :
     userId(utility::uuid::generateUUID())

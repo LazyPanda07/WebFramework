@@ -259,6 +259,26 @@ namespace framework
 		return implementation->getServerPort();
 	}
 
+	Database HTTPRequest::getOrCreateDatabase(string_view databaseName)
+	{
+		return Database(implementation->getOrCreateDatabase(databaseName.data()));
+	}
+
+	Database HTTPRequest::getDatabase(string_view databaseName) const
+	{
+		return Database(implementation->getDatabase(databaseName.data()));
+	}
+
+	Table HTTPRequest::getOrCreateTable(string_view databaseName, string_view tableName, string_view createTableQuery)
+	{
+		return this->getOrCreateDatabase(databaseName).getOrCreateTable(tableName, createTableQuery);
+	}
+
+	Table HTTPRequest::getTable(string_view databaseName, string_view tableName) const
+	{
+		return this->getDatabase(databaseName).getTable(tableName);
+	}
+
 	HTTPRequest::~HTTPRequest()
 	{
 		if (deleter && implementation)

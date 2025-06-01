@@ -17,9 +17,9 @@ namespace framework
 
 		bool contains(std::string_view tableName, Table* outTable = nullptr) const;
 
-		Table get(std::string_view tableName) const;
+		Table getTable(std::string_view tableName) const;
 
-		Table createOrGetTable(std::string_view tableName, std::string_view createTableQuery);
+		Table getOrCreateTable(std::string_view tableName, std::string_view createTableQuery);
 
 		std::string_view getDatabaseName() const;
 
