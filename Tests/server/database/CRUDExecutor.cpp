@@ -52,7 +52,7 @@ void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRespons
 	{
 		table.execute
 		(
-			"INSERT INTO test_table VALUES(name, amount) VALUES(?, ?)",
+			"INSERT INTO test_table (name, amount) VALUES(?, ?)",
 			{ framework::SQLValue("glue"), framework::SQLValue(std::to_string(random() % 200)) }
 		);
 	}
