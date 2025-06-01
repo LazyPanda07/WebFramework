@@ -11,7 +11,7 @@ env:
 
 
 jobs:
-  windows-static-build:
+  windows-visual-studio-build:
    runs-on: windows-latest
 
    steps:
@@ -26,12 +26,6 @@ jobs:
      run: |
          cd samples\VisualStudioSample
          msbuild VisualStudioSample.sln -property:Configuration=Release
-   
-   - name: Upload artifacts
-     uses: actions/upload-artifact@v4
-     with:
-        name: VisualStudioSample
-        path: samples/VisualStudioSample/bin/Release-x64/VisualStudioSample
 
 
   windows-build:
@@ -319,7 +313,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [
-      windows-static-build,
+      windows-visual-studio-build,
       windows-hello-executor,
       linux-hello-executor,
       android-hello-executor,
@@ -340,7 +334,7 @@ jobs:
     
     - name: Setup release version variable
       shell: pwsh
-      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\Import\WebFramework.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\Framework\WebFramework.h -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
       uses: actions/download-artifact@v4

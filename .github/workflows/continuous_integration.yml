@@ -150,6 +150,92 @@ jobs:
         path: Tests/build/bin
 
 
+  windows-debug-release-tests:
+    runs-on: windows-latest
+    needs: windows-build
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+  
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: Debug_Windows
+        path: WebFrameworkLibrary
+
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@v1
+      with:
+        build-type: Release
+        install-path: Tests/gtest
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Tests
+      working-directory: Tests
+      run: |
+          cd build/bin
+          .\CXX_API.exe || exit 1
+          .\run_tests.bat ${{ matrix.config }}
+
+
+  windows-release-debug-tests:
+    runs-on: windows-latest
+    needs: windows-build
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+  
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: Release_Windows
+        path: WebFrameworkLibrary
+
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@v1
+      with:
+        build-type: Debug
+        install-path: Tests/gtest
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Debug -DCXX_API=ON -G "NMake Makefiles" ..
+          nmake install
+
+    - name: Tests
+      working-directory: Tests
+      run: |
+          cd build/bin
+          .\CXX_API.exe || exit 1
+          .\run_tests.bat ${{ matrix.config }}
+
+
   linux-cxx-tests:
     runs-on: ubuntu-latest
     needs: linux-build
@@ -448,6 +534,8 @@ jobs:
       linux-python-tests,
       windows-cc-tests,
       linux-cc-tests,
+      windows-debug-release-tests,
+      windows-release-debug-tests,
       android-build
     ]
     runs-on: ubuntu-latest
