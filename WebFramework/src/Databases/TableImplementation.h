@@ -16,7 +16,7 @@ namespace framework
 	public:
 		TableImplementation(database::Table* table);
 
-		interfaces::ISQLResult* execute(const char* query, const interfaces::ISQLValue* values, size_t size) override;
+		interfaces::ISQLResult* execute(const char* query, const interfaces::ISQLValue** values, size_t size) override;
 
 		void deleteResult(interfaces::ISQLResult* ptr) const override;
 

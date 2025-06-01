@@ -59,16 +59,16 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\API\CXX_API\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\API\CXX_API\src\;$(SolutionDir)..\..\Databases\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-move "$(OutDir)Executors.dll" "$(OutDir)executors"
+      <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
+move "$(OutDir)..\Executors\Executors.dll" "$(OutDir)executors"
+for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
 xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
 move "$(OutDir)web.json" "$(OutDir)executors"
 </Command>
@@ -84,7 +84,7 @@ move "$(OutDir)web.json" "$(OutDir)executors"
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\API\CXX_API\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\API\CXX_API\src\;$(SolutionDir)..\..\Databases\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,9 +93,9 @@ move "$(OutDir)web.json" "$(OutDir)executors"
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-move "$(OutDir)Executors.dll" "$(OutDir)executors"
+      <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
+move "$(OutDir)..\Executors\Executors.dll" "$(OutDir)executors"
+for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
 xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
 move "$(OutDir)web.json" "$(OutDir)executors"
 </Command>

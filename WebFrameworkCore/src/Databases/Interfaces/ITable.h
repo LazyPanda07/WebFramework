@@ -8,7 +8,7 @@ namespace framework::interfaces
 	class WEB_FRAMEWORK_CORE_API ITable
 	{
 	public:
-		virtual ISQLResult* execute(const char* query, const ISQLValue* values, size_t size) = 0;
+		virtual ISQLResult* execute(const char* query, const ISQLValue** values, size_t size) = 0;
 
 		virtual void deleteResult(ISQLResult* ptr) const = 0;
 

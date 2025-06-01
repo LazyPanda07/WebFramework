@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SHA256", "..\..\SHA256\SHA2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Executors", "Executors\Executors.vcxproj", "{69729C71-7EF7-4854-A6B4-3A87ACD90602}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Databases", "..\..\Databases\Databases.vcxproj", "{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -119,6 +121,10 @@ Global
 		{69729C71-7EF7-4854-A6B4-3A87ACD90602}.Debug|x64.Build.0 = Debug|x64
 		{69729C71-7EF7-4854-A6B4-3A87ACD90602}.Release|x64.ActiveCfg = Release|x64
 		{69729C71-7EF7-4854-A6B4-3A87ACD90602}.Release|x64.Build.0 = Release|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Debug|x64.ActiveCfg = Debug|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Debug|x64.Build.0 = Debug|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Release|x64.ActiveCfg = Release|x64
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +146,7 @@ Global
 		{F71A5E4A-5242-4FA9-B614-5C0603ADC678} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{3F4D262A-28BD-49D4-BB24-A83363263739} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{91F7FB1E-1D8D-4544-99E2-23D409D666AB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3381BD60-3EF3-4F31-858A-DD62BAD18F6E}

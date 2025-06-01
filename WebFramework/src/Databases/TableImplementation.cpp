@@ -12,7 +12,7 @@ namespace framework
 
 	}
 
-	interfaces::ISQLResult* TableImplementation::execute(const char* query, const interfaces::ISQLValue* values, size_t size)
+	interfaces::ISQLResult* TableImplementation::execute(const char* query, const interfaces::ISQLValue** values, size_t size)
 	{
 		vector<database::SQLValue> temp;
 
@@ -20,7 +20,7 @@ namespace framework
 
 		for (size_t i = 0; i < size; i++)
 		{
-			const interfaces::ISQLValue& value = values[i];
+			const interfaces::ISQLValue& value = *values[i];
 
 			switch (value.getType())
 			{

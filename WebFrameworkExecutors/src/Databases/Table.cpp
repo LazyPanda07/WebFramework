@@ -48,13 +48,17 @@ namespace framework
 	SQLResult Table::execute(string_view query, const vector<SQLValue>& values)
 	{
 		vector<CSQLValue> tempValues;
+		vector<const interfaces::ISQLValue*> pointers;
+
+		tempValues.reserve(values.size());
+		pointers.reserve(values.size());
 
 		for (const SQLValue& value : values)
 		{
-			tempValues.emplace_back(value);
+			pointers.push_back(&tempValues.emplace_back(value));
 		}
 
-		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), tempValues.data(), tempValues.size());
+		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), pointers.data(), pointers.size());
 		SQLResult result(tempResult);
 
 		implementation->deleteResult(tempResult);
@@ -116,7 +120,7 @@ const char* CSQLValue::getString() const
 
 bool CSQLValue::getBool() const
 {
-	return value.get<bool>();;
+	return value.get<bool>();
 }
 
 const uint8_t* CSQLValue::getBlob(size_t* size) const
@@ -130,5 +134,5 @@ const uint8_t* CSQLValue::getBlob(size_t* size) const
 
 CSQLValue::SQLValueType CSQLValue::getType() const
 {
-	return static_cast<SQLValueType>((*value).valueless_by_exception());
+	return static_cast<SQLValueType>((*value).index());
 }
