@@ -89,6 +89,8 @@
   <ItemGroup>
     <ClCompile Include="src\c_api\executors_c_api.cpp" />
     <ClCompile Include="src\Databases\Database.cpp" />
+    <ClCompile Include="src\Databases\SQLResult.cpp" />
+    <ClCompile Include="src\Databases\SQLValue.cpp" />
     <ClCompile Include="src\Databases\Table.cpp" />
     <ClCompile Include="src\Executors\BaseExecutor.cpp" />
     <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp" />
@@ -105,6 +107,8 @@
   <ItemGroup>
     <ClInclude Include="src\c_api\executors_c_api.h" />
     <ClInclude Include="src\Databases\Database.h" />
+    <ClInclude Include="src\Databases\SQLResult.h" />
+    <ClInclude Include="src\Databases\SQLValue.h" />
     <ClInclude Include="src\Databases\Table.h" />
     <ClInclude Include="src\Executors\BaseExecutor.h" />
     <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h" />

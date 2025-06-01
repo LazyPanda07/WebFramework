@@ -17,7 +17,7 @@ namespace framework
 		return result.size();
 	}
 
-	void SQLResultImplementation::iterate(void (*callback)(const char* columnName, const interfaces::ISQLValue* columnValue, size_t index, size_t size))
+	void SQLResultImplementation::iterate(void (*callback)(const char* columnName, const interfaces::ISQLValue* columnValue, size_t index, size_t size, void* data), void* data)
 	{
 		for (size_t i = 0; i < result.size(); i++)
 		{
@@ -25,7 +25,7 @@ namespace framework
 			{
 				SQLValueImplementation temp(value);
 
-				callback(key.data(), &temp, i, result.size());
+				callback(key.data(), &temp, i, result.size(), data);
 			}
 		}
 	}
