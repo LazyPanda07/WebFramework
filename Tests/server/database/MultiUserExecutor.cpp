@@ -10,40 +10,43 @@ MultiUserExecutor::MultiUserExecutor() :
 
 void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	/*std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
-	framework::sqlite::utility::SQLiteResult result = model->selectByField("user_id", userId);
+	framework::Table table = request.getTable("test_database", "multi_user");
+
+	framework::SQLResult result = table.execute
+	(
+		"SELECT * FROM multi_user WHERE user_id = ?",
+		{ framework::SQLValue(userId) }
+	);
 	std::vector<json::utility::jsonObject> data;
 
 	for (const auto& value : result)
 	{
 		json::utility::jsonObject object;
 
-		object.setString("id", value.at("id"));
-		object.setString("user_id", value.at("user_id"));
-		object.setString("data", value.at("data"));
+		object.setInt("id", value.at("id").get<int64_t>());
+		object.setString("user_id", value.at("user_id").get<std::string>());
+		object.setString("data", value.at("data").get<std::string>());
 
 		json::utility::appendArray(object, data);
 	}
 
-	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));*/
+	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
 }
 
 void MultiUserExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	// request.createModel<MultiUserDatabaseModel>();
+	request.getOrCreateDatabase("test_database").getOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
 }
 
 void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	/*std::shared_ptr<MultiUserDatabaseModel> model = request.getModel<MultiUserDatabaseModel>();
+	framework::Table table = request.getTable("test_database", "multi_user");
 
-	model->insert
-    (
-        {
-            { "user_id", userId },
-            { "data", request.getJSON().getString("data") }
-        }
-    );*/
+	table.execute
+	(
+		"INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
+		{ framework::SQLValue(userId), framework::SQLValue(request.getJSON().getString("data")) }
+	);
 }
 
 DECLARE_EXECUTOR(MultiUserExecutor)
