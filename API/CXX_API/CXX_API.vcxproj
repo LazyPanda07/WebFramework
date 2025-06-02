@@ -86,7 +86,7 @@
   <ItemGroup>
     <ClInclude Include="src\Config.hpp" />
     <ClInclude Include="src\DLLHandler.hpp" />
-    <ClInclude Include="src\import.h" />
+    <ClInclude Include="src\import.hpp" />
     <ClInclude Include="src\WebFramework.hpp" />
   </ItemGroup>
   <ItemGroup>
