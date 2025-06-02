@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include "import.h"
+#include "import.hpp"
 
 std::string getConfiguration()
 {

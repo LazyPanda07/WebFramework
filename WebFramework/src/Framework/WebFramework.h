@@ -15,10 +15,6 @@ namespace framework
 	class WEB_FRAMEWORK_API WebFramework
 	{
 	public:
-		/// @brief Get current WebFramework version
-		/// @return Current WebFramework version
-		static constexpr std::string_view getWebFrameworkVersion();
-
 		/**
 		 * @brief Is server use HTTPS
 		 * @return 
@@ -93,11 +89,4 @@ namespace framework
 
 		~WebFramework() = default;
 	};
-
-	constexpr std::string_view WebFramework::getWebFrameworkVersion()
-	{
-		constexpr std::string_view version = "3.0.12";
-
-		return version;
-	}
 }

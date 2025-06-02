@@ -161,7 +161,9 @@ bool isServerRunning(WebFramework server, Exception* exception)
 
 const char* getWebFrameworkVersion()
 {
-	return framework::WebFramework::getWebFrameworkVersion().data();
+	constexpr std::string_view version = "3.0.12";
+
+	return version.data();
 }
 
 void overrideConfigurationString(Config config, const char* key, const char* value, bool recursive, Exception* exception)
