@@ -61,7 +61,34 @@ jobs:
       with:
         name: ${{ matrix.configuration }}_Linux
         path: build/WebFrameworkLibrary
-        
+
+
+  linux-aarch64-build:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:aarch64
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_LinuxARM
+        path: build/WebFrameworkLibrary
+
 
   android-build:
     runs-on: ubuntu-latest
