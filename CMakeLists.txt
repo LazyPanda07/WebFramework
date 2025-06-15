@@ -124,9 +124,7 @@ add_subdirectory(ThreadPool)
 add_subdirectory(UtilityLibrary)
 add_subdirectory(Databases)
 
-if (${WITH_LANGUAGES_APIS})
-	add_subdirectory(API)
-endif()
+add_subdirectory(API)
 
 target_link_directories(
 	${PROJECT_NAME} PUBLIC
