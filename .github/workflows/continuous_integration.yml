@@ -297,7 +297,7 @@ jobs:
       shell: bash
       run: |
           cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           ./CXX_API
           source run_tests.sh ${{ matrix.config }}
 
@@ -308,6 +308,46 @@ jobs:
         name: Tests_Linux
         path: Tests/build/bin
 
+
+  linux-aarch64-cxx-tests:
+    runs-on: ubuntu-latest
+    needs: linux-aarch64-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:aarch64
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_LinuxARM
+        path: WebFrameworkLibrary
+        
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON ..
+          make install -j $(nproc)
+
+    - name: Tests
+      working-directory: Tests
+      shell: bash
+      run: |
+          cd build/bin
+          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+          qemu-aarch64 ./CXX_API
+          chmod +x run_aarch64_tests.sh ${{ matrix.config }}
+          qemu-aarch64 ./run_aarch64_tests.sh ${{ matrix.config }}
+          
 
   windows-cc-tests:
     runs-on: windows-latest
@@ -387,7 +427,7 @@ jobs:
       shell: bash
       run: |
           cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           ./CC_API
           source run_cc_tests.sh ${{ matrix.config }}
   
@@ -555,6 +595,7 @@ jobs:
     needs: [
       windows-cxx-tests,
       linux-cxx-tests,
+      linux-aarch64-cxx-tests,
       windows-csharp-tests,
       linux-csharp-tests,
       windows-python-tests,
