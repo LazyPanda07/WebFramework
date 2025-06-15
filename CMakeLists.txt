@@ -23,6 +23,7 @@ set(
 	ssl
 	crypto
 )
+option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 
 project(WebFramework VERSION 3.0.12)
 
@@ -123,7 +124,9 @@ add_subdirectory(ThreadPool)
 add_subdirectory(UtilityLibrary)
 add_subdirectory(Databases)
 
-add_subdirectory(API)
+if (${WITH_LANGUAGES_APIS})
+	add_subdirectory(API)
+endif()
 
 target_link_directories(
 	${PROJECT_NAME} PUBLIC
