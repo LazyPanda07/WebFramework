@@ -335,7 +335,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake ..
           make install -j $(nproc)
 
     - name: Tests
