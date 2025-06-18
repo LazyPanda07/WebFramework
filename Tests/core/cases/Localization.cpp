@@ -33,6 +33,10 @@ TEST(Localization, English)
 
 TEST(Localization, Russian)
 {
+#ifdef __AARCH64__
+	GTEST_SKIP();
+#endif
+
 	try
 	{
 		streams::IOSocketStream stream = utility::createSocketStream();

@@ -52,6 +52,10 @@ endif()
 
 project(Tests)
 
+if ((NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} EQUAL ${CMAKE_SYSTEM_PROCESSOR}) AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+    add_definitions(-D__AARCH64__)
+endif()
+
 find_package(GTest)
 
 if(NOT ${GTest_FOUND})

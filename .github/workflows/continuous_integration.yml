@@ -338,6 +338,9 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake ..
           make install -j $(nproc)
 
+    - name: Install curl
+      run: apt update && apt install -y curl
+
     - name: Tests
       working-directory: Tests
       shell: bash
@@ -345,8 +348,7 @@ jobs:
           cd build/bin
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           qemu-aarch64 ./CXX_API
-          chmod +x run_aarch64_tests.sh
-          qemu-aarch64 ./run_aarch64_tests.sh ${{ matrix.config }}
+          source run_aarch64_tests.sh ${{ matrix.config }}
           
 
   windows-cc-tests:
