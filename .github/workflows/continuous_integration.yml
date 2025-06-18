@@ -345,7 +345,7 @@ jobs:
           cd build/bin
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           qemu-aarch64 ./CXX_API
-          chmod +x run_aarch64_tests.sh ${{ matrix.config }}
+          chmod +x run_aarch64_tests.sh
           qemu-aarch64 ./run_aarch64_tests.sh ${{ matrix.config }}
           
 
