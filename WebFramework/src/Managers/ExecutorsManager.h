@@ -33,7 +33,8 @@ namespace framework
 	private:
 		mutable std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
-		std::unordered_map<std::string, createExecutorFunction> creators; // executor name - create function
+		std::unordered_map<std::string, CreateExecutorFunction> creators; // executor name - create function
+		std::unordered_map<std::string, HMODULE> creatorSources; // executor name - shared library
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -70,10 +71,11 @@ namespace framework
 			uint64_t cachingSize,
 			const std::filesystem::path& pathToTemplates,
 			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes,
-			std::unordered_map<std::string, createExecutorFunction>&& creators,
+			std::unordered_map<std::string, CreateExecutorFunction>&& creators,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 			std::vector<utility::RouteParameters>&& routeParameters,
-			const utility::AdditionalServerSettings& additionalSettings
+			const utility::AdditionalServerSettings& additionalSettings,
+			std::unordered_map<std::string, HMODULE>&& creatorSources
 		);
 
 		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);

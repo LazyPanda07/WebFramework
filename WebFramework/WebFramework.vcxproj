@@ -137,6 +137,7 @@
     <ClCompile Include="src\Databases\SQLValueImplementation.cpp" />
     <ClCompile Include="src\Databases\TableImplementation.cpp" />
     <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
+    <ClCompile Include="src\Executors\CXXExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
     <ClCompile Include="src\c_api\web_framework_c_api.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="src\Databases\SQLValueImplementation.h" />
     <ClInclude Include="src\Databases\TableImplementation.h" />
     <ClInclude Include="src\Exceptions\NotFoundException.h" />
+    <ClInclude Include="src\Executors\CXXExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\c_api\web_framework_c_api.h" />
     <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />

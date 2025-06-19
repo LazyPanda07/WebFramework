@@ -27,6 +27,7 @@ namespace framework::utility
 			json::utility::jsonObject initParameters;
 			std::string name;
 			std::string userAgentFilter;
+			std::string apiType;
 			loadType executorLoadType;
 
 		public:

@@ -39,7 +39,8 @@ namespace framework
 			additionalSettings(additionalSettings)
 		{
 			unordered_map<string, unique_ptr<BaseExecutor>> routes;
-			unordered_map<string, createExecutorFunction> creators;
+			unordered_map<string, CreateExecutorFunction> creators;
+			unordered_map<string, HMODULE> creatorSources;
 			vector<utility::RouteParameters> routeParameters;
 			unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = IExecutorFunctionality::createExecutorSettings(parsers);
 			vector<HMODULE> sources = utility::loadSources(pathToSources);
@@ -51,12 +52,15 @@ namespace framework
 
 			for (const auto& [i, j] : settings)
 			{
-				createExecutorFunction creator = nullptr;
+				CreateExecutorFunction creator = nullptr;
+				HMODULE creatorSource = nullptr;
 
-				for (const auto& source : sources)
+				for (const HMODULE& source : sources)
 				{
-					if (creator = utility::load<createExecutorFunction>(source, format("create{}Instance", j.name)))
+					if (creator = utility::load<CreateExecutorFunction>(source, format("create{}Instance", j.name)))
 					{
+						creatorSource = source;
+
 						break;
 					}
 				}
@@ -131,6 +135,7 @@ namespace framework
 				}
 
 				creators.try_emplace(j.name, creator);
+				creatorSources.try_emplace(j.name, creatorSource);
 			}
 
 			for (auto&& [i, j] : nodes)
@@ -142,7 +147,7 @@ namespace framework
 				settings.insert(move(node)); //-V837
 			}
 
-			executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters), additionalSettings);
+			executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters), additionalSettings, move(creatorSources));
 
 			resources = executorsManager.getResourceExecutor();
 		}

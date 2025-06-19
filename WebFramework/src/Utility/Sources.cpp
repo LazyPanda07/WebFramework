@@ -8,71 +8,68 @@
 
 using namespace std;
 
-namespace framework
+namespace framework::utility
 {
-    namespace utility
-    {
-        vector<HMODULE> loadSources(const vector<string>& pathToSources)
-        {
-            vector<HMODULE> result;
+	vector<HMODULE> loadSources(const vector<string>& pathToSources)
+	{
+		vector<HMODULE> result;
 
-			if (pathToSources.size())
+		if (pathToSources.size())
+		{
+			result.reserve(pathToSources.size());
+		}
+		else
+		{
+			result.push_back(nullptr);
+		}
+
+		for (const string& temp : pathToSources)
+		{
+			if (temp == json_settings::defaultLoadSourceValue)
 			{
-				result.reserve(pathToSources.size());
+#ifdef __LINUX__
+				result.push_back(dlopen(nullptr, RTLD_LAZY));
+#else
+				result.push_back(nullptr);
+#endif
+
+				continue;
+			}
+
+			string pathToSource = makePathToDynamicLibrary(temp);
+
+			if (filesystem::exists(pathToSource))
+			{
+				HMODULE handle = nullptr;
+
+#ifdef __LINUX__
+				handle = dlopen(pathToSource.data(), RTLD_LAZY);
+#else
+				handle = LoadLibraryA(pathToSource.data());
+#endif
+				result.push_back(handle);
 			}
 			else
 			{
-				result.push_back(nullptr);
+				if (Log::isValid())
+				{
+					Log::error("Can't find source {}", "LogWebFrameworkSources", pathToSource);
+				}
+
+				throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 			}
 
-			for (const string& temp : pathToSources)
+			if (!result.back())
 			{
-				if (temp == json_settings::defaultLoadSourceValue)
+				if (Log::isValid())
 				{
-#ifdef __LINUX__
-					result.push_back(dlopen(nullptr, RTLD_LAZY));
-#else
-					result.push_back(nullptr);
-#endif
-
-					continue;
+					Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
 				}
 
-				string pathToSource = makePathToDynamicLibrary(temp);
-
-				if (filesystem::exists(pathToSource))
-				{
-					HMODULE handle = nullptr;
-
-#ifdef __LINUX__
-					handle = dlopen(pathToSource.data(), RTLD_LAZY);
-#else
-					handle = LoadLibraryA(pathToSource.data());
-#endif
-					result.push_back(handle);
-				}
-				else
-				{
-					if (Log::isValid())
-					{
-						Log::error("Can't find source {}", "LogWebFrameworkSources", pathToSource);
-					}
-
-					throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
-				}
-
-				if (!result.back())
-				{
-					if (Log::isValid())
-					{
-						Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
-					}
-
-					throw exceptions::CantLoadSourceException(pathToSource);
-				}
+				throw exceptions::CantLoadSourceException(pathToSource);
 			}
+		}
 
-			return result;
-        }
-    }
+		return result;
+	}
 }

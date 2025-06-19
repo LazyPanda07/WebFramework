@@ -111,12 +111,6 @@ namespace framework
 		virtual void doConnect(HTTPRequest& request, HTTPResponse& response);
 
 		/// <summary>
-		/// <para>Destroy and unload executor</para>
-		/// <para>Executors inherited from BaseStatelessExecutor no need this method</para>
-		/// </summary>
-		virtual void destroy() = 0;
-
-		/// <summary>
 		/// <para>By default all executors must be inherited from BaseStatelessExecutor or BaseStatefullExecutor</para>
 		/// <para>BaseStatelessExecutor override this method by getting ExecutorType::stateless</para>
 		/// <para>BaseStatefulExecutor override this method by getting ExecutorType::stateful</para>
@@ -125,10 +119,16 @@ namespace framework
 		/// <returns>stateful, stateless or none value</returns>
 		virtual ExecutorType getType() const = 0;
 
+		/// <summary>
+		/// <para>Destroy and unload executor</para>
+		/// <para>Executors inherited from BaseStatelessExecutor no need this method</para>
+		/// </summary>
+		virtual void destroy() = 0;
+
 		virtual ~BaseExecutor() = default;
 	};
 
-	using createExecutorFunction = void* (*)();
+	using CreateExecutorFunction = void* (*)();
 }
 
 #ifdef __LINUX__

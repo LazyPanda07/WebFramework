@@ -10,6 +10,8 @@
 #include "Exceptions/DatabaseException.h"
 #include "WebNetwork/HTTPRequestImplementation.h"
 
+#include <Executors/CXXExecutor.h>
+
 using namespace std;
 
 namespace framework
@@ -130,11 +132,27 @@ namespace framework
 					parameters = it->baseRoute;
 				}
 
-				executor = routes.try_emplace
-				(
-					move(parameters),
-					unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
-				).first;
+				if (executorSettings->second.apiType.empty())
+				{
+					executor = routes.try_emplace
+					(
+						move(parameters),
+						unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
+					).first;
+				}
+				else if (executorSettings->second.apiType == json_settings::cxxExecutorKey)
+				{
+					executor = routes.try_emplace
+					(
+						move(parameters),
+						make_unique<CXXExecutor>(creatorSources[executorSettings->second.name], creators[executorSettings->second.name]())
+					).first;
+				}
+				else
+				{
+					return nullptr;
+				}
+
 				executor->second->init(executorSettings->second);
 
 				BaseExecutor::ExecutorType ExecutorType = executor->second->getType();
@@ -213,14 +231,16 @@ namespace framework
 		uint64_t cachingSize,
 		const filesystem::path& pathToTemplates,
 		unordered_map<string, unique_ptr<BaseExecutor>>&& routes,
-		unordered_map<string, createExecutorFunction>&& creators,
+		unordered_map<string, CreateExecutorFunction>&& creators,
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
 		vector<utility::RouteParameters>&& routeParameters,
-		const utility::AdditionalServerSettings& additionalSettings
+		const utility::AdditionalServerSettings& additionalSettings,
+		unordered_map<std::string, HMODULE>&& creatorSources
 	)
 	{
 		this->routes = move(routes);
 		this->creators = move(creators);
+		this->creatorSources = move(creatorSources);
 		this->settings = move(settings);
 		this->routeParameters = move(routeParameters);
 		this->userAgentFilter = additionalSettings.userAgentFilter;

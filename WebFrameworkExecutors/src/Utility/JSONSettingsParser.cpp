@@ -49,6 +49,7 @@ namespace framework::utility
 
 			data.tryGetObject(json_settings::initParametersKey, executorSettings.initParameters);
 			data.tryGetString(json_settings::userAgentFilterKey, executorSettings.userAgentFilter);
+			data.tryGetString(json_settings::apiTypeKey, executorSettings.apiType);
 
 			if (loadType == json_settings_values::initializationLoadTypeValue)
 			{

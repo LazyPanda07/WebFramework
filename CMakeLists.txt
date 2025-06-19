@@ -82,6 +82,7 @@ add_library(
 	WebFramework/src/Databases/TableImplementation.cpp
 	WebFramework/src/Databases/SQLResultImplementation.cpp
 	WebFramework/src/Databases/SQLValueImplementation.cpp
+	WebFramework/src/Executors/CXXExecutor.cpp
 )
 
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
