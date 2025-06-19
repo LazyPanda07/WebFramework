@@ -8,6 +8,7 @@
 #include "Utility/RouteParameters.h"
 #include "Utility/AdditionalServerSettings.h"
 #include "Framework/WebFrameworkConstants.h"
+#include <Utility/Sources.h>
 
 namespace framework
 {
