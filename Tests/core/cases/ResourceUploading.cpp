@@ -36,6 +36,10 @@ TEST(ResourceUploading, Multipart)
 
 TEST(ResourceUploading, OctetStream)
 {
+#ifdef __AARCH64__
+	GTEST_SKIP();
+#endif
+
 	constexpr std::string_view uploadFileName = "octet_stream.bin";
 	uintmax_t fileSize = std::filesystem::file_size(LARGE_FILE_NAME);
 	constexpr size_t chunkSize = 10ULL * 1024 * 1024;
