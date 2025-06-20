@@ -15,6 +15,9 @@ namespace framework
 		std::function<void(interfaces::IHTTPResponse*)> deleter;
 
 	public:
+		interfaces::IHTTPResponse* getImplementation() const;
+
+	public:
 		HTTPResponse(interfaces::IHTTPResponse* implementation, const std::function<void(interfaces::IHTTPResponse*)>& deleter = nullptr);
 
 		HTTPResponse(const HTTPResponse&) = delete;

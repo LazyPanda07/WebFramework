@@ -4,9 +4,9 @@ using namespace std;
 
 namespace framework
 {
-	BaseExecutor::ExecutorType BaseHeavyOperationStatelessExecutor::getType() const
+	utility::ExecutorType BaseHeavyOperationStatelessExecutor::getType() const
 	{
-		return ExecutorType::heavyOperationStateless;
+		return utility::ExecutorType::heavyOperationStateless;
 	}
 
 	void BaseHeavyOperationStatelessExecutor::destroy()

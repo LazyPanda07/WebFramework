@@ -47,7 +47,7 @@ namespace framework
 
 		void initChunks();
 
-	private:
+	public:
 		interfaces::IHTTPRequest* getImplementation() const;
 
 	public:

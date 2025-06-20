@@ -17,7 +17,7 @@ namespace framework
 
 		/// @brief Get executor type
 		/// @return ExecutorType::heavyOperationStateful
-		virtual ExecutorType getType() const final override;
+		virtual utility::ExecutorType getType() const final override;
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>

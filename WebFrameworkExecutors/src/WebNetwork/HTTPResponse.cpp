@@ -4,6 +4,11 @@ using namespace std;
 
 namespace framework
 {
+	interfaces::IHTTPResponse* HTTPResponse::getImplementation() const
+	{
+		return implementation;
+	}
+
 	HTTPResponse::HTTPResponse(interfaces::IHTTPResponse* implementation, const function<void(interfaces::IHTTPResponse*)>& deleter) :
 		implementation(implementation),
 		deleter(deleter)

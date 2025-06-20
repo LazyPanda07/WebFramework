@@ -2,9 +2,9 @@
 
 namespace framework
 {
-	BaseExecutor::ExecutorType BaseStatelessExecutor::getType() const
+	utility::ExecutorType BaseStatelessExecutor::getType() const
 	{
-		return ExecutorType::stateless;
+		return utility::ExecutorType::stateless;
 	}
 
 	void BaseStatelessExecutor::destroy()

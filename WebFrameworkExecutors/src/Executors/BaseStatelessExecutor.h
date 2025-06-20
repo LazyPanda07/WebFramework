@@ -18,7 +18,7 @@ namespace framework
 		/// Get executor type
 		/// </summary>
 		/// <returns>ExecutorType::stateless</returns>
-		virtual ExecutorType getType() const final override;
+		virtual utility::ExecutorType getType() const final override;
 
 		/// <summary>
 		/// Stateless executors can't call destroy method

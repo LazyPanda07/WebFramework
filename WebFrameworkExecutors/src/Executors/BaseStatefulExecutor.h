@@ -18,7 +18,7 @@ namespace framework
 		/// Get executor type
 		/// </summary>
 		/// <returns>ExecutorType::stateful</returns>
-		virtual ExecutorType getType() const final override;
+		virtual utility::ExecutorType getType() const final override;
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>

@@ -4,9 +4,9 @@ using namespace std;
 
 namespace framework
 {
-	BaseExecutor::ExecutorType BaseStatefulExecutor::getType() const
+	utility::ExecutorType BaseStatefulExecutor::getType() const
 	{
-		return ExecutorType::stateful;
+		return utility::ExecutorType::stateful;
 	}
 
 	void BaseStatefulExecutor::destroy()

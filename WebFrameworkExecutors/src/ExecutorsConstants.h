@@ -18,6 +18,18 @@ namespace json_settings_values
 	inline constexpr std::string_view dynamicLoadTypeValue = "dynamic";
 }
 
+namespace framework::utility
+{
+	enum class ExecutorType
+	{
+		none,
+		stateful,
+		stateless,
+		heavyOperationStateful,
+		heavyOperationStateless
+	};
+}
+
 #ifdef __LINUX__
 #define EXECUTORS_API __attribute__((visibility("default")))
 #else

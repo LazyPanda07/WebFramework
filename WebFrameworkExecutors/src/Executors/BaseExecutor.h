@@ -20,16 +20,6 @@ namespace framework
 	class EXECUTORS_API BaseExecutor
 	{
 	public:
-		enum class ExecutorType
-		{
-			none,
-			stateful,
-			stateless,
-			heavyOperationStateful,
-			heavyOperationStateless
-		};
-
-	public:
 		static void (BaseExecutor::* getMethod(std::string_view methodName))(HTTPRequest&, HTTPResponse&);
 
 	public:
@@ -117,7 +107,7 @@ namespace framework
 		/// <para>ExecutorsManager can manage executors by getting type of ExecutorType enum class</para>
 		/// </summary>
 		/// <returns>stateful, stateless or none value</returns>
-		virtual ExecutorType getType() const = 0;
+		virtual utility::ExecutorType getType() const = 0;
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>
