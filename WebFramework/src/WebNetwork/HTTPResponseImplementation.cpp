@@ -26,9 +26,9 @@ namespace framework
 		builder.HTTPVersion(version);
 	}
 
-	void HTTPResponseImplementation::setResponseCode(web::ResponseCodes code)
+	void HTTPResponseImplementation::setResponseCode(int code)
 	{
-		builder.responseCode(code);
+		builder.responseCode(static_cast<web::ResponseCodes>(code));
 	}
 
 	void HTTPResponseImplementation::addHeader(const char* name, const char* value)

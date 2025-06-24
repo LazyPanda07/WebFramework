@@ -12,6 +12,8 @@ typedef void* String;
 typedef void* Config;
 typedef void* WebFramework;
 typedef void* Exception;
+typedef void* JSONBuilder;
+typedef void* JSONObject;
 
 EXPORT void deleteWebFrameworkString(String string);
 
@@ -20,6 +22,10 @@ EXPORT void deleteWebFrameworkConfig(Config config);
 EXPORT void deleteWebFramework(WebFramework webFramework);
 
 EXPORT void deleteWebFrameworkException(Exception exception);
+
+EXPORT void deleteWebFrameworkJSONBuider(JSONBuilder builder);
+
+EXPORT void deleteWebFrameworkJSONObject(JSONObject object);
 
 EXPORT const char* getDataFromString(String string);
 
@@ -34,6 +40,10 @@ EXPORT WebFramework createWebFrameworkFromConfig(Config config, Exception* excep
 EXPORT Config createConfigFromPath(const char* configPath, Exception* exception);
 
 EXPORT Config createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, Exception* exception);
+
+EXPORT JSONBuilder createJSONBuilder(JSONBuilder builder, Exception* exception);
+
+EXPORT JSONObject createJSONObject(JSONObject object, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,7 +79,41 @@ EXPORT void* getConfiguration(Config config, Exception* exception);
 
 EXPORT const char* getRawConfiguration(Config config, Exception* exception);
 
-EXPORT void* getBasePath(Config config, Exception* exception);
+EXPORT String getBasePath(Config config, Exception* exception);
+
+EXPORT String build(JSONBuilder builder, Exception* exception);
+
+EXPORT void appendObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception);
+
+EXPORT void appendString(JSONBuilder builder, const char* key, const char* value, Exception* exception);
+
+EXPORT void appendInteger(JSONBuilder builder, const char* key, int64_t value, Exception* exception);
+
+EXPORT void appendUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value, Exception* exception);
+
+EXPORT void appendDouble(JSONBuilder builder, const char* key, double value, Exception* exception);
+
+EXPORT void appendBoolean(JSONBuilder builder, const char* key, bool value, Exception* exception);
+
+EXPORT void appendNull(JSONBuilder builder, const char* key, Exception* exception);
+
+EXPORT void appendArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception);
+
+EXPORT void setObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception);
+
+EXPORT void setString(JSONObject jsonObject, const char* key, const char* value, Exception* exception);
+
+EXPORT void setInteger(JSONObject jsonObject, const char* key, int64_t value, Exception* exception);
+
+EXPORT void setUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception);
+
+EXPORT void setDouble(JSONObject jsonObject, const char* key, double value, Exception* exception);
+
+EXPORT void setBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception);
+
+EXPORT void setNull(JSONObject jsonObject, const char* key, Exception* exception);
+
+EXPORT void setArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

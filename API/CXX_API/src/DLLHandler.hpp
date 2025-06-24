@@ -58,6 +58,17 @@ namespace framework
 
 			void deleteException(void* implementation);
 
+			void deleteJSONBuilder(void* implementation);
+
+			void deleteJSONObject(void* implementation);
+
+			/**
+			 * @brief Get data from string and delete string
+			 * @param implementation
+			 * @return
+			 */
+			std::string getString(void* implementation);
+
 			friend void utility::initializeWebFramework(const std::filesystem::path& pathToDLL);
 			friend struct std::default_delete<DLLHandler>;
 		};
@@ -185,6 +196,31 @@ namespace framework
 			using deleteWebFrameworkException = void (*)(void* implementation);
 
 			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, implementation);
+		}
+
+		inline void DLLHandler::deleteJSONBuilder(void* implementation)
+		{
+			using deleteWebFrameworkJSONBuider = void (*)(void* implementation);
+
+			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuider, implementation);
+		}
+
+		inline void DLLHandler::deleteJSONObject(void* implementation)
+		{
+			using deleteWebFrameworkJSONObject = void (*)(void* implementation);
+
+			this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONObject, implementation);
+		}
+
+		inline std::string DLLHandler::getString(void* implementation)
+		{
+			using getDataFromString = const char* (*)(void* implementation);
+
+			std::string result(CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, implementation));
+
+			this->deleteString(implementation);
+
+			return result;
 		}
 	}
 }

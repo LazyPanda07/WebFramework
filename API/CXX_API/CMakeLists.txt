@@ -15,6 +15,11 @@ add_library(
 	src/dummy.cpp
 )
 
+target_include_directories(
+	${PROJECT_NAME} PUBLIC
+	${CMAKE_SOURCE_DIR}/WebFrameworkCore/src/
+)
+
 install(
 	TARGETS ${PROJECT_NAME}
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib

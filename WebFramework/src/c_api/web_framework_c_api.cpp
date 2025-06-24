@@ -28,6 +28,16 @@ void deleteWebFrameworkException(Exception exception)
 	delete static_cast<std::runtime_error*>(exception);
 }
 
+void deleteWebFrameworkJSONBuider(JSONBuilder builder)
+{
+	delete static_cast<json::JSONBuilder*>(builder);
+}
+
+void deleteWebFrameworkJSONObject(JSONObject object)
+{
+	delete static_cast<json::utility::jsonObject*>(object);
+}
+
 const char* getDataFromString(String string)
 {
 	return static_cast<std::string*>(string)->data();
@@ -96,6 +106,38 @@ Config createConfigFromString(const char* serverConfiguration, const char* appli
 	try
 	{
 		return new framework::utility::Config(serverConfiguration, applicationDirectory);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONBuilder createJSONBuilder(JSONBuilder builder, Exception* exception)
+{
+	try
+	{
+		return builder ? 
+			new json::JSONBuilder(*static_cast<json::JSONBuilder*>(builder)) :
+			new json::JSONBuilder(CP_UTF8);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject createJSONObject(JSONObject object, Exception* exception)
+{
+	try
+	{
+		return object ?
+			new json::utility::jsonObject(*static_cast<json::utility::jsonObject*>(object)) :
+			new json::utility::jsonObject();
 	}
 	catch (const std::exception& e)
 	{
@@ -330,7 +372,7 @@ const char* getRawConfiguration(Config config, Exception* exception)
 	return nullptr;
 }
 
-void* getBasePath(Config config, Exception* exception)
+String getBasePath(Config config, Exception* exception)
 {
 	try
 	{
@@ -342,6 +384,230 @@ void* getBasePath(Config config, Exception* exception)
 	}
 
 	return nullptr;
+}
+
+String build(JSONBuilder builder, Exception* exception)
+{
+	try
+	{
+		return new std::string(static_cast<json::JSONBuilder*>(builder)->build());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void appendObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JSONBuilder*>(builder)->appendObject(key, *static_cast<json::utility::jsonObject*>(object));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void appendString(JSONBuilder builder, const char* key, const char* value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JSONBuilder*>(builder)->appendString(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void appendInteger(JSONBuilder builder, const char* key, int64_t value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JSONBuilder*>(builder)->appendInt(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void appendUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JSONBuilder*>(builder)->appendUnsignedInt(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void appendDouble(JSONBuilder builder, const char* key, double value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JSONBuilder*>(builder)->appendDouble(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void appendBoolean(JSONBuilder builder, const char* key, bool value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JSONBuilder*>(builder)->appendBool(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void appendNull(JSONBuilder builder, const char* key, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JSONBuilder*>(builder)->appendNull(key);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void appendArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception)
+{
+	try
+	{
+		std::vector<json::utility::jsonObject> values;
+
+		values.reserve(size);
+
+		for (size_t i = 0; i < size; i++)
+		{
+			values.emplace_back(*static_cast<json::utility::jsonObject*>(objects[i]));
+		}
+
+		static_cast<json::JSONBuilder*>(builder)->appendArray(key, std::move(values));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception)
+{
+	try
+	{
+		static_cast<json::utility::jsonObject*>(jsonObject)->setObject(key, *static_cast<json::utility::jsonObject*>(object));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setString(JSONObject jsonObject, const char* key, const char* value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::utility::jsonObject*>(jsonObject)->setString(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setInteger(JSONObject jsonObject, const char* key, int64_t value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::utility::jsonObject*>(jsonObject)->setInt(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::utility::jsonObject*>(jsonObject)->setUnsignedInt(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setDouble(JSONObject jsonObject, const char* key, double value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::utility::jsonObject*>(jsonObject)->setDouble(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception)
+{
+	try
+	{
+		static_cast<json::utility::jsonObject*>(jsonObject)->setBool(key, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setNull(JSONObject jsonObject, const char* key, Exception* exception)
+{
+	try
+	{
+		static_cast<json::utility::jsonObject*>(jsonObject)->setNull(key);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+}
+
+void setArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception)
+{
+	try
+	{
+		std::vector<json::utility::jsonObject> values;
+
+		values.reserve(size);
+
+		for (size_t i = 0; i < size; i++)
+		{
+			values.emplace_back(*static_cast<json::utility::jsonObject*>(objects[i]));
+		}
+
+		static_cast<json::utility::jsonObject*>(jsonObject)->setArray(key, std::move(values));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

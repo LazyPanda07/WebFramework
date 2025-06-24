@@ -16,7 +16,7 @@ namespace framework
 		doTraceFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoTrace")),
 		doConnectFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoConnect")),
 		getTypeFunction(utility::load<GetTypeSignature>(module, "webFrameworkGetType")),
-		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkDestroy"))
+		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkDestroyExecutor"))
 	{
 
 	}

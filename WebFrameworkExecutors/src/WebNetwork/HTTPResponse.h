@@ -5,6 +5,7 @@
 #include "WebNetwork/Interfaces/IHTTPResponse.h"
 #include "JSONBuilder.h"
 #include "ExecutorsConstants.h"
+#include <HTTPUtility.h>
 
 namespace framework
 {

@@ -39,7 +39,7 @@ namespace framework
 
 	void HTTPResponse::setResponseCode(web::ResponseCodes code)
 	{
-		implementation->setResponseCode(code);
+		implementation->setResponseCode(static_cast<int>(code));
 	}
 
 	void HTTPResponse::addHeader(string_view name, string_view value)

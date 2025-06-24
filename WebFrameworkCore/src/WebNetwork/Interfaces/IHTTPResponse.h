@@ -2,8 +2,6 @@
 
 #include "WebFrameworkCoreConstants.h"
 
-#include "HTTPUtility.h"
-
 namespace framework::interfaces
 {
 	class WEB_FRAMEWORK_CORE_API IHTTPResponse
@@ -13,7 +11,7 @@ namespace framework::interfaces
 
 		virtual void setHTTPVersion(const char* version) = 0;
 
-		virtual void setResponseCode(web::ResponseCodes code) = 0;
+		virtual void setResponseCode(int code) = 0;
 
 		virtual void addHeader(const char* name, const char* value) = 0;
 
