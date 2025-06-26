@@ -81,9 +81,7 @@ namespace framework
 {
 	inline std::string_view WebFramework::getWebFrameworkVersion()
 	{
-		using getWebFrameworkVersion = const char* (*)();
-
-		return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkVersion);
+		return utility::DLLHandler::getInstance().callFunction<const char* (*)()>("getWebFrameworkVersion");
 	}
 
 	inline WebFramework::WebFramework(const std::string& configPath) :
