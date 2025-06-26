@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
 
 #ifdef __LINUX__
 #define EXPORT extern "C" __attribute__((visibility("default")))
