@@ -81,7 +81,7 @@
     <ClCompile Include="src\Proxy\ProxyServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\c_api\web_framework_c_api.cpp">
+    <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\DynamicLibraries.cpp">
@@ -124,6 +124,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Executors\CXXExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CAPI\WebFrameworkExecutorsCAPI.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CAPI\WebFrameworkUtilityCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,7 +206,7 @@
     <ClInclude Include="src\Proxy\ProxyServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\c_api\web_framework_c_api.h">
+    <ClInclude Include="src\CAPI\WebFrameworkCAPI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\DynamicLibraries.h">
@@ -246,6 +252,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Executors\CXXExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CAPI\WebFrameworkExecutorsCAPI.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CAPI\WebFrameworkUtilityCAPI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

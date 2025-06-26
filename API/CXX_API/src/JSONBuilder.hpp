@@ -20,6 +20,9 @@ namespace framework
 
 		JSONBuilder& operator =(JSONBuilder&& other) noexcept;
 
+		template<JsonValues<JSONObject> T>
+		JSONBuilder& appendValue(std::string_view key, const T& value = T());
+
 		std::string build() const;
 
 		~JSONBuilder();
@@ -71,6 +74,73 @@ namespace framework
 		implementation = other.implementation;
 
 		other.implementation = nullptr;
+
+		return *this;
+	}
+
+	template<JsonValues<JSONObject> T>
+	inline JSONBuilder& JSONBuilder::appendValue(std::string_view key, const T& value)
+	{
+		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		void* exception = nullptr;
+
+		if constexpr (std::is_same_v<T, bool>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendBoolean, void, const char* key, bool value, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendBoolean, key.data(), value, &exception);
+		}
+		else if constexpr (std::is_same_v<T, std::nullptr_t>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendNull, void, const char* key, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendNull, key.data(), &exception);
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendString, void, const char* key, const char* value, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendString, key.data(), value.data(), &exception);
+		}
+		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendArray, void, const char* key, const void* value, size_t size, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendArray, key.data(), value.data(), value.size(), &exception);
+		}
+		else if constexpr (std::is_same_v<T, JSONObject>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendObject, void, const char* key, void* value, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendObject, key.data(), value.implementation, &exception);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendDouble, void, const char* key, double value, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendDouble, key.data(), static_cast<double>(value), &exception);
+		}
+		else if constexpr (std::is_unsigned_v<T>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendUnsignedInteger, void, const char* key, uint64_t value, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendUnsignedInteger, key.data(), static_cast<uint64_t>(value), &exception);
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(appendInteger, void, const char* key, int64_t value, void** exception);
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendInteger, key.data(), static_cast<int64_t>(value), &exception);
+		}
+		else
+		{
+			throw std::invalid_argument("Wrong argument type: " + typeid(T).name());
+		}
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
 
 		return *this;
 	}

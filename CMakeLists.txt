@@ -71,7 +71,8 @@ add_library(
 	WebFramework/src/WebNetwork/Interfaces/IExecutorFunctionality.cpp
 	WebFramework/src/Framework/Config.cpp
 	WebFramework/src/Framework/WebFramework.cpp
-	WebFramework/src/c_api/web_framework_c_api.cpp
+	WebFramework/src/CAPI/WebFrameworkCAPI.cpp
+	WebFramework/src/CAPI/WebFrameworkExecutorsCAPI.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp

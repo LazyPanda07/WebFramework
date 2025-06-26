@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include "WebNetwork/Interfaces/IHTTPRequest.h"
-#include "HTTPResponse.h"
+#include "HTTPResponse.hpp"
 #include "Utility/ChunkGenerator.h"
 
 namespace framework
@@ -146,7 +146,7 @@ namespace framework
 		 * @brief Get data from multipart/form-data
 		 * @return
 		 */
-		const std::vector<web::Multipart>& getMultiparts() const;
+		// const std::vector<web::Multipart>& getMultiparts() const;
 
 		LargeData getLargeData() const;
 
@@ -364,10 +364,10 @@ namespace framework
 		implementation->getKeyValueParameters(addKeyValue, &keyValueParameters);
 	}
 
-	inline void HTTPRequest::initMultiparts()
+	/*inline void HTTPRequest::initMultiparts()
 	{
 		implementation->getMultiparts(addMultipart, &multiparts);
-	}
+	}*/
 
 	inline void HTTPRequest::initChunks()
 	{
@@ -407,7 +407,7 @@ namespace framework
 
 	inline HTTPRequest::HTTPRequest(HTTPRequest&& other) noexcept
 	{
-		(*this) = move(other);
+		(*this) = std::move(other);
 	}
 
 	inline HTTPRequest& HTTPRequest::operator =(HTTPRequest&& other) noexcept
