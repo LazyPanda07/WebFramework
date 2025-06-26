@@ -380,7 +380,7 @@ void getNull(JSONParser parser, const char* key, bool recursive, Exception* exce
 	}
 }
 
-void getArray(JSONParser parser, const char* key, bool recursive, void(*addArrayValue)(JSONObject object), Exception* exception)
+void getArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -390,7 +390,7 @@ void getArray(JSONParser parser, const char* key, bool recursive, void(*addArray
 		{
 			json::utility::jsonObject& temp = const_cast<json::utility::jsonObject&>(object);
 
-			addArrayValue(&temp);
+			addArrayValue(&temp, array);
 		}
 	}
 	catch (const std::exception& e)
@@ -511,7 +511,7 @@ bool tryGetNull(JSONParser parser, const char* key, bool recursive, Exception* e
 	return false;
 }
 
-bool tryGetArray(JSONParser parser, const char* key, bool recursive, void(*addArrayValue)(JSONObject object), Exception* exception)
+bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -523,7 +523,7 @@ bool tryGetArray(JSONParser parser, const char* key, bool recursive, void(*addAr
 			{
 				json::utility::jsonObject& temp = const_cast<json::utility::jsonObject&>(object);
 
-				addArrayValue(&temp);
+				addArrayValue(&temp, array);
 			}
 
 			return true;

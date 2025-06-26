@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "DLLHandler.hpp"
 #include "WebFrameworkException.hpp"
 
@@ -12,6 +14,9 @@ namespace framework
 	{
 	private:
 		void* implementation;
+
+	private:
+		JSONObject(void* implementation);
 
 	public:
 		JSONObject();
@@ -28,11 +33,19 @@ namespace framework
 		void setValue(std::string_view key, const T& value = T());
 
 		~JSONObject();
+
+		friend class JSONParser;
 	};
 }
 
 namespace framework
 {
+	inline JSONObject::JSONObject(void* implementation) :
+		implementation(implementation)
+	{
+
+	}
+
 	inline JSONObject::JSONObject()
 	{
 		using createJSONObject = void* (*)(void* object, void** exception);

@@ -64,7 +64,7 @@ EXPORT bool getBoolean(JSONParser parser, const char* key, bool recursive, Excep
 
 EXPORT void getNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT void getArray(JSONParser parser, const char* key, bool recursive, void(*addArrayValue)(JSONObject object), Exception* exception);
+EXPORT void getArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
 
 EXPORT bool tryGetObject(JSONParser parser, const char* key, JSONObject* value, bool recursive, Exception* exception);
 
@@ -80,7 +80,7 @@ EXPORT bool tryGetBoolean(JSONParser parser, const char* key, bool* value, bool 
 
 EXPORT bool tryGetNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT bool tryGetArray(JSONParser parser, const char* key, bool recursive, void(*addArrayValue)(JSONObject object), Exception* exception);
+EXPORT bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
