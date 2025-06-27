@@ -620,7 +620,7 @@ jobs:
     
     - name: Setup release version variable
       shell: pwsh
-      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\c_api\web_framework_c_api.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
       if: ${{ env.CURRENT_BRANCH == 'master' }}

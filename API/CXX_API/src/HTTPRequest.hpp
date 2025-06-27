@@ -6,6 +6,7 @@
 #include "WebNetwork/Interfaces/IHTTPRequest.h"
 #include "HTTPResponse.hpp"
 #include "Utility/ChunkGenerator.h"
+#include "JSONParser.hpp"
 
 namespace framework
 {
@@ -43,7 +44,7 @@ namespace framework
 	private:
 		interfaces::IHTTPRequest* implementation;
 		std::function<void(interfaces::IHTTPRequest*)> deleter;
-		// json::JSONParser json;
+		JSONParser json;
 		HeadersMap headers;
 		std::unordered_map<std::string, std::string> keyValueParameters;
 		// std::vector<web::Multipart> multiparts;
@@ -202,7 +203,7 @@ namespace framework
 		/// Getter for JSONParser
 		/// </summary>
 		/// <returns>JSONParser</returns>
-		// const json::JSONParser& getJSON() const;
+		const JSONParser& getJSON() const;
 
 		/**
 		 * @brief Get chunks
@@ -236,13 +237,13 @@ namespace framework
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const;
 
-		Database getOrCreateDatabase(std::string_view databaseName);
+		/*Database getOrCreateDatabase(std::string_view databaseName);
 
 		Database getDatabase(std::string_view databaseName) const;
 
 		Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
 
-		Table getTable(std::string_view databaseName, std::string_view tableName) const;
+		Table getTable(std::string_view databaseName, std::string_view tableName) const;*/
 
 		template<RouteParameterType T>
 		T getRouteParameter(std::string_view routeParameterName) const;
@@ -336,15 +337,15 @@ namespace framework
 		);
 	}
 
-	inline void addHeader(const char* key, const char* value, void* additionalData);
+	void addHeader(const char* key, const char* value, void* additionalData);
 
-	inline void addKeyValue(const char* key, const char* value, void* additionalData);
+	void addKeyValue(const char* key, const char* value, void* additionalData);
 
-	inline void addCookie(const char* key, const char* value, void* additionalData);
+	void addCookie(const char* key, const char* value, void* additionalData);
 
-	inline void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData);
+	// void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData);
 
-	inline void addChunk(const char* chunk, size_t chunkSize, void* additionalData);
+	void addChunk(const char* chunk, size_t chunkSize, void* additionalData);
 
 	inline LargeData::LargeData(std::string_view dataPart, size_t size, bool isLastPacket) :
 		dataPart(dataPart),
@@ -395,10 +396,9 @@ namespace framework
 
 	inline HTTPRequest::HTTPRequest(interfaces::IHTTPRequest* implementation, const std::function<void(interfaces::IHTTPRequest*)>& deleter) :
 		implementation(implementation),
-		deleter(deleter)
+		deleter(deleter),
+		json(implementation->getJSON())
 	{
-		json.setJSONData(string_view(implementation->getJSON()));
-
 		this->initHeaders();
 		this->initKeyValuesParameters();
 		this->initMultiparts();
@@ -414,10 +414,10 @@ namespace framework
 	{
 		implementation = other.implementation;
 		deleter = other.deleter;
-		json = move(other.json);
+		json = std::move(other.json);
 		headers = move(other.headers);
 		keyValueParameters = move(other.keyValueParameters);
-		multiparts = move(other.multiparts);
+		// multiparts = move(other.multiparts);
 		chunks = move(other.chunks);
 
 		other.implementation = nullptr;
@@ -426,7 +426,7 @@ namespace framework
 		return *this;
 	}
 
-	inline void HTTPRequest::updateLargeData(string_view dataPart, size_t size)
+	inline void HTTPRequest::updateLargeData(std::string_view dataPart, size_t size)
 	{
 		implementation->updateLargeData(dataPart.data(), dataPart.size(), size);
 	}
@@ -451,7 +451,7 @@ namespace framework
 		return "HTTP/" + std::to_string(implementation->getHTTPVersion());
 	}
 
-	const HTTPRequest::HeadersMap& HTTPRequest::getHeaders() const
+	inline const HTTPRequest::HeadersMap& HTTPRequest::getHeaders() const
 	{
 		return headers;
 	}
@@ -469,7 +469,7 @@ namespace framework
 	inline std::string HTTPRequest::getAttribute(std::string_view name)
 	{
 		const char* temp = implementation->getAttribute(name.data());
-		string result(temp);
+		std::string result(temp);
 
 		implementation->deleteAttribute(temp);
 
@@ -495,10 +495,10 @@ namespace framework
 		return result;
 	}
 
-	inline const std::vector<web::Multipart>& HTTPRequest::getMultiparts() const
+	/*inline const std::vector<web::Multipart>& HTTPRequest::getMultiparts() const
 	{
 		return multiparts;
-	}
+	}*/
 
 	inline LargeData HTTPRequest::getLargeData() const
 	{
@@ -546,12 +546,12 @@ namespace framework
 		return implementation->isDynamicFunctionRegistered(functionName.data());
 	}
 
-	inline const json::JSONParser& HTTPRequest::getJSON() const
+	inline const JSONParser& HTTPRequest::getJSON() const
 	{
 		return json;
 	}
 
-	inline const std::vector<string>& HTTPRequest::getChunks() const
+	inline const std::vector<std::string>& HTTPRequest::getChunks() const
 	{
 		return chunks;
 	}
@@ -581,17 +581,17 @@ namespace framework
 		return result;
 	}
 
-	uint16_t HTTPRequest::getClientPort() const
+	inline uint16_t HTTPRequest::getClientPort() const
 	{
 		return implementation->getClientPort();
 	}
 
-	uint16_t HTTPRequest::getServerPort() const
+	inline uint16_t HTTPRequest::getServerPort() const
 	{
 		return implementation->getServerPort();
 	}
 
-	Database HTTPRequest::getOrCreateDatabase(string_view databaseName)
+	/*Database HTTPRequest::getOrCreateDatabase(string_view databaseName)
 	{
 		return Database(implementation->getOrCreateDatabase(databaseName.data()));
 	}
@@ -609,9 +609,9 @@ namespace framework
 	Table HTTPRequest::getTable(string_view databaseName, string_view tableName) const
 	{
 		return this->getDatabase(databaseName).getTable(tableName);
-	}
+	}*/
 
-	HTTPRequest::~HTTPRequest()
+	inline HTTPRequest::~HTTPRequest()
 	{
 		if (deleter && implementation)
 		{
@@ -621,22 +621,22 @@ namespace framework
 		}
 	}
 
-	void addHeader(const char* key, const char* value, void* additionalData)
+	inline void addHeader(const char* key, const char* value, void* additionalData)
 	{
 		reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
 	}
 
-	void addKeyValue(const char* key, const char* value, void* additionalData)
+	inline void addKeyValue(const char* key, const char* value, void* additionalData)
 	{
 		reinterpret_cast<std::unordered_map<std::string, std::string>*>(additionalData)->try_emplace(key, value);
 	}
 
-	void addCookie(const char* key, const char* value, void* additionalData)
+	inline void addCookie(const char* key, const char* value, void* additionalData)
 	{
 		reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
 	}
 
-	void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData)
+	/*void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData)
 	{
 		std::optional<std::string> fileName;
 		std::optional<std::string> contentType;
@@ -658,9 +658,9 @@ namespace framework
 			contentType,
 			multipart->data
 		);
-	}
+	}*/
 
-	void addChunk(const char* chunk, size_t chunkSize, void* additionalData)
+	inline void addChunk(const char* chunk, size_t chunkSize, void* additionalData)
 	{
 		reinterpret_cast<std::vector<std::string>*>(additionalData)->emplace_back(chunk, chunkSize);
 	}

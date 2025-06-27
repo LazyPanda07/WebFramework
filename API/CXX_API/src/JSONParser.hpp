@@ -18,6 +18,8 @@ namespace framework
 	public:
 		JSONParser();
 
+		JSONParser(std::string_view jsonString);
+
 		JSONParser(const JSONParser& other);
 
 		JSONParser(JSONParser&& other) noexcept;
@@ -44,6 +46,19 @@ namespace framework
 		void* exception = nullptr;
 
 		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONParser, nullptr, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+	}
+
+	inline JSONParser::JSONParser(std::string_view jsonString)
+	{
+		using createJSONParserFromString = void* (*)(const char* jsonString, void** exception);
+		void* exception = nullptr;
+
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONParserFromString, jsonString.data(), &exception);
 
 		if (exception)
 		{

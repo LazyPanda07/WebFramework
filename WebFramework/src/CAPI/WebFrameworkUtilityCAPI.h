@@ -14,6 +14,8 @@ EXPORT JSONBuilder createJSONBuilder(JSONBuilder builder, Exception* exception);
 
 EXPORT JSONParser createJSONParser(JSONParser parser, Exception* exception);
 
+EXPORT JSONParser createJSONParserFromString(const char* jsonString, Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EXPORT String build(JSONBuilder builder, Exception* exception);

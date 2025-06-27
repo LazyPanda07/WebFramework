@@ -56,6 +56,20 @@ JSONParser createJSONParser(JSONParser parser, Exception* exception)
 	return nullptr;
 }
 
+JSONParser createJSONParserFromString(const char* jsonString, Exception* exception)
+{
+	try
+	{
+		return new json::JSONParser(jsonString);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void setObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception)
