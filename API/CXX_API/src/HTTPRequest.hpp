@@ -55,7 +55,7 @@ namespace framework
 
 		void initKeyValuesParameters();
 
-		void initMultiparts();
+		// void initMultiparts();
 
 		void initChunks();
 
@@ -322,7 +322,16 @@ namespace framework
 
 		temp.reserve(value.size());
 
-		std::transform(value.begin(), value.end(), std::back_inserter(temp), std::tolower);
+		std::transform
+		(
+			value.begin(), 
+			value.end(), 
+			std::back_inserter(temp), 
+			[](char c) -> char
+			{
+				return std::tolower(c);
+			}
+		);
 
 		return std::hash<std::string>()(temp);
 	}
@@ -401,7 +410,7 @@ namespace framework
 	{
 		this->initHeaders();
 		this->initKeyValuesParameters();
-		this->initMultiparts();
+		// this->initMultiparts();
 		this->initChunks();
 	}
 

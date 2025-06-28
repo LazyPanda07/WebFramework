@@ -8,10 +8,9 @@ using HMODULE = void*;
 #include <Windows.h>
 #endif
 
-namespace framework
+namespace framework::utility
 {
-	namespace utility
-	{
-		std::string makePathToDynamicLibrary(const std::filesystem::path& pathToSource);
-	}
+	std::string makePathToDynamicLibrary(const std::filesystem::path& pathToSource);
+
+	std::string getPathToWebFrameworkSharedLibrary();
 }

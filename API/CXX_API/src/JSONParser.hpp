@@ -205,7 +205,7 @@ namespace framework
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetArray, bool, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetArray, bool, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
 
 			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetArray, key.data(), &JSONParser::addArrayValue, &value, recursive, &exception);
 		}

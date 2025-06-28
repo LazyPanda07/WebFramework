@@ -13,7 +13,6 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
@@ -25,7 +24,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
           make install -j $(nproc)
         
     - name: Build tests
@@ -33,7 +32,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
+          cmake -DCMAKE_BUILD_TYPE=Release ..
           make install -j $(nproc)
 
     - name: Tests

@@ -11,10 +11,19 @@ namespace framework::utility
 	template<typename T>
 	inline T load(HMODULE handle, std::string_view name)
 	{
+		T function;
+
 #ifdef __LINUX__
-		return reinterpret_cast<T>(dlsym(handle, name.data()));
+		function = reinterpret_cast<T>(dlsym(handle, name.data()));
 #else
-		return reinterpret_cast<T>(GetProcAddress(handle, name.data()));
+		function = reinterpret_cast<T>(GetProcAddress(handle, name.data()));
 #endif
+
+		if (!function)
+		{
+			throw std::runtime_error(std::format("Can't find {} function", name));
+		}
+
+		return function;
 	};
 }

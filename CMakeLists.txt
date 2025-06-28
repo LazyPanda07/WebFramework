@@ -73,6 +73,7 @@ add_library(
 	WebFramework/src/Framework/WebFramework.cpp
 	WebFramework/src/CAPI/WebFrameworkCAPI.cpp
 	WebFramework/src/CAPI/WebFrameworkExecutorsCAPI.cpp
+	WebFramework/src/CAPI/WebFrameworkUtilityCAPI.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp

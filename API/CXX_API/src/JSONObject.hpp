@@ -14,12 +14,16 @@ namespace framework
 	{
 	private:
 		void* implementation;
-
-	private:
-		JSONObject(void* implementation);
+		bool weak;
 
 	public:
 		JSONObject();
+
+		/**
+		 * @brief Construct view to JSONObject
+		 * @param implementation 
+		 */
+		JSONObject(void* implementation);
 
 		JSONObject(const JSONObject& other);
 
@@ -34,6 +38,7 @@ namespace framework
 
 		~JSONObject();
 
+		friend class JSONBuilder;
 		friend class JSONParser;
 	};
 }
@@ -41,12 +46,14 @@ namespace framework
 namespace framework
 {
 	inline JSONObject::JSONObject(void* implementation) :
-		implementation(implementation)
+		implementation(implementation),
+		weak(true)
 	{
 
 	}
 
-	inline JSONObject::JSONObject()
+	inline JSONObject::JSONObject() :
+		weak(false)
 	{
 		using createJSONObject = void* (*)(void* object, void** exception);
 		void* exception = nullptr;
@@ -81,12 +88,15 @@ namespace framework
 			throw exceptions::WebFrameworkException(exception);
 		}
 
+		weak = false;
+
 		return *this;
 	}
 
 	inline JSONObject& JSONObject::operator =(JSONObject&& other) noexcept
 	{
 		implementation = other.implementation;
+		weak = false;
 
 		other.implementation = nullptr;
 
@@ -160,7 +170,7 @@ namespace framework
 
 	inline JSONObject::~JSONObject()
 	{
-		if (implementation)
+		if (!weak && implementation)
 		{
 			utility::DLLHandler::getInstance().deleteJSONObject(implementation);
 

@@ -119,6 +119,7 @@ namespace framework
 	};
 
 	using CreateExecutorFunction = void* (*)();
+	using InitializeWebFrameworkInExecutor = void(*)(const char*);
 }
 
 #ifdef __LINUX__
