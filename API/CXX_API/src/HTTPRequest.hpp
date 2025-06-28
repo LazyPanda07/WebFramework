@@ -7,6 +7,7 @@
 #include "HTTPResponse.hpp"
 #include "Utility/ChunkGenerator.h"
 #include "JSONParser.hpp"
+#include "WebFrameworkAPIException.hpp"
 
 namespace framework
 {
@@ -269,6 +270,9 @@ namespace framework
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
 
+		template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
+		void throwException(Args&&... args);
+
 		~HTTPRequest();
 
 		friend class ExecutorsManager;
@@ -300,17 +304,25 @@ namespace framework
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendChunks(HTTPResponse& response, Args&&... args)
+	inline void HTTPRequest::sendChunks(HTTPResponse& response, Args&&... args)
 	{
 		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
+	inline void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
 	{
 		T generator(std::forward<Args>(args)...);
 
 		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator) -> const char* { return reinterpret_cast<T*>(chunkGenerator)->generate().data(); });
+	}
+
+	template<std::derived_from<exceptions::WebFrameworkAPIException> T, typename... Args>
+	inline void HTTPRequest::throwException(Args&&... args)
+	{
+		T exception(std::forward<Args>(args)...);
+
+		implementation->throwException(exception.what(), static_cast<int64_t>(exception.getResponseCode()), exception.getLogCategory().data());
 	}
 }
 

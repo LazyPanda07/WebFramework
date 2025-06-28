@@ -26,7 +26,7 @@ namespace framework
 		builder.HTTPVersion(version);
 	}
 
-	void HTTPResponseImplementation::setResponseCode(int code)
+	void HTTPResponseImplementation::setResponseCode(int64_t code)
 	{
 		builder.responseCode(static_cast<web::ResponseCodes>(code));
 	}

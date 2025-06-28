@@ -132,6 +132,9 @@
     <ClCompile Include="src\CAPI\WebFrameworkUtilityCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Exceptions\APIException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Framework\WebFramework.h">
@@ -258,6 +261,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\CAPI\WebFrameworkUtilityCAPI.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\APIException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

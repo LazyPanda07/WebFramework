@@ -11,7 +11,7 @@ namespace framework::interfaces
 
 		virtual void setHTTPVersion(const char* version) = 0;
 
-		virtual void setResponseCode(int code) = 0;
+		virtual void setResponseCode(int64_t code) = 0;
 
 		virtual void addHeader(const char* name, const char* value) = 0;
 

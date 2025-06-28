@@ -10,6 +10,7 @@
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
 #include "Exceptions/BadRequestException.h"
+#include <Exceptions/APIException.h>
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SSLException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
@@ -132,6 +133,17 @@ namespace framework
 			catch (const exceptions::NotFoundException& e) // 404
 			{
 				resources->notFoundError(responseWrapper, &e);
+
+				stream << response;
+			}
+			catch (const exceptions::APIException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), e.getResponseCode());
+				}
+
+				response.setResponseCode(e.getResponseCode());
 
 				stream << response;
 			}

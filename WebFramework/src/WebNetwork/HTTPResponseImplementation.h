@@ -47,7 +47,7 @@ namespace framework
 		/// Set HTTP response code
 		/// </summary>
 		/// <param name="code">value from web::responseCodes</param>
-		void setResponseCode(int code) override;
+		void setResponseCode(int64_t code) override;
 
 		/// <summary>
 		/// Set additional HTTP header

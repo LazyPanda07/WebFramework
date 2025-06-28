@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\WebFrameworkAPIException.hpp" />
     <ClInclude Include="src\Executors\BaseExecutor.hpp" />
     <ClInclude Include="src\Config.hpp" />
     <ClInclude Include="src\DLLHandler.hpp" />

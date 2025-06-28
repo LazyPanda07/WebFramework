@@ -138,6 +138,7 @@
     <ClCompile Include="src\Databases\SQLResultImplementation.cpp" />
     <ClCompile Include="src\Databases\SQLValueImplementation.cpp" />
     <ClCompile Include="src\Databases\TableImplementation.cpp" />
+    <ClCompile Include="src\Exceptions\APIException.cpp" />
     <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
     <ClCompile Include="src\Executors\CXXExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\Databases\SQLResultImplementation.h" />
     <ClInclude Include="src\Databases\SQLValueImplementation.h" />
     <ClInclude Include="src\Databases\TableImplementation.h" />
+    <ClInclude Include="src\Exceptions\APIException.h" />
     <ClInclude Include="src\Exceptions\NotFoundException.h" />
     <ClInclude Include="src\Executors\CXXExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />

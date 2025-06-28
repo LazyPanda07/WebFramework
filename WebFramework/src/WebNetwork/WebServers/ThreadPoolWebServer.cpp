@@ -5,6 +5,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/NotFoundException.h"
 #include "Exceptions/SSLException.h"
+#include <Exceptions/APIException.h>
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "HTTPSNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
@@ -133,6 +134,17 @@ namespace framework
 
 							stream << response;
 						}
+						catch (const exceptions::APIException& e)
+						{
+							if (Log::isValid())
+							{
+								Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), e.getResponseCode());
+							}
+
+							response.setResponseCode(e.getResponseCode());
+
+							stream << response;
+						}
 						catch (const exceptions::BaseExecutorException& e) // 500
 						{
 							if (Log::isValid())
@@ -208,6 +220,20 @@ namespace framework
 			HTTPResponse responseWrapper(&response);
 
 			resourceExecutor.notFoundError(responseWrapper, &e);
+
+			stream << response;
+		}
+		catch (const exceptions::APIException& e)
+		{
+			HTTPResponseImplementation response;
+			HTTPResponse responseWrapper(&response);
+
+			if (Log::isValid())
+			{
+				Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), e.getResponseCode());
+			}
+
+			response.setResponseCode(e.getResponseCode());
 
 			stream << response;
 		}

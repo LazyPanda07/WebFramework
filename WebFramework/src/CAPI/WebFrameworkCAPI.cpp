@@ -3,6 +3,7 @@
 #include "Framework/WebFramework.h"
 #include "Framework/Config.h"
 #include "Log.h"
+#include <WebNetwork/Interfaces/IHTTPRequest.h>
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -327,6 +328,11 @@ String getBasePath(Config config, Exception* exception)
 	}
 
 	return nullptr;
+}
+
+void throwException(void* httpRequest, const char* errorMessage, int64_t responseCode, const char* logCategory)
+{
+	static_cast<framework::interfaces::IHTTPRequest*>(httpRequest)->throwException(errorMessage, responseCode, logCategory);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

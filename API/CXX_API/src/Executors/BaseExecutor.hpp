@@ -1,5 +1,7 @@
 #pragma once
 
+#include <format>
+
 #include "../HTTPRequest.hpp"
 #include "../HTTPResponse.hpp"
 #include "../DLLHandler.hpp"
@@ -25,47 +27,51 @@ namespace framework
 
 		virtual void doPost(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
 		}
 
 		virtual void doGet(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
 		}
 
 		virtual void doHead(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
 		}
 
 		virtual void doPut(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
 		}
 
 		virtual void doDelete(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
 		}
 
 		virtual void doPatch(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
 		}
 
 		virtual void doOptions(HTTPRequest& request, HTTPResponse& response)
 		{
+#ifdef NDEBUG
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+#endif
 
+			// TODO: default implementations
 		}
 
 		virtual void doTrace(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			// TODO: default implementations
 		}
 
 		virtual void doConnect(HTTPRequest& request, HTTPResponse& response)
 		{
-
+			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
 		}
 
 		virtual utility::ExecutorType getType() const = 0;

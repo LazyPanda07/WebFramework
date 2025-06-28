@@ -9,6 +9,7 @@
 #include "Managers/SessionsManager.h"
 #include <Managers/DatabasesManager.h>
 #include <Databases/DatabaseImplementation.h>
+#include <Exceptions/APIException.h>
 
 #include "Exceptions/FileDoesNotExistException.h"
 
@@ -392,6 +393,11 @@ namespace framework
 				break;
 			}
 		}
+	}
+
+	void HTTPRequestImplementation::throwException(const char* errorMessage, int64_t responseCode, const char* logCategory)
+	{
+		throw framework::exceptions::APIException(errorMessage, responseCode, logCategory ? logCategory : "");
 	}
 
 	void HTTPRequestImplementation::getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const

@@ -53,6 +53,7 @@ add_library(
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
 	WebFramework/src/Exceptions/DynamicPagesSyntaxException.cpp
 	WebFramework/src/Exceptions/MissingLoadTypeException.cpp
+	WebFramework/src/Exceptions/APIException.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp

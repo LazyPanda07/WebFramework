@@ -5,17 +5,14 @@
 
 #include "WebFrameworkCoreConstants.h"
 
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	/// @brief Base class for all WebFramework exceptions
+	class WEB_FRAMEWORK_CORE_API BaseWebFrameworkException : public std::runtime_error
 	{
-		/// @brief Base class for all WebFramework exceptions
-		class WEB_FRAMEWORK_CORE_API BaseWebFrameworkException : public std::runtime_error
-		{
-		public:
-			BaseWebFrameworkException(std::string_view errorMessage);
+	public:
+		BaseWebFrameworkException(std::string_view errorMessage);
 
-			virtual ~BaseWebFrameworkException() = default;
-		};
-	}
+		virtual ~BaseWebFrameworkException() = default;
+	};
 }
