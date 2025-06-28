@@ -91,7 +91,7 @@ namespace framework
 	return new subclassName();	\
 }
 
-#pragma region ExportedFunctions
+#pragma region ExportFunctions
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);

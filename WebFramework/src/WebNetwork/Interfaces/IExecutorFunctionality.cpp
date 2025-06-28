@@ -134,7 +134,10 @@ namespace framework::interfaces
 				break;
 			}
 
-			utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkForExecutors")(webFrameworkSharedLibraryPath.data());
+			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkForExecutors"))
+			{
+				initFunction(webFrameworkSharedLibraryPath.data());
+			}
 
 			creators.try_emplace(executorSettings.name, creator);
 			creatorSources.try_emplace(executorSettings.name, creatorSource);

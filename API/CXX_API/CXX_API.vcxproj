@@ -89,6 +89,10 @@
     <ClInclude Include="src\Executors\BaseExecutor.hpp" />
     <ClInclude Include="src\Config.hpp" />
     <ClInclude Include="src\DLLHandler.hpp" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.hpp" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.hpp" />
+    <ClInclude Include="src\Executors\BaseStatefulExecutor.hpp" />
+    <ClInclude Include="src\Executors\BaseStatelessExecutor.hpp" />
     <ClInclude Include="src\HTTPRequest.hpp" />
     <ClInclude Include="src\HTTPResponse.hpp" />
     <ClInclude Include="src\import.hpp" />
