@@ -72,7 +72,7 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp">
+    <ClCompile Include="src\WebNetwork\WebServers\ExecutorServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Framework\Config.cpp">
@@ -197,7 +197,7 @@
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h">
+    <ClInclude Include="src\WebNetwork\WebServers\ExecutorServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Framework\Config.h">

@@ -373,9 +373,6 @@ namespace framework
 	(
 		const json::JSONParser& configuration,
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-		const filesystem::path& assets,
-		const filesystem::path& pathToTemplates,
-		uint64_t cachingSize,
 		string_view ip,
 		string_view port,
 		DWORD timeout,
@@ -392,12 +389,9 @@ namespace framework
 			1,
 			false
 		),
-		IExecutorFunctionality
+		ExecutorServer
 		(
 			configuration,
-			assets,
-			pathToTemplates,
-			cachingSize,
 			move(executorsSettings),
 			pathToSources,
 			additionalSettings

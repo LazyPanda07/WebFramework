@@ -8,28 +8,25 @@
 #include "Managers/SessionsManager.h"
 #include "Utility/AdditionalServerSettings.h"
 
-namespace framework::interfaces
+namespace framework
 {
-	class IExecutorFunctionality
+	class ExecutorServer
 	{
 	protected:
+		utility::AdditionalServerSettings additionalSettings;
 		ExecutorsManager executorsManager;
 		SessionsManager sessionsManager;
 		std::shared_ptr<ResourceExecutor> resources;
-		utility::AdditionalServerSettings additionalSettings;
 
 	public:
-		IExecutorFunctionality
+		ExecutorServer
 		(
 			const json::JSONParser& configuration,
-			const std::filesystem::path& assets,
-			const std::filesystem::path& pathToTemplates,
-			uint64_t cachingSize,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings
 		);
 
-		virtual ~IExecutorFunctionality() = default;
+		virtual ~ExecutorServer() = default;
 	};
 }

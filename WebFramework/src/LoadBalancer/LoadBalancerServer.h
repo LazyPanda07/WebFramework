@@ -9,6 +9,7 @@
 #include "Executors/ResourceExecutor.h"
 
 #include "Utility/BaseConnectionData.h"
+#include <Utility/AdditionalServerSettings.h>
 
 namespace framework
 {
@@ -51,7 +52,8 @@ namespace framework
 				std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
 				std::string_view heuristicName, const std::vector<HMODULE>& loadSources,
 				const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
-				const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::filesystem::path& pathToTemplates
+				const json::JSONParser& configuration,
+				const utility::AdditionalServerSettings& additionalSettings
 			);
 
 			~LoadBalancerServer() = default;

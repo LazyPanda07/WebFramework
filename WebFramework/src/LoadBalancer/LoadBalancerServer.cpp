@@ -116,7 +116,8 @@ namespace framework
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
 			string_view heuristicName, const vector<HMODULE>& loadSources,
 			const unordered_map<string, vector<int64_t>>& allServers, //-V688
-			const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const filesystem::path& pathToTemplates
+			const json::JSONParser& configuration,
+			const utility::AdditionalServerSettings& additionalSettings
 		) :
 			BaseTCPServer
 			(
@@ -127,7 +128,7 @@ namespace framework
 				0,
 				false
 			),
-			resources(make_shared<ResourceExecutor>(configuration, assets, cachingSize, pathToTemplates)),
+			resources(make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)),
 			serversHTTPS(serversHTTPS)
 		{
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);

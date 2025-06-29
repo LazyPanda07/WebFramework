@@ -3,13 +3,13 @@
 #include "Framework/WebFrameworkPlatform.h"
 
 #include "BaseWebServer.h"
-#include "WebNetwork/Interfaces/IExecutorFunctionality.h"
+#include "ExecutorServer.h"
 
 namespace framework
 {
 	class MultithreadedWebServer : 
 		public virtual BaseWebServer,
-		public interfaces::IExecutorFunctionality
+		public ExecutorServer
 	{
 	private:
 		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) override;
@@ -19,9 +19,6 @@ namespace framework
 		(
 			const json::JSONParser& configuration,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-			const std::filesystem::path& assets,
-			const std::filesystem::path& pathToTemplates,
-			uint64_t cachingSize,
 			std::string_view ip,
 			std::string_view port,
 			DWORD timeout,

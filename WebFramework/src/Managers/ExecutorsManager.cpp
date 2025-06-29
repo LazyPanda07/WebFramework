@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <ranges>
+#include <format>
 
 #include "Log.h"
 
@@ -9,6 +10,10 @@
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/DatabaseException.h"
 #include "WebNetwork/HTTPRequestImplementation.h"
+#include <Utility/Sources.h>
+#include <Utility/DynamicLibraries.h>
+#include <Exceptions/MissingLoadTypeException.h>
+#include <Exceptions/CantFindFunctionException.h>
 
 #include <Executors/CXXExecutor.h>
 
@@ -199,10 +204,126 @@ namespace framework
 		return apiExecutors.at(apiType)(name);
 	}
 
-	ExecutorsManager::ExecutorsManager() :
-		serverType(WebServerType::multiThreaded)
+	ExecutorsManager::ExecutorsManager
+	(
+		const json::JSONParser& configuration,
+		const vector<string>& pathToSources, 
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		const utility::AdditionalServerSettings& additionalSettings
+	) :
+		resources(make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)),
+		userAgentFilter(additionalSettings.userAgentFilter),
+		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
+		vector<HMODULE> sources = utility::loadSources(pathToSources);
 
+		routes.reserve(executorsSettings.size());
+		creators.reserve(executorsSettings.size());
+
+		vector<pair<string, string>> nodes;
+		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
+
+		for (const auto& [route, executorSettings] : executorsSettings)
+		{
+			CreateExecutorFunction creator = nullptr;
+			HMODULE creatorSource = nullptr;
+
+			for (const HMODULE& source : sources)
+			{
+				if (creator = utility::load<CreateExecutorFunction>(source, format("create{}Instance", executorSettings.name)))
+				{
+					creatorSource = source;
+
+					break;
+				}
+			}
+
+			if (!creator)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Can't find creator for executor {}", "LogWebFrameworkInitialization", executorSettings.name);
+				}
+
+				throw exceptions::CantFindFunctionException(format("create{}Instance", executorSettings.name));
+			}
+
+			switch (executorSettings.executorLoadType)
+			{
+			case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
+				if (route.find('{') == string::npos)
+				{
+					auto [it, success] = routes.try_emplace
+					(
+						route,
+						unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
+					);
+
+					if (success)
+					{
+						if (it->second->getType() == utility::ExecutorType::stateful || it->second->getType() == utility::ExecutorType::heavyOperationStateful)
+						{
+							routes.erase(route);
+						}
+						else
+						{
+							it->second->init(executorSettings);
+						}
+					}
+				}
+				else
+				{
+					routeParameters.push_back(route);
+
+					auto [it, success] = routes.try_emplace
+					(
+						routeParameters.back().baseRoute,
+						unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
+					);
+
+					nodes.emplace_back(route, routeParameters.back().baseRoute);
+
+					if (success)
+					{
+						it->second->init(executorSettings);
+					}
+				}
+
+				break;
+
+			case utility::JSONSettingsParser::ExecutorSettings::loadType::dynamic:
+				if (route.find('{') != string::npos)
+				{
+					routeParameters.push_back(route);
+
+					nodes.emplace_back(route, routeParameters.back().baseRoute);
+				}
+
+				break;
+
+			case utility::JSONSettingsParser::ExecutorSettings::loadType::none:
+				throw exceptions::MissingLoadTypeException(executorSettings.name);
+
+				break;
+			}
+
+			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkForExecutors"))
+			{
+				initFunction(webFrameworkSharedLibraryPath.data());
+			}
+
+			creators.try_emplace(executorSettings.name, creator);
+			creatorSources.try_emplace(executorSettings.name, creatorSource);
+		}
+
+		for (auto&& [route, executorSettings] : nodes)
+		{
+			auto node = executorsSettings.extract(route);
+
+			node.key() = move(executorSettings);
+
+			executorsSettings.insert(move(node)); //-V837
+		}
 	}
 
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept
@@ -218,34 +339,6 @@ namespace framework
 		this->resources = move(other.resources);
 
 		return *this;
-	}
-
-	void ExecutorsManager::init
-	(
-		const json::JSONParser& configuraion,
-		const filesystem::path& assets,
-		uint64_t cachingSize,
-		const filesystem::path& pathToTemplates,
-		unordered_map<string, unique_ptr<BaseExecutor>>&& routes,
-		unordered_map<string, CreateExecutorFunction>&& creators,
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
-		vector<utility::RouteParameters>&& routeParameters,
-		const utility::AdditionalServerSettings& additionalSettings,
-		unordered_map<std::string, HMODULE>&& creatorSources
-	)
-	{
-		this->routes = move(routes);
-		this->creators = move(creators);
-		this->creatorSources = move(creatorSources);
-		this->settings = move(settings);
-		this->routeParameters = move(routeParameters);
-		this->userAgentFilter = additionalSettings.userAgentFilter;
-
-		resources = make_shared<ResourceExecutor>(configuraion, assets, cachingSize, pathToTemplates);
-
-		resources->init();
-
-		serverType = ExecutorsManager::types.at(configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey));
 	}
 
 	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)

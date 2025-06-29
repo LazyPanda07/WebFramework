@@ -244,24 +244,7 @@ namespace framework
 		DWORD timeout = 0;
 
 		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
-		uint64_t cachingSize = 0;
-		string assetsPath;
-		string templatesPath;
-		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings);
-
-		webFrameworkSettings.tryGetUnsignedInt(json_settings::cachingSize, cachingSize);
-
-		{
-			filesystem::path temp = webFrameworkSettings.getString(json_settings::assetsPathKey);
-
-			assetsPath = temp.is_absolute() ? temp.string() : (basePath / temp).string();
-		}
-
-		{
-			filesystem::path temp = webFrameworkSettings.getString(json_settings::templatesPathKey);
-
-			templatesPath = temp.is_absolute() ? temp.string() : (basePath / temp).string();
-		}
+		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings, basePath);
 
 		{
 			int64_t temp = 0;
@@ -278,9 +261,6 @@ namespace framework
 				(
 					*config,
 					move(executorsSettings),
-					assetsPath,
-					templatesPath,
-					cachingSize,
 					ip,
 					port,
 					timeout,
@@ -302,9 +282,6 @@ namespace framework
 				(
 					*config,
 					move(executorsSettings),
-					assetsPath,
-					templatesPath,
-					cachingSize,
 					ip,
 					port,
 					timeout,
@@ -344,9 +321,7 @@ namespace framework
 					utility::loadSources(pathToSources),
 					allServers,
 					(*config),
-					assetsPath,
-					cachingSize,
-					templatesPath
+					additionalSettings
 				);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)

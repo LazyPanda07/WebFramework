@@ -47,12 +47,6 @@ namespace framework
 		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::filesystem::path& pathToTemplates);
 
 		/// <summary>
-		/// Create assets folder
-		/// </summary>
-		/// <param name="settings">not used</param>
-		void init(const utility::JSONSettingsParser::ExecutorSettings& settings = utility::JSONSettingsParser::ExecutorSettings()) override;
-
-		/// <summary>
 		/// Override from IStaticFile interface
 		/// </summary>
 		/// <param name="filePath">path to file from assets folder</param>

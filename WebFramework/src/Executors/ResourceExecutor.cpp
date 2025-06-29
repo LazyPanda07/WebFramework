@@ -66,10 +66,7 @@ namespace framework
 		fileManager(file_manager::FileManager::getInstance())
 	{
 		fileManager.getCache().setCacheSize(cachingSize);
-	}
 
-	void ResourceExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
-	{
 		if (!filesystem::exists(assets))
 		{
 			filesystem::create_directories(assets);

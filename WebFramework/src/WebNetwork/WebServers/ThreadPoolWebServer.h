@@ -3,14 +3,14 @@
 #include "ThreadPool.h"
 
 #include "BaseWebServer.h"
-#include "WebNetwork/Interfaces/IExecutorFunctionality.h"
+#include "ExecutorServer.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 
 namespace framework
 {
 	class ThreadPoolWebServer : 
 		public virtual BaseWebServer,
-		public interfaces::IExecutorFunctionality
+		public ExecutorServer
 	{
 	private:
 		class Client
@@ -66,9 +66,6 @@ namespace framework
 		(
 			const json::JSONParser& configuration,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-			const std::filesystem::path& assets,
-			const std::filesystem::path& pathToTemplates,
-			uint64_t cachingSize,
 			std::string_view ip,
 			std::string_view port,
 			DWORD timeout,

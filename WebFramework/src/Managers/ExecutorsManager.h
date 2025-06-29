@@ -57,7 +57,13 @@ namespace framework
 		std::unique_ptr<BaseExecutor> createAPIExecutor(const std::string& name, std::string_view apiType) const;
 
 	public:
-		ExecutorsManager();
+		ExecutorsManager
+		(
+			const json::JSONParser& configuration,
+			const std::vector<std::string>& pathToSources,
+			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+			const utility::AdditionalServerSettings& additionalSettings
+		);
 
 		ExecutorsManager(const ExecutorsManager&) = delete;
 
@@ -66,20 +72,6 @@ namespace framework
 		ExecutorsManager(ExecutorsManager&& other) noexcept;
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
-
-		void init
-		(
-			const json::JSONParser& configuraion,
-			const std::filesystem::path& assets,
-			uint64_t cachingSize,
-			const std::filesystem::path& pathToTemplates,
-			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>&& routes,
-			std::unordered_map<std::string, CreateExecutorFunction>&& creators,
-			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
-			std::vector<utility::RouteParameters>&& routeParameters,
-			const utility::AdditionalServerSettings& additionalSettings,
-			std::unordered_map<std::string, HMODULE>&& creatorSources
-		);
 
 		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 

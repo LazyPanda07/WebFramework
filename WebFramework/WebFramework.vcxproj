@@ -152,7 +152,7 @@
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPRequestImplementation.cpp" />
     <ClCompile Include="src\WebNetwork\HTTPResponseImplementation.cpp" />
-    <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp" />
+    <ClCompile Include="src\WebNetwork\WebServers\ExecutorServer.cpp" />
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
@@ -211,7 +211,7 @@
     <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
     <ClInclude Include="src\WebNetwork\HTTPRequestImplementation.h" />
     <ClInclude Include="src\WebNetwork\HTTPResponseImplementation.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h" />
+    <ClInclude Include="src\WebNetwork\WebServers\ExecutorServer.h" />
     <ClInclude Include="src\Framework\WebFrameworkConstants.h" />
     <ClInclude Include="src\Framework\WebFramework.h" />
     <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
