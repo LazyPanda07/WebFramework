@@ -144,6 +144,7 @@ namespace framework
 				}
 
 				response.setResponseCode(e.getResponseCode());
+				response.setBody(e.what());
 
 				stream << response;
 			}
