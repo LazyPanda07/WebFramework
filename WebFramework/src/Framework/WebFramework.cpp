@@ -51,6 +51,23 @@ namespace framework
 		}
 	}
 
+	unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const vector<string>& settingsPaths)
+	{
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> result;
+
+		for (const string& settingsPath : settingsPaths)
+		{
+			utility::JSONSettingsParser parser(settingsPath);
+
+			for (const auto& [key, value] : parser.getSettings())
+			{
+				result.try_emplace(key, value);
+			}
+		}
+
+		return result;
+	}
+
 	uint64_t WebFramework::parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const
 	{
 		vector<json::utility::jsonObject> flags;
@@ -60,13 +77,13 @@ namespace framework
 			(numeric_limits<uint64_t>::max)();
 	}
 
-	string WebFramework::initLogging() const
+	void WebFramework::initLogging() const
 	{
 		json::utility::jsonObject loggingSettings;
 
 		if (!(*config).tryGetObject(json_settings::loggingObject, loggingSettings))
 		{
-			return "";
+			return;
 		}
 
 		bool usingLogging = false;
@@ -119,13 +136,12 @@ namespace framework
 				Log::duplicateErrorLog(cerr);
 			}
 		}
-
-		return "";
 	}
 
-	void WebFramework::initExecutors(const json::utility::jsonObject& webFrameworkSettings, vector<string>& settingsPaths, vector<string>& pathToSources)
+	void WebFramework::initExecutors(const json::utility::jsonObject& webFrameworkSettings, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, vector<string>& pathToSources)
 	{
 		const filesystem::path& basePath = config.getBasePath();
+		vector<string> settingsPaths;
 
 		{
 			vector<json::utility::jsonObject> settings;
@@ -160,6 +176,8 @@ namespace framework
 				source = (basePath / source).string();
 			}
 		);
+
+		executorSettings = WebFramework::createExecutorsSettings(settingsPaths);
 
 		if (ExecutorsManager::types.at(webFrameworkSettings.getString(json_settings::webServerTypeKey)) > ExecutorsManager::WebServerType::proxy)
 		{
@@ -215,7 +233,7 @@ namespace framework
 	void WebFramework::initServer
 	(
 		const json::utility::jsonObject& webFrameworkSettings,
-		const vector<utility::JSONSettingsParser>& jsonSettings,
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const vector<string>& pathToSources
 	)
 	{
@@ -259,7 +277,7 @@ namespace framework
 			server = make_unique<MultithreadedWebServer>
 				(
 					*config,
-					jsonSettings,
+					move(executorsSettings),
 					assetsPath,
 					templatesPath,
 					cachingSize,
@@ -283,7 +301,7 @@ namespace framework
 			server = make_unique<ThreadPoolWebServer>
 				(
 					*config,
-					jsonSettings,
+					move(executorsSettings),
 					assetsPath,
 					templatesPath,
 					cachingSize,
@@ -344,29 +362,20 @@ namespace framework
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig)
 	{
-		if (string errorMessage = this->initLogging(); errorMessage.size())
-		{
-			throw runtime_error(errorMessage);
-		}
+		this->initLogging();
 
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
-		vector<string> settingsPaths;
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
 		vector<string> pathToSources;
 
 		this->initDatabase(webFrameworkSettings);
-		this->initExecutors(webFrameworkSettings, settingsPaths, pathToSources);
+		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
 		this->initHTTPS(webFrameworkSettings);
-
-		vector<utility::JSONSettingsParser> jsonSettings;
-
-		jsonSettings.reserve(settingsPaths.size());
-
-		transform(settingsPaths.begin(), settingsPaths.end(), back_inserter(jsonSettings), [](const string& i) { return utility::JSONSettingsParser(i); });
 
 		this->initServer
 		(
 			webFrameworkSettings,
-			jsonSettings,
+			move(executorsSettings),
 			pathToSources
 		);
 	}

@@ -132,32 +132,17 @@ namespace framework
 					parameters = it->baseRoute;
 				}
 
-				if (executorSettings->second.apiType.empty())
-				{
-					executor = routes.try_emplace
-					(
-						move(parameters),
-						unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
-					).first;
-				}
-				else if (executorSettings->second.apiType == json_settings::cxxExecutorKey)
-				{
-					executor = routes.try_emplace
-					(
-						move(parameters),
-						make_unique<CXXExecutor>(creatorSources[executorSettings->second.name], creators[executorSettings->second.name]())
-					).first;
-				}
-				else
-				{
-					return nullptr;
-				}
+				executor = routes.try_emplace
+				(
+					move(parameters),
+					this->createAPIExecutor(executorSettings->second.name, executorSettings->second.apiType)
+				).first;
 
 				executor->second->init(executorSettings->second);
 
-				utility::ExecutorType ExecutorType = executor->second->getType();
+				utility::ExecutorType executorType = executor->second->getType();
 
-				if (ExecutorType == utility::ExecutorType::stateful || ExecutorType == utility::ExecutorType::heavyOperationStateful)
+				if (executorType == utility::ExecutorType::stateful || executorType == utility::ExecutorType::heavyOperationStateful)
 				{
 					executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
 				}
@@ -201,6 +186,17 @@ namespace framework
 		}
 
 		return true;
+	}
+
+	unique_ptr<BaseExecutor> ExecutorsManager::createAPIExecutor(const string& name, string_view apiType) const
+	{
+		static const unordered_map<string_view, function<unique_ptr<BaseExecutor>(const string& name)>> apiExecutors =
+		{
+			{ "", [this](const string& name) { return unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
+			{ json_settings::cxxExecutorKey, [this](const string& name) { return make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } }
+		};
+
+		return apiExecutors.at(apiType)(name);
 	}
 
 	ExecutorsManager::ExecutorsManager() :

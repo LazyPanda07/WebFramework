@@ -24,6 +24,8 @@ namespace framework
 	private:
 		static void parseAdditionalConfigs(const json::utility::jsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources);
 
+		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
+
 	private:
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;
@@ -32,9 +34,9 @@ namespace framework
 		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
 
 	private:
-		std::string initLogging() const;
+		void initLogging() const;
 
-		void initExecutors(const json::utility::jsonObject& webFrameworkSettings, std::vector<std::string>& settingsPaths, std::vector<std::string>& pathToSources);
+		void initExecutors(const json::utility::jsonObject& webFrameworkSettings, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, std::vector<std::string>& pathToSources);
 
 		void initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const;
 
@@ -43,7 +45,7 @@ namespace framework
 		void initServer
 		(
 			const json::utility::jsonObject& webFrameworkSettings,
-			const std::vector<utility::JSONSettingsParser>& jsonSettings,
+			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::vector<std::string>& pathToSources
 		);
 

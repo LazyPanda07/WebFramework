@@ -18,9 +18,6 @@ namespace framework::interfaces
 		std::shared_ptr<ResourceExecutor> resources;
 		utility::AdditionalServerSettings additionalSettings;
 
-	private:
-		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorSettings(const std::vector<utility::JSONSettingsParser>& parsers);
-
 	public:
 		IExecutorFunctionality
 		(
@@ -28,7 +25,7 @@ namespace framework::interfaces
 			const std::filesystem::path& assets,
 			const std::filesystem::path& pathToTemplates,
 			uint64_t cachingSize,
-			const std::vector<utility::JSONSettingsParser>& parsers,
+			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings
 		);

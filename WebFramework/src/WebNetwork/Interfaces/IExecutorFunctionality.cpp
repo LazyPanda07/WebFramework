@@ -10,28 +10,13 @@ using namespace std;
 
 namespace framework::interfaces
 {
-	unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> IExecutorFunctionality::createExecutorSettings(const vector<utility::JSONSettingsParser>& parsers)
-	{
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> result;
-
-		for (const utility::JSONSettingsParser& parser : parsers)
-		{
-			for (const auto& [key, value] : parser.getSettings())
-			{
-				result.try_emplace(key, value);
-			}
-		}
-
-		return result;
-	}
-
 	IExecutorFunctionality::IExecutorFunctionality
 	(
 		const json::JSONParser& configuration,
 		const filesystem::path& assets,
 		const filesystem::path& pathToTemplates,
 		uint64_t cachingSize,
-		const vector<utility::JSONSettingsParser>& parsers,
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const vector<string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings
 	) :
@@ -41,16 +26,15 @@ namespace framework::interfaces
 		unordered_map<string, CreateExecutorFunction> creators;
 		unordered_map<string, HMODULE> creatorSources;
 		vector<utility::RouteParameters> routeParameters;
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> settings = IExecutorFunctionality::createExecutorSettings(parsers);
 		vector<HMODULE> sources = utility::loadSources(pathToSources);
 
-		routes.reserve(settings.size());
-		creators.reserve(settings.size());
+		routes.reserve(executorsSettings.size());
+		creators.reserve(executorsSettings.size());
 
 		vector<pair<string, string>> nodes;
 		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
 
-		for (const auto& [route, executorSettings] : settings)
+		for (const auto& [route, executorSettings] : executorsSettings)
 		{
 			CreateExecutorFunction creator = nullptr;
 			HMODULE creatorSource = nullptr;
@@ -145,14 +129,14 @@ namespace framework::interfaces
 
 		for (auto&& [route, executorSettings] : nodes)
 		{
-			auto node = settings.extract(route);
+			auto node = executorsSettings.extract(route);
 
 			node.key() = move(executorSettings);
 
-			settings.insert(move(node)); //-V837
+			executorsSettings.insert(move(node)); //-V837
 		}
 
-		executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(settings), move(routeParameters), additionalSettings, move(creatorSources));
+		executorsManager.init(configuration, assets, cachingSize, pathToTemplates, move(routes), move(creators), move(executorsSettings), move(routeParameters), additionalSettings, move(creatorSources));
 
 		resources = executorsManager.getResourceExecutor();
 	}

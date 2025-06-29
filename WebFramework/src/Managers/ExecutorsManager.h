@@ -54,6 +54,8 @@ namespace framework
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponse& response) const;
 
+		std::unique_ptr<BaseExecutor> createAPIExecutor(const std::string& name, std::string_view apiType) const;
+
 	public:
 		ExecutorsManager();
 

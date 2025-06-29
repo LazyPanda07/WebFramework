@@ -182,7 +182,7 @@ namespace framework
 	MultithreadedWebServer::MultithreadedWebServer
 	(
 		const json::JSONParser& configuration,
-		const vector<utility::JSONSettingsParser>& parsers,
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const filesystem::path& assets,
 		const filesystem::path& pathToTemplates,
 		uint64_t cachingSize,
@@ -207,7 +207,7 @@ namespace framework
 			assets,
 			pathToTemplates,
 			cachingSize,
-			parsers,
+			move(executorsSettings),
 			pathToSources,
 			additionalSettings
 		)

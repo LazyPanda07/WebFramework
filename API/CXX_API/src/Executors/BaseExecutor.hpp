@@ -92,7 +92,7 @@ namespace framework
 * Macro for each BaseExecutor subclass
 * Used for loading function that creates BaseExecutor subclass
 */
-#define DECLARE_EXECUTOR(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API framework::BaseExecutor* create##subclassName##Instance()	\
+#define DECLARE_EXECUTOR(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##subclassName##Instance()	\
 {	\
 	return new subclassName();	\
 }

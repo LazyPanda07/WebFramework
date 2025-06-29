@@ -18,7 +18,7 @@ namespace framework
 		MultithreadedWebServer
 		(
 			const json::JSONParser& configuration,
-			const std::vector<utility::JSONSettingsParser>& parsers,
+			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::filesystem::path& assets,
 			const std::filesystem::path& pathToTemplates,
 			uint64_t cachingSize,
