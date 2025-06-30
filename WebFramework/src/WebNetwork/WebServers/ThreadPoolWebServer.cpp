@@ -32,7 +32,7 @@ namespace framework
 			(
 				server.additionalSettings.largeBodyPacketSize, network, server.sessionsManager, server,
 				*server.resources, *server.resources,
-				address, stream, server.executorsManager, statefulExecutors
+				address, stream, server.executorsManager, *statefulExecutors
 			);
 		network.setLargeBodySizeThreshold(server.additionalSettings.largeBodySizeThreshold);
 
@@ -85,7 +85,7 @@ namespace framework
 			HTTPRequest requestWrapper(&request);
 			HTTPResponse responseWrapper(&response);
 
-			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, statefulExecutors);
+			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, *statefulExecutors);
 
 			if (threadPoolFunction)
 			{

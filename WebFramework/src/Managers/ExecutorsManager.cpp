@@ -21,6 +21,19 @@ using namespace std;
 
 namespace framework
 {
+	unordered_map<string, unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator* ()
+	{
+		return statefulExecutors;
+	}
+
+	ExecutorsManager::StatefulExecutors::~StatefulExecutors()
+	{
+		for (auto&& [_, executor] : statefulExecutors)
+		{
+			executor->destroy();
+		}
+	}
+
 	bool ExecutorsManager::isFileRequest(string_view parameters)
 	{
 		size_t index = parameters.find('.');
@@ -249,6 +262,9 @@ namespace framework
 				throw exceptions::CantFindFunctionException(format("create{}Instance", executorSettings.name));
 			}
 
+			creators.try_emplace(executorSettings.name, creator);
+			creatorSources.try_emplace(executorSettings.name, creatorSource);
+
 			switch (executorSettings.executorLoadType)
 			{
 			case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
@@ -257,7 +273,7 @@ namespace framework
 					auto [it, success] = routes.try_emplace
 					(
 						route,
-						unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
+						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
 					);
 
 					if (success)
@@ -279,7 +295,7 @@ namespace framework
 					auto [it, success] = routes.try_emplace
 					(
 						routeParameters.back().baseRoute,
-						unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creator()))
+						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
 					);
 
 					nodes.emplace_back(route, routeParameters.back().baseRoute);
@@ -312,9 +328,6 @@ namespace framework
 			{
 				initFunction(webFrameworkSharedLibraryPath.data());
 			}
-
-			creators.try_emplace(executorSettings.name, creator);
-			creatorSources.try_emplace(executorSettings.name, creatorSource);
 		}
 
 		for (auto&& [route, executorSettings] : nodes)

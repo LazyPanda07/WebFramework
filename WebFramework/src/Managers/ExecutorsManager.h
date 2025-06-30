@@ -23,6 +23,19 @@ namespace framework
 			threadPool
 		};
 
+		class StatefulExecutors
+		{
+		private:
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
+
+		public:
+			StatefulExecutors() = default;
+
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& operator *();
+
+			~StatefulExecutors();
+		};
+
 		static inline const std::unordered_map<std::string_view, WebServerType> types =
 		{
 			{ json_settings::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },

@@ -17,7 +17,7 @@ namespace framework
 		{
 		private:
 			streams::IOSocketStream stream;
-			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
+			ExecutorsManager::StatefulExecutors statefulExecutors;
 			std::function<void()> cleanup;
 			sockaddr address;
 			bool isBusy;
