@@ -211,19 +211,20 @@ namespace framework
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const utility::AdditionalServerSettings& additionalSettings
 	) :
+		settings(move(executorsSettings)),
 		resources(make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)),
 		userAgentFilter(additionalSettings.userAgentFilter),
 		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
 		vector<HMODULE> sources = utility::loadSources(pathToSources);
 
-		routes.reserve(executorsSettings.size());
-		creators.reserve(executorsSettings.size());
+		routes.reserve(settings.size());
+		creators.reserve(settings.size());
 
 		vector<pair<string, string>> nodes;
 		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
 
-		for (const auto& [route, executorSettings] : executorsSettings)
+		for (const auto& [route, executorSettings] : settings)
 		{
 			CreateExecutorFunction creator = nullptr;
 			HMODULE creatorSource = nullptr;
@@ -318,11 +319,11 @@ namespace framework
 
 		for (auto&& [route, executorSettings] : nodes)
 		{
-			auto node = executorsSettings.extract(route);
+			auto node = settings.extract(route);
 
 			node.key() = move(executorSettings);
 
-			executorsSettings.insert(move(node)); //-V837
+			settings.insert(move(node)); //-V837
 		}
 	}
 
