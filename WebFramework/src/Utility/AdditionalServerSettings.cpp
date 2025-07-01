@@ -18,22 +18,25 @@ namespace framework::utility
 	AdditionalServerSettings AdditionalServerSettings::createSettings(const json::JSONParser& parser, const filesystem::path& basePath)
 	{
 		AdditionalServerSettings result;
+		std::string value;
 
 		parser.tryGetString(json_settings::userAgentFilterKey, result.userAgentFilter);
 		parser.tryGetUnsignedInt(json_settings::largeBodySizeThresholdKey, result.largeBodySizeThreshold);
 		parser.tryGetUnsignedInt(json_settings::largeBodyPacketSizeKey, result.largeBodyPacketSize);
 		parser.tryGetUnsignedInt(json_settings::cachingSize, result.cachingSize);
 
+		if (parser.tryGetString(json_settings::assetsPathKey, value))
 		{
-			filesystem::path temp = parser.getString(json_settings::assetsPathKey);
+			filesystem::path temp(value);
 
-			result.assetsPath = temp.is_absolute() ? temp.string() : (basePath / temp).string();
+			result.assetsPath = temp.is_absolute() ? temp : (basePath / temp);
 		}
 
+		if (parser.tryGetString(json_settings::templatesPathKey, value))
 		{
-			filesystem::path temp = parser.getString(json_settings::templatesPathKey);
+			filesystem::path temp(value);
 
-			result.templatesPath = temp.is_absolute() ? temp.string() : (basePath / temp).string();
+			result.templatesPath = temp.is_absolute() ? temp : (basePath / temp);
 		}
 
 		return result;

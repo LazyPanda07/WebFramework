@@ -45,7 +45,7 @@ namespace framework
 		};
 
 	private:
-		mutable std::mutex checkExecutor;
+		std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
 		std::unordered_map<std::string, CreateExecutorFunction> creators; // executor name - create function
 		std::unordered_map<std::string, HMODULE> creatorSources; // executor name - shared library

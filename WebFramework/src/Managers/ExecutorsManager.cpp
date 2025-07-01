@@ -120,7 +120,7 @@ namespace framework
 
 		if (executor == statefulExecutors.end())
 		{
-			unique_lock<mutex> scopeLock(checkExecutor);
+			unique_lock<mutex> lock(checkExecutor);
 
 			executor = routes.find(parameters);
 
@@ -349,8 +349,12 @@ namespace framework
 	{
 		this->routes = move(other.routes);
 		this->creators = move(other.creators);
+		this->creatorSources = move(other.creatorSources);
 		this->settings = move(other.settings);
 		this->resources = move(other.resources);
+		this->routeParameters = move(other.routeParameters);
+		this->userAgentFilter = move(other.userAgentFilter);
+		this->serverType = other.serverType;
 
 		return *this;
 	}
