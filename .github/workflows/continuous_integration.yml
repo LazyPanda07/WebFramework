@@ -476,8 +476,8 @@ jobs:
   linux-python-tests:
     runs-on: ubuntu-latest
     needs: [linux-cxx-tests]
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
+    # container:
+    #   image: lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
@@ -506,6 +506,9 @@ jobs:
       - name: Tests
         shell: bash
         run: |
+          python3 --version
+          python3 -m venv .venv
+          source .venv/bin/activate
           pip3 install WebFrameworkLibrary/api/python_api/
           cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
           cd TestsBinaries
