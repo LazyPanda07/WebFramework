@@ -335,7 +335,8 @@ namespace framework
 	}
 
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
-		config(webFrameworkConfig)
+		config(webFrameworkConfig),
+		serverException(nullptr)
 	{
 		this->initLogging();
 
@@ -363,7 +364,7 @@ namespace framework
 
 	void WebFramework::start(bool wait, const function<void()>& onStartServer)
 	{
-		server->start(wait, onStartServer);
+		server->start(wait, onStartServer, serverException);
 	}
 
 	void WebFramework::stop(bool wait)
@@ -399,5 +400,18 @@ namespace framework
 	const json::JSONParser& WebFramework::getCurrentConfiguration() const
 	{
 		return (*config);
+	}
+
+	WebFramework::~WebFramework()
+	{
+		if (serverException)
+		{
+			if (Log::isValid())
+			{
+				Log::error("Server exception: {}", "LogWebFrameworkServer", (*serverException)->what());
+			}
+
+			delete (*serverException);
+		}
 	}
 }

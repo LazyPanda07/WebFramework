@@ -29,6 +29,7 @@ namespace framework
 	private:
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;
+		std::exception** serverException;
 
 	private:
 		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
@@ -89,6 +90,6 @@ namespace framework
 		/// @return Get current running configuration JSON 
 		const json::JSONParser& getCurrentConfiguration() const;
 
-		~WebFramework() = default;
+		~WebFramework();
 	};
 }
