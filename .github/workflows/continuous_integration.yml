@@ -317,8 +317,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        # config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        config: [thread_pool_config.json, thread_pool_config_https.json]
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -481,8 +480,7 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        # config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        config: [thread_pool_config.json, thread_pool_config_https.json]
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
       - name: Download artifacts
