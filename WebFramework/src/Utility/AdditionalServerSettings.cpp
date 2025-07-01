@@ -9,7 +9,8 @@ namespace framework::utility
 {
 	AdditionalServerSettings::AdditionalServerSettings() :
 		largeBodySizeThreshold(json_settings_values::largeBodySizeThresholdValue),
-		largeBodyPacketSize(json_settings_values::largeBodyPacketSizeValue)
+		largeBodyPacketSize(json_settings_values::largeBodyPacketSizeValue),
+		cachingSize(0)
 	{
 
 	}

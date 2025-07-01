@@ -506,9 +506,6 @@ jobs:
       - name: Tests
         shell: bash
         run: |
-          python3 --version
-          python3 -m venv .venv
-          source .venv/bin/activate
           pip3 install WebFrameworkLibrary/api/python_api/
           cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
           cd TestsBinaries

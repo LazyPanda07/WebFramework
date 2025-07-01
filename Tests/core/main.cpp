@@ -61,6 +61,8 @@ int main(int argc, char** argv)
 
 	testing::InitGoogleTest(&argc, argv);
 
+	auto start = std::chrono::high_resolution_clock::now();
+
 #ifndef FLUTTER_API
 	while (!std::filesystem::exists(START_CORE_SERVER_FILE))
 	{
@@ -74,6 +76,11 @@ int main(int argc, char** argv)
 		std::cout << "Wait " << START_CORE_SERVER_FILE << " file..." << std::endl;
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
+
+		if (std::chrono::duration_cast<std::chrono::minutes>(std::chrono::high_resolution_clock::now() - start).count() > 1)
+		{
+			break;
+		}
 	}
 #else
 	std::this_thread::sleep_for(std::chrono::seconds(5));
