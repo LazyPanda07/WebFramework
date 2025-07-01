@@ -64,6 +64,13 @@ int main(int argc, char** argv)
 #ifndef FLUTTER_API
 	while (!std::filesystem::exists(START_CORE_SERVER_FILE))
 	{
+		if (std::filesystem::exists("error.txt") && std::filesystem::file_size("error.txt"))
+		{
+			std::cerr << std::ifstream("error.txt").rdbuf() << std::endl;
+
+			exit(1);
+		}
+
 		std::cout << "Wait " << START_CORE_SERVER_FILE << " file..." << std::endl;
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
