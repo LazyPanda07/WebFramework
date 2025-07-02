@@ -92,7 +92,10 @@ namespace framework
 					HTTPResponseImplementation errorResponse;
 					HTTPResponse wrapper(&errorResponse);
 
-					resources->internalServerError(wrapper, nullptr);
+					// resources->internalServerError(wrapper, nullptr);
+
+					wrapper.setResponseCode(web::ResponseCodes::internalServerError);
+					wrapper.setBody("Internal Server Error");
 
 					clientStream << errorResponse;
 
@@ -128,7 +131,7 @@ namespace framework
 				0,
 				false
 			),
-			resources(make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)),
+			// resources(make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)),
 			serversHTTPS(serversHTTPS)
 		{
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
