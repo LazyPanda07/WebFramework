@@ -338,22 +338,41 @@ namespace framework
 		config(webFrameworkConfig),
 		serverException(nullptr)
 	{
-		this->initLogging();
+		try
+		{
+			this->initLogging();
 
-		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
-		vector<string> pathToSources;
+			const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
+			unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
+			vector<string> pathToSources;
 
-		this->initDatabase(webFrameworkSettings);
-		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
-		this->initHTTPS(webFrameworkSettings);
+			this->initDatabase(webFrameworkSettings);
+			this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
+			this->initHTTPS(webFrameworkSettings);
 
-		this->initServer
-		(
-			webFrameworkSettings,
-			move(executorsSettings),
-			pathToSources
-		);
+			this->initServer
+			(
+				webFrameworkSettings,
+				move(executorsSettings),
+				pathToSources
+			);
+		}
+		catch (const web::exceptions::WebException& e)
+		{
+			Log::error("Initialization WebException: {}", "LogWebFramework", e.what());
+
+			throw;
+		}
+		catch (const exception& e)
+		{
+			Log::error("Initialization exception: {}", "LogWebFramework", e.what());
+
+			throw;
+		}
+		catch (...)
+		{
+			Log::fatalError("Something went wrong", "LogWebFramework", -15);
+		}
 	}
 
 	WebFramework::WebFramework(const filesystem::path& webFrameworkConfigPath) :
