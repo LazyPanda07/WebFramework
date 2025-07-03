@@ -177,9 +177,9 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::info("Assets path: {}", "LogResources", additionalSettings.assetsPath);
+					Log::info("Assets path: {}", "LogResources", additionalSettings.assetsPath.string());
 					Log::info("Caching size: {}", "LogResources", additionalSettings.cachingSize);
-					Log::info("Templates path: {}", "LogResources", additionalSettings.templatesPath);
+					Log::info("Templates path: {}", "LogResources", additionalSettings.templatesPath.string());
 				}
 
 				resources = make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath);
