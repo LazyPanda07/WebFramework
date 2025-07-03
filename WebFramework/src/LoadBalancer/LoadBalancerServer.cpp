@@ -7,6 +7,7 @@
 #include "Utility/Sources.h"
 #include "Heuristics/Connections.h"
 #include "WebNetwork/HTTPResponseImplementation.h"
+#include <Log.h>
 
 using namespace std;
 
@@ -131,7 +132,6 @@ namespace framework
 				0,
 				false
 			),
-			// resources(make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)),
 			serversHTTPS(serversHTTPS)
 		{
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
@@ -170,6 +170,25 @@ namespace framework
 						utility::BaseConnectionData(ip, portString, timeout),
 						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction(ip, portString, serversHTTPS)))
 					);
+				}
+			}
+
+			try
+			{
+				if (Log::isValid())
+				{
+					Log::info("Assets path: {}", "LogResources", additionalSettings.assetsPath);
+					Log::info("Caching size: {}", "LogResources", additionalSettings.cachingSize);
+					Log::info("Templates path: {}", "LogResources", additionalSettings.templatesPath);
+				}
+
+				resources = make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath);
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Resource error: {}", "LogResources", e.what());
 				}
 			}
 		}
