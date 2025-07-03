@@ -8,6 +8,7 @@
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
+#define UNEXPECTED_EXCEPTION() if (Log::isValid()) { Log::error("Somethind went wrong", "C_API"); } *exception = new std::runtime_error("Something went wrong");
 
 const char* getDataFromString(String string)
 {
@@ -31,6 +32,10 @@ WebFramework createWebFrameworkFromPath(const char* configPath, Exception* excep
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -44,6 +49,10 @@ WebFramework createWebFrameworkFromString(const char* serverConfiguration, const
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;
@@ -59,6 +68,10 @@ WebFramework createWebFrameworkFromConfig(Config config, Exception* exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -73,6 +86,10 @@ Config createConfigFromPath(const char* configPath, Exception* exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -86,6 +103,10 @@ Config createConfigFromString(const char* serverConfiguration, const char* appli
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;
@@ -105,6 +126,10 @@ void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartSer
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServer)(), Exception* exception)
@@ -116,6 +141,10 @@ void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServe
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -129,6 +158,10 @@ void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 bool isServerRunning(WebFramework server, Exception* exception)
@@ -140,6 +173,10 @@ bool isServerRunning(WebFramework server, Exception* exception)
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return false;
@@ -162,6 +199,10 @@ void overrideConfigurationString(Config config, const char* key, const char* val
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void overrideConfigurationInteger(Config config, const char* key, int64_t value, bool recursive, Exception* exception)
@@ -174,6 +215,10 @@ void overrideConfigurationInteger(Config config, const char* key, int64_t value,
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void overrideConfigurationBoolean(Config config, const char* key, bool value, bool recursive, Exception* exception)
@@ -185,6 +230,10 @@ void overrideConfigurationBoolean(Config config, const char* key, bool value, bo
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -207,6 +256,10 @@ void overrideConfigurationStringArray(Config config, const char* key, const char
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void overrideConfigurationIntegerArray(Config config, const char* key, const int64_t* value, bool recursive, int64_t size, Exception* exception)
@@ -228,6 +281,10 @@ void overrideConfigurationIntegerArray(Config config, const char* key, const int
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 String getConfigurationString(Config config, const char* key, bool recursive, Exception* exception)
@@ -239,6 +296,10 @@ String getConfigurationString(Config config, const char* key, bool recursive, Ex
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;
@@ -254,6 +315,10 @@ int64_t getConfigurationInteger(Config config, const char* key, bool recursive, 
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return -1;
 }
@@ -268,6 +333,10 @@ bool getConfigurationBoolean(Config config, const char* key, bool recursive, Exc
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return false;
 }
@@ -281,6 +350,10 @@ void overrideBasePath(Config config, const char* basePath, Exception* exception)
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -298,6 +371,10 @@ void* getConfiguration(Config config, Exception* exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -312,6 +389,10 @@ const char* getRawConfiguration(Config config, Exception* exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -325,6 +406,10 @@ String getBasePath(Config config, Exception* exception)
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;

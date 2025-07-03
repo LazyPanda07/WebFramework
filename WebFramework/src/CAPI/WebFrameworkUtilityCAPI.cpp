@@ -7,6 +7,7 @@
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
+#define UNEXPECTED_EXCEPTION() if (Log::isValid()) { Log::error("Somethind went wrong", "C_API"); } *exception = new std::runtime_error("Something went wrong");
 
 JSONObject createJSONObject(JSONObject object, Exception* exception)
 {
@@ -19,6 +20,10 @@ JSONObject createJSONObject(JSONObject object, Exception* exception)
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;
@@ -36,6 +41,10 @@ JSONBuilder createJSONBuilder(JSONBuilder builder, Exception* exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -52,6 +61,10 @@ JSONParser createJSONParser(JSONParser parser, Exception* exception)
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -65,6 +78,10 @@ JSONParser createJSONParserFromString(const char* jsonString, Exception* excepti
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;
@@ -82,6 +99,10 @@ void setObject(JSONObject jsonObject, const char* key, JSONObject object, Except
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void setString(JSONObject jsonObject, const char* key, const char* value, Exception* exception)
@@ -93,6 +114,10 @@ void setString(JSONObject jsonObject, const char* key, const char* value, Except
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -106,6 +131,10 @@ void setInteger(JSONObject jsonObject, const char* key, int64_t value, Exception
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void setUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception)
@@ -117,6 +146,10 @@ void setUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, 
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -130,6 +163,10 @@ void setDouble(JSONObject jsonObject, const char* key, double value, Exception* 
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void setBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception)
@@ -142,6 +179,10 @@ void setBoolean(JSONObject jsonObject, const char* key, bool value, Exception* e
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void setNull(JSONObject jsonObject, const char* key, Exception* exception)
@@ -153,6 +194,10 @@ void setNull(JSONObject jsonObject, const char* key, Exception* exception)
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -175,6 +220,10 @@ void setArray(JSONObject jsonObject, const char* key, const JSONObject* objects,
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 String build(JSONBuilder builder, Exception* exception)
@@ -186,6 +235,10 @@ String build(JSONBuilder builder, Exception* exception)
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;
@@ -201,6 +254,10 @@ void appendObject(JSONBuilder builder, const char* key, JSONObject object, Excep
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void appendString(JSONBuilder builder, const char* key, const char* value, Exception* exception)
@@ -212,6 +269,10 @@ void appendString(JSONBuilder builder, const char* key, const char* value, Excep
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -225,6 +286,10 @@ void appendInteger(JSONBuilder builder, const char* key, int64_t value, Exceptio
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void appendUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value, Exception* exception)
@@ -236,6 +301,10 @@ void appendUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value,
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -249,6 +318,10 @@ void appendDouble(JSONBuilder builder, const char* key, double value, Exception*
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void appendBoolean(JSONBuilder builder, const char* key, bool value, Exception* exception)
@@ -261,6 +334,10 @@ void appendBoolean(JSONBuilder builder, const char* key, bool value, Exception* 
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 void appendNull(JSONBuilder builder, const char* key, Exception* exception)
@@ -272,6 +349,10 @@ void appendNull(JSONBuilder builder, const char* key, Exception* exception)
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -294,6 +375,10 @@ void appendArray(JSONBuilder builder, const char* key, const JSONObject* objects
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 JSONObject getObject(JSONParser parser, const char* key, bool recursive, Exception* exception)
@@ -307,6 +392,10 @@ JSONObject getObject(JSONParser parser, const char* key, bool recursive, Excepti
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return nullptr;
@@ -322,6 +411,10 @@ const char* getString(JSONParser parser, const char* key, bool recursive, Except
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return nullptr;
 }
@@ -335,6 +428,10 @@ int64_t getInteger(JSONParser parser, const char* key, bool recursive, Exception
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return 0;
@@ -350,6 +447,10 @@ uint64_t getUnsignedInteger(JSONParser parser, const char* key, bool recursive, 
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return 0;
 }
@@ -363,6 +464,10 @@ double getDouble(JSONParser parser, const char* key, bool recursive, Exception* 
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return 0.0;
@@ -378,6 +483,10 @@ bool getBoolean(JSONParser parser, const char* key, bool recursive, Exception* e
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return false;
 }
@@ -391,6 +500,10 @@ void getNull(JSONParser parser, const char* key, bool recursive, Exception* exce
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 }
 
@@ -411,6 +524,10 @@ void getArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObjec
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }
 
 bool tryGetObject(JSONParser parser, const char* key, JSONObject* value, bool recursive, Exception* exception)
@@ -429,6 +546,10 @@ bool tryGetObject(JSONParser parser, const char* key, JSONObject* value, bool re
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return false;
@@ -451,6 +572,10 @@ bool tryGetString(JSONParser parser, const char* key, String* value, bool recurs
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return false;
 }
@@ -464,6 +589,10 @@ bool tryGetInteger(JSONParser parser, const char* key, int64_t* value, bool recu
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return false;
@@ -479,6 +608,10 @@ bool tryGetUnsignedInteger(JSONParser parser, const char* key, uint64_t* value, 
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return false;
 }
@@ -492,6 +625,10 @@ bool tryGetDouble(JSONParser parser, const char* key, double* value, bool recurs
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return false;
@@ -507,6 +644,10 @@ bool tryGetBoolean(JSONParser parser, const char* key, bool* value, bool recursi
 	{
 		LOG_AND_CREATE_EXCEPTION();
 	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
 	return false;
 }
@@ -520,6 +661,10 @@ bool tryGetNull(JSONParser parser, const char* key, bool recursive, Exception* e
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return false;
@@ -546,6 +691,10 @@ bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONOb
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
 	}
 
 	return false;
