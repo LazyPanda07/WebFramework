@@ -93,10 +93,7 @@ namespace framework
 					HTTPResponseImplementation errorResponse;
 					HTTPResponse wrapper(&errorResponse);
 
-					// resources->internalServerError(wrapper, nullptr);
-
-					wrapper.setResponseCode(web::ResponseCodes::internalServerError);
-					wrapper.setBody("Internal Server Error");
+					resources->internalServerError(wrapper, nullptr);
 
 					clientStream << errorResponse;
 

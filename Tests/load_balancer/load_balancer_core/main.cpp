@@ -121,6 +121,43 @@ TEST(LoadBalancer, CustomHeuristic)
 	ASSERT_EQ(ids.size(), 1);
 }
 
+TEST(LoadBalancer, InternalServerError)
+{
+	std::vector<streams::IOSocketStream> streams;
+	std::vector<std::future<int>> awaiters;
+	std::mt19937_64 random(time(nullptr));
+	auto call = [&random](streams::IOSocketStream& stream)
+		{
+			std::string request = web::HTTPBuilder().postRequest().build();
+			std::string response;
+
+			std::this_thread::sleep_for(std::chrono::seconds(random() % 5));
+
+			stream << request;
+
+			stream >> response;
+
+			return web::HTTPParser(response).getResponseCode();
+		};
+	size_t connections = 1;
+
+	streams.reserve(connections);
+	awaiters.reserve(connections);
+
+	for (size_t i = 0; i < connections; i++)
+	{
+		awaiters.emplace_back
+		(
+			std::async(std::launch::async, call, std::ref(streams.emplace_back(utility::createSocketStream(port, useHTTPS))))
+		);
+	}
+
+	for (std::future<int>& awaiter : awaiters)
+	{
+		ASSERT_EQ(awaiter.get(), 500);
+	}
+}
+
 void printLog()
 {
 	for (const auto& it : std::filesystem::recursive_directory_iterator(std::filesystem::current_path() / "logs"))

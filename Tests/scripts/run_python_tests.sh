@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+# set -e
 
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
@@ -31,3 +31,5 @@ python3 api_test.py
 ./LoadBalancerCore --port 9094 --custom_heuristic
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
+
+ls

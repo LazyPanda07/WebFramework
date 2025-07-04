@@ -16,6 +16,11 @@ void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse&
 	);
 }
 
+void IdExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+{
+	exit(0);
+}
+
 int64_t getProcessId()
 {
 #ifdef __LINUX__
