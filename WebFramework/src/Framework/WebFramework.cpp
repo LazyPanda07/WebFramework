@@ -320,8 +320,7 @@ namespace framework
 					heuristic,
 					utility::loadSources(pathToSources),
 					allServers,
-					(*config),
-					additionalSettings
+					make_shared<ResourceExecutor>(*config, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)
 				);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)
