@@ -29,5 +29,3 @@ qemu-aarch64 ./LoadBalancerCore --port 9093 --useHTTPS
 qemu-aarch64 ./LoadBalancerCore --port 9094 --custom_heuristic
 qemu-aarch64 ./ProxyCore --port 15000
 qemu-aarch64 ./ProxyCore --port 15001 --useHTTPS
-
-ls

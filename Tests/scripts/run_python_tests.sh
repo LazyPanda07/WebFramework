@@ -31,5 +31,3 @@ python3 api_test.py
 ./LoadBalancerCore --port 9094 --custom_heuristic
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
-
-ls
