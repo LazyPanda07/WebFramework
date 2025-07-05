@@ -154,7 +154,7 @@ TEST(LoadBalancer, InternalServerError)
 
 	for (std::future<int>& awaiter : awaiters)
 	{
-		ASSERT_EQ(awaiter.get(), 500);
+		ASSERT_EQ(awaiter.get(), 502);
 	}
 }
 
