@@ -10,6 +10,7 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 #include "DynamicPages/WebFrameworkDynamicPages.h"
+#include <Utility/AdditionalServerSettings.h>
 
 namespace framework
 {
@@ -44,7 +45,7 @@ namespace framework
 		void readFile(std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 
 	public:
-		ResourceExecutor(const json::JSONParser& configuration, const std::filesystem::path& assets, uint64_t cachingSize, const std::filesystem::path& pathToTemplates);
+		ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, threading::ThreadPool& threadPool);
 
 		/// <summary>
 		/// Override from IStaticFile interface

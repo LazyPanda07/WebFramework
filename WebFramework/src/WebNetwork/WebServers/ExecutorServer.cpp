@@ -15,13 +15,14 @@ namespace framework
 		const json::JSONParser& configuration,
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const vector<string>& pathToSources,
-		const utility::AdditionalServerSettings& additionalSettings
+		const utility::AdditionalServerSettings& additionalSettings,
+		threading::ThreadPool& threadPool
 	) :
 		additionalSettings(additionalSettings)
 	{
 		try
 		{
-			executorsManager = make_unique<ExecutorsManager>(configuration, pathToSources, move(executorsSettings), additionalSettings);
+			executorsManager = make_unique<ExecutorsManager>(configuration, pathToSources, move(executorsSettings), additionalSettings, threadPool);
 
 			resources = executorsManager->getResourceExecutor();
 		}

@@ -3,7 +3,7 @@
 #include "Framework/WebFrameworkPlatform.h"
 
 #include "WebNetwork/WebServers/BaseWebServer.h"
-
+#include "ThreadPool.h"
 #include "Config.h"
 
 namespace framework
@@ -29,6 +29,7 @@ namespace framework
 	private:
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;
+		std::unique_ptr<threading::ThreadPool> threadPool;
 		std::exception** serverException;
 
 	private:

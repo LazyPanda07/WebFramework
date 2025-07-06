@@ -245,6 +245,7 @@ namespace framework
 
 		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
 		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings, basePath);
+		int64_t totalThreads = 1;
 
 		{
 			int64_t temp = 0;
@@ -254,6 +255,21 @@ namespace framework
 				timeout = static_cast<DWORD>(temp);
 			}
 		}
+
+		webFrameworkSettings.tryGetInt(json_settings::resourcesThreadsKey, totalThreads);
+
+		json::utility::jsonObject threadPoolServerObject;
+
+		if ((*config).tryGetObject(json_settings::threadPoolServerObject, threadPoolServerObject))
+		{
+			int64_t threadPoolThreads = 0;
+
+			(*config).tryGetInt(json_settings::threadCountKey, threadPoolThreads);
+
+			totalThreads += threadPoolThreads;
+		}
+
+		threadPool = make_unique<threading::ThreadPool>(totalThreads);
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
@@ -265,19 +281,12 @@ namespace framework
 					port,
 					timeout,
 					pathToSources,
-					additionalSettings
+					additionalSettings,
+					*threadPool
 				);
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
 		{
-			int64_t threadCount = 0;
-			json::utility::jsonObject threadPoolServerObject;
-
-			if ((*config).tryGetObject(json_settings::threadPoolServerObject, threadPoolServerObject))
-			{
-				(*config).tryGetInt(json_settings::threadCountKey, threadCount);
-			}
-
 			server = make_unique<ThreadPoolWebServer>
 				(
 					*config,
@@ -286,8 +295,8 @@ namespace framework
 					port,
 					timeout,
 					pathToSources,
-					static_cast<uint32_t>(threadCount),
-					additionalSettings
+					additionalSettings,
+					*threadPool
 				);
 		}
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
@@ -320,7 +329,7 @@ namespace framework
 					heuristic,
 					utility::loadSources(pathToSources),
 					allServers,
-					make_shared<ResourceExecutor>(*config, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)
+					make_shared<ResourceExecutor>(*config, additionalSettings, *threadPool)
 				);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)

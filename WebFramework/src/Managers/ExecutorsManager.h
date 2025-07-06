@@ -75,7 +75,8 @@ namespace framework
 			const json::JSONParser& configuration,
 			const std::vector<std::string>& pathToSources,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-			const utility::AdditionalServerSettings& additionalSettings
+			const utility::AdditionalServerSettings& additionalSettings,
+			threading::ThreadPool& threadPool
 		);
 
 		ExecutorsManager(const ExecutorsManager&) = delete;

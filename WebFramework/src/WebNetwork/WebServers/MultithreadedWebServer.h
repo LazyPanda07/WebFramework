@@ -23,7 +23,8 @@ namespace framework
 			std::string_view port,
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
-			const utility::AdditionalServerSettings& additionalSettings
+			const utility::AdditionalServerSettings& additionalSettings,
+			threading::ThreadPool& threadPool
 		);
 
 		~MultithreadedWebServer() = default;

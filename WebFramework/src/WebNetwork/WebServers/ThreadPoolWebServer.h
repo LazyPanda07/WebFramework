@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ThreadPool.h"
-
 #include "BaseWebServer.h"
 #include "ExecutorServer.h"
+
+#include "ThreadPool.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 
 namespace framework
@@ -50,7 +50,7 @@ namespace framework
 		};
 
 	private:
-		threading::ThreadPool threadPool;
+		threading::ThreadPool& threadPool;
 		std::vector<Client*> clients;
 
 	private:
@@ -70,8 +70,8 @@ namespace framework
 			std::string_view port,
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
-			uint32_t threadCount,
-			const utility::AdditionalServerSettings& additionalSettings
+			const utility::AdditionalServerSettings& additionalSettings,
+			threading::ThreadPool& threadPool
 		);
 
 		~ThreadPoolWebServer() = default;

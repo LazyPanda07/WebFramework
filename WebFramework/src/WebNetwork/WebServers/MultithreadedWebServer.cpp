@@ -187,7 +187,8 @@ namespace framework
 		string_view port,
 		DWORD timeout,
 		const vector<string>& pathToSources,
-		const utility::AdditionalServerSettings& additionalSettings
+		const utility::AdditionalServerSettings& additionalSettings,
+		threading::ThreadPool& threadPool
 	) :
 		BaseTCPServer
 		(
@@ -203,7 +204,8 @@ namespace framework
 			configuration,
 			move(executorsSettings),
 			pathToSources,
-			additionalSettings
+			additionalSettings,
+			threadPool
 		)
 	{
 

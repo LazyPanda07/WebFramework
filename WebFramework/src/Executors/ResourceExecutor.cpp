@@ -54,18 +54,18 @@ namespace framework
 		}
 	}
 
-	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const filesystem::path& pathToTemplates) :
+	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, threading::ThreadPool& threadPool) :
 		defaultAssets
 		(
 			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ?
 			configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webFrameworkDefaultAssetsPath) :
 			webFrameworkDefaultAssests
 		),
-		assets(assets),
-		dynamicPages(pathToTemplates),
-		fileManager(file_manager::FileManager::getInstance())
+		assets(additionalSettings.assetsPath),
+		dynamicPages(additionalSettings.templatesPath),
+		fileManager(file_manager::FileManager::getInstance(&threadPool))
 	{
-		fileManager.getCache().setCacheSize(cachingSize);
+		fileManager.getCache().setCacheSize(additionalSettings.cachingSize);
 
 		if (!filesystem::exists(assets))
 		{

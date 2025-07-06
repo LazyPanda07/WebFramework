@@ -377,8 +377,8 @@ namespace framework
 		string_view port,
 		DWORD timeout,
 		const vector<string>& pathToSources,
-		uint32_t threadCount,
-		const utility::AdditionalServerSettings& additionalSettings
+		const utility::AdditionalServerSettings& additionalSettings,
+		threading::ThreadPool& threadPool
 	) :
 		BaseTCPServer
 		(
@@ -394,9 +394,10 @@ namespace framework
 			configuration,
 			move(executorsSettings),
 			pathToSources,
-			additionalSettings
+			additionalSettings,
+			threadPool
 		),
-		threadPool(threadCount ? threadCount : thread::hardware_concurrency())
+		threadPool(threadPool)
 	{
 
 	}

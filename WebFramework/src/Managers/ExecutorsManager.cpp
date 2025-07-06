@@ -222,10 +222,11 @@ namespace framework
 		const json::JSONParser& configuration,
 		const vector<string>& pathToSources, 
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-		const utility::AdditionalServerSettings& additionalSettings
+		const utility::AdditionalServerSettings& additionalSettings,
+		threading::ThreadPool& threadPool
 	) :
 		settings(move(executorsSettings)),
-		resources(make_shared<ResourceExecutor>(configuration, additionalSettings.assetsPath, additionalSettings.cachingSize, additionalSettings.templatesPath)),
+		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
 		userAgentFilter(additionalSettings.userAgentFilter),
 		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
