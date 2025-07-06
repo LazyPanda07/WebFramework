@@ -14,7 +14,7 @@ namespace framework
 	{
 	protected:
 		utility::AdditionalServerSettings additionalSettings;
-		ExecutorsManager executorsManager;
+		std::unique_ptr<ExecutorsManager> executorsManager;
 		SessionsManager sessionsManager;
 		std::shared_ptr<ResourceExecutor> resources;
 

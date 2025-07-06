@@ -1,10 +1,10 @@
 #include "ExecutorServer.h"
 
-#include "Exceptions/CantFindFunctionException.h"
-#include "Exceptions/MissingLoadTypeException.h"
+#include <Exceptions/CantFindFunctionException.h>
+#include <Exceptions/MissingLoadTypeException.h>
 #include <Utility/Sources.h>
 #include <Utility/DynamicLibraries.h>
-#include "Log.h"
+#include <Log.h>
 
 using namespace std;
 
@@ -17,10 +17,29 @@ namespace framework
 		const vector<string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings
 	) :
-		additionalSettings(additionalSettings),
-		executorsManager(configuration, pathToSources, move(executorsSettings), additionalSettings),
-		resources(executorsManager.getResourceExecutor())
+		additionalSettings(additionalSettings)
 	{
+		try
+		{
+			executorsManager = make_unique<ExecutorsManager>(configuration, pathToSources, move(executorsSettings), additionalSettings);
 
+			resources = executorsManager->getResourceExecutor();
+		}
+		catch (const exception& e)
+		{
+			if (Log::isValid())
+			{
+				Log::error("Can't create server: {}", "LogExecutorServer", e.what());
+			}
+		}
+		catch (...)
+		{
+			cerr << "Something went wrong" << endl;
+
+			if (Log::isValid())
+			{
+				Log::error("Something went wrong", "LogExecutorServer");
+			}
+		}
 	}
 }

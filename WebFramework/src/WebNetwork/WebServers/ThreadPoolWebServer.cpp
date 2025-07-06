@@ -32,7 +32,7 @@ namespace framework
 			(
 				server.additionalSettings.largeBodyPacketSize, network, server.sessionsManager, server,
 				*server.resources, *server.resources,
-				address, stream, server.executorsManager, *statefulExecutors
+				address, stream, *server.executorsManager, *statefulExecutors
 			);
 		network.setLargeBodySizeThreshold(server.additionalSettings.largeBodySizeThreshold);
 
@@ -300,7 +300,7 @@ namespace framework
 				*this,
 				*resources,
 				*resources,
-				executorsManager,
+				*executorsManager,
 				*resources,
 				threadPool
 			);
