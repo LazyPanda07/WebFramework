@@ -1,10 +1,9 @@
 #include "ResourceExecutor.h"
 
-#include <fstream>
-
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
+#include <Log.h>
 
 using namespace std;
 
@@ -42,6 +41,10 @@ namespace framework
 		html.open(allErrorsFolder / web_framework_assets::internalServerError);
 
 		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
+
+		html.open(allErrorsFolder / web_framework_assets::badGateway);
+
+		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(html);
 	}
 
 	void ResourceExecutor::readFile(string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
@@ -51,6 +54,11 @@ namespace framework
 		if (result.empty())
 		{
 			throw exceptions::BadRequestException("File is empty");
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Complete send file", "LogResource");
 		}
 	}
 
@@ -90,6 +98,11 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
+		if (Log::isValid())
+		{
+			Log::info("Request static file: {}, is binary: {}", "LogResource", filePath, isBinary);
+		}
+
 		if (isBinary)
 		{
 			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
@@ -115,6 +128,11 @@ namespace framework
 		if (!filesystem::exists(assetFilePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Request dynamic file: {}, is binary: {}", "LogResource", filePath, isBinary);
 		}
 
 		if (isBinary)
@@ -244,6 +262,26 @@ namespace framework
 #endif
 
 		response.setResponseCode(web::ResponseCodes::internalServerError);
+	}
+
+	void ResourceExecutor::badGatewayError(HTTPResponse& response, const std::exception* exception)
+	{
+		string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::badGateway);
 	}
 
 	bool ResourceExecutor::getIsCaching() const

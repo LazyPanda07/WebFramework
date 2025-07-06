@@ -267,8 +267,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\400.html" />
+    <None Include="WebFrameworkAssets\Errors\403.html" />
     <None Include="WebFrameworkAssets\Errors\404.html" />
     <None Include="WebFrameworkAssets\Errors\500.html" />
+    <None Include="WebFrameworkAssets\Errors\502.html" />
     <None Include="WebFrameworkMacros.props" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

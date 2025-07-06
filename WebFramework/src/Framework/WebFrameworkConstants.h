@@ -94,4 +94,5 @@ namespace web_framework_assets
 	inline constexpr std::string_view forbidden = "403.html";
 	inline constexpr std::string_view notFound = "404.html";
 	inline constexpr std::string_view internalServerError = "500.html";
+	inline constexpr std::string_view badGateway = "502.html";
 }

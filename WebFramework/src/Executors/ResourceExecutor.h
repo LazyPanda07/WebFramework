@@ -26,6 +26,7 @@ namespace framework
 			forbidden403,
 			notFound404,
 			internalServerError500,
+			badGateway502,
 			HTMLErrorsSize
 		};
 
@@ -118,6 +119,12 @@ namespace framework
 		/// </summary>
 		/// <param name="response">response with error file</param>
 		void internalServerError(HTTPResponse& response, const std::exception* exception = nullptr);
+
+		/// <summary>
+		/// Send 502.html from WebFrameworkAssets
+		/// </summary>
+		/// <param name="response">response with error file</param>
+		void badGatewayError(HTTPResponse& response, const std::exception* exception = nullptr);
 
 		bool getIsCaching() const;
 

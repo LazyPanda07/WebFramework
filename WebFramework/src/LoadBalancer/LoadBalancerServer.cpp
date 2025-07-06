@@ -142,8 +142,7 @@ namespace framework
 					HTTPResponseImplementation errorResponse;
 					HTTPResponse wrapper(&errorResponse);
 
-					wrapper.setResponseCode(web::ResponseCodes::badGateway);
-					wrapper.setBody("Can't send request to server");
+					resources->badGatewayError(wrapper, &e);
 
 					clientStream << errorResponse;
 
@@ -208,8 +207,7 @@ namespace framework
 					HTTPResponseImplementation errorResponse;
 					HTTPResponse wrapper(&errorResponse);
 
-					wrapper.setResponseCode(web::ResponseCodes::badGateway);
-					wrapper.setBody("Can't receive response from server");
+					resources->badGatewayError(wrapper, &e);
 
 					clientStream << errorResponse;
 

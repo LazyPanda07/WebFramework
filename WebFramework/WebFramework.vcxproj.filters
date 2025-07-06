@@ -272,5 +272,7 @@
     <None Include="WebFrameworkAssets\Errors\400.html" />
     <None Include="WebFrameworkAssets\Errors\500.html" />
     <None Include="WebFrameworkMacros.props" />
+    <None Include="WebFrameworkAssets\Errors\403.html" />
+    <None Include="WebFrameworkAssets\Errors\502.html" />
   </ItemGroup>
 </Project>
