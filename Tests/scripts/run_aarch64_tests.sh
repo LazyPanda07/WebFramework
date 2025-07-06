@@ -22,8 +22,8 @@ qemu-aarch64 ./LoadBalancerServer --config load_balancer_config_https.json --typ
 sleep 1
 
 qemu-aarch64 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
-# qemu-aarch64 ./LoadBalancerCore --port 9090
-# qemu-aarch64 ./LoadBalancerCore --port 9091
+qemu-aarch64 ./LoadBalancerCore --port 9090
+qemu-aarch64 ./LoadBalancerCore --port 9091
 # qemu-aarch64 ./LoadBalancerCore --port 9092 --useHTTPS
 # qemu-aarch64 ./LoadBalancerCore --port 9093 --useHTTPS
 # qemu-aarch64 ./LoadBalancerCore --port 9094 --custom_heuristic

@@ -22,8 +22,8 @@ dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 90
 sleep 1
 
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
-# ./LoadBalancerCore --port 9090
-# ./LoadBalancerCore --port 9091
+./LoadBalancerCore --port 9090
+./LoadBalancerCore --port 9091
 # ./LoadBalancerCore --port 9092 --useHTTPS
 # ./LoadBalancerCore --port 9093 --useHTTPS
 # ./LoadBalancerCore --port 9094 --custom_heuristic

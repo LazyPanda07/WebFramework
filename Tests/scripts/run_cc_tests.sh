@@ -22,8 +22,8 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 sleep 1
 
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
-# ./LoadBalancerCore --port 9090
-# ./LoadBalancerCore --port 9091
+./LoadBalancerCore --port 9090
+./LoadBalancerCore --port 9091
 # ./LoadBalancerCore --port 9092 --useHTTPS
 # ./LoadBalancerCore --port 9093 --useHTTPS
 # ./LoadBalancerCore --port 9094 --custom_heuristic
