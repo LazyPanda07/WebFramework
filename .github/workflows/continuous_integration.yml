@@ -25,21 +25,15 @@ jobs:
         
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Install JOM
-      run: |
-        Invoke-WebRequest -Uri "https://download.qt.io/official_releases/jom/jom_${{ env.JOM_VERSION }}.zip" -OutFile jom.zip
-        Expand-Archive jom.zip -DestinationPath jom-bin
-        echo "${{ github.workspace }}\jom-bin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
-        
+      
     - name: Build
       shell: bash
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles JOM" ..
-          jom -j $(nproc)
-          jom install
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "Ninja" ..
+          cmake --build . --parallel
+          cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
