@@ -26,14 +26,14 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
           cmake --build . -t INSTALL -j $([Environment]::ProcessorCount) --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}_Windows
-        path: build/WebFrameworkLibrary
+        path: WebFrameworkLibrary
 
 
   linux-build:
@@ -53,14 +53,14 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
           make install -j $(nproc)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}_Linux
-        path: build/WebFrameworkLibrary
+        path: WebFrameworkLibrary
 
 
   linux-aarch64-build:
@@ -80,14 +80,14 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CC_API=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CC_API=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF ..
           make install -j $(nproc)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}_LinuxARM
-        path: build/WebFrameworkLibrary
+        path: WebFrameworkLibrary
 
 
   android-build:
@@ -107,11 +107,11 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           make install -j $(nproc)
 
     - name: Move
-      working-directory: build/WebFrameworkLibrary
+      working-directory: WebFrameworkLibrary
       run: |
           cd lib
           mkdir arm64-v8a
@@ -123,7 +123,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.configuration }}_Android
-        path: build/WebFrameworkLibrary
+        path: WebFrameworkLibrary
         
 
   windows-cxx-tests:
