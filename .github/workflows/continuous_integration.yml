@@ -23,13 +23,12 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build
-      shell: bash
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "Ninja" ..
-          cmake --build . --parallel $(nproc)
-          cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_INSTALL_PREFIX=..\WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "Ninja" ..
+          ninja -j 0
+          ninja install
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
