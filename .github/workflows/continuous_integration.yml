@@ -23,6 +23,9 @@ jobs:
       with:
         submodules: recursive
         
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
     - name: Install JOM
       run: |
         Invoke-WebRequest -Uri "https://download.qt.io/official_releases/jom/jom_${{ env.JOM_VERSION }}.zip" -OutFile jom.zip
@@ -148,6 +151,9 @@ jobs:
       with:
         submodules: recursive
   
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
@@ -378,6 +384,9 @@ jobs:
       with:
         submodules: recursive
   
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
@@ -543,6 +552,9 @@ jobs:
       with:
         submodules: recursive
   
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
