@@ -22,30 +22,21 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
+        
     - name: Install JOM
       run: |
         Invoke-WebRequest -Uri "https://download.qt.io/official_releases/jom/jom_${{ env.JOM_VERSION }}.zip" -OutFile jom.zip
         Expand-Archive jom.zip -DestinationPath jom-bin
         echo "${{ github.workspace }}\jom-bin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
-
-    # - name: Build
-    #   run: |
-    #       mkdir build
-    #       cd build
-    #       cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
-    #       cmake --build . -t INSTALL -j $([Environment]::ProcessorCount) --config ${{ matrix.configuration }}
-
+        
     - name: Build
       shell: bash
       run: |
           mkdir build
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles JOM" ..
-          jom -j $(nproc) install
+          jom -j $(nproc)
+          jom install
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -169,16 +160,21 @@ jobs:
         build-type: ${{ matrix.configuration }}
         install-path: Tests/gtest
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
+    - name: Install JOM
+      run: |
+        Invoke-WebRequest -Uri "https://download.qt.io/official_releases/jom/jom_${{ env.JOM_VERSION }}.zip" -OutFile jom.zip
+        Expand-Archive jom.zip -DestinationPath jom-bin
+        echo "${{ github.workspace }}\jom-bin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+        
     - name: Build tests
       working-directory: Tests
+      shell: bash
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G "NMake Makefiles JOM" ..
+          jom -j $(nproc)
+          jom install
 
     - name: Tests
       working-directory: Tests
@@ -394,16 +390,21 @@ jobs:
         build-type: ${{ matrix.configuration }}
         install-path: Tests/gtest
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
+    - name: Install JOM
+      run: |
+        Invoke-WebRequest -Uri "https://download.qt.io/official_releases/jom/jom_${{ env.JOM_VERSION }}.zip" -OutFile jom.zip
+        Expand-Archive jom.zip -DestinationPath jom-bin
+        echo "${{ github.workspace }}\jom-bin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+        
     - name: Build tests
       working-directory: Tests
+      shell: bash
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G "NMake Makefiles JOM" ..
+          jom -j $(nproc)
+          jom install
 
     - name: Tests
       working-directory: Tests
@@ -553,17 +554,22 @@ jobs:
       with:
         build-type: Release
         install-path: Tests/gtest
-
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+        
+    - name: Install JOM
+      run: |
+        Invoke-WebRequest -Uri "https://download.qt.io/official_releases/jom/jom_${{ env.JOM_VERSION }}.zip" -OutFile jom.zip
+        Expand-Archive jom.zip -DestinationPath jom-bin
+        echo "${{ github.workspace }}\jom-bin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
 
     - name: Build tests
       working-directory: Tests
+      shell: bash
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G "NMake Makefiles JOM" ..
+          jom -j $(nproc)
+          jom install
 
     - name: Tests
       working-directory: Tests
