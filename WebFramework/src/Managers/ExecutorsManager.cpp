@@ -223,7 +223,7 @@ namespace framework
 		const vector<string>& pathToSources, 
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const utility::AdditionalServerSettings& additionalSettings,
-		threading::ThreadPool& threadPool
+		shared_ptr<threading::ThreadPool> threadPool
 	) :
 		settings(move(executorsSettings)),
 		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),

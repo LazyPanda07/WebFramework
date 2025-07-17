@@ -269,7 +269,7 @@ namespace framework
 			totalThreads += threadPoolThreads;
 		}
 
-		threadPool = make_unique<threading::ThreadPool>(totalThreads);
+		threadPool = make_shared<threading::ThreadPool>(totalThreads);
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
@@ -282,7 +282,7 @@ namespace framework
 					timeout,
 					pathToSources,
 					additionalSettings,
-					*threadPool
+					threadPool
 				);
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
@@ -296,7 +296,7 @@ namespace framework
 					timeout,
 					pathToSources,
 					additionalSettings,
-					*threadPool
+					threadPool
 				);
 		}
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
@@ -329,7 +329,7 @@ namespace framework
 					heuristic,
 					utility::loadSources(pathToSources),
 					allServers,
-					make_shared<ResourceExecutor>(*config, additionalSettings, *threadPool)
+					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool)
 				);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)

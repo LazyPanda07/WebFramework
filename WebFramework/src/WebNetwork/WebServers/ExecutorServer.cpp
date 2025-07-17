@@ -16,7 +16,7 @@ namespace framework
 		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const vector<string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
-		threading::ThreadPool& threadPool
+		shared_ptr<threading::ThreadPool> threadPool
 	) :
 		additionalSettings(additionalSettings)
 	{

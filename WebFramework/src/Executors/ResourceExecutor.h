@@ -46,7 +46,7 @@ namespace framework
 		void readFile(std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 
 	public:
-		ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, threading::ThreadPool& threadPool);
+		ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
 
 		/// <summary>
 		/// Override from IStaticFile interface

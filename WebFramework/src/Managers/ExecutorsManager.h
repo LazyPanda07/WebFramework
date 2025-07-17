@@ -76,7 +76,7 @@ namespace framework
 			const std::vector<std::string>& pathToSources,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const utility::AdditionalServerSettings& additionalSettings,
-			threading::ThreadPool& threadPool
+			std::shared_ptr<threading::ThreadPool> threadPool
 		);
 
 		ExecutorsManager(const ExecutorsManager&) = delete;

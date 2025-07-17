@@ -29,7 +29,7 @@ namespace framework
 	private:
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;
-		std::unique_ptr<threading::ThreadPool> threadPool;
+		std::shared_ptr<threading::ThreadPool> threadPool;
 		std::exception** serverException;
 
 	private:

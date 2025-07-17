@@ -154,8 +154,7 @@ BASIC_TEST(CONNECT)
 
 TEST(RoutePattern, PassingValues)
 {
-	static constexpr DWORD timeout = 600'000;
-	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", timeout);
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000");
 	std::string request;
 	std::string response;
 

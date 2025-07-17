@@ -62,7 +62,7 @@ namespace framework
 		}
 	}
 
-	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, threading::ThreadPool& threadPool) :
+	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, shared_ptr<threading::ThreadPool> threadPool) :
 		defaultAssets
 		(
 			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ?
@@ -71,7 +71,7 @@ namespace framework
 		),
 		assets(additionalSettings.assetsPath),
 		dynamicPages(additionalSettings.templatesPath),
-		fileManager(file_manager::FileManager::getInstance(&threadPool))
+		fileManager(file_manager::FileManager::getInstance(threadPool))
 	{
 		fileManager.getCache().setCacheSize(additionalSettings.cachingSize);
 

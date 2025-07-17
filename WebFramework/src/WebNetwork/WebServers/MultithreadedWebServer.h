@@ -24,7 +24,7 @@ namespace framework
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,
-			threading::ThreadPool& threadPool
+			std::shared_ptr<threading::ThreadPool> threadPool
 		);
 
 		~MultithreadedWebServer() = default;

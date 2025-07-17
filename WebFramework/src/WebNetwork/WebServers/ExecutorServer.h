@@ -25,7 +25,7 @@ namespace framework
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,
-			threading::ThreadPool& threadPool
+			std::shared_ptr<threading::ThreadPool> threadPool
 		);
 
 		virtual ~ExecutorServer() = default;
