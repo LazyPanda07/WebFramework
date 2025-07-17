@@ -3,7 +3,7 @@
 #include <exception>
 #include <string>
 
-#include "HTTPResponse.hpp"
+#include "../HTTPResponse.hpp"
 
 namespace framework::exceptions
 {

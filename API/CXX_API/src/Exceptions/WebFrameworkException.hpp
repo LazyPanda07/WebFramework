@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "DLLHandler.hpp"
+#include "../DLLHandler.hpp"
 
 namespace framework::exceptions
 {

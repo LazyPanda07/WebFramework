@@ -200,7 +200,7 @@ namespace framework
 
 		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator)) override;
 
-		void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory) override;
+		void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash) override;
 
 		/**
 		 * @brief Get chunks

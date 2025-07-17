@@ -114,7 +114,7 @@ namespace framework::interfaces
 
 		virtual void sendFileChunks(IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*addChunk)(void* chunkGenerator)) = 0;
 
-		virtual void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory) = 0;
+		virtual void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash) = 0;
 
 		virtual void getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const = 0;
 

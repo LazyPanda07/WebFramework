@@ -3,7 +3,7 @@
 #include <concepts>
 
 #include "DLLHandler.hpp"
-#include "WebFrameworkException.hpp"
+#include "Exceptions/WebFrameworkException.hpp"
 
 namespace framework::utility
 {

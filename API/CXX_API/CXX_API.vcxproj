@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -86,7 +86,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\WebFrameworkAPIException.hpp" />
+    <ClInclude Include="src\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="src\Exceptions\NotImplementedDoMethodException.hpp" />
+    <ClInclude Include="src\Exceptions\WebFrameworkAPIException.hpp" />
     <ClInclude Include="src\APIExecutors\BaseExecutor.hpp" />
     <ClInclude Include="src\Config.hpp" />
     <ClInclude Include="src\DLLHandler.hpp" />
@@ -103,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dummy.cpp" />
-    <ClCompile Include="src\WebFrameworkException.hpp" />
+    <ClCompile Include="src\Exceptions\WebFrameworkException.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\JSONObject.hpp" />

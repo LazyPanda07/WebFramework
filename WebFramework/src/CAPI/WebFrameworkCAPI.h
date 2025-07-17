@@ -68,7 +68,9 @@ EXPORT const char* getRawConfiguration(Config config, Exception* exception);
 
 EXPORT String getBasePath(Config config, Exception* exception);
 
-EXPORT void throwException(void* httpRequest, const char* errorMessage, int64_t responseCode, const char* logCategory);
+EXPORT void throwException(void* httpRequest, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash);
+
+EXPORT bool checkExceptionHash(Exception exception, size_t hash);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

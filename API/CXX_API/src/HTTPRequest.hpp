@@ -7,7 +7,8 @@
 #include "HTTPResponse.hpp"
 #include "Utility/ChunkGenerator.h"
 #include "JSONParser.hpp"
-#include "WebFrameworkAPIException.hpp"
+#include "Exceptions/WebFrameworkAPIException.hpp"
+#include "DLLHandler.hpp"
 
 namespace framework
 {
@@ -59,6 +60,10 @@ namespace framework
 		// void initMultiparts();
 
 		void initChunks();
+
+	public:
+		template<std::derived_from<exceptions::WebFrameworkAPIException> T>
+		static bool isException(const std::exception& exception);
 
 	public:
 		interfaces::IHTTPRequest* getImplementation() const;
@@ -322,7 +327,7 @@ namespace framework
 	{
 		T exception(std::forward<Args>(args)...);
 
-		implementation->throwException(exception.what(), static_cast<int64_t>(exception.getResponseCode()), exception.getLogCategory().data());
+		implementation->throwException(exception.what(), static_cast<int64_t>(exception.getResponseCode()), exception.getLogCategory().data(), typeid(T).hash_code());
 	}
 }
 
@@ -394,6 +399,14 @@ namespace framework
 	inline void HTTPRequest::initChunks()
 	{
 		implementation->getChunks(addChunk, &chunks);
+	}
+
+	template<std::derived_from<exceptions::WebFrameworkAPIException> T>
+	inline bool HTTPRequest::isException(const std::exception& exception)
+	{
+		using checkExceptionHash = bool (*)(void* exception, size_t hash);
+
+		return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(checkExceptionHash, &exception, typeid(T).hash_code());
 	}
 
 	inline interfaces::IHTTPRequest* HTTPRequest::getImplementation() const

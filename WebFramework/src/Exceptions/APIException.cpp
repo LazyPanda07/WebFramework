@@ -4,10 +4,11 @@ using namespace std;
 
 namespace framework::exceptions
 {
-	APIException::APIException(string_view errorMessage, int64_t responseCode, string_view logCategory) :
+	APIException::APIException(string_view errorMessage, int64_t responseCode, string_view logCategory, size_t exceptionClassHash) :
 		BaseWebFrameworkException(errorMessage),
 		logCategory(logCategory),
-		responseCode(responseCode)
+		responseCode(responseCode),
+		exceptionClassHash(exceptionClassHash)
 	{
 
 	}
@@ -22,5 +23,10 @@ namespace framework::exceptions
 		return logCategory.empty() ?
 			"LogAPI" :
 			logCategory;
+	}
+
+	size_t APIException::getExceptionClassHash() const
+	{
+		return exceptionClassHash;
 	}
 }

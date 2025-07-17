@@ -5,6 +5,7 @@
 #include "../HTTPRequest.hpp"
 #include "../HTTPResponse.hpp"
 #include "../DLLHandler.hpp"
+#include "../Exceptions/NotImplementedDoMethodException.hpp"
 
 namespace framework
 {
@@ -22,56 +23,93 @@ namespace framework
 
 	class BaseExecutor
 	{
+	private:
+		static void isImplemented
+		(
+			std::vector<std::string>& result,
+			HTTPRequest& request,
+			HTTPResponse& response,
+			const std::string& methodName,
+			void(BaseExecutor::* method)(HTTPRequest&, HTTPResponse&),
+			BaseExecutor& executor
+		);
+
 	public:
 		// virtual void init(const utility::JSONSettingsParser::ExecutorSettings& settings);
 
 		virtual void doPost(HTTPRequest& request, HTTPResponse& response)
 		{
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 		}
 
 		virtual void doGet(HTTPRequest& request, HTTPResponse& response)
 		{
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 		}
 
 		virtual void doHead(HTTPRequest& request, HTTPResponse& response)
 		{
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 		}
 
 		virtual void doPut(HTTPRequest& request, HTTPResponse& response)
 		{
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 		}
 
 		virtual void doDelete(HTTPRequest& request, HTTPResponse& response)
 		{
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 		}
 
 		virtual void doPatch(HTTPRequest& request, HTTPResponse& response)
 		{
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 		}
 
 		virtual void doOptions(HTTPRequest& request, HTTPResponse& response)
 		{
 #ifdef NDEBUG
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 #endif
 
-			// TODO: default implementations
+			std::vector<std::string> methods = { "OPTIONS" };
+			std::string allowHeader;
+
+			BaseExecutor::isImplemented(methods, request, response, "GET", &BaseExecutor::doGet, *this);
+			BaseExecutor::isImplemented(methods, request, response, "POST", &BaseExecutor::doPost, *this);
+			BaseExecutor::isImplemented(methods, request, response, "HEAD", &BaseExecutor::doHead, *this);
+			BaseExecutor::isImplemented(methods, request, response, "PUT", &BaseExecutor::doPut, *this);
+			BaseExecutor::isImplemented(methods, request, response, "DELETE", &BaseExecutor::doDelete, *this);
+			BaseExecutor::isImplemented(methods, request, response, "PATCH", &BaseExecutor::doPatch, *this);
+			BaseExecutor::isImplemented(methods, request, response, "TRACE", &BaseExecutor::doTrace, *this);
+			BaseExecutor::isImplemented(methods, request, response, "CONNECT", &BaseExecutor::doConnect, *this);
+
+			for (size_t i = 0; i < methods.size(); i++)
+			{
+				allowHeader += methods[i];
+
+				if (i + 1 != methods.size())
+				{
+					allowHeader += ", ";
+				}
+			}
+
+			response.addHeader("Allow", allowHeader);
 		}
 
 		virtual void doTrace(HTTPRequest& request, HTTPResponse& response)
 		{
-			// TODO: default implementations
+#ifdef NDEBUG
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+#endif
+
+			response.setBody(request.getRawRequest());
 		}
 
 		virtual void doConnect(HTTPRequest& request, HTTPResponse& response)
 		{
-			request.throwException(std::format("Not implemented method {} in {}", __func__, typeid(*this).name()), ResponseCodes::badRequest);
+			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 		}
 
 		virtual utility::ExecutorType getType() const = 0;
@@ -80,6 +118,40 @@ namespace framework
 
 		virtual ~BaseExecutor() = default;
 	};
+}
+
+namespace framework
+{
+	void BaseExecutor::isImplemented
+	(
+		std::vector<std::string>& result,
+		HTTPRequest& request,
+		HTTPResponse& response,
+		const std::string& methodName,
+		void(BaseExecutor::* method)(HTTPRequest&, HTTPResponse&),
+		BaseExecutor& executor
+	)
+	{
+		response.setDefault();
+
+		try
+		{
+			(executor.*method)(request, response);
+
+			result.push_back(methodName);
+		}
+		catch (const std::exception& e)
+		{
+			if (!HTTPRequest::isException<exceptions::NotImplementedDoMethodException>(e))
+			{
+				result.push_back(methodName);
+			}
+		}
+		catch (...)
+		{
+			result.push_back(methodName);
+		}
+	}
 }
 
 #ifdef __LINUX__

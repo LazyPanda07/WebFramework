@@ -395,9 +395,9 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::throwException(const char* errorMessage, int64_t responseCode, const char* logCategory)
+	void HTTPRequestImplementation::throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash)
 	{
-		throw framework::exceptions::APIException(errorMessage, responseCode, logCategory ? logCategory : "");
+		throw framework::exceptions::APIException(errorMessage, responseCode, logCategory ? logCategory : "", exceptionClassHash);
 	}
 
 	void HTTPRequestImplementation::getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const

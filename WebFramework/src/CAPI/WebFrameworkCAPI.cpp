@@ -5,7 +5,8 @@
 #include "Framework/WebFramework.h"
 #include "Framework/Config.h"
 #include "Log.h"
-#include <WebNetwork/Interfaces/IHTTPRequest.h>
+#include "WebNetwork/Interfaces/IHTTPRequest.h"
+#include "Exceptions/APIException.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -417,9 +418,21 @@ String getBasePath(Config config, Exception* exception)
 	return nullptr;
 }
 
-void throwException(void* httpRequest, const char* errorMessage, int64_t responseCode, const char* logCategory)
+void throwException(void* httpRequest, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash)
 {
-	static_cast<framework::interfaces::IHTTPRequest*>(httpRequest)->throwException(errorMessage, responseCode, logCategory);
+	static_cast<framework::interfaces::IHTTPRequest*>(httpRequest)->throwException(errorMessage, responseCode, logCategory, exceptionClassHash);
+}
+
+bool checkExceptionHash(Exception exception, size_t hash)
+{
+	std::exception* temp = static_cast<std::exception*>(exception);
+
+	if (framework::exceptions::APIException* apiException = dynamic_cast<framework::exceptions::APIException*>(temp))
+	{
+		return apiException->getExceptionClassHash() == hash;
+	}
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

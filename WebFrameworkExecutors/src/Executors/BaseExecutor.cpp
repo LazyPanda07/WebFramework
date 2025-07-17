@@ -115,7 +115,7 @@ namespace framework
 	}
 }
 
-inline void isImplemented
+void isImplemented
 (
 	vector<string>& result,
 	framework::HTTPRequest& request,
