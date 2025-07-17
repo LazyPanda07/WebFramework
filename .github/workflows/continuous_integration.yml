@@ -40,11 +40,12 @@ jobs:
     #       cmake --build . -t INSTALL -j $([Environment]::ProcessorCount) --config ${{ matrix.configuration }}
 
     - name: Build
+      shell: bash
       run: |
           mkdir build
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles JOM" ..
-          jom -j $([Environment]::ProcessorCount) install
+          jom -j $(nproc) install
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
