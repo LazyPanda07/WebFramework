@@ -187,6 +187,10 @@ int main(int argc, char** argv)
 	{
 		printLog();
 	}
+	else
+	{
+		printLog();
+	}
 
 	return result;
 }
