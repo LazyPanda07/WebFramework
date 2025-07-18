@@ -423,11 +423,11 @@ void throwException(void* httpRequest, const char* errorMessage, int64_t respons
 	static_cast<framework::interfaces::IHTTPRequest*>(httpRequest)->throwException(errorMessage, responseCode, logCategory, exceptionClassHash);
 }
 
-bool checkExceptionHash(Exception exception, size_t hash)
+bool checkExceptionHash(const Exception exception, size_t hash)
 {
-	std::exception* temp = static_cast<std::exception*>(exception);
+	const std::exception* temp = static_cast<const std::exception*>(exception);
 
-	if (framework::exceptions::APIException* apiException = dynamic_cast<framework::exceptions::APIException*>(temp))
+	if (const framework::exceptions::APIException* apiException = dynamic_cast<const framework::exceptions::APIException*>(temp))
 	{
 		return apiException->getExceptionClassHash() == hash;
 	}

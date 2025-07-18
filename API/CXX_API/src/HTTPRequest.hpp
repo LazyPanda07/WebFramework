@@ -404,7 +404,7 @@ namespace framework
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T>
 	inline bool HTTPRequest::isException(const std::exception& exception)
 	{
-		using checkExceptionHash = bool (*)(void* exception, size_t hash);
+		using checkExceptionHash = bool (*)(const void* exception, size_t hash);
 
 		return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(checkExceptionHash, &exception, typeid(T).hash_code());
 	}
