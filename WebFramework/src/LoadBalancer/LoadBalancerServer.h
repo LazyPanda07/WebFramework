@@ -52,17 +52,18 @@ namespace framework
 			public:
 				streams::IOSocketStream clientStream;
 				streams::IOSocketStream serverStream;
+				std::function<void()> cleanup;
 				BaseLoadBalancerHeuristic* heuristic;
 				State currentState;
 
 			public:
-				LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<BaseLoadBalancerHeuristic>& heuristic);
+				LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<BaseLoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup);
 
 				LoadBalancerRequest(LoadBalancerRequest&& other) noexcept = default;
 
 				LoadBalancerRequest& operator =(LoadBalancerRequest&& other) noexcept = default;
 
-				~LoadBalancerRequest() = default;
+				~LoadBalancerRequest();
 			};
 
 		private:
@@ -86,6 +87,8 @@ namespace framework
 			void processing(size_t index);
 
 		private:
+			void receiveConnections(const std::function<void()>& onStartServer, std::exception** outException) override;
+
 			void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) override;
 
 		public:

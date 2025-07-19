@@ -22,13 +22,22 @@ namespace framework
 
 		}
 
-		LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, unique_ptr<BaseLoadBalancerHeuristic>& heuristic) :
+		LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, unique_ptr<BaseLoadBalancerHeuristic>& heuristic, function<void()>&& cleanup) :
 			clientStream(move(clientStream)),
 			serverStream(move(serverStream)),
+			cleanup(move(cleanup)),
 			heuristic(heuristic.get()),
 			currentState(State::receiveServerResponse)
 		{
 
+		}
+
+		LoadBalancerServer::LoadBalancerRequest::~LoadBalancerRequest()
+		{
+			if (cleanup)
+			{
+				cleanup();
+			}
 		}
 
 		bool LoadBalancerServer::receiveClientRequest(LoadBalancerRequest& request, string& httpRequest)
@@ -283,6 +292,18 @@ namespace framework
 			}
 		}
 
+		void LoadBalancerServer::receiveConnections(const function<void()>& onStartServer, exception** outException)
+		{
+			threads.reserve(requestQueues.size());
+
+			for (size_t i = 0; i < requestQueues.size(); i++)
+			{
+				threads.emplace_back(async(launch::async, &LoadBalancerServer::processing, this, i));
+			}
+
+			BaseTCPServer::receiveConnections(onStartServer, outException);
+		}
+
 		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup)
 		{
 			auto& [connectionData, heuristic] = *min_element
@@ -324,7 +345,8 @@ namespace framework
 			(
 				ssl ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) : streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket),
 				serversHTTPS ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeout) : streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeout),
-				heuristic
+				heuristic,
+				move(cleanup)
 			);
 			string httpRequest;
 
@@ -392,13 +414,6 @@ namespace framework
 						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction(ip, portString, serversHTTPS)))
 					);
 				}
-			}
-
-			threads.reserve(processingThreads);
-
-			for (size_t i = 0; i < processingThreads; i++)
-			{
-				threads.emplace_back(async(launch::async, &LoadBalancerServer::processing, this, i));
 			}
 		}
 	}
