@@ -43,14 +43,14 @@ namespace framework
 				interfaces::IDynamicFile& dynamicResources,
 				ExecutorsManager& executorsManager,
 				ResourceExecutor& resourceExecutor,
-				std::shared_ptr<threading::ThreadPool> threadPool
+				threading::ThreadPool& threadPool
 			);
 
 			~Client();
 		};
 
 	private:
-		std::shared_ptr<threading::ThreadPool> threadPool;
+		threading::ThreadPool threadPool;
 		std::vector<Client*> clients;
 
 	private:
@@ -71,7 +71,8 @@ namespace framework
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,
-			std::shared_ptr<threading::ThreadPool> threadPool
+			size_t numberOfThreads,
+			std::shared_ptr<threading::ThreadPool> resourcesThreadPool
 		);
 
 		~ThreadPoolWebServer() = default;

@@ -47,7 +47,7 @@ namespace framework
 		interfaces::IDynamicFile& dynamicResources,
 		ExecutorsManager& executorsManager,
 		ResourceExecutor& resourceExecutor,
-		shared_ptr<threading::ThreadPool> threadPool
+		threading::ThreadPool& threadPool
 	)
 	{
 		if (stream.eof() || webExceptionAcquired)
@@ -91,7 +91,7 @@ namespace framework
 			{
 				isBusy = true;
 
-				threadPool->addTask
+				threadPool.addTask
 				(
 					[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
 					{
@@ -378,7 +378,8 @@ namespace framework
 		DWORD timeout,
 		const vector<string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
-		shared_ptr<threading::ThreadPool> threadPool
+		size_t numberOfThreads,
+		std::shared_ptr<threading::ThreadPool> resourcesThreadPool
 	) :
 		BaseTCPServer
 		(
@@ -395,9 +396,9 @@ namespace framework
 			move(executorsSettings),
 			pathToSources,
 			additionalSettings,
-			threadPool
+			resourcesThreadPool
 		),
-		threadPool(threadPool)
+		threadPool(numberOfThreads)
 	{
 
 	}

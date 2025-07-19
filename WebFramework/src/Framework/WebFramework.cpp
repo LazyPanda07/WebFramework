@@ -245,7 +245,7 @@ namespace framework
 
 		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
 		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings, basePath);
-		int64_t totalThreads = 1;
+		int64_t resourcesThreads = 1;
 
 		{
 			int64_t temp = 0;
@@ -256,20 +256,9 @@ namespace framework
 			}
 		}
 
-		webFrameworkSettings.tryGetInt(json_settings::resourcesThreadsKey, totalThreads);
+		webFrameworkSettings.tryGetInt(json_settings::resourcesThreadsKey, resourcesThreads);
 
-		json::utility::jsonObject threadPoolServerObject;
-
-		if ((*config).tryGetObject(json_settings::threadPoolServerObject, threadPoolServerObject))
-		{
-			int64_t threadPoolThreads = 0;
-
-			(*config).tryGetInt(json_settings::threadCountKey, threadPoolThreads);
-
-			totalThreads += threadPoolThreads;
-		}
-
-		threadPool = make_shared<threading::ThreadPool>(totalThreads);
+		shared_ptr<threading::ThreadPool> threadPool = make_shared<threading::ThreadPool>(resourcesThreads);
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
@@ -287,6 +276,14 @@ namespace framework
 		}
 		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
 		{
+			json::utility::jsonObject threadPoolServerObject;
+			uint64_t threadPoolThreads = 1;
+
+			if ((*config).tryGetObject(json_settings::threadPoolServerObject, threadPoolServerObject))
+			{
+				(*config).tryGetUnsignedInt(json_settings::threadCountKey, threadPoolThreads);
+			}
+
 			server = make_unique<ThreadPoolWebServer>
 				(
 					*config,
@@ -296,6 +293,7 @@ namespace framework
 					timeout,
 					pathToSources,
 					additionalSettings,
+					threadPoolThreads,
 					threadPool
 				);
 		}

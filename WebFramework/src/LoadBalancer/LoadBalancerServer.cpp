@@ -81,6 +81,11 @@ namespace framework
 
 				if (clientStream.eof())
 				{
+					if (Log::isValid())
+					{
+						Log::info("LoadBalancer client eof", "LogLoadBalancer");
+					}
+
 					break;
 				}
 
