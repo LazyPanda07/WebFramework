@@ -327,7 +327,8 @@ namespace framework
 					heuristic,
 					utility::loadSources(pathToSources),
 					allServers,
-					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool)
+					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
+					1
 				);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)

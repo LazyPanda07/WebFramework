@@ -1,13 +1,13 @@
 #include "LoadBalancerServer.h"
 
-#include "IOSocketStream.h"
 #include "Exceptions/SSLException.h"
 #include "HTTPSNetwork.h"
 
 #include "Utility/Sources.h"
 #include "Heuristics/Connections.h"
 #include "WebNetwork/HTTPResponseImplementation.h"
-#include <Log.h>
+#include "Log.h"
+#include "WebNetwork/HTTPResponse.h"
 
 using namespace std;
 
@@ -15,34 +15,287 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
+		LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
 			connectionData(move(connectionData)),
 			heuristic(move(heuristic))
 		{
 
 		}
 
-		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup) //-V688
+		LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, unique_ptr<BaseLoadBalancerHeuristic>& heuristic) :
+			clientStream(move(clientStream)),
+			serverStream(move(serverStream)),
+			heuristic(heuristic.get()),
+			currentState(State::receiveServerResponse)
 		{
-			static mutex dataMutex;
-			const ServerData* serveData = nullptr;
 
+		}
+
+		bool LoadBalancerServer::receiveClientRequest(LoadBalancerRequest& request, string& httpRequest)
+		{
+			try
 			{
-				unique_lock<mutex> lock(dataMutex);
+				request.clientStream >> httpRequest;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving client request web error: {}", "LogLoadBalancer", e.what());
+				}
 
-				serveData = &*min_element
-				(
-					allServers.begin(), allServers.end(),
-					[](const ServerData& left, const ServerData& right)
-					{
-						return (*left.heuristic)() < (*right.heuristic)();
-					}
-				);
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving client request internal error: {}", "LogLoadBalancer", e.what());
+				}
 
-				serveData->heuristic->onStart();
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while getting client request", "LogLoadBalancer");
+				}
+
+				return false;
 			}
 
-			const auto& [connectionData, heuristic] = *serveData;
+			return true;
+		}
+
+		bool LoadBalancerServer::sendClientRequest(LoadBalancerRequest& request, string& httpRequest)
+		{
+			try
+			{
+				request.serverStream << httpRequest;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client request web error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client request internal error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while sending client request", "LogLoadBalancer");
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		bool LoadBalancerServer::receiveServerResponse(LoadBalancerRequest& request, string& httpResponse)
+		{
+			try
+			{
+				request.serverStream >> httpResponse;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving server response web error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving server response internal error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while getting server response", "LogLoadBalancer");
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		bool LoadBalancerServer::sendClientResponse(LoadBalancerRequest& request, const string& httpResponse)
+		{
+			try
+			{
+				request.clientStream << httpResponse;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client response web error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client response internal error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while sending client response", "LogLoadBalancer");
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		void LoadBalancerServer::processing(size_t index)
+		{
+			vector<LoadBalancerRequest>& requests = requestQueues[index];
+
+			while (isRunning)
+			{
+				vector<size_t> removeIndices;
+
+				for (size_t i = 0; i < requests.size(); i++ )
+				{
+					LoadBalancerRequest& request = requests[i];
+
+					switch (request.currentState)
+					{
+					case LoadBalancerRequest::State::receiveClientRequest:
+					{
+						string httpRequest;
+
+						if (request.clientStream.getNetwork().isDataAvailable())
+						{
+							if (LoadBalancerServer::receiveClientRequest(request, httpRequest))
+							{
+								if (LoadBalancerServer::sendClientRequest(request, httpRequest))
+								{
+									request.currentState = LoadBalancerRequest::State::receiveServerResponse;
+								}
+								else
+								{
+									HTTPResponseImplementation response;
+									HTTPResponse responseWrapper(&response);
+
+									resources->badGatewayError(responseWrapper);
+
+									request.clientStream << response;
+								}
+							}
+							else
+							{
+								removeIndices.push_back(i);
+							}
+						}
+					}
+
+					break;
+
+					case LoadBalancerRequest::State::receiveServerResponse:
+					{
+						string httpResponse;
+
+						if (request.serverStream.getNetwork().isDataAvailable())
+						{
+							if (LoadBalancerServer::receiveServerResponse(request, httpResponse))
+							{
+								if (LoadBalancerServer::sendClientResponse(request, httpResponse))
+								{
+									request.currentState = LoadBalancerRequest::State::receiveClientRequest;
+								}
+								else
+								{
+									removeIndices.push_back(i);
+								}
+							}
+							else
+							{
+								HTTPResponseImplementation response;
+								HTTPResponse responseWrapper(&response);
+
+								resources->badGatewayError(responseWrapper);
+
+								request.clientStream << response;
+							}
+						}
+					}
+
+					break;
+
+					default:
+						break;
+					}
+				}
+
+				for (size_t i = 0; i < removeIndices.size(); i++)
+				{
+					auto it = requests.begin() + removeIndices[i] - i;
+
+					it->heuristic->onEnd();
+
+					requests.erase(it);
+				}
+
+				while (true)
+				{
+					if (optional<LoadBalancerRequest> request = queuedRequests.pop())
+					{
+						requests.emplace_back(move(*request));
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+		}
+
+		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup)
+		{
+			auto& [connectionData, heuristic] = *min_element
+			(
+				allServers.begin(), allServers.end(),
+				[](const ServerData& left, const ServerData& right)
+				{
+					return (*left.heuristic)() < (*right.heuristic)();
+				}
+			);
+
+			heuristic->onStart();
+
 			SSL* ssl = nullptr;
 
 			if (useHTTPS)
@@ -67,232 +320,17 @@ namespace framework
 				}
 			}
 
-			streams::IOSocketStream clientStream = ssl ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
-			streams::IOSocketStream serverStream = serversHTTPS ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeout) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeout);
+			LoadBalancerRequest request
+			(
+				ssl ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) : streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket),
+				serversHTTPS ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeout) : streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeout),
+				heuristic
+			);
+			string httpRequest;
 
-			while (isRunning)
+			if (LoadBalancerServer::receiveClientRequest(request, httpRequest) && LoadBalancerServer::sendClientRequest(request, httpRequest))
 			{
-				string request;
-				string response;
-
-				if (clientStream.eof())
-				{
-					if (Log::isValid())
-					{
-						Log::info("LoadBalancer client eof", "LogLoadBalancer");
-					}
-
-					break;
-				}
-
-				try
-				{
-					clientStream >> request;
-				}
-				catch (const web::exceptions::WebException& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer client request web exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					break;
-				}
-				catch (const exception& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer client request exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					break;
-				}
-				catch (...)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer client request unexpected error", "LogLoadBalancer");
-					}
-
-					break;
-				}
-
-				if (serverStream.eof())
-				{
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->internalServerError(wrapper, nullptr);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-
-				try
-				{
-					serverStream << request;
-				}
-				catch (const web::exceptions::WebException& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer server request web exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->badGatewayError(wrapper, &e);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-				catch (const exception& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer server request exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->internalServerError(wrapper, &e);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-				catch (...)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer server request unexpected error", "LogLoadBalancer");
-					}
-
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->internalServerError(wrapper, nullptr);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-
-				if (serverStream.eof())
-				{
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->internalServerError(wrapper, nullptr);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-
-				try
-				{
-					serverStream >> response;
-				}
-				catch (const web::exceptions::WebException& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer server response web exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->badGatewayError(wrapper, &e);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-				catch (const exception& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer server response exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->internalServerError(wrapper, &e);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-				catch (...)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer server response unexpected error", "LogLoadBalancer");
-					}
-
-					HTTPResponseImplementation errorResponse;
-					HTTPResponse wrapper(&errorResponse);
-
-					resources->internalServerError(wrapper, nullptr);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-
-				if (clientStream.eof())
-				{
-					break;
-				}
-
-				try
-				{
-					clientStream << response;
-				}
-				catch (const web::exceptions::WebException& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer client response web exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					break;
-				}
-				catch (const exception& e)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer client response exception: {}", "LogLoadBalancer", e.what());
-					}
-
-					break;
-				}
-				catch (...)
-				{
-					if (Log::isValid())
-					{
-						Log::error("LoadBalancer client response unexpected error", "LogLoadBalancer");
-					}
-
-					break;
-				}
-			}
-
-			{
-				unique_lock<mutex> lock(dataMutex);
-
-				heuristic->onEnd();
+				queuedRequests.push(move(request));
 			}
 		}
 
@@ -301,7 +339,8 @@ namespace framework
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
 			string_view heuristicName, const vector<HMODULE>& loadSources,
 			const unordered_map<string, vector<int64_t>>& allServers, //-V688
-			shared_ptr<ResourceExecutor> resources
+			shared_ptr<ResourceExecutor> resources,
+			size_t processingThreads
 		) :
 			BaseTCPServer
 			(
@@ -312,6 +351,7 @@ namespace framework
 				0,
 				false
 			),
+			requestQueues(processingThreads),
 			resources(resources),
 			serversHTTPS(serversHTTPS)
 		{
@@ -352,6 +392,13 @@ namespace framework
 						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction(ip, portString, serversHTTPS)))
 					);
 				}
+			}
+
+			threads.reserve(processingThreads);
+
+			for (size_t i = 0; i < processingThreads; i++)
+			{
+				threads.emplace_back(async(launch::async, &LoadBalancerServer::processing, this, i));
 			}
 		}
 	}

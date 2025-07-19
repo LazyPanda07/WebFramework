@@ -9,7 +9,9 @@
 #include "Executors/ResourceExecutor.h"
 
 #include "Utility/BaseConnectionData.h"
-#include <Utility/AdditionalServerSettings.h>
+#include "Utility/AdditionalServerSettings.h"
+#include "IOSocketStream.h"
+#include "Utility/ConcurrentQueue.h"
 
 namespace framework
 {
@@ -38,10 +40,50 @@ namespace framework
 				~ServerData() = default;
 			};
 
+			struct LoadBalancerRequest
+			{
+			public:
+				enum class State
+				{
+					receiveClientRequest,
+					receiveServerResponse
+				};
+
+			public:
+				streams::IOSocketStream clientStream;
+				streams::IOSocketStream serverStream;
+				BaseLoadBalancerHeuristic* heuristic;
+				State currentState;
+
+			public:
+				LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<BaseLoadBalancerHeuristic>& heuristic);
+
+				LoadBalancerRequest(LoadBalancerRequest&& other) noexcept = default;
+
+				LoadBalancerRequest& operator =(LoadBalancerRequest&& other) noexcept = default;
+
+				~LoadBalancerRequest() = default;
+			};
+
 		private:
 			std::vector<ServerData> allServers;
+			std::vector<std::vector<LoadBalancerRequest>> requestQueues;
+			std::vector<std::future<void>> threads;
+			threading::utility::ConcurrentQueue<LoadBalancerRequest> queuedRequests;
 			std::shared_ptr<ResourceExecutor> resources;
 			bool serversHTTPS;
+
+		private:
+			static bool receiveClientRequest(LoadBalancerRequest& request, std::string& httpRequest);
+
+			static bool sendClientRequest(LoadBalancerRequest& request, std::string& httpRequest);
+
+			static bool receiveServerResponse(LoadBalancerRequest& request, std::string& httpResponse);
+
+			static bool sendClientResponse(LoadBalancerRequest& request, const std::string& httpResponse);
+
+		private:
+			void processing(size_t index);
 
 		private:
 			void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) override;
@@ -52,7 +94,8 @@ namespace framework
 				std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
 				std::string_view heuristicName, const std::vector<HMODULE>& loadSources,
 				const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
-				std::shared_ptr<ResourceExecutor> resources
+				std::shared_ptr<ResourceExecutor> resources,
+				size_t processingThreads
 			);
 
 			~LoadBalancerServer() = default;
