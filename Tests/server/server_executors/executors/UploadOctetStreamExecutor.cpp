@@ -13,7 +13,7 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 
 	if (data.size() < 2000)
 	{
-		Log::info("Size: , data: {}", "LogUploadOctetStreamExecutor", data.size(), data);
+		Log::info("Size: {}, data: {}", "LogUploadOctetStreamExecutor", data.size(), data);
 	}
 	
 	stream.write(data.data(), data.size());
