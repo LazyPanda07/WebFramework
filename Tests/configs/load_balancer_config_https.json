@@ -8,6 +8,7 @@
     "heuristic": "Connections",
     "loadSource": "current",
     "serversHTTPS": false,
+    "processingThreads": 4,
     "listOfServers": {
       "127.0.0.1": [
         10000,

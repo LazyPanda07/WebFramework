@@ -305,9 +305,11 @@ namespace framework
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject(json_settings::listOfServersKey);
 			unordered_map<string, vector<int64_t>> allServers;
+			uint64_t processingThreads = 1;
 
 			loadBalancerSettings.tryGetString(json_settings::heuristicKey, heuristic);
 			loadBalancerSettings.tryGetString(json_settings::loadSourceKey, loadSource);
+			loadBalancerSettings.tryGetUnsignedInt(json_settings::processingThreadsKey, processingThreads);
 
 			for (const auto& [key, value] : listOfServers)
 			{
@@ -328,7 +330,7 @@ namespace framework
 					utility::loadSources(pathToSources),
 					allServers,
 					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
-					1
+					processingThreads
 				);
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)

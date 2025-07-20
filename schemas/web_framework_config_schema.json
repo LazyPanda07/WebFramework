@@ -41,6 +41,11 @@
           "type": "boolean",
           "description": "Is servers from listOfServers using HTTPS"
         },
+        "processingThreads": {
+          "type": "integer",
+          "description": "Number of threads for sending requests to servers and receiving responses from them",
+          "minimum": 1
+        },
         "listOfServers": {
           "type": "object",
           "description": "List of all balancing servers in format IP address: [ port1, port2 ]",

@@ -43,6 +43,7 @@ namespace json_settings
 	inline constexpr std::string_view heuristicKey = "heuristic";
 	inline constexpr std::string_view loadSourceKey = "loadSource";
 	inline constexpr std::string_view serversHTTPSKey = "serversHTTPS";
+	inline constexpr std::string_view processingThreadsKey = "processingThreads";
 
 	inline constexpr std::string_view usingLoggingKey = "usingLogging";
 	inline constexpr std::string_view logsPathKey = "logsPath";
