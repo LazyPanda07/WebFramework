@@ -16,7 +16,7 @@
 
 #include "utilities/utilities.h"
 
-static constexpr size_t connections = 8;
+constexpr size_t connections = 8;
 int64_t port;
 bool useHTTPS;
 bool customHeuristic;
@@ -184,10 +184,6 @@ int main(int argc, char** argv)
 	int result = RUN_ALL_TESTS();
 
 	if (result)
-	{
-		printLog();
-	}
-	else
 	{
 		printLog();
 	}

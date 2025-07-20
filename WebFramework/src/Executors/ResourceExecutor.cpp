@@ -55,11 +55,6 @@ namespace framework
 		{
 			throw exceptions::BadRequestException("File is empty");
 		}
-
-		if (Log::isValid())
-		{
-			Log::info("Complete send file", "LogResource");
-		}
 	}
 
 	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, shared_ptr<threading::ThreadPool> threadPool) :
