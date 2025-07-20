@@ -10,6 +10,11 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 	{
 		stream.open(request.getHeaders().at("File-Name"), std::ios::binary);
 	}
+
+	if (data.size() < 2000)
+	{
+		Log::info("Size: , data: {}", "LogUploadOctetStreamExecutor", data.size(), data);
+	}
 	
 	stream.write(data.data(), data.size());
 
