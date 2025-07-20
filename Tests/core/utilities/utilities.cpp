@@ -10,16 +10,9 @@ namespace utility
 {
 	streams::IOSocketStream createSocketStream()
 	{
-		using namespace std::chrono_literals;
-
-		auto convertToMilliseconds = [](auto time) -> DWORD
-			{
-				return static_cast<DWORD>(std::chrono::duration_cast<std::chrono::milliseconds>(time).count());
-			};
-
 		return useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080", convertToMilliseconds(10min)) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080", convertToMilliseconds(10min));
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080") :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080");
 	}
 
 	bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second)
