@@ -1,5 +1,7 @@
 #include "UploadOctetStreamExecutor.h"
 
+#include "Log.h"
+
 void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	const auto& [data, size, last] = request.getLargeData();
@@ -10,6 +12,11 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 	}
 
 	stream.write(data.data(), data.size());
+
+	if (Log::isValid())
+	{
+		Log::info("Current data size: {}, body size: {}, last: {}", "LogUploadOctetStreamExecutor", data.size(), size, last);
+	}
 
 	if (last)
 	{
