@@ -6,10 +6,10 @@ void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTT
 {
 	response.setBody
 	(
-		json::JSONBuilder(CP_UTF8).appendString
+		framework::JSONBuilder().append
 		(
 			"result",
-			localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", request.getJSON().getString("language"))
+			localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", request.getJSON().get<std::string>("language"))
 		)
 	);
 }

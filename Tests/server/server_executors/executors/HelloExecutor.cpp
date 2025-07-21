@@ -1,10 +1,8 @@
 #include "HelloExecutor.h"
 
-#include "JSONBuilder.h"
-
 void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	json::JSONBuilder builder(CP_UTF8);
+	framework::JSONBuilder builder;
 
 	builder["message"] = "Hello, World!";
 	builder["randomNumber"] = rand();

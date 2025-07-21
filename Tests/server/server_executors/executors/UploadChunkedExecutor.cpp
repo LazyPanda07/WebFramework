@@ -11,7 +11,7 @@ void UploadChunkedExecutor::doPost(framework::HTTPRequest& request, framework::H
 		stream.write(chunk.data(), chunk.size());
 	}
 
-	response.setResponseCode(web::ResponseCodes::created);
+	response.setResponseCode(framework::ResponseCodes::created);
 	response.setBody("Finish uploading file");
 }
 

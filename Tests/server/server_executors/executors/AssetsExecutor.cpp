@@ -19,7 +19,7 @@ void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespo
 {
 	request.sendDynamicFile
 	(
-		std::format("{}.wfdp", request.getJSON().getString("fileName")),
+		std::format("{}.wfdp", request.getJSON().get<std::string>("fileName")),
 		response,
 		request.getKeyValueParameters()
 	);

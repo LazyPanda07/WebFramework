@@ -29,10 +29,10 @@ namespace framework
 		JSONParser& operator =(JSONParser&& other) noexcept;
 
 		template<JsonValues<JSONObject> T>
-		T get(std::string_view key, bool recursive = false) const;
+		T get(std::string_view key, bool recursive = false) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>);
 
 		template<JsonValues<JSONObject> T>
-		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
+		bool tryGet(std::string_view key, T& value, bool recursive = false) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>);
 
 		~JSONParser();
 	};
@@ -101,7 +101,7 @@ namespace framework
 	}
 
 	template<JsonValues<JSONObject> T>
-	inline T JSONParser::get(std::string_view key, bool recursive) const
+	inline T JSONParser::get(std::string_view key, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
 	{
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 		void* exception = nullptr;
@@ -171,7 +171,7 @@ namespace framework
 	}
 
 	template<JsonValues<JSONObject> T>
-	inline bool JSONParser::tryGet(std::string_view key, T& value, bool recursive) const
+	inline bool JSONParser::tryGet(std::string_view key, T& value, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
 	{
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 		void* exception = nullptr;

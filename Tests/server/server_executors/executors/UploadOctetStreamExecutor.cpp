@@ -22,7 +22,7 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 	{
 		stream.close();
 
-		response.setResponseCode(web::ResponseCodes::created);
+		response.setResponseCode(framework::ResponseCodes::created);
 		response.setBody("Finish uploading file");
 	}
 }

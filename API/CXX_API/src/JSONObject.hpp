@@ -8,7 +8,7 @@
 namespace framework
 {
 	template<typename T, typename TJsonStruct>
-	concept JsonValues = std::integral<T> || std::floating_point<T> || std::same_as<T, std::nullptr_t> || std::same_as<T, std::string> || std::same_as<T, std::vector<TJsonStruct>> || std::same_as<T, TJsonStruct>;
+	concept JsonValues = std::integral<T> || std::floating_point<T> || std::same_as<T, std::nullptr_t> || std::convertible_to<T, std::string_view> || std::same_as<T, std::vector<TJsonStruct>> || std::same_as<T, TJsonStruct>;
 
 	class JSONObject
 	{
@@ -121,11 +121,11 @@ namespace framework
 
 			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setNull, key.data(), &exception);
 		}
-		else if constexpr (std::is_same_v<T, std::string>)
+		else if constexpr (std::convertible_to<T, std::string_view>)
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(setString, void, const char* key, const char* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setString, key.data(), value.data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setString, key.data(), static_cast<std::string_view>(value).data(), &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
 		{

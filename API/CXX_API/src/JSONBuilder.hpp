@@ -10,6 +10,22 @@ namespace framework
 		void* implementation;
 
 	public:
+		class JSONBuilderHelper
+		{
+		private:
+			std::string key;
+			JSONBuilder& builder;
+
+		public:
+			JSONBuilderHelper(std::string_view key, JSONBuilder& builder);
+
+			template<JsonValues<JSONObject> T>
+			void operator =(const T& value);
+
+			~JSONBuilderHelper() = default;
+		};
+
+	public:
 		JSONBuilder();
 
 		JSONBuilder(const JSONBuilder& other);
@@ -21,9 +37,13 @@ namespace framework
 		JSONBuilder& operator =(JSONBuilder&& other) noexcept;
 
 		template<JsonValues<JSONObject> T>
-		JSONBuilder& appendValue(std::string_view key, const T& value = T());
+		JSONBuilder& append(std::string_view key, const T& value = T());
 
 		std::string build() const;
+
+		JSONBuilderHelper operator [](std::string_view key);
+
+		explicit operator std::string() const;
 
 		~JSONBuilder();
 	};
@@ -31,6 +51,19 @@ namespace framework
 
 namespace framework
 {
+	inline JSONBuilder::JSONBuilderHelper::JSONBuilderHelper(std::string_view key, JSONBuilder& builder) :
+		key(key),
+		builder(builder)
+	{
+
+	}
+
+	template<JsonValues<JSONObject> T>
+	inline void JSONBuilder::JSONBuilderHelper::operator =(const T& value)
+	{
+		builder.append<T>(key, value);
+	}
+
 	inline JSONBuilder::JSONBuilder()
 	{
 		using createJSONBuilder = void* (*)(void* builder, void** exception);
@@ -79,7 +112,7 @@ namespace framework
 	}
 
 	template<JsonValues<JSONObject> T>
-	inline JSONBuilder& JSONBuilder::appendValue(std::string_view key, const T& value)
+	inline JSONBuilder& JSONBuilder::append(std::string_view key, const T& value)
 	{
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 		void* exception = nullptr;
@@ -96,11 +129,11 @@ namespace framework
 
 			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendNull, key.data(), &exception);
 		}
-		else if constexpr (std::is_same_v<T, std::string>)
+		else if constexpr (std::convertible_to<T, std::string_view>)
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(appendString, void, const char* key, const char* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendString, key.data(), value.data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendString, key.data(), static_cast<std::string_view>(value).data(), &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
 		{
@@ -159,6 +192,16 @@ namespace framework
 		}
 
 		return handler.getString(result);
+	}
+
+	inline JSONBuilder::JSONBuilderHelper JSONBuilder::operator [](std::string_view key)
+	{
+		return JSONBuilderHelper(key, *this);
+	}
+
+	inline JSONBuilder::operator std::string() const
+	{
+		return this->build();
 	}
 
 	inline JSONBuilder::~JSONBuilder()

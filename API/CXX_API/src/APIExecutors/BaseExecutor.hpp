@@ -122,7 +122,7 @@ namespace framework
 
 namespace framework
 {
-	void BaseExecutor::isImplemented
+	inline void BaseExecutor::isImplemented
 	(
 		std::vector<std::string>& result,
 		HTTPRequest& request,
