@@ -85,29 +85,30 @@ namespace framework::utility
 
 		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path
 			{
+				std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
+				std::string fileName = absolutePath.filename().string();
 				std::string extension;
+				std::string prefix;
 
-#ifdef __LINUX__
-				extension = pathToSource.extension() == ".so" ?
-					"" :
-					".so";
-
-				if (pathToSource.is_absolute())
+				if (!absolutePath.has_extension())
 				{
-					std::filesystem::path parent = pathToSource.parent_path();
-					std::filesystem::path fileName = pathToSource.filename();
-
-					return std::format("{}/lib{}.so", parent.string(), fileName.string());
+#ifdef __LINUX__
+					extension = ".so";
+#else
+					extension = ".dll";
+#endif
 				}
 
-				return std::format("lib{}{}", pathToSource.string(), extension);
-#else
-				extension = pathToSource.extension() == ".dll" ?
-					"" :
-					".dll";
+				absolutePath.remove_filename();
 
-				return std::format("{}{}", pathToSource.string(), extension);
+#ifdef __LINUX__
+				if (fileName.find("lib") == std::string::npos)
+				{
+					prefix = "lib";
+				}
 #endif
+
+				return std::format("{}{}{}", absolutePath.string(), prefix, extension);
 			};
 
 		std::filesystem::path realPath = makePathToDLL(pathToDLL.empty() ? "WebFramework" : std::filesystem::absolute(pathToDLL));
