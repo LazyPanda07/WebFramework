@@ -1,7 +1,8 @@
 {
   "HelloExecutor": {
     "route": "",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "CRUDExecutor": {
     "route": "database",
@@ -13,15 +14,18 @@
   },
   "AssetsExecutor": {
     "route": "wfdp",
-    "loadType": "dynamic"
+    "loadType": "dynamic",
+    "api": "cxx"
   },
   "ChunksExecutor": {
     "route": "chunks",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "DownloadExecutor": {
     "route": "download",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "UploadMultipartExecutor": {
     "route": "upload_multipart",
@@ -29,14 +33,17 @@
   },
   "UploadChunkedExecutor": {
     "route": "upload_chunked",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "UploadOctetStreamExecutor": {
     "route": "upload_octet_stream",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "LocalizationExecutor": {
     "route": "localization",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   }
 }

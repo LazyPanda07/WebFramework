@@ -159,7 +159,7 @@ namespace framework
 		}
 		else
 		{
-			throw std::invalid_argument("Wrong argument type: " + typeid(T).name());
+			throw std::invalid_argument(std::format("Wrong argument type: {}", typeid(T).name()));
 		}
 
 		if (exception)

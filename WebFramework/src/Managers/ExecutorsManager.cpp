@@ -266,6 +266,11 @@ namespace framework
 			creators.try_emplace(executorSettings.name, creator);
 			creatorSources.try_emplace(executorSettings.name, creatorSource);
 
+			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkForExecutors"))
+			{
+				initFunction(webFrameworkSharedLibraryPath.data());
+			}
+
 			switch (executorSettings.executorLoadType)
 			{
 			case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
@@ -323,11 +328,6 @@ namespace framework
 				throw exceptions::MissingLoadTypeException(executorSettings.name);
 
 				break;
-			}
-
-			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkForExecutors"))
-			{
-				initFunction(webFrameworkSharedLibraryPath.data());
 			}
 		}
 
