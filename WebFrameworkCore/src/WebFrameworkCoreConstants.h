@@ -24,8 +24,14 @@ namespace json_settings
 	inline constexpr std::string_view userAgentFilterKey = "userAgentFilter";
 }
 
+//#ifdef __LINUX__
+//#define WEB_FRAMEWORK_CORE_API __attribute__((visibility("hidden")))
+//#else
+//#define WEB_FRAMEWORK_CORE_API
+//#endif
+
 #ifdef __LINUX__
-#define WEB_FRAMEWORK_CORE_API __attribute__((visibility("hidden")))
+#define WEB_FRAMEWORK_CORE_API __attribute__((visibility("default")))
 #else
-#define WEB_FRAMEWORK_CORE_API
+#define WEB_FRAMEWORK_CORE_API __declspec(dllexport)
 #endif
