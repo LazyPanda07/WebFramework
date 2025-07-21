@@ -1,13 +1,13 @@
 #pragma once
 
-#include <exception>
+#include <stdexcept>
 #include <string>
 
 #include "../HTTPResponse.hpp"
 
 namespace framework::exceptions
 {
-	class WebFrameworkAPIException : public std::exception
+	class WebFrameworkAPIException : public std::runtime_error
 	{
 	private:
 		std::string logCategory;
@@ -24,7 +24,7 @@ namespace framework::exceptions
 	};
 
 	inline WebFrameworkAPIException::WebFrameworkAPIException(std::string_view errorMessage, ResponseCodes responseCode, std::string_view logCategory) :
-		exception(errorMessage.data()),
+		runtime_error(errorMessage.data()),
 		logCategory(logCategory),
 		responseCode(responseCode)
 	{
