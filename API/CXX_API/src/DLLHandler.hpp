@@ -108,7 +108,7 @@ namespace framework::utility
 				}
 #endif
 
-				return std::format("{}{}{}", absolutePath.string(), prefix, extension);
+				return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
 			};
 
 		std::filesystem::path realPath = makePathToDLL(pathToDLL.empty() ? "WebFramework" : std::filesystem::absolute(pathToDLL));
