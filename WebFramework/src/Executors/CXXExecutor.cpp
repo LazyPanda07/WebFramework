@@ -1,5 +1,9 @@
 #include "CXXExecutor.h"
 
+#include <format>
+
+#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw runtime_error(format("Can't load {} function", #name))
+
 using namespace std;
 
 namespace framework
@@ -18,7 +22,17 @@ namespace framework
 		getTypeFunction(utility::load<GetTypeSignature>(module, "webFrameworkGetType")),
 		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkDestroyExecutor"))
 	{
-
+		ASSERT_LOAD_FUNCTION(doPostFunction);
+		ASSERT_LOAD_FUNCTION(doGetFunction);
+		ASSERT_LOAD_FUNCTION(doHeadFunction);
+		ASSERT_LOAD_FUNCTION(doPutFunction);
+		ASSERT_LOAD_FUNCTION(doDeleteFunction);
+		ASSERT_LOAD_FUNCTION(doPatchFunction);
+		ASSERT_LOAD_FUNCTION(doOptionsFunction);
+		ASSERT_LOAD_FUNCTION(doTraceFunction);
+		ASSERT_LOAD_FUNCTION(doConnectFunction);
+		ASSERT_LOAD_FUNCTION(getTypeFunction);
+		ASSERT_LOAD_FUNCTION(destroyFunction);
 	}
 
 	void CXXExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
