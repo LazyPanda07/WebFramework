@@ -11,16 +11,16 @@ add_library(
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	src/
-	${CMAKE_SOURCE_DIR}/Networks/src/
-	${CMAKE_SOURCE_DIR}/Networks/HTTP/src/
-	${CMAKE_SOURCE_DIR}/Networks/HTTP/JSON/src/
-	${CMAKE_SOURCE_DIR}/Networks/SocketStreams/src/
-	${CMAKE_SOURCE_DIR}/Networks/vendor/OpenSSL/include/
-	${CMAKE_SOURCE_DIR}/Log/src/
-	${CMAKE_SOURCE_DIR}/Localization/src/
-	${CMAKE_SOURCE_DIR}/BaseTCPServer/src/
-	${CMAKE_SOURCE_DIR}/FileManager/src/
-	${CMAKE_SOURCE_DIR}/UtilityLibrary/include/
+	${PROJECT_SOURCE_DIR}/../Networks/src/
+	${PROJECT_SOURCE_DIR}/../Networks/HTTP/src/
+	${PROJECT_SOURCE_DIR}/../Networks/HTTP/JSON/src/
+	${PROJECT_SOURCE_DIR}/../Networks/SocketStreams/src/
+	${PROJECT_SOURCE_DIR}/../Networks/vendor/OpenSSL/include/
+	${PROJECT_SOURCE_DIR}/../Log/src/
+	${PROJECT_SOURCE_DIR}/../Localization/src/
+	${PROJECT_SOURCE_DIR}/../BaseTCPServer/src/
+	${PROJECT_SOURCE_DIR}/../FileManager/src/
+	${PROJECT_SOURCE_DIR}/../UtilityLibrary/include/
 )
 
 install(
