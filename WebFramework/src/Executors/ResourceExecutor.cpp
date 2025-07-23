@@ -169,17 +169,17 @@ namespace framework
 		return assets;
 	}
 
-	void ResourceExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	void ResourceExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
-	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response) //-V524
+	void ResourceExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) //-V524
 	{
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
-	void ResourceExecutor::notFoundError(HTTPResponse& response, const exception* exception)
+	void ResourceExecutor::notFoundError(HTTPResponseExecutors& response, const exception* exception)
 	{
 		string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
@@ -199,7 +199,7 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::notFound);
 	}
 
-	void ResourceExecutor::badRequestError(HTTPResponse& response, const exception* exception)
+	void ResourceExecutor::badRequestError(HTTPResponseExecutors& response, const exception* exception)
 	{
 		string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
@@ -219,7 +219,7 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::badRequest);
 	}
 
-	void ResourceExecutor::forbiddenError(HTTPResponse& response, const exception* exception)
+	void ResourceExecutor::forbiddenError(HTTPResponseExecutors& response, const exception* exception)
 	{
 		string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
@@ -239,7 +239,7 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::forbidden);
 	}
 
-	void ResourceExecutor::internalServerError(HTTPResponse& response, const exception* exception)
+	void ResourceExecutor::internalServerError(HTTPResponseExecutors& response, const exception* exception)
 	{
 		string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
@@ -259,7 +259,7 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::internalServerError);
 	}
 
-	void ResourceExecutor::badGatewayError(HTTPResponse& response, const std::exception* exception)
+	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const std::exception* exception)
 	{
 		string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
 

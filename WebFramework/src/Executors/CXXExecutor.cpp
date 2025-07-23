@@ -35,47 +35,47 @@ namespace framework
 		ASSERT_LOAD_FUNCTION(destroyFunction);
 	}
 
-	void CXXExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doPostFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doGetFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doHeadFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doPutFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doDeleteFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doPatchFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doOptionsFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doTraceFunction(implementation, request.getImplementation(), response.getImplementation());
 	}
 
-	void CXXExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	void CXXExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		doConnectFunction(implementation, request.getImplementation(), response.getImplementation());
 	}

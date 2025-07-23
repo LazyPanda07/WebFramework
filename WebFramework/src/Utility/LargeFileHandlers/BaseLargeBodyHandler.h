@@ -24,10 +24,10 @@ namespace framework::utility
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors;
 		std::unique_ptr<HTTPRequestImplementation> request;
 		HTTPResponseImplementation response;
-		std::unique_ptr<HTTPRequest> requestWrapper;
-		HTTPResponse responseWrapper;
+		std::unique_ptr<HTTPRequestExecutors> requestWrapper;
+		HTTPResponseExecutors responseWrapper;
 		BaseExecutor* executor;
-		void(BaseExecutor::* method)(HTTPRequest&, HTTPResponse&);
+		void(BaseExecutor::* method)(HTTPRequestExecutors&, HTTPResponseExecutors&);
 
 	private:
 		bool handleChunk(std::string_view data, size_t bodySize) override;

@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include "WebNetwork/HTTPRequest.h"
-#include "WebNetwork/HTTPResponse.h"
+#include "WebNetwork/HTTPRequestExecutors.h"
+#include "WebNetwork/HTTPResponseExecutors.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/JSONSettingsParser.h"
 #include "ExecutorsConstants.h"
@@ -20,7 +20,7 @@ namespace framework
 	class EXECUTORS_API BaseExecutor
 	{
 	public:
-		static void (BaseExecutor::* getMethod(std::string_view methodName))(HTTPRequest&, HTTPResponse&);
+		static void (BaseExecutor::* getMethod(std::string_view methodName))(HTTPRequestExecutors&, HTTPResponseExecutors&);
 
 	public:
 		BaseExecutor() = default;
@@ -37,7 +37,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doPost(HTTPRequest& request, HTTPResponse& response);
+		virtual void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/// <summary>
 		/// Process GET request
@@ -45,7 +45,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doGet(HTTPRequest& request, HTTPResponse& response);
+		virtual void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/// <summary>
 		/// Process HEAD request
@@ -53,7 +53,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doHead(HTTPRequest& request, HTTPResponse& response);
+		virtual void doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/// <summary>
 		/// Process PUT request
@@ -61,7 +61,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doPut(HTTPRequest& request, HTTPResponse& response);
+		virtual void doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/// <summary>
 		/// Process DELETE request
@@ -69,14 +69,14 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doDelete(HTTPRequest& request, HTTPResponse& response);
+		virtual void doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/**
 		 * @brief Process PATCH request
 		 * @param request Request controller
 		 * @param response Response controller
 		 */
-		virtual void doPatch(HTTPRequest& request, HTTPResponse& response);
+		virtual void doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/// <summary>
 		/// Process OPTIONS request
@@ -84,21 +84,21 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doOptions(HTTPRequest& request, HTTPResponse& response);
+		virtual void doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/// <summary>
 		/// Process TRACE request
 		/// </summary>
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
-		virtual void doTrace(HTTPRequest& request, HTTPResponse& response);
+		virtual void doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/**
 		 * @brief Process CONNECT request
 		 * @param request Request controller
 		 * @param response Response controller
 		 */
-		virtual void doConnect(HTTPRequest& request, HTTPResponse& response);
+		virtual void doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 		/// <summary>
 		/// <para>By default all executors must be inherited from BaseStatelessExecutor or BaseStatefullExecutor</para>

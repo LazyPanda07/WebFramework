@@ -32,23 +32,23 @@ namespace framework
 	public:
 		CXXExecutor(HMODULE module, void* implementation);
 
-		void doPost(HTTPRequest& request, HTTPResponse& response) override;
+		void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doGet(HTTPRequest& request, HTTPResponse& response) override;
+		void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doHead(HTTPRequest& request, HTTPResponse& response) override;
+		void doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doPut(HTTPRequest& request, HTTPResponse& response) override;
+		void doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doDelete(HTTPRequest& request, HTTPResponse& response) override;
+		void doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doPatch(HTTPRequest& request, HTTPResponse& response) override;
+		void doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doOptions(HTTPRequest& request, HTTPResponse& response) override;
+		void doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doTrace(HTTPRequest& request, HTTPResponse& response) override;
+		void doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
-		void doConnect(HTTPRequest& request, HTTPResponse& response) override;
+		void doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
 		utility::ExecutorType getType() const override;
 

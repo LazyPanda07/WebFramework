@@ -86,45 +86,45 @@ namespace framework
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		void doGet(HTTPRequest& request, HTTPResponse& response) override;
+		void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
 		/// <summary>
 		/// Send file via POST request
 		/// </summary>
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
-		void doPost(HTTPRequest& request, HTTPResponse& response) override;
+		void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
 		/// <summary>
 		/// Send 404.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void notFoundError(HTTPResponse& response, const std::exception* exception = nullptr);
+		void notFoundError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 400.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badRequestError(HTTPResponse& response, const std::exception* exception = nullptr);
+		void badRequestError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
 
 		/**
 		 * @brief Send 403.html from WebFrameworkAssets
 		 * @param response Response with error file
 		 * @param exception
 		 */
-		void forbiddenError(HTTPResponse& response, const std::exception* exception = nullptr);
+		void forbiddenError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 500.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void internalServerError(HTTPResponse& response, const std::exception* exception = nullptr);
+		void internalServerError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 502.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badGatewayError(HTTPResponse& response, const std::exception* exception = nullptr);
+		void badGatewayError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
 
 		bool getIsCaching() const;
 

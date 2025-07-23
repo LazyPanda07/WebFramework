@@ -7,18 +7,18 @@ using namespace std;
 static void isImplemented
 (
 	vector<string>& result,
-	framework::HTTPRequest& request, 
-	framework::HTTPResponse& response,
+	framework::HTTPRequestExecutors& request, 
+	framework::HTTPResponseExecutors& response,
 	const string& methodName, 
-	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
+	void(framework::BaseExecutor::*method)(framework::HTTPRequestExecutors&, framework::HTTPResponseExecutors&), 
 	framework::BaseExecutor& executor
 );
 
 namespace framework
 {
-	void (BaseExecutor::* BaseExecutor::getMethod(string_view methodName))(HTTPRequest&, HTTPResponse&)
+	void (BaseExecutor::* BaseExecutor::getMethod(string_view methodName))(HTTPRequestExecutors&, HTTPResponseExecutors&)
 	{
-		static const ::utility::strings::string_based_unordered_map<void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> methods =
+		static const ::utility::strings::string_based_unordered_map<void(BaseExecutor::*)(HTTPRequestExecutors&, HTTPResponseExecutors&)> methods =
 		{
 			{ "GET", &BaseExecutor::doGet },
 			{ "POST", &BaseExecutor::doPost },
@@ -39,37 +39,37 @@ namespace framework
 
 	}
 
-	void BaseExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 #ifdef NDEBUG
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
@@ -100,7 +100,7 @@ namespace framework
 		response.addHeader("Allow", allowHeader);
 	}
 
-	void BaseExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 #ifdef NDEBUG
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
@@ -109,7 +109,7 @@ namespace framework
 		response.setBody(request.getRawRequest());
 	}
 
-	void BaseExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	void BaseExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
@@ -118,10 +118,10 @@ namespace framework
 void isImplemented
 (
 	vector<string>& result,
-	framework::HTTPRequest& request,
-	framework::HTTPResponse& response,
+	framework::HTTPRequestExecutors& request,
+	framework::HTTPResponseExecutors& response,
 	const string& methodName, 
-	void(framework::BaseExecutor::*method)(framework::HTTPRequest&, framework::HTTPResponse&), 
+	void(framework::BaseExecutor::*method)(framework::HTTPRequestExecutors&, framework::HTTPResponseExecutors&), 
 	framework::BaseExecutor& executor
 )
 {

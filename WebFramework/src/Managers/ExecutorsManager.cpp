@@ -56,7 +56,7 @@ namespace framework
 			ExecutorType == utility::ExecutorType::heavyOperationStateful;
 	}
 
-	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequest& request, vector<utility::RouteParameters>::iterator it)
+	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequestExecutors& request, vector<utility::RouteParameters>::iterator it)
 	{
 		size_t i = 0;
 		size_t startParameter = it->baseRoute.size() + 1;
@@ -114,7 +114,7 @@ namespace framework
 		} while (endParameter != string::npos);
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(string& parameters, HTTPRequest& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(string& parameters, HTTPRequestExecutors& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		auto executor = statefulExecutors.find(parameters);
 
@@ -170,7 +170,7 @@ namespace framework
 		return executor->second.get();
 	}
 
-	bool ExecutorsManager::filterUserAgent(const string& parameters, const web::HeadersMap& headers, HTTPResponse& response) const
+	bool ExecutorsManager::filterUserAgent(const string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const
 	{
 		const string& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
 
@@ -213,6 +213,8 @@ namespace framework
 			{ "", [this](const string& name) { return unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
 			{ json_settings::cxxExecutorKey, [this](const string& name) { return make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } }
 		};
+
+		// TODO: exception handling
 
 		return apiExecutors.at(apiType)(name);
 	}
@@ -360,7 +362,7 @@ namespace framework
 		return *this;
 	}
 
-	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	optional<function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> ExecutorsManager::service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		BaseExecutor* executor = this->getOrCreateExecutor(request, response, statefulExecutors);
 
@@ -369,7 +371,7 @@ namespace framework
 			return nullopt;
 		}
 
-		void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = BaseExecutor::getMethod(request.getMethod());
+		void (BaseExecutor:: * method)(HTTPRequestExecutors&, HTTPResponseExecutors&) = BaseExecutor::getMethod(request.getMethod());
 
 		if (serverType == WebServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 		{
@@ -381,7 +383,7 @@ namespace framework
 		return nullopt;
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		try
 		{

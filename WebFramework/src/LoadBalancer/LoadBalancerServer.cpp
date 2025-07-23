@@ -7,7 +7,7 @@
 #include "Heuristics/Connections.h"
 #include "WebNetwork/HTTPResponseImplementation.h"
 #include "Log.h"
-#include "WebNetwork/HTTPResponse.h"
+#include "WebNetwork/HTTPResponseExecutors.h"
 
 using namespace std;
 
@@ -217,7 +217,7 @@ namespace framework
 								else
 								{
 									HTTPResponseImplementation response;
-									HTTPResponse responseWrapper(&response);
+									HTTPResponseExecutors responseWrapper(&response);
 
 									resources->badGatewayError(responseWrapper);
 
@@ -253,7 +253,7 @@ namespace framework
 							else
 							{
 								HTTPResponseImplementation response;
-								HTTPResponse responseWrapper(&response);
+								HTTPResponseExecutors responseWrapper(&response);
 
 								resources->badGatewayError(responseWrapper);
 

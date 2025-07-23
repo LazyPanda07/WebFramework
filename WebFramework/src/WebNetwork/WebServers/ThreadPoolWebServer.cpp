@@ -82,10 +82,10 @@ namespace framework
 				return false;
 			}
 
-			HTTPRequest requestWrapper(&request);
-			HTTPResponse responseWrapper(&response);
+			HTTPRequestExecutors requestWrapper(&request);
+			HTTPResponseExecutors responseWrapper(&response);
 
-			optional<function<void(HTTPRequest&, HTTPResponse&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, *statefulExecutors);
+			optional<function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, *statefulExecutors);
 
 			if (threadPoolFunction)
 			{
@@ -95,8 +95,8 @@ namespace framework
 				(
 					[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
 					{
-						HTTPRequest requestWrapper(&request);
-						HTTPResponse responseWrapper(&response);
+						HTTPRequestExecutors requestWrapper(&request);
+						HTTPResponseExecutors responseWrapper(&response);
 
 						try
 						{
@@ -200,7 +200,7 @@ namespace framework
 		catch (const exceptions::BadRequestException& e) // 400
 		{
 			HTTPResponseImplementation response;
-			HTTPResponse responseWrapper(&response);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			resourceExecutor.badRequestError(responseWrapper, &e);
 
@@ -209,7 +209,7 @@ namespace framework
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
 			HTTPResponseImplementation response;
-			HTTPResponse responseWrapper(&response);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			resourceExecutor.notFoundError(responseWrapper, &e);
 
@@ -218,7 +218,7 @@ namespace framework
 		catch (const exceptions::NotFoundException& e) // 404
 		{
 			HTTPResponseImplementation response;
-			HTTPResponse responseWrapper(&response);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			resourceExecutor.notFoundError(responseWrapper, &e);
 
@@ -227,7 +227,7 @@ namespace framework
 		catch (const exceptions::APIException& e)
 		{
 			HTTPResponseImplementation response;
-			HTTPResponse responseWrapper(&response);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			if (Log::isValid())
 			{
@@ -242,7 +242,7 @@ namespace framework
 		catch (const exceptions::BaseExecutorException& e) // 500
 		{
 			HTTPResponseImplementation response;
-			HTTPResponse responseWrapper(&response);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			if (Log::isValid())
 			{
@@ -256,7 +256,7 @@ namespace framework
 		catch (const exception& e)
 		{
 			HTTPResponseImplementation response;
-			HTTPResponse responseWrapper(&response);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			if (Log::isValid())
 			{
@@ -270,7 +270,7 @@ namespace framework
 		catch (...) // 500
 		{
 			HTTPResponseImplementation response;
-			HTTPResponse responseWrapper(&response);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			resourceExecutor.internalServerError(responseWrapper, nullptr);
 

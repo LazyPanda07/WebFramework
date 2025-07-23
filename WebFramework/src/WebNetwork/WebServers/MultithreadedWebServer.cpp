@@ -67,7 +67,7 @@ namespace framework
 			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
 		ExecutorsManager::StatefulExecutors statefulExecutors;
 		HTTPResponseImplementation response;
-		HTTPResponse responseWrapper(&response);
+		HTTPResponseExecutors responseWrapper(&response);
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
 
 		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, *statefulExecutors);
@@ -95,7 +95,7 @@ namespace framework
 					break;
 				}
 
-				HTTPRequest requestWrapper(&request);
+				HTTPRequestExecutors requestWrapper(&request);
 
 				executorsManager->service(requestWrapper, responseWrapper, *statefulExecutors);
 

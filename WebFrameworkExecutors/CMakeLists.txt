@@ -14,8 +14,8 @@ add_library(
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
 	src/c_api/executors_c_api.cpp
-	src/WebNetwork/HTTPRequest.cpp
-	src/WebNetwork/HTTPResponse.cpp
+	src/WebNetwork/HTTPRequestExecutors.cpp
+	src/WebNetwork/HTTPResponseExecutors.cpp
 	src/Databases/Database.cpp
 	src/Databases/Table.cpp
 	src/Databases/SQLValue.cpp

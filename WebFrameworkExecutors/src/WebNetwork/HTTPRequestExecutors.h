@@ -3,7 +3,7 @@
 #include <functional>
 
 #include "WebNetwork/Interfaces/IHTTPRequest.h"
-#include "HTTPResponse.h"
+#include "HTTPResponseExecutors.h"
 #include "JSONParser.h"
 #include "HTTPParser.h"
 #include "ExecutorsConstants.h"
@@ -24,7 +24,7 @@ namespace framework
 		LargeData(std::string_view dataPart, size_t size, bool isLastPacket);
 	};
 
-	class EXECUTORS_API HTTPRequest
+	class EXECUTORS_API HTTPRequestExecutors
 	{
 	private:
 		static std::vector<interfaces::CVariable> convertVariables(const std::unordered_map<std::string, std::string>& variables);
@@ -51,15 +51,15 @@ namespace framework
 		interfaces::IHTTPRequest* getImplementation() const;
 
 	public:
-		HTTPRequest(interfaces::IHTTPRequest* implementation, const std::function<void(interfaces::IHTTPRequest*)>& deleter = nullptr);
+		HTTPRequestExecutors(interfaces::IHTTPRequest* implementation, const std::function<void(interfaces::IHTTPRequest*)>& deleter = nullptr);
 
-		HTTPRequest(const HTTPRequest&) = delete;
+		HTTPRequestExecutors(const HTTPRequestExecutors&) = delete;
 
-		HTTPRequest(HTTPRequest&& other) noexcept;
+		HTTPRequestExecutors(HTTPRequestExecutors&& other) noexcept;
 
-		HTTPRequest& operator =(const HTTPRequest&) = delete;
+		HTTPRequestExecutors& operator =(const HTTPRequestExecutors&) = delete;
 
-		HTTPRequest& operator =(HTTPRequest&& other) noexcept;
+		HTTPRequestExecutors& operator =(HTTPRequestExecutors&& other) noexcept;
 
 		void updateLargeData(std::string_view dataPart, size_t size);
 
@@ -146,7 +146,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
+		void sendAssetFile(std::string_view filePath, HTTPResponseExecutors& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
 
 		/**
 		* Send non dynamic file
@@ -154,7 +154,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary = true, std::string_view fileName = "");
+		void sendStaticFile(std::string_view filePath, HTTPResponseExecutors& response, bool isBinary = true, std::string_view fileName = "");
 
 		/**
 		* Send dynamic file(.wfdp)
@@ -163,7 +163,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
+		void sendDynamicFile(std::string_view filePath, HTTPResponseExecutors& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
 
 		/**
 		* Send large files
@@ -171,7 +171,7 @@ namespace framework
 		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
 		* @param chunkSize Desired size of read data before sending
 		*/
-		void streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize = defaultChunkSize);
+		void streamFile(std::string_view filePath, HTTPResponseExecutors& response, std::string_view fileName, size_t chunkSize = defaultChunkSize);
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
@@ -244,7 +244,7 @@ namespace framework
 		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendChunks(HTTPResponse& response, Args&&... args);
+		void sendChunks(HTTPResponseExecutors& response, Args&&... args);
 
 		/**
 		 * @brief Send file
@@ -255,15 +255,15 @@ namespace framework
 		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
+		void sendFileChunks(HTTPResponseExecutors& response, std::string_view fileName, Args&&... args);
 
-		~HTTPRequest();
+		~HTTPRequestExecutors();
 
 		friend class ExecutorsManager;
 	};
 
 	template<RouteParameterType T>
-	T HTTPRequest::getRouteParameter(std::string_view routeParameterName) const
+	T HTTPRequestExecutors::getRouteParameter(std::string_view routeParameterName) const
 	{
 		if constexpr (std::is_same_v<T, std::string>)
 		{
@@ -288,13 +288,13 @@ namespace framework
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendChunks(HTTPResponse& response, Args&&... args)
+	void HTTPRequestExecutors::sendChunks(HTTPResponseExecutors& response, Args&&... args)
 	{
 		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
+	void HTTPRequestExecutors::sendFileChunks(HTTPResponseExecutors& response, std::string_view fileName, Args&&... args)
 	{
 		T generator(std::forward<Args>(args)...);
 

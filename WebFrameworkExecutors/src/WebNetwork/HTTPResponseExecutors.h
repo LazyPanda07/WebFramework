@@ -5,11 +5,11 @@
 #include "WebNetwork/Interfaces/IHTTPResponse.h"
 #include "JSONBuilder.h"
 #include "ExecutorsConstants.h"
-#include <HTTPUtility.h>
+#include "HTTPUtility.h"
 
 namespace framework
 {
-	class EXECUTORS_API HTTPResponse
+	class EXECUTORS_API HTTPResponseExecutors
 	{
 	private:
 		interfaces::IHTTPResponse* implementation;
@@ -19,15 +19,15 @@ namespace framework
 		interfaces::IHTTPResponse* getImplementation() const;
 
 	public:
-		HTTPResponse(interfaces::IHTTPResponse* implementation, const std::function<void(interfaces::IHTTPResponse*)>& deleter = nullptr);
+		HTTPResponseExecutors(interfaces::IHTTPResponse* implementation, const std::function<void(interfaces::IHTTPResponse*)>& deleter = nullptr);
 
-		HTTPResponse(const HTTPResponse&) = delete;
+		HTTPResponseExecutors(const HTTPResponseExecutors&) = delete;
 
-		HTTPResponse& operator =(const HTTPResponse&) = delete;
+		HTTPResponseExecutors& operator =(const HTTPResponseExecutors&) = delete;
 
-		HTTPResponse(HTTPResponse&& other) noexcept;
+		HTTPResponseExecutors(HTTPResponseExecutors&& other) noexcept;
 
-		HTTPResponse& operator =(HTTPResponse&& other) noexcept;
+		HTTPResponseExecutors& operator =(HTTPResponseExecutors&& other) noexcept;
 
 		void setHTTPVersion(std::string_view version);
 
@@ -64,7 +64,7 @@ namespace framework
 		/// </summary>
 		/// <param name="body">data</param>
 		/// <returns>reference to self</returns>
-		HTTPResponse& appendBody(std::string_view body);
+		HTTPResponseExecutors& appendBody(std::string_view body);
 
 		/// <summary>
 		/// Add cookie to HTTP response
@@ -74,7 +74,7 @@ namespace framework
 		void addCookie(std::string_view name, std::string_view value);
 
 		/// <summary>
-		/// Clears HTTPResponse
+		/// Clears HTTPResponseExecutors
 		/// </summary>
 		void setDefault();
 
@@ -85,8 +85,8 @@ namespace framework
 		*/
 		explicit operator bool() const;
 
-		~HTTPResponse();
+		~HTTPResponseExecutors();
 
-		friend class HTTPRequest;
+		friend class HTTPRequestExecutors;
 	};
 }

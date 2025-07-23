@@ -155,7 +155,7 @@ namespace framework
 }
 
 #ifdef __LINUX__
-#define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API extern "C" __attribute__((used))
+#define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API extern "C" __attribute__((visibility("default"))) __attribute__((used))
 #else
 #define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API extern "C" __declspec(dllexport)
 #endif

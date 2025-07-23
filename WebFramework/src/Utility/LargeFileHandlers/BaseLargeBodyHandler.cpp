@@ -36,7 +36,7 @@ namespace framework::utility
 
 		request->setParser(parser);
 
-		requestWrapper = make_unique<HTTPRequest>(request.get());
+		requestWrapper = make_unique<HTTPRequestExecutors>(request.get());
 		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, statefulExecutors);
 		method = BaseExecutor::getMethod(parser.getMethod());
 	}

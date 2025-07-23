@@ -60,12 +60,12 @@ namespace framework
 
 		static bool isHeavyOperation(BaseExecutor* executor);
 
-		static void parseRouteParameters(const std::string& parameters, HTTPRequest& request, std::vector<utility::RouteParameters>::iterator it);
+		static void parseRouteParameters(const std::string& parameters, HTTPRequestExecutors& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequest& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
-		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponse& response) const;
+		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const;
 
 		std::unique_ptr<BaseExecutor> createAPIExecutor(const std::string& name, std::string_view apiType) const;
 
@@ -87,9 +87,9 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		std::optional<std::function<void(HTTPRequest&, HTTPResponse&)>> service(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
-		BaseExecutor* getOrCreateExecutor(HTTPRequest& request, HTTPResponse& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		BaseExecutor* getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

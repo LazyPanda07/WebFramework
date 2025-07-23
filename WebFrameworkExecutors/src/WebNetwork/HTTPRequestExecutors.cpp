@@ -1,4 +1,4 @@
-#include "HTTPRequest.h"
+#include "HTTPRequestExecutors.h"
 
 using namespace std;
 
@@ -22,32 +22,32 @@ namespace framework
 
 	}
 
-	void HTTPRequest::initHeaders()
+	void HTTPRequestExecutors::initHeaders()
 	{
 		implementation->getHeaders(addHeader, &headers);
 	}
 
-	void HTTPRequest::initKeyValuesParameters()
+	void HTTPRequestExecutors::initKeyValuesParameters()
 	{
 		implementation->getKeyValueParameters(addKeyValue, &keyValueParameters);
 	}
 
-	void HTTPRequest::initMultiparts()
+	void HTTPRequestExecutors::initMultiparts()
 	{
 		implementation->getMultiparts(addMultipart, &multiparts);
 	}
 
-	void HTTPRequest::initChunks()
+	void HTTPRequestExecutors::initChunks()
 	{
 		implementation->getChunks(addChunk, &chunks);
 	}
 
-	interfaces::IHTTPRequest* HTTPRequest::getImplementation() const
+	interfaces::IHTTPRequest* HTTPRequestExecutors::getImplementation() const
 	{
 		return implementation;
 	}
 
-	vector<interfaces::CVariable> HTTPRequest::convertVariables(const unordered_map<string, string>& variables)
+	vector<interfaces::CVariable> HTTPRequestExecutors::convertVariables(const unordered_map<string, string>& variables)
 	{
 		vector<interfaces::CVariable> result;
 
@@ -61,7 +61,7 @@ namespace framework
 		return result;
 	}
 
-	HTTPRequest::HTTPRequest(interfaces::IHTTPRequest* implementation, const function<void(interfaces::IHTTPRequest*)>& deleter) :
+	HTTPRequestExecutors::HTTPRequestExecutors(interfaces::IHTTPRequest* implementation, const function<void(interfaces::IHTTPRequest*)>& deleter) :
 		implementation(implementation),
 		deleter(deleter)
 	{
@@ -73,12 +73,12 @@ namespace framework
 		this->initChunks();
 	}
 
-	HTTPRequest::HTTPRequest(HTTPRequest&& other) noexcept
+	HTTPRequestExecutors::HTTPRequestExecutors(HTTPRequestExecutors&& other) noexcept
 	{
 		(*this) = move(other);
 	}
 
-	HTTPRequest& HTTPRequest::operator =(HTTPRequest&& other) noexcept
+	HTTPRequestExecutors& HTTPRequestExecutors::operator =(HTTPRequestExecutors&& other) noexcept
 	{
 		implementation = other.implementation;
 		deleter = other.deleter;
@@ -94,47 +94,47 @@ namespace framework
 		return *this;
 	}
 
-	void HTTPRequest::updateLargeData(string_view dataPart, size_t size)
+	void HTTPRequestExecutors::updateLargeData(string_view dataPart, size_t size)
 	{
 		implementation->updateLargeData(dataPart.data(), dataPart.size(), size);
 	}
 
-	string_view HTTPRequest::getRawParameters() const
+	string_view HTTPRequestExecutors::getRawParameters() const
 	{
 		return implementation->getRawParameters();
 	}
 
-	string_view HTTPRequest::getMethod() const
+	string_view HTTPRequestExecutors::getMethod() const
 	{
 		return implementation->getMethod();
 	}
 
-	const unordered_map<string, string>& HTTPRequest::getKeyValueParameters() const
+	const unordered_map<string, string>& HTTPRequestExecutors::getKeyValueParameters() const
 	{
 		return keyValueParameters;
 	}
 
-	string HTTPRequest::getHTTPVersion() const
+	string HTTPRequestExecutors::getHTTPVersion() const
 	{
 		return "HTTP/" + to_string(implementation->getHTTPVersion());
 	}
 
-	const web::HeadersMap& HTTPRequest::getHeaders() const
+	const web::HeadersMap& HTTPRequestExecutors::getHeaders() const
 	{
 		return headers;
 	}
 
-	string_view HTTPRequest::getBody() const
+	string_view HTTPRequestExecutors::getBody() const
 	{
 		return implementation->getBody();
 	}
 
-	void HTTPRequest::setAttribute(string_view name, string_view value)
+	void HTTPRequestExecutors::setAttribute(string_view name, string_view value)
 	{
 		implementation->setAttribute(name.data(), value.data());
 	}
 
-	string HTTPRequest::getAttribute(string_view name)
+	string HTTPRequestExecutors::getAttribute(string_view name)
 	{
 		const char* temp = implementation->getAttribute(name.data());
 		string result(temp);
@@ -144,17 +144,17 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequest::deleteSession()
+	void HTTPRequestExecutors::deleteSession()
 	{
 		implementation->deleteSession();
 	}
 
-	void HTTPRequest::removeAttribute(string_view name)
+	void HTTPRequestExecutors::removeAttribute(string_view name)
 	{
 		implementation->removeAttribute(name.data());
 	}
 
-	web::HeadersMap HTTPRequest::getCookies() const
+	web::HeadersMap HTTPRequestExecutors::getCookies() const
 	{
 		web::HeadersMap result;
 
@@ -163,73 +163,73 @@ namespace framework
 		return result;
 	}
 
-	const vector<web::Multipart>& HTTPRequest::getMultiparts() const
+	const vector<web::Multipart>& HTTPRequestExecutors::getMultiparts() const
 	{
 		return multiparts;
 	}
 
-	LargeData HTTPRequest::getLargeData() const
+	LargeData HTTPRequestExecutors::getLargeData() const
 	{
 		const interfaces::CLargeData* data = implementation->getLargeData();
 
 		return LargeData(string_view(data->dataPart, data->dataPartSize), data->bodySize, data->isLastPacket);
 	}
 
-	void HTTPRequest::sendAssetFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
+	void HTTPRequestExecutors::sendAssetFile(string_view filePath, HTTPResponseExecutors& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
 	{
-		vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
+		vector<interfaces::CVariable> temp = HTTPRequestExecutors::convertVariables(variables);
 
 		implementation->sendAssetFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
-	void HTTPRequest::sendStaticFile(string_view filePath, HTTPResponse& response, bool isBinary, string_view fileName)
+	void HTTPRequestExecutors::sendStaticFile(string_view filePath, HTTPResponseExecutors& response, bool isBinary, string_view fileName)
 	{
 		implementation->sendStaticFile(filePath.data(), response.implementation, isBinary, fileName.data());
 	}
 
-	void HTTPRequest::sendDynamicFile(string_view filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
+	void HTTPRequestExecutors::sendDynamicFile(string_view filePath, HTTPResponseExecutors& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)
 	{
-		vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
+		vector<interfaces::CVariable> temp = HTTPRequestExecutors::convertVariables(variables);
 
 		implementation->sendDynamicFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
-	void HTTPRequest::streamFile(string_view filePath, HTTPResponse& response, string_view fileName, size_t chunkSize)
+	void HTTPRequestExecutors::streamFile(string_view filePath, HTTPResponseExecutors& response, string_view fileName, size_t chunkSize)
 	{
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
 	}
 
-	void HTTPRequest::registerDynamicFunction(string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
+	void HTTPRequestExecutors::registerDynamicFunction(string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
 	{
 		implementation->registerDynamicFunction(functionName.data(), function, deleter);
 	}
 
-	void HTTPRequest::unregisterDynamicFunction(string_view functionName)
+	void HTTPRequestExecutors::unregisterDynamicFunction(string_view functionName)
 	{
 		implementation->unregisterDynamicFunction(functionName.data());
 	}
 
-	bool HTTPRequest::isDynamicFunctionRegistered(string_view functionName)
+	bool HTTPRequestExecutors::isDynamicFunctionRegistered(string_view functionName)
 	{
 		return implementation->isDynamicFunctionRegistered(functionName.data());
 	}
 
-	const json::JSONParser& HTTPRequest::getJSON() const
+	const json::JSONParser& HTTPRequestExecutors::getJSON() const
 	{
 		return json;
 	}
 
-	const vector<string>& HTTPRequest::getChunks() const
+	const vector<string>& HTTPRequestExecutors::getChunks() const
 	{
 		return chunks;
 	}
 
-	string_view HTTPRequest::getRawRequest() const
+	string_view HTTPRequestExecutors::getRawRequest() const
 	{
 		return implementation->getRawRequest();
 	}
 
-	string HTTPRequest::getClientIpV4() const
+	string HTTPRequestExecutors::getClientIpV4() const
 	{
 		const char* temp = implementation->getClientIpV4();
 		string result(temp);
@@ -239,7 +239,7 @@ namespace framework
 		return result;
 	}
 
-	string HTTPRequest::getServerIpV4() const
+	string HTTPRequestExecutors::getServerIpV4() const
 	{
 		const char* temp = implementation->getServerIpV4();
 		string result(temp);
@@ -249,37 +249,37 @@ namespace framework
 		return result;
 	}
 
-	uint16_t HTTPRequest::getClientPort() const
+	uint16_t HTTPRequestExecutors::getClientPort() const
 	{
 		return implementation->getClientPort();
 	}
 
-	uint16_t HTTPRequest::getServerPort() const
+	uint16_t HTTPRequestExecutors::getServerPort() const
 	{
 		return implementation->getServerPort();
 	}
 
-	Database HTTPRequest::getOrCreateDatabase(string_view databaseName)
+	Database HTTPRequestExecutors::getOrCreateDatabase(string_view databaseName)
 	{
 		return Database(implementation->getOrCreateDatabase(databaseName.data()));
 	}
 
-	Database HTTPRequest::getDatabase(string_view databaseName) const
+	Database HTTPRequestExecutors::getDatabase(string_view databaseName) const
 	{
 		return Database(implementation->getDatabase(databaseName.data()));
 	}
 
-	Table HTTPRequest::getOrCreateTable(string_view databaseName, string_view tableName, string_view createTableQuery)
+	Table HTTPRequestExecutors::getOrCreateTable(string_view databaseName, string_view tableName, string_view createTableQuery)
 	{
 		return this->getOrCreateDatabase(databaseName).getOrCreateTable(tableName, createTableQuery);
 	}
 
-	Table HTTPRequest::getTable(string_view databaseName, string_view tableName) const
+	Table HTTPRequestExecutors::getTable(string_view databaseName, string_view tableName) const
 	{
 		return this->getDatabase(databaseName).getTable(tableName);
 	}
 
-	HTTPRequest::~HTTPRequest()
+	HTTPRequestExecutors::~HTTPRequestExecutors()
 	{
 		if (deleter && implementation)
 		{
