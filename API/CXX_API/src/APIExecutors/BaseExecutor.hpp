@@ -164,17 +164,18 @@ namespace framework
 
 		inline JSONParser ExecutorSettings::getInitParameters() const
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorInitParameters, JSONParser, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorInitParameters, void*, void** exception);
 			void* exception = nullptr;
+			DLLHandler& handler = DLLHandler::getInstance();
 
-			JSONParser result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorInitParameters, &exception);
+			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorInitParameters, &exception);
 
 			if (exception)
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
 
-			return result;
+			return JSONParser(handler.getString(result)):
 		}
 
 		inline std::string ExecutorSettings::getName() const

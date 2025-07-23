@@ -701,13 +701,16 @@ bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONOb
 	return false;
 }
 
-JSONParser getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception)
+String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception)
 {
 	try
 	{
 		json::JSONParser parser(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->initParameters);
+		std::ostringstream stream;
 
-		return createJSONParser(&parser, exception);
+		stream << parser;
+
+		return new std::string(stream.str());
 	}
 	catch (const std::exception& e)
 	{

@@ -85,7 +85,7 @@ EXPORT bool tryGetNull(JSONParser parser, const char* key, bool recursive, Excep
 
 EXPORT bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
 
-EXPORT JSONParser getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
+EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
 
 EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);
 
