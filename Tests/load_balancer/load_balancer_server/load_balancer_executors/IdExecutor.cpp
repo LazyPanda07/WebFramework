@@ -8,7 +8,7 @@
 
 static int64_t getProcessId();
 
-void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void IdExecutor::doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	response.setBody
 	(
@@ -16,7 +16,7 @@ void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse&
 	);
 }
 
-void IdExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void IdExecutor::doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	exit(0);
 }

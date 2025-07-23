@@ -10,9 +10,9 @@ private:
 public:
 	MultiUserExecutor();
 
-	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
 
-	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
 
-	void doPut(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doPut(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
 };

@@ -3,7 +3,7 @@
 #include <random>
 #include <ctime>
 
-void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	framework::Database model = request.getDatabase("test_database");
 	framework::Table table = model.getTable("test_table");
@@ -24,7 +24,7 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
 }
 
-void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	request.getOrCreateDatabase("test_database").getOrCreateTable
 	(
@@ -36,7 +36,7 @@ void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPRespon
 	);
 }
 
-void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doPut(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
@@ -58,7 +58,7 @@ void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRespons
 	}
 }
 
-void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doPatch(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
@@ -92,7 +92,7 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
 }
 
-void CRUDExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doDelete(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	request.getDatabase("test_database").getTable("test_table").execute("DROP TABLE test_table", {});
 }

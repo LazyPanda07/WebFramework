@@ -5,5 +5,5 @@
 class UserAgentExecutor : public framework::BaseStatelessExecutor
 {
 public:
-	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
 };

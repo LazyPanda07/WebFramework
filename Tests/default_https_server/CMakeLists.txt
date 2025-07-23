@@ -21,6 +21,7 @@ add_executable(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${PROJECT_SOURCE_DIR}
+	${WEB_FRAMEWORK_SDK}/api/cxx/include
 )
 
 target_link_libraries(

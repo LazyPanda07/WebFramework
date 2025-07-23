@@ -3,7 +3,7 @@
 #include <fstream>
 #include <filesystem>
 
-void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void UploadMultipartExecutor::doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	std::filesystem::path currentPath = std::filesystem::current_path();
 

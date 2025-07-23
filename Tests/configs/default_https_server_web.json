@@ -1,7 +1,8 @@
 {
   "Executor": {
     "route": "default_request",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "RoutePatternExecutor": {
     "route": "pattern/{string:stringValue}/{int:integerValue}/{double:doubleValue}",

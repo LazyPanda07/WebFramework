@@ -1,6 +1,6 @@
 #include "UserAgentExecutor.h"
 
-void UserAgentExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void UserAgentExecutor::doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
 {
 	response.setBody("ok");
 }
