@@ -19,6 +19,35 @@ namespace framework
 			heavyOperationStateful,
 			heavyOperationStateless
 		};
+
+		class ExecutorSettings
+		{
+		public:
+			enum class LoadType
+			{
+				initialization,
+				dynamic,
+				none
+			};
+
+		private:
+			void* implementation;
+
+		public:
+			ExecutorSettings(void* implementation);
+
+			JSONParser getInitParameters() const;
+
+			std::string getName() const;
+
+			std::string getUserAgentFilter() const;
+
+			std::string getAPIType() const;
+
+			LoadType getLoadType() const;
+
+			~ExecutorSettings() = default;
+		};
 	}
 
 	class BaseExecutor
@@ -35,7 +64,10 @@ namespace framework
 		);
 
 	public:
-		// virtual void init(const utility::JSONSettingsParser::ExecutorSettings& settings);
+		virtual void init(const utility::ExecutorSettings& settings)
+		{
+
+		}
 
 		virtual void doPost(HTTPRequest& request, HTTPResponse& response)
 		{
@@ -122,6 +154,93 @@ namespace framework
 
 namespace framework
 {
+	namespace utility
+	{
+		inline ExecutorSettings::ExecutorSettings(void* implementation) :
+			implementation(implementation)
+		{
+
+		}
+
+		inline JSONParser ExecutorSettings::getInitParameters() const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorInitParameters, JSONParser, void** exception);
+			void* exception = nullptr;
+
+			JSONParser result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorInitParameters, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		inline std::string ExecutorSettings::getName() const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorName, void*, void** exception);
+			void* exception = nullptr;
+			DLLHandler& handler = DLLHandler::getInstance();
+
+			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorName, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return handler.getString(result);
+		}
+
+		inline std::string ExecutorSettings::getUserAgentFilter() const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorUserAgentFilter, void*, void** exception);
+			void* exception = nullptr;
+			DLLHandler& handler = DLLHandler::getInstance();
+
+			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return handler.getString(result);
+		}
+
+		inline std::string ExecutorSettings::getAPIType() const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorAPIType, void*, void** exception);
+			void* exception = nullptr;
+			DLLHandler& handler = DLLHandler::getInstance();
+
+			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorAPIType, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return handler.getString(result);
+		}
+
+		inline ExecutorSettings::LoadType ExecutorSettings::getLoadType() const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorLoadType, int, void** exception);
+			void* exception = nullptr;
+
+			int result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorLoadType, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return static_cast<LoadType>(result);
+		}
+	}
+
 	inline void BaseExecutor::isImplemented
 	(
 		std::vector<std::string>& result,
@@ -170,6 +289,11 @@ namespace framework
 }
 
 #pragma region ExportFunctions
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkExecutorInit(void* implementation, void* executorSettings)
+{
+	static_cast<framework::BaseExecutor*>(implementation)->init(framework::utility::ExecutorSettings(executorSettings));
+}
+
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);

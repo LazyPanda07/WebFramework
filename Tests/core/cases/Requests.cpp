@@ -29,7 +29,8 @@ TEST(HelloExecutor, requestType) \
 		parser.setJSONData(web::HTTPParser(response).getBody()); \
  \
 		ASSERT_EQ(parser.getString("message"), "Hello, World!"); \
-		ASSERT_TRUE(parser.tryGetInt("randomNumber", value)); \
+		ASSERT_TRUE(parser.tryGetInt("number", value)); \
+		ASSERT_EQ(value, 890); \
 	} \
 }
 

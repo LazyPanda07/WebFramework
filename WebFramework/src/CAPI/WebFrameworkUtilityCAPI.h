@@ -2,9 +2,10 @@
 
 #include "WebFrameworkCAPI.h"
 
-typedef void* JSONObject;
 typedef void* JSONBuilder;
-typedef void* JSONParser;
+typedef void* JSONParser; 
+typedef void* JSONObject;
+typedef void* ExecutorSettings;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -83,6 +84,16 @@ EXPORT bool tryGetBoolean(JSONParser parser, const char* key, bool* value, bool 
 EXPORT bool tryGetNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
 EXPORT bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
+
+EXPORT JSONParser getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -275,7 +275,7 @@ namespace framework
 
 			switch (executorSettings.executorLoadType)
 			{
-			case utility::JSONSettingsParser::ExecutorSettings::loadType::initialization:
+			case utility::JSONSettingsParser::ExecutorSettings::LoadType::initialization:
 				if (route.find('{') == string::npos)
 				{
 					auto [it, success] = routes.try_emplace
@@ -316,7 +316,7 @@ namespace framework
 
 				break;
 
-			case utility::JSONSettingsParser::ExecutorSettings::loadType::dynamic:
+			case utility::JSONSettingsParser::ExecutorSettings::LoadType::dynamic:
 				if (route.find('{') != string::npos)
 				{
 					routeParameters.push_back(route);
@@ -326,7 +326,7 @@ namespace framework
 
 				break;
 
-			case utility::JSONSettingsParser::ExecutorSettings::loadType::none:
+			case utility::JSONSettingsParser::ExecutorSettings::LoadType::none:
 				throw exceptions::MissingLoadTypeException(executorSettings.name);
 
 				break;

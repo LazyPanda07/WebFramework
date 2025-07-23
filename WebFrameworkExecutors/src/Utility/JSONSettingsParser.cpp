@@ -14,14 +14,14 @@ using namespace std;
 namespace framework::utility
 {
 	JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
-		executorLoadType(loadType::none)
+		executorLoadType(LoadType::none)
 	{
 
 	}
 
 	JSONSettingsParser::ExecutorSettings::ExecutorSettings(string_view name) :
 		name(name),
-		executorLoadType(loadType::none)
+		executorLoadType(LoadType::none)
 	{
 
 	}
@@ -44,24 +44,24 @@ namespace framework::utility
 		for (const auto& [name, description] : parser)
 		{
 			const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
-			const string& loadType = data.getString(json_settings::loadTypeKey);
+			const string& LoadType = data.getString(json_settings::loadTypeKey);
 			ExecutorSettings executorSettings(name);
 
 			data.tryGetObject(json_settings::initParametersKey, executorSettings.initParameters);
 			data.tryGetString(json_settings::userAgentFilterKey, executorSettings.userAgentFilter);
 			data.tryGetString(json_settings::apiTypeKey, executorSettings.apiType);
 
-			if (loadType == json_settings_values::initializationLoadTypeValue)
+			if (LoadType == json_settings_values::initializationLoadTypeValue)
 			{
-				executorSettings.executorLoadType = ExecutorSettings::loadType::initialization;
+				executorSettings.executorLoadType = ExecutorSettings::LoadType::initialization;
 			}
-			else if (loadType == json_settings_values::dynamicLoadTypeValue)
+			else if (LoadType == json_settings_values::dynamicLoadTypeValue)
 			{
-				executorSettings.executorLoadType = ExecutorSettings::loadType::dynamic;
+				executorSettings.executorLoadType = ExecutorSettings::LoadType::dynamic;
 			}
 			else
 			{
-				throw runtime_error("Wrong loadType");
+				throw runtime_error("Wrong LoadType");
 			}
 
 			settings.try_emplace(::utility::strings::replaceAll(data.getString(json_settings::routeKey), " ", "%20"), move(executorSettings));

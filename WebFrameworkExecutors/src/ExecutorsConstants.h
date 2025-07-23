@@ -5,7 +5,7 @@
 namespace json_settings
 {
 	inline constexpr std::string_view initParametersKey = "initParameters";
-	inline constexpr std::string_view loadTypeKey = "loadType";
+	inline constexpr std::string_view loadTypeKey = "LoadType";
 	inline constexpr std::string_view routeKey = "route";
 	inline constexpr std::string_view apiTypeKey = "api";
 

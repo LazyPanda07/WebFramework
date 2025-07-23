@@ -2,7 +2,10 @@
   "HelloExecutor": {
     "route": "",
     "loadType": "initialization",
-    "api": "cxx"
+    "api": "cxx",
+    "initParameters": {
+      "number": 890
+    }
   },
   "CRUDExecutor": {
     "route": "database",

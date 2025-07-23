@@ -12,6 +12,7 @@ namespace framework
 {
 	CXXExecutor::CXXExecutor(HMODULE module, void* implementation) :
 		implementation(implementation),
+		initFunction(utility::load<InitExecutorSignature>(module, "webFrameworkExecutorInit")),
 		doPostFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoPost")),
 		doGetFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoGet")),
 		doHeadFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoHead")),
@@ -26,6 +27,7 @@ namespace framework
 	{
 		try
 		{
+			ASSERT_LOAD_FUNCTION(initFunction);
 			ASSERT_LOAD_FUNCTION(doPostFunction);
 			ASSERT_LOAD_FUNCTION(doGetFunction);
 			ASSERT_LOAD_FUNCTION(doHeadFunction);
@@ -42,6 +44,11 @@ namespace framework
 		{
 			Log::fatalError("Load function error: {}", "LogCXXExecutor", 1, e.what());
 		}	
+	}
+
+	void CXXExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
+	{
+		initFunction(implementation, &settings);
 	}
 
 	void CXXExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)

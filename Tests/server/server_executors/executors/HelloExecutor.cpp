@@ -1,11 +1,18 @@
 #include "HelloExecutor.h"
 
+void HelloExecutor::init(const framework::utility::ExecutorSettings& executorSettings)
+{
+	framework::JSONParser initParameters = executorSettings.getInitParameters();
+
+	value = initParameters.get<int64_t>("number");
+}
+
 void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	framework::JSONBuilder builder;
 
 	builder["message"] = "Hello, World!";
-	builder["randomNumber"] = rand();
+	builder["number"] = value;
 
 	response.setBody(builder);
 }

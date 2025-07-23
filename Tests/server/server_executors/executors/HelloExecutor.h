@@ -4,7 +4,12 @@
 
 class HelloExecutor : public framework::BaseStatelessExecutor
 {
+private:
+	int64_t value;
+
 public:
+	void init(const framework::utility::ExecutorSettings& executorSettings) override;
+
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
 	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;

@@ -17,7 +17,7 @@ namespace framework::utility
 		/// </summary>
 		struct EXECUTORS_API ExecutorSettings
 		{
-			enum class loadType
+			enum class LoadType
 			{
 				initialization,
 				dynamic,
@@ -28,7 +28,7 @@ namespace framework::utility
 			std::string name;
 			std::string userAgentFilter;
 			std::string apiType;
-			loadType executorLoadType;
+			LoadType executorLoadType;
 
 		public:
 			ExecutorSettings();

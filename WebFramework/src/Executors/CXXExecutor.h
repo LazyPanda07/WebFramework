@@ -11,12 +11,14 @@ namespace framework
 	class CXXExecutor : public BaseExecutor
 	{
 	public:
+		using InitExecutorSignature = void(*)(void*, const void*);
 		using DoMethodSignature = void(*)(void*, interfaces::IHTTPRequest*, interfaces::IHTTPResponse*);
 		using GetTypeSignature = utility::ExecutorType(*)(void*);
 		using DestroySignature = void(*)(void*);
 
 	private:
 		void* implementation;
+		InitExecutorSignature initFunction;
 		DoMethodSignature doPostFunction;
 		DoMethodSignature doGetFunction;
 		DoMethodSignature doHeadFunction;
@@ -31,6 +33,8 @@ namespace framework
 
 	public:
 		CXXExecutor(HMODULE module, void* implementation);
+
+		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
 		void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
 
