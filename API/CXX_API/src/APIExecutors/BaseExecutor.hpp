@@ -175,7 +175,7 @@ namespace framework
 				throw exceptions::WebFrameworkException(exception);
 			}
 
-			return JSONParser(handler.getString(result)):
+			return JSONParser(handler.getString(result));
 		}
 
 		inline std::string ExecutorSettings::getName() const
