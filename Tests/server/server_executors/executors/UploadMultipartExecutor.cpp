@@ -3,11 +3,11 @@
 #include <fstream>
 #include <filesystem>
 
-void UploadMultipartExecutor::doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	std::filesystem::path currentPath = std::filesystem::current_path();
 
-	for (const web::Multipart& multipart : request.getMultiparts())
+	for (const framework::Multipart& multipart : request.getMultiparts())
 	{
 		std::ofstream file(currentPath / multipart.getName(), std::ios::binary);
 		const std::string& data = multipart.getData();
@@ -15,7 +15,7 @@ void UploadMultipartExecutor::doPost(framework::HTTPRequestExecutors& request, f
 		file.write(data.data(), data.size());
 	}
 
-	response.setResponseCode(web::ResponseCodes::created);
+	response.setResponseCode(framework::ResponseCodes::created);
 	response.setBody("Finish uploading files");
 }
 

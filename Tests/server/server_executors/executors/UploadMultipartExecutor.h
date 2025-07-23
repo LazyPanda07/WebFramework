@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Executors/BaseHeavyOperationStatelessExecutor.h"
+#include <APIExecutors/BaseHeavyOperationStatelessExecutor.hpp>
 
 class UploadMultipartExecutor : public framework::BaseHeavyOperationStatelessExecutor
 {
 public:
-	void doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
+	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 };

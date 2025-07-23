@@ -15,6 +15,28 @@ namespace framework
 	template<typename T>
 	concept RouteParameterType = std::same_as<T, std::string> || std::integral<T> || std::floating_point<T>;
 
+	class Multipart
+	{
+	private:
+		std::string name;
+		std::optional<std::string> fileName;
+		std::optional<std::string> contentType;
+		std::string data;
+
+	public:
+		Multipart(const framework::interfaces::CMultipart& multipart);
+
+		const std::string& getName() const;
+
+		const std::optional<std::string>& getFileName() const;
+
+		const std::optional<std::string>& getContentType() const;
+
+		const std::string& getData() const;
+
+		~Multipart() = default;
+	};
+
 	struct LargeData
 	{
 		std::string_view dataPart;
@@ -49,7 +71,7 @@ namespace framework
 		JSONParser json;
 		HeadersMap headers;
 		std::unordered_map<std::string, std::string> keyValueParameters;
-		// std::vector<web::Multipart> multiparts;
+		std::vector<Multipart> multiparts;
 		std::vector<std::string> chunks;
 
 	private:
@@ -57,7 +79,7 @@ namespace framework
 
 		void initKeyValuesParameters();
 
-		// void initMultiparts();
+		void initMultiparts();
 
 		void initChunks();
 
@@ -149,11 +171,13 @@ namespace framework
 		/// <returns>HTTP cookies as map</returns>
 		HeadersMap getCookies() const;
 
+		const std::vector<Multipart>& getMultiparts() const;
+
 		/**
 		 * @brief Get data from multipart/form-data
 		 * @return
 		 */
-		// const std::vector<web::Multipart>& getMultiparts() const;
+		 // const std::vector<web::Multipart>& getMultiparts() const;
 
 		LargeData getLargeData() const;
 
@@ -341,9 +365,9 @@ namespace framework
 
 		std::transform
 		(
-			value.begin(), 
-			value.end(), 
-			std::back_inserter(temp), 
+			value.begin(),
+			value.end(),
+			std::back_inserter(temp),
 			[](char c) -> char
 			{
 				return std::tolower(c);
@@ -369,9 +393,38 @@ namespace framework
 
 	void addCookie(const char* key, const char* value, void* additionalData);
 
-	// void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData);
+	void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData);
 
 	void addChunk(const char* chunk, size_t chunkSize, void* additionalData);
+
+	inline Multipart::Multipart(const framework::interfaces::CMultipart& multipart) :
+		name(multipart.name),
+		fileName(multipart.fileName),
+		contentType(multipart.contentType),
+		data(multipart.data)
+	{
+
+	}
+
+	inline const std::string& Multipart::getName() const
+	{
+		return name;
+	}
+
+	inline const std::optional<std::string>& Multipart::getFileName() const
+	{
+		return fileName;
+	}
+
+	inline const std::optional<std::string>& Multipart::getContentType() const
+	{
+		return contentType;
+	}
+
+	inline const std::string& Multipart::getData() const
+	{
+		return data;
+	}
 
 	inline LargeData::LargeData(std::string_view dataPart, size_t size, bool isLastPacket) :
 		dataPart(dataPart),
@@ -391,10 +444,10 @@ namespace framework
 		implementation->getKeyValueParameters(addKeyValue, &keyValueParameters);
 	}
 
-	/*inline void HTTPRequest::initMultiparts()
+	inline void HTTPRequest::initMultiparts()
 	{
 		implementation->getMultiparts(addMultipart, &multiparts);
-	}*/
+	}
 
 	inline void HTTPRequest::initChunks()
 	{
@@ -435,7 +488,7 @@ namespace framework
 	{
 		this->initHeaders();
 		this->initKeyValuesParameters();
-		// this->initMultiparts();
+		this->initMultiparts();
 		this->initChunks();
 	}
 
@@ -451,7 +504,7 @@ namespace framework
 		json = std::move(other.json);
 		headers = move(other.headers);
 		keyValueParameters = move(other.keyValueParameters);
-		// multiparts = move(other.multiparts);
+		multiparts = move(other.multiparts);
 		chunks = move(other.chunks);
 
 		other.implementation = nullptr;
@@ -529,10 +582,10 @@ namespace framework
 		return result;
 	}
 
-	/*inline const std::vector<web::Multipart>& HTTPRequest::getMultiparts() const
+	inline const std::vector<Multipart>& HTTPRequest::getMultiparts() const
 	{
 		return multiparts;
-	}*/
+	}
 
 	inline LargeData HTTPRequest::getLargeData() const
 	{
@@ -670,29 +723,10 @@ namespace framework
 		reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
 	}
 
-	/*void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData)
+	inline void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData)
 	{
-		std::optional<std::string> fileName;
-		std::optional<std::string> contentType;
-
-		if (multipart->fileName)
-		{
-			fileName = multipart->fileName;
-		}
-
-		if (multipart->contentType)
-		{
-			contentType = multipart->contentType;
-		}
-
-		reinterpret_cast<std::vector<web::Multipart>*>(additionalData)->emplace_back
-		(
-			multipart->name,
-			fileName,
-			contentType,
-			multipart->data
-		);
-	}*/
+		static_cast<std::vector<Multipart>*>(additionalData)->emplace_back(*multipart);
+	}
 
 	inline void addChunk(const char* chunk, size_t chunkSize, void* additionalData)
 	{

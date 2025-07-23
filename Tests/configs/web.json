@@ -32,7 +32,8 @@
   },
   "UploadMultipartExecutor": {
     "route": "upload_multipart",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "UploadChunkedExecutor": {
     "route": "upload_chunked",
