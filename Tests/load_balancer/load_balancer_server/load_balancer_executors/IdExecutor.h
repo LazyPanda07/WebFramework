@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Executors/BaseStatelessExecutor.h"
+#include <APIExecutors/BaseStatelessExecutor.hpp>
 
 class IdExecutor : public framework::BaseStatelessExecutor
 {
 public:
-	void doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
+	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-	void doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
+	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 };

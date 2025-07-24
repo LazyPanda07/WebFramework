@@ -6,11 +6,13 @@
   },
   "RoutePatternExecutor": {
     "route": "pattern/{string:stringValue}/{int:integerValue}/{double:doubleValue}",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "UserAgentExecutor": {
     "route": "user_agent",
     "loadType": "initialization",
-    "userAgentFilter": "CustomUserAgent"
+    "userAgentFilter": "CustomUserAgent",
+    "api": "cxx"
   }
 }

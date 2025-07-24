@@ -8,15 +8,15 @@
 
 static int64_t getProcessId();
 
-void IdExecutor::doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	response.setBody
 	(
-		json::JSONBuilder(CP_UTF8).appendInt("id", getProcessId())
+		framework::JSONBuilder().append("id", getProcessId())
 	);
 }
 
-void IdExecutor::doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void IdExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	exit(0);
 }
