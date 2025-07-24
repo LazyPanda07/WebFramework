@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <format>
+#include <vector>
 
 #include "DLLHandler.hpp"
 #include "Exceptions/WebFrameworkException.hpp"
@@ -42,6 +43,12 @@ namespace framework
 		friend class JSONBuilder;
 		friend class JSONParser;
 	};
+
+	namespace utility
+	{
+		template<JsonValues<JSONObject> T>
+		std::vector<JSONObject>& appendArray(std::vector<JSONObject>& data, const T& value);
+	}
 }
 
 namespace framework
@@ -131,8 +138,16 @@ namespace framework
 		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(setArray, void, const char* key, const void* value, size_t size, void** exception);
+			std::vector<void*> temp;
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setArray, key.data(), value.data(), value.size(), &exception);
+			temp.reserve(value.size());
+
+			for (const JSONObject& object : value)
+			{
+				temp.push_back(object.implementation);
+			}
+
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setArray, key.data(), temp.data(), temp.size(), &exception);
 		}
 		else if constexpr (std::is_same_v<T, JSONObject>)
 		{
@@ -176,6 +191,21 @@ namespace framework
 			utility::DLLHandler::getInstance().deleteJSONObject(implementation);
 
 			implementation = nullptr;
+		}
+	}
+
+	namespace utility
+	{
+		template<JsonValues<JSONObject> T>
+		inline std::vector<JSONObject>& appendArray(std::vector<JSONObject>& data, const T& value)
+		{
+			JSONObject object;
+
+			object.setValue("", value);
+
+			data.emplace_back(std::move(object));
+
+			return data;
 		}
 	}
 }

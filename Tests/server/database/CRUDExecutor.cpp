@@ -18,7 +18,7 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 		object.setValue("name", value.at("name").get<std::string>());
 		object.setValue("amount", value.at("amount").get<int64_t>());
 
-		data.emplace_back(std::move(object));
+		framework::utility::appendArray(data, object);
 	}
 
 	response.setBody(framework::JSONBuilder().append("data", std::move(data)));
@@ -86,7 +86,7 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 		object.setValue("name", value.at("name").get<std::string>());
 		object.setValue("amount", value.at("amount").get<int64_t>());
 
-		data.emplace_back(std::move(object));
+		framework::utility::appendArray(data, object);
 	}
 
 	response.setBody(framework::JSONBuilder().append("data", std::move(data)));

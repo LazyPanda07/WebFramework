@@ -27,7 +27,7 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 		object.setValue("user_id", value.at("user_id").get<std::string>());
 		object.setValue("data", value.at("data").get<std::string>());
 
-		data.emplace_back(std::move(object));
+		framework::utility::appendArray(data, object);
 	}
 
 	response.setBody(framework::JSONBuilder().append("data", std::move(data)));
