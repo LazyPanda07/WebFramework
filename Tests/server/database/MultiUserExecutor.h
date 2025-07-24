@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Executors/BaseHeavyOperationStatefulExecutor.h>
+#include <APIExecutors/BaseHeavyOperationStatefulExecutor.hpp>
 
 class MultiUserExecutor : public framework::BaseHeavyOperationStatefulExecutor
 {
@@ -10,9 +10,9 @@ private:
 public:
 	MultiUserExecutor();
 
-	void doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
+	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-	void doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
+	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-	void doPut(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response) override;
+	void doPut(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 };

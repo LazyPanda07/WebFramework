@@ -12,21 +12,7 @@ add_library(
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_DIR}/WebFramework/src/
-	${WEB_FRAMEWORK_DIR}/BaseTCPServer/src/
-	${WEB_FRAMEWORK_DIR}/Networks/src/
-	${WEB_FRAMEWORK_DIR}/Networks/HTTP/src/
-	${WEB_FRAMEWORK_DIR}/Networks/HTTP/JSON/src/
-	${WEB_FRAMEWORK_DIR}/Networks/SocketStreams/src/
-	${WEB_FRAMEWORK_DIR}/FileManager/src/
-	${WEB_FRAMEWORK_DIR}/ThreadPool/src/
-	${WEB_FRAMEWORK_DIR}/Log/src/
-	${WEB_FRAMEWORK_DIR}/SHA256/src/
-	${WEB_FRAMEWORK_DIR}/INIParser/src/
-	${WEB_FRAMEWORK_DIR}/Localization/src/
-	${WEB_FRAMEWORK_DIR}/UtilityLibrary/include/
-	${WEB_FRAMEWORK_DIR}/Networks/vendor/OpenSSL/include/
-	${WEB_FRAMEWORK_DIR}/WebFramework/vendor/sqlite3/include/
+	${WEB_FRAMEWORK_SDK}/api/cxx/include
 )
 
 target_link_libraries(

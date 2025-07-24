@@ -11,6 +11,8 @@ if (${WEB_FRAMEWORK_CC_API})
 else()
     message("WebFramework CXX API")
 
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
     if (NOT DEFINED CMAKE_CXX_STANDARD)
         set(CMAKE_CXX_STANDARD 20)
     endif()
@@ -66,7 +68,6 @@ set(
     crypto
     sqlite3
 )
-set(IS_WEB_FRAMEWORK_SHARED OFF CACHE STRING "Is WebFramework dynamically linked")
 
 link_directories(
     BEFORE
@@ -93,35 +94,25 @@ endif()
 if (UNIX)
     install(
         DIRECTORY ${WEB_FRAMEWORK_SDK}/lib/ 
-        DESTINATION ${CMAKE_INSTALL_PREFIX} 
+        DESTINATION .
         FILES_MATCHING 
         PATTERN "*.so"
         PATTERN "vendor" EXCLUDE
     )
-
-    if(EXISTS ${WEB_FRAMEWORK_SDK}/lib/libWebFramework.so)
-        set(IS_WEB_FRAMEWORK_SHARED ON)
-    endif()
 elseif(WIN32)
-    install(DIRECTORY ${WEB_FRAMEWORK_SDK}/dll/ DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-    if(EXISTS ${WEB_FRAMEWORK_SDK}/dll/WebFramework.dll)
-        set(IS_WEB_FRAMEWORK_SHARED ON)
-    endif()
+    install(DIRECTORY ${WEB_FRAMEWORK_SDK}/dll/ DESTINATION .)
 endif(UNIX)
 
-if (${IS_WEB_FRAMEWORK_SHARED})
-    if (${WEB_FRAMEWORK_CC_API})
-        include_directories(
-            BEFORE
-            ${WEB_FRAMEWORK_SDK}/api/cc/include/
-        )
-    else()
-        include_directories(
-            BEFORE
-            ${WEB_FRAMEWORK_SDK}/api/cxx/include/
-        )
-    endif()
+if (${WEB_FRAMEWORK_CC_API})
+    include_directories(
+        BEFORE
+        ${WEB_FRAMEWORK_SDK}/api/cc/include/
+    )
+else()
+    include_directories(
+        BEFORE
+        ${WEB_FRAMEWORK_SDK}/api/cxx/include/
+    )
 endif()
 
 if (NOT TARGET generate_localization)

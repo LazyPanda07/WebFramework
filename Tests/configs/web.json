@@ -9,11 +9,13 @@
   },
   "CRUDExecutor": {
     "route": "database",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   },
   "MultiUserExecutor": {
     "route": "multi_user_database",
-    "loadType": "dynamic"
+    "loadType": "dynamic",
+    "api": "cxx"
   },
   "AssetsExecutor": {
     "route": "wfdp",

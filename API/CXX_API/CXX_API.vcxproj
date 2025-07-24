@@ -86,6 +86,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Databases\Database.hpp" />
+    <ClInclude Include="src\Databases\SQLResult.hpp" />
+    <ClInclude Include="src\Databases\SQLValue.hpp" />
+    <ClInclude Include="src\Databases\Table.hpp" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="src\Exceptions\NotImplementedDoMethodException.hpp" />
     <ClInclude Include="src\Exceptions\WebFrameworkAPIException.hpp" />

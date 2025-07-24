@@ -3,28 +3,28 @@
 #include <random>
 #include <ctime>
 
-void CRUDExecutor::doGet(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	framework::Database model = request.getDatabase("test_database");
 	framework::Table table = model.getTable("test_table");
 	framework::SQLResult result = table.execute("SELECT * FROM test_table WHERE name = ?", { framework::SQLValue("glue") });
-	std::vector<json::utility::jsonObject> data;
+	std::vector<framework::JSONObject> data;
 
 	for (const auto& value : result)
 	{
-		json::utility::jsonObject object;
+		framework::JSONObject object;
 
-		object.setInt("id", value.at("id").get<int64_t>());
-		object.setString("name", value.at("name").get<std::string>());
-		object.setInt("amount", value.at("amount").get<int64_t>());
+		object.setValue("id", value.at("id").get<int64_t>());
+		object.setValue("name", value.at("name").get<std::string>());
+		object.setValue("amount", value.at("amount").get<int64_t>());
 
-		json::utility::appendArray(object, data);
+		data.emplace_back(std::move(object));
 	}
 
-	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
+	response.setBody(framework::JSONBuilder().append("data", std::move(data)));
 }
 
-void CRUDExecutor::doPost(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	request.getOrCreateDatabase("test_database").getOrCreateTable
 	(
@@ -36,7 +36,7 @@ void CRUDExecutor::doPost(framework::HTTPRequestExecutors& request, framework::H
 	);
 }
 
-void CRUDExecutor::doPut(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
@@ -58,7 +58,7 @@ void CRUDExecutor::doPut(framework::HTTPRequestExecutors& request, framework::HT
 	}
 }
 
-void CRUDExecutor::doPatch(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
@@ -76,23 +76,23 @@ void CRUDExecutor::doPatch(framework::HTTPRequestExecutors& request, framework::
 		{ framework::SQLValue("empty") }
 	);
 
-	std::vector<json::utility::jsonObject> data;
+	std::vector<framework::JSONObject> data;
 
 	for (const auto& value : result)
 	{
-		json::utility::jsonObject object;
+		framework::JSONObject object;
 
-		object.setInt("id", value.at("id").get<int64_t>());
-		object.setString("name", value.at("name").get<std::string>());
-		object.setInt("amount", value.at("amount").get<int64_t>());
+		object.setValue("id", value.at("id").get<int64_t>());
+		object.setValue("name", value.at("name").get<std::string>());
+		object.setValue("amount", value.at("amount").get<int64_t>());
 
-		json::utility::appendArray(object, data);
+		data.emplace_back(std::move(object));
 	}
 
-	response.setBody(json::JSONBuilder(CP_UTF8).appendArray("data", std::move(data)));
+	response.setBody(framework::JSONBuilder().append("data", std::move(data)));
 }
 
-void CRUDExecutor::doDelete(framework::HTTPRequestExecutors& request, framework::HTTPResponseExecutors& response)
+void CRUDExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	request.getDatabase("test_database").getTable("test_table").execute("DROP TABLE test_table", {});
 }

@@ -9,6 +9,7 @@
 #include "JSONParser.hpp"
 #include "Exceptions/WebFrameworkAPIException.hpp"
 #include "DLLHandler.hpp"
+#include "Databases/Database.hpp"
 
 namespace framework
 {
@@ -267,13 +268,13 @@ namespace framework
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const;
 
-		/*Database getOrCreateDatabase(std::string_view databaseName);
+		Database getOrCreateDatabase(std::string_view databaseName);
 
 		Database getDatabase(std::string_view databaseName) const;
 
 		Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
 
-		Table getTable(std::string_view databaseName, std::string_view tableName) const;*/
+		Table getTable(std::string_view databaseName, std::string_view tableName) const;
 
 		template<RouteParameterType T>
 		T getRouteParameter(std::string_view routeParameterName) const;
@@ -678,25 +679,25 @@ namespace framework
 		return implementation->getServerPort();
 	}
 
-	/*Database HTTPRequest::getOrCreateDatabase(string_view databaseName)
+	inline Database HTTPRequest::getOrCreateDatabase(std::string_view databaseName)
 	{
 		return Database(implementation->getOrCreateDatabase(databaseName.data()));
 	}
 
-	Database HTTPRequest::getDatabase(string_view databaseName) const
+	inline Database HTTPRequest::getDatabase(std::string_view databaseName) const
 	{
 		return Database(implementation->getDatabase(databaseName.data()));
 	}
 
-	Table HTTPRequest::getOrCreateTable(string_view databaseName, string_view tableName, string_view createTableQuery)
+	inline Table HTTPRequest::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery)
 	{
 		return this->getOrCreateDatabase(databaseName).getOrCreateTable(tableName, createTableQuery);
 	}
 
-	Table HTTPRequest::getTable(string_view databaseName, string_view tableName) const
+	inline Table HTTPRequest::getTable(std::string_view databaseName, std::string_view tableName) const
 	{
 		return this->getDatabase(databaseName).getTable(tableName);
-	}*/
+	}
 
 	inline HTTPRequest::~HTTPRequest()
 	{

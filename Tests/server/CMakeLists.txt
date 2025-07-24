@@ -21,11 +21,7 @@ add_executable(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${PROJECT_SOURCE_DIR}
-)
-
-target_link_libraries(
-	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
+	${WEB_FRAMEWORK_SDK}/api/cxx/include
 )
 
 add_custom_command(
