@@ -16,10 +16,10 @@ add_library(
 	src/c_api/executors_c_api.cpp
 	src/WebNetwork/HTTPRequestExecutors.cpp
 	src/WebNetwork/HTTPResponseExecutors.cpp
-	src/Databases/Database.cpp
-	src/Databases/Table.cpp
-	src/Databases/SQLValue.cpp
-	src/Databases/SQLResult.cpp
+	src/Databases/DatabaseExecutors.cpp
+	src/Databases/TableExecutors.cpp
+	src/Databases/SQLValueExecutors.cpp
+	src/Databases/SQLResultExecutors.cpp
 )
 
 target_include_directories(

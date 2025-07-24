@@ -1,8 +1,8 @@
-#include "SQLValue.h"
+#include "SQLValueExecutors.h"
 
 namespace framework
 {
-	SQLValue::SQLValue(const interfaces::ISQLValue* implementation)
+	SQLValueExecutors::SQLValueExecutors(const interfaces::ISQLValue* implementation)
 	{
 		switch (implementation->getType())
 		{
@@ -46,19 +46,19 @@ namespace framework
 		}
 	}
 
-	SQLValue::SQLValue(const ValueType& value) :
+	SQLValueExecutors::SQLValueExecutors(const ValueType& value) :
 		value(value)
 	{
 
 	}
 
-	SQLValue::SQLValue(ValueType&& value) noexcept :
+	SQLValueExecutors::SQLValueExecutors(ValueType&& value) noexcept :
 		value(move(value))
 	{
 
 	}
 
-	const SQLValue::ValueType& SQLValue::operator *() const
+	const SQLValueExecutors::ValueType& SQLValueExecutors::operator *() const
 	{
 		return value;
 	}

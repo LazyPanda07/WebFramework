@@ -259,22 +259,22 @@ namespace framework
 		return implementation->getServerPort();
 	}
 
-	Database HTTPRequestExecutors::getOrCreateDatabase(string_view databaseName)
+	DatabaseExecutors HTTPRequestExecutors::getOrCreateDatabase(string_view databaseName)
 	{
-		return Database(implementation->getOrCreateDatabase(databaseName.data()));
+		return DatabaseExecutors(implementation->getOrCreateDatabase(databaseName.data()));
 	}
 
-	Database HTTPRequestExecutors::getDatabase(string_view databaseName) const
+	DatabaseExecutors HTTPRequestExecutors::getDatabase(string_view databaseName) const
 	{
-		return Database(implementation->getDatabase(databaseName.data()));
+		return DatabaseExecutors(implementation->getDatabase(databaseName.data()));
 	}
 
-	Table HTTPRequestExecutors::getOrCreateTable(string_view databaseName, string_view tableName, string_view createTableQuery)
+	TableExecutors HTTPRequestExecutors::getOrCreateTable(string_view databaseName, string_view tableName, string_view createTableQuery)
 	{
 		return this->getOrCreateDatabase(databaseName).getOrCreateTable(tableName, createTableQuery);
 	}
 
-	Table HTTPRequestExecutors::getTable(string_view databaseName, string_view tableName) const
+	TableExecutors HTTPRequestExecutors::getTable(string_view databaseName, string_view tableName) const
 	{
 		return this->getDatabase(databaseName).getTable(tableName);
 	}

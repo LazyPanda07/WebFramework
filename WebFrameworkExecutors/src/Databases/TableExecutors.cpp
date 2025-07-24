@@ -1,14 +1,14 @@
-#include "Table.h"
+#include "TableExecutors.h"
 
 using namespace std;
 
 class CSQLValue : public framework::interfaces::ISQLValue
 {
 private:
-	const framework::SQLValue& value;
+	const framework::SQLValueExecutors& value;
 
 public:
-	CSQLValue(const framework::SQLValue& value);
+	CSQLValue(const framework::SQLValueExecutors& value);
 
 	void setInt(int64_t value) override;
 
@@ -39,13 +39,13 @@ public:
 
 namespace framework
 {
-	Table::Table(interfaces::ITable* implementation) :
+	TableExecutors::TableExecutors(interfaces::ITable* implementation) :
 		implementation(implementation)
 	{
 
 	}
 
-	SQLResult Table::execute(string_view query, const vector<SQLValue>& values)
+	SQLResultExecutors TableExecutors::execute(string_view query, const vector<SQLValueExecutors>& values)
 	{
 		vector<CSQLValue> tempValues;
 		vector<const interfaces::ISQLValue*> pointers;
@@ -53,13 +53,13 @@ namespace framework
 		tempValues.reserve(values.size());
 		pointers.reserve(values.size());
 
-		for (const SQLValue& value : values)
+		for (const SQLValueExecutors& value : values)
 		{
 			pointers.push_back(&tempValues.emplace_back(value));
 		}
 
 		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), pointers.data(), pointers.size());
-		SQLResult result(tempResult);
+		SQLResultExecutors result(tempResult);
 
 		implementation->deleteResult(tempResult);
 
@@ -67,7 +67,7 @@ namespace framework
 	}
 }
 
-CSQLValue::CSQLValue(const framework::SQLValue& value) :
+CSQLValue::CSQLValue(const framework::SQLValueExecutors& value) :
 	value(value)
 {
 
