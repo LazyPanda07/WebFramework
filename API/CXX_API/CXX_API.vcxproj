@@ -105,7 +105,7 @@
     <ClInclude Include="src\import.hpp" />
     <ClInclude Include="src\JSONBuilder.hpp" />
     <ClInclude Include="src\JSONParser.hpp" />
-    <ClInclude Include="src\LoadBalancerHeuristics\LoadBalancerHeuristic.hpp" />
+    <ClInclude Include="src\LoadBalancerHeuristic.hpp" />
     <ClInclude Include="src\Utility\ChunkGenerator.hpp" />
     <ClInclude Include="src\Utility\WebFrameworkLocalization.hpp" />
     <ClInclude Include="src\Utility\WebFrameworkUtility.hpp" />
