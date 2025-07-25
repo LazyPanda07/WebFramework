@@ -2,7 +2,7 @@
 
 #include <LoadBalancerHeuristic.hpp>
 
-class CustomHeuristic : public framework::BaseLoadBalancerHeuristic
+class CustomHeuristic : public framework::LoadBalancerHeuristic
 {
 private:
 	uint64_t id;

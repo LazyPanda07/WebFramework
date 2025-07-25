@@ -3,7 +3,7 @@
 static uint64_t getId();
 
 CustomHeuristic::CustomHeuristic(std::string_view ip, std::string_view port, bool useHTTPS) :
-	BaseLoadBalancerHeuristic(ip, port, useHTTPS),
+	LoadBalancerHeuristic(ip, port, useHTTPS),
 	id(getId())
 {
 
@@ -16,7 +16,7 @@ uint64_t CustomHeuristic::operator ()() const
 
 uint64_t getId()
 {
-	static std::uint64_t id = 0;
+	static std::atomic_uint64_t id = 0;
 
 	return id++;
 }
