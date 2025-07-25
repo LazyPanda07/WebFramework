@@ -5,7 +5,7 @@
 
 #include "WebNetwork/Interfaces/IHTTPRequest.h"
 #include "HTTPResponse.hpp"
-#include "Utility/ChunkGenerator.h"
+#include "Utility/ChunkGenerator.hpp"
 #include "JSONParser.hpp"
 #include "Exceptions/WebFrameworkAPIException.hpp"
 #include "DLLHandler.hpp"

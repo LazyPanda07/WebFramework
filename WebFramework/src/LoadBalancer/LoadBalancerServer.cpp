@@ -196,18 +196,17 @@ namespace framework
 			{
 				vector<size_t> removeIndices;
 
-				for (size_t i = 0; i < requests.size(); i++ )
+				for (size_t i = 0; i < requests.size(); i++)
 				{
 					LoadBalancerRequest& request = requests[i];
 
 					switch (request.currentState)
 					{
 					case LoadBalancerRequest::State::receiveClientRequest:
-					{
-						string httpRequest;
-
 						if (request.clientStream.getNetwork().isDataAvailable())
 						{
+							string httpRequest;
+
 							if (LoadBalancerServer::receiveClientRequest(request, httpRequest))
 							{
 								if (LoadBalancerServer::sendClientRequest(request, httpRequest))
@@ -229,16 +228,14 @@ namespace framework
 								removeIndices.push_back(i);
 							}
 						}
-					}
 
-					break;
+						break;
 
 					case LoadBalancerRequest::State::receiveServerResponse:
-					{
-						string httpResponse;
-
 						if (request.serverStream.getNetwork().isDataAvailable())
 						{
+							string httpResponse;
+
 							if (LoadBalancerServer::receiveServerResponse(request, httpResponse))
 							{
 								if (LoadBalancerServer::sendClientResponse(request, httpResponse))
@@ -260,9 +257,8 @@ namespace framework
 								request.clientStream << response;
 							}
 						}
-					}
 
-					break;
+						break;
 
 					default:
 						break;

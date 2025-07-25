@@ -1,7 +1,5 @@
 #include "TextGenerator.h"
 
-static constexpr size_t smallStringSize = 15;
-
 TextGenerator::TextGenerator(std::string_view data) :
 	data(data),
 	offset(0)
@@ -11,6 +9,8 @@ TextGenerator::TextGenerator(std::string_view data) :
 
 std::string_view TextGenerator::generate()
 {
+	constexpr size_t smallStringSize = 15;
+
 	if (offset >= data.size())
 	{
 		return {};

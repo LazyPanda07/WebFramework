@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utility/ChunkGenerator.h"
+#include <Utility/ChunkGenerator.hpp>
 
 class TextGenerator : public framework::utility::ChunkGenerator
 {
