@@ -2,6 +2,10 @@
 
 #include "BaseLoadBalancerHeuristic.h"
 
+#ifdef __LINUX__
+using HMODULE = void*;
+#endif
+
 namespace framework::load_balancer
 {
 	class CXXHeuristic : public BaseLoadBalancerHeuristic
