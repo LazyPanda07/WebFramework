@@ -1,6 +1,6 @@
 #pragma once
 
-#include <LoadBalancerHeuristics.hpp>
+#include <LoadBalancerHeuristic.hpp>
 
 class CustomHeuristic : public framework::BaseLoadBalancerHeuristic
 {
