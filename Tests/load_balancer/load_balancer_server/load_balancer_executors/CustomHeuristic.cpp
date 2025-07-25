@@ -1,5 +1,7 @@
 #include "CustomHeuristic.h"
 
+#include <atomic>
+
 static uint64_t getId();
 
 CustomHeuristic::CustomHeuristic(std::string_view ip, std::string_view port, bool useHTTPS) :
