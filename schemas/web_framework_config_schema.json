@@ -260,7 +260,7 @@
           }
         }
       },
-      "required": [ "dateFormat", "flags" ]
+      "required": [ "dateFormat" ]
     },
     "ThreadPoolServer": {
       "type": "object",

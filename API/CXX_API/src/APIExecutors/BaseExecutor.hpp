@@ -377,6 +377,11 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDestroyExecutor(voi
 	static_cast<framework::BaseExecutor*>(implementation)->destroy();
 }
 
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDeleteExecutor(void* implementation)
+{
+	delete static_cast<framework::BaseExecutor*>(implementation);
+}
+
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkForExecutors(const char* webFrameworkSharedLibraryPath)
 {
 	framework::utility::initializeWebFramework(webFrameworkSharedLibraryPath);

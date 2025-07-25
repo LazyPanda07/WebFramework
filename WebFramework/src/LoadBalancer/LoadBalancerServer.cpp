@@ -3,7 +3,6 @@
 #include "Exceptions/SSLException.h"
 #include "HTTPSNetwork.h"
 
-#include "Utility/Sources.h"
 #include "Heuristics/Connections.h"
 #include "Heuristics/CXXHeuristic.h"
 #include "Web/HTTPResponseImplementation.h"
@@ -289,12 +288,12 @@ namespace framework
 			}
 		}
 
-		unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(string_view ip, string_view port, bool useHTTPS, string_view apiType) const
+		unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(string_view ip, string_view port, bool useHTTPS, string_view heuristicName, string_view apiType, HMODULE loadSource) const
 		{
 			static const unordered_map<string_view, function<unique_ptr<BaseLoadBalancerHeuristic>(string_view, string_view, bool)>> apiHeuristics =
 			{
 				{ "Connections", [](string_view ip, string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
-				{ json_settings::cxxExecutorKey, [](string_view ip, string_view port, bool useHTTPS) { return make_unique<CXXHeuristic>(nullptr, ip, port, useHTTPS); } }
+				{ json_settings::cxxExecutorKey, [heuristicName, loadSource](string_view ip, string_view port, bool useHTTPS) { return make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } }
 			};
 
 			// TODO: exception handling
@@ -369,7 +368,7 @@ namespace framework
 		LoadBalancerServer::LoadBalancerServer
 		(
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
-			const json::utility::jsonObject& heuristic, const vector<HMODULE>& loadSources,
+			const json::utility::jsonObject& heuristic, HMODULE loadSource,
 			const unordered_map<string, vector<int64_t>>& allServers, //-V688
 			shared_ptr<ResourceExecutor> resources,
 			size_t processingThreads
@@ -390,29 +389,6 @@ namespace framework
 			const string& heuristicName = heuristic.getString("name");
 			const string& apiType = heuristic.getString(json_settings::apiTypeKey);
 
-			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
-			CreateHeuristicFunction heuristicCreateFunction = nullptr;
-
-			if (heuristicName == "Connections")
-			{
-				heuristicCreateFunction = [](string_view ip, string_view port, bool useHTTPS) -> void* { return new Connections(ip, port, useHTTPS); };
-			}
-			else
-			{
-				for (HMODULE source : loadSources)
-				{
-					if (heuristicCreateFunction = utility::load<CreateHeuristicFunction>(source, createHeuristicFunctionName); heuristicCreateFunction)
-					{
-						break;
-					}
-				}
-
-				if (!heuristicCreateFunction)
-				{
-					throw runtime_error("Can't find heuristic");
-				}
-			}
-
 			this->allServers.reserve(allServers.size());
 
 			for (const auto& [ip, ports] : allServers)
@@ -424,7 +400,7 @@ namespace framework
 					this->allServers.emplace_back
 					(
 						utility::BaseConnectionData(ip, portString, timeout),
-						this->createAPIHeuristic(ip, portString, useHTTPS, apiType)
+						this->createAPIHeuristic(ip, portString, useHTTPS, heuristicName, apiType, loadSource)
 					);
 				}
 			}

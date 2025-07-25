@@ -21,19 +21,6 @@ using namespace std;
 
 namespace framework
 {
-	unordered_map<string, unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator* ()
-	{
-		return statefulExecutors;
-	}
-
-	ExecutorsManager::StatefulExecutors::~StatefulExecutors()
-	{
-		for (auto&& [_, executor] : statefulExecutors)
-		{
-			executor->destroy();
-		}
-	}
-
 	bool ExecutorsManager::isFileRequest(string_view parameters)
 	{
 		size_t index = parameters.find('.');

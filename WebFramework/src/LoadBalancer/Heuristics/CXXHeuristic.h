@@ -7,10 +7,28 @@ namespace framework::load_balancer
 	class CXXHeuristic : public BaseLoadBalancerHeuristic
 	{
 	private:
+		using OperatorSignature = uint64_t(*)(void*);
+		using OnStartSignature = void(*)(void*);
+		using OnEndSignature = void(*)(void*);
+		using GetIpSignature = const char* (*)(void*);
+		using GetPortSignature = const char* (*)(void*);
+		using GetUseHTTPSSignature = bool(*)(void*);
+		using DeleteHeuristicSignature = void(*)(void*);
+
+	private:
+		std::string ip;
+		std::string port;
 		void* implementation;
+		OperatorSignature operatorFunction;
+		OnStartSignature onStartFunction;
+		OnEndSignature onEndFunction;
+		GetIpSignature getIpFunction;
+		GetPortSignature getPortFunction;
+		GetUseHTTPSSignature getUseHTTPSFunction;
+		DeleteHeuristicSignature deleteHeuristicFunction;
 
 	public:
-		CXXHeuristic(void* implementation, std::string_view ip, std::string_view port, bool useHTTPS);
+		CXXHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, HMODULE handle);
 
 		uint64_t operator ()() const override;
 

@@ -26,6 +26,6 @@ sleep 1
 ./LoadBalancerCore --port 9091
 ./LoadBalancerCore --port 9092 --useHTTPS
 ./LoadBalancerCore --port 9093 --useHTTPS
-# ./LoadBalancerCore --port 9094 --custom_heuristic
+./LoadBalancerCore --port 9094 --custom_heuristic
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS

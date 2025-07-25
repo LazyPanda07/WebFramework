@@ -115,6 +115,11 @@ namespace framework
 #endif
 
 #pragma region ExportFunctions
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline uint64_t webFrameworkHeuristicOperator(void* implementation)
+{
+	return (*static_cast<framework::LoadBalancerHeuristic*>(implementation))();
+}
+
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkHeuristicOnStart(void* implementation)
 {
 	static_cast<framework::LoadBalancerHeuristic*>(implementation)->onStart();
@@ -135,8 +140,13 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline const char* webFrameworkHeuristicGet
 	return static_cast<framework::LoadBalancerHeuristic*>(implementation)->getPort().data();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline bool webFrameworkHeuristicUseHTTPS(void* implementation)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline bool webFrameworkHeuristicGetUseHTTPS(void* implementation)
 {
 	return static_cast<framework::LoadBalancerHeuristic*>(implementation)->getUseHTTPS();
+}
+
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDeleteHeuristic(void* implementation)
+{
+	delete static_cast<framework::LoadBalancerHeuristic*>(implementation);
 }
 #pragma endregion

@@ -23,7 +23,8 @@ namespace framework
 		doTraceFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoTrace")),
 		doConnectFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoConnect")),
 		getTypeFunction(utility::load<GetTypeSignature>(module, "webFrameworkGetType")),
-		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkDestroyExecutor"))
+		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkDestroyExecutor")),
+		deleteFunction(utility::load<DeleteSignature>(module, "webFrameworkDeleteExecutor"))
 	{
 		try
 		{
@@ -39,6 +40,7 @@ namespace framework
 			ASSERT_LOAD_FUNCTION(doConnectFunction);
 			ASSERT_LOAD_FUNCTION(getTypeFunction);
 			ASSERT_LOAD_FUNCTION(destroyFunction);
+			ASSERT_LOAD_FUNCTION(deleteFunction);
 		}
 		catch (const exception& e)
 		{
@@ -104,5 +106,12 @@ namespace framework
 	void CXXExecutor::destroy()
 	{
 		destroyFunction(implementation);
+	}
+
+	CXXExecutor::~CXXExecutor()
+	{
+		this->destroy();
+
+		deleteFunction(implementation);
 	}
 }

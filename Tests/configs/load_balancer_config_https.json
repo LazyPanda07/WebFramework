@@ -5,7 +5,10 @@
     "timeout": 0
   },
   "LoadBalancer": {
-    "heuristic": "Connections",
+    "heuristic": {
+      "name": "Connections",
+      "api": "cxx"
+    },
     "loadSource": "current",
     "serversHTTPS": false,
     "processingThreads": 4,

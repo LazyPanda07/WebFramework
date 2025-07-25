@@ -10,11 +10,12 @@ namespace framework
 {
 	class CXXExecutor : public BaseExecutor
 	{
-	public:
+	private:
 		using InitExecutorSignature = void(*)(void*, const void*);
 		using DoMethodSignature = void(*)(void*, interfaces::IHTTPRequest*, interfaces::IHTTPResponse*);
 		using GetTypeSignature = utility::ExecutorType(*)(void*);
 		using DestroySignature = void(*)(void*);
+		using DeleteSignature = void(*)(void*);
 
 	private:
 		void* implementation;
@@ -30,6 +31,7 @@ namespace framework
 		DoMethodSignature doConnectFunction;
 		GetTypeSignature getTypeFunction;
 		DestroySignature destroyFunction;
+		DeleteSignature deleteFunction;
 
 	public:
 		CXXExecutor(HMODULE module, void* implementation);
@@ -58,6 +60,6 @@ namespace framework
 
 		void destroy() override;
 
-		~CXXExecutor() = default;
+		~CXXExecutor();
 	};
 }

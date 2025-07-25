@@ -332,7 +332,7 @@ namespace framework
 					timeout,
 					serversHTTPS,
 					heuristic,
-					utility::loadSources(pathToSources),
+					utility::loadSources({ loadSource }).front(),
 					allServers,
 					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
 					processingThreads

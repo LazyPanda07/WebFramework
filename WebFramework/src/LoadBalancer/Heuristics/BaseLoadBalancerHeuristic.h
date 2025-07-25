@@ -13,7 +13,7 @@ namespace framework::load_balancer
 	class WEB_FRAMEWORK_EXPORT_API BaseLoadBalancerHeuristic
 	{
 	public:
-		BaseLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
+		BaseLoadBalancerHeuristic() = default;
 
 		/**
 		 * @brief Calculate load score(choose server with lowest score)
@@ -52,7 +52,7 @@ namespace framework::load_balancer
 		virtual ~BaseLoadBalancerHeuristic() = default;
 	};
 
-	using CreateHeuristicFunction = void* (*)(std::string_view ip, std::string_view port, bool useHTTPS);
+	using CreateHeuristicFunction = void* (*)(const char* ip, const char* port, bool useHTTPS);
 }
 
 #ifdef __LINUX__

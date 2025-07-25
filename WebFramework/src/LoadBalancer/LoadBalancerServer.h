@@ -86,7 +86,7 @@ namespace framework
 		private:
 			void processing(size_t index);
 
-			std::unique_ptr<BaseLoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view apiType) const;
+			std::unique_ptr<BaseLoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, HMODULE loadSource) const;
 
 		private:
 			void receiveConnections(const std::function<void()>& onStartServer, std::exception** outException) override;
@@ -97,7 +97,7 @@ namespace framework
 			LoadBalancerServer
 			(
 				std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
-				const json::utility::jsonObject& heuristic, const std::vector<HMODULE>& loadSources,
+				const json::utility::jsonObject& heuristic, HMODULE loadSource,
 				const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 				std::shared_ptr<ResourceExecutor> resources,
 				size_t processingThreads

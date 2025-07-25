@@ -7,7 +7,6 @@ namespace framework
 	namespace load_balancer
 	{
 		Connections::Connections(string_view ip, string_view port, bool useHTTPS) :
-			BaseLoadBalancerHeuristic(ip, port, useHTTPS),
 			ip(ip),
 			port(port),
 			useHTTPS(useHTTPS),
