@@ -292,7 +292,7 @@ namespace framework
 		{
 			static const unordered_map<string_view, function<unique_ptr<BaseLoadBalancerHeuristic>(string_view, string_view, bool)>> apiHeuristics =
 			{
-				{ "Connections", [](string_view ip, string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
+				{ "", [](string_view ip, string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
 				{ json_settings::cxxExecutorKey, [heuristicName, loadSource](string_view ip, string_view port, bool useHTTPS) { return make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } }
 			};
 
