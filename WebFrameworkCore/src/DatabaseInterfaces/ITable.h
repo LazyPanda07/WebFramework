@@ -5,7 +5,7 @@
 
 namespace framework::interfaces
 {
-	class WEB_FRAMEWORK_CORE_API ITable
+	class ITable
 	{
 	public:
 		virtual ISQLResult* execute(const char* query, const ISQLValue** values, size_t size) = 0;

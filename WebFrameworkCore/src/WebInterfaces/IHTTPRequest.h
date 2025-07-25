@@ -2,11 +2,11 @@
 
 #include "IHTTPResponse.h"
 
-#include "Databases/Interfaces/IDatabase.h"
+#include "DatabaseInterfaces/IDatabase.h"
 
 namespace framework::interfaces
 {
-	struct WEB_FRAMEWORK_CORE_API CLargeData
+	struct CLargeData
 	{
 		const char* dataPart;
 		size_t dataPartSize;
@@ -23,7 +23,7 @@ namespace framework::interfaces
 		}
 	};
 
-	struct WEB_FRAMEWORK_CORE_API CMultipart
+	struct CMultipart
 	{
 		const char* name;
 		/**
@@ -46,7 +46,7 @@ namespace framework::interfaces
 		}
 	};
 
-	struct WEB_FRAMEWORK_CORE_API CVariable
+	struct CVariable
 	{
 		const char* name;
 		const char* value;
@@ -59,8 +59,11 @@ namespace framework::interfaces
 		}
 	};
 
-	class WEB_FRAMEWORK_CORE_API IHTTPRequest
+	class IHTTPRequest
 	{
+	public:
+		static inline constexpr size_t defaultChunkSize = 14 * 1024 * 1024;
+
 	public:
 		IHTTPRequest() = default;
 
@@ -104,7 +107,7 @@ namespace framework::interfaces
 
 		virtual void sendDynamicFile(const char* filePath, IHTTPResponse* response, size_t variablesSize, const CVariable* variables, bool isBinary = false, const char* fileName = "") = 0;
 
-		virtual void streamFile(const char* filePath, IHTTPResponse* response, const char* fileName, size_t chunkSize = defaultChunkSize) = 0;
+		virtual void streamFile(const char* filePath, IHTTPResponse* response, const char* fileName, size_t chunkSize = IHTTPRequest::defaultChunkSize) = 0;
 
 		virtual void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(const char* result)) = 0;
 

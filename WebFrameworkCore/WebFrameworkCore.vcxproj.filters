@@ -21,13 +21,13 @@
     <ClInclude Include="src\WebFrameworkCoreConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h">
+    <ClInclude Include="src\WebInterfaces\IDynamicFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IFile.h">
+    <ClInclude Include="src\WebInterfaces\IFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h">
+    <ClInclude Include="src\WebInterfaces\IStaticFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\ChunkGenerator.h">
@@ -36,19 +36,19 @@
     <ClInclude Include="src\Managers\SessionsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IHTTPRequest.h">
+    <ClInclude Include="src\WebInterfaces\IHTTPRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\Interfaces\IDatabase.h">
+    <ClInclude Include="src\DatabaseInterfaces\IDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\Interfaces\ITable.h">
+    <ClInclude Include="src\DatabaseInterfaces\ITable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\Interfaces\ISQLResult.h">
+    <ClInclude Include="src\DatabaseInterfaces\ISQLResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\Interfaces\ISQLValue.h">
+    <ClInclude Include="src\DatabaseInterfaces\ISQLValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClCompile Include="src\Managers\SessionsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\Interfaces\IHTTPResponse.h">
+    <ClCompile Include="src\WebInterfaces\IHTTPResponse.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,8 +7,8 @@
 
 #include "Exceptions/BaseJSONException.h"
 #include "Exceptions/FileDoesNotExistException.h"
-#include "WebNetwork/WebServers/MultithreadedWebServer.h"
-#include "WebNetwork/WebServers/ThreadPoolWebServer.h"
+#include "Web/WebServers/MultithreadedWebServer.h"
+#include "Web/WebServers/ThreadPoolWebServer.h"
 #include "LoadBalancer/LoadBalancerServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Sources.h"
@@ -300,16 +300,21 @@ namespace framework
 		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
 		{
 			const json::utility::jsonObject& loadBalancerSettings = (*config).getObject(json_settings::loadBalancerObject);
-			string heuristic(json_settings::defaultHeuristicValue);
+			json::utility::jsonObject heuristic;
 			string loadSource(json_settings::defaultLoadSourceValue);
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject(json_settings::listOfServersKey);
 			unordered_map<string, vector<int64_t>> allServers;
 			uint64_t processingThreads = 1;
 
-			loadBalancerSettings.tryGetString(json_settings::heuristicKey, heuristic);
 			loadBalancerSettings.tryGetString(json_settings::loadSourceKey, loadSource);
 			loadBalancerSettings.tryGetUnsignedInt(json_settings::processingThreadsKey, processingThreads);
+
+			if (!loadBalancerSettings.tryGetObject(json_settings::heuristicKey, heuristic))
+			{
+				heuristic.setString("name", json_settings::defaultHeuristicValue);
+				heuristic.setString(json_settings::apiTypeKey, "cxx");
+			}
 
 			for (const auto& [key, value] : listOfServers)
 			{

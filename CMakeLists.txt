@@ -23,6 +23,7 @@ set(
 	crypto
 )
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
+set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
 project(WebFramework VERSION 3.0.12)
 
@@ -57,6 +58,7 @@ add_library(
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
+	WebFramework/src/LoadBalancer/Heuristics/CXXHeuristic.cpp
 	WebFramework/src/Proxy/ProxyServer.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
@@ -65,21 +67,22 @@ add_library(
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
-	WebFramework/src/WebNetwork/WebServers/BaseWebServer.cpp
-	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
-	WebFramework/src/WebNetwork/WebServers/ThreadPoolWebServer.cpp
-	WebFramework/src/WebNetwork/WebServers/ExecutorServer.cpp
+	WebFramework/src/Web/WebServers/BaseWebServer.cpp
+	WebFramework/src/Web/WebServers/MultithreadedWebServer.cpp
+	WebFramework/src/Web/WebServers/ThreadPoolWebServer.cpp
+	WebFramework/src/Web/WebServers/ExecutorServer.cpp
 	WebFramework/src/Framework/Config.cpp
 	WebFramework/src/Framework/WebFramework.cpp
 	WebFramework/src/CAPI/WebFrameworkCAPI.cpp
 	WebFramework/src/CAPI/WebFrameworkExecutorsCAPI.cpp
 	WebFramework/src/CAPI/WebFrameworkUtilityCAPI.cpp
+	WebFramework/src/CAPI/WebFrameworkLocalizationCAPI.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
 	WebFramework/src/Utility/AdditionalServerSettings.cpp
-	WebFramework/src/WebNetwork/HTTPRequestImplementation.cpp
-	WebFramework/src/WebNetwork/HTTPResponseImplementation.cpp
+	WebFramework/src/Web/HTTPRequestImplementation.cpp
+	WebFramework/src/Web/HTTPResponseImplementation.cpp
 	WebFramework/src/Databases/DatabaseImplementation.cpp
 	WebFramework/src/Databases/TableImplementation.cpp
 	WebFramework/src/Databases/SQLResultImplementation.cpp

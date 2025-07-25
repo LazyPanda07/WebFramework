@@ -1,9 +1,9 @@
 #include "MultiUserExecutor.h"
 
-#include "UUID.h"
+#include <Utility/WebFrameworkUtility.hpp>
 
 MultiUserExecutor::MultiUserExecutor() :
-    userId(utility::uuid::generateUUID())
+    userId(framework::utility::uuid::generateUUID())
 {
 	
 }

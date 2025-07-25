@@ -1,6 +1,6 @@
 #include "LocalizationExecutor.h"
 
-#include "MultiLocalizationManager.h"
+#include <Utility/WebFrameworkLocalization.hpp>
 
 void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
@@ -9,7 +9,7 @@ void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTT
 		framework::JSONBuilder().append
 		(
 			"result",
-			localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", request.getJSON().get<std::string>("language"))
+			framework::utility::getLocalizedString("LocalizationData", "key", request.getJSON().get<std::string>("language"))
 		)
 	);
 }

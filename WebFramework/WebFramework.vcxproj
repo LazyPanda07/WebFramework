@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\CAPI\WebFrameworkExecutorsCAPI.cpp" />
+    <ClCompile Include="src\CAPI\WebFrameworkLocalizationCAPI.cpp" />
     <ClCompile Include="src\CAPI\WebFrameworkUtilityCAPI.cpp" />
     <ClCompile Include="src\Databases\DatabaseImplementation.cpp" />
     <ClCompile Include="src\Databases\SQLResultImplementation.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="src\Executors\CXXExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
     <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
@@ -150,9 +152,9 @@
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPRequestImplementation.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPResponseImplementation.cpp" />
-    <ClCompile Include="src\WebNetwork\WebServers\ExecutorServer.cpp" />
+    <ClCompile Include="src\Web\HTTPRequestImplementation.cpp" />
+    <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
+    <ClCompile Include="src\Web\WebServers\ExecutorServer.cpp" />
     <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
     <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
@@ -169,12 +171,13 @@
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
     <ClCompile Include="src\Utility\BaseConnectionData.cpp" />
     <ClCompile Include="src\Framework\WebFramework.cpp" />
-    <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
-    <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp" />
-    <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
+    <ClCompile Include="src\Web\WebServers\BaseWebServer.cpp" />
+    <ClCompile Include="src\Web\WebServers\MultithreadedWebServer.cpp" />
+    <ClCompile Include="src\Web\WebServers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CAPI\WebFrameworkExecutorsCAPI.h" />
+    <ClInclude Include="src\CAPI\WebFrameworkLocalizationCAPI.h" />
     <ClInclude Include="src\CAPI\WebFrameworkUtilityCAPI.h" />
     <ClInclude Include="src\Databases\DatabaseImplementation.h" />
     <ClInclude Include="src\Databases\SQLResultImplementation.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="src\Framework\WebFrameworkPlatform.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h" />
+    <ClInclude Include="src\LoadBalancer\Heuristics\CXXHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />
     <ClInclude Include="src\Managers\DatabasesManager.h" />
     <ClInclude Include="src\Proxy\ProxyServer.h" />
@@ -209,14 +213,14 @@
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
     <ClInclude Include="src\Utility\BaseConnectionData.h" />
     <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
-    <ClInclude Include="src\WebNetwork\HTTPRequestImplementation.h" />
-    <ClInclude Include="src\WebNetwork\HTTPResponseImplementation.h" />
-    <ClInclude Include="src\WebNetwork\WebServers\ExecutorServer.h" />
+    <ClInclude Include="src\Web\HTTPRequestImplementation.h" />
+    <ClInclude Include="src\Web\HTTPResponseImplementation.h" />
+    <ClInclude Include="src\Web\WebServers\ExecutorServer.h" />
     <ClInclude Include="src\Framework\WebFrameworkConstants.h" />
     <ClInclude Include="src\Framework\WebFramework.h" />
-    <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
-    <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h" />
-    <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />
+    <ClInclude Include="src\Web\WebServers\BaseWebServer.h" />
+    <ClInclude Include="src\Web\WebServers\MultithreadedWebServer.h" />
+    <ClInclude Include="src\Web\WebServers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Databases\Databases.vcxproj">

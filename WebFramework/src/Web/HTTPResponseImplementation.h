@@ -2,7 +2,7 @@
 
 #include "HTTPBuilder.h"
 #include "IOSocketStream.h"
-#include "WebNetwork/Interfaces/IHTTPResponse.h"
+#include "WebInterfaces/IHTTPResponse.h"
 
 #include "Framework/WebFrameworkPlatform.h"
 

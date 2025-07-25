@@ -2,7 +2,7 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 
-#include "WebNetwork/WebServers/BaseWebServer.h"
+#include "Web/WebServers/BaseWebServer.h"
 #include "Utility/BaseConnectionData.h"
 
 namespace framework

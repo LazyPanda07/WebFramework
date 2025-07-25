@@ -12,7 +12,6 @@ add_library(
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_SDK}/api/cxx/include
 )
 
 target_link_libraries(

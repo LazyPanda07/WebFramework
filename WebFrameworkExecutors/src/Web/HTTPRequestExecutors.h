@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "WebNetwork/Interfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHTTPRequest.h"
 #include "HTTPResponseExecutors.h"
 #include "JSONParser.h"
 #include "HTTPParser.h"

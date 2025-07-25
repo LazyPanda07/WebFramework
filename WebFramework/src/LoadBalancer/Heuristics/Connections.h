@@ -11,6 +11,9 @@ namespace framework
 		class Connections : public BaseLoadBalancerHeuristic
 		{
 		private:
+			std::string ip;
+			std::string port;
+			bool useHTTPS;
 			std::atomic_uint64_t connections;
 
 		public:
@@ -21,6 +24,12 @@ namespace framework
 			void onStart() override;
 
 			void onEnd() override;
+
+			const std::string& getIp() const override;
+			
+			const std::string& getPort() const override;
+
+			bool getUseHTTPS() const override;
 
 			~Connections() = default;
 		};

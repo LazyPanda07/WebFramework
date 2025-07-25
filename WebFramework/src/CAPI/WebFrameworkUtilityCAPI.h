@@ -95,6 +95,8 @@ EXPORT String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* 
 
 EXPORT int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception);
 
+EXPORT String generateWebFrameworkUUID(Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EXPORT void deleteWebFrameworkJSONObject(JSONObject object);

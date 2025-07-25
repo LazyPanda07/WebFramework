@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Databases/Interfaces/IDatabase.h"
+#include "DatabaseInterfaces/IDatabase.h"
 
 #include "Framework/WebFrameworkPlatform.h"
 

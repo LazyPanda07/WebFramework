@@ -1,10 +1,10 @@
 #pragma once
 
-#include "WebFrameworkCoreConstants.h"
+#include <cstdint>
 
 namespace framework::interfaces
 {
-	class WEB_FRAMEWORK_CORE_API IHTTPResponse
+	class IHTTPResponse
 	{
 	public:
 		IHTTPResponse() = default;

@@ -22,6 +22,11 @@
         "initParameters": {
           "type": "object",
           "description": "Initialization parameters for executors that can be accessed in init function"
+        },
+        "api": {
+          "type": "string",
+          "description": "API language",
+          "enum": ["cxx"]
         }
       },
       "required": [ "route", "loadType" ]

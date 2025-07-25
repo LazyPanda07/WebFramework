@@ -8,7 +8,7 @@
 
 namespace framework::interfaces
 {
-	class WEB_FRAMEWORK_CORE_API IDynamicFile : virtual public IFile
+	class IDynamicFile : virtual public IFile
 	{
 	public:
 		/**

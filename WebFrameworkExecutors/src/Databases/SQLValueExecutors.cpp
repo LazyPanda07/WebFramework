@@ -1,5 +1,7 @@
 #include "SQLValueExecutors.h"
 
+#include <stdexcept>
+
 namespace framework
 {
 	SQLValueExecutors::SQLValueExecutors(const interfaces::ISQLValue* implementation)

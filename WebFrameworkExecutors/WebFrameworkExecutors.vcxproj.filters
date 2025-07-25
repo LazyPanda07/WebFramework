@@ -45,10 +45,10 @@
     <ClCompile Include="src\c_api\executors_c_api.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\HTTPRequestExecutors.cpp">
+    <ClCompile Include="src\Web\HTTPRequestExecutors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\HTTPResponseExecutors.cpp">
+    <ClCompile Include="src\Web\HTTPResponseExecutors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Databases\DatabaseExecutors.cpp">
@@ -98,10 +98,10 @@
     <ClInclude Include="src\c_api\executors_c_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\HTTPRequestExecutors.h">
+    <ClInclude Include="src\Web\HTTPRequestExecutors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\HTTPResponseExecutors.h">
+    <ClInclude Include="src\Web\HTTPResponseExecutors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Databases\DatabaseExecutors.h">

@@ -12,11 +12,6 @@ namespace framework::load_balancer
 	 */
 	class WEB_FRAMEWORK_EXPORT_API BaseLoadBalancerHeuristic
 	{
-	private:
-		std::string ip;
-		std::string port;
-		bool useHTTPS;
-
 	public:
 		BaseLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
 
@@ -40,19 +35,19 @@ namespace framework::load_balancer
 		 * @brief Get server ip
 		 * @return
 		 */
-		const std::string& getIp() const;
+		virtual const std::string& getIp() const = 0;
 
 		/**
 		 * @brief Get server port
 		 * @return
 		 */
-		const std::string& getPort() const;
+		virtual const std::string& getPort() const = 0;
 
 		/**
 		 * @brief Is server using HTTPS
 		 * @return
 		 */
-		bool getUseHTTPS() const;
+		virtual bool getUseHTTPS() const = 0;
 
 		virtual ~BaseLoadBalancerHeuristic() = default;
 	};

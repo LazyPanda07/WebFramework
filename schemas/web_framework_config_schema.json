@@ -30,8 +30,19 @@
       "description": "Settings for loadBalancer webServerType",
       "properties": {
         "heuristic": {
-          "type": "string",
-          "description": "Heuristic for load balancing"
+          "type": "object",
+          "description": "Heuristic for load balancing",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Heuristic class name"
+            },
+            "api": {
+              "type": "string",
+              "description": "API language",
+              "enum": [ "cxx" ]
+            }
+          }
         },
         "loadSource": {
           "type": "string",

@@ -5,7 +5,7 @@
 
 namespace framework::interfaces
 {
-	class WEB_FRAMEWORK_CORE_API IStaticFile : virtual public IFile
+	class IStaticFile : virtual public IFile
 	{
 	public:
 		/**

@@ -40,8 +40,8 @@ if (CMAKE_SCRIPT_MODE_FILE)
     return()
 endif()
 
-include_directories(
-    BEFORE
+set(
+    WEB_FRAMEWORK_INCLUDES
     ${WEB_FRAMEWORK_SDK}/include/
     ${WEB_FRAMEWORK_SDK}/include/vendor/OpenSSL/
     ${WEB_FRAMEWORK_SDK}/include/vendor/sqlite3/

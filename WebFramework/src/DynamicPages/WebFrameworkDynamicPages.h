@@ -7,7 +7,7 @@
 #include "Framework/WebFrameworkPlatform.h"
 
 #include "Strings.h"
-#include "WebNetwork/Interfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHTTPRequest.h"
 
 namespace framework
 {

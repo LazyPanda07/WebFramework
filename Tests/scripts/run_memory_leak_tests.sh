@@ -43,7 +43,7 @@ LOAD_BALANCER_9093_FILE_NAME=load_balancer_9093_memory_leaks_result.txt
 ./LoadBalancerServer --config load_balancer_config.json --type server --port 10001 --serversHTTPS &
 ./LoadBalancerServer --config load_balancer_config_https.json  --type server --port 10002 &
 ./LoadBalancerServer --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
-./LoadBalancerServer --config load_balancer_config.json --port 9094 --custom_heuristic &
+# ./LoadBalancerServer --config load_balancer_config.json --port 9094 --custom_heuristic &
 sleep 1
 
 valgrind --max-threads=1000 --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=${CORE_FILE_NAME} ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &

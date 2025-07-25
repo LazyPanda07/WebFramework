@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Databases/Interfaces/ISQLValue.h"
+#include "DatabaseInterfaces/ISQLValue.h"
 
 #include "Framework/WebFrameworkPlatform.h"
 

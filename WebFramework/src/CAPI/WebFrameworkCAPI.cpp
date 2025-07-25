@@ -5,7 +5,7 @@
 #include "Framework/WebFramework.h"
 #include "Framework/Config.h"
 #include "Log.h"
-#include "WebNetwork/Interfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHTTPRequest.h"
 #include "Exceptions/APIException.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }

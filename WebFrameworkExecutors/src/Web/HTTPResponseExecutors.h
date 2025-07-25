@@ -2,7 +2,7 @@
 
 #include "functional"
 
-#include "WebNetwork/Interfaces/IHTTPResponse.h"
+#include "WebInterfaces/IHTTPResponse.h"
 #include "JSONBuilder.h"
 #include "ExecutorsConstants.h"
 #include "HTTPUtility.h"

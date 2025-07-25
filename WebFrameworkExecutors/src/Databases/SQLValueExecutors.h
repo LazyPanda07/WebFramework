@@ -1,8 +1,11 @@
 #pragma once
 
 #include <variant>
+#include <type_traits>
+#include <vector>
+#include <string>
 
-#include "Databases/Interfaces/ISQLValue.h"
+#include "DatabaseInterfaces/ISQLValue.h"
 
 #include "ExecutorsConstants.h"
 

@@ -94,23 +94,23 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Databases\Interfaces\IDatabase.h" />
-    <ClInclude Include="src\Databases\Interfaces\ISQLResult.h" />
-    <ClInclude Include="src\Databases\Interfaces\ISQLValue.h" />
-    <ClInclude Include="src\Databases\Interfaces\ITable.h" />
+    <ClInclude Include="src\DatabaseInterfaces\IDatabase.h" />
+    <ClInclude Include="src\DatabaseInterfaces\ISQLResult.h" />
+    <ClInclude Include="src\DatabaseInterfaces\ISQLValue.h" />
+    <ClInclude Include="src\DatabaseInterfaces\ITable.h" />
     <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
     <ClInclude Include="src\Utility\ChunkGenerator.h" />
     <ClInclude Include="src\WebFrameworkCoreConstants.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IHTTPRequest.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
+    <ClInclude Include="src\WebInterfaces\IDynamicFile.h" />
+    <ClInclude Include="src\WebInterfaces\IFile.h" />
+    <ClInclude Include="src\WebInterfaces\IHTTPRequest.h" />
+    <ClInclude Include="src\WebInterfaces\IStaticFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
-    <ClCompile Include="src\WebNetwork\Interfaces\IHTTPResponse.h" />
+    <ClCompile Include="src\WebInterfaces\IHTTPResponse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

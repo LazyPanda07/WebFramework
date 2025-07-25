@@ -6,8 +6,8 @@
 */
 #pragma once
 
-#include "WebNetwork/HTTPRequestExecutors.h"
-#include "WebNetwork/HTTPResponseExecutors.h"
+#include "Web/HTTPRequestExecutors.h"
+#include "Web/HTTPResponseExecutors.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/JSONSettingsParser.h"
 #include "ExecutorsConstants.h"

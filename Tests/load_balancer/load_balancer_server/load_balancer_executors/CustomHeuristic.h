@@ -1,8 +1,8 @@
 #pragma once
 
-#include "LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.h"
+#include <LoadBalancerHeuristics.hpp>
 
-class CustomHeuristic : public framework::load_balancer::BaseLoadBalancerHeuristic
+class CustomHeuristic : public framework::BaseLoadBalancerHeuristic
 {
 private:
 	uint64_t id;

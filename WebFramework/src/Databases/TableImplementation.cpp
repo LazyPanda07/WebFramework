@@ -1,5 +1,7 @@
 #include "TableImplementation.h"
 
+#include <stdexcept>
+
 #include "SQLResultImplementation.h"
 
 using namespace std;

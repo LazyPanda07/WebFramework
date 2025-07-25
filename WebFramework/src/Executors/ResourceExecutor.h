@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Executors/BaseStatelessExecutor.h"
-#include "WebNetwork/Interfaces/IStaticFile.h"
-#include "WebNetwork/Interfaces/IDynamicFile.h"
+#include "WebInterfaces/IStaticFile.h"
+#include "WebInterfaces/IDynamicFile.h"
 
 #include <array>
 

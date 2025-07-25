@@ -4,7 +4,7 @@
 
 #include "MultiLocalizationManager.h"
 
-#include "WebNetwork/WebServers/BaseWebServer.h"
+#include "Web/WebServers/BaseWebServer.h"
 #include "Heuristics/BaseLoadBalancerHeuristic.h"
 #include "Executors/ResourceExecutor.h"
 
@@ -86,6 +86,8 @@ namespace framework
 		private:
 			void processing(size_t index);
 
+			std::unique_ptr<BaseLoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view apiType) const;
+
 		private:
 			void receiveConnections(const std::function<void()>& onStartServer, std::exception** outException) override;
 
@@ -95,7 +97,7 @@ namespace framework
 			LoadBalancerServer
 			(
 				std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
-				std::string_view heuristicName, const std::vector<HMODULE>& loadSources,
+				const json::utility::jsonObject& heuristic, const std::vector<HMODULE>& loadSources,
 				const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 				std::shared_ptr<ResourceExecutor> resources,
 				size_t processingThreads

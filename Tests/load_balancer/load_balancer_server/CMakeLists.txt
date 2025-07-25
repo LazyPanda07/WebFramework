@@ -11,9 +11,14 @@ add_executable(
 	main.cpp
 )
 
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
+	${WEB_FRAMEWORK_INCLUDES}
+)
+
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
+	UtilityLibrary
 )
 
 add_subdirectory(load_balancer_executors)

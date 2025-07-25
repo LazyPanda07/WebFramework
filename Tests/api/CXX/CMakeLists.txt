@@ -21,7 +21,6 @@ target_link_directories(
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
 	${GTEST_BOTH_LIBRARIES}
 )
 

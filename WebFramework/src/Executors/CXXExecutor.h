@@ -3,8 +3,8 @@
 #include <Executors/BaseExecutor.h>
 
 #include <Utility/Sources.h>
-#include <WebNetwork/Interfaces/IHTTPRequest.h>
-#include <WebNetwork/Interfaces/IHTTPResponse.h>
+#include <WebInterfaces/IHTTPRequest.h>
+#include <WebInterfaces/IHTTPResponse.h>
 
 namespace framework
 {

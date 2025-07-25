@@ -1,10 +1,10 @@
 #pragma once
 
-#include "WebFrameworkCoreConstants.h"
+#include <cstdint>
 
 namespace framework::interfaces
 {
-	class WEB_FRAMEWORK_CORE_API ISQLValue
+	class ISQLValue
 	{
 	public:
 		enum class SQLValueType : uint8_t

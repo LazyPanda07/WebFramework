@@ -4,6 +4,7 @@
 #include "JSONBuilder.h"
 #include "JSONParser.h"
 #include "Utility/JSONSettingsParser.h"
+#include "UUID.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -794,6 +795,24 @@ int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception
 	}
 
 	return -1;
+}
+
+String generateWebFrameworkUUID(Exception* exception)
+{
+	try
+	{
+		return new std::string(utility::uuid::generateUUID());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Databases/Interfaces/ITable.h"
+#include "DatabaseInterfaces/ITable.h"
 
 #include "ExecutorsConstants.h"
 #include "SQLResultExecutors.h"

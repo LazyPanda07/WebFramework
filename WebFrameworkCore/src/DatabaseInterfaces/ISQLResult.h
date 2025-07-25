@@ -1,12 +1,10 @@
 #pragma once
 
-#include "WebFrameworkCoreConstants.h"
-
 #include "ISQLValue.h"
 
 namespace framework::interfaces
 {
-	class WEB_FRAMEWORK_CORE_API ISQLResult
+	class ISQLResult
 	{
 	public:
 		virtual size_t size() const = 0;

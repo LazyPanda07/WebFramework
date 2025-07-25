@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "WebNetwork/Interfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHTTPRequest.h"
 #include "HTTPResponse.hpp"
 #include "Utility/ChunkGenerator.hpp"
 #include "JSONParser.hpp"
@@ -49,6 +49,8 @@ namespace framework
 
 	class HTTPRequest
 	{
+	
+
 	public:
 		struct InsensitiveStringHash
 		{
@@ -214,7 +216,7 @@ namespace framework
 		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
 		* @param chunkSize Desired size of read data before sending
 		*/
-		void streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize = defaultChunkSize);
+		void streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHTTPRequest::defaultChunkSize);
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

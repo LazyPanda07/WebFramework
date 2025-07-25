@@ -2,7 +2,7 @@
 
 #include <variant>
 
-#include "Databases/Interfaces/ISQLValue.h"
+#include "DatabaseInterfaces/ISQLValue.h"
 
 namespace framework
 {

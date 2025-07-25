@@ -1,0 +1,27 @@
+#pragma once
+
+#include "../DLLHandler.hpp"
+#include "../Exceptions/WebFrameworkException.hpp"
+
+namespace framework::utility
+{
+	std::string_view getLocalizedString(std::string_view localizationModuleName, std::string_view key, std::string_view language = "");
+}
+
+namespace framework::utility
+{
+	inline std::string_view getLocalizedString(std::string_view localizationModuleName, std::string_view key, std::string_view language)
+	{
+		using getWebFrameworkLocalizedString = const char* (*)(const char* localizationModuleName, const char* key, const char* language, void** exception);
+		void* exception = nullptr;
+
+		const char* result = DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkLocalizedString, localizationModuleName.data(), key.data(), language.data(), &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return result;
+	}
+}

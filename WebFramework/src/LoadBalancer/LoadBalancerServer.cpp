@@ -5,9 +5,10 @@
 
 #include "Utility/Sources.h"
 #include "Heuristics/Connections.h"
-#include "WebNetwork/HTTPResponseImplementation.h"
+#include "Heuristics/CXXHeuristic.h"
+#include "Web/HTTPResponseImplementation.h"
 #include "Log.h"
-#include "WebNetwork/HTTPResponseExecutors.h"
+#include "Web/HTTPResponseExecutors.h"
 
 using namespace std;
 
@@ -288,6 +289,19 @@ namespace framework
 			}
 		}
 
+		unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(string_view ip, string_view port, bool useHTTPS, string_view apiType) const
+		{
+			static const unordered_map<string_view, function<unique_ptr<BaseLoadBalancerHeuristic>(string_view, string_view, bool)>> apiHeuristics =
+			{
+				{ "Connections", [](string_view ip, string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
+				{ json_settings::cxxExecutorKey, [](string_view ip, string_view port, bool useHTTPS) { return make_unique<CXXHeuristic>(nullptr, ip, port, useHTTPS); } }
+			};
+
+			// TODO: exception handling
+
+			return apiHeuristics.at(apiType)(ip, port, useHTTPS);
+		}
+
 		void LoadBalancerServer::receiveConnections(const function<void()>& onStartServer, exception** outException)
 		{
 			threads.reserve(requestQueues.size());
@@ -355,7 +369,7 @@ namespace framework
 		LoadBalancerServer::LoadBalancerServer
 		(
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
-			string_view heuristicName, const vector<HMODULE>& loadSources,
+			const json::utility::jsonObject& heuristic, const vector<HMODULE>& loadSources,
 			const unordered_map<string, vector<int64_t>>& allServers, //-V688
 			shared_ptr<ResourceExecutor> resources,
 			size_t processingThreads
@@ -373,6 +387,9 @@ namespace framework
 			resources(resources),
 			serversHTTPS(serversHTTPS)
 		{
+			const string& heuristicName = heuristic.getString("name");
+			const string& apiType = heuristic.getString(json_settings::apiTypeKey);
+
 			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
 			CreateHeuristicFunction heuristicCreateFunction = nullptr;
 
@@ -407,7 +424,7 @@ namespace framework
 					this->allServers.emplace_back
 					(
 						utility::BaseConnectionData(ip, portString, timeout),
-						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction(ip, portString, serversHTTPS)))
+						this->createAPIHeuristic(ip, portString, useHTTPS, apiType)
 					);
 				}
 			}

@@ -4,7 +4,7 @@
 
 namespace framework::interfaces
 {
-	class WEB_FRAMEWORK_CORE_API IDatabase
+	class IDatabase
 	{
 	public:
 		virtual bool contains(const char* tableName, ITable** outTable = nullptr) const = 0;

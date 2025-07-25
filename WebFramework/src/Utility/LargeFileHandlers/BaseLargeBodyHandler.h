@@ -5,9 +5,9 @@
 #include "BaseTCPServer.h"
 #include "Managers/SessionsManager.h"
 #include "Managers/ExecutorsManager.h"
-#include "WebNetwork/Interfaces/IStaticFile.h"
-#include "WebNetwork/Interfaces/IDynamicFile.h"
-#include "WebNetwork/HTTPRequestImplementation.h"
+#include "WebInterfaces/IStaticFile.h"
+#include "WebInterfaces/IDynamicFile.h"
+#include "Web/HTTPRequestImplementation.h"
 
 namespace framework::utility
 {

@@ -2,9 +2,9 @@
 
 #include "HTTPParser.h"
 
-#include "WebNetwork/Interfaces/IStaticFile.h"
-#include "WebNetwork/Interfaces/IDynamicFile.h"
-#include "WebNetwork/Interfaces/IHTTPRequest.h"
+#include "WebInterfaces/IStaticFile.h"
+#include "WebInterfaces/IDynamicFile.h"
+#include "WebInterfaces/IHTTPRequest.h"
 #include "Utility/ChunkGenerator.h"
 #include "WebFrameworkCoreConstants.h"
 #include "IOSocketStream.h"
