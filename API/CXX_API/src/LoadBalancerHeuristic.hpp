@@ -99,7 +99,7 @@ namespace framework
 * Macro for each LoadBalancerHeuristic subclass
 * Used for loading function that creates LoadBalancerHeuristic subclass
 */
-#define DECLARE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) __attribute__((used)) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
+#define DECLARE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) __attribute__((used)) void* create##subclassName##Heuristic(const char* ip, const char* port, bool useHTTPS)	\
 {	\
 	return new subclassName(ip, port, useHTTPS);	\
 }
@@ -108,7 +108,7 @@ namespace framework
 * Macro for each LoadBalancerHeuristic subclass
 * Used for loading function that creates LoadBalancerHeuristic subclass
 */
-#define DECLARE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
+#define DECLARE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(const char* ip, const char* port, bool useHTTPS)	\
 {	\
 	return new subclassName(ip, port, useHTTPS);	\
 }
