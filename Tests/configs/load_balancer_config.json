@@ -9,7 +9,7 @@
       "name": "Connections",
       "api": "cxx"
     },
-    "loadSource": "current",
+    "loadSource": "LoadBalancerExecutors",
     "serversHTTPS": false,
     "processingThreads": 4,
     "listOfServers": {
