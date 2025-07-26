@@ -44,7 +44,7 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        configuration: [Release]
+        configuration: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v4
@@ -71,7 +71,7 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:aarch64
     strategy:
       matrix:
-        configuration: [Release]
+        configuration: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v4
@@ -98,7 +98,7 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:android
     strategy:
       matrix:
-        configuration: [Release]
+        configuration: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v4
