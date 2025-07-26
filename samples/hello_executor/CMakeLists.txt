@@ -12,11 +12,6 @@ target_include_directories(
 	include
 )
 
-target_link_libraries(
-	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
-)
-
 if (WIN32)
 	install(
 		TARGETS ${PROJECT_NAME} 

@@ -101,7 +101,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\API\CXX_API\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,7 +121,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\API\CXX_API\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
