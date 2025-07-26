@@ -1,6 +1,7 @@
 #include "CXXHeuristic.h"
 
 #include "Utility/Sources.h"
+#include "Log.h"
 
 #define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw runtime_error(format("Can't load {} function", #name))
 
@@ -46,16 +47,26 @@ namespace framework::load_balancer
 
 	uint64_t CXXHeuristic::operator ()() const
 	{
-		return operatorFunction(implementation);
+		Log::info("Call operatorFunction", "LogCXXHeuristic");
+
+		uint64_t result = operatorFunction(implementation);
+
+		Log::info("Operator result: {}", "LogCXXHeuristic", result);
+
+		return result;
 	}
 
 	void CXXHeuristic::onStart()
 	{
+		Log::info("onStart", "LogCXXHeuristic");
+
 		return onStartFunction(implementation);
 	}
 
 	void CXXHeuristic::onEnd()
 	{
+		Log::info("onEnd", "LogCXXHeuristic");
+
 		return onEndFunction(implementation);
 	}
 
@@ -71,7 +82,13 @@ namespace framework::load_balancer
 
 	bool CXXHeuristic::getUseHTTPS() const
 	{
-		return getUseHTTPSFunction(implementation);
+		Log::info("Call getUseHTTPS", "LogCXXHeuristic");
+
+		bool result = getUseHTTPSFunction(implementation);
+
+		Log::info("getUseHTTPS result: {}", "LogCXXHeuristic", result);
+
+		return result;
 	}
 
 	CXXHeuristic::~CXXHeuristic()
