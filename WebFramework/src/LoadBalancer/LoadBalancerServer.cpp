@@ -387,7 +387,12 @@ namespace framework
 			serversHTTPS(serversHTTPS)
 		{
 			const string& heuristicName = heuristic.getString("name");
-			const string& apiType = heuristic.getString(json_settings::apiTypeKey);
+			string apiType = heuristic.getString(json_settings::apiTypeKey);
+
+			if (heuristicName == "Connections")
+			{
+				apiType = "";
+			}
 
 			this->allServers.reserve(allServers.size());
 
