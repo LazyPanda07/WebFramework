@@ -7,6 +7,15 @@ on:
   workflow_dispatch:
 
 
+defaults:
+  run:
+    shell: bash
+
+
+env:
+  WINDOWS_CMAKE_GENERATOR: "Ninja"
+
+
 jobs:
   windows-build:
     runs-on: windows-latest
@@ -23,13 +32,11 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build
-      shell: bash
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "Ninja" ..
-          ninja -j 0
-          ninja install
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . && cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

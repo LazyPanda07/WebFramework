@@ -4,6 +4,7 @@ set(WEB_FRAMEWORK_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(WEB_FRAMEWORK_DIR ${CMAKE_SOURCE_DIR}/..)
 set(WEB_FRAMEWORK_SDK ${WEB_FRAMEWORK_LIBRARY_DIR})
 set(GTEST_LIB_DIR ${CMAKE_SOURCE_DIR}/gtest/lib/)
+set(LOCALIZATION_BUILD_TARGET build_release_localization)
 set(
 	LIBS
     Networks
@@ -56,6 +57,8 @@ if ((NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} EQUAL ${CMAKE_SYSTEM_PROCESSOR}) AND ${C
     add_definitions(-D__AARCH64__)
 endif()
 
+include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
+
 find_package(GTest)
 
 if(NOT ${GTest_FOUND})
@@ -69,6 +72,17 @@ add_subdirectory(load_balancer)
 add_subdirectory(proxy)
 add_subdirectory(default_https_server)
 add_subdirectory(api)
+
+add_custom_target(
+	build_tests_localization ALL
+	COMMAND ${CMAKE_MAKE_PROGRAM} ${LOCALIZATION_BUILD_TARGET}
+)
+
+add_custom_command(
+	TARGET build_tests_localization
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy ${WEB_FRAMEWORK_LIBRARY_DIR}/localization_modules.json ${CMAKE_INSTALL_PREFIX}/localization_modules.json
+)
 
 install(DIRECTORY configs/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY scripts/ DESTINATION ${CMAKE_INSTALL_PREFIX})
