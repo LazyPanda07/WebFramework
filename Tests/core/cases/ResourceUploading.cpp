@@ -39,13 +39,12 @@ TEST(ResourceUploading, OctetStream)
 #ifdef __AARCH64__
 	GTEST_SKIP();
 #endif
-
 	constexpr std::string_view uploadFileName = "octet_stream.bin";
-	uintmax_t fileSize = std::filesystem::file_size(LARGE_FILE_NAME);
 	constexpr size_t chunkSize = 10ULL * 1024 * 1024;
+	uintmax_t fileSize = std::filesystem::file_size(LARGE_FILE_NAME);
 	std::string response;
 
-	streams::IOSocketStream stream = utility::createSocketStream(0);
+	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string headers = web::HTTPBuilder().postRequest().parameters("upload_octet_stream").headers
 	(
 		"File-Name", uploadFileName,

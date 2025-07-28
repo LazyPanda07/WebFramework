@@ -10,13 +10,6 @@ namespace framework::utility
 	{
 		requestWrapper->updateLargeData(data, bodySize);
 
-		totalSize += data.size();
-
-		if (Log::isValid())
-		{
-			Log::info("Total size: {}, Content-Length: {}", "LogLargeBodyHandler", totalSize, contentLengthSize);
-		}
-
 		try
 		{
 			 invoke(method, executor, *requestWrapper, responseWrapper);
@@ -27,6 +20,8 @@ namespace framework::utility
 			{
 				Log::error("Exception on handle chunk: {}", "LogBaseLargeBodyHandler", e.what());
 			}
+
+			std::cout << e.what() << std::endl;
 
 			return false;
 		}
@@ -46,9 +41,6 @@ namespace framework::utility
 		requestWrapper = make_unique<HTTPRequestExecutors>(request.get());
 		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, statefulExecutors);
 		method = BaseExecutor::getMethod(parser.getMethod());
-		totalSize = 0;
-
-		contentLengthSize = stoull(requestWrapper->getHeaders().at("Content-Length"));
 	}
 
 	void BaseLargeBodyHandler::onFinishHandleChunks()
@@ -75,9 +67,7 @@ namespace framework::utility
 		statefulExecutors(statefulExecutors),
 		executor(nullptr),
 		method(nullptr),
-		responseWrapper(&response),
-		totalSize(0),
-		contentLengthSize(0)
+		responseWrapper(&response)
 	{
 
 	}

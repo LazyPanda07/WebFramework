@@ -8,11 +8,11 @@
 
 namespace utility
 {
-	streams::IOSocketStream createSocketStream(DWORD timeout)
+	streams::IOSocketStream createSocketStream()
 	{
 		return useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080", timeout) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080", timeout);
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080") :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080");
 	}
 
 	bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second)

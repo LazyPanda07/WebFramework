@@ -7,7 +7,7 @@
 
 namespace utility
 {
-	streams::IOSocketStream createSocketStream(DWORD timeout = 30'000);
+	streams::IOSocketStream createSocketStream();
 
 	bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second);
 

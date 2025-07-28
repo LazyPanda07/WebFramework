@@ -28,8 +28,6 @@ namespace framework::utility
 		HTTPResponseExecutors responseWrapper;
 		BaseExecutor* executor;
 		void(BaseExecutor::* method)(HTTPRequestExecutors&, HTTPResponseExecutors&);
-		size_t totalSize;
-		size_t contentLengthSize;
 
 	private:
 		bool handleChunk(std::string_view data, size_t bodySize) override;
