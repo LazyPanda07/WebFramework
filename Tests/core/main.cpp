@@ -29,7 +29,7 @@ void printLog()
 
 void createLargeFile()
 {
-	if (!std::filesystem::exists(LARGE_FILE_NAME))
+	if (std::filesystem::exists(LARGE_FILE_NAME))
 	{
 		return;
 	}
