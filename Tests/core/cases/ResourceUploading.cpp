@@ -45,7 +45,7 @@ TEST(ResourceUploading, OctetStream)
 	constexpr size_t chunkSize = 10ULL * 1024 * 1024;
 	std::string response;
 
-	streams::IOSocketStream stream = utility::createSocketStream();
+	streams::IOSocketStream stream = utility::createSocketStream(0);
 	std::string headers = web::HTTPBuilder().postRequest().parameters("upload_octet_stream").headers
 	(
 		"File-Name", uploadFileName,
