@@ -24,11 +24,6 @@ namespace framework::utility
 			return false;
 		}
 
-		if (Log::isValid())
-		{
-			Log::info("Valid response: {}", "LogBaseLargeBodyHandler", !static_cast<bool>(response));
-		}
-
 		return !static_cast<bool>(response);
 	}
 

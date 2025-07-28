@@ -39,13 +39,16 @@ TEST(ResourceUploading, OctetStream)
 #ifdef __AARCH64__
 	GTEST_SKIP();
 #endif
+	constexpr std::string_view httpUrl = "http://127.0.0.1:8080/upload_octet_stream";
+	constexpr std::string_view httpsUrl = "https://127.0.0.1:8080/upload_octet_stream";
 	constexpr std::string_view uploadFileName = "octet_stream.bin";
 	constexpr size_t chunkSize = 10ULL * 1024 * 1024;
+
 	uintmax_t fileSize = std::filesystem::file_size(LARGE_FILE_NAME);
 	std::string response;
 
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string headers = web::HTTPBuilder().postRequest().parameters("upload_octet_stream").headers
+	/*std::string headers = web::HTTPBuilder().postRequest().parameters("upload_octet_stream").headers
 	(
 		"File-Name", uploadFileName,
 		"Content-Type", "application/octet-stream",
@@ -60,7 +63,7 @@ TEST(ResourceUploading, OctetStream)
 	for (uintmax_t i = 0; i < fileSize;)
 	{
 		size_t readSize = std::min<size_t>(chunkSize, fileSize - i);
-		
+
 		data.resize(readSize);
 
 		in.read(data.data(), readSize);
@@ -74,6 +77,10 @@ TEST(ResourceUploading, OctetStream)
 
 	web::HTTPParser parser(response);
 
-	ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::created);
+	ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::created);*/
+
+	int errorCode = std::system(std::format(R"(curl --insecure -X POST {} -H "Content-Type: application/octet-stream" -H "File-Name: {}" --data-binary @{})", (useHTTPS ? httpsUrl : httpUrl), uploadFileName, LARGE_FILE_NAME).data());
+
+	ASSERT_EQ(errorCode, 0);
 	ASSERT_TRUE(utility::compareFiles(LARGE_FILE_NAME, uploadFileName));
 }
