@@ -29,6 +29,11 @@ void printLog()
 
 void createLargeFile()
 {
+	if (!std::filesystem::exists(LARGE_FILE_NAME))
+	{
+		return;
+	}
+
 	std::ofstream out(LARGE_FILE_NAME, std::ios::binary);
 	size_t currentSize = 0;
 	std::string data(fileChunkSize, '\0');
@@ -54,10 +59,7 @@ int main(int argc, char** argv)
 {
 	useHTTPS = json::JSONParser(std::ifstream(argv[1])).getObject("WebFramework").getObject("HTTPS").getBool("useHTTPS");
 
-	if (!std::filesystem::exists(LARGE_FILE_NAME))
-	{
-		createLargeFile();
-	}
+	createLargeFile();
 
 	testing::InitGoogleTest(&argc, argv);
 

@@ -21,9 +21,12 @@ namespace framework::utility
 				Log::error("Exception on handle chunk: {}", "LogBaseLargeBodyHandler", e.what());
 			}
 
-			std::cout << e.what() << std::endl;
-
 			return false;
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Valid response: {}", "LogBaseLargeBodyHandler", !static_cast<bool>(response));
 		}
 
 		return !static_cast<bool>(response);
