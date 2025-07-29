@@ -25,3 +25,8 @@ call LoadBalancerCore.exe --port 9093 --useHTTPS || exit 1
 call LoadBalancerCore.exe --port 9094 --custom_heuristic || exit 1
 call ProxyCore.exe --port 15000 || exit 1
 call ProxyCore.exe --port 15001 --useHTTPS || exit 1
+
+taskkill /IM Server.exe /F
+taskkill /IM DefaultHTTPSServer.exe /F
+taskkill /IM ProxyServer.exe /F
+taskkill /IM LoadBalancerServer.exe /F

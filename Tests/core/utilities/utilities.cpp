@@ -21,34 +21,36 @@ namespace utility
 
 		if (!std::filesystem::exists(first) || !std::filesystem::exists(second))
 		{
-			std::cout << "Exists error: " << std::filesystem::exists(first) << ' ' << std::filesystem::exists(second) << std::endl;
+			std::cerr << "Exists error: " << std::filesystem::exists(first) << ' ' << std::filesystem::exists(second) << std::endl;
 
 			return false;
 		}
 
 		if (std::filesystem::file_size(first) != std::filesystem::file_size(second))
 		{
-			std::cout << "Different file sizes: " << std::filesystem::file_size(first) << ' ' << std::filesystem::file_size(second) << std::endl;
+			std::cerr << "Different file sizes: " << std::filesystem::file_size(first) << ' ' << std::filesystem::file_size(second) << std::endl;
 
 			return false;
 		}
 
 		std::ifstream firstIn(first, std::ios::binary);
 		std::ifstream secondIn(second, std::ios::binary);
-		size_t index = 0;
-		
+		std::string firstCompare(chunkSize, '\0');
+		std::string secondCompare(chunkSize, '\0');
+
 		while (!firstIn.eof())
 		{
-			if (firstIn.get() != secondIn.get())
+			firstIn.read(firstCompare.data(), chunkSize);
+			secondIn.read(secondCompare.data(), chunkSize);
+
+			if (firstCompare != secondCompare)
 			{
-				std::cout << "Wrong file content at " << index << std::endl;
+				std::cerr << "Chunks does not same at offset: " << firstIn.tellg() << std::endl;
 
 				return false;
 			}
-
-			index++;
 		}
-
+		
 		return true;
 	}
 
