@@ -67,10 +67,10 @@ add_library(
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
-	WebFramework/src/Web/WebServers/BaseWebServer.cpp
-	WebFramework/src/Web/WebServers/MultithreadedWebServer.cpp
-	WebFramework/src/Web/WebServers/ThreadPoolWebServer.cpp
-	WebFramework/src/Web/WebServers/ExecutorServer.cpp
+	WebFramework/src/Web/Servers/BaseWebServer.cpp
+	WebFramework/src/Web/Servers/MultithreadedWebServer.cpp
+	WebFramework/src/Web/Servers/ThreadPoolWebServer.cpp
+	WebFramework/src/Web/Servers/ExecutorServer.cpp
 	WebFramework/src/Framework/Config.cpp
 	WebFramework/src/Framework/WebFramework.cpp
 	WebFramework/src/CAPI/WebFrameworkCAPI.cpp

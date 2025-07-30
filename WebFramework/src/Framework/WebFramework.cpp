@@ -7,8 +7,8 @@
 
 #include "Exceptions/BaseJSONException.h"
 #include "Exceptions/FileDoesNotExistException.h"
-#include "Web/WebServers/MultithreadedWebServer.h"
-#include "Web/WebServers/ThreadPoolWebServer.h"
+#include "Web/Servers/MultithreadedWebServer.h"
+#include "Web/Servers/ThreadPoolWebServer.h"
 #include "LoadBalancer/LoadBalancerServer.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Sources.h"

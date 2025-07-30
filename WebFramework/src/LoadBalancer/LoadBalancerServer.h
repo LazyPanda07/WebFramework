@@ -4,7 +4,7 @@
 
 #include "MultiLocalizationManager.h"
 
-#include "Web/WebServers/BaseWebServer.h"
+#include "Web/Servers/BaseWebServer.h"
 #include "Heuristics/BaseLoadBalancerHeuristic.h"
 #include "Executors/ResourceExecutor.h"
 

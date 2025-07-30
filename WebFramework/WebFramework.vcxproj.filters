@@ -18,7 +18,7 @@
     <ClCompile Include="src\Framework\WebFramework.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Web\WebServers\MultithreadedWebServer.cpp">
+    <ClCompile Include="src\Web\Servers\MultithreadedWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp">
@@ -57,10 +57,10 @@
     <ClCompile Include="src\Utility\RouteParameters.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Web\WebServers\BaseWebServer.cpp">
+    <ClCompile Include="src\Web\Servers\BaseWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Web\WebServers\ThreadPoolWebServer.cpp">
+    <ClCompile Include="src\Web\Servers\ThreadPoolWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp">
@@ -72,7 +72,7 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Web\WebServers\ExecutorServer.cpp">
+    <ClCompile Include="src\Web\Servers\ExecutorServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Framework\Config.cpp">
@@ -149,7 +149,7 @@
     <ClInclude Include="src\Framework\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\WebServers\MultithreadedWebServer.h">
+    <ClInclude Include="src\Web\Servers\MultithreadedWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h">
@@ -185,10 +185,10 @@
     <ClInclude Include="src\Utility\RouteParameters.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\WebServers\BaseWebServer.h">
+    <ClInclude Include="src\Web\Servers\BaseWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\WebServers\ThreadPoolWebServer.h">
+    <ClInclude Include="src\Web\Servers\ThreadPoolWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h">
@@ -203,7 +203,7 @@
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\WebServers\ExecutorServer.h">
+    <ClInclude Include="src\Web\Servers\ExecutorServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Framework\Config.h">
