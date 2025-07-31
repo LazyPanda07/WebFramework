@@ -9,6 +9,7 @@ on:
 
 env:
   WINDOWS_CMAKE_GENERATOR: "Ninja"
+  LINUX_CMAKE_GENERATOR: "Ninja"
 
 
 jobs:
@@ -32,7 +33,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . && cmake --install .
+          cmake --build  . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -58,8 +59,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ..
-          cmake --build . -j $(nproc) && cmake --install .
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -85,8 +86,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CC_API=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF ..
-          cmake --build . -j $(nproc) && cmake --install .
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CC_API=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -112,8 +113,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
-          cmake --build . -j $(nproc) && cmake --install .
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Move
       working-directory: WebFrameworkLibrary
@@ -166,7 +167,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . && cmake --install .
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
@@ -181,95 +182,7 @@ jobs:
       with:
         name: Tests_Windows
         path: Tests/build/bin
-
-
-  # windows-debug-release-tests:
-  #   runs-on: windows-latest
-  #   needs: windows-build
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #     with:
-  #       submodules: recursive
-  
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: Debug_Windows
-  #       path: WebFrameworkLibrary
-
-  #   - name: Get Google Test
-  #     uses: LazyPanda07/get-gtest@v1
-  #     with:
-  #       build-type: Release
-  #       install-path: Tests/gtest
-
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
-
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-  #         cmake --build . -j $(nproc) && cmake --install .
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     run: |
-  #         cd build/bin
-  #         .\CXX_API.exe || exit 1
-  #         .\run_tests.bat ${{ matrix.config }}
-
-
-  # windows-release-debug-tests:
-  #   runs-on: windows-latest
-  #   needs: windows-build
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #     with:
-  #       submodules: recursive
-  
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: Release_Windows
-  #       path: WebFrameworkLibrary
-
-  #   - name: Get Google Test
-  #     uses: LazyPanda07/get-gtest@v1
-  #     with:
-  #       build-type: Debug
-  #       install-path: Tests/gtest
-
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
-
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Debug -DCXX_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-  #         cmake --build . -j $(nproc) && cmake --install .
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     run: |
-  #         cd build/bin
-  #         .\CXX_API.exe || exit 1
-  #         .\run_tests.bat ${{ matrix.config }}
-
+        
 
   linux-cxx-tests:
     runs-on: ubuntu-latest
@@ -297,8 +210,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON ..
-          cmake --build . -j $(nproc) && cmake --install .
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
@@ -343,8 +256,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake ..
-          cmake --build . -j $(nproc) && cmake --install .
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Install curl
       run: apt update && apt install -y curl
@@ -394,7 +307,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . && cmake --install .
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
@@ -430,8 +343,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON ..
-          cmake --build . -j $(nproc) && cmake --install .
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G ${{ env.LINUX_CMAKE_GENERERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
@@ -555,7 +468,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . -j && cmake --install .
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
@@ -590,8 +503,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON ..
-          cmake --build . -j $(nproc) && cmake --install .
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
