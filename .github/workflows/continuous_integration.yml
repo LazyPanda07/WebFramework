@@ -468,7 +468,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake --build . --config Release -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
@@ -504,7 +504,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake --build . --config Release -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Tests
       working-directory: Tests
