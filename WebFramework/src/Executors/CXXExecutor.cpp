@@ -12,19 +12,19 @@ namespace framework
 {
 	CXXExecutor::CXXExecutor(HMODULE module, void* implementation) :
 		implementation(implementation),
-		initFunction(utility::load<InitExecutorSignature>(module, "webFrameworkExecutorInit")),
-		doPostFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoPost")),
-		doGetFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoGet")),
-		doHeadFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoHead")),
-		doPutFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoPut")),
-		doDeleteFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoDelete")),
-		doPatchFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoPatch")),
-		doOptionsFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoOptions")),
-		doTraceFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoTrace")),
-		doConnectFunction(utility::load<DoMethodSignature>(module, "webFrameworkDoConnect")),
-		getTypeFunction(utility::load<GetTypeSignature>(module, "webFrameworkGetType")),
-		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkDestroyExecutor")),
-		deleteFunction(utility::load<DeleteSignature>(module, "webFrameworkDeleteExecutor"))
+		initFunction(utility::load<InitExecutorSignature>(module, "webFrameworkCXXExecutorInit")),
+		doPostFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoPost")),
+		doGetFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoGet")),
+		doHeadFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoHead")),
+		doPutFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoPut")),
+		doDeleteFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoDelete")),
+		doPatchFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoPatch")),
+		doOptionsFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoOptions")),
+		doTraceFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoTrace")),
+		doConnectFunction(utility::load<DoMethodSignature>(module, "webFrameworkCXXDoConnect")),
+		getTypeFunction(utility::load<GetTypeSignature>(module, "webFrameworkCXXGetType")),
+		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkCXXDestroyExecutor")),
+		deleteFunction(utility::load<DeleteSignature>(module, "webFrameworkCXXDeleteExecutor"))
 	{
 		try
 		{
@@ -45,7 +45,7 @@ namespace framework
 		catch (const exception& e)
 		{
 			Log::fatalError("Load function error: {}", "LogCXXExecutor", 1, e.what());
-		}	
+		}
 	}
 
 	void CXXExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)

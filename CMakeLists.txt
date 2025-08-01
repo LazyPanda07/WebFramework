@@ -59,6 +59,7 @@ add_library(
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
 	WebFramework/src/LoadBalancer/Heuristics/CXXHeuristic.cpp
+	WebFramework/src/LoadBalancer/Heuristics/CCHeuristic.cpp
 	WebFramework/src/Proxy/ProxyServer.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
@@ -88,6 +89,7 @@ add_library(
 	WebFramework/src/Databases/SQLResultImplementation.cpp
 	WebFramework/src/Databases/SQLValueImplementation.cpp
 	WebFramework/src/Executors/CXXExecutor.cpp
+	WebFramework/src/Executors/CCExecutor.cpp
 )
 
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")

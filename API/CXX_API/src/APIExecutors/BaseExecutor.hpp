@@ -284,18 +284,18 @@ namespace framework
 * Macro for each BaseExecutor subclass
 * Used for loading function that creates BaseExecutor subclass
 */
-#define DECLARE_EXECUTOR(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##subclassName##Instance()	\
+#define DECLARE_EXECUTOR(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##subclassName##CXXInstance()	\
 {	\
 	return new subclassName();	\
 }
 
 #pragma region ExportFunctions
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkExecutorInit(void* implementation, void* executorSettings)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(void* implementation, void* executorSettings)
 {
 	static_cast<framework::BaseExecutor*>(implementation)->init(framework::utility::ExecutorSettings(executorSettings));
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -303,7 +303,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPost(void* implem
 	static_cast<framework::BaseExecutor*>(implementation)->doPost(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoGet(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -311,7 +311,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoGet(void* impleme
 	static_cast<framework::BaseExecutor*>(implementation)->doGet(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoHead(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -319,7 +319,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoHead(void* implem
 	static_cast<framework::BaseExecutor*>(implementation)->doHead(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPut(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -327,7 +327,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPut(void* impleme
 	static_cast<framework::BaseExecutor*>(implementation)->doPut(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoDelete(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -335,7 +335,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoDelete(void* impl
 	static_cast<framework::BaseExecutor*>(implementation)->doDelete(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPatch(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -343,7 +343,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoPatch(void* imple
 	static_cast<framework::BaseExecutor*>(implementation)->doPatch(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoOptions(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -351,7 +351,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoOptions(void* imp
 	static_cast<framework::BaseExecutor*>(implementation)->doOptions(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoTrace(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -359,7 +359,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoTrace(void* imple
 	static_cast<framework::BaseExecutor*>(implementation)->doTrace(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoConnect(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
@@ -367,22 +367,22 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDoConnect(void* imp
 	static_cast<framework::BaseExecutor*>(implementation)->doConnect(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline framework::utility::ExecutorType webFrameworkGetType(void* implementation)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline framework::utility::ExecutorType webFrameworkCXXGetType(void* implementation)
 {
 	return static_cast<framework::BaseExecutor*>(implementation)->getType();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDestroyExecutor(void* implementation)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDestroyExecutor(void* implementation)
 {
 	static_cast<framework::BaseExecutor*>(implementation)->destroy();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDeleteExecutor(void* implementation)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDeleteExecutor(void* implementation)
 {
 	delete static_cast<framework::BaseExecutor*>(implementation);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkForExecutors(const char* webFrameworkSharedLibraryPath)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCXX(const char* webFrameworkSharedLibraryPath)
 {
 	framework::utility::initializeWebFramework(webFrameworkSharedLibraryPath);
 }

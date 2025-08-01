@@ -10,6 +10,7 @@ namespace json_settings
 	inline constexpr std::string_view apiTypeKey = "api";
 
 	inline constexpr std::string_view cxxExecutorKey = "cxx";
+	inline constexpr std::string_view ccExecutorKey = "cc";
 }
 
 namespace json_settings_values

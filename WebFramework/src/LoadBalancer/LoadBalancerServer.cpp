@@ -5,6 +5,7 @@
 
 #include "Heuristics/Connections.h"
 #include "Heuristics/CXXHeuristic.h"
+#include "Heuristics/CCHeuristic.h"
 #include "Web/HTTPResponseImplementation.h"
 #include "Log.h"
 #include "Web/HTTPResponseExecutors.h"
@@ -293,12 +294,18 @@ namespace framework
 			static const unordered_map<string_view, function<unique_ptr<BaseLoadBalancerHeuristic>(string_view, string_view, bool)>> apiHeuristics =
 			{
 				{ "", [](string_view ip, string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
-				{ json_settings::cxxExecutorKey, [heuristicName, loadSource](string_view ip, string_view port, bool useHTTPS) { return make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } }
+				{ json_settings::cxxExecutorKey, [heuristicName, loadSource](string_view ip, string_view port, bool useHTTPS) { return make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
+				{ json_settings::ccExecutorKey, [heuristicName, loadSource](string_view ip, string_view port, bool useHTTPS) { return make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } }
 			};
 
-			// TODO: exception handling
+			if (auto it = apiHeuristics.find(apiType); it != apiHeuristics.end())
+			{
+				return (it->second)(ip, port, useHTTPS);
+			}
 
-			return apiHeuristics.at(apiType)(ip, port, useHTTPS);
+			throw runtime_error(format("Can't find heuristic type for {}", apiType));
+
+			return nullptr;
 		}
 
 		void LoadBalancerServer::receiveConnections(const function<void()>& onStartServer, exception** outException)

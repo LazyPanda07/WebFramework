@@ -1,7 +1,6 @@
 #include "CXXHeuristic.h"
 
 #include "Utility/Sources.h"
-#include "Log.h"
 
 #define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw runtime_error(format("Can't load {} function", #name))
 
@@ -11,7 +10,7 @@ namespace framework::load_balancer
 {
 	CXXHeuristic::CXXHeuristic(string_view ip, string_view port, bool useHTTPS, string_view heuristicName, HMODULE handle)
 	{
-		CreateHeuristicFunction creator = utility::load<CreateHeuristicFunction>(handle, format("create{}Heuristic", heuristicName));
+		CreateHeuristicFunction creator = utility::load<CreateHeuristicFunction>(handle, format("create{}CXXHeuristic", heuristicName));
 
 		if (!creator)
 		{
@@ -25,13 +24,13 @@ namespace framework::load_balancer
 			throw runtime_error(format("Can't create {} heuristic", heuristicName));
 		}
 
-		operatorFunction = utility::load<OperatorSignature>(handle, "webFrameworkHeuristicOperator");
-		onStartFunction = utility::load<OnStartSignature>(handle, "webFrameworkHeuristicOnStart");
-		onEndFunction = utility::load<OnEndSignature>(handle, "webFrameworkHeuristicOnEnd");
-		getIpFunction = utility::load<GetIpSignature>(handle, "webFrameworkHeuristicGetIp");
-		getPortFunction = utility::load<GetPortSignature>(handle, "webFrameworkHeuristicGetPort");
-		getUseHTTPSFunction = utility::load<GetUseHTTPSSignature>(handle, "webFrameworkHeuristicGetUseHTTPS");
-		deleteHeuristicFunction = utility::load<DeleteHeuristicSignature>(handle, "webFrameworkDeleteHeuristic");
+		operatorFunction = utility::load<OperatorSignature>(handle, "webFrameworkCXXHeuristicOperator");
+		onStartFunction = utility::load<OnStartSignature>(handle, "webFrameworkCXXHeuristicOnStart");
+		onEndFunction = utility::load<OnEndSignature>(handle, "webFrameworkCXXHeuristicOnEnd");
+		getIpFunction = utility::load<GetIpSignature>(handle, "webFrameworkCXXHeuristicGetIp");
+		getPortFunction = utility::load<GetPortSignature>(handle, "webFrameworkCXXHeuristicGetPort");
+		getUseHTTPSFunction = utility::load<GetUseHTTPSSignature>(handle, "webFrameworkCXXHeuristicGetUseHTTPS");
+		deleteHeuristicFunction = utility::load<DeleteHeuristicSignature>(handle, "webFrameworkCXXDeleteHeuristic");
 
 		ASSERT_LOAD_FUNCTION(operatorFunction);
 		ASSERT_LOAD_FUNCTION(onStartFunction);
@@ -47,26 +46,16 @@ namespace framework::load_balancer
 
 	uint64_t CXXHeuristic::operator ()() const
 	{
-		Log::info("Call operatorFunction", "LogCXXHeuristic");
-
-		uint64_t result = operatorFunction(implementation);
-
-		Log::info("Operator result: {}", "LogCXXHeuristic", result);
-
-		return result;
+		return operatorFunction(implementation);
 	}
 
 	void CXXHeuristic::onStart()
 	{
-		Log::info("onStart", "LogCXXHeuristic");
-
 		return onStartFunction(implementation);
 	}
 
 	void CXXHeuristic::onEnd()
 	{
-		Log::info("onEnd", "LogCXXHeuristic");
-
 		return onEndFunction(implementation);
 	}
 
@@ -82,13 +71,7 @@ namespace framework::load_balancer
 
 	bool CXXHeuristic::getUseHTTPS() const
 	{
-		Log::info("Call getUseHTTPS", "LogCXXHeuristic");
-
-		bool result = getUseHTTPSFunction(implementation);
-
-		Log::info("getUseHTTPS result: {}", "LogCXXHeuristic", result);
-
-		return result;
+		return getUseHTTPSFunction(implementation);
 	}
 
 	CXXHeuristic::~CXXHeuristic()

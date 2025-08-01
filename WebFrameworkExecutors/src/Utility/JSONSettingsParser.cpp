@@ -44,24 +44,25 @@ namespace framework::utility
 		for (const auto& [name, description] : parser)
 		{
 			const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
-			const string& LoadType = data.getString(json_settings::loadTypeKey);
+			const string& loadType = data.getString(json_settings::loadTypeKey);
 			ExecutorSettings executorSettings(name);
 
 			data.tryGetObject(json_settings::initParametersKey, executorSettings.initParameters);
 			data.tryGetString(json_settings::userAgentFilterKey, executorSettings.userAgentFilter);
-			data.tryGetString(json_settings::apiTypeKey, executorSettings.apiType);
+			
+			executorSettings.apiType = data.getString(json_settings::apiTypeKey);
 
-			if (LoadType == json_settings_values::initializationLoadTypeValue)
+			if (loadType == json_settings_values::initializationLoadTypeValue)
 			{
 				executorSettings.executorLoadType = ExecutorSettings::LoadType::initialization;
 			}
-			else if (LoadType == json_settings_values::dynamicLoadTypeValue)
+			else if (loadType == json_settings_values::dynamicLoadTypeValue)
 			{
 				executorSettings.executorLoadType = ExecutorSettings::LoadType::dynamic;
 			}
 			else
 			{
-				throw runtime_error("Wrong LoadType");
+				throw runtime_error("Wrong loadType");
 			}
 
 			settings.try_emplace(::utility::strings::replaceAll(data.getString(json_settings::routeKey), " ", "%20"), move(executorSettings));

@@ -141,9 +141,11 @@
     <ClCompile Include="src\Databases\TableImplementation.cpp" />
     <ClCompile Include="src\Exceptions\APIException.cpp" />
     <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
+    <ClCompile Include="src\Executors\CCExecutor.cpp" />
     <ClCompile Include="src\Executors\CXXExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
     <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
@@ -185,6 +187,7 @@
     <ClInclude Include="src\Databases\TableImplementation.h" />
     <ClInclude Include="src\Exceptions\APIException.h" />
     <ClInclude Include="src\Exceptions\NotFoundException.h" />
+    <ClInclude Include="src\Executors\CCExecutor.h" />
     <ClInclude Include="src\Executors\CXXExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
     <ClInclude Include="src\Framework\WebFrameworkPlatform.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
+    <ClInclude Include="src\LoadBalancer\Heuristics\CCHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\CXXHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />

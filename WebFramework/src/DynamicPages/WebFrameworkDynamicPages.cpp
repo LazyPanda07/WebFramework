@@ -64,9 +64,7 @@ namespace framework
 
 				if (it == variables.end())
 				{
-					// TODO: no variable exception
-
-					throw runtime_error("");
+					throw runtime_error(format("No variable: {}", name));
 				}
 
 				return it->value;

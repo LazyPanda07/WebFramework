@@ -3,8 +3,6 @@
 #include <string>
 #include <cstdint>
 
-#include "APIExecutors/BaseExecutor.hpp"
-
 namespace framework
 {
 	/**
@@ -95,57 +93,52 @@ namespace framework
 }
 
 #ifdef __LINUX__
-/**
-* Macro for each LoadBalancerHeuristic subclass
-* Used for loading function that creates LoadBalancerHeuristic subclass
-*/
-#define DECLARE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) __attribute__((used)) void* create##subclassName##Heuristic(const char* ip, const char* port, bool useHTTPS)	\
-{	\
-	return new subclassName(ip, port, useHTTPS);	\
-}
+#define WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API extern "C" __attribute__((visibility("default"))) __attribute__((used))
 #else
-/**
-* Macro for each LoadBalancerHeuristic subclass
-* Used for loading function that creates LoadBalancerHeuristic subclass
-*/
-#define DECLARE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(const char* ip, const char* port, bool useHTTPS)	\
-{	\
-	return new subclassName(ip, port, useHTTPS);	\
-}
+#define WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API extern "C" __declspec(dllexport)
 #endif
 
+/**
+* Macro for each LoadBalancerHeuristic subclass
+* Used for loading function that creates LoadBalancerHeuristic subclass
+*/
+#define DECLARE_HEURISTIC(subclassName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API void* create##subclassName##CXXHeuristic(const char* ip, const char* port, bool useHTTPS)	\
+{	\
+	return new subclassName(ip, port, useHTTPS);	\
+}
+
 #pragma region ExportFunctions
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline uint64_t webFrameworkHeuristicOperator(void* implementation)
+WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline uint64_t webFrameworkCXXHeuristicOperator(void* implementation)
 {
 	return (*static_cast<framework::LoadBalancerHeuristic*>(implementation))();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkHeuristicOnStart(void* implementation)
+WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline void webFrameworkCXXHeuristicOnStart(void* implementation)
 {
 	static_cast<framework::LoadBalancerHeuristic*>(implementation)->onStart();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkHeuristicOnEnd(void* implementation)
+WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline void webFrameworkCXXHeuristicOnEnd(void* implementation)
 {
 	static_cast<framework::LoadBalancerHeuristic*>(implementation)->onEnd();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline const char* webFrameworkHeuristicGetIp(void* implementation)
+WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline const char* webFrameworkCXXHeuristicGetIp(void* implementation)
 {
 	return static_cast<framework::LoadBalancerHeuristic*>(implementation)->getIp().data();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline const char* webFrameworkHeuristicGetPort(void* implementation)
+WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline const char* webFrameworkCXXHeuristicGetPort(void* implementation)
 {
 	return static_cast<framework::LoadBalancerHeuristic*>(implementation)->getPort().data();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline bool webFrameworkHeuristicGetUseHTTPS(void* implementation)
+WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline bool webFrameworkCXXHeuristicGetUseHTTPS(void* implementation)
 {
 	return static_cast<framework::LoadBalancerHeuristic*>(implementation)->getUseHTTPS();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkDeleteHeuristic(void* implementation)
+WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API inline void webFrameworkCXXDeleteHeuristic(void* implementation)
 {
 	delete static_cast<framework::LoadBalancerHeuristic*>(implementation);
 }

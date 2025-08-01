@@ -16,6 +16,7 @@
 #include <Exceptions/CantFindFunctionException.h>
 
 #include <Executors/CXXExecutor.h>
+#include <Executors/CCExecutor.h>
 
 using namespace std;
 
@@ -198,12 +199,18 @@ namespace framework
 		static const unordered_map<string_view, function<unique_ptr<BaseExecutor>(const string& name)>> apiExecutors =
 		{
 			{ "", [this](const string& name) { return unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
-			{ json_settings::cxxExecutorKey, [this](const string& name) { return make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } }
+			{ json_settings::cxxExecutorKey, [this](const string& name) { return make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } },
+			{ json_settings::ccExecutorKey, [this](const string& name) { return make_unique<CCExecutor>(creatorSources.at(name), creators.at(name)(), name); } }
 		};
 
-		// TODO: exception handling
+		if (auto it = apiExecutors.find(apiType); it != apiExecutors.end())
+		{
+			return (it->second)(name);
+		}
 
-		return apiExecutors.at(apiType)(name);
+		throw runtime_error(format("Can't find executor type for {}", apiType));
+
+		return nullptr;
 	}
 
 	ExecutorsManager::ExecutorsManager
@@ -231,10 +238,13 @@ namespace framework
 		{
 			CreateExecutorFunction creator = nullptr;
 			HMODULE creatorSource = nullptr;
+			string apiType;
+
+			ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
 			for (const HMODULE& source : sources)
 			{
-				if (creator = utility::load<CreateExecutorFunction>(source, format("create{}Instance", executorSettings.name)))
+				if (creator = utility::load<CreateExecutorFunction>(source, format("create{}{}Instance", executorSettings.name, apiType)))
 				{
 					creatorSource = source;
 
@@ -249,13 +259,13 @@ namespace framework
 					Log::error("Can't find creator for executor {}", "LogWebFrameworkInitialization", executorSettings.name);
 				}
 
-				throw exceptions::CantFindFunctionException(format("create{}Instance", executorSettings.name));
+				throw exceptions::CantFindFunctionException(format("create{}{}Instance", executorSettings.name, apiType));
 			}
 
 			creators.try_emplace(executorSettings.name, creator);
 			creatorSources.try_emplace(executorSettings.name, creatorSource);
 
-			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkForExecutors"))
+			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCXX"))
 			{
 				initFunction(webFrameworkSharedLibraryPath.data());
 			}
