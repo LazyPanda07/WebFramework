@@ -156,7 +156,7 @@ jobs:
         path: WebFrameworkLibrary
 
     - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
+      uses: LazyPanda07/get-gtest@master
       with:
         build-type: ${{ matrix.configuration }}
         install-path: Tests/gtest
@@ -296,7 +296,7 @@ jobs:
         path: WebFrameworkLibrary
 
     - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
+      uses: LazyPanda07/get-gtest@master
       with:
         build-type: ${{ matrix.configuration }}
         install-path: Tests/gtest
@@ -457,7 +457,7 @@ jobs:
         path: WebFrameworkLibrary
 
     - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
+      uses: LazyPanda07/get-gtest@master
       with:
         build-type: Release
         install-path: Tests/gtest
