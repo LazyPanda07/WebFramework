@@ -133,8 +133,8 @@ jobs:
         
 
   windows-cxx-tests:
-    # runs-on: windows-latest
-    runs-on: [self-hosted, Windows]
+    runs-on: windows-latest
+    # runs-on: [self-hosted, Windows]
     needs: windows-build
     strategy:
       matrix:
