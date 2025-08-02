@@ -18,6 +18,9 @@
     <ClCompile Include="src\dummy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\APIExecutors\BaseExecutor.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\import.h">
@@ -33,6 +36,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\WebFrameworkException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HTTPRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HTTPResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

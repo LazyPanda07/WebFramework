@@ -105,7 +105,13 @@ namespace framework
 
 	void CXXExecutor::destroy()
 	{
-		destroyFunction(implementation);
+		utility::ExecutorType executorType = this->getType();
+
+		if (executorType == utility::ExecutorType::heavyOperationStateless ||
+			executorType == utility::ExecutorType::heavyOperationStateful)
+		{
+			destroyFunction(implementation);
+		}
 	}
 
 	CXXExecutor::~CXXExecutor()

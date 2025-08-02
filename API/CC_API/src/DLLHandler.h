@@ -69,6 +69,8 @@ size_t findLastChar(char* ptr, char c);
 
 inline void initializeWebFramework(const char* pathToDLL)
 {
+	// TOOD: rewrite
+
 	if (pathToDLL == NULL)
 	{
 #ifdef __LINUX__
@@ -112,7 +114,14 @@ inline void initializeWebFramework(const char* pathToDLL)
 	free(directory);
 	free(fileName);
 #else
-	sprintf_s(realPath, MAX_PATH_SIZE, "%s.dll", fullPath);
+	if (strstr(fullPath, ".dll") != NULL)
+	{
+		memcpy(realPath, fullPath, sizeof(realPath));
+	}
+	else
+	{
+		sprintf_s(realPath, MAX_PATH_SIZE, "%s.dll", fullPath);
+	}
 #endif
 	
 	getInstance(realPath);

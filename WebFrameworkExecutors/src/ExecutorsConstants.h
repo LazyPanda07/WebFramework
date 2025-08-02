@@ -23,7 +23,6 @@ namespace framework::utility
 {
 	enum class ExecutorType
 	{
-		none,
 		stateful,
 		stateless,
 		heavyOperationStateful,

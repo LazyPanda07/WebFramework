@@ -7,7 +7,7 @@ using namespace std;
 namespace framework
 {
 	template<typename T, typename... Args>
-	void CCExecutor::callBindedFunction(const T& function, string_view functionName, Args&&... args) requires invocable<T, Args...>
+	void CCExecutor::callBindedMethodFunction(const T& function, string_view functionName, Args&&... args) requires invocable<T, Args...>
 	{
 		if (function)
 		{
@@ -23,15 +23,15 @@ namespace framework
 		implementation(implementation),
 		executorName(executorName),
 		initFunction(utility::load<InitExecutorSignature>(module, format("webFrameworkCCExecutorInit{}", executorName))),
-		doPostFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPost{}", executorName))),
-		doGetFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoGet{}", executorName))),
-		doHeadFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoHead{}", executorName))),
-		doPutFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPut{}", executorName))),
-		doDeleteFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoDelete{}", executorName))),
-		doPatchFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPatch{}", executorName))),
-		doOptionsFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoOptions{}", executorName))),
-		doTraceFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoTrace{}", executorName))),
-		doConnectFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoConnect{}", executorName))),
+		doPostFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPOST_METHOD{}", executorName))),
+		doGetFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoGET_METHOD{}", executorName))),
+		doHeadFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoHEAD_METHOD{}", executorName))),
+		doPutFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPUT_METHOD{}", executorName))),
+		doDeleteFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoDELETE_METHOD{}", executorName))),
+		doPatchFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPATCH_METHOD{}", executorName))),
+		doOptionsFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoOPTIONS_METHOD{}", executorName))),
+		doTraceFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoTRACE_METHOD{}", executorName))),
+		doConnectFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoCONNECT_METHOD{}", executorName))),
 		getTypeFunction(utility::load<GetTypeSignature>(module, format("webFrameworkCCGetType{}", executorName))),
 		destroyFunction(utility::load<DestroySignature>(module, format("webFrameworkCCDestroyExecutor{}", executorName))),
 		deleteFunction(utility::load<DeleteSignature>(module, format("webFrameworkCCDeleteExecutor{}", executorName)))
@@ -54,47 +54,47 @@ namespace framework
 
 	void CCExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doPostFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doPostFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doGetFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doGetFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doHeadFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doHeadFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doPutFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doPutFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doDeleteFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doDeleteFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doPatchFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doPatchFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doOptionsFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doOptionsFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doTraceFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doTraceFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	void CCExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedFunction(doConnectFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doConnectFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
 	}
 
 	utility::ExecutorType CCExecutor::getType() const
@@ -104,13 +104,19 @@ namespace framework
 
 	void CCExecutor::destroy()
 	{
-		destroyFunction(implementation);
+		utility::ExecutorType executorType = this->getType();
+
+		if (executorType == utility::ExecutorType::heavyOperationStateless ||
+			executorType == utility::ExecutorType::heavyOperationStateful)
+		{
+			destroyFunction(implementation);
+		}
 	}
 
 	CCExecutor::~CCExecutor()
 	{
 		this->destroy();
 
-		this->callBindedFunction(deleteFunction, __func__, implementation);
+		deleteFunction(implementation);
 	}
 }

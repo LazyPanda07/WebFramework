@@ -86,11 +86,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\APIExecutors\BaseExecutor.h" />
     <ClCompile Include="src\dummy.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\DLLHandler.h" />
+    <ClInclude Include="src\HTTPRequest.h" />
+    <ClInclude Include="src\HTTPResponse.h" />
     <ClInclude Include="src\import.h" />
     <ClInclude Include="src\WebFramework.h" />
     <ClInclude Include="src\WebFrameworkException.h" />

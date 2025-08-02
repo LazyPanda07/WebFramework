@@ -36,7 +36,7 @@ namespace framework
 
 	private:
 		template<typename T, typename... Args>
-		void callBindedFunction(const T& function, std::string_view functionName, Args&&... args) requires std::invocable<T, Args...>;
+		void callBindedMethodFunction(const T& function, std::string_view functionName, Args&&... args) requires std::invocable<T, Args...>;
 
 	public:
 		CCExecutor(HMODULE module, void* implementation, std::string_view executorName);

@@ -26,10 +26,10 @@
         "api": {
           "type": "string",
           "description": "API language",
-          "enum": ["cxx"]
+          "enum": ["cxx", "cc"]
         }
       },
-      "required": [ "route", "loadType" ]
+      "required": [ "route", "loadType", "api" ]
     }
   },
   "additionalProperties": false

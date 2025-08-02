@@ -13,7 +13,6 @@ namespace framework
 	{
 		enum class ExecutorType
 		{
-			none,
 			stateful,
 			stateless,
 			heavyOperationStateful,

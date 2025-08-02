@@ -38,10 +38,10 @@ namespace framework
 
 	bool ExecutorsManager::isHeavyOperation(BaseExecutor* executor)
 	{
-		utility::ExecutorType ExecutorType = executor->getType();
+		utility::ExecutorType executorType = executor->getType();
 
-		return ExecutorType == utility::ExecutorType::heavyOperationStateless ||
-			ExecutorType == utility::ExecutorType::heavyOperationStateful;
+		return executorType == utility::ExecutorType::heavyOperationStateless ||
+			executorType == utility::ExecutorType::heavyOperationStateful;
 	}
 
 	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequestExecutors& request, vector<utility::RouteParameters>::iterator it)
@@ -266,6 +266,10 @@ namespace framework
 			creatorSources.try_emplace(executorSettings.name, creatorSource);
 
 			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCXX"))
+			{
+				initFunction(webFrameworkSharedLibraryPath.data());
+			}
+			else if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCC"))
 			{
 				initFunction(webFrameworkSharedLibraryPath.data());
 			}
