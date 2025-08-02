@@ -69,9 +69,13 @@ size_t findLastChar(char* ptr, char c);
 
 inline void initializeWebFramework(const char* pathToDLL)
 {
-	// TOOD: rewrite
-
-	if (pathToDLL == NULL)
+	if (pathToDLL == NULL || !strcmp(pathToDLL, "") || !strcmp(pathToDLL, "WebFramework") ||
+#ifdef __LINUX__
+		!strcmp(pathToDLL, "libWebFramework.so")
+#else
+		!strcmp(pathToDLL, "WebFramework.dll")
+#endif
+		)
 	{
 #ifdef __LINUX__
 		getInstance("libWebFramework.so");
@@ -86,10 +90,12 @@ inline void initializeWebFramework(const char* pathToDLL)
 
 	char fullPath[MAX_PATH_SIZE];
 	char realPath[MAX_PATH_SIZE];
+	const char* prefix = "";
+	const char* suffix = "";
 
 	memset(fullPath, 0, sizeof(fullPath));
 	memset(realPath, 0, sizeof(realPath));
-	
+
 #ifdef __LINUX__
 	realpath(pathToDLL, fullPath);
 #else
@@ -102,6 +108,8 @@ inline void initializeWebFramework(const char* pathToDLL)
 	size_t fileNameSize = strlen(fullPath + index + 1);
 	char* directory = malloc(directorySize);
 	char* fileName = malloc(fileNameSize);
+	prefix = "lib";
+	suffix = ".so";
 
 	directory[directorySize] = 0;
 	fileName[fileNameSize] = 0;
@@ -109,21 +117,19 @@ inline void initializeWebFramework(const char* pathToDLL)
 	memcpy(directory, fullPath, directorySize);
 	memcpy(fileName, fullPath + index + 1, fileNameSize);
 
-	sprintf(realPath, "%s/lib%s.so", directory, fileName);
+	sprintf(realPath, "%s/%s%s%s", directory, prefix, fileName, suffix);
 
 	free(directory);
 	free(fileName);
 #else
-	if (strstr(fullPath, ".dll") != NULL)
+	if (strstr(fullPath, ".dll") == NULL)
 	{
-		memcpy(realPath, fullPath, sizeof(realPath));
+		suffix = ".dll";
 	}
-	else
-	{
-		sprintf_s(realPath, MAX_PATH_SIZE, "%s.dll", fullPath);
-	}
+
+	sprintf_s(realPath, MAX_PATH_SIZE, "%s%s", fullPath, suffix);
 #endif
-	
+
 	getInstance(realPath);
 
 #undef MAX_PATH_SIZE

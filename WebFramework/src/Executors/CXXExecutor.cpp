@@ -107,7 +107,7 @@ namespace framework
 	{
 		utility::ExecutorType executorType = this->getType();
 
-		if (executorType == utility::ExecutorType::heavyOperationStateless ||
+		if (executorType == utility::ExecutorType::stateful ||
 			executorType == utility::ExecutorType::heavyOperationStateful)
 		{
 			destroyFunction(implementation);

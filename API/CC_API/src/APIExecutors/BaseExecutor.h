@@ -59,7 +59,7 @@ typedef enum
 
 #define DECLARE_EXECUTOR_INIT(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##subclassName(Executor executor, ExecutorSettings settings)
 
-#define DECLARE_EXECUTOR_DESTROY(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDeleteExecutor##subclassName(Executor executor)
+#define DECLARE_EXECUTOR_DESTROY(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##subclassName(Executor executor)
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath)
 {
