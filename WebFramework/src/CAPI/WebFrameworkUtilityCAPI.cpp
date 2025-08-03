@@ -91,7 +91,7 @@ JSONParser createJSONParserFromString(const char* jsonString, Exception* excepti
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void setObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception)
+void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception)
 {
 	try
 	{
@@ -107,7 +107,7 @@ void setObject(JSONObject jsonObject, const char* key, JSONObject object, Except
 	}
 }
 
-void setString(JSONObject jsonObject, const char* key, const char* value, Exception* exception)
+void setJSONObjectString(JSONObject jsonObject, const char* key, const char* value, Exception* exception)
 {
 	try
 	{
@@ -123,7 +123,7 @@ void setString(JSONObject jsonObject, const char* key, const char* value, Except
 	}
 }
 
-void setInteger(JSONObject jsonObject, const char* key, int64_t value, Exception* exception)
+void setJSONObjectInteger(JSONObject jsonObject, const char* key, int64_t value, Exception* exception)
 {
 	try
 	{
@@ -139,7 +139,7 @@ void setInteger(JSONObject jsonObject, const char* key, int64_t value, Exception
 	}
 }
 
-void setUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception)
+void setJSONObjectUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception)
 {
 	try
 	{
@@ -155,7 +155,7 @@ void setUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, 
 	}
 }
 
-void setDouble(JSONObject jsonObject, const char* key, double value, Exception* exception)
+void setJSONObjectDouble(JSONObject jsonObject, const char* key, double value, Exception* exception)
 {
 	try
 	{
@@ -171,7 +171,7 @@ void setDouble(JSONObject jsonObject, const char* key, double value, Exception* 
 	}
 }
 
-void setBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception)
+void setJSONObjectBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception)
 {
 	try
 	{
@@ -187,7 +187,7 @@ void setBoolean(JSONObject jsonObject, const char* key, bool value, Exception* e
 	}
 }
 
-void setNull(JSONObject jsonObject, const char* key, Exception* exception)
+void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* exception)
 {
 	try
 	{
@@ -203,7 +203,7 @@ void setNull(JSONObject jsonObject, const char* key, Exception* exception)
 	}
 }
 
-void setArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception)
+void setJSONObjectArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception)
 {
 	try
 	{
@@ -246,7 +246,7 @@ String build(JSONBuilder builder, Exception* exception)
 	return nullptr;
 }
 
-void appendObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception)
+void appendJSONBuilderObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception)
 {
 	try
 	{
@@ -262,7 +262,7 @@ void appendObject(JSONBuilder builder, const char* key, JSONObject object, Excep
 	}
 }
 
-void appendString(JSONBuilder builder, const char* key, const char* value, Exception* exception)
+void appendJSONBuilderString(JSONBuilder builder, const char* key, const char* value, Exception* exception)
 {
 	try
 	{
@@ -278,7 +278,7 @@ void appendString(JSONBuilder builder, const char* key, const char* value, Excep
 	}
 }
 
-void appendInteger(JSONBuilder builder, const char* key, int64_t value, Exception* exception)
+void appendJSONBuilderInteger(JSONBuilder builder, const char* key, int64_t value, Exception* exception)
 {
 	try
 	{
@@ -294,7 +294,7 @@ void appendInteger(JSONBuilder builder, const char* key, int64_t value, Exceptio
 	}
 }
 
-void appendUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value, Exception* exception)
+void appendJSONBuilderUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value, Exception* exception)
 {
 	try
 	{
@@ -310,7 +310,7 @@ void appendUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value,
 	}
 }
 
-void appendDouble(JSONBuilder builder, const char* key, double value, Exception* exception)
+void appendJSONBuilderDouble(JSONBuilder builder, const char* key, double value, Exception* exception)
 {
 	try
 	{
@@ -326,7 +326,7 @@ void appendDouble(JSONBuilder builder, const char* key, double value, Exception*
 	}
 }
 
-void appendBoolean(JSONBuilder builder, const char* key, bool value, Exception* exception)
+void appendJSONBuilderBoolean(JSONBuilder builder, const char* key, bool value, Exception* exception)
 {
 	try
 	{
@@ -342,7 +342,7 @@ void appendBoolean(JSONBuilder builder, const char* key, bool value, Exception* 
 	}
 }
 
-void appendNull(JSONBuilder builder, const char* key, Exception* exception)
+void appendJSONBuilderNull(JSONBuilder builder, const char* key, Exception* exception)
 {
 	try
 	{
@@ -358,7 +358,7 @@ void appendNull(JSONBuilder builder, const char* key, Exception* exception)
 	}
 }
 
-void appendArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception)
+void appendJSONBuilderArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception)
 {
 	try
 	{
@@ -383,7 +383,7 @@ void appendArray(JSONBuilder builder, const char* key, const JSONObject* objects
 	}
 }
 
-JSONObject getObject(JSONParser parser, const char* key, bool recursive, Exception* exception)
+JSONObject getJSONParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -403,7 +403,7 @@ JSONObject getObject(JSONParser parser, const char* key, bool recursive, Excepti
 	return nullptr;
 }
 
-const char* getString(JSONParser parser, const char* key, bool recursive, Exception* exception)
+const char* getJSONParserString(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -421,7 +421,7 @@ const char* getString(JSONParser parser, const char* key, bool recursive, Except
 	return nullptr;
 }
 
-int64_t getInteger(JSONParser parser, const char* key, bool recursive, Exception* exception)
+int64_t getJSONParserInteger(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -439,7 +439,7 @@ int64_t getInteger(JSONParser parser, const char* key, bool recursive, Exception
 	return 0;
 }
 
-uint64_t getUnsignedInteger(JSONParser parser, const char* key, bool recursive, Exception* exception)
+uint64_t getJSONParserUnsignedInteger(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -457,7 +457,7 @@ uint64_t getUnsignedInteger(JSONParser parser, const char* key, bool recursive, 
 	return 0;
 }
 
-double getDouble(JSONParser parser, const char* key, bool recursive, Exception* exception)
+double getJSONParserDouble(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -475,7 +475,7 @@ double getDouble(JSONParser parser, const char* key, bool recursive, Exception* 
 	return 0.0;
 }
 
-bool getBoolean(JSONParser parser, const char* key, bool recursive, Exception* exception)
+bool getJSONParserBoolean(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -493,7 +493,7 @@ bool getBoolean(JSONParser parser, const char* key, bool recursive, Exception* e
 	return false;
 }
 
-void getNull(JSONParser parser, const char* key, bool recursive, Exception* exception)
+void getJSONParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -509,7 +509,7 @@ void getNull(JSONParser parser, const char* key, bool recursive, Exception* exce
 	}
 }
 
-void getArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception)
+void getJSONParserArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -532,7 +532,7 @@ void getArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObjec
 	}
 }
 
-bool tryGetObject(JSONParser parser, const char* key, JSONObject* value, bool recursive, Exception* exception)
+bool tryGetJSONParserObject(JSONParser parser, const char* key, JSONObject* value, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -557,7 +557,7 @@ bool tryGetObject(JSONParser parser, const char* key, JSONObject* value, bool re
 	return false;
 }
 
-bool tryGetString(JSONParser parser, const char* key, String* value, bool recursive, Exception* exception)
+bool tryGetJSONParserString(JSONParser parser, const char* key, String* value, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -582,7 +582,7 @@ bool tryGetString(JSONParser parser, const char* key, String* value, bool recurs
 	return false;
 }
 
-bool tryGetInteger(JSONParser parser, const char* key, int64_t* value, bool recursive, Exception* exception)
+bool tryGetJSONParserInteger(JSONParser parser, const char* key, int64_t* value, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -600,7 +600,7 @@ bool tryGetInteger(JSONParser parser, const char* key, int64_t* value, bool recu
 	return false;
 }
 
-bool tryGetUnsignedInteger(JSONParser parser, const char* key, uint64_t* value, bool recursive, Exception* exception)
+bool tryGetJSONParserUnsignedInteger(JSONParser parser, const char* key, uint64_t* value, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -618,7 +618,7 @@ bool tryGetUnsignedInteger(JSONParser parser, const char* key, uint64_t* value, 
 	return false;
 }
 
-bool tryGetDouble(JSONParser parser, const char* key, double* value, bool recursive, Exception* exception)
+bool tryGetJSONParserDouble(JSONParser parser, const char* key, double* value, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -636,7 +636,7 @@ bool tryGetDouble(JSONParser parser, const char* key, double* value, bool recurs
 	return false;
 }
 
-bool tryGetBoolean(JSONParser parser, const char* key, bool* value, bool recursive, Exception* exception)
+bool tryGetJSONParserBoolean(JSONParser parser, const char* key, bool* value, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -654,7 +654,7 @@ bool tryGetBoolean(JSONParser parser, const char* key, bool* value, bool recursi
 	return false;
 }
 
-bool tryGetNull(JSONParser parser, const char* key, bool recursive, Exception* exception)
+bool tryGetJSONParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
@@ -672,7 +672,7 @@ bool tryGetNull(JSONParser parser, const char* key, bool recursive, Exception* e
 	return false;
 }
 
-bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception)
+bool tryGetJSONParserArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception)
 {
 	try
 	{

@@ -21,69 +21,69 @@ EXPORT JSONParser createJSONParserFromString(const char* jsonString, Exception* 
 
 EXPORT String build(JSONBuilder builder, Exception* exception);
 
-EXPORT void setObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception);
+EXPORT void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception);
 
-EXPORT void setString(JSONObject jsonObject, const char* key, const char* value, Exception* exception);
+EXPORT void setJSONObjectString(JSONObject jsonObject, const char* key, const char* value, Exception* exception);
 
-EXPORT void setInteger(JSONObject jsonObject, const char* key, int64_t value, Exception* exception);
+EXPORT void setJSONObjectInteger(JSONObject jsonObject, const char* key, int64_t value, Exception* exception);
 
-EXPORT void setUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception);
+EXPORT void setJSONObjectUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception);
 
-EXPORT void setDouble(JSONObject jsonObject, const char* key, double value, Exception* exception);
+EXPORT void setJSONObjectDouble(JSONObject jsonObject, const char* key, double value, Exception* exception);
 
-EXPORT void setBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception);
+EXPORT void setJSONObjectBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception);
 
-EXPORT void setNull(JSONObject jsonObject, const char* key, Exception* exception);
+EXPORT void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* exception);
 
-EXPORT void setArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception);
+EXPORT void setJSONObjectArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception);
 
-EXPORT void appendObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception);
+EXPORT void appendJSONBuilderObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception);
 
-EXPORT void appendString(JSONBuilder builder, const char* key, const char* value, Exception* exception);
+EXPORT void appendJSONBuilderString(JSONBuilder builder, const char* key, const char* value, Exception* exception);
 
-EXPORT void appendInteger(JSONBuilder builder, const char* key, int64_t value, Exception* exception);
+EXPORT void appendJSONBuilderInteger(JSONBuilder builder, const char* key, int64_t value, Exception* exception);
 
-EXPORT void appendUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value, Exception* exception);
+EXPORT void appendJSONBuilderUnsignedInteger(JSONBuilder builder, const char* key, uint64_t value, Exception* exception);
 
-EXPORT void appendDouble(JSONBuilder builder, const char* key, double value, Exception* exception);
+EXPORT void appendJSONBuilderDouble(JSONBuilder builder, const char* key, double value, Exception* exception);
 
-EXPORT void appendBoolean(JSONBuilder builder, const char* key, bool value, Exception* exception);
+EXPORT void appendJSONBuilderBoolean(JSONBuilder builder, const char* key, bool value, Exception* exception);
 
-EXPORT void appendNull(JSONBuilder builder, const char* key, Exception* exception);
+EXPORT void appendJSONBuilderNull(JSONBuilder builder, const char* key, Exception* exception);
 
-EXPORT void appendArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception);
+EXPORT void appendJSONBuilderArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception);
 
-EXPORT JSONObject getObject(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT JSONObject getJSONParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT const char* getString(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT const char* getJSONParserString(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT int64_t getInteger(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT int64_t getJSONParserInteger(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT uint64_t getUnsignedInteger(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT uint64_t getJSONParserUnsignedInteger(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT double getDouble(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT double getJSONParserDouble(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT bool getBoolean(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT bool getJSONParserBoolean(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT void getNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT void getJSONParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT void getArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
+EXPORT void getJSONParserArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
 
-EXPORT bool tryGetObject(JSONParser parser, const char* key, JSONObject* value, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserObject(JSONParser parser, const char* key, JSONObject* value, bool recursive, Exception* exception);
 
-EXPORT bool tryGetString(JSONParser parser, const char* key, String* value, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserString(JSONParser parser, const char* key, String* value, bool recursive, Exception* exception);
 
-EXPORT bool tryGetInteger(JSONParser parser, const char* key, int64_t* value, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserInteger(JSONParser parser, const char* key, int64_t* value, bool recursive, Exception* exception);
 
-EXPORT bool tryGetUnsignedInteger(JSONParser parser, const char* key, uint64_t* value, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserUnsignedInteger(JSONParser parser, const char* key, uint64_t* value, bool recursive, Exception* exception);
 
-EXPORT bool tryGetDouble(JSONParser parser, const char* key, double* value, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserDouble(JSONParser parser, const char* key, double* value, bool recursive, Exception* exception);
 
-EXPORT bool tryGetBoolean(JSONParser parser, const char* key, bool* value, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserBoolean(JSONParser parser, const char* key, bool* value, bool recursive, Exception* exception);
 
-EXPORT bool tryGetNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT bool tryGetArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
+EXPORT bool tryGetJSONParserArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
 
 EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
 

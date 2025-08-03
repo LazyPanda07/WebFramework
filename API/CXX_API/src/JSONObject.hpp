@@ -119,25 +119,25 @@ namespace framework
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setBoolean, void, const char* key, bool value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectBoolean, void, const char* key, bool value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setBoolean, key.data(), value, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectBoolean, key.data(), value, &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setNull, void, const char* key, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectNull, void, const char* key, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setNull, key.data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectNull, key.data(), &exception);
 		}
 		else if constexpr (std::convertible_to<T, std::string_view>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setString, void, const char* key, const char* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectString, void, const char* key, const char* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setString, key.data(), static_cast<std::string_view>(value).data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectString, key.data(), static_cast<std::string_view>(value).data(), &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setArray, void, const char* key, const void* value, size_t size, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectArray, void, const char* key, const void* value, size_t size, void** exception);
 			std::vector<void*> temp;
 
 			temp.reserve(value.size());
@@ -147,31 +147,31 @@ namespace framework
 				temp.push_back(object.implementation);
 			}
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setArray, key.data(), temp.data(), temp.size(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectArray, key.data(), temp.data(), temp.size(), &exception);
 		}
 		else if constexpr (std::is_same_v<T, JSONObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setObject, void, const char* key, void* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectObject, void, const char* key, void* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setObject, key.data(), value.implementation, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectObject, key.data(), value.implementation, &exception);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setDouble, void, const char* key, double value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectDouble, void, const char* key, double value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setDouble, key.data(), static_cast<double>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectDouble, key.data(), static_cast<double>(value), &exception);
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setUnsignedInteger, void, const char* key, uint64_t value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectUnsignedInteger, void, const char* key, uint64_t value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setUnsignedInteger, key.data(), static_cast<uint64_t>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectUnsignedInteger, key.data(), static_cast<uint64_t>(value), &exception);
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setInteger, void, const char* key, int64_t value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectInteger, void, const char* key, int64_t value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setInteger, key.data(), static_cast<int64_t>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectInteger, key.data(), static_cast<int64_t>(value), &exception);
 		}
 		else
 		{

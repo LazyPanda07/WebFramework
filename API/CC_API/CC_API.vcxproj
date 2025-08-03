@@ -95,6 +95,9 @@
     <ClInclude Include="src\HTTPRequest.h" />
     <ClInclude Include="src\HTTPResponse.h" />
     <ClInclude Include="src\import.h" />
+    <ClInclude Include="src\JSONBuilder.h" />
+    <ClInclude Include="src\JSONObject.h" />
+    <ClInclude Include="src\JSONParser.h" />
     <ClInclude Include="src\WebFramework.h" />
     <ClInclude Include="src\WebFrameworkException.h" />
   </ItemGroup>
