@@ -2,7 +2,7 @@
   "WebServer": {
     "ip": "127.0.0.1",
     "port": 8080,
-    "timeout": 1000
+    "timeout": 0
   },
   "WebFramework": {
     "settingsPaths": [
