@@ -127,7 +127,7 @@ inline WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, 
 	void* buffer = malloc(array->size * sizeof(void*));
 	void** value = &buffer;
 
-	typedef void (*appendJSONBuilderArray)(void* implementation, const char* key, const void** value, size_t size, void** exception);
+	typedef void (*appendJSONBuilderArray)(void* implementation, const char* key, void** value, size_t size, void** exception);
 
 	for (size_t i = 0; i < array->size; i++)
 	{

@@ -152,3 +152,267 @@ void setHTTPResponseIsValid(HTTPResponseObject response, bool isValid, Exception
 		UNEXPECTED_EXCEPTION();
 	}
 }
+
+const char* getHTTPRawParameters(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRawParameters();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+const char* getHTTPMethod(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getMethod();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void* getHTTPVersion(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return new std::string(std::format("HTTP/{}", static_cast<framework::interfaces::IHTTPRequest*>(request)->getHTTPVersion()));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+const char* getHTTPBody(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getBody();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void setHTTPAttribute(HTTPRequestObject request, const char* name, const char* value, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->setAttribute(name, value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void* getHTTPAttribute(HTTPRequestObject request, const char* name, Exception* exception)
+{
+	try
+	{
+		framework::interfaces::IHTTPRequest* implementation = static_cast<framework::interfaces::IHTTPRequest*>(request);
+		const char* temp = implementation->getAttribute(name);
+		std::string* result = new std::string(temp);
+
+		implementation->deleteAttribute(temp);
+
+		return result;
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void deleteHTTPSession(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->deleteSession();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void removeHTTPAttribute(HTTPRequestObject request, const char* name, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->removeAttribute(name);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+JSONParser getHTTPRequestJSON(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return createJSONParserFromString(static_cast<framework::interfaces::IHTTPRequest*>(request)->getJSON(), exception);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+const char* getHTTPRawRequest(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRawRequest();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void* getClientIpV4(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		framework::interfaces::IHTTPRequest* implementation = static_cast<framework::interfaces::IHTTPRequest*>(request);
+		const char* temp = implementation->getClientIpV4();
+		std::string* result = new std::string(temp);
+
+		implementation->deleteClientIpV4(temp);
+
+		return result;
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void* getServerIpV4(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		framework::interfaces::IHTTPRequest* implementation = static_cast<framework::interfaces::IHTTPRequest*>(request);
+		const char* temp = implementation->getServerIpV4();
+		std::string* result = new std::string(temp);
+
+		implementation->deleteClientIpV4(temp);
+
+		return result;
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+uint16_t getClientPort(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getClientPort();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
+uint16_t getServerPort(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getServerPort();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}

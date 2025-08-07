@@ -102,8 +102,6 @@ namespace framework
 
 		HTTPRequest& operator =(HTTPRequest&& other) noexcept;
 
-		void updateLargeData(std::string_view dataPart, size_t size);
-
 		/// <summary>
 		/// Parameters string from HTTP
 		/// </summary>
@@ -514,11 +512,6 @@ namespace framework
 		return *this;
 	}
 
-	inline void HTTPRequest::updateLargeData(std::string_view dataPart, size_t size)
-	{
-		implementation->updateLargeData(dataPart.data(), dataPart.size(), size);
-	}
-
 	inline std::string_view HTTPRequest::getRawParameters() const
 	{
 		return implementation->getRawParameters();
@@ -536,7 +529,7 @@ namespace framework
 
 	inline std::string HTTPRequest::getHTTPVersion() const
 	{
-		return "HTTP/" + std::to_string(implementation->getHTTPVersion());
+		return std::format("HTTP/{}", implementation->getHTTPVersion());
 	}
 
 	inline const HTTPRequest::HeadersMap& HTTPRequest::getHeaders() const
