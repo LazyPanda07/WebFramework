@@ -2,8 +2,6 @@
 
 #include "JSONObject.h"
 
-typedef void* JSONParser;
-
 void __addArrayCallback(void* object, void* array);
 
 WebFrameworkException createJSONParser(JSONParser* parser);

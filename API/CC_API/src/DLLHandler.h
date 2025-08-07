@@ -23,6 +23,8 @@ typedef void* WebFrameworkString;
 typedef void* Config;
 typedef void* WebFramework;
 typedef void* WebFrameworkException;
+typedef void* JSONBuilder;
+typedef void* JSONParser;
 
 /**
  * @brief Load WebFramework shared library
@@ -57,6 +59,18 @@ void deleteWebFramework(WebFramework webFramework);
  * @param exception Exception object
  */
 void deleteWebFrameworkException(WebFrameworkException exception);
+
+/**
+ * @brief Free memory
+ * @param builder JSONBuilder object
+ */
+void deleteWebFrameworkJSONBuider(JSONBuilder builder);
+
+/**
+ * @brief Free memory
+ * @param parser JSONParser object
+ */
+void deleteWebFrameworkJSONParser(JSONParser parser);
 
 /**
  * @brief Get string from WebFrameworkString
@@ -207,6 +221,20 @@ inline void deleteWebFrameworkException(WebFrameworkException exception)
 	typedef void (*deleteWebFrameworkException)(void* exception);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
+}
+
+inline void deleteWebFrameworkJSONBuider(JSONBuilder builder)
+{
+	typedef void (*deleteWebFrameworkJSONBuider)(void* builder);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuider, builder);
+}
+
+inline void deleteWebFrameworkJSONParser(JSONParser parser)
+{
+	typedef void (*deleteWebFrameworkJSONParser)(void* parser);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONParser, parser);
 }
 
 inline const char* getDataFromString(WebFrameworkString string)

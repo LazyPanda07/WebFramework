@@ -398,14 +398,14 @@ inline WebFrameworkException setJSONObjectArray(JSONObject* jsonObject, const ch
 	void* buffer = malloc(array->size * sizeof(void*));
 	void** value = &buffer;
 
-	typedef void (*setJSONObjectArray)(void* implementation, const char* key, const void** value, void** exception);
+	typedef void (*setJSONObjectArray)(void* implementation, const char* key, const void** value, size_t size, void** exception);
 
 	for (size_t i = 0; i < array->size; i++)
 	{
 		value[i] = array->data[i].implementation;
 	}
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectArray, key, value, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectArray, key, value, array->size, &exception);
 
 	free(buffer);
 
