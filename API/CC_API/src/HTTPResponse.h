@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DLLHandler.h"
+#include "JSONBuilder.h"
 
 typedef void* HTTPResponse;
 
@@ -81,7 +81,7 @@ typedef enum
 
 WebFrameworkException setBody(HTTPResponse implementation, const char* body);
 
-// WebFrameworkException setJSONBody(HTTPResponse implementation, const char* body);
+WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilder body);
 
 WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* version);
 
@@ -104,6 +104,17 @@ inline WebFrameworkException setBody(HTTPResponse implementation, const char* bo
 	typedef void (*setHTTPResponseBody)(void* implementation, const char* body, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setHTTPResponseBody, body, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilder body)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*setHTTPResponseJSONBody)(void* implementation, void* body, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setHTTPResponseJSONBody, body, &exception);
 
 	return exception;
 }

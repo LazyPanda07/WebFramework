@@ -49,8 +49,6 @@ namespace framework
 
 	class HTTPRequest
 	{
-	
-
 	public:
 		struct InsensitiveStringHash
 		{

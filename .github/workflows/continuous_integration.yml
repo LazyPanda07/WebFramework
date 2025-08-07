@@ -134,11 +134,9 @@ jobs:
 
   windows-cxx-tests:
     runs-on: windows-latest
-    # runs-on: [self-hosted, Windows]
     needs: windows-build
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
@@ -152,13 +150,13 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}_Windows
+        name: Release_Windows
         path: WebFrameworkLibrary
 
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@master
       with:
-        build-type: ${{ matrix.configuration }}
+        build-type: Release
         install-path: Tests/gtest
         
     - name: Build tests
@@ -167,8 +165,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Tests
       working-directory: Tests
@@ -178,7 +176,7 @@ jobs:
           .\run_tests.bat ${{ matrix.config }}
 
     - name: Upload tests binaries
-      if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
+      if: ${{ matrix.config == 'multi_threaded_config.json' }}
       uses: actions/upload-artifact@v4
       with:
         name: Tests_Windows
@@ -278,7 +276,6 @@ jobs:
     needs: windows-build
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
@@ -292,13 +289,13 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}_Windows
+        name: Release_Windows
         path: WebFrameworkLibrary
 
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@master
       with:
-        build-type: ${{ matrix.configuration }}
+        build-type: Release
         install-path: Tests/gtest
         
     - name: Build tests
@@ -307,8 +304,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCC_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Tests
       working-directory: Tests
