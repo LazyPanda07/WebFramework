@@ -7,7 +7,7 @@ on:
   
   
 env:
-  flutter-version: 3.32.1
+  flutter-version: 3.32.8
 
 
 jobs:
@@ -43,16 +43,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -76,16 +78,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ..
-          nmake install
+          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
