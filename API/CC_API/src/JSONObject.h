@@ -70,7 +70,10 @@ inline size_t __getIndex(JSONArray* array)
 		array->capacity *= 2;
 		array->data = (JSONObject*)malloc(array->capacity * sizeof(JSONObject));
 
-		memcpy(array->data, temp, array->size * sizeof(JSONObject));
+		if (array->data)
+		{
+			memcpy(array->data, temp, array->size * sizeof(JSONObject));
+		}
 
 		free(temp);
 	}
@@ -95,7 +98,10 @@ inline JSONArray createJSONArray(size_t capacity)
 		.capacity = capacity
 	};
 
-	memset(result.data, 0, capacity * sizeof(JSONObject));
+	if (result.data)
+	{
+		memset(result.data, 0, capacity * sizeof(JSONObject));
+	}
 
 	return result;
 }
@@ -256,7 +262,7 @@ inline WebFrameworkException appendJSONArrayNull(JSONArray* array)
 
 inline WebFrameworkException appendJSONArrayArray(JSONArray* array, const JSONArray* objects)
 {
-	WebFrameworkException exception;
+	WebFrameworkException exception = nullptr;
 
 	for (size_t i = 0; i < objects->size; i++)
 	{

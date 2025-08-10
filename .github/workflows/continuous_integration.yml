@@ -8,6 +8,7 @@ on:
 
 
 env:
+  WINDOWS_CMAKE_BUILD_PARAMETERS: "-DNETWORKS_LOGGING=ON"
   WINDOWS_CMAKE_GENERATOR: "Ninja"
   LINUX_CMAKE_GENERATOR: "Ninja"
 
@@ -32,7 +33,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
           cmake --build  . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
