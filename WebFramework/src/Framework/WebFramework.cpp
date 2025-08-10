@@ -144,10 +144,14 @@ namespace framework
 				{
 					if (Log::isValid())
 					{
-						Log::info("CLog information: {}", "LogCLog", str());
+						Log::info("{}", "LogCLog", str());
 					}
 
-					return stringbuf::sync();
+					int result = stringbuf::sync();
+
+					stringbuf::str("");
+
+					return result;
 				}
 			} buffer;
 
