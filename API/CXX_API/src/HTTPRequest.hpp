@@ -71,14 +71,14 @@ namespace framework
 		std::function<void(interfaces::IHTTPRequest*)> deleter;
 		JSONParser json;
 		HeadersMap headers;
-		std::unordered_map<std::string, std::string> keyValueParameters;
+		std::unordered_map<std::string, std::string> queryParameters;
 		std::vector<Multipart> multiparts;
 		std::vector<std::string> chunks;
 
 	private:
 		void initHeaders();
 
-		void initKeyValuesParameters();
+		void initQueryParameters();
 
 		void initMultiparts();
 
@@ -386,16 +386,6 @@ namespace framework
 		);
 	}
 
-	void addHeader(const char* key, const char* value, void* additionalData);
-
-	void addKeyValue(const char* key, const char* value, void* additionalData);
-
-	void addCookie(const char* key, const char* value, void* additionalData);
-
-	void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData);
-
-	void addChunk(const char* chunk, size_t chunkSize, void* additionalData);
-
 	inline Multipart::Multipart(const framework::interfaces::CMultipart& multipart) :
 		name(multipart.name),
 		fileName(multipart.fileName),
@@ -435,21 +425,45 @@ namespace framework
 
 	inline void HTTPRequest::initHeaders()
 	{
+		auto addHeader = [](const char* key, const char* value, void* additionalData)
+			{
+				reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
+			};
+
 		implementation->getHeaders(addHeader, &headers);
 	}
 
-	inline void HTTPRequest::initKeyValuesParameters()
+	inline void HTTPRequest::initQueryParameters()
 	{
-		implementation->getQueryParameters(addKeyValue, &keyValueParameters);
+		auto initQueryBuffer = [](size_t size, void* buffer)
+			{
+				reinterpret_cast<std::unordered_map<std::string, std::string>*>(buffer)->reserve(size);
+			};
+		auto addQueryParameter = [](const char* key, const char* value, size_t index, void* buffer)
+			{
+				reinterpret_cast<std::unordered_map<std::string, std::string>*>(buffer)->try_emplace(key, value);
+			};
+
+		implementation->getQueryParameters(initQueryBuffer, addQueryParameter, &queryParameters);
 	}
 
 	inline void HTTPRequest::initMultiparts()
 	{
+		auto addMultipart = [](const framework::interfaces::CMultipart* multipart, void* additionalData)
+			{
+				static_cast<std::vector<Multipart>*>(additionalData)->emplace_back(*multipart);
+			};
+
 		implementation->getMultiparts(addMultipart, &multiparts);
 	}
 
 	inline void HTTPRequest::initChunks()
 	{
+		auto addChunk = [](const char* chunk, size_t chunkSize, void* additionalData)
+			{
+				reinterpret_cast<std::vector<std::string>*>(additionalData)->emplace_back(chunk, chunkSize);
+			};
+
 		implementation->getChunks(addChunk, &chunks);
 	}
 
@@ -486,7 +500,7 @@ namespace framework
 		json(implementation->getJSON())
 	{
 		this->initHeaders();
-		this->initKeyValuesParameters();
+		this->initQueryParameters();
 		this->initMultiparts();
 		this->initChunks();
 	}
@@ -502,7 +516,7 @@ namespace framework
 		deleter = other.deleter;
 		json = std::move(other.json);
 		headers = move(other.headers);
-		keyValueParameters = move(other.keyValueParameters);
+		queryParameters = move(other.queryParameters);
 		multiparts = move(other.multiparts);
 		chunks = move(other.chunks);
 
@@ -524,7 +538,7 @@ namespace framework
 
 	inline const std::unordered_map<std::string, std::string>& HTTPRequest::getQueryParameters() const
 	{
-		return keyValueParameters;
+		return queryParameters;
 	}
 
 	inline std::string HTTPRequest::getHTTPVersion() const
@@ -570,6 +584,10 @@ namespace framework
 	inline HTTPRequest::HeadersMap HTTPRequest::getCookies() const
 	{
 		HeadersMap result;
+		auto addCookie = [](const char* key, const char* value, void* additionalData)
+			{
+				reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
+			};
 
 		implementation->getCookies(addCookie, &result);
 
@@ -700,30 +718,5 @@ namespace framework
 
 			implementation = nullptr;
 		}
-	}
-
-	inline void addHeader(const char* key, const char* value, void* additionalData)
-	{
-		reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
-	}
-
-	inline void addKeyValue(const char* key, const char* value, void* additionalData)
-	{
-		reinterpret_cast<std::unordered_map<std::string, std::string>*>(additionalData)->try_emplace(key, value);
-	}
-
-	inline void addCookie(const char* key, const char* value, void* additionalData)
-	{
-		reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
-	}
-
-	inline void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData)
-	{
-		static_cast<std::vector<Multipart>*>(additionalData)->emplace_back(*multipart);
-	}
-
-	inline void addChunk(const char* chunk, size_t chunkSize, void* additionalData)
-	{
-		reinterpret_cast<std::vector<std::string>*>(additionalData)->emplace_back(chunk, chunkSize);
 	}
 }

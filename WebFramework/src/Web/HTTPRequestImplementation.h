@@ -80,13 +80,13 @@ namespace framework
 		/// <returns>HTTP method</returns>
 		const char* getMethod() const override;
 
-		void getQueryParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
+		void getQueryParameters(void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const override;
 
 		/// <summary>
 		/// GET parameters
 		/// </summary>
 		/// <returns>GET parameters as map</returns>
-		const char* getKeyValueParameter(const char* key) const override;
+		const char* getQueryParameter(const char* key) const override;
 
 		/// <summary>
 		/// HTTP version

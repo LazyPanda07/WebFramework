@@ -416,3 +416,37 @@ uint16_t getServerPort(HTTPRequestObject request, Exception* exception)
 
 	return 0;
 }
+
+bool isDynamicFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->isDynamicFunctionRegistered(functionName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
+void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->getQueryParameters(initQueryBuffer, addQueryParameter, buffer);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}

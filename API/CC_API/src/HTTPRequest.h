@@ -4,11 +4,21 @@
 
 typedef void* HTTPRequest;
 
+typedef struct
+{
+	const char* key;
+	const char* value;
+} QueryParameter;
+
+void __initQueryBuffer(size_t querySize, void* buffer);
+
+void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer);
+
 WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters);
 
 WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** method);
 
-// const std::unordered_map<std::string, std::string>& getQueryParameters() const;
+WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result);
 
 WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkString* version);
 
@@ -42,7 +52,7 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 
 // void unregisterDynamicFunction(std::string_view functionName);
 
-// bool isDynamicFunctionRegistered(std::string_view functionName);
+bool isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result);
 
 WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser);
 
@@ -78,6 +88,21 @@ WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port);
 // template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
 // void throwException(Args&&... args);
 
+inline void __initQueryBuffer(size_t querySize, void* buffer)
+{
+	QueryParameter** temp = (QueryParameter**)buffer;
+
+	*temp = (QueryParameter*)malloc(querySize * sizeof(QueryParameter));
+}
+
+inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
+{
+	QueryParameter* temp = *(QueryParameter**)buffer;
+
+	temp[index].key = key;
+	temp[index].value = value;
+}
+
 inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
 {
 	WebFrameworkException exception = NULL;
@@ -96,6 +121,17 @@ inline WebFrameworkException getHTTPMethod(HTTPRequest implementation, const cha
 	typedef const char* (*getHTTPMethod)(void* implementation, void** exception);
 
 	*method = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPMethod, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef const char* (*getQueryParameters)(void* implementation, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getQueryParameters, __initQueryBuffer, __addQueryParameter, result, &exception);
 
 	return exception;
 }
@@ -162,6 +198,17 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	typedef void (*removeHTTPAttribute)(void* implementation, const char* name, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeHTTPAttribute, name, &exception);
+
+	return exception;
+}
+
+inline bool isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef bool (*isDynamicFunctionRegistered)(void* implementation, const char* functionName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isDynamicFunctionRegistered, functionName, &exception);
 
 	return exception;
 }

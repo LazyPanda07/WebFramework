@@ -88,17 +88,20 @@ namespace framework
 		return parser.getMethod().data();
 	}
 
-	void HTTPRequestImplementation::getQueryParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const
+	void HTTPRequestImplementation::getQueryParameters(void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
 	{
 		const unordered_map<string, string>& queryParameters = parser.getQueryParameters();
+		size_t index = 0;
+
+		initQueryBuffer(queryParameters.size(), buffer);
 
 		for (const auto& [key, value] : queryParameters)
 		{
-			addKeyValue(key.data(), value.data(), additionalData);
+			addQueryParameter(key.data(), value.data(), index++, buffer);
 		}
 	}
 
-	const char* HTTPRequestImplementation::getKeyValueParameter(const char* key) const
+	const char* HTTPRequestImplementation::getQueryParameter(const char* key) const
 	{
 		return parser.getQueryParameters().at(key).data();
 	}

@@ -2,16 +2,6 @@
 
 using namespace std;
 
-static void addHeader(const char* key, const char* value, void* additionalData);
-
-static void addKeyValue(const char* key, const char* value, void* additionalData);
-
-static void addCookie(const char* key, const char* value, void* additionalData);
-
-static void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData);
-
-static void addChunk(const char* chunk, size_t chunkSize, void* additionalData);
-
 namespace framework
 {
 	LargeData::LargeData(string_view dataPart, size_t size, bool isLastPacket) :
@@ -24,21 +14,64 @@ namespace framework
 
 	void HTTPRequestExecutors::initHeaders()
 	{
+		auto addHeader = [](const char* key, const char* value, void* additionalData)
+			{
+				reinterpret_cast<web::HeadersMap*>(additionalData)->try_emplace(key, value);
+			};
+
 		implementation->getHeaders(addHeader, &headers);
 	}
 
-	void HTTPRequestExecutors::initKeyValuesParameters()
+	void HTTPRequestExecutors::initQueryParameters()
 	{
-		implementation->getQueryParameters(addKeyValue, &keyValueParameters);
+		auto initQueryBuffer = [](size_t size, void* buffer)
+			{
+				reinterpret_cast<std::unordered_map<std::string, std::string>*>(buffer)->reserve(size);
+			};
+		auto addQueryParameter = [](const char* key, const char* value, size_t index, void* buffer)
+			{
+				reinterpret_cast<std::unordered_map<std::string, std::string>*>(buffer)->try_emplace(key, value);
+			};
+
+		implementation->getQueryParameters(initQueryBuffer, addQueryParameter, &queryParameters);
 	}
 
 	void HTTPRequestExecutors::initMultiparts()
 	{
+		auto addMultipart = [](const framework::interfaces::CMultipart* multipart, void* additionalData)
+			{
+				optional<string> fileName;
+				optional<string> contentType;
+
+				if (multipart->fileName)
+				{
+					fileName = multipart->fileName;
+				}
+
+				if (multipart->contentType)
+				{
+					contentType = multipart->contentType;
+				}
+
+				reinterpret_cast<vector<web::Multipart>*>(additionalData)->emplace_back
+				(
+					multipart->name,
+					fileName,
+					contentType,
+					multipart->data
+				);
+			};
+
 		implementation->getMultiparts(addMultipart, &multiparts);
 	}
 
 	void HTTPRequestExecutors::initChunks()
 	{
+		auto addChunk = [](const char* chunk, size_t chunkSize, void* additionalData)
+			{
+				reinterpret_cast<vector<string>*>(additionalData)->emplace_back(chunk, chunkSize);
+			};
+
 		implementation->getChunks(addChunk, &chunks);
 	}
 
@@ -68,7 +101,7 @@ namespace framework
 		json.setJSONData(string_view(implementation->getJSON()));
 
 		this->initHeaders();
-		this->initKeyValuesParameters();
+		this->initQueryParameters();
 		this->initMultiparts();
 		this->initChunks();
 	}
@@ -84,7 +117,7 @@ namespace framework
 		deleter = other.deleter;
 		json = move(other.json);
 		headers = move(other.headers);
-		keyValueParameters = move(other.keyValueParameters);
+		queryParameters = move(other.queryParameters);
 		multiparts = move(other.multiparts);
 		chunks = move(other.chunks);
 
@@ -111,7 +144,7 @@ namespace framework
 
 	const unordered_map<string, string>& HTTPRequestExecutors::getQueryParameters() const
 	{
-		return keyValueParameters;
+		return queryParameters;
 	}
 
 	string HTTPRequestExecutors::getHTTPVersion() const
@@ -157,6 +190,10 @@ namespace framework
 	web::HeadersMap HTTPRequestExecutors::getCookies() const
 	{
 		web::HeadersMap result;
+		auto addCookie = [](const char* key, const char* value, void* additionalData)
+			{
+				reinterpret_cast<web::HeadersMap*>(additionalData)->try_emplace(key, value);
+			};
 
 		implementation->getCookies(addCookie, &result);
 
@@ -288,48 +325,4 @@ namespace framework
 			implementation = nullptr;
 		}
 	}
-}
-
-void addHeader(const char* key, const char* value, void* additionalData)
-{
-	reinterpret_cast<web::HeadersMap*>(additionalData)->try_emplace(key, value);
-}
-
-void addKeyValue(const char* key, const char* value, void* additionalData)
-{
-	reinterpret_cast<unordered_map<string, string>*>(additionalData)->try_emplace(key, value);
-}
-
-void addCookie(const char* key, const char* value, void* additionalData)
-{
-	reinterpret_cast<web::HeadersMap*>(additionalData)->try_emplace(key, value);
-}
-
-void addMultipart(const framework::interfaces::CMultipart* multipart, void* additionalData)
-{
-	optional<string> fileName;
-	optional<string> contentType;
-
-	if (multipart->fileName)
-	{
-		fileName = multipart->fileName;
-	}
-
-	if (multipart->contentType)
-	{
-		contentType = multipart->contentType;
-	}
-
-	reinterpret_cast<vector<web::Multipart>*>(additionalData)->emplace_back
-	(
-		multipart->name,
-		fileName,
-		contentType,
-		multipart->data
-	);
-}
-
-void addChunk(const char* chunk, size_t chunkSize, void* additionalData)
-{
-	reinterpret_cast<vector<string>*>(additionalData)->emplace_back(chunk, chunkSize);
 }

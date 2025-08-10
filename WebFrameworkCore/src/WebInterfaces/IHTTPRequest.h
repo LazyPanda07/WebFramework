@@ -73,9 +73,9 @@ namespace framework::interfaces
 
 		virtual const char* getMethod() const = 0;
 
-		virtual void getQueryParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
+		virtual void getQueryParameters(void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const = 0;
 
-		virtual const char* getKeyValueParameter(const char* key) const = 0;
+		virtual const char* getQueryParameter(const char* key) const = 0;
 
 		virtual double getHTTPVersion() const = 0;
 

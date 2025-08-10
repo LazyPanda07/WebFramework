@@ -34,14 +34,14 @@ namespace framework
 		std::function<void(interfaces::IHTTPRequest*)> deleter;
 		json::JSONParser json;
 		web::HeadersMap headers;
-		std::unordered_map<std::string, std::string> keyValueParameters;
+		std::unordered_map<std::string, std::string> queryParameters;
 		std::vector<web::Multipart> multiparts;
 		std::vector<std::string> chunks;
 
 	private:
 		void initHeaders();
 
-		void initKeyValuesParameters();
+		void initQueryParameters();
 
 		void initMultiparts();
 

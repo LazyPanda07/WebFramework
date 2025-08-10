@@ -53,4 +53,8 @@ EXPORT uint16_t getClientPort(HTTPRequestObject request, Exception* exception);
 
 EXPORT uint16_t getServerPort(HTTPRequestObject request, Exception* exception);
 
+EXPORT bool isDynamicFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception);
+
+EXPORT void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
