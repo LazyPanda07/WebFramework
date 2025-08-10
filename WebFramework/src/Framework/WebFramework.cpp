@@ -135,28 +135,6 @@ namespace framework
 			{
 				Log::duplicateErrorLog(cerr);
 			}
-
-#ifdef _WIN32
-			static class Buffer : public stringbuf
-			{
-			private:
-				int sync() override
-				{
-					if (Log::isValid())
-					{
-						Log::info("{}", "LogCLog", str());
-					}
-
-					int result = stringbuf::sync();
-
-					stringbuf::str("");
-
-					return result;
-				}
-			} buffer;
-
-			clog.rdbuf(&buffer);
-#endif
 		}
 	}
 

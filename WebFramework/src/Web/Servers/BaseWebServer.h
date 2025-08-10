@@ -15,6 +15,9 @@ namespace framework
 		SSL_CTX* context;
 		bool useHTTPS;
 
+	private:
+		bool autoCloseSocket() const final override;
+
 	public:
 		BaseWebServer();
 

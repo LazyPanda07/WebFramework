@@ -7,6 +7,11 @@ using namespace std;
 
 namespace framework
 {
+	bool BaseWebServer::autoCloseSocket() const
+	{
+		return false;
+	}
+
 	BaseWebServer::BaseWebServer() :
 		context(nullptr)
 	{
