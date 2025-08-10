@@ -8,7 +8,7 @@ WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const cha
 
 WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** method);
 
-// const std::unordered_map<std::string, std::string>& getKeyValueParameters() const;
+// const std::unordered_map<std::string, std::string>& getQueryParameters() const;
 
 WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkString* version);
 

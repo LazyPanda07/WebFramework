@@ -80,7 +80,7 @@ namespace framework
 		/// <returns>HTTP method</returns>
 		const char* getMethod() const override;
 
-		void getKeyValueParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
+		void getQueryParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
 
 		/// <summary>
 		/// GET parameters

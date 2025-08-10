@@ -73,7 +73,7 @@ namespace framework::interfaces
 
 		virtual const char* getMethod() const = 0;
 
-		virtual void getKeyValueParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
+		virtual void getQueryParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
 
 		virtual const char* getKeyValueParameter(const char* key) const = 0;
 

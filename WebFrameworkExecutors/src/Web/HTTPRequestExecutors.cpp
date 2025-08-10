@@ -29,7 +29,7 @@ namespace framework
 
 	void HTTPRequestExecutors::initKeyValuesParameters()
 	{
-		implementation->getKeyValueParameters(addKeyValue, &keyValueParameters);
+		implementation->getQueryParameters(addKeyValue, &keyValueParameters);
 	}
 
 	void HTTPRequestExecutors::initMultiparts()
@@ -109,7 +109,7 @@ namespace framework
 		return implementation->getMethod();
 	}
 
-	const unordered_map<string, string>& HTTPRequestExecutors::getKeyValueParameters() const
+	const unordered_map<string, string>& HTTPRequestExecutors::getQueryParameters() const
 	{
 		return keyValueParameters;
 	}

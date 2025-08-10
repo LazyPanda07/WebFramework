@@ -21,7 +21,7 @@ void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespo
 	(
 		std::format("{}.wfdp", request.getJSON().get<std::string>("fileName")),
 		response,
-		request.getKeyValueParameters()
+		request.getQueryParameters()
 	);
 }
 

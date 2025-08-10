@@ -118,7 +118,7 @@ namespace framework
 		/// GET parameters
 		/// </summary>
 		/// <returns>GET parameters as map</returns>
-		const std::unordered_map<std::string, std::string>& getKeyValueParameters() const;
+		const std::unordered_map<std::string, std::string>& getQueryParameters() const;
 
 		/// <summary>
 		/// HTTP version
@@ -440,7 +440,7 @@ namespace framework
 
 	inline void HTTPRequest::initKeyValuesParameters()
 	{
-		implementation->getKeyValueParameters(addKeyValue, &keyValueParameters);
+		implementation->getQueryParameters(addKeyValue, &keyValueParameters);
 	}
 
 	inline void HTTPRequest::initMultiparts()
@@ -522,7 +522,7 @@ namespace framework
 		return implementation->getMethod();
 	}
 
-	inline const std::unordered_map<std::string, std::string>& HTTPRequest::getKeyValueParameters() const
+	inline const std::unordered_map<std::string, std::string>& HTTPRequest::getQueryParameters() const
 	{
 		return keyValueParameters;
 	}

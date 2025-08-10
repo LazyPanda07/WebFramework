@@ -88,11 +88,11 @@ namespace framework
 		return parser.getMethod().data();
 	}
 
-	void HTTPRequestImplementation::getKeyValueParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const
+	void HTTPRequestImplementation::getQueryParameters(void(*addKeyValue)(const char* key, const char* value, void* additionalData), void* additionalData) const
 	{
-		const unordered_map<string, string>& keyValuesParameters = parser.getKeyValueParameters();
+		const unordered_map<string, string>& queryParameters = parser.getQueryParameters();
 
-		for (const auto& [key, value] : keyValuesParameters)
+		for (const auto& [key, value] : queryParameters)
 		{
 			addKeyValue(key.data(), value.data(), additionalData);
 		}
@@ -100,7 +100,7 @@ namespace framework
 
 	const char* HTTPRequestImplementation::getKeyValueParameter(const char* key) const
 	{
-		return parser.getKeyValueParameters().at(key).data();
+		return parser.getQueryParameters().at(key).data();
 	}
 
 	double HTTPRequestImplementation::getHTTPVersion() const

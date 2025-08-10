@@ -79,7 +79,7 @@ namespace framework
 		/// GET parameters
 		/// </summary>
 		/// <returns>GET parameters as map</returns>
-		const std::unordered_map<std::string, std::string>& getKeyValueParameters() const;
+		const std::unordered_map<std::string, std::string>& getQueryParameters() const;
 
 		/// <summary>
 		/// HTTP version
