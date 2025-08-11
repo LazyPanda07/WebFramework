@@ -59,7 +59,11 @@ TEST(LoadBalancer, ConnectionsHeuristic)
 
 	for (std::future<int64_t>& awaiter : awaiters)
 	{
-		ids.push_back(awaiter.get());
+		int64_t id = awaiter.get();
+
+		ids.push_back(id);
+
+		std::cout << std::format("Id: {}", id) << std::endl;
 	}
 
 	std::unordered_map<int64_t, size_t> unique;
