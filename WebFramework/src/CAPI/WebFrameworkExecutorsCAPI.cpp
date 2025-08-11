@@ -431,8 +431,6 @@ void unregisterDynamicFunction(HTTPRequestObject request, const char* functionNa
 	{
 		UNEXPECTED_EXCEPTION();
 	}
-
-	return 0;
 }
 
 bool isDynamicFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception)
@@ -450,7 +448,7 @@ bool isDynamicFunctionRegistered(HTTPRequestObject request, const char* function
 		UNEXPECTED_EXCEPTION();
 	}
 
-	return 0;
+	return false;
 }
 
 void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
