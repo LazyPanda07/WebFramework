@@ -459,12 +459,16 @@ namespace framework
 
 	inline void HTTPRequest::initChunks()
 	{
-		auto addChunk = [](const char* chunk, size_t chunkSize, void* additionalData)
+		auto addChunk = [](const char* chunk, size_t chunkSize, size_t index, void* buffer)
 			{
-				reinterpret_cast<std::vector<std::string>*>(additionalData)->emplace_back(chunk, chunkSize);
+				reinterpret_cast<std::vector<std::string>*>(buffer)->emplace_back(chunk, chunkSize);
+			};
+		auto initChunkBuffer = [](size_t size, void* buffer)
+			{
+				reinterpret_cast<std::vector<std::string>*>(buffer)->reserve(size);
 			};
 
-		implementation->getChunks(addChunk, &chunks);
+		implementation->getChunks(initChunkBuffer, addChunk, &chunks);
 	}
 
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T>
