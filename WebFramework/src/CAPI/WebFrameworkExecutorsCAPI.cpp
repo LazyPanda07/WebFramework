@@ -417,6 +417,22 @@ uint16_t getServerPort(HTTPRequestObject request, Exception* exception)
 	return 0;
 }
 
+void registerDynamicFunction(HTTPRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result), Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->registerDynamicFunction(functionName, function, deleter);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
 void unregisterDynamicFunction(HTTPRequestObject request, const char* functionName, Exception* exception)
 {
 	try
@@ -472,6 +488,38 @@ void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size
 	try
 	{
 		static_cast<framework::interfaces::IHTTPRequest*>(request)->getChunks(initChunkBuffer, addChunk, buffer);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, bool isBinary, const char* fileName, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendStaticFile(filePath, static_cast<framework::interfaces::IHTTPResponse*>(response), isBinary, fileName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void streamFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const char* fileName, size_t chunkSize, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->streamFile(filePath, static_cast<framework::interfaces::IHTTPResponse*>(response), fileName, chunkSize);
 	}
 	catch (const std::exception& e)
 	{

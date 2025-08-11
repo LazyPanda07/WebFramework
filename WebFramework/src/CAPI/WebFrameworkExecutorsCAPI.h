@@ -53,6 +53,8 @@ EXPORT uint16_t getClientPort(HTTPRequestObject request, Exception* exception);
 
 EXPORT uint16_t getServerPort(HTTPRequestObject request, Exception* exception);
 
+EXPORT void registerDynamicFunction(HTTPRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result), Exception* exception);
+
 EXPORT void unregisterDynamicFunction(HTTPRequestObject request, const char* functionName, Exception* exception);
 
 EXPORT bool isDynamicFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception);
@@ -60,5 +62,9 @@ EXPORT bool isDynamicFunctionRegistered(HTTPRequestObject request, const char* f
 EXPORT void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 
 EXPORT void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, bool isBinary, const char* fileName, Exception* exception);
+
+EXPORT void streamFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const char* fileName, size_t chunkSize, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

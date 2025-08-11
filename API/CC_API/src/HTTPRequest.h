@@ -52,13 +52,13 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 
 // void sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
 
-// void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary = true, std::string_view fileName = "");
+WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName);
 
 // void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
 
-// void streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHTTPRequest::defaultChunkSize);
+WebFrameworkException streamFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const char* fileName, size_t chunkSize);
 
-// void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result));
+WebFrameworkException registerDynamicFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result));
 
 WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName);
 
@@ -104,7 +104,14 @@ inline void __initQueryBuffer(size_t querySize, void* buffer)
 
 	*temp = (QueryParameter*)malloc((querySize + 1) * sizeof(QueryParameter)); // + 1 uses as \0
 
-	memset((*temp)[querySize], NULL, sizeof(QueryParameter)); // fill with zeros last element
+	if (!*temp)
+	{
+		fprintf(stderr, "Can't allocate memory for query parameter\n");
+
+		exit(1);
+	}
+
+	memset(&(*temp)[querySize], NULL, sizeof(QueryParameter)); // fill with zeros last element
 }
 
 inline void __initChunksBuffer(size_t size, void* buffer)
@@ -113,7 +120,14 @@ inline void __initChunksBuffer(size_t size, void* buffer)
 
 	*temp = (HTTPChunk*)malloc((size + 1) * sizeof(HTTPChunk)); // + 1 uses as \0
 
-	memset((*temp)[size], NULL, sizeof(HTTPChunk)); // fill with zeros last element
+	if (!*temp)
+	{
+		fprintf(stderr, "Can't allocate memory for chunks\n");
+
+		exit(2);
+	}
+
+	memset(&(*temp)[size], NULL, sizeof(HTTPChunk)); // fill with zeros last element
 }
 
 inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
@@ -175,7 +189,7 @@ inline WebFrameworkException getQueryParameters(HTTPRequest implementation, Quer
 
 	while (true)
 	{
-		if (!memcmp(temp[i], emptyBuffer, sizeof(QueryParameter)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(QueryParameter)))
 		{
 			*size = index;
 
@@ -254,6 +268,39 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	return exception;
 }
 
+inline WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, bool isBinary, const char* fileName, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, isBinary, fileName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException streamFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const char* fileName, size_t chunkSize)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*streamFile)(void* implementation, const char* filePath, void* response, const char* fileName, size_t chunkSize, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(streamFile, filePath, response, fileName, chunkSize, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException registerDynamicFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*registerDynamicFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result), void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunction, functionName, function, deleter, &exception);
+
+	return exception;
+}
+
 inline WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName)
 {
 	WebFrameworkException exception = NULL;
@@ -308,7 +355,7 @@ inline WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk
 
 	while (true)
 	{
-		if (!memcmp(temp[i], emptyBuffer, sizeof(HTTPChunk)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPChunk)))
 		{
 			*size = index;
 
