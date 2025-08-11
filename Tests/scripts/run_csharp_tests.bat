@@ -26,24 +26,24 @@ call LoadBalancerCore.exe --port 9094 --custom_heuristic || exit 1
 call ProxyCore.exe --port 15000 || exit 1
 call ProxyCore.exe --port 15001 --useHTTPS || exit 1
 
-call :KillProcess start_core_server.txt
-call :KillProcess start_proxy_server.txt
-call :KillProcess start_proxy_https_server.txt
-call :KillProcess start_load_balancer_9090_server.txt
-call :KillProcess start_load_balancer_9091_server.txt
-call :KillProcess start_load_balancer_9092_server.txt
-call :KillProcess start_load_balancer_9093_server.txt
-call :KillProcess start_load_balancer_9094_server.txt
-call :KillProcess start_load_balancer_10000_server.txt
-call :KillProcess start_load_balancer_10001_server.txt
-call :KillProcess start_load_balancer_10002_server.txt
-call :KillProcess start_load_balancer_10003_server.txt
-
-taskkill /IM DefaultHTTPSServer.exe /F
-
-exit /b
-
-:KillProcess
-set /p WEB_FRAMEWORK_KILL_PID=<"%1"
-taskkill /PID %WEB_FRAMEWORK_KILL_PID% /F
-exit /b
+@REM call :KillProcess start_core_server.txt
+@REM call :KillProcess start_proxy_server.txt
+@REM call :KillProcess start_proxy_https_server.txt
+@REM call :KillProcess start_load_balancer_9090_server.txt
+@REM call :KillProcess start_load_balancer_9091_server.txt
+@REM call :KillProcess start_load_balancer_9092_server.txt
+@REM call :KillProcess start_load_balancer_9093_server.txt
+@REM call :KillProcess start_load_balancer_9094_server.txt
+@REM call :KillProcess start_load_balancer_10000_server.txt
+@REM call :KillProcess start_load_balancer_10001_server.txt
+@REM call :KillProcess start_load_balancer_10002_server.txt
+@REM call :KillProcess start_load_balancer_10003_server.txt
+@REM 
+@REM taskkill /IM DefaultHTTPSServer.exe /F
+@REM 
+@REM exit /b
+@REM 
+@REM :KillProcess
+@REM set /p WEB_FRAMEWORK_KILL_PID=<"%1"
+@REM taskkill /PID %WEB_FRAMEWORK_KILL_PID% /F
+@REM exit /b

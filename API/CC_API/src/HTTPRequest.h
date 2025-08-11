@@ -10,9 +10,19 @@ typedef struct
 	const char* value;
 } QueryParameter;
 
+typedef struct
+{
+	const char* data;
+	size_t size;
+} HTTPChunk;
+
 void __initQueryBuffer(size_t querySize, void* buffer);
 
+void __initChunksBuffer(size_t size, void* buffer);
+
 void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer);
+
+void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer);
 
 WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters);
 
@@ -56,7 +66,7 @@ bool isDynamicFunctionRegistered(HTTPRequest implementation, const char* functio
 
 WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser);
 
-// const std::vector<std::string>& getChunks() const;
+WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk* chunks, size_t* size);
 
 WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const char** rawRequest);
 
@@ -95,12 +105,22 @@ inline void __initQueryBuffer(size_t querySize, void* buffer)
 	*temp = (QueryParameter*)malloc(querySize * sizeof(QueryParameter));
 }
 
+inline void __initChunksBuffer(size_t size, void* buffer)
+{
+
+}
+
 inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
 {
 	QueryParameter* temp = *(QueryParameter**)buffer;
 
 	temp[index].key = key;
 	temp[index].value = value;
+}
+
+inline void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
+{
+
 }
 
 inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
@@ -220,6 +240,19 @@ inline WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSON
 	typedef void* (*removeHTTPAttribute)(void* implementation, void** exception);
 
 	*parser = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeHTTPAttribute, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk* chunks, size_t* size)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*getHTTPChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
+
+	// TODO: __initChunksBuffer, __addChunk, fill size
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunks, __initChunksBuffer, __addChunk, chunks, &exception);
 
 	return exception;
 }

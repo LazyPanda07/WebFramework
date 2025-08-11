@@ -403,9 +403,18 @@ namespace framework
 		throw framework::exceptions::APIException(errorMessage, responseCode, logCategory ? logCategory : "", exceptionClassHash);
 	}
 
-	void HTTPRequestImplementation::getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const
+	void HTTPRequestImplementation::getChunks(void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer) const
 	{
-		ranges::for_each(parser.getChunks(), [addChunk, additionalData](const string& chunk) { addChunk(chunk.data(), chunk.size(), additionalData); });
+		const vector<string>& chunks = parser.getChunks();
+
+		initChunkBuffer(chunks.size(), buffer);
+
+		for (size_t i = 0; i < chunks.size(); i++)
+		{
+			const string& chunk = chunks[i];
+
+			addChunk(chunk.data(), chunk.size(), i, buffer);
+		}
 	}
 
 	const char* HTTPRequestImplementation::getJSON() const

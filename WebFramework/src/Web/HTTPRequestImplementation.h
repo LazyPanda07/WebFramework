@@ -206,7 +206,7 @@ namespace framework
 		 * @brief Get chunks
 		 * @return
 		 */
-		void getChunks(void(*addChunk)(const char* chunk, size_t chunkSize, void* additionalData), void* additionalData) const override;
+		void getChunks(void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer) const override;
 
 		/// <summary>
 		/// Getter for JSONParser

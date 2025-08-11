@@ -450,3 +450,19 @@ void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)(size_t
 		UNEXPECTED_EXCEPTION();
 	}
 }
+
+void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->getChunks(initChunkBuffer, addChunk, buffer);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
