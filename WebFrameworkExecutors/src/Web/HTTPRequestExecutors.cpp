@@ -67,12 +67,16 @@ namespace framework
 
 	void HTTPRequestExecutors::initChunks()
 	{
-		auto addChunk = [](const char* chunk, size_t chunkSize, void* additionalData)
+		auto addChunk = [](const char* chunk, size_t chunkSize, size_t index, void* buffer)
 			{
-				reinterpret_cast<vector<string>*>(additionalData)->emplace_back(chunk, chunkSize);
+				reinterpret_cast<vector<string>*>(buffer)->emplace_back(chunk, chunkSize);
+			};
+		auto initChunkBuffer = [](size_t size, void* buffer)
+			{
+				reinterpret_cast<vector<string>*>(buffer)->reserve(size);
 			};
 
-		implementation->getChunks(addChunk, &chunks);
+		implementation->getChunks(initChunkBuffer, addChunk, &chunks);
 	}
 
 	interfaces::IHTTPRequest* HTTPRequestExecutors::getImplementation() const

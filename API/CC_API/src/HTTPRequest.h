@@ -28,7 +28,7 @@ WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const cha
 
 WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** method);
 
-WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result);
+WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result, size_t* size);
 
 WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkString* version);
 
@@ -60,13 +60,13 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 
 // void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result));
 
-// void unregisterDynamicFunction(std::string_view functionName);
+WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName);
 
-bool isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result);
+WebFrameworkException isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result);
 
 WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser);
 
-WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk* chunks, size_t* size);
+WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk** result, size_t* size);
 
 WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const char** rawRequest);
 
@@ -102,12 +102,18 @@ inline void __initQueryBuffer(size_t querySize, void* buffer)
 {
 	QueryParameter** temp = (QueryParameter**)buffer;
 
-	*temp = (QueryParameter*)malloc(querySize * sizeof(QueryParameter));
+	*temp = (QueryParameter*)malloc((querySize + 1) * sizeof(QueryParameter)); // + 1 uses as \0
+
+	memset((*temp)[querySize], NULL, sizeof(QueryParameter)); // fill with zeros last element
 }
 
 inline void __initChunksBuffer(size_t size, void* buffer)
 {
+	HTTPChunk** temp = (HTTPChunk**)buffer;
 
+	*temp = (HTTPChunk*)malloc((size + 1) * sizeof(HTTPChunk)); // + 1 uses as \0
+
+	memset((*temp)[size], NULL, sizeof(HTTPChunk)); // fill with zeros last element
 }
 
 inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
@@ -120,7 +126,10 @@ inline void __addQueryParameter(const char* key, const char* value, size_t index
 
 inline void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
 {
+	HTTPChunk* temp = *(HTTPChunk**)buffer;
 
+	temp[index].data = chunk;
+	temp[index].size = chunkSize;
 }
 
 inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
@@ -145,13 +154,36 @@ inline WebFrameworkException getHTTPMethod(HTTPRequest implementation, const cha
 	return exception;
 }
 
-inline WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result)
+inline WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
 	typedef const char* (*getQueryParameters)(void* implementation, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getQueryParameters, __initQueryBuffer, __addQueryParameter, result, &exception);
+
+	if (exception)
+	{
+		return exception;
+	}
+
+	uint8_t emptyBuffer[sizeof(QueryParameter)];
+	QueryParameter* temp = *result;
+	size_t index = 0;
+
+	memset(emptyBuffer, NULL, sizeof(QueryParameter));
+
+	while (true)
+	{
+		if (!memcmp(temp[i], emptyBuffer, sizeof(QueryParameter)))
+		{
+			*size = index;
+
+			break;
+		}
+
+		index++;
+	}
 
 	return exception;
 }
@@ -222,7 +254,18 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	return exception;
 }
 
-inline bool isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
+inline WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*unregisterDynamicFunction)(void* implementation, const char* functionName, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterDynamicFunction, functionName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -244,15 +287,36 @@ inline WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSON
 	return exception;
 }
 
-inline WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk* chunks, size_t* size)
+inline WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
 	typedef void (*getHTTPChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
 
-	// TODO: __initChunksBuffer, __addChunk, fill size
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunks, __initChunksBuffer, __addChunk, result, &exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunks, __initChunksBuffer, __addChunk, chunks, &exception);
+	if (exception)
+	{
+		return exception;
+	}
+
+	uint8_t emptyBuffer[sizeof(HTTPChunk)];
+	HTTPChunk* temp = *result;
+	size_t index = 0;
+
+	memset(emptyBuffer, NULL, sizeof(HTTPChunk));
+
+	while (true)
+	{
+		if (!memcmp(temp[i], emptyBuffer, sizeof(HTTPChunk)))
+		{
+			*size = index;
+
+			break;
+		}
+
+		index++;
+	}
 
 	return exception;
 }
