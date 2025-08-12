@@ -11,8 +11,8 @@ namespace utility
 	streams::IOSocketStream createSocketStream()
 	{
 		return useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080", 3600000) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080", 3600000);
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080", 3'600'000) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080", 3'600'000);
 	}
 
 	bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second)

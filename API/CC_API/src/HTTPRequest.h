@@ -16,13 +16,29 @@ typedef struct
 	size_t size;
 } HTTPChunk;
 
+typedef struct
+{
+	const char* key;
+	const char* value;
+} HTTPHeader;
+
+typedef struct
+{
+	const char* name;
+	const char* value;
+} DynamicPagesVariable;
+
 void __initQueryBuffer(size_t querySize, void* buffer);
 
 void __initChunksBuffer(size_t size, void* buffer);
 
+void __initHeadersBuffer(size_t size, void* buffer);
+
 void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer);
 
 void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer);
+
+void __addHeader(const char* key, const char* value, size_t index, void* buffer);
 
 WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters);
 
@@ -32,7 +48,9 @@ WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParame
 
 WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkString* version);
 
-// const HeadersMap& getHeaders() const;
+WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader** result, size_t* size);
+
+WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* headerName, const char** result);
 
 WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body);
 
@@ -50,11 +68,11 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 
 // LargeData getLargeData() const;
 
-// void sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
+WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName);
 
 WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName);
 
-// void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
+WebFrameworkException sendDynamicFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName);
 
 WebFrameworkException streamFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const char* fileName, size_t chunkSize);
 
@@ -130,6 +148,22 @@ inline void __initChunksBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], NULL, sizeof(HTTPChunk)); // fill with zeros last element
 }
 
+inline void __initHeadersBuffer(size_t size, void* buffer)
+{
+	HTTPHeader** temp = (HTTPHeader**)buffer;
+
+	*temp = (HTTPHeader*)malloc((size + 1) * sizeof(HTTPHeader)); // + 1 uses as \0
+
+	if (!*temp)
+	{
+		fprintf(stderr, "Can't allocate memory for HTTP headers\n");
+
+		exit(2);
+	}
+
+	memset(&(*temp)[size], NULL, sizeof(HTTPHeader)); // fill with zeros last element
+}
+
 inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
 {
 	QueryParameter* temp = *(QueryParameter**)buffer;
@@ -144,6 +178,14 @@ inline void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* 
 
 	temp[index].data = chunk;
 	temp[index].size = chunkSize;
+}
+
+inline void __addHeader(const char* key, const char* value, size_t index, void* buffer)
+{
+	HTTPHeader* temp = *(HTTPHeader**)buffer;
+
+	temp[index].key = key;
+	temp[index].value = value;
 }
 
 inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
@@ -213,6 +255,28 @@ inline WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrame
 	return exception;
 }
 
+inline WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader** result, size_t* size)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*getHTTPHeaders)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeaders, __initHeadersBuffer, __addHeader, result, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* headerName, const char** result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef const char* (*getHTTPHeader)(void* implementation, const char* headerName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader, headerName, &exception);
+
+	return exception;
+}
+
 inline WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body)
 {
 	WebFrameworkException exception = NULL;
@@ -268,6 +332,17 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	return exception;
 }
 
+inline WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*sendAssetFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendAssetFile, filePath, response, variables, variablesSize, isBinary, fileName, &exception);
+
+	return exception;
+}
+
 inline WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName)
 {
 	WebFrameworkException exception = NULL;
@@ -275,6 +350,17 @@ inline WebFrameworkException sendStaticFile(HTTPRequest implementation, const ch
 	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, bool isBinary, const char* fileName, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, isBinary, fileName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException sendDynamicFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*sendDynamicFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendDynamicFile, filePath, response, variables, variablesSize, isBinary, fileName, &exception);
 
 	return exception;
 }

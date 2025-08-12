@@ -111,13 +111,16 @@ namespace framework
 		return parser.getHTTPVersion();
 	}
 
-	void HTTPRequestImplementation::getHeaders(void(*addHeader)(const char* key, const char* value, void* additionalData), void* additionalData) const
+	void HTTPRequestImplementation::getHeaders(void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
 	{
 		const web::HeadersMap& headers = parser.getHeaders();
+		size_t index = 0;
+
+		initHeadersBuffer(headers.size(), buffer);
 
 		for (const auto& [key, value] : headers)
 		{
-			addHeader(key.data(), value.data(), additionalData);
+			addHeader(key.data(), value.data(), index++, buffer);
 		}
 	}
 

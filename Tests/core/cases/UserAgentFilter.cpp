@@ -9,7 +9,7 @@
 
 TEST(UserAgentFilter, PerExecutor)
 {
-    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000");
+    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 3'600'000);
 
     {
         std::string request = web::HTTPBuilder().getRequest().parameters("user_agent").build();
@@ -47,7 +47,7 @@ TEST(UserAgentFilter, PerExecutor)
 
 TEST(UserAgentFilter, ConfigLevel)
 {
-    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20001");
+    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20001", 3'600'000);
 
     {
         std::string request = web::HTTPBuilder().getRequest().parameters("default_request").build();

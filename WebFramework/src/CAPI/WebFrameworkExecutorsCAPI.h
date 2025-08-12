@@ -4,6 +4,7 @@
 
 typedef void* HTTPResponseObject;
 typedef void* HTTPRequestObject;
+typedef void* DynamicPagesVariable;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -63,7 +64,15 @@ EXPORT void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)
 
 EXPORT void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, Exception* exception);
 
+EXPORT void getHTTPHeaders(HTTPRequestObject request, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
+
+EXPORT const char* getHTTPHeader(HTTPRequestObject request, const char* headerName, Exception* exception);
+
+EXPORT void sendAssetFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception);
+
 EXPORT void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, bool isBinary, const char* fileName, Exception* exception);
+
+EXPORT void sendDynamicFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception);
 
 EXPORT void streamFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const char* fileName, size_t chunkSize, Exception* exception);
 

@@ -14,12 +14,16 @@ namespace framework
 
 	void HTTPRequestExecutors::initHeaders()
 	{
-		auto addHeader = [](const char* key, const char* value, void* additionalData)
+		auto initHeadersBuffer = [](size_t size, void* buffer)
 			{
-				reinterpret_cast<web::HeadersMap*>(additionalData)->try_emplace(key, value);
+				reinterpret_cast<web::HeadersMap*>(buffer)->reserve(size);
+			};
+		auto addHeader = [](const char* key, const char* value, size_t index, void* buffer)
+			{
+				reinterpret_cast<web::HeadersMap*>(buffer)->try_emplace(key, value);
 			};
 
-		implementation->getHeaders(addHeader, &headers);
+		implementation->getHeaders(initHeadersBuffer, addHeader, &headers);
 	}
 
 	void HTTPRequestExecutors::initQueryParameters()

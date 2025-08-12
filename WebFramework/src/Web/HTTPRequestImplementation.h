@@ -94,7 +94,7 @@ namespace framework
 		/// <returns>HTTP version</returns>
 		double getHTTPVersion() const override;
 
-		void getHeaders(void(*addHeader)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
+		void getHeaders(void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const override;
 
 		/// <summary>
 		/// All HTTP headers

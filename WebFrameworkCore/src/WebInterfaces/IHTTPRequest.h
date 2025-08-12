@@ -79,7 +79,7 @@ namespace framework::interfaces
 
 		virtual double getHTTPVersion() const = 0;
 
-		virtual void getHeaders(void(*addHeader)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
+		virtual void getHeaders(void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const = 0;
 
 		virtual const char* getHeaderValue(const char* headerName, bool throwException = true) const = 0;
 

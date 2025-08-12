@@ -499,11 +499,93 @@ void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size
 	}
 }
 
+void getHTTPHeaders(HTTPRequestObject request, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->getHeaders(initHeadersBuffer, addHeader, buffer);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+const char* getHTTPHeader(HTTPRequestObject request, const char* headerName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getHeaderValue(headerName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void sendAssetFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendAssetFile
+		(
+			filePath,
+			static_cast<framework::interfaces::IHTTPResponse*>(response),
+			variableSize,
+			static_cast<framework::interfaces::CVariable*>(variables),
+			isBinary,
+			fileName
+		);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
 void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{
 		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendStaticFile(filePath, static_cast<framework::interfaces::IHTTPResponse*>(response), isBinary, fileName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void sendDynamicFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendDynamicFile
+		(
+			filePath,
+			static_cast<framework::interfaces::IHTTPResponse*>(response),
+			variableSize,
+			static_cast<framework::interfaces::CVariable*>(variables),
+			isBinary,
+			fileName
+		);
 	}
 	catch (const std::exception& e)
 	{

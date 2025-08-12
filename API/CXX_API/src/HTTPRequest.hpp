@@ -425,12 +425,16 @@ namespace framework
 
 	inline void HTTPRequest::initHeaders()
 	{
-		auto addHeader = [](const char* key, const char* value, void* additionalData)
+		auto initHeadersBuffer = [](size_t size, void* buffer)
 			{
-				reinterpret_cast<HTTPRequest::HeadersMap*>(additionalData)->try_emplace(key, value);
+				reinterpret_cast<HTTPRequest::HeadersMap*>(buffer)->reserve(size);
+			};
+		auto addHeader = [](const char* key, const char* value, size_t index, void* buffer)
+			{
+				reinterpret_cast<HTTPRequest::HeadersMap*>(buffer)->try_emplace(key, value);
 			};
 
-		implementation->getHeaders(addHeader, &headers);
+		implementation->getHeaders(initHeadersBuffer, addHeader, &headers);
 	}
 
 	inline void HTTPRequest::initQueryParameters()
