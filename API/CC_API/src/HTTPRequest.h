@@ -28,6 +28,14 @@ typedef struct
 	const char* value;
 } DynamicPagesVariable;
 
+typedef struct
+{
+	const char* dataPart;
+	size_t dataPartSize;
+	size_t bodySize;
+	bool isLastPacket;
+} LargeData;
+
 void __initQueryBuffer(size_t querySize, void* buffer);
 
 void __initChunksBuffer(size_t size, void* buffer);
@@ -66,7 +74,7 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 
 // const std::vector<Multipart>& getMultiparts() const;
 
-// LargeData getLargeData() const;
+WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result);
 
 WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName);
 
@@ -328,6 +336,17 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	typedef void (*removeHTTPAttribute)(void* implementation, const char* name, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeHTTPAttribute, name, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef const void* (*getLargeData)(void* implementation, void** exception);
+
+	*result = (const LargeData*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getLargeData, &exception);
 
 	return exception;
 }

@@ -155,7 +155,9 @@ BASIC_TEST(CONNECT)
 
 TEST(RoutePattern, PassingValues)
 {
-	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 3'600'000);
+	using namespace std::chrono_literals;
+
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 1h);
 	std::string request;
 	std::string response;
 

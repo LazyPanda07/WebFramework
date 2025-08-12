@@ -68,6 +68,8 @@ EXPORT void getHTTPHeaders(HTTPRequestObject request, void(*initHeadersBuffer)(s
 
 EXPORT const char* getHTTPHeader(HTTPRequestObject request, const char* headerName, Exception* exception);
 
+EXPORT const void* getLargeData(HTTPRequestObject request, Exception* exception);
+
 EXPORT void sendAssetFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception);
 
 EXPORT void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, bool isBinary, const char* fileName, Exception* exception);

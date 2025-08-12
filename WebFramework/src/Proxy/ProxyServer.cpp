@@ -66,8 +66,8 @@ namespace framework
 			const ProxyData& proxyData = *routes.at(route);
 
 			streams::IOSocketStream serverStream = proxyData.isHTTPS ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(proxyData.ip, proxyData.port, proxyData.timeout) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(proxyData.ip, proxyData.port, proxyData.timeout);
+				streams::IOSocketStream::createStream<web::HTTPSNetwork>(proxyData.ip, proxyData.port, chrono::milliseconds(proxyData.timeout)) :
+				streams::IOSocketStream::createStream<web::HTTPNetwork>(proxyData.ip, proxyData.port, chrono::milliseconds(proxyData.timeout));
 
 			serverStream << request;
 

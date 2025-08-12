@@ -49,8 +49,8 @@ namespace framework
 	web::HTTPParser HTTPRequestImplementation::sendRequestToAnotherServer(string_view ip, string_view port, string_view request, DWORD timeout, bool useHTTPS)
 	{
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(ip, port, timeout) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(ip, port, timeout);
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(ip, port, chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(ip, port, chrono::milliseconds(timeout));
 		string response;
 
 		stream << request;
