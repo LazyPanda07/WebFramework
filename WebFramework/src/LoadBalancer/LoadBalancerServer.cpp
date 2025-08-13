@@ -357,14 +357,11 @@ namespace framework
 				}
 			}
 
+			chrono::milliseconds timeoutInMilliseconds(timeout);
 			LoadBalancerRequest request
 			(
-				ssl ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket),
-				serversHTTPS ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, chrono::milliseconds(timeout)) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, chrono::milliseconds(timeout)),
+				ssl ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, timeoutInMilliseconds),
+				serversHTTPS ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
 				heuristic,
 				move(cleanup)
 			);

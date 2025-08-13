@@ -146,7 +146,7 @@ namespace framework
 		 * @brief Get data from multipart/form-data
 		 * @return
 		 */
-		void getMultiparts(void(*addMultipart)(const interfaces::CMultipart* part, void* additionalData), void* additionalData) const override;
+		void getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer) const override;
 
 		const interfaces::CLargeData* getLargeData() const override;
 

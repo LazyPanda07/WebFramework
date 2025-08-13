@@ -25,7 +25,7 @@ namespace framework
 		std::string data;
 
 	public:
-		Multipart(const framework::interfaces::CMultipart& multipart);
+		Multipart(const char* name, const char* fileName, const char* contentType, const char* data);
 
 		const std::string& getName() const;
 
@@ -386,13 +386,19 @@ namespace framework
 		);
 	}
 
-	inline Multipart::Multipart(const framework::interfaces::CMultipart& multipart) :
-		name(multipart.name),
-		fileName(multipart.fileName),
-		contentType(multipart.contentType),
-		data(multipart.data)
+	inline Multipart::Multipart(const char* name, const char* fileName, const char* contentType, const char* data) :
+		name(name),
+		data(data)
 	{
+		if (fileName)
+		{
+			this->fileName = fileName;
+		}
 
+		if (contentType)
+		{
+			this->contentType = contentType;
+		}
 	}
 
 	inline const std::string& Multipart::getName() const
@@ -453,12 +459,16 @@ namespace framework
 
 	inline void HTTPRequest::initMultiparts()
 	{
-		auto addMultipart = [](const framework::interfaces::CMultipart* multipart, void* additionalData)
+		auto initMultipartsBuffer = [](size_t size, void* buffer)
 			{
-				static_cast<std::vector<Multipart>*>(additionalData)->emplace_back(*multipart);
+				static_cast<std::vector<Multipart>*>(buffer)->reserve(size);
+			};
+		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer)
+			{
+				static_cast<std::vector<Multipart>*>(buffer)->emplace_back(name, fileName, contentType, data);
 			};
 
-		implementation->getMultiparts(addMultipart, &multiparts);
+		implementation->getMultiparts(initMultipartsBuffer, addMultipart, &multiparts);
 	}
 
 	inline void HTTPRequest::initChunks()

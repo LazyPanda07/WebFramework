@@ -36,17 +36,35 @@ typedef struct
 	bool isLastPacket;
 } LargeData;
 
+typedef struct
+{
+	const char* name;
+	/**
+	 * @brief May be NULL
+	 */
+	const char* fileName;
+	/**
+	 * @brief May be NULL
+	 */
+	const char* contentType;
+	const char* data;
+} Multipart;
+
 void __initQueryBuffer(size_t querySize, void* buffer);
 
 void __initChunksBuffer(size_t size, void* buffer);
 
 void __initHeadersBuffer(size_t size, void* buffer);
 
+void __initMultipartsBuffer(size_t size, void* buffer);
+
 void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer);
 
 void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer);
 
 void __addHeader(const char* key, const char* value, size_t index, void* buffer);
+
+void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer);
 
 WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters);
 
@@ -72,7 +90,7 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 
 // HeadersMap getCookies() const;
 
-// const std::vector<Multipart>& getMultiparts() const;
+WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** result, size_t* size);
 
 WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result);
 
@@ -166,10 +184,26 @@ inline void __initHeadersBuffer(size_t size, void* buffer)
 	{
 		fprintf(stderr, "Can't allocate memory for HTTP headers\n");
 
-		exit(2);
+		exit(3);
 	}
 
 	memset(&(*temp)[size], NULL, sizeof(HTTPHeader)); // fill with zeros last element
+}
+
+inline void __initMultipartsBuffer(size_t size, void* buffer)
+{
+	Multipart** temp = (Multipart**)buffer;
+
+	*temp = (Multipart*)malloc((size + 1) * sizeof(Multipart)); // + 1 uses as \0
+
+	if (!*temp)
+	{
+		fprintf(stderr, "Can't allocate memory for multiparts\n");
+
+		exit(4);
+	}
+
+	memset(&(*temp)[size], NULL, sizeof(Multipart)); // fill with zeros last element
 }
 
 inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
@@ -194,6 +228,16 @@ inline void __addHeader(const char* key, const char* value, size_t index, void* 
 
 	temp[index].key = key;
 	temp[index].value = value;
+}
+
+inline void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer)
+{
+	Multipart* temp = *(Multipart**)buffer;
+
+	temp[index].name = name;
+	temp[index].fileName = fileName;
+	temp[index].contentType = contentType;
+	temp[index].data = data;
 }
 
 inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
@@ -271,6 +315,29 @@ inline WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHead
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeaders, __initHeadersBuffer, __addHeader, result, &exception);
 
+	if (exception)
+	{
+		return exception;
+	}
+
+	uint8_t emptyBuffer[sizeof(HTTPHeader)];
+	HTTPHeader* temp = *result;
+	size_t index = 0;
+
+	memset(emptyBuffer, NULL, sizeof(HTTPHeader));
+
+	while (true)
+	{
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPHeader)))
+		{
+			*size = index;
+
+			break;
+		}
+
+		index++;
+	}
+
 	return exception;
 }
 
@@ -336,6 +403,42 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	typedef void (*removeHTTPAttribute)(void* implementation, const char* name, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeHTTPAttribute, name, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** result, size_t* size)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*getMultiparts)(void* implementation, void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getMultiparts, __initMultipartsBuffer, __addMultipart, result, &exception);
+
+	if (exception)
+	{
+		return exception;
+	}
+
+	uint8_t emptyBuffer[sizeof(Multipart)];
+	Multipart* temp = *result;
+	size_t index = 0;
+
+	memset(emptyBuffer, NULL, sizeof(Multipart));
+
+	while (true)
+	{
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(Multipart)))
+		{
+			*size = index;
+
+			break;
+		}
+
+		index++;
+	}
+
+	return exception;
 
 	return exception;
 }

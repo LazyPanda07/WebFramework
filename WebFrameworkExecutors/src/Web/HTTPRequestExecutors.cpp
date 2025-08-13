@@ -42,31 +42,22 @@ namespace framework
 
 	void HTTPRequestExecutors::initMultiparts()
 	{
-		auto addMultipart = [](const framework::interfaces::CMultipart* multipart, void* additionalData)
+		auto initMultipartsBuffer = [](size_t size, void* buffer)
 			{
-				optional<string> fileName;
-				optional<string> contentType;
-
-				if (multipart->fileName)
-				{
-					fileName = multipart->fileName;
-				}
-
-				if (multipart->contentType)
-				{
-					contentType = multipart->contentType;
-				}
-
+				static_cast<std::vector<web::Multipart>*>(buffer)->reserve(size);
+			};
+		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* additionalData)
+			{
 				reinterpret_cast<vector<web::Multipart>*>(additionalData)->emplace_back
 				(
-					multipart->name,
+					name,
 					fileName,
 					contentType,
-					multipart->data
+					data
 				);
 			};
 
-		implementation->getMultiparts(addMultipart, &multiparts);
+		implementation->getMultiparts(initMultipartsBuffer, addMultipart, &multiparts);
 	}
 
 	void HTTPRequestExecutors::initChunks()
