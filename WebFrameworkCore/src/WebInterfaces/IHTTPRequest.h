@@ -95,7 +95,7 @@ namespace framework::interfaces
 
 		virtual void removeAttribute(const char* name) = 0;
 
-		virtual void getCookies(void(*addCookie)(const char* key, const char* value, void* additionalData), void* additionalData) const = 0;
+		virtual void getCookies(void(*initCookiesBuffer)(size_t size, void* buffer), void(*addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const = 0;
 
 		virtual void getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer) const = 0;
 

@@ -24,6 +24,12 @@ typedef struct
 
 typedef struct
 {
+	const char* key;
+	const char* value;
+} Cookie;
+
+typedef struct
+{
 	const char* name;
 	const char* value;
 } DynamicPagesVariable;
@@ -58,6 +64,8 @@ void __initHeadersBuffer(size_t size, void* buffer);
 
 void __initMultipartsBuffer(size_t size, void* buffer);
 
+void __initCookiesBuffer(size_t size, void* buffer);
+
 void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer);
 
 void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer);
@@ -65,6 +73,8 @@ void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
 void __addHeader(const char* key, const char* value, size_t index, void* buffer);
 
 void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer);
+
+void __addCookie(const char* key, const char* value, size_t index, void* buffer);
 
 WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters);
 
@@ -88,7 +98,7 @@ WebFrameworkException deleteHTTPSession(HTTPRequest implementation);
 
 WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char* name);
 
-// HeadersMap getCookies() const;
+WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, size_t* size);
 
 WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** result, size_t* size);
 
@@ -206,6 +216,22 @@ inline void __initMultipartsBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], NULL, sizeof(Multipart)); // fill with zeros last element
 }
 
+inline void __initCookiesBuffer(size_t size, void* buffer)
+{
+	Cookie** temp = (Cookie**)buffer;
+
+	*temp = (Cookie*)malloc((size + 1) * sizeof(Cookie)); // + 1 uses as \0
+
+	if (!*temp)
+	{
+		fprintf(stderr, "Can't allocate memory for multiparts\n");
+
+		exit(5);
+	}
+
+	memset(&(*temp)[size], NULL, sizeof(Cookie)); // fill with zeros last element
+}
+
 inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
 {
 	QueryParameter* temp = *(QueryParameter**)buffer;
@@ -238,6 +264,14 @@ inline void __addMultipart(const char* name, const char* fileName, const char* c
 	temp[index].fileName = fileName;
 	temp[index].contentType = contentType;
 	temp[index].data = data;
+}
+
+inline void __addCookie(const char* key, const char* value, size_t index, void* buffer)
+{
+	Cookie* temp = *(Cookie**)buffer;
+
+	temp[index].key = key;
+	temp[index].value = value;
 }
 
 inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
@@ -403,6 +437,40 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	typedef void (*removeHTTPAttribute)(void* implementation, const char* name, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeHTTPAttribute, name, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, size_t* size)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*getCookies)(void* implementation, void(*__initCookiesBuffer)(size_t size, void* buffer), void(*__addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getCookies, __initCookiesBuffer, __addCookie, result, &exception);
+
+	if (exception)
+	{
+		return exception;
+	}
+
+	uint8_t emptyBuffer[sizeof(Cookie)];
+	Cookie* temp = *result;
+	size_t index = 0;
+
+	memset(emptyBuffer, NULL, sizeof(Cookie));
+
+	while (true)
+	{
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(Cookie)))
+		{
+			*size = index;
+
+			break;
+		}
+
+		index++;
+	}
 
 	return exception;
 }
