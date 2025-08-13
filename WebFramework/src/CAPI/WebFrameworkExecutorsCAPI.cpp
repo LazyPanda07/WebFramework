@@ -567,8 +567,8 @@ void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t
 	}
 }
 
- void getCookies(HTTPRequestObject request, void(*initCookiesBuffer)(size_t size, void* buffer), void(addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
- {
+void getCookies(HTTPRequestObject request, void(*initCookiesBuffer)(size_t size, void* buffer), void(addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
+{
 	try
 	{
 		static_cast<framework::interfaces::IHTTPRequest*>(request)->getCookies(initCookiesBuffer, addCookie, buffer);
@@ -581,7 +581,7 @@ void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t
 	{
 		UNEXPECTED_EXCEPTION();
 	}
- }
+}
 
 void sendAssetFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
 {
@@ -661,4 +661,58 @@ void streamFile(HTTPRequestObject request, const char* filePath, HTTPResponseObj
 	{
 		UNEXPECTED_EXCEPTION();
 	}
+}
+
+int64_t getRouteIntegerParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRouteIntegerParameter(routeParameterName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
+double getRouteDoubleParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRouteDoubleParameter(routeParameterName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0.0;
+}
+
+const char* getRouteStringParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRouteStringParameter(routeParameterName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
 }

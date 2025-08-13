@@ -140,8 +140,11 @@ WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port);
 
 // Table getTable(std::string_view databaseName, std::string_view tableName) const;
 
-// template<RouteParameterType T>
-// T getRouteParameter(std::string_view routeParameterName) const;
+WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const char* routeParameterName, int64_t* result);
+
+WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation, const char* routeParameterName, double* result);
+
+WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const char* routeParameterName, const char** result);
 
 // template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 // void sendChunks(HTTPResponse& response, Args&&... args);
@@ -677,7 +680,7 @@ inline WebFrameworkException getServerIpV4(HTTPRequest implementation, WebFramew
 	return exception;
 }
 
-WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port)
+inline WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port)
 {
 	WebFrameworkException exception = NULL;
 
@@ -688,13 +691,46 @@ WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port)
 	return exception;
 }
 
-WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port)
+inline WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port)
 {
 	WebFrameworkException exception = NULL;
 
 	typedef uint16_t(*getServerPort)(void* implementation, void** exception);
 
 	*port = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getServerPort, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const char* routeParameterName, int64_t* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef int64_t(*getRouteIntegerParameter)(void* implementation, const char* routeParameterName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRouteIntegerParameter, routeParameterName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation, const char* routeParameterName, double* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef double(*getRouteDoubleParameter)(void* implementation, const char* routeParameterName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRouteDoubleParameter, routeParameterName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const char* routeParameterName, const char** result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef const char* (*getRouteStringParameter)(void* implementation, const char* routeParameterName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRouteStringParameter, routeParameterName, &exception);
 
 	return exception;
 }

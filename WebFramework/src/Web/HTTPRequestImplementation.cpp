@@ -484,17 +484,17 @@ namespace framework
 		return serverReference.getServerPortV4();
 	}
 
-	const char* HTTPRequestImplementation::getRouteParameterString(const char* routeParameterName) const
+	const char* HTTPRequestImplementation::getRouteStringParameter(const char* routeParameterName) const
 	{
 		return get<string>(routeParameters.at(routeParameterName)).data();
 	}
 
-	int64_t HTTPRequestImplementation::getRouteParameterInteger(const char* routeParameterName) const
+	int64_t HTTPRequestImplementation::getRouteIntegerParameter(const char* routeParameterName) const
 	{
 		return get<int64_t>(routeParameters.at(routeParameterName));
 	}
 
-	double HTTPRequestImplementation::getRouteParameterDouble(const char* routeParameterName) const
+	double HTTPRequestImplementation::getRouteDoubleParameter(const char* routeParameterName) const
 	{
 		return get<double>(routeParameters.at(routeParameterName));
 	}

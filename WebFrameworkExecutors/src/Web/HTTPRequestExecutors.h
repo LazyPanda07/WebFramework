@@ -267,17 +267,17 @@ namespace framework
 	{
 		if constexpr (std::is_same_v<T, std::string>)
 		{
-			std::string result(implementation->getRouteParameterString(routeParameterName.data()));
+			std::string result(implementation->getRouteStringParameter(routeParameterName.data()));
 
 			return result;
 		}
 		else if constexpr (std::is_integral_v<T>)
 		{
-			return static_cast<T>(implementation->getRouteParameterInteger(routeParameterName.data()));
+			return static_cast<T>(implementation->getRouteIntegerParameter(routeParameterName.data()));
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			return static_cast<T>(implementation->getRouteParameterDouble(routeParameterName.data()));
+			return static_cast<T>(implementation->getRouteDoubleParameter(routeParameterName.data()));
 		}
 		else
 		{

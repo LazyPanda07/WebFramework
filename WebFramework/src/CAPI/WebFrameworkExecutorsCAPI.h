@@ -82,4 +82,10 @@ EXPORT void sendDynamicFile(HTTPRequestObject request, const char* filePath, HTT
 
 EXPORT void streamFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const char* fileName, size_t chunkSize, Exception* exception);
 
+EXPORT int64_t getRouteIntegerParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception);
+
+EXPORT double getRouteDoubleParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception);
+
+EXPORT const char* getRouteStringParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

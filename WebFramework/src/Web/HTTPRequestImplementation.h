@@ -244,11 +244,11 @@ namespace framework
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const override;
 
-		const char* getRouteParameterString(const char* routeParameterName) const override;
+		const char* getRouteStringParameter(const char* routeParameterName) const override;
 
-		int64_t getRouteParameterInteger(const char* routeParameterName) const override;
+		int64_t getRouteIntegerParameter(const char* routeParameterName) const override;
 
-		double getRouteParameterDouble(const char* routeParameterName) const override;
+		double getRouteDoubleParameter(const char* routeParameterName) const override;
 
 		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName) override;
 

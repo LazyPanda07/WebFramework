@@ -137,11 +137,11 @@ namespace framework::interfaces
 
 		virtual uint16_t getServerPort() const = 0;
 
-		virtual const char* getRouteParameterString(const char* routeParameterName) const = 0;
+		virtual const char* getRouteStringParameter(const char* routeParameterName) const = 0;
 
-		virtual int64_t getRouteParameterInteger(const char* routeParameterName) const = 0;
+		virtual int64_t getRouteIntegerParameter(const char* routeParameterName) const = 0;
 
-		virtual double getRouteParameterDouble(const char* routeParameterName) const = 0;
+		virtual double getRouteDoubleParameter(const char* routeParameterName) const = 0;
 
 		virtual IDatabase* getOrCreateDatabase(const char* databaseName) = 0;
 
