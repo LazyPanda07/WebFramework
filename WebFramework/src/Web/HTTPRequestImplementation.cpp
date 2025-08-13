@@ -175,7 +175,7 @@ namespace framework
 		session.deleteAttribute(this->getClientIpV4(), name);
 	}
 
-	void HTTPRequestImplementation::getCookies(void(*addCookie)(const char* key, const char* value, void* additionalData), void* additionalData) const
+	void HTTPRequestImplementation::getCookies(void(initCookiesBuffer)(size_t size, void* buffer), void(*addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
 	{
 		const web::HeadersMap& headers = parser.getHeaders();
 
@@ -183,6 +183,8 @@ namespace framework
 		{
 			const string& cookies = it->second;
 			size_t offset = 0;
+			size_t index = 0;
+			vector<pair<string_view, string_view>> temp;
 
 			while (true)
 			{
@@ -193,7 +195,7 @@ namespace framework
 				string::const_iterator startValue = endKey + 1;
 				string::const_iterator endValue = findValue != string::npos ? (cookies.begin() + findValue) : (cookies.end());
 
-				addCookie(string_view(startKey, endKey).data(), string_view(startValue, endValue).data(), additionalData);
+				temp.emplace_back(string_view(startKey, endKey), string_view(startValue, endValue));
 
 				if (findValue == string::npos)
 				{
@@ -201,6 +203,13 @@ namespace framework
 				}
 
 				offset = findValue + 2;
+			}
+
+			initCookiesBuffer(temp.size(), buffer);
+
+			for (const auto& [key, value] : temp)
+			{
+				addCookie(key.data(), value.data(), index++, buffer);
 			}
 		}
 	}

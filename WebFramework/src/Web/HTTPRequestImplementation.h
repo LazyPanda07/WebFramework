@@ -140,7 +140,7 @@ namespace framework
 		/// Client's cookies
 		/// </summary>
 		/// <returns>HTTP cookies as map</returns>
-		void getCookies(void(*addCookie)(const char* key, const char* value, void* additionalData), void* additionalData) const override;
+		void getCookies(void(initCookiesBuffer)(size_t size, void* buffer), void(*addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const override;
 
 		/**
 		 * @brief Get data from multipart/form-data
