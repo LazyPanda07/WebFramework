@@ -1,6 +1,7 @@
 #pragma once
 
 #include "HTTPResponse.h"
+#include "Databases/Database.h"
 
 typedef void* HTTPRequest;
 
@@ -132,13 +133,13 @@ WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port);
 
 WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port);
 
-// Database getOrCreateDatabase(std::string_view databaseName);
+WebFrameworkException getOrCreateDatabase(HTTPRequest implementation, const char* databaseName, Database* result);
 
-// Database getDatabase(std::string_view databaseName) const;
+WebFrameworkException getDatabase(HTTPRequest implementation, const char* databaseName, Database* result);
 
-// Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
+WebFrameworkException getOrCreateTable(HTTPRequest implementation, const char* databaseName, const char* tableName, const char* createTableQuery, Table* result);
 
-// Table getTable(std::string_view databaseName, std::string_view tableName) const;
+WebFrameworkException getTable(const char* databaseName, const char* tableName, Table* result);
 
 WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const char* routeParameterName, int64_t* result);
 
@@ -698,6 +699,50 @@ inline WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t*
 	typedef uint16_t(*getServerPort)(void* implementation, void** exception);
 
 	*port = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getServerPort, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getOrCreateDatabase(HTTPRequest implementation, const char* databaseName, Database* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void*(*getOrCreateDatabase)(void* implementation, const char* databaseName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabase, databaseName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getDatabase(HTTPRequest implementation, const char* databaseName, Database* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void*(*getDatabase)(void* implementation, const char* databaseName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabase, databaseName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getOrCreateTable(HTTPRequest implementation, const char* databaseName, const char* tableName, const char* createTableQuery, Table* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void*(*getOrCreateTable)(void* implementation, const char* databaseName, const char* tableName, const char* createTableQuery, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTable, databaseName, tableName, createTableQuery, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getTable(const char* databaseName, const char* tableName, Table* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void*(*getTable)(void* implementation, const char* databaseName, const char* tableName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTable, databaseName, tableName, &exception);
 
 	return exception;
 }

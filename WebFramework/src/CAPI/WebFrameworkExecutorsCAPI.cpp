@@ -716,3 +716,75 @@ const char* getRouteStringParameter(HTTPRequestObject request, const char* route
 
 	return nullptr;
 }
+
+DatabaseObject getOrCreateDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+DatabaseObject getDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getOrCreateTable(HTTPRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName)->createOrGetTable(tableName, createTableQuery);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getTable(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName)->get(tableName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}

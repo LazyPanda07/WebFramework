@@ -5,6 +5,8 @@
 typedef void* HTTPResponseObject;
 typedef void* HTTPRequestObject;
 typedef void* DynamicPagesVariable;
+typedef void* DatabaseObject;
+typedef void* TableObject;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -87,5 +89,13 @@ EXPORT int64_t getRouteIntegerParameter(HTTPRequestObject request, const char* r
 EXPORT double getRouteDoubleParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception);
 
 EXPORT const char* getRouteStringParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception);
+
+EXPORT DatabaseObject getOrCreateDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception);
+
+EXPORT DatabaseObject getDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception);
+
+EXPORT TableObject getOrCreateTable(HTTPRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception);
+
+EXPORT TableObject getTable(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
