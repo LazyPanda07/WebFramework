@@ -139,7 +139,7 @@ WebFrameworkException getDatabase(HTTPRequest implementation, const char* databa
 
 WebFrameworkException getOrCreateTable(HTTPRequest implementation, const char* databaseName, const char* tableName, const char* createTableQuery, Table* result);
 
-WebFrameworkException getTable(const char* databaseName, const char* tableName, Table* result);
+WebFrameworkException getTable(HTTPRequest implementation, const char* databaseName, const char* tableName, Table* result);
 
 WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const char* routeParameterName, int64_t* result);
 
@@ -147,14 +147,11 @@ WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation, const 
 
 WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const char* routeParameterName, const char** result);
 
-// template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-// void sendChunks(HTTPResponse& response, Args&&... args);
+WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data), void* data);
 
-// template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-// void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
+WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data);
 
-// template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
-// void throwException(Args&&... args);
+WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* exceptionMessage, ResponseCodes responseCode, const char* logCategory, size_t exceptionHash);
 
 inline void __initQueryBuffer(size_t querySize, void* buffer)
 {
@@ -228,7 +225,7 @@ inline void __initCookiesBuffer(size_t size, void* buffer)
 
 	if (!*temp)
 	{
-		fprintf(stderr, "Can't allocate memory for multiparts\n");
+		fprintf(stderr, "Can't allocate memory for cookies\n");
 
 		exit(5);
 	}
@@ -736,7 +733,7 @@ inline WebFrameworkException getOrCreateTable(HTTPRequest implementation, const 
 	return exception;
 }
 
-inline WebFrameworkException getTable(const char* databaseName, const char* tableName, Table* result)
+inline WebFrameworkException getTable(HTTPRequest implementation, const char* databaseName, const char* tableName, Table* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -776,6 +773,39 @@ inline WebFrameworkException getRouteStringParameter(HTTPRequest implementation,
 	typedef const char* (*getRouteStringParameter)(void* implementation, const char* routeParameterName, void** exception);
 
 	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRouteStringParameter, routeParameterName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data), void* data)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*sendChunks)(void* implementation, void* response, const char* (*chunkGenerator)(void* data), void* data, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendChunks, response, chunkGenerator, data, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*sendFileChunks)(void* implementation, void* response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendFileChunks, response, fileName, chunkGenerator, data, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* errorMessage, ResponseCodes responseCode, const char* logCategory, size_t exceptionHash)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void (*throwWebFrameworkException)(void* implementation, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(throwWebFrameworkException, errorMessage, (int64_t)responseCode, logCategory, exceptionHash, &exception);
 
 	return exception;
 }
