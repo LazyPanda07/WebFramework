@@ -25,7 +25,7 @@ namespace framework
 			web::LargeBodyHandler* largeBodyHandler;
 
 		public:
-			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup, ThreadPoolWebServer& server);
+			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup, ThreadPoolWebServer& server, DWORD timeout);
 
 			Client(const Client&) = delete;
 

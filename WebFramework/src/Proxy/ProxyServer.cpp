@@ -46,8 +46,8 @@ namespace framework
 			}
 
 			streams::IOSocketStream clientStream = ssl ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
+				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, chrono::milliseconds(timeout)) :
+				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, chrono::milliseconds(timeout));
 
 			string request;
 			string response;

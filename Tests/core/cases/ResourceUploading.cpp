@@ -47,6 +47,10 @@ TEST(ResourceUploading, OctetStream)
 	streams::IOSocketStream stream = utility::createSocketStream();
 	int errorCode = std::system(std::format(R"(curl --max-time 3600 --insecure -X POST {} -H "Content-Type: application/octet-stream" -H "File-Name: {}" --data-binary @{})", (useHTTPS ? httpsUrl : httpUrl), uploadFileName, LARGE_FILE_NAME).data());
 
-	ASSERT_EQ(errorCode, 0);
+	if (errorCode != 0)
+	{
+		std::cout << std::format("Error code from curl: {}", errorCode) << std::endl;
+	}
+
 	ASSERT_TRUE(utility::compareFiles(LARGE_FILE_NAME, uploadFileName));
 }

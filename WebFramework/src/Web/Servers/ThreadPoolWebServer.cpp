@@ -14,12 +14,12 @@ using namespace std;
 
 namespace framework
 {
-	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup, ThreadPoolWebServer& server) :
+	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup, ThreadPoolWebServer& server, DWORD timeout) :
 		stream
 		(
 			ssl ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket)
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, chrono::milliseconds(timeout))
 		),
 		cleanup(move(cleanup)),
 		address(address),
@@ -351,7 +351,7 @@ namespace framework
 				}
 			}
 
-			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup), *this));
+			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup), *this, timeout));
 		}
 		catch (const web::exceptions::SSLException& e)
 		{

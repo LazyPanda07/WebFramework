@@ -63,8 +63,8 @@ namespace framework
 		}
 
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket);
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, chrono::milliseconds(timeout));
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponseImplementation response;
 		HTTPResponseExecutors responseWrapper(&response);
