@@ -141,6 +141,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
@@ -191,6 +193,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
@@ -233,6 +237,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
@@ -268,6 +274,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
@@ -311,6 +319,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
@@ -346,6 +356,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
@@ -459,6 +471,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
@@ -501,6 +515,8 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
+    - uses: actions/checkout@v4
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
