@@ -6,7 +6,7 @@ namespace framework
 {
 	void SQLResultExecutors::reserveSize(size_t size, void* buffer)
 	{
-		static_cast<ValueType*>(buffer)->reserve(size);
+		static_cast<ValueType*>(buffer)->resize(size);
 	}
 
 	void SQLResultExecutors::fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer)

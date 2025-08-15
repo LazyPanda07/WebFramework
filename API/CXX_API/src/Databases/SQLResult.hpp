@@ -50,7 +50,7 @@ namespace framework
 {
 	inline void SQLResult::reserveSize(size_t size, void* buffer)
 	{
-		static_cast<ValueType*>(buffer)->reserve(size);
+		static_cast<ValueType*>(buffer)->resize(size);
 	}
 
 	inline void SQLResult::fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer)
