@@ -4,14 +4,14 @@ using namespace std;
 
 namespace framework
 {
-	void SQLResultExecutors::fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer)
-	{
-		(*static_cast<ValueType*>(buffer))[index].try_emplace(columnName, SQLValueExecutors(static_cast<const interfaces::ISQLValue*>(value)));
-	}
-
 	void SQLResultExecutors::reserveSize(size_t size, void* buffer)
 	{
 		static_cast<ValueType*>(buffer)->reserve(size);
+	}
+
+	void SQLResultExecutors::fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer)
+	{
+		(*static_cast<ValueType*>(buffer))[index].try_emplace(columnName, SQLValueExecutors(static_cast<const interfaces::ISQLValue*>(value)));
 	}
 
 	SQLResultExecutors::SQLResultExecutors(interfaces::ISQLResult* implementation)

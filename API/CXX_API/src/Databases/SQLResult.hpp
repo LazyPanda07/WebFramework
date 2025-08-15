@@ -17,7 +17,9 @@ namespace framework
 		ValueType rows;
 
 	private:
-		static void fill(const char* columnName, const interfaces::ISQLValue* value, size_t index, size_t size, void* data);
+		static void reserveSize(size_t size, void* buffer);
+
+		static void fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer);
 
 	public:
 		SQLResult(interfaces::ISQLResult* implementation);
@@ -46,21 +48,19 @@ namespace framework
 
 namespace framework
 {
-	inline void SQLResult::fill(const char* columnName, const interfaces::ISQLValue* value, size_t index, size_t size, void* data)
+	inline void SQLResult::reserveSize(size_t size, void* buffer)
 	{
-		ValueType& rows = *static_cast<ValueType*>(data);
+		static_cast<ValueType*>(buffer)->reserve(size);
+	}
 
-		if (rows.empty())
-		{
-			rows.resize(size);
-		}
-
-		rows[index].try_emplace(columnName, SQLValue(value));
+	inline void SQLResult::fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer)
+	{
+		(*static_cast<ValueType*>(buffer))[index].try_emplace(columnName, SQLValue(static_cast<const interfaces::ISQLValue*>(value)));
 	}
 
 	inline SQLResult::SQLResult(interfaces::ISQLResult* implementation)
 	{
-		implementation->iterate(&SQLResult::fill, &rows);
+		implementation->iterate(&SQLResult::reserveSize, &SQLResult::fill, &rows);
 	}
 
 	inline std::unordered_map<std::string, SQLValue>& SQLResult::at(size_t index)
