@@ -21,13 +21,11 @@ namespace framework
 
 		interfaces::ITable* get(const char* tableName) const override;
 
-		interfaces::ITable* createOrGetTable(const char* tableName, const char* createTableQuery) override;
+		interfaces::ITable* getOrCreateTable(const char* tableName, const char* createTableQuery) override;
 
 		const char* getDatabaseName() const override;
 
 		const char* getDatabaseFileName() const override;
-
-		void deleteDatabaseFileName(const char* ptr) const override;
 
 		~DatabaseImplementation();
 	};

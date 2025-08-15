@@ -6,6 +6,8 @@ typedef void* JSONBuilder;
 typedef void* JSONParser; 
 typedef void* JSONObject;
 typedef void* ExecutorSettings;
+typedef void* DatabaseObject;
+typedef void* TableObject;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -85,15 +87,17 @@ EXPORT bool tryGetJSONParserNull(JSONParser parser, const char* key, bool recurs
 
 EXPORT bool tryGetJSONParserArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
 
-EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
+EXPORT TableObject getOrCreateTable(DatabaseObject database, const char* tableName, const char* createTableQuery, Exception* exception);
 
-EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);
+EXPORT TableObject getTable(DatabaseObject database, const char* tableName, Exception* exception);
 
-EXPORT String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception* exception);
+EXPORT bool containsTable(DatabaseObject database, const char* tableName, TableObject* table, Exception* exception);
 
-EXPORT String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* exception);
+EXPORT const char* getDatabaseName(DatabaseObject database, Exception* exception);
 
-EXPORT int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception);
+EXPORT const char* getDatabaseFileName(DatabaseObject database, Exception* exception);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EXPORT String generateWebFrameworkUUID(Exception* exception);
 

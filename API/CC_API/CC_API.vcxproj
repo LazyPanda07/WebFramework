@@ -91,6 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\Databases\Database.h" />
+    <ClInclude Include="src\Databases\Table.h" />
     <ClInclude Include="src\DLLHandler.h" />
     <ClInclude Include="src\HTTPRequest.h" />
     <ClInclude Include="src\HTTPResponse.h" />

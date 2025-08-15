@@ -35,7 +35,7 @@ namespace framework
 		return tables.emplace_back(new TableImplementation(database->get(tableName).get()));
 	}
 
-	interfaces::ITable* DatabaseImplementation::createOrGetTable(const char* tableName, const char* createTableQuery)
+	interfaces::ITable* DatabaseImplementation::getOrCreateTable(const char* tableName, const char* createTableQuery)
 	{
 		return tables.emplace_back
 		(
@@ -59,19 +59,7 @@ namespace framework
 
 	const char* DatabaseImplementation::getDatabaseFileName() const
 	{
-		string temp = database->getDatabaseFileName();
-		char* result = new char[temp.size() + 1];
-
-		result[temp.size()] = '\0';
-
-		temp.copy(result, temp.size());
-
-		return result;
-	}
-
-	void DatabaseImplementation::deleteDatabaseFileName(const char* ptr) const
-	{
-		delete[] ptr;
+		return database->getDatabaseFileName().data();
 	}
 
 	DatabaseImplementation::~DatabaseImplementation()

@@ -56,7 +56,7 @@ namespace framework
 
 	inline Table Database::getOrCreateTable(std::string_view tableName, std::string_view createTableQuery)
 	{
-		return Table(implementation->createOrGetTable(tableName.data(), createTableQuery.data()));
+		return Table(implementation->getOrCreateTable(tableName.data(), createTableQuery.data()));
 	}
 
 	inline std::string_view Database::getDatabaseName() const
@@ -66,11 +66,6 @@ namespace framework
 
 	inline std::string Database::getDatabaseFileName() const
 	{
-		const char* temp = implementation->getDatabaseFileName();
-		std::string result(temp);
-
-		implementation->deleteDatabaseFileName(temp);
-
-		return result;
+		return implementation->getDatabaseFileName();
 	}
 }

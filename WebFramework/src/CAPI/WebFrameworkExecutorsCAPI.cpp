@@ -3,6 +3,8 @@
 #include "Log.h"
 #include "WebInterfaces/IHTTPRequest.h"
 #include "JSONBuilder.h"
+#include "JSONParser.h"
+#include "Utility/JSONSettingsParser.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -717,7 +719,7 @@ const char* getRouteStringParameter(HTTPRequestObject request, const char* route
 	return nullptr;
 }
 
-DatabaseObject getOrCreateDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception)
+DatabaseObject getOrCreateDatabaseHTTPRequest(HTTPRequestObject request, const char* databaseName, Exception* exception)
 {
 	try
 	{
@@ -735,7 +737,7 @@ DatabaseObject getOrCreateDatabase(HTTPRequestObject request, const char* databa
 	return nullptr;
 }
 
-DatabaseObject getDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception)
+DatabaseObject getDatabaseHTTPRequest(HTTPRequestObject request, const char* databaseName, Exception* exception)
 {
 	try
 	{
@@ -753,11 +755,11 @@ DatabaseObject getDatabase(HTTPRequestObject request, const char* databaseName, 
 	return nullptr;
 }
 
-TableObject getOrCreateTable(HTTPRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception)
+TableObject getOrCreateTableHTTPRequest(HTTPRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName)->createOrGetTable(tableName, createTableQuery);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const std::exception& e)
 	{
@@ -771,7 +773,7 @@ TableObject getOrCreateTable(HTTPRequestObject request, const char* databaseName
 	return nullptr;
 }
 
-TableObject getTable(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception)
+TableObject getTableHTTPRequest(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception)
 {
 	try
 	{
@@ -835,4 +837,99 @@ void throwWebFrameworkException(HTTPRequestObject request, const char* errorMess
 	{
 		UNEXPECTED_EXCEPTION();
 	}
+}
+
+String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception)
+{
+	try
+	{
+		json::JSONParser parser(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->initParameters);
+		std::ostringstream stream;
+
+		stream << parser;
+
+		return new std::string(stream.str());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+String getExecutorName(ExecutorSettings executorsSettings, Exception* exception)
+{
+	try
+	{
+		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->name);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception* exception)
+{
+	try
+	{
+		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->userAgentFilter);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* exception)
+{
+	try
+	{
+		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->apiType);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception)
+{
+	try
+	{
+		return static_cast<int>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->executorLoadType);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return -1;
 }

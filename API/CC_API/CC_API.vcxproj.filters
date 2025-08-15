@@ -53,5 +53,11 @@
     <ClInclude Include="src\JSONParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Databases\Database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\Table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

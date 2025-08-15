@@ -5,8 +5,6 @@
 typedef void* HTTPResponseObject;
 typedef void* HTTPRequestObject;
 typedef void* DynamicPagesVariable;
-typedef void* DatabaseObject;
-typedef void* TableObject;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,18 +88,28 @@ EXPORT double getRouteDoubleParameter(HTTPRequestObject request, const char* rou
 
 EXPORT const char* getRouteStringParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception);
 
-EXPORT DatabaseObject getOrCreateDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception);
+EXPORT DatabaseObject getOrCreateDatabaseHTTPRequest(HTTPRequestObject request, const char* databaseName, Exception* exception);
 
-EXPORT DatabaseObject getDatabase(HTTPRequestObject request, const char* databaseName, Exception* exception);
+EXPORT DatabaseObject getDatabaseHTTPRequest(HTTPRequestObject request, const char* databaseName, Exception* exception);
 
-EXPORT TableObject getOrCreateTable(HTTPRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception);
+EXPORT TableObject getOrCreateTableHTTPRequest(HTTPRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception);
 
-EXPORT TableObject getTable(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception);
+EXPORT TableObject getTableHTTPRequest(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception);
 
 EXPORT void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const char* (*chunkGenerator)(void* data), void* data, Exception* exception);
 
 EXPORT void sendFileChunks(HTTPRequestObject request, HTTPResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data, Exception* exception);
 
 EXPORT void throwWebFrameworkException(HTTPRequestObject request, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, Exception* exception);
+
+EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* exception);
+
+EXPORT int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,7 @@ namespace framework
 
 	TableExecutors DatabaseExecutors::getOrCreateTable(string_view tableName, string_view createTableQuery)
 	{
-		return TableExecutors(implementation->createOrGetTable(tableName.data(), createTableQuery.data()));
+		return TableExecutors(implementation->getOrCreateTable(tableName.data(), createTableQuery.data()));
 	}
 
 	string_view DatabaseExecutors::getDatabaseName() const
@@ -40,11 +40,6 @@ namespace framework
 
 	string DatabaseExecutors::getDatabaseFileName() const
 	{
-		const char* temp = implementation->getDatabaseFileName();
-		string result(temp);
-
-		implementation->deleteDatabaseFileName(temp);
-
-		return result;
+		return implementation->getDatabaseFileName();
 	}
 }

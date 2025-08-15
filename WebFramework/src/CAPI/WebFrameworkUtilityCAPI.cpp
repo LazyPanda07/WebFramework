@@ -5,6 +5,7 @@
 #include "JSONParser.h"
 #include "Utility/JSONSettingsParser.h"
 #include "UUID.h"
+#include "DatabaseInterfaces/IDatabase.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -702,16 +703,11 @@ bool tryGetJSONParserArray(JSONParser parser, const char* key, void(*addArrayVal
 	return false;
 }
 
-String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception)
+TableObject getOrCreateTable(DatabaseObject database, const char* tableName, const char* createTableQuery, Exception* exception)
 {
 	try
 	{
-		json::JSONParser parser(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->initParameters);
-		std::ostringstream stream;
-
-		stream << parser;
-
-		return new std::string(stream.str());
+		return static_cast<framework::interfaces::IDatabase*>(database)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const std::exception& e)
 	{
@@ -725,11 +721,11 @@ String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* 
 	return nullptr;
 }
 
-String getExecutorName(ExecutorSettings executorsSettings, Exception* exception)
+TableObject getTable(DatabaseObject database, const char* tableName, Exception* exception)
 {
 	try
 	{
-		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->name);
+		return static_cast<framework::interfaces::IDatabase*>(database)->get(tableName);
 	}
 	catch (const std::exception& e)
 	{
@@ -743,11 +739,29 @@ String getExecutorName(ExecutorSettings executorsSettings, Exception* exception)
 	return nullptr;
 }
 
-String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception* exception)
+bool containsTable(DatabaseObject database, const char* tableName, TableObject* table, Exception* exception)
 {
 	try
 	{
-		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->userAgentFilter);
+		return static_cast<framework::interfaces::IDatabase*>(database)->contains(tableName, reinterpret_cast<framework::interfaces::ITable**>(table));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+const char* getDatabaseName(DatabaseObject database, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IDatabase*>(database)->getDatabaseName();
 	}
 	catch (const std::exception& e)
 	{
@@ -761,11 +775,11 @@ String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception*
 	return nullptr;
 }
 
-String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* exception)
+const char* getDatabaseFileName(DatabaseObject database, Exception* exception)
 {
 	try
 	{
-		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->apiType);
+		return static_cast<framework::interfaces::IDatabase*>(database)->getDatabaseFileName();
 	}
 	catch (const std::exception& e)
 	{
@@ -779,23 +793,7 @@ String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* excepti
 	return nullptr;
 }
 
-int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception)
-{
-	try
-	{
-		return static_cast<int>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->executorLoadType);
-	}
-	catch (const std::exception& e)
-	{
-		LOG_AND_CREATE_EXCEPTION();
-	}
-	catch (...)
-	{
-		UNEXPECTED_EXCEPTION();
-	}
-
-	return -1;
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 String generateWebFrameworkUUID(Exception* exception)
 {
