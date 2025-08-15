@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ISQLResult.h"
-#include "ISQLValue.h"
 
 namespace framework::interfaces
 {

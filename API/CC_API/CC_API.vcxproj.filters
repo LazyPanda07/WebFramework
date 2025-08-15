@@ -59,5 +59,11 @@
     <ClInclude Include="src\Databases\Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Databases\SQLValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\SQLResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

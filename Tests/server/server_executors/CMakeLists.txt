@@ -22,6 +22,12 @@ add_library(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${PROJECT_SOURCE_DIR}
+	${WEB_FRAMEWORK_INCLUDES}
+)
+
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE
+	Log
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})

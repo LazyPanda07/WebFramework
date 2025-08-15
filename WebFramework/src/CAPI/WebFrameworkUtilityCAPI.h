@@ -8,6 +8,8 @@ typedef void* JSONObject;
 typedef void* ExecutorSettings;
 typedef void* DatabaseObject;
 typedef void* TableObject;
+typedef void* SQLResultObject;
+typedef void* SQLValueObject;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -96,6 +98,12 @@ EXPORT bool containsTable(DatabaseObject database, const char* tableName, TableO
 EXPORT const char* getDatabaseName(DatabaseObject database, Exception* exception);
 
 EXPORT const char* getDatabaseFileName(DatabaseObject database, Exception* exception);
+
+EXPORT SQLResultObject executeQuery(TableObject table, const char* query, SQLValueObject* values, size_t size, Exception* exception);
+
+EXPORT void deleteSQLResult(TableObject table, SQLResultObject result, Exception* exception);
+
+EXPORT const char* getTableName(TableObject table, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
