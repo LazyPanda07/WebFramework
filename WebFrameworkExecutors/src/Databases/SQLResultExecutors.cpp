@@ -4,21 +4,19 @@ using namespace std;
 
 namespace framework
 {
-	void SQLResultExecutors::fill(const char* columnName, const interfaces::ISQLValue* value, size_t index, size_t size, void* data)
+	void SQLResultExecutors::fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer)
 	{
-		ValueType& rows = *static_cast<ValueType*>(data);
+		(*static_cast<ValueType*>(buffer))[index].try_emplace(columnName, SQLValueExecutors(static_cast<const interfaces::ISQLValue*>(value)));
+	}
 
-		if (rows.empty())
-		{
-			rows.resize(size);
-		}
-
-		rows[index].try_emplace(columnName, SQLValueExecutors(value));
+	void SQLResultExecutors::reserveSize(size_t size, void* buffer)
+	{
+		static_cast<ValueType*>(buffer)->reserve(size);
 	}
 
 	SQLResultExecutors::SQLResultExecutors(interfaces::ISQLResult* implementation)
 	{
-		implementation->iterate(&SQLResultExecutors::fill, &rows);
+		implementation->iterate(&SQLResultExecutors::reserveSize, &SQLResultExecutors::fill, &rows);
 	}
 
 	unordered_map<string, SQLValueExecutors>& SQLResultExecutors::at(size_t index)

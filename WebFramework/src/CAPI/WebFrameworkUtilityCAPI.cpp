@@ -1049,6 +1049,40 @@ int getSQLValueType(SQLValueObject sqlValue, Exception* exception)
 	return 0;
 }
 
+size_t getSQLResultSize(SQLResultObject result, Exception* exception)
+{
+	try
+	{
+		return static_cast<int>(static_cast<framework::interfaces::ISQLResult*>(result)->size());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
+void iterateSQLResult(SQLResultObject result, void(*initBuffer)(size_t size, void* buffer), void(*callback)(const char* columnName, const void* columnValue, size_t index, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::ISQLResult*>(result)->iterate(initBuffer, callback, buffer);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 String generateWebFrameworkUUID(Exception* exception)
