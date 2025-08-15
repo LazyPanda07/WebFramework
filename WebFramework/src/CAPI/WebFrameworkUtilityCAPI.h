@@ -105,6 +105,30 @@ EXPORT void deleteSQLResult(TableObject table, SQLResultObject result, Exception
 
 EXPORT const char* getTableName(TableObject table, Exception* exception);
 
+EXPORT void setSQLValueInt(SQLValueObject sqlValue, int64_t value, Exception* exception);
+
+EXPORT void setSQLValueDouble(SQLValueObject sqlValue, double value, Exception* exception);
+
+EXPORT void setSQLValueString(SQLValueObject sqlValue, const char* value, Exception* exception);
+
+EXPORT void setSQLValueBool(SQLValueObject sqlValue, bool value, Exception* exception);
+
+EXPORT void setSQLValueNull(SQLValueObject sqlValue, Exception* exception);
+
+EXPORT void setSQLValueBlob(SQLValueObject sqlValue, const uint8_t* value, size_t size, Exception* exception);
+
+EXPORT int64_t getSQLValueInt(SQLValueObject sqlValue, Exception* exception);
+
+EXPORT double getSQLValueDouble(SQLValueObject sqlValue, Exception* exception);
+
+EXPORT const char* getSQLValueString(SQLValueObject sqlValue, Exception* exception);
+
+EXPORT bool getSQLValueBool(SQLValueObject sqlValue, Exception* exception);
+
+EXPORT const uint8_t* getSQLValueBlob(SQLValueObject sqlValue, size_t* size, Exception* exception);
+
+EXPORT int getSQLValueType(SQLValueObject sqlValue, Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EXPORT String generateWebFrameworkUUID(Exception* exception);

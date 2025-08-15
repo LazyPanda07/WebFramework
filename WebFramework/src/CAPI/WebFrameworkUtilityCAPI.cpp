@@ -845,6 +845,210 @@ const char* getTableName(TableObject table, Exception* exception)
 	return nullptr;
 }
 
+void setSQLValueInt(SQLValueObject sqlValue, int64_t value, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setInt(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void setSQLValueDouble(SQLValueObject sqlValue, double value, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setDouble(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void setSQLValueString(SQLValueObject sqlValue, const char* value, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setString(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void setSQLValueBool(SQLValueObject sqlValue, bool value, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBool(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void setSQLValueNull(SQLValueObject sqlValue, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setNull();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void setSQLValueBlob(SQLValueObject sqlValue, const uint8_t* value, size_t size, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBlob(value, size);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+int64_t getSQLValueInt(SQLValueObject sqlValue, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getInt();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
+double getSQLValueDouble(SQLValueObject sqlValue, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getDouble();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0.0;
+}
+
+const char* getSQLValueString(SQLValueObject sqlValue, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getString();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+bool getSQLValueBool(SQLValueObject sqlValue, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getBool();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+const uint8_t* getSQLValueBlob(SQLValueObject sqlValue, size_t* size, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getBlob(size);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+int getSQLValueType(SQLValueObject sqlValue, Exception* exception)
+{
+	try
+	{
+		return static_cast<int>(static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getType());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 String generateWebFrameworkUUID(Exception* exception)
