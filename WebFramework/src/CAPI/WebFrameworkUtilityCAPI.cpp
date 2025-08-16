@@ -229,7 +229,7 @@ void setJSONObjectArray(JSONObject jsonObject, const char* key, const JSONObject
 	}
 }
 
-String build(JSONBuilder builder, Exception* exception)
+String buildJSONBuilder(JSONBuilder builder, Exception* exception)
 {
 	try
 	{

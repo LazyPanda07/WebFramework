@@ -23,7 +23,7 @@ EXPORT JSONParser createJSONParserFromString(const char* jsonString, Exception* 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-EXPORT String build(JSONBuilder builder, Exception* exception);
+EXPORT String buildJSONBuilder(JSONBuilder builder, Exception* exception);
 
 EXPORT void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception);
 

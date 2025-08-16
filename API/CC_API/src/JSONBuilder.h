@@ -6,6 +6,8 @@ WebFrameworkException createJSONBuilder(JSONBuilder* builder);
 
 WebFrameworkException copyJSONBuilder(JSONBuilder* builder, JSONBuilder other);
 
+WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFrameworkString* result);
+
 WebFrameworkException appendJSONBuilderObject(JSONBuilder implementation, const char* key, JSONObject* object);
 
 WebFrameworkException appendJSONBuilderString(JSONBuilder implementation, const char* key, const char* value);
@@ -40,6 +42,17 @@ inline WebFrameworkException copyJSONBuilder(JSONBuilder* builder, JSONBuilder o
 	typedef void* (*createJSONBuilder)(void* other, void** exception);
 
 	*builder = CALL_WEB_FRAMEWORK_FUNCTION(createJSONBuilder, other, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFrameworkString* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void* (*buildJSONBuilder)(void** exception);
+
+	*result = CALL_WEB_FRAMEWORK_FUNCTION(buildJSONBuilder, &exception);
 
 	return exception;
 }

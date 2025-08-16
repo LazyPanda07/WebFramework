@@ -10,7 +10,7 @@ typedef enum
 	DOUBLE_TYPE,
 	STRING_TYPE,
 	BOOL_TYPE,
-	NULLPTR_TYPE,
+	NULL_TYPE,
 	BLOB_TYPE
 } SQLValueType;
 
