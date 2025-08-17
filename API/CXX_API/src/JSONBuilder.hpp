@@ -188,11 +188,11 @@ namespace framework
 
 	inline std::string JSONBuilder::build() const
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(build, void*, void** exception);
+		DEFINE_CLASS_MEMBER_FUNCTION(buildJSONBuilder, void*, void** exception);
 		void* exception = nullptr;
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 
-		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(build, &exception);
+		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(buildJSONBuilder, &exception);
 
 		if (exception)
 		{
