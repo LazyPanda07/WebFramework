@@ -229,7 +229,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=none -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=none -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
           cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Upload tests
@@ -259,7 +259,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=none -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=none -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Upload executors
