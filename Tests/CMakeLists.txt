@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.27.0)
 
+include(cmake/enums.cmake)
+
 set(WEB_FRAMEWORK_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(WEB_FRAMEWORK_SDK ${WEB_FRAMEWORK_LIBRARY_DIR})
 set(GTEST_LIB_DIR ${CMAKE_SOURCE_DIR}/gtest/lib/)
@@ -20,16 +22,15 @@ set(
     ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/OpenSSL/
     ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/vendor/sqlite3/
 )
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 option(CC_API "" OFF)
 option(CXX_API "" OFF)
 option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)
-option(BUILD_CXX_EXECUTORS "" ON)
-option(BUILD_CC_EXECUTORS "" OFF)
 option(BUILD_TESTS "" ON)
-set(BUILD_EXECUTORS ${BUILD_CXX_EXECUTORS} OR ${BUILD_CC_EXECUTORS})
+set(ALLOWED_BUILD_EXECUTORS_VALUES "cxx" "cc" "none")
+enum_option(BUILD_EXECUTORS cxx ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
 add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
@@ -69,18 +70,12 @@ if(NOT ${GTest_FOUND})
 	set(GTEST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/gtest/include/)
 endif()
 
-if (${BUILD_EXECUTORS})
+if (NOT ${BUILD_EXECUTORS} STREQUAL "none")
     include(${CMAKE_SOURCE_DIR}/cmake/generate_json.cmake)
 
     add_subdirectory(executors)
 
-    set(REPLACES "")
-
-    if (${BUILD_CXX_EXECUTORS})
-        list(APPEND REPLACES "{API_TYPE}" "cxx")
-    elseif(${BUILD_CC_EXECUTORS})
-        list(APPEND REPLACES "{API_TYPE}" "cc")
-    endif()
+    set(REPLACES "{API_TYPE}" ${BUILD_EXECUTORS})
 
     generate_json(settings/web.json ${CMAKE_INSTALL_PREFIX}/web.json REPLACES)
     generate_json(settings/load_balancer_web.json ${CMAKE_INSTALL_PREFIX}/load_balancer_web.json REPLACES)

@@ -133,6 +133,72 @@ jobs:
         path: WebFrameworkLibrary
         
 
+  windows-executors-build:
+    runs-on: windows-latest
+    needs: windows-build
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        executors: [cxx, cc]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Download WebFramework
+      uses: actions/download-artifact@v4
+      with:
+        name: Release_Windows
+        path: WebFrameworkLibrary
+
+    - name: Build ${{ matrix.executors }} ${{ matrix.configuration }} Executors
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+
+    - name: Upload executors
+      uses: actions/upload-artifact@v4
+      with:
+        name: WindowsExecutors-${{ env.executors }}-${{ env.configuration }}
+        path: Tests/build/bin
+
+
+  linux-executors-build:
+    runs-on: linux-latest
+    needs: linux-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        executors: [cxx, cc]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Download WebFramework
+      uses: actions/download-artifact@v4
+      with:
+        name: Release_Linux
+        path: WebFrameworkLibrary
+
+    - name: Build ${{ matrix.executors }} ${{ matrix.configuration }} Executors
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+
+    - name: Upload executors
+      uses: actions/upload-artifact@v4
+      with:
+        name: LinuxExecutors-${{ env.executors }}-${{ env.configuration }}
+        path: Tests/build/bin
+
+
   windows-cxx-tests:
     runs-on: windows-latest
     needs: windows-build
