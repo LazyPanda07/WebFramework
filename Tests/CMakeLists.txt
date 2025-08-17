@@ -26,6 +26,9 @@ option(CC_API "" OFF)
 option(CXX_API "" OFF)
 option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)
+option(BUILD_CXX_EXECUTORS "" ON)
+option(BUILD_TESTS "" ON)
+set(BUILD_EXECUTORS ${BUILD_CXX_EXECUTORS})
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
 add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
@@ -65,12 +68,15 @@ if(NOT ${GTest_FOUND})
 	set(GTEST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/gtest/include/)
 endif()
 
-add_subdirectory(core)
-add_subdirectory(server)
-add_subdirectory(load_balancer)
-add_subdirectory(proxy)
-add_subdirectory(default_https_server)
-add_subdirectory(api)
+if (${BUILD_EXECUTORS})
+    add_subdirectory(executors)
+endif()
+
+if (${BUILD_TESTS})
+    add_subdirectory(servers)
+    add_subdirectory(tests)
+    add_subdirectory(api)
+endif()
 
 add_custom_target(
 	build_tests_localization ALL

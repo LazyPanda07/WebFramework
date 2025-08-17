@@ -49,14 +49,14 @@ if (CMAKE_SCRIPT_MODE_FILE)
 endif()
 
 set(
-    WEB_FRAMEWORK_INCLUDES
+    WEB_FRAMEWORK_INCLUDE
     ${WEB_FRAMEWORK_SDK}/include/
     ${WEB_FRAMEWORK_SDK}/include/vendor/OpenSSL/
     ${WEB_FRAMEWORK_SDK}/include/vendor/sqlite3/
 )
 
 set(
-    WEB_FRAMEWORK_LIBS
+    WEB_FRAMEWORK_LIB
     WebFramework
     WebFrameworkCore
     WebFrameworkExecutors
@@ -86,15 +86,15 @@ link_directories(
 
 if (WIN32)
     set(
-        WEB_FRAMEWORK_LIBS
-        ${WEB_FRAMEWORK_LIBS}
+        WEB_FRAMEWORK_LIB
+        ${WEB_FRAMEWORK_LIB}
         crypt32
         Rpcrt4
     )
 elseif (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
     set(
-        WEB_FRAMEWORK_LIBS
-        ${WEB_FRAMEWORK_LIBS}
+        WEB_FRAMEWORK_LIB
+        ${WEB_FRAMEWORK_LIB}
         uuid
     )
 endif()
