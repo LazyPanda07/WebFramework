@@ -139,7 +139,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        executors: [cxx, cc]
+        executors: [cxx]
 
     steps:
     - uses: actions/checkout@v4
@@ -164,19 +164,19 @@ jobs:
     - name: Upload executors
       uses: actions/upload-artifact@v4
       with:
-        name: WindowsExecutors-${{ env.executors }}-${{ env.configuration }}
+        name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
         path: Tests/build/bin
 
 
   linux-executors-build:
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     needs: linux-build
     container:
       image: lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
         configuration: [Debug, Release]
-        executors: [cxx, cc]
+        executors: [cxx]
 
     steps:
     - uses: actions/checkout@v4
@@ -198,7 +198,74 @@ jobs:
     - name: Upload executors
       uses: actions/upload-artifact@v4
       with:
-        name: LinuxExecutors-${{ env.executors }}-${{ env.configuration }}
+        name: LinuxExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        path: Tests/build/bin
+
+
+  windows-tests-build:
+    runs-on: windows-latest
+    needs: windows-build
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@master
+      with:
+        build-type: Release
+        install-path: Tests/gtest
+
+    - name: Download WebFramework
+      uses: actions/download-artifact@v4
+      with:
+        name: Release_Windows
+        path: WebFrameworkLibrary
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=none -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . --config Release -j && cmake --install . --config Release
+
+    - name: Upload tests
+      uses: actions/upload-artifact@v4
+      with:
+        name: WindowsTests
+        path: Tests/build/bin
+
+
+  linux-tests-build:
+    runs-on: ubuntu-latest
+    needs: linux-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Download WebFramework
+      uses: actions/download-artifact@v4
+      with:
+        name: Release_Linux
+        path: WebFrameworkLibrary
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=none -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config Release -j && cmake --install . --config Release
+
+    - name: Upload executors
+      uses: actions/upload-artifact@v4
+      with:
+        name: LinuxTests
         path: Tests/build/bin
 
 
