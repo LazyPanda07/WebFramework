@@ -2,6 +2,6 @@
   "IdExecutor": {
     "route": "",
     "loadType": "initialization",
-    "api": "cxx"
+    "api": "{API_TYPE}"
   }
 }

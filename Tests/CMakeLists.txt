@@ -27,8 +27,9 @@ option(CXX_API "" OFF)
 option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)
 option(BUILD_CXX_EXECUTORS "" ON)
+option(BUILD_CC_EXECUTORS "" OFF)
 option(BUILD_TESTS "" ON)
-set(BUILD_EXECUTORS ${BUILD_CXX_EXECUTORS})
+set(BUILD_EXECUTORS ${BUILD_CXX_EXECUTORS} OR ${BUILD_CC_EXECUTORS})
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
 add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
@@ -69,7 +70,29 @@ if(NOT ${GTest_FOUND})
 endif()
 
 if (${BUILD_EXECUTORS})
+    include(${CMAKE_SOURCE_DIR}/cmake/generate_json.cmake)
+
     add_subdirectory(executors)
+
+    set(REPLACES "")
+
+    if (${BUILD_CXX_EXECUTORS})
+        list(APPEND REPLACES "{API_TYPE}" "cxx")
+    elseif(${BUILD_CC_EXECUTORS})
+        list(APPEND REPLACES "{API_TYPE}" "cc")
+    endif()
+
+    generate_json(settings/web.json ${CMAKE_INSTALL_PREFIX}/web.json REPLACES)
+    generate_json(settings/load_balancer_web.json ${CMAKE_INSTALL_PREFIX}/load_balancer_web.json REPLACES)
+
+    install(DIRECTORY configs/ DESTINATION .)
+    install(DIRECTORY scripts/ DESTINATION .)
+    install(DIRECTORY templates DESTINATION .)
+    install(DIRECTORY assets DESTINATION .)
+    
+    install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION .)
+    
+    install(FILES settings/default_https_server_web.json DESTINATION .)
 endif()
 
 if (${BUILD_TESTS})
@@ -88,11 +111,3 @@ add_custom_command(
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy ${WEB_FRAMEWORK_LIBRARY_DIR}/localization_modules.json ${CMAKE_INSTALL_PREFIX}/localization_modules.json
 )
-
-install(DIRECTORY configs/ DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY scripts/ DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY templates DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY assets DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES ${SHARED_LIBRARY_WEB_FRAMEWORK_PATH} DESTINATION ${CMAKE_INSTALL_PREFIX})
