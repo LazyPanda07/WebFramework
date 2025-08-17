@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.27.0)
 
 project(executors)
 
-include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
-
-if (${BUILD_CXX_EXECUTORS})
+if (${BUILD_EXECUTORS} STREQUAL "cxx")
 	add_subdirectory(cxx)
 endif()
