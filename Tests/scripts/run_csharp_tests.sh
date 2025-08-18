@@ -2,8 +2,12 @@
 
 set -e
 
+echo "Start C# Tests"
+
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+
+trap 'kill -9 0' EXIT
 
 dotnet CSharpServer.dll ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
@@ -31,17 +35,4 @@ dotnet test CSharpAPI.dll
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
 
-kill -9 $(cat start_core_server.txt)
-kill -9 $(cat start_proxy_server.txt)
-kill -9 $(cat start_proxy_https_server.txt)
-kill -9 $(cat start_load_balancer_9090_server.txt)
-kill -9 $(cat start_load_balancer_9091_server.txt)
-kill -9 $(cat start_load_balancer_9092_server.txt)
-kill -9 $(cat start_load_balancer_9093_server.txt)
-kill -9 $(cat start_load_balancer_9094_server.txt)
-kill -9 $(cat start_load_balancer_10000_server.txt)
-kill -9 $(cat start_load_balancer_10001_server.txt)
-kill -9 $(cat start_load_balancer_10002_server.txt)
-kill -9 $(cat start_load_balancer_10003_server.txt)
-
-pkill -9 DefaultHTTPSServer
+wait

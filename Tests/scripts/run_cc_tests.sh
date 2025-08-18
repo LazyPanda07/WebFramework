@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Start CC Tests"
+
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
@@ -13,6 +15,8 @@ chmod +x ./CC_API
 chmod +x ./Core
 chmod +x ./LoadBalancerCore
 chmod +x ./ProxyCore
+
+trap 'kill -9 0' EXIT
 
 ./CC_Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
@@ -40,7 +44,4 @@ sleep 1
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
 
-pkill -9 CC_Server
-pkill -9 DefaultHTTPSServer
-killall -9 CC_ProxyServer
-killall -9 CC_LoadBalancerServer
+wait

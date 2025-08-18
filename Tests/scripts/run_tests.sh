@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Start C++ Tests"
+
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
@@ -14,6 +16,8 @@ chmod +x ./CXX_API
 chmod +x ./Core
 chmod +x ./LoadBalancerCore
 chmod +x ./ProxyCore
+
+trap 'kill -9 0' EXIT
 
 ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
@@ -41,7 +45,4 @@ sleep 1
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
 
-pkill -9 Server
-pkill -9 DefaultHTTPSServer
-killall -9 ProxyServer
-killall -9 LoadBalancerServer
+wait
