@@ -74,12 +74,14 @@ if(NOT ${GTest_FOUND})
 	set(GTEST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/gtest/include/)
 endif()
 
-if (NOT ${BUILD_EXECUTORS} STREQUAL "none")
+if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
     include(${CMAKE_SOURCE_DIR}/cmake/generate_json.cmake)
 
     add_subdirectory(executors)
 
-    set(REPLACES "{API_TYPE}" ${BUILD_EXECUTORS})
+    string(TOLOWER ${BUILD_EXECUTORS} API_TYPE)
+
+    set(REPLACES "{API_TYPE}" ${API_TYPE})
 
     generate_json(settings/web.json ${CMAKE_INSTALL_PREFIX}/web.json REPLACES)
     generate_json(settings/load_balancer_web.json ${CMAKE_INSTALL_PREFIX}/load_balancer_web.json REPLACES)
