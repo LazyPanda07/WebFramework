@@ -278,6 +278,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
         executors: [CXX]
 
     steps:
@@ -306,10 +307,7 @@ jobs:
           mv Executors/* Tests
           mv WebFrameworkLibrary/lib/* Tests
           cd Tests
-          source run_tests.sh ${{ matrix.config }}
-          source run_cc_tests.sh ${{ matrix.config }}
-          source run_csharp_tests.sh ${{ matrix.config }}
-          source run_python_tests.sh ${{ matrix.config }}
+          source ${{ matrix.api_test }}
           
 
   # windows-cxx-tests:

@@ -7,8 +7,6 @@ echo "Start C# Tests"
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
-trap 'kill -9 0' EXIT
-
 dotnet CSharpServer.dll ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
 dotnet CSharpProxyServer.dll --config proxy_config.json --port 15000 &
@@ -34,5 +32,3 @@ dotnet test CSharpAPI.dll
 ./LoadBalancerCore --port 9094 --custom_heuristic
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
-
-wait

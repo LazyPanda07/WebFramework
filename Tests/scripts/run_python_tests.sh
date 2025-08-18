@@ -2,12 +2,8 @@
 
 set -e
 
-echo "Start Python Tests"
-
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-
-trap 'kill -9 0' EXIT
 
 python3 server.py ${WEB_FRAMEWORK_SERVER_CONFIG} &
 python3 proxy_server.py --config proxy_config.json --port 15000 &
@@ -35,5 +31,3 @@ python3 api_test.py
 ./LoadBalancerCore --port 9094 --custom_heuristic
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
-
-wait
