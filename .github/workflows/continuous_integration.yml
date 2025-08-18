@@ -300,14 +300,14 @@ jobs:
         name: LinuxExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
         path: Executors
 
-    - name: Run ${{ matrix.configuration }} ${{ matrix.executors }} Tests
+    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
       shell: bash
       run: |
           pip3 install WebFrameworkLibrary/api/python_api/
           mv Executors/* Tests
           mv WebFrameworkLibrary/lib/* Tests
           cd Tests
-          source ${{ matrix.api_test }}
+          source ${{ matrix.api_test }} ${{ matrix.config }}
           
 
   # windows-cxx-tests:
