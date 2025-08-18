@@ -43,8 +43,6 @@ TEST(ResourceUploading, OctetStream)
 	constexpr std::string_view httpsUrl = "https://127.0.0.1:8080/upload_octet_stream";
 	constexpr std::string_view uploadFileName = "octet_stream.bin";
 
-	uintmax_t fileSize = std::filesystem::file_size(LARGE_FILE_NAME);
-	streams::IOSocketStream stream = utility::createSocketStream();
 	int errorCode = std::system(std::format(R"(curl --max-time 3600 --insecure -X POST {} -H "Content-Type: application/octet-stream" -H "File-Name: {}" --data-binary @{})", (useHTTPS ? httpsUrl : httpUrl), uploadFileName, LARGE_FILE_NAME).data());
 
 	ASSERT_TRUE(utility::compareFiles(LARGE_FILE_NAME, uploadFileName));
