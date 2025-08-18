@@ -300,6 +300,7 @@ jobs:
         path: Executors
 
     - name: Run ${{ matrix.configuration }} ${{ matrix.executors }} Tests
+      shell: bash
       run: |
           pip3 install WebFrameworkLibrary/api/python_api/
           mv Executors/* Tests
