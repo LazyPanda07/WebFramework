@@ -310,98 +310,44 @@ jobs:
           source ${{ matrix.api_test }} ${{ matrix.config }}
           
 
-  # windows-cxx-tests:
-  #   runs-on: windows-latest
-  #   needs: windows-build
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  windows-tests:
+    runs-on: windows-latest
+    needs: [windows-tests-build, windows-executors-build]
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
+        executors: [CXX]
 
-  #   steps:
-  #   - uses: actions/checkout@v4
+    steps:
+    - name: Download WebFramework
+      uses: actions/download-artifact@v4
+      with:
+        name: Release_Windows
+        path: WebFrameworkLibrary
 
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Download Tests
+      uses: actions/download-artifact@v4
+      with:
+        name: WindowsTests
+        path: Tests
 
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: Release_Windows
-  #       path: WebFrameworkLibrary
+    - name: Download ${{ matrix.configuration }} ${{ matrix.executors }} Executors
+      uses: actions/download-artifact@v4
+      with:
+        name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        path: Executors
 
-  #   - name: Get Google Test
-  #     uses: LazyPanda07/get-gtest@master
-  #     with:
-  #       build-type: Release
-  #       install-path: Tests/gtest
-        
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-  #         cmake --build . --config Release -j && cmake --install . --config Release
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     run: |
-  #         cd build/bin
-  #         .\CXX_API.exe || exit 1
-  #         .\run_tests.bat ${{ matrix.config }}
-
-  #   - name: Upload tests binaries
-  #     if: ${{ matrix.config == 'multi_threaded_config.json' }}
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: Tests_Windows
-  #       path: Tests/build/bin
-        
-
-  # linux-cxx-tests:
-  #   runs-on: ubuntu-latest
-  #   needs: linux-build
-  #   container:
-  #     image: lazypanda07/ubuntu_cxx20:24.04
-  #   strategy:
-  #     matrix:
-  #       configuration: [Debug, Release]
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: ${{ matrix.configuration }}_Linux
-  #       path: WebFrameworkLibrary
-        
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-  #         cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         cd build/bin
-  #         export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-  #         ./CXX_API
-  #         source run_tests.sh ${{ matrix.config }}
-
-  #   - name: Upload tests binaries
-  #     if: ${{ matrix.config == 'multi_threaded_config.json' && matrix.configuration == 'Release' }}
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: Tests_Linux
-  #       path: Tests/build/bin
-
+    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
+      shell: bash
+      run: |
+          pip install WebFrameworkLibrary/api/python_api/
+          mv Executors/* Tests
+          mv WebFrameworkLibrary/lib/* Tests
+          cd Tests
+          ./${{ matrix.api_test }} ${{ matrix.config }}
+          
 
   linux-aarch64-cxx-tests:
     runs-on: ubuntu-latest
@@ -442,86 +388,7 @@ jobs:
           qemu-aarch64 ./CXX_API
           source run_aarch64_cxx_tests.sh ${{ matrix.config }}
           
-
-  # windows-cc-tests:
-  #   runs-on: windows-latest
-  #   needs: windows-build
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
-
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: Release_Windows
-  #       path: WebFrameworkLibrary
-
-  #   - name: Get Google Test
-  #     uses: LazyPanda07/get-gtest@master
-  #     with:
-  #       build-type: Release
-  #       install-path: Tests/gtest
-        
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCC_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-  #         cmake --build . --config Release -j && cmake --install . --config Release
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     run: |
-  #         cd build/bin
-  #         .\CC_API.exe || exit 1
-  #         .\run_cc_tests.bat ${{ matrix.config }}
-
-
-  # linux-cc-tests:
-  #   runs-on: ubuntu-latest
-  #   needs: linux-build
-  #   container:
-  #     image: lazypanda07/ubuntu_cxx20:24.04
-  #   strategy:
-  #     matrix:
-  #       configuration: [Debug, Release]
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: ${{ matrix.configuration }}_Linux
-  #       path: WebFrameworkLibrary
-        
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-  #         cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         cd build/bin
-  #         export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-  #         ./CC_API
-  #         source run_cc_tests.sh ${{ matrix.config }}
-  
-
+          
   linux-aarch64-cc-tests:
     runs-on: ubuntu-latest
     needs: linux-aarch64-build
@@ -560,164 +427,8 @@ jobs:
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           qemu-aarch64 ./CC_API
           source run_aarch64_cc_tests.sh ${{ matrix.config }}
-
-
-  # windows-python-tests:
-  #   runs-on: windows-latest
-  #   needs: [windows-cxx-tests]
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #     - name: Install Python 3.13
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: "3.13"
-
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: Release_Windows
-  #         path: WebFrameworkLibrary
-
-  #     - name: Download tests artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: Tests_Windows
-  #         path: TestsBinaries
-        
-  #     - name: Install Python API
-  #       run: |
-  #           python -m pip install pip --upgrade
-  #           pip install setuptools
-  #           pip install setuptools --upgrade
-  #           pip install WebFrameworkLibrary/api/python_api/
-        
-  #     - name: Tests
-  #       run: |
-  #         cp WebFrameworkLibrary/dll/WebFramework.dll TestsBinaries
-  #         cd TestsBinaries
-  #         .\run_python_tests.bat ${{ matrix.config }}
-
-
-  # linux-python-tests:
-  #   runs-on: ubuntu-latest
-  #   needs: [linux-cxx-tests]
-  #   container:
-  #     image: lazypanda07/ubuntu_cxx20:24.04
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: Release_Linux
-  #         path: WebFrameworkLibrary
-
-  #     - name: Download tests artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: Tests_Linux
-  #         path: TestsBinaries
-        
-  #     - name: Chmod
-  #       run: |
-  #         cd TestsBinaries
-  #         chmod +x DefaultHTTPSServer
-  #         chmod +x Core
-  #         chmod +x LoadBalancerCore
-  #         chmod +x ProxyCore
-
-  #     - name: Tests
-  #       shell: bash
-  #       run: |
-  #         pip3 install WebFrameworkLibrary/api/python_api/
-  #         cp WebFrameworkLibrary/lib/libWebFramework.so TestsBinaries
-  #         cd TestsBinaries
-  #         source run_python_tests.sh ${{ matrix.config }}
-  
-
-  # windows-csharp-tests:
-  #   runs-on: windows-latest
-  #   needs: windows-build
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
-
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: Release_Windows
-  #       path: WebFrameworkLibrary
-
-  #   - name: Get Google Test
-  #     uses: LazyPanda07/get-gtest@master
-  #     with:
-  #       build-type: Release
-  #       install-path: Tests/gtest
-        
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-  #         cmake --build . --config Release -j && cmake --install . --config Release
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     run: |
-  #         cd build/bin
-  #         dotnet test CSharpAPI.dll
-  #         .\run_csharp_tests.bat ${{ matrix.config }}
-
-
-  # linux-csharp-tests:
-  #   runs-on: ubuntu-latest
-  #   needs: linux-build
-  #   container:
-  #     image: lazypanda07/ubuntu_cxx20:24.04
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-  #   steps:
-  #   - uses: actions/checkout@v4
-
-  #   - name: Download artifacts
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: Release_Linux
-  #       path: WebFrameworkLibrary
-        
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-  #         cmake --build . --config Release -j && cmake --install . --config Release
-
-  #   - name: Tests
-  #     working-directory: Tests
-  #     shell: bash
-  #     run: |
-  #         cd build/bin
-  #         export LD_LIBRARY_PATH=$(pwd):LD_LIBRARY_PATH
-  #         dotnet test CSharpAPI.dll
-  #         source run_csharp_tests.sh ${{ matrix.config }}
-
           
+
   # publish:
   #   needs: [
   #     windows-cxx-tests,
