@@ -21,6 +21,7 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 ./CC_LoadBalancerServer load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
 sleep 1
 
+./CC_API
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
 ./LoadBalancerCore --port 9090
 ./LoadBalancerCore --port 9091
@@ -29,3 +30,8 @@ sleep 1
 ./LoadBalancerCore --port 9094 --custom_heuristic
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
+
+pkill -9 CC_Server
+pkill -9 DefaultHTTPSServer
+killall -9 CC_ProxyServer
+killall -9 CC_LoadBalancerServer

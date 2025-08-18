@@ -21,6 +21,7 @@ dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --t
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9094 --custom-heuristic &
 sleep 1
 
+dotnet test CSharpAPI.dll
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
 ./LoadBalancerCore --port 9090
 ./LoadBalancerCore --port 9091
@@ -29,3 +30,18 @@ sleep 1
 ./LoadBalancerCore --port 9094 --custom_heuristic
 ./ProxyCore --port 15000
 ./ProxyCore --port 15001 --useHTTPS
+
+kill -9 $(cat start_core_server.txt)
+kill -9 $(cat start_proxy_server.txt)
+kill -9 $(cat start_proxy_https_server.txt)
+kill -9 $(cat start_load_balancer_9090_server.txt)
+kill -9 $(cat start_load_balancer_9091_server.txt)
+kill -9 $(cat start_load_balancer_9092_server.txt)
+kill -9 $(cat start_load_balancer_9093_server.txt)
+kill -9 $(cat start_load_balancer_9094_server.txt)
+kill -9 $(cat start_load_balancer_10000_server.txt)
+kill -9 $(cat start_load_balancer_10001_server.txt)
+kill -9 $(cat start_load_balancer_10002_server.txt)
+kill -9 $(cat start_load_balancer_10003_server.txt)
+
+pkill -9 DefaultHTTPSServer
