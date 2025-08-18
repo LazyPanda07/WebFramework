@@ -5,6 +5,15 @@ set -e
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+chmod +x ./CC_Server
+chmod +x ./DefaultHTTPSServer
+chmod +x ./CC_ProxyServer
+chmod +x ./CC_LoadBalancerServer
+chmod +x ./CC_API
+chmod +x ./Core
+chmod +x ./LoadBalancerCore
+chmod +x ./ProxyCore
+
 ./CC_Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
 ./CC_ProxyServer proxy_config.json 15000 &

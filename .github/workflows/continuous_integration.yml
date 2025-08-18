@@ -306,10 +306,6 @@ jobs:
           mv Executors/* Tests
           mv WebFrameworkLibrary/lib/* Tests
           cd Tests
-          chmod +x DefaultHTTPSServer
-          chmod +x Core
-          chmod +x LoadBalancerCore
-          chmod +x ProxyCore
           source run_tests.sh ${{ matrix.config }}
           source run_cc_tests.sh ${{ matrix.config }}
           source run_csharp_tests.sh ${{ matrix.config }}
