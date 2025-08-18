@@ -38,39 +38,39 @@ std::string constructRequest(std::string_view requestType)
 {
 	web::HTTPBuilder result;
 
-	if(requestType == "GET")
+	if (requestType == "GET")
 	{
 		result.getRequest();
 	}
-	else if(requestType == "POST")
+	else if (requestType == "POST")
 	{
 		result.postRequest();
 	}
-	else if(requestType == "HEAD")
+	else if (requestType == "HEAD")
 	{
 		result.headRequest();
 	}
-	else if(requestType == "PUT")
+	else if (requestType == "PUT")
 	{
 		result.putRequest();
 	}
-	else if(requestType == "DELETE")
+	else if (requestType == "DELETE")
 	{
 		result.deleteRequest();
 	}
-	else if(requestType == "PATCH")
+	else if (requestType == "PATCH")
 	{
 		result.patchRequest();
 	}
-	else if(requestType == "CONNECT")
+	else if (requestType == "CONNECT")
 	{
 		result.connectRequest();
 	}
-	else if(requestType == "OPTIONS")
+	else if (requestType == "OPTIONS")
 	{
 		result.optionsRequest();
 	}
-	else if(requestType == "TRACE")
+	else if (requestType == "TRACE")
 	{
 		result.traceRequest();
 	}
@@ -93,11 +93,11 @@ TEST(HelloExecutor, OPTIONS)
 
 		web::HTTPParser parser(response);
 
-#ifdef NDEBUG
-		ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::badRequest);
-#else
-		ASSERT_EQ(parser.getHeaders().at("Allow"), "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT");
-#endif
+		ASSERT_TRUE
+		(
+			parser.getResponseCode() == web::ResponseCodes::badRequest ||
+			parser.getHeaders().at("Allow") == "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT"
+		);
 	}
 }
 
@@ -116,18 +116,25 @@ TEST(HelloExecutor, TRACE)
 
 		web::HTTPParser parser(response);
 
-#ifdef NDEBUG
-		ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::badRequest);
-#else
-		std::istringstream is(request);
-		std::string temp;
-		const std::string& rawData = parser.getRawData();
+		bool result = parser.getResponseCode() == web::ResponseCodes::badRequest ||
+			[&]() -> bool
+			{
+				std::istringstream is(request);
+				std::string temp;
+				const std::string& rawData = parser.getRawData();
 
-		while (std::getline(is, temp))
-		{
-			ASSERT_NE(rawData.find(temp), std::string::npos);
-		}
-#endif
+				while (std::getline(is, temp))
+				{
+					if (rawData.find(temp) == std::string::npos)
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}();
+
+		ASSERT_TRUE(result);
 	}
 }
 

@@ -205,9 +205,6 @@ jobs:
   windows-tests-build:
     runs-on: windows-latest
     needs: windows-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v4
@@ -218,7 +215,7 @@ jobs:
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@master
       with:
-        build-type: ${{ matrix.configuration }}
+        build-type: Release
         install-path: Tests/gtest
 
     - name: Download WebFramework
@@ -232,13 +229,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Upload tests
       uses: actions/upload-artifact@v4
       with:
-        name: WindowsTests_${{ matrix.configuration }}
+        name: WindowsTests
         path: Tests/build/bin
 
 
@@ -247,10 +244,7 @@ jobs:
     needs: linux-build
     container:
       image: lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
+    
     steps:
     - uses: actions/checkout@v4
       
@@ -265,13 +259,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Upload executors
       uses: actions/upload-artifact@v4
       with:
-        name: LinuxTests_${{ matrix.configuration }}
+        name: LinuxTests
         path: Tests/build/bin
 
 

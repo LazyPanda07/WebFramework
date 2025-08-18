@@ -84,12 +84,26 @@ namespace framework
 
 	void CCExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedMethodFunction(doOptionsFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		if (doOptionsFunction)
+		{
+			doOptionsFunction(implementation, request.getImplementation(), response.getImplementation());
+		}
+		else
+		{
+			BaseExecutor::doOptions(request, response);
+		}
 	}
 
 	void CCExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		this->callBindedMethodFunction(doTraceFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		if (doTraceFunction)
+		{
+			doTraceFunction(implementation, request.getImplementation(), response.getImplementation());
+		}
+		else
+		{
+			BaseExecutor::doTrace(request, response);
+		}
 	}
 
 	void CCExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
