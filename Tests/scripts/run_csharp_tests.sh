@@ -7,6 +7,11 @@ echo "Start C# Tests"
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+chmod +x ./Core
+chmod +x ./LoadBalancerCore
+chmod +x ./ProxyCore
+chmod +x ./DefaultHTTPSServer
+
 dotnet CSharpServer.dll ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
 dotnet CSharpProxyServer.dll --config proxy_config.json --port 15000 &

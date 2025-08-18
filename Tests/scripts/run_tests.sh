@@ -9,7 +9,6 @@ chmod +x ./Server
 chmod +x ./DefaultHTTPSServer
 chmod +x ./ProxyServer
 chmod +x ./LoadBalancerServer
-chmod +x ./LoadBalancerServer
 chmod +x ./CXX_API
 chmod +x ./Core
 chmod +x ./LoadBalancerCore
