@@ -14,9 +14,4 @@ target_include_directories(
 	${WEB_FRAMEWORK_INCLUDE}
 )
 
-target_link_libraries(
-	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIB}
-)
-
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
