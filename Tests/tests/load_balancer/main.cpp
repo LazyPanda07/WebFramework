@@ -31,13 +31,10 @@ TEST(LoadBalancer, ConnectionsHeuristic)
 	std::vector<streams::IOSocketStream> streams;
 	std::vector<int64_t> ids;
 	std::vector<std::future<int64_t>> awaiters;
-	std::mt19937_64 random(time(nullptr));
-	auto call = [&random](streams::IOSocketStream& stream)
+	auto call = [](streams::IOSocketStream& stream)
 		{
 			std::string request = web::HTTPBuilder().getRequest().build();
 			std::string response;
-
-			std::this_thread::sleep_for(std::chrono::seconds(random() % 5));
 
 			stream << request;
 

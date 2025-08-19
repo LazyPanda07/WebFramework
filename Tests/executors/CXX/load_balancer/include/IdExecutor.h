@@ -1,8 +1,8 @@
 #pragma once
 
-#include <APIExecutors/BaseStatelessExecutor.hpp>
+#include <APIExecutors/BaseHeavyOperationStatelessExecutor.hpp>
 
-class IdExecutor : public framework::BaseStatelessExecutor
+class IdExecutor : public framework::BaseHeavyOperationStatelessExecutor
 {
 public:
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
