@@ -300,10 +300,13 @@ jobs:
         name: LinuxExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
         path: Executors
 
+    - name: Install Python API
+      if: ${{ matrix.api_test == 'run_python_tests.sh' }}
+      run: pip3 install WebFrameworkLibrary/api/python_api/
+
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
       shell: bash
       run: |
-          pip3 install WebFrameworkLibrary/api/python_api/
           mv Executors/* Tests
           mv WebFrameworkLibrary/lib/* Tests
           cd Tests
@@ -317,7 +320,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
+        api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
         executors: [CXX]
 
     steps:
@@ -339,6 +342,10 @@ jobs:
         name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
         path: Executors
 
+    - name: Install Python API
+      if: ${{ matrix.api_test == 'run_python_tests.bat' }}
+      run: pip install WebFrameworkLibrary/api/python_api/
+
     - name: Merge artifacts
       shell: bash
       run: |
@@ -346,10 +353,8 @@ jobs:
           mv WebFrameworkLibrary/lib/* Tests
 
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
-      run: |
-          pip install WebFrameworkLibrary/api/python_api/
-          cd Tests
-          .\${{ matrix.api_test }} ${{ matrix.config }}
+      working-directory: Tests
+      run: .\${{ matrix.api_test }} ${{ matrix.config }}
           
 
   linux-aarch64-cxx-tests:
