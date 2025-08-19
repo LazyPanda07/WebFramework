@@ -317,7 +317,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        api_test: [run_tests.bat]
+        api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
         executors: [CXX]
 
     steps:
@@ -339,14 +339,17 @@ jobs:
         name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
         path: Executors
 
-    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
+    - name: Merge artifacts
       shell: bash
       run: |
-          pip install WebFrameworkLibrary/api/python_api/
           mv Executors/* Tests
           mv WebFrameworkLibrary/lib/* Tests
+
+    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
+      run: |
+          pip install WebFrameworkLibrary/api/python_api/
           cd Tests
-          ./${{ matrix.api_test }} ${{ matrix.config }}
+          .\${{ matrix.api_test }} ${{ matrix.config }}
           
 
   linux-aarch64-cxx-tests:
