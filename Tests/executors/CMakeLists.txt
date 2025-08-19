@@ -5,3 +5,7 @@ project(executors)
 if (${BUILD_EXECUTORS} STREQUAL "CXX")
 	add_subdirectory(CXX)
 endif()
+
+if (${BUILD_EXECUTORS} STREQUAL "CC")
+	add_subdirectory(CC)
+endif()

@@ -166,7 +166,7 @@ inline void __initQueryBuffer(size_t querySize, void* buffer)
 		exit(1);
 	}
 
-	memset(&(*temp)[querySize], NULL, sizeof(QueryParameter)); // fill with zeros last element
+	memset(&(*temp)[querySize], 0, sizeof(QueryParameter)); // fill with zeros last element
 }
 
 inline void __initChunksBuffer(size_t size, void* buffer)
@@ -182,7 +182,7 @@ inline void __initChunksBuffer(size_t size, void* buffer)
 		exit(2);
 	}
 
-	memset(&(*temp)[size], NULL, sizeof(HTTPChunk)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(HTTPChunk)); // fill with zeros last element
 }
 
 inline void __initHeadersBuffer(size_t size, void* buffer)
@@ -198,7 +198,7 @@ inline void __initHeadersBuffer(size_t size, void* buffer)
 		exit(3);
 	}
 
-	memset(&(*temp)[size], NULL, sizeof(HTTPHeader)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(HTTPHeader)); // fill with zeros last element
 }
 
 inline void __initMultipartsBuffer(size_t size, void* buffer)
@@ -214,7 +214,7 @@ inline void __initMultipartsBuffer(size_t size, void* buffer)
 		exit(4);
 	}
 
-	memset(&(*temp)[size], NULL, sizeof(Multipart)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(Multipart)); // fill with zeros last element
 }
 
 inline void __initCookiesBuffer(size_t size, void* buffer)
@@ -230,7 +230,7 @@ inline void __initCookiesBuffer(size_t size, void* buffer)
 		exit(5);
 	}
 
-	memset(&(*temp)[size], NULL, sizeof(Cookie)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(Cookie)); // fill with zeros last element
 }
 
 inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
@@ -314,7 +314,7 @@ inline WebFrameworkException getQueryParameters(HTTPRequest implementation, Quer
 	QueryParameter* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, NULL, sizeof(QueryParameter));
+	memset(emptyBuffer, 0, sizeof(QueryParameter));
 
 	while (true)
 	{
@@ -359,7 +359,7 @@ inline WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHead
 	HTTPHeader* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, NULL, sizeof(HTTPHeader));
+	memset(emptyBuffer, 0, sizeof(HTTPHeader));
 
 	while (true)
 	{
@@ -459,7 +459,7 @@ inline WebFrameworkException getCookies(HTTPRequest implementation, Cookie** res
 	Cookie* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, NULL, sizeof(Cookie));
+	memset(emptyBuffer, 0, sizeof(Cookie));
 
 	while (true)
 	{
@@ -493,7 +493,7 @@ inline WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart
 	Multipart* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, NULL, sizeof(Multipart));
+	memset(emptyBuffer, 0, sizeof(Multipart));
 
 	while (true)
 	{
@@ -628,7 +628,7 @@ inline WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk
 	HTTPChunk* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, NULL, sizeof(HTTPChunk));
+	memset(emptyBuffer, 0, sizeof(HTTPChunk));
 
 	while (true)
 	{

@@ -15,34 +15,42 @@ typedef void* ExecutorSettings;
 #define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API __declspec(dllexport)
 #endif
 
-typedef enum
+typedef enum ExecutorType
 {
 	STATEFUL_EXECUTOR,
 	STATELESS_EXECUTOR,
 	HEAVY_OPERATION_STATEFUL_EXECUTOR,
 	HEAVY_OPERATION_STATELESS_EXECUTOR
-} ExecutorType;
+} ExecutorType_t;
 
 /**
 * Macro for each BaseExecutor subclass
 * Used for loading function that creates BaseExecutor subclass
+* @param structName Already defined struct name
 */
-#define DECLARE_EXECUTOR(subclassName, executorType) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##subclassName##CCInstance()	\
+#define DECLARE_EXECUTOR(structName, executorType) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##structName##CCInstance()	\
 {	\
-	return malloc(sizeof(subclassName));	\
+	return malloc(sizeof(structName));	\
 }	\
 	\
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API int webFrameworkCCGetType##subclassName(void* executor)	\
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API int webFrameworkCCGetType##structName(void* executor)	\
 {	\
 	return executorType;	\
 }	\
 	\
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDeleteExecutor##subclassName(void* executor)	\
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDeleteExecutor##structName(void* executor)	\
 {	\
-	free((subclassName*)executor);	\
+	free((structName*)executor);	\
 }
 
-typedef enum
+/**
+* Macro for each BaseExecutor subclass
+* Used for loading function that creates BaseExecutor subclass
+* @param structName Create empty struct for stateless executors
+*/
+#define DECLARE_DEFAULT_EXECUTOR(structName, executorType) typedef struct { char _; } structName; DECLARE_EXECUTOR(structName, executorType)
+
+typedef enum Methods
 {
 	POST_METHOD,
 	GET_METHOD,
@@ -53,13 +61,13 @@ typedef enum
 	OPTIONS_METHOD,
 	TRACE_METHOD,
 	CONNECT_METHOD,
-} Methods;
+} Methods_t;
 
-#define DECLARE_EXECUTOR_METHOD(subclassName, method, requestVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##subclassName(Executor executor, HTTPRequest requestVariableName, HTTPResponse responseVariableName)
+#define DECLARE_EXECUTOR_METHOD(structName, method, requestVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##structName(Executor executor, HTTPRequest requestVariableName, HTTPResponse responseVariableName)
 
-#define DECLARE_EXECUTOR_INIT(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##subclassName(Executor executor, ExecutorSettings settings)
+#define DECLARE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(Executor executor, ExecutorSettings settings)
 
-#define DECLARE_EXECUTOR_DESTROY(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##subclassName(Executor executor)
+#define DECLARE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(Executor executor)
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath)
 {

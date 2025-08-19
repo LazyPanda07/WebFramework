@@ -262,7 +262,7 @@ inline WebFrameworkException appendJSONArrayNull(JSONArray* array)
 
 inline WebFrameworkException appendJSONArrayArray(JSONArray* array, const JSONArray* objects)
 {
-	WebFrameworkException exception = nullptr;
+	WebFrameworkException exception = NULL;
 
 	for (size_t i = 0; i < objects->size; i++)
 	{

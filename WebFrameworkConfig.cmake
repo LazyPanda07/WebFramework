@@ -15,6 +15,14 @@ if (NOT DEFINED WEB_FRAMEWORK_CC_API)
 endif()
 
 if (${WEB_FRAMEWORK_CC_API})
+    if (NOT DEFINED CMAKE_C_STANDARD)
+        set(CMAKE_C_STANDARD 11)
+    endif()
+
+    if (${CMAKE_C_STANDARD} LESS 11)
+        set(CMAKE_C_STANDARD 11)
+    endif()
+
     if (NOT PROJECT_NAME)
         message(STATUS "WebFramework CC API")
     else()
