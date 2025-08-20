@@ -381,7 +381,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Install curl
@@ -421,7 +421,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Install curl
@@ -435,6 +435,43 @@ jobs:
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           qemu-aarch64 ./CC_API
           source run_aarch64_cc_tests.sh ${{ matrix.config }}
+
+
+  linux-cc-executors-tests:
+    runs-on: ubuntu-latest
+    needs: linux-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Linux
+        path: WebFrameworkLibrary
+        
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DBUILD_EXECUTORS=CC -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          
+    - name: Tests
+      working-directory: Tests
+      shell: bash
+      run: |
+          cd build/bin
+          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+          ./Server ${{ matrix.config }} & sleep 1
+          ./Core --gtest_filter=HelloExecutor.* ${{ matrix.config }}}
           
 
   # publish:

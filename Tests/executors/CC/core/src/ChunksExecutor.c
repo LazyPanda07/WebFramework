@@ -1,0 +1,3 @@
+#include <APIExecutors/BaseExecutor.h>
+
+DECLARE_DEFAULT_EXECUTOR(ChunksExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);

@@ -185,7 +185,7 @@ inline WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation)
 	return exception;
 }
 
-WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid)
+inline WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid)
 {
 	WebFrameworkException exception = NULL;
 

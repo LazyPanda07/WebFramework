@@ -64,10 +64,10 @@ namespace json_settings
 namespace exceptions
 {
 	inline constexpr std::string_view fileDoesNotExist = "file does not exist";
-	inline constexpr std::string_view cantFindFunction = "Can't find ";
+	inline constexpr std::string_view cantFindFunction = "Can't find";
 	inline constexpr std::string_view useMacroToMakeCreationFunction = "Make sure that you add DECLARE_EXECUTOR macro for executor class";
-	inline constexpr std::string_view missingLoadType = "Missing load type of ";
-	inline constexpr std::string_view cantLoadSource = "Can't load ";
+	inline constexpr std::string_view missingLoadType = "Missing load type of";
+	inline constexpr std::string_view cantLoadSource = "Can't load";
 	inline constexpr std::string_view missingOtherDLLs = "That load source requires to load other dlls";
 
 	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
