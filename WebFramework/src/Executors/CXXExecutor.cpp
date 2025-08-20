@@ -44,7 +44,14 @@ namespace framework
 		}
 		catch (const exception& e)
 		{
-			Log::fatalError("Load function error: {}", "LogCXXExecutor", 1, e.what());
+			if (Log::isValid())
+			{
+				Log::fatalError("Load function error: {}", "LogCXXExecutor", 1, e.what());
+			}
+			else
+			{
+				throw;
+			}
 		}
 	}
 

@@ -30,7 +30,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Can't create server: {}", "LogExecutorServer", e.what());
+				Log::fatalError("Can't create server: {}", "LogExecutorServer", 2, e.what());
 			}
 		}
 		catch (...)
@@ -39,7 +39,7 @@ namespace framework
 
 			if (Log::isValid())
 			{
-				Log::error("Something went wrong", "LogExecutorServer");
+				Log::fatalError("Something went wrong", "LogExecutorServer", 2);
 			}
 		}
 	}

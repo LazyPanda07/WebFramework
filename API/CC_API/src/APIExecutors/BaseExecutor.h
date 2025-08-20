@@ -5,6 +5,7 @@
 #include "../HTTPRequest.h"
 #include "../HTTPResponse.h"
 #include "../DLLHandler.h"
+#include "../JSONParser.h"
 
 typedef void* Executor;
 typedef void* ExecutorSettings;
@@ -22,6 +23,13 @@ typedef enum ExecutorType
 	HEAVY_OPERATION_STATEFUL_EXECUTOR,
 	HEAVY_OPERATION_STATELESS_EXECUTOR
 } ExecutorType_t;
+
+typedef enum LoadType
+{
+	INITIALIZATION,
+	DYNAMIC,
+	NONE
+} LoadType_t;
 
 /**
 * Macro for each BaseExecutor subclass
@@ -68,6 +76,80 @@ typedef enum Methods
 #define DECLARE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(Executor executor, ExecutorSettings settings)
 
 #define DECLARE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(Executor executor)
+
+WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result);
+
+WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFrameworkString* result);
+
+WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation, WebFrameworkString* result);
+
+WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFrameworkString* result);
+
+WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadType_t* result);
+
+inline WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void* (*getExecutorInitParameters)(void* implementation, void** exception);
+	
+	WebFrameworkString temp = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorInitParameters, &exception);
+
+	if (exception)
+	{
+		return exception;
+	}
+
+	exception = createJSONParserFromString(getDataFromString(temp), result);
+
+	deleteWebFrameworkString(temp);
+
+	return exception;
+}
+
+inline WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFrameworkString* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void* (*getExecutorName)(void* implementation, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorName, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation, WebFrameworkString* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void* (*getExecutorUserAgentFilter)(void* implementation, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFrameworkString* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void* (*getExecutorAPIType)(void* implementation, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorAPIType, &exception);
+
+	return exception;
+}
+
+inline WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadType_t* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef int (*getExecutorLoadType)(void* implementation, void** exception);
+
+	*result = (LoadType_t)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorLoadType, &exception);
+
+	return exception;
+}
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath)
 {
