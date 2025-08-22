@@ -87,7 +87,10 @@ WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFra
 
 WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadType_t* result);
 
-inline WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result)
+#ifndef __WEB_FRAMEWORK_EXECUTOR_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_EXECUTOR_IMPLEMENTATION__
+
+WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -107,7 +110,7 @@ inline WebFrameworkException getExecutorInitParameters(ExecutorSettings implemen
 	return exception;
 }
 
-inline WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFrameworkString* result)
+WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFrameworkString* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -118,7 +121,7 @@ inline WebFrameworkException getExecutorName(ExecutorSettings implementation, We
 	return exception;
 }
 
-inline WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation, WebFrameworkString* result)
+WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation, WebFrameworkString* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -129,7 +132,7 @@ inline WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings impleme
 	return exception;
 }
 
-inline WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFrameworkString* result)
+WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFrameworkString* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -140,7 +143,7 @@ inline WebFrameworkException getExecutorAPIType(ExecutorSettings implementation,
 	return exception;
 }
 
-inline WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadType_t* result)
+WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadType_t* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -151,7 +154,8 @@ inline WebFrameworkException getExecutorLoadType(ExecutorSettings implementation
 	return exception;
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath)
 {
 	initializeWebFramework(webFrameworkSharedLibraryPath);
 }
+#endif

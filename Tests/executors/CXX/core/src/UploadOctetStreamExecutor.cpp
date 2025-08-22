@@ -17,6 +17,8 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 
 		response.setResponseCode(framework::ResponseCodes::created);
 		response.setBody("Finish uploading file");
+
+		std::ofstream("finish_uploading.txt");
 	}
 }
 

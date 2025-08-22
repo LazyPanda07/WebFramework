@@ -38,7 +38,10 @@ WebFrameworkException getSQLValueBlob(SQLValue implementation, const uint8_t** r
 
 WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueType* result);
 
-inline WebFrameworkException setSQLValueInt(SQLValue implementation, int64_t value)
+#ifndef __WEB_FRAMEWORK_SQL_VALUE_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_SQL_VALUE_IMPLEMENTATION__
+
+WebFrameworkException setSQLValueInt(SQLValue implementation, int64_t value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -49,7 +52,7 @@ inline WebFrameworkException setSQLValueInt(SQLValue implementation, int64_t val
 	return exception;
 }
 
-inline WebFrameworkException setSQLValueDouble(SQLValue implementation, double value)
+WebFrameworkException setSQLValueDouble(SQLValue implementation, double value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -60,7 +63,7 @@ inline WebFrameworkException setSQLValueDouble(SQLValue implementation, double v
 	return exception;
 }
 
-inline WebFrameworkException setSQLValueString(SQLValue implementation, const char* value)
+WebFrameworkException setSQLValueString(SQLValue implementation, const char* value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -71,7 +74,7 @@ inline WebFrameworkException setSQLValueString(SQLValue implementation, const ch
 	return exception;
 }
 
-inline WebFrameworkException setSQLValueBool(SQLValue implementation, bool value)
+WebFrameworkException setSQLValueBool(SQLValue implementation, bool value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -82,7 +85,7 @@ inline WebFrameworkException setSQLValueBool(SQLValue implementation, bool value
 	return exception;
 }
 
-inline WebFrameworkException setSQLValueNull(SQLValue implementation)
+WebFrameworkException setSQLValueNull(SQLValue implementation)
 {
 	WebFrameworkException exception = NULL;
 
@@ -93,7 +96,7 @@ inline WebFrameworkException setSQLValueNull(SQLValue implementation)
 	return exception;
 }
 
-inline WebFrameworkException setSQLValueBlob(SQLValue implementation, const uint8_t* value, size_t size)
+WebFrameworkException setSQLValueBlob(SQLValue implementation, const uint8_t* value, size_t size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -104,7 +107,7 @@ inline WebFrameworkException setSQLValueBlob(SQLValue implementation, const uint
 	return exception;
 }
 
-inline WebFrameworkException getSQLValueInt(SQLValue implementation, int64_t* result)
+WebFrameworkException getSQLValueInt(SQLValue implementation, int64_t* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -115,7 +118,7 @@ inline WebFrameworkException getSQLValueInt(SQLValue implementation, int64_t* re
 	return exception;
 }
 
-inline WebFrameworkException getSQLValueDouble(SQLValue implementation, double* result)
+WebFrameworkException getSQLValueDouble(SQLValue implementation, double* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -126,7 +129,7 @@ inline WebFrameworkException getSQLValueDouble(SQLValue implementation, double* 
 	return exception;
 }
 
-inline WebFrameworkException getSQLValueString(SQLValue implementation, const char** result)
+WebFrameworkException getSQLValueString(SQLValue implementation, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -137,7 +140,7 @@ inline WebFrameworkException getSQLValueString(SQLValue implementation, const ch
 	return exception;
 }
 
-inline WebFrameworkException getSQLValueBool(SQLValue implementation, bool* result)
+WebFrameworkException getSQLValueBool(SQLValue implementation, bool* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -148,7 +151,7 @@ inline WebFrameworkException getSQLValueBool(SQLValue implementation, bool* resu
 	return exception;
 }
 
-inline WebFrameworkException getSQLValueBlob(SQLValue implementation, const uint8_t** result, size_t* size)
+WebFrameworkException getSQLValueBlob(SQLValue implementation, const uint8_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -159,7 +162,7 @@ inline WebFrameworkException getSQLValueBlob(SQLValue implementation, const uint
 	return exception;
 }
 
-inline WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueType* result)
+WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueType* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -169,3 +172,4 @@ inline WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueTy
 
 	return exception;
 }
+#endif

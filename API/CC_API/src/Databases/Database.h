@@ -14,7 +14,10 @@ WebFrameworkException getDatabaseName(Database implementation, const char** resu
 
 WebFrameworkException getDatabaseFileName(Database implementation, const char** result);
 
-inline WebFrameworkException getOrCreateTable(Database implementation, const char* tableName, const char* createTableQuery, Table* result)
+#ifndef __WEB_FRAMEWORK_DATABASE_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_DATABASE_IMPLEMENTATION__
+
+WebFrameworkException getOrCreateTable(Database implementation, const char* tableName, const char* createTableQuery, Table* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -25,7 +28,7 @@ inline WebFrameworkException getOrCreateTable(Database implementation, const cha
 	return exception;
 }
 
-inline WebFrameworkException getTable(Database implementation, const char* tableName, Table* result)
+WebFrameworkException getTable(Database implementation, const char* tableName, Table* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -36,7 +39,7 @@ inline WebFrameworkException getTable(Database implementation, const char* table
 	return exception;
 }
 
-inline WebFrameworkException containsTable(Database implementation, const char* tableName, Table* outTable, bool* result)
+WebFrameworkException containsTable(Database implementation, const char* tableName, Table* outTable, bool* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -47,7 +50,7 @@ inline WebFrameworkException containsTable(Database implementation, const char* 
 	return exception;
 }
 
-inline WebFrameworkException getDatabaseName(Database implementation, const char** result)
+WebFrameworkException getDatabaseName(Database implementation, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -58,7 +61,7 @@ inline WebFrameworkException getDatabaseName(Database implementation, const char
 	return exception;
 }
 
-inline WebFrameworkException getDatabaseFileName(Database implementation, const char** result)
+WebFrameworkException getDatabaseFileName(Database implementation, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -68,3 +71,4 @@ inline WebFrameworkException getDatabaseFileName(Database implementation, const 
 
 	return exception;
 }
+#endif

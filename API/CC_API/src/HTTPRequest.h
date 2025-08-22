@@ -153,7 +153,10 @@ WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse re
 
 WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* exceptionMessage, ResponseCodes responseCode, const char* logCategory, size_t exceptionHash);
 
-inline void __initQueryBuffer(size_t querySize, void* buffer)
+#ifndef __WEB_FRAMEWORK_HTTP_REQUEST_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_HTTP_REQUEST_IMPLEMENTATION__
+
+void __initQueryBuffer(size_t querySize, void* buffer)
 {
 	QueryParameter** temp = (QueryParameter**)buffer;
 
@@ -169,7 +172,7 @@ inline void __initQueryBuffer(size_t querySize, void* buffer)
 	memset(&(*temp)[querySize], 0, sizeof(QueryParameter)); // fill with zeros last element
 }
 
-inline void __initChunksBuffer(size_t size, void* buffer)
+void __initChunksBuffer(size_t size, void* buffer)
 {
 	HTTPChunk** temp = (HTTPChunk**)buffer;
 
@@ -185,7 +188,7 @@ inline void __initChunksBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], 0, sizeof(HTTPChunk)); // fill with zeros last element
 }
 
-inline void __initHeadersBuffer(size_t size, void* buffer)
+void __initHeadersBuffer(size_t size, void* buffer)
 {
 	HTTPHeader** temp = (HTTPHeader**)buffer;
 
@@ -201,7 +204,7 @@ inline void __initHeadersBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], 0, sizeof(HTTPHeader)); // fill with zeros last element
 }
 
-inline void __initMultipartsBuffer(size_t size, void* buffer)
+void __initMultipartsBuffer(size_t size, void* buffer)
 {
 	Multipart** temp = (Multipart**)buffer;
 
@@ -217,7 +220,7 @@ inline void __initMultipartsBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], 0, sizeof(Multipart)); // fill with zeros last element
 }
 
-inline void __initCookiesBuffer(size_t size, void* buffer)
+void __initCookiesBuffer(size_t size, void* buffer)
 {
 	Cookie** temp = (Cookie**)buffer;
 
@@ -233,7 +236,7 @@ inline void __initCookiesBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], 0, sizeof(Cookie)); // fill with zeros last element
 }
 
-inline void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
+void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
 {
 	QueryParameter* temp = *(QueryParameter**)buffer;
 
@@ -241,7 +244,7 @@ inline void __addQueryParameter(const char* key, const char* value, size_t index
 	temp[index].value = value;
 }
 
-inline void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
+void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
 {
 	HTTPChunk* temp = *(HTTPChunk**)buffer;
 
@@ -249,7 +252,7 @@ inline void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* 
 	temp[index].size = chunkSize;
 }
 
-inline void __addHeader(const char* key, const char* value, size_t index, void* buffer)
+void __addHeader(const char* key, const char* value, size_t index, void* buffer)
 {
 	HTTPHeader* temp = *(HTTPHeader**)buffer;
 
@@ -257,7 +260,7 @@ inline void __addHeader(const char* key, const char* value, size_t index, void* 
 	temp[index].value = value;
 }
 
-inline void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer)
+void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer)
 {
 	Multipart* temp = *(Multipart**)buffer;
 
@@ -267,7 +270,7 @@ inline void __addMultipart(const char* name, const char* fileName, const char* c
 	temp[index].data = data;
 }
 
-inline void __addCookie(const char* key, const char* value, size_t index, void* buffer)
+void __addCookie(const char* key, const char* value, size_t index, void* buffer)
 {
 	Cookie* temp = *(Cookie**)buffer;
 
@@ -275,7 +278,7 @@ inline void __addCookie(const char* key, const char* value, size_t index, void* 
 	temp[index].value = value;
 }
 
-inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
+WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
 {
 	WebFrameworkException exception = NULL;
 
@@ -286,7 +289,7 @@ inline WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, co
 	return exception;
 }
 
-inline WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** method)
+WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** method)
 {
 	WebFrameworkException exception = NULL;
 
@@ -297,7 +300,7 @@ inline WebFrameworkException getHTTPMethod(HTTPRequest implementation, const cha
 	return exception;
 }
 
-inline WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result, size_t* size)
+WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -331,7 +334,7 @@ inline WebFrameworkException getQueryParameters(HTTPRequest implementation, Quer
 	return exception;
 }
 
-inline WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkString* version)
+WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkString* version)
 {
 	WebFrameworkException exception = NULL;
 
@@ -342,7 +345,7 @@ inline WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrame
 	return exception;
 }
 
-inline WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader** result, size_t* size)
+WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -376,7 +379,7 @@ inline WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHead
 	return exception;
 }
 
-inline WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* headerName, const char** result)
+WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* headerName, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -387,7 +390,7 @@ inline WebFrameworkException getHTTPHeader(HTTPRequest implementation, const cha
 	return exception;
 }
 
-inline WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body)
+WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body)
 {
 	WebFrameworkException exception = NULL;
 
@@ -398,7 +401,7 @@ inline WebFrameworkException getHTTPBody(HTTPRequest implementation, const char*
 	return exception;
 }
 
-inline WebFrameworkException setHTTPAttribute(HTTPRequest implementation, const char* name, const char* value)
+WebFrameworkException setHTTPAttribute(HTTPRequest implementation, const char* name, const char* value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -409,7 +412,7 @@ inline WebFrameworkException setHTTPAttribute(HTTPRequest implementation, const 
 	return exception;
 }
 
-inline WebFrameworkException getHTTPAttribute(HTTPRequest implementation, const char* name, WebFrameworkString* result)
+WebFrameworkException getHTTPAttribute(HTTPRequest implementation, const char* name, WebFrameworkString* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -420,7 +423,7 @@ inline WebFrameworkException getHTTPAttribute(HTTPRequest implementation, const 
 	return exception;
 }
 
-inline WebFrameworkException deleteHTTPSession(HTTPRequest implementation)
+WebFrameworkException deleteHTTPSession(HTTPRequest implementation)
 {
 	WebFrameworkException exception = NULL;
 
@@ -431,7 +434,7 @@ inline WebFrameworkException deleteHTTPSession(HTTPRequest implementation)
 	return exception;
 }
 
-inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char* name)
+WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char* name)
 {
 	WebFrameworkException exception = NULL;
 
@@ -442,7 +445,7 @@ inline WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, con
 	return exception;
 }
 
-inline WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, size_t* size)
+WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -476,7 +479,7 @@ inline WebFrameworkException getCookies(HTTPRequest implementation, Cookie** res
 	return exception;
 }
 
-inline WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** result, size_t* size)
+WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -512,7 +515,7 @@ inline WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart
 	return exception;
 }
 
-inline WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result)
+WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -523,7 +526,7 @@ inline WebFrameworkException getLargeData(HTTPRequest implementation, const Larg
 	return exception;
 }
 
-inline WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
+WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
 	WebFrameworkException exception = NULL;
 
@@ -534,7 +537,7 @@ inline WebFrameworkException sendAssetFile(HTTPRequest implementation, const cha
 	return exception;
 }
 
-inline WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName)
+WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName)
 {
 	WebFrameworkException exception = NULL;
 
@@ -545,7 +548,7 @@ inline WebFrameworkException sendStaticFile(HTTPRequest implementation, const ch
 	return exception;
 }
 
-inline WebFrameworkException sendDynamicFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
+WebFrameworkException sendDynamicFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
 	WebFrameworkException exception = NULL;
 
@@ -556,7 +559,7 @@ inline WebFrameworkException sendDynamicFile(HTTPRequest implementation, const c
 	return exception;
 }
 
-inline WebFrameworkException streamFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const char* fileName, size_t chunkSize)
+WebFrameworkException streamFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const char* fileName, size_t chunkSize)
 {
 	WebFrameworkException exception = NULL;
 
@@ -567,7 +570,7 @@ inline WebFrameworkException streamFile(HTTPRequest implementation, const char* 
 	return exception;
 }
 
-inline WebFrameworkException registerDynamicFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
+WebFrameworkException registerDynamicFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
 {
 	WebFrameworkException exception = NULL;
 
@@ -578,7 +581,7 @@ inline WebFrameworkException registerDynamicFunction(HTTPRequest implementation,
 	return exception;
 }
 
-inline WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName)
+WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName)
 {
 	WebFrameworkException exception = NULL;
 
@@ -589,7 +592,7 @@ inline WebFrameworkException unregisterDynamicFunction(HTTPRequest implementatio
 	return exception;
 }
 
-inline WebFrameworkException isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
+WebFrameworkException isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -600,7 +603,7 @@ inline WebFrameworkException isDynamicFunctionRegistered(HTTPRequest implementat
 	return exception;
 }
 
-inline WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser)
+WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser)
 {
 	WebFrameworkException exception = NULL;
 
@@ -611,7 +614,7 @@ inline WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSON
 	return exception;
 }
 
-inline WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk** result, size_t* size)
+WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -645,7 +648,7 @@ inline WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk
 	return exception;
 }
 
-inline WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const char** rawRequest)
+WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const char** rawRequest)
 {
 	WebFrameworkException exception = NULL;
 
@@ -656,7 +659,7 @@ inline WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const
 	return exception;
 }
 
-inline WebFrameworkException getClientIpV4(HTTPRequest implementation, WebFrameworkString* ip)
+WebFrameworkException getClientIpV4(HTTPRequest implementation, WebFrameworkString* ip)
 {
 	WebFrameworkException exception = NULL;
 
@@ -667,7 +670,7 @@ inline WebFrameworkException getClientIpV4(HTTPRequest implementation, WebFramew
 	return exception;
 }
 
-inline WebFrameworkException getServerIpV4(HTTPRequest implementation, WebFrameworkString* ip)
+WebFrameworkException getServerIpV4(HTTPRequest implementation, WebFrameworkString* ip)
 {
 	WebFrameworkException exception = NULL;
 
@@ -678,7 +681,7 @@ inline WebFrameworkException getServerIpV4(HTTPRequest implementation, WebFramew
 	return exception;
 }
 
-inline WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port)
+WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port)
 {
 	WebFrameworkException exception = NULL;
 
@@ -689,7 +692,7 @@ inline WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t*
 	return exception;
 }
 
-inline WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port)
+WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port)
 {
 	WebFrameworkException exception = NULL;
 
@@ -700,7 +703,7 @@ inline WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t*
 	return exception;
 }
 
-inline WebFrameworkException getOrCreateDatabaseHTTPRequest(HTTPRequest implementation, const char* databaseName, Database* result)
+WebFrameworkException getOrCreateDatabaseHTTPRequest(HTTPRequest implementation, const char* databaseName, Database* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -711,7 +714,7 @@ inline WebFrameworkException getOrCreateDatabaseHTTPRequest(HTTPRequest implemen
 	return exception;
 }
 
-inline WebFrameworkException getDatabaseHTTPRequest(HTTPRequest implementation, const char* databaseName, Database* result)
+WebFrameworkException getDatabaseHTTPRequest(HTTPRequest implementation, const char* databaseName, Database* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -722,7 +725,7 @@ inline WebFrameworkException getDatabaseHTTPRequest(HTTPRequest implementation, 
 	return exception;
 }
 
-inline WebFrameworkException getOrCreateTableHTTPRequest(HTTPRequest implementation, const char* databaseName, const char* tableName, const char* createTableQuery, Table* result)
+WebFrameworkException getOrCreateTableHTTPRequest(HTTPRequest implementation, const char* databaseName, const char* tableName, const char* createTableQuery, Table* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -733,7 +736,7 @@ inline WebFrameworkException getOrCreateTableHTTPRequest(HTTPRequest implementat
 	return exception;
 }
 
-inline WebFrameworkException getTableHTTPRequest(HTTPRequest implementation, const char* databaseName, const char* tableName, Table* result)
+WebFrameworkException getTableHTTPRequest(HTTPRequest implementation, const char* databaseName, const char* tableName, Table* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -744,7 +747,7 @@ inline WebFrameworkException getTableHTTPRequest(HTTPRequest implementation, con
 	return exception;
 }
 
-inline WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const char* routeParameterName, int64_t* result)
+WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const char* routeParameterName, int64_t* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -755,7 +758,7 @@ inline WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation
 	return exception;
 }
 
-inline WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation, const char* routeParameterName, double* result)
+WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation, const char* routeParameterName, double* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -766,7 +769,7 @@ inline WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation,
 	return exception;
 }
 
-inline WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const char* routeParameterName, const char** result)
+WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const char* routeParameterName, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -777,7 +780,7 @@ inline WebFrameworkException getRouteStringParameter(HTTPRequest implementation,
 	return exception;
 }
 
-inline WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data), void* data)
+WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data), void* data)
 {
 	WebFrameworkException exception = NULL;
 
@@ -788,7 +791,7 @@ inline WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse
 	return exception;
 }
 
-inline WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data)
+WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data)
 {
 	WebFrameworkException exception = NULL;
 
@@ -799,7 +802,7 @@ inline WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResp
 	return exception;
 }
 
-inline WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* errorMessage, ResponseCodes responseCode, const char* logCategory, size_t exceptionHash)
+WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* errorMessage, ResponseCodes responseCode, const char* logCategory, size_t exceptionHash)
 {
 	WebFrameworkException exception = NULL;
 
@@ -809,3 +812,4 @@ inline WebFrameworkException throwWebFrameworkException(HTTPRequest implementati
 
 	return exception;
 }
+#endif

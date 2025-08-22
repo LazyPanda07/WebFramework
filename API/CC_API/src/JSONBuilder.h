@@ -24,7 +24,10 @@ WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, const ch
 
 WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONArray* array);
 
-inline WebFrameworkException createJSONBuilder(JSONBuilder* builder)
+#ifndef __WEB_FRAMEWORK_JSON_BUILDER_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_JSON_BUILDER_IMPLEMENTATION__
+
+WebFrameworkException createJSONBuilder(JSONBuilder* builder)
 {
 	WebFrameworkException exception = NULL;
 
@@ -35,7 +38,7 @@ inline WebFrameworkException createJSONBuilder(JSONBuilder* builder)
 	return exception;
 }
 
-inline WebFrameworkException copyJSONBuilder(JSONBuilder* builder, JSONBuilder other)
+WebFrameworkException copyJSONBuilder(JSONBuilder* builder, JSONBuilder other)
 {
 	WebFrameworkException exception = NULL;
 
@@ -46,7 +49,7 @@ inline WebFrameworkException copyJSONBuilder(JSONBuilder* builder, JSONBuilder o
 	return exception;
 }
 
-inline WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFrameworkString* result)
+WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFrameworkString* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -57,7 +60,7 @@ inline WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFra
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderObject(JSONBuilder implementation, const char* key, JSONObject* object)
+WebFrameworkException appendJSONBuilderObject(JSONBuilder implementation, const char* key, JSONObject* object)
 {
 	WebFrameworkException exception = NULL;
 
@@ -68,7 +71,7 @@ inline WebFrameworkException appendJSONBuilderObject(JSONBuilder implementation,
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderString(JSONBuilder implementation, const char* key, const char* value)
+WebFrameworkException appendJSONBuilderString(JSONBuilder implementation, const char* key, const char* value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -79,7 +82,7 @@ inline WebFrameworkException appendJSONBuilderString(JSONBuilder implementation,
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderInteger(JSONBuilder implementation, const char* key, int64_t value)
+WebFrameworkException appendJSONBuilderInteger(JSONBuilder implementation, const char* key, int64_t value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -90,7 +93,7 @@ inline WebFrameworkException appendJSONBuilderInteger(JSONBuilder implementation
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderUnsignedInteger(JSONBuilder implementation, const char* key, uint64_t value)
+WebFrameworkException appendJSONBuilderUnsignedInteger(JSONBuilder implementation, const char* key, uint64_t value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -101,7 +104,7 @@ inline WebFrameworkException appendJSONBuilderUnsignedInteger(JSONBuilder implem
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderDouble(JSONBuilder implementation, const char* key, double value)
+WebFrameworkException appendJSONBuilderDouble(JSONBuilder implementation, const char* key, double value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -112,7 +115,7 @@ inline WebFrameworkException appendJSONBuilderDouble(JSONBuilder implementation,
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderBoolean(JSONBuilder implementation, const char* key, bool value)
+WebFrameworkException appendJSONBuilderBoolean(JSONBuilder implementation, const char* key, bool value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -123,7 +126,7 @@ inline WebFrameworkException appendJSONBuilderBoolean(JSONBuilder implementation
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, const char* key)
+WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, const char* key)
 {
 	WebFrameworkException exception = NULL;
 
@@ -134,7 +137,7 @@ inline WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, c
 	return exception;
 }
 
-inline WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONArray* array)
+WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONArray* array)
 {
 	WebFrameworkException exception = NULL;
 	void* buffer = malloc(array->size * sizeof(void*));
@@ -153,3 +156,4 @@ inline WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, 
 
 	return exception;
 }
+#endif

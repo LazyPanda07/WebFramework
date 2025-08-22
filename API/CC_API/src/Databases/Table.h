@@ -10,7 +10,10 @@ WebFrameworkException deleteSQLResult(Table implementation, SQLResult result);
 
 WebFrameworkException getTableName(Table implementation, const char** result);
 
-inline WebFrameworkException executeQuery(Table implementation, const char* query, const SQLValue* values, size_t size, SQLResult* result)
+#ifndef __WEB_FRAMEWORK_TABLE_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_TABLE_IMPLEMENTATION__
+
+WebFrameworkException executeQuery(Table implementation, const char* query, const SQLValue* values, size_t size, SQLResult* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -21,7 +24,7 @@ inline WebFrameworkException executeQuery(Table implementation, const char* quer
 	return exception;
 }
 
-inline WebFrameworkException deleteSQLResult(Table implementation, SQLResult result)
+WebFrameworkException deleteSQLResult(Table implementation, SQLResult result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -32,7 +35,7 @@ inline WebFrameworkException deleteSQLResult(Table implementation, SQLResult res
 	return exception;
 }
 
-inline WebFrameworkException getTableName(Table implementation, const char** result)
+WebFrameworkException getTableName(Table implementation, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -42,3 +45,4 @@ inline WebFrameworkException getTableName(Table implementation, const char** res
 
 	return exception;
 }
+#endif

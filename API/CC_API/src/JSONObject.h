@@ -61,7 +61,10 @@ WebFrameworkException setJSONObjectArray(JSONObject* jsonObject, const char* key
 
 void deleteJSONObject(JSONObject* jsonObject);
 
-inline size_t __getIndex(JSONArray* array)
+#ifndef __WEB_FRAMEWORK_JSON_OBJECT_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_JSON_OBJECT_IMPLEMENTATION__
+
+size_t __getIndex(JSONArray* array)
 {
 	if (array->size == array->capacity)
 	{
@@ -81,7 +84,7 @@ inline size_t __getIndex(JSONArray* array)
 	return array->size++;
 }
 
-inline void __appendJSONArrayObject(JSONArray* array, void* value)
+void __appendJSONArrayObject(JSONArray* array, void* value)
 {
 	size_t index = __getIndex(array);
 
@@ -89,7 +92,7 @@ inline void __appendJSONArrayObject(JSONArray* array, void* value)
 	array->data[index].weak = true;
 }
 
-inline JSONArray createJSONArray(size_t capacity)
+JSONArray createJSONArray(size_t capacity)
 {
 	JSONArray result =
 	{
@@ -106,7 +109,7 @@ inline JSONArray createJSONArray(size_t capacity)
 	return result;
 }
 
-inline WebFrameworkException appendJSONArrayObject(JSONArray* array, JSONObject* value)
+WebFrameworkException appendJSONArrayObject(JSONArray* array, JSONObject* value)
 {
 	JSONObject object;
 	WebFrameworkException exception = createJSONObject(&object);
@@ -128,7 +131,7 @@ inline WebFrameworkException appendJSONArrayObject(JSONArray* array, JSONObject*
 	return exception;
 }
 
-inline WebFrameworkException appendJSONArrayString(JSONArray* array, const char* value)
+WebFrameworkException appendJSONArrayString(JSONArray* array, const char* value)
 {
 	JSONObject object;
 	WebFrameworkException exception = createJSONObject(&object);
@@ -150,7 +153,7 @@ inline WebFrameworkException appendJSONArrayString(JSONArray* array, const char*
 	return exception;
 }
 
-inline WebFrameworkException appendJSONArrayInteger(JSONArray* array, int64_t value)
+WebFrameworkException appendJSONArrayInteger(JSONArray* array, int64_t value)
 {
 	JSONObject object;
 	WebFrameworkException exception = createJSONObject(&object);
@@ -172,7 +175,7 @@ inline WebFrameworkException appendJSONArrayInteger(JSONArray* array, int64_t va
 	return exception;
 }
 
-inline WebFrameworkException appendJSONArrayUnsignedInteger(JSONArray* array, uint64_t value)
+WebFrameworkException appendJSONArrayUnsignedInteger(JSONArray* array, uint64_t value)
 {
 	JSONObject object;
 	WebFrameworkException exception = createJSONObject(&object);
@@ -194,7 +197,7 @@ inline WebFrameworkException appendJSONArrayUnsignedInteger(JSONArray* array, ui
 	return exception;
 }
 
-inline WebFrameworkException appendJSONArrayDouble(JSONArray* array, double value)
+WebFrameworkException appendJSONArrayDouble(JSONArray* array, double value)
 {
 	JSONObject object;
 	WebFrameworkException exception = createJSONObject(&object);
@@ -216,7 +219,7 @@ inline WebFrameworkException appendJSONArrayDouble(JSONArray* array, double valu
 	return exception;
 }
 
-inline WebFrameworkException appendJSONArrayBoolean(JSONArray* array, bool value)
+WebFrameworkException appendJSONArrayBoolean(JSONArray* array, bool value)
 {
 	JSONObject object;
 	WebFrameworkException exception = createJSONObject(&object);
@@ -238,7 +241,7 @@ inline WebFrameworkException appendJSONArrayBoolean(JSONArray* array, bool value
 	return exception;
 }
 
-inline WebFrameworkException appendJSONArrayNull(JSONArray* array)
+WebFrameworkException appendJSONArrayNull(JSONArray* array)
 {
 	JSONObject object;
 	WebFrameworkException exception = createJSONObject(&object);
@@ -260,7 +263,7 @@ inline WebFrameworkException appendJSONArrayNull(JSONArray* array)
 	return exception;
 }
 
-inline WebFrameworkException appendJSONArrayArray(JSONArray* array, const JSONArray* objects)
+WebFrameworkException appendJSONArrayArray(JSONArray* array, const JSONArray* objects)
 {
 	WebFrameworkException exception = NULL;
 
@@ -277,7 +280,7 @@ inline WebFrameworkException appendJSONArrayArray(JSONArray* array, const JSONAr
 	return exception;
 }
 
-inline JSONArray deleteJSONArray(JSONArray* array)
+JSONArray deleteJSONArray(JSONArray* array)
 {
 	for (size_t i = 0; i < array->size; i++)
 	{
@@ -289,7 +292,7 @@ inline JSONArray deleteJSONArray(JSONArray* array)
 	array->size = 0;
 }
 
-inline WebFrameworkException createJSONObject(JSONObject* jsonObject)
+WebFrameworkException createJSONObject(JSONObject* jsonObject)
 {
 	WebFrameworkException exception = NULL;
 
@@ -301,7 +304,7 @@ inline WebFrameworkException createJSONObject(JSONObject* jsonObject)
 	return exception;
 }
 
-inline WebFrameworkException copyJSONObject(JSONObject* jsonObject, const JSONObject* other)
+WebFrameworkException copyJSONObject(JSONObject* jsonObject, const JSONObject* other)
 {
 	WebFrameworkException exception = NULL;
 
@@ -313,7 +316,7 @@ inline WebFrameworkException copyJSONObject(JSONObject* jsonObject, const JSONOb
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectObject(JSONObject* jsonObject, const char* key, JSONObject* object)
+WebFrameworkException setJSONObjectObject(JSONObject* jsonObject, const char* key, JSONObject* object)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -325,7 +328,7 @@ inline WebFrameworkException setJSONObjectObject(JSONObject* jsonObject, const c
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectString(JSONObject* jsonObject, const char* key, const char* value)
+WebFrameworkException setJSONObjectString(JSONObject* jsonObject, const char* key, const char* value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -337,7 +340,7 @@ inline WebFrameworkException setJSONObjectString(JSONObject* jsonObject, const c
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectInteger(JSONObject* jsonObject, const char* key, int64_t value)
+WebFrameworkException setJSONObjectInteger(JSONObject* jsonObject, const char* key, int64_t value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -349,7 +352,7 @@ inline WebFrameworkException setJSONObjectInteger(JSONObject* jsonObject, const 
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectUnsignedInteger(JSONObject* jsonObject, const char* key, uint64_t value)
+WebFrameworkException setJSONObjectUnsignedInteger(JSONObject* jsonObject, const char* key, uint64_t value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -361,7 +364,7 @@ inline WebFrameworkException setJSONObjectUnsignedInteger(JSONObject* jsonObject
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectDouble(JSONObject* jsonObject, const char* key, double value)
+WebFrameworkException setJSONObjectDouble(JSONObject* jsonObject, const char* key, double value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -373,7 +376,7 @@ inline WebFrameworkException setJSONObjectDouble(JSONObject* jsonObject, const c
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectBoolean(JSONObject* jsonObject, const char* key, bool value)
+WebFrameworkException setJSONObjectBoolean(JSONObject* jsonObject, const char* key, bool value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -385,7 +388,7 @@ inline WebFrameworkException setJSONObjectBoolean(JSONObject* jsonObject, const 
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectNull(JSONObject* jsonObject, const char* key)
+WebFrameworkException setJSONObjectNull(JSONObject* jsonObject, const char* key)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -397,7 +400,7 @@ inline WebFrameworkException setJSONObjectNull(JSONObject* jsonObject, const cha
 	return exception;
 }
 
-inline WebFrameworkException setJSONObjectArray(JSONObject* jsonObject, const char* key, const JSONArray* array)
+WebFrameworkException setJSONObjectArray(JSONObject* jsonObject, const char* key, const JSONArray* array)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -418,7 +421,7 @@ inline WebFrameworkException setJSONObjectArray(JSONObject* jsonObject, const ch
 	return exception;
 }
 
-inline void deleteJSONObject(JSONObject* jsonObject)
+void deleteJSONObject(JSONObject* jsonObject)
 {
 	typedef void* (*deleteWebFrameworkJSONObject)(void* implementation);
 
@@ -429,3 +432,4 @@ inline void deleteJSONObject(JSONObject* jsonObject)
 		jsonObject->implementation = NULL;
 	}
 }
+#endif

@@ -9,7 +9,10 @@
  */
 const char* getErrorMessage(WebFrameworkException exception);
 
-inline const char* getErrorMessage(WebFrameworkException exception)
+#ifndef __WEB_FRAMEWORK_WEB_FRAMEWORK_EXCEPTION_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_WEB_FRAMEWORK_EXCEPTION_IMPLEMENTATION__
+
+const char* getErrorMessage(WebFrameworkException exception)
 {
     if (exception)
     {
@@ -18,3 +21,4 @@ inline const char* getErrorMessage(WebFrameworkException exception)
 
     return NULL;
 }
+#endif

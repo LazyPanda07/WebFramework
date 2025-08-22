@@ -60,7 +60,10 @@ WebFrameworkException isServerRunning(WebFramework implementation, bool* result)
  */
 const char* getWebFrameworkVersion();
 
-inline WebFrameworkException createWebFrameworkFromPath(const char* configPath, WebFramework* server)
+#ifndef __WEB_FRAMEWORK_WEB_FRAMEWORK_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_WEB_FRAMEWORK_IMPLEMENTATION__
+
+WebFrameworkException createWebFrameworkFromPath(const char* configPath, WebFramework* server)
 {
     WebFrameworkException exception = NULL;
 
@@ -71,7 +74,7 @@ inline WebFrameworkException createWebFrameworkFromPath(const char* configPath, 
     return exception;
 }
 
-inline WebFrameworkException createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, WebFramework* server)
+WebFrameworkException createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, WebFramework* server)
 {
     WebFrameworkException exception = NULL;
 
@@ -82,7 +85,7 @@ inline WebFrameworkException createWebFrameworkFromString(const char* serverConf
     return exception;
 }
 
-inline WebFrameworkException createWebFrameworkFromConfig(Config config, WebFramework* server)
+WebFrameworkException createWebFrameworkFromConfig(Config config, WebFramework* server)
 {
     WebFrameworkException exception = NULL;
 
@@ -93,7 +96,7 @@ inline WebFrameworkException createWebFrameworkFromConfig(Config config, WebFram
     return exception;
 }
 
-inline WebFrameworkException startWebFrameworkServer(WebFramework implementation, bool wait, void (*onStartServer)())
+WebFrameworkException startWebFrameworkServer(WebFramework implementation, bool wait, void (*onStartServer)())
 {
     WebFrameworkException exception = NULL;
 
@@ -104,7 +107,7 @@ inline WebFrameworkException startWebFrameworkServer(WebFramework implementation
     return exception;
 }
 
-inline WebFrameworkException stopWebFrameworkServer(WebFramework implementation, bool wait)
+WebFrameworkException stopWebFrameworkServer(WebFramework implementation, bool wait)
 {
     WebFrameworkException exception = NULL;
 
@@ -115,7 +118,7 @@ inline WebFrameworkException stopWebFrameworkServer(WebFramework implementation,
     return exception;
 }
 
-inline WebFrameworkException isServerRunning(WebFramework implementation, bool* result)
+WebFrameworkException isServerRunning(WebFramework implementation, bool* result)
 {
     WebFrameworkException exception = NULL;
 
@@ -126,9 +129,10 @@ inline WebFrameworkException isServerRunning(WebFramework implementation, bool* 
     return exception;
 }
 
-inline const char* getWebFrameworkVersion()
+const char* getWebFrameworkVersion()
 {
     typedef const char* (*getWebFrameworkVersion)();
 
     return CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkVersion);
 }
+#endif

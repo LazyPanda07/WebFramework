@@ -97,7 +97,10 @@ WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation);
 
 WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid);
 
-inline WebFrameworkException setBody(HTTPResponse implementation, const char* body)
+#ifndef __WEB_FRAMEWORK_HTTP_RESPONSE__
+#define __WEB_FRAMEWORK_HTTP_RESPONSE__
+
+WebFrameworkException setBody(HTTPResponse implementation, const char* body)
 {
 	WebFrameworkException exception = NULL;
 
@@ -108,7 +111,7 @@ inline WebFrameworkException setBody(HTTPResponse implementation, const char* bo
 	return exception;
 }
 
-inline WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilder body)
+WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilder body)
 {
 	WebFrameworkException exception = NULL;
 
@@ -119,7 +122,7 @@ inline WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilde
 	return exception;
 }
 
-inline WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* version)
+WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* version)
 {
 	WebFrameworkException exception = NULL;
 
@@ -130,7 +133,7 @@ inline WebFrameworkException setHTTPVersion(HTTPResponse implementation, const c
 	return exception;
 }
 
-inline WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseCodes responseCode)
+WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseCodes responseCode)
 {
 	WebFrameworkException exception = NULL;
 
@@ -141,7 +144,7 @@ inline WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, Re
 	return exception;
 }
 
-inline WebFrameworkException addHTTPResponseHeader(HTTPResponse implementation, const char* name, const char* value)
+WebFrameworkException addHTTPResponseHeader(HTTPResponse implementation, const char* name, const char* value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -152,7 +155,7 @@ inline WebFrameworkException addHTTPResponseHeader(HTTPResponse implementation, 
 	return exception;
 }
 
-inline WebFrameworkException appendHTTPResponseBody(HTTPResponse implementation, const char* body)
+WebFrameworkException appendHTTPResponseBody(HTTPResponse implementation, const char* body)
 {
 	WebFrameworkException exception = NULL;
 
@@ -163,7 +166,7 @@ inline WebFrameworkException appendHTTPResponseBody(HTTPResponse implementation,
 	return exception;
 }
 
-inline WebFrameworkException addHTTPResponseCookie(HTTPResponse implementation, const char* name, const char* value)
+WebFrameworkException addHTTPResponseCookie(HTTPResponse implementation, const char* name, const char* value)
 {
 	WebFrameworkException exception = NULL;
 
@@ -174,7 +177,7 @@ inline WebFrameworkException addHTTPResponseCookie(HTTPResponse implementation, 
 	return exception;
 }
 
-inline WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation)
+WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation)
 {
 	WebFrameworkException exception = NULL;
 
@@ -185,7 +188,7 @@ inline WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation)
 	return exception;
 }
 
-inline WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid)
+WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid)
 {
 	WebFrameworkException exception = NULL;
 
@@ -195,3 +198,4 @@ inline WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation,
 
 	return exception;
 }
+#endif

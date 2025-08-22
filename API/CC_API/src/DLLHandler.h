@@ -81,7 +81,10 @@ const char* getDataFromString(WebFrameworkString string);
 
 size_t findLastChar(char* ptr, char c);
 
-inline void initializeWebFramework(const char* pathToDLL)
+#ifndef __WEB_FRAMEWORK_DLL_HANDLER_IMPLEMENTATION__
+#define __WEB_FRAMEWORK_DLL_HANDLER_IMPLEMENTATION__
+
+void initializeWebFramework(const char* pathToDLL)
 {
 	if (pathToDLL == NULL || !strcmp(pathToDLL, "") || !strcmp(pathToDLL, "WebFramework") ||
 #ifdef __LINUX__
@@ -149,7 +152,7 @@ inline void initializeWebFramework(const char* pathToDLL)
 #undef MAX_PATH_SIZE
 }
 
-inline HMODULE getInstance(const char* pathToDLL)
+HMODULE getInstance(const char* pathToDLL)
 {
 	static HMODULE instance = NULL;
 
@@ -184,7 +187,7 @@ inline HMODULE getInstance(const char* pathToDLL)
 	return instance;
 }
 
-inline void* findFunction(const char* name)
+void* findFunction(const char* name)
 {
 	HMODULE instance = getInstance(NULL);
 
@@ -195,56 +198,56 @@ inline void* findFunction(const char* name)
 #endif
 }
 
-inline void deleteWebFrameworkString(WebFrameworkString string)
+void deleteWebFrameworkString(WebFrameworkString string)
 {
 	typedef void (*deleteWebFrameworkString)(void* string);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, string);
 }
 
-inline void deleteWebFrameworkConfig(Config config)
+void deleteWebFrameworkConfig(Config config)
 {
 	typedef void (*deleteWebFrameworkConfig)(void* config);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkConfig, config);
 }
 
-inline void deleteWebFramework(WebFramework webFramework)
+void deleteWebFramework(WebFramework webFramework)
 {
 	typedef void (*deleteWebFramework)(void* webFramework);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, webFramework);
 }
 
-inline void deleteWebFrameworkException(WebFrameworkException exception)
+void deleteWebFrameworkException(WebFrameworkException exception)
 {
 	typedef void (*deleteWebFrameworkException)(void* exception);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
 }
 
-inline void deleteWebFrameworkJSONBuider(JSONBuilder builder)
+void deleteWebFrameworkJSONBuider(JSONBuilder builder)
 {
 	typedef void (*deleteWebFrameworkJSONBuider)(void* builder);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuider, builder);
 }
 
-inline void deleteWebFrameworkJSONParser(JSONParser parser)
+void deleteWebFrameworkJSONParser(JSONParser parser)
 {
 	typedef void (*deleteWebFrameworkJSONParser)(void* parser);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONParser, parser);
 }
 
-inline const char* getDataFromString(WebFrameworkString string)
+const char* getDataFromString(WebFrameworkString string)
 {
 	typedef const char* (*getDataFromString)(void* implementation);
 
 	return CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, string);
 }
 
-inline size_t findLastChar(char* ptr, char c)
+size_t findLastChar(char* ptr, char c)
 {
 	size_t result = -1;
 
@@ -263,3 +266,4 @@ inline size_t findLastChar(char* ptr, char c)
 
 	return result;
 }
+#endif
