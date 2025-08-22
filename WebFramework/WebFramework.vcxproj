@@ -154,6 +154,7 @@
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
+    <ClCompile Include="src\Utility\SegfaultHandler.cpp" />
     <ClCompile Include="src\Web\HTTPRequestImplementation.cpp" />
     <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="src\Utility\DynamicLibraries.h" />
     <ClInclude Include="src\Utility\LargeFileHandlers\MultithreadedHandler.h" />
     <ClInclude Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.h" />
+    <ClInclude Include="src\Utility\SegfaultHandler.h" />
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
     <ClInclude Include="src\Utility\Sources.h" />

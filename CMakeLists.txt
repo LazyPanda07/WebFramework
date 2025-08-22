@@ -21,11 +21,18 @@ set(
 	sqlite3
 	ssl
 	crypto
+	CACHE INTERNAL ""
 )
+set(ADDITIONAL_LIBS "" CACHE INTERNAL "")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
+option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
 project(WebFramework VERSION 3.0.12)
+
+if (${WITH_STACKTRACE})
+	add_definitions(-D__WITH_STACKTRACE__)
+endif()
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
@@ -41,7 +48,7 @@ if (UNIX)
 else ()
 	add_definitions(-DNOMINMAX)
 
-	set(LIBS ${LIBS} crypt32)
+	list(APPEND LIBS crypt32)
 endif ()
 
 add_library(
@@ -66,6 +73,7 @@ add_library(
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/BaseConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
+	WebFramework/src/Utility/SegfaultHandler.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
 	WebFramework/src/Web/Servers/BaseWebServer.cpp
@@ -97,8 +105,24 @@ if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
 endif()
 
 if (CMAKE_GENERATOR MATCHES "Visual Studio")
-	target_compile_options(${PROJECT_NAME} PRIVATE "/MP")
+	target_compile_options(${PROJECT_NAME} PUBLIC "/MP")
 endif()
+
+add_subdirectory(3rdparty)
+add_subdirectory(WebFrameworkCore)
+add_subdirectory(WebFrameworkExecutors)
+add_subdirectory(BaseTCPServer)
+add_subdirectory(FileManager)
+add_subdirectory(INIParser)
+add_subdirectory(Localization)
+add_subdirectory(Log)
+add_subdirectory(Networks)
+add_subdirectory(SHA256)
+add_subdirectory(ThreadPool)
+add_subdirectory(UtilityLibrary)
+add_subdirectory(Databases)
+
+add_subdirectory(API)
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
@@ -119,21 +143,6 @@ target_include_directories(
 	UtilityLibrary/include/
 )
 
-add_subdirectory(WebFrameworkCore)
-add_subdirectory(WebFrameworkExecutors)
-add_subdirectory(BaseTCPServer)
-add_subdirectory(FileManager)
-add_subdirectory(INIParser)
-add_subdirectory(Localization)
-add_subdirectory(Log)
-add_subdirectory(Networks)
-add_subdirectory(SHA256)
-add_subdirectory(ThreadPool)
-add_subdirectory(UtilityLibrary)
-add_subdirectory(Databases)
-
-add_subdirectory(API)
-
 target_link_directories(
 	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
@@ -142,6 +151,7 @@ target_link_directories(
 target_link_libraries(
 	${PROJECT_NAME}
 	${LIBS}
+	${ADDITIONAL_LIBS}
 )
 
 install(

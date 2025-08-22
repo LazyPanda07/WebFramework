@@ -6,6 +6,10 @@
 #include "ThreadPool.h"
 #include "Config.h"
 
+#ifdef __WITH_STACKTRACE__
+#include "Utility/SegfaultHandler.h"
+#endif
+
 namespace framework
 {
 	/// <summary>
@@ -30,6 +34,9 @@ namespace framework
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;
 		std::exception** serverException;
+#ifdef __WITH_STACKTRACE__
+		utility::SegfaultHandler segfaultHandler;
+#endif
 
 	private:
 		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
