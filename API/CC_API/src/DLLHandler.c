@@ -36,19 +36,20 @@ void initializeWebFramework(const char* pathToDLL)
 #endif
 
 #ifdef __LINUX__
-	size_t index = findLastChar(fullPath, '/');
-	size_t directorySize = index;
-	size_t fileNameSize = strlen(fullPath + index + 1);
-	char* directory = malloc(directorySize);
-	char* fileName = malloc(fileNameSize);
 	prefix = "lib";
 	suffix = ".so";
+
+	size_t index = findLastChar(fullPath, '/');
+	size_t directorySize = index;
+	size_t fileNameSize = strlen(fullPath + index + 1) - strlen(prefix) - strlen(suffix);
+	char* directory = malloc(directorySize);
+	char* fileName = malloc(fileNameSize);
 
 	directory[directorySize] = '\0';
 	fileName[fileNameSize] = '\0';
 
 	memcpy(directory, fullPath, directorySize);
-	memcpy(fileName, fullPath + index + 1 + strlen(prefix), fileNameSize - strlen(suffix));
+	memcpy(fileName, fullPath + index + 1 + strlen(prefix), fileNameSize);
 
 	sprintf(realPath, "%s/%s%s%s", directory, prefix, fileName, suffix);
 

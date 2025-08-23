@@ -43,7 +43,6 @@ namespace framework
 		this->body = body;
 	}
 
-
 	interfaces::IHTTPResponse* HTTPResponseImplementation::appendBody(const char* body)
 	{
 		this->body += body;
