@@ -63,6 +63,12 @@
     <ClCompile Include="src\JSONParser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utility\WebFrameworkUtility.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\WebFrameworkLocalization.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\import.h">
@@ -105,6 +111,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Databases\SQLResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\WebFrameworkUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\WebFrameworkLocalization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

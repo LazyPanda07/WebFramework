@@ -17,6 +17,8 @@ add_library(
 	src/Databases/SQLResult.c
 	src/Databases/SQLValue.c
 	src/Databases/Table.c
+	src/Utility/WebFrameworkUtility.c
+	src/Utility/WebFrameworkLocalization.c
 	src/Config.c
 	src/DLLHandler.c
 	src/HTTPRequest.c

@@ -100,6 +100,8 @@
     <ClCompile Include="src\JSONBuilder.c" />
     <ClCompile Include="src\JSONObject.c" />
     <ClCompile Include="src\JSONParser.c" />
+    <ClCompile Include="src\Utility\WebFrameworkLocalization.c" />
+    <ClCompile Include="src\Utility\WebFrameworkUtility.c" />
     <ClCompile Include="src\WebFramework.c" />
     <ClCompile Include="src\WebFrameworkException.c" />
   </ItemGroup>
@@ -116,6 +118,8 @@
     <ClInclude Include="src\JSONBuilder.h" />
     <ClInclude Include="src\JSONObject.h" />
     <ClInclude Include="src\JSONParser.h" />
+    <ClInclude Include="src\Utility\WebFrameworkLocalization.h" />
+    <ClInclude Include="src\Utility\WebFrameworkUtility.h" />
     <ClInclude Include="src\WebFramework.h" />
     <ClInclude Include="src\WebFrameworkException.h" />
   </ItemGroup>
