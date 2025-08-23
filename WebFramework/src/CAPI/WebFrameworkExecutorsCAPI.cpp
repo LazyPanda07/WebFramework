@@ -31,7 +31,11 @@ void setHTTPResponseJSONBody(HTTPResponseObject response, JSONBuilder builder, E
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->setBody(static_cast<json::JSONBuilder*>(builder)->build().data());
+		framework::interfaces::IHTTPResponse* implementation = static_cast<framework::interfaces::IHTTPResponse*>(response);
+
+		implementation->addHeader("Content-Type", "application/json");
+
+		implementation->setBody(static_cast<json::JSONBuilder*>(builder)->build().data());
 	}
 	catch (const std::exception& e)
 	{

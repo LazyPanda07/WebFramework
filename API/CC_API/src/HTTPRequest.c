@@ -451,9 +451,9 @@ WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser*
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*removeHTTPAttribute)(void* implementation, void** exception);
+	typedef void* (*getHTTPRequestJSON)(void* implementation, void** exception);
 
-	*parser = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeHTTPAttribute, &exception);
+	*parser = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPRequestJSON, &exception);
 
 	return exception;
 }
