@@ -44,11 +44,11 @@ void initializeWebFramework(const char* pathToDLL)
 	prefix = "lib";
 	suffix = ".so";
 
-	directory[directorySize] = 0;
-	fileName[fileNameSize] = 0;
+	directory[directorySize] = '\0';
+	fileName[fileNameSize] = '\0';
 
 	memcpy(directory, fullPath, directorySize);
-	memcpy(fileName, fullPath + index + 1, fileNameSize);
+	memcpy(fileName, fullPath + index + 1 + strlen(prefix), fileNameSize - strlen(suffix));
 
 	sprintf(realPath, "%s/%s%s%s", directory, prefix, fileName, suffix);
 
