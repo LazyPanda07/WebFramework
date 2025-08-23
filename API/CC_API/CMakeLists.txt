@@ -12,7 +12,20 @@ project(CC_API)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/dummy.c
+	src/APIExecutors/BaseExecutor.c
+	src/Databases/Database.c
+	src/Databases/SQLResult.c
+	src/Databases/SQLValue.c
+	src/Databases/Table.c
+	src/Config.c
+	src/DLLHandler.c
+	src/HTTPRequest.c
+	src/HTTPResponse.c
+	src/JSONBuilder.c
+	src/JSONObject.c
+	src/JSONParser.c
+	src/WebFramework.c
+	src/WebFrameworkException.c
 )
 
 install(

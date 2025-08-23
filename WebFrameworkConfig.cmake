@@ -23,6 +23,8 @@ if (${WEB_FRAMEWORK_CC_API})
         set(CMAKE_C_STANDARD 11)
     endif()
 
+    add_library(CC_API)
+
     if (NOT PROJECT_NAME)
         message(STATUS "WebFramework CC API")
     else()

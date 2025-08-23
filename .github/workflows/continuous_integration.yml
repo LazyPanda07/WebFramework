@@ -33,7 +33,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake -DWITH_STACKTRACE=ON -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
           cmake --build  . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts

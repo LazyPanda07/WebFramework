@@ -86,8 +86,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\APIExecutors\BaseExecutor.c" />
     <ClCompile Include="src\APIExecutors\BaseExecutor.h" />
+    <ClCompile Include="src\Config.c" />
+    <ClCompile Include="src\Databases\Database.c" />
+    <ClCompile Include="src\Databases\SQLResult.c" />
+    <ClCompile Include="src\Databases\SQLValue.c" />
+    <ClCompile Include="src\Databases\Table.c" />
+    <ClCompile Include="src\DLLHandler.c" />
     <ClCompile Include="src\dummy.c" />
+    <ClCompile Include="src\HTTPRequest.c" />
+    <ClCompile Include="src\HTTPResponse.c" />
+    <ClCompile Include="src\JSONBuilder.c" />
+    <ClCompile Include="src\JSONObject.c" />
+    <ClCompile Include="src\JSONParser.c" />
+    <ClCompile Include="src\WebFramework.c" />
+    <ClCompile Include="src\WebFrameworkException.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Config.h" />
