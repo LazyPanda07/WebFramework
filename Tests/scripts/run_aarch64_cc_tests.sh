@@ -21,6 +21,7 @@ qemu-aarch64 ./CC_LoadBalancerServer load_balancer_config_https.json  --type ser
 qemu-aarch64 ./CC_LoadBalancerServer load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
 sleep 1
 
+qemu-aarch64 ./CC_API_TESTS
 qemu-aarch64 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
 qemu-aarch64 ./LoadBalancerCore --port 9090
 qemu-aarch64 ./LoadBalancerCore --port 9091

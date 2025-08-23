@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-project(CXX_API)
+project(CXX_API_TESTS)
 
 add_executable(
 	${PROJECT_NAME}

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 
 if(UNIX)
 	add_definitions(-D__LINUX__)

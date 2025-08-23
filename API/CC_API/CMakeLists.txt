@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 

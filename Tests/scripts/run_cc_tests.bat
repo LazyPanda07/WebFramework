@@ -17,6 +17,7 @@ start CC_LoadBalancerServer.exe load_balancer_config.json --type server --port 1
 start CC_LoadBalancerServer.exe load_balancer_config_https.json  --type server --port 10002
 start CC_LoadBalancerServer.exe load_balancer_config_https.json --type server --port 10003 --serversHTTPS
 
+CALL CC_API_TESTS.exe
 call Core.exe %WEB_FRAMEWORK_SERVER_CONFIG% || exit 1
 call LoadBalancerCore.exe --port 9090 || exit 1
 call LoadBalancerCore.exe --port 9091 || exit 1
