@@ -2,7 +2,7 @@
 
 DECLARE_DEFAULT_EXECUTOR(UploadChunkedExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
-DECLARE_EXECUTOR_METHOD(UploadChunkedExecutor, DO_POST, request, response)
+DECLARE_EXECUTOR_METHOD(UploadChunkedExecutor, POST_METHOD, request, response)
 {
 	const char* fileName;
 	HTTPChunk* chunks;

@@ -1,11 +1,13 @@
 #include <APIExecutors/BaseExecutor.h>
 
+#include <signal.h>
+
 #define SMALL_SIZE 15
 
 typedef struct
 {
 	char* data;
-	const char* currentChunk;
+	char* currentChunk;
 	size_t offset;
 } TextGenerator;
 
@@ -13,13 +15,32 @@ static const char* generate(void* data)
 {
 	TextGenerator* generator = (TextGenerator*)data;
 
+	free(generator->currentChunk);
+
 	if (generator->offset >= strlen(generator->data))
 	{
 		return "";
 	}
 
-	generator->currentChunk = generator->data + generator->offset;
-	generator->offset += SMALL_SIZE;
+	generator->currentChunk = (char*)calloc(SMALL_SIZE, sizeof(char));
+
+	if (!generator->currentChunk)
+	{
+		raise(SIGSEGV);
+
+		return "";
+	}
+
+	size_t copySize = SMALL_SIZE;
+
+	if (strlen(generator->data) < generator->offset + copySize)
+	{
+		copySize = strlen(generator->data) - generator->offset;
+	}
+
+	memcpy(generator->currentChunk, generator->data + generator->offset, copySize);
+
+	generator->offset += copySize;
 
 	return generator->currentChunk;
 }
