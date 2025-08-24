@@ -469,7 +469,7 @@ jobs:
           cd build/bin
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           ./Server ${{ matrix.config }} & sleep 1
-          ./Core ${{ matrix.config }} --gtest_filter=HelloExecutor.*:Localization.*:ResourceLoading.*:WFDP.*:Chunks.*:ResourceUploading.Chunk
+          ./Core ${{ matrix.config }}
           
 
   # publish:

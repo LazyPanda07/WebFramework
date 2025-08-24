@@ -355,8 +355,6 @@ WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** resu
 	}
 
 	return exception;
-
-	return exception;
 }
 
 WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result)
