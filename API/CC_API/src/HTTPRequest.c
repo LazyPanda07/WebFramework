@@ -646,7 +646,7 @@ WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse re
 	return exception;
 }
 
-WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* errorMessage, ResponseCodes responseCode, const char* logCategory, size_t exceptionHash)
+WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* errorMessage, ResponseCodes_t responseCode, const char* logCategory, size_t exceptionHash)
 {
 	WebFrameworkException exception = NULL;
 

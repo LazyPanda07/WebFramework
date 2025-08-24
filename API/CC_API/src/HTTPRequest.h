@@ -131,4 +131,4 @@ WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse respon
 
 WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data);
 
-WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* exceptionMessage, ResponseCodes responseCode, const char* logCategory, size_t exceptionHash);
+WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* exceptionMessage, ResponseCodes_t responseCode, const char* logCategory, size_t exceptionHash);

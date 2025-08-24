@@ -12,7 +12,6 @@ add_library(
 	src/UploadMultipartExecutor.c
 	src/UploadChunkedExecutor.c
 	src/UploadOctetStreamExecutor.c
-	src/TextGenerator.c
 )
 
 target_include_directories(

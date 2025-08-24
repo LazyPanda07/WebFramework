@@ -33,7 +33,7 @@ WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* ve
 	return exception;
 }
 
-WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseCodes responseCode)
+WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseCodes_t responseCode)
 {
 	WebFrameworkException exception = NULL;
 
