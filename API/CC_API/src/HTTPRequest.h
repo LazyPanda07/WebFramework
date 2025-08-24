@@ -89,15 +89,15 @@ WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* file
 
 WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName);
 
-WebFrameworkException sendDynamicFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName);
+WebFrameworkException sendWFDPFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName);
 
 WebFrameworkException streamFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const char* fileName, size_t chunkSize);
 
-WebFrameworkException registerDynamicFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result));
+WebFrameworkException registerWFDPFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 
-WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName);
+WebFrameworkException unregisterWFDPFunction(HTTPRequest implementation, const char* functionName);
 
-WebFrameworkException isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result);
+WebFrameworkException isWFDPFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result);
 
 WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser);
 

@@ -231,7 +231,7 @@ namespace framework
 	{
 		vector<interfaces::CVariable> temp = HTTPRequestExecutors::convertVariables(variables);
 
-		implementation->sendDynamicFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
+		implementation->sendWFDPFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
 	void HTTPRequestExecutors::streamFile(string_view filePath, HTTPResponseExecutors& response, string_view fileName, size_t chunkSize)
@@ -239,19 +239,19 @@ namespace framework
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
 	}
 
-	void HTTPRequestExecutors::registerDynamicFunction(string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
+	void HTTPRequestExecutors::registerWFDPFunction(string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
-		implementation->registerDynamicFunction(functionName.data(), function, deleter);
+		implementation->registerWFDPFunction(functionName.data(), function, deleter);
 	}
 
-	void HTTPRequestExecutors::unregisterDynamicFunction(string_view functionName)
+	void HTTPRequestExecutors::unregisterWFDPFunction(string_view functionName)
 	{
-		implementation->unregisterDynamicFunction(functionName.data());
+		implementation->unregisterWFDPFunction(functionName.data());
 	}
 
-	bool HTTPRequestExecutors::isDynamicFunctionRegistered(string_view functionName)
+	bool HTTPRequestExecutors::isWFDPFunctionRegistered(string_view functionName)
 	{
-		return implementation->isDynamicFunctionRegistered(functionName.data());
+		return implementation->isWFDPFunctionRegistered(functionName.data());
 	}
 
 	const json::JSONParser& HTTPRequestExecutors::getJSON() const

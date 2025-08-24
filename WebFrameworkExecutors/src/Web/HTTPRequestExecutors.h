@@ -176,16 +176,16 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result));
+		void registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterDynamicFunction(std::string_view functionName);
+		void unregisterWFDPFunction(std::string_view functionName);
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isDynamicFunctionRegistered(std::string_view functionName);
+		bool isWFDPFunctionRegistered(std::string_view functionName);
 
 		/// <summary>
 		/// Getter for JSONParser

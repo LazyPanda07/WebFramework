@@ -392,13 +392,13 @@ WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* fil
 	return exception;
 }
 
-WebFrameworkException sendDynamicFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
+WebFrameworkException sendWFDPFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*sendDynamicFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendWFDPFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendDynamicFile, filePath, response, variables, variablesSize, isBinary, fileName, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendWFDPFile, filePath, response, variables, variablesSize, isBinary, fileName, &exception);
 
 	return exception;
 }
@@ -414,29 +414,29 @@ WebFrameworkException streamFile(HTTPRequest implementation, const char* filePat
 	return exception;
 }
 
-WebFrameworkException registerDynamicFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
+WebFrameworkException registerWFDPFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*registerDynamicFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result), void** exception);
+	typedef void (*registerWFDPFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunction, functionName, function, deleter, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerWFDPFunction, functionName, function, deleter, &exception);
 
 	return exception;
 }
 
-WebFrameworkException unregisterDynamicFunction(HTTPRequest implementation, const char* functionName)
+WebFrameworkException unregisterWFDPFunction(HTTPRequest implementation, const char* functionName)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*unregisterDynamicFunction)(void* implementation, const char* functionName, void** exception);
+	typedef void (*unregisterWFDPFunction)(void* implementation, const char* functionName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterDynamicFunction, functionName, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterWFDPFunction, functionName, &exception);
 
 	return exception;
 }
 
-WebFrameworkException isDynamicFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
+WebFrameworkException isWFDPFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
 {
 	WebFrameworkException exception = NULL;
 

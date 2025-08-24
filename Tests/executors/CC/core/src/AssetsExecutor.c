@@ -7,7 +7,7 @@ DECLARE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR);
 static const char* customFunction(const char** args, size_t agumentsNumber)
 {
 	size_t bufferSize = 1024;
-	const char* buffer = (const char*)calloc(bufferSize, sizeof(char));
+	char* const buffer = (char* const)calloc(bufferSize, sizeof(char));
 
 	if (!buffer)
 	{
@@ -21,7 +21,7 @@ static const char* customFunction(const char** args, size_t agumentsNumber)
 	return buffer;
 }
 
-static void deleter(const char* ptr)
+static void deleter(char* ptr)
 {
 	free(ptr);
 }
@@ -45,7 +45,7 @@ DECLARE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 	{
 		raise(SIGSEGV);
 
-		return "";
+		return;
 	}
 
 	for (size_t i = 0; i < queryParametersSize; i++)
@@ -55,18 +55,18 @@ DECLARE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 	}
 
 	size_t fullNameSize = 1024;
-	const char* fullName = (const char*)calloc(fullNameSize, sizeof(char));
+	char* const fullName = (char* const)calloc(fullNameSize, sizeof(char));
 
 	if (!fullName)
 	{
 		raise(SIGSEGV);
 
-		return "";
+		return;
 	}
 
 	snprintf(fullName, fullNameSize, "%s.%s", fileName, extension);
 
-	sendDynamicFile(request, fullName, response, &variables, queryParametersSize, false, "");
+	sendWFDPFile(request, fullName, response, variables, queryParametersSize, false, "");
 
 	free(variables);
 	free(fullName);
@@ -74,10 +74,10 @@ DECLARE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 DECLARE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
 {
-	registerDynamicFunction(request, "customFunction", customFunction, deleter);
+	registerWFDPFunction(request, "customFunction", customFunction, deleter);
 }
 
 DECLARE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 {
-	unregisterDynamicFunction(request, "customFunction");
+	unregisterWFDPFunction(request, "customFunction");
 }

@@ -249,7 +249,7 @@ namespace framework
 	void HTTPRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		HTTPRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
-			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
+			this->sendWFDPFile(filePath, response, variablesSize, variables, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
@@ -258,7 +258,7 @@ namespace framework
 		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HTTPRequestImplementation::sendWFDPFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, *response, span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
 	}
@@ -338,7 +338,7 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
+	void HTTPRequestImplementation::registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
 		dynamicResources.registerDynamicFunction
 		(
@@ -357,7 +357,7 @@ namespace framework
 
 				if (deleter)
 				{
-					deleter(tempResult);
+					deleter(const_cast<char*>(tempResult));
 				}
 
 				delete[] temp;
@@ -367,12 +367,12 @@ namespace framework
 		);
 	}
 
-	void HTTPRequestImplementation::unregisterDynamicFunction(const char* functionName)
+	void HTTPRequestImplementation::unregisterWFDPFunction(const char* functionName)
 	{
 		dynamicResources.unregisterDynamicFunction(functionName);
 	}
 
-	bool HTTPRequestImplementation::isDynamicFunctionRegistered(const char* functionName)
+	bool HTTPRequestImplementation::isWFDPFunctionRegistered(const char* functionName)
 	{
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}

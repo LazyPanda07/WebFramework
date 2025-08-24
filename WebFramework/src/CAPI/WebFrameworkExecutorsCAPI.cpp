@@ -423,11 +423,11 @@ uint16_t getServerPort(HTTPRequestObject request, Exception* exception)
 	return 0;
 }
 
-void registerDynamicFunction(HTTPRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result), Exception* exception)
+void registerWFDPFunction(HTTPRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->registerDynamicFunction(functionName, function, deleter);
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->registerWFDPFunction(functionName, function, deleter);
 	}
 	catch (const std::exception& e)
 	{
@@ -439,11 +439,11 @@ void registerDynamicFunction(HTTPRequestObject request, const char* functionName
 	}
 }
 
-void unregisterDynamicFunction(HTTPRequestObject request, const char* functionName, Exception* exception)
+void unregisterWFDPFunction(HTTPRequestObject request, const char* functionName, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->unregisterDynamicFunction(functionName);
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->unregisterWFDPFunction(functionName);
 	}
 	catch (const std::exception& e)
 	{
@@ -455,11 +455,11 @@ void unregisterDynamicFunction(HTTPRequestObject request, const char* functionNa
 	}
 }
 
-bool isDynamicFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception)
+bool isWFDPFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->isDynamicFunctionRegistered(functionName);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->isWFDPFunctionRegistered(functionName);
 	}
 	catch (const std::exception& e)
 	{
@@ -629,11 +629,11 @@ void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPRespons
 	}
 }
 
-void sendDynamicFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendWFDPFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendDynamicFile
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendWFDPFile
 		(
 			filePath,
 			static_cast<framework::interfaces::IHTTPResponse*>(response),

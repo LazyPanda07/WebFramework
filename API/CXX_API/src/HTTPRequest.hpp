@@ -198,13 +198,13 @@ namespace framework
 		void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary = true, std::string_view fileName = "");
 
 		/**
-		* Send dynamic file(.wfdp)
+		* Send .wfdp file
 		* @param filePath Path to asset file from assets folder
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
+		void sendWFDPFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
 
 		/**
 		* Send large files
@@ -217,16 +217,16 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result));
+		void registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterDynamicFunction(std::string_view functionName);
+		void unregisterWFDPFunction(std::string_view functionName);
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isDynamicFunctionRegistered(std::string_view functionName);
+		bool isWFDPFunctionRegistered(std::string_view functionName);
 
 		/// <summary>
 		/// Getter for JSONParser
@@ -640,11 +640,11 @@ namespace framework
 		implementation->sendStaticFile(filePath.data(), response.implementation, isBinary, fileName.data());
 	}
 
-	inline void HTTPRequest::sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
+	inline void HTTPRequest::sendWFDPFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
 	{
 		std::vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
 
-		implementation->sendDynamicFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
+		implementation->sendWFDPFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
 	inline void HTTPRequest::streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize)
@@ -652,19 +652,19 @@ namespace framework
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
 	}
 
-	inline void HTTPRequest::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(const char* result))
+	inline void HTTPRequest::registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
-		implementation->registerDynamicFunction(functionName.data(), function, deleter);
+		implementation->registerWFDPFunction(functionName.data(), function, deleter);
 	}
 
-	inline void HTTPRequest::unregisterDynamicFunction(std::string_view functionName)
+	inline void HTTPRequest::unregisterWFDPFunction(std::string_view functionName)
 	{
-		implementation->unregisterDynamicFunction(functionName.data());
+		implementation->unregisterWFDPFunction(functionName.data());
 	}
 
-	inline bool HTTPRequest::isDynamicFunctionRegistered(std::string_view functionName)
+	inline bool HTTPRequest::isWFDPFunctionRegistered(std::string_view functionName)
 	{
-		return implementation->isDynamicFunctionRegistered(functionName.data());
+		return implementation->isWFDPFunctionRegistered(functionName.data());
 	}
 
 	inline const JSONParser& HTTPRequest::getJSON() const
