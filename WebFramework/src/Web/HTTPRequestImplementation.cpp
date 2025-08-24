@@ -402,9 +402,18 @@ namespace framework
 		{
 			const char* data = getChunk(chunkGenerator);
 
-			stream << web::HTTPBuilder::getChunk(data ? data : "");
+			if (data)
+			{
+				stream << web::HTTPBuilder::getChunk(data);
+			}
+			else
+			{
+				stream << web::HTTPBuilder::getChunk("");
 
-			if (stream.eof() || !data)
+				break;
+			}
+
+			if (stream.eof() || string_view(data).empty())
 			{
 				break;
 			}

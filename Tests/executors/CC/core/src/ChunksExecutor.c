@@ -19,7 +19,7 @@ static const char* generate(void* data)
 
 	if (generator->offset >= strlen(generator->data))
 	{
-		return "";
+		return NULL;
 	}
 
 	generator->currentChunk = (char*)calloc(SMALL_SIZE, sizeof(char));
@@ -28,7 +28,7 @@ static const char* generate(void* data)
 	{
 		raise(SIGSEGV);
 
-		return "";
+		return NULL;
 	}
 
 	size_t copySize = SMALL_SIZE;
