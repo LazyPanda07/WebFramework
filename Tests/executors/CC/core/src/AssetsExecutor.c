@@ -54,7 +54,7 @@ DECLARE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 		variables[i].value = queryParameters[i].value;
 	}
 
-	size_t fullNameSize = strlen(fileName) + strlen(extension) + 1;
+	size_t fullNameSize = 1024;
 	const char* fullName = (const char*)calloc(fullNameSize, sizeof(char));
 
 	if (!fullName)
