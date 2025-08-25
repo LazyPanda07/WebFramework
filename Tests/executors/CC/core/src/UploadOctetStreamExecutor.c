@@ -40,7 +40,5 @@ DECLARE_EXECUTOR_METHOD(UploadOctetStreamExecutor, POST_METHOD, request, respons
 
 		setHTTPResponseCode(response, CREATED);
 		setBody(response, "Finish uploading file");
-
-		fclose(fopen("finish_uploading.txt", "w"));
 	}
 }

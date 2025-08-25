@@ -1,8 +1,14 @@
 #include "UploadOctetStreamExecutor.h"
 
+void UploadOctetStreamExecutor::init(const framework::utility::ExecutorSettings& settings)
+{
+	currentSize = 0;
+}
+
 void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	const auto& [data, size, last] = request.getLargeData();
+	int64_t contentLength = stoll(request.getHeaders().at("Content-Length"));
 
 	if (!stream.is_open())
 	{
@@ -11,14 +17,19 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 
 	stream.write(data.data(), data.size());
 
+	currentSize += data.size();
+
+	if (currentSize == contentLength && !last)
+	{
+		std::ofstream("finish_uploading.txt");
+	}
+
 	if (last)
 	{
 		stream.close();
 
 		response.setResponseCode(framework::ResponseCodes::created);
 		response.setBody("Finish uploading file");
-
-		std::ofstream("finish_uploading.txt");
 	}
 }
 

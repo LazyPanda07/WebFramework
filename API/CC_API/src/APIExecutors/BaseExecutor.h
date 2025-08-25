@@ -77,6 +77,11 @@ typedef enum Methods
 
 #define DECLARE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(Executor executor)
 
+#define DEFINE_INITIALIZE_WEB_FRAMEWORK() WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath) \
+{ \
+	initializeWebFramework(webFrameworkSharedLibraryPath); \
+}
+
 WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result);
 
 WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFrameworkString* result);

@@ -72,7 +72,7 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 
 	getDatabaseHTTPRequest(request, "test_database", &database);
 	getTable(database, "test_table", &table);
-	
+
 	createSQLValue(&(values[0]));
 	createSQLValue(&(values[1]));
 
@@ -178,3 +178,5 @@ void callback(const char* columnName, const SQLValue columnValue, size_t index, 
 		appendJSONArrayString(array, result);
 	}
 }
+
+DEFINE_INITIALIZE_WEB_FRAMEWORK();

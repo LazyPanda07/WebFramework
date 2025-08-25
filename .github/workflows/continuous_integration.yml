@@ -468,7 +468,7 @@ jobs:
       run: |
           cd build/bin
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          ./Server ${{ matrix.config }} & sleep 1
+          ./Server ${{ matrix.config }} & ./DefaultHTTPSServer & sleep 1
           ./Core ${{ matrix.config }}
           
 

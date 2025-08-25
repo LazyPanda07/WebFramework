@@ -63,8 +63,3 @@ WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadT
 
 	return exception;
 }
-
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath)
-{
-	initializeWebFramework(webFrameworkSharedLibraryPath);
-}
