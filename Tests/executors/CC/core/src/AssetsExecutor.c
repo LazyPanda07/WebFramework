@@ -4,27 +4,9 @@
 
 DECLARE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR);
 
-static const char* customFunction(const char** args, size_t agumentsNumber)
-{
-	size_t bufferSize = 1024;
-	char* const buffer = (char* const)calloc(bufferSize, sizeof(char));
+static const char* customFunction(const char** args, size_t agumentsNumber);
 
-	if (!buffer)
-	{
-		raise(SIGSEGV);
-
-		return "";
-	}
-
-	snprintf(buffer, bufferSize, "Data: %s %s %s", args[0], args[1], args[2]);
-
-	return buffer;
-}
-
-static void deleter(char* ptr)
-{
-	free(ptr);
-}
+static void deleter(char* ptr);
 
 DECLARE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 {
@@ -80,4 +62,26 @@ DECLARE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
 DECLARE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 {
 	unregisterWFDPFunction(request, "customFunction");
+}
+
+const char* customFunction(const char** args, size_t agumentsNumber)
+{
+	size_t bufferSize = 1024;
+	char* const buffer = (char* const)calloc(bufferSize, sizeof(char));
+
+	if (!buffer)
+	{
+		raise(SIGSEGV);
+
+		return "";
+	}
+
+	snprintf(buffer, bufferSize, "Data: %s %s %s", args[0], args[1], args[2]);
+
+	return buffer;
+}
+
+void deleter(char* ptr)
+{
+	free(ptr);
 }

@@ -7,7 +7,7 @@ DECLARE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 	Multipart* multiparts = NULL;
 	size_t size;
 
-	getMultiparts(CreateTimerQueue, &multiparts, &size);
+	getMultiparts(request, &multiparts, &size);
 
 	for (size_t i = 0; i < size; i++)
 	{

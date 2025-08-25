@@ -1,5 +1,16 @@
 #include "SQLValue.h"
 
+WebFrameworkException createSQLValue(SQLValue* result)
+{
+	WebFrameworkException exception = NULL;
+
+	typedef void* (*createSQLValue)(void** exception);
+
+	*result = CALL_WEB_FRAMEWORK_FUNCTION(createSQLValue, &exception);
+
+	return exception;
+}
+
 WebFrameworkException setSQLValueInt(SQLValue implementation, int64_t value)
 {
 	WebFrameworkException exception = NULL;
@@ -130,4 +141,11 @@ WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueType* res
 	*result = (SQLValueType)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getSQLValueType, &exception);
 
 	return exception;
+}
+
+void deleteWebFrameworkSQLValue(SQLValue implementation)
+{
+	typedef void* (*deleteWebFrameworkSQLValue)(void* implementation);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkSQLValue, implementation);
 }

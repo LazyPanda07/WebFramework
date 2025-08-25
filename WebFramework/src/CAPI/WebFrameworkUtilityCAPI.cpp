@@ -6,6 +6,7 @@
 #include "Utility/JSONSettingsParser.h"
 #include "UUID.h"
 #include "DatabaseInterfaces/IDatabase.h"
+#include "Databases/SQLValueImplementation.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -845,11 +846,29 @@ const char* getTableName(TableObject table, Exception* exception)
 	return nullptr;
 }
 
+SQLValueObject createSQLValue(Exception* exception)
+{
+	try
+	{
+		return new framework::SQLValueImplementation();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 void setSQLValueInt(SQLValueObject sqlValue, int64_t value, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setInt(value);
+		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setInt(value);
 	}
 	catch (const std::exception& e)
 	{
@@ -865,7 +884,7 @@ void setSQLValueDouble(SQLValueObject sqlValue, double value, Exception* excepti
 {
 	try
 	{
-		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setDouble(value);
+		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setDouble(value);
 	}
 	catch (const std::exception& e)
 	{
@@ -881,7 +900,7 @@ void setSQLValueString(SQLValueObject sqlValue, const char* value, Exception* ex
 {
 	try
 	{
-		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setString(value);
+		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setString(value);
 	}
 	catch (const std::exception& e)
 	{
@@ -897,7 +916,7 @@ void setSQLValueBool(SQLValueObject sqlValue, bool value, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBool(value);
+		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBool(value);
 	}
 	catch (const std::exception& e)
 	{
@@ -913,7 +932,7 @@ void setSQLValueNull(SQLValueObject sqlValue, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setNull();
+		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setNull();
 	}
 	catch (const std::exception& e)
 	{
@@ -929,7 +948,7 @@ void setSQLValueBlob(SQLValueObject sqlValue, const uint8_t* value, size_t size,
 {
 	try
 	{
-		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBlob(value, size);
+		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBlob(value, size);
 	}
 	catch (const std::exception& e)
 	{
@@ -1118,4 +1137,9 @@ void deleteWebFrameworkJSONBuider(JSONBuilder builder)
 void deleteWebFrameworkJSONParser(JSONParser parser)
 {
 	delete static_cast<json::JSONParser*>(parser);
+}
+
+void deleteWebFrameworkSQLValue(SQLValueObject value)
+{
+	delete static_cast<framework::interfaces::ISQLValue*>(value);
 }

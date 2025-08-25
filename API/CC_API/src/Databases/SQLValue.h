@@ -14,6 +14,8 @@ typedef enum
 	BLOB_TYPE
 } SQLValueType;
 
+WebFrameworkException createSQLValue(SQLValue* result);
+
 WebFrameworkException setSQLValueInt(SQLValue implementation, int64_t value);
 
 WebFrameworkException setSQLValueDouble(SQLValue implementation, double value);
@@ -37,3 +39,5 @@ WebFrameworkException getSQLValueBool(SQLValue implementation, bool* result);
 WebFrameworkException getSQLValueBlob(SQLValue implementation, const uint8_t** result, size_t* size);
 
 WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueType* result);
+
+void deleteWebFrameworkSQLValue(SQLValue implementation);

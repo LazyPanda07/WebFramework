@@ -95,7 +95,7 @@ namespace framework
 	}
 
 	inline SQLValue::SQLValue(ValueType&& value) noexcept :
-		value(move(value))
+		value(std::move(value))
 	{
 
 	}

@@ -105,6 +105,8 @@ EXPORT void deleteSQLResult(TableObject table, SQLResultObject result, Exception
 
 EXPORT const char* getTableName(TableObject table, Exception* exception);
 
+EXPORT SQLValueObject createSQLValue(Exception* exception);
+
 EXPORT void setSQLValueInt(SQLValueObject sqlValue, int64_t value, Exception* exception);
 
 EXPORT void setSQLValueDouble(SQLValueObject sqlValue, double value, Exception* exception);
@@ -144,3 +146,5 @@ EXPORT void deleteWebFrameworkJSONObject(JSONObject object);
 EXPORT void deleteWebFrameworkJSONBuider(JSONBuilder builder);
 
 EXPORT void deleteWebFrameworkJSONParser(JSONParser parser);
+
+EXPORT void deleteWebFrameworkSQLValue(SQLValueObject values);

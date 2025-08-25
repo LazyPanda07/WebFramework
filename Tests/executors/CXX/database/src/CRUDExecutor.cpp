@@ -5,8 +5,8 @@
 
 void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	framework::Database model = request.getDatabase("test_database");
-	framework::Table table = model.getTable("test_table");
+	framework::Database database = request.getDatabase("test_database");
+	framework::Table table = database.getTable("test_table");
 	framework::SQLResult result = table.execute("SELECT * FROM test_table WHERE name = ?", { framework::SQLValue("glue") });
 	std::vector<framework::JSONObject> data;
 
