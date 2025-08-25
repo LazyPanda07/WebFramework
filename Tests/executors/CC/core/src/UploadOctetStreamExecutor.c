@@ -17,7 +17,7 @@ DECLARE_EXECUTOR_INIT(UploadOctetStreamExecutor)
 DECLARE_EXECUTOR_METHOD(UploadOctetStreamExecutor, POST_METHOD, request, response)
 {
 	UploadOctetStreamExecutor* self = (UploadOctetStreamExecutor*)executor;
-	LargeData* data = NULL;
+	LargeData_t* data = NULL;
 
 	getLargeData(request, &data);
 

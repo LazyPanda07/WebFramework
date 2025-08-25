@@ -357,13 +357,13 @@ WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** resu
 	return exception;
 }
 
-WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result)
+WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData_t** result)
 {
 	WebFrameworkException exception = NULL;
 
 	typedef const void* (*getLargeData)(void* implementation, void** exception);
 
-	*result = (const LargeData*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getLargeData, &exception);
+	*result = (const LargeData_t*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getLargeData, &exception);
 
 	return exception;
 }

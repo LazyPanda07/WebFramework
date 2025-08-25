@@ -35,13 +35,13 @@ typedef struct
 	const char* value;
 } DynamicPagesVariable;
 
-typedef struct
+typedef struct LargeData
 {
 	const char* dataPart;
 	size_t dataPartSize;
 	size_t bodySize;
 	bool isLastPacket;
-} LargeData;
+} LargeData_t;
 
 typedef struct
 {
@@ -83,7 +83,7 @@ WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, si
 
 WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** result, size_t* size);
 
-WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData** result);
+WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData_t** result);
 
 WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName);
 
