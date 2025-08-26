@@ -59,8 +59,6 @@ TEST(LoadBalancer, ConnectionsHeuristic)
 		int64_t id = awaiter.get();
 
 		ids.push_back(id);
-
-		std::cout << std::format("Id: {}", id) << std::endl;
 	}
 
 	std::unordered_map<int64_t, size_t> unique;

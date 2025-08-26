@@ -6,7 +6,7 @@ WebFrameworkException executeQuery(Table implementation, const char* query, cons
 
 	typedef void* (*executeQuery)(void* implementation, const char* query, const void** values, size_t size, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(executeQuery, query, (const void**)&values, size, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(executeQuery, query, (const void**)values, size, &exception);
 
 	return exception;
 }

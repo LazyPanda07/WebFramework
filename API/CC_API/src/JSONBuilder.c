@@ -114,7 +114,13 @@ WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const c
 {
 	WebFrameworkException exception = NULL;
 	void* buffer = malloc(array->size * sizeof(void*));
-	void** value = &buffer;
+
+	if (!buffer)
+	{
+		return exception;
+	}
+
+	void** value = (void**)buffer;
 
 	typedef void (*appendJSONBuilderArray)(void* implementation, const char* key, void** value, size_t size, void** exception);
 

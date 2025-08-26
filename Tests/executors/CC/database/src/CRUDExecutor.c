@@ -142,7 +142,8 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	appendJSONBuilderArray(builder, "data", &data);
 	setJSONBody(response, builder);
 
-	deleteWebFrameworkSQLValue(values);
+	deleteWebFrameworkSQLValue(values[0]);
+	deleteWebFrameworkSQLValue(values[1]);
 	deleteJSONArray(&data);
 	deleteWebFrameworkJSONBuider(builder);
 }
