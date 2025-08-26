@@ -18,10 +18,9 @@ namespace framework
 	struct EXECUTORS_API LargeData
 	{
 		std::string_view dataPart;
-		size_t size;
 		bool isLastPacket;
 
-		LargeData(std::string_view dataPart, size_t size, bool isLastPacket);
+		LargeData(std::string_view dataPart, bool isLastPacket);
 	};
 
 	class EXECUTORS_API HTTPRequestExecutors
@@ -61,7 +60,7 @@ namespace framework
 
 		HTTPRequestExecutors& operator =(HTTPRequestExecutors&& other) noexcept;
 
-		void updateLargeData(std::string_view dataPart, size_t size);
+		void updateLargeData(std::string_view dataPart, bool isLast);
 
 		/// <summary>
 		/// Parameters string from HTTP

@@ -6,9 +6,9 @@ using namespace std;
 
 namespace framework::utility
 {
-	bool BaseLargeBodyHandler::handleChunk(string_view data, size_t bodySize)
+	bool BaseLargeBodyHandler::handleChunk(string_view data)
 	{
-		requestWrapper->updateLargeData(data, bodySize);
+		requestWrapper->updateLargeData(data, this->isLast());
 
 		try
 		{

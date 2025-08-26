@@ -70,12 +70,11 @@ namespace framework
 
 	}
 
-	void HTTPRequestImplementation::updateLargeData(const char* dataPart, size_t dataPartSize, size_t bodySize)
+	void HTTPRequestImplementation::updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast)
 	{
 		largeData.dataPart = dataPart;
 		largeData.dataPartSize = dataPartSize;
-		largeData.bodySize = bodySize;
-		largeData.isLastPacket = !bodySize;
+		largeData.isLastPacket = isLast;
 	}
 
 	const char* HTTPRequestImplementation::getRawParameters() const

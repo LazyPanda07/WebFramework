@@ -30,7 +30,7 @@ namespace framework::utility
 		void(BaseExecutor::* method)(HTTPRequestExecutors&, HTTPResponseExecutors&);
 
 	private:
-		bool handleChunk(std::string_view data, size_t bodySize) override;
+		bool handleChunk(std::string_view data) override;
 
 		void onParseHeaders() override;
 

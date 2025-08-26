@@ -4,9 +4,8 @@ using namespace std;
 
 namespace framework
 {
-	LargeData::LargeData(string_view dataPart, size_t size, bool isLastPacket) :
+	LargeData::LargeData(string_view dataPart, bool isLastPacket) :
 		dataPart(dataPart),
-		size(size),
 		isLastPacket(isLastPacket)
 	{
 
@@ -126,9 +125,9 @@ namespace framework
 		return *this;
 	}
 
-	void HTTPRequestExecutors::updateLargeData(string_view dataPart, size_t size)
+	void HTTPRequestExecutors::updateLargeData(string_view dataPart, bool isLast)
 	{
-		implementation->updateLargeData(dataPart.data(), dataPart.size(), size);
+		implementation->updateLargeData(dataPart.data(), dataPart.size(), isLast);
 	}
 
 	string_view HTTPRequestExecutors::getRawParameters() const
@@ -212,7 +211,7 @@ namespace framework
 	{
 		const interfaces::CLargeData* data = implementation->getLargeData();
 
-		return LargeData(string_view(data->dataPart, data->dataPartSize), data->bodySize, data->isLastPacket);
+		return LargeData(string_view(data->dataPart, data->dataPartSize), data->isLastPacket);
 	}
 
 	void HTTPRequestExecutors::sendAssetFile(string_view filePath, HTTPResponseExecutors& response, const unordered_map<string, string>& variables, bool isBinary, string_view fileName)

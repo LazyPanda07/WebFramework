@@ -39,7 +39,6 @@ typedef struct LargeData
 {
 	const char* dataPart;
 	size_t dataPartSize;
-	size_t bodySize;
 	bool isLastPacket;
 } LargeData_t;
 

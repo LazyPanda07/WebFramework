@@ -66,7 +66,7 @@ namespace framework
 
 		HTTPRequestImplementation& operator =(const HTTPRequestImplementation&) = default;
 
-		void updateLargeData(const char* dataPart, size_t dataPartSize, size_t bodySize) override;
+		void updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast) override;
 
 		/// <summary>
 		/// Parameters string from HTTP

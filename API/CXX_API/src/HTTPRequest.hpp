@@ -41,10 +41,9 @@ namespace framework
 	struct LargeData
 	{
 		std::string_view dataPart;
-		size_t size;
 		bool isLastPacket;
 
-		LargeData(std::string_view dataPart, size_t size, bool isLastPacket);
+		LargeData(std::string_view dataPart, bool isLastPacket);
 	};
 
 	class HTTPRequest
@@ -421,9 +420,8 @@ namespace framework
 		return data;
 	}
 
-	inline LargeData::LargeData(std::string_view dataPart, size_t size, bool isLastPacket) :
+	inline LargeData::LargeData(std::string_view dataPart, bool isLastPacket) :
 		dataPart(dataPart),
-		size(size),
 		isLastPacket(isLastPacket)
 	{
 
@@ -625,7 +623,7 @@ namespace framework
 	{
 		const interfaces::CLargeData* data = implementation->getLargeData();
 
-		return LargeData(std::string_view(data->dataPart, data->dataPartSize), data->bodySize, data->isLastPacket);
+		return LargeData(std::string_view(data->dataPart, data->dataPartSize), data->isLastPacket);
 	}
 
 	inline void HTTPRequest::sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)

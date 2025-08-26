@@ -10,13 +10,11 @@ namespace framework::interfaces
 	{
 		const char* dataPart;
 		size_t dataPartSize;
-		size_t bodySize;
 		bool isLastPacket;
 
 		CLargeData() :
 			dataPart(nullptr),
 			dataPartSize(0),
-			bodySize(0),
 			isLastPacket(true)
 		{
 
@@ -67,7 +65,7 @@ namespace framework::interfaces
 	public:
 		IHTTPRequest() = default;
 
-		virtual void updateLargeData(const char* dataPart, size_t dataPartSize, size_t bodySize) = 0;
+		virtual void updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast) = 0;
 
 		virtual const char* getRawParameters() const = 0;
 
