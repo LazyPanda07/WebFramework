@@ -3,9 +3,7 @@
 #include <time.h>
 #include <signal.h>
 
-static void initBuffer(size_t size, void* buffer);
-
-static void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer);
+#include "SQLUtility.h"
 
 DECLARE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR);
 
@@ -30,18 +28,12 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 
 	appendJSONBuilderArray(builder, "data", &data);
 
-	WebFrameworkString string;
-
-	buildJSONBuilder(builder, &string);
-
-	printf("%s\n", getDataFromString(string));
-
 	setJSONBody(response, builder);
 
 	deleteWebFrameworkSQLValue(value);
 	deleteJSONArray(&data);
 	deleteWebFrameworkJSONBuider(builder);
-	deleteWebFrameworkString(string);
+	deleteSQLResult(table, result);
 }
 
 DECLARE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
@@ -154,48 +146,6 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	deleteWebFrameworkSQLValue(values[1]);
 	deleteJSONArray(&data);
 	deleteWebFrameworkJSONBuider(builder);
-}
-
-void initBuffer(size_t size, void* buffer)
-{
-	JSONArray* array = (JSONArray*)buffer;
-
-	*array = createJSONArray(size);
-}
-
-void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer)
-{
-	JSONArray* array = (JSONArray*)buffer;
-	JSONObject object;
-
-	createJSONObject(&object);
-
-	for (size_t i = 0; i < size; i++)
-	{
-		SQLValueType type;
-
-		getSQLValueType(columnValues[i], &type);
-
-		if (type == INT_TYPE)
-		{
-			int64_t result;
-
-			getSQLValueInt(columnValues[i], &result);
-
-			setJSONObjectInteger(&object, columnNames[i], result);
-		}
-		else if (type == STRING_TYPE)
-		{
-			const char* result;
-
-			getSQLValueString(columnValues[i], &result);
-
-			setJSONObjectString(&object, columnNames[i], result);
-		}
-	}
-
-	appendJSONArrayObject(array, &object);
-	deleteJSONObject(&object);
 }
 
 DEFINE_INITIALIZE_WEB_FRAMEWORK();

@@ -217,6 +217,8 @@ namespace framework
 	{
 		const vector<web::Multipart>& multiparts = parser.getMultiparts();
 
+		initMultipartsBuffer(multiparts.size(), buffer);
+
 		for (size_t i = 0; i < multiparts.size(); i++)
 		{
 			const web::Multipart& multipart = multiparts[i];

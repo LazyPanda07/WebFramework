@@ -6,6 +6,7 @@ add_library(
 	${PROJECT_NAME} SHARED
 	src/CRUDExecutor.c
 	src/MultiUserExecutor.c
+	src/SQLUtility.c
 )
 
 target_include_directories(
