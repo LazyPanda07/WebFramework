@@ -29,7 +29,7 @@ DECLARE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	JSONArray data;
 	JSONBuilder builder;
 	
-	getTableHTTPRequest(request, "test_table", "multi_user", &table);
+	getTableHTTPRequest(request, "test_database", "multi_user", &table);
 	createSQLValue(&value);
 	createJSONBuilder(&builder);
 
@@ -83,7 +83,7 @@ DECLARE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 	setSQLValueString(values[0], getDataFromString(self->uuid));
 	setSQLValueString(values[1], data);
 
-	executeQuery(table, "INSERT INTO multi_user (user_id, data) VALUES(?, ?)", &values, 2, &result);
+	executeQuery(table, "INSERT INTO multi_user (user_id, data) VALUES(?, ?)", values, 2, &result);
 
 	deleteWebFrameworkSQLValue(values[0]);
 	deleteWebFrameworkSQLValue(values[1]);
