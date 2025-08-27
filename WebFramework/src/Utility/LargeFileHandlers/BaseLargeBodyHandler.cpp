@@ -8,7 +8,10 @@ namespace framework::utility
 {
 	bool BaseLargeBodyHandler::handleChunk(string_view data)
 	{
-		fileStream << currentReceive << ' ' << contentLength << ' ' << this->isLast() << endl;
+		if (Log::isValid())
+		{
+			Log::info("Handle chunk: {}, {}, {}", "LogLargeBodyHandler", currentReceive.load(), contentLength, this->isLast());
+		}
 
 		requestWrapper->updateLargeData(data, this->isLast());
 
@@ -41,8 +44,6 @@ namespace framework::utility
 		requestWrapper = make_unique<HTTPRequestExecutors>(request.get());
 		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, statefulExecutors);
 		method = BaseExecutor::getMethod(parser.getMethod());
-
-		fileStream.open("log.txt");
 	}
 
 	void BaseLargeBodyHandler::onFinishHandleChunks()

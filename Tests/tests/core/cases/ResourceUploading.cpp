@@ -52,12 +52,5 @@ TEST(ResourceUploading, OctetStream)
 		std::cout << std::format("Exist finish_uploading.txt: {}", std::filesystem::exists("finish_uploading.txt")) << std::endl;
 	}
 
-	std::ostringstream os;
-	std::ifstream file("log.txt");
-
-	os << file.rdbuf();
-
-	std::cout << os.str() << std::endl;
-
 	ASSERT_EQ(errorCode, 0);
 }

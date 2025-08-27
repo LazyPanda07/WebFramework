@@ -28,7 +28,6 @@ namespace framework::utility
 		HTTPResponseExecutors responseWrapper;
 		BaseExecutor* executor;
 		void(BaseExecutor::* method)(HTTPRequestExecutors&, HTTPResponseExecutors&);
-		std::ofstream fileStream;
 
 	private:
 		bool handleChunk(std::string_view data) override;

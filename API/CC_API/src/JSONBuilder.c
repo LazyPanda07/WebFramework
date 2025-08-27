@@ -26,9 +26,9 @@ WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFrameworkS
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*buildJSONBuilder)(void** exception);
+	typedef void* (*buildJSONBuilder)(void* implementation, void** exception);
 
-	*result = CALL_WEB_FRAMEWORK_FUNCTION(buildJSONBuilder, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(buildJSONBuilder, &exception);
 
 	return exception;
 }
