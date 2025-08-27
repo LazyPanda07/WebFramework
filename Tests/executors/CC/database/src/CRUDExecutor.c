@@ -29,11 +29,19 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	iterateSQLResult(result, initBuffer, callback, &data);
 
 	appendJSONBuilderArray(builder, "data", &data);
+
+	WebFrameworkString string;
+
+	buildJSONBuilder(builder, &string);
+
+	printf("%s\n", getDataFromString(string));
+
 	setJSONBody(response, builder);
 
 	deleteWebFrameworkSQLValue(value);
 	deleteJSONArray(&data);
 	deleteWebFrameworkJSONBuider(builder);
+	deleteWebFrameworkString(string);
 }
 
 DECLARE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
@@ -162,13 +170,22 @@ void callback(const char* columnName, const SQLValue columnValue, size_t index, 
 
 	getSQLValueType(columnValue, &type);
 
+	if (array->size == index)
+	{
+		JSONObject object;
+
+		createJSONObject(&object);
+
+		appendJSONArrayObject(array, &object);
+	}
+
 	if (type == INT_TYPE)
 	{
 		int64_t result;
 
 		getSQLValueInt(columnValue, &result);
 
-		appendJSONArrayInteger(array, result);
+		setJSONObjectInteger(&array->data[index], columnName, result);
 	}
 	else if (type == STRING_TYPE)
 	{
@@ -176,7 +193,7 @@ void callback(const char* columnName, const SQLValue columnValue, size_t index, 
 
 		getSQLValueString(columnValue, &result);
 
-		appendJSONArrayString(array, result);
+		setJSONObjectString(&array->data[index], columnName, result);
 	}
 }
 

@@ -8,11 +8,13 @@ namespace framework::utility
 {
 	bool BaseLargeBodyHandler::handleChunk(string_view data)
 	{
+		fileStream << currentReceive << ' ' << contentLength << ' ' << this->isLast() << endl;
+
 		requestWrapper->updateLargeData(data, this->isLast());
 
 		try
 		{
-			 invoke(method, executor, *requestWrapper, responseWrapper);
+			invoke(method, executor, *requestWrapper, responseWrapper);
 		}
 		catch (const exception& e)
 		{
@@ -39,6 +41,8 @@ namespace framework::utility
 		requestWrapper = make_unique<HTTPRequestExecutors>(request.get());
 		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, statefulExecutors);
 		method = BaseExecutor::getMethod(parser.getMethod());
+
+		fileStream.open("log.txt");
 	}
 
 	void BaseLargeBodyHandler::onFinishHandleChunks()
