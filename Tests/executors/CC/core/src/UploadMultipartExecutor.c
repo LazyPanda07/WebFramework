@@ -11,7 +11,7 @@ DECLARE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 
 	for (size_t i = 0; i < size; i++)
 	{
-		FILE* file = fopen(multiparts[i].fileName, "wb");
+		FILE* file = fopen(multiparts[i].name, "wb");
 
 		fwrite(multiparts[i].data, sizeof(char), strlen(multiparts[i].data), file);
 
