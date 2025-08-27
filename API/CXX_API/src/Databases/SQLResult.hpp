@@ -19,7 +19,7 @@ namespace framework
 	private:
 		static void reserveSize(size_t size, void* buffer);
 
-		static void fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer);
+		static void fill(const char** columnNames, const void** values, size_t size, size_t index, void* buffer);
 
 	public:
 		SQLResult(interfaces::ISQLResult* implementation);
@@ -53,9 +53,12 @@ namespace framework
 		static_cast<ValueType*>(buffer)->resize(size);
 	}
 
-	inline void SQLResult::fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer)
+	inline void SQLResult::fill(const char** columnNames, const void** values, size_t size, size_t index, void* buffer)
 	{
-		(*static_cast<ValueType*>(buffer))[index].try_emplace(columnName, SQLValue(static_cast<const interfaces::ISQLValue*>(value)));
+		for (size_t i = 0; i < size; i++)
+		{
+			(*static_cast<ValueType*>(buffer))[index].try_emplace(columnNames[i], SQLValue(static_cast<const interfaces::ISQLValue*>(values[i])));
+		}
 	}
 
 	inline SQLResult::SQLResult(interfaces::ISQLResult* implementation)

@@ -20,7 +20,7 @@ namespace framework
 	private:
 		static void reserveSize(size_t size, void* buffer);
 
-		static void fill(const char* columnName, const void* value, size_t index, size_t size, void* buffer);
+		static void fill(const char** columnNames, const void** values, size_t size, size_t index, void* buffer);
 
 	public:
 		SQLResultExecutors(interfaces::ISQLResult* implementation);

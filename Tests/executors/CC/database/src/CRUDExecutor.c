@@ -5,7 +5,7 @@
 
 static void initBuffer(size_t size, void* buffer);
 
-static void callback(const char* columnName, const SQLValue columnValue, size_t index, size_t size, void* buffer);
+static void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer);
 
 DECLARE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR);
 
@@ -163,38 +163,39 @@ void initBuffer(size_t size, void* buffer)
 	*array = createJSONArray(size);
 }
 
-void callback(const char* columnName, const SQLValue columnValue, size_t index, size_t size, void* buffer)
+void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer)
 {
 	JSONArray* array = (JSONArray*)buffer;
-	SQLValueType type;
+	JSONObject object;
 
-	getSQLValueType(columnValue, &type);
+	createJSONObject(&object);
 
-	if (array->size == index)
+	for (size_t i = 0; i < size; i++)
 	{
-		JSONObject object;
+		SQLValueType type;
 
-		createJSONObject(&object);
+		getSQLValueType(columnValues[i], &type);
 
-		appendJSONArrayObject(array, &object);
+		if (type == INT_TYPE)
+		{
+			int64_t result;
+
+			getSQLValueInt(columnValues[i], &result);
+
+			setJSONObjectInteger(&object, columnNames[i], result);
+		}
+		else if (type == STRING_TYPE)
+		{
+			const char* result;
+
+			getSQLValueString(columnValues[i], &result);
+
+			setJSONObjectString(&object, columnNames[i], result);
+		}
 	}
 
-	if (type == INT_TYPE)
-	{
-		int64_t result;
-
-		getSQLValueInt(columnValue, &result);
-
-		setJSONObjectInteger(&array->data[index], columnName, result);
-	}
-	else if (type == STRING_TYPE)
-	{
-		const char* result;
-
-		getSQLValueString(columnValue, &result);
-
-		setJSONObjectString(&array->data[index], columnName, result);
-	}
+	appendJSONArrayObject(array, &object);
+	deleteJSONObject(&object);
 }
 
 DEFINE_INITIALIZE_WEB_FRAMEWORK();

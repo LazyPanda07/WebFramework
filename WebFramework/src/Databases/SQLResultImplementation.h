@@ -18,7 +18,7 @@ namespace framework
 
 		size_t size() const override;
 
-		void iterate(void (initBuffer)(size_t size, void* buffer), void (*callback)(const char* columnName, const void* columnValue, size_t index, size_t size, void* buffer), void* buffer) override;
+		void iterate(void (initBuffer)(size_t size, void* buffer), void (*callback)(const char** columnName, const void** columnValue, size_t size, size_t index, void* buffer), void* buffer) override;
 
 		~SQLResultImplementation() = default;
 	};

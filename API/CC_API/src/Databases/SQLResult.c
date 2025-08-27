@@ -11,11 +11,11 @@ WebFrameworkException getSQLResultSize(SQLResult implementation, size_t* result)
 	return exception;
 }
 
-WebFrameworkException iterateSQLResult(SQLResult implementation, void(*initBuffer)(size_t size, void* buffer), void(*callback)(const char* columnName, const SQLValue columnValue, size_t index, size_t size, void* buffer), void* buffer)
+WebFrameworkException iterateSQLResult(SQLResult implementation, void(*initBuffer)(size_t size, void* buffer), void(*callback)(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer), void* buffer)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void(*iterateSQLResult)(void* implementation, void(*initBuffer)(size_t size, void* buffer), void(*callback)(const char* columnName, const SQLValue columnValue, size_t index, size_t size, void* buffer), void* buffer, void** exception);
+	typedef void(*iterateSQLResult)(void* implementation, void(*initBuffer)(size_t size, void* buffer), void(*callback)(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer), void* buffer, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(iterateSQLResult, initBuffer, callback, buffer, &exception);
 

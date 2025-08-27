@@ -133,7 +133,7 @@ EXPORT int getSQLValueType(SQLValueObject sqlValue, Exception* exception);
 
 EXPORT size_t getSQLResultSize(SQLResultObject result, Exception* exception);
 
-EXPORT void iterateSQLResult(SQLResultObject result, void(*initBuffer)(size_t size, void* buffer), void(*callback)(const char* columnName, const void* columnValue, size_t index, size_t size, void* buffer), void* buffer, Exception* exception);
+EXPORT void iterateSQLResult(SQLResultObject result, void(*initBuffer)(size_t size, void* buffer), void(*callback)(const char** columnNames, const void** columnValues, size_t size, size_t index, void* buffer), void* buffer, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
