@@ -36,6 +36,7 @@ namespace framework
 		{
 			for (const auto& [key, value] : result[i])
 			{
+				columnNames[index] = key.data();
 				columnValues[index++] = SQLValueImplementation(value);
 			}
 
