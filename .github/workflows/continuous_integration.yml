@@ -465,7 +465,7 @@ jobs:
       shell: bash
       run: |
           cd build/bin
-          source run_cxx_tests.sh ${{ matrix.config }}
+          source run_tests.sh ${{ matrix.config }}
           
 
   # publish:
