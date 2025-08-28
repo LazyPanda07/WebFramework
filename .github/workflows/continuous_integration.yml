@@ -392,7 +392,6 @@ jobs:
       shell: bash
       run: |
           cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           source run_aarch64_cxx_tests.sh ${{ matrix.config }}
           
           
@@ -431,7 +430,6 @@ jobs:
       shell: bash
       run: |
           cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           source run_aarch64_cc_tests.sh ${{ matrix.config }}
 
 
@@ -467,9 +465,7 @@ jobs:
       shell: bash
       run: |
           cd build/bin
-          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          ./Server ${{ matrix.config }} & ./DefaultHTTPSServer & sleep 1
-          ./Core ${{ matrix.config }}
+          source run_cxx_tests.sh ${{ matrix.config }}
           
 
   # publish:
