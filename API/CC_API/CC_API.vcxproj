@@ -100,6 +100,7 @@
     <ClCompile Include="src\JSONBuilder.c" />
     <ClCompile Include="src\JSONObject.c" />
     <ClCompile Include="src\JSONParser.c" />
+    <ClCompile Include="src\LoadBalancerHeuristic.c" />
     <ClCompile Include="src\Utility\WebFrameworkLocalization.c" />
     <ClCompile Include="src\Utility\WebFrameworkUtility.c" />
     <ClCompile Include="src\WebFramework.c" />
@@ -118,6 +119,7 @@
     <ClInclude Include="src\JSONBuilder.h" />
     <ClInclude Include="src\JSONObject.h" />
     <ClInclude Include="src\JSONParser.h" />
+    <ClInclude Include="src\LoadBalancerHeuristic.h" />
     <ClInclude Include="src\Utility\WebFrameworkLocalization.h" />
     <ClInclude Include="src\Utility\WebFrameworkUtility.h" />
     <ClInclude Include="src\WebFramework.h" />

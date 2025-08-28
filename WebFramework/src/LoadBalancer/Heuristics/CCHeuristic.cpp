@@ -25,6 +25,7 @@ namespace framework::load_balancer
 		}
 
 		operatorFunction = utility::load<OperatorSignature>(handle, format("webFrameworkCCHeuristicOperator{}", heuristicName));
+		initFunction = utility::load<InitSignature>(handle, format("webFrameworkCCHeuristicInit{}", heuristicName));
 		onStartFunction = utility::load<OnStartSignature>(handle, format("webFrameworkCCHeuristicOnStart{}", heuristicName));
 		onEndFunction = utility::load<OnEndSignature>(handle, format("webFrameworkCCHeuristicOnEnd{}", heuristicName));
 		getIpFunction = utility::load<GetIpSignature>(handle, format("webFrameworkCCHeuristicGetIp{}", heuristicName));
@@ -34,6 +35,11 @@ namespace framework::load_balancer
 
 		ASSERT_LOAD_FUNCTION(operatorFunction);
 		ASSERT_LOAD_FUNCTION(deleteHeuristicFunction);
+
+		if (initFunction)
+		{
+			initFunction(this);
+		}
 
 		if (!onStartFunction)
 		{

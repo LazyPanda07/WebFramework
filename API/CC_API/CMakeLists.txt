@@ -28,6 +28,7 @@ add_library(
 	src/JSONParser.c
 	src/WebFramework.c
 	src/WebFrameworkException.c
+	src/LoadBalancerHeuristic.c
 )
 
 install(

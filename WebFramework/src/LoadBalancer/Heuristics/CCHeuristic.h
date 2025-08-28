@@ -12,6 +12,7 @@ namespace framework::load_balancer
 	{
 	private:
 		using OperatorSignature = uint64_t(*)(void*);
+		using InitSignature = void(*)(void*);
 		using OnStartSignature = void(*)(void*);
 		using OnEndSignature = void(*)(void*);
 		using GetIpSignature = const char* (*)(void*);
@@ -24,6 +25,7 @@ namespace framework::load_balancer
 		std::string port;
 		void* implementation;
 		OperatorSignature operatorFunction;
+		InitSignature initFunction;
 		OnStartSignature onStartFunction;
 		OnEndSignature onEndFunction;
 		GetIpSignature getIpFunction;
