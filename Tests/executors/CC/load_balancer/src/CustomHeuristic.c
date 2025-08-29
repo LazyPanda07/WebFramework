@@ -33,3 +33,5 @@ uint64_t getId()
 
 	return counter++;
 }
+
+DEFINE_INITIALIZE_WEB_FRAMEWORK();
