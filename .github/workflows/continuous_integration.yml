@@ -450,7 +450,7 @@ jobs:
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@master
       with:
-        build-type: Release
+        build-type: ${{ matrix.configuration }}
         install-path: Tests/gtest
 
     - name: Download artifacts
