@@ -139,7 +139,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        executors: [CXX]
+        executors: [CXX, CC]
 
     steps:
     - uses: actions/checkout@v4
@@ -321,7 +321,7 @@ jobs:
         configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        executors: [CXX]
+        executors: [CXX, CC]
 
     steps:
     - name: Download WebFramework
@@ -431,47 +431,6 @@ jobs:
       run: |
           cd build/bin
           source run_aarch64_cc_tests.sh ${{ matrix.config }}
-
-
-  windows-cc-executors-tests:
-    runs-on: windows-latest
-    needs: windows-build
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@master
-      with:
-        build-type: ${{ matrix.configuration }}
-        install-path: Tests/gtest
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_Windows
-        path: WebFrameworkLibrary
-        
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DBUILD_EXECUTORS=CC -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-          
-    - name: Tests
-      working-directory: Tests
-      run: |
-          cd build/bin
-          .\run_tests.bat ${{ matrix.config }}
           
 
   # publish:
