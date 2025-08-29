@@ -50,7 +50,7 @@ const char* generate(void* data)
 		return NULL;
 	}
 
-	generator->currentChunk = (char*)calloc(SMALL_SIZE, sizeof(char));
+	generator->currentChunk = (char*)calloc(SMALL_SIZE + 1, sizeof(char));
 
 	if (!generator->currentChunk)
 	{
