@@ -35,3 +35,5 @@ int64_t getProcessId()
 	return (int64_t)GetCurrentProcessId();
 #endif
 }
+
+DEFINE_INITIALIZE_WEB_FRAMEWORK();

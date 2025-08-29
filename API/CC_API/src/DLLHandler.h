@@ -80,3 +80,8 @@ void deleteWebFrameworkJSONParser(JSONParser parser);
 const char* getDataFromString(WebFrameworkString string);
 
 size_t findLastChar(char* ptr, char c);
+
+#define DEFINE_INITIALIZE_WEB_FRAMEWORK() WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath) \
+{ \
+	initializeWebFramework(webFrameworkSharedLibraryPath); \
+}
