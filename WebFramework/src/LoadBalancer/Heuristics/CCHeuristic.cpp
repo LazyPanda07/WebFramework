@@ -2,6 +2,8 @@
 
 #include "Utility/Sources.h"
 
+#include "Log.h"
+
 #define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw runtime_error(format("Can't load {} function", #name))
 
 using namespace std;
@@ -14,14 +16,24 @@ namespace framework::load_balancer
 
 		if (!creator)
 		{
-			throw runtime_error(format("Can't find {} function", heuristicName));
+			if (Log::isValid())
+			{
+				Log::fatalError("Can't find create{}CCHeuristic function", "LogCCHeuristic", 1, heuristicName);
+			}
+
+			throw runtime_error(format("Can't find create{}CCHeuristic function", heuristicName));
 		}
 
 		implementation = creator(ip.data(), port.data(), useHTTPS);
 
 		if (!implementation)
 		{
-			throw runtime_error(format("Can't create {} heuristic", heuristicName));
+			if (Log::isValid())
+			{
+				Log::fatalError("Can't create create{}CCHeuristic heuristic", "LogCCHeuristic", 2, heuristicName);
+			}
+
+			throw runtime_error(format("Can't create create{}CCHeuristic heuristic", heuristicName));
 		}
 
 		operatorFunction = utility::load<OperatorSignature>(handle, format("webFrameworkCCHeuristicOperator{}", heuristicName));

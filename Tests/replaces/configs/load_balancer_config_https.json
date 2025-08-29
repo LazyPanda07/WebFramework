@@ -7,7 +7,7 @@
   "LoadBalancer": {
     "heuristic": {
       "name": "Connections",
-      "api": "cxx"
+      "api": "{API_TYPE}"
     },
     "loadSource": "LoadBalancerExecutors",
     "serversHTTPS": false,

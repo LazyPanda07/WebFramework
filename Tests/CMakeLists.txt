@@ -83,17 +83,18 @@ if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
 
     set(REPLACES "{API_TYPE}" ${API_TYPE})
 
-    generate_json(settings/web.json ${CMAKE_INSTALL_PREFIX}/web.json REPLACES)
-    generate_json(settings/load_balancer_web.json ${CMAKE_INSTALL_PREFIX}/load_balancer_web.json REPLACES)
+    generate_json(replaces/configs/load_balancer_config.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config.json REPLACES)
+    generate_json(replaces/configs/load_balancer_config_https.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config_https.json REPLACES)
+    generate_json(replaces/settings/web.json ${CMAKE_INSTALL_PREFIX}/web.json REPLACES)
+    generate_json(replaces/settings/load_balancer_web.json ${CMAKE_INSTALL_PREFIX}/load_balancer_web.json REPLACES)
 
     install(DIRECTORY configs/ DESTINATION .)
+    install(DIRECTORY settings/ DESTINATION .)
     install(DIRECTORY scripts/ DESTINATION .)
     install(DIRECTORY templates DESTINATION .)
     install(DIRECTORY assets DESTINATION .)
     
     install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION .)
-    
-    install(FILES settings/default_https_server_web.json DESTINATION .)
 endif()
 
 if (${BUILD_TESTS})
