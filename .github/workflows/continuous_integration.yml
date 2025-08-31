@@ -321,7 +321,7 @@ jobs:
         configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         # api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        api_test: [run_tests.bat, run_cc_tests.bat]
+        api_test: [run_tests.bat, run_cc_tests.bat, run_python_tests.bat]
         executors: [CXX, CC]
 
     steps:
