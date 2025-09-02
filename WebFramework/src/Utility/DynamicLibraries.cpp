@@ -3,6 +3,7 @@
 #include <format>
 
 #include "Exceptions/FileDoesNotExistException.h"
+#include "Strings.h"
 
 #ifdef __LINUX__
 #include <dlfcn.h>
@@ -71,7 +72,7 @@ namespace framework::utility
 
 			if (GetModuleFileNameA(module, path, MAX_PATH))
 			{
-				return path;
+				return ::utility::strings::replaceAll(path, ".DLL", ".dll");
 			}
 		}
 #endif

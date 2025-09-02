@@ -361,7 +361,6 @@ namespace framework
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
 		this->initHTTPS(webFrameworkSettings);
-
 		this->initServer
 		(
 			webFrameworkSettings,
