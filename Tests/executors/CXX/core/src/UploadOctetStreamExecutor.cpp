@@ -19,7 +19,7 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 
 	currentSize += data.size();
 
-	if (currentSize == contentLength && !last)
+	if (currentSize == contentLength)
 	{
 		std::ofstream("finish_uploading.txt");
 	}

@@ -79,6 +79,11 @@ namespace framework
 		{
 			try
 			{
+				while (largeBodyHandler.isRunning())
+				{
+					this_thread::sleep_for(1s);
+				}
+
 				HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 
 				response.setDefault();
