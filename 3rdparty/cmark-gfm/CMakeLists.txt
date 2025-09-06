@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-include(${CMAKE_SOURCE_DIR}/cmake/BuildLibrary.cmake)
+include(${WEB_FRAMEWORK_CMAKE_DIRECTORY}/BuildLibrary.cmake)
 
 project(external_cmark_gfm)
 

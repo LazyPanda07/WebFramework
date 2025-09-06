@@ -64,6 +64,15 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
+
+cd $(ProjectDir)
+
+if not exist build mkdir build
+
+cd build &amp;&amp; cmake -DWEB_FRAMEWORK_CMAKE_DIRECTORY=$(SolutionDir)cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -82,6 +91,15 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
+
+cd $(ProjectDir)
+
+if not exist build mkdir build
+
+cd build &amp;&amp; cmake -DWEB_FRAMEWORK_CMAKE_DIRECTORY=$(SolutionDir)cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
