@@ -4,6 +4,7 @@
 
 #include "HTTPBuilder.h"
 #include "HTTPParser.h"
+#include "Strings.h"
 
 #include "utilities.h"
 
@@ -64,7 +65,7 @@ TEST(ResourceLoading, PageMD)
 
 		stream >> response;
 
-		html = web::HTTPParser(response).getBody();
+		html = utility::strings::replaceAll(web::HTTPParser(response).getBody(), "\r", "");
 	}
 
 	{
