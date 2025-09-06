@@ -24,6 +24,8 @@ set(
 	CACHE INTERNAL ""
 )
 set(ADDITIONAL_LIBS "" CACHE INTERNAL "")
+set(ADDITIONAL_INCLUDES "" CACHE INTERNAL "")
+set(ADDITIONAL_LIB_DIRS "" CACHE INTERNAL "")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
@@ -141,11 +143,13 @@ target_include_directories(
 	SHA256/src/
 	ThreadPool/src/
 	UtilityLibrary/include/
+	${ADDITIONAL_INCLUDES}
 )
 
 target_link_directories(
 	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
+	${ADDITIONAL_LIB_DIRS}
 )
 
 target_link_libraries(

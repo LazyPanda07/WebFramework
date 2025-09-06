@@ -23,12 +23,12 @@ if (NOT ${Boost_FOUND})
     endif()
 
     FetchContent_Declare(
-        boost_stacktrace
+        ${PROJECT_NAME}
         GIT_REPOSITORY https://github.com/boostorg/boost.git
         GIT_TAG ${BOOST_TAG}
     )
 
-    FetchContent_MakeAvailable(boost_stacktrace)
+    FetchContent_MakeAvailable(${PROJECT_NAME})
 endif()
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")

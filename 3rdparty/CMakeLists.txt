@@ -5,3 +5,5 @@ project(3rdparty)
 if (${WITH_STACKTRACE})
 	add_subdirectory(boost)
 endif()
+
+add_subdirectory(cmark-gfm)

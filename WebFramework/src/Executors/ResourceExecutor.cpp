@@ -1,9 +1,11 @@
 #include "ResourceExecutor.h"
 
+#include <cmark-gfm.h>
+
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
-#include <Log.h>
+#include "Log.h"
 
 using namespace std;
 
@@ -47,9 +49,18 @@ namespace framework
 		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(html);
 	}
 
-	void ResourceExecutor::readFile(string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
+	void ResourceExecutor::readFile(filesystem::path extension, string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
 	{
 		result = handle->readAllData();
+
+		if (extension == markdownExtension)
+		{
+			char* temp = cmark_markdown_to_html(result.data(), result.size(), CMARK_OPT_UNSAFE);
+
+			result = temp;
+
+			free(temp);
+		}
 
 		if (result.empty())
 		{
@@ -93,6 +104,8 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
+		filesystem::path extension = assetFilePath.extension();
+
 		if (Log::isValid())
 		{
 			Log::info("Request static file: {}, is binary: {}", "LogResource", filePath, isBinary);
@@ -100,11 +113,11 @@ namespace framework
 
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 
 		if (fileName.size())
@@ -125,6 +138,8 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
+		filesystem::path extension = assetFilePath.extension();
+
 		if (Log::isValid())
 		{
 			Log::info("Request dynamic file: {}, is binary: {}", "LogResource", filePath, isBinary);
@@ -132,11 +147,11 @@ namespace framework
 
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 
 		dynamicPages.run(variables, result);
