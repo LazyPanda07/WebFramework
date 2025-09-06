@@ -229,6 +229,9 @@
     <ClInclude Include="src\Web\Servers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3rdparty\cmark-gfm\cmark-gfm.vcxproj">
+      <Project>{66216d2f-5851-404b-af2a-da5f216f54af}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Databases\Databases.vcxproj">
       <Project>{2f9bd34b-de1c-4c0e-8131-8aa7274c0081}</Project>
     </ProjectReference>

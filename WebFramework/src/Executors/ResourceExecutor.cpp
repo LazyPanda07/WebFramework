@@ -13,40 +13,25 @@ namespace framework
 {
 	void ResourceExecutor::loadHTMLErrorsData()
 	{
-		filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
-		ifstream html(allErrorsFolder / web_framework_assets::badRequest);
-		auto readFile = [](ifstream& html) -> string
+		auto readFile = [](const filesystem::path& errorPath) -> string
 			{
+				ifstream stream(errorPath);
+				ostringstream os;
 				string result;
-				string tem;
 
-				while (getline(html, tem))
-				{
-					result += tem + '\n';
-				}
+				os << stream.rdbuf();
 
-				html.close();
+				result = os.str();
 
 				return result;
 			};
+		filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
 
-		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(html);
-
-		html.open(allErrorsFolder / web_framework_assets::notFound);
-
-		HTMLErrorsData[HTMLErrors::forbidden403] = readFile(html);
-
-		html.open(allErrorsFolder / web_framework_assets::forbidden);
-
-		HTMLErrorsData[HTMLErrors::notFound404] = readFile(html);
-
-		html.open(allErrorsFolder / web_framework_assets::internalServerError);
-
-		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
-
-		html.open(allErrorsFolder / web_framework_assets::badGateway);
-
-		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(html);
+		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(allErrorsFolder / web_framework_assets::badRequest);
+		HTMLErrorsData[HTMLErrors::forbidden403] = readFile(allErrorsFolder / web_framework_assets::forbidden);
+		HTMLErrorsData[HTMLErrors::notFound404] = readFile(allErrorsFolder / web_framework_assets::notFound);
+		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(allErrorsFolder / web_framework_assets::internalServerError);
+		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(allErrorsFolder / web_framework_assets::badGateway);
 	}
 
 	void ResourceExecutor::readFile(filesystem::path extension, string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)

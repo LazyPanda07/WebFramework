@@ -50,6 +50,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Databases", "Databases\Data
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdparty", "3rdparty", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cmark-gfm", "3rdparty\cmark-gfm\cmark-gfm.vcxproj", "{66216D2F-5851-404B-AF2A-DA5F216F54AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -132,6 +134,10 @@ Global
 		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Debug|x64.Build.0 = Debug|x64
 		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Release|x64.ActiveCfg = Release|x64
 		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081}.Release|x64.Build.0 = Release|x64
+		{66216D2F-5851-404B-AF2A-DA5F216F54AF}.Debug|x64.ActiveCfg = Debug|x64
+		{66216D2F-5851-404B-AF2A-DA5F216F54AF}.Debug|x64.Build.0 = Debug|x64
+		{66216D2F-5851-404B-AF2A-DA5F216F54AF}.Release|x64.ActiveCfg = Release|x64
+		{66216D2F-5851-404B-AF2A-DA5F216F54AF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +159,7 @@ Global
 		{5BBA94D8-A316-40BC-A14C-9D9F4AE4D04C} = {4DD1875E-103B-4E84-88B7-1B3E5D6A2EDF}
 		{3D090049-A939-49CF-B7CB-434E4197B940} = {4DD1875E-103B-4E84-88B7-1B3E5D6A2EDF}
 		{2F9BD34B-DE1C-4C0E-8131-8AA7274C0081} = {880A8FA6-3CB7-4962-BE82-41AB1DB0DE09}
+		{66216D2F-5851-404B-AF2A-DA5F216F54AF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {155A7728-6396-43E2-9EFF-B3B350E831EA}
