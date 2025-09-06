@@ -49,3 +49,34 @@ TEST(ResourceLoading, Index)
 
 	ASSERT_EQ(web::HTTPParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str());
 }
+
+TEST(ResourceLoading, PageMD)
+{
+	streams::IOSocketStream stream = utility::createSocketStream();
+	std::string html;
+	std::string md;
+
+	{
+		std::string request = web::HTTPBuilder().getRequest().parameters("page.html").build();
+		std::string response;
+
+		stream << request;
+
+		stream >> response;
+
+		html = web::HTTPParser(response).getBody();
+	}
+
+	{
+		std::string request = web::HTTPBuilder().getRequest().parameters("page.md").build();
+		std::string response;
+
+		stream << request;
+
+		stream >> response;
+
+		md = web::HTTPParser(response).getBody();
+	}
+
+	ASSERT_EQ(html, md) << html << std::endl << md;
+}
