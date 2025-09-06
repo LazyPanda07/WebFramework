@@ -20,9 +20,9 @@ build_cmake_library(
 )
 
 if (UNIX)
-	list(APPEND ADDITIONAL_LIBS cmark-gfm_static)
-else()
 	list(APPEND ADDITIONAL_LIBS cmark-gfm)
+else()
+	list(APPEND ADDITIONAL_LIBS cmark-gfm_static)
 endif()
 
 list(APPEND ADDITIONAL_INCLUDES ${CMARK_BUILD_CMARK_INSTALL_PREFIX}/include)
