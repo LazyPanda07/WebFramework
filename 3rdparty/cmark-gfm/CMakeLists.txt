@@ -19,7 +19,12 @@ build_cmake_library(
 	CMARK_BUILD_ARGUMENTS
 )
 
-list(APPEND ADDITIONAL_LIBS cmark-gfm_static)
+if (UNIX)
+	list(APPEND ADDITIONAL_LIBS cmark-gfm_static)
+else()
+	list(APPEND ADDITIONAL_LIBS cmark-gfm)
+endif()
+
 list(APPEND ADDITIONAL_INCLUDES ${CMARK_BUILD_CMARK_INSTALL_PREFIX}/include)
 list(APPEND ADDITIONAL_LIB_DIRS ${CMARK_BUILD_CMARK_INSTALL_PREFIX}/lib)
 
