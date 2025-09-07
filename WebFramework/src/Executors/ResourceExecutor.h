@@ -35,15 +35,15 @@ namespace framework
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
 		WFDPRenderer wfdpRenderer;
-		MDRenderer mdRenderer;
+		// MDRenderer mdRenderer;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		file_manager::FileManager& fileManager;
+		std::unordered_map<std::string_view, std::unique_ptr<StaticFileRenderer>> staticRenderers;
 
 	private:
-		/// <summary>
-		/// Load all .htmls from WebFrameworkAssets/Errors
-		/// </summary>
 		void loadHTMLErrorsData();
+
+		void loadRenderers();
 
 		void readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 

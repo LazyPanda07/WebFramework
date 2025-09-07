@@ -150,6 +150,7 @@
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
+    <ClCompile Include="src\Rendering\StaticFileRenderer.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
     <ClInclude Include="src\Rendering\MDRenderer.h" />
+    <ClInclude Include="src\Rendering\StaticFileRenderer.h" />
     <ClInclude Include="src\Rendering\WFDPRenderer.h" />
     <ClInclude Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />

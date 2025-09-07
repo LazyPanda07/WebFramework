@@ -32,14 +32,16 @@ namespace framework
 		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(allErrorsFolder / web_framework_assets::badGateway);
 	}
 
+	void ResourceExecutor::loadRenderers()
+	{
+		unique_ptr<StaticFileRenderer> mdRenderer = make_unique<MDRenderer>();
+
+		staticRenderers.try_emplace(mdRenderer->getExtension(), move(mdRenderer));
+	}
+
 	void ResourceExecutor::readFile(filesystem::path extension, string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
 	{
 		result = handle->readAllData();
-
-		if (extension == markdownExtension)
-		{
-			result = mdRenderer.render(result);
-		}
 
 		if (result.empty())
 		{
@@ -71,6 +73,7 @@ namespace framework
 		}
 
 		this->loadHTMLErrorsData();
+		this->loadRenderers();
 	}
 
 	void ResourceExecutor::sendStaticFile(string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, string_view fileName)
@@ -90,6 +93,8 @@ namespace framework
 			Log::info("Request static file: {}, is binary: {}", "LogResource", filePath, isBinary);
 		}
 
+		auto renderer = staticRenderers.find(extension.string());
+
 		if (isBinary)
 		{
 			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
@@ -102,6 +107,11 @@ namespace framework
 		if (fileName.size())
 		{
 			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName).data());
+		}
+
+		if (renderer != staticRenderers.end())
+		{
+			result = renderer->second->render(result);
 		}
 
 		response.setBody(result.data());

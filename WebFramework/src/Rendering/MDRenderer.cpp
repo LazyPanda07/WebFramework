@@ -2,6 +2,8 @@
 
 #include <cmark-gfm.h>
 
+#include "WebFrameworkCoreConstants.h"
+
 using namespace std;
 
 namespace framework
@@ -18,5 +20,10 @@ namespace framework
 		}
 
 		return result;
+	}
+
+	string_view MDRenderer::getExtension() const
+	{
+		return markdownExtension;
 	}
 }
