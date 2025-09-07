@@ -59,7 +59,6 @@ add_library(
 	WebFramework/src/Rendering/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp
 	WebFramework/src/Rendering/MDRenderer.cpp
-	WebFramework/src/Rendering/StaticFileRenderer.cpp
 	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp

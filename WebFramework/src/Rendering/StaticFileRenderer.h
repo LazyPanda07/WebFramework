@@ -14,12 +14,3 @@ namespace framework
 		virtual ~StaticFileRenderer() = default;
 	};
 }
-
-namespace std
-{
-	template<>
-	struct hash<framework::StaticFileRenderer>
-	{
-		size_t operator ()(const framework::StaticFileRenderer& renderer) const noexcept;
-	};
-}

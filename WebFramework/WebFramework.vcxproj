@@ -150,7 +150,6 @@
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
-    <ClCompile Include="src\Rendering\StaticFileRenderer.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
