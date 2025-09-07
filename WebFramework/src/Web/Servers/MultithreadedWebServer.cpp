@@ -24,7 +24,7 @@ using namespace std;
 
 namespace framework
 {
-	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup) //-V688
+	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup)
 	{
 		SSL* ssl = nullptr;
 
@@ -79,11 +79,6 @@ namespace framework
 		{
 			try
 			{
-				while (largeBodyHandler.isRunning())
-				{
-					this_thread::sleep_for(1s);
-				}
-
 				HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 
 				response.setDefault();
