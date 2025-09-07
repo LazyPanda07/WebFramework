@@ -19,46 +19,13 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 ### Linux
 * uuid-dev
 
-### Samples
+## Samples
 [Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 8.0, Python
 
-## Windows
-### Build
-1. Visual Studio
-* Create ```build``` directory
-* Run command from ```build``` directory
-```cmd
-cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+## Build
+```console
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary .. && cmake --build . -j --config Release && cmake --install . --config Release
 ```
-* Open ```build\WebFramework.sln```
-* Select ```Release``` configuration
-* In ```Solution Explorer``` build INSTALL project(expand ```CMakePredefinedTargets```)
-* ```WebFramework``` will be installed in ```WebFrameworkLibrary``` directory in project directory
-
-2. NMake
-* Create ```build``` directory
-* Run command from ```build``` directory
-```cmd
-cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "NMake Makefiles" .. && nmake install
-```
-***NMake doesn't support multithreaded builds***
-* ```WebFramework``` will be installed in ```WebFrameworkLibrary``` directory in project directory
-
-## Linux
-### Build
-* Create ```build``` directory
-* Run command from ```build``` directory
-```bash
-cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary .. && make install -j $(nproc)
-```
-* ```WebFramework``` will be installed in ```WebFrameworkLibrary``` directory in project directory
 
 ## Getting Started Application
 [Simple example of web application with ```WebFramework```](https://github.com/LazyPanda07/WebFramework/wiki/WebFramework-getting-started)
-
-## WebFramework Reference
-[Reference link](https://lazypanda07.github.io/WebFramework/)
-
-## SAST Tools
-
-[PVS-Studio](https://pvs-studio.com/en/pvs-studio/?utm_source=website&utm_medium=github&utm_campaign=open_source) - static analyzer for C, C++, C#, and Java code.
