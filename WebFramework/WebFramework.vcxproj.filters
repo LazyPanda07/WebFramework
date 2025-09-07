@@ -33,13 +33,13 @@
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp">
+    <ClCompile Include="src\Rendering\WFDPRenderer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp">
+    <ClCompile Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp">
@@ -150,6 +150,9 @@
     <ClCompile Include="src\Utility\SegfaultHandler.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Rendering\MDRenderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Framework\WebFramework.h">
@@ -173,13 +176,13 @@
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h">
+    <ClInclude Include="src\Rendering\WFDPRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h">
+    <ClInclude Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h">
@@ -294,6 +297,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\SegfaultHandler.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\MDRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

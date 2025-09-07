@@ -11,7 +11,7 @@
 
 namespace framework
 {
-	class WebFrameworkDynamicPages
+	class WFDPRenderer
 	{
 	private:
 		struct ExecutionUnit
@@ -38,7 +38,7 @@ namespace framework
 		std::string execute(const std::vector<ExecutionUnit>& codes);
 
 	public:
-		WebFrameworkDynamicPages(const std::filesystem::path& pathToTemplates);
+		WFDPRenderer(const std::filesystem::path& pathToTemplates);
 
 		void run(std::span<const interfaces::CVariable> variables, std::string& source);
 
@@ -50,6 +50,6 @@ namespace framework
 
 		const std::filesystem::path& getPathToTemplates() const;
 
-		~WebFrameworkDynamicPages() = default;
+		~WFDPRenderer() = default;
 	};
 }

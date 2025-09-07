@@ -56,8 +56,9 @@ endif ()
 
 add_library(
 	${PROJECT_NAME} SHARED
-	WebFramework/src/DynamicPages/StandardWebFrameworkDynamicPagesFunctions.cpp
-	WebFramework/src/DynamicPages/WebFrameworkDynamicPages.cpp
+	WebFramework/src/Rendering/StandardWebFrameworkDynamicPagesFunctions.cpp
+	WebFramework/src/Rendering/WFDPRenderer.cpp
+	WebFramework/src/Rendering/MDRenderer.cpp
 	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp

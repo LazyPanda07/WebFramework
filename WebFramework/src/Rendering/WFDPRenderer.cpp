@@ -1,4 +1,4 @@
-#include "WebFrameworkDynamicPages.h"
+#include "WFDPRenderer.h"
 
 #include "Strings.h"
 #include "Log.h"
@@ -15,19 +15,19 @@ static constexpr string_view argumentsDelimiter = "</arg>";
 
 namespace framework
 {
-	WebFrameworkDynamicPages::ExecutionUnit::ExecutionUnit(string&& functionName, vector<string>&& arguments) noexcept :
+	WFDPRenderer::ExecutionUnit::ExecutionUnit(string&& functionName, vector<string>&& arguments) noexcept :
 		functionName(move(functionName)),
 		arguments(move(arguments))
 	{
 
 	}
 
-	void WebFrameworkDynamicPages::clear(string& code)
+	void WFDPRenderer::clear(string& code)
 	{
 		code.erase(remove_if(code.begin(), code.end(), [](const char& c) { return iscntrl(c) || isspace(c); }), code.end());
 	}
 
-	void WebFrameworkDynamicPages::separateArguments(string& code)
+	void WFDPRenderer::separateArguments(string& code)
 	{
 		bool stringArgument = false;
 
@@ -56,7 +56,7 @@ namespace framework
 		}
 	}
 
-	string WebFrameworkDynamicPages::insertVariables(span<const interfaces::CVariable> variables, string code)
+	string WFDPRenderer::insertVariables(span<const interfaces::CVariable> variables, string code)
 	{
 		auto findVariable = [&variables](string_view name) -> string_view
 			{
@@ -93,7 +93,7 @@ namespace framework
 		return code;
 	}
 
-	vector<WebFrameworkDynamicPages::ExecutionUnit> WebFrameworkDynamicPages::preExecute(string_view code)
+	vector<WFDPRenderer::ExecutionUnit> WFDPRenderer::preExecute(string_view code)
 	{
 		vector<ExecutionUnit> result;
 		size_t startLine = 0;
@@ -127,7 +127,7 @@ namespace framework
 		return result;
 	}
 
-	string WebFrameworkDynamicPages::execute(const vector<ExecutionUnit>& codes)
+	string WFDPRenderer::execute(const vector<ExecutionUnit>& codes)
 	{
 		string result;
 
@@ -141,7 +141,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::error("WebFrameworkDynamicPages execute exception: {}", "LogWebFrameworkDynamicPages", e.what());
+					Log::error("WFDPRenderer execute exception: {}", "LogWebFrameworkDynamicPages", e.what());
 				}
 
 				throw;
@@ -151,7 +151,7 @@ namespace framework
 		return result;
 	}
 
-	WebFrameworkDynamicPages::WebFrameworkDynamicPages(const filesystem::path& pathToTemplates) :
+	WFDPRenderer::WFDPRenderer(const filesystem::path& pathToTemplates) :
 		pathToTemplates(pathToTemplates)
 	{
 		dynamicPagesFunctions.try_emplace("print", print);
@@ -159,7 +159,7 @@ namespace framework
 		dynamicPagesFunctions.try_emplace("for", bind(forWFDP, placeholders::_1, ref(dynamicPagesFunctions)));
 	}
 
-	void WebFrameworkDynamicPages::run(span<const interfaces::CVariable> variables, string& source)
+	void WFDPRenderer::run(span<const interfaces::CVariable> variables, string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
 
@@ -174,16 +174,16 @@ namespace framework
 
 			string code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);
 
-			WebFrameworkDynamicPages::clear(code);
+			WFDPRenderer::clear(code);
 
-			WebFrameworkDynamicPages::separateArguments(code);
+			WFDPRenderer::separateArguments(code);
 
 			if (variables.size())
 			{
-				code = WebFrameworkDynamicPages::insertVariables(variables, code);
+				code = WFDPRenderer::insertVariables(variables, code);
 			}
 
-			source.replace(source.begin() + nextSectionStart, source.begin() + nextSectionEnd + 2, this->execute(WebFrameworkDynamicPages::preExecute(code)));
+			source.replace(source.begin() + nextSectionStart, source.begin() + nextSectionEnd + 2, this->execute(WFDPRenderer::preExecute(code)));
 
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
 		}
@@ -194,12 +194,12 @@ namespace framework
 		}
 	}
 
-	void WebFrameworkDynamicPages::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
+	void WFDPRenderer::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
 		dynamicPagesFunctions.emplace(functionName, move(function));
 	}
 
-	void WebFrameworkDynamicPages::unregisterDynamicFunction(string_view functionName)
+	void WFDPRenderer::unregisterDynamicFunction(string_view functionName)
 	{
 		if (auto it = dynamicPagesFunctions.find(functionName); it != dynamicPagesFunctions.end())
 		{
@@ -207,12 +207,12 @@ namespace framework
 		}
 	}
 
-	bool WebFrameworkDynamicPages::isDynamicFunctionRegistered(string_view functionName)
+	bool WFDPRenderer::isDynamicFunctionRegistered(string_view functionName)
 	{
 		return dynamicPagesFunctions.find(functionName) != dynamicPagesFunctions.end();
 	}
 
-	const filesystem::path& WebFrameworkDynamicPages::getPathToTemplates() const
+	const filesystem::path& WFDPRenderer::getPathToTemplates() const
 	{
 		return pathToTemplates;
 	}

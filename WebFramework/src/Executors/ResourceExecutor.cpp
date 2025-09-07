@@ -1,7 +1,5 @@
 #include "ResourceExecutor.h"
 
-#include <cmark-gfm.h>
-
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
@@ -40,11 +38,7 @@ namespace framework
 
 		if (extension == markdownExtension)
 		{
-			char* temp = cmark_markdown_to_html(result.data(), result.size(), CMARK_OPT_UNSAFE);
-
-			result = temp;
-
-			free(temp);
+			result = mdRenderer.render(result);
 		}
 
 		if (result.empty())
@@ -61,7 +55,7 @@ namespace framework
 			webFrameworkDefaultAssests
 		),
 		assets(additionalSettings.assetsPath),
-		dynamicPages(additionalSettings.templatesPath),
+		wfdpRenderer(additionalSettings.templatesPath),
 		fileManager(file_manager::FileManager::getInstance(threadPool))
 	{
 		fileManager.getCache().setCacheSize(additionalSettings.cachingSize);
@@ -71,9 +65,9 @@ namespace framework
 			filesystem::create_directories(assets);
 		}
 
-		if (!filesystem::exists(dynamicPages.getPathToTemplates()))
+		if (!filesystem::exists(wfdpRenderer.getPathToTemplates()))
 		{
-			filesystem::create_directories(dynamicPages.getPathToTemplates());
+			filesystem::create_directories(wfdpRenderer.getPathToTemplates());
 		}
 
 		this->loadHTMLErrorsData();
@@ -139,7 +133,7 @@ namespace framework
 			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 
-		dynamicPages.run(variables, result);
+		wfdpRenderer.run(variables, result);
 
 		if (fileName.size())
 		{
@@ -151,17 +145,17 @@ namespace framework
 
 	void ResourceExecutor::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
-		dynamicPages.registerDynamicFunction(functionName, move(function));
+		wfdpRenderer.registerDynamicFunction(functionName, move(function));
 	}
 
 	void ResourceExecutor::unregisterDynamicFunction(string_view functionName)
 	{
-		dynamicPages.unregisterDynamicFunction(functionName);
+		wfdpRenderer.unregisterDynamicFunction(functionName);
 	}
 
 	bool ResourceExecutor::isDynamicFunctionRegistered(string_view functionName)
 	{
-		return dynamicPages.isDynamicFunctionRegistered(functionName);
+		return wfdpRenderer.isDynamicFunctionRegistered(functionName);
 	}
 
 	const filesystem::path& ResourceExecutor::getPathToAssets() const

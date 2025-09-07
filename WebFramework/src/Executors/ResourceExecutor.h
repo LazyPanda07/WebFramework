@@ -9,8 +9,9 @@
 #include "FileManager.h"
 
 #include "Framework/WebFrameworkPlatform.h"
-#include "DynamicPages/WebFrameworkDynamicPages.h"
-#include <Utility/AdditionalServerSettings.h>
+#include "Rendering/WFDPRenderer.h"
+#include "Rendering/MDRenderer.h"
+#include "Utility/AdditionalServerSettings.h"
 
 namespace framework
 {
@@ -33,7 +34,8 @@ namespace framework
 	private:
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
-		WebFrameworkDynamicPages dynamicPages;
+		WFDPRenderer wfdpRenderer;
+		MDRenderer mdRenderer;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		file_manager::FileManager& fileManager;
 

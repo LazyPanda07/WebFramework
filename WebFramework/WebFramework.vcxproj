@@ -149,6 +149,7 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
+    <ClCompile Include="src\Rendering\MDRenderer.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
@@ -158,8 +159,8 @@
     <ClCompile Include="src\Web\HTTPRequestImplementation.cpp" />
     <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
-    <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
-    <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
+    <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
+    <ClCompile Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
@@ -192,8 +193,9 @@
     <ClInclude Include="src\Executors\CXXExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
-    <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
-    <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h" />
+    <ClInclude Include="src\Rendering\MDRenderer.h" />
+    <ClInclude Include="src\Rendering\WFDPRenderer.h" />
+    <ClInclude Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
