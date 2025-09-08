@@ -47,4 +47,4 @@ void HelloExecutor::doConnect(framework::HTTPRequest& request, framework::HTTPRe
 	this->doGet(request, response);
 }
 
-DECLARE_EXECUTOR(HelloExecutor)
+DEFINE_EXECUTOR(HelloExecutor)

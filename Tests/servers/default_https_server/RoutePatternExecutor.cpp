@@ -11,4 +11,4 @@ void RoutePatternExecutor::doGet(framework::HTTPRequest& request, framework::HTT
 	);
 }
 
-DECLARE_EXECUTOR(RoutePatternExecutor)
+DEFINE_EXECUTOR(RoutePatternExecutor)

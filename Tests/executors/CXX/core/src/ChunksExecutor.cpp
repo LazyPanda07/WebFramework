@@ -12,4 +12,4 @@ void ChunksExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResp
 	request.sendFileChunks<TextGenerator>(response, "file.txt", "Some information here");
 }
 
-DECLARE_EXECUTOR(ChunksExecutor)
+DEFINE_EXECUTOR(ChunksExecutor)

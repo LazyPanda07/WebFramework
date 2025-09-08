@@ -13,9 +13,9 @@ typedef struct
 
 static const char* generate(void* data);
 
-DECLARE_DEFAULT_EXECUTOR(ChunksExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(ChunksExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
-DECLARE_EXECUTOR_METHOD(ChunksExecutor, GET_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(ChunksExecutor, GET_METHOD, request, response)
 {
 	TextGenerator generator =
 	{
@@ -27,7 +27,7 @@ DECLARE_EXECUTOR_METHOD(ChunksExecutor, GET_METHOD, request, response)
 	sendChunks(request, response, generate, &generator);
 }
 
-DECLARE_EXECUTOR_METHOD(ChunksExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(ChunksExecutor, POST_METHOD, request, response)
 {
 	TextGenerator generator =
 	{

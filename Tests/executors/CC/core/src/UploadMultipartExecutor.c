@@ -1,8 +1,8 @@
 #include <APIExecutors/BaseExecutor.h>
 
-DECLARE_DEFAULT_EXECUTOR(UploadMultipartExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR)
+DEFINE_DEFAULT_EXECUTOR(UploadMultipartExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR)
 
-DECLARE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 {
 	Multipart* multiparts = NULL;
 	size_t size;

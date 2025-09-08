@@ -4,9 +4,9 @@
 #include <JSONParser.h>
 #include <Utility/WebFrameworkLocalization.h>
 
-DECLARE_DEFAULT_EXECUTOR(LocalizationExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(LocalizationExecutor, STATELESS_EXECUTOR);
 
-DECLARE_EXECUTOR_METHOD(LocalizationExecutor, GET_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(LocalizationExecutor, GET_METHOD, request, response)
 {
 	JSONBuilder builder;
 	JSONParser parser;

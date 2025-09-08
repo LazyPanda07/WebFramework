@@ -5,4 +5,4 @@ void UserAgentExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 	response.setBody("ok");
 }
 
-DECLARE_EXECUTOR(UserAgentExecutor)
+DEFINE_EXECUTOR(UserAgentExecutor)

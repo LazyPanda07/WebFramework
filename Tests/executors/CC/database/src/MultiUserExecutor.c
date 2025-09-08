@@ -11,16 +11,16 @@ typedef struct
 	WebFrameworkString uuid;
 } MultiUserExecutor;
 
-DECLARE_EXECUTOR(MultiUserExecutor, HEAVY_OPERATION_STATEFUL_EXECUTOR);
+DEFINE_EXECUTOR(MultiUserExecutor, HEAVY_OPERATION_STATEFUL_EXECUTOR);
 
-DECLARE_EXECUTOR_INIT(MultiUserExecutor)
+DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
 
 	generateUUID(&self->uuid);
 }
 
-DECLARE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
 	Table table;
@@ -49,7 +49,7 @@ DECLARE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	deleteSQLResult(table, result);
 }
 
-DECLARE_EXECUTOR_METHOD(MultiUserExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(MultiUserExecutor, POST_METHOD, request, response)
 {
 	Database database;
 	Table table;
@@ -58,7 +58,7 @@ DECLARE_EXECUTOR_METHOD(MultiUserExecutor, POST_METHOD, request, response)
 	getOrCreateTable(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
 }
 
-DECLARE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
 	Table table;
@@ -92,7 +92,7 @@ DECLARE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 	free(values);
 }
 
-DECLARE_EXECUTOR_DESTROY(MultiUserExecutor)
+DEFINE_EXECUTOR_DESTROY(MultiUserExecutor)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
 

@@ -15,4 +15,4 @@ void UploadChunkedExecutor::doPost(framework::HTTPRequest& request, framework::H
 	response.setBody("Finish uploading file");
 }
 
-DECLARE_EXECUTOR(UploadChunkedExecutor)
+DEFINE_EXECUTOR(UploadChunkedExecutor)

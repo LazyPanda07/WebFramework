@@ -36,7 +36,7 @@ typedef enum LoadType
 * Used for loading function that creates BaseExecutor subclass
 * @param structName Already defined struct name
 */
-#define DECLARE_EXECUTOR(structName, executorType) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##structName##CCInstance()	\
+#define DEFINE_EXECUTOR(structName, executorType) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##structName##CCInstance()	\
 {	\
 	return malloc(sizeof(structName));	\
 }	\
@@ -56,7 +56,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDeleteExecutor##structNa
 * Used for loading function that creates BaseExecutor subclass
 * @param structName Create empty struct for stateless executors
 */
-#define DECLARE_DEFAULT_EXECUTOR(structName, executorType) typedef struct { char _; } structName; DECLARE_EXECUTOR(structName, executorType)
+#define DEFINE_DEFAULT_EXECUTOR(structName, executorType) typedef struct { char _; } structName; DEFINE_EXECUTOR(structName, executorType)
 
 typedef enum Methods
 {
@@ -71,11 +71,11 @@ typedef enum Methods
 	CONNECT_METHOD,
 } Methods_t;
 
-#define DECLARE_EXECUTOR_METHOD(structName, method, requestVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##structName(Executor executor, HTTPRequest requestVariableName, HTTPResponse responseVariableName)
+#define DEFINE_EXECUTOR_METHOD(structName, method, requestVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##structName(Executor executor, HTTPRequest requestVariableName, HTTPResponse responseVariableName)
 
-#define DECLARE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(Executor executor, ExecutorSettings settings)
+#define DEFINE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(Executor executor, ExecutorSettings settings)
 
-#define DECLARE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(Executor executor)
+#define DEFINE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(Executor executor)
 
 WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result);
 

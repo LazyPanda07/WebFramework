@@ -132,7 +132,7 @@ namespace framework
 * Macro for each BaseExecutor subclass
 * Used for loading function that creates BaseExecutor subclass
 */
-#define DECLARE_EXECUTOR(subclassName) EXPORT_EXECUTOR_FUNCTION void* create##subclassName##Instance()	\
+#define DEFINE_EXECUTOR(subclassName) EXPORT_EXECUTOR_FUNCTION void* create##subclassName##Instance()	\
 {	\
 	return new subclassName();	\
 }

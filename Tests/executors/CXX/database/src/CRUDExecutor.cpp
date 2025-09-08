@@ -97,4 +97,4 @@ void CRUDExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResp
 	request.getDatabase("test_database").getTable("test_table").execute("DROP TABLE test_table", {});
 }
 
-DECLARE_EXECUTOR(CRUDExecutor)
+DEFINE_EXECUTOR(CRUDExecutor)

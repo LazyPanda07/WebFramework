@@ -10,9 +10,9 @@
 
 static int64_t getProcessId();
 
-DECLARE_DEFAULT_EXECUTOR(IdExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(IdExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
-DECLARE_EXECUTOR_METHOD(IdExecutor, GET_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(IdExecutor, GET_METHOD, request, response)
 {
 	JSONBuilder builder = NULL;
 	struct timespec duration = { 10, 0 };

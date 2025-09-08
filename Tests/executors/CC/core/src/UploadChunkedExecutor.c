@@ -1,8 +1,8 @@
 #include <APIExecutors/BaseExecutor.h>
 
-DECLARE_DEFAULT_EXECUTOR(UploadChunkedExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(UploadChunkedExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
-DECLARE_EXECUTOR_METHOD(UploadChunkedExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(UploadChunkedExecutor, POST_METHOD, request, response)
 {
 	const char* fileName;
 	HTTPChunk* chunks;

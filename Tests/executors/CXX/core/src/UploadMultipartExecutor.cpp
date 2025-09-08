@@ -16,4 +16,4 @@ void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework:
 	response.setBody("Finish uploading files");
 }
 
-DECLARE_EXECUTOR(UploadMultipartExecutor)
+DEFINE_EXECUTOR(UploadMultipartExecutor)

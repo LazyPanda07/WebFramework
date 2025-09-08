@@ -14,4 +14,4 @@ void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTT
 	);
 }
 
-DECLARE_EXECUTOR(LocalizationExecutor)
+DEFINE_EXECUTOR(LocalizationExecutor)

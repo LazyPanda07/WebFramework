@@ -2,13 +2,13 @@
 
 #include <signal.h>
 
-DECLARE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR);
 
 static const char* customFunction(const char** args, size_t agumentsNumber);
 
 static void deleter(char* ptr);
 
-DECLARE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 {
 	JSONParser parser;
 	const char* fileName;
@@ -54,12 +54,12 @@ DECLARE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 	free(fullName);
 }
 
-DECLARE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
 {
 	registerWFDPFunction(request, "customFunction", customFunction, deleter);
 }
 
-DECLARE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 {
 	unregisterWFDPFunction(request, "customFunction");
 }

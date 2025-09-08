@@ -5,9 +5,9 @@
 
 #include "SQLUtility.h"
 
-DECLARE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR);
 
-DECLARE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 {
 	Database database;
 	Table table;
@@ -36,7 +36,7 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	deleteSQLResult(table, result);
 }
 
-DECLARE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
 {
 	Database database;
 	Table table;
@@ -54,7 +54,7 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
 	);
 }
 
-DECLARE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 {
 	Database database;
 	Table table;
@@ -91,7 +91,7 @@ DECLARE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 	free(values);
 }
 
-DECLARE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 {
 	Database database;
 	Table table;

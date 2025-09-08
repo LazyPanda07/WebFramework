@@ -49,4 +49,4 @@ void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRe
 	);
 }
 
-DECLARE_EXECUTOR(MultiUserExecutor)
+DEFINE_EXECUTOR(MultiUserExecutor)

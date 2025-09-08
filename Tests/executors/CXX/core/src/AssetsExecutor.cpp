@@ -35,4 +35,4 @@ void AssetsExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPRe
 	request.unregisterWFDPFunction("customFunction");
 }
 
-DECLARE_EXECUTOR(AssetsExecutor)
+DEFINE_EXECUTOR(AssetsExecutor)

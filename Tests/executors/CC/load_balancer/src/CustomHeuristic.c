@@ -11,16 +11,16 @@ typedef struct
 	uint64_t id;
 } CustomHeuristic;
 
-DECLARE_HEURISTIC(CustomHeuristic);
+DEFINE_HEURISTIC(CustomHeuristic);
 
-DECLARE_HEURISTIC_INIT(CustomHeuristic)
+DEFINE_HEURISTIC_INIT(CustomHeuristic)
 {
 	CustomHeuristic* self = (CustomHeuristic*)heuristic;
 
 	self->id = getId();
 }
 
-DECLARE_HEURISTIC_FUNCTION(CustomHeuristic)
+DEFINE_HEURISTIC_FUNCTION(CustomHeuristic)
 {
 	CustomHeuristic* self = (CustomHeuristic*)heuristic;
 

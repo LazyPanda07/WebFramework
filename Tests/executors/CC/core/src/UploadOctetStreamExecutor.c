@@ -6,9 +6,9 @@ typedef struct
 	int64_t currentSize;
 } UploadOctetStreamExecutor;
 
-DECLARE_EXECUTOR(UploadOctetStreamExecutor, STATEFUL_EXECUTOR);
+DEFINE_EXECUTOR(UploadOctetStreamExecutor, STATEFUL_EXECUTOR);
 
-DECLARE_EXECUTOR_INIT(UploadOctetStreamExecutor)
+DEFINE_EXECUTOR_INIT(UploadOctetStreamExecutor)
 {
 	UploadOctetStreamExecutor* self = (UploadOctetStreamExecutor*)executor;
 
@@ -16,7 +16,7 @@ DECLARE_EXECUTOR_INIT(UploadOctetStreamExecutor)
 	self->currentSize = 0;
 }
 
-DECLARE_EXECUTOR_METHOD(UploadOctetStreamExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(UploadOctetStreamExecutor, POST_METHOD, request, response)
 {
 	UploadOctetStreamExecutor* self = (UploadOctetStreamExecutor*)executor;
 	const char* contentLength = NULL;

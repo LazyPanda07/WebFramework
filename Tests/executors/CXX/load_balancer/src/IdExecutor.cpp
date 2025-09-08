@@ -32,4 +32,4 @@ int64_t getProcessId()
 #endif
 }
 
-DECLARE_EXECUTOR(IdExecutor)
+DEFINE_EXECUTOR(IdExecutor)

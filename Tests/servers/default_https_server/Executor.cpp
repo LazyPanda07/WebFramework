@@ -5,4 +5,4 @@ void Executor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& r
 	response.setBody(framework::JSONBuilder().append("data", "data"));
 }
 
-DECLARE_EXECUTOR(Executor)
+DEFINE_EXECUTOR(Executor)

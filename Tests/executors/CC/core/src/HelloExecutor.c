@@ -6,11 +6,11 @@ typedef struct
 	int64_t number;
 } HelloExecutor;
 
-DECLARE_EXECUTOR(HelloExecutor, STATELESS_EXECUTOR);
+DEFINE_EXECUTOR(HelloExecutor, STATELESS_EXECUTOR);
 
 static void service(Executor executor, HTTPResponse response);
 
-DECLARE_EXECUTOR_INIT(HelloExecutor)
+DEFINE_EXECUTOR_INIT(HelloExecutor)
 {
 	HelloExecutor* self = (HelloExecutor*)executor;
 	JSONParser parser = NULL;
@@ -20,37 +20,37 @@ DECLARE_EXECUTOR_INIT(HelloExecutor)
 	getJSONParserInteger(parser, "number", true, &self->number);
 }
 
-DECLARE_EXECUTOR_METHOD(HelloExecutor, GET_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(HelloExecutor, GET_METHOD, request, response)
 {
 	service(executor, response);
 }
 
-DECLARE_EXECUTOR_METHOD(HelloExecutor, POST_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(HelloExecutor, POST_METHOD, request, response)
 {
 	service(executor, response);
 }
 
-DECLARE_EXECUTOR_METHOD(HelloExecutor, HEAD_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(HelloExecutor, HEAD_METHOD, request, response)
 {
 	service(executor, response);
 }
 
-DECLARE_EXECUTOR_METHOD(HelloExecutor, PUT_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(HelloExecutor, PUT_METHOD, request, response)
 {
 	service(executor, response);
 }
 
-DECLARE_EXECUTOR_METHOD(HelloExecutor, DELETE_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(HelloExecutor, DELETE_METHOD, request, response)
 {
 	service(executor, response);
 }
 
-DECLARE_EXECUTOR_METHOD(HelloExecutor, PATCH_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(HelloExecutor, PATCH_METHOD, request, response)
 {
 	service(executor, response);
 }
 
-DECLARE_EXECUTOR_METHOD(HelloExecutor, CONNECT_METHOD, request, response)
+DEFINE_EXECUTOR_METHOD(HelloExecutor, CONNECT_METHOD, request, response)
 {
 	service(executor, response);
 }

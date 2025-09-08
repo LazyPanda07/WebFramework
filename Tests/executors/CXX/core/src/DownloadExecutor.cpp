@@ -5,4 +5,4 @@ void DownloadExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRes
 	request.streamFile("index.html", response, "index.html");
 }
 
-DECLARE_EXECUTOR(DownloadExecutor)
+DEFINE_EXECUTOR(DownloadExecutor)

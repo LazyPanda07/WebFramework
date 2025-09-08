@@ -23,4 +23,4 @@ uint64_t getId()
 	return id++;
 }
 
-DECLARE_HEURISTIC(CustomHeuristic)
+DEFINE_HEURISTIC(CustomHeuristic)

@@ -33,4 +33,4 @@ void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framewor
 	}
 }
 
-DECLARE_EXECUTOR(UploadOctetStreamExecutor)
+DEFINE_EXECUTOR(UploadOctetStreamExecutor)
