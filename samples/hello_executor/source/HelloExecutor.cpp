@@ -7,5 +7,5 @@ namespace executors
 		response.setBody(framework::JSONBuilder().append("message", "Hello, World!"));
 	}
 
-	DECLARE_EXECUTOR(HelloExecutor);
+	DEFINE_EXECUTOR(HelloExecutor);
 }

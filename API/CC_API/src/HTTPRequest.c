@@ -193,9 +193,9 @@ WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader_t** 
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*getHTTPHeader_ts)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
+	typedef void (*getHTTPHeaders)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader_ts, __initHeadersBuffer, __addHeader, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeaders, __initHeadersBuffer, __addHeader, result, &exception);
 
 	if (exception)
 	{
@@ -227,9 +227,9 @@ WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* head
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPHeader_t)(void* implementation, const char* headerName, void** exception);
+	typedef const char* (*getHTTPHeader)(void* implementation, const char* headerName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader_t, headerName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader, headerName, &exception);
 
 	return exception;
 }
@@ -460,9 +460,9 @@ WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk_t** re
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*getHTTPChunk_ts)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
+	typedef void (*getHTTPChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunk_ts, __initChunksBuffer, __addChunk, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunks, __initChunksBuffer, __addChunk, result, &exception);
 
 	if (exception)
 	{
