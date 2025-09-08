@@ -2,9 +2,9 @@
 
 static void __initQueryBuffer(size_t querySize, void* buffer)
 {
-	QueryParameter** temp = (QueryParameter**)buffer;
+	QueryParameter_t** temp = (QueryParameter_t**)buffer;
 
-	*temp = (QueryParameter*)malloc((querySize + 1) * sizeof(QueryParameter)); // + 1 uses as \0
+	*temp = (QueryParameter_t*)malloc((querySize + 1) * sizeof(QueryParameter_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -13,14 +13,14 @@ static void __initQueryBuffer(size_t querySize, void* buffer)
 		exit(1);
 	}
 
-	memset(&(*temp)[querySize], 0, sizeof(QueryParameter)); // fill with zeros last element
+	memset(&(*temp)[querySize], 0, sizeof(QueryParameter_t)); // fill with zeros last element
 }
 
 static void __initChunksBuffer(size_t size, void* buffer)
 {
-	HTTPChunk** temp = (HTTPChunk**)buffer;
+	HTTPChunk_t** temp = (HTTPChunk_t**)buffer;
 
-	*temp = (HTTPChunk*)malloc((size + 1) * sizeof(HTTPChunk)); // + 1 uses as \0
+	*temp = (HTTPChunk_t*)malloc((size + 1) * sizeof(HTTPChunk_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -29,14 +29,14 @@ static void __initChunksBuffer(size_t size, void* buffer)
 		exit(2);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(HTTPChunk)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(HTTPChunk_t)); // fill with zeros last element
 }
 
 static void __initHeadersBuffer(size_t size, void* buffer)
 {
-	HTTPHeader** temp = (HTTPHeader**)buffer;
+	HTTPHeader_t** temp = (HTTPHeader_t**)buffer;
 
-	*temp = (HTTPHeader*)malloc((size + 1) * sizeof(HTTPHeader)); // + 1 uses as \0
+	*temp = (HTTPHeader_t*)malloc((size + 1) * sizeof(HTTPHeader_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -45,14 +45,14 @@ static void __initHeadersBuffer(size_t size, void* buffer)
 		exit(3);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(HTTPHeader)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(HTTPHeader_t)); // fill with zeros last element
 }
 
 static void __initMultipartsBuffer(size_t size, void* buffer)
 {
-	Multipart** temp = (Multipart**)buffer;
+	Multipart_t** temp = (Multipart_t**)buffer;
 
-	*temp = (Multipart*)malloc((size + 1) * sizeof(Multipart)); // + 1 uses as \0
+	*temp = (Multipart_t*)malloc((size + 1) * sizeof(Multipart_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -61,14 +61,14 @@ static void __initMultipartsBuffer(size_t size, void* buffer)
 		exit(4);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(Multipart)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(Multipart_t)); // fill with zeros last element
 }
 
 static void __initCookiesBuffer(size_t size, void* buffer)
 {
-	Cookie** temp = (Cookie**)buffer;
+	Cookie_t** temp = (Cookie_t**)buffer;
 
-	*temp = (Cookie*)malloc((size + 1) * sizeof(Cookie)); // + 1 uses as \0
+	*temp = (Cookie_t*)malloc((size + 1) * sizeof(Cookie_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -77,12 +77,12 @@ static void __initCookiesBuffer(size_t size, void* buffer)
 		exit(5);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(Cookie)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(Cookie_t)); // fill with zeros last element
 }
 
 static void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
 {
-	QueryParameter* temp = *(QueryParameter**)buffer;
+	QueryParameter_t* temp = *(QueryParameter_t**)buffer;
 
 	temp[index].key = key;
 	temp[index].value = value;
@@ -90,7 +90,7 @@ static void __addQueryParameter(const char* key, const char* value, size_t index
 
 static void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
 {
-	HTTPChunk* temp = *(HTTPChunk**)buffer;
+	HTTPChunk_t* temp = *(HTTPChunk_t**)buffer;
 
 	temp[index].data = chunk;
 	temp[index].size = chunkSize;
@@ -98,7 +98,7 @@ static void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* 
 
 static void __addHeader(const char* key, const char* value, size_t index, void* buffer)
 {
-	HTTPHeader* temp = *(HTTPHeader**)buffer;
+	HTTPHeader_t* temp = *(HTTPHeader_t**)buffer;
 
 	temp[index].key = key;
 	temp[index].value = value;
@@ -106,7 +106,7 @@ static void __addHeader(const char* key, const char* value, size_t index, void* 
 
 static void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer)
 {
-	Multipart* temp = *(Multipart**)buffer;
+	Multipart_t* temp = *(Multipart_t**)buffer;
 
 	temp[index].name = name;
 	temp[index].fileName = fileName;
@@ -116,7 +116,7 @@ static void __addMultipart(const char* name, const char* fileName, const char* c
 
 static void __addCookie(const char* key, const char* value, size_t index, void* buffer)
 {
-	Cookie* temp = *(Cookie**)buffer;
+	Cookie_t* temp = *(Cookie_t**)buffer;
 
 	temp[index].key = key;
 	temp[index].value = value;
@@ -144,7 +144,7 @@ WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** met
 	return exception;
 }
 
-WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter** result, size_t* size)
+WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -157,15 +157,15 @@ WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParame
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(QueryParameter)];
-	QueryParameter* temp = *result;
+	uint8_t emptyBuffer[sizeof(QueryParameter_t)];
+	QueryParameter_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(QueryParameter));
+	memset(emptyBuffer, 0, sizeof(QueryParameter_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(QueryParameter)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(QueryParameter_t)))
 		{
 			*size = index;
 
@@ -189,28 +189,28 @@ WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkStr
 	return exception;
 }
 
-WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader** result, size_t* size)
+WebFrameworkException getHTTPHeader_ts(HTTPRequest implementation, HTTPHeader_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*getHTTPHeaders)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
+	typedef void (*getHTTPHeader_ts)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeaders, __initHeadersBuffer, __addHeader, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader_ts, __initHeadersBuffer, __addHeader, result, &exception);
 
 	if (exception)
 	{
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(HTTPHeader)];
-	HTTPHeader* temp = *result;
+	uint8_t emptyBuffer[sizeof(HTTPHeader_t)];
+	HTTPHeader_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(HTTPHeader));
+	memset(emptyBuffer, 0, sizeof(HTTPHeader_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPHeader)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPHeader_t)))
 		{
 			*size = index;
 
@@ -223,13 +223,13 @@ WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader** re
 	return exception;
 }
 
-WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* headerName, const char** result)
+WebFrameworkException getHTTPHeader_t(HTTPRequest implementation, const char* headerName, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPHeader)(void* implementation, const char* headerName, void** exception);
+	typedef const char* (*getHTTPHeader_t)(void* implementation, const char* headerName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader, headerName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader_t, headerName, &exception);
 
 	return exception;
 }
@@ -289,7 +289,7 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 	return exception;
 }
 
-WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, size_t* size)
+WebFrameworkException getCookies(HTTPRequest implementation, Cookie_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -302,15 +302,15 @@ WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, si
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(Cookie)];
-	Cookie* temp = *result;
+	uint8_t emptyBuffer[sizeof(Cookie_t)];
+	Cookie_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(Cookie));
+	memset(emptyBuffer, 0, sizeof(Cookie_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(Cookie)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(Cookie_t)))
 		{
 			*size = index;
 
@@ -323,7 +323,7 @@ WebFrameworkException getCookies(HTTPRequest implementation, Cookie** result, si
 	return exception;
 }
 
-WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** result, size_t* size)
+WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -336,15 +336,15 @@ WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart** resu
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(Multipart)];
-	Multipart* temp = *result;
+	uint8_t emptyBuffer[sizeof(Multipart_t)];
+	Multipart_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(Multipart));
+	memset(emptyBuffer, 0, sizeof(Multipart_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(Multipart)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(Multipart_t)))
 		{
 			*size = index;
 
@@ -368,13 +368,13 @@ WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData_t
 	return exception;
 }
 
-WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
+WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
 	WebFrameworkException exception = NULL;
 
 	typedef void (*sendAssetFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendAssetFile, filePath, response, variables, variablesSize, isBinary, fileName, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendAssetFile, filePath, response, variables, variablesSize, isBinary, fileName ? fileName : "", &exception);
 
 	return exception;
 }
@@ -385,18 +385,18 @@ WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* fil
 
 	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, bool isBinary, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, isBinary, fileName, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, isBinary, fileName ? fileName : "", &exception);
 
 	return exception;
 }
 
-WebFrameworkException sendWFDPFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable* variables, size_t variablesSize, bool isBinary, const char* fileName)
+WebFrameworkException sendWFDPFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
 	WebFrameworkException exception = NULL;
 
 	typedef void (*sendWFDPFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendWFDPFile, filePath, response, variables, variablesSize, isBinary, fileName, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendWFDPFile, filePath, response, variables, variablesSize, isBinary, fileName ? fileName : "", &exception);
 
 	return exception;
 }
@@ -456,28 +456,28 @@ WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser*
 	return exception;
 }
 
-WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk** result, size_t* size)
+WebFrameworkException getHTTPChunk_ts(HTTPRequest implementation, HTTPChunk_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*getHTTPChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
+	typedef void (*getHTTPChunk_ts)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunks, __initChunksBuffer, __addChunk, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunk_ts, __initChunksBuffer, __addChunk, result, &exception);
 
 	if (exception)
 	{
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(HTTPChunk)];
-	HTTPChunk* temp = *result;
+	uint8_t emptyBuffer[sizeof(HTTPChunk_t)];
+	HTTPChunk_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(HTTPChunk));
+	memset(emptyBuffer, 0, sizeof(HTTPChunk_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPChunk)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPChunk_t)))
 		{
 			*size = index;
 

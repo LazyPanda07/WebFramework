@@ -132,13 +132,13 @@ WebFrameworkException getSQLValueBlob(SQLValue implementation, const uint8_t** r
 	return exception;
 }
 
-WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueType* result)
+WebFrameworkException getSQLValueType(SQLValue implementation, SQLValueType_t* result)
 {
 	WebFrameworkException exception = NULL;
 
 	typedef int (*getSQLValueType)(void* implementation, void** exception);
 
-	*result = (SQLValueType)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getSQLValueType, &exception);
+	*result = (SQLValueType_t)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getSQLValueType, &exception);
 
 	return exception;
 }
