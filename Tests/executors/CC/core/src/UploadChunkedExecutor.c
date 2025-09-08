@@ -5,7 +5,7 @@ DEFINE_DEFAULT_EXECUTOR(UploadChunkedExecutor, HEAVY_OPERATION_STATELESS_EXECUTO
 DEFINE_EXECUTOR_METHOD(UploadChunkedExecutor, POST_METHOD, request, response)
 {
 	const char* fileName;
-	HTTPChunk* chunks;
+	HTTPChunk_t* chunks;
 	size_t size;
 
 	getHTTPHeader(request, "File-Name", &fileName);

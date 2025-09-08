@@ -18,7 +18,7 @@ void callback(const char** columnNames, const SQLValue* columnValues, size_t siz
 
 	for (size_t i = 0; i < size; i++)
 	{
-		SQLValueType type;
+		SQLValueType_t type;
 
 		getSQLValueType(columnValues[i], &type);
 

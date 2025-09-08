@@ -4,7 +4,7 @@ DEFINE_DEFAULT_EXECUTOR(UploadMultipartExecutor, HEAVY_OPERATION_STATELESS_EXECU
 
 DEFINE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 {
-	Multipart* multiparts = NULL;
+	Multipart_t* multiparts = NULL;
 	size_t size;
 
 	getMultiparts(request, &multiparts, &size);

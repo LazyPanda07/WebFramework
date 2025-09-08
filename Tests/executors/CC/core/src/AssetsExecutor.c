@@ -13,7 +13,7 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 	JSONParser parser;
 	const char* fileName;
 	const char extension[] = "wfdp";
-	QueryParameter* queryParameters;
+	QueryParameter_t* queryParameters;
 	size_t queryParametersSize;
 
 	getHTTPRequestJSON(request, &parser);
@@ -21,7 +21,7 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 	getJSONParserString(parser, "fileName", true, &fileName);
 
-	DynamicPagesVariable* variables = (DynamicPagesVariable*)malloc(queryParametersSize * sizeof(DynamicPagesVariable));
+	DynamicPagesVariable_t* variables = (DynamicPagesVariable_t*)malloc(queryParametersSize * sizeof(DynamicPagesVariable_t));
 
 	if (!variables)
 	{
