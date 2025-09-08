@@ -38,3 +38,5 @@ elseif(WIN32)
 endif()
 
 set(ADDITIONAL_LIBS ${ADDITIONAL_LIBS} CACHE INTERNAL "")
+
+install(DIRECTORY license/ DESTINATION license)
