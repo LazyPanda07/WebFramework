@@ -4,15 +4,15 @@
 
 void initBuffer(size_t size, void* buffer)
 {
-	JSONArray* array = (JSONArray*)buffer;
+	JSONArray_t* array = (JSONArray_t*)buffer;
 
 	*array = createJSONArray(size);
 }
 
 void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer)
 {
-	JSONArray* array = (JSONArray*)buffer;
-	JSONObject object;
+	JSONArray_t* array = (JSONArray_t*)buffer;
+	JSONObject_t object;
 
 	createJSONObject(&object);
 

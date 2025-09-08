@@ -143,7 +143,7 @@ EXPORT String generateWebFrameworkUUID(Exception* exception);
 
 EXPORT void deleteWebFrameworkJSONObject(JSONObject object);
 
-EXPORT void deleteWebFrameworkJSONBuider(JSONBuilder builder);
+EXPORT void deleteWebFrameworkJSONBuilder(JSONBuilder builder);
 
 EXPORT void deleteWebFrameworkJSONParser(JSONParser parser);
 

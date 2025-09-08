@@ -215,9 +215,9 @@ namespace framework::utility
 
 	inline void DLLHandler::deleteJSONBuilder(void* implementation)
 	{
-		using deleteWebFrameworkJSONBuider = void (*)(void* implementation);
+		using deleteWebFrameworkJSONBuilder = void (*)(void* implementation);
 
-		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuider, implementation);
+		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuilder, implementation);
 	}
 
 	inline void DLLHandler::deleteJSONParser(void* implementation)

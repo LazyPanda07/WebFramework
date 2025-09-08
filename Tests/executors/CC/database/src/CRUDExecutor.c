@@ -13,7 +13,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	Table table;
 	SQLValue value;
 	SQLResult result;
-	JSONArray data;
+	JSONArray_t data;
 	JSONBuilder builder;
 
 	getDatabaseHTTPRequest(request, "test_database", &database);
@@ -32,7 +32,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 
 	deleteWebFrameworkSQLValue(value);
 	deleteJSONArray(&data);
-	deleteWebFrameworkJSONBuider(builder);
+	deleteWebFrameworkJSONBuilder(builder);
 	deleteSQLResult(table, result);
 }
 
@@ -97,7 +97,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	Table table;
 	SQLResult result;
 	SQLValue* values = (SQLValue*)malloc(2 * sizeof(SQLValue));
-	JSONArray data;
+	JSONArray_t data;
 	JSONBuilder builder;
 
 	if (!values)
@@ -145,7 +145,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	deleteWebFrameworkSQLValue(values[0]);
 	deleteWebFrameworkSQLValue(values[1]);
 	deleteJSONArray(&data);
-	deleteWebFrameworkJSONBuider(builder);
+	deleteWebFrameworkJSONBuilder(builder);
 }
 
 DEFINE_INITIALIZE_WEB_FRAMEWORK();

@@ -1129,7 +1129,7 @@ void deleteWebFrameworkJSONObject(JSONObject object)
 	delete static_cast<json::utility::jsonObject*>(object);
 }
 
-void deleteWebFrameworkJSONBuider(JSONBuilder builder)
+void deleteWebFrameworkJSONBuilder(JSONBuilder builder)
 {
 	delete static_cast<json::JSONBuilder*>(builder);
 }

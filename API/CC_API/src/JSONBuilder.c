@@ -33,7 +33,7 @@ WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFrameworkS
 	return exception;
 }
 
-WebFrameworkException appendJSONBuilderObject(JSONBuilder implementation, const char* key, JSONObject* object)
+WebFrameworkException appendJSONBuilderObject(JSONBuilder implementation, const char* key, JSONObject_t* object)
 {
 	WebFrameworkException exception = NULL;
 
@@ -110,7 +110,7 @@ WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, const ch
 	return exception;
 }
 
-WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONArray* array)
+WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONArray_t* array)
 {
 	WebFrameworkException exception = NULL;
 	void* buffer = malloc(array->size * sizeof(void*));

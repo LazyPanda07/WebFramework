@@ -26,7 +26,7 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	Table table;
 	SQLValue value;
 	SQLResult result;
-	JSONArray data;
+	JSONArray_t data;
 	JSONBuilder builder;
 	
 	getTableHTTPRequest(request, "test_database", "multi_user", &table);
@@ -45,7 +45,7 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 
 	deleteWebFrameworkSQLValue(value);
 	deleteJSONArray(&data);
-	deleteWebFrameworkJSONBuider(builder);
+	deleteWebFrameworkJSONBuilder(builder);
 	deleteSQLResult(table, result);
 }
 

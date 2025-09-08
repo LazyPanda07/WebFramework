@@ -64,7 +64,7 @@ void deleteWebFrameworkException(WebFrameworkException exception);
  * @brief Free memory
  * @param builder JSONBuilder object
  */
-void deleteWebFrameworkJSONBuider(JSONBuilder builder);
+void deleteWebFrameworkJSONBuilder(JSONBuilder builder);
 
 /**
  * @brief Free memory

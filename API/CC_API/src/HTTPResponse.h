@@ -4,6 +4,9 @@
 
 typedef void* HTTPResponse;
 
+/**
+ * @brief HTTP response codes
+ */
 typedef enum ResponseCodes
 {
 	CONTINUE_CODE = 100,
@@ -79,20 +82,75 @@ typedef enum ResponseCodes
 	INVALID_SSL_CERTIFICATE
 } ResponseCodes_t;
 
+/**
+ * @brief Set HTTP body
+ * @param implementation HTTPResponse instance
+ * @param body HTTP body
+ * @return Error if occurred
+ */
 WebFrameworkException setBody(HTTPResponse implementation, const char* body);
 
+/**
+ * @brief Set HTTP body
+ * @param implementation HTTPResponse instance
+ * @param body HTTP JSON body
+ * @return Error if occurred
+ */
 WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilder body);
 
+/**
+ * @brief Set HTTP version
+ * @param implementation HTTPResponse instance
+ * @param version HTTP version
+ * @return Error if occurred
+ */
 WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* version);
 
+/**
+ * @brief Set HTTP response code
+ * @param implementation HTTPResponse instance
+ * @param responseCode HTTP response code
+ * @return Error if occurred
+ */
 WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseCodes_t responseCode);
 
+/**
+ * @brief Add HTTP header
+ * @param implementation HTTPResponse instance
+ * @param name HTTP header name
+ * @param value HTTP header value
+ * @return Error if occurred
+ */
 WebFrameworkException addHTTPResponseHeader(HTTPResponse implementation, const char* name, const char* value);
 
+/**
+ * @brief Append HTTP body
+ * @param implementation HTTPResponse instance
+ * @param body HTTP body
+ * @return Error if occurred
+ */
 WebFrameworkException appendHTTPResponseBody(HTTPResponse implementation, const char* body);
 
+/**
+ * @brief Add cookie
+ * @param implementation HTTPResponse instance
+ * @param name Cookie name
+ * @param value Cookie value
+ * @return Error if occurred
+ */
 WebFrameworkException addHTTPResponseCookie(HTTPResponse implementation, const char* name, const char* value);
 
+/**
+ * @brief Set HTTPResponse to default state
+ * @param implementation HTTPResponse instance
+ * @return Error if occurred
+ */
 WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation);
 
+/**
+ * @brief Set state of HTTPResponse
+ * @param implementation HTTPResponse instance
+ * @param isValid HTTPResponse state
+ * @return Error if occurred
+ */
 WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid);

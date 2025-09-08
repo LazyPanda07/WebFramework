@@ -23,5 +23,5 @@ DEFINE_EXECUTOR_METHOD(LocalizationExecutor, GET_METHOD, request, response)
 
 	setJSONBody(response, builder);
 
-	deleteWebFrameworkJSONBuider(builder);
+	deleteWebFrameworkJSONBuilder(builder);
 }

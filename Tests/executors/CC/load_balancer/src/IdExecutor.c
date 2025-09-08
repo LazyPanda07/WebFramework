@@ -24,7 +24,7 @@ DEFINE_EXECUTOR_METHOD(IdExecutor, GET_METHOD, request, response)
 
 	setJSONBody(response, builder);
 
-	deleteWebFrameworkJSONBuider(builder);
+	deleteWebFrameworkJSONBuilder(builder);
 }
 
 int64_t getProcessId()

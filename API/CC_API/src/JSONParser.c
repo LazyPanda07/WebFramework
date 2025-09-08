@@ -1,6 +1,6 @@
 #include "JSONParser.h"
 
-static void __appendJSONArrayObject(JSONArray* array, void* value)
+static void __appendJSONArrayObject(JSONArray_t* array, void* value)
 {
 	size_t index = __getIndex(array);
 
@@ -10,7 +10,7 @@ static void __appendJSONArrayObject(JSONArray* array, void* value)
 
 static void __addArrayCallback(void* object, void* array)
 {
-	JSONArray* jsonArray = (JSONArray*)array;
+	JSONArray_t* jsonArray = (JSONArray_t*)array;
 
 	__appendJSONArrayObject(jsonArray, object);
 }
@@ -48,7 +48,7 @@ WebFrameworkException createJSONParserFromString(const char* jsonString, JSONPar
 	return exception;
 }
 
-WebFrameworkException getJSONParserObject(JSONParser implementation, const char* key, bool recursive, JSONObject* result)
+WebFrameworkException getJSONParserObject(JSONParser implementation, const char* key, bool recursive, JSONObject_t* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -126,7 +126,7 @@ WebFrameworkException getJSONParserNull(JSONParser implementation, const char* k
 	return exception;
 }
 
-WebFrameworkException getJSONParserArray(JSONParser implementation, const char* key, JSONArray* array, bool recursive)
+WebFrameworkException getJSONParserArray(JSONParser implementation, const char* key, JSONArray_t* array, bool recursive)
 {
 	WebFrameworkException exception = NULL;
 
@@ -137,7 +137,7 @@ WebFrameworkException getJSONParserArray(JSONParser implementation, const char* 
 	return exception;
 }
 
-bool tryGetJSONParserObject(JSONParser implementation, const char* key, JSONObject* value, bool recursive, WebFrameworkException* exception)
+bool tryGetJSONParserObject(JSONParser implementation, const char* key, JSONObject_t* value, bool recursive, WebFrameworkException* exception)
 {
 	void* object = NULL;
 
@@ -207,7 +207,7 @@ bool tryGetJSONParserNull(JSONParser implementation, const char* key, bool recur
 	return CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserNull, key, recursive, exception);
 }
 
-bool tryGetJSONParserArray(JSONParser implementation, const char* key, JSONArray* array, bool recursive, WebFrameworkException* exception)
+bool tryGetJSONParserArray(JSONParser implementation, const char* key, JSONArray_t* array, bool recursive, WebFrameworkException* exception)
 {
 	typedef bool (*tryGetJSONParserArray)(void* implementation, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
 

@@ -67,5 +67,5 @@ void service(Executor executor, HTTPResponse response)
 
 	setJSONBody(response, builder);
 
-	deleteWebFrameworkJSONBuider(builder);
+	deleteWebFrameworkJSONBuilder(builder);
 }

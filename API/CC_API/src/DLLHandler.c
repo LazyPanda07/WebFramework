@@ -143,11 +143,11 @@ void deleteWebFrameworkException(WebFrameworkException exception)
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
 }
 
-void deleteWebFrameworkJSONBuider(JSONBuilder builder)
+void deleteWebFrameworkJSONBuilder(JSONBuilder builder)
 {
-	typedef void (*deleteWebFrameworkJSONBuider)(void* builder);
+	typedef void (*deleteWebFrameworkJSONBuilder)(void* builder);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuider, builder);
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuilder, builder);
 }
 
 void deleteWebFrameworkJSONParser(JSONParser parser)
