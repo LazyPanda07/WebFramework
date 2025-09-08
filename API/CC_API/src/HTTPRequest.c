@@ -189,7 +189,7 @@ WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkStr
 	return exception;
 }
 
-WebFrameworkException getHTTPHeader_ts(HTTPRequest implementation, HTTPHeader_t** result, size_t* size)
+WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
@@ -223,7 +223,7 @@ WebFrameworkException getHTTPHeader_ts(HTTPRequest implementation, HTTPHeader_t*
 	return exception;
 }
 
-WebFrameworkException getHTTPHeader_t(HTTPRequest implementation, const char* headerName, const char** result)
+WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* headerName, const char** result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -456,7 +456,7 @@ WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser*
 	return exception;
 }
 
-WebFrameworkException getHTTPChunk_ts(HTTPRequest implementation, HTTPChunk_t** result, size_t* size)
+WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk_t** result, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 
