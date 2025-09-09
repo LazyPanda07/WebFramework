@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.27.0)
 project(WebFrameworkExecutors)
 
 add_library(
-	${PROJECT_NAME} SHARED
+	${PROJECT_NAME} STATIC
 	src/Executors/BaseExecutor.cpp
 	src/Executors/BaseHeavyOperationStatefulExecutor.cpp
 	src/Executors/BaseHeavyOperationStatelessExecutor.cpp
