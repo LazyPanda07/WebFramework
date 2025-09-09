@@ -26,7 +26,7 @@ jobs:
     - name: Create package folder
       run: |
           mkdir package
-          mv ReleaseDLL_Linux/api/python_api/* package/
+          mv Release_Linux/api/python_api/* package/
 
     - name: Build wheel
       working-directory: package
@@ -71,8 +71,8 @@ jobs:
     - name: Copy libraries
       shell: bash
       run: |
-          mv ReleaseDLL_Windows/dll/*.dll API/CSharp_API/
-          mv ReleaseDLL_Linux/lib/*.so API/CSharp_API/
+          mv Release_Windows/dll/*.dll API/CSharp_API/
+          mv Release_Linux/lib/*.so API/CSharp_API/
 
     - name: Create nuget package
       run: |
@@ -116,7 +116,7 @@ jobs:
     - name: Copy libraries
       run: |
           mkdir -p API/web_framework_flutter_api/assets/lib/arm64-v8a
-          cp -r ReleaseDLL_Windows/dll/*.dll API/web_framework_flutter_api/assets/lib
+          cp -r Release_Windows/dll/*.dll API/web_framework_flutter_api/assets/lib
           cp -r Release_Android/lib/arm64-v8a/*.so API/web_framework_flutter_api/assets/lib/arm64-v8a
 
     - name: Dry run
@@ -152,9 +152,10 @@ jobs:
           chmod 0755 deb_packages/web-framework/DEBIAN/postinst
           cp ./LICENSE deb_packages/web-framework/DEBIAN/copyright
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r ReleaseDLL_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r ReleaseDLL_Linux/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r ReleaseDLL_Linux/localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/* deb_packages/web-framework-dev/DEBIAN/copyright
+          cp -r Release_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          cp -r Release_Linux/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
     
     - name: Create deb dev package
@@ -166,14 +167,15 @@ jobs:
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
           cp ./LICENSE deb_packages/web-framework-dev/DEBIAN/copyright
           mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r ReleaseDLL_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r ReleaseDLL_Linux/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
-          cp -r ReleaseDLL_Linux/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
-          cp -r ReleaseDLL_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
-          cp -r ReleaseDLL_Linux/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r ReleaseDLL_Linux/FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r ReleaseDLL_Linux/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r ReleaseDLL_Linux/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/* deb_packages/web-framework-dev/DEBIAN/copyright
+          cp -r Release_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          cp -r Release_Linux/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
+          cp -r Release_Linux/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
+          cp -r Release_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
+          cp -r Release_Linux/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
 
     - name: Create deb static dev package
@@ -183,6 +185,7 @@ jobs:
           chmod 0755 deb_packages/web-framework-static-dev/DEBIAN/postinst
           cp ./LICENSE deb_packages/web-framework-static-dev/DEBIAN/copyright
           mv deb_packages/web-framework-static-dev/DEBIAN web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
+          cp -r Release_Linux/* deb_packages/web-framework-dev/DEBIAN/copyright
           cp -r Release_Linux/lib/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           cp -r Release_Linux/include/* web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           cp -r Release_Linux/WebFrameworkConfig.cmake web-framework-static-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
