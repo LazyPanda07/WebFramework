@@ -13,6 +13,10 @@ env:
   LINUX_CMAKE_GENERATOR: "Ninja"
 
 
+permissions:
+  contents: write
+
+
 jobs:
   windows-build:
     runs-on: windows-latest
@@ -433,63 +437,59 @@ jobs:
           source run_aarch64_cc_tests.sh ${{ matrix.config }}
           
 
-  # publish:
-  #   needs: [
-  #     windows-cxx-tests,
-  #     linux-cxx-tests,
-  #     linux-aarch64-cxx-tests,
-  #     linux-aarch64-cc-tests,
-  #     windows-csharp-tests,
-  #     linux-csharp-tests,
-  #     windows-python-tests,
-  #     linux-python-tests,
-  #     windows-cc-tests,
-  #     linux-cc-tests,
-  #     windows-debug-release-tests,
-  #     windows-release-debug-tests,
-  #     android-build
-  #   ]
-  #   runs-on: ubuntu-latest
+  publish:
+    needs: [
+      android-build,
+      linux-tests,
+      windows-tests,
+      linux-aarch64-cxx-tests,
+      linux-aarch64-cc-tests
+    ]
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #     with:
-  #       submodules: recursive
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
-  #   - name: Get current branch
-  #     uses : LazyPanda07/extract-current-branch@master
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
     
-  #   - name: Setup release version variable
-  #     shell: pwsh
-  #     run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+    - name: Setup release version variable
+      shell: pwsh
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
-  #   - name: Download artifacts
-  #     if: ${{ env.CURRENT_BRANCH == 'master' }}
-  #     uses: actions/download-artifact@v4
+    - name: Download artifacts
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: actions/download-artifact@v4
 
-  #   - name: Remove Windows tests
-  #     run: rm -rf Tests_Windows
+    - name: Remove Windows tests
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: |
+          rm -rf WindowsTests
+          rm -rf WindowsExecutors*
       
-  #   - name: Setup Windows build list
-  #     run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
+    - name: Setup Windows build list
+      run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
       
-  #   - name: Create Windows zip
-  #     if: ${{ env.CURRENT_BRANCH == 'master' }}
-  #     run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
+    - name: Create Windows zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
 
-  #   - name: Create Linux zip
-  #     if: ${{ env.CURRENT_BRANCH == 'master' }}
-  #     run: zip -r linux.zip Release_Linux
+    - name: Create Linux zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r linux.zip Release_Linux
 
-  #   - name: Create Android zip
-  #     if: ${{ env.CURRENT_BRANCH == 'master' }}
-  #     run: zip -r android.zip Release_Android
+    - name: Create Android zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r android.zip Release_Android
 
-  #   - name: Publish
-  #     if: ${{ env.CURRENT_BRANCH == 'master' }}
-  #     uses: svenstaro/upload-release-action@2.9.0
-  #     with:
-  #       tag: v${{ env.VERSION }}
-  #       release_name: v${{ env.VERSION }}
-  #       file_glob: true
-  #       file: "*.zip"
+    - name: Create Linux ARM64 zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r linux_aarch64.zip Release_LinuxARM
+
+    - name: Publish
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: gh release create v${{ env.VERSION }} *.zip --title v${{ env.VERSION }} --generate-notes
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
