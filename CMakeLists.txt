@@ -174,5 +174,6 @@ if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 endif ()
 
+install(FILES LICENSE DESTINATION license)
 install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY schemas DESTINATION ${CMAKE_INSTALL_PREFIX})

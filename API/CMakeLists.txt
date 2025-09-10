@@ -21,7 +21,12 @@ if (${BUILD_CSHARP_API})
 endif()
 
 if (${BUILD_PYTHON_API})
-	add_subdirectory(python_api)
+	install(DIRECTORY python_api DESTINATION api)
+	install(
+		CODE [[
+			execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/license ${CMAKE_INSTALL_PREFIX}/api/python_api/license)
+		]]
+	)
 endif()
 
 if (${BUILD_FLUTTER_API})

@@ -6,6 +6,7 @@ build-backend = "scikit_build_core.build"
 name = "web_framework_api"
 description = "Python API for WebFramework"
 readme = "README.md"
+license = { file = "license/LICENSE" }
 authors = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
 ]
