@@ -40,7 +40,7 @@
             "api": {
               "type": "string",
               "description": "API language",
-              "enum": [ "cxx" ]
+              "enum": [ "cxx", "cc" ]
             }
           }
         },
@@ -154,7 +154,7 @@
         },
         "assetsPath": {
           "type": "string",
-          "description": "Path to web server assets(*.html, *.css, ...)"
+          "description": "Path to web server assets(*.html, *.css, *.wfdp, *.md, ...)"
         },
         "templatesPath": {
           "type": "string",
