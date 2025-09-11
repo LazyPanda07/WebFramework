@@ -33,6 +33,8 @@ set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
 project(WebFramework VERSION 3.0.12)
 
+install(FILES LICENSE DESTINATION license) # Used in APIs install
+
 if (${WITH_STACKTRACE})
 	add_definitions(-D__WITH_STACKTRACE__)
 endif()
@@ -174,6 +176,5 @@ if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 endif ()
 
-install(FILES LICENSE DESTINATION license)
 install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY schemas DESTINATION ${CMAKE_INSTALL_PREFIX})
