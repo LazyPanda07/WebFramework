@@ -9,7 +9,7 @@ int main(int argc, const char** argv) try
 	framework::utility::Config config("config.json"); // Load config.json
 	framework::WebFramework server(config); // Create server
 
-	server.start(true, []() { std::cout << "Server is running" << std::endl; }); // Start server and wait
+	server.start(true, []() { std::cout << "Server is running at http://127.0.0.1:8080" << std::endl; }); // Start server and wait
 
 	return 0;
 }

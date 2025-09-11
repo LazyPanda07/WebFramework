@@ -317,6 +317,51 @@ jobs:
         name: AndroidFlutterSample
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
         
+        
+  windows-tests:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        api: ["cxx", "cc", "csharp", "python"]  
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Install Python API
+      if: ${{ matrix.api == 'python' }}
+      run: pip install WebFrameworkLibrary/api/python_api/
+
+    - name: Run samples
+      working-directory: samples/build/bin
+      run: |
+          if (${{ matrix.api }} -eq "cxx") { start hello_cpp.exe }
+          if (${{ matrix.api }} -eq "cc") { start hello_c.exe }
+          if (${{ matrix.api }} -eq "csharp") { start hello_csharp.exe }
+          if (${{ matrix.api }} -eq "python") { start python main.py }
+          curl http://127.0.0.1:8080
+
 
   publish:
     runs-on: ubuntu-latest
@@ -329,7 +374,8 @@ jobs:
       linux-build,
       android-build,
       windows-flutter-build,
-      android-flutter-build
+      android-flutter-build,
+      windows-tests
     ]
 
     steps:
