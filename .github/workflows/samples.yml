@@ -360,6 +360,7 @@ jobs:
           if ("${{ matrix.api }}" -eq "cc") { start hello_c.exe }
           if ("${{ matrix.api }}" -eq "csharp") { start hello_csharp.exe }
           if ("${{ matrix.api }}" -eq "python") { start python main.py }
+          sleep 10
           curl http://127.0.0.1:8080
 
 
