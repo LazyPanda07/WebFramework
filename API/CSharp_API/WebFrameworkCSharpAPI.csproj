@@ -37,7 +37,35 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE">
+    <None Update="..\..\WebFrameworkLibrary\license\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="..\..\WebFrameworkLibrary\license\CMARK_GFM_LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="..\..\WebFrameworkLibrary\license\OPEN_SSL_LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="..\..\WebFrameworkLibrary\license\SQLITE3_LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="..\..\WebFrameworkLibrary\license\BOOST_LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
