@@ -7,7 +7,11 @@ on:
   
   
 env:
-  flutter-version: 3.32.8
+  flutter-version: 3.35.3
+
+
+permissions:
+  contents: write
 
 
 jobs:
@@ -371,9 +375,6 @@ jobs:
           
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      uses: svenstaro/upload-release-action@2.9.0
-      with:
-        tag: v${{ env.VERSION }}
-        release_name: v${{ env.VERSION }}
-        file_glob: true
-        file: "*.zip"
+      run: gh release create v${{ env.VERSION }} *.zip --title v${{ env.VERSION }} --generate-notes
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

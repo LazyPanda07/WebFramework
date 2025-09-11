@@ -123,7 +123,7 @@ class _AppState extends State<App> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Plugin example app"),
+          title: const Text("WebFramework App"),
         ),
         body: Column(children: [
           Center(
