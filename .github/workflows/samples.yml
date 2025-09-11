@@ -404,6 +404,7 @@ jobs:
     - name: Run samples
       working-directory: samples/build/bin
       run: |
+          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           if [ "${{ matrix.api }}" = "cxx" ]; then ./hello_cpp & sleep 1; fi
           if [ "${{ matrix.api }}" = "cc" ]; then ./hello_c & sleep 1; fi
           if [ "${{ matrix.api }}" = "csharp" ]; then ./hello_csharp & sleep 1; fi
