@@ -14,7 +14,7 @@ namespace framework
 	public:
 		Table(interfaces::ITable* implementation);
 
-		SQLResult execute(std::string_view query, const std::vector<SQLValue>& values);
+		SQLResult execute(std::string_view query, const std::vector<SQLValue>& values = {});
 
 		~Table() = default;
 	};

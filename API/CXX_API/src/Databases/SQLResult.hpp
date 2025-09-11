@@ -11,10 +11,11 @@ namespace framework
 	class SQLResult
 	{
 	public:
-		using ValueType = std::vector<std::unordered_map<std::string, SQLValue>>;
+		using Rows = std::vector<std::unordered_map<std::string, SQLValue>>;
+		using Row = std::unordered_map<std::string, SQLValue>;
 
 	private:
-		ValueType rows;
+		Rows rows;
 
 	private:
 		static void reserveSize(size_t size, void* buffer);
@@ -30,17 +31,17 @@ namespace framework
 
 		size_t size() const;
 
-		ValueType::iterator begin();
+		Rows::iterator begin();
 
-		ValueType::iterator end();
+		Rows::iterator end();
 
-		operator ValueType& ();
+		operator Rows& ();
 
-		operator const ValueType& () const;
+		operator const Rows& () const;
 
-		std::unordered_map<std::string, SQLValue>& operator[](size_t index);
+		Row& operator [](size_t index);
 
-		const std::unordered_map<std::string, SQLValue>& operator[](size_t index) const;
+		const Row& operator [](size_t index) const;
 
 		~SQLResult() = default;
 	};
@@ -50,14 +51,14 @@ namespace framework
 {
 	inline void SQLResult::reserveSize(size_t size, void* buffer)
 	{
-		static_cast<ValueType*>(buffer)->resize(size);
+		static_cast<Rows*>(buffer)->resize(size);
 	}
 
 	inline void SQLResult::fill(const char** columnNames, const void** values, size_t size, size_t index, void* buffer)
 	{
 		for (size_t i = 0; i < size; i++)
 		{
-			(*static_cast<ValueType*>(buffer))[index].try_emplace(columnNames[i], SQLValue(static_cast<const interfaces::ISQLValue*>(values[i])));
+			(*static_cast<Rows*>(buffer))[index].try_emplace(columnNames[i], SQLValue(static_cast<const interfaces::ISQLValue*>(values[i])));
 		}
 	}
 
@@ -81,32 +82,32 @@ namespace framework
 		return rows.size();
 	}
 
-	inline SQLResult::ValueType::iterator SQLResult::begin()
+	inline SQLResult::Rows::iterator SQLResult::begin()
 	{
 		return rows.begin();
 	}
 
-	inline SQLResult::ValueType::iterator SQLResult::end()
+	inline SQLResult::Rows::iterator SQLResult::end()
 	{
 		return rows.end();
 	}
 
-	inline SQLResult::operator ValueType& ()
+	inline SQLResult::operator Rows& ()
 	{
 		return rows;
 	}
 
-	inline SQLResult::operator const ValueType& () const
+	inline SQLResult::operator const Rows& () const
 	{
 		return rows;
 	}
 
-	inline std::unordered_map<std::string, SQLValue>& SQLResult::operator[](size_t index)
+	inline SQLResult::Row& SQLResult::operator [](size_t index)
 	{
 		return rows[index];
 	}
 
-	inline const std::unordered_map<std::string, SQLValue>& SQLResult::operator[](size_t index) const
+	inline const SQLResult::Row& SQLResult::operator [](size_t index) const
 	{
 		return rows[index];
 	}

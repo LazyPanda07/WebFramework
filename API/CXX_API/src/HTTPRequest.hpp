@@ -169,13 +169,11 @@ namespace framework
 		/// <returns>HTTP cookies as map</returns>
 		HeadersMap getCookies() const;
 
-		const std::vector<Multipart>& getMultiparts() const;
-
 		/**
 		 * @brief Get data from multipart/form-data
 		 * @return
 		 */
-		 // const std::vector<web::Multipart>& getMultiparts() const;
+		const std::vector<Multipart>& getMultiparts() const;
 
 		LargeData getLargeData() const;
 

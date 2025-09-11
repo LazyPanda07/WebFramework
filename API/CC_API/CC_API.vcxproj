@@ -94,7 +94,6 @@
     <ClCompile Include="src\Databases\SQLValue.c" />
     <ClCompile Include="src\Databases\Table.c" />
     <ClCompile Include="src\DLLHandler.c" />
-    <ClCompile Include="src\dummy.c" />
     <ClCompile Include="src\HTTPRequest.c" />
     <ClCompile Include="src\HTTPResponse.c" />
     <ClCompile Include="src\JSONBuilder.c" />

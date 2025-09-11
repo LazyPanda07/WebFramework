@@ -7,6 +7,10 @@ namespace framework::utility
 {
 	namespace uuid
 	{
+		/**
+		 * @brief Generate UUID in format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+		 * @return 
+		 */
 		std::string generateUUID();
 	}
 }

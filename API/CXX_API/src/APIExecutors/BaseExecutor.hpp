@@ -11,21 +11,48 @@ namespace framework
 {
 	namespace utility
 	{
+		/**
+		 * @brief Behavior of created Executor
+		 */
 		enum class ExecutorType
 		{
+			/**
+			 * @brief Create Executor for each client
+			 */
 			stateful,
+			/**
+			 * @brief Create Executor once while server is initializing
+			 */
 			stateless,
+			/**
+			 * @brief Create Executor for each client. If server type is threadPool then DO methods runs in thread pool
+			 */
 			heavyOperationStateful,
+			/**
+			 * @brief Create Executor once while server is initializing. If server type is threadPool then DO methods runs in thread pool
+			 */
 			heavyOperationStateless
 		};
 
 		class ExecutorSettings
 		{
 		public:
+			/**
+			 * @brief When Executors created
+			 */
 			enum class LoadType
 			{
+				/**
+				 * @brief Create at initialization
+				 */
 				initialization,
+				/**
+				 * @brief Create if client connected
+				 */
 				dynamic,
+				/**
+				 * @brief Signal that error happened
+				 */
 				none
 			};
 
@@ -35,14 +62,34 @@ namespace framework
 		public:
 			ExecutorSettings(void* implementation);
 
+			/**
+			 * @brief Get JSON structed values from initParameters section from settings file
+			 * @return
+			 */
 			JSONParser getInitParameters() const;
 
+			/**
+			 * @brief Get executor name
+			 * @return
+			 */
 			std::string getName() const;
 
+			/**
+			 * @brief Get filter by User-Agent header
+			 * @return
+			 */
 			std::string getUserAgentFilter() const;
 
+			/**
+			 * @brief Get API language of Executor
+			 * @return
+			 */
 			std::string getAPIType() const;
 
+			/**
+			 * @brief Get LoadType of Executor
+			 * @return
+			 */
 			LoadType getLoadType() const;
 
 			~ExecutorSettings() = default;
@@ -63,85 +110,25 @@ namespace framework
 		);
 
 	public:
-		virtual void init(const utility::ExecutorSettings& settings)
-		{
+		virtual void init(const utility::ExecutorSettings& settings);
 
-		}
+		virtual void doPost(HTTPRequest& request, HTTPResponse& response);
 
-		virtual void doPost(HTTPRequest& request, HTTPResponse& response)
-		{
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-		}
+		virtual void doGet(HTTPRequest& request, HTTPResponse& response);
 
-		virtual void doGet(HTTPRequest& request, HTTPResponse& response)
-		{
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-		}
+		virtual void doHead(HTTPRequest& request, HTTPResponse& response);
 
-		virtual void doHead(HTTPRequest& request, HTTPResponse& response)
-		{
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-		}
+		virtual void doPut(HTTPRequest& request, HTTPResponse& response);
 
-		virtual void doPut(HTTPRequest& request, HTTPResponse& response)
-		{
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-		}
+		virtual void doDelete(HTTPRequest& request, HTTPResponse& response);
 
-		virtual void doDelete(HTTPRequest& request, HTTPResponse& response)
-		{
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-		}
+		virtual void doPatch(HTTPRequest& request, HTTPResponse& response);
 
-		virtual void doPatch(HTTPRequest& request, HTTPResponse& response)
-		{
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-		}
+		virtual void doOptions(HTTPRequest& request, HTTPResponse& response);
 
-		virtual void doOptions(HTTPRequest& request, HTTPResponse& response)
-		{
-#ifdef NDEBUG
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-#endif
+		virtual void doTrace(HTTPRequest& request, HTTPResponse& response);
 
-			std::vector<std::string> methods = { "OPTIONS" };
-			std::string allowHeader;
-
-			BaseExecutor::isImplemented(methods, request, response, "GET", &BaseExecutor::doGet, *this);
-			BaseExecutor::isImplemented(methods, request, response, "POST", &BaseExecutor::doPost, *this);
-			BaseExecutor::isImplemented(methods, request, response, "HEAD", &BaseExecutor::doHead, *this);
-			BaseExecutor::isImplemented(methods, request, response, "PUT", &BaseExecutor::doPut, *this);
-			BaseExecutor::isImplemented(methods, request, response, "DELETE", &BaseExecutor::doDelete, *this);
-			BaseExecutor::isImplemented(methods, request, response, "PATCH", &BaseExecutor::doPatch, *this);
-			BaseExecutor::isImplemented(methods, request, response, "TRACE", &BaseExecutor::doTrace, *this);
-			BaseExecutor::isImplemented(methods, request, response, "CONNECT", &BaseExecutor::doConnect, *this);
-
-			for (size_t i = 0; i < methods.size(); i++)
-			{
-				allowHeader += methods[i];
-
-				if (i + 1 != methods.size())
-				{
-					allowHeader += ", ";
-				}
-			}
-
-			response.addHeader("Allow", allowHeader);
-		}
-
-		virtual void doTrace(HTTPRequest& request, HTTPResponse& response)
-		{
-#ifdef NDEBUG
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-#endif
-
-			response.setBody(request.getRawRequest());
-		}
-
-		virtual void doConnect(HTTPRequest& request, HTTPResponse& response)
-		{
-			request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-		}
+		virtual void doConnect(HTTPRequest& request, HTTPResponse& response);
 
 		virtual utility::ExecutorType getType() const = 0;
 
@@ -239,6 +226,86 @@ namespace framework
 
 			return static_cast<LoadType>(result);
 		}
+	}
+
+	inline void BaseExecutor::init(const utility::ExecutorSettings& settings)
+	{
+
+	}
+
+	inline void BaseExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+	}
+
+	inline void BaseExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+	}
+
+	inline void BaseExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+	}
+
+	inline void BaseExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+	}
+
+	inline void BaseExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+	}
+
+	inline void BaseExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+	}
+
+	inline void BaseExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
+	{
+#ifdef NDEBUG
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+#endif
+
+		std::vector<std::string> methods = { "OPTIONS" };
+		std::string allowHeader;
+
+		BaseExecutor::isImplemented(methods, request, response, "GET", &BaseExecutor::doGet, *this);
+		BaseExecutor::isImplemented(methods, request, response, "POST", &BaseExecutor::doPost, *this);
+		BaseExecutor::isImplemented(methods, request, response, "HEAD", &BaseExecutor::doHead, *this);
+		BaseExecutor::isImplemented(methods, request, response, "PUT", &BaseExecutor::doPut, *this);
+		BaseExecutor::isImplemented(methods, request, response, "DELETE", &BaseExecutor::doDelete, *this);
+		BaseExecutor::isImplemented(methods, request, response, "PATCH", &BaseExecutor::doPatch, *this);
+		BaseExecutor::isImplemented(methods, request, response, "TRACE", &BaseExecutor::doTrace, *this);
+		BaseExecutor::isImplemented(methods, request, response, "CONNECT", &BaseExecutor::doConnect, *this);
+
+		for (size_t i = 0; i < methods.size(); i++)
+		{
+			allowHeader += methods[i];
+
+			if (i + 1 != methods.size())
+			{
+				allowHeader += ", ";
+			}
+		}
+
+		response.addHeader("Allow", allowHeader);
+	}
+
+	inline void BaseExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
+	{
+#ifdef NDEBUG
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+#endif
+
+		response.setBody(request.getRawRequest());
+	}
+
+	inline void BaseExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
 	inline void BaseExecutor::isImplemented

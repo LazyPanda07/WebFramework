@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\dummy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\APIExecutors\BaseExecutor.h">
       <Filter>Source Files</Filter>
     </ClCompile>

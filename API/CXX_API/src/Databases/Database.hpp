@@ -14,10 +14,22 @@ namespace framework
 	public:
 		Database(interfaces::IDatabase* implementation);
 
+		/**
+		 * @brief Check if table exists in database
+		 * @param tableName Name of table
+		 * @param outTable Optional parameter. Also receive Table instance
+		 * @return 
+		 */
 		bool contains(std::string_view tableName, Table* outTable = nullptr) const;
 
 		Table getTable(std::string_view tableName) const;
 
+		/**
+		 * @brief Tries to get table from database or create if can't get
+		 * @param tableName Name of table
+		 * @param createTableQuery Create table query if can't get table
+		 * @return 
+		 */
 		Table getOrCreateTable(std::string_view tableName, std::string_view createTableQuery);
 
 		std::string_view getDatabaseName() const;

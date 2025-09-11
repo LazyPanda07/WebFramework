@@ -155,7 +155,7 @@ WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation
 WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFrameworkString* result);
 
 /**
- * @brief Get LoadType of Executo
+ * @brief Get LoadType of Executor
  * @param implementation ExecutorSettings instance
  * @param result String with executor name. Delete with deleteWebFrameworkString function
  * @return Error if occurred
