@@ -356,10 +356,10 @@ jobs:
     - name: Run samples
       working-directory: samples/build/bin
       run: |
-          if (${{ matrix.api }} -eq "cxx") { start hello_cpp.exe }
-          if (${{ matrix.api }} -eq "cc") { start hello_c.exe }
-          if (${{ matrix.api }} -eq "csharp") { start hello_csharp.exe }
-          if (${{ matrix.api }} -eq "python") { start python main.py }
+          if ("${{ matrix.api }}" -eq "cxx") { start hello_cpp.exe }
+          if ("${{ matrix.api }}" -eq "cc") { start hello_c.exe }
+          if ("${{ matrix.api }}" -eq "csharp") { start hello_csharp.exe }
+          if ("${{ matrix.api }}" -eq "python") { start python main.py }
           curl http://127.0.0.1:8080
 
 
