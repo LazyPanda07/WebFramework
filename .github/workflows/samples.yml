@@ -364,6 +364,54 @@ jobs:
           curl http://127.0.0.1:8080
 
 
+  linux-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        api: ["cxx", "cc", "csharp", "python"]  
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Install Python API
+      if: ${{ matrix.api == 'python' }}
+      run: pip3 install WebFrameworkLibrary/api/python_api/
+
+    - name: Run samples
+      working-directory: samples/build/bin
+      run: |
+          if ["${{ matrix.api }}" -eq "cxx"]; then ./hello_cpp & sleep 1;
+          if ["${{ matrix.api }}" -eq "cc"]; then ./hello_c & sleep 1;
+          if ["${{ matrix.api }}" -eq "csharp"]; then ./hello_csharp & sleep 1;
+          if ["${{ matrix.api }}" -eq "python"]; then python3 main.py & sleep 1;
+          sleep 10
+          curl http://127.0.0.1:8080
+
+
   publish:
     runs-on: ubuntu-latest
     needs: [
@@ -376,7 +424,8 @@ jobs:
       android-build,
       windows-flutter-build,
       android-flutter-build,
-      windows-tests
+      windows-tests,
+      linux-tests
     ]
 
     steps:
