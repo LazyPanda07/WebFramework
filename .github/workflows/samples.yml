@@ -384,7 +384,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
