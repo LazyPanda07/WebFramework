@@ -46,6 +46,10 @@ if (UNIX)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 		add_definitions(-D__ANDROID__)
+
+		find_library(LOG_LIB log)
+
+		list(APPEND ADDITIONAL_LIBS ${LOG_LIB})
 	else()
 		add_link_options(-rdynamic)
 	endif()
@@ -154,15 +158,6 @@ target_link_directories(
 	${SQLITE_LIBRARY_PATH}
 	${ADDITIONAL_LIB_DIRS}
 )
-
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-	find_library(LOG_LIB log)
-
-	target_link_libraries(
-		${PROJECT_NAME} PRIVATE
-		${LOG_LIB}
-	)
-endif()
 
 target_link_libraries(
 	${PROJECT_NAME}
