@@ -379,7 +379,7 @@ namespace framework
 		const vector<string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
 		size_t numberOfThreads,
-		std::shared_ptr<threading::ThreadPool> resourcesThreadPool
+		shared_ptr<threading::ThreadPool> resourcesThreadPool
 	) :
 		BaseTCPServer
 		(

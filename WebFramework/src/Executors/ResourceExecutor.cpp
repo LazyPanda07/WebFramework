@@ -263,7 +263,7 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::internalServerError);
 	}
 
-	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const std::exception* exception)
+	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const exception* exception)
 	{
 		string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
 

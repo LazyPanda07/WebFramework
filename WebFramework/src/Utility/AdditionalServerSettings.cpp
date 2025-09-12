@@ -18,7 +18,7 @@ namespace framework::utility
 	AdditionalServerSettings AdditionalServerSettings::createSettings(const json::JSONParser& parser, const filesystem::path& basePath)
 	{
 		AdditionalServerSettings result;
-		std::string value;
+		string value;
 
 		parser.tryGetString(json_settings::userAgentFilterKey, result.userAgentFilter);
 		parser.tryGetUnsignedInt(json_settings::largeBodySizeThresholdKey, result.largeBodySizeThreshold);
