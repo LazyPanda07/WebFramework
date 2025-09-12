@@ -86,8 +86,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\APIExecutors\BaseExecutor.c" />
-    <ClCompile Include="src\APIExecutors\BaseExecutor.h" />
+    <ClCompile Include="src\Executors\BaseExecutor.c" />
+    <ClCompile Include="src\Executors\BaseExecutor.h" />
     <ClCompile Include="src\Config.c" />
     <ClCompile Include="src\Databases\Database.c" />
     <ClCompile Include="src\Databases\SQLResult.c" />
