@@ -3,6 +3,7 @@
 #ifdef __WITH_STACKTRACE__
 
 #include <boost/stacktrace.hpp>
+
 #include "Log.h"
 
 using namespace std;

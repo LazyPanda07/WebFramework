@@ -91,7 +91,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
@@ -116,16 +116,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake ..
-          make install -j $(nproc)
+          cmake -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -148,16 +150,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -180,16 +184,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Debug -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -212,16 +218,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Debug -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
