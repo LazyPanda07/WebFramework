@@ -30,7 +30,7 @@ class WebFrameworkFlutterApiPlugin : FlutterPlugin, MethodCallHandler, ActivityA
 
     override fun onMethodCall(call: MethodCall, result: Result) {
         if (call.method == "getLibraryPath") {
-            result.success(context.getApplicationInfo().nativeLibraryDir + "/libWebFramework.so")
+            result.success("libWebFramework.so")
         } else if (call.method == "getAssetsPath") {
             result.success(context.getApplicationInfo().dataDir + "/app_flutter/assets")
         } else {
