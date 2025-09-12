@@ -15,5 +15,10 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "defaultAssetsPath": "WebFrameworkAssets"
+  },
+  "Logging": {
+    "usingLogging": true,
+    "dateFormat": "DMY",
+    "logFileSize": 134217728
   }
 }

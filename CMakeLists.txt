@@ -46,10 +46,6 @@ if (UNIX)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 		add_definitions(-D__ANDROID__)
-
-		find_library(LOG_LIB log)
-
-		list(APPEND ADDITIONAL_LIBS ${LOG_LIB})
 	else()
 		add_link_options(-rdynamic)
 	endif()

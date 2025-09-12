@@ -59,7 +59,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\;$(ProjectDir)..\Log\src\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -76,7 +76,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\;$(ProjectDir)..\Log\src\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>

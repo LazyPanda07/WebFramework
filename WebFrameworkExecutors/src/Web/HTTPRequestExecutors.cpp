@@ -1,11 +1,6 @@
 #include "HTTPRequestExecutors.h"
 
-#ifdef __ANDROID__
-#include <android/log.h>
-
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO,  "WebFramework", __VA_ARGS__)
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "WebFramework", __VA_ARGS__)
-#endif
+#include <Log.h>
 
 using namespace std;
 
@@ -31,15 +26,16 @@ namespace framework
 
 		implementation->getHeaders(initHeadersBuffer, addHeader, &headers);
 
-#ifdef __ANDROID__
-		LOGI("Line: %d", __LINE__);
-		LOGI("Headers size: %d", headers.size());
-
-		for (const auto& [key, value] : headers)
+		if (Log::isValid())
 		{
-			LOGI("Header %s, value: %s", key.data(), value.data());
+			Log::info("Line: {}", "LogTemp", __LINE__);
+			Log::info("Headers size: {}", "LogTemp", headers.size());
+
+			for (const auto& [key, value] : headers)
+			{
+				Log::info("Header {}, value: {}", key, value);
+			}
 		}
-#endif
 	}
 
 	void HTTPRequestExecutors::initQueryParameters()

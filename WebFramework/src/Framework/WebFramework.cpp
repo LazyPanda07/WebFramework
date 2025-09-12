@@ -377,16 +377,31 @@ namespace framework
 
 	void WebFramework::start(bool wait, const function<void()>& onStartServer)
 	{
+		if (Log::isValid())
+		{
+			Log::info("Starting server at {}:{}", "LogWebFramework", server->getPort(), server->getIp());
+		}
+
 		server->start(wait, onStartServer, serverException);
 	}
 
 	void WebFramework::stop(bool wait)
 	{
+		if (Log::isValid())
+		{
+			Log::info("Stopping server at {}:{}", "LogWebFramework", server->getPort(), server->getIp());
+		}
+
 		server->stop(wait);
 	}
 
 	void WebFramework::kick(const string& ip) const
 	{
+		if (Log::isValid())
+		{
+			Log::info("Kick client with ip: {} from server", "LogWebFramework", ip);
+		}
+
 		server->kick(ip);
 	}
 
