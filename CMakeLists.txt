@@ -155,6 +155,15 @@ target_link_directories(
 	${ADDITIONAL_LIB_DIRS}
 )
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+	find_library(LOG_LIB log)
+
+	target_link_libraries(
+		${PROJECT_NAME} PRIVATE
+		${LOG_LIB}
+	)
+endif()
+
 target_link_libraries(
 	${PROJECT_NAME}
 	${LIBS}
