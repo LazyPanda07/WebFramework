@@ -37,7 +37,7 @@ namespace framework
 
 		for (const auto& [key, value] : headers)
 		{
-			LOGI("Header %s, value: %s", key.data(), value.dat());
+			LOGI("Header %s, value: %s", key.data(), value.data());
 		}
 #endif
 	}
