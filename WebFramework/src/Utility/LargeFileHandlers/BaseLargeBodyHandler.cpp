@@ -8,11 +8,6 @@ namespace framework::utility
 {
 	bool BaseLargeBodyHandler::handleChunk(string_view data)
 	{
-		if (Log::isValid())
-		{
-			Log::info("Handle chunk: {}, {}, {}", "LogLargeBodyHandler", currentReceive.load(), contentLength, this->isLast());
-		}
-
 		requestWrapper->updateLargeData(data, this->isLast());
 
 		try
