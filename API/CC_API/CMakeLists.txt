@@ -12,7 +12,7 @@ project(CC_API)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/APIExecutors/BaseExecutor.c
+	src/Executors/BaseExecutor.c
 	src/Databases/Database.c
 	src/Databases/SQLResult.c
 	src/Databases/SQLValue.c

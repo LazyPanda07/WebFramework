@@ -1,6 +1,6 @@
 #pragma once
 
-#include <APIExecutors/BaseHeavyOperationStatelessExecutor.hpp>
+#include <Executors/BaseHeavyOperationStatelessExecutor.hpp>
 
 class UploadChunkedExecutor : public framework::BaseHeavyOperationStatelessExecutor
 {
