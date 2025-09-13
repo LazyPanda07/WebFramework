@@ -83,6 +83,10 @@ namespace framework::utility
 			return;
 		}
 
+#ifdef __ANDROID__
+		DLLHandler::instance = std::unique_ptr<DLLHandler>(new DLLHandler(pathToDLL));
+#endif
+
 		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path
 			{
 				std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
