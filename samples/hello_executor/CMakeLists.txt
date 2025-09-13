@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.27.0)
 
 project(hello_executor)
 
+add_library(
+	${PROJECT_NAME} SHARED
+	source/HelloExecutor.cpp
+)
+
 if (UNIX AND ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	add_definitions(-D__ANDROID__)
 
@@ -10,11 +15,6 @@ if (UNIX AND ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 		-fexceptions -frtti
 	)
 endif()
-
-add_library(
-	${PROJECT_NAME} SHARED
-	source/HelloExecutor.cpp
-)
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
