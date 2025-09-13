@@ -234,17 +234,7 @@ namespace framework
 
 		vector<pair<string, string>> nodes;
 
-		if (Log::isValid())
-		{
-			log += format("Line: {}", __LINE__);
-		}
-
 		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
-
-		if (Log::isValid())
-		{
-			log += format("Line: {}", __LINE__);
-		}
 
 		for (const auto& [route, executorSettings] : settings)
 		{
@@ -281,18 +271,18 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					log += format("Line: {}", __LINE__);
+					log += format("Line: {}, library path: {}", __LINE__, webFrameworkSharedLibraryPath);
 				}
 
 				initFunction(webFrameworkSharedLibraryPath.data());
+
+				if (Log::isValid())
+				{
+					log += format("Line: {}, library path: {}", __LINE__, webFrameworkSharedLibraryPath);
+				}
 			}
 			else if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCC"))
 			{
-				if (Log::isValid())
-				{
-					log += format("Line: {}", __LINE__);
-				}
-
 				initFunction(webFrameworkSharedLibraryPath.data());
 			}
 
