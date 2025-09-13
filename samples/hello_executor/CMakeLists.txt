@@ -4,6 +4,11 @@ project(hello_executor)
 
 if (UNIX AND ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	add_definitions(-D__ANDROID__)
+
+	target_compile_options(
+		${PROJECT_NAME} PRIVATE 
+		-fexceptions -frtti
+	)
 endif()
 
 add_library(
