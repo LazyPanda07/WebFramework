@@ -234,8 +234,12 @@ namespace framework
 
 		vector<pair<string, string>> nodes;
 
+#ifdef __ANDROID__
+		string webFrameworkSharedLibraryPath = "libWebFramework.so";
+#else
 		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
-
+#endif
+		
 		for (const auto& [route, executorSettings] : settings)
 		{
 			CreateExecutorFunction creator = nullptr;
