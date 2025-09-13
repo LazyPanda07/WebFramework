@@ -32,15 +32,17 @@ namespace framework
 			{
 				Log::fatalError("Can't create server: {}", "LogExecutorServer", 2, e.what());
 			}
+
+			throw;
 		}
 		catch (...)
 		{
-			cerr << "Something went wrong" << endl;
-
 			if (Log::isValid())
 			{
 				Log::fatalError("Something went wrong", "LogExecutorServer", 2);
 			}
+
+			throw;
 		}
 	}
 }
