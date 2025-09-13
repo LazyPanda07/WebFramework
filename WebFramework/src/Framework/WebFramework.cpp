@@ -379,7 +379,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Starting server at {}:{}", "LogWebFramework", server->getPort(), server->getIp());
+			Log::info("Starting server at {}:{}", "LogWebFramework", server->getIp(), server->getPort());
 		}
 
 		server->start(wait, onStartServer, serverException);
@@ -389,7 +389,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Stopping server at {}:{}", "LogWebFramework", server->getPort(), server->getIp());
+			Log::info("Stopping server at {}:{}", "LogWebFramework", server->getIp(), server->getPort());
 		}
 
 		server->stop(wait);
