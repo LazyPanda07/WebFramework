@@ -275,10 +275,31 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					log += format("Line: {}, library path: {}", __LINE__, webFrameworkSharedLibraryPath);
+					log += format("Line: {}, library path: {}, {}", __LINE__, webFrameworkSharedLibraryPath, executorSettings.name);
 				}
 
-				initFunction(webFrameworkSharedLibraryPath.data());
+				try
+				{
+					initFunction(webFrameworkSharedLibraryPath.data());
+				}
+				catch (const exception& e)
+				{
+					if (Log::isValid())
+					{
+						log += format("Line: {}, library path: {}, exception: {}", __LINE__, webFrameworkSharedLibraryPath, e.what());
+					}
+
+					throw;
+				}
+				catch (...)
+				{
+					if (Log::isValid())
+					{
+						log += format("Line: {}, library path: {}", __LINE__, webFrameworkSharedLibraryPath);
+					}
+
+					throw;
+				}
 
 				if (Log::isValid())
 				{
