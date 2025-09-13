@@ -227,12 +227,24 @@ namespace framework
 		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
 		vector<HMODULE> sources = utility::loadSources(pathToSources);
+		Log& log = Log::getInstance();
 
 		routes.reserve(settings.size());
 		creators.reserve(settings.size());
 
 		vector<pair<string, string>> nodes;
+
+		if (Log::isValid())
+		{
+			log += format("Line: {}", __LINE__);
+		}
+
 		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
+
+		if (Log::isValid())
+		{
+			log += format("Line: {}", __LINE__);
+		}
 
 		for (const auto& [route, executorSettings] : settings)
 		{
@@ -267,10 +279,20 @@ namespace framework
 
 			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCXX"))
 			{
+				if (Log::isValid())
+				{
+					log += format("Line: {}", __LINE__);
+				}
+
 				initFunction(webFrameworkSharedLibraryPath.data());
 			}
 			else if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCC"))
 			{
+				if (Log::isValid())
+				{
+					log += format("Line: {}", __LINE__);
+				}
+
 				initFunction(webFrameworkSharedLibraryPath.data());
 			}
 
@@ -279,11 +301,21 @@ namespace framework
 			case utility::JSONSettingsParser::ExecutorSettings::LoadType::initialization:
 				if (route.find('{') == string::npos)
 				{
+					if (Log::isValid())
+					{
+						log += format("Line: {}", __LINE__);
+					}
+
 					auto [it, success] = routes.try_emplace
 					(
 						route,
 						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
 					);
+
+					if (Log::isValid())
+					{
+						log += format("Line: {}", __LINE__);
+					}
 
 					if (success)
 					{
@@ -301,11 +333,21 @@ namespace framework
 				{
 					routeParameters.push_back(route);
 
+					if (Log::isValid())
+					{
+						log += format("Line: {}", __LINE__);
+					}
+
 					auto [it, success] = routes.try_emplace
 					(
 						routeParameters.back().baseRoute,
 						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
 					);
+
+					if (Log::isValid())
+					{
+						log += format("Line: {}", __LINE__);
+					}
 
 					nodes.emplace_back(route, routeParameters.back().baseRoute);
 
