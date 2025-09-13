@@ -84,7 +84,9 @@ namespace framework::utility
 		}
 
 #ifdef __ANDROID__
-		DLLHandler::instance = std::unique_ptr<DLLHandler>(new DLLHandler(pathToDLL));
+		DLLHandler::instance = std::unique_ptr<DLLHandler>(new DLLHandler("libWebFramework.so"));
+
+		return;
 #endif
 
 		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path
