@@ -33,7 +33,7 @@ namespace framework
 
 			for (const auto& [key, value] : headers)
 			{
-				Log::info("Header {}, value: {}", key, value);
+				Log::info("Header {}, value: {}", "LogTemp", key, value);
 			}
 		}
 	}
