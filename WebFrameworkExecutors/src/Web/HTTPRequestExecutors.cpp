@@ -25,17 +25,6 @@ namespace framework
 			};
 
 		implementation->getHeaders(initHeadersBuffer, addHeader, &headers);
-
-		if (Log::isValid())
-		{
-			Log::info("Line: {}", "LogTemp", __LINE__);
-			Log::info("Headers size: {}", "LogTemp", headers.size());
-
-			for (const auto& [key, value] : headers)
-			{
-				Log::info("Header {}, value: {}", "LogTemp", key, value);
-			}
-		}
 	}
 
 	void HTTPRequestExecutors::initQueryParameters()

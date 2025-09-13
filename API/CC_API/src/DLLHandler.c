@@ -2,6 +2,12 @@
 
 void initializeWebFramework(const char* pathToDLL)
 {
+#ifdef __ANDROID__
+	getInstance("libWebFramework.so");
+
+	return;
+#endif
+
 	if (pathToDLL == NULL || !strcmp(pathToDLL, "") || !strcmp(pathToDLL, "WebFramework") ||
 #ifdef __LINUX__
 		!strcmp(pathToDLL, "libWebFramework.so")

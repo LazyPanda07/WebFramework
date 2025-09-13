@@ -14,4 +14,13 @@ target_include_directories(
 	${WEB_FRAMEWORK_INCLUDE}
 )
 
+if (UNIX)
+	find_package(Threads REQUIRED)
+
+	target_link_libraries(
+		${PROJECT_NAME} PRIVATE
+		Threads::Threads
+	)
+endif()
+
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
