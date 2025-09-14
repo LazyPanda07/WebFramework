@@ -12,6 +12,7 @@ add_library(
 	src/UploadMultipartExecutor.c
 	src/UploadChunkedExecutor.c
 	src/UploadOctetStreamExecutor.c
+	src/DynamicResources.c
 )
 
 target_include_directories(

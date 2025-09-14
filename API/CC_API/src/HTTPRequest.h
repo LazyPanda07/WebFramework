@@ -288,6 +288,40 @@ WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser*
 WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk_t** result, size_t* size);
 
 /**
+ * @brief Get file content
+ * @param implementation HTTPRequest instance
+ * @param filePath Path to asset file from assets folder
+ * @param result File content. Delete with free function
+ * @param size File content size
+ * @return Error if occurred
+ */
+WebFrameworkException getFile(HTTPRequest implementation, const char* filePath, const char** result, size_t* size);
+
+/**
+ * @brief Process static files like .md
+ * @param implementation HTTPRequest instance
+ * @param fileData Static file content
+ * @param size fileData size
+ * @param fileExtension Supported processing extension
+ * @param result Processed data
+ * @param resultSize Processed data size
+ * @return 
+ */
+WebFrameworkException processStaticFile(HTTPRequest implementation, const char* fileData, size_t size, const char* fileExtension, const char** result, size_t* resultSize);
+
+/**
+ * @brief Process .wfdp files
+ * @param implementation HTTPRequest instance
+ * @param fileData WFDP file content
+ * @param variables Variables for processing .wfdp file
+ * @param variablesSize Size of variables
+ * @param result Processed data
+ * @param resultSize Processed data size
+ * @return 
+ */
+WebFrameworkException processWFDPFile(HTTPRequest implementation, const char* fileData, size_t size, const DynamicPagesVariable_t* variables, size_t variablesSize, const char** result, size_t* resultSize);
+
+/**
  * @brief Get raw HTTP request
  * @param implementation HTTPRequest instance
  * @param rawRequest Raw HTTP request

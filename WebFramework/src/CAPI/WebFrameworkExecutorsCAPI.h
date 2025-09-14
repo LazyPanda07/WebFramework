@@ -64,6 +64,12 @@ EXPORT void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)
 
 EXPORT void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, Exception* exception);
 
+EXPORT void getFile(HTTPRequestObject request, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processStaticFile(HTTPRequestObject request, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processWFDPFile(HTTPRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
 EXPORT void getHTTPHeaders(HTTPRequestObject request, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 
 EXPORT const char* getHTTPHeader(HTTPRequestObject request, const char* headerName, Exception* exception);
