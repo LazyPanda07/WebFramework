@@ -12,6 +12,7 @@ add_library(
 	src/UploadMultipartExecutor.cpp
 	src/UploadChunkedExecutor.cpp
 	src/UploadOctetStreamExecutor.cpp
+	src/DynamicResources.cpp
 	src/TextGenerator.cpp
 )
 

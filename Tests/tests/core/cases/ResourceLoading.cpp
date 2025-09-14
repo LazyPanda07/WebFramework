@@ -81,3 +81,52 @@ TEST(ResourceLoading, PageMD)
 
 	ASSERT_EQ(html, md) << html << std::endl << md;
 }
+
+TEST(ResourceLoading, DynamicResources)
+{
+	streams::IOSocketStream stream = utility::createSocketStream();
+
+	{
+		std::string request = web::HTTPBuilder().postRequest().parameters("dynamic_resources").build
+		(
+			json::JSONBuilder(CP_UTF8).appendString("data", "Hello, World!")
+		);
+		std::string response;
+
+		stream << request;
+
+		stream >> response;
+
+		ASSERT_EQ(web::HTTPParser(response).getBody(), "Hello, World!");
+	}
+
+	{
+		streams::IOSocketStream stream = utility::createSocketStream();
+		std::string html;
+		std::string md;
+
+		{
+			std::string request = web::HTTPBuilder().getRequest().parameters("dynamic_resources").build();
+			std::string response;
+
+			stream << request;
+
+			stream >> response;
+
+			html = utility::strings::replaceAll(web::HTTPParser(response).getBody(), "\r", "");
+		}
+
+		{
+			std::string request = web::HTTPBuilder().getRequest().parameters("page.md").build();
+			std::string response;
+
+			stream << request;
+
+			stream >> response;
+
+			md = web::HTTPParser(response).getBody();
+		}
+
+		ASSERT_EQ(html, md) << html << std::endl << md;
+	}
+}

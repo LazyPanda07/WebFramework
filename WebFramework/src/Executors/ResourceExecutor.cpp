@@ -179,7 +179,7 @@ namespace framework
 		return assets;
 	}
 
-	const unordered_map<string_view, unique_ptr<interfaces::IStaticFileRenderer>>& ResourceExecutor::getStaticRenderers() const
+	const unordered_map<string_view, unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& ResourceExecutor::getStaticRenderers() const
 	{
 		return staticRenderers;
 	}

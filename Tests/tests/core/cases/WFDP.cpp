@@ -22,26 +22,11 @@ TEST(WFDP, Print)
 	);
 	std::string response;
 
-	try
-	{
-		stream << request;
+	stream << request;
 
-		stream >> response;
+	stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getBody(), "Hello, World!");
-	}
-	catch (const web::exceptions::WebException& e)
-	{
-		std::cout << e.what() << std::endl;
-
-		for (const auto& it : std::filesystem::recursive_directory_iterator("logs"))
-		{
-			if (it.is_regular_file())
-			{
-				std::cout << "Log: " << (std::ostringstream() << std::ifstream(it.path()).rdbuf()).str() << std::endl;
-			}
-		}
-	}
+	ASSERT_EQ(web::HTTPParser(response).getBody(), "Hello, World!");
 }
 
 TEST(WFDP, For)

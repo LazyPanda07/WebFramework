@@ -253,6 +253,46 @@ namespace framework
 		return implementation->isWFDPFunctionRegistered(functionName.data());
 	}
 
+	string HTTPRequestExecutors::getFile(const filesystem::path& filePath) const
+	{
+		string result;
+		auto fillBuffer = [](const char* data, size_t size, void* buffer)
+			{
+				static_cast<string*>(buffer)->append(data, size);
+			};
+
+		implementation->getFile(filePath.string().data(), fillBuffer, &result);
+
+		return result;
+	}
+
+	string HTTPRequestExecutors::processStaticFile(string_view fileData, string_view fileExtension)
+	{
+		string result;
+		auto fillBuffer = [](const char* data, size_t size, void* buffer)
+			{
+				static_cast<string*>(buffer)->append(data, size);
+			};
+
+		implementation->processStaticFile(fileData.data(), fileData.size(), fileExtension.data(), fillBuffer, &result);
+
+		return result;
+	}
+
+	string HTTPRequestExecutors::processWFDPFile(string_view fileData, const unordered_map<string, string>& variables)
+	{
+		string result;
+		vector<interfaces::CVariable> temp = HTTPRequestExecutors::convertVariables(variables);
+		auto fillBuffer = [](const char* data, size_t size, void* buffer)
+			{
+				static_cast<string*>(buffer)->append(data, size);
+			};
+
+		implementation->processWFDPFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
+
+		return result;
+	}
+
 	const json::JSONParser& HTTPRequestExecutors::getJSON() const
 	{
 		return json;

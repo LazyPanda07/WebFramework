@@ -225,6 +225,29 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isWFDPFunctionRegistered(std::string_view functionName);
 
+		/**
+		 * @brief Get file content
+		 * @param filePath Path to asset file from assets folder
+		 * @return 
+		 */
+		std::string getFile(const std::filesystem::path& filePath) const;
+
+		/**
+		 * @brief Process static files like .md
+		 * @param fileData Static file content
+		 * @param fileExtension Supported processing extension
+		 * @return 
+		 */
+		std::string processStaticFile(std::string_view fileData, std::string_view fileExtension);
+
+		/**
+		 * @brief Process .wfdp files
+		 * @param fileData WFDP file content
+		 * @param variables 
+		 * @return 
+		 */
+		std::string processWFDPFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables);
+
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
@@ -661,6 +684,46 @@ namespace framework
 	inline bool HTTPRequest::isWFDPFunctionRegistered(std::string_view functionName)
 	{
 		return implementation->isWFDPFunctionRegistered(functionName.data());
+	}
+
+	inline std::string HTTPRequest::getFile(const std::filesystem::path& filePath) const
+	{
+		std::string result;
+		auto fillBuffer = [](const char* data, size_t size, void* buffer)
+			{
+				static_cast<std::string*>(buffer)->append(data, size);
+			};
+
+		implementation->getFile(filePath.string().data(), fillBuffer, &result);
+
+		return result;
+	}
+
+	inline std::string HTTPRequest::processStaticFile(std::string_view fileData, std::string_view fileExtension)
+	{
+		std::string result;
+		auto fillBuffer = [](const char* data, size_t size, void* buffer)
+			{
+				static_cast<std::string*>(buffer)->append(data, size);
+			};
+
+		implementation->processStaticFile(fileData.data(), fileData.size(), fileExtension.data(), fillBuffer, &result);
+
+		return result;
+	}
+
+	inline std::string HTTPRequest::processWFDPFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables)
+	{
+		std::string result;
+		std::vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
+		auto fillBuffer = [](const char* data, size_t size, void* buffer)
+			{
+				static_cast<std::string*>(buffer)->append(data, size);
+			};
+
+		implementation->processWFDPFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
+
+		return result;
 	}
 
 	inline const JSONParser& HTTPRequest::getJSON() const

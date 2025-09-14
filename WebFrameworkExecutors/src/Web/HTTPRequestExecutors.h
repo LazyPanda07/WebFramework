@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <filesystem>
 
 #include "WebInterfaces/IHTTPRequest.h"
 #include "HTTPResponseExecutors.h"
@@ -185,6 +186,12 @@ namespace framework
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
 		bool isWFDPFunctionRegistered(std::string_view functionName);
+
+		std::string getFile(const std::filesystem::path& filePath) const;
+
+		std::string processStaticFile(std::string_view fileData, std::string_view fileExtension);
+
+		std::string processWFDPFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables);
 
 		/// <summary>
 		/// Getter for JSONParser

@@ -51,5 +51,10 @@
     "route": "localization",
     "loadType": "initialization",
     "api": "{API_TYPE}"
+  },
+  "DynamicResources": {
+    "route": "dynamic_resources",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
   }
 }

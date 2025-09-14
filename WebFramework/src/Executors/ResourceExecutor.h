@@ -36,7 +36,7 @@ namespace framework
 		WFDPRenderer wfdpRenderer;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		file_manager::FileManager& fileManager;
-		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>> staticRenderers;
+		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual> staticRenderers;
 
 	private:
 		void loadHTMLErrorsData();
@@ -82,7 +82,7 @@ namespace framework
 
 		const std::filesystem::path& getPathToAssets() const override;
 
-		const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>>& getStaticRenderers() const override;
+		const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& getStaticRenderers() const override;
 
 		/// <summary>
 		/// Send file via GET request
