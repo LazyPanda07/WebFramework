@@ -423,7 +423,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CC -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Install curl
