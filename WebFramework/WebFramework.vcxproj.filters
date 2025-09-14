@@ -302,9 +302,6 @@
     <ClInclude Include="src\Rendering\MDRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\StaticFileRenderer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\404.html" />

@@ -51,6 +51,9 @@
     <ClInclude Include="src\DatabaseInterfaces\ISQLValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Rendering\IStaticFileRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp">

@@ -440,6 +440,58 @@ namespace framework
 		}
 	}
 
+	void HTTPRequestImplementation::getFile(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) const
+	{
+		filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
+		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
+
+		if (!filesystem::exists(assetFilePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		if (cache.contains(assetFilePath))
+		{
+			string_view data = cache.getCacheData(assetFilePath);
+
+			fillBuffer(data.data(), data.size(), buffer);
+		}
+		else
+		{
+			string data;
+			
+			{
+				ifstream file(assetFilePath);
+				ostringstream os;
+
+				os << file.rdbuf();
+
+				data = os.str();
+			}
+
+			cache.appendCache(assetFilePath, data);
+
+			fillBuffer(data.data(), data.size(), buffer);
+		}
+	}
+
+	void HTTPRequestImplementation::processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	{
+		const unique_ptr<interfaces::IStaticFileRenderer>& renderer = staticResources.getStaticRenderers().at(fileExtension);
+		string result = renderer->render(string_view(fileData, size));
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+
+	void HTTPRequestImplementation::processWFDPFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	{
+		string result(fileData, size);
+
+		dynamicResources.processWFDPFile(result, span<const interfaces::CVariable>(variables, variablesSize));
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+
 	const char* HTTPRequestImplementation::getJSON() const
 	{
 		return parser.getJSON().getRawData().data();

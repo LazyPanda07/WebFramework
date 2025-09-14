@@ -1,10 +1,10 @@
 #pragma once
 
-#include "StaticFileRenderer.h"
+#include "Rendering/IStaticFileRenderer.h"
 
 namespace framework
 {
-	class MDRenderer : public StaticFileRenderer
+	class MDRenderer : public interfaces::IStaticFileRenderer
 	{
 	public:
 		MDRenderer() = default;

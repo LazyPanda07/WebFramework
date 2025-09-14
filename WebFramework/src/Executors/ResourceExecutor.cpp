@@ -1,5 +1,6 @@
 #include "ResourceExecutor.h"
 
+#include "Rendering/MDRenderer.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
@@ -32,9 +33,9 @@ namespace framework
 		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(allErrorsFolder / web_framework_assets::badGateway);
 	}
 
-	void ResourceExecutor::loadRenderers()
+	void ResourceExecutor::loadStaticRenderers()
 	{
-		unique_ptr<StaticFileRenderer> mdRenderer = make_unique<MDRenderer>();
+		unique_ptr<interfaces::IStaticFileRenderer> mdRenderer = make_unique<MDRenderer>();
 
 		staticRenderers.try_emplace(mdRenderer->getExtension(), move(mdRenderer));
 	}
@@ -73,7 +74,7 @@ namespace framework
 		}
 
 		this->loadHTMLErrorsData();
-		this->loadRenderers();
+		this->loadStaticRenderers();
 	}
 
 	void ResourceExecutor::sendStaticFile(string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, string_view fileName)
@@ -153,6 +154,11 @@ namespace framework
 		response.setBody(result.data());
 	}
 
+	void ResourceExecutor::processWFDPFile(string& data, span<const interfaces::CVariable> variables)
+	{
+		wfdpRenderer.run(variables, data);
+	}
+
 	void ResourceExecutor::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
 		wfdpRenderer.registerDynamicFunction(functionName, move(function));
@@ -171,6 +177,11 @@ namespace framework
 	const filesystem::path& ResourceExecutor::getPathToAssets() const
 	{
 		return assets;
+	}
+
+	const unordered_map<string_view, unique_ptr<interfaces::IStaticFileRenderer>>& ResourceExecutor::getStaticRenderers() const
+	{
+		return staticRenderers;
 	}
 
 	void ResourceExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)

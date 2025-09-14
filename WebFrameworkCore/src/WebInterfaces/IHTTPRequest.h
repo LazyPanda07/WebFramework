@@ -119,6 +119,12 @@ namespace framework::interfaces
 
 		virtual void getChunks(void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer) const = 0;
 
+		virtual void getFile(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) const = 0;
+
+		virtual void processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
+
+		virtual void processWFDPFile(const char* fileData, size_t size, const CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
+
 		virtual const char* getJSON() const = 0;
 
 		virtual const char* getRawRequest() const = 0;

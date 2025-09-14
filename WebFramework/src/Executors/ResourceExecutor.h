@@ -10,7 +10,6 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 #include "Rendering/WFDPRenderer.h"
-#include "Rendering/MDRenderer.h"
 #include "Utility/AdditionalServerSettings.h"
 
 namespace framework
@@ -35,15 +34,14 @@ namespace framework
 		const std::filesystem::path defaultAssets;
 		const std::filesystem::path assets;
 		WFDPRenderer wfdpRenderer;
-		// MDRenderer mdRenderer;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		file_manager::FileManager& fileManager;
-		std::unordered_map<std::string_view, std::unique_ptr<StaticFileRenderer>> staticRenderers;
+		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>> staticRenderers;
 
 	private:
 		void loadHTMLErrorsData();
 
-		void loadRenderers();
+		void loadStaticRenderers();
 
 		void readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 
@@ -66,6 +64,8 @@ namespace framework
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		void sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary = true, std::string_view fileName = "") override;
 
+		void processWFDPFile(std::string& data, std::span<const interfaces::CVariable> variables) override;
+
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
@@ -80,7 +80,9 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(std::string_view functionName) override;
 
-		const std::filesystem::path& getPathToAssets() const final override;
+		const std::filesystem::path& getPathToAssets() const override;
+
+		const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>>& getStaticRenderers() const override;
 
 		/// <summary>
 		/// Send file via GET request

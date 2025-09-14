@@ -106,6 +106,7 @@
     <ClInclude Include="src\WebInterfaces\IFile.h" />
     <ClInclude Include="src\WebInterfaces\IHTTPRequest.h" />
     <ClInclude Include="src\WebInterfaces\IStaticFile.h" />
+    <ClInclude Include="src\Rendering\IStaticFileRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />

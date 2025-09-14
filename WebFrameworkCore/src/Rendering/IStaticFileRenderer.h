@@ -2,15 +2,15 @@
 
 #include <string>
 
-namespace framework
+namespace framework::interfaces
 {
-	class StaticFileRenderer
+	class IStaticFileRenderer
 	{
 	public:
 		virtual std::string render(std::string_view source) const = 0;
 
 		virtual std::string_view getExtension() const = 0;
 
-		virtual ~StaticFileRenderer() = default;
+		virtual ~IStaticFileRenderer() = default;
 	};
 }
