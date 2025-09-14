@@ -1,6 +1,9 @@
 #pragma once
 
 #include "IFile.h"
+
+#include <algorithm>
+
 #include "IHTTPResponse.h"
 #include "Rendering/IStaticFileRenderer.h"
 
@@ -14,7 +17,7 @@ namespace framework::interfaces
 
 			tem.reserve(value.size());
 
-			for_each(value.begin(), value.end(), [&tem](char c) { tem += tolower(c); });
+			std::for_each(value.begin(), value.end(), [&tem](char c) { tem += tolower(c); });
 
 			return std::hash<std::string>()(tem);
 		}
