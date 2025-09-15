@@ -1,5 +1,11 @@
 #include "HTTPRequest.h"
 
+typedef struct FileBuffer
+{
+	char** data;
+	size_t* size;
+} FileBuffer_t;
+
 static void __initQueryBuffer(size_t querySize, void* buffer)
 {
 	QueryParameter_t** temp = (QueryParameter_t**)buffer;
@@ -124,26 +130,21 @@ static void __addCookie(const char* key, const char* value, size_t index, void* 
 
 static void __fillFileBuffer(const char* data, size_t size, void* buffer)
 {
-	char** result = (const char**)buffer;
-	size_t* outSize = (size_t*)((char*)buffer + sizeof(const char**));
+	FileBuffer_t* fileBuffer = (FileBuffer_t*)buffer;
+	char** result = fileBuffer->data;
+	size_t* resultSize = fileBuffer->size;
 
-	if (!result)
-	{
-		fprintf(stderr, "NULL pointer for result\n");
-
-		exit(6);
-	}
-
-	*result = malloc(size);
+	*result = malloc(size + 1);
 
 	if (!*result)
 	{
 		fprintf(stderr, "Can't allocate memory for file buffer\n");
 
-		exit(7);
+		exit(6);
 	}
 
-	*outSize = size;
+	(*result)[size] = '\0';
+	resultSize = size;
 
 	memcpy(*result, data, size);
 }
@@ -522,28 +523,9 @@ WebFrameworkException getFile(HTTPRequest implementation, const char* filePath, 
 
 	typedef void (*getFile)(void* implementation, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
-	void* buffer = malloc(sizeof(result) + sizeof(size));
-	
-	if (!buffer)
-	{
-		fprintf(stderr, "Can't allocate memory for file data\n");
+	FileBuffer_t buffer = { .data = result, .size = size };
 
-		exit(7);
-	}
-
-	memcpy(buffer, result, sizeof(result));
-	memcpy(((char*)buffer) + sizeof(size), size, sizeof(size));
-
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFile, filePath, __fillFileBuffer, buffer, &exception);
-
-	if (exception)
-	{
-		free(buffer);
-
-		return exception;
-	}
-
-	free(buffer);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFile, filePath, __fillFileBuffer, &buffer, &exception);
 
 	return exception;
 }
@@ -554,28 +536,9 @@ WebFrameworkException processStaticFile(HTTPRequest implementation, const char* 
 
 	typedef void (*processStaticFile)(void* implementation, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
-	void* buffer = malloc(sizeof(result) + sizeof(size));
+	FileBuffer_t buffer = { .data = result, .size = resultSize };
 
-	if (!buffer)
-	{
-		fprintf(stderr, "Can't allocate memory for file data\n");
-
-		exit(8);
-	}
-
-	memcpy(buffer, result, sizeof(result));
-	memcpy(((char*)buffer) + sizeof(resultSize), resultSize, sizeof(resultSize));
-
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processStaticFile, fileData, size, fileExtension, __fillFileBuffer, buffer, &exception);
-
-	if (exception)
-	{
-		free(buffer);
-
-		return exception;
-	}
-
-	free(buffer);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processStaticFile, fileData, size, fileExtension, __fillFileBuffer, &buffer, &exception);
 
 	return exception;
 }
@@ -586,28 +549,9 @@ WebFrameworkException processWFDPFile(HTTPRequest implementation, const char* fi
 
 	typedef void (*processWFDPFile)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
-	void* buffer = malloc(sizeof(result) + sizeof(size));
+	FileBuffer_t buffer = { .data = result, .size = resultSize };
 
-	if (!buffer)
-	{
-		fprintf(stderr, "Can't allocate memory for file data\n");
-
-		exit(9);
-	}
-
-	memcpy(buffer, result, sizeof(result));
-	memcpy(((char*)buffer) + sizeof(resultSize), resultSize, sizeof(resultSize));
-
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processWFDPFile, fileData, size, variables, variablesSize, __fillFileBuffer, buffer, &exception);
-
-	if (exception)
-	{
-		free(buffer);
-
-		return exception;
-	}
-
-	free(buffer);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processWFDPFile, fileData, size, variables, variablesSize, __fillFileBuffer, &buffer, &exception);
 
 	return exception;
 }

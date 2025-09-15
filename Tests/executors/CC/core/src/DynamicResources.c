@@ -28,13 +28,12 @@ DEFINE_EXECUTOR_METHOD(DynamicResources, POST_METHOD, request, response)
 	size_t size;
 	size_t resultSize;
 	JSONParser parser;
+	DynamicPagesVariable_t variable = { .name = "data" };
 
 	getHTTPRequestJSON(request, &parser);
 
-	DynamicPagesVariable_t variable = { .name = "data" };
-
 	getFile(request, "print.wfdp", &fileData, &size);
-	getJSONParserString(request, "data", true, &variable.value);
+	getJSONParserString(parser, "data", true, &variable.value);
 
 	processWFDPFile(request, fileData, size, &variable, 1, &result, &resultSize);
 

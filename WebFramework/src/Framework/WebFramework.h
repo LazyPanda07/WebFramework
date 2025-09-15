@@ -34,6 +34,7 @@ namespace framework
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;
 		std::exception** serverException;
+		std::string webServerType;
 #ifdef __WITH_STACKTRACE__
 		utility::SegfaultHandler segfaultHandler;
 #endif

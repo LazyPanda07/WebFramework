@@ -242,10 +242,10 @@ namespace framework
 		const string& ip = webServerSettings.getString(json_settings::ipKey);
 		string port = to_string(webServerSettings.getInt(json_settings::portKey));
 		DWORD timeout = 0;
-
-		const string& webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
 		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings, basePath);
 		int64_t resourcesThreads = 1;
+
+		webServerType = webFrameworkSettings.getString(json_settings::webServerTypeKey);
 
 		{
 			int64_t temp = 0;
@@ -379,7 +379,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Starting server at {}:{}", "LogWebFramework", server->getIp(), server->getPort());
+			Log::info("Starting {} server at {}:{}", "LogWebFramework", webServerType, server->getIp(), server->getPort());
 		}
 
 		server->start(wait, onStartServer, serverException);
@@ -389,7 +389,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Stopping server at {}:{}", "LogWebFramework", server->getIp(), server->getPort());
+			Log::info("Stopping {} server at {}:{}", "LogWebFramework", webServerType, server->getIp(), server->getPort());
 		}
 
 		server->stop(wait);
