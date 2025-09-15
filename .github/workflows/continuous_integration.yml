@@ -490,6 +490,6 @@ jobs:
 
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: gh release create v${{ env.VERSION }} *.zip --title v${{ env.VERSION }} --generate-notes
+      run: gh release upload v${{ env.VERSION }} *.zip --clobber
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
