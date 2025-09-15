@@ -1,11 +1,10 @@
 #include "ResourceExecutor.h"
 
-#include <fstream>
-
-#include "Import/WebFramework.h"
-#include "Import/WebFrameworkConstants.h"
+#include "Rendering/MDRenderer.h"
+#include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -13,35 +12,35 @@ namespace framework
 {
 	void ResourceExecutor::loadHTMLErrorsData()
 	{
-		filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
-		ifstream html(allErrorsFolder / web_framework_assets::badRequest);
-		auto readFile = [](ifstream& html) -> string
-		{
-			string result;
-			string tem;
-
-			while (getline(html, tem))
+		auto readFile = [](const filesystem::path& errorPath) -> string
 			{
-				result += tem + '\n';
-			}
+				ifstream stream(errorPath);
+				ostringstream os;
+				string result;
 
-			html.close();
+				os << stream.rdbuf();
 
-			return result;
-		};
+				result = os.str();
 
-		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(html);
+				return result;
+			};
+		filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
 
-		html.open(allErrorsFolder / web_framework_assets::notFound);
-
-		HTMLErrorsData[HTMLErrors::notFound404] = readFile(html);
-
-		html.open(allErrorsFolder / web_framework_assets::internalServerError);
-
-		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(html);
+		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(allErrorsFolder / web_framework_assets::badRequest);
+		HTMLErrorsData[HTMLErrors::forbidden403] = readFile(allErrorsFolder / web_framework_assets::forbidden);
+		HTMLErrorsData[HTMLErrors::notFound404] = readFile(allErrorsFolder / web_framework_assets::notFound);
+		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(allErrorsFolder / web_framework_assets::internalServerError);
+		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(allErrorsFolder / web_framework_assets::badGateway);
 	}
 
-	void ResourceExecutor::readFile(string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
+	void ResourceExecutor::loadStaticRenderers()
+	{
+		unique_ptr<interfaces::IStaticFileRenderer> mdRenderer = make_unique<MDRenderer>();
+
+		staticRenderers.try_emplace(mdRenderer->getExtension(), move(mdRenderer));
+	}
+
+	void ResourceExecutor::readFile(filesystem::path extension, string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
 	{
 		result = handle->readAllData();
 
@@ -51,36 +50,34 @@ namespace framework
 		}
 	}
 
-	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const filesystem::path& pathToTemplates) :
+	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, shared_ptr<threading::ThreadPool> threadPool) :
 		defaultAssets
 		(
-			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ? 
+			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ?
 			configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webFrameworkDefaultAssetsPath) :
 			webFrameworkDefaultAssests
 		),
-		assets(assets),
-		dynamicPages(pathToTemplates),
-		fileManager(file_manager::FileManager::getInstance())
+		assets(additionalSettings.assetsPath),
+		wfdpRenderer(additionalSettings.templatesPath),
+		fileManager(file_manager::FileManager::getInstance(threadPool))
 	{
-		fileManager.getCache().setCacheSize(cachingSize);
-	}
+		fileManager.getCache().setCacheSize(additionalSettings.cachingSize);
 
-	void ResourceExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
-	{
 		if (!filesystem::exists(assets))
 		{
 			filesystem::create_directories(assets);
 		}
 
-		if (!filesystem::exists(dynamicPages.getPathToTemplates()))
+		if (!filesystem::exists(wfdpRenderer.getPathToTemplates()))
 		{
-			filesystem::create_directories(dynamicPages.getPathToTemplates());
+			filesystem::create_directories(wfdpRenderer.getPathToTemplates());
 		}
 
 		this->loadHTMLErrorsData();
+		this->loadStaticRenderers();
 	}
 
-	void ResourceExecutor::sendStaticFile(const string& filePath, HTTPResponse& response, bool isBinary, const string& fileName)
+	void ResourceExecutor::sendStaticFile(string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, string_view fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -90,24 +87,38 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
+		filesystem::path extension = assetFilePath.extension();
+
+		if (Log::isValid())
+		{
+			Log::info("Request static file: {}, is binary: {}", "LogResource", filePath, isBinary);
+		}
+
+		auto renderer = staticRenderers.find(extension.string());
+
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName));
+			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		response.addBody(move(result));
+		if (renderer != staticRenderers.end())
+		{
+			result = renderer->second->render(result);
+		}
+
+		response.setBody(result.data());
 	}
 
-	void ResourceExecutor::sendDynamicFile(const string& filePath, HTTPResponse& response, const unordered_map<string, string>& variables, bool isBinary, const string& fileName)
+	void ResourceExecutor::sendDynamicFile(string_view filePath, interfaces::IHTTPResponse& response, span<const interfaces::CVariable> variables, bool isBinary, string_view fileName)
 	{
 		string result;
 		filesystem::path assetFilePath(assets / filePath);
@@ -117,48 +128,50 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
+		filesystem::path extension = assetFilePath.extension();
+
+		if (Log::isValid())
+		{
+			Log::info("Request dynamic file: {}, is binary: {}", "LogResource", filePath, isBinary);
+		}
+
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, ref(result), placeholders::_1));
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
 		}
 
-		dynamicPages.run(variables, result);
+		wfdpRenderer.run(variables, result);
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName));
+			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		response.addBody(move(result));
+		response.setBody(result.data());
 	}
 
-	void ResourceExecutor::registerDynamicFunction(const string& functionName, function<string(const vector<string>&)>&& function)
+	void ResourceExecutor::processWFDPFile(string& data, span<const interfaces::CVariable> variables)
 	{
-		dynamicPages.registerDynamicFunction(functionName, move(function));
+		wfdpRenderer.run(variables, data);
 	}
 
-	void ResourceExecutor::unregisterDynamicFunction(const string& functionName)
+	void ResourceExecutor::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
 	{
-		dynamicPages.unregisterDynamicFunction(functionName);
+		wfdpRenderer.registerDynamicFunction(functionName, move(function));
 	}
 
-	bool ResourceExecutor::isDynamicFunctionRegistered(const string& functionName)
+	void ResourceExecutor::unregisterDynamicFunction(string_view functionName)
 	{
-		return dynamicPages.isDynamicFunctionRegistered(functionName);
+		wfdpRenderer.unregisterDynamicFunction(functionName);
 	}
 
-	void ResourceExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	bool ResourceExecutor::isDynamicFunctionRegistered(string_view functionName)
 	{
-		request.sendAssetFile(request.getRawParameters(), response);
-	}
-
-	void ResourceExecutor::doPost(HTTPRequest& request, HTTPResponse& response) //-V524
-	{
-		request.sendAssetFile(request.getRawParameters(), response);
+		return wfdpRenderer.isDynamicFunctionRegistered(functionName);
 	}
 
 	const filesystem::path& ResourceExecutor::getPathToAssets() const
@@ -166,64 +179,119 @@ namespace framework
 		return assets;
 	}
 
-	void ResourceExecutor::notFoundError(HTTPResponse& response, const exception* exception)
+	const unordered_map<string_view, unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& ResourceExecutor::getStaticRenderers() const
 	{
-		const string& message = HTMLErrorsData[HTMLErrors::notFound404];
-
-#ifdef NDEBUG
-		response.addBody(message);
-#else
-		if (exception)
-		{
-			response.addBody(format("{} Exception: {}", message, exception->what()));
-		}
-		else
-		{
-			response.addBody(message);
-		}
-#endif
-
-		response.setResponseCode(web::responseCodes::notFound);
+		return staticRenderers;
 	}
 
-	void ResourceExecutor::badRequestError(HTTPResponse& response, const exception* exception)
+	void ResourceExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		const string& message = HTMLErrorsData[HTMLErrors::badRequest400];
-
-#ifdef NDEBUG
-		response.addBody(message);
-#else
-		if (exception)
-		{
-			response.addBody(format("{} Exception: {}", message, exception->what()));
-		}
-		else
-		{
-			response.addBody(message);
-		}
-#endif
-
-		response.setResponseCode(web::responseCodes::badRequest);
+		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
-	void ResourceExecutor::internalServerError(HTTPResponse& response, const exception* exception)
-	{		
-		const string& message = HTMLErrorsData[HTMLErrors::internalServerError500];
+	void ResourceExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) //-V524
+	{
+		request.sendAssetFile(request.getRawParameters(), response);
+	}
+
+	void ResourceExecutor::notFoundError(HTTPResponseExecutors& response, const exception* exception)
+	{
+		string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
 #ifdef NDEBUG
-		response.addBody(message);
+		response.setBody(message);
 #else
 		if (exception)
 		{
-			response.addBody(format("{} Exception: {}", message, exception->what()));
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
-			response.addBody(message);
+			response.setBody(message.data());
 		}
 #endif
 
-		response.setResponseCode(web::responseCodes::internalServerError);
+		response.setResponseCode(web::ResponseCodes::notFound);
+	}
+
+	void ResourceExecutor::badRequestError(HTTPResponseExecutors& response, const exception* exception)
+	{
+		string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::badRequest);
+	}
+
+	void ResourceExecutor::forbiddenError(HTTPResponseExecutors& response, const exception* exception)
+	{
+		string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::forbidden);
+	}
+
+	void ResourceExecutor::internalServerError(HTTPResponseExecutors& response, const exception* exception)
+	{
+		string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::internalServerError);
+	}
+
+	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const exception* exception)
+	{
+		string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::badGateway);
 	}
 
 	bool ResourceExecutor::getIsCaching() const

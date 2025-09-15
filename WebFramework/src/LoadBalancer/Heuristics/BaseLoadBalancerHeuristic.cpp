@@ -2,41 +2,15 @@
 
 using namespace std;
 
-namespace framework
+namespace framework::load_balancer
 {
-	namespace load_balancer
+	void BaseLoadBalancerHeuristic::onStart()
 	{
-		BaseLoadBalancerHeuristic::BaseLoadBalancerHeuristic(string_view ip, string_view port, bool useHTTPS) :
-			ip(ip),
-			port(port),
-			useHTTPS(useHTTPS)
-		{
 
-		}
+	}
 
-		void BaseLoadBalancerHeuristic::onStart()
-		{
+	void BaseLoadBalancerHeuristic::onEnd()
+	{
 
-		}
-
-		void BaseLoadBalancerHeuristic::onEnd()
-		{
-
-		}
-
-		const string& BaseLoadBalancerHeuristic::getIp() const
-		{
-			return ip;
-		}
-
-		const string& BaseLoadBalancerHeuristic::getPort() const
-		{
-			return port;
-		}
-
-		bool BaseLoadBalancerHeuristic::getUseHTTPS() const
-		{
-			return useHTTPS;
-		}
 	}
 }

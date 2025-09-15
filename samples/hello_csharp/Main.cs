@@ -16,7 +16,7 @@ namespace hello_csharp
 
 				using WebFramework server = new(config); // Create server
 
-				server.Start(true, () => Console.WriteLine("Server is running")); // Start server and wait
+				server.Start(true, () => Console.WriteLine("Server is running at http://127.0.0.1:8080")); // Start server and wait
 			}
 			catch (WebFrameworkException e)
 			{

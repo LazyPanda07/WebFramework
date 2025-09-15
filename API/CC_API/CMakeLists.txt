@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
@@ -12,7 +12,23 @@ project(CC_API)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/dummy.c
+	src/Executors/BaseExecutor.c
+	src/Databases/Database.c
+	src/Databases/SQLResult.c
+	src/Databases/SQLValue.c
+	src/Databases/Table.c
+	src/Utility/WebFrameworkUtility.c
+	src/Utility/WebFrameworkLocalization.c
+	src/Config.c
+	src/DLLHandler.c
+	src/HTTPRequest.c
+	src/HTTPResponse.c
+	src/JSONBuilder.c
+	src/JSONObject.c
+	src/JSONParser.c
+	src/WebFramework.c
+	src/WebFrameworkException.c
+	src/LoadBalancerHeuristic.c
 )
 
 install(

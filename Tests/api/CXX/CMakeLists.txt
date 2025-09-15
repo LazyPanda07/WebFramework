@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
-
-project(CXX_API)
+project(CXX_API_TESTS)
 
 add_executable(
 	${PROJECT_NAME}
@@ -21,7 +19,6 @@ target_link_directories(
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
 	${GTEST_BOTH_LIBRARIES}
 )
 

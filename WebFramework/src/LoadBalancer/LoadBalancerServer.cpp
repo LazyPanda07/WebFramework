@@ -1,11 +1,14 @@
 #include "LoadBalancerServer.h"
 
-#include "IOSocketStream.h"
 #include "Exceptions/SSLException.h"
 #include "HTTPSNetwork.h"
 
-#include "Utility/Sources.h"
 #include "Heuristics/Connections.h"
+#include "Heuristics/CXXHeuristic.h"
+#include "Heuristics/CCHeuristic.h"
+#include "Web/HTTPResponseImplementation.h"
+#include "Log.h"
+#include "Web/HTTPResponseExecutors.h"
 
 using namespace std;
 
@@ -13,34 +16,323 @@ namespace framework
 {
 	namespace load_balancer
 	{
-		LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
+		LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
 			connectionData(move(connectionData)),
 			heuristic(move(heuristic))
 		{
 
 		}
 
-		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup) //-V688
+		LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, unique_ptr<BaseLoadBalancerHeuristic>& heuristic, function<void()>&& cleanup) :
+			clientStream(move(clientStream)),
+			serverStream(move(serverStream)),
+			cleanup(move(cleanup)),
+			heuristic(heuristic.get()),
+			currentState(State::receiveServerResponse)
 		{
-			static mutex dataMutex;
-			const ServerData* serveData = nullptr;
 
+		}
+
+		LoadBalancerServer::LoadBalancerRequest::~LoadBalancerRequest()
+		{
+			if (cleanup)
 			{
-				unique_lock<mutex> lock(dataMutex);
+				cleanup();
+			}
+		}
 
-				serveData = &*min_element
-				(
-					allServers.begin(), allServers.end(),
-					[](const ServerData& left, const ServerData& right)
-					{
-						return (*left.heuristic)() < (*right.heuristic)();
-					}
-				);
+		bool LoadBalancerServer::receiveClientRequest(LoadBalancerRequest& request, string& httpRequest)
+		{
+			try
+			{
+				request.clientStream >> httpRequest;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving client request web error: {}", "LogLoadBalancer", e.what());
+				}
 
-				serveData->heuristic->onStart();
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving client request internal error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while getting client request", "LogLoadBalancer");
+				}
+
+				return false;
 			}
 
-			const auto& [connectionData, heuristic] = *serveData;
+			return true;
+		}
+
+		bool LoadBalancerServer::sendClientRequest(LoadBalancerRequest& request, string& httpRequest)
+		{
+			try
+			{
+				request.serverStream << httpRequest;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client request web error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client request internal error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while sending client request", "LogLoadBalancer");
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		bool LoadBalancerServer::receiveServerResponse(LoadBalancerRequest& request, string& httpResponse)
+		{
+			try
+			{
+				request.serverStream >> httpResponse;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving server response web error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Receiving server response internal error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while getting server response", "LogLoadBalancer");
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		bool LoadBalancerServer::sendClientResponse(LoadBalancerRequest& request, const string& httpResponse)
+		{
+			try
+			{
+				request.clientStream << httpResponse;
+			}
+			catch (const web::exceptions::WebException& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client response web error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (const exception& e)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Sending client response internal error: {}", "LogLoadBalancer", e.what());
+				}
+
+				return false;
+			}
+			catch (...)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Some unexpected error acquired while sending client response", "LogLoadBalancer");
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		void LoadBalancerServer::processing(size_t index)
+		{
+			vector<LoadBalancerRequest>& requests = requestQueues[index];
+
+			while (isRunning)
+			{
+				vector<size_t> removeIndices;
+
+				for (size_t i = 0; i < requests.size(); i++)
+				{
+					LoadBalancerRequest& request = requests[i];
+
+					switch (request.currentState)
+					{
+					case LoadBalancerRequest::State::receiveClientRequest:
+						if (request.clientStream.getNetwork().isDataAvailable())
+						{
+							string httpRequest;
+
+							if (LoadBalancerServer::receiveClientRequest(request, httpRequest))
+							{
+								if (LoadBalancerServer::sendClientRequest(request, httpRequest))
+								{
+									request.currentState = LoadBalancerRequest::State::receiveServerResponse;
+								}
+								else
+								{
+									HTTPResponseImplementation response;
+									HTTPResponseExecutors responseWrapper(&response);
+
+									resources->badGatewayError(responseWrapper);
+
+									request.clientStream << response;
+								}
+							}
+							else
+							{
+								removeIndices.push_back(i);
+							}
+						}
+
+						break;
+
+					case LoadBalancerRequest::State::receiveServerResponse:
+						if (request.serverStream.getNetwork().isDataAvailable())
+						{
+							string httpResponse;
+
+							if (LoadBalancerServer::receiveServerResponse(request, httpResponse))
+							{
+								if (LoadBalancerServer::sendClientResponse(request, httpResponse))
+								{
+									request.currentState = LoadBalancerRequest::State::receiveClientRequest;
+								}
+								else
+								{
+									removeIndices.push_back(i);
+								}
+							}
+							else
+							{
+								HTTPResponseImplementation response;
+								HTTPResponseExecutors responseWrapper(&response);
+
+								resources->badGatewayError(responseWrapper);
+
+								request.clientStream << response;
+							}
+						}
+
+						break;
+
+					default:
+						break;
+					}
+				}
+
+				for (size_t i = 0; i < removeIndices.size(); i++)
+				{
+					auto it = requests.begin() + removeIndices[i] - i;
+
+					it->heuristic->onEnd();
+
+					requests.erase(it);
+				}
+
+				while (true)
+				{
+					if (optional<LoadBalancerRequest> request = queuedRequests.pop())
+					{
+						requests.emplace_back(move(*request));
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+		}
+
+		unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(string_view ip, string_view port, bool useHTTPS, string_view heuristicName, string_view apiType, HMODULE loadSource) const
+		{
+			static const unordered_map<string_view, function<unique_ptr<BaseLoadBalancerHeuristic>(string_view, string_view, bool)>> apiHeuristics =
+			{
+				{ "", [](string_view ip, string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
+				{ json_settings::cxxExecutorKey, [heuristicName, loadSource](string_view ip, string_view port, bool useHTTPS) { return make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
+				{ json_settings::ccExecutorKey, [heuristicName, loadSource](string_view ip, string_view port, bool useHTTPS) { return make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } }
+			};
+
+			if (auto it = apiHeuristics.find(apiType); it != apiHeuristics.end())
+			{
+				return (it->second)(ip, port, useHTTPS);
+			}
+
+			throw runtime_error(format("Can't find heuristic type for {}", apiType));
+
+			return nullptr;
+		}
+
+		void LoadBalancerServer::receiveConnections(const function<void()>& onStartServer, exception** outException)
+		{
+			threads.reserve(requestQueues.size());
+
+			for (size_t i = 0; i < requestQueues.size(); i++)
+			{
+				threads.emplace_back(async(launch::async, &LoadBalancerServer::processing, this, i));
+			}
+
+			BaseTCPServer::receiveConnections(onStartServer, outException);
+		}
+
+		void LoadBalancerServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup)
+		{
+			auto& [connectionData, heuristic] = *min_element
+			(
+				allServers.begin(), allServers.end(),
+				[](const ServerData& left, const ServerData& right)
+				{
+					return (*left.heuristic)() < (*right.heuristic)();
+				}
+			);
+
+			heuristic->onStart();
+
 			SSL* ssl = nullptr;
 
 			if (useHTTPS)
@@ -64,63 +356,30 @@ namespace framework
 					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
-			
-			streams::IOSocketStream clientStream
+
+			chrono::milliseconds timeoutInMilliseconds(timeout);
+			LoadBalancerRequest request
 			(
-				ssl ?
-				make_unique<web::HTTPSNetwork>(clientSocket, ssl, context) :
-				make_unique<web::HTTPNetwork>(clientSocket)
+				ssl ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, timeoutInMilliseconds),
+				serversHTTPS ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
+				heuristic,
+				move(cleanup)
 			);
-			streams::IOSocketStream serverStream
-			(
-				serversHTTPS ?
-				make_unique<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeout) :
-				make_unique<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeout)
-			);
+			string httpRequest;
 
-			while (isRunning)
+			if (LoadBalancerServer::receiveClientRequest(request, httpRequest) && LoadBalancerServer::sendClientRequest(request, httpRequest))
 			{
-				string request;
-				string response;
-
-				clientStream >> request;
-
-				if (clientStream.eof())
-				{
-					break;
-				}
-
-				serverStream << request;
-
-				if (serverStream.eof())
-				{
-					HTTPResponse errorResponse;
-
-					resources->internalServerError(errorResponse, nullptr);
-
-					clientStream << errorResponse;
-
-					break;
-				}
-
-				serverStream >> response;
-
-				clientStream << response;
-			}
-
-			{
-				unique_lock<mutex> lock(dataMutex);
-
-				heuristic->onEnd();
+				queuedRequests.push(move(request));
 			}
 		}
 
 		LoadBalancerServer::LoadBalancerServer
 		(
 			string_view ip, string_view port, DWORD timeout, bool serversHTTPS,
-			string_view heuristicName, const vector<HMODULE>& loadSources,
+			const json::utility::jsonObject& heuristic, HMODULE loadSource,
 			const unordered_map<string, vector<int64_t>>& allServers, //-V688
-			const json::JSONParser& configuration, const filesystem::path& assets, uint64_t cachingSize, const filesystem::path& pathToTemplates
+			shared_ptr<ResourceExecutor> resources,
+			size_t processingThreads
 		) :
 			BaseTCPServer
 			(
@@ -131,30 +390,16 @@ namespace framework
 				0,
 				false
 			),
-			resources(make_shared<ResourceExecutor>(configuration, assets, cachingSize, pathToTemplates)),
+			requestQueues(processingThreads),
+			resources(resources),
 			serversHTTPS(serversHTTPS)
 		{
-			string createHeuristicFunctionName = format("create{}Heuristic", heuristicName);
-			createHeuristicFunction heuristicCreateFunction = nullptr;
+			const string& heuristicName = heuristic.getString("name");
+			string apiType = heuristic.getString(json_settings::apiTypeKey);
 
 			if (heuristicName == "Connections")
 			{
-				heuristicCreateFunction = [](string_view ip, string_view port, bool useHTTPS) -> void* { return new Connections(ip, port, useHTTPS); };
-			}
-			else
-			{
-				for (HMODULE source : loadSources)
-				{
-					if (heuristicCreateFunction = reinterpret_cast<createHeuristicFunction>(utility::load(source, createHeuristicFunctionName)); heuristicCreateFunction)
-					{
-						break;
-					}
-				}
-
-				if (!heuristicCreateFunction)
-				{
-					throw runtime_error("Can't find heuristic");
-				}
+				apiType = "";
 			}
 
 			this->allServers.reserve(allServers.size());
@@ -168,7 +413,7 @@ namespace framework
 					this->allServers.emplace_back
 					(
 						utility::BaseConnectionData(ip, portString, timeout),
-						unique_ptr<BaseLoadBalancerHeuristic>(static_cast<BaseLoadBalancerHeuristic*>(heuristicCreateFunction(ip, portString, serversHTTPS)))
+						this->createAPIHeuristic(ip, portString, useHTTPS, heuristicName, apiType, loadSource)
 					);
 				}
 			}

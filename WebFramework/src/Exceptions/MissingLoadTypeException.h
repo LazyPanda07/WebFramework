@@ -1,13 +1,15 @@
 #pragma once
 
-#include "BaseExecutorException.h"
+#include "Exceptions/BaseExecutorException.h"
+
+#include "Framework/WebFrameworkPlatform.h"
 
 namespace framework
 {
 	namespace exceptions
 	{
 		/// <summary>
-		/// Missing loadType in .json file of executor
+		/// Missing LoadType in .json file of executor
 		/// </summary>
 		class WEB_FRAMEWORK_API MissingLoadTypeException : public BaseExecutorException
 		{

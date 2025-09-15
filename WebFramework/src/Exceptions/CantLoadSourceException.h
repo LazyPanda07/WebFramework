@@ -1,6 +1,8 @@
 #pragma once
 
-#include "BaseWebFrameworkException.h"
+#include "Exceptions/BaseWebFrameworkException.h"
+
+#include "Framework/WebFrameworkPlatform.h"
 
 namespace framework
 {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -59,6 +59,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(SolutionDir)WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,6 +76,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(SolutionDir)WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -84,14 +86,37 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Databases\Database.hpp" />
+    <ClInclude Include="src\Databases\SQLResult.hpp" />
+    <ClInclude Include="src\Databases\SQLValue.hpp" />
+    <ClInclude Include="src\Databases\Table.hpp" />
+    <ClInclude Include="src\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="src\Exceptions\NotImplementedDoMethodException.hpp" />
+    <ClInclude Include="src\Exceptions\WebFrameworkAPIException.hpp" />
+    <ClInclude Include="src\Executors\BaseExecutor.hpp" />
     <ClInclude Include="src\Config.hpp" />
     <ClInclude Include="src\DLLHandler.hpp" />
-    <ClInclude Include="src\import.h" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.hpp" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.hpp" />
+    <ClInclude Include="src\Executors\BaseStatefulExecutor.hpp" />
+    <ClInclude Include="src\Executors\BaseStatelessExecutor.hpp" />
+    <ClInclude Include="src\HTTPRequest.hpp" />
+    <ClInclude Include="src\HTTPResponse.hpp" />
+    <ClInclude Include="src\import.hpp" />
+    <ClInclude Include="src\JSONBuilder.hpp" />
+    <ClInclude Include="src\JSONParser.hpp" />
+    <ClInclude Include="src\LoadBalancerHeuristic.hpp" />
+    <ClInclude Include="src\Utility\ChunkGenerator.hpp" />
+    <ClInclude Include="src\Utility\WebFrameworkLocalization.hpp" />
+    <ClInclude Include="src\Utility\WebFrameworkUtility.hpp" />
     <ClInclude Include="src\WebFramework.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dummy.cpp" />
-    <ClCompile Include="src\WebFrameworkException.hpp" />
+    <ClCompile Include="src\Exceptions\WebFrameworkException.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\JSONObject.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

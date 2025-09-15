@@ -1,63 +1,58 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include <string>
+#include <cstdint>
 
-namespace framework
+#include "Framework/WebFrameworkPlatform.h"
+
+namespace framework::load_balancer
 {
-	namespace load_balancer
+	/**
+	 * @brief Determine which server use
+	 */
+	class WEB_FRAMEWORK_EXPORT_API BaseLoadBalancerHeuristic
 	{
+	public:
+		BaseLoadBalancerHeuristic() = default;
+
 		/**
-		 * @brief Determine which server use
+		 * @brief Calculate load score(choose server with lowest score)
+		 * @return Load score
 		 */
-		class WEB_FRAMEWORK_API BaseLoadBalancerHeuristic
-		{
-		private:
-			std::string ip;
-			std::string port;
-			bool useHTTPS;
+		virtual uint64_t operator ()() const = 0;
 
-		public:
-			BaseLoadBalancerHeuristic(std::string_view ip, std::string_view port, bool useHTTPS);
+		/**
+		 * @brief On start event
+		 */
+		virtual void onStart();
 
-			/**
-			 * @brief Calculate load score(choose server with lowest score)
-			 * @return Load score
-			 */
-			virtual uint64_t operator ()() const = 0;
+		/**
+		 * @brief On end event
+		 */
+		virtual void onEnd();
 
-			/**
-			 * @brief On start event
-			 */
-			virtual void onStart();
+		/**
+		 * @brief Get server ip
+		 * @return
+		 */
+		virtual const std::string& getIp() const = 0;
 
-			/**
-			 * @brief On end event
-			 */
-			virtual void onEnd();
+		/**
+		 * @brief Get server port
+		 * @return
+		 */
+		virtual const std::string& getPort() const = 0;
 
-			/**
-			 * @brief Get server ip
-			 * @return 
-			 */
-			const std::string& getIp() const;
+		/**
+		 * @brief Is server using HTTPS
+		 * @return
+		 */
+		virtual bool getUseHTTPS() const = 0;
 
-			/**
-			 * @brief Get server port
-			 * @return 
-			 */
-			const std::string& getPort() const;
+		virtual ~BaseLoadBalancerHeuristic() = default;
+	};
 
-			/**
-			 * @brief Is server using HTTPS
-			 * @return 
-			 */
-			bool getUseHTTPS() const;
-
-			virtual ~BaseLoadBalancerHeuristic() = default;
-		};
-
-		using createHeuristicFunction = void* (*)(std::string_view ip, std::string_view port, bool useHTTPS);
-	}
+	using CreateHeuristicFunction = void* (*)(const char* ip, const char* port, bool useHTTPS);
 }
 
 #ifdef __LINUX__
@@ -65,7 +60,7 @@ namespace framework
 * Macro for each BaseLoadBalancerHeuristic subclass
 * Used for loading function that creates BaseLoadBalancerHeuristic subclass
 */
-#define DECLARE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
+#define DEFINE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
 {	\
 	return new subclassName(ip, port, useHTTPS);	\
 }
@@ -74,7 +69,7 @@ namespace framework
 * Macro for each BaseLoadBalancerHeuristic subclass
 * Used for loading function that creates BaseLoadBalancerHeuristic subclass
 */
-#define DECLARE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
+#define DEFINE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
 {	\
 	return new subclassName(ip, port, useHTTPS);	\
 }

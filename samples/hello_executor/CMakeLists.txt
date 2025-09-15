@@ -7,14 +7,18 @@ add_library(
 	source/HelloExecutor.cpp
 )
 
+if (UNIX AND ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+	add_definitions(-D__ANDROID__)
+
+	target_compile_options(
+		${PROJECT_NAME} PRIVATE 
+		-fexceptions -frtti
+	)
+endif()
+
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	include
-)
-
-target_link_libraries(
-	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
 )
 
 if (WIN32)

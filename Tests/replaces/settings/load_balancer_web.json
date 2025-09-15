@@ -1,0 +1,7 @@
+{
+  "IdExecutor": {
+    "route": "",
+    "loadType": "dynamic",
+    "api": "{API_TYPE}"
+  }
+}

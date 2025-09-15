@@ -3,8 +3,8 @@ from web_framework_api.utility.Config import Config  # Config file
 from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization
 from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
 
-def on_start():
-   print("Server is running")
+def print_server_state():
+   print("Server is running at http://127.0.0.1:8080")
 
 if __name__ == '__main__':
     try:
@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
         server = WebFramework.from_config(config)  # Create server
 
-        server.start(True, on_start)  # Start server and wait
+        server.start(True, print_server_state)  # Start server and wait
     except WebFrameworkException as exception:
         print(exception)
 

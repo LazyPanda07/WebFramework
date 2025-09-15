@@ -1,0 +1,277 @@
+{
+  "title": "WebFramework config",
+  "type": "object",
+  "description": "Settings for WebFramework server",
+  "properties": {
+    "WebServer": {
+      "type": "object",
+      "description": "HTTP server basic settings",
+      "properties": {
+        "ip": {
+          "type": "string",
+          "description": "Server IP address",
+          "pattern": "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))$"
+        },
+        "port": {
+          "type": "integer",
+          "description": "Server port",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Time in milliseconds before connection close"
+        }
+      },
+      "required": [ "ip", "port" ]
+    },
+    "LoadBalancer": {
+      "type": "object",
+      "description": "Settings for loadBalancer webServerType",
+      "properties": {
+        "heuristic": {
+          "type": "object",
+          "description": "Heuristic for load balancing",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Heuristic class name"
+            },
+            "api": {
+              "type": "string",
+              "description": "API language",
+              "enum": [ "cxx", "cc" ]
+            }
+          }
+        },
+        "loadSource": {
+          "type": "string",
+          "description": "Heuristic load source"
+        },
+        "serversHTTPS": {
+          "type": "boolean",
+          "description": "Is servers from listOfServers using HTTPS"
+        },
+        "processingThreads": {
+          "type": "integer",
+          "description": "Number of threads for sending requests to servers and receiving responses from them",
+          "minimum": 1
+        },
+        "listOfServers": {
+          "type": "object",
+          "description": "List of all balancing servers in format IP address: [ port1, port2 ]",
+          "minProperties": 1,
+          "patternProperties": {
+            "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))$": {
+              "type": "array",
+              "description": "Ports",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 1,
+              "uniqueItems": true,
+              "minimum": 0,
+              "maximum": 65535
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [ "serversHTTPS", "listOfServers" ]
+    },
+    "Proxy": {
+      "type": "object",
+      "description": "Settings for proxy webServerType",
+      "properties": {
+        "proxiedServers": {
+          "type": "array",
+          "description": "",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ip": {
+                "type": "string",
+                "description": "Proxied server IP",
+                "pattern": "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))$"
+              },
+              "port": {
+                "type": "integer",
+                "description": "Proxied server port",
+                "minimum": 0,
+                "maximum": 65535
+              },
+              "timeout": {
+                "type": "integer",
+                "description": "Time in milliseconds before connection close"
+              },
+              "isHTTPS": {
+                "type": "boolean",
+                "description": "Is proxied server uses HTTPS"
+              },
+              "routes": {
+                "type": "array",
+                "description": "Proxied endpoints",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [ "ip", "port", "timeout", "isHTTPS", "routes" ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [ "proxiedServers" ]
+    },
+    "WebFramework": {
+      "type": "object",
+      "description": "WebFramework settings",
+      "properties": {
+        "settingsPaths": {
+          "type": "array",
+          "description": "List of settings files with information about executors and routes",
+          "items": {
+            "type": "string"
+          }
+        },
+        "loadSources": {
+          "type": "array",
+          "description": "Paths to shared libraries with executors",
+          "items": {
+            "type": "string"
+          },
+          "default": [ "current" ]
+        },
+        "additionalConfigs": {
+          "type": "array",
+          "description": "Paths to additional configs with settingsPaths and loadSources arrays",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assetsPath": {
+          "type": "string",
+          "description": "Path to web server assets(*.html, *.css, *.wfdp, *.md, ...)"
+        },
+        "templatesPath": {
+          "type": "string",
+          "description": "Path to web server templates assets(files for including)"
+        },
+        "cachingSize": {
+          "type": "integer",
+          "description": "Size of cache in bytes"
+        },
+        "webServerType": {
+          "type": "string",
+          "description": "Type of running server",
+          "enum": [ "multiThreaded", "threadPool", "loadBalancer", "proxy" ]
+        },
+        "userAgentFilter": {
+          "type": "string",
+          "description": "Filter input requests by User-Agent"
+        },
+        "largeBodySizeThreshold": {
+          "type": "integer",
+          "description": "Size of message body to trigger large messages handling"
+        },
+        "largeBodyPacketSize": {
+          "type": "integer",
+          "description": "Size of single packet from large message"
+        },
+        "databaseImplementation": {
+          "type": "string",
+          "description": "Database implementation name",
+          "enum": [ "sqlite" ]
+        },
+        "resourcesThreads": {
+          "type": "integer",
+          "description": "Number of threads to send files",
+          "minimum": 1
+        },
+        "HTTPS": {
+          "type": "object",
+          "description": "HTTPS settings",
+          "properties": {
+            "useHTTPS": {
+              "type": "boolean",
+              "description": "Is server uses HTTPS"
+            },
+            "pathToCertificate": {
+              "type": "string",
+              "description": "Path to HTTPS certificate"
+            },
+            "pathToKey": {
+              "type": "string",
+              "description": "Path to HTTPS key"
+            }
+          },
+          "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
+        },
+        "defaultAssetsPath": {
+          "type": "string",
+          "description": "Path to default WebFramework *.html files",
+          "default": "WebFrameworkAssets"
+        }
+      },
+      "required": [ "assetsPath", "templatesPath", "webServerType" ],
+      "anyOf": [
+        { "required": [ "settingsPaths", "loadSources" ] },
+        { "required": [ "additionalConfigs" ] }
+      ]
+    },
+    "Logging": {
+      "type": "object",
+      "description": "Logging settings",
+      "properties": {
+        "usingLogging": {
+          "type": "boolean",
+          "description": "Use logging"
+        },
+        "dateFormat": {
+          "type": "string",
+          "description": "Date format in logging files",
+          "enum": [ "DMY", "MDY", "YMD" ]
+        },
+        "logFileSize": {
+          "type": "integer",
+          "description": "Each log file size in bytes"
+        },
+        "logsPath": {
+          "type": "string",
+          "description": "Base logs files path"
+        },
+        "duplicateOutput": {
+          "type": "boolean",
+          "description": "Also logging to standard output"
+        },
+        "duplicateErrorOutput": {
+          "type": "boolean",
+          "description": "Also logging error level to standard error output"
+        },
+        "flags": {
+          "type": "array",
+          "description": "Logging flags",
+          "items": {
+            "type": "string",
+            "enum": [ "utcDate", "localDate", "processName", "processId", "threadId" ]
+          }
+        }
+      },
+      "required": [ "dateFormat" ]
+    },
+    "ThreadPoolServer": {
+      "type": "object",
+      "description": "Settings for threadPool webServerType",
+      "properties": {
+        "threadCount": {
+          "type": "integer",
+          "description": "Number of threads in thread pool(0 means all CPU threads)"
+        }
+      }
+    }
+  },
+  "required": [ "WebServer", "WebFramework" ]
+}

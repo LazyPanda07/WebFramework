@@ -1,20 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="StaticDebug|x64">
-      <Configuration>StaticDebug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="StaticRelease|x64">
-      <Configuration>StaticRelease</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -26,23 +18,10 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StaticDebug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StaticRelease|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -57,15 +36,7 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='StaticDebug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="WebFrameworkMacros.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="WebFrameworkMacros.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='StaticRelease|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="WebFrameworkMacros.props" />
   </ImportGroup>
@@ -74,29 +45,11 @@
     <Import Project="WebFrameworkMacros.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StaticDebug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <CustomBuildBeforeTargets>
-    </CustomBuildBeforeTargets>
-    <CustomBuildAfterTargets>
-    </CustomBuildAfterTargets>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
     <CustomBuildBeforeTargets />
-    <CustomBuildAfterTargets>
-    </CustomBuildAfterTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StaticRelease|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-    <CustomBuildBeforeTargets>
-    </CustomBuildBeforeTargets>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
   </PropertyGroup>
@@ -108,53 +61,21 @@
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='StaticDebug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\src\;$(ProjectDir)src\;$(ProjectDir)..\WebFrameworkExecutors\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <Lib>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>
-      </Outputs>
-    </CustomBuildStep>
-    <PostBuildEvent>
-      <Command>XCOPY /Y $(ProjectDir)vendor\sqlite3\dll\sqlite3.dll $(OutDir)
-if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -170,44 +91,7 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>XCOPY /Y $(ProjectDir)vendor\sqlite3\dll\sqlite3.dll $(OutDir)
-if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='StaticRelease|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <Lib>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
-    </Lib>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>
-      </Outputs>
-    </CustomBuildStep>
-    <PostBuildEvent>
-      <Command>XCOPY /Y $(ProjectDir)vendor\sqlite3\dll\sqlite3.dll $(OutDir)
-if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
+      <Command>if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -216,10 +100,10 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);WEB_FRAMEWORK_DLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)src\;$(ProjectDir)vendor\sqlite3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\src\;$(ProjectDir)..\ThreadPool\src\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\src\;$(ProjectDir)src\;$(ProjectDir)..\WebFrameworkExecutors\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -227,8 +111,8 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -244,111 +128,118 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>XCOPY /Y $(ProjectDir)vendor\sqlite3\dll\sqlite3.dll $(OutDir)
-if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
+      <Command>if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CAPI\WebFrameworkExecutorsCAPI.cpp" />
+    <ClCompile Include="src\CAPI\WebFrameworkLocalizationCAPI.cpp" />
+    <ClCompile Include="src\CAPI\WebFrameworkUtilityCAPI.cpp" />
+    <ClCompile Include="src\Databases\DatabaseImplementation.cpp" />
+    <ClCompile Include="src\Databases\SQLResultImplementation.cpp" />
+    <ClCompile Include="src\Databases\SQLValueImplementation.cpp" />
+    <ClCompile Include="src\Databases\TableImplementation.cpp" />
+    <ClCompile Include="src\Exceptions\APIException.cpp" />
     <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
-    <ClCompile Include="src\Import\Config.cpp" />
-    <ClCompile Include="src\c_api\web_framework_c_api.cpp" />
+    <ClCompile Include="src\Executors\CCExecutor.cpp" />
+    <ClCompile Include="src\Executors\CXXExecutor.cpp" />
+    <ClCompile Include="src\Framework\Config.cpp" />
+    <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
+    <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
-    <ClCompile Include="src\Utility\ChunkGenerator.cpp" />
+    <ClCompile Include="src\Rendering\MDRenderer.cpp" />
+    <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
+    <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
     <ClCompile Include="src\Utility\DynamicLibraries.cpp" />
-    <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp" />
-    <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp" />
-    <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp" />
-    <ClCompile Include="src\Exceptions\BadRequestException.cpp" />
-    <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />
+    <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
+    <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
+    <ClCompile Include="src\Utility\SegfaultHandler.cpp" />
+    <ClCompile Include="src\Web\HTTPRequestImplementation.cpp" />
+    <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
+    <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
+    <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
+    <ClCompile Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
-    <ClCompile Include="src\Exceptions\DatabaseException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
-    <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
-    <ClCompile Include="src\Exceptions\SQLite3Exception.cpp" />
-    <ClCompile Include="src\Executors\BaseExecutor.cpp" />
-    <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp" />
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp" />
-    <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
-    <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteResult.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteManager.cpp" />
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\Sources.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
-    <ClCompile Include="src\Managers\SessionsManager.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp" />
-    <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp" />
     <ClCompile Include="src\Utility\BaseConnectionData.cpp" />
-    <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
-    <ClCompile Include="src\Import\WebFramework.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp" />
-    <ClCompile Include="src\WebNetwork\HTTPResponse.cpp" />
-    <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp" />
-    <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp" />
-    <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp" />
+    <ClCompile Include="src\Framework\WebFramework.cpp" />
+    <ClCompile Include="src\Web\Servers\BaseWebServer.cpp" />
+    <ClCompile Include="src\Web\Servers\MultithreadedWebServer.cpp" />
+    <ClCompile Include="src\Web\Servers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CAPI\WebFrameworkExecutorsCAPI.h" />
+    <ClInclude Include="src\CAPI\WebFrameworkLocalizationCAPI.h" />
+    <ClInclude Include="src\CAPI\WebFrameworkUtilityCAPI.h" />
+    <ClInclude Include="src\Databases\DatabaseImplementation.h" />
+    <ClInclude Include="src\Databases\SQLResultImplementation.h" />
+    <ClInclude Include="src\Databases\SQLValueImplementation.h" />
+    <ClInclude Include="src\Databases\TableImplementation.h" />
+    <ClInclude Include="src\Exceptions\APIException.h" />
     <ClInclude Include="src\Exceptions\NotFoundException.h" />
-    <ClInclude Include="src\Import\Config.h" />
-    <ClInclude Include="src\c_api\web_framework_c_api.h" />
-    <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h" />
-    <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h" />
-    <ClInclude Include="src\Exceptions\BadRequestException.h" />
-    <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h" />
+    <ClInclude Include="src\Executors\CCExecutor.h" />
+    <ClInclude Include="src\Executors\CXXExecutor.h" />
+    <ClInclude Include="src\Framework\Config.h" />
+    <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
+    <ClInclude Include="src\Rendering\MDRenderer.h" />
+    <ClInclude Include="src\Rendering\WFDPRenderer.h" />
+    <ClInclude Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
-    <ClInclude Include="src\Exceptions\DatabaseException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
-    <ClInclude Include="src\Exceptions\NotImplementedException.h" />
-    <ClInclude Include="src\Exceptions\SQLite3Exception.h" />
-    <ClInclude Include="src\Executors\BaseExecutor.h" />
-    <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h" />
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h" />
-    <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
-    <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
     <ClInclude Include="src\Executors\ResourceExecutor.h" />
-    <ClInclude Include="src\Import\WebFrameworkCore.h" />
+    <ClInclude Include="src\Framework\WebFrameworkPlatform.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
+    <ClInclude Include="src\LoadBalancer\Heuristics\CCHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h" />
+    <ClInclude Include="src\LoadBalancer\Heuristics\CXXHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />
+    <ClInclude Include="src\Managers\DatabasesManager.h" />
     <ClInclude Include="src\Proxy\ProxyServer.h" />
-    <ClInclude Include="src\SQLite3\SQLiteManager.h" />
-    <ClInclude Include="src\SQLite3\SQLiteResult.h" />
-    <ClInclude Include="src\Utility\ChunkGenerator.h" />
+    <ClInclude Include="src\Utility\AdditionalServerSettings.h" />
+    <ClInclude Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.h" />
     <ClInclude Include="src\Utility\DynamicLibraries.h" />
+    <ClInclude Include="src\Utility\LargeFileHandlers\MultithreadedHandler.h" />
+    <ClInclude Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.h" />
+    <ClInclude Include="src\Utility\SegfaultHandler.h" />
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="src\Utility\RouteParameters.h" />
     <ClInclude Include="src\Utility\Sources.h" />
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
-    <ClInclude Include="src\Managers\SessionsManager.h" />
-    <ClInclude Include="src\SQLite3\SQLiteDatabase.h" />
-    <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h" />
     <ClInclude Include="src\Utility\BaseConnectionData.h" />
-    <ClInclude Include="src\Utility\JSONSettingsParser.h" />
     <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IFile.h" />
-    <ClInclude Include="src\Import\WebFrameworkConstants.h" />
-    <ClInclude Include="src\Import\WebFramework.h" />
-    <ClInclude Include="src\WebNetwork\HTTPRequest.h" />
-    <ClInclude Include="src\WebNetwork\HTTPResponse.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h" />
-    <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h" />
-    <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h" />
-    <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h" />
-    <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h" />
+    <ClInclude Include="src\Web\HTTPRequestImplementation.h" />
+    <ClInclude Include="src\Web\HTTPResponseImplementation.h" />
+    <ClInclude Include="src\Web\Servers\ExecutorServer.h" />
+    <ClInclude Include="src\Framework\WebFrameworkConstants.h" />
+    <ClInclude Include="src\Framework\WebFramework.h" />
+    <ClInclude Include="src\Web\Servers\BaseWebServer.h" />
+    <ClInclude Include="src\Web\Servers\MultithreadedWebServer.h" />
+    <ClInclude Include="src\Web\Servers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3rdparty\cmark-gfm\cmark-gfm.vcxproj">
+      <Project>{66216d2f-5851-404b-af2a-da5f216f54af}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Databases\Databases.vcxproj">
+      <Project>{2f9bd34b-de1c-4c0e-8131-8aa7274c0081}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFrameworkExecutors\WebFrameworkExecutors.vcxproj">
+      <Project>{fa69e899-f0d2-4c8e-96dc-2aa61854665c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\FileManager\FileManager.vcxproj">
       <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
     </ProjectReference>
@@ -385,11 +276,16 @@ if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkA
     <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.vcxproj">
       <Project>{f71a5e4a-5242-4fa9-b614-5c0603adc678}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\WebFrameworkCore\WebFrameworkCore.vcxproj">
+      <Project>{e852aa58-2286-41f3-8a93-44e08c0efc97}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\400.html" />
+    <None Include="WebFrameworkAssets\Errors\403.html" />
     <None Include="WebFrameworkAssets\Errors\404.html" />
     <None Include="WebFrameworkAssets\Errors\500.html" />
+    <None Include="WebFrameworkAssets\Errors\502.html" />
     <None Include="WebFrameworkMacros.props" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

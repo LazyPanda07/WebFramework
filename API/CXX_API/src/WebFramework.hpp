@@ -4,7 +4,7 @@
 #include <filesystem>
 
 #include "DLLHandler.hpp"
-#include "WebFrameworkException.hpp"
+#include "Exceptions/WebFrameworkException.hpp"
 #include "Config.hpp"
 
 namespace framework

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Import/WebFrameworkCore.h"
+#include "Framework/WebFrameworkPlatform.h"
 
-#include "WebNetwork/WebServers/BaseWebServer.h"
+#include "Web/Servers/BaseWebServer.h"
 #include "Utility/BaseConnectionData.h"
 
 namespace framework

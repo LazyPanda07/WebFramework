@@ -1,3 +1,6 @@
+## 3.1.0
+* Update WebFramework to 3.1.0
+
 ## 1.0.7
 * Fixes
 

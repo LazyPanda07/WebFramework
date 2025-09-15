@@ -1,13 +1,14 @@
 #include "NotFoundException.h"
 
-namespace framework
-{
-	namespace exceptions
-	{
-		NotFoundException::NotFoundException(std::string_view additionalInformation) :
-			BaseExecutorException(format("{}. {}", ::exceptions::notFound, additionalInformation))
-		{
+#include "Framework/WebFrameworkConstants.h"
 
-		}
+using namespace std;
+
+namespace framework::exceptions
+{
+	NotFoundException::NotFoundException(string_view additionalInformation) :
+		BaseExecutorException(format("{}. {}", ::exceptions::notFound, additionalInformation))
+	{
+
 	}
 }

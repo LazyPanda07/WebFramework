@@ -5,6 +5,15 @@ set -e
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+chmod +x ./Server
+chmod +x ./DefaultHTTPSServer
+chmod +x ./ProxyServer
+chmod +x ./LoadBalancerServer
+chmod +x ./CXX_API_TESTS
+chmod +x ./Core
+chmod +x ./LoadBalancerCore
+chmod +x ./ProxyCore
+
 ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
 ./ProxyServer --config proxy_config.json --port 15000 &
@@ -21,6 +30,7 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 ./LoadBalancerServer --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
 sleep 1
 
+./CXX_API_TESTS
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
 ./LoadBalancerCore --port 9090
 ./LoadBalancerCore --port 9091

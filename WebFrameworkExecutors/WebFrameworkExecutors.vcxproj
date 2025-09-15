@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{fa69e899-f0d2-4c8e-96dc-2aa61854665c}</ProjectGuid>
+    <RootNamespace>WebFrameworkExecutors</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>WebFrameworkExecutors</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\;$(ProjectDir)..\Log\src\</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\src\;$(ProjectDir)..\FileManager\src\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\src\;$(ProjectDir)..\Networks\SocketStreams\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\;$(ProjectDir)..\Log\src\</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\c_api\executors_c_api.cpp" />
+    <ClCompile Include="src\Databases\DatabaseExecutors.cpp" />
+    <ClCompile Include="src\Databases\SQLResultExecutors.cpp" />
+    <ClCompile Include="src\Databases\SQLValueExecutors.cpp" />
+    <ClCompile Include="src\Databases\TableExecutors.cpp" />
+    <ClCompile Include="src\Executors\BaseExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp" />
+    <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp" />
+    <ClCompile Include="src\Exceptions\BadRequestException.cpp" />
+    <ClCompile Include="src\Exceptions\BaseExecutorException.cpp" />
+    <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
+    <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
+    <ClCompile Include="src\Web\HTTPRequestExecutors.cpp" />
+    <ClCompile Include="src\Web\HTTPResponseExecutors.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\c_api\executors_c_api.h" />
+    <ClInclude Include="src\Databases\DatabaseExecutors.h" />
+    <ClInclude Include="src\Databases\SQLResultExecutors.h" />
+    <ClInclude Include="src\Databases\SQLValueExecutors.h" />
+    <ClInclude Include="src\Databases\TableExecutors.h" />
+    <ClInclude Include="src\Executors\BaseExecutor.h" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h" />
+    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h" />
+    <ClInclude Include="src\Executors\BaseStatefulExecutor.h" />
+    <ClInclude Include="src\Executors\BaseStatelessExecutor.h" />
+    <ClInclude Include="src\Exceptions\BadRequestException.h" />
+    <ClInclude Include="src\Exceptions\BaseExecutorException.h" />
+    <ClInclude Include="src\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="src\ExecutorsConstants.h" />
+    <ClInclude Include="src\Utility\JSONSettingsParser.h" />
+    <ClInclude Include="src\Web\HTTPRequestExecutors.h" />
+    <ClInclude Include="src\Web\HTTPResponseExecutors.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileManager\FileManager.vcxproj">
+      <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\INIParser\INIParser.vcxproj">
+      <Project>{ce5f5455-0e8a-49e8-be46-0a12ed898352}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Localization\Localization.vcxproj">
+      <Project>{d2968ac9-bac3-4f25-9698-5c1cf6c4fa35}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Log\Log.vcxproj">
+      <Project>{89755e92-d5a7-4fa6-b227-7ddc3bba9aa1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\HTTP\HTTP.vcxproj">
+      <Project>{cd88b391-b7b9-47d5-af8d-153fcb2b5a2b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Networks\HTTP\JSON\JSON.vcxproj">
+      <Project>{f6b57139-d9f3-4b02-aa92-4e1f417649da}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SHA256\SHA256.vcxproj">
+      <Project>{91f7fb1e-1d8d-4544-99e2-23d409d666ab}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ThreadPool\ThreadPool.vcxproj">
+      <Project>{bde48484-5593-484f-9f84-fc01f8cf83a9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\UtilityLibrary\UtilityLibrary.vcxproj">
+      <Project>{f71a5e4a-5242-4fa9-b614-5c0603adc678}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WebFrameworkCore\WebFrameworkCore.vcxproj">
+      <Project>{e852aa58-2286-41f3-8a93-44e08c0efc97}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

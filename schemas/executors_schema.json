@@ -1,0 +1,36 @@
+{
+  "title": "WebFramework executors",
+  "type": "object",
+  "description": "Executors setup",
+  "patternProperties": {
+    "^[A-Za-z_][A-Za-z0-9_]*$": {
+      "type": "object",
+      "properties": {
+        "route": {
+          "type": "string",
+          "description": "API endpoint"
+        },
+        "loadType": {
+          "type": "string",
+          "description": "Load executor at startup or per client connection",
+          "enum": [ "initialization", "dynamic" ]
+        },
+        "userAgentFilter": {
+          "type": "string",
+          "description": "Filter input requests by User-Agent"
+        },
+        "initParameters": {
+          "type": "object",
+          "description": "Initialization parameters for executors that can be accessed in init function"
+        },
+        "api": {
+          "type": "string",
+          "description": "API language",
+          "enum": ["cxx", "cc"]
+        }
+      },
+      "required": [ "route", "loadType", "api" ]
+    }
+  },
+  "additionalProperties": false
+}

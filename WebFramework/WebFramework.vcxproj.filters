@@ -15,22 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Import\WebFramework.cpp">
+    <ClCompile Include="src\Framework\WebFramework.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\WebServers\MultithreadedWebServer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Executors\BaseExecutor.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Exceptions\BaseExecutorException.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Exceptions\NotImplementedException.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utility\JSONSettingsParser.cpp">
+    <ClCompile Include="src\Web\Servers\MultithreadedWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp">
@@ -39,37 +27,19 @@
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\HTTPRequest.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WebNetwork\HTTPResponse.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\Executors\ResourceExecutor.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\SQLite3\SQLiteDatabase.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SQLite3\SQLiteDatabaseModel.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DynamicPages\WebFrameworkDynamicPages.cpp">
+    <ClCompile Include="src\Rendering\WFDPRenderer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.cpp">
+    <ClCompile Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp">
@@ -81,46 +51,19 @@
     <ClCompile Include="src\Managers\ExecutorsManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\SessionsManager.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\Utility\Sources.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\RouteParameters.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Exceptions\BadRequestException.cpp">
+    <ClCompile Include="src\Web\Servers\BaseWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\SQLite3\SQLiteResult.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SQLite3\SQLiteManager.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WebNetwork\WebServers\BaseWebServer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WebNetwork\WebServers\ThreadPoolWebServer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp">
+    <ClCompile Include="src\Web\Servers\ThreadPoolWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Exceptions\SQLite3Exception.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Exceptions\DatabaseException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp">
@@ -129,19 +72,16 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebNetwork\Interfaces\IExecutorFunctionality.cpp">
+    <ClCompile Include="src\Web\Servers\ExecutorServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Import\Config.cpp">
+    <ClCompile Include="src\Framework\Config.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Proxy\ProxyServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\ChunkGenerator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\c_api\web_framework_c_api.cpp">
+    <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\DynamicLibraries.cpp">
@@ -150,27 +90,78 @@
     <ClCompile Include="src\Exceptions\NotFoundException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\AdditionalServerSettings.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Web\HTTPRequestImplementation.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Web\HTTPResponseImplementation.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\DatabasesManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Databases\DatabaseImplementation.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Databases\TableImplementation.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Databases\SQLResultImplementation.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Databases\SQLValueImplementation.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Executors\CXXExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CAPI\WebFrameworkExecutorsCAPI.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CAPI\WebFrameworkUtilityCAPI.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions\APIException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CAPI\WebFrameworkLocalizationCAPI.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Executors\CCExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\SegfaultHandler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rendering\MDRenderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Import\WebFramework.h">
+    <ClInclude Include="src\Framework\WebFramework.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Import\WebFrameworkConstants.h">
+    <ClInclude Include="src\Framework\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\WebServers\MultithreadedWebServer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Executors\BaseExecutor.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Exceptions\BaseExecutorException.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Exceptions\NotImplementedException.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utility\JSONSettingsParser.h">
+    <ClInclude Include="src\Web\Servers\MultithreadedWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h">
@@ -179,43 +170,19 @@
     <ClInclude Include="src\Exceptions\MissingLoadTypeException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\HTTPRequest.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WebNetwork\HTTPResponse.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\Executors\ResourceExecutor.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Executors\BaseStatefulExecutor.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Executors\BaseStatelessExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\SQLite3\SQLiteDatabase.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SQLite3\SQLiteDatabaseModel.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DynamicPages\WebFrameworkDynamicPages.h">
+    <ClInclude Include="src\Rendering\WFDPRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IStaticFile.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IDynamicFile.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DynamicPages\StandardWebFrameworkDynamicPagesFunctions.h">
+    <ClInclude Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h">
@@ -227,49 +194,19 @@
     <ClInclude Include="src\Managers\ExecutorsManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\SessionsManager.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SQLite3\SQLiteManager.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="src\Utility\RouteParameters.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\BadRequestException.h">
+    <ClInclude Include="src\Web\Servers\BaseWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\SQLite3\SQLiteResult.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WebNetwork\WebServers\BaseWebServer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WebNetwork\WebServers\ThreadPoolWebServer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h">
+    <ClInclude Include="src\Web\Servers\ThreadPoolWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Exceptions\SQLite3Exception.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Exceptions\DatabaseException.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Import\WebFrameworkCore.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IFile.h">
+    <ClInclude Include="src\Framework\WebFrameworkPlatform.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h">
@@ -278,10 +215,10 @@
     <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebNetwork\Interfaces\IExecutorFunctionality.h">
+    <ClInclude Include="src\Web\Servers\ExecutorServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Import\Config.h">
+    <ClInclude Include="src\Framework\Config.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Sources.h">
@@ -290,10 +227,7 @@
     <ClInclude Include="src\Proxy\ProxyServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\ChunkGenerator.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\c_api\web_framework_c_api.h">
+    <ClInclude Include="src\CAPI\WebFrameworkCAPI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\DynamicLibraries.h">
@@ -305,11 +239,76 @@
     <ClInclude Include="src\Exceptions\NotFoundException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\LargeFileHandlers\MultithreadedHandler.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\AdditionalServerSettings.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Web\HTTPResponseImplementation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Web\HTTPRequestImplementation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\DatabasesManager.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\DatabaseImplementation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\TableImplementation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\SQLResultImplementation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Databases\SQLValueImplementation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Executors\CXXExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CAPI\WebFrameworkExecutorsCAPI.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CAPI\WebFrameworkUtilityCAPI.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions\APIException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CAPI\WebFrameworkLocalizationCAPI.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadBalancer\Heuristics\CXXHeuristic.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Executors\CCExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadBalancer\Heuristics\CCHeuristic.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\SegfaultHandler.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rendering\MDRenderer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="WebFrameworkAssets\Errors\404.html" />
     <None Include="WebFrameworkAssets\Errors\400.html" />
     <None Include="WebFrameworkAssets\Errors\500.html" />
     <None Include="WebFrameworkMacros.props" />
+    <None Include="WebFrameworkAssets\Errors\403.html" />
+    <None Include="WebFrameworkAssets\Errors\502.html" />
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@
     "templatesPath": "templates",
     "cachingSize": 536870912,
     "webServerType": "multiThreaded",
+    "userAgentFilter": "",
     "HTTPS": {
       "useHTTPS": true,
       "pathToCertificate": "certificates/cert.pem",

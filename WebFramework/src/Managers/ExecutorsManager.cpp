@@ -1,10 +1,22 @@
 #include "ExecutorsManager.h"
 
+#include <algorithm>
+#include <ranges>
+#include <format>
+
 #include "Log.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/DatabaseException.h"
+#include "Web/HTTPRequestImplementation.h"
+#include <Utility/Sources.h>
+#include <Utility/DynamicLibraries.h>
+#include <Exceptions/MissingLoadTypeException.h>
+#include <Exceptions/CantFindFunctionException.h>
+
+#include <Executors/CXXExecutor.h>
+#include <Executors/CCExecutor.h>
 
 using namespace std;
 
@@ -26,38 +38,34 @@ namespace framework
 
 	bool ExecutorsManager::isHeavyOperation(BaseExecutor* executor)
 	{
-		if (!executor)
-		{
-			throw exceptions::BadRequestException(); // 400
-		}
+		utility::ExecutorType executorType = executor->getType();
 
-		BaseExecutor::executorType executorType = executor->getType();
-
-		return executorType == BaseExecutor::executorType::heavyOperationStateless ||
-			executorType == BaseExecutor::executorType::heavyOperationStateful;
+		return executorType == utility::ExecutorType::heavyOperationStateless ||
+			executorType == utility::ExecutorType::heavyOperationStateful;
 	}
 
-	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequest& request, vector<utility::RouteParameters>::iterator it)
+	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequestExecutors& request, vector<utility::RouteParameters>::iterator it)
 	{
 		size_t i = 0;
 		size_t startParameter = it->baseRoute.size() + 1;
 		size_t endParameter;
+		HTTPRequestImplementation& requestImplementation = *static_cast<HTTPRequestImplementation*>(request.getImplementation());
 
 		do
 		{
 			endParameter = parameters.find('/', startParameter);
 
-			switch (static_cast<utility::RouteParameters::routeParametersType>(it->parameters[it->indices[i]].index()))
+			switch (static_cast<utility::RouteParameters::RouteParametersType>(it->parameters[it->indices[i]].index()))
 			{
-			case utility::RouteParameters::routeParametersType::stringTypeIndex:
-				request.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
+			case utility::RouteParameters::RouteParametersType::stringTypeIndex:
+				requestImplementation.routeParameters[it->indices[i++]] = parameters.substr(startParameter, endParameter - startParameter);
 
 				break;
 
-			case utility::RouteParameters::routeParametersType::integerTypeIndex:
+			case utility::RouteParameters::RouteParametersType::integerTypeIndex:
 				try
 				{
-					request.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
+					requestImplementation.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const invalid_argument&)
 				{
@@ -70,10 +78,10 @@ namespace framework
 
 				break;
 
-			case utility::RouteParameters::routeParametersType::doubleTypeIndex:
+			case utility::RouteParameters::RouteParametersType::doubleTypeIndex:
 				try
 				{
-					request.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
+					requestImplementation.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const invalid_argument&)
 				{
@@ -94,13 +102,13 @@ namespace framework
 		} while (endParameter != string::npos);
 	}
 
-	BaseExecutor* ExecutorsManager::getExecutor(string& parameters, HTTPRequest& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(string& parameters, HTTPRequestExecutors& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		auto executor = statefulExecutors.find(parameters);
 
 		if (executor == statefulExecutors.end())
 		{
-			unique_lock<mutex> scopeLock(checkExecutor);
+			unique_lock<mutex> lock(checkExecutor);
 
 			executor = routes.find(parameters);
 
@@ -133,13 +141,14 @@ namespace framework
 				executor = routes.try_emplace
 				(
 					move(parameters),
-					unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators[executorSettings->second.name]()))
+					this->createAPIExecutor(executorSettings->second.name, executorSettings->second.apiType)
 				).first;
+
 				executor->second->init(executorSettings->second);
 
-				BaseExecutor::executorType executorType = executor->second->getType();
+				utility::ExecutorType executorType = executor->second->getType();
 
-				if (executorType == BaseExecutor::executorType::stateful || executorType == BaseExecutor::executorType::heavyOperationStateful)
+				if (executorType == utility::ExecutorType::stateful || executorType == utility::ExecutorType::heavyOperationStateful)
 				{
 					executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
 				}
@@ -149,10 +158,195 @@ namespace framework
 		return executor->second.get();
 	}
 
-	ExecutorsManager::ExecutorsManager() :
-		serverType(webServerType::multiThreaded)
+	bool ExecutorsManager::filterUserAgent(const string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const
 	{
+		const string& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
 
+		if (executorUserAgentFilter.size())
+		{
+			if (auto it = headers.find("User-Agent"); it != headers.end())
+			{
+				if (executorUserAgentFilter != it->second)
+				{
+					if (Log::isValid())
+					{
+						Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
+					}
+
+					resources->forbiddenError(response, nullptr);
+
+					return false;
+				}
+			}
+			else
+			{
+				if (Log::isValid())
+				{
+					Log::info("No User-Agent provided", "LogFilter");
+				}
+
+				resources->forbiddenError(response, nullptr);
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	unique_ptr<BaseExecutor> ExecutorsManager::createAPIExecutor(const string& name, string_view apiType) const
+	{
+		static const unordered_map<string_view, function<unique_ptr<BaseExecutor>(const string& name)>> apiExecutors =
+		{
+			{ "", [this](const string& name) { return unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
+			{ json_settings::cxxExecutorKey, [this](const string& name) { return make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } },
+			{ json_settings::ccExecutorKey, [this](const string& name) { return make_unique<CCExecutor>(creatorSources.at(name), creators.at(name)(), name); } }
+		};
+
+		if (auto it = apiExecutors.find(apiType); it != apiExecutors.end())
+		{
+			return (it->second)(name);
+		}
+
+		throw runtime_error(format("Can't find executor type for {}", apiType));
+
+		return nullptr;
+	}
+
+	ExecutorsManager::ExecutorsManager
+	(
+		const json::JSONParser& configuration,
+		const vector<string>& pathToSources,
+		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		const utility::AdditionalServerSettings& additionalSettings,
+		shared_ptr<threading::ThreadPool> threadPool
+	) :
+		settings(move(executorsSettings)),
+		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
+		userAgentFilter(additionalSettings.userAgentFilter),
+		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
+	{
+		vector<HMODULE> sources = utility::loadSources(pathToSources);
+
+		routes.reserve(settings.size());
+		creators.reserve(settings.size());
+
+		vector<pair<string, string>> nodes;
+
+#ifdef __ANDROID__
+		string webFrameworkSharedLibraryPath = "libWebFramework.so";
+#else
+		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
+#endif
+
+		for (const auto& [route, executorSettings] : settings)
+		{
+			CreateExecutorFunction creator = nullptr;
+			HMODULE creatorSource = nullptr;
+			string apiType;
+
+			ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
+
+			for (const HMODULE& source : sources)
+			{
+				if (creator = utility::load<CreateExecutorFunction>(source, format("create{}{}Instance", executorSettings.name, apiType)))
+				{
+					creatorSource = source;
+
+					break;
+				}
+			}
+
+			if (!creator)
+			{
+				if (Log::isValid())
+				{
+					Log::error("Can't find creator for executor {}", "LogWebFrameworkInitialization", executorSettings.name);
+				}
+
+				throw exceptions::CantFindFunctionException(format("create{}{}Instance", executorSettings.name, apiType));
+			}
+
+			creators.try_emplace(executorSettings.name, creator);
+			creatorSources.try_emplace(executorSettings.name, creatorSource);
+
+			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCXX"))
+			{
+				initFunction(webFrameworkSharedLibraryPath.data());
+			}
+			else if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCC"))
+			{
+				initFunction(webFrameworkSharedLibraryPath.data());
+			}
+
+			switch (executorSettings.executorLoadType)
+			{
+			case utility::JSONSettingsParser::ExecutorSettings::LoadType::initialization:
+				if (route.find('{') == string::npos)
+				{
+					auto [it, success] = routes.try_emplace
+					(
+						route,
+						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
+					);
+
+					if (success)
+					{
+						if (it->second->getType() == utility::ExecutorType::stateful || it->second->getType() == utility::ExecutorType::heavyOperationStateful)
+						{
+							routes.erase(route);
+						}
+						else
+						{
+							it->second->init(executorSettings);
+						}
+					}
+				}
+				else
+				{
+					routeParameters.push_back(route);
+
+					auto [it, success] = routes.try_emplace
+					(
+						routeParameters.back().baseRoute,
+						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
+					);
+
+					nodes.emplace_back(route, routeParameters.back().baseRoute);
+
+					if (success)
+					{
+						it->second->init(executorSettings);
+					}
+				}
+
+				break;
+
+			case utility::JSONSettingsParser::ExecutorSettings::LoadType::dynamic:
+				if (route.find('{') != string::npos)
+				{
+					routeParameters.push_back(route);
+
+					nodes.emplace_back(route, routeParameters.back().baseRoute);
+				}
+
+				break;
+
+			case utility::JSONSettingsParser::ExecutorSettings::LoadType::none:
+				throw exceptions::MissingLoadTypeException(executorSettings.name);
+
+				break;
+			}
+		}
+
+		for (auto&& [route, executorSettings] : nodes)
+		{
+			auto node = settings.extract(route);
+
+			node.key() = move(executorSettings);
+
+			settings.insert(move(node)); //-V837
+		}
 	}
 
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept
@@ -164,62 +358,73 @@ namespace framework
 	{
 		this->routes = move(other.routes);
 		this->creators = move(other.creators);
+		this->creatorSources = move(other.creatorSources);
 		this->settings = move(other.settings);
 		this->resources = move(other.resources);
+		this->routeParameters = move(other.routeParameters);
+		this->userAgentFilter = move(other.userAgentFilter);
+		this->serverType = other.serverType;
 
 		return *this;
 	}
 
-	void ExecutorsManager::init
-	(
-		const json::JSONParser& configuraion,
-		const filesystem::path& assets,
-		uint64_t cachingSize,
-		const filesystem::path& pathToTemplates,
-		unordered_map<string, unique_ptr<BaseExecutor>>&& routes,
-		unordered_map<string, createExecutorFunction>&& creators,
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& settings,
-		vector<utility::RouteParameters>&& routeParameters
-	)
+	optional<function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> ExecutorsManager::service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
-		const unordered_map<string_view, webServerType> types =
+		BaseExecutor* executor = this->getOrCreateExecutor(request, response, statefulExecutors);
+
+		if (!executor)
 		{
-			{ json_settings::multiThreadedWebServerTypeValue, webServerType::multiThreaded },
-			{ json_settings::threadPoolWebServerTypeValue, webServerType::threadPool },
-			{ json_settings::loadBalancerWebServerTypeValue, webServerType::loadBalancer },
-			{ json_settings::proxyWebServerTypeValue, webServerType::proxy }
-		};
+			return nullopt;
+		}
 
-		this->routes = move(routes);
-		this->creators = move(creators);
-		this->settings = move(settings);
-		this->routeParameters = move(routeParameters);
+		void (BaseExecutor:: * method)(HTTPRequestExecutors&, HTTPResponseExecutors&) = BaseExecutor::getMethod(request.getMethod());
 
-		resources = make_shared<ResourceExecutor>(configuraion, assets, cachingSize, pathToTemplates);
+		if (serverType == WebServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
+		{
+			return bind(method, executor, placeholders::_1, placeholders::_2);
+		}
 
-		resources->init(utility::JSONSettingsParser::ExecutorSettings());
+		invoke(method, executor, request, response);
 
-		serverType = types.at(configuraion.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey));
+		return nullopt;
 	}
 
-	optional<function<void(HTTPRequest&, HTTPResponse&)>> ExecutorsManager::service(HTTPRequest& request, HTTPResponse& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
-		static const unordered_map<string, void(BaseExecutor::*)(HTTPRequest&, HTTPResponse&)> methods =
-		{
-			{ "GET", &BaseExecutor::doGet },
-			{ "POST", &BaseExecutor::doPost },
-			{ "HEAD", &BaseExecutor::doHead },
-			{ "PUT", &BaseExecutor::doPut },
-			{ "DELETE", &BaseExecutor::doDelete },
-			{ "PATCH", &BaseExecutor::doPatch },
-			{ "OPTIONS",&BaseExecutor::doOptions },
-			{ "TRACE", &BaseExecutor::doTrace },
-			{ "CONNECT", &BaseExecutor::doConnect }
-		};
-
 		try
 		{
-			string parameters = request.getRawParameters();
+			const web::HeadersMap& headers = request.getHeaders();
+
+			if (userAgentFilter.size())
+			{
+				if (auto it = headers.find("User-Agent"); it != headers.end())
+				{
+					if (userAgentFilter != it->second)
+					{
+						if (Log::isValid())
+						{
+							Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
+						}
+
+						resources->forbiddenError(response, nullptr);
+
+						return nullptr;
+					}
+				}
+				else
+				{
+					if (Log::isValid())
+					{
+						Log::info("No User-Agent provided", "LogFilter");
+					}
+
+					resources->forbiddenError(response, nullptr);
+
+					return nullptr;
+				}
+			}
+
+			string parameters(request.getRawParameters());
 			BaseExecutor* executor = nullptr;
 			bool fileRequest = ExecutorsManager::isFileRequest(parameters);
 
@@ -228,7 +433,7 @@ namespace framework
 				parameters.resize(parameters.find('?'));
 			}
 
-			executor = this->getExecutor(parameters, request, statefulExecutors);
+			executor = this->getOrCreateExecutor(parameters, request, statefulExecutors);
 
 			if (!fileRequest && !executor)
 			{
@@ -240,20 +445,27 @@ namespace framework
 				fileRequest = false;
 			}
 
-			void (BaseExecutor:: * method)(HTTPRequest&, HTTPResponse&) = methods.at(request.getMethod());
-
-			if (serverType == webServerType::threadPool && (fileRequest ? false : ExecutorsManager::isHeavyOperation(executor)))
+			if (fileRequest)
 			{
-				return bind(method, executor, placeholders::_1, placeholders::_2);
+				return resources.get();
+			}
+			else if (executor)
+			{
+				if (this->filterUserAgent(parameters, headers, response))
+				{
+					return executor;
+				}
+				else
+				{
+					resources->forbiddenError(response, nullptr);
+				}
 			}
 			else
 			{
-				fileRequest ?
-					invoke(method, resources.get(), request, response) :
-					invoke(method, executor, request, response);
+				throw exceptions::BadRequestException(); // 400
 			}
 
-			return {};
+			return nullptr;
 		}
 		catch (const exceptions::BaseExecutorException& e)
 		{
@@ -273,7 +485,7 @@ namespace framework
 
 			throw;
 		}
-		catch (const exceptions::DatabaseException& e)
+		catch (const database::exception::DatabaseException& e)
 		{
 			if (Log::isValid())
 			{

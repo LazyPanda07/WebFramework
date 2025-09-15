@@ -24,7 +24,7 @@ if __name__ == '__main__':
         config = Config.from_path(args.config)
 
         if args.custom_heuristic:
-            config.override_configuration("heuristic", "CustomHeuristic", True)
+            config.override_configuration("name", "CustomHeuristic", True)
 
         if args.type == "server":
             settings_paths: List[str] = ["load_balancer_web.json"]

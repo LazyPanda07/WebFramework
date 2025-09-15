@@ -2,6 +2,8 @@
 
 #include <import.h>
 
+static void printServerState();
+
 int main(int argc, char** argv)
 {
 	initializeWebFramework("WebFramework"); // Load WebFramework shared library
@@ -43,7 +45,7 @@ int main(int argc, char** argv)
 		return -3;
 	}
 
-	exception = startWebFrameworkServer(server, true, NULL); // Start server and wait
+	exception = startWebFrameworkServer(server, true, printServerState); // Start server and wait
 
 	if (exception) // Check error
 	{
@@ -60,4 +62,9 @@ int main(int argc, char** argv)
 	deleteWebFramework(server); // Free WebFramework memory
 
 	return 0;
+}
+
+void printServerState()
+{
+	printf("Server is running at http://127.0.0.1:8080\n");
 }

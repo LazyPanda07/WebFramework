@@ -8,26 +8,27 @@ option(BUILD_FLUTTER_API "Build Flutter API" ON)
 
 project(API)
 
-if(${WEB_FRAMEWORK_LIBRARY_TYPE} STREQUAL SHARED)
-	if (${BUILD_CC_API})
-		add_subdirectory(CC_API)
-	endif()
-	
-	if (${BUILD_CXX_API})
-		add_subdirectory(CXX_API)
-	endif()
-
-	if (${BUILD_CSHARP_API})
-		add_subdirectory(CSharp_API)
-	endif()
-	
-	if (${BUILD_PYTHON_API})
-		add_subdirectory(python_api)
-	endif()
+if (${BUILD_CC_API})
+	add_subdirectory(CC_API)
 endif()
 
-if(${WEB_FRAMEWORK_LIBRARY_TYPE} STREQUAL SHARED)
-	if (${BUILD_FLUTTER_API})
-		install(DIRECTORY web_framework_flutter_api/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/web_framework_flutter_api/)
-	endif()
+if (${BUILD_CXX_API})
+	add_subdirectory(CXX_API)
+endif()
+
+if (${BUILD_CSHARP_API})
+	add_subdirectory(CSharp_API)
+endif()
+
+if (${BUILD_PYTHON_API})
+	install(DIRECTORY python_api DESTINATION api)
+	install(
+		CODE [[
+			execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/license ${CMAKE_INSTALL_PREFIX}/api/python_api/license)
+		]]
+	)
+endif()
+
+if (${BUILD_FLUTTER_API})
+	install(DIRECTORY web_framework_flutter_api/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/web_framework_flutter_api/)
 endif()

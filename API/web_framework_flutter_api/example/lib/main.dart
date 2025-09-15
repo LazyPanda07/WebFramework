@@ -53,6 +53,7 @@ class _AppState extends State<App> {
     try {
       config = await Config.fromPath("configs/config.json");
 
+      config.overrideConfigurationBoolean("usingLogging", false);
       config.overrideBasePath("${config.handler.assetsPath}/executors");
 
       _server = await WebFramework.fromConfig(config);
@@ -79,9 +80,6 @@ class _AppState extends State<App> {
       config?.dispose();
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {});
@@ -123,7 +121,7 @@ class _AppState extends State<App> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Plugin example app"),
+          title: const Text("WebFramework App"),
         ),
         body: Column(children: [
           Center(

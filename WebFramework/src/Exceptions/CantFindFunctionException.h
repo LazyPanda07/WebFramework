@@ -1,13 +1,15 @@
 #pragma once
 
-#include "BaseExecutorException.h"
+#include "Exceptions/BaseExecutorException.h"
+
+#include "Framework/WebFrameworkPlatform.h"
 
 namespace framework
 {
 	namespace exceptions
 	{
 		/// <summary>
-		/// Can't find createExecutorFunction for executor
+		/// Can't find CreateExecutorFunction for executor
 		/// </summary>
 		class WEB_FRAMEWORK_API CantFindFunctionException : public BaseExecutorException
 		{

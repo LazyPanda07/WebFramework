@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 		}
 		else if (!strcmp(argv[i], "--custom_heuristic"))
 		{
-			exception = overrideConfigurationString(config, "heuristic", "CustomHeuristic", true);
+			exception = overrideConfigurationString(config, "name", "CustomHeuristic", true);
 
 			if (exception)
 			{

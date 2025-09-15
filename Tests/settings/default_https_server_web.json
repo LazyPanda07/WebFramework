@@ -1,0 +1,18 @@
+{
+  "Executor": {
+    "route": "default_request",
+    "loadType": "initialization",
+    "api": "cxx"
+  },
+  "RoutePatternExecutor": {
+    "route": "pattern/{string:stringValue}/{int:integerValue}/{double:doubleValue}",
+    "loadType": "initialization",
+    "api": "cxx"
+  },
+  "UserAgentExecutor": {
+    "route": "user_agent",
+    "loadType": "initialization",
+    "userAgentFilter": "CustomUserAgent",
+    "api": "cxx"
+  }
+}

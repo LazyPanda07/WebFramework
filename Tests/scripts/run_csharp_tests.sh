@@ -2,8 +2,15 @@
 
 set -e
 
+echo "Start C# Tests"
+
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+
+chmod +x ./Core
+chmod +x ./LoadBalancerCore
+chmod +x ./ProxyCore
+chmod +x ./DefaultHTTPSServer
 
 dotnet CSharpServer.dll ${WEB_FRAMEWORK_SERVER_CONFIG} &
 ./DefaultHTTPSServer &
@@ -21,6 +28,7 @@ dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --t
 dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9094 --custom-heuristic &
 sleep 1
 
+dotnet test CSharpAPI.dll
 ./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
 ./LoadBalancerCore --port 9090
 ./LoadBalancerCore --port 9091

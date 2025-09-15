@@ -5,6 +5,11 @@ set -e
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+chmod +x ./Core
+chmod +x ./LoadBalancerCore
+chmod +x ./ProxyCore
+chmod +x ./DefaultHTTPSServer
+
 python3 server.py ${WEB_FRAMEWORK_SERVER_CONFIG} &
 python3 proxy_server.py --config proxy_config.json --port 15000 &
 python3 proxy_server.py --config proxy_config.json --port 15001 --useHTTPS &

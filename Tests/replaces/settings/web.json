@@ -1,0 +1,60 @@
+{
+  "HelloExecutor": {
+    "route": "",
+    "loadType": "initialization",
+    "api": "{API_TYPE}",
+    "initParameters": {
+      "number": 890
+    }
+  },
+  "CRUDExecutor": {
+    "route": "database",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
+  "MultiUserExecutor": {
+    "route": "multi_user_database",
+    "loadType": "dynamic",
+    "api": "{API_TYPE}"
+  },
+  "AssetsExecutor": {
+    "route": "wfdp",
+    "loadType": "dynamic",
+    "api": "{API_TYPE}"
+  },
+  "ChunksExecutor": {
+    "route": "chunks",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
+  "DownloadExecutor": {
+    "route": "download",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
+  "UploadMultipartExecutor": {
+    "route": "upload_multipart",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
+  "UploadChunkedExecutor": {
+    "route": "upload_chunked",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
+  "UploadOctetStreamExecutor": {
+    "route": "upload_octet_stream",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
+  "LocalizationExecutor": {
+    "route": "localization",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
+  "DynamicResources": {
+    "route": "dynamic_resources",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  }
+}

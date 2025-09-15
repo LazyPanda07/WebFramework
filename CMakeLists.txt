@@ -1,13 +1,11 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(SQLITE_LIBRARY_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3/lib)
-set(SQLITE_DLL_PATH ${CMAKE_SOURCE_DIR}/WebFramework/vendor/sqlite3)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-set(WEB_FRAMEWORK_LIBRARY_TYPE STATIC)
 set(
 	LIBS
+	WebFrameworkCore
+	WebFrameworkExecutors
 	BaseTCPServer
 	FileManager
 	INIParser
@@ -19,110 +17,126 @@ set(
 	SHA256
 	ThreadPool
 	UtilityLibrary
+	Databases
 	sqlite3
 	ssl
 	crypto
+	CACHE INTERNAL ""
 )
-option(SHARED_WEB_FRAMEWORK "Build WebFramework shared library for using in different APIs" ON)
+set(ADDITIONAL_LIBS "" CACHE INTERNAL "")
+set(ADDITIONAL_INCLUDES "" CACHE INTERNAL "")
+set(ADDITIONAL_LIB_DIRS "" CACHE INTERNAL "")
+option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
+option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
+set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
-project(WebFramework VERSION 3.0.12)
+project(WebFramework VERSION 3.1.0)
+
+install(FILES LICENSE DESTINATION license) # Used in APIs install
+
+if (${WITH_STACKTRACE})
+	add_definitions(-D__WITH_STACKTRACE__)
+endif()
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
 	add_compile_options(-fvisibility=hidden)
 	
-	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/lib)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 		add_definitions(-D__ANDROID__)
 
-		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Android)
-		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Android/libsqlite3.so)
-		
-		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Android/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
 	else()
-		set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Linux)
-		set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/lib/Linux/libsqlite3.so)
-
-		add_compile_options(-rdynamic)
-
-		install(DIRECTORY WebFramework/vendor/sqlite3/lib/Linux/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+		add_link_options(-rdynamic)
 	endif()
 else ()
 	add_definitions(-DNOMINMAX)
-	add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
 
-	set(SQLITE_LIBRARY_PATH ${SQLITE_LIBRARY_PATH}/Windows)
-	set(SQLITE_DLL_PATH ${SQLITE_DLL_PATH}/dll/sqlite3.dll)
-	set(SQLITE_DLL_DESTINATION_PATH ${CMAKE_INSTALL_PREFIX}/dll)
-	set(LIBS ${LIBS} crypt32)
-
-	install(DIRECTORY WebFramework/vendor/sqlite3/lib/Windows/ DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vendor/sqlite3)
-endif ()
-
-if (${SHARED_WEB_FRAMEWORK})
-	add_definitions(-DWEB_FRAMEWORK_DLL)
-
-	set(WEB_FRAMEWORK_LIBRARY_TYPE SHARED)
+	list(APPEND LIBS crypt32)
 endif ()
 
 add_library(
-	${PROJECT_NAME} ${WEB_FRAMEWORK_LIBRARY_TYPE}
-	WebFramework/src/DynamicPages/StandardWebFrameworkDynamicPagesFunctions.cpp
-	WebFramework/src/DynamicPages/WebFrameworkDynamicPages.cpp
-	WebFramework/src/Exceptions/BadRequestException.cpp
+	${PROJECT_NAME} SHARED
+	WebFramework/src/Rendering/StandardWebFrameworkDynamicPagesFunctions.cpp
+	WebFramework/src/Rendering/WFDPRenderer.cpp
+	WebFramework/src/Rendering/MDRenderer.cpp
 	WebFramework/src/Exceptions/NotFoundException.cpp
-	WebFramework/src/Exceptions/BaseExecutorException.cpp
-	WebFramework/src/Exceptions/BaseWebFrameworkException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
-	WebFramework/src/Exceptions/DatabaseException.cpp
 	WebFramework/src/Exceptions/DynamicPagesSyntaxException.cpp
 	WebFramework/src/Exceptions/MissingLoadTypeException.cpp
-	WebFramework/src/Exceptions/NotImplementedException.cpp
-	WebFramework/src/Exceptions/SQLite3Exception.cpp
-	WebFramework/src/Executors/BaseExecutor.cpp
-	WebFramework/src/Executors/BaseHeavyOperationStatefulExecutor.cpp
-	WebFramework/src/Executors/BaseHeavyOperationStatelessExecutor.cpp
-	WebFramework/src/Executors/BaseStatefulExecutor.cpp
-	WebFramework/src/Executors/BaseStatelessExecutor.cpp
+	WebFramework/src/Exceptions/APIException.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
+	WebFramework/src/LoadBalancer/Heuristics/CXXHeuristic.cpp
+	WebFramework/src/LoadBalancer/Heuristics/CCHeuristic.cpp
 	WebFramework/src/Proxy/ProxyServer.cpp
-	WebFramework/src/SQLite3/SQLiteDatabase.cpp
-	WebFramework/src/SQLite3/SQLiteDatabaseModel.cpp
-	WebFramework/src/SQLite3/SQLiteResult.cpp
-	WebFramework/src/SQLite3/SQLiteManager.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
-	WebFramework/src/Utility/JSONSettingsParser.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/BaseConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
+	WebFramework/src/Utility/SegfaultHandler.cpp
+	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
-	WebFramework/src/Managers/SessionsManager.cpp
-	WebFramework/src/WebNetwork/HTTPRequest.cpp
-	WebFramework/src/WebNetwork/HTTPResponse.cpp
-	WebFramework/src/WebNetwork/WebServers/BaseWebServer.cpp
-	WebFramework/src/WebNetwork/WebServers/MultithreadedWebServer.cpp
-	WebFramework/src/WebNetwork/WebServers/ThreadPoolWebServer.cpp
-	WebFramework/src/WebNetwork/Interfaces/IExecutorFunctionality.cpp
-	WebFramework/src/Import/Config.cpp
-	WebFramework/src/Import/WebFramework.cpp
-	WebFramework/src/c_api/web_framework_c_api.cpp
+	WebFramework/src/Web/Servers/BaseWebServer.cpp
+	WebFramework/src/Web/Servers/MultithreadedWebServer.cpp
+	WebFramework/src/Web/Servers/ThreadPoolWebServer.cpp
+	WebFramework/src/Web/Servers/ExecutorServer.cpp
+	WebFramework/src/Framework/Config.cpp
+	WebFramework/src/Framework/WebFramework.cpp
+	WebFramework/src/CAPI/WebFrameworkCAPI.cpp
+	WebFramework/src/CAPI/WebFrameworkExecutorsCAPI.cpp
+	WebFramework/src/CAPI/WebFrameworkUtilityCAPI.cpp
+	WebFramework/src/CAPI/WebFrameworkLocalizationCAPI.cpp
+	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
+	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
+	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
+	WebFramework/src/Utility/AdditionalServerSettings.cpp
+	WebFramework/src/Web/HTTPRequestImplementation.cpp
+	WebFramework/src/Web/HTTPResponseImplementation.cpp
+	WebFramework/src/Databases/DatabaseImplementation.cpp
+	WebFramework/src/Databases/TableImplementation.cpp
+	WebFramework/src/Databases/SQLResultImplementation.cpp
+	WebFramework/src/Databases/SQLValueImplementation.cpp
+	WebFramework/src/Executors/CXXExecutor.cpp
+	WebFramework/src/Executors/CCExecutor.cpp
 )
 
-if (WIN32)
-	target_compile_options(${PROJECT_NAME} PRIVATE "/MP")
-endif (WIN32)
+if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
+	target_compile_options(${PROJECT_NAME} PRIVATE -march=$ENV{MARCH})
+endif()
+
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+	target_compile_options(${PROJECT_NAME} PUBLIC "/MP")
+endif()
+
+add_subdirectory(3rdparty)
+add_subdirectory(WebFrameworkCore)
+add_subdirectory(WebFrameworkExecutors)
+add_subdirectory(BaseTCPServer)
+add_subdirectory(FileManager)
+add_subdirectory(INIParser)
+add_subdirectory(Localization)
+add_subdirectory(Log)
+add_subdirectory(Networks)
+add_subdirectory(SHA256)
+add_subdirectory(ThreadPool)
+add_subdirectory(UtilityLibrary)
+add_subdirectory(Databases)
+
+add_subdirectory(API)
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	WebFramework/vendor/sqlite3/include/
 	WebFramework/src/
+	WebFrameworkCore/src/
+	WebFrameworkCore/vendor/sqlite3/include/
+	WebFrameworkExecutors/src/
 	BaseTCPServer/src/
 	FileManager/src/
 	INIParser/src/
@@ -134,28 +148,19 @@ target_include_directories(
 	SHA256/src/
 	ThreadPool/src/
 	UtilityLibrary/include/
+	${ADDITIONAL_INCLUDES}
 )
-
-add_subdirectory(BaseTCPServer)
-add_subdirectory(FileManager)
-add_subdirectory(INIParser)
-add_subdirectory(Localization)
-add_subdirectory(Log)
-add_subdirectory(Networks)
-add_subdirectory(SHA256)
-add_subdirectory(ThreadPool)
-add_subdirectory(UtilityLibrary)
-
-add_subdirectory(API)
 
 target_link_directories(
 	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
+	${ADDITIONAL_LIB_DIRS}
 )
 
 target_link_libraries(
 	${PROJECT_NAME}
 	${LIBS}
+	${ADDITIONAL_LIBS}
 )
 
 install(
@@ -165,7 +170,6 @@ install(
 	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
 )
 
-install(FILES ${SQLITE_DLL_PATH} DESTINATION ${SQLITE_DLL_DESTINATION_PATH})
 install(FILES WebFrameworkConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES FindWebFramework.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
 
@@ -173,6 +177,5 @@ if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
 endif ()
 
-install(DIRECTORY WebFramework/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY WebFramework/vendor/sqlite3/include/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/vendor/sqlite3/)
 install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY schemas DESTINATION ${CMAKE_INSTALL_PREFIX})
