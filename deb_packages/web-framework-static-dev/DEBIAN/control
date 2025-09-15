@@ -1,7 +1,0 @@
-Package: web-framework-static-dev
-Version: 3.1.0
-Maintainer: lazypanda07 semengricenko@gmail.com
-Depends: build-essential | clang, uuid-dev
-Architecture: amd64
-Homepage: https://github.com/LazyPanda07/WebFramework
-Description: Web framework for C++

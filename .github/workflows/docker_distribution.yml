@@ -96,25 +96,4 @@ jobs:
             echo ${{ secrets.GITHUB_TOKEN }} | sudo docker login ghcr.io -u LazyPanda07 --password-stdin
             sudo docker push ghcr.io/lazypanda07/web_framework_dev:${WEB_FRAMEWORK_DEV_VERSION}
 
-
-  docker-publish-static-dev:
-    runs-on: ubuntu-latest
-    needs: docker-publish-deploy
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      
-      - name: Build web_framework_static_dev
-        working-directory: Docker/web_framework_static_dev
-        run: |
-            sudo docker build . -t lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
-            sudo docker build . -t ghcr.io/lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
-          
-      - name: Push web_framework_deploy
-        run: |
-            sudo docker login -u "${{ secrets.DOCKER_HUB_LOGIN }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
-            sudo docker push lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
-            echo ${{ secrets.GITHUB_TOKEN }} | sudo docker login ghcr.io -u LazyPanda07 --password-stdin
-            sudo docker push ghcr.io/lazypanda07/web_framework_static_dev:${WEB_FRAMEWORK_STATIC_DEV_VERSION}
+            

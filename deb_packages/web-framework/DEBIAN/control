@@ -3,4 +3,4 @@ Version: 3.1.0
 Maintainer: lazypanda07 semengricenko@gmail.com
 Architecture: amd64
 Homepage: https://github.com/LazyPanda07/WebFramework
-Description: Web framework for C++
+Description: Web framework in C++ with C, C++, C#, Python, Flutter APIs
