@@ -4,7 +4,6 @@ build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
 wheel.py-api = "py3"
-wheel.plat-name = "any"
 
 [project]
 name = "web_framework_api"
