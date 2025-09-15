@@ -15,7 +15,7 @@ DEFINE_EXECUTOR_METHOD(DynamicResources, GET_METHOD, request, response)
 
 	processStaticFile(request, fileData, size, ".md", &result, &resultSize);
 
-	setBody(request, result);
+	setBody(response, result);
 
 	free(fileData);
 	free(result);
@@ -37,7 +37,7 @@ DEFINE_EXECUTOR_METHOD(DynamicResources, POST_METHOD, request, response)
 
 	processWFDPFile(request, fileData, size, &variable, 1, &result, &resultSize);
 
-	setBody(request, result);
+	setBody(response, result);
 
 	free(fileData);
 	free(result);
