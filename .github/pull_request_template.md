@@ -1,5 +1,4 @@
 ## Versions update
-- [ ] Doxyfile
 - [ ] WebFramework
 - [ ] CMakeLists.txt
 - [ ] distribution.yml
@@ -14,4 +13,4 @@
 ## API versions update
 - [ ] C#(package version, assembly version, file version)
 - [ ] Flutter(pubspec.yml, CHANGELOG.md)
-- [ ] Python(Utils.py, pyproject.toml)
+- [ ] Python(Utils.py, pyproject.toml, CMakeLists.txt)

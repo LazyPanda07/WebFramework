@@ -30,7 +30,7 @@ option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
-project(WebFramework VERSION 3.0.12)
+project(WebFramework VERSION 3.1.0)
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 

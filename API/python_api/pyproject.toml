@@ -14,7 +14,7 @@ maintainers = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
 ]
 keywords = ["Web"]
-version = "1.0.7"
+version = "3.1.0"
 dependencies = [
     "multipledispatch",
     "requests",

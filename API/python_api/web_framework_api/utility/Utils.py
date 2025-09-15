@@ -7,8 +7,9 @@ import requests
 
 from tqdm import tqdm
 
-WEB_FRAMEWORK_MAJOR_VERSION = "0"
-WEB_FRAMEWORK_MINOR_VERSION = "12"
+WEB_FRAMEWORK_MAJOR_VERSION = "3"
+WEB_FRAMEWORK_MINOR_VERSION = "1"
+WEB_FRAMEWORK_PATCH_VERSION = "0"
 WEB_FRAMEWORK_LIBRARIES_FILE_NAME = "libraries.zip"
 WEB_FRAMEWORK_DOWNLOAD_BLOCK_SIZE = 1024
 
@@ -67,11 +68,12 @@ def create_directories(libraries_directory: str):
     else:
         os.makedirs(os.path.join(libraries_directory, "lib"))
 
+
 def get_url():
     if sys.platform == "win32":
-        return f"https://github.com/LazyPanda07/WebFramework/releases/download/v3.{WEB_FRAMEWORK_MAJOR_VERSION}.{WEB_FRAMEWORK_MINOR_VERSION}/windows.zip"
+        return f"https://github.com/LazyPanda07/WebFramework/releases/download/v{WEB_FRAMEWORK_MAJOR_VERSION}.{WEB_FRAMEWORK_MINOR_VERSION}.{WEB_FRAMEWORK_PATCH_VERSION}/windows.zip"
     else:
-        return f"https://github.com/LazyPanda07/WebFramework/releases/download/v3.{WEB_FRAMEWORK_MAJOR_VERSION}.{WEB_FRAMEWORK_MINOR_VERSION}/linux.zip"
+        return f"https://github.com/LazyPanda07/WebFramework/releases/download/v{WEB_FRAMEWORK_MAJOR_VERSION}.{WEB_FRAMEWORK_MINOR_VERSION}.{WEB_FRAMEWORK_PATCH_VERSION}/linux.zip"
 
 
 def get_libraries(libraries_directory: str):

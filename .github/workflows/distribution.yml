@@ -6,8 +6,8 @@ on: workflow_dispatch
 
 env:
   dotnet-version: 8.0
-  deb-package-version: 1.0.7
-  deb-package-release-number: 8
+  deb-package-version: 3.1.0
+  deb-package-release-number: 9
 
 
 jobs:
