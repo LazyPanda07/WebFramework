@@ -144,7 +144,7 @@ static void __fillFileBuffer(const char* data, size_t size, void* buffer)
 	}
 
 	(*result)[size] = '\0';
-	resultSize = size;
+	*resultSize = size;
 
 	memcpy(*result, data, size);
 }
