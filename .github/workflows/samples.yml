@@ -184,7 +184,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
@@ -193,7 +193,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Debug -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
@@ -218,7 +218,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
@@ -227,7 +227,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Debug -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 

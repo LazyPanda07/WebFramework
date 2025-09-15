@@ -53,6 +53,7 @@ class _AppState extends State<App> {
     try {
       config = await Config.fromPath("configs/config.json");
 
+      config.overrideConfigurationBoolean("usingLogging", false);
       config.overrideBasePath("${config.handler.assetsPath}/executors");
 
       _server = await WebFramework.fromConfig(config);
