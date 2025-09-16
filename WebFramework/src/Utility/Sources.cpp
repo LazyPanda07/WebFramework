@@ -10,9 +10,9 @@ using namespace std;
 
 namespace framework::utility
 {
-	vector<HMODULE> loadSources(const vector<string>& pathToSources)
+	vector<pair<HMODULE, string>> loadSources(const vector<string>& pathToSources)
 	{
-		vector<HMODULE> result;
+		vector<pair<HMODULE, string>> result;
 
 		if (pathToSources.size())
 		{
@@ -20,7 +20,7 @@ namespace framework::utility
 		}
 		else
 		{
-			result.push_back(nullptr);
+			result.emplace_back(nullptr, "");
 		}
 
 		for (const string& temp : pathToSources)
@@ -28,9 +28,9 @@ namespace framework::utility
 			if (temp == json_settings::defaultLoadSourceValue)
 			{
 #ifdef __LINUX__
-				result.push_back(dlopen(nullptr, RTLD_LAZY));
+				result.emplace_back(dlopen(nullptr, RTLD_LAZY), "");
 #else
-				result.push_back(nullptr);
+				result.emplace_back(nullptr, "");
 #endif
 
 				continue;
@@ -47,7 +47,7 @@ namespace framework::utility
 #else
 				handle = LoadLibraryA(pathToSource.data());
 #endif
-				result.push_back(handle);
+				result.emplace_back(handle, pathToSource);
 			}
 			else
 			{
@@ -59,7 +59,7 @@ namespace framework::utility
 				throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 			}
 
-			if (!result.back())
+			if (!result.back().first)
 			{
 				if (Log::isValid())
 				{

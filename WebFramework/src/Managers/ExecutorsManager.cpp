@@ -226,7 +226,7 @@ namespace framework
 		userAgentFilter(additionalSettings.userAgentFilter),
 		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
-		vector<HMODULE> sources = utility::loadSources(pathToSources);
+		vector<pair<HMODULE, string>> sources = utility::loadSources(pathToSources);
 
 		routes.reserve(settings.size());
 		creators.reserve(settings.size());
@@ -247,11 +247,16 @@ namespace framework
 
 			ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
-			for (const HMODULE& source : sources)
+			for (const auto& [source, sourcePath] : sources)
 			{
 				if (creator = utility::load<CreateExecutorFunction>(source, format("create{}{}Instance", executorSettings.name, apiType)))
 				{
 					creatorSource = source;
+
+					if (Log::isValid())
+					{
+						Log::info("Found create{}{}Instance in {}", "LogWebFrameworkInitialization", executorSettings.name, apiType, sourcePath);
+					}
 
 					break;
 				}
@@ -261,7 +266,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::error("Can't find creator for executor {}", "LogWebFrameworkInitialization", executorSettings.name);
+					Log::fatalError("Can't find creator function create{}{}Instance for executor {}.", "LogWebFrameworkInitialization", 3, executorSettings.name, apiType, executorSettings.name);
 				}
 
 				throw exceptions::CantFindFunctionException(format("create{}{}Instance", executorSettings.name, apiType));

@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv) try
 {
-	framework::utility::initializeWebFramework(argv[1]);
+	framework::utility::initializeWebFramework();
 
 	framework::WebFramework server("config.json");
 

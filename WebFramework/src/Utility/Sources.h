@@ -6,7 +6,7 @@
 
 namespace framework::utility
 {
-	std::vector<HMODULE> loadSources(const std::vector<std::string>& pathToSources);
+	std::vector<std::pair<HMODULE, std::string>> loadSources(const std::vector<std::string>& pathToSources);
 
 	template<typename T>
 	inline T load(HMODULE handle, std::string_view name)
