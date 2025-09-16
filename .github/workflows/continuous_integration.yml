@@ -118,8 +118,9 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=MinSizeRel ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake --build . -j 
+          make install/strip
 
     - name: Move
       working-directory: WebFrameworkLibrary
@@ -133,7 +134,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}_Android
+        name: Release_Android
         path: WebFrameworkLibrary
         
 
