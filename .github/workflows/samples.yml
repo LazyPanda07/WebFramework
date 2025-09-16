@@ -184,18 +184,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           cmake --build . -j
-          cmake --install .
+          make install/strip
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           cmake --build . -j
-          cmake --install .
+          make install/strip
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -218,18 +218,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           cmake --build . -j
-          cmake --install .
+          make install/strip
 
     - name: Build samples
       run: |
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           cmake --build . -j
-          cmake --install .
+          make install/strip
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

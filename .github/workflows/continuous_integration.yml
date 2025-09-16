@@ -105,9 +105,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: lazypanda07/ubuntu_cxx20:android
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v4
