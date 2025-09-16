@@ -214,7 +214,8 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DTEST_PYTHON=ON .. && make install
+        cmake -DTEST_PYTHON=ON -G "Ninja" ..
+        cmake --install .
         cd bin
         source run_python_test.sh
         diff reference.json out.json
@@ -247,7 +248,8 @@ jobs:
         cd DistributionTests
         mkdir build
         cd build
-        cmake -DTEST_PYTHON=ON -G "NMake Makefiles" .. && nmake install
+        cmake -DTEST_PYTHON=ON -G "Ninja" .. 
+        cmake --install .
         cd bin
         .\run_python_test.bat
         Compare-Object (Get-Content reference.json) (Get-Content out.json)
