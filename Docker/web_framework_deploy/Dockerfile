@@ -1,4 +1,4 @@
-FROM ubuntu:24.10 AS build
+FROM ubuntu:24.4 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -18,7 +18,7 @@ WORKDIR /
 
 RUN rm -rf web_framework_server
 
-FROM ubuntu:24.10 AS deploy
+FROM ubuntu:24.4 AS deploy
 
 RUN apt update
 RUN apt install -y curl bash gpg sudo
