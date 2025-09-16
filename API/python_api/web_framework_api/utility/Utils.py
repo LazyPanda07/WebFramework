@@ -41,13 +41,13 @@ def unzip_libraries(path_to_zip: str, output_path: str):
 
 def copy_libraries(libraries_directory: str):
     if sys.platform == "win32":
-        directory_path = os.path.join(libraries_directory, "ReleaseDLL_Windows", "dll")
+        directory_path = os.path.join(libraries_directory, "Release_Windows", "dll")
 
         for file in os.listdir(directory_path):
             shutil.copy(os.path.join(directory_path, file), libraries_directory)
 
     else:
-        directory_path = os.path.join(libraries_directory, "ReleaseDLL_Linux", "lib")
+        directory_path = os.path.join(libraries_directory, "Release_Linux", "lib")
 
         for file in os.listdir(directory_path):
             if file.endswith(".so"):

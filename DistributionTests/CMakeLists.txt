@@ -30,9 +30,9 @@ endif()
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/configs/ DESTINATION bin)
 
 if (UNIX)
-	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/latest/download/linux.zip)
+	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_linux.zip)
 else()
-	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/latest/download/windows.zip)
+	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_windows.zip)
 endif()
 
 FetchContent_Declare(
