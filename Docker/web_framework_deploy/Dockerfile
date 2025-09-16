@@ -3,15 +3,16 @@ FROM ubuntu:24.04 AS build
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
-RUN apt install -y cmake build-essential git uuid-dev
+RUN apt install -y cmake build-essential git uuid-dev ninja-build
 
 RUN git clone https://github.com/LazyPanda07/web_framework_server.git
 RUN mkdir -p web_framework_server/build
 
 WORKDIR /web_framework_server/build
 
-RUN cmake -DWEB_FRAMEWORK_TAG=v3.1.0 ..
-RUN make install -j $(nproc)
+RUN cmake -DWEB_FRAMEWORK_TAG=v3.1.0 -G "Ninja" ..
+RUN cmake --build .
+RUN cmake --install .
 RUN mkdir /opt/web_framework_server && cp /web_framework_server/build/bin/web_framework_server /opt/web_framework_server
 
 WORKDIR /
