@@ -9,7 +9,7 @@ include(FetchContent)
 option(TEST_PYTHON "" OFF)
 option(TEST_CSHARP "" OFF)
 option(TEST_DEV_CC "" OFF)
-option(TEST_STATIC_DEV_CXX "" OFF)
+option(TEST_DEV_CXX "" OFF)
 
 if (${TEST_PYTHON})
 	add_subdirectory(python)
@@ -23,16 +23,16 @@ if (${TEST_DEV_CC})
 	add_subdirectory(cc)
 endif()
 
-if (${TEST_STATIC_DEV_CXX})
+if (${TEST_DEV_CXX})
 	add_subdirectory(cxx)
 endif()
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/configs/ DESTINATION bin)
 
 if (UNIX)
-	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/download/Assets/linux.zip)
+	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/latest/download/linux.zip)
 else()
-	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/download/Assets/windows.zip)
+	set(HELLO_EXECUTOR_URL https://github.com/LazyPanda07/WebFramework/releases/latest/download/windows.zip)
 endif()
 
 FetchContent_Declare(

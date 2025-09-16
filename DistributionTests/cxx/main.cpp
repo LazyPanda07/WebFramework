@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Import/WebFramework.h"
+#include <import.hpp>
 
 int main(int argc, char** argv) try
 {

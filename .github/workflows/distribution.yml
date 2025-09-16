@@ -33,6 +33,7 @@ jobs:
       run: |
           python3 -m pip install build
           python3 -m build
+          mv dist/*.whl dist/web_framework_api-3.1.0-py3-none-any.whl
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -152,8 +153,8 @@ jobs:
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           chmod 0755 deb_packages/web-framework/DEBIAN/postinst
+          cp deb_packages/web-framework/DEBIAN/copyright web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r Release_Linux/license/* web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           cp -r Release_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           cp -r Release_Linux/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Release_Linux/localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
@@ -167,8 +168,8 @@ jobs:
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
+          cp deb_packages/web-framework-dev/DEBIAN/copyright web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r Release_Linux/license/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           cp -r Release_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
           cp -r Release_Linux/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           cp -r Release_Linux/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
@@ -255,6 +256,9 @@ jobs:
   dev-deb-package-test:
     runs-on: ubuntu-24.04
     needs: [deb-package]
+    strategy:
+      matrix:
+        configuration: [[TEST_DEV_CC, run_cc_test.sh, cc_test], [TEST_DEV_CXX, run_cxx_test.sh, cxx_test]]
 
     steps:
     - uses: actions/checkout@v4
@@ -277,12 +281,12 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DTEST_DEV_CC=ON .. && make install -j $(nproc)
+          cmake -D${{ matrix.configuration[0] }}=ON .. && make install -j $(nproc)
 
     - name: Run test
       working-directory: DistributionTests/build/bin
       run: |
-          source run_cc_test.sh
+          source ${{ matrix.configuration[1] }}
           diff reference.json out.json
           
     - name: Upload artifacts
@@ -291,7 +295,7 @@ jobs:
         name: binaries
         path: |
             DistributionTests/build/bin/libhello_executor.so
-            DistributionTests/build/bin/cc_test
+            DistributionTests/build/bin/${{ matrix.configuration[2] }}
             DistributionTests/build/bin/config.json
             DistributionTests/build/bin/web.json
             DistributionTests/build/bin/reference.json
@@ -300,6 +304,9 @@ jobs:
   deb-package-test:
     runs-on: ubuntu-24.04
     needs: [dev-deb-package-test]
+    strategy:
+      matrix:
+        test: [cc_test, cxx_test]
 
     steps:
     - name: Download deb packages
@@ -320,8 +327,8 @@ jobs:
 
     - name: Run test
       run: |
-        chmod +x cc_test
-        ./cc_test & sleep 1
+        chmod +x ${{ matrix.test }}
+        ./${{ matrix.test }} & sleep 1
         curl http://127.0.0.1:8080 > out.json
         md5sum reference.json
         md5sum out.json
