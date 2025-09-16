@@ -294,7 +294,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: binaries
+        name: binaries_${{ matrix.configuration[2] }}
         path: |
             DistributionTests/build/bin/libhello_executor.so
             DistributionTests/build/bin/${{ matrix.configuration[2] }}
@@ -325,7 +325,7 @@ jobs:
     - name: Download binaries
       uses: actions/download-artifact@v4
       with:
-        name: binaries
+        name: binaries_${{ matrix.test }}
 
     - name: Run test
       run: |
