@@ -91,7 +91,10 @@ namespace framework::utility
 
 		auto makePathToDLL = [](const std::filesystem::path& pathToSource) -> std::filesystem::path
 			{
-				std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
+				std::filesystem::path absolutePath = pathToSource == "WebFramework" ?
+					"WebFramework" :
+					std::filesystem::absolute(pathToSource);
+
 				std::string fileName = absolutePath.filename().string();
 				std::string extension;
 				std::string prefix;
@@ -119,14 +122,13 @@ namespace framework::utility
 
 		std::filesystem::path realPath = makePathToDLL(pathToDLL.empty() ? "WebFramework" : std::filesystem::absolute(pathToDLL));
 
-		if (!std::filesystem::exists(realPath))
+		if (realPath.is_absolute() && !std::filesystem::exists(realPath))
 		{
 			throw std::runtime_error(std::format("Path {} doesn't exist", realPath.string()));
 		}
 
 		DLLHandler::instance = std::unique_ptr<DLLHandler>(new DLLHandler(realPath));
 	}
-
 
 	inline DLLHandler::DLLHandler(const std::filesystem::path& pathToDLL)
 	{
