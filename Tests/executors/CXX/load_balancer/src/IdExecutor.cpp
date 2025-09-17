@@ -15,7 +15,7 @@ void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse&
 {
 	using namespace std::chrono_literals;
 
-	std::this_thread::sleep_for(10s);
+	std::this_thread::sleep_for(5min);
 
 	response.setBody
 	(
