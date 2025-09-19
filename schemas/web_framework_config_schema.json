@@ -209,13 +209,15 @@
             }
           },
           "required": [ "useHTTPS" ],
-          "if": {
-            "properties": { "useHTTPS": { "const": true } },
-            "required": [ "useHTTPS" ]
-          },
-          "then": {
-            "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
-          }
+          "oneOf": [
+            {
+              "properties": { "useHTTPS": { "enum": [ true ] } },
+              "required": [ "pathToCertificate", "pathToKey" ]
+            },
+            {
+              "properties": { "useHTTPS": { "enum": [ false ] } }
+            }
+          ]
         },
         "defaultAssetsPath": {
           "type": "string",

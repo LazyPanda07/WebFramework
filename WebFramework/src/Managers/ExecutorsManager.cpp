@@ -255,7 +255,7 @@ namespace framework
 
 					if (Log::isValid())
 					{
-						Log::info("Found create{}{}Instance in {}", "LogWebFrameworkInitialization", executorSettings.name, apiType, sourcePath);
+						Log::info("Found create{}{}Instance in {}", "LogWebFrameworkInitialization", executorSettings.name, apiType, sourcePath.empty() ? "current" : sourcePath);
 					}
 
 					break;

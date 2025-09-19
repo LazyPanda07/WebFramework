@@ -12,7 +12,6 @@
 bool useHTTPS;
 int64_t port;
 
-/*
 TEST(Proxy, DefaultRoute)
 {
 	streams::IOSocketStream stream = utility::createSocketStream(port, useHTTPS);
@@ -39,7 +38,6 @@ TEST(Proxy, DefaultRequestRoute)
 
 	ASSERT_EQ(web::HTTPParser(response).getJSON().getString("data"), "data");
 }
-*/
 
 void printLog()
 {
