@@ -210,7 +210,8 @@
           },
           "required": [ "useHTTPS" ],
           "if": {
-            "properties": { "useHTTPS": { "const": true } }
+            "properties": { "useHTTPS": { "const": true } },
+            "required": [ "useHTTPS" ]
           },
           "then": {
             "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
