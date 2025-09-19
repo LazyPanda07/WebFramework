@@ -208,7 +208,13 @@
               "description": "Path to HTTPS key"
             }
           },
-          "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
+          "required": [ "useHTTPS" ],
+          "if": {
+            "properties": { "useHTTPS": { "const": true } }
+          },
+          "then": {
+            "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
+          }
         },
         "defaultAssetsPath": {
           "type": "string",
