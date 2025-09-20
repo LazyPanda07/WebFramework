@@ -4,8 +4,6 @@
 
 #include "SQLResultImplementation.h"
 
-using namespace std;
-
 namespace framework
 {
 	TableImplementation::TableImplementation(database::Table* table) :
@@ -16,7 +14,7 @@ namespace framework
 
 	interfaces::ISQLResult* TableImplementation::execute(const char* query, const interfaces::ISQLValue** values, size_t size)
 	{
-		vector<database::SQLValue> temp;
+		std::vector<database::SQLValue> temp;
 
 		temp.reserve(size);
 
@@ -56,13 +54,13 @@ namespace framework
 				size_t blobSize = 0;
 				const uint8_t* blobData = value.getBlob(&blobSize);
 
-				temp.emplace_back(vector<uint8_t>{ blobData, blobData + blobSize });
+				temp.emplace_back(std::vector<uint8_t>{ blobData, blobData + blobSize });
 			}
 
 			break;
 
 			default:
-				throw runtime_error("Wrong type");
+				throw std::runtime_error("Wrong type");
 			}
 		}
 

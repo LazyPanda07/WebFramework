@@ -2,16 +2,14 @@
 
 #include <algorithm>
 
+#include <DatabaseFactory.h>
+
 #include "TableImplementation.h"
 #include "Managers/DatabasesManager.h"
 
-#include "DatabaseFactory.h"
-
-using namespace std;
-
 namespace framework
 {
-	DatabaseImplementation::DatabaseImplementation(shared_ptr<database::Database> database) :
+	DatabaseImplementation::DatabaseImplementation(std::shared_ptr<database::Database> database) :
 		database(database)
 	{
 
@@ -64,6 +62,6 @@ namespace framework
 
 	DatabaseImplementation::~DatabaseImplementation()
 	{
-		ranges::for_each(tables, [](interfaces::ITable* table) { delete table; });
+		std::ranges::for_each(tables, [](interfaces::ITable* table) { delete table; });
 	}
 }

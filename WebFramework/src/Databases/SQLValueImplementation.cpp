@@ -1,7 +1,5 @@
 #include "SQLValueImplementation.h"
 
-using namespace std;
-
 namespace framework
 {
 	SQLValueImplementation::SQLValueImplementation(const database::SQLValue& value) :
@@ -11,7 +9,7 @@ namespace framework
 	}
 
 	SQLValueImplementation::SQLValueImplementation(database::SQLValue&& value) :
-		value(move(value))
+		value(std::move(value))
 	{
 
 	}
@@ -43,7 +41,7 @@ namespace framework
 
 	void SQLValueImplementation::setBlob(const uint8_t* value, size_t size)
 	{
-		this->value = vector<uint8_t>(value, value + size);
+		this->value = std::vector<uint8_t>(value, value + size);
 	}
 
 	int64_t SQLValueImplementation::getInt() const
@@ -58,7 +56,7 @@ namespace framework
 
 	const char* SQLValueImplementation::getString() const
 	{
-		return value.get<string>().data();
+		return value.get<std::string>().data();
 	}
 
 	bool SQLValueImplementation::getBool() const
@@ -68,7 +66,7 @@ namespace framework
 
 	const uint8_t* SQLValueImplementation::getBlob(size_t* size) const
 	{
-		const vector<uint8_t>& result = value.get<vector<uint8_t>>();
+		const std::vector<uint8_t>& result = value.get<std::vector<uint8_t>>();
 
 		*size = result.size();
 

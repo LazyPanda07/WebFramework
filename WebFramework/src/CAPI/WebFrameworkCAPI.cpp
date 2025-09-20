@@ -3,9 +3,10 @@
 #include <fstream>
 #include <format>
 
+#include <Log.h>
+
 #include "Framework/WebFramework.h"
 #include "Framework/Config.h"
-#include "Log.h"
 #include "WebInterfaces/IHTTPRequest.h"
 #include "Exceptions/APIException.h"
 

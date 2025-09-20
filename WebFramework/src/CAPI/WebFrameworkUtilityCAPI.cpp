@@ -1,10 +1,11 @@
 #include "WebFrameworkUtilityCAPI.h"
 
-#include "Log.h"
-#include "JSONBuilder.h"
-#include "JSONParser.h"
+#include <Log.h>
+#include <JSONBuilder.h>
+#include <JSONParser.h>
+#include <UUID.h>
+
 #include "Utility/JSONSettingsParser.h"
-#include "UUID.h"
 #include "DatabaseInterfaces/IDatabase.h"
 #include "Databases/SQLValueImplementation.h"
 
