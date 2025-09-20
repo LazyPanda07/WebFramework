@@ -2,12 +2,10 @@
 
 #include "Framework/WebFrameworkConstants.h"
 
-using namespace std;
-
 namespace framework::exceptions
 {
-	NotFoundException::NotFoundException(string_view additionalInformation) :
-		BaseExecutorException(format("{}. {}", ::exceptions::notFound, additionalInformation))
+	NotFoundException::NotFoundException(std::string_view additionalInformation) :
+		BaseExecutorException(std::format("{}. {}", ::exceptions::notFound, additionalInformation))
 	{
 
 	}

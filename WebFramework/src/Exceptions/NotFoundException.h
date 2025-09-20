@@ -4,19 +4,16 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	/// <summary>
+	/// HTTP not found 404 error code
+	/// </summary>
+	class WEB_FRAMEWORK_API NotFoundException : public BaseExecutorException
 	{
-		/// <summary>
-		/// HTTP not found 404 error code
-		/// </summary>
-		class WEB_FRAMEWORK_API NotFoundException : public BaseExecutorException
-		{
-		public:
-			NotFoundException(std::string_view additionalInformation = "");
+	public:
+		NotFoundException(std::string_view additionalInformation = "");
 
-			virtual ~NotFoundException() = default;
-		};
-	}
+		virtual ~NotFoundException() = default;
+	};
 }

@@ -1,10 +1,8 @@
 #include "APIException.h"
 
-using namespace std;
-
 namespace framework::exceptions
 {
-	APIException::APIException(string_view errorMessage, int64_t responseCode, string_view logCategory, size_t exceptionClassHash) :
+	APIException::APIException(std::string_view errorMessage, int64_t responseCode, std::string_view logCategory, size_t exceptionClassHash) :
 		BaseWebFrameworkException(errorMessage),
 		logCategory(logCategory),
 		responseCode(responseCode),
@@ -18,7 +16,7 @@ namespace framework::exceptions
 		return responseCode;
 	}
 
-	string APIException::getLogCategory() const
+	std::string APIException::getLogCategory() const
 	{
 		return logCategory.empty() ?
 			"LogAPI" :

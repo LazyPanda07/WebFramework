@@ -1,22 +1,21 @@
 #include "ResourceExecutor.h"
 
+#include <Log.h>
+
 #include "Rendering/MDRenderer.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
-#include "Log.h"
-
-using namespace std;
 
 namespace framework
 {
 	void ResourceExecutor::loadHTMLErrorsData()
 	{
-		auto readFile = [](const filesystem::path& errorPath) -> string
+		auto readFile = [](const std::filesystem::path& errorPath) -> std::string
 			{
-				ifstream stream(errorPath);
-				ostringstream os;
-				string result;
+				std::ifstream stream(errorPath);
+				std::ostringstream os;
+				std::string result;
 
 				os << stream.rdbuf();
 
@@ -24,7 +23,7 @@ namespace framework
 
 				return result;
 			};
-		filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
+		std::filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
 
 		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(allErrorsFolder / web_framework_assets::badRequest);
 		HTMLErrorsData[HTMLErrors::forbidden403] = readFile(allErrorsFolder / web_framework_assets::forbidden);
@@ -35,12 +34,12 @@ namespace framework
 
 	void ResourceExecutor::loadStaticRenderers()
 	{
-		unique_ptr<interfaces::IStaticFileRenderer> mdRenderer = make_unique<MDRenderer>();
+		std::unique_ptr<interfaces::IStaticFileRenderer> mdRenderer = std::make_unique<MDRenderer>();
 
 		staticRenderers.try_emplace(mdRenderer->getExtension(), move(mdRenderer));
 	}
 
-	void ResourceExecutor::readFile(filesystem::path extension, string& result, unique_ptr<file_manager::ReadFileHandle>&& handle)
+	void ResourceExecutor::readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle)
 	{
 		result = handle->readAllData();
 
@@ -50,7 +49,7 @@ namespace framework
 		}
 	}
 
-	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, shared_ptr<threading::ThreadPool> threadPool) :
+	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
 		defaultAssets
 		(
 			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ?
@@ -63,31 +62,31 @@ namespace framework
 	{
 		fileManager.getCache().setCacheSize(additionalSettings.cachingSize);
 
-		if (!filesystem::exists(assets))
+		if (!std::filesystem::exists(assets))
 		{
-			filesystem::create_directories(assets);
+			std::filesystem::create_directories(assets);
 		}
 
-		if (!filesystem::exists(wfdpRenderer.getPathToTemplates()))
+		if (!std::filesystem::exists(wfdpRenderer.getPathToTemplates()))
 		{
-			filesystem::create_directories(wfdpRenderer.getPathToTemplates());
+			std::filesystem::create_directories(wfdpRenderer.getPathToTemplates());
 		}
 
 		this->loadHTMLErrorsData();
 		this->loadStaticRenderers();
 	}
 
-	void ResourceExecutor::sendStaticFile(string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, string_view fileName)
+	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, std::string_view fileName)
 	{
-		string result;
-		filesystem::path assetFilePath(assets / filePath);
+		std::string result;
+		std::filesystem::path assetFilePath(assets / filePath);
 
-		if (!filesystem::exists(assetFilePath))
+		if (!std::filesystem::exists(assetFilePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		filesystem::path extension = assetFilePath.extension();
+		std::filesystem::path extension = assetFilePath.extension();
 
 		if (Log::isValid())
 		{
@@ -98,16 +97,16 @@ namespace framework
 
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
 		}
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName).data());
+			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
 		if (renderer != staticRenderers.end())
@@ -118,17 +117,17 @@ namespace framework
 		response.setBody(result.data());
 	}
 
-	void ResourceExecutor::sendDynamicFile(string_view filePath, interfaces::IHTTPResponse& response, span<const interfaces::CVariable> variables, bool isBinary, string_view fileName)
+	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
 	{
-		string result;
-		filesystem::path assetFilePath(assets / filePath);
+		std::string result;
+		std::filesystem::path assetFilePath(assets / filePath);
 
-		if (!filesystem::exists(assetFilePath))
+		if (!std::filesystem::exists(assetFilePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		filesystem::path extension = assetFilePath.extension();
+		std::filesystem::path extension = assetFilePath.extension();
 
 		if (Log::isValid())
 		{
@@ -137,49 +136,49 @@ namespace framework
 
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, move(extension), ref(result), placeholders::_1));
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
 		}
 
 		wfdpRenderer.run(variables, result);
 
 		if (fileName.size())
 		{
-			response.addHeader("Content-Disposition", format(R"(attachment; filename="{}")", fileName).data());
+			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
 		response.setBody(result.data());
 	}
 
-	void ResourceExecutor::processWFDPFile(string& data, span<const interfaces::CVariable> variables)
+	void ResourceExecutor::processWFDPFile(std::string& data, std::span<const interfaces::CVariable> variables)
 	{
 		wfdpRenderer.run(variables, data);
 	}
 
-	void ResourceExecutor::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
+	void ResourceExecutor::registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function)
 	{
 		wfdpRenderer.registerDynamicFunction(functionName, move(function));
 	}
 
-	void ResourceExecutor::unregisterDynamicFunction(string_view functionName)
+	void ResourceExecutor::unregisterDynamicFunction(std::string_view functionName)
 	{
 		wfdpRenderer.unregisterDynamicFunction(functionName);
 	}
 
-	bool ResourceExecutor::isDynamicFunctionRegistered(string_view functionName)
+	bool ResourceExecutor::isDynamicFunctionRegistered(std::string_view functionName)
 	{
 		return wfdpRenderer.isDynamicFunctionRegistered(functionName);
 	}
 
-	const filesystem::path& ResourceExecutor::getPathToAssets() const
+	const std::filesystem::path& ResourceExecutor::getPathToAssets() const
 	{
 		return assets;
 	}
 
-	const unordered_map<string_view, unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& ResourceExecutor::getStaticRenderers() const
+	const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& ResourceExecutor::getStaticRenderers() const
 	{
 		return staticRenderers;
 	}
@@ -194,16 +193,16 @@ namespace framework
 		request.sendAssetFile(request.getRawParameters(), response);
 	}
 
-	void ResourceExecutor::notFoundError(HTTPResponseExecutors& response, const exception* exception)
+	void ResourceExecutor::notFoundError(HTTPResponseExecutors& response, const std::exception* exception)
 	{
-		string_view message = HTMLErrorsData[HTMLErrors::notFound404];
+		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
 #ifdef NDEBUG
 		response.setBody(message);
 #else
 		if (exception)
 		{
-			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
@@ -214,16 +213,16 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::notFound);
 	}
 
-	void ResourceExecutor::badRequestError(HTTPResponseExecutors& response, const exception* exception)
+	void ResourceExecutor::badRequestError(HTTPResponseExecutors& response, const std::exception* exception)
 	{
-		string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
+		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
 #ifdef NDEBUG
 		response.setBody(message);
 #else
 		if (exception)
 		{
-			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
@@ -234,16 +233,16 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::badRequest);
 	}
 
-	void ResourceExecutor::forbiddenError(HTTPResponseExecutors& response, const exception* exception)
+	void ResourceExecutor::forbiddenError(HTTPResponseExecutors& response, const std::exception* exception)
 	{
-		string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
+		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
 #ifdef NDEBUG
 		response.setBody(message);
 #else
 		if (exception)
 		{
-			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
@@ -254,16 +253,16 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::forbidden);
 	}
 
-	void ResourceExecutor::internalServerError(HTTPResponseExecutors& response, const exception* exception)
+	void ResourceExecutor::internalServerError(HTTPResponseExecutors& response, const std::exception* exception)
 	{
-		string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
+		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
 #ifdef NDEBUG
 		response.setBody(message);
 #else
 		if (exception)
 		{
-			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{
@@ -274,16 +273,16 @@ namespace framework
 		response.setResponseCode(web::ResponseCodes::internalServerError);
 	}
 
-	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const exception* exception)
+	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const std::exception* exception)
 	{
-		string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
+		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
 
 #ifdef NDEBUG
 		response.setBody(message);
 #else
 		if (exception)
 		{
-			response.setBody(format("{} Exception: {}", message, exception->what()).data());
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
 		}
 		else
 		{

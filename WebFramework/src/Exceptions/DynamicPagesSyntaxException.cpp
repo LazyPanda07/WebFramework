@@ -2,16 +2,11 @@
 
 #include "Framework/WebFrameworkConstants.h"
 
-using namespace std;
-
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	DynamicPagesSyntaxException::DynamicPagesSyntaxException(std::string_view syntaxError) :
+		BaseWebFrameworkException(syntaxError)
 	{
-		DynamicPagesSyntaxException::DynamicPagesSyntaxException(string_view syntaxError) :
-			BaseWebFrameworkException(syntaxError)
-		{
 
-		}
 	}
 }

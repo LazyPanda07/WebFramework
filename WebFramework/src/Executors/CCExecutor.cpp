@@ -2,12 +2,10 @@
 
 #include "Exceptions/NotImplementedException.h"
 
-using namespace std;
-
 namespace framework
 {
 	template<typename T, typename... Args>
-	void CCExecutor::callBindedMethodFunction(const T& function, string_view functionName, Args&&... args) requires invocable<T, Args...>
+	void CCExecutor::callBindedMethodFunction(const T& function, std::string_view functionName, Args&&... args) requires std::invocable<T, Args...>
 	{
 		if (function)
 		{
@@ -19,7 +17,7 @@ namespace framework
 		}
 	}
 
-	CCExecutor::CCExecutor(HMODULE module, void* implementation, string_view executorName) :
+	CCExecutor::CCExecutor(HMODULE module, void* implementation, std::string_view executorName) :
 		implementation(implementation),
 		executorName(executorName),
 		initFunction(utility::load<InitExecutorSignature>(module, format("webFrameworkCCExecutorInit{}", executorName))),
