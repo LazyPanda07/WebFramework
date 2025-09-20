@@ -13,7 +13,6 @@ using namespace std::chrono_literals;
 
 TEST(UserAgentFilter, PerExecutor)
 {
-    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 1h);
     auto start = std::chrono::high_resolution_clock::now();
 
     while (!std::filesystem::exists(START_DEFAULT_HTTPS_SERVER_FILE))
@@ -27,6 +26,8 @@ TEST(UserAgentFilter, PerExecutor)
             break;
         }
     }
+
+    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 1h);
 
     {
         std::string request = web::HTTPBuilder().getRequest().parameters("user_agent").build();
@@ -64,7 +65,6 @@ TEST(UserAgentFilter, PerExecutor)
 
 TEST(UserAgentFilter, ConfigLevel)
 {
-    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20001", 1h);
     auto start = std::chrono::high_resolution_clock::now();
 
     while (!std::filesystem::exists(START_DEFAULT_HTTPS_SERVER_FILE))
@@ -78,6 +78,8 @@ TEST(UserAgentFilter, ConfigLevel)
             break;
         }
     }
+
+    streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20001", 1h);
 
     {
         std::string request = web::HTTPBuilder().getRequest().parameters("default_request").build();

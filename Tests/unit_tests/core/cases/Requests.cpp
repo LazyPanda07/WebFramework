@@ -164,9 +164,6 @@ TEST(RoutePattern, PassingValues)
 {
 	using namespace std::chrono_literals;
 
-	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 1h);
-	std::string request;
-	std::string response;
 	auto start = std::chrono::high_resolution_clock::now();
 
 	std::cout << "Is " << START_DEFAULT_HTTPS_SERVER_FILE << " exists: " << std::filesystem::exists(START_DEFAULT_HTTPS_SERVER_FILE) << std::endl;
@@ -182,6 +179,10 @@ TEST(RoutePattern, PassingValues)
 			break;
 		}
 	}
+
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 1h);
+	std::string request;
+	std::string response;
 
 	request = web::HTTPBuilder().getRequest().parameters(std::format("pattern/{}/{}/{}", "qwe", 200, 25.5)).build();
 
