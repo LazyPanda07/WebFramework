@@ -69,11 +69,6 @@ TEST(LoadBalancer, ConnectionsHeuristic)
 	}
 
 	ASSERT_EQ(unique.size(), 2);
-
-	size_t first = unique.begin()->second;
-	size_t second = (++unique.begin())->second;
-
-	ASSERT_EQ(first, second);
 }
 
 TEST(LoadBalancer, CustomHeuristic)

@@ -33,6 +33,7 @@ set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "NONE")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
+add_definitions(-DSTART_DEFAULT_HTTPS_SERVER_FILE="start_default_https_server.txt")
 add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
 add_definitions(-DSTART_PROXY_HTTPS_SERVER_FILE="start_proxy_https_server.txt")
 add_definitions(-DSTART_LOAD_BALANCER_9090_SERVER_FILE="start_load_balancer_9090_server.txt")

@@ -208,16 +208,7 @@
               "description": "Path to HTTPS key"
             }
           },
-          "required": [ "useHTTPS" ],
-          "oneOf": [
-            {
-              "properties": { "useHTTPS": { "enum": [ true ] } },
-              "required": [ "pathToCertificate", "pathToKey" ]
-            },
-            {
-              "properties": { "useHTTPS": { "enum": [ false ] } }
-            }
-          ]
+          "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
         },
         "defaultAssetsPath": {
           "type": "string",
