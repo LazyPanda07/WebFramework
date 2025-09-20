@@ -9,7 +9,7 @@ namespace framework
 	{
 		if (function)
 		{
-			function(forward<Args>(args)...);
+			function(std::forward<Args>(args)...);
 		}
 		else
 		{
@@ -20,19 +20,19 @@ namespace framework
 	CCExecutor::CCExecutor(HMODULE module, void* implementation, std::string_view executorName) :
 		implementation(implementation),
 		executorName(executorName),
-		initFunction(utility::load<InitExecutorSignature>(module, format("webFrameworkCCExecutorInit{}", executorName))),
-		doPostFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPOST_METHOD{}", executorName))),
-		doGetFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoGET_METHOD{}", executorName))),
-		doHeadFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoHEAD_METHOD{}", executorName))),
-		doPutFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPUT_METHOD{}", executorName))),
-		doDeleteFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoDELETE_METHOD{}", executorName))),
-		doPatchFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoPATCH_METHOD{}", executorName))),
-		doOptionsFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoOPTIONS_METHOD{}", executorName))),
-		doTraceFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoTRACE_METHOD{}", executorName))),
-		doConnectFunction(utility::load<DoMethodSignature>(module, format("webFrameworkCCDoCONNECT_METHOD{}", executorName))),
-		getTypeFunction(utility::load<GetTypeSignature>(module, format("webFrameworkCCGetType{}", executorName))),
-		destroyFunction(utility::load<DestroySignature>(module, format("webFrameworkCCDestroyExecutor{}", executorName))),
-		deleteFunction(utility::load<DeleteSignature>(module, format("webFrameworkCCDeleteExecutor{}", executorName)))
+		initFunction(utility::load<InitExecutorSignature>(module, std::format("webFrameworkCCExecutorInit{}", executorName))),
+		doPostFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoPOST_METHOD{}", executorName))),
+		doGetFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoGET_METHOD{}", executorName))),
+		doHeadFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoHEAD_METHOD{}", executorName))),
+		doPutFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoPUT_METHOD{}", executorName))),
+		doDeleteFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoDELETE_METHOD{}", executorName))),
+		doPatchFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoPATCH_METHOD{}", executorName))),
+		doOptionsFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoOPTIONS_METHOD{}", executorName))),
+		doTraceFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoTRACE_METHOD{}", executorName))),
+		doConnectFunction(utility::load<DoMethodSignature>(module, std::format("webFrameworkCCDoCONNECT_METHOD{}", executorName))),
+		getTypeFunction(utility::load<GetTypeSignature>(module, std::format("webFrameworkCCGetType{}", executorName))),
+		destroyFunction(utility::load<DestroySignature>(module, std::format("webFrameworkCCDestroyExecutor{}", executorName))),
+		deleteFunction(utility::load<DeleteSignature>(module, std::format("webFrameworkCCDeleteExecutor{}", executorName)))
 	{
 		if (!initFunction)
 		{
