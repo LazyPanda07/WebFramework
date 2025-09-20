@@ -2,9 +2,7 @@
 
 #include <format>
 
-#include "DatabaseFactory.h"
-
-using namespace std;
+#include <DatabaseFactory.h>
 
 namespace framework
 {
@@ -15,14 +13,14 @@ namespace framework
 		return instance;
 	}
 
-	void DatabasesManager::initDatabaseImplementation(string_view databaseImplementationName)
+	void DatabasesManager::initDatabaseImplementation(std::string_view databaseImplementationName)
 	{
 		this->databaseImplementationName = databaseImplementationName;
 	}
 
-	shared_ptr<database::Database> DatabasesManager::getOrCreateDatabase(string_view databaseName)
+	std::shared_ptr<database::Database> DatabasesManager::getOrCreateDatabase(std::string_view databaseName)
 	{
-		unique_lock<mutex> lock(databasesMutex);
+		std::unique_lock<std::mutex> lock(databasesMutex);
 		auto it = databases.find(databaseName);
 
 		if (it == databases.end())
@@ -33,20 +31,20 @@ namespace framework
 		return it->second;
 	}
 
-	shared_ptr<database::Database> DatabasesManager::getDatabase(string_view databaseName)
+	std::shared_ptr<database::Database> DatabasesManager::getDatabase(std::string_view databaseName)
 	{
-		unique_lock<mutex> lock(databasesMutex);
+		std::unique_lock<std::mutex> lock(databasesMutex);
 		auto it = databases.find(databaseName);
 
 		if (it == databases.end())
 		{
-			throw runtime_error(format("Can't get database with name: {}", databaseName));
+			throw std::runtime_error(format("Can't get database with name: {}", databaseName));
 		}
 
 		return it->second;
 	}
 
-	string_view DatabasesManager::getDatabaseImplementationName() const
+	std::string_view DatabasesManager::getDatabaseImplementationName() const
 	{
 		return databaseImplementationName;
 	}

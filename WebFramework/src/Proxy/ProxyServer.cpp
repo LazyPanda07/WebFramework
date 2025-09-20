@@ -1,110 +1,104 @@
 #include "ProxyServer.h"
 
-#include "JSONArrayWrapper.h"
-#include "HTTPSNetwork.h"
-#include "IOSocketStream.h"
+#include <Exceptions/SSLException.h>
+#include <HTTPSNetwork.h>
+#include <JSONArrayWrapper.h>
+#include <IOSocketStream.h>
 
-#include "Exceptions/SSLException.h"
-
-using namespace std;
-
-namespace framework
+namespace framework::proxy
 {
-	namespace proxy
+	ProxyServer::ProxyData::ProxyData(std::string_view ip, std::string_view port, DWORD timeout, bool isHTTPS) :
+		BaseConnectionData(ip, port, timeout),
+		isHTTPS(isHTTPS)
 	{
-		ProxyServer::ProxyData::ProxyData(string_view ip, string_view port, DWORD timeout, bool isHTTPS) :
-			BaseConnectionData(ip, port, timeout),
-			isHTTPS(isHTTPS)
+
+	}
+
+	void ProxyServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) //-V688
+	{
+		SSL* ssl = nullptr;
+
+		if (useHTTPS)
 		{
+			ssl = SSL_new(context);
 
-		}
-
-		void ProxyServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup) //-V688
-		{
-			SSL* ssl = nullptr;
-
-			if (useHTTPS)
+			if (!ssl)
 			{
-				ssl = SSL_new(context);
-
-				if (!ssl)
-				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
-				}
-
-				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
-				{
-					SSL_free(ssl);
-
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
-				}
-
-				if (int errorCode = SSL_accept(ssl); errorCode != 1)
-				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
-				}
+				throw web::exceptions::SSLException(__LINE__, __FILE__);
 			}
 
-			streams::IOSocketStream clientStream = ssl ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, chrono::milliseconds(timeout)) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, chrono::milliseconds(timeout));
-
-			string request;
-			string response;
-
-			clientStream >> request;
-
-			web::HTTPParser parser(request);
-
-			string route = parser.getParameters();
-
-			if (route.find('?') != string::npos)
+			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 			{
-				route.resize(route.find('?'));
+				SSL_free(ssl);
+
+				throw web::exceptions::SSLException(__LINE__, __FILE__);
 			}
 
-			const ProxyData& proxyData = *routes.at(route);
-
-			streams::IOSocketStream serverStream = proxyData.isHTTPS ?
-				streams::IOSocketStream::createStream<web::HTTPSNetwork>(proxyData.ip, proxyData.port, chrono::milliseconds(proxyData.timeout)) :
-				streams::IOSocketStream::createStream<web::HTTPNetwork>(proxyData.ip, proxyData.port, chrono::milliseconds(proxyData.timeout));
-
-			serverStream << request;
-
-			serverStream >> response;
-
-			clientStream << response;
+			if (int errorCode = SSL_accept(ssl); errorCode != 1)
+			{
+				throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+			}
 		}
 
-		ProxyServer::ProxyServer(string_view ip, string_view port, DWORD timeout, const json::utility::jsonObject& proxySettings) :
-			BaseTCPServer
-			(
-				port,
-				ip,
-				timeout,
-				true,
-				0,
-				false
-			)
+		streams::IOSocketStream clientStream = ssl ?
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, std::chrono::milliseconds(timeout));
+
+		std::string request;
+		std::string response;
+
+		clientStream >> request;
+
+		web::HTTPParser parser(request);
+
+		std::string route = parser.getParameters();
+
+		if (route.find('?') != std::string::npos)
 		{
-			vector<json::utility::jsonObject> servers = json::utility::JSONArrayWrapper(proxySettings.getArray("proxiedServers")).getAsObjectArray();
+			route.resize(route.find('?'));
+		}
 
-			proxyData.reserve(servers.size());
+		const ProxyData& proxyData = *routes.at(route);
 
-			for (const json::utility::jsonObject& proxiedServer : servers)
+		streams::IOSocketStream serverStream = proxyData.isHTTPS ?
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout)) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout));
+
+		serverStream << request;
+
+		serverStream >> response;
+
+		clientStream << response;
+	}
+
+	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::utility::jsonObject& proxySettings) :
+		BaseTCPServer
+		(
+			port,
+			ip,
+			timeout,
+			true,
+			0,
+			false
+		)
+	{
+		std::vector<json::utility::jsonObject> servers = json::utility::JSONArrayWrapper(proxySettings.getArray("proxiedServers")).getAsObjectArray();
+
+		proxyData.reserve(servers.size());
+
+		for (const json::utility::jsonObject& proxiedServer : servers)
+		{
+			const std::string& ip = proxiedServer.getString("ip"); //-V688
+			int64_t port = proxiedServer.getInt("port"); //-V688
+			uint64_t timeout = proxiedServer.getUnsignedInt("timeout"); //-V688
+			bool isHTTPS = proxiedServer.getBool("isHTTPS");
+			std::vector<std::string> serverRoutes = json::utility::JSONArrayWrapper(proxiedServer.getArray("routes")).getAsStringArray();
+
+			const ProxyData& data = proxyData.emplace_back(ip, std::to_string(port), static_cast<DWORD>(timeout), isHTTPS); //-V688
+
+			for (const std::string& route : serverRoutes)
 			{
-				const string& ip = proxiedServer.getString("ip"); //-V688
-				int64_t port = proxiedServer.getInt("port"); //-V688
-				uint64_t timeout = proxiedServer.getUnsignedInt("timeout"); //-V688
-				bool isHTTPS = proxiedServer.getBool("isHTTPS");
-				vector<string> serverRoutes = json::utility::JSONArrayWrapper(proxiedServer.getArray("routes")).getAsStringArray();
-
-				const ProxyData& data = proxyData.emplace_back(ip, to_string(port), static_cast<DWORD>(timeout), isHTTPS); //-V688
-
-				for (const string& route : serverRoutes)
-				{
-					routes[route] = &data;
-				}
+				routes[route] = &data;
 			}
 		}
 	}

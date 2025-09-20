@@ -2,15 +2,13 @@
 
 #include <fstream>
 
-#include "Exceptions/FileDoesNotExistException.h"
-
-using namespace std;
+#include <Exceptions/FileDoesNotExistException.h>
 
 namespace framework
 {
-	string print(const vector<string>& arguments)
+	std::string print(const std::vector<std::string>& arguments)
 	{
-		string result;
+		std::string result;
 
 		for (const auto& i : arguments)
 		{
@@ -22,22 +20,22 @@ namespace framework
 		return result;
 	}
 
-	string include(const vector<string>& arguments, const string& pathToTemplates)
+	std::string include(const std::vector<std::string>& arguments, const std::string& pathToTemplates)
 	{
-		string result;
-		string tem;
-		const filesystem::path filePath(pathToTemplates + '/' + arguments[0]);
+		std::string result;
+		std::string tem;
+		const std::filesystem::path filePath(pathToTemplates + '/' + arguments[0]);
 
-		if (!filesystem::exists(filePath))
+		if (!std::filesystem::exists(filePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(filePath.string());
 		}
 
-		result.reserve(filesystem::file_size(filePath));
+		result.reserve(std::filesystem::file_size(filePath));
 
-		ifstream in(filePath);
+		std::ifstream in(filePath);
 
-		while (getline(in, tem))
+		while (std::getline(in, tem))
 		{
 			result += tem + '\n';
 		}
@@ -47,22 +45,22 @@ namespace framework
 		return result;
 	}
 
-	string forWFDP(const vector<string>& arguments, const utility::strings::string_based_unordered_map<function<string(const vector<string>&)>>& dynamicPagesFunctions)
+	std::string forWFDP(const std::vector<std::string>& arguments, const utility::strings::string_based_unordered_map<std::function<std::string(const std::vector<std::string>&)>>& dynamicPagesFunctions)
 	{
 		int64_t start = stoll(arguments[0]);
 		int64_t end = stoll(arguments[1]);
-		const function<string(const vector<string>&)> repeatableFunction = dynamicPagesFunctions.at(arguments[2]);
+		const std::function<std::string(const std::vector<std::string>&)> repeatableFunction = dynamicPagesFunctions.at(arguments[2]);
 		int64_t step = 1;
-		string result;
+		std::string result;
 		
 		if (arguments.size() == 4)
 		{
-			step = stoll(arguments[3]);
+			step = std::stoll(arguments[3]);
 		}
 
 		for (int64_t i = start; i < end; i += step)
 		{
-			result += repeatableFunction({ to_string(i) });
+			result += repeatableFunction({ std::to_string(i) });
 		}
 
 		return result;

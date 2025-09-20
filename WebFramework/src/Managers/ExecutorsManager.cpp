@@ -4,36 +4,34 @@
 #include <ranges>
 #include <format>
 
-#include "Log.h"
+#include <Log.h>
+#include <Exceptions/FileDoesNotExistException.h>
+#include <Exceptions/DatabaseException.h>
 
-#include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
-#include "Exceptions/DatabaseException.h"
 #include "Web/HTTPRequestImplementation.h"
-#include <Utility/Sources.h>
-#include <Utility/DynamicLibraries.h>
-#include <Exceptions/MissingLoadTypeException.h>
-#include <Exceptions/CantFindFunctionException.h>
+#include "Utility/Sources.h"
+#include "Utility/DynamicLibraries.h"
+#include "Exceptions/MissingLoadTypeException.h"
+#include "Exceptions/CantFindFunctionException.h"
 
-#include <Executors/CXXExecutor.h>
-#include <Executors/CCExecutor.h>
-
-using namespace std;
+#include "Executors/CXXExecutor.h"
+#include "Executors/CCExecutor.h"
 
 namespace framework
 {
-	bool ExecutorsManager::isFileRequest(string_view parameters)
+	bool ExecutorsManager::isFileRequest(std::string_view parameters)
 	{
 		size_t index = parameters.find('.');
 
-		if (index == string_view::npos)
+		if (index == std::string_view::npos)
 		{
 			return false;
 		}
 
-		string_view fileExtension(parameters.begin() + index, parameters.end());
+		std::string_view fileExtension(parameters.begin() + index, parameters.end());
 
-		return fileExtension.size() > 1 && ranges::all_of(fileExtension, [](char c) { return c != '/'; });
+		return fileExtension.size() > 1 && std::ranges::all_of(fileExtension, [](char c) { return c != '/'; });
 	}
 
 	bool ExecutorsManager::isHeavyOperation(BaseExecutor* executor)
@@ -44,7 +42,7 @@ namespace framework
 			executorType == utility::ExecutorType::heavyOperationStateful;
 	}
 
-	void ExecutorsManager::parseRouteParameters(const string& parameters, HTTPRequestExecutors& request, vector<utility::RouteParameters>::iterator it)
+	void ExecutorsManager::parseRouteParameters(const std::string& parameters, HTTPRequestExecutors& request, std::vector<utility::RouteParameters>::iterator it)
 	{
 		size_t i = 0;
 		size_t startParameter = it->baseRoute.size() + 1;
@@ -67,11 +65,11 @@ namespace framework
 				{
 					requestImplementation.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
 				}
-				catch (const invalid_argument&)
+				catch (const std::invalid_argument&)
 				{
 					throw exceptions::BadRequestException("Can't convert to int64_t"); // 400
 				}
-				catch (const out_of_range&)
+				catch (const std::out_of_range&)
 				{
 					throw exceptions::BadRequestException("Out of range of int64_t"); // 400
 				}
@@ -83,11 +81,11 @@ namespace framework
 				{
 					requestImplementation.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
 				}
-				catch (const invalid_argument&)
+				catch (const std::invalid_argument&)
 				{
 					throw exceptions::BadRequestException("Can't convert to double"); // 400
 				}
-				catch (const out_of_range&)
+				catch (const std::out_of_range&)
 				{
 					throw exceptions::BadRequestException("Out of range of double"); // 400
 				}
@@ -95,20 +93,20 @@ namespace framework
 				break;
 
 			default:
-				throw runtime_error("Wrong routeParametersType");
+				throw std::runtime_error("Wrong routeParametersType");
 			}
 
 			startParameter = endParameter + 1;
-		} while (endParameter != string::npos);
+		} while (endParameter != std::string::npos);
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(string& parameters, HTTPRequestExecutors& request, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		auto executor = statefulExecutors.find(parameters);
 
 		if (executor == statefulExecutors.end())
 		{
-			unique_lock<mutex> lock(checkExecutor);
+			std::unique_lock<std::mutex> lock(checkExecutor);
 
 			executor = routes.find(parameters);
 
@@ -119,7 +117,7 @@ namespace framework
 				if (executorSettings == settings.end())
 				{
 					auto it = find_if(routeParameters.begin(), routeParameters.end(),
-						[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) != string::npos; });
+						[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) != std::string::npos; });
 
 					if (it == routeParameters.end())
 					{
@@ -158,9 +156,9 @@ namespace framework
 		return executor->second.get();
 	}
 
-	bool ExecutorsManager::filterUserAgent(const string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const
+	bool ExecutorsManager::filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const
 	{
-		const string& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
+		const std::string& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
 
 		if (executorUserAgentFilter.size())
 		{
@@ -194,13 +192,13 @@ namespace framework
 		return true;
 	}
 
-	unique_ptr<BaseExecutor> ExecutorsManager::createAPIExecutor(const string& name, string_view apiType) const
+	std::unique_ptr<BaseExecutor> ExecutorsManager::createAPIExecutor(const std::string& name, std::string_view apiType) const
 	{
-		static const unordered_map<string_view, function<unique_ptr<BaseExecutor>(const string& name)>> apiExecutors =
+		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseExecutor>(const std::string& name)>> apiExecutors =
 		{
-			{ "", [this](const string& name) { return unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
-			{ json_settings::cxxExecutorKey, [this](const string& name) { return make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } },
-			{ json_settings::ccExecutorKey, [this](const string& name) { return make_unique<CCExecutor>(creatorSources.at(name), creators.at(name)(), name); } }
+			{ "", [this](const std::string& name) { return std::unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
+			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } },
+			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(creatorSources.at(name), creators.at(name)(), name); } }
 		};
 
 		if (auto it = apiExecutors.find(apiType); it != apiExecutors.end())
@@ -208,7 +206,7 @@ namespace framework
 			return (it->second)(name);
 		}
 
-		throw runtime_error(format("Can't find executor type for {}", apiType));
+		throw std::runtime_error(format("Can't find executor type for {}", apiType));
 
 		return nullptr;
 	}
@@ -216,36 +214,36 @@ namespace framework
 	ExecutorsManager::ExecutorsManager
 	(
 		const json::JSONParser& configuration,
-		const vector<string>& pathToSources,
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		const std::vector<std::string>& pathToSources,
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const utility::AdditionalServerSettings& additionalSettings,
-		shared_ptr<threading::ThreadPool> threadPool
+		std::shared_ptr<threading::ThreadPool> threadPool
 	) :
 		settings(move(executorsSettings)),
 		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
 		userAgentFilter(additionalSettings.userAgentFilter),
 		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
-		vector<pair<HMODULE, string>> sources = utility::loadSources(pathToSources);
+		std::vector<std::pair<HMODULE, std::string>> sources = utility::loadSources(pathToSources);
 
 		routes.reserve(settings.size());
 		creators.reserve(settings.size());
 
-		vector<pair<string, string>> nodes;
+		std::vector<std::pair<std::string, std::string>> nodes;
 
 #ifdef __ANDROID__
 		string webFrameworkSharedLibraryPath = "libWebFramework.so";
 #else
-		string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
+		std::string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
 #endif
 
 		for (const auto& [route, executorSettings] : settings)
 		{
 			CreateExecutorFunction creator = nullptr;
 			HMODULE creatorSource = nullptr;
-			string apiType;
+			std::string apiType;
 
-			ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
+			std::ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
 			for (const auto& [source, sourcePath] : sources)
 			{
@@ -287,7 +285,7 @@ namespace framework
 			switch (executorSettings.executorLoadType)
 			{
 			case utility::JSONSettingsParser::ExecutorSettings::LoadType::initialization:
-				if (route.find('{') == string::npos)
+				if (route.find('{') == std::string::npos)
 				{
 					auto [it, success] = routes.try_emplace
 					(
@@ -328,7 +326,7 @@ namespace framework
 				break;
 
 			case utility::JSONSettingsParser::ExecutorSettings::LoadType::dynamic:
-				if (route.find('{') != string::npos)
+				if (route.find('{') != std::string::npos)
 				{
 					routeParameters.push_back(route);
 
@@ -356,7 +354,7 @@ namespace framework
 
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept
 	{
-		(*this) = move(other);
+		(*this) = std::move(other);
 	}
 
 	ExecutorsManager& ExecutorsManager::operator = (ExecutorsManager&& other) noexcept
@@ -373,28 +371,28 @@ namespace framework
 		return *this;
 	}
 
-	optional<function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> ExecutorsManager::service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> ExecutorsManager::service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		BaseExecutor* executor = this->getOrCreateExecutor(request, response, statefulExecutors);
 
 		if (!executor)
 		{
-			return nullopt;
+			return std::nullopt;
 		}
 
 		void (BaseExecutor:: * method)(HTTPRequestExecutors&, HTTPResponseExecutors&) = BaseExecutor::getMethod(request.getMethod());
 
 		if (serverType == WebServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 		{
-			return bind(method, executor, placeholders::_1, placeholders::_2);
+			return std::bind(method, executor, std::placeholders::_1, std::placeholders::_2);
 		}
 
-		invoke(method, executor, request, response);
+		std::invoke(method, executor, request, response);
 
-		return nullopt;
+		return std::nullopt;
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
 	{
 		try
 		{
@@ -429,11 +427,11 @@ namespace framework
 				}
 			}
 
-			string parameters(request.getRawParameters());
+			std::string parameters(request.getRawParameters());
 			BaseExecutor* executor = nullptr;
 			bool fileRequest = ExecutorsManager::isFileRequest(parameters);
 
-			if (parameters.find('?') != string::npos)
+			if (parameters.find('?') != std::string::npos)
 			{
 				parameters.resize(parameters.find('?'));
 			}
@@ -499,7 +497,7 @@ namespace framework
 
 			throw;
 		}
-		catch (const out_of_range&)
+		catch (const std::out_of_range&)
 		{
 			if (Log::isValid())
 			{
@@ -508,7 +506,7 @@ namespace framework
 
 			throw;
 		}
-		catch (const exception& e)
+		catch (const std::exception& e)
 		{
 			if (Log::isValid())
 			{
@@ -519,7 +517,7 @@ namespace framework
 		}
 	}
 
-	shared_ptr<ResourceExecutor> ExecutorsManager::getResourceExecutor() const
+	std::shared_ptr<ResourceExecutor> ExecutorsManager::getResourceExecutor() const
 	{
 		return resources;
 	}

@@ -1,17 +1,16 @@
 #include "HTTPRequestImplementation.h"
 
-#include "Log.h"
-#include "MultiLocalizationManager.h"
+#include <Log.h>
+#include <MultiLocalizationManager.h>
+#include <Exceptions/FileDoesNotExistException.h>
 
 #include "BaseTCPServer.h"
 #include "FileManager.h"
 #include "HTTPSNetwork.h"
 #include "Managers/SessionsManager.h"
-#include <Managers/DatabasesManager.h>
-#include <Databases/DatabaseImplementation.h>
-#include <Exceptions/APIException.h>
-
-#include "Exceptions/FileDoesNotExistException.h"
+#include "Managers/DatabasesManager.h"
+#include "Databases/DatabaseImplementation.h"
+#include "Exceptions/APIException.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)

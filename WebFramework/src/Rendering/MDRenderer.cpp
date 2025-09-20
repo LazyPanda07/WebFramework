@@ -4,13 +4,11 @@
 
 #include "WebFrameworkCoreConstants.h"
 
-using namespace std;
-
 namespace framework
 {
-	string MDRenderer::render(string_view source) const
+	std::string MDRenderer::render(std::string_view source) const
 	{
-		string result;
+		std::string result;
 		
 		if (char* temp = cmark_markdown_to_html(source.data(), source.size(), CMARK_OPT_UNSAFE))
 		{
@@ -22,7 +20,7 @@ namespace framework
 		return result;
 	}
 
-	string_view MDRenderer::getExtension() const
+	std::string_view MDRenderer::getExtension() const
 	{
 		return markdownExtension;
 	}
