@@ -2,8 +2,8 @@
 
 #include <filesystem>
 
-#include "Log.h"
-#include "JSONArrayWrapper.h"
+#include <Log.h>
+#include <JSONArrayWrapper.h>
 
 #include "Exceptions/BaseJSONException.h"
 #include "Exceptions/FileDoesNotExistException.h"
@@ -215,6 +215,11 @@ namespace framework
 
 			SSL_library_init();
 			SSL_load_error_strings();
+
+			if (Log::isValid())
+			{
+				Log::info("Using HTTPS with certificate: {}, and key: {}", "LogWebFramework", httpsSettings.getPathToCertificate(), httpsSettings.getPathToKey());
+			}
 		}
 	}
 
@@ -225,6 +230,11 @@ namespace framework
 		if (!webFrameworkSettings.tryGetString(json_settings::databaseImplementationKey, databaseImplementationName))
 		{
 			databaseImplementationName = "sqlite";
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Using {} database", "LogWebFramework", databaseImplementationName);
 		}
 
 		DatabasesManager::get().initDatabaseImplementation(databaseImplementationName);
@@ -313,7 +323,7 @@ namespace framework
 			if (!loadBalancerSettings.tryGetObject(json_settings::heuristicKey, heuristic))
 			{
 				heuristic.setString("name", json_settings::defaultHeuristicValue);
-				heuristic.setString(json_settings::apiTypeKey, "cxx");
+				heuristic.setString(json_settings::apiTypeKey, json_settings::cxxExecutorKey);
 			}
 
 			for (const auto& [key, value] : listOfServers)
