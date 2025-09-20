@@ -1,48 +1,43 @@
 #include "Connections.h"
 
-using namespace std;
-
-namespace framework
+namespace framework::load_balancer
 {
-	namespace load_balancer
+	Connections::Connections(std::string_view ip, std::string_view port, bool useHTTPS) :
+		ip(ip),
+		port(port),
+		useHTTPS(useHTTPS),
+		connections(0)
 	{
-		Connections::Connections(string_view ip, string_view port, bool useHTTPS) :
-			ip(ip),
-			port(port),
-			useHTTPS(useHTTPS),
-			connections(0)
-		{
 
-		}
+	}
 
-		void Connections::onStart()
-		{
-			connections++;
-		}
+	void Connections::onStart()
+	{
+		connections++;
+	}
 
-		void Connections::onEnd()
-		{
-			connections--;
-		}
+	void Connections::onEnd()
+	{
+		connections--;
+	}
 
-		uint64_t Connections::operator ()() const
-		{
-			return connections;
-		}
+	uint64_t Connections::operator ()() const
+	{
+		return connections;
+	}
 
-		const string& Connections::getIp() const
-		{
-			return ip;
-		}
+	const std::string& Connections::getIp() const
+	{
+		return ip;
+	}
 
-		const string& Connections::getPort() const
-		{
-			return port;
-		}
+	const std::string& Connections::getPort() const
+	{
+		return port;
+	}
 
-		bool Connections::getUseHTTPS() const
-		{
-			return useHTTPS;
-		}
+	bool Connections::getUseHTTPS() const
+	{
+		return useHTTPS;
 	}
 }

@@ -1,18 +1,16 @@
 #include "CXXHeuristic.h"
 
+#include <Log.h>
+
 #include "Utility/Sources.h"
 
-#include "Log.h"
-
-#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw runtime_error(format("Can't load {} function", #name))
-
-using namespace std;
+#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw std::runtime_error(std::format("Can't load {} function", #name))
 
 namespace framework::load_balancer
 {
-	CXXHeuristic::CXXHeuristic(string_view ip, string_view port, bool useHTTPS, string_view heuristicName, HMODULE handle)
+	CXXHeuristic::CXXHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, HMODULE handle)
 	{
-		CreateHeuristicFunction creator = utility::load<CreateHeuristicFunction>(handle, format("create{}CXXHeuristic", heuristicName));
+		CreateHeuristicFunction creator = utility::load<CreateHeuristicFunction>(handle, std::format("create{}CXXHeuristic", heuristicName));
 
 		if (!creator)
 		{
@@ -21,7 +19,7 @@ namespace framework::load_balancer
 				Log::fatalError("Can't find create{}CXXHeuristic function", "LogCXXHeuristic", 3, heuristicName);
 			}
 
-			throw runtime_error(format("Can't find create{}CXXHeuristic function", heuristicName));
+			throw std::runtime_error(std::format("Can't find create{}CXXHeuristic function", heuristicName));
 		}
 
 		implementation = creator(ip.data(), port.data(), useHTTPS);
@@ -33,7 +31,7 @@ namespace framework::load_balancer
 				Log::fatalError("Can't create create{}CXXHeuristic heuristic", "LogCXXHeuristic", 4, heuristicName);
 			}
 
-			throw runtime_error(format("Can't create create{}CXXHeuristic heuristic", heuristicName));
+			throw std::runtime_error(std::format("Can't create create{}CXXHeuristic heuristic", heuristicName));
 		}
 
 		operatorFunction = utility::load<OperatorSignature>(handle, "webFrameworkCXXHeuristicOperator");
@@ -71,12 +69,12 @@ namespace framework::load_balancer
 		return onEndFunction(implementation);
 	}
 
-	const string& CXXHeuristic::getIp() const
+	const std::string& CXXHeuristic::getIp() const
 	{
 		return ip;
 	}
 
-	const string& CXXHeuristic::getPort() const
+	const std::string& CXXHeuristic::getPort() const
 	{
 		return port;
 	}
