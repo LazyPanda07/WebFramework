@@ -1,14 +1,15 @@
 #pragma once
 
-#include "HTTPParser.h"
+#include "WebInterfaces/IHTTPRequest.h"
+
+#include <HTTPParser.h>
+#include <IOSocketStream.h>
+#include <HTTPBuilder.h>
 
 #include "WebInterfaces/IStaticFile.h"
 #include "WebInterfaces/IDynamicFile.h"
-#include "WebInterfaces/IHTTPRequest.h"
 #include "Utility/ChunkGenerator.h"
 #include "WebFrameworkCoreConstants.h"
-#include "IOSocketStream.h"
-#include "HTTPBuilder.h"
 #include "HTTPResponseImplementation.h"
 
 namespace web

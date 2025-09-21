@@ -2,13 +2,11 @@
 
 #include <chrono>
 
-using namespace std;
-
 namespace framework
 {
-	string HTTPResponseImplementation::getFullDate()
+	std::string HTTPResponseImplementation::getFullDate()
 	{
-		return format("{:%a, %d %b %Y %H:%M:%OS} GMT", chrono::system_clock::now());
+		return std::format("{:%a, %d %b %Y %H:%M:%OS} GMT", std::chrono::system_clock::now());
 	}
 
 	HTTPResponseImplementation::HTTPResponseImplementation()
@@ -54,7 +52,7 @@ namespace framework
 	{
 		builder.headers
 		(
-			"Set-Cookie", format("{}={}", name, value)
+			"Set-Cookie", std::format("{}={}", name, value)
 		);
 	}
 
@@ -86,7 +84,7 @@ namespace framework
 
 	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponseImplementation& response)
 	{
-		string result;
+		std::string result;
 
 		response.builder.headers
 		(

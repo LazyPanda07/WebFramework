@@ -232,7 +232,7 @@ namespace framework
 		std::vector<std::pair<std::string, std::string>> nodes;
 
 #ifdef __ANDROID__
-		string webFrameworkSharedLibraryPath = "libWebFramework.so";
+		std::string webFrameworkSharedLibraryPath = "libWebFramework.so";
 #else
 		std::string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
 #endif

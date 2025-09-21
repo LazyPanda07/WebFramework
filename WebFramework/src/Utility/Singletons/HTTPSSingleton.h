@@ -4,36 +4,33 @@
 
 #include <filesystem>
 
-namespace framework
+namespace framework::utility
 {
-	namespace utility
+	class HTTPSSingleton
 	{
-		class HTTPSSingleton
-		{
-		private:
-			bool useHTTPS;
-			std::filesystem::path pathToCertificate;
-			std::filesystem::path pathToKey;
+	private:
+		bool useHTTPS;
+		std::filesystem::path pathToCertificate;
+		std::filesystem::path pathToKey;
 
-		private:
-			HTTPSSingleton();
+	private:
+		HTTPSSingleton();
 
-			~HTTPSSingleton() = default;
+		~HTTPSSingleton() = default;
 
-		public:
-			static HTTPSSingleton& get();
+	public:
+		static HTTPSSingleton& get();
 
-			void setUseHTTPS(bool useHTTPS);
+		void setUseHTTPS(bool useHTTPS);
 
-			void setPathToCertificate(const std::filesystem::path& pathToCertificate);
+		void setPathToCertificate(const std::filesystem::path& pathToCertificate);
 
-			void setPathToKey(const std::filesystem::path& pathToKey);
+		void setPathToKey(const std::filesystem::path& pathToKey);
 
-			bool getUseHTTPS() const;
+		bool getUseHTTPS() const;
 
-			const std::filesystem::path& getPathToCertificate() const;
+		const std::filesystem::path& getPathToCertificate() const;
 
-			const std::filesystem::path& getPathToKey() const;
-		};
-	}
+		const std::filesystem::path& getPathToKey() const;
+	};
 }

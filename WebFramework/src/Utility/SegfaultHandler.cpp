@@ -4,15 +4,13 @@
 
 #include <boost/stacktrace.hpp>
 
-#include "Log.h"
-
-using namespace std;
+#include <Log.h>
 
 namespace framework::utility
 {
 	void SegfaultHandler::printStacktrace()
 	{
-		ostringstream stacktrace;
+		std::ostringstream stacktrace;
 
 		stacktrace << boost::stacktrace::stacktrace();
 
@@ -22,7 +20,7 @@ namespace framework::utility
 		}
 		else
 		{
-			cerr << stacktrace.str() << endl;
+			std::cerr << stacktrace.str() << std::endl;
 		}
 	}
 

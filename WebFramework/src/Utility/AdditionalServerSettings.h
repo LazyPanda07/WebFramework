@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "JSONParser.h"
+#include <JSONParser.h>
 
 namespace framework::utility
 {
