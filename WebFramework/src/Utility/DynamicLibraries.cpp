@@ -32,13 +32,13 @@ namespace framework::utility
 		absolutePath.remove_filename();
 
 #ifdef __LINUX__
-		if (fileName.find("lib") == string::npos)
+		if (fileName.find("lib") == std::string::npos)
 		{
 			prefix = "lib";
 		}
 #endif
 
-		return format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
+		return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
 	}
 
 	std::string getPathToWebFrameworkSharedLibrary()
