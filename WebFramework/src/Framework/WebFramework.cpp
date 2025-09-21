@@ -17,8 +17,6 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/DatabasesManager.h"
 
-using namespace std;
-
 namespace framework
 {
 	bool WebFramework::getUseHTTPS()
@@ -26,36 +24,36 @@ namespace framework
 		return utility::HTTPSSingleton::get().getUseHTTPS();
 	}
 
-	void WebFramework::parseAdditionalConfigs(const json::utility::jsonObject& webFrameworkSettings, const filesystem::path& basePath, vector<string>& settingsPaths, vector<string>& loadSources)
+	void WebFramework::parseAdditionalConfigs(const json::utility::jsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources)
 	{
-		vector<json::utility::jsonObject> additionalConfigs;
+		std::vector<json::utility::jsonObject> additionalConfigs;
 
 		if (!webFrameworkSettings.tryGetArray(json_settings::additionalConfigsKey, additionalConfigs))
 		{
 			return;
 		}
 
-		vector<string> configs = json::utility::JSONArrayWrapper(additionalConfigs).getAsStringArray();
+		std::vector<std::string> configs = json::utility::JSONArrayWrapper(additionalConfigs).getAsStringArray();
 
-		ranges::for_each(configs, [&basePath](string& path) { path = (basePath / path).string(); });
+		std::ranges::for_each(configs, [&basePath](std::string& path) { path = (basePath / path).string(); });
 
-		for (const string& configPath : configs)
+		for (const std::string& configPath : configs)
 		{
 			utility::Config config(configPath);
 			const json::JSONParser& parser = *config;
-			vector<string> tempSettingsPaths = json::utility::JSONArrayWrapper(parser.getArray(json_settings::settingsPathsKey)).getAsStringArray();
-			vector<string> tempLoadSources = json::utility::JSONArrayWrapper(parser.getArray(json_settings::loadSourcesKey)).getAsStringArray();
+			std::vector<std::string> tempSettingsPaths = json::utility::JSONArrayWrapper(parser.getArray(json_settings::settingsPathsKey)).getAsStringArray();
+			std::vector<std::string> tempLoadSources = json::utility::JSONArrayWrapper(parser.getArray(json_settings::loadSourcesKey)).getAsStringArray();
 
 			move(tempSettingsPaths.begin(), tempSettingsPaths.end(), back_inserter(settingsPaths));
 			move(tempLoadSources.begin(), tempLoadSources.end(), back_inserter(loadSources));
 		}
 	}
 
-	unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const vector<string>& settingsPaths)
+	std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const std::vector<std::string>& settingsPaths)
 	{
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> result;
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> result;
 
-		for (const string& settingsPath : settingsPaths)
+		for (const std::string& settingsPath : settingsPaths)
 		{
 			utility::JSONSettingsParser parser(settingsPath);
 
@@ -70,11 +68,11 @@ namespace framework
 
 	uint64_t WebFramework::parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const
 	{
-		vector<json::utility::jsonObject> flags;
+		std::vector<json::utility::jsonObject> flags;
 
 		return loggingSettings.tryGetArray(json_settings::logFlagsKey, flags) ?
 			Log::createFlags(json::utility::JSONArrayWrapper(flags).getAsStringArray()) :
-			(numeric_limits<uint64_t>::max)();
+			(std::numeric_limits<uint64_t>::max)();
 	}
 
 	void WebFramework::initLogging() const
@@ -90,8 +88,8 @@ namespace framework
 
 		if (loggingSettings.tryGetBool(json_settings::usingLoggingKey, usingLogging) && usingLogging)
 		{
-			string logsPath;
-			const string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
+			std::string logsPath;
+			const std::string& dateFormat = loggingSettings.getString(json_settings::dateFormatKey);
 			bool duplicateOutput = false;
 			bool duplicateErrorOutput = false;
 
@@ -105,7 +103,7 @@ namespace framework
 
 			if (loggingSettings.tryGetUnsignedInt(json_settings::logFileSizeKey, logFileSize))
 			{
-				if (flags == (numeric_limits<uint64_t>::max)())
+				if (flags == (std::numeric_limits<uint64_t>::max)())
 				{
 					Log::configure(dateFormat, logsPath, logFileSize);
 				}
@@ -116,7 +114,7 @@ namespace framework
 			}
 			else
 			{
-				if (flags == (numeric_limits<uint64_t>::max)())
+				if (flags == (std::numeric_limits<uint64_t>::max)())
 				{
 					Log::configure(dateFormat, logsPath);
 				}
@@ -128,23 +126,23 @@ namespace framework
 
 			if (duplicateOutput)
 			{
-				Log::duplicateLog(cout);
+				Log::duplicateLog(std::cout);
 			}
 
 			if (duplicateErrorOutput)
 			{
-				Log::duplicateErrorLog(cerr);
+				Log::duplicateErrorLog(std::cerr);
 			}
 		}
 	}
 
-	void WebFramework::initExecutors(const json::utility::jsonObject& webFrameworkSettings, unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, vector<string>& pathToSources)
+	void WebFramework::initExecutors(const json::utility::jsonObject& webFrameworkSettings, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, std::vector<std::string>& pathToSources)
 	{
-		const filesystem::path& basePath = config.getBasePath();
-		vector<string> settingsPaths;
+		const std::filesystem::path& basePath = config.getBasePath();
+		std::vector<std::string> settingsPaths;
 
 		{
-			vector<json::utility::jsonObject> settings;
+			std::vector<json::utility::jsonObject> settings;
 
 			if (webFrameworkSettings.tryGetArray(json_settings::settingsPathsKey, settings))
 			{
@@ -153,7 +151,7 @@ namespace framework
 		}
 
 		{
-			vector<json::utility::jsonObject> loadSources;
+			std::vector<json::utility::jsonObject> loadSources;
 
 			if (webFrameworkSettings.tryGetArray(json_settings::loadSourcesKey, loadSources))
 			{
@@ -163,10 +161,10 @@ namespace framework
 
 		WebFramework::parseAdditionalConfigs(webFrameworkSettings, basePath, settingsPaths, pathToSources);
 
-		ranges::for_each(settingsPaths, [this, &basePath](string& path) { path = (basePath / path).string(); });
-		ranges::for_each
+		std::ranges::for_each(settingsPaths, [this, &basePath](std::string& path) { path = (basePath / path).string(); });
+		std::ranges::for_each
 		(
-			pathToSources, [this, &basePath](string& source)
+			pathToSources, [this, &basePath](std::string& source)
 			{
 				if (source == json_settings::defaultLoadSourceValue)
 				{
@@ -183,12 +181,12 @@ namespace framework
 		{
 			if (settingsPaths.empty())
 			{
-				throw runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
+				throw std::runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
 			}
 
 			if (pathToSources.empty())
 			{
-				throw runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
+				throw std::runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
 			}
 		}
 	}
@@ -207,7 +205,7 @@ namespace framework
 		if (https.tryGetBool(json_settings::useHTTPSKey, useHTTPS) && useHTTPS)
 		{
 			utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
-			const filesystem::path& basePath = config.getBasePath();
+			const std::filesystem::path& basePath = config.getBasePath();
 
 			httpsSettings.setUseHTTPS(true);
 			httpsSettings.setPathToCertificate(basePath / https.getString(json_settings::pathToCertificateKey));
@@ -225,7 +223,7 @@ namespace framework
 
 	void WebFramework::initDatabase(const json::utility::jsonObject& webFrameworkSettings)
 	{
-		string databaseImplementationName;
+		std::string databaseImplementationName;
 
 		if (!webFrameworkSettings.tryGetString(json_settings::databaseImplementationKey, databaseImplementationName))
 		{
@@ -243,14 +241,14 @@ namespace framework
 	void WebFramework::initServer
 	(
 		const json::utility::jsonObject& webFrameworkSettings,
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-		const vector<string>& pathToSources
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		const std::vector<std::string>& pathToSources
 	)
 	{
-		const filesystem::path& basePath = config.getBasePath();
+		const std::filesystem::path& basePath = config.getBasePath();
 		const json::utility::jsonObject& webServerSettings = (*config).getObject(json_settings::webServerObject);
-		const string& ip = webServerSettings.getString(json_settings::ipKey);
-		string port = to_string(webServerSettings.getInt(json_settings::portKey));
+		const std::string& ip = webServerSettings.getString(json_settings::ipKey);
+		std::string port = std::to_string(webServerSettings.getInt(json_settings::portKey));
 		DWORD timeout = 0;
 		utility::AdditionalServerSettings additionalSettings = utility::AdditionalServerSettings::createSettings(webFrameworkSettings, basePath);
 		int64_t resourcesThreads = 1;
@@ -268,7 +266,7 @@ namespace framework
 
 		webFrameworkSettings.tryGetInt(json_settings::resourcesThreadsKey, resourcesThreads);
 
-		shared_ptr<threading::ThreadPool> threadPool = make_shared<threading::ThreadPool>(resourcesThreads);
+		std::shared_ptr<threading::ThreadPool> threadPool = std::make_shared<threading::ThreadPool>(resourcesThreads);
 
 		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
 		{
@@ -311,10 +309,10 @@ namespace framework
 		{
 			const json::utility::jsonObject& loadBalancerSettings = (*config).getObject(json_settings::loadBalancerObject);
 			json::utility::jsonObject heuristic;
-			string loadSource(json_settings::defaultLoadSourceValue);
+			std::string loadSource(json_settings::defaultLoadSourceValue);
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject(json_settings::listOfServersKey);
-			unordered_map<string, vector<int64_t>> allServers;
+			std::unordered_map<std::string, std::vector<int64_t>> allServers;
 			uint64_t processingThreads = 1;
 
 			loadBalancerSettings.tryGetString(json_settings::loadSourceKey, loadSource);
@@ -331,11 +329,11 @@ namespace framework
 				allServers.try_emplace
 				(
 					key,
-					json::utility::JSONArrayWrapper(get<vector<json::utility::jsonObject>>(value)).getAsInt64_tArray()
+					json::utility::JSONArrayWrapper(std::get<std::vector<json::utility::jsonObject>>(value)).getAsInt64_tArray()
 				);
 			}
 
-			server = make_unique<load_balancer::LoadBalancerServer>
+			server = std::make_unique<load_balancer::LoadBalancerServer>
 				(
 					ip,
 					port,
@@ -350,11 +348,11 @@ namespace framework
 		}
 		else if (webServerType == json_settings::proxyWebServerTypeValue)
 		{
-			server = make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).getObject(json_settings::proxyObject));
+			server = std::make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).getObject(json_settings::proxyObject));
 		}
 		else
 		{
-			throw runtime_error(::exceptions::wrongWebServerType);
+			throw std::runtime_error(::exceptions::wrongWebServerType);
 		}
 	}
 
@@ -365,8 +363,8 @@ namespace framework
 		this->initLogging();
 
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
-		vector<string> pathToSources;
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
+		std::vector<std::string> pathToSources;
 
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
@@ -374,18 +372,18 @@ namespace framework
 		this->initServer
 		(
 			webFrameworkSettings,
-			move(executorsSettings),
+			std::move(executorsSettings),
 			pathToSources
 		);
 	}
 
-	WebFramework::WebFramework(const filesystem::path& webFrameworkConfigPath) :
+	WebFramework::WebFramework(const std::filesystem::path& webFrameworkConfigPath) :
 		WebFramework(utility::Config(webFrameworkConfigPath))
 	{
 
 	}
 
-	void WebFramework::start(bool wait, const function<void()>& onStartServer)
+	void WebFramework::start(bool wait, const std::function<void()>& onStartServer)
 	{
 		if (Log::isValid())
 		{
@@ -405,7 +403,7 @@ namespace framework
 		server->stop(wait);
 	}
 
-	void WebFramework::kick(const string& ip) const
+	void WebFramework::kick(const std::string& ip) const
 	{
 		if (Log::isValid())
 		{
@@ -415,10 +413,10 @@ namespace framework
 		server->kick(ip);
 	}
 
-	vector<string> WebFramework::getClientsIp() const
+	std::vector<std::string> WebFramework::getClientsIp() const
 	{
-		vector<pair<string, vector<SOCKET>>> clients = server->getClients();
-		vector<string> result;
+		std::vector<std::pair<std::string, std::vector<SOCKET>>> clients = server->getClients();
+		std::vector<std::string> result;
 
 		result.reserve(clients.size());
 

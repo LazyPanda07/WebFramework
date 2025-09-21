@@ -2,15 +2,13 @@
 
 #include <thread>
 
-using namespace std;
-
 namespace framework
 {
 	void SessionsManager::SessionTime::asyncCheck()
 	{
-		unique_lock<mutex> guard(checkLock);
-		vector<pair<SessionTimePoint, string>> deleteVariants;
-		const SessionTimePoint current = chrono::high_resolution_clock::now();
+		std::unique_lock<std::mutex> guard(checkLock);
+		std::vector<std::pair<SessionTimePoint, std::string>> deleteVariants;
+		const SessionTimePoint current = std::chrono::high_resolution_clock::now();
 
 		for (const auto& i : timeIp)
 		{
@@ -41,14 +39,14 @@ namespace framework
 		{
 			this->asyncCheck();
 
-			this_thread::sleep_for(sessionCheckPeriod);
+			std::this_thread::sleep_for(sessionCheckPeriod);
 		}
 	}
 
 	void SessionsManager::SessionTime::nextPeriod()
 	{
-		multimap<SessionTimePoint, string, greater<SessionTimePoint>> tem;
-		const SessionTimePoint period = chrono::high_resolution_clock::now();
+		std::multimap<SessionTimePoint, std::string, std::greater<SessionTimePoint>> tem;
+		const SessionTimePoint period = std::chrono::high_resolution_clock::now();
 
 		for (const auto& [time, ip] : timeIp)
 		{
@@ -67,12 +65,12 @@ namespace framework
 	SessionsManager::SessionTime::SessionTime(SessionsManager* userSession) :
 		userSessionSynchronization(userSession)
 	{
-		thread(&SessionTime::runAsyncCheck, this).detach();
+		std::thread(&SessionTime::runAsyncCheck, this).detach();
 	}
 
-	void SessionsManager::SessionTime::updateSessionTime(string_view ip)
+	void SessionsManager::SessionTime::updateSessionTime(std::string_view ip)
 	{
-		unique_lock<mutex> guard(checkLock);
+		std::unique_lock<std::mutex> guard(checkLock);
 
 		auto findTime = ipTime.find(ip);
 
@@ -88,7 +86,7 @@ namespace framework
 			timeIp.erase(target);
 		}
 
-		SessionTimePoint start = chrono::high_resolution_clock::now();
+		SessionTimePoint start = std::chrono::high_resolution_clock::now();
 
 		ipTime.emplace(ip, start);
 		timeIp.emplace(move(start), ip);
@@ -100,18 +98,18 @@ namespace framework
 
 	}
 
-	void SessionsManager::setAttribute(const string& ip, string_view name, string_view value)
+	void SessionsManager::setAttribute(const std::string& ip, std::string_view name, std::string_view value)
 	{
-		unique_lock<mutex> guard(lock);
+		std::unique_lock<std::mutex> guard(lock);
 
 		userSession[ip].emplace(name, value);
 
 		time.updateSessionTime(ip);
 	}
 
-	string SessionsManager::getAttribute(string_view ip, string_view name)
+	std::string SessionsManager::getAttribute(std::string_view ip, std::string_view name)
 	{
-		unique_lock guard(lock);
+		std::unique_lock guard(lock);
 
 		time.updateSessionTime(ip);
 
@@ -122,24 +120,24 @@ namespace framework
 				return it->second;
 			}
 			
-			throw runtime_error(format("Wrong attribute name: {}", name));
+			throw std::runtime_error(format("Wrong attribute name: {}", name));
 		}
 
-		throw runtime_error(format("Can't find ip: {}", ip));
+		throw std::runtime_error(format("Can't find ip: {}", ip));
 
 		return {};
 	}
 
-	void SessionsManager::deleteSession(string_view ip)
+	void SessionsManager::deleteSession(std::string_view ip)
 	{
-		unique_lock guard(lock);
+		std::unique_lock guard(lock);
 
 		userSession.erase(userSession.find(ip));
 	}
 
-	void SessionsManager::deleteAttribute(string_view ip, string_view name)
+	void SessionsManager::deleteAttribute(std::string_view ip, std::string_view name)
 	{
-		unique_lock guard(lock);
+		std::unique_lock guard(lock);
 
 		if (auto it = userSession.find(ip); it != userSession.end())
 		{

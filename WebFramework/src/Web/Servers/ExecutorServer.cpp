@@ -6,17 +6,15 @@
 #include <Utility/DynamicLibraries.h>
 #include <Log.h>
 
-using namespace std;
-
 namespace framework
 {
 	ExecutorServer::ExecutorServer
 	(
 		const json::JSONParser& configuration,
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-		const vector<string>& pathToSources,
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
-		shared_ptr<threading::ThreadPool> threadPool
+		std::shared_ptr<threading::ThreadPool> threadPool
 	) :
 		additionalSettings(additionalSettings)
 	{
@@ -26,7 +24,7 @@ namespace framework
 
 			resources = executorsManager->getResourceExecutor();
 		}
-		catch (const exception& e)
+		catch (const std::exception& e)
 		{
 			if (Log::isValid())
 			{

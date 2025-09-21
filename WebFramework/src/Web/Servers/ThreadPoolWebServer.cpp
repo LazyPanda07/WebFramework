@@ -10,16 +10,14 @@
 #include "HTTPSNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 
-using namespace std;
-
 namespace framework
 {
-	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, function<void()>&& cleanup, ThreadPoolWebServer& server, DWORD timeout) :
+	ThreadPoolWebServer::Client::Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup, ThreadPoolWebServer& server, DWORD timeout) :
 		stream
 		(
 			ssl ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, chrono::milliseconds(timeout))
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, std::chrono::milliseconds(timeout))
 		),
 		cleanup(move(cleanup)),
 		address(address),
@@ -85,7 +83,7 @@ namespace framework
 			HTTPRequestExecutors requestWrapper(&request);
 			HTTPResponseExecutors responseWrapper(&response);
 
-			optional<function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, statefulExecutors);
+			std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, statefulExecutors);
 
 			if (threadPoolFunction)
 			{
@@ -93,7 +91,7 @@ namespace framework
 
 				threadPool.addTask
 				(
-					[this, &resourceExecutor, request = move(request), response = move(response), threadPoolFunction = move(threadPoolFunction)]() mutable
+					[this, &resourceExecutor, request = std::move(request), response = std::move(response), threadPoolFunction = std::move(threadPoolFunction)]() mutable
 					{
 						HTTPRequestExecutors requestWrapper(&request);
 						HTTPResponseExecutors responseWrapper(&response);
@@ -157,7 +155,7 @@ namespace framework
 
 							stream << response;
 						}
-						catch (const exception& e)
+						catch (const std::exception& e)
 						{
 							if (Log::isValid())
 							{
@@ -253,7 +251,7 @@ namespace framework
 
 			stream << response;
 		}
-		catch (const exception& e)
+		catch (const std::exception& e)
 		{
 			HTTPResponseImplementation response;
 			HTTPResponseExecutors responseWrapper(&response);
@@ -323,7 +321,7 @@ namespace framework
 		}
 	}
 
-	void ThreadPoolWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr address, function<void()>& cleanup) //-V688
+	void ThreadPoolWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr address, std::function<void()>& cleanup) //-V688
 	{
 		SSL* ssl = nullptr;
 
@@ -372,14 +370,14 @@ namespace framework
 	ThreadPoolWebServer::ThreadPoolWebServer
 	(
 		const json::JSONParser& configuration,
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-		string_view ip,
-		string_view port,
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		std::string_view ip,
+		std::string_view port,
 		DWORD timeout,
-		const vector<string>& pathToSources,
+		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
 		size_t numberOfThreads,
-		shared_ptr<threading::ThreadPool> resourcesThreadPool
+		std::shared_ptr<threading::ThreadPool> resourcesThreadPool
 	) :
 		BaseTCPServer
 		(

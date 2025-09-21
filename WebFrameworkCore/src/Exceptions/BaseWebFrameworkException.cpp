@@ -1,13 +1,11 @@
 #include "BaseWebFrameworkException.h"
 
-using namespace std;
-
 namespace framework
 {
 	namespace exceptions
 	{
-		BaseWebFrameworkException::BaseWebFrameworkException(string_view errorMessage) :
-			runtime_error(string(errorMessage.data(), errorMessage.size()))
+		BaseWebFrameworkException::BaseWebFrameworkException(std::string_view errorMessage) :
+			runtime_error(std::string(errorMessage.data(), errorMessage.size()))
 		{
 
 		}
