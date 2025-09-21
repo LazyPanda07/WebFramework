@@ -1,7 +1,5 @@
 #include "DatabaseExecutors.h"
 
-using namespace std;
-
 namespace framework
 {
 	DatabaseExecutors::DatabaseExecutors(interfaces::IDatabase* implementation) :
@@ -10,7 +8,7 @@ namespace framework
 
 	}
 
-	bool DatabaseExecutors::contains(string_view tableName, TableExecutors* outTable) const
+	bool DatabaseExecutors::contains(std::string_view tableName, TableExecutors* outTable) const
 	{
 		interfaces::ITable* table = nullptr;
 		bool result = implementation->contains(tableName.data(), &table);
@@ -23,22 +21,22 @@ namespace framework
 		return result;
 	}
 
-	TableExecutors DatabaseExecutors::getTable(string_view tableName) const
+	TableExecutors DatabaseExecutors::getTable(std::string_view tableName) const
 	{
 		return TableExecutors(implementation->get(tableName.data()));
 	}
 
-	TableExecutors DatabaseExecutors::getOrCreateTable(string_view tableName, string_view createTableQuery)
+	TableExecutors DatabaseExecutors::getOrCreateTable(std::string_view tableName, std::string_view createTableQuery)
 	{
 		return TableExecutors(implementation->getOrCreateTable(tableName.data(), createTableQuery.data()));
 	}
 
-	string_view DatabaseExecutors::getDatabaseName() const
+	std::string_view DatabaseExecutors::getDatabaseName() const
 	{
 		return implementation->getDatabaseName();
 	}
 
-	string DatabaseExecutors::getDatabaseFileName() const
+	std::string DatabaseExecutors::getDatabaseFileName() const
 	{
 		return implementation->getDatabaseFileName();
 	}

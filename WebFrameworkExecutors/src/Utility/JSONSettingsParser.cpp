@@ -2,14 +2,12 @@
 
 #include <fstream>
 
-#include "JSONParser.h"
+#include <JSONParser.h>
+#include <Strings.h>
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/CantFindValueException.h"
-#include "Strings.h"
 #include "WebFrameworkCoreConstants.h"
-
-using namespace std;
 
 namespace framework::utility
 {
@@ -19,16 +17,16 @@ namespace framework::utility
 
 	}
 
-	JSONSettingsParser::ExecutorSettings::ExecutorSettings(string_view name) :
+	JSONSettingsParser::ExecutorSettings::ExecutorSettings(std::string_view name) :
 		name(name),
 		executorLoadType(LoadType::none)
 	{
 
 	}
 
-	JSONSettingsParser::JSONSettingsParser(const string& JSONSettings)
+	JSONSettingsParser::JSONSettingsParser(const std::string& JSONSettings)
 	{
-		ifstream in(JSONSettings);
+		std::ifstream in(JSONSettings);
 
 		if (!in.is_open())
 		{
@@ -44,7 +42,7 @@ namespace framework::utility
 		for (const auto& [name, description] : parser)
 		{
 			const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
-			const string& loadType = data.getString(json_settings::loadTypeKey);
+			const std::string& loadType = data.getString(json_settings::loadTypeKey);
 			ExecutorSettings executorSettings(name);
 
 			data.tryGetObject(json_settings::initParametersKey, executorSettings.initParameters);
@@ -62,19 +60,19 @@ namespace framework::utility
 			}
 			else
 			{
-				throw runtime_error("Wrong loadType");
+				throw std::runtime_error("Wrong loadType");
 			}
 
-			settings.try_emplace(::utility::strings::replaceAll(data.getString(json_settings::routeKey), " ", "%20"), move(executorSettings));
+			settings.try_emplace(::utility::strings::replaceAll(data.getString(json_settings::routeKey), " ", "%20"), std::move(executorSettings));
 		}
 	}
 
-	const unordered_map<string, JSONSettingsParser::ExecutorSettings>& JSONSettingsParser::getSettings() const
+	const std::unordered_map<std::string, JSONSettingsParser::ExecutorSettings>& JSONSettingsParser::getSettings() const
 	{
 		return settings;
 	}
 
-	const JSONSettingsParser::ExecutorSettings& JSONSettingsParser::getExecutorSettings(const string& executorName) const
+	const JSONSettingsParser::ExecutorSettings& JSONSettingsParser::getExecutorSettings(const std::string& executorName) const
 	{
 		return settings.at(executorName);
 	}

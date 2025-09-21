@@ -1,7 +1,5 @@
 #include "BaseStatefulExecutor.h"
 
-using namespace std;
-
 namespace framework
 {
 	utility::ExecutorType BaseStatefulExecutor::getType() const

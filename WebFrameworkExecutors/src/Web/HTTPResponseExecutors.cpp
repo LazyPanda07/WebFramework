@@ -1,7 +1,5 @@
 #include "HTTPResponseExecutors.h"
 
-using namespace std;
-
 namespace framework
 {
 	interfaces::IHTTPResponse* HTTPResponseExecutors::getImplementation() const
@@ -9,7 +7,7 @@ namespace framework
 		return implementation;
 	}
 
-	HTTPResponseExecutors::HTTPResponseExecutors(interfaces::IHTTPResponse* implementation, const function<void(interfaces::IHTTPResponse*)>& deleter) :
+	HTTPResponseExecutors::HTTPResponseExecutors(interfaces::IHTTPResponse* implementation, const std::function<void(interfaces::IHTTPResponse*)>& deleter) :
 		implementation(implementation),
 		deleter(deleter)
 	{
@@ -18,7 +16,7 @@ namespace framework
 
 	HTTPResponseExecutors::HTTPResponseExecutors(HTTPResponseExecutors&& other) noexcept
 	{
-		(*this) = move(other);
+		(*this) = std::move(other);
 	}
 
 	HTTPResponseExecutors& HTTPResponseExecutors::operator =(HTTPResponseExecutors&& other) noexcept
@@ -32,7 +30,7 @@ namespace framework
 		return *this;
 	}
 
-	void HTTPResponseExecutors::setHTTPVersion(string_view version)
+	void HTTPResponseExecutors::setHTTPVersion(std::string_view version)
 	{
 		implementation->setHTTPVersion(version.data());
 	}
@@ -42,12 +40,12 @@ namespace framework
 		implementation->setResponseCode(static_cast<int>(code));
 	}
 
-	void HTTPResponseExecutors::addHeader(string_view name, string_view value)
+	void HTTPResponseExecutors::addHeader(std::string_view name, std::string_view value)
 	{
 		implementation->addHeader(name.data(), value.data());
 	}
 
-	void HTTPResponseExecutors::setBody(string_view body)
+	void HTTPResponseExecutors::setBody(std::string_view body)
 	{
 		implementation->setBody(body.data());
 	}
@@ -59,14 +57,14 @@ namespace framework
 		implementation->setBody(json.build().data());
 	}
 
-	HTTPResponseExecutors& HTTPResponseExecutors::appendBody(string_view body)
+	HTTPResponseExecutors& HTTPResponseExecutors::appendBody(std::string_view body)
 	{
 		implementation->appendBody(body.data());
 
 		return *this;
 	}
 
-	void HTTPResponseExecutors::addCookie(string_view name, string_view value)
+	void HTTPResponseExecutors::addCookie(std::string_view name, std::string_view value)
 	{
 		implementation->addCookie(name.data(), value.data());
 	}

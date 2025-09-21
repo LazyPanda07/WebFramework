@@ -1,22 +1,20 @@
 #include "BaseExecutor.h"
 
-#include "Strings.h"
-
-using namespace std;
+#include <Strings.h>
 
 static void isImplemented
 (
-	vector<string>& result,
+	std::vector<std::string>& result,
 	framework::HTTPRequestExecutors& request, 
 	framework::HTTPResponseExecutors& response,
-	const string& methodName, 
+	const std::string& methodName, 
 	void(framework::BaseExecutor::*method)(framework::HTTPRequestExecutors&, framework::HTTPResponseExecutors&), 
 	framework::BaseExecutor& executor
 );
 
 namespace framework
 {
-	void (BaseExecutor::* BaseExecutor::getMethod(string_view methodName))(HTTPRequestExecutors&, HTTPResponseExecutors&)
+	void (BaseExecutor::* BaseExecutor::getMethod(std::string_view methodName))(HTTPRequestExecutors&, HTTPResponseExecutors&)
 	{
 		static const ::utility::strings::string_based_unordered_map<void(BaseExecutor::*)(HTTPRequestExecutors&, HTTPResponseExecutors&)> methods =
 		{
@@ -75,8 +73,8 @@ namespace framework
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 #endif
 
-		vector<string> methods = { "OPTIONS" };
-		string allowHeader;
+		std::vector<std::string> methods = { "OPTIONS" };
+		std::string allowHeader;
 
 		isImplemented(methods, request, response, "GET", &BaseExecutor::doGet, *this);
 		isImplemented(methods, request, response, "POST", &BaseExecutor::doPost, *this);
@@ -117,10 +115,10 @@ namespace framework
 
 void isImplemented
 (
-	vector<string>& result,
+	std::vector<std::string>& result,
 	framework::HTTPRequestExecutors& request,
 	framework::HTTPResponseExecutors& response,
-	const string& methodName, 
+	const std::string& methodName, 
 	void(framework::BaseExecutor::*method)(framework::HTTPRequestExecutors&, framework::HTTPResponseExecutors&), 
 	framework::BaseExecutor& executor
 )

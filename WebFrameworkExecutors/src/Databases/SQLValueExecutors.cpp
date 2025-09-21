@@ -55,7 +55,7 @@ namespace framework
 	}
 
 	SQLValueExecutors::SQLValueExecutors(ValueType&& value) noexcept :
-		value(move(value))
+		value(std::move(value))
 	{
 
 	}

@@ -1,7 +1,5 @@
 #include "BaseHeavyOperationStatefulExecutor.h"
 
-using namespace std;
-
 namespace framework
 {
 	utility::ExecutorType BaseHeavyOperationStatefulExecutor::getType() const
