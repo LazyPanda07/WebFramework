@@ -33,7 +33,7 @@ jobs:
       run: |
           python3 -m pip install build
           python3 -m build
-          mv dist/*.whl dist/web_framework_api-3.1.0-py3-none-any.whl
+          mv dist/*.whl dist/web_framework_api-${{ env.deb-package-version }}-py3-none-any.whl
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
