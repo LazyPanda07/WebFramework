@@ -2,8 +2,8 @@
 
 #include <format>
 
-#include "Exceptions/FileDoesNotExistException.h"
-#include "Strings.h"
+#include <Exceptions/FileDoesNotExistException.h>
+#include <Strings.h>
 
 #ifdef __LINUX__
 #include <dlfcn.h>
@@ -11,16 +11,14 @@
 #include <unistd.h>
 #endif
 
-using namespace std;
-
 namespace framework::utility
 {
-	string makePathToDynamicLibrary(const filesystem::path& pathToSource)
+	std::string makePathToDynamicLibrary(const std::filesystem::path& pathToSource)
 	{
-		filesystem::path absolutePath = filesystem::absolute(pathToSource);
-		string fileName = absolutePath.filename().string();
-		string extension;
-		string prefix;
+		std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
+		std::string fileName = absolutePath.filename().string();
+		std::string extension;
+		std::string prefix;
 
 		if (!absolutePath.has_extension())
 		{
@@ -34,16 +32,16 @@ namespace framework::utility
 		absolutePath.remove_filename();
 
 #ifdef __LINUX__
-		if (fileName.find("lib") == string::npos)
+		if (fileName.find("lib") == std::string::npos)
 		{
 			prefix = "lib";
 		}
 #endif
 
-		return format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
+		return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
 	}
 
-	string getPathToWebFrameworkSharedLibrary()
+	std::string getPathToWebFrameworkSharedLibrary()
 	{
 #ifdef __LINUX__
 		Dl_info info;

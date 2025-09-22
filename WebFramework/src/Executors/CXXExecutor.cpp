@@ -2,11 +2,9 @@
 
 #include <format>
 
-#include "Log.h"
+#include <Log.h>
 
-#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw runtime_error(format("Can't load {} function", #name))
-
-using namespace std;
+#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw std::runtime_error(std::format("Can't load {} function", #name))
 
 namespace framework
 {
@@ -42,7 +40,7 @@ namespace framework
 			ASSERT_LOAD_FUNCTION(destroyFunction);
 			ASSERT_LOAD_FUNCTION(deleteFunction);
 		}
-		catch (const exception& e)
+		catch (const std::exception& e)
 		{
 			if (Log::isValid())
 			{

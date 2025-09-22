@@ -3,8 +3,6 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "WebFrameworkCoreConstants.h"
 
-using namespace std;
-
 namespace framework::utility
 {
 	AdditionalServerSettings::AdditionalServerSettings() :
@@ -15,10 +13,10 @@ namespace framework::utility
 
 	}
 
-	AdditionalServerSettings AdditionalServerSettings::createSettings(const json::JSONParser& parser, const filesystem::path& basePath)
+	AdditionalServerSettings AdditionalServerSettings::createSettings(const json::JSONParser& parser, const std::filesystem::path& basePath)
 	{
 		AdditionalServerSettings result;
-		string value;
+		std::string value;
 
 		parser.tryGetString(json_settings::userAgentFilterKey, result.userAgentFilter);
 		parser.tryGetUnsignedInt(json_settings::largeBodySizeThresholdKey, result.largeBodySizeThreshold);
@@ -27,14 +25,14 @@ namespace framework::utility
 
 		if (parser.tryGetString(json_settings::assetsPathKey, value))
 		{
-			filesystem::path temp(value);
+			std::filesystem::path temp(value);
 
 			result.assetsPath = temp.is_absolute() ? temp : (basePath / temp);
 		}
 
 		if (parser.tryGetString(json_settings::templatesPathKey, value))
 		{
-			filesystem::path temp(value);
+			std::filesystem::path temp(value);
 
 			result.templatesPath = temp.is_absolute() ? temp : (basePath / temp);
 		}

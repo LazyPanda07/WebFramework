@@ -2,12 +2,10 @@
 
 #include "SQLValueImplementation.h"
 
-using namespace std;
-
 namespace framework
 {
 	SQLResultImplementation::SQLResultImplementation(database::SQLResult&& result) :
-		result(move(result))
+		result(std::move(result))
 	{
 
 	}
@@ -21,9 +19,9 @@ namespace framework
 	{
 		initBuffer(result.size(), buffer);
 
-		vector<const char*> columnNames;
-		vector<SQLValueImplementation> columnValues;
-		vector<const void*> pointers;
+		std::vector<const char*> columnNames;
+		std::vector<SQLValueImplementation> columnValues;
+		std::vector<const void*> pointers;
 
 		if (result.size())
 		{

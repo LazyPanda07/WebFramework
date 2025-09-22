@@ -4,19 +4,16 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	/// <summary>
+	/// Syntax erros in .wfdp
+	/// </summary>
+	class WEB_FRAMEWORK_API DynamicPagesSyntaxException : public BaseWebFrameworkException
 	{
-		/// <summary>
-		/// Syntax erros in .wfdp
-		/// </summary>
-		class WEB_FRAMEWORK_API DynamicPagesSyntaxException : public BaseWebFrameworkException
-		{
-		public:
-			DynamicPagesSyntaxException(std::string_view syntaxError);
+	public:
+		DynamicPagesSyntaxException(std::string_view syntaxError);
 
-			~DynamicPagesSyntaxException() = default;
-		};
-	}
+		~DynamicPagesSyntaxException() = default;
+	};
 }

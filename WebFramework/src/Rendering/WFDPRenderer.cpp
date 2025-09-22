@@ -1,7 +1,6 @@
 #include "WFDPRenderer.h"
 
-#include "Strings.h"
-#include "Log.h"
+#include <Log.h>
 
 #include "Exceptions/DynamicPagesSyntaxException.h"
 #include "StandardWebFrameworkDynamicPagesFunctions.h"
@@ -9,25 +8,23 @@
 
 #pragma warning(disable: 26800)
 
-using namespace std;
-
-static constexpr string_view argumentsDelimiter = "</arg>";
+static constexpr std::string_view argumentsDelimiter = "</arg>";
 
 namespace framework
 {
-	WFDPRenderer::ExecutionUnit::ExecutionUnit(string&& functionName, vector<string>&& arguments) noexcept :
-		functionName(move(functionName)),
-		arguments(move(arguments))
+	WFDPRenderer::ExecutionUnit::ExecutionUnit(std::string&& functionName, std::vector<std::string>&& arguments) noexcept :
+		functionName(std::move(functionName)),
+		arguments(std::move(arguments))
 	{
 
 	}
 
-	void WFDPRenderer::clear(string& code)
+	void WFDPRenderer::clear(std::string& code)
 	{
-		code.erase(remove_if(code.begin(), code.end(), [](const char& c) { return iscntrl(c) || isspace(c); }), code.end());
+		code.erase(std::remove_if(code.begin(), code.end(), [](const char& c) { return std::iscntrl(c) || std::isspace(c); }), code.end());
 	}
 
-	void WFDPRenderer::separateArguments(string& code)
+	void WFDPRenderer::separateArguments(std::string& code)
 	{
 		bool stringArgument = false;
 
@@ -56,15 +53,15 @@ namespace framework
 		}
 	}
 
-	string WFDPRenderer::insertVariables(span<const interfaces::CVariable> variables, string code)
+	std::string WFDPRenderer::insertVariables(std::span<const interfaces::CVariable> variables, std::string code)
 	{
-		auto findVariable = [&variables](string_view name) -> string_view
+		auto findVariable = [&variables](std::string_view name) -> std::string_view
 			{
-				auto it = ranges::find_if(variables, [name](const auto& variable) { return variable.name == name; });
+				auto it = std::ranges::find_if(variables, [name](const auto& variable) { return variable.name == name; });
 
 				if (it == variables.end())
 				{
-					throw runtime_error(format("No variable: {}", name));
+					throw std::runtime_error(std::format("No variable: {}", name));
 				}
 
 				return it->value;
@@ -72,18 +69,18 @@ namespace framework
 
 		size_t changeVariableStart = code.find('$');
 
-		while (changeVariableStart != string::npos)
+		while (changeVariableStart != std::string::npos)
 		{
 			changeVariableStart++;
 
 			size_t changeVariableEnd = code.find('$', changeVariableStart);
 
-			if (changeVariableEnd == string::npos)
+			if (changeVariableEnd == std::string::npos)
 			{
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
 			}
 
-			string_view variableName(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart);
+			std::string_view variableName(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart);
 
 			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, findVariable(variableName));
 
@@ -93,31 +90,31 @@ namespace framework
 		return code;
 	}
 
-	vector<WFDPRenderer::ExecutionUnit> WFDPRenderer::preExecute(string_view code)
+	std::vector<WFDPRenderer::ExecutionUnit> WFDPRenderer::preExecute(std::string_view code)
 	{
-		vector<ExecutionUnit> result;
+		std::vector<ExecutionUnit> result;
 		size_t startLine = 0;
 		size_t endLine = code.find(';');
 
-		if (endLine == string::npos)
+		if (endLine == std::string::npos)
 		{
 			throw exceptions::DynamicPagesSyntaxException(::exceptions::missingSemicolonSyntaxError);
 		}
 
-		result.reserve(count(code.begin(), code.end(), ';'));
+		result.reserve(std::count(code.begin(), code.end(), ';'));
 
-		while (endLine != string::npos)
+		while (endLine != std::string::npos)
 		{
 			endLine++;
 
-			string_view line(code.data() + startLine, endLine - startLine);
+			std::string_view line(code.data() + startLine, endLine - startLine);
 			size_t openBracket = line.find('(');
-			string functionName(line.substr(0, openBracket));
+			std::string functionName(line.substr(0, openBracket));
 
 			result.emplace_back
 			(
-				move(functionName),
-				utility::strings::split(string_view(line.data() + openBracket + 1, line.find(')') - openBracket - 1), argumentsDelimiter)
+				std::move(functionName),
+				utility::strings::split(std::string_view(line.data() + openBracket + 1, line.find(')') - openBracket - 1), argumentsDelimiter)
 			);
 
 			startLine = endLine;
@@ -127,9 +124,9 @@ namespace framework
 		return result;
 	}
 
-	string WFDPRenderer::execute(const vector<ExecutionUnit>& codes)
+	std::string WFDPRenderer::execute(const std::vector<ExecutionUnit>& codes)
 	{
-		string result;
+		std::string result;
 
 		for (const auto& [functionName, arguments] : codes)
 		{
@@ -137,7 +134,7 @@ namespace framework
 			{
 				result += dynamicPagesFunctions.at(functionName)(arguments);
 			}
-			catch (const exception& e)
+			catch (const std::exception& e)
 			{
 				if (Log::isValid())
 				{
@@ -151,28 +148,28 @@ namespace framework
 		return result;
 	}
 
-	WFDPRenderer::WFDPRenderer(const filesystem::path& pathToTemplates) :
+	WFDPRenderer::WFDPRenderer(const std::filesystem::path& pathToTemplates) :
 		pathToTemplates(pathToTemplates)
 	{
 		dynamicPagesFunctions.try_emplace("print", print);
-		dynamicPagesFunctions.try_emplace("include", bind(include, placeholders::_1, pathToTemplates.string()));
-		dynamicPagesFunctions.try_emplace("for", bind(forWFDP, placeholders::_1, ref(dynamicPagesFunctions)));
+		dynamicPagesFunctions.try_emplace("include", std::bind(include, std::placeholders::_1, pathToTemplates.string()));
+		dynamicPagesFunctions.try_emplace("for", std::bind(forWFDP, std::placeholders::_1, ref(dynamicPagesFunctions)));
 	}
 
-	void WFDPRenderer::run(span<const interfaces::CVariable> variables, string& source)
+	void WFDPRenderer::run(std::span<const interfaces::CVariable> variables, std::string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
 
-		while (nextSectionStart != string::npos)
+		while (nextSectionStart != std::string::npos)
 		{
 			size_t nextSectionEnd = source.find("%}", nextSectionStart);
 
-			if (nextSectionEnd == string::npos)
+			if (nextSectionEnd == std::string::npos)
 			{
 				throw exceptions::DynamicPagesSyntaxException(::exceptions::sectionDeclarationSyntaxError);
 			}
 
-			string code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);
+			std::string code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);
 
 			WFDPRenderer::clear(code);
 
@@ -188,18 +185,18 @@ namespace framework
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
 		}
 
-		if (source.find("{%") != string::npos)
+		if (source.find("{%") != std::string::npos)
 		{
 			this->run(variables, source);
 		}
 	}
 
-	void WFDPRenderer::registerDynamicFunction(string_view functionName, function<string(const vector<string>&)>&& function)
+	void WFDPRenderer::registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function)
 	{
-		dynamicPagesFunctions.emplace(functionName, move(function));
+		dynamicPagesFunctions.emplace(functionName, std::move(function));
 	}
 
-	void WFDPRenderer::unregisterDynamicFunction(string_view functionName)
+	void WFDPRenderer::unregisterDynamicFunction(std::string_view functionName)
 	{
 		if (auto it = dynamicPagesFunctions.find(functionName); it != dynamicPagesFunctions.end())
 		{
@@ -207,12 +204,12 @@ namespace framework
 		}
 	}
 
-	bool WFDPRenderer::isDynamicFunctionRegistered(string_view functionName)
+	bool WFDPRenderer::isDynamicFunctionRegistered(std::string_view functionName)
 	{
 		return dynamicPagesFunctions.find(functionName) != dynamicPagesFunctions.end();
 	}
 
-	const filesystem::path& WFDPRenderer::getPathToTemplates() const
+	const std::filesystem::path& WFDPRenderer::getPathToTemplates() const
 	{
 		return pathToTemplates;
 	}

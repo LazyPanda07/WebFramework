@@ -2,16 +2,11 @@
 
 #include "Framework/WebFrameworkConstants.h"
 
-using namespace std;
-
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	CantLoadSourceException::CantLoadSourceException(std::string_view source) :
+		BaseWebFrameworkException(std::format("{} {}. ", ::exceptions::cantLoadSource, source, ::exceptions::missingOtherDLLs))
 	{
-		CantLoadSourceException::CantLoadSourceException(string_view source) :
-			BaseWebFrameworkException(format("{} {}. ", ::exceptions::cantLoadSource, source, ::exceptions::missingOtherDLLs))
-		{
 
-		}
 	}
 }

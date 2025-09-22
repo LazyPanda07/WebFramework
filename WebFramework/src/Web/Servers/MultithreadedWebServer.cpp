@@ -20,11 +20,9 @@
 #pragma warning(disable: 6387)
 #endif
 
-using namespace std;
-
 namespace framework
 {
-	void MultithreadedWebServer::clientConnection(const string& ip, SOCKET clientSocket, sockaddr addr, function<void()>& cleanup)
+	void MultithreadedWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup)
 	{
 		SSL* ssl = nullptr;
 
@@ -63,9 +61,9 @@ namespace framework
 		}
 
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, chrono::milliseconds(timeout));
-		unordered_map<string, unique_ptr<BaseExecutor>> statefulExecutors;
+			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, std::chrono::milliseconds(timeout));
+		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
 		HTTPResponseImplementation response;
 		HTTPResponseExecutors responseWrapper(&response);
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
@@ -159,7 +157,7 @@ namespace framework
 
 				stream << response;
 			}
-			catch (const exception& e)
+			catch (const std::exception& e)
 			{
 				if (Log::isValid())
 				{
@@ -182,13 +180,13 @@ namespace framework
 	MultithreadedWebServer::MultithreadedWebServer
 	(
 		const json::JSONParser& configuration,
-		unordered_map<string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-		string_view ip,
-		string_view port,
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		std::string_view ip,
+		std::string_view port,
 		DWORD timeout,
-		const vector<string>& pathToSources,
+		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
-		shared_ptr<threading::ThreadPool> threadPool
+		std::shared_ptr<threading::ThreadPool> threadPool
 	) :
 		BaseTCPServer
 		(

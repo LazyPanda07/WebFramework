@@ -2,17 +2,15 @@
 
 #include "Utility/Sources.h"
 
-#include "Log.h"
+#include <Log.h>
 
-#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw runtime_error(format("Can't load {} function", #name))
-
-using namespace std;
+#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw std::runtime_error(std::format("Can't load {} function", #name))
 
 namespace framework::load_balancer
 {
-	CCHeuristic::CCHeuristic(string_view ip, string_view port, bool useHTTPS, string_view heuristicName, HMODULE handle)
+	CCHeuristic::CCHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, HMODULE handle)
 	{
-		CreateHeuristicFunction creator = utility::load<CreateHeuristicFunction>(handle, format("create{}CCHeuristic", heuristicName));
+		CreateHeuristicFunction creator = utility::load<CreateHeuristicFunction>(handle, std::format("create{}CCHeuristic", heuristicName));
 
 		if (!creator)
 		{
@@ -21,7 +19,7 @@ namespace framework::load_balancer
 				Log::fatalError("Can't find create{}CCHeuristic function", "LogCCHeuristic", 1, heuristicName);
 			}
 
-			throw runtime_error(format("Can't find create{}CCHeuristic function", heuristicName));
+			throw std::runtime_error(std::format("Can't find create{}CCHeuristic function", heuristicName));
 		}
 
 		implementation = creator(ip.data(), port.data(), useHTTPS);
@@ -33,7 +31,7 @@ namespace framework::load_balancer
 				Log::fatalError("Can't create create{}CCHeuristic heuristic", "LogCCHeuristic", 2, heuristicName);
 			}
 
-			throw runtime_error(format("Can't create create{}CCHeuristic heuristic", heuristicName));
+			throw std::runtime_error(std::format("Can't create create{}CCHeuristic heuristic", heuristicName));
 		}
 
 		operatorFunction = utility::load<OperatorSignature>(handle, format("webFrameworkCCHeuristicOperator{}", heuristicName));
@@ -82,12 +80,12 @@ namespace framework::load_balancer
 		return onEndFunction(implementation);
 	}
 
-	const string& CCHeuristic::getIp() const
+	const std::string& CCHeuristic::getIp() const
 	{
 		return ip;
 	}
 
-	const string& CCHeuristic::getPort() const
+	const std::string& CCHeuristic::getPort() const
 	{
 		return port;
 	}

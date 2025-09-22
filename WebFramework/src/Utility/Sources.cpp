@@ -1,18 +1,17 @@
 #include "Sources.h"
 
-#include "DynamicLibraries.h"
-#include "Exceptions/FileDoesNotExistException.h"
-#include "Exceptions/CantLoadSourceException.h"
-#include "Log.h"
-#include "Framework/WebFrameworkConstants.h"
+#include <Log.h>
+#include <Exceptions/FileDoesNotExistException.h>
 
-using namespace std;
+#include "DynamicLibraries.h"
+#include "Exceptions/CantLoadSourceException.h"
+#include "Framework/WebFrameworkConstants.h"
 
 namespace framework::utility
 {
-	vector<pair<HMODULE, string>> loadSources(const vector<string>& pathToSources)
+	std::vector<std::pair<HMODULE, std::string>> loadSources(const std::vector<std::string>& pathToSources)
 	{
-		vector<pair<HMODULE, string>> result;
+		std::vector<std::pair<HMODULE, std::string>> result;
 
 		if (pathToSources.size())
 		{
@@ -23,7 +22,7 @@ namespace framework::utility
 			result.emplace_back(nullptr, "");
 		}
 
-		for (const string& temp : pathToSources)
+		for (const std::string& temp : pathToSources)
 		{
 			if (temp == json_settings::defaultLoadSourceValue)
 			{
@@ -36,9 +35,9 @@ namespace framework::utility
 				continue;
 			}
 
-			string pathToSource = makePathToDynamicLibrary(temp);
+			std::string pathToSource = makePathToDynamicLibrary(temp);
 
-			if (filesystem::exists(pathToSource))
+			if (std::filesystem::exists(pathToSource))
 			{
 				HMODULE handle = nullptr;
 

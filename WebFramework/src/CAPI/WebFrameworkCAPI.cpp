@@ -3,9 +3,10 @@
 #include <fstream>
 #include <format>
 
+#include <Log.h>
+
 #include "Framework/WebFramework.h"
 #include "Framework/Config.h"
-#include "Log.h"
 #include "WebInterfaces/IHTTPRequest.h"
 #include "Exceptions/APIException.h"
 
@@ -188,7 +189,7 @@ bool isServerRunning(WebFramework server, Exception* exception)
 
 const char* getWebFrameworkVersion()
 {
-	constexpr std::string_view version = "3.1.0";
+	constexpr std::string_view version = "3.1.1";
 
 	return version.data();
 }

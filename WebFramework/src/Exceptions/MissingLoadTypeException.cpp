@@ -2,16 +2,11 @@
 
 #include "Framework/WebFrameworkConstants.h"
 
-using namespace std;
-
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	MissingLoadTypeException::MissingLoadTypeException(std::string_view className) :
+		BaseExecutorException(std::format("{} {}", ::exceptions::missingLoadType, className))
 	{
-		MissingLoadTypeException::MissingLoadTypeException(string_view className) :
-			BaseExecutorException(format("{} {}", ::exceptions::missingLoadType, className))
-		{
 
-		}
 	}
 }

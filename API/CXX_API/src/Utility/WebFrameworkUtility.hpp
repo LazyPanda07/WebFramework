@@ -19,7 +19,7 @@ namespace framework::utility
 {
 	namespace uuid
 	{
-		std::string generateUUID()
+		inline std::string generateUUID()
 		{
 			using generateWebFrameworkUUID = void* (*)(void** exception);
 			void* exception = nullptr;

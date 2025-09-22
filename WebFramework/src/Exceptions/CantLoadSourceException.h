@@ -4,19 +4,16 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 
-namespace framework
+namespace framework::exceptions
 {
-	namespace exceptions
+	/// <summary>
+	/// Wrong path to loadSource from .ini
+	/// </summary>
+	class WEB_FRAMEWORK_API CantLoadSourceException : public BaseWebFrameworkException
 	{
-		/// <summary>
-		/// Wrong path to loadSource from .ini
-		/// </summary>
-		class WEB_FRAMEWORK_API CantLoadSourceException : public BaseWebFrameworkException
-		{
-		public:
-			CantLoadSourceException(std::string_view source);
+	public:
+		CantLoadSourceException(std::string_view source);
 
-			~CantLoadSourceException() = default;
-		};
-	}
+		~CantLoadSourceException() = default;
+	};
 }

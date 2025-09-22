@@ -1,7 +1,5 @@
 #include "TableExecutors.h"
 
-using namespace std;
-
 class CSQLValue : public framework::interfaces::ISQLValue
 {
 private:
@@ -45,10 +43,10 @@ namespace framework
 
 	}
 
-	SQLResultExecutors TableExecutors::execute(string_view query, const vector<SQLValueExecutors>& values)
+	SQLResultExecutors TableExecutors::execute(std::string_view query, const std::vector<SQLValueExecutors>& values)
 	{
-		vector<CSQLValue> tempValues;
-		vector<const interfaces::ISQLValue*> pointers;
+		std::vector<CSQLValue> tempValues;
+		std::vector<const interfaces::ISQLValue*> pointers;
 
 		tempValues.reserve(values.size());
 		pointers.reserve(values.size());
@@ -115,7 +113,7 @@ double CSQLValue::getDouble() const
 
 const char* CSQLValue::getString() const
 {
-	return value.get<string>().data();
+	return value.get<std::string>().data();
 }
 
 bool CSQLValue::getBool() const
@@ -125,7 +123,7 @@ bool CSQLValue::getBool() const
 
 const uint8_t* CSQLValue::getBlob(size_t* size) const
 {
-	const vector<uint8_t>& data = value.get<vector<uint8_t>>();
+	const std::vector<uint8_t>& data = value.get<std::vector<uint8_t>>();
 
 	*size = data.size();
 

@@ -1,20 +1,18 @@
 #include "BaseLargeBodyHandler.h"
 
-#include "Log.h"
-
-using namespace std;
+#include <Log.h>
 
 namespace framework::utility
 {
-	bool BaseLargeBodyHandler::handleChunk(string_view data)
+	bool BaseLargeBodyHandler::handleChunk(std::string_view data)
 	{
 		requestWrapper->updateLargeData(data, this->isLast());
 
 		try
 		{
-			invoke(method, executor, *requestWrapper, responseWrapper);
+			std::invoke(method, executor, *requestWrapper, responseWrapper);
 		}
-		catch (const exception& e)
+		catch (const std::exception& e)
 		{
 			if (Log::isValid())
 			{
@@ -36,7 +34,7 @@ namespace framework::utility
 
 		request->setParser(parser);
 
-		requestWrapper = make_unique<HTTPRequestExecutors>(request.get());
+		requestWrapper = std::make_unique<HTTPRequestExecutors>(request.get());
 		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, statefulExecutors);
 		method = BaseExecutor::getMethod(parser.getMethod());
 	}
@@ -52,7 +50,7 @@ namespace framework::utility
 	(
 		web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
 		sockaddr clientAddr, streams::IOSocketStream& stream,
-		ExecutorsManager& executorsManager, unordered_map<string, unique_ptr<BaseExecutor>>& statefulExecutors
+		ExecutorsManager& executorsManager, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors
 	) :
 		LargeBodyHandler(network),
 		sessionsManager(session),

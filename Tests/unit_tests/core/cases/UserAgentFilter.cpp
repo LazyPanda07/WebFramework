@@ -1,5 +1,6 @@
 #include <numeric>
 #include <chrono>
+#include <filesystem>
 
 #include "gtest/gtest.h"
 
@@ -12,6 +13,20 @@ using namespace std::chrono_literals;
 
 TEST(UserAgentFilter, PerExecutor)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
+    while (!std::filesystem::exists(START_DEFAULT_HTTPS_SERVER_FILE))
+    {
+        std::cout << "Wait " << START_DEFAULT_HTTPS_SERVER_FILE << " file..." << std::endl;
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        if (std::chrono::duration_cast<std::chrono::minutes>(std::chrono::high_resolution_clock::now() - start).count() > 1)
+        {
+            break;
+        }
+    }
+
     streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 1h);
 
     {
@@ -50,6 +65,20 @@ TEST(UserAgentFilter, PerExecutor)
 
 TEST(UserAgentFilter, ConfigLevel)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
+    while (!std::filesystem::exists(START_DEFAULT_HTTPS_SERVER_FILE))
+    {
+        std::cout << "Wait " << START_DEFAULT_HTTPS_SERVER_FILE << " file..." << std::endl;
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        if (std::chrono::duration_cast<std::chrono::minutes>(std::chrono::high_resolution_clock::now() - start).count() > 1)
+        {
+            break;
+        }
+    }
+
     streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20001", 1h);
 
     {

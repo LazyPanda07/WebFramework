@@ -3,8 +3,6 @@
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Exceptions/SSLException.h"
 
-using namespace std;
-
 namespace framework
 {
 	bool BaseWebServer::autoCloseSocket() const

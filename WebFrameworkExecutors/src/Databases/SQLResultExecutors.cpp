@@ -1,7 +1,5 @@
 #include "SQLResultExecutors.h"
 
-using namespace std;
-
 namespace framework
 {
 	void SQLResultExecutors::reserveSize(size_t size, void* buffer)
@@ -22,12 +20,12 @@ namespace framework
 		implementation->iterate(&SQLResultExecutors::reserveSize, &SQLResultExecutors::fill, &rows);
 	}
 
-	unordered_map<string, SQLValueExecutors>& SQLResultExecutors::at(size_t index)
+	std::unordered_map<std::string, SQLValueExecutors>& SQLResultExecutors::at(size_t index)
 	{
 		return rows.at(index);
 	}
 
-	const unordered_map<string, SQLValueExecutors>& SQLResultExecutors::at(size_t index) const
+	const std::unordered_map<std::string, SQLValueExecutors>& SQLResultExecutors::at(size_t index) const
 	{
 		return rows.at(index);
 	}
@@ -57,12 +55,12 @@ namespace framework
 		return rows;
 	}
 
-	unordered_map<string, SQLValueExecutors>& SQLResultExecutors::operator[](size_t index)
+	std::unordered_map<std::string, SQLValueExecutors>& SQLResultExecutors::operator[](size_t index)
 	{
 		return rows[index];
 	}
 
-	const unordered_map<string, SQLValueExecutors>& SQLResultExecutors::operator[](size_t index) const
+	const std::unordered_map<std::string, SQLValueExecutors>& SQLResultExecutors::operator[](size_t index) const
 	{
 		return rows[index];
 	}
