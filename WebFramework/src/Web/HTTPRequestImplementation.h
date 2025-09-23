@@ -107,7 +107,7 @@ namespace framework
 		/// HTTP request body
 		/// </summary>
 		/// <returns>HTTP request body</returns>
-		const char* getBody() const override;
+		const char* getBody(size_t* bodySize) const override;
 
 		/// <summary>
 		/// Session wrapper

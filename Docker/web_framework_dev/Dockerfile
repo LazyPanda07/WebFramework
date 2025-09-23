@@ -9,7 +9,7 @@ ENV FLUTTER_PATH=/opt/flutter
 ENV FLUTTER_BIN_PATH=${FLUTTER_PATH}/bin
 
 RUN apt update
-RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo wget unzip zip openjdk-21-jdk libssl-dev
+RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo wget unzip zip openjdk-21-jdk
 RUN apt install -y dotnet-sdk-8.0 python3
 
 RUN wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O tools.zip

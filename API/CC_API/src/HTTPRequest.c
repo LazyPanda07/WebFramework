@@ -261,13 +261,13 @@ WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* head
 	return exception;
 }
 
-WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body)
+WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body, size_t* bodySize)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPBody)(void* implementation, void** exception);
+	typedef const char* (*getHTTPBody)(void* implementation, size_t* bodySize, void** exception);
 
-	*body = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPBody, &exception);
+	*body = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPBody, bodySize, &exception);
 
 	return exception;
 }

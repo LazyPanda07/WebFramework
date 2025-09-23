@@ -155,7 +155,10 @@ namespace framework
 
 	std::string_view HTTPRequestExecutors::getBody() const
 	{
-		return implementation->getBody();
+		size_t bodySize = 0;
+		const char* result = implementation->getBody(&bodySize);
+
+		return std::string_view(result, bodySize);
 	}
 
 	void HTTPRequestExecutors::setAttribute(std::string_view name, std::string_view value)
