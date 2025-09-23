@@ -10,7 +10,7 @@
 #include "settings.h"
 
 bool useHTTPS;
-constexpr size_t largeFileSize = 100 * 1024 * 1024;
+constexpr size_t largeFileSize = 200 * 1024 * 1024;
 constexpr size_t fileChunkSize = largeFileSize / 256;
 constexpr size_t randomNumbers = fileChunkSize / sizeof(size_t);
 
