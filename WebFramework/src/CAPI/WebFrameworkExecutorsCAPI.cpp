@@ -214,11 +214,11 @@ void* getHTTPVersion(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-const char* getHTTPBody(HTTPRequestObject request, Exception* exception)
+const char* getHTTPBody(HTTPRequestObject request, size_t* bodySize, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getBody();
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getBody(bodySize);
 	}
 	catch (const std::exception& e)
 	{

@@ -1,6 +1,6 @@
 name: web_framework_flutter_api
 description: "C++ HTTP/HTTPS web server with Flutter API for Android and Windows"
-version: 3.1.1
+version: 3.1.2
 homepage: https://github.com/Lazypanda07/WebFramework
 
 environment:

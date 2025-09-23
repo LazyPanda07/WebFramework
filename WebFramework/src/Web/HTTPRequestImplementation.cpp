@@ -134,8 +134,10 @@ namespace framework
 		return it != headers.end() ? it->second.data() : nullptr;
 	}
 
-	const char* HTTPRequestImplementation::getBody() const
+	const char* HTTPRequestImplementation::getBody(size_t* bodySize) const
 	{
+		*bodySize = parser.getBody().size();
+
 		return parser.getBody().data();
 	}
 

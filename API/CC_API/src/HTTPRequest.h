@@ -132,9 +132,10 @@ WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* head
  * @brief Get body of HTTP request
  * @param implementation HTTPRequest instance
  * @param body HTTP body
+ * @param bodySize HTTP body size
  * @return Error if occurred
  */
-WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body);
+WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body, size_t* bodySize);
 
 /**
  * @brief Set HTTP session attribute

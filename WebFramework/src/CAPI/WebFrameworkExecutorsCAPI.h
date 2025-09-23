@@ -32,7 +32,7 @@ EXPORT const char* getHTTPMethod(HTTPRequestObject request, Exception* exception
 
 EXPORT void* getHTTPVersion(HTTPRequestObject request, Exception* exception);
 
-EXPORT const char* getHTTPBody(HTTPRequestObject request, Exception* exception);
+EXPORT const char* getHTTPBody(HTTPRequestObject request, size_t* bodySize, Exception* exception);
 
 EXPORT void setHTTPAttribute(HTTPRequestObject request, const char* name, const char* value, Exception* exception);
 

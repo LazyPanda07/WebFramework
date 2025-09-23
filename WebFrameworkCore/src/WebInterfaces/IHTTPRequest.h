@@ -81,7 +81,7 @@ namespace framework::interfaces
 
 		virtual const char* getHeaderValue(const char* headerName, bool throwException = true) const = 0;
 
-		virtual const char* getBody() const = 0;
+		virtual const char* getBody(size_t* bodySize) const = 0;
 
 		virtual void setAttribute(const char* name, const char* value) = 0;
 
