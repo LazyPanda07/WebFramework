@@ -1,3 +1,6 @@
+## 3.1.3
+* Update WebFramework to 3.1.3
+
 ## 3.1.2
 * Update WebFramework to 3.1.2
 
