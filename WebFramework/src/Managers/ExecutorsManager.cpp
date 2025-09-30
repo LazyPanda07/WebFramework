@@ -117,7 +117,7 @@ namespace framework
 				if (executorSettings == settings.end())
 				{
 					auto it = find_if(routeParameters.begin(), routeParameters.end(),
-						[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) != std::string::npos; });
+						[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) == 0; });
 
 					if (it == routeParameters.end())
 					{
