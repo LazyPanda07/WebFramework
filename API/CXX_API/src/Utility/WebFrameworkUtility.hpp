@@ -2,6 +2,7 @@
 
 #include "../DLLHandler.hpp"
 #include "../Exceptions/WebFrameworkException.hpp"
+#include "../Databases/SQLValue.hpp"
 
 namespace framework::utility
 {
@@ -12,6 +13,18 @@ namespace framework::utility
 		 * @return 
 		 */
 		std::string generateUUID();
+	}
+
+	namespace database
+	{
+		/**
+		 * @brief Helper function for SQLValue
+		 * @tparam ...Args 
+		 * @param ...args 
+		 * @return 
+		 */
+		template<typename... Args>
+		std::array<SQLValue, sizeof...(Args)> makeSQLValues(Args&&... args);
 	}
 }
 
@@ -33,6 +46,17 @@ namespace framework::utility
 			}
 
 			return instance.getString(result);
+		}
+	}
+
+	namespace database
+	{
+		template<typename... Args>
+		inline std::array<SQLValue, sizeof...(Args)> makeSQLValues(Args&&... args)
+		{
+			std::array<SQLValue, sizeof...(Args)> result({ std::forward<Args>(args)... });
+
+			return result;
 		}
 	}
 }

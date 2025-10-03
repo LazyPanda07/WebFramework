@@ -3,11 +3,13 @@
 #include <random>
 #include <ctime>
 
+#include <Utility/WebFrameworkUtility.hpp>
+
 void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
-	framework::SQLResult result = table.execute("SELECT * FROM test_table WHERE name = ?", { framework::SQLValue("glue") });
+	framework::SQLResult result = table.execute("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSQLValues("glue"));
 	std::vector<framework::JSONObject> data;
 
 	for (const auto& value : result)
@@ -45,7 +47,7 @@ void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRespons
 	table.execute
 	(
 		"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-		{ framework::SQLValue("glue"), framework::SQLValue(-1) }
+		framework::utility::database::makeSQLValues("glue", -1)
 	);
 
 	for (size_t i = 0; i < 10; i++)
@@ -53,7 +55,7 @@ void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRespons
 		table.execute
 		(
 			"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-			{ framework::SQLValue("glue"), framework::SQLValue(std::to_string(random() % 200)) }
+			framework::utility::database::makeSQLValues("glue", std::to_string(random() % 200))
 		);
 	}
 }
@@ -68,12 +70,12 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 		"UPDATE test_table "
 		"SET name = ? "
 		"WHERE amount = ?",
-		{ framework::SQLValue("empty"), framework::SQLValue(-1) }
+		framework::utility::database::makeSQLValues("empty", -1)
 	);
 	framework::SQLResult result = table.execute
 	(
 		"SELECT * FROM test_table WHERE name = ?",
-		{ framework::SQLValue("empty") }
+		framework::utility::database::makeSQLValues("empty")
 	);
 
 	std::vector<framework::JSONObject> data;

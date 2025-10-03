@@ -1,6 +1,9 @@
 #pragma once
 
 #include <variant>
+#include <vector>
+#include <string>
+#include <stdexcept>
 
 #include "DatabaseInterfaces/ISQLValue.h"
 
@@ -21,9 +24,8 @@ namespace framework
 		SQLValue(const interfaces::ISQLValue* implementation);
 
 	public:
-		SQLValue(const ValueType& value);
-
-		SQLValue(ValueType&& value) noexcept;
+		template<typename... Args>
+		SQLValue(Args&&... args) requires std::constructible_from<ValueType, Args...>;
 
 		template<OneOf T>
 		const T& get() const;
@@ -88,14 +90,9 @@ namespace framework
 		}
 	}
 
-	inline SQLValue::SQLValue(const ValueType& value) :
-		value(value)
-	{
-
-	}
-
-	inline SQLValue::SQLValue(ValueType&& value) noexcept :
-		value(std::move(value))
+	template<typename... Args>
+	inline SQLValue::SQLValue(Args&&... args) requires std::constructible_from<ValueType, Args...> :
+		value(std::forward<Args>(args)...)
 	{
 
 	}

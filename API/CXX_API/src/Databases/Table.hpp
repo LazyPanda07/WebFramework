@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "DatabaseInterfaces/ITable.h"
 
 #include "SQLResult.hpp"
@@ -15,6 +17,9 @@ namespace framework
 		Table(interfaces::ITable* implementation);
 
 		SQLResult execute(std::string_view query, const std::vector<SQLValue>& values = {});
+
+		template<size_t SizeT>
+		SQLResult execute(std::string_view query, const std::array<SQLValue, SizeT>& values);
 
 		~Table() = default;
 	};
@@ -143,6 +148,28 @@ namespace framework
 
 		tempValues.reserve(values.size());
 		pointers.reserve(values.size());
+
+		for (const SQLValue& value : values)
+		{
+			pointers.push_back(&tempValues.emplace_back(value));
+		}
+
+		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), pointers.data(), pointers.size());
+		SQLResult result(tempResult);
+
+		implementation->deleteResult(tempResult);
+
+		return result;
+	}
+
+	template<size_t SizeT>
+	inline SQLResult Table::execute(std::string_view query, const std::array<SQLValue, SizeT>& values)
+	{
+		std::vector<__framework::CSQLValue> tempValues;
+		std::vector<const interfaces::ISQLValue*> pointers;
+
+		tempValues.reserve(SizeT);
+		pointers.reserve(SizeT);
 
 		for (const SQLValue& value : values)
 		{

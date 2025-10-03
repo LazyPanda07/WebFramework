@@ -15,7 +15,7 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 	framework::SQLResult result = table.execute
 	(
 		"SELECT * FROM multi_user WHERE user_id = ?",
-		{ framework::SQLValue(userId) }
+		framework::utility::database::makeSQLValues(userId)
 	);
 	std::vector<framework::JSONObject> data;
 
@@ -45,7 +45,7 @@ void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRe
 	table.execute
 	(
 		"INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
-		{ framework::SQLValue(userId), framework::SQLValue(request.getJSON().get<std::string>("data")) }
+		framework::utility::database::makeSQLValues(userId, request.getJSON().get<std::string>("data"))
 	);
 }
 
