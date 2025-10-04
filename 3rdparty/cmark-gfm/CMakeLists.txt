@@ -1,15 +1,10 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(LICENSE_INSTALLING_AVAILABLE OFF)
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/build/_deps/install CACHE STRING "")
 
 project(external_cmark_gfm)
 
-if (EXISTS ${PROJECT_SOURCE_DIR}/../../cmake/BuildLibrary.cmake)
-	include(${CMAKE_SOURCE_DIR}/cmake/BuildLibrary.cmake)
-	set(LICENSE_INSTALLING_AVAILABLE ON)
-else()
-	include(${WEB_FRAMEWORK_CMAKE_DIRECTORY}/BuildLibrary.cmake)
-endif()
+include(${PROJECT_SOURCE_DIR}/../../cmake/BuildLibrary.cmake)
 
 set(CMARK_GFM_TAG 0.29.0.gfm.13)
 set(CMARK_BUILD_ARGUMENTS "")
@@ -47,6 +42,4 @@ set(ADDITIONAL_LIBS ${ADDITIONAL_LIBS} CACHE INTERNAL "")
 set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} CACHE INTERNAL "")
 set(ADDITIONAL_LIB_DIRS ${ADDITIONAL_LIB_DIRS} CACHE INTERNAL "")
 
-if (${LICENSE_INSTALLING_AVAILABLE})
-	install(DIRECTORY license/ DESTINATION license)
-endif()
+install(DIRECTORY license/ DESTINATION license)
