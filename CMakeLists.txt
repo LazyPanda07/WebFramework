@@ -32,8 +32,6 @@ set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
 project(WebFramework VERSION 3.1.3)
 
-include(CMakePackageConfigHelpers)
-
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
 if (${WITH_STACKTRACE})
@@ -172,23 +170,6 @@ install(
 	LIBRARY DESTINATION lib
 	RUNTIME DESTINATION dll
 )
-
-# install(
-# 	EXPORT WebFrameworkTargets
-#     NAMESPACE WebFramework::
-#     DESTINATION lib/cmake/WebFramework
-# )
-# 
-# configure_package_config_file(
-#     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/WebFrameworkConfig.cmake.in
-#     ${CMAKE_CURRENT_BINARY_DIR}/WebFrameworkConfig.cmake
-#     INSTALL_DESTINATION lib/cmake/WebFramework
-# )
-# 
-# install(FILES
-#     ${CMAKE_CURRENT_BINARY_DIR}/WebFrameworkConfig.cmake
-#     DESTINATION lib/cmake/WebFramework
-# )
 
 install(FILES WebFrameworkConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(FILES FindWebFramework.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
