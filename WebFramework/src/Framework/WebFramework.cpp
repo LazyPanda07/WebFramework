@@ -216,7 +216,7 @@ namespace framework
 
 			if (Log::isValid())
 			{
-				Log::info("Using HTTPS with certificate: {}, and key: {}", "LogWebFramework", httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
+				Log::info("Using HTTPS with certificate: {}, key: {}", "LogWebFramework", httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
 			}
 		}
 	}

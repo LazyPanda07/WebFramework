@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <thread>
 #include <filesystem>
+#include <array>
 
 #include "gtest/gtest.h"
 
@@ -137,6 +138,21 @@ int main(int argc, char** argv)
 	customHeuristic = parser.get<bool>("--custom_heuristic");
 
 	testing::InitGoogleTest(&argc, argv);
+
+	constexpr std::array<std::string_view, 4> loadBalancers =
+	{
+		START_LOAD_BALANCER_9090_SERVER_FILE,
+		START_LOAD_BALANCER_9091_SERVER_FILE,
+		START_LOAD_BALANCER_9092_SERVER_FILE,
+		START_LOAD_BALANCER_9093_SERVER_FILE
+	};
+
+	while (!std::ranges::all_of(loadBalancers, [](std::string_view file) { return std::filesystem::exists(file); }))
+	{
+		std::cout << "Wait for all load balancers..." << std::endl;
+
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
 
 	int result = RUN_ALL_TESTS();
 

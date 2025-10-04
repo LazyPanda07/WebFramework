@@ -166,8 +166,6 @@ TEST(RoutePattern, PassingValues)
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	std::cout << "Is " << START_DEFAULT_HTTPS_SERVER_FILE << " exists: " << std::filesystem::exists(START_DEFAULT_HTTPS_SERVER_FILE) << std::endl;
-
 	while (!std::filesystem::exists(START_DEFAULT_HTTPS_SERVER_FILE))
 	{
 		std::cout << "Wait " << START_DEFAULT_HTTPS_SERVER_FILE << " file..." << std::endl;
