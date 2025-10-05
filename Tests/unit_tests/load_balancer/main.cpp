@@ -147,11 +147,22 @@ int main(int argc, char** argv)
 		START_LOAD_BALANCER_9093_SERVER_FILE
 	};
 
+	auto start = std::chrono::high_resolution_clock::now();
+
 	while (!std::ranges::all_of(loadBalancers, [](std::string_view file) { return std::filesystem::exists(file); }))
 	{
 		std::cout << "Wait for all load balancers..." << std::endl;
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
+
+		auto end = std::chrono::high_resolution_clock::now();
+
+		if (std::chrono::duration_cast<std::chrono::minutes>(end - start).count() > 5)
+		{
+			printLog();
+
+			return -1;
+		}
 	}
 
 	int result = RUN_ALL_TESTS();
