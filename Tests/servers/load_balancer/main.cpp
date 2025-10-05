@@ -74,32 +74,7 @@ int main(int argc, char** argv) try
 #else
 			DWORD processId = GetCurrentProcessId();
 #endif
-			switch (port)
-			{
-			case 9090:
-				std::ofstream(START_LOAD_BALANCER_9090_SERVER_FILE) << processId;
-
-				break;
-
-			case 9091:
-				std::ofstream(START_LOAD_BALANCER_9091_SERVER_FILE) << processId;
-
-				break;
-
-			case 9092:
-				std::ofstream(START_LOAD_BALANCER_9092_SERVER_FILE) << processId;
-
-				break;
-
-			case 9093:
-				std::ofstream(START_LOAD_BALANCER_9093_SERVER_FILE) << processId;
-
-				break;
-
-			default:
-				break;
-			}
-
+			std::ofstream(std::format("start_load_balancer_{}_server.txt", port)) << processId;
 		}
 	);
 

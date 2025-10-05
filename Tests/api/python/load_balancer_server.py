@@ -1,10 +1,18 @@
 import argparse
+import os
 from typing import List
+from functools import partial
 
 from web_framework_api.WebFramework import WebFramework
 from web_framework_api.utility.DLLHandler import initialize_web_framework
 from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException
 from web_framework_api.utility.Config import Config
+
+
+def on_server_start(port: int):
+    with open(f"start_load_balancer_{port}_server.txt", "w") as file:
+        file.write(f"{os.getpid()}")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -49,7 +57,7 @@ if __name__ == '__main__':
 
         server = WebFramework.from_config(config)
 
-        server.start(True)
+        server.start(True, partial(on_server_start, args.port))
     except WebFrameworkException as exception:
         print(exception)
 
