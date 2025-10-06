@@ -86,28 +86,14 @@ namespace framework::utility
 		Config& overrideBasePath(std::string_view basePath);
 
 		/**
-		 * @brief Get string from config
+		 * @brief Get value from config
+		 * @tparam T 
 		 * @param key Config key
 		 * @param recursive Search recursively
-		 * @return Config string value
+		 * @return Config value
 		 */
-		std::string getConfigurationString(std::string_view key, bool recursive = true) const;
-
-		/**
-		 * @brief Get integer from config
-		 * @param key Config key
-		 * @param recursive Search recursively
-		 * @return Config integer value
-		 */
-		int64_t getConfigurationInteger(std::string_view key, bool recursive = true) const;
-
-		/**
-		 * @brief Get boolean from config
-		 * @param key Config key
-		 * @param recursive Search recursively
-		 * @return Config boolean value
-		 */
-		bool getConfigurationBoolean(std::string_view key, bool recursive = true) const;
+		template<typename T>
+		T get(std::string_view key, bool recursive = true) const requires(std::same_as<T, std::string> || std::convertible_to<T, int64_t> || std::same_as<T, bool>);
 
 		/**
 		 * @brief Get config file directory
@@ -313,45 +299,40 @@ namespace framework::utility
 		return *this;
 	}
 
-	inline std::string Config::getConfigurationString(std::string_view key, bool recursive) const
+	template<typename T>
+	inline T Config::get(std::string_view key, bool recursive) const requires(std::same_as<T, std::string> || std::convertible_to<T, int64_t> || std::same_as<T, bool>)
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationString, void*, const char* key, bool recursive, void** exception);
 		void* exception = nullptr;
-		DLLHandler& handler = DLLHandler::getInstance();
+		DLLHandler& instance = DLLHandler::getInstance();
+		T result;
 
-		void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationString, key.data(), recursive, &exception);
-
-		if (exception) //-V547
+		if constexpr (std::is_same_v<T, bool>)
 		{
-			throw exceptions::WebFrameworkException(exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationBoolean, bool, const char* key, bool recursive, void** exception);
+
+			result = instance.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationBoolean, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_convertible_v<T, int64_t>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationInteger, int64_t, const char* key, bool recursive, void** exception);
+
+			result = static_cast<T>(instance.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationInteger, key.data(), recursive, &exception));
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationString, void*, const char* key, bool recursive, void** exception);
+
+			void* temp = instance.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationString, key.data(), recursive, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return instance.getString(temp);
 		}
 
-		return handler.getString(result);
-	}
-
-	inline int64_t Config::getConfigurationInteger(std::string_view key, bool recursive) const
-	{
-		DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationInteger, int64_t, const char* key, bool recursive, void** exception);
-		void* exception = nullptr;
-
-		int64_t result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationInteger, key.data(), recursive, &exception);
-
-		if (exception) //-V547
-		{
-			throw exceptions::WebFrameworkException(exception);
-		}
-
-		return result;
-	}
-
-	inline bool Config::getConfigurationBoolean(std::string_view key, bool recursive) const
-	{
-		DEFINE_CLASS_MEMBER_FUNCTION(getConfigurationBoolean, bool, const char* key, bool recursive, void** exception);
-		void* exception = nullptr;
-
-		bool result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfigurationBoolean, key.data(), recursive, &exception);
-
-		if (exception) //-V547
+		if (exception)
 		{
 			throw exceptions::WebFrameworkException(exception);
 		}

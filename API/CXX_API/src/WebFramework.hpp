@@ -31,7 +31,7 @@ namespace framework
 		 * @brief 
 		 * @param configPath Path to *.json config
 		 */
-		WebFramework(const std::string& configPath);
+		WebFramework(std::string_view configPath);
 
 		/**
 		 * @brief 
@@ -84,7 +84,7 @@ namespace framework
 		return utility::DLLHandler::getInstance().callFunction<const char* (*)()>("getWebFrameworkVersion");
 	}
 
-	inline WebFramework::WebFramework(const std::string& configPath) :
+	inline WebFramework::WebFramework(std::string_view configPath) :
 		weak(false)
 	{
 		using createWebFrameworkFromPath = void* (*)(const char* configPath, void** exception);

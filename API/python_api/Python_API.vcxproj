@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{66216d2f-5851-404b-af2a-da5f216f54af}</ProjectGuid>
-    <RootNamespace>cmark_gfm</RootNamespace>
+    <ProjectGuid>{c74350e0-4f4e-482f-ba34-87c35cde54ae}</ProjectGuid>
+    <RootNamespace>Python_API</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -46,10 +46,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <PublicIncludeDirectories>
+    </PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <PublicIncludeDirectories>
+    </PublicIncludeDirectories>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -59,6 +63,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,7 +76,7 @@ cd $(ProjectDir)
 
 if not exist build mkdir build
 
-cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(ProjectDir)build\_deps\install -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
+cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFramework\API\$(ProjectName) -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,6 +89,7 @@ cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(ProjectDir)build\_deps\instal
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -98,9 +104,12 @@ cd $(ProjectDir)
 
 if not exist build mkdir build
 
-cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(ProjectDir)build\_deps\install -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
+cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFramework\API\$(ProjectName) -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\module.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

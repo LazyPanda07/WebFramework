@@ -164,8 +164,7 @@ target_link_libraries(
 )
 
 install(
-	TARGETS ${PROJECT_NAME} 
-	EXPORT WebFrameworkTargets
+	TARGETS ${PROJECT_NAME}
 	ARCHIVE DESTINATION lib
 	LIBRARY DESTINATION lib
 	RUNTIME DESTINATION dll

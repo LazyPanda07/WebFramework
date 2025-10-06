@@ -234,6 +234,9 @@
     <ProjectReference Include="..\3rdparty\cmark-gfm\cmark-gfm.vcxproj">
       <Project>{66216d2f-5851-404b-af2a-da5f216f54af}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\API\Python_API\Python_API.vcxproj">
+      <Project>{c74350e0-4f4e-482f-ba34-87c35cde54ae}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Databases\Databases.vcxproj">
       <Project>{2f9bd34b-de1c-4c0e-8131-8aa7274c0081}</Project>
     </ProjectReference>
