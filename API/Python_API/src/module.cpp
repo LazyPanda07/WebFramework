@@ -6,6 +6,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/stl/filesystem.h>
+#include <pybind11/functional.h>
 
 #include "WebFramework.hpp"
 
@@ -23,7 +24,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def(py::init<std::string_view>(), "config_path"_a)
 		.def(py::init<std::string_view, std::string_view>(), "server_configuration"_a, "application_directory"_a)
 		.def(py::init<const framework::utility::Config&>(), "config"_a)
-		.def("start", &framework::WebFramework::start, "wait"_a = false, "on_start_server"_a = py::none())
+		.def("start", &framework::WebFramework::start, "wait"_a = false, "on_start_server"_a = py::none(), py::call_guard<py::gil_scoped_release>())
 		.def("stop", &framework::WebFramework::stop, "wait"_a = true)
 		.def("is_server_running", &framework::WebFramework::isServerRunning)
 		.def_static("get_web_framework_version", &framework::WebFramework::getWebFrameworkVersion);
