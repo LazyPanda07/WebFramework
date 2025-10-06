@@ -3,10 +3,7 @@ import os
 from typing import List
 from functools import partial
 
-from web_framework_api.WebFramework import WebFramework
-from web_framework_api.utility.DLLHandler import initialize_web_framework
-from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException
-from web_framework_api.utility.Config import Config
+from web_framework_api import *
 
 
 def on_server_start(port: int):
@@ -29,7 +26,7 @@ if __name__ == '__main__':
     try:
         initialize_web_framework("WebFramework")
 
-        config = Config.from_path(args.config)
+        config = Config(args.config)
 
         if args.custom_heuristic:
             config.override_configuration("name", "CustomHeuristic", True)
@@ -39,7 +36,7 @@ if __name__ == '__main__':
 
             config.override_configuration("webServerType", "multiThreaded", True)
 
-            config.override_configuration_string_array("settingsPaths", settings_paths, True)
+            config.override_configuration("settingsPaths", settings_paths, True)
         else:
             servers_https = args.serversHTTPS
             list_of_serves: List[int] = []
@@ -51,11 +48,11 @@ if __name__ == '__main__':
             else:
                 list_of_serves = [10000, 10001]
 
-            config.override_configuration_integer_array("127.0.0.1", list_of_serves, True)
+            config.override_configuration("127.0.0.1", list_of_serves, True)
 
         config.override_configuration("port", args.port, True)
 
-        server = WebFramework.from_config(config)
+        server = WebFramework(config)
 
         server.start(True, partial(on_server_start, args.port))
     except WebFrameworkException as exception:

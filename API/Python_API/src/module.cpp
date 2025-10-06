@@ -1,3 +1,5 @@
+#define PYBIND11_DETAILED_ERROR_MESSAGES
+
 #include <functional>
 #include <string>
 
@@ -20,8 +22,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def(py::init<std::string_view>(), "config_path"_a)
 		.def(py::init<std::string_view, std::string_view>(), "server_configuration"_a, "application_directory"_a)
 		.def(py::init<const framework::utility::Config&>(), "config"_a)
-		.def("start", &framework::WebFramework::start)
-		.def("stop", &framework::WebFramework::stop)
+		.def("start", &framework::WebFramework::start, "wait"_a = false, "on_start_server"_a = py::none())
+		.def("stop", &framework::WebFramework::stop, "wait"_a = true)
 		.def("is_server_running", &framework::WebFramework::isServerRunning)
 		.def_static("get_web_framework_version", &framework::WebFramework::getWebFrameworkVersion);
 

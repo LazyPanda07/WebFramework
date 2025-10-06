@@ -1,9 +1,7 @@
 import sys
 import os
 
-from web_framework_api.WebFramework import WebFramework
-from web_framework_api.utility.DLLHandler import initialize_web_framework
-from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException
+from web_framework_api import *
 
 
 def write_process_id():
@@ -18,7 +16,7 @@ if __name__ == '__main__':
 
         initialize_web_framework("WebFramework")
 
-        server = WebFramework.from_path(sys.argv[1])
+        server = WebFramework(sys.argv[1])
 
         server.start(True, write_process_id)
     except WebFrameworkException as exception:
