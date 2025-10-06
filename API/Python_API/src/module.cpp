@@ -45,18 +45,18 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"override_configuration",
-			py::overload_cast<std::string_view, const std::int64_t&, bool>
+			py::overload_cast<std::string_view, const bool&, bool>
 			(
-				static_cast<framework::utility::Config & (framework::utility::Config::*)(std::string_view, const std::int64_t&, bool)>(&framework::utility::Config::overrideConfiguration<std::int64_t>)
+				static_cast<framework::utility::Config & (framework::utility::Config::*)(std::string_view, const bool&, bool)>(&framework::utility::Config::overrideConfiguration<bool>)
 			),
 			"key"_a, "value"_a, "recursive"_a = true
 		)
 		.def
 		(
 			"override_configuration",
-			py::overload_cast<std::string_view, const bool&, bool>
+			py::overload_cast<std::string_view, const std::int64_t&, bool>
 			(
-				static_cast<framework::utility::Config & (framework::utility::Config::*)(std::string_view, const bool&, bool)>(&framework::utility::Config::overrideConfiguration<bool>)
+				static_cast<framework::utility::Config & (framework::utility::Config::*)(std::string_view, const std::int64_t&, bool)>(&framework::utility::Config::overrideConfiguration<std::int64_t>)
 			),
 			"key"_a, "value"_a, "recursive"_a = true
 		)
