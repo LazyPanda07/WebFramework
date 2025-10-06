@@ -27,11 +27,13 @@ endif()
 
 message(STATUS "Python minor version: ${PYTHON_MINOR_VERSION}")
 
+if (UNIX)
+	add_definitions(-D__LINUX__)
+endif(UNIX)
+
 project(web_framework_api VERSION 3.1.3)
 
 set(WEB_FRAMEWORK_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/../CXX_API/src" CACHE STRING "Path to include directory")
-
-message("Include path: ${WEB_FRAMEWORK_INCLUDE_PATH}")
 
 include(FetchContent)
 
