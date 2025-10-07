@@ -358,7 +358,6 @@ jobs:
           cmake --install .
 
     - name: Install Python API
-      if: ${{ matrix.api == 'python main.py' }}
       run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Run samples
@@ -403,7 +402,6 @@ jobs:
           cmake --install .
 
     - name: Install Python API
-      if: ${{ matrix.api == 'python3 main.py' }}
       run: pip3 install WebFrameworkLibrary/api/python_api/
 
     - name: Run samples
