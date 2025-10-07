@@ -7,7 +7,7 @@ on:
   
   
 env:
-  flutter-version: 3.35.3
+  flutter-version: 3.35.5
 
 
 permissions:
@@ -358,17 +358,13 @@ jobs:
           cmake --install .
 
     - name: Install Python API
-      if: ${{ matrix.api == 'python' }}
+      if: ${{ matrix.api == 'python main.py' }}
       run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Run samples
       working-directory: samples/build/bin
       run: |
           start ${{ matrix.run }}
-          # if ("${{ matrix.run }}" -eq "cxx") { start hello_cpp.exe }
-          # if ("${{ matrix.run }}" -eq "cc") { start hello_c.exe }
-          # if ("${{ matrix.run }}" -eq "csharp") { start hello_csharp.exe }
-          # if ("${{ matrix.run }}" -eq "python") { start python main.py }
           while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
           curl http://127.0.0.1:8080
 
@@ -407,7 +403,7 @@ jobs:
           cmake --install .
 
     - name: Install Python API
-      if: ${{ matrix.api == 'python' }}
+      if: ${{ matrix.api == 'python3 main.py' }}
       run: pip3 install WebFrameworkLibrary/api/python_api/
 
     - name: Run samples
@@ -415,10 +411,6 @@ jobs:
       run: |
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           ${{ matrix.run }} & sleep 1
-          # if [ "${{ matrix.run }}" = "cxx" ]; then ./hello_cpp & sleep 1; fi
-          # if [ "${{ matrix.run }}" = "cc" ]; then ./hello_c & sleep 1; fi
-          # if [ "${{ matrix.run }}" = "csharp" ]; then ./hello_csharp & sleep 1; fi
-          # if [ "${{ matrix.run }}" = "python" ]; then python3 main.py & sleep 1; fi
           while ! nc -z localhost 8080; do sleep 1; done
           curl http://127.0.0.1:8080
 
