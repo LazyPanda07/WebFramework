@@ -330,7 +330,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        api: ["cxx", "cc", "csharp", "python"]  
+        run: [.\hello_cpp, .\hello_c, .\hello_csharp, python main.py]
 
     steps:
     - uses: actions/checkout@v4
@@ -364,11 +364,12 @@ jobs:
     - name: Run samples
       working-directory: samples/build/bin
       run: |
-          if ("${{ matrix.api }}" -eq "cxx") { start hello_cpp.exe }
-          if ("${{ matrix.api }}" -eq "cc") { start hello_c.exe }
-          if ("${{ matrix.api }}" -eq "csharp") { start hello_csharp.exe }
-          if ("${{ matrix.api }}" -eq "python") { start python main.py }
-          sleep 10
+          start ${{ matrix.run }}
+          # if ("${{ matrix.run }}" -eq "cxx") { start hello_cpp.exe }
+          # if ("${{ matrix.run }}" -eq "cc") { start hello_c.exe }
+          # if ("${{ matrix.run }}" -eq "csharp") { start hello_csharp.exe }
+          # if ("${{ matrix.run }}" -eq "python") { start python main.py }
+          while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
           curl http://127.0.0.1:8080
 
 
@@ -378,7 +379,7 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        api: ["cxx", "cc", "csharp", "python"]  
+        run: [./hello_cpp, ./hello_c, ./hello_csharp, python3 main.py]
 
     steps:
     - uses: actions/checkout@v4
@@ -413,11 +414,12 @@ jobs:
       working-directory: samples/build/bin
       run: |
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          if [ "${{ matrix.api }}" = "cxx" ]; then ./hello_cpp & sleep 1; fi
-          if [ "${{ matrix.api }}" = "cc" ]; then ./hello_c & sleep 1; fi
-          if [ "${{ matrix.api }}" = "csharp" ]; then ./hello_csharp & sleep 1; fi
-          if [ "${{ matrix.api }}" = "python" ]; then python3 main.py & sleep 1; fi
-          sleep 10
+          ${{ matrix.run }} & sleep 1
+          # if [ "${{ matrix.run }}" = "cxx" ]; then ./hello_cpp & sleep 1; fi
+          # if [ "${{ matrix.run }}" = "cc" ]; then ./hello_c & sleep 1; fi
+          # if [ "${{ matrix.run }}" = "csharp" ]; then ./hello_csharp & sleep 1; fi
+          # if [ "${{ matrix.run }}" = "python" ]; then python3 main.py & sleep 1; fi
+          while ! nc -z localhost 8080; do sleep 1; done
           curl http://127.0.0.1:8080
 
 
