@@ -105,6 +105,9 @@ move "$(OutDir)web.json" "$(OutDir)executors"
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\3rdparty\pybind11\pybind11.vcxproj">
+      <Project>{fa38c2dc-a207-4048-8c9c-d75bfcacd77b}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\API\CXX_API\CXX_API.vcxproj">
       <Project>{3f4d262a-28bd-49d4-bb24-a83363263739}</Project>
     </ProjectReference>

@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(
 	LIBS
@@ -58,6 +59,8 @@ if (UNIX)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
 	else()
 		add_link_options(-rdynamic)
+
+		list(APPEND LIBS mimalloc)
 	endif()
 else ()
 	add_definitions(-DNOMINMAX)
@@ -115,8 +118,14 @@ add_library(
 	WebFramework/src/Databases/SQLValueImplementation.cpp
 	WebFramework/src/Executors/CXXExecutor.cpp
 	WebFramework/src/Executors/CCExecutor.cpp
-	WebFramework/src/Executors/PythonExecutor.cpp
 )
+
+if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+	target_sources(
+		${PROJECT_NAME} PRIVATE
+		WebFramework/src/Executors/PythonExecutor.cpp
+	)
+endif()
 
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
 	target_compile_options(${PROJECT_NAME} PRIVATE -march=$ENV{MARCH})
