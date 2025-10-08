@@ -29,6 +29,7 @@ set(ADDITIONAL_INCLUDES "" CACHE INTERNAL "")
 set(ADDITIONAL_LIB_DIRS "" CACHE INTERNAL "")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
+option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
 project(WebFramework VERSION 3.1.3)
@@ -59,8 +60,6 @@ if (UNIX)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
 	else()
 		add_link_options(-rdynamic)
-
-		list(APPEND LIBS mimalloc)
 	endif()
 else ()
 	add_definitions(-DNOMINMAX)
@@ -120,7 +119,7 @@ add_library(
 	WebFramework/src/Executors/CCExecutor.cpp
 )
 
-if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows AND ${WITH_PYTHON_EXECUTORS})
 	target_sources(
 		${PROJECT_NAME} PRIVATE
 		WebFramework/src/Executors/PythonExecutor.cpp
