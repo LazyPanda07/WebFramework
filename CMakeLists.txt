@@ -44,8 +44,16 @@ if (UNIX)
 	
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+	if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL aarch64)
+		set(COMPILE_TARGET LinuxARM)
+	else()
+		set(COMPILE_TARGET Linux)
+	endif()
+	
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 		add_definitions(-D__ANDROID__)
+
+		set(COMPILE_TARGET Android)
 
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
 	else()
@@ -53,6 +61,8 @@ if (UNIX)
 	endif()
 else ()
 	add_definitions(-DNOMINMAX)
+
+	set(COMPILE_TARGET Windows)
 
 	list(APPEND LIBS crypt32)
 endif ()
@@ -105,6 +115,7 @@ add_library(
 	WebFramework/src/Databases/SQLValueImplementation.cpp
 	WebFramework/src/Executors/CXXExecutor.cpp
 	WebFramework/src/Executors/CCExecutor.cpp
+	WebFramework/src/Executors/PythonExecutor.cpp
 )
 
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")

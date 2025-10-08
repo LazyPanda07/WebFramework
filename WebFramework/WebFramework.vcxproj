@@ -74,7 +74,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\</AdditionalLibraryDirectories>
       <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -111,7 +111,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\</AdditionalLibraryDirectories>
       <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -143,6 +143,7 @@
     <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
     <ClCompile Include="src\Executors\CCExecutor.cpp" />
     <ClCompile Include="src\Executors\CXXExecutor.cpp" />
+    <ClCompile Include="src\Executors\PythonExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
     <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="src\Exceptions\NotFoundException.h" />
     <ClInclude Include="src\Executors\CCExecutor.h" />
     <ClInclude Include="src\Executors\CXXExecutor.h" />
+    <ClInclude Include="src\Executors\PythonExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
     <ClInclude Include="src\Rendering\MDRenderer.h" />
@@ -233,6 +235,9 @@
   <ItemGroup>
     <ProjectReference Include="..\3rdparty\cmark-gfm\cmark-gfm.vcxproj">
       <Project>{66216d2f-5851-404b-af2a-da5f216f54af}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\3rdparty\pybind11\pybind11.vcxproj">
+      <Project>{fa38c2dc-a207-4048-8c9c-d75bfcacd77b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\API\Python_API\Python_API.vcxproj">
       <Project>{c74350e0-4f4e-482f-ba34-87c35cde54ae}</Project>
