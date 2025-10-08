@@ -8,9 +8,10 @@ on:
 
 
 env:
-  WINDOWS_CMAKE_BUILD_PARAMETERS: ""
   WINDOWS_CMAKE_GENERATOR: "Ninja"
   LINUX_CMAKE_GENERATOR: "Ninja"
+  WINDOWS_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON -DWITH_UNITY_BUILD=ON"
+  LINUX_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON -DWITH_UNITY_BUILD=ON"
 
 
 permissions:
@@ -37,8 +38,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DWITH_STACKTRACE=ON -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build  . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -64,7 +65,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DWITH_STACKTRACE=ON -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
 
     - name: Upload artifacts

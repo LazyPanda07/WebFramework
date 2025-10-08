@@ -30,6 +30,7 @@ set(ADDITIONAL_LIB_DIRS "" CACHE INTERNAL "")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
+option(WITH_UNITY_BUILD "Build few .cpp at once" OFF)
 set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
 project(WebFramework VERSION 3.1.3)
@@ -118,6 +119,10 @@ add_library(
 	WebFramework/src/Executors/CXXExecutor.cpp
 	WebFramework/src/Executors/CCExecutor.cpp
 )
+
+if (${WITH_UNITY_BUILD})
+	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+endif()
 
 if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows AND ${WITH_PYTHON_EXECUTORS})
 	target_sources(
