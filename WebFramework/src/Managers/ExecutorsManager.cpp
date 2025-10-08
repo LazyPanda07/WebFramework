@@ -14,9 +14,19 @@
 #include "Utility/DynamicLibraries.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantFindFunctionException.h"
+#include "Utility/ExecutorsUtility.h"
 
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
+
+template<typename... Ts>
+struct VisitHelper : Ts...
+{
+	using Ts::operator()...;
+};
+
+template<typename... Ts> 
+VisitHelper(Ts...) -> VisitHelper<Ts...>;
 
 namespace framework
 {
@@ -98,6 +108,49 @@ namespace framework
 
 			startParameter = endParameter + 1;
 		} while (endParameter != std::string::npos);
+	}
+
+	void ExecutorsManager::callInitFunction(const utility::LoadSource& creatorSource, std::string_view webFrameworkSharedLibraryPath, std::string_view apiType)
+	{
+		utility::ExecutorAPIType type = utility::getExecutorAPIType(apiType);
+		static bool called = false;
+
+		switch (type)
+		{
+		case framework::utility::ExecutorAPIType::cc:
+			utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(creatorSource), "initializeWebFrameworkCC")(webFrameworkSharedLibraryPath.data());
+
+			break;
+
+		case framework::utility::ExecutorAPIType::cxx:
+			utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(creatorSource), "initializeWebFrameworkCXX")(webFrameworkSharedLibraryPath.data());
+
+			break;
+
+		case framework::utility::ExecutorAPIType::python:
+#ifdef __WITH_PYTHON_EXECUTORS__
+			if (!called)
+			{
+				py::object apiModule = py::module_::import("web_framework_api");
+
+				if (py::hasattr(apiModule, "initialize_web_framework"))
+				{
+					apiModule.attr("initialize_web_framework")(webFrameworkSharedLibraryPath.data());
+				}
+				else
+				{
+					throw std::runtime_error("Can't find initialize_web_framework function");
+				}
+			}
+#endif
+
+			called = true;
+
+			break;
+
+		default:
+			throw std::runtime_error("Wrong api type name");
+		}
 	}
 
 	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
@@ -197,8 +250,8 @@ namespace framework
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseExecutor>(const std::string& name)>> apiExecutors =
 		{
 			{ "", [this](const std::string& name) { return std::unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
-			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(creatorSources.at(name), creators.at(name)()); } },
-			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(creatorSources.at(name), creators.at(name)(), name); } }
+			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)()); } },
+			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } }
 		};
 
 		if (auto it = apiExecutors.find(apiType); it != apiExecutors.end())
@@ -211,20 +264,9 @@ namespace framework
 		return nullptr;
 	}
 
-	ExecutorsManager::ExecutorsManager
-	(
-		const json::JSONParser& configuration,
-		const std::vector<std::string>& pathToSources,
-		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
-		const utility::AdditionalServerSettings& additionalSettings,
-		std::shared_ptr<threading::ThreadPool> threadPool
-	) :
-		settings(move(executorsSettings)),
-		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
-		userAgentFilter(additionalSettings.userAgentFilter),
-		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
+	void ExecutorsManager::initCreators(const std::vector<std::string>& pathToSources)
 	{
-		std::vector<std::pair<HMODULE, std::string>> sources = utility::loadSources(pathToSources);
+		std::vector<std::pair<utility::LoadSource, std::string>> sources = utility::loadSources(pathToSources);
 
 		routes.reserve(settings.size());
 		creators.reserve(settings.size());
@@ -240,22 +282,74 @@ namespace framework
 		for (const auto& [route, executorSettings] : settings)
 		{
 			CreateExecutorFunction creator = nullptr;
-			HMODULE creatorSource = nullptr;
+			utility::LoadSource creatorSource = nullptr;
 			std::string apiType;
 
 			std::ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
+			std::string creatorFunctionName = format("create{}{}Instance", executorSettings.name, apiType);
+
+#ifdef __WITH_PYTHON_EXECUTORS__
+			py::gil_scoped_acquire gil;
+
+			py::module_ inspect = py::module_::import("inspect");
+#endif
+
 			for (const auto& [source, sourcePath] : sources)
 			{
-				if (creator = utility::load<CreateExecutorFunction>(source, format("create{}{}Instance", executorSettings.name, apiType)))
+				bool found = std::visit
+				(
+					VisitHelper
+					(
+						[&creator, &creatorFunctionName, &sourcePath, &creatorSource](HMODULE module) -> bool
+						{
+							if (creator = utility::load<CreateExecutorSignature>(module, creatorFunctionName))
+							{
+								creatorSource = module;
+
+								if (Log::isValid())
+								{
+									Log::info("Found {} in {}", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath);
+								}
+
+								return true;
+							}
+
+							return false;
+						}
+#ifdef __WITH_PYTHON_EXECUTORS__
+						, [&creator, &creatorFunctionName, &executorSettings](py::module_ module) -> bool
+						{
+							if (!py::hasattr(module, executorSettings.name.data()))
+							{
+								return false;
+							}
+
+							py::object cls = module.attr(executorSettings.name.data());
+
+							if (!py::isinstance<py::type>(cls))
+							{
+								return false;
+							}
+
+							creator = [cls]() -> void*
+								{
+									return new py::object(cls());
+								};
+
+							return true;
+						},
+#endif
+						[](auto&& module)
+						{
+							throw std::runtime_error("Wrong visit module type");
+						}
+					),
+					source
+				);
+
+				if (found)
 				{
-					creatorSource = source;
-
-					if (Log::isValid())
-					{
-						Log::info("Found create{}{}Instance in {}", "LogWebFrameworkInitialization", executorSettings.name, apiType, sourcePath.empty() ? "current" : sourcePath);
-					}
-
 					break;
 				}
 			}
@@ -273,14 +367,7 @@ namespace framework
 			creators.try_emplace(executorSettings.name, creator);
 			creatorSources.try_emplace(executorSettings.name, creatorSource);
 
-			if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCXX"))
-			{
-				initFunction(webFrameworkSharedLibraryPath.data());
-			}
-			else if (InitializeWebFrameworkInExecutor initFunction = utility::load<InitializeWebFrameworkInExecutor>(creatorSource, "initializeWebFrameworkCC"))
-			{
-				initFunction(webFrameworkSharedLibraryPath.data());
-			}
+			ExecutorsManager::callInitFunction(creatorSource, webFrameworkSharedLibraryPath, executorSettings.apiType);
 
 			switch (executorSettings.executorLoadType)
 			{
@@ -350,6 +437,22 @@ namespace framework
 
 			settings.insert(move(node)); //-V837
 		}
+	}
+
+	ExecutorsManager::ExecutorsManager
+	(
+		const json::JSONParser& configuration,
+		const std::vector<std::string>& pathToSources,
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
+		const utility::AdditionalServerSettings& additionalSettings,
+		std::shared_ptr<threading::ThreadPool> threadPool
+	) :
+		settings(move(executorsSettings)),
+		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
+		userAgentFilter(additionalSettings.userAgentFilter),
+		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
+	{
+		this->initCreators(pathToSources);
 	}
 
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept

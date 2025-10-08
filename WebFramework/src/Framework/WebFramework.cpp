@@ -2,6 +2,10 @@
 
 #include <filesystem>
 
+#ifdef __WITH_PYTHON_EXECUTORS__
+#include <pybind11/embed.h>
+#endif
+
 #include <Log.h>
 #include <JSONArrayWrapper.h>
 
@@ -73,6 +77,13 @@ namespace framework
 		return loggingSettings.tryGetArray(json_settings::logFlagsKey, flags) ?
 			Log::createFlags(json::utility::JSONArrayWrapper(flags).getAsStringArray()) :
 			(std::numeric_limits<uint64_t>::max)();
+	}
+
+	void WebFramework::initAPIs() const
+	{
+#ifdef __WITH_PYTHON_EXECUTORS__
+		pybind11::initialize_interpreter();
+#endif
 	}
 
 	void WebFramework::initLogging() const
@@ -360,6 +371,8 @@ namespace framework
 		config(webFrameworkConfig),
 		serverException(nullptr)
 	{
+		this->initAPIs();
+
 		this->initLogging();
 
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
@@ -440,6 +453,10 @@ namespace framework
 
 	WebFramework::~WebFramework()
 	{
+#ifdef __WITH_PYTHON_EXECUTORS__
+		pybind11::finalize_interpreter();
+#endif
+
 		if (serverException)
 		{
 			if (Log::isValid())

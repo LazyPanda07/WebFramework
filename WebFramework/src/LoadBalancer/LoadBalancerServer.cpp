@@ -285,13 +285,13 @@ namespace framework::load_balancer
 		}
 	}
 
-	std::unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, HMODULE loadSource) const
+	std::unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
 	{
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseLoadBalancerHeuristic>(std::string_view, std::string_view, bool)>> apiHeuristics =
 		{
 			{ "", [](std::string_view ip, std::string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
-			{ json_settings::cxxExecutorKey, [heuristicName, loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
-			{ json_settings::ccExecutorKey, [heuristicName, loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } }
+			{ json_settings::cxxExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
+			{ json_settings::ccExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } }
 		};
 
 		if (auto it = apiHeuristics.find(apiType); it != apiHeuristics.end())
@@ -372,7 +372,7 @@ namespace framework::load_balancer
 	LoadBalancerServer::LoadBalancerServer
 	(
 		std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
-		const json::utility::jsonObject& heuristic, HMODULE loadSource,
+		const json::utility::jsonObject& heuristic, utility::LoadSource loadSource,
 		const std::unordered_map<std::string, std::vector<int64_t>>& allServers, //-V688
 		std::shared_ptr<ResourceExecutor> resources,
 		size_t processingThreads

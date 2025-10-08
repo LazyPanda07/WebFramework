@@ -30,7 +30,7 @@ set(ADDITIONAL_LIB_DIRS "" CACHE INTERNAL "")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
-option(WITH_UNITY_BUILD "Build few .cpp at once" OFF)
+option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
 project(WebFramework VERSION 3.1.3)
@@ -110,6 +110,7 @@ add_library(
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
 	WebFramework/src/Utility/AdditionalServerSettings.cpp
+	WebFramework/src/Utility/ExecutorsUtility.cpp
 	WebFramework/src/Web/HTTPRequestImplementation.cpp
 	WebFramework/src/Web/HTTPResponseImplementation.cpp
 	WebFramework/src/Databases/DatabaseImplementation.cpp
@@ -118,6 +119,7 @@ add_library(
 	WebFramework/src/Databases/SQLValueImplementation.cpp
 	WebFramework/src/Executors/CXXExecutor.cpp
 	WebFramework/src/Executors/CCExecutor.cpp
+	WebFramework/src/Executors/PythonExecutor.cpp
 )
 
 if (${WITH_UNITY_BUILD})
@@ -125,10 +127,7 @@ if (${WITH_UNITY_BUILD})
 endif()
 
 if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows AND ${WITH_PYTHON_EXECUTORS})
-	target_sources(
-		${PROJECT_NAME} PRIVATE
-		WebFramework/src/Executors/PythonExecutor.cpp
-	)
+	add_definitions(-D__WITH_PYTHON_EXECUTORS__)
 endif()
 
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")

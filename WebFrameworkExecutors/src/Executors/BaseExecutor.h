@@ -118,7 +118,8 @@ namespace framework
 		virtual ~BaseExecutor() = default;
 	};
 
-	using CreateExecutorFunction = void* (*)();
+	using CreateExecutorSignature = void* (*)();
+	using CreateExecutorFunction = std::function<void* ()>;
 	using InitializeWebFrameworkInExecutor = void(*)(const char*);
 }
 

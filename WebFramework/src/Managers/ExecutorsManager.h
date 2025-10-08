@@ -35,7 +35,7 @@ namespace framework
 		std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
 		std::unordered_map<std::string, CreateExecutorFunction> creators; // executor name - create function
-		std::unordered_map<std::string, HMODULE> creatorSources; // executor name - shared library
+		std::unordered_map<std::string, utility::LoadSource> creatorSources; // executor name - shared library
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -49,12 +49,16 @@ namespace framework
 
 		static void parseRouteParameters(const std::string& parameters, HTTPRequestExecutors& request, std::vector<utility::RouteParameters>::iterator it);
 
+		static void callInitFunction(const utility::LoadSource& creatorSource, std::string_view webFrameworkSharedLibraryPath, std::string_view apiType);
+
 	private:
 		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const;
 
 		std::unique_ptr<BaseExecutor> createAPIExecutor(const std::string& name, std::string_view apiType) const;
+
+		void initCreators(const std::vector<std::string>& pathToSources);
 
 	public:
 		ExecutorsManager

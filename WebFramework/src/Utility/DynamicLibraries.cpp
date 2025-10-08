@@ -13,12 +13,19 @@
 
 namespace framework::utility
 {
-	std::string makePathToDynamicLibrary(const std::filesystem::path& pathToSource)
+	std::string makePathToLoadSource(const std::filesystem::path& pathToSource, LoadSourceType& type)
 	{
 		std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
 		std::string fileName = absolutePath.filename().string();
 		std::string extension;
 		std::string prefix;
+
+#ifdef __LINUX__
+		if (fileName.find("lib") == std::string::npos)
+		{
+			prefix = "lib";
+		}
+#endif
 
 		if (!absolutePath.has_extension())
 		{
@@ -27,16 +34,17 @@ namespace framework::utility
 #else
 			extension = ".dll";
 #endif
+
+			type = LoadSourceType::dynamicLibrary;
+		}
+		else if (absolutePath.extension() == ".py")
+		{
+			prefix = "";
+
+			type = LoadSourceType::python;
 		}
 
 		absolutePath.remove_filename();
-
-#ifdef __LINUX__
-		if (fileName.find("lib") == std::string::npos)
-		{
-			prefix = "lib";
-		}
-#endif
 
 		return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
 	}

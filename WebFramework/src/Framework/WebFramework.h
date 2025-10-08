@@ -43,6 +43,8 @@ namespace framework
 		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
 
 	private:
+		void initAPIs() const;
+
 		void initLogging() const;
 
 		void initExecutors(const json::utility::jsonObject& webFrameworkSettings, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, std::vector<std::string>& pathToSources);

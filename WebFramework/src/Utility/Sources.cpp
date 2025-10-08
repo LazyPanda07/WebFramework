@@ -9,9 +9,9 @@
 
 namespace framework::utility
 {
-	std::vector<std::pair<HMODULE, std::string>> loadSources(const std::vector<std::string>& pathToSources)
+	std::vector<std::pair<LoadSource, std::string>> loadSources(const std::vector<std::string>& pathToSources)
 	{
-		std::vector<std::pair<HMODULE, std::string>> result;
+		std::vector<std::pair<LoadSource, std::string>> result;
 
 		if (pathToSources.size())
 		{
@@ -35,20 +35,12 @@ namespace framework::utility
 				continue;
 			}
 
-			std::string pathToSource = makePathToDynamicLibrary(temp);
+			utility::LoadSourceType type;
+			std::string pathToSource = makePathToLoadSource(temp, type);
+			std::string exceptionMessage;
+			LoadSource source;
 
-			if (std::filesystem::exists(pathToSource))
-			{
-				HMODULE handle = nullptr;
-
-#ifdef __LINUX__
-				handle = dlopen(pathToSource.data(), RTLD_LAZY);
-#else
-				handle = LoadLibraryA(pathToSource.data());
-#endif
-				result.emplace_back(handle, pathToSource);
-			}
-			else
+			if (!std::filesystem::exists(pathToSource))
 			{
 				if (Log::isValid())
 				{
@@ -58,15 +50,52 @@ namespace framework::utility
 				throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 			}
 
-			if (!result.back().first)
+			switch (type)
+			{
+			case framework::utility::LoadSourceType::dynamicLibrary:
+#ifdef __LINUX__
+				source = dlopen(pathToSource.data(), RTLD_LAZY);
+#else
+				source = LoadLibraryA(pathToSource.data());
+#endif				
+				if (!std::get<HMODULE>(source))
+				{
+					exceptionMessage = ::exceptions::missingOtherDLLs;
+				}
+
+				break;
+
+			case framework::utility::LoadSourceType::python:
+#ifdef __WITH_PYTHON_EXECUTORS__
+				try
+				{
+					source = py::module_::import(pathToSource.data());
+				}
+				catch (const py::error_already_set& e)
+				{
+					exceptionMessage = e.what();
+				}
+#else
+				exceptionMessage = "Can't load Python Executor. WebFramework built without Python Executor support";
+#endif
+				
+				break;
+
+			default:
+				throw std::runtime_error("Wrong LoadSourceType");
+			}
+
+			if (exceptionMessage.size())
 			{
 				if (Log::isValid())
 				{
-					Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
+					Log::error("Can't load source {}, {}", "LogWebFrameworkSources", pathToSource, exceptionMessage);
 				}
 
-				throw exceptions::CantLoadSourceException(pathToSource);
+				throw exceptions::CantLoadSourceException(pathToSource, exceptionMessage);
 			}
+
+			result.emplace_back(std::move(source), pathToSource);
 		}
 
 		return result;
