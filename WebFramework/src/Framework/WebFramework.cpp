@@ -95,6 +95,10 @@ namespace framework
 
 			finalizeInterpreter = true;
 
+#ifdef __LINUX__
+			dlopen(nullptr, RTLD_NOW | RTLD_GLOBAL);
+#endif
+
 			if (Log::isValid())
 			{
 				Log::info("Initialize Python interpreter", "LogWebFramework");
@@ -391,9 +395,9 @@ namespace framework
 		, finalizeInterpreter(false)
 #endif
 	{
-		this->initAPIs();
-
 		this->initLogging();
+
+		this->initAPIs();
 
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
