@@ -374,8 +374,10 @@ namespace framework
 
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig),
-		serverException(nullptr),
-		finalizeInterpreter(false)
+		serverException(nullptr)
+#ifdef __WITH_PYTHON_EXECUTORS__
+		, finalizeInterpreter(false)
+#endif
 	{
 		this->initAPIs();
 
