@@ -38,12 +38,15 @@ namespace framework
 #ifdef __WITH_STACKTRACE__
 		utility::SegfaultHandler segfaultHandler;
 #endif
+#ifdef __WITH_PYTHON_EXECUTORS__
+		bool finalizeInterpreter;
+#endif
 
 	private:
 		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
 
 	private:
-		void initAPIs() const;
+		void initAPIs();
 
 		void initLogging() const;
 

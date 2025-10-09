@@ -79,10 +79,15 @@ namespace framework
 			(std::numeric_limits<uint64_t>::max)();
 	}
 
-	void WebFramework::initAPIs() const
+	void WebFramework::initAPIs()
 	{
 #ifdef __WITH_PYTHON_EXECUTORS__
-		pybind11::initialize_interpreter();
+		if (!Py_IsInitialized())
+		{
+			pybind11::initialize_interpreter();
+
+			finalizeInterpreter = true;
+		}
 #endif
 	}
 
@@ -369,7 +374,8 @@ namespace framework
 
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig),
-		serverException(nullptr)
+		serverException(nullptr),
+		finalizeInterpreter(false)
 	{
 		this->initAPIs();
 
@@ -454,7 +460,12 @@ namespace framework
 	WebFramework::~WebFramework()
 	{
 #ifdef __WITH_PYTHON_EXECUTORS__
-		pybind11::finalize_interpreter();
+		if (finalizeInterpreter)
+		{
+			pybind11::finalize_interpreter();
+
+			finalizeInterpreter = false;
+		}
 #endif
 
 		if (serverException)

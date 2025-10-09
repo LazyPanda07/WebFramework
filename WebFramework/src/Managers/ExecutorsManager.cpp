@@ -316,9 +316,9 @@ namespace framework
 							}
 
 							return false;
-						}
+						},
 #ifdef __WITH_PYTHON_EXECUTORS__
-						, [&creator, &creatorFunctionName, &executorSettings](py::module_ module) -> bool
+						[&creator, &creatorFunctionName, &executorSettings](py::module_ module) -> bool
 						{
 							if (!py::hasattr(module, executorSettings.name.data()))
 							{
