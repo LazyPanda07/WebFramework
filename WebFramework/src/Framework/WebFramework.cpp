@@ -82,11 +82,23 @@ namespace framework
 	void WebFramework::initAPIs()
 	{
 #ifdef __WITH_PYTHON_EXECUTORS__
-		if (!Py_IsInitialized())
+		bool initialized = Py_IsInitialized();
+
+		if (Log::isValid())
+		{
+			Log::info("Is Python interpreter initialized: {}", "LogWebFramework", initialized);
+		}
+
+		if (!initialized)
 		{
 			pybind11::initialize_interpreter();
 
 			finalizeInterpreter = true;
+
+			if (Log::isValid())
+			{
+				Log::info("Initialize Python interpreter", "LogWebFramework");
+			}
 		}
 #endif
 	}
