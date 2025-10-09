@@ -357,6 +357,11 @@ jobs:
           cmake --build . -j
           cmake --install .
 
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.13'
+
     - name: Install Python API
       run: pip install WebFrameworkLibrary/api/python_api/
 
