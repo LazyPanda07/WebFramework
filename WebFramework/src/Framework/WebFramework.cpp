@@ -53,6 +53,20 @@ namespace framework
 		}
 	}
 
+#ifdef __WITH_PYTHON_EXECUTORS__
+	void WebFramework::loadSymbols()
+	{
+		py::scoped_interpreter lock;
+
+#ifdef __LINUX__
+		py::object sysconfig = py::module_::import("sysconfig");
+		std::string result = sysconfig.attr("get_config_var")("LDLIBRARY").cast<std::string>();
+
+		dlopen(result.data(), RTLD_NOW | RTLD_GLOBAL);
+#endif
+	}
+#endif
+
 	std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const std::vector<std::string>& settingsPaths)
 	{
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> result;
@@ -95,9 +109,7 @@ namespace framework
 
 			finalizeInterpreter = true;
 
-#ifdef __LINUX__
-			dlopen(nullptr, RTLD_NOW | RTLD_GLOBAL);
-#endif
+			this->loadSymbols();
 
 			if (Log::isValid())
 			{

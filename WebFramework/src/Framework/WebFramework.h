@@ -30,6 +30,10 @@ namespace framework
 
 		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
 
+#ifdef __WITH_PYTHON_EXECUTORS__
+		static void loadSymbols();
+#endif
+
 	private:
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;
