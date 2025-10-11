@@ -56,7 +56,7 @@ namespace framework
 #ifdef __WITH_PYTHON_EXECUTORS__
 	void WebFramework::loadSymbols()
 	{
-		py::scoped_interpreter lock;
+		py::gil_scoped_acquire gil;
 
 #ifdef __LINUX__
 		py::object sysconfig = py::module_::import("sysconfig");

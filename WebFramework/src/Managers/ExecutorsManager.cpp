@@ -131,6 +131,7 @@ namespace framework
 #ifdef __WITH_PYTHON_EXECUTORS__
 			if (!called)
 			{
+				py::gil_scoped_acquire gil;
 				py::object apiModule = py::module_::import("web_framework_api");
 
 				if (py::hasattr(apiModule, "initialize_web_framework"))
@@ -288,12 +289,6 @@ namespace framework
 			std::ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
 			std::string creatorFunctionName = format("create{}{}Instance", executorSettings.name, apiType);
-
-#ifdef __WITH_PYTHON_EXECUTORS__
-			py::gil_scoped_acquire gil;
-
-			py::module_ inspect = py::module_::import("inspect");
-#endif
 
 			for (const auto& [source, sourcePath] : sources)
 			{
