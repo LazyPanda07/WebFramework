@@ -19,18 +19,28 @@ namespace framework::runtime
 	}
 
 	PythonRuntime::PythonRuntime() :
-		called(false)
+		called(false),
+		initialized(false)
 	{
-		py::initialize_interpreter();
+		if (!Py_IsInitialized())
+		{
+			py::initialize_interpreter();
+
+			initialized = true;
+
+			if (Log::isValid())
+			{
+				Log::info("Initialize Python interpreter", "LogRuntime");
+			}
+		}
+		else if (Log::isValid())
+		{
+			Log::info("Python interpreter already initialized", "LogRuntime");
+		}
 
 		py::gil_scoped_acquire gil;
 
 		PythonRuntime::loadSymbols();
-
-		if (Log::isValid())
-		{
-			Log::info("Initialize Python interpreter", "LogRuntime");
-		}
 
 		api = py::module_::import("web_framework_api");
 	}
@@ -58,7 +68,10 @@ namespace framework::runtime
 
 	PythonRuntime::~PythonRuntime()
 	{
-		py::finalize_interpreter();
+		if (initialized)
+		{
+			py::finalize_interpreter();
+		}
 	}
 }
 #endif

@@ -9,16 +9,16 @@ qemu-aarch64 ./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
 qemu-aarch64 ./DefaultHTTPSServer &
 qemu-aarch64 ./ProxyServer --config proxy_config.json --port 15000 &
 qemu-aarch64 ./ProxyServer --config proxy_config.json --port 15001 --useHTTPS &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config.json --port 9090 &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config.json --port 9091 --serversHTTPS &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config_https.json --port 9092 &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config_https.json --port 9093 --serversHTTPS &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config.json --port 9094 --custom_heuristic &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config.json --port 9090 &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config.json --port 9091 --serversHTTPS &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config_https.json --port 9092 &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config_https.json --port 9093 --serversHTTPS &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config.json --port 9094 --custom_heuristic &
 
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config.json --type server --port 10000 &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config.json --type server --port 10001 --serversHTTPS &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config_https.json  --type server --port 10002 &
-qemu-aarch64 ./LoadBalancerServer --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config.json --type server --port 10000 &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config.json --type server --port 10001 --serversHTTPS &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config_https.json  --type server --port 10002 &
+qemu-aarch64 ./LoadBalancerServer --config aarch64_load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
 sleep 1
 
 qemu-aarch64 ./CXX_API_TESTS

@@ -86,6 +86,8 @@ if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
 
     generate_json(replaces/configs/load_balancer_config.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config.json REPLACES)
     generate_json(replaces/configs/load_balancer_config_https.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config_https.json REPLACES)
+    generate_json(replaces/configs/aarch64_load_balancer_config.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config.json REPLACES)
+    generate_json(replaces/configs/aarch64_load_balancer_config_https.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config_https.json REPLACES)
     generate_json(replaces/settings/web.json ${CMAKE_INSTALL_PREFIX}/web.json REPLACES)
     generate_json(replaces/settings/load_balancer_web.json ${CMAKE_INSTALL_PREFIX}/load_balancer_web.json REPLACES)
 

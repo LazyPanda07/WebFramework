@@ -16,6 +16,7 @@ namespace framework::runtime
 	private:
 		pybind11::module_ api;
 		bool called;
+		bool initialized;
 
 	public:
 		PythonRuntime();
