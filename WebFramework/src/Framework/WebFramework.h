@@ -30,9 +30,7 @@ namespace framework
 
 		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
 
-#ifdef __WITH_PYTHON_EXECUTORS__
-		static void loadSymbols();
-#endif
+		static void cantLoadRuntimeError(std::string_view runtime);
 
 	private:
 		utility::Config config;
@@ -42,15 +40,11 @@ namespace framework
 #ifdef __WITH_STACKTRACE__
 		utility::SegfaultHandler segfaultHandler;
 #endif
-#ifdef __WITH_PYTHON_EXECUTORS__
-		bool finalizeInterpreter;
-#endif
-
 	private:
 		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
 
 	private:
-		void initAPIs();
+		void initAPIs(const json::utility::jsonObject& webFrameworkSettings);
 
 		void initLogging() const;
 

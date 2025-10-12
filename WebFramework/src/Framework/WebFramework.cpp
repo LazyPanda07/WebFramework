@@ -2,10 +2,6 @@
 
 #include <filesystem>
 
-#ifdef __WITH_PYTHON_EXECUTORS__
-#include <pybind11/embed.h>
-#endif
-
 #include <Log.h>
 #include <JSONArrayWrapper.h>
 
@@ -20,6 +16,8 @@
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/DatabasesManager.h"
+#include "Managers/RuntimesManager.h"
+#include "Runtimes/PythonRuntime.h"
 
 namespace framework
 {
@@ -53,20 +51,6 @@ namespace framework
 		}
 	}
 
-#ifdef __WITH_PYTHON_EXECUTORS__
-	void WebFramework::loadSymbols()
-	{
-		py::gil_scoped_acquire gil;
-
-#ifdef __LINUX__
-		py::object sysconfig = py::module_::import("sysconfig");
-		std::string result = sysconfig.attr("get_config_var")("LDLIBRARY").cast<std::string>();
-
-		dlopen(result.data(), RTLD_NOW | RTLD_GLOBAL);
-#endif
-	}
-#endif
-
 	std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const std::vector<std::string>& settingsPaths)
 	{
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> result;
@@ -84,6 +68,18 @@ namespace framework
 		return result;
 	}
 
+	void WebFramework::cantLoadRuntimeError(std::string_view runtime)
+	{
+		std::string message = std::format("Can't load {} runtime", runtime);
+
+		if (Log::isValid())
+		{
+			Log::fatalError(message, "LogRuntime", 15);
+		}
+
+		throw std::runtime_error(message);
+	}
+
 	uint64_t WebFramework::parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const
 	{
 		std::vector<json::utility::jsonObject> flags;
@@ -93,30 +89,34 @@ namespace framework
 			(std::numeric_limits<uint64_t>::max)();
 	}
 
-	void WebFramework::initAPIs()
+	void WebFramework::initAPIs(const json::utility::jsonObject& webFrameworkSettings)
 	{
-#ifdef __WITH_PYTHON_EXECUTORS__
-		bool initialized = Py_IsInitialized();
-
-		if (Log::isValid())
+		const std::unordered_map<std::string_view, std::function<void()>> initFunctions =
 		{
-			Log::info("Is Python interpreter initialized: {}", "LogWebFramework", initialized);
-		}
-
-		if (!initialized)
-		{
-			pybind11::initialize_interpreter();
-
-			finalizeInterpreter = true;
-
-			this->loadSymbols();
-
-			if (Log::isValid())
 			{
-				Log::info("Initialize Python interpreter", "LogWebFramework");
+				json_settings_values::runtimesPythonValue,
+#ifdef __WITH_PYTHON_EXECUTORS__
+				[]() { runtime::RuntimesManager::get().addRuntime<runtime::PythonRuntime>(); }
+#else
+				std::bind(&WebFramework::cantLoadRuntimeError, json_settings_values::runtimesPythonValue)
+#endif
+			}
+		};
+		std::vector<json::utility::jsonObject> runtimes;
+
+		webFrameworkSettings.tryGetArray(json_settings::runtimesKey, runtimes);
+
+		for (const std::string& runtime : json::utility::JSONArrayWrapper(runtimes).getAsStringArray())
+		{
+			if (auto it = initFunctions.find(runtime); it == initFunctions.end())
+			{
+				WebFramework::cantLoadRuntimeError(runtime);
+			}
+			else
+			{
+				it->second();
 			}
 		}
-#endif
 	}
 
 	void WebFramework::initLogging() const
@@ -210,7 +210,7 @@ namespace framework
 		(
 			pathToSources, [this, &basePath](std::string& source)
 			{
-				if (source == json_settings::defaultLoadSourceValue)
+				if (source == json_settings_values::defaultLoadSourceValue)
 				{
 					return;
 				}
@@ -312,7 +312,7 @@ namespace framework
 
 		std::shared_ptr<threading::ThreadPool> threadPool = std::make_shared<threading::ThreadPool>(resourcesThreads);
 
-		if (webServerType == json_settings::multiThreadedWebServerTypeValue)
+		if (webServerType == json_settings_values::multiThreadedWebServerTypeValue)
 		{
 			server = make_unique<MultithreadedWebServer>
 				(
@@ -326,7 +326,7 @@ namespace framework
 					threadPool
 				);
 		}
-		else if (webServerType == json_settings::threadPoolWebServerTypeValue)
+		else if (webServerType == json_settings_values::threadPoolWebServerTypeValue)
 		{
 			json::utility::jsonObject threadPoolServerObject;
 			uint64_t threadPoolThreads = 1;
@@ -349,11 +349,11 @@ namespace framework
 					threadPool
 				);
 		}
-		else if (webServerType == json_settings::loadBalancerWebServerTypeValue)
+		else if (webServerType == json_settings_values::loadBalancerWebServerTypeValue)
 		{
 			const json::utility::jsonObject& loadBalancerSettings = (*config).getObject(json_settings::loadBalancerObject);
 			json::utility::jsonObject heuristic;
-			std::string loadSource(json_settings::defaultLoadSourceValue);
+			std::string loadSource(json_settings_values::defaultLoadSourceValue);
 			bool serversHTTPS = loadBalancerSettings.getBool(json_settings::serversHTTPSKey);
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject(json_settings::listOfServersKey);
 			std::unordered_map<std::string, std::vector<int64_t>> allServers;
@@ -364,7 +364,7 @@ namespace framework
 
 			if (!loadBalancerSettings.tryGetObject(json_settings::heuristicKey, heuristic))
 			{
-				heuristic.setString("name", json_settings::defaultHeuristicValue);
+				heuristic.setString("name", json_settings_values::defaultHeuristicValue);
 				heuristic.setString(json_settings::apiTypeKey, json_settings::cxxExecutorKey);
 			}
 
@@ -390,7 +390,7 @@ namespace framework
 					processingThreads
 				);
 		}
-		else if (webServerType == json_settings::proxyWebServerTypeValue)
+		else if (webServerType == json_settings_values::proxyWebServerTypeValue)
 		{
 			server = std::make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).getObject(json_settings::proxyObject));
 		}
@@ -403,17 +403,14 @@ namespace framework
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig),
 		serverException(nullptr)
-#ifdef __WITH_PYTHON_EXECUTORS__
-		, finalizeInterpreter(false)
-#endif
 	{
 		this->initLogging();
-
-		this->initAPIs();
 
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
 		std::vector<std::string> pathToSources;
+
+		this->initAPIs(webFrameworkSettings);
 
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
@@ -489,15 +486,6 @@ namespace framework
 
 	WebFramework::~WebFramework()
 	{
-#ifdef __WITH_PYTHON_EXECUTORS__
-		if (finalizeInterpreter)
-		{
-			pybind11::finalize_interpreter();
-
-			finalizeInterpreter = false;
-		}
-#endif
-
 		if (serverException)
 		{
 			if (Log::isValid())

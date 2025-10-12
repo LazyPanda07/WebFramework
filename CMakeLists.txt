@@ -75,6 +75,7 @@ add_library(
 	WebFramework/src/Rendering/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp
 	WebFramework/src/Rendering/MDRenderer.cpp
+	WebFramework/src/Runtimes/PythonRuntime.cpp
 	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
@@ -96,6 +97,7 @@ add_library(
 	WebFramework/src/Utility/SegfaultHandler.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
+	WebFramework/src/Managers/RuntimesManager.cpp
 	WebFramework/src/Web/Servers/BaseWebServer.cpp
 	WebFramework/src/Web/Servers/MultithreadedWebServer.cpp
 	WebFramework/src/Web/Servers/ThreadPoolWebServer.cpp

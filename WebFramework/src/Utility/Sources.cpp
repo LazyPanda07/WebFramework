@@ -24,7 +24,7 @@ namespace framework::utility
 
 		for (const std::string& temp : pathToSources)
 		{
-			if (temp == json_settings::defaultLoadSourceValue)
+			if (temp == json_settings_values::defaultLoadSourceValue)
 			{
 #ifdef __LINUX__
 				result.emplace_back(dlopen(nullptr, RTLD_LAZY), "");

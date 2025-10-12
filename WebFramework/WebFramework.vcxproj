@@ -149,8 +149,11 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
+    <ClCompile Include="src\Managers\RuntimesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
+    <ClCompile Include="src\Runtimes\PythonRuntime.cpp" />
+    <ClCompile Include="src\Runtimes\Runtime.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\ExecutorsUtility.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
@@ -196,6 +199,7 @@
     <ClInclude Include="src\Executors\PythonExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
+    <ClInclude Include="src\Managers\RuntimesManager.h" />
     <ClInclude Include="src\Rendering\MDRenderer.h" />
     <ClInclude Include="src\Rendering\WFDPRenderer.h" />
     <ClInclude Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.h" />
@@ -212,6 +216,8 @@
     <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />
     <ClInclude Include="src\Managers\DatabasesManager.h" />
     <ClInclude Include="src\Proxy\ProxyServer.h" />
+    <ClInclude Include="src\Runtimes\PythonRuntime.h" />
+    <ClInclude Include="src\Runtimes\Runtime.h" />
     <ClInclude Include="src\Utility\AdditionalServerSettings.h" />
     <ClInclude Include="src\Utility\ExecutorsUtility.h" />
     <ClInclude Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.h" />

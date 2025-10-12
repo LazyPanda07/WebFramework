@@ -15,6 +15,8 @@
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Utility/ExecutorsUtility.h"
+#include "Managers/RuntimesManager.h"
+#include "Runtimes/PythonRuntime.h"
 
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
@@ -113,7 +115,6 @@ namespace framework
 	void ExecutorsManager::callInitFunction(const utility::LoadSource& creatorSource, std::string_view webFrameworkSharedLibraryPath, std::string_view apiType)
 	{
 		utility::ExecutorAPIType type = utility::getExecutorAPIType(apiType);
-		static bool called = false;
 
 		switch (type)
 		{
@@ -129,23 +130,8 @@ namespace framework
 
 		case framework::utility::ExecutorAPIType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
-			if (!called)
-			{
-				py::gil_scoped_acquire gil;
-				py::object apiModule = py::module_::import("web_framework_api");
-
-				if (py::hasattr(apiModule, "initialize_web_framework"))
-				{
-					apiModule.attr("initialize_web_framework")(webFrameworkSharedLibraryPath.data());
-				}
-				else
-				{
-					throw std::runtime_error("Can't find initialize_web_framework function");
-				}
-			}
+			runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().initializeWebFramework(webFrameworkSharedLibraryPath.data());
 #endif
-
-			called = true;
 
 			break;
 
@@ -315,6 +301,8 @@ namespace framework
 #ifdef __WITH_PYTHON_EXECUTORS__
 						[&creator, &creatorFunctionName, &executorSettings](py::module_ module) -> bool
 						{
+							py::gil_scoped_acquire gil;
+
 							if (!py::hasattr(module, executorSettings.name.data()))
 							{
 								return false;
@@ -329,6 +317,8 @@ namespace framework
 
 							creator = [cls]() -> void*
 								{
+									py::gil_scoped_acquire gil;
+
 									return new py::object(cls());
 								};
 

@@ -15,6 +15,8 @@ namespace framework
 	public:
 		PythonExecutor(void* implementation);
 
+		void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
 		~PythonExecutor();
 	};
 }

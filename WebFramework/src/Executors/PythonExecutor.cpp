@@ -12,8 +12,19 @@ namespace framework
 
 	}
 
+	void PythonExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	{
+		
+
+		py::gil_scoped_acquire gil;
+
+		implementation->attr("do_get")(request.getImplementation(), response.getImplementation());
+	}
+
 	PythonExecutor::~PythonExecutor()
 	{
+		py::gil_scoped_acquire gil;
+
 		delete implementation;
 	}
 }

@@ -25,10 +25,10 @@ namespace framework
 		
 		static inline const std::unordered_map<std::string_view, WebServerType> types =
 		{
-			{ json_settings::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
-			{ json_settings::proxyWebServerTypeValue, WebServerType::proxy },
-			{ json_settings::multiThreadedWebServerTypeValue, WebServerType::multiThreaded },
-			{ json_settings::threadPoolWebServerTypeValue, WebServerType::threadPool }
+			{ json_settings_values::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
+			{ json_settings_values::proxyWebServerTypeValue, WebServerType::proxy },
+			{ json_settings_values::multiThreadedWebServerTypeValue, WebServerType::multiThreaded },
+			{ json_settings_values::threadPoolWebServerTypeValue, WebServerType::threadPool }
 		};
 
 	private:

@@ -191,6 +191,14 @@
           "description": "Number of threads to send files",
           "minimum": 1
         },
+        "runtimes": {
+          "type": "array",
+          "description": "List of additional API runtimes",
+          "items": {
+            "type": "string",
+            "enum": [ "python" ]
+          }
+        },
         "HTTPS": {
           "type": "object",
           "description": "HTTPS settings",
