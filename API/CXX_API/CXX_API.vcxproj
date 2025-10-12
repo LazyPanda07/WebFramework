@@ -59,7 +59,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -76,7 +76,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebFrameworkCore\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,10 +86,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\DatabaseInterfaces\IDatabase.h" />
-    <ClInclude Include="src\DatabaseInterfaces\ISQLResult.h" />
-    <ClInclude Include="src\DatabaseInterfaces\ISQLValue.h" />
-    <ClInclude Include="src\DatabaseInterfaces\ITable.h" />
+    <ClInclude Include="src\DatabaseInterfaces\IDatabase.hpp" />
+    <ClInclude Include="src\DatabaseInterfaces\ISQLResult.hpp" />
+    <ClInclude Include="src\DatabaseInterfaces\ISQLValue.hpp" />
+    <ClInclude Include="src\DatabaseInterfaces\ITable.hpp" />
     <ClInclude Include="src\Databases\Database.hpp" />
     <ClInclude Include="src\Databases\SQLResult.hpp" />
     <ClInclude Include="src\Databases\SQLValue.hpp" />
@@ -114,8 +114,8 @@
     <ClInclude Include="src\Utility\WebFrameworkLocalization.hpp" />
     <ClInclude Include="src\Utility\WebFrameworkUtility.hpp" />
     <ClInclude Include="src\WebFramework.hpp" />
-    <ClInclude Include="src\WebInterfaces\IHTTPRequest.h" />
-    <ClInclude Include="src\WebInterfaces\IHTTPResponse.h" />
+    <ClInclude Include="src\WebInterfaces\IHTTPRequest.hpp" />
+    <ClInclude Include="src\WebInterfaces\IHTTPResponse.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dummy.cpp" />
