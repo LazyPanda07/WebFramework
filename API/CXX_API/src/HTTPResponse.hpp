@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "WebInterfaces/IHTTPResponse.h"
+#include "WebInterfaces/IHTTPResponse.hpp"
 
 #include "JSONBuilder.hpp"
 

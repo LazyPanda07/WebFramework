@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "DatabaseInterfaces/ITable.h"
+#include "DatabaseInterfaces/ITable.hpp"
 
 #include "SQLResult.hpp"
 

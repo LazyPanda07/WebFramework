@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ITable.h"
+#include "ITable.hpp"
 
 namespace framework::interfaces
 {

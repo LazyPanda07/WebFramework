@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DatabaseInterfaces/IDatabase.h"
+#include "DatabaseInterfaces/IDatabase.hpp"
 
 #include "Table.hpp"
 

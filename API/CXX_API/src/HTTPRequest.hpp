@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "WebInterfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHTTPRequest.hpp"
 #include "HTTPResponse.hpp"
 #include "Utility/ChunkGenerator.hpp"
 #include "JSONParser.hpp"

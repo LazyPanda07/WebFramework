@@ -5,7 +5,7 @@
 #include <string>
 #include <stdexcept>
 
-#include "DatabaseInterfaces/ISQLValue.h"
+#include "DatabaseInterfaces/ISQLValue.hpp"
 
 namespace framework
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IHTTPResponse.h"
+#include "IHTTPResponse.hpp"
 
-#include "DatabaseInterfaces/IDatabase.h"
+#include "DatabaseInterfaces/IDatabase.hpp"
 
 namespace framework::interfaces
 {

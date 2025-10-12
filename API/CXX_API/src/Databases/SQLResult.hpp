@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "DatabaseInterfaces/ISQLResult.h"
+#include "DatabaseInterfaces/ISQLResult.hpp"
 
 #include "SQLValue.hpp"
 
