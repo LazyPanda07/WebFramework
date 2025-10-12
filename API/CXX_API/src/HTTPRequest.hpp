@@ -67,7 +67,6 @@ namespace framework
 
 	private:
 		interfaces::IHTTPRequest* implementation;
-		std::function<void(interfaces::IHTTPRequest*)> deleter;
 		JSONParser json;
 		HeadersMap headers;
 		std::unordered_map<std::string, std::string> queryParameters;
@@ -91,7 +90,7 @@ namespace framework
 		interfaces::IHTTPRequest* getImplementation() const;
 
 	public:
-		HTTPRequest(interfaces::IHTTPRequest* implementation, const std::function<void(interfaces::IHTTPRequest*)>& deleter = nullptr);
+		HTTPRequest(interfaces::IHTTPRequest* implementation);
 
 		HTTPRequest(const HTTPRequest&) = delete;
 
@@ -531,9 +530,8 @@ namespace framework
 		return result;
 	}
 
-	inline HTTPRequest::HTTPRequest(interfaces::IHTTPRequest* implementation, const std::function<void(interfaces::IHTTPRequest*)>& deleter) :
+	inline HTTPRequest::HTTPRequest(interfaces::IHTTPRequest* implementation) :
 		implementation(implementation),
-		deleter(deleter),
 		json(implementation->getJSON())
 	{
 		this->initHeaders();
@@ -550,7 +548,6 @@ namespace framework
 	inline HTTPRequest& HTTPRequest::operator =(HTTPRequest&& other) noexcept
 	{
 		implementation = other.implementation;
-		deleter = other.deleter;
 		json = std::move(other.json);
 		headers = move(other.headers);
 		queryParameters = move(other.queryParameters);
@@ -558,7 +555,6 @@ namespace framework
 		chunks = move(other.chunks);
 
 		other.implementation = nullptr;
-		other.deleter = nullptr;
 
 		return *this;
 	}
@@ -796,11 +792,6 @@ namespace framework
 
 	inline HTTPRequest::~HTTPRequest()
 	{
-		if (deleter && implementation)
-		{
-			deleter(implementation);
-
-			implementation = nullptr;
-		}
+		implementation = nullptr;
 	}
 }

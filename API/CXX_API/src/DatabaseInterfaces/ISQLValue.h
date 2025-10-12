@@ -5,7 +5,6 @@
 
 namespace framework::interfaces
 {
-	// Also update CXX_API
 	class ISQLValue
 	{
 	public:

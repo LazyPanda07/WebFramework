@@ -86,6 +86,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DatabaseInterfaces\IDatabase.h" />
+    <ClInclude Include="src\DatabaseInterfaces\ISQLResult.h" />
+    <ClInclude Include="src\DatabaseInterfaces\ISQLValue.h" />
+    <ClInclude Include="src\DatabaseInterfaces\ITable.h" />
     <ClInclude Include="src\Databases\Database.hpp" />
     <ClInclude Include="src\Databases\SQLResult.hpp" />
     <ClInclude Include="src\Databases\SQLValue.hpp" />
@@ -110,6 +114,8 @@
     <ClInclude Include="src\Utility\WebFrameworkLocalization.hpp" />
     <ClInclude Include="src\Utility\WebFrameworkUtility.hpp" />
     <ClInclude Include="src\WebFramework.hpp" />
+    <ClInclude Include="src\WebInterfaces\IHTTPRequest.h" />
+    <ClInclude Include="src\WebInterfaces\IHTTPResponse.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dummy.cpp" />

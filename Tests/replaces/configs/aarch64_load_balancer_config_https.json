@@ -31,9 +31,6 @@
     "templatesPath": "templates",
     "cachingSize": 536870912,
     "webServerType": "loadBalancer",
-    "runtimes": [
-      "python"
-    ],
     "HTTPS": {
       "useHTTPS": true,
       "pathToCertificate": "certificates/cert.pem",

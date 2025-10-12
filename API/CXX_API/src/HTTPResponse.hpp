@@ -87,13 +87,12 @@ namespace framework
 	{
 	private:
 		interfaces::IHTTPResponse* implementation;
-		std::function<void(interfaces::IHTTPResponse*)> deleter;
 
 	public:
 		interfaces::IHTTPResponse* getImplementation() const;
 
 	public:
-		HTTPResponse(interfaces::IHTTPResponse* implementation, const std::function<void(interfaces::IHTTPResponse*)>& deleter = nullptr);
+		HTTPResponse(interfaces::IHTTPResponse* implementation);
 
 		HTTPResponse(const HTTPResponse&) = delete;
 
@@ -172,9 +171,8 @@ namespace framework
 		return implementation;
 	}
 
-	inline HTTPResponse::HTTPResponse(interfaces::IHTTPResponse* implementation, const std::function<void(interfaces::IHTTPResponse*)>& deleter) :
-		implementation(implementation),
-		deleter(deleter)
+	inline HTTPResponse::HTTPResponse(interfaces::IHTTPResponse* implementation) :
+		implementation(implementation)
 	{
 
 	}
@@ -187,10 +185,8 @@ namespace framework
 	inline HTTPResponse& HTTPResponse::operator =(HTTPResponse&& other) noexcept
 	{
 		implementation = other.implementation;
-		deleter = other.deleter;
 
 		other.implementation = nullptr;
-		other.deleter = nullptr;
 
 		return *this;
 	}
@@ -251,11 +247,6 @@ namespace framework
 
 	inline HTTPResponse::~HTTPResponse()
 	{
-		if (deleter && implementation)
-		{
-			deleter(implementation);
-
-			implementation = nullptr;
-		}
+		implementation = nullptr;
 	}
 }
