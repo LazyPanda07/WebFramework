@@ -304,7 +304,6 @@ jobs:
         path: Executors
 
     - name: Install Python API
-      if: ${{ matrix.api_test == 'run_python_tests.sh' }}
       run: pip3 install WebFrameworkLibrary/api/python_api/
 
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
@@ -351,7 +350,6 @@ jobs:
         python-version: '3.13'
 
     - name: Install Python API
-      if: ${{ matrix.api_test == 'run_python_tests.bat' }}
       run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Merge artifacts
@@ -373,7 +371,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
 
     steps:
     - uses: actions/checkout@v4
@@ -411,7 +409,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
 
     steps:
     - uses: actions/checkout@v4
