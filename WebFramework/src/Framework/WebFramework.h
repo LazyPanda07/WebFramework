@@ -30,8 +30,6 @@ namespace framework
 
 		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
 
-		static void cantLoadRuntimeError(std::string_view runtime);
-
 	private:
 		utility::Config config;
 		std::unique_ptr<web::BaseTCPServer> server;

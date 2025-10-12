@@ -27,6 +27,9 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
           make install -j $(nproc)
         
+    - name: Install Python API
+      run: pip3 install WebFrameworkLibrary/api/python_api/
+
     - name: Build tests
       working-directory: Tests
       run: |

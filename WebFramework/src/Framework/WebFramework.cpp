@@ -68,18 +68,6 @@ namespace framework
 		return result;
 	}
 
-	void WebFramework::cantLoadRuntimeError(std::string_view runtime)
-	{
-		std::string message = std::format("Can't load {} runtime", runtime);
-
-		if (Log::isValid())
-		{
-			Log::fatalError(message, "LogRuntime", 15);
-		}
-
-		throw std::runtime_error(message);
-	}
-
 	uint64_t WebFramework::parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const
 	{
 		std::vector<json::utility::jsonObject> flags;
@@ -93,14 +81,12 @@ namespace framework
 	{
 		const std::unordered_map<std::string_view, std::function<void()>> initFunctions =
 		{
+#ifdef __WITH_PYTHON_EXECUTORS__
 			{
 				json_settings_values::runtimesPythonValue,
-#ifdef __WITH_PYTHON_EXECUTORS__
 				[]() { runtime::RuntimesManager::get().addRuntime<runtime::PythonRuntime>(); }
-#else
-				std::bind(&WebFramework::cantLoadRuntimeError, json_settings_values::runtimesPythonValue)
+			},
 #endif
-			}
 		};
 		std::vector<json::utility::jsonObject> runtimes;
 
@@ -110,7 +96,14 @@ namespace framework
 		{
 			if (auto it = initFunctions.find(runtime); it == initFunctions.end())
 			{
-				WebFramework::cantLoadRuntimeError(runtime);
+				std::string message = std::format("Can't load {} runtime", runtime);
+
+				if (Log::isValid())
+				{
+					Log::fatalError(message, "LogRuntime", 15);
+				}
+
+				throw std::runtime_error(message);
 			}
 			else
 			{
