@@ -21,7 +21,7 @@ namespace framework::utility
 		std::string prefix;
 
 #ifdef __LINUX__
-		if (fileName.find("lib") == std::string::npos)
+		if (fileName.string().find("lib") == std::string::npos)
 		{
 			prefix = "lib";
 		}
