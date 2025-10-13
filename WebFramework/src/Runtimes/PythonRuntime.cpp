@@ -19,14 +19,11 @@ namespace framework::runtime
 	}
 
 	PythonRuntime::PythonRuntime() :
-		called(false),
-		initialized(false)
+		called(false)
 	{
 		if (!Py_IsInitialized())
 		{
-			py::initialize_interpreter();
-
-			initialized = true;
+			guard = std::make_unique<py::scoped_interpreter>();
 
 			if (Log::isValid())
 			{
@@ -38,11 +35,44 @@ namespace framework::runtime
 			Log::info("Python interpreter already initialized", "LogRuntime");
 		}
 
-		py::gil_scoped_acquire gil;
-
 		PythonRuntime::loadSymbols();
 
 		api = py::module_::import("web_framework_api");
+	}
+
+	PythonRuntime::PythonRuntime(PythonRuntime&& other) noexcept
+	{
+		(*this) = std::move(other);
+	}
+
+	PythonRuntime& PythonRuntime::operator =(PythonRuntime&& other) noexcept
+	{
+		guard = std::move(other.guard);
+		api = other.api;
+		called = other.called;
+
+		other.called = false;
+
+		return *this;
+	}
+
+	void PythonRuntime::finishInitialization()
+	{
+		PyEval_SaveThread();
+	}
+
+	void* PythonRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const
+	{
+		py::object cls = api.attr("HTTPRequest");
+
+		return new py::object(cls(reinterpret_cast<uint64_t>(request)));
+	}
+
+	void* PythonRuntime::createHTTPResponse(framework::interfaces::IHTTPResponse* response) const
+	{
+		py::object cls = api.attr("HTTPResponse");
+
+		return new py::object(cls(reinterpret_cast<uint64_t>(response)));
 	}
 
 	void PythonRuntime::initializeWebFramework(std::string_view libraryPath)
@@ -51,8 +81,6 @@ namespace framework::runtime
 		{
 			return;
 		}
-
-		py::gil_scoped_acquire gil;
 
 		if (py::hasattr(api, "initialize_web_framework"))
 		{
@@ -63,14 +91,6 @@ namespace framework::runtime
 		else
 		{
 			throw std::runtime_error("Can't find initialize_web_framework function");
-		}
-	}
-
-	PythonRuntime::~PythonRuntime()
-	{
-		if (initialized)
-		{
-			py::finalize_interpreter();
 		}
 	}
 }

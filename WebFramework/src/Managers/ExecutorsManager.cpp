@@ -20,6 +20,7 @@
 
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
+#include "Executors/PythonExecutor.h"
 
 template<typename... Ts>
 struct VisitHelper : Ts...
@@ -238,7 +239,10 @@ namespace framework
 		{
 			{ "", [this](const std::string& name) { return std::unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
 			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)()); } },
-			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } }
+			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
+#ifdef __WITH_PYTHON_EXECUTORS__
+			{ json_settings::pythonExecutorKey, [this](const std::string& name) { return std::make_unique<PythonExecutor>(creators.at(name)()); } },
+#endif
 		};
 
 		if (auto it = apiExecutors.find(apiType); it != apiExecutors.end())
@@ -299,10 +303,8 @@ namespace framework
 							return false;
 						},
 #ifdef __WITH_PYTHON_EXECUTORS__
-						[&creator, &creatorFunctionName, &executorSettings](py::module_ module) -> bool
+						[&creator, &creatorFunctionName, &executorSettings](const py::module_& module) -> bool
 						{
-							py::gil_scoped_acquire gil;
-
 							if (!py::hasattr(module, executorSettings.name.data()))
 							{
 								return false;
@@ -438,6 +440,13 @@ namespace framework
 		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
 		this->initCreators(pathToSources);
+
+		runtime::RuntimesManager& instance = runtime::RuntimesManager::get();
+
+		for (auto it = instance.begin(); it != instance.end(); ++it)
+		{
+			it->finishInitialization();
+		}
 	}
 
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept

@@ -95,22 +95,45 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHTTPResponse");
 
 	py::class_<framework::HTTPRequest>(m, "HTTPRequest")
-		.def(py::init<framework::interfaces::IHTTPRequest*>());
+		.def
+		(
+			py::init
+			(
+				[](uint64_t pointer)
+				{
+					return framework::HTTPRequest(reinterpret_cast<framework::interfaces::IHTTPRequest*>(pointer));
+				}
+			),
+			"pointer"_a
+		);
 
 	py::class_<framework::HTTPResponse>(m, "HTTPResponse")
-		.def(py::init<framework::interfaces::IHTTPResponse*>());
+		.def
+		(
+			py::init
+			(
+				[](uint64_t pointer)
+				{
+					return framework::HTTPResponse(reinterpret_cast<framework::interfaces::IHTTPResponse*>(pointer));
+				}
+			),
+			"pointer_a"
+		)
+		.def("set_body", py::overload_cast<std::string_view>(&framework::HTTPResponse::setBody), "body"_a)
+		.def("add_header", &framework::HTTPResponse::addHeader, "name"_a, "value"_a);
 
 	py::class_<framework::BaseStatelessExecutor, framework::PyBaseStatelessExecutor>(m, "BaseStatelessExecutor")
-		.def("init", &framework::BaseStatelessExecutor::init)
-		.def("doPost", &framework::BaseStatelessExecutor::doPost)
-		.def("doGet", &framework::BaseStatelessExecutor::doGet)
-		.def("doHead", &framework::BaseStatelessExecutor::doHead)
-		.def("doPut", &framework::BaseStatelessExecutor::doPut)
-		.def("doDelete", &framework::BaseStatelessExecutor::doDelete)
-		.def("doPatch", &framework::BaseStatelessExecutor::doPatch)
-		.def("doOptions", &framework::BaseStatelessExecutor::doOptions)
-		.def("doTrace", &framework::BaseStatelessExecutor::doTrace)
-		.def("doConnect", &framework::BaseStatelessExecutor::doConnect);
+		.def(py::init())
+		.def("init", &framework::BaseStatelessExecutor::init, "settings"_a)
+		.def("do_post", &framework::BaseStatelessExecutor::doPost, "request"_a, "response"_a)
+		.def("do_get", &framework::BaseStatelessExecutor::doGet, "request"_a, "response"_a)
+		.def("do_head", &framework::BaseStatelessExecutor::doHead, "request"_a, "response"_a)
+		.def("do_put", &framework::BaseStatelessExecutor::doPut, "request"_a, "response"_a)
+		.def("do_delete", &framework::BaseStatelessExecutor::doDelete, "request"_a, "response"_a)
+		.def("do_patch", &framework::BaseStatelessExecutor::doPatch, "request"_a, "response"_a)
+		.def("do_options", &framework::BaseStatelessExecutor::doOptions, "request"_a, "response"_a)
+		.def("do_trace", &framework::BaseStatelessExecutor::doTrace, "request"_a, "response"_a)
+		.def("do_connect", &framework::BaseStatelessExecutor::doConnect, "request"_a, "response"_a);
 
 	py::register_exception<framework::exceptions::WebFrameworkException>(m, "WebFrameworkException");
 }

@@ -16,7 +16,7 @@ namespace framework::utility
 	std::string makePathToLoadSource(const std::filesystem::path& pathToSource, LoadSourceType& type)
 	{
 		std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
-		std::string fileName = absolutePath.filename().string();
+		std::filesystem::path fileName = absolutePath.filename();
 		std::string extension;
 		std::string prefix;
 
@@ -40,13 +40,16 @@ namespace framework::utility
 		else if (absolutePath.extension() == ".py")
 		{
 			prefix = "";
+			absolutePath = "";
 
+			fileName.replace_extension();
+			
 			type = LoadSourceType::python;
 		}
 
 		absolutePath.remove_filename();
 
-		return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
+		return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName.string(), extension);
 	}
 
 	std::string getPathToWebFrameworkSharedLibrary()

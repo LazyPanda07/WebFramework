@@ -1,7 +1,6 @@
 #pragma once
 
 #include <unordered_map>
-#include <memory>
 #include <concepts>
 
 #include "Runtimes/Runtime.h"
@@ -10,8 +9,32 @@ namespace framework::runtime
 {
 	class RuntimesManager
 	{
+	public:
+		class Iterator
+		{
+		private:
+			std::unordered_map<size_t, Runtime*>::iterator it;
+
+		public:
+			Iterator(std::unordered_map<size_t, Runtime*>::iterator it);
+
+			Iterator& operator ++();
+
+			bool operator == (const Iterator& other) const noexcept;
+
+			Runtime& operator *();
+
+			const Runtime& operator *() const;
+
+			Runtime* operator ->();
+
+			const Runtime* operator ->() const;
+
+			~Iterator() = default;
+		};
+
 	private:
-		std::unordered_map<size_t, std::unique_ptr<Runtime>> runtimes;
+		std::unordered_map<size_t, Runtime*> runtimes; // leaky singleton
 
 	private:
 		RuntimesManager() = default;
@@ -37,6 +60,10 @@ namespace framework::runtime
 
 		template<std::derived_from<Runtime> T>
 		const T& getRuntime() const;
+
+		Iterator begin();
+
+		Iterator end();
 	};
 }
 
@@ -49,19 +76,19 @@ namespace framework::runtime
 
 		if (!runtimes.contains(key))
 		{
-			runtimes.try_emplace(key, std::make_unique<T>(std::forward<Args>(args)...));
+			runtimes.try_emplace(key, new T(std::forward<Args>(args)...));
 		}
 	}
 
 	template<std::derived_from<Runtime> T>
 	T& RuntimesManager::getRuntime()
 	{
-		return *static_cast<T*>(runtimes.at(typeid(T).hash_code()).get());
+		return *static_cast<T*>(runtimes.at(typeid(T).hash_code()));
 	}
 
 	template<std::derived_from<Runtime> T>
 	const T& RuntimesManager::getRuntime() const
 	{
-		return *static_cast<T*>(runtimes.at(typeid(T).hash_code()).get());
+		return *static_cast<T*>(runtimes.at(typeid(T).hash_code()));
 	}
 }

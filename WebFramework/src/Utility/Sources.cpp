@@ -40,7 +40,7 @@ namespace framework::utility
 			std::string exceptionMessage;
 			LoadSource source;
 
-			if (!std::filesystem::exists(pathToSource))
+			if (type != utility::LoadSourceType::python && !std::filesystem::exists(pathToSource))
 			{
 				if (Log::isValid())
 				{
@@ -69,6 +69,10 @@ namespace framework::utility
 #ifdef __WITH_PYTHON_EXECUTORS__
 				try
 				{
+					py::module_ sys = py::module_::import("sys");
+					// TODO: append source directory path
+					// sys.attr("path").attr("append")(<path_to_source_dir>);
+					
 					source = py::module_::import(pathToSource.data());
 				}
 				catch (const py::error_already_set& e)

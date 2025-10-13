@@ -15,7 +15,29 @@ namespace framework
 	public:
 		PythonExecutor(void* implementation);
 
+		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
+
 		void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		void doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+
+		utility::ExecutorType getType() const override;
+
+		void destroy() override;
 
 		~PythonExecutor();
 	};

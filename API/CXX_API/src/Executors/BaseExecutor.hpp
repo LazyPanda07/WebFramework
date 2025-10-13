@@ -110,6 +110,8 @@ namespace framework
 		);
 
 	public:
+		BaseExecutor() = default;
+
 		virtual void init(const utility::ExecutorSettings& settings);
 
 		virtual void doPost(HTTPRequest& request, HTTPResponse& response);
