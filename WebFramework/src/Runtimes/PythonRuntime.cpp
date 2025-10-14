@@ -58,7 +58,10 @@ namespace framework::runtime
 
 	void PythonRuntime::finishInitialization()
 	{
-		PyEval_SaveThread();
+		if (guard)
+		{
+			PyEval_SaveThread();
+		}
 	}
 
 	void* PythonRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const

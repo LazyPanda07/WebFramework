@@ -40,7 +40,6 @@ namespace framework::utility
 		else if (absolutePath.extension() == ".py")
 		{
 			prefix = "";
-			absolutePath = "";
 
 			fileName.replace_extension();
 			

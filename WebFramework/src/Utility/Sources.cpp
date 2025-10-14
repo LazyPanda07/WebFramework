@@ -40,7 +40,7 @@ namespace framework::utility
 			std::string exceptionMessage;
 			LoadSource source;
 
-			if (type != utility::LoadSourceType::python && !std::filesystem::exists(pathToSource))
+			if (type == utility::LoadSourceType::dynamicLibrary && !std::filesystem::exists(pathToSource))
 			{
 				if (Log::isValid())
 				{
@@ -69,11 +69,12 @@ namespace framework::utility
 #ifdef __WITH_PYTHON_EXECUTORS__
 				try
 				{
+					std::filesystem::path pythonSourcePath(pathToSource);
 					py::module_ sys = py::module_::import("sys");
-					// TODO: append source directory path
-					// sys.attr("path").attr("append")(<path_to_source_dir>);
+
+					sys.attr("path").attr("append")(pythonSourcePath.root_directory().string().data());
 					
-					source = py::module_::import(pathToSource.data());
+					source = py::module_::import(pythonSourcePath.filename().string().data());
 				}
 				catch (const py::error_already_set& e)
 				{
