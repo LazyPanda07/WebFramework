@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Executors/BaseStatelessExecutor.hpp>
+#include <Executors/BaseStatefulExecutor.hpp>
 
 namespace framework
 {
-	class PyBaseStatelessExecutor : public BaseStatelessExecutor
+	class PyStatefulExecutor : public BaseStatefulExecutor
 	{
 	public:
-		PyBaseStatelessExecutor() = default;
+		PyStatefulExecutor() = default;
 
 		void init(const utility::ExecutorSettings& settings) override;
 
@@ -29,6 +29,8 @@ namespace framework
 
 		void doConnect(HTTPRequest& request, HTTPResponse& response) override;
 
-		~PyBaseStatelessExecutor() = default;
+		void destroy() override;
+
+		~PyStatefulExecutor() = default;
 	};
 }

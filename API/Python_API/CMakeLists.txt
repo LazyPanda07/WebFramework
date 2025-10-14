@@ -51,11 +51,10 @@ find_package(pybind11 REQUIRED)
 pybind11_add_module(
     ${PROJECT_NAME} 
     src/module.cpp
-    src/Executors/PyBaseStatelessExecutor.cpp
-    # src/Context.cpp
-    # src/ProcessingBlock.cpp
-    # src/ContextTemplate.cpp
-    # src/DynamicTemplateIndex.cpp
+    src/Executors/PyStatelessExecutor.cpp
+    src/Executors/PyStatefulExecutor.cpp
+    src/Executors/PyHeavyOperationStatelessExecutor.cpp
+    src/Executors/PyHeavyOperationStatefulExecutor.cpp
 )
 
 target_include_directories(

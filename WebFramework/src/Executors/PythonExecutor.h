@@ -10,6 +10,9 @@ namespace framework
 	class PythonExecutor : public BaseExecutor
 	{
 	private:
+		void processMethod(std::string_view methodName, HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+
+	private:
 		pybind11::object* implementation;
 
 	public:
