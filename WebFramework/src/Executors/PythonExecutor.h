@@ -18,6 +18,14 @@ namespace framework
 	public:
 		PythonExecutor(void* implementation);
 
+		PythonExecutor(const PythonExecutor&) = delete;
+
+		PythonExecutor(PythonExecutor&& other) noexcept;
+
+		PythonExecutor& operator =(const PythonExecutor&) = delete;
+
+		PythonExecutor& operator =(PythonExecutor&& other) noexcept;
+
 		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
 		void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;

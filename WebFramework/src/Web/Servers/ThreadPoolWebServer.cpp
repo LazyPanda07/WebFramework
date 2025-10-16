@@ -30,7 +30,7 @@ namespace framework
 			(
 				server.additionalSettings.largeBodyPacketSize, network, server.sessionsManager, server,
 				*server.resources, *server.resources,
-				address, stream, *server.executorsManager, statefulExecutors
+				address, stream, *server.executorsManager, executors
 			);
 		network.setLargeBodySizeThreshold(server.additionalSettings.largeBodySizeThreshold);
 
@@ -83,7 +83,7 @@ namespace framework
 			HTTPRequestExecutors requestWrapper(&request);
 			HTTPResponseExecutors responseWrapper(&response);
 
-			std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, statefulExecutors);
+			std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, executors);
 
 			if (threadPoolFunction)
 			{

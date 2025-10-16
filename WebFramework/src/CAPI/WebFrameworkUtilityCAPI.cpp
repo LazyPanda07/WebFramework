@@ -705,6 +705,24 @@ bool tryGetJSONParserArray(JSONParser parser, const char* key, void(*addArrayVal
 	return false;
 }
 
+const char* getJSONParserRawData(JSONParser parser, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JSONParser*>(parser)->getRawData().data();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 TableObject getOrCreateTable(DatabaseObject database, const char* tableName, const char* createTableQuery, Exception* exception)
 {
 	try

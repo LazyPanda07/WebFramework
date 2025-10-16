@@ -63,12 +63,12 @@ namespace framework
 		streams::IOSocketStream stream = useHTTPS ?
 			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
 			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, std::chrono::milliseconds(timeout));
-		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
+		ExecutorsManager::StatefulExecutors executors;
 		HTTPResponseImplementation response;
 		HTTPResponseExecutors responseWrapper(&response);
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
 
-		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, statefulExecutors);
+		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, executors);
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
 		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
@@ -95,7 +95,7 @@ namespace framework
 
 				HTTPRequestExecutors requestWrapper(&request);
 
-				executorsManager->service(requestWrapper, responseWrapper, statefulExecutors);
+				executorsManager->service(requestWrapper, responseWrapper, executors);
 
 				if (response)
 				{

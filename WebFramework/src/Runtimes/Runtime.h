@@ -13,6 +13,8 @@ namespace framework::runtime
 
 		virtual void finishInitialization() = 0;
 
+		virtual void* createExecutorSettings(const void* implementation) const = 0;
+
 		virtual void* createHTTPRequest(framework::interfaces::IHTTPRequest* request) const = 0;
 
 		virtual void* createHTTPResponse(framework::interfaces::IHTTPResponse* response) const = 0;

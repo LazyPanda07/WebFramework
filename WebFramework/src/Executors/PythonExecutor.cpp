@@ -1,7 +1,5 @@
 #include "PythonExecutor.h"
 
-#include <Log.h>
-
 #ifdef __WITH_PYTHON_EXECUTORS__
 
 #include "Managers/RuntimesManager.h"
@@ -13,7 +11,7 @@ namespace framework
 {
 	void PythonExecutor::processMethod(std::string_view methodName, HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		py::gil_scoped_acquire gil;
+		py::gil_scoped_acquire_simple gil;
 		const runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
 		std::unique_ptr<py::object> pyRequest(static_cast<py::object*>(runtime.createHTTPRequest(request.getImplementation())));
 		std::unique_ptr<py::object> pyResponse(static_cast<py::object*>(runtime.createHTTPResponse(response.getImplementation())));
@@ -24,12 +22,30 @@ namespace framework
 	PythonExecutor::PythonExecutor(void* implementation) :
 		implementation(static_cast<py::object*>(implementation))
 	{
+		
+	}
 
+	PythonExecutor::PythonExecutor(PythonExecutor&& other) noexcept
+	{
+		(*this) = std::move(other);
+	}
+
+	PythonExecutor& PythonExecutor::operator =(PythonExecutor&& other) noexcept
+	{
+		implementation = other.implementation;
+
+		other.implementation = nullptr;
+
+		return *this;
 	}
 
 	void PythonExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
-		
+		py::gil_scoped_acquire_simple gil;
+		const runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
+		std::unique_ptr<py::object> pyExecutorSettings(static_cast<py::object*>(runtime.createExecutorSettings(&settings)));
+
+		implementation->attr("init")(*pyExecutorSettings);
 	}
 
 	void PythonExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
@@ -79,21 +95,28 @@ namespace framework
 
 	utility::ExecutorType PythonExecutor::getType() const
 	{
-		return utility::ExecutorType::stateless;
+		py::gil_scoped_acquire_simple gil;
+
+		return static_cast<utility::ExecutorType>(implementation->attr("get_type")().cast<int>());
 	}
 
 	void PythonExecutor::destroy()
 	{
+		py::gil_scoped_acquire_simple gil;
 
+		implementation->attr("destroy")();
 	}
 
 	PythonExecutor::~PythonExecutor()
 	{
-		py::gil_scoped_acquire gil;
+		if (implementation)
+		{
+			py::gil_scoped_acquire_simple gil;
 
-		delete implementation;
+			delete implementation;
 
-		implementation = nullptr;
+			implementation = nullptr;
+		}
 	}
 }
 

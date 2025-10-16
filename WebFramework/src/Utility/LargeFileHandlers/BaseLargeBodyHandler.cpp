@@ -35,7 +35,7 @@ namespace framework::utility
 		request->setParser(parser);
 
 		requestWrapper = std::make_unique<HTTPRequestExecutors>(request.get());
-		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, statefulExecutors);
+		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, executors);
 		method = BaseExecutor::getMethod(parser.getMethod());
 	}
 
@@ -50,7 +50,7 @@ namespace framework::utility
 	(
 		web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
 		sockaddr clientAddr, streams::IOSocketStream& stream,
-		ExecutorsManager& executorsManager, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors
+		ExecutorsManager& executorsManager, ExecutorsManager::StatefulExecutors& executors
 	) :
 		LargeBodyHandler(network),
 		sessionsManager(session),
@@ -60,7 +60,7 @@ namespace framework::utility
 		clientAddr(clientAddr),
 		stream(stream),
 		executorsManager(executorsManager),
-		statefulExecutors(statefulExecutors),
+		executors(executors),
 		executor(nullptr),
 		method(nullptr),
 		responseWrapper(&response)

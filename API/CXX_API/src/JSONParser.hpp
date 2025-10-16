@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 #include "JSONObject.hpp"
 
 namespace framework
@@ -33,6 +35,10 @@ namespace framework
 
 		template<JsonValues<JSONObject> T>
 		bool tryGet(std::string_view key, T& value, bool recursive = false) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>);
+
+		std::string_view operator *() const;
+
+		friend std::ostream& operator <<(std::ostream& stream, const JSONParser& parser);
 
 		~JSONParser();
 	};
@@ -268,6 +274,26 @@ namespace framework
 		}
 
 		return result;
+	}
+
+	inline std::string_view JSONParser::operator *() const
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserRawData, const char*, void** exception);
+		void* exception = nullptr;
+
+		std::string_view result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserRawData, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return result;
+	}
+
+	inline std::ostream& operator <<(std::ostream& stream, const JSONParser& parser)
+	{
+		return stream << *parser;
 	}
 
 	inline JSONParser::~JSONParser()

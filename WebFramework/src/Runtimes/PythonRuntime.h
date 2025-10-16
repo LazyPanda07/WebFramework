@@ -31,6 +31,8 @@ namespace framework::runtime
 
 		void finishInitialization() override;
 
+		void* createExecutorSettings(const void* implementation) const override;
+
 		void* createHTTPRequest(framework::interfaces::IHTTPRequest* request) const override;
 
 		void* createHTTPResponse(framework::interfaces::IHTTPResponse* response) const override;

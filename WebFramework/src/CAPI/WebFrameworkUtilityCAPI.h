@@ -89,6 +89,8 @@ EXPORT bool tryGetJSONParserNull(JSONParser parser, const char* key, bool recurs
 
 EXPORT bool tryGetJSONParserArray(JSONParser parser, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception);
 
+EXPORT const char* getJSONParserRawData(JSONParser parser, Exception* exception);
+
 EXPORT TableObject getOrCreateTable(DatabaseObject database, const char* tableName, const char* createTableQuery, Exception* exception);
 
 EXPORT TableObject getTable(DatabaseObject database, const char* tableName, Exception* exception);

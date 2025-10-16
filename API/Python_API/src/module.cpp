@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <string>
+#include <fstream>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -25,8 +26,49 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
 
-	py::class_<framework::utility::ExecutorSettings>(m, "ExecutorSettings")
-		.def("get_api_type", &framework::utility::ExecutorSettings::getAPIType);
+	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
+
+	py::enum_<framework::utility::ExecutorSettings::LoadType>(executorSettings, "LoadType")
+		.value("initialization", framework::utility::ExecutorSettings::LoadType::initialization)
+		.value("dynamic", framework::utility::ExecutorSettings::LoadType::dynamic)
+		.value("none", framework::utility::ExecutorSettings::LoadType::none)
+		.export_values();
+
+	py::enum_<framework::utility::ExecutorType>(m, "ExecutorType")
+		.value("stateful", framework::utility::ExecutorType::stateful)
+		.value("stateless", framework::utility::ExecutorType::stateless)
+		.value("heavyOperationStateful", framework::utility::ExecutorType::heavyOperationStateful)
+		.value("heavyOperationStateless", framework::utility::ExecutorType::heavyOperationStateless)
+		.export_values();
+
+	executorSettings
+		.def
+		(
+			py::init
+			(
+				[](uint64_t pointer)
+				{
+					return framework::utility::ExecutorSettings(reinterpret_cast<void*>(pointer));
+				}
+			),
+			"pointer"_a
+		)
+		.def("get_name_type", &framework::utility::ExecutorSettings::getName)
+		.def("get_user_agent_filter", &framework::utility::ExecutorSettings::getUserAgentFilter)
+		.def("get_api_type", &framework::utility::ExecutorSettings::getAPIType)
+		.def("get_load_type", &framework::utility::ExecutorSettings::getLoadType)
+		.def
+		(
+			"get_init_parameters",
+			[](const framework::utility::ExecutorSettings& settings) -> py::dict
+			{
+				py::module_ json = py::module_::import("json");
+				framework::JSONParser parser = settings.getInitParameters();
+				std::string_view data = *parser;
+
+				return json.attr("loads")(data.data()).cast<py::dict>();
+			}
+		);
 
 	py::class_<framework::utility::Config>(m, "Config")
 		.def(py::init<const std::filesystem::path&>(), "config_path"_a)
@@ -136,7 +178,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("do_patch", &framework::BaseStatelessExecutor::doPatch, "request"_a, "response"_a)
 		.def("do_options", &framework::BaseStatelessExecutor::doOptions, "request"_a, "response"_a)
 		.def("do_trace", &framework::BaseStatelessExecutor::doTrace, "request"_a, "response"_a)
-		.def("do_connect", &framework::BaseStatelessExecutor::doConnect, "request"_a, "response"_a);
+		.def("do_connect", &framework::BaseStatelessExecutor::doConnect, "request"_a, "response"_a)
+		.def("get_type", &framework::BaseStatelessExecutor::getType);
 
 	py::class_<framework::BaseStatefulExecutor, framework::PyStatefulExecutor>(m, "StatefulExecutor")
 		.def(py::init())
@@ -150,6 +193,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("do_options", &framework::BaseStatefulExecutor::doOptions, "request"_a, "response"_a)
 		.def("do_trace", &framework::BaseStatefulExecutor::doTrace, "request"_a, "response"_a)
 		.def("do_connect", &framework::BaseStatefulExecutor::doConnect, "request"_a, "response"_a)
+		.def("get_type", &framework::BaseStatefulExecutor::getType)
 		.def("destroy", &framework::BaseStatefulExecutor::destroy);
 
 	py::class_<framework::BaseHeavyOperationStatelessExecutor, framework::PyHeavyOperationStatelessExecutor>(m, "HeavyOperationStatelessExecutor")
@@ -163,7 +207,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("do_patch", &framework::BaseHeavyOperationStatelessExecutor::doPatch, "request"_a, "response"_a)
 		.def("do_options", &framework::BaseHeavyOperationStatelessExecutor::doOptions, "request"_a, "response"_a)
 		.def("do_trace", &framework::BaseHeavyOperationStatelessExecutor::doTrace, "request"_a, "response"_a)
-		.def("do_connect", &framework::BaseHeavyOperationStatelessExecutor::doConnect, "request"_a, "response"_a);
+		.def("do_connect", &framework::BaseHeavyOperationStatelessExecutor::doConnect, "request"_a, "response"_a)
+		.def("get_type", &framework::BaseHeavyOperationStatelessExecutor::getType);
 
 	py::class_<framework::BaseHeavyOperationStatefulExecutor, framework::PyHeavyOperationStatefulExecutor>(m, "HeavyOperationStatefulExecutor")
 		.def(py::init())
@@ -177,6 +222,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("do_options", &framework::BaseHeavyOperationStatefulExecutor::doOptions, "request"_a, "response"_a)
 		.def("do_trace", &framework::BaseHeavyOperationStatefulExecutor::doTrace, "request"_a, "response"_a)
 		.def("do_connect", &framework::BaseHeavyOperationStatefulExecutor::doConnect, "request"_a, "response"_a)
+		.def("get_type", &framework::BaseHeavyOperationStatefulExecutor::getType)
 		.def("destroy", &framework::BaseHeavyOperationStatefulExecutor::destroy);
 
 	py::register_exception<framework::exceptions::WebFrameworkException>(m, "WebFrameworkException");

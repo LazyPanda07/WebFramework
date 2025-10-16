@@ -28,11 +28,29 @@ struct VisitHelper : Ts...
 	using Ts::operator()...;
 };
 
-template<typename... Ts> 
+template<typename... Ts>
 VisitHelper(Ts...) -> VisitHelper<Ts...>;
 
 namespace framework
 {
+	const std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator* () const
+	{
+		return executors;
+	}
+
+	std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator *()
+	{
+		return executors;
+	}
+
+	ExecutorsManager::StatefulExecutors::~StatefulExecutors()
+	{
+		for (const auto& [_, executor] : executors)
+		{
+			executor->destroy();
+		}
+	}
+
 	bool ExecutorsManager::isFileRequest(std::string_view parameters)
 	{
 		size_t index = parameters.find('.');
@@ -141,8 +159,10 @@ namespace framework
 		}
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, StatefulExecutors& executors)
 	{
+		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors = *executors;
+
 		auto executor = statefulExecutors.find(parameters);
 
 		if (executor == statefulExecutors.end())
@@ -189,7 +209,7 @@ namespace framework
 
 				if (executorType == utility::ExecutorType::stateful || executorType == utility::ExecutorType::heavyOperationStateful)
 				{
-					executor = statefulExecutors.insert(routes.extract(executor)).position; //-V837 //-V823
+					executor = statefulExecutors.insert(routes.extract(executor)).position;
 				}
 			}
 		}
@@ -241,7 +261,7 @@ namespace framework
 			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)()); } },
 			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, [this](const std::string& name) { return std::make_unique<PythonExecutor>(creators.at(name)()); } },
+			{ json_settings::pythonExecutorKey, [this](const std::string& name) { py::gil_scoped_acquire_simple gil; return std::make_unique<PythonExecutor>(creators.at(name)()); } },
 #endif
 		};
 
@@ -250,7 +270,7 @@ namespace framework
 			return (it->second)(name);
 		}
 
-		throw std::runtime_error(format("Can't find executor type for {}", apiType));
+		throw std::runtime_error(std::format("Can't find executor type for {}", apiType));
 
 		return nullptr;
 	}
@@ -303,7 +323,7 @@ namespace framework
 							return false;
 						},
 #ifdef __WITH_PYTHON_EXECUTORS__
-						[&creator, &creatorFunctionName, &executorSettings](const py::module_& module) -> bool
+						[&creator, &executorSettings](const py::module_& module) -> bool
 						{
 							if (!py::hasattr(module, executorSettings.name.data()))
 							{
@@ -317,10 +337,13 @@ namespace framework
 								return false;
 							}
 
+							if (Log::isValid())
+							{
+								Log::info("Found {} in {}", "LogWebFrameworkInitialization", executorSettings.name, py::str(module).cast<std::string>());
+							}
+
 							creator = [cls]() -> void*
 								{
-									py::gil_scoped_acquire gil;
-
 									return new py::object(cls());
 								};
 
@@ -468,9 +491,9 @@ namespace framework
 		return *this;
 	}
 
-	std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> ExecutorsManager::service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
+	std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> ExecutorsManager::service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors)
 	{
-		BaseExecutor* executor = this->getOrCreateExecutor(request, response, statefulExecutors);
+		BaseExecutor* executor = this->getOrCreateExecutor(request, response, executors);
 
 		if (!executor)
 		{
@@ -489,7 +512,7 @@ namespace framework
 		return std::nullopt;
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors)
 	{
 		try
 		{
@@ -533,7 +556,7 @@ namespace framework
 				parameters.resize(parameters.find('?'));
 			}
 
-			executor = this->getOrCreateExecutor(parameters, request, statefulExecutors);
+			executor = this->getOrCreateExecutor(parameters, request, executors);
 
 			if (!fileRequest && !executor)
 			{

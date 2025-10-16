@@ -15,6 +15,21 @@ namespace framework
 	class ExecutorsManager
 	{
 	public:
+		class StatefulExecutors
+		{
+		private:
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> executors;
+
+		public:
+			StatefulExecutors() = default;
+
+			const std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& operator *() const;
+
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& operator *();
+
+			~StatefulExecutors();
+		};
+
 		enum class WebServerType
 		{
 			loadBalancer,
@@ -52,7 +67,7 @@ namespace framework
 		static void callInitFunction(const utility::LoadSource& creatorSource, std::string_view webFrameworkSharedLibraryPath, std::string_view apiType);
 
 	private:
-		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, StatefulExecutors& executors);
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const;
 
@@ -78,9 +93,9 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors);
 
-		BaseExecutor* getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		BaseExecutor* getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

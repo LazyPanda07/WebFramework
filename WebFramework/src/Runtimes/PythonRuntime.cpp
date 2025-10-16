@@ -64,6 +64,13 @@ namespace framework::runtime
 		}
 	}
 
+	void* PythonRuntime::createExecutorSettings(const void* implementation) const
+	{
+		py::object cls = api.attr("ExecutorSettings");
+
+		return new py::object(cls(reinterpret_cast<uint64_t>(implementation)));
+	}
+
 	void* PythonRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const
 	{
 		py::object cls = api.attr("HTTPRequest");
