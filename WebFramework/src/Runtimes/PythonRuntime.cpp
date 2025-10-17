@@ -37,6 +37,8 @@ namespace framework::runtime
 
 		PythonRuntime::loadSymbols();
 
+		py::gil_scoped_acquire gil; // load internals
+
 		api = py::module_::import("web_framework_api");
 	}
 

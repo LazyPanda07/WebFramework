@@ -261,7 +261,7 @@ namespace framework
 			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)()); } },
 			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, [this](const std::string& name) { py::gil_scoped_acquire_simple gil; return std::make_unique<PythonExecutor>(creators.at(name)()); } },
+			{ json_settings::pythonExecutorKey, [this](const std::string& name) { py::gil_scoped_acquire gil; return std::make_unique<PythonExecutor>(creators.at(name)()); } },
 #endif
 		};
 
@@ -445,7 +445,7 @@ namespace framework
 
 			node.key() = move(executorSettings);
 
-			settings.insert(move(node)); //-V837
+			settings.insert(move(node));
 		}
 	}
 

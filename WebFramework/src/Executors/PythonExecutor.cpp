@@ -11,7 +11,7 @@ namespace framework
 {
 	void PythonExecutor::processMethod(std::string_view methodName, HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		py::gil_scoped_acquire_simple gil;
+		py::gil_scoped_acquire gil;
 		const runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
 		std::unique_ptr<py::object> pyRequest(static_cast<py::object*>(runtime.createHTTPRequest(request.getImplementation())));
 		std::unique_ptr<py::object> pyResponse(static_cast<py::object*>(runtime.createHTTPResponse(response.getImplementation())));
@@ -41,7 +41,7 @@ namespace framework
 
 	void PythonExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
-		py::gil_scoped_acquire_simple gil;
+		py::gil_scoped_acquire gil;
 		const runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
 		std::unique_ptr<py::object> pyExecutorSettings(static_cast<py::object*>(runtime.createExecutorSettings(&settings)));
 
@@ -95,14 +95,14 @@ namespace framework
 
 	utility::ExecutorType PythonExecutor::getType() const
 	{
-		py::gil_scoped_acquire_simple gil;
+		py::gil_scoped_acquire gil;
 
 		return static_cast<utility::ExecutorType>(implementation->attr("get_type")().cast<int>());
 	}
 
 	void PythonExecutor::destroy()
 	{
-		py::gil_scoped_acquire_simple gil;
+		py::gil_scoped_acquire gil;
 
 		implementation->attr("destroy")();
 	}
@@ -111,7 +111,7 @@ namespace framework
 	{
 		if (implementation)
 		{
-			py::gil_scoped_acquire_simple gil;
+			py::gil_scoped_acquire gil;
 
 			delete implementation;
 

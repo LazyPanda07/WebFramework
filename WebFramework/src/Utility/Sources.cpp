@@ -72,8 +72,8 @@ namespace framework::utility
 					std::filesystem::path pythonSourcePath(pathToSource);
 					py::module_ sys = py::module_::import("sys");
 
-					sys.attr("path").attr("append")(pythonSourcePath.root_directory().string().data());
-					
+					sys.attr("path").attr("append")(pythonSourcePath.parent_path().string().data());
+
 					source = py::module_::import(pythonSourcePath.filename().string().data());
 				}
 				catch (const py::error_already_set& e)
