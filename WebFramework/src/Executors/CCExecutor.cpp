@@ -127,8 +127,6 @@ namespace framework
 
 	CCExecutor::~CCExecutor()
 	{
-		this->destroy();
-
 		deleteFunction(implementation);
 	}
 }
