@@ -339,7 +339,7 @@ namespace framework
 
 							if (Log::isValid())
 							{
-								Log::info("Found {} in {}", "LogWebFrameworkInitialization", executorSettings.name, py::str(module).cast<std::string>());
+								Log::info("Found {} in {}", "LogWebFrameworkInitialization", executorSettings.name, py::str(module.cast<py::handle>()).cast<std::string>());
 							}
 
 							creator = [cls]() -> void*
