@@ -17,7 +17,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -29,7 +29,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -41,7 +41,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -53,7 +53,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -65,7 +65,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -77,7 +77,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -89,7 +89,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -101,7 +101,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,
@@ -113,7 +113,7 @@ namespace framework
 
 	void PyHeavyOperationStatelessExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatelessExecutor,

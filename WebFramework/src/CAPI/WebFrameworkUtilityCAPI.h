@@ -17,6 +17,8 @@ EXPORT JSONObject createJSONObject(JSONObject object, Exception* exception);
 
 EXPORT JSONBuilder createJSONBuilder(JSONBuilder builder, Exception* exception);
 
+EXPORT JSONBuilder createJSONBuilderFromString(const char* jsonString, Exception* exception);
+
 EXPORT JSONParser createJSONParser(JSONParser parser, Exception* exception);
 
 EXPORT JSONParser createJSONParserFromString(const char* jsonString, Exception* exception);

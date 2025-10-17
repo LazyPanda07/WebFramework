@@ -17,7 +17,7 @@ namespace framework
 
 	void PyStatefulExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -29,7 +29,7 @@ namespace framework
 
 	void PyStatefulExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -41,7 +41,7 @@ namespace framework
 
 	void PyStatefulExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -53,7 +53,7 @@ namespace framework
 
 	void PyStatefulExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -65,7 +65,7 @@ namespace framework
 
 	void PyStatefulExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -77,7 +77,7 @@ namespace framework
 
 	void PyStatefulExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -89,7 +89,7 @@ namespace framework
 
 	void PyStatefulExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -101,7 +101,7 @@ namespace framework
 
 	void PyStatefulExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -113,7 +113,7 @@ namespace framework
 
 	void PyStatefulExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,
@@ -125,7 +125,7 @@ namespace framework
 
 	void PyStatefulExecutor::destroy()
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatefulExecutor,

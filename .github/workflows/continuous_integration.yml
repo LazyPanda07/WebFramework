@@ -12,6 +12,7 @@ env:
   LINUX_CMAKE_GENERATOR: "Ninja"
   WINDOWS_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
   LINUX_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
+  PYTHON_VERSION: 3.14
 
 
 permissions:
@@ -347,7 +348,7 @@ jobs:
     - name: Install Python
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13'
+        python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Install Python API
       run: pip install WebFrameworkLibrary/api/python_api/

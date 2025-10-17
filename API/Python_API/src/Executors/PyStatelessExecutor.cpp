@@ -17,7 +17,7 @@ namespace framework
 
 	void PyStatelessExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -29,7 +29,7 @@ namespace framework
 
 	void PyStatelessExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -41,7 +41,7 @@ namespace framework
 
 	void PyStatelessExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -53,7 +53,7 @@ namespace framework
 
 	void PyStatelessExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -65,7 +65,7 @@ namespace framework
 
 	void PyStatelessExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -77,7 +77,7 @@ namespace framework
 
 	void PyStatelessExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -89,7 +89,7 @@ namespace framework
 
 	void PyStatelessExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -101,7 +101,7 @@ namespace framework
 
 	void PyStatelessExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,
@@ -113,7 +113,7 @@ namespace framework
 
 	void PyStatelessExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseStatelessExecutor,

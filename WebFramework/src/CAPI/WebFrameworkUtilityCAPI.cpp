@@ -54,6 +54,24 @@ JSONBuilder createJSONBuilder(JSONBuilder builder, Exception* exception)
 	return nullptr;
 }
 
+JSONBuilder createJSONBuilderFromString(const char* jsonString, Exception* exception)
+{
+	try
+	{
+		return new json::JSONBuilder(json::JSONParser(jsonString).getParsedData(), CP_UTF8);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 JSONParser createJSONParser(JSONParser parser, Exception* exception)
 {
 	try

@@ -28,6 +28,8 @@ namespace framework
 	public:
 		JSONBuilder();
 
+		JSONBuilder(std::string_view jsonString);
+
 		JSONBuilder(const JSONBuilder& other);
 
 		JSONBuilder(JSONBuilder&& other) noexcept;
@@ -70,6 +72,19 @@ namespace framework
 		void* exception = nullptr;
 
 		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONBuilder, nullptr, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+	}
+
+	inline JSONBuilder::JSONBuilder(std::string_view jsonString)
+	{
+		using createJSONBuilderFromString = void* (*)(const char* jsonString, void** exception);
+		void* exception = nullptr;
+
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONBuilderFromString, jsonString.data(), &exception);
 
 		if (exception)
 		{

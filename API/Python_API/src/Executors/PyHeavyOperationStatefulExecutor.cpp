@@ -17,7 +17,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -29,7 +29,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -41,7 +41,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -53,7 +53,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -65,7 +65,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -77,7 +77,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -89,7 +89,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -101,7 +101,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -113,7 +113,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
@@ -125,7 +125,7 @@ namespace framework
 
 	void PyHeavyOperationStatefulExecutor::destroy()
 	{
-		PYBIND11_OVERRIDE_PURE
+		PYBIND11_OVERRIDE
 		(
 			void,
 			BaseHeavyOperationStatefulExecutor,
