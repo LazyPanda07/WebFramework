@@ -26,11 +26,12 @@
         "api": {
           "type": "string",
           "description": "API language",
-          "enum": ["cxx", "cc", "py"]
+          "enum": [ "cxx", "cc", "py" ]
         }
       },
       "required": [ "route", "loadType", "api" ]
-    }
+    },
+    "^\\$schema$": true
   },
   "additionalProperties": false
 }

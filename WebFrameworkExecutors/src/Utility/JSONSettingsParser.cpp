@@ -41,6 +41,11 @@ namespace framework::utility
 
 		for (const auto& [name, description] : parser)
 		{
+			if (name == "$schema")
+			{
+				continue;
+			}
+
 			const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
 			const std::string& loadType = data.getString(json_settings::loadTypeKey);
 			ExecutorSettings executorSettings(name);
