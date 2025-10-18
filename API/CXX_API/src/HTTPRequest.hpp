@@ -307,6 +307,12 @@ namespace framework
 		void sendChunks(HTTPResponse& response, Args&&... args);
 
 		/**
+		 * @brief Send runtime generated content
+		 * @param response
+		 */
+		void sendChunks(HTTPResponse& response, utility::ChunkGenerator& generator);
+
+		/**
 		 * @brief Send file
 		 * @tparam ...Args
 		 * @tparam T
@@ -316,6 +322,13 @@ namespace framework
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
+
+		/**
+		 * @brief Send file
+		 * @param response
+		 * @param fileName
+		 */
+		void sendFileChunks(HTTPResponse& response, std::string_view fileName, utility::ChunkGenerator& generator);
 
 		template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
 		void throwException(Args&&... args);
@@ -356,12 +369,22 @@ namespace framework
 		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
 	}
 
+	inline void HTTPRequest::sendChunks(HTTPResponse& response, utility::ChunkGenerator& generator)
+	{
+		this->sendFileChunks(response, "", generator);
+	}
+
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
 	inline void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
 	{
 		T generator(std::forward<Args>(args)...);
 
-		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator) -> const char* { return reinterpret_cast<T*>(chunkGenerator)->generate().data(); });
+		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator) -> const char* { return static_cast<T*>(chunkGenerator)->generate().data(); });
+	}
+
+	inline void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, utility::ChunkGenerator& generator)
+	{
+		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator) -> const char* { return static_cast<utility::ChunkGenerator*>(chunkGenerator)->generate().data(); });
 	}
 
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T, typename... Args>

@@ -13,15 +13,18 @@ namespace framework
 	private:
 		interfaces::ITable* implementation;
 
-	public:
+	private:
 		Table(interfaces::ITable* implementation);
 
+	public:
 		SQLResult execute(std::string_view query, const std::vector<SQLValue>& values = {});
 
 		template<size_t SizeT>
 		SQLResult execute(std::string_view query, const std::array<SQLValue, SizeT>& values);
 
 		~Table() = default;
+
+		friend class Database;
 	};
 }
 

@@ -7,7 +7,8 @@ on:
   
   
 env:
-  flutter-version: 3.35.5
+  FLUTTER_VERSION: 3.35.6
+  PYTHON_VERSION: 3.14
 
 
 permissions:
@@ -251,7 +252,7 @@ jobs:
       uses: subosito/flutter-action@v2.16.0
       with:
         channel: stable
-        flutter-version: ${{ env.flutter-version }}
+        FLUTTER_VERSION: ${{ env.FLUTTER_VERSION }}
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -360,7 +361,7 @@ jobs:
     - name: Install Python
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13'
+        python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Install Python API
       run: pip install WebFrameworkLibrary/api/python_api/

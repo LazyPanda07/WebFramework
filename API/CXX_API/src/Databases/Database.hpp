@@ -11,9 +11,10 @@ namespace framework
 	private:
 		interfaces::IDatabase* implementation;
 
-	public:
+	private:
 		Database(interfaces::IDatabase* implementation);
 
+	public:
 		/**
 		 * @brief Check if table exists in database
 		 * @param tableName Name of table
@@ -37,6 +38,8 @@ namespace framework
 		std::string getDatabaseFileName() const;
 
 		~Database() = default;
+
+		friend class HTTPRequest;
 	};
 }
 

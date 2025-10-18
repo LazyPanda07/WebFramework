@@ -15,6 +15,7 @@
 #include "Executors/PyStatefulExecutor.h"
 #include "Executors/PyHeavyOperationStatelessExecutor.h"
 #include "Executors/PyHeavyOperationStatefulExecutor.h"
+#include "PyChunkGenerator.h"
 
 namespace py = pybind11;
 
@@ -223,6 +224,31 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	py::class_<framework::interfaces::IHTTPRequest> request(m, "IHTTPRequest");
 	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHTTPResponse");
 
+	py::class_<framework::SQLValue>(m, "SQLValue")
+		.def(py::init<int64_t>(), "value"_a)
+		.def(py::init<double>(), "value"_a)
+		.def(py::init<const std::string&>(), "value"_a)
+		.def(py::init<std::nullptr_t>(), "value"_a)
+		.def(py::init<const std::vector<uint8_t>&>(), "value"_a)
+		.def("get", &framework::SQLValue::operator*);
+
+	py::class_<framework::SQLResult>(m, "SQLResult")
+		.def("at", [](const framework::SQLResult& self, size_t index) { return self.at(index); }, "index"_a)
+		.def("__len__", &framework::SQLResult::size)
+		.def("__iter__", [](framework::SQLResult& self) { return py::make_iterator(self.begin(), self.end()); }, py::keep_alive<0, 1>())
+		.def("__getitem__", [](const framework::SQLResult& self, size_t index) { return self[index]; }, "index"_a);
+
+	py::class_<framework::Table>(m, "Table")
+		.def("execute", [](framework::Table& table, std::string_view query, const std::vector<framework::SQLValue>& values = {}) { return table.execute(query, values); }, "query"_a, "values"_a);
+
+	py::class_<framework::Database>(m, "Database")
+		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a)
+		.def("get_or_create_table", &framework::Database::getOrCreateTable, "table_name"_a, "create_table_query"_a)
+		.def("get_database_name", &framework::Database::getDatabaseName)
+		.def("get_database_file_name", &framework::Database::getDatabaseFileName)
+		.def("__getitem__", &framework::Database::getTable, "table_name"_a)
+		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a);
+
 	py::class_<framework::HTTPResponse>(m, "HTTPResponse")
 		.def
 		(
@@ -254,6 +280,9 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("set_is_valid", &framework::HTTPResponse::setIsValid)
 		.def("set_response_code", &framework::HTTPResponse::setResponseCode, "response_code"_a)
 		.def("__bool__", [](const framework::HTTPResponse& self) { return static_cast<bool>(self); });
+
+	py::class_<framework::utility::ChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
+		.def("generate", &framework::utility::ChunkGenerator::generate);
 
 	py::class_<framework::HTTPRequest>(m, "HTTPRequest")
 		.def
@@ -306,27 +335,27 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_server_ip_v4", &framework::HTTPRequest::getServerIpV4)
 		.def("get_client_port", &framework::HTTPRequest::getClientPort)
 		.def("get_server_port", &framework::HTTPRequest::getServerPort)
-		/*
-		Database getOrCreateDatabase(std::string_view databaseName);
-
-		Database getDatabase(std::string_view databaseName) const;
-
-		Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
-
-		Table getTable(std::string_view databaseName, std::string_view tableName) const;
-
-		template<RouteParameterType T>
-		T getRouteParameter(std::string_view routeParameterName) const;
-
-		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendChunks(HTTPResponse& response, Args&&... args);
-
-		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
-
-		template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
-		void throwException(Args&&... args);
-		*/
+		.def("get_or_create_database", &framework::HTTPRequest::getOrCreateDatabase, "database_name"_a)
+		.def("get_database", &framework::HTTPRequest::getDatabase, "database_name"_a)
+		.def("get_or_create_table", &framework::HTTPRequest::getOrCreateTable, "database_name"_a, "table_name"_a, "create_table_query"_a)
+		.def("get_table", &framework::HTTPRequest::getTable, "database_name"_a, "table_name"_a)
+		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<std::string>, "route_parameter_name"_a)
+		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<bool>, "route_parameter_name"_a)
+		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<int64_t>, "route_parameter_name"_a)
+		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<double>, "route_parameter_name"_a)
+		.def
+		(
+			"throw_exception",
+			[](framework::HTTPRequest& self, std::string_view errorMessage, framework::ResponseCodes responseCode, std::string_view logCategory = "") { self.throwException(errorMessage, responseCode, logCategory); },
+			"error_message"_a, "response_code"_a, "log_category"_a
+		)
+		.def("send_chunks", [](framework::HTTPRequest& self, framework::HTTPResponse& response, framework::utility::PyChunkGenerator& generator) { self.sendChunks(response, generator); }, "response"_a, "generator"_a)
+		.def
+		(
+			"send_file_chunks",
+			[](framework::HTTPRequest& self, framework::HTTPResponse& response, std::string_view fileName, framework::utility::PyChunkGenerator& generator) { self.sendFileChunks(response, fileName, generator); },
+			"response"_a, "file_name"_a, "generator"_a
+		)
 		.def("get_method", &framework::HTTPRequest::getMethod);
 
 	py::class_<framework::BaseStatelessExecutor, framework::PyStatelessExecutor>(m, "StatelessExecutor")

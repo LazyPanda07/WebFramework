@@ -22,12 +22,13 @@ namespace framework
 
 		static void fill(const char** columnNames, const void** values, size_t size, size_t index, void* buffer);
 
-	public:
+	private:
 		SQLResult(interfaces::ISQLResult* implementation);
 
-		std::unordered_map<std::string, SQLValue>& at(size_t index);
+	public:
+		Row& at(size_t index);
 
-		const std::unordered_map<std::string, SQLValue>& at(size_t index) const;
+		const Row& at(size_t index) const;
 
 		size_t size() const;
 
@@ -44,6 +45,8 @@ namespace framework
 		const Row& operator [](size_t index) const;
 
 		~SQLResult() = default;
+
+		friend class Table;
 	};
 }
 
