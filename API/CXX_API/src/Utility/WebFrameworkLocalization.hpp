@@ -10,7 +10,7 @@ namespace framework::utility
 	 * @param localizationModuleName Localization module name
 	 * @param key Localization string key
 	 * @param language Preferred language. If can't find string for that language then returns string in original language
-	 * @return 
+	 * @return
 	 */
 	std::string_view getLocalizedString(std::string_view localizationModuleName, std::string_view key, std::string_view language = "");
 }

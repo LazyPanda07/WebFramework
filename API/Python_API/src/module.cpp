@@ -10,12 +10,15 @@
 #include <pybind11/functional.h>
 
 #include <WebFramework.hpp>
+#include <Utility/WebFrameworkLocalization.hpp>
+#include <Utility/WebFrameworkUtility.hpp>
 
 #include "Executors/PyStatelessExecutor.h"
 #include "Executors/PyStatefulExecutor.h"
 #include "Executors/PyHeavyOperationStatelessExecutor.h"
 #include "Executors/PyHeavyOperationStatefulExecutor.h"
 #include "PyChunkGenerator.h"
+#include "PyLoadBalancerHeuristic.h"
 
 namespace py = pybind11;
 
@@ -25,7 +28,9 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	m.doc() = "Python API for WebFramework";
 
-	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
+	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a);
+	m.def("get_localized_string", &framework::utility::getLocalizedString, "localizationModuleName"_a, "key"_a, "language"_a);
+	m.def("generate_uuid", &framework::utility::uuid::generateUUID);
 
 	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
 
@@ -284,6 +289,14 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	py::class_<framework::utility::ChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
 		.def("generate", &framework::utility::ChunkGenerator::generate);
 
+	py::class_<framework::LoadBalancerHeuristic, framework::PyLoadBalancerHeuristic>(m, "LoadBalancerHeuristic")
+		.def("get_ip", &framework::LoadBalancerHeuristic::getIp)
+		.def("get_port", &framework::LoadBalancerHeuristic::getPort)
+		.def("get_use_https", &framework::LoadBalancerHeuristic::getUseHTTPS)
+		.def("on_start", &framework::LoadBalancerHeuristic::onStart)
+		.def("on_end", &framework::LoadBalancerHeuristic::onEnd)
+		.def("__call__", &framework::LoadBalancerHeuristic::operator());
+
 	py::class_<framework::HTTPRequest>(m, "HTTPRequest")
 		.def
 		(
@@ -312,7 +325,24 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("send_static_file", &framework::HTTPRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
 		.def("send_wfdp_file", &framework::HTTPRequest::sendWFDPFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
 		.def("stream_file", &framework::HTTPRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a)
-		// .def("register_wfdp_function", &framework::HTTPRequest::registerWFDPFunction, "functionName"_a, "function"_a, "deleter"_a)
+		/*.def
+		(
+			"register_wfdp_function", 
+			[](framework::HTTPRequest& self, std::string_view functionName, const std::function<const char*(const char**, size_t)>& function)
+			{
+				auto inner = [](const char** args, size_t size) -> const char*
+					{
+						return nullptr;
+					};
+				auto deleter = [](char* result)
+					{
+
+					};
+
+				self.registerWFDPFunction(functionName, inner, deleter);
+			}, 
+			"function_name"_a, "function"_a
+		)*/
 		.def("unregister_wfdp_function", &framework::HTTPRequest::unregisterWFDPFunction, "function_name"_a)
 		.def("is_wfdp_function_registered", &framework::HTTPRequest::isWFDPFunctionRegistered, "function_name"_a)
 		.def("get_file", &framework::HTTPRequest::getFile, "file_path"_a)

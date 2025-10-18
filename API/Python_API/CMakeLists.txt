@@ -56,6 +56,7 @@ pybind11_add_module(
     src/Executors/PyHeavyOperationStatelessExecutor.cpp
     src/Executors/PyHeavyOperationStatefulExecutor.cpp
     src/PyChunkGenerator.cpp
+    src/PyLoadBalancerHeuristic.cpp
 )
 
 target_include_directories(
