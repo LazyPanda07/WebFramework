@@ -17,8 +17,22 @@ namespace framework::utility
 	{
 		std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
 		std::filesystem::path fileName = absolutePath.filename();
+		bool hasExtension = absolutePath.has_extension();
 		std::string extension;
 		std::string prefix;
+		auto initPy = [&]()
+			{
+				extension = "";
+				prefix = "";
+
+				fileName.replace_extension();
+
+				type = LoadSourceType::python;
+			};
+		auto generatePath = [&](std::string_view extension) -> std::string
+			{
+				return std::filesystem::path(std::format("{}/{}{}{}", absolutePath.string(), prefix, fileName.string(), extension)).make_preferred().string();
+			};
 
 #ifdef __LINUX__
 		if (fileName.string().find("lib") == std::string::npos)
@@ -27,28 +41,40 @@ namespace framework::utility
 		}
 #endif
 
-		if (!absolutePath.has_extension())
+		if (hasExtension)
 		{
+			extension = absolutePath.extension().string();
+
+			if (extension == ".py")
+			{
+				initPy();
+			}
+			else
+			{
+				type = LoadSourceType::dynamicLibrary;
+			}
+		}
+
+		absolutePath = absolutePath.parent_path();
+
+		if (!hasExtension)
+		{
+			if (std::filesystem::exists(generatePath(".py")))
+			{
+				initPy();
+			}
+			else
+			{
 #ifdef __LINUX__
-			extension = ".so";
+				extension = ".so";
 #else
-			extension = ".dll";
+				extension = ".dll";
 #endif
-
-			type = LoadSourceType::dynamicLibrary;
-		}
-		else if (absolutePath.extension() == ".py")
-		{
-			prefix = "";
-
-			fileName.replace_extension();
-			
-			type = LoadSourceType::python;
+				type = LoadSourceType::dynamicLibrary;
+			}
 		}
 
-		absolutePath.remove_filename();
-
-		return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName.string(), extension);
+		return generatePath(extension);
 	}
 
 	std::string getPathToWebFrameworkSharedLibrary()
