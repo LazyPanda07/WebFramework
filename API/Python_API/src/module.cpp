@@ -28,8 +28,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	m.doc() = "Python API for WebFramework";
 
-	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a);
-	m.def("get_localized_string", &framework::utility::getLocalizedString, "localizationModuleName"_a, "key"_a, "language"_a);
+	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
+	m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
 	m.def("generate_uuid", &framework::utility::uuid::generateUUID);
 
 	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
@@ -323,7 +323,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_large_data", &framework::HTTPRequest::getLargeData)
 		.def("send_asset_file", &framework::HTTPRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
 		.def("send_static_file", &framework::HTTPRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
-		.def("send_wfdp_file", &framework::HTTPRequest::sendWFDPFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
+		.def("send_wfdp_file", &framework::HTTPRequest::sendWFDPFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
 		.def("stream_file", &framework::HTTPRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a)
 		/*.def
 		(

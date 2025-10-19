@@ -9,3 +9,7 @@ endif()
 if (${BUILD_EXECUTORS} STREQUAL "CC")
 	add_subdirectory(CC)
 endif()
+
+if (${BUILD_EXECUTORS} STREQUAL "Python")
+	add_subdirectory(Python)
+endif()
