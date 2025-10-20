@@ -16,8 +16,8 @@ class CustomHeuristic(LoadBalancerHeuristic):
 
             return value
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, ip: str, port: str, use_https: bool):
+        super().__init__(ip, port, use_https)
         self._id = CustomHeuristic._get_id()
 
     def __call__(self):
