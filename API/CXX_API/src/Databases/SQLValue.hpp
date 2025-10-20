@@ -21,11 +21,13 @@ namespace framework
 		ValueType value;
 
 	private:
-		SQLValue(const interfaces::ISQLValue* implementation);
+		explicit SQLValue(const interfaces::ISQLValue* implementation);
 
 	public:
 		template<typename... Args>
 		SQLValue(Args&&... args) requires std::constructible_from<ValueType, Args...>;
+
+		SQLValue(size_t value);
 
 		template<OneOf T>
 		const T& get() const;
@@ -93,6 +95,12 @@ namespace framework
 	template<typename... Args>
 	inline SQLValue::SQLValue(Args&&... args) requires std::constructible_from<ValueType, Args...> :
 		value(std::forward<Args>(args)...)
+	{
+
+	}
+
+	inline SQLValue::SQLValue(size_t value) :
+		value(static_cast<int64_t>(value))
 	{
 
 	}
