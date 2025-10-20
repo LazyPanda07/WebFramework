@@ -28,9 +28,89 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	m.doc() = "Python API for WebFramework";
 
+	py::class_<framework::SQLValue>(m, "SQLValue")
+		.def(py::init<int64_t>(), "value"_a)
+		.def(py::init<double>(), "value"_a)
+		.def(py::init<const std::string&>(), "value"_a)
+		.def(py::init<std::nullptr_t>(), "value"_a)
+		.def(py::init<const std::vector<uint8_t>&>(), "value"_a)
+		.def("get", &framework::SQLValue::operator*);
+
+	py::class_<framework::SQLResult>(m, "SQLResult")
+		.def("at", [](const framework::SQLResult& self, size_t index) { return self.at(index); }, "index"_a)
+		.def("__len__", &framework::SQLResult::size)
+		.def("__iter__", [](framework::SQLResult& self) { return py::make_iterator(self.begin(), self.end()); }, py::keep_alive<0, 1>())
+		.def("__getitem__", [](const framework::SQLResult& self, size_t index) { return self[index]; }, "index"_a);
+
+	py::class_<framework::Table>(m, "Table")
+		.def("execute", [](framework::Table& table, std::string_view query, const std::vector<framework::SQLValue>& values = {}) { return table.execute(query, values); }, "query"_a, "values"_a = py::list());
+
+	py::class_<framework::Database>(m, "Database")
+		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a)
+		.def("get_table", &framework::Database::getTable, "table_name"_a)
+		.def("get_or_create_table", &framework::Database::getOrCreateTable, "table_name"_a, "create_table_query"_a)
+		.def("get_database_name", &framework::Database::getDatabaseName)
+		.def("get_database_file_name", &framework::Database::getDatabaseFileName)
+		.def("__getitem__", &framework::Database::getTable, "table_name"_a)
+		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a);
+
 	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
 	m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
 	m.def("generate_uuid", &framework::utility::uuid::generateUUID);
+	m.def
+	(
+		"make_sql_values",
+		[](py::args args) -> std::vector<framework::SQLValue>
+		{
+			std::vector<framework::SQLValue> result;
+
+			result.reserve(args.size());
+
+			for (py::handle item : args)
+			{
+				if (py::isinstance<py::str>(item))
+				{
+					result.emplace_back(item.cast<std::string>());
+				}
+				else if (py::isinstance<py::bool_>(item))
+				{
+					result.emplace_back(item.cast<bool>());
+				}
+				else if (py::isinstance<py::int_>(item))
+				{
+					result.emplace_back(item.cast<int64_t>());
+				}
+				else if (py::isinstance<py::float_>(item))
+				{
+					result.emplace_back(item.cast<double>());
+				}
+				else if (item.is_none())
+				{
+					result.emplace_back(nullptr);
+				}
+				else if (py::isinstance<py::bytes>(item))
+				{
+					py::bytes bytes = item.cast<py::bytes>();
+					std::string temp(bytes);
+
+					result.emplace_back(std::vector<uint8_t>(temp.begin(), temp.end()));
+				}
+				else if (py::isinstance<py::bytearray>(item))
+				{
+					py::bytearray bytes = item.cast<py::bytearray>();
+					std::string temp(bytes);
+
+					result.emplace_back(std::vector<uint8_t>(temp.begin(), temp.end()));
+				}
+				else
+				{
+					throw std::runtime_error("Unsupported type: " + py::repr(item.get_type()).cast<std::string>());
+				}
+			}
+
+			return result;
+		}
+	);
 
 	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
 
@@ -157,8 +237,10 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_file_name", &framework::Multipart::getFileName);
 
 	py::class_<framework::LargeData>(m, "LargeData")
-		.def("get_data_part", [](const framework::LargeData& self) { return self.dataPart; })
-		.def("is_last_packet", [](const framework::LargeData& self) { return self.isLastPacket; });
+		.def_readonly("data_part", &framework::LargeData::dataPart)
+		.def_readonly("is_last_packet", &framework::LargeData::isLastPacket)
+		.def("__iter__", [](const framework::LargeData& self) { return py::iter(py::make_tuple(std::string(self.dataPart), self.isLastPacket)); })
+		.def("__len__", [](const framework::LargeData& self) { return 2; });
 
 	py::class_<framework::utility::Config>(m, "Config")
 		.def(py::init<const std::filesystem::path&>(), "config_path"_a)
@@ -228,31 +310,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	py::class_<framework::interfaces::IHTTPRequest> request(m, "IHTTPRequest");
 	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHTTPResponse");
-
-	py::class_<framework::SQLValue>(m, "SQLValue")
-		.def(py::init<int64_t>(), "value"_a)
-		.def(py::init<double>(), "value"_a)
-		.def(py::init<const std::string&>(), "value"_a)
-		.def(py::init<std::nullptr_t>(), "value"_a)
-		.def(py::init<const std::vector<uint8_t>&>(), "value"_a)
-		.def("get", &framework::SQLValue::operator*);
-
-	py::class_<framework::SQLResult>(m, "SQLResult")
-		.def("at", [](const framework::SQLResult& self, size_t index) { return self.at(index); }, "index"_a)
-		.def("__len__", &framework::SQLResult::size)
-		.def("__iter__", [](framework::SQLResult& self) { return py::make_iterator(self.begin(), self.end()); }, py::keep_alive<0, 1>())
-		.def("__getitem__", [](const framework::SQLResult& self, size_t index) { return self[index]; }, "index"_a);
-
-	py::class_<framework::Table>(m, "Table")
-		.def("execute", [](framework::Table& table, std::string_view query, const std::vector<framework::SQLValue>& values = {}) { return table.execute(query, values); }, "query"_a, "values"_a);
-
-	py::class_<framework::Database>(m, "Database")
-		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a)
-		.def("get_or_create_table", &framework::Database::getOrCreateTable, "table_name"_a, "create_table_query"_a)
-		.def("get_database_name", &framework::Database::getDatabaseName)
-		.def("get_database_file_name", &framework::Database::getDatabaseFileName)
-		.def("__getitem__", &framework::Database::getTable, "table_name"_a)
-		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a);
 
 	py::class_<framework::HTTPResponse>(m, "HTTPResponse")
 		.def
@@ -324,10 +381,10 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("send_asset_file", &framework::HTTPRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
 		.def("send_static_file", &framework::HTTPRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
 		.def("send_wfdp_file", &framework::HTTPRequest::sendWFDPFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
-		.def("stream_file", &framework::HTTPRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a)
+		.def("stream_file", &framework::HTTPRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHTTPRequest::defaultChunkSize)
 		/*.def
 		(
-			"register_wfdp_function", 
+			"register_wfdp_function",
 			[](framework::HTTPRequest& self, std::string_view functionName, const std::function<const char*(const char**, size_t)>& function)
 			{
 				auto inner = [](const char** args, size_t size) -> const char*
@@ -340,7 +397,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 					};
 
 				self.registerWFDPFunction(functionName, inner, deleter);
-			}, 
+			},
 			"function_name"_a, "function"_a
 		)*/
 		.def("unregister_wfdp_function", &framework::HTTPRequest::unregisterWFDPFunction, "function_name"_a)
