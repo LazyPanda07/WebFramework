@@ -401,6 +401,7 @@ namespace framework
 
 		const json::utility::jsonObject& webFrameworkSettings = (*config).getObject(json_settings::webFrameworkObject);
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
+		runtime::RuntimesManager& instance = runtime::RuntimesManager::get();
 		std::vector<std::string> pathToSources;
 
 		this->initAPIs(webFrameworkSettings);
@@ -414,6 +415,11 @@ namespace framework
 			std::move(executorsSettings),
 			pathToSources
 		);
+
+		for (auto it = instance.begin(); it != instance.end(); ++it)
+		{
+			it->finishInitialization();
+		}
 	}
 
 	WebFramework::WebFramework(const std::filesystem::path& webFrameworkConfigPath) :

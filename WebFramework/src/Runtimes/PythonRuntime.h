@@ -39,6 +39,8 @@ namespace framework::runtime
 
 		void initializeWebFramework(std::string_view libraryPath) override;
 
+		std::any getClass(std::string_view className, const utility::LoadSource& source) const override;
+
 		~PythonRuntime() = default;
 	};
 }

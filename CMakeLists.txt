@@ -88,6 +88,7 @@ add_library(
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
 	WebFramework/src/LoadBalancer/Heuristics/CXXHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/CCHeuristic.cpp
+	WebFramework/src/LoadBalancer/Heuristics/PythonHeuristic.cpp
 	WebFramework/src/Proxy/ProxyServer.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp

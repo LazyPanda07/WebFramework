@@ -105,5 +105,24 @@ namespace framework::runtime
 			throw std::runtime_error("Can't find initialize_web_framework function");
 		}
 	}
+
+	std::any PythonRuntime::getClass(std::string_view className, const utility::LoadSource& source) const
+	{
+		const py::module_& module = std::get<py::module_>(source);
+
+		if (!py::hasattr(module, className.data()))
+		{
+			return {};
+		}
+
+		py::object cls = module.attr(className.data());
+
+		if (!py::isinstance<py::type>(cls))
+		{
+			return {};
+		}
+
+		return cls;
+	}
 }
 #endif

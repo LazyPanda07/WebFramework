@@ -4,11 +4,16 @@
 #include <HTTPSNetwork.h>
 #include <Log.h>
 
+#include "Web/HTTPResponseImplementation.h"
+#include "Web/HTTPResponseExecutors.h"
+
 #include "Heuristics/Connections.h"
 #include "Heuristics/CXXHeuristic.h"
 #include "Heuristics/CCHeuristic.h"
-#include "Web/HTTPResponseImplementation.h"
-#include "Web/HTTPResponseExecutors.h"
+
+#ifdef __WITH_PYTHON_EXECUTORS__
+#include "Heuristics/PythonHeuristic.h"
+#endif
 
 namespace framework::load_balancer
 {
@@ -291,7 +296,10 @@ namespace framework::load_balancer
 		{
 			{ "", [](std::string_view ip, std::string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
 			{ json_settings::cxxExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
-			{ json_settings::ccExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } }
+			{ json_settings::ccExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
+#ifdef __WITH_PYTHON_EXECUTORS__
+			{ json_settings::pythonExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<PythonHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
+#endif
 		};
 
 		if (auto it = apiHeuristics.find(apiType); it != apiHeuristics.end())

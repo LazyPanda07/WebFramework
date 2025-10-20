@@ -323,19 +323,17 @@ namespace framework
 							return false;
 						},
 #ifdef __WITH_PYTHON_EXECUTORS__
-						[&creator, &executorSettings](const py::module_& module) -> bool
+						[&creator, &executorSettings, &source](const py::module_& module) -> bool
 						{
-							if (!py::hasattr(module, executorSettings.name.data()))
+							runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
+							std::any temp = runtime.getClass(executorSettings.name, source);
+
+							if (!temp.has_value())
 							{
 								return false;
 							}
 
-							py::object cls = module.attr(executorSettings.name.data());
-
-							if (!py::isinstance<py::type>(cls))
-							{
-								return false;
-							}
+							py::object cls = std::any_cast<py::object>(temp);
 
 							if (Log::isValid())
 							{
@@ -463,13 +461,6 @@ namespace framework
 		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
 	{
 		this->initCreators(pathToSources);
-
-		runtime::RuntimesManager& instance = runtime::RuntimesManager::get();
-
-		for (auto it = instance.begin(); it != instance.end(); ++it)
-		{
-			it->finishInitialization();
-		}
 	}
 
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept
