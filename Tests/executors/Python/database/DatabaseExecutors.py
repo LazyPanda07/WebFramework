@@ -86,7 +86,7 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
         self._user_id = generate_uuid()
 
     def do_get(self, request, response):
-        table = request.get_table("test_table", "multi_user")
+        table = request.get_table("test_database", "multi_user")
         data = []
 
         result = table.execute(

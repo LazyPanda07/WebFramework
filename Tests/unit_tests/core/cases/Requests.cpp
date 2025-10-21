@@ -97,7 +97,7 @@ TEST(HelloExecutor, OPTIONS)
 		(
 			parser.getResponseCode() == web::ResponseCodes::badRequest ||
 			parser.getHeaders().at("Allow") == "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT"
-		);
+		) << response;
 	}
 }
 
@@ -134,7 +134,7 @@ TEST(HelloExecutor, TRACE)
 				return true;
 			}();
 
-		ASSERT_TRUE(result);
+		ASSERT_TRUE(result) << response;
 	}
 }
 

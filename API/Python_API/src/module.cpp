@@ -2,7 +2,6 @@
 
 #include <functional>
 #include <string>
-#include <fstream>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -28,89 +27,9 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	m.doc() = "Python API for WebFramework";
 
-	py::class_<framework::SQLValue>(m, "SQLValue")
-		.def(py::init<int64_t>(), "value"_a)
-		.def(py::init<double>(), "value"_a)
-		.def(py::init<const std::string&>(), "value"_a)
-		.def(py::init<std::nullptr_t>(), "value"_a)
-		.def(py::init<const std::vector<uint8_t>&>(), "value"_a)
-		.def("get", &framework::SQLValue::operator*);
-
-	py::class_<framework::SQLResult>(m, "SQLResult")
-		.def("at", [](const framework::SQLResult& self, size_t index) { return self.at(index); }, "index"_a)
-		.def("__len__", &framework::SQLResult::size)
-		.def("__iter__", [](framework::SQLResult& self) { return py::make_iterator(self.begin(), self.end()); }, py::keep_alive<0, 1>())
-		.def("__getitem__", [](const framework::SQLResult& self, size_t index) { return self[index]; }, "index"_a);
-
-	py::class_<framework::Table>(m, "Table")
-		.def("execute", [](framework::Table& table, std::string_view query, const std::vector<framework::SQLValue>& values = {}) { return table.execute(query, values); }, "query"_a, "values"_a = py::list());
-
-	py::class_<framework::Database>(m, "Database")
-		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a)
-		.def("get_table", &framework::Database::getTable, "table_name"_a)
-		.def("get_or_create_table", &framework::Database::getOrCreateTable, "table_name"_a, "create_table_query"_a)
-		.def("get_database_name", &framework::Database::getDatabaseName)
-		.def("get_database_file_name", &framework::Database::getDatabaseFileName)
-		.def("__getitem__", &framework::Database::getTable, "table_name"_a)
-		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a);
-
 	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
 	m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
 	m.def("generate_uuid", &framework::utility::uuid::generateUUID);
-	m.def
-	(
-		"make_sql_values",
-		[](py::args args) -> std::vector<framework::SQLValue>
-		{
-			std::vector<framework::SQLValue> result;
-
-			result.reserve(args.size());
-
-			for (py::handle item : args)
-			{
-				if (py::isinstance<py::str>(item))
-				{
-					result.emplace_back(item.cast<std::string>());
-				}
-				else if (py::isinstance<py::bool_>(item))
-				{
-					result.emplace_back(item.cast<bool>());
-				}
-				else if (py::isinstance<py::int_>(item))
-				{
-					result.emplace_back(item.cast<int64_t>());
-				}
-				else if (py::isinstance<py::float_>(item))
-				{
-					result.emplace_back(item.cast<double>());
-				}
-				else if (item.is_none())
-				{
-					result.emplace_back(nullptr);
-				}
-				else if (py::isinstance<py::bytes>(item))
-				{
-					py::bytes bytes = item.cast<py::bytes>();
-					std::string temp(bytes);
-
-					result.emplace_back(std::vector<uint8_t>(temp.begin(), temp.end()));
-				}
-				else if (py::isinstance<py::bytearray>(item))
-				{
-					py::bytearray bytes = item.cast<py::bytearray>();
-					std::string temp(bytes);
-
-					result.emplace_back(std::vector<uint8_t>(temp.begin(), temp.end()));
-				}
-				else
-				{
-					throw std::runtime_error("Unsupported type: " + py::repr(item.get_type()).cast<std::string>());
-				}
-			}
-
-			return result;
-		}
-	);
 
 	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
 
@@ -237,9 +156,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_file_name", &framework::Multipart::getFileName);
 
 	py::class_<framework::LargeData>(m, "LargeData")
-		.def_readonly("data_part", &framework::LargeData::dataPart)
-		.def_readonly("is_last_packet", &framework::LargeData::isLastPacket)
-		.def("__iter__", [](const framework::LargeData& self) { return py::iter(py::make_tuple(std::string(self.dataPart), self.isLastPacket)); })
+		.def("__iter__", [](const framework::LargeData& self) { return py::iter(py::make_tuple(py::bytes(self.dataPart), self.isLastPacket)); })
 		.def("__len__", [](const framework::LargeData& self) { return 2; });
 
 	py::class_<framework::utility::Config>(m, "Config")
@@ -311,6 +228,87 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	py::class_<framework::interfaces::IHTTPRequest> request(m, "IHTTPRequest");
 	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHTTPResponse");
 
+	py::class_<framework::SQLValue>(m, "SQLValue")
+		.def(py::init<int64_t>(), "value"_a)
+		.def(py::init<double>(), "value"_a)
+		.def(py::init<const std::string&>(), "value"_a)
+		.def(py::init<std::nullptr_t>(), "value"_a)
+		.def(py::init<const std::vector<uint8_t>&>(), "value"_a)
+		.def("get", &framework::SQLValue::operator*);
+
+	py::class_<framework::SQLResult>(m, "SQLResult")
+		.def("at", [](const framework::SQLResult& self, size_t index) { return self.at(index); }, "index"_a)
+		.def("__len__", &framework::SQLResult::size)
+		.def("__iter__", [](framework::SQLResult& self) { return py::make_iterator(self.begin(), self.end()); }, py::keep_alive<0, 1>())
+		.def("__getitem__", [](const framework::SQLResult& self, size_t index) { return self[index]; }, "index"_a);
+
+	py::class_<framework::Table>(m, "Table")
+		.def("execute", [](framework::Table& table, std::string_view query, const std::vector<framework::SQLValue>& values = {}) { return table.execute(query, values); }, "query"_a, "values"_a = py::list());
+
+	py::class_<framework::Database>(m, "Database")
+		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a)
+		.def("get_table", &framework::Database::getTable, "table_name"_a)
+		.def("get_or_create_table", &framework::Database::getOrCreateTable, "table_name"_a, "create_table_query"_a)
+		.def("get_database_name", &framework::Database::getDatabaseName)
+		.def("get_database_file_name", &framework::Database::getDatabaseFileName)
+		.def("__getitem__", &framework::Database::getTable, "table_name"_a)
+		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a);
+
+	m.def
+	(
+		"make_sql_values",
+		[](py::args args) -> std::vector<framework::SQLValue>
+		{
+			std::vector<framework::SQLValue> result;
+
+			result.reserve(args.size());
+
+			for (py::handle item : args)
+			{
+				if (py::isinstance<py::str>(item))
+				{
+					result.emplace_back(item.cast<std::string>());
+				}
+				else if (py::isinstance<py::bool_>(item))
+				{
+					result.emplace_back(item.cast<bool>());
+				}
+				else if (py::isinstance<py::int_>(item))
+				{
+					result.emplace_back(item.cast<int64_t>());
+				}
+				else if (py::isinstance<py::float_>(item))
+				{
+					result.emplace_back(item.cast<double>());
+				}
+				else if (item.is_none())
+				{
+					result.emplace_back(nullptr);
+				}
+				else if (py::isinstance<py::bytes>(item))
+				{
+					py::bytes bytes = item.cast<py::bytes>();
+					std::string temp(bytes);
+
+					result.emplace_back(std::vector<uint8_t>(temp.begin(), temp.end()));
+				}
+				else if (py::isinstance<py::bytearray>(item))
+				{
+					py::bytearray bytes = item.cast<py::bytearray>();
+					std::string temp(bytes);
+
+					result.emplace_back(std::vector<uint8_t>(temp.begin(), temp.end()));
+				}
+				else
+				{
+					throw std::runtime_error("Unsupported type: " + py::repr(item.get_type()).cast<std::string>());
+				}
+			}
+
+			return result;
+		}
+	);
+
 	py::class_<framework::HTTPResponse>(m, "HTTPResponse")
 		.def
 		(
@@ -344,6 +342,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("__bool__", [](const framework::HTTPResponse& self) { return static_cast<bool>(self); });
 
 	py::class_<framework::utility::ChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
+		.def(py::init())
 		.def("generate", &framework::utility::ChunkGenerator::generate);
 
 	py::class_<framework::LoadBalancerHeuristic, framework::PyLoadBalancerHeuristic>(m, "LoadBalancerHeuristic")
@@ -435,7 +434,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		(
 			"throw_exception",
 			[](framework::HTTPRequest& self, std::string_view errorMessage, framework::ResponseCodes responseCode, std::string_view logCategory = "") { self.throwException(errorMessage, responseCode, logCategory); },
-			"error_message"_a, "response_code"_a, "log_category"_a
+			"error_message"_a, "response_code"_a, "log_category"_a = ""
 		)
 		.def("send_chunks", [](framework::HTTPRequest& self, framework::HTTPResponse& response, framework::utility::PyChunkGenerator& generator) { self.sendChunks(response, generator); }, "response"_a, "generator"_a)
 		.def

@@ -120,7 +120,7 @@ class UploadOctetStreamExecutor(StatefulExecutor):
         if self._stream is None:
             self._stream = open(request.get_headers()["File-Name"], "wb")
 
-        self._stream.write(data.encode("ascii"))
+        self._stream.write(data)
 
         if last:
             self._stream.close()

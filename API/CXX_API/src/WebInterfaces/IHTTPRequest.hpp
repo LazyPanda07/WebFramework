@@ -125,6 +125,8 @@ namespace framework::interfaces
 
 		virtual void processWFDPFile(const char* fileData, size_t size, const CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
 
+		virtual void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) = 0;
+
 		virtual const char* getJSON() const = 0;
 
 		virtual const char* getRawRequest() const = 0;

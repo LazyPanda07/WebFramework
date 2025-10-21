@@ -75,10 +75,10 @@ namespace framework
 		
 		while (isRunning)
 		{
+			HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
+
 			try
 			{
-				HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
-
 				response.setDefault();
 
 				stream >> request;
@@ -159,12 +159,27 @@ namespace framework
 			}
 			catch (const std::exception& e)
 			{
-				if (Log::isValid())
-				{
-					Log::error("Internal server error: {}", "LogMultithreadedServer", e.what());
-				}
+				framework::ExceptionData exceptionData;
 
-				resources->internalServerError(responseWrapper, &e);
+				if (request.getExceptionData(exceptionData))
+				{
+					if (Log::isValid())
+					{
+						Log::error("Exception from API: {} with response code: {}", exceptionData.logCategory, e.what(), exceptionData.responseCode);
+					}
+
+					response.setResponseCode(exceptionData.responseCode);
+					response.setBody(exceptionData.errorMessage.data());
+				}
+				else
+				{
+					if (Log::isValid())
+					{
+						Log::error("Internal server error: {}", "LogMultithreadedServer", e.what());
+					}
+
+					resources->internalServerError(responseWrapper, &e);
+				}
 
 				stream << response;
 			}

@@ -18,6 +18,34 @@
 
 namespace framework
 {
+	ExceptionData::ExceptionData()
+	{
+		this->clear();
+	}
+
+	ExceptionData::ExceptionData(ExceptionData&& other) noexcept
+	{
+		(*this) = std::move(other);
+	}
+
+	ExceptionData& ExceptionData::operator =(ExceptionData&& other) noexcept
+	{
+		errorMessage = std::move(other.errorMessage);
+		responseCode = other.responseCode;
+		logCategory = std::move(other.logCategory);
+
+		other.responseCode = 0;
+
+		return *this;
+	}
+
+	void ExceptionData::clear()
+	{
+		errorMessage.clear();
+		responseCode = 0;
+		logCategory.clear();
+	}
+
 	bool HTTPRequestImplementation::isWebFrameworkDynamicPages(std::string_view filePath)
 	{
 		size_t extension = filePath.find('.');
@@ -65,6 +93,18 @@ namespace framework
 		dynamicResources(dynamicResources)
 	{
 
+	}
+
+	bool HTTPRequestImplementation::getExceptionData(ExceptionData& data)
+	{
+		if (exceptionData.errorMessage.empty())
+		{
+			return false;
+		}
+
+		data = std::move(exceptionData);
+
+		return true;
 	}
 
 	void HTTPRequestImplementation::updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast)
@@ -489,6 +529,13 @@ namespace framework
 		dynamicResources.processWFDPFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
 
 		fillBuffer(result.data(), result.size(), buffer);
+	}
+
+	void HTTPRequestImplementation::setExceptionData(const char* errorMessage, int responseCode, const char* logCategory)
+	{
+		exceptionData.errorMessage = errorMessage;
+		exceptionData.responseCode = responseCode;
+		exceptionData.logCategory = logCategory;
 	}
 
 	const char* HTTPRequestImplementation::getJSON() const

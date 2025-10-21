@@ -247,6 +247,11 @@ namespace framework
 		 */
 		std::string processWFDPFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables);
 
+		/**
+		 * @brief Internal use
+		 */
+		void setExceptionData(std::string_view errorMessage, ResponseCodes responseCode, std::string_view logCategory = "");
+
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
@@ -391,6 +396,8 @@ namespace framework
 	inline void HTTPRequest::throwException(Args&&... args)
 	{
 		T exception(std::forward<Args>(args)...);
+
+		this->setExceptionData(exception.what(), exception.getResponseCode(), exception.getLogCategory());
 
 		implementation->throwException(exception.what(), static_cast<int64_t>(exception.getResponseCode()), exception.getLogCategory().data(), typeid(T).hash_code());
 	}
@@ -746,6 +753,11 @@ namespace framework
 		implementation->processWFDPFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
 
 		return result;
+	}
+
+	inline void HTTPRequest::setExceptionData(std::string_view errorMessage, ResponseCodes responseCode, std::string_view logCategory)
+	{
+		implementation->setExceptionData(errorMessage.data(), static_cast<int>(responseCode), logCategory.data());
 	}
 
 	inline const JSONParser& HTTPRequest::getJSON() const

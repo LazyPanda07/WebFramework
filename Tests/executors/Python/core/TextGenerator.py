@@ -3,6 +3,8 @@ from web_framework_api import *
 
 class TextGenerator(ChunkGenerator):
     def __init__(self, data: str):
+        super().__init__()
+
         self._data = data
         self._offset = 0
         self._last_result = ""

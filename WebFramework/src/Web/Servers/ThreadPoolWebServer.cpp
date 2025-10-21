@@ -157,6 +157,8 @@ namespace framework
 						}
 						catch (const std::exception& e)
 						{
+							// TODO: ExceptionData
+
 							if (Log::isValid())
 							{
 								Log::error("Internal server error: {}", "LogThreadPoolServer", e.what());

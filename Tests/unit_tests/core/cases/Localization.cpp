@@ -6,14 +6,18 @@
 
 #include "utilities.h"
 
+#include "MultiLocalizationManager.h"
+
 TEST(Localization, English)
 {
+	constexpr std::string_view language = "en";
+
 	try
 	{
 		streams::IOSocketStream stream = utility::createSocketStream();
 		std::string request = web::HTTPBuilder().getRequest().parameters("localization").build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("language", "en")
+			json::JSONBuilder(CP_UTF8).appendString("language", language)
 		);
 		std::string response;
 
@@ -21,7 +25,7 @@ TEST(Localization, English)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), "value");
+		ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", language));
 	}
 	catch (const std::exception& e)
 	{
@@ -37,12 +41,14 @@ TEST(Localization, Russian)
 	GTEST_SKIP();
 #endif
 
+	constexpr std::string_view language = "ru";
+
 	try
 	{
 		streams::IOSocketStream stream = utility::createSocketStream();
 		std::string request = web::HTTPBuilder().getRequest().parameters("localization").build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("language", "ru")
+			json::JSONBuilder(CP_UTF8).appendString("language", language)
 		);
 		std::string response;
 
@@ -50,7 +56,7 @@ TEST(Localization, Russian)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), "значение");
+		ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", language));
 	}
 	catch (const std::exception& e)
 	{
