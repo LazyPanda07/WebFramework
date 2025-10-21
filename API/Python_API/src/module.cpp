@@ -329,7 +329,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			{
 				py::module_ jsonModule = py::module_::import("json");
 
-				self.setBody(framework::JSONBuilder(jsonModule.attr("dumps")(json).cast<std::string>()));
+				self.setBody(framework::JSONBuilder(jsonModule.attr("dumps")(json, "ensure_ascii"_a = false).cast<std::string>()));
 			},
 			"json"_a
 		)
