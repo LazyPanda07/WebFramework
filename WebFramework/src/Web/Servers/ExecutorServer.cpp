@@ -14,7 +14,6 @@ namespace framework
 {
 	bool ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler)
 	{
-		HTTPRequestExecutors requestWrapper(&request);
 		HTTPResponseExecutors responseWrapper(&response);
 
 		try
@@ -30,6 +29,8 @@ namespace framework
 			{
 				return false;
 			}
+
+			HTTPRequestExecutors requestWrapper(&request);
 
 			executorsManager->service(requestWrapper, responseWrapper, executors);
 
