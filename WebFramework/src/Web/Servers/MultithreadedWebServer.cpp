@@ -79,7 +79,10 @@ namespace framework
 
 			response.setDefault();
 
-			this->serviceRequests(stream, request, response, executors, &largeBodyHandler);
+			if (!this->serviceRequests(stream, request, response, executors, &largeBodyHandler))
+			{
+				break;
+			}
 		}
 	}
 

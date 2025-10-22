@@ -22,7 +22,7 @@ namespace framework
 		std::shared_ptr<ResourceExecutor> resources;
 
 	protected:
-		void serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler);
+		bool serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler);
 
 	public:
 		ExecutorServer

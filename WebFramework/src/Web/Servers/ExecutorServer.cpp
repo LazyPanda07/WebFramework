@@ -12,7 +12,7 @@
 
 namespace framework
 {
-	void ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler)
+	bool ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler)
 	{
 		HTTPRequestExecutors requestWrapper(&request);
 		HTTPResponseExecutors responseWrapper(&response);
@@ -23,12 +23,12 @@ namespace framework
 
 			if (largeBodyHandler && largeBodyHandler->isRunning())
 			{
-				return;
+				return true;
 			}
 
 			if (stream.eof())
 			{
-				return;
+				return false;
 			}
 
 			executorsManager->service(requestWrapper, responseWrapper, executors);
@@ -40,15 +40,17 @@ namespace framework
 
 			if (stream.eof())
 			{
-				return;
+				return false;
 			}
 		}
 		catch (const web::exceptions::WebException& e)
 		{
 			if (Log::isValid())
 			{
-				Log::error("Multithreaded serve exception: {}", "LogMultithreadedServer", e.what());
+				Log::error("Executors serve exception: {}", "LogExecutorServer", e.what());
 			}
+
+			return false;
 		}
 		catch (const exceptions::BadRequestException& e) // 400
 		{
@@ -84,7 +86,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Internal server error: {}", "LogMultithreadedServer", e.what());
+				Log::error("Internal server error: {}", "LogExecutorServer", e.what());
 			}
 
 			resources->internalServerError(responseWrapper, &e);
@@ -109,7 +111,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::error("Internal server error: {}", "LogMultithreadedServer", e.what());
+					Log::error("Internal server error: {}", "LogExecutorServer", e.what());
 				}
 
 				resources->internalServerError(responseWrapper, &e);
@@ -123,6 +125,8 @@ namespace framework
 
 			stream << response;
 		}
+
+		return true;
 	}
 
 	ExecutorServer::ExecutorServer
