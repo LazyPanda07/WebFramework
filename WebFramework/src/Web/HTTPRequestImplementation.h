@@ -26,29 +26,6 @@ namespace framework
 {
 	class SessionsManager;
 
-	struct ExceptionData
-	{
-	public:
-		std::string errorMessage;
-		int responseCode;
-		std::string logCategory;
-
-	public:
-		ExceptionData();
-
-		ExceptionData(const ExceptionData&) = default;
-
-		ExceptionData(ExceptionData&& other) noexcept;
-
-		ExceptionData& operator =(const ExceptionData&) = default;
-
-		ExceptionData& operator =(ExceptionData&& other) noexcept;
-
-		void clear();
-
-		~ExceptionData() = default;
-	};
-
 	/// <summary>
 	/// Parsing HTTP request
 	/// <para>Accessing to sessions</para>
@@ -56,6 +33,27 @@ namespace framework
 	/// </summary>
 	class WEB_FRAMEWORK_API HTTPRequestImplementation : public interfaces::IHTTPRequest
 	{
+	private:
+		class ExceptionData
+		{
+		private:
+			std::string logCategory;
+			
+		public:
+			std::string errorMessage;
+			int responseCode;
+			bool valid;
+
+		public:
+			ExceptionData();
+
+			void setLogCategory(std::string_view logCategory);
+
+			std::string_view getLogCategory() const;
+
+			~ExceptionData() = default;
+		};
+
 	private:
 		SessionsManager& session;
 		const web::BaseTCPServer& serverReference;
@@ -90,13 +88,6 @@ namespace framework
 		HTTPRequestImplementation& operator =(HTTPRequestImplementation&&) noexcept = default;
 
 		HTTPRequestImplementation& operator =(const HTTPRequestImplementation&) = default;
-
-		/**
-		 * @brief Steal current ExceptionData if present
-		 * @param data 
-		 * @return 
-		 */
-		bool getExceptionData(ExceptionData& data);
 
 		void updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast) override;
 
@@ -247,6 +238,13 @@ namespace framework
 		void processWFDPFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
 
 		void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) override;
+
+		/**
+		 * @brief Steal current ExceptionData if present
+		 * @param data
+		 * @return
+		 */
+		bool getExceptionData(interfaces::CExceptionData* data) override;
 
 		/// <summary>
 		/// Getter for JSONParser

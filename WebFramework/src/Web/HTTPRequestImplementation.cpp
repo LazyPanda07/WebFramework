@@ -18,32 +18,23 @@
 
 namespace framework
 {
-	ExceptionData::ExceptionData()
+	HTTPRequestImplementation::ExceptionData::ExceptionData() :
+		responseCode(0),
+		valid(false)
 	{
-		this->clear();
+
 	}
 
-	ExceptionData::ExceptionData(ExceptionData&& other) noexcept
+	void HTTPRequestImplementation::ExceptionData::setLogCategory(std::string_view logCategory)
 	{
-		(*this) = std::move(other);
+		this->logCategory = logCategory.empty() ?
+			"LogAPI" :
+			logCategory;
 	}
 
-	ExceptionData& ExceptionData::operator =(ExceptionData&& other) noexcept
+	std::string_view HTTPRequestImplementation::ExceptionData::getLogCategory() const
 	{
-		errorMessage = std::move(other.errorMessage);
-		responseCode = other.responseCode;
-		logCategory = std::move(other.logCategory);
-
-		other.responseCode = 0;
-
-		return *this;
-	}
-
-	void ExceptionData::clear()
-	{
-		errorMessage.clear();
-		responseCode = 0;
-		logCategory.clear();
+		return logCategory;
 	}
 
 	bool HTTPRequestImplementation::isWebFrameworkDynamicPages(std::string_view filePath)
@@ -93,18 +84,6 @@ namespace framework
 		dynamicResources(dynamicResources)
 	{
 
-	}
-
-	bool HTTPRequestImplementation::getExceptionData(ExceptionData& data)
-	{
-		if (exceptionData.errorMessage.empty())
-		{
-			return false;
-		}
-
-		data = std::move(exceptionData);
-
-		return true;
 	}
 
 	void HTTPRequestImplementation::updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast)
@@ -535,7 +514,25 @@ namespace framework
 	{
 		exceptionData.errorMessage = errorMessage;
 		exceptionData.responseCode = responseCode;
-		exceptionData.logCategory = logCategory;
+		exceptionData.valid = true;
+
+		exceptionData.setLogCategory(logCategory ? logCategory : "");
+	}
+
+	bool HTTPRequestImplementation::getExceptionData(interfaces::CExceptionData* data)
+	{
+		if (exceptionData.valid)
+		{
+			data->errorMessage = exceptionData.errorMessage.data();
+			data->responseCode = exceptionData.responseCode;
+			data->logCategory = exceptionData.getLogCategory().data();
+			
+			exceptionData.valid = false;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	const char* HTTPRequestImplementation::getJSON() const

@@ -2,11 +2,14 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 
-#include "MultiLocalizationManager.h"
+#include <MultiLocalizationManager.h>
+#include <IOSocketStream.h>
 
 #include "Managers/ExecutorsManager.h"
 #include "Managers/SessionsManager.h"
 #include "Utility/AdditionalServerSettings.h"
+#include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
+#include "Web/HTTPRequestImplementation.h"
 
 namespace framework
 {
@@ -17,6 +20,9 @@ namespace framework
 		std::unique_ptr<ExecutorsManager> executorsManager;
 		SessionsManager sessionsManager;
 		std::shared_ptr<ResourceExecutor> resources;
+
+	protected:
+		void serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler);
 
 	public:
 		ExecutorServer
