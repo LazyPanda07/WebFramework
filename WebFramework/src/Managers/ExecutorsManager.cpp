@@ -529,7 +529,7 @@ namespace framework
 				{
 					if (Log::isValid())
 					{
-						Log::info("No User-Agent provided", "LogFilter");
+						Log::info("No User-Agent provided, {}", "LogFilter", request.getRawRequest());
 					}
 
 					resources->forbiddenError(response, nullptr);
