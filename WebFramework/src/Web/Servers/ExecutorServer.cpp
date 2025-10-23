@@ -12,37 +12,13 @@
 
 namespace framework
 {
-	bool ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler)
+	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, const std::function<void()>& task)
 	{
 		HTTPResponseExecutors responseWrapper(&response);
 
 		try
 		{
-			stream >> request;
-
-			if (largeBodyHandler && largeBodyHandler->isRunning())
-			{
-				return true;
-			}
-
-			if (stream.eof())
-			{
-				return false;
-			}
-
-			HTTPRequestExecutors requestWrapper(&request);
-
-			executorsManager->service(requestWrapper, responseWrapper, executors);
-
-			if (response)
-			{
-				stream << response;
-			}
-
-			if (stream.eof())
-			{
-				return false;
-			}
+			task();
 		}
 		catch (const web::exceptions::WebException& e)
 		{
@@ -51,25 +27,31 @@ namespace framework
 				Log::error("Executors serve exception: {}", "LogExecutorServer", e.what());
 			}
 
-			return false;
+			return ServiceState::error;
 		}
 		catch (const exceptions::BadRequestException& e) // 400
 		{
 			resources->badRequestError(responseWrapper, &e);
 
 			stream << response;
+
+			return ServiceState::exception;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
 			resources->notFoundError(responseWrapper, &e);
 
 			stream << response;
+
+			return ServiceState::exception;
 		}
 		catch (const exceptions::NotFoundException& e) // 404
 		{
 			resources->notFoundError(responseWrapper, &e);
 
 			stream << response;
+
+			return ServiceState::exception;
 		}
 		catch (const exceptions::APIException& e)
 		{
@@ -82,6 +64,8 @@ namespace framework
 			response.setBody(e.what());
 
 			stream << response;
+
+			return ServiceState::exception;
 		}
 		catch (const exceptions::BaseExecutorException& e) // 500
 		{
@@ -93,6 +77,8 @@ namespace framework
 			resources->internalServerError(responseWrapper, &e);
 
 			stream << response;
+
+			return ServiceState::exception;
 		}
 		catch (const std::exception& e)
 		{
@@ -119,15 +105,19 @@ namespace framework
 			}
 
 			stream << response;
+
+			return ServiceState::exception;
 		}
 		catch (...)	// 500
 		{
 			resources->internalServerError(responseWrapper, nullptr);
 
 			stream << response;
+
+			return ServiceState::exception;
 		}
 
-		return true;
+		return ServiceState::success;
 	}
 
 	ExecutorServer::ExecutorServer

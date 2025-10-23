@@ -16,13 +16,21 @@ namespace framework
 	class ExecutorServer
 	{
 	protected:
+		enum class ServiceState
+		{
+			success,
+			exception,
+			error
+		};
+
+	protected:
 		utility::AdditionalServerSettings additionalSettings;
 		std::unique_ptr<ExecutorsManager> executorsManager;
 		SessionsManager sessionsManager;
 		std::shared_ptr<ResourceExecutor> resources;
 
 	protected:
-		bool serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, web::LargeBodyHandler* largeBodyHandler);
+		ServiceState serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, const std::function<void()>& task);
 
 	public:
 		ExecutorServer

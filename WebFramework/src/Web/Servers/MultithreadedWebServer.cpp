@@ -72,14 +72,49 @@ namespace framework
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
 		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
-		
+
 		while (isRunning)
 		{
 			HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
+			HTTPResponseExecutors responseWrapper(&response);
 
 			response.setDefault();
 
-			if (!this->serviceRequests(stream, request, response, executors, &largeBodyHandler))
+			ServiceState state = this->serviceRequests(stream, request, response, [&stream, &request]() { stream >> request; });
+
+			if (state == ServiceState::error)
+			{
+				break;
+			}
+			else if (state == ServiceState::exception || largeBodyHandler.isRunning())
+			{
+				continue;
+			}
+
+			if (stream.eof())
+			{
+				break;
+			}
+
+			HTTPRequestExecutors requestWrapper(&request);
+
+			state = this->serviceRequests(stream, request, response, [this, &requestWrapper, &responseWrapper, &executors]() { executorsManager->service(requestWrapper, responseWrapper, executors); });
+
+			if (state == ServiceState::error)
+			{
+				break;
+			}
+			else if (state == ServiceState::exception)
+			{
+				continue;
+			}
+
+			if (response)
+			{
+				state = this->serviceRequests(stream, request, response, [&stream, &response]() { stream << response; });
+			}
+
+			if (state == ServiceState::error)
 			{
 				break;
 			}
