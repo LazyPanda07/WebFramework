@@ -81,7 +81,7 @@ namespace framework
 			{
 				stream >> request;
 
-				if (stream.eof())
+				if (stream.eof()) // request may be empty
 				{
 					state = ServiceState::error;
 				}
@@ -111,7 +111,7 @@ namespace framework
 
 			for (const std::function<void(ServiceState&)>& task : chain)
 			{
-				ServiceState state = this->serviceRequests(stream, request, response, task);
+				ServiceState state = this->serviceRequests(stream, request, response, *resources, task);
 
 				if (state == ServiceState::success)
 				{

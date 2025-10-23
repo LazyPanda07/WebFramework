@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class ThreadPoolWebServer : 
+	class ThreadPoolWebServer :
 		public virtual BaseWebServer,
 		public ExecutorServer
 	{
@@ -19,13 +19,21 @@ namespace framework
 			streams::IOSocketStream stream;
 			ExecutorsManager::StatefulExecutors executors;
 			std::function<void()> cleanup;
+			std::function<ExecutorServer::ServiceState(streams::IOSocketStream& stream, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)> service;
 			sockaddr address;
 			bool isBusy;
 			bool webExceptionAcquired;
 			web::LargeBodyHandler* largeBodyHandler;
 
 		public:
-			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup, ThreadPoolWebServer& server, DWORD timeout);
+			Client
+			(
+				SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address,
+				std::function<void()>&& cleanup,
+				const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& task,
+				ThreadPoolWebServer& server,
+				DWORD timeout
+			);
 
 			Client(const Client&) = delete;
 
