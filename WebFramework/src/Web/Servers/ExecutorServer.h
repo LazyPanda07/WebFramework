@@ -19,7 +19,7 @@ namespace framework
 		enum class ServiceState
 		{
 			success,
-			exception,
+			skipResponse,
 			error
 		};
 
@@ -30,7 +30,7 @@ namespace framework
 		std::shared_ptr<ResourceExecutor> resources;
 
 	protected:
-		ServiceState serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, const std::function<void()>& task);
+		ServiceState serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, const std::function<void(ServiceState&)>& task);
 
 	public:
 		ExecutorServer

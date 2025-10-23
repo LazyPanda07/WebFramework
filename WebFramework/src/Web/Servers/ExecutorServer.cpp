@@ -12,13 +12,14 @@
 
 namespace framework
 {
-	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, const std::function<void()>& task)
+	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, const std::function<void(ServiceState&)>& task)
 	{
+		ServiceState result = ServiceState::success;
 		HTTPResponseExecutors responseWrapper(&response);
 
 		try
 		{
-			task();
+			task(result);
 		}
 		catch (const web::exceptions::WebException& e)
 		{
@@ -27,7 +28,7 @@ namespace framework
 				Log::error("Executors serve exception: {}", "LogExecutorServer", e.what());
 			}
 
-			return ServiceState::error;
+			result = ServiceState::error;
 		}
 		catch (const exceptions::BadRequestException& e) // 400
 		{
@@ -35,7 +36,7 @@ namespace framework
 
 			stream << response;
 
-			return ServiceState::exception;
+			result = ServiceState::skipResponse;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
@@ -43,7 +44,7 @@ namespace framework
 
 			stream << response;
 
-			return ServiceState::exception;
+			result = ServiceState::skipResponse;
 		}
 		catch (const exceptions::NotFoundException& e) // 404
 		{
@@ -51,7 +52,7 @@ namespace framework
 
 			stream << response;
 
-			return ServiceState::exception;
+			result = ServiceState::skipResponse;
 		}
 		catch (const exceptions::APIException& e)
 		{
@@ -65,7 +66,7 @@ namespace framework
 
 			stream << response;
 
-			return ServiceState::exception;
+			result = ServiceState::skipResponse;
 		}
 		catch (const exceptions::BaseExecutorException& e) // 500
 		{
@@ -78,7 +79,7 @@ namespace framework
 
 			stream << response;
 
-			return ServiceState::exception;
+			result = ServiceState::skipResponse;
 		}
 		catch (const std::exception& e)
 		{
@@ -106,7 +107,7 @@ namespace framework
 
 			stream << response;
 
-			return ServiceState::exception;
+			result = ServiceState::skipResponse;
 		}
 		catch (...)	// 500
 		{
@@ -114,10 +115,10 @@ namespace framework
 
 			stream << response;
 
-			return ServiceState::exception;
+			result = ServiceState::skipResponse;
 		}
 
-		return ServiceState::success;
+		return result;
 	}
 
 	ExecutorServer::ExecutorServer

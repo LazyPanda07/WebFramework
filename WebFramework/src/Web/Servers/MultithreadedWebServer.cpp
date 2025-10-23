@@ -65,56 +65,68 @@ namespace framework
 			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, std::chrono::milliseconds(timeout));
 		ExecutorsManager::StatefulExecutors executors;
 		HTTPResponseImplementation response;
+		HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 		HTTPResponseExecutors responseWrapper(&response);
 		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
+		bool finish = false;
 
 		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, executors);
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
 		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
 
+		std::vector<std::function<void(ServiceState&)>> chain =
+		{
+			[&stream, &request, &largeBodyHandler](ServiceState& state)
+			{
+				stream >> request;
+
+				state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
+			},
+			[this, &request, &responseWrapper, &executors](ServiceState& _)
+			{
+				HTTPRequestExecutors requestWrapper(&request);
+
+				executorsManager->service(requestWrapper, responseWrapper, executors);
+			},
+			[&stream, &response](ServiceState& _)
+			{
+				if (response)
+				{
+					stream << response;
+				}
+			}
+		};
+
 		while (isRunning)
 		{
-			HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
-			HTTPResponseExecutors responseWrapper(&response);
-
 			response.setDefault();
 
-			ServiceState state = this->serviceRequests(stream, request, response, [&stream, &request]() { stream >> request; });
-
-			if (state == ServiceState::error)
+			for (const std::function<void(ServiceState&)>& task : chain)
 			{
-				break;
-			}
-			else if (state == ServiceState::exception || largeBodyHandler.isRunning())
-			{
-				continue;
-			}
+				ServiceState state = this->serviceRequests(stream, request, response, task);
 
-			if (stream.eof())
-			{
-				break;
-			}
+				if (state == ServiceState::success)
+				{
+					continue;
+				}
+				else if (state == ServiceState::skipResponse)
+				{
+					break;
+				}
+				else if (state == ServiceState::error)
+				{
+					finish = true;
 
-			HTTPRequestExecutors requestWrapper(&request);
-
-			state = this->serviceRequests(stream, request, response, [this, &requestWrapper, &responseWrapper, &executors]() { executorsManager->service(requestWrapper, responseWrapper, executors); });
-
-			if (state == ServiceState::error)
-			{
-				break;
-			}
-			else if (state == ServiceState::exception)
-			{
-				continue;
+					break;
+				}
+				else
+				{
+					throw std::runtime_error("Wrong ServiceState: " + std::to_string(static_cast<int>(state)));
+				}
 			}
 
-			if (response)
-			{
-				state = this->serviceRequests(stream, request, response, [&stream, &response]() { stream << response; });
-			}
-
-			if (state == ServiceState::error)
+			if (finish)
 			{
 				break;
 			}
