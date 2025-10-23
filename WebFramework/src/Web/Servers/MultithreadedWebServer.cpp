@@ -81,7 +81,14 @@ namespace framework
 			{
 				stream >> request;
 
-				state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
+				if (stream.eof())
+				{
+					state = ServiceState::error;
+				}
+				else
+				{
+					state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
+				}
 			},
 			[this, &request, &responseWrapper, &executors](ServiceState& _)
 			{

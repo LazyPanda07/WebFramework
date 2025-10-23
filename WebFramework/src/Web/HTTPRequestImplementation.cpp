@@ -625,7 +625,7 @@ namespace framework
 
 		stream >> data;
 
-		request.parser.parse(data);
+		request.parser = web::HTTPParser(data);
 
 		return stream;
 	}
