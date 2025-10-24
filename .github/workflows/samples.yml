@@ -7,7 +7,7 @@ on:
   
   
 env:
-  FLUTTER_VERSION: 3.35.6
+  FLUTTER_VERSION: 3.35.7
   PYTHON_VERSION: 3.14
 
 
@@ -17,18 +17,23 @@ permissions:
 
 jobs:
   windows-visual-studio-build:
-   runs-on: windows-latest
+    runs-on: windows-latest
 
-   steps:
-   - uses: actions/checkout@v4
-     with:
+    steps:
+    - uses: actions/checkout@v4
+      with:
        submodules: recursive
    
-   - name: Setup MSBuild
-     uses: microsoft/setup-msbuild@v2
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
 
-   - name: Build VisualStudioSample
-     run: |
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build VisualStudioSample
+      run: |
          cd samples\VisualStudioSample
          msbuild VisualStudioSample.sln -property:Configuration=Release
 
