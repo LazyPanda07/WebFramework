@@ -1,10 +1,11 @@
 #pragma once
 
-#include <functional>
+#include <memory>
 
 #include <Strings.h>
 
 #include "Framework/WebFrameworkPlatform.h"
+#include "DynamicFunction.h"
 
 namespace framework
 {
@@ -26,5 +27,5 @@ namespace framework
 	/// @brief For cycle
 	/// @param arguments arguments[0] - start index, arguments[1] - index after end, arguments[2] - function name, arguments[3] - cycle step(optional parameter)
 	/// @return All data from function
-	std::string forWFDP(const std::vector<std::string>& arguments, const utility::strings::string_based_unordered_map<std::function<std::string(const std::vector<std::string>&)>>& dynamicPagesFunctions);
+	std::string forWFDP(const std::vector<std::string>& arguments, const utility::strings::string_based_unordered_map<std::unique_ptr<DynamicFunction>>& dynamicPagesFunctions);
 }

@@ -72,7 +72,8 @@ endif ()
 
 add_library(
 	${PROJECT_NAME} SHARED
-	WebFramework/src/Rendering/StandardWebFrameworkDynamicPagesFunctions.cpp
+	WebFramework/src/WFDP/StandardWebFrameworkDynamicPagesFunctions.cpp
+	WebFramework/src/WFDP/CXXDynamicFunction.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp
 	WebFramework/src/Rendering/MDRenderer.cpp
 	WebFramework/src/Runtimes/PythonRuntime.cpp

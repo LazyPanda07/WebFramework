@@ -166,7 +166,8 @@
     <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
     <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
-    <ClCompile Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.cpp" />
+    <ClCompile Include="src\WFDP\CXXDynamicFunction.cpp" />
+    <ClCompile Include="src\WFDP\StandardWebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
@@ -204,7 +205,9 @@
     <ClInclude Include="src\Managers\RuntimesManager.h" />
     <ClInclude Include="src\Rendering\MDRenderer.h" />
     <ClInclude Include="src\Rendering\WFDPRenderer.h" />
-    <ClInclude Include="src\Rendering\StandardWebFrameworkDynamicPagesFunctions.h" />
+    <ClInclude Include="src\WFDP\CXXDynamicFunction.h" />
+    <ClInclude Include="src\WFDP\DynamicFunction.h" />
+    <ClInclude Include="src\WFDP\StandardWebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
     <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
