@@ -1,5 +1,7 @@
 #include "PythonDynamicFunction.h"
 
+#ifdef __WITH_PYTHON_EXECUTORS__
+
 namespace py = pybind11;
 
 namespace framework
@@ -24,3 +26,5 @@ namespace framework
 		return functor(*args).cast<std::string>();
 	}
 }
+
+#endif

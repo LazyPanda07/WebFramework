@@ -17,16 +17,16 @@ namespace framework::load_balancer
 		useHTTPS(useHTTPS),
 		implementation(nullptr)
 	{
-		std::any temp = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().getClass(heuristicName.data(), source);
+		std::any temp = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().getClass(heuristicName, source);
 
 		if (!temp.has_value())
 		{
 			if (Log::isValid())
 			{
-				Log::fatalError("Can't find {}", "LogPythonHeuristic", 4, heuristicName);
+				Log::fatalError("Can't find {} in {}", "LogPythonHeuristic", 4, heuristicName, py::repr(std::get<py::module_>(source)).cast<std::string>());
 			}
 
-			throw std::runtime_error(std::format("Can't find {}", heuristicName));
+			throw std::runtime_error(std::format("Can't find {} in {}", heuristicName, py::repr(std::get<py::module_>(source)).cast<std::string>()));
 		}
 
 		implementation = new py::object(std::any_cast<py::object>(temp)(ip.data(), port.data(), useHTTPS));
