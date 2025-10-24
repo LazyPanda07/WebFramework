@@ -34,13 +34,6 @@ namespace framework::utility
 				return std::filesystem::path(std::format("{}/{}{}{}", absolutePath.string(), prefix, fileName.string(), extension)).make_preferred().string();
 			};
 
-#ifdef __LINUX__
-		if (fileName.string().find("lib") == std::string::npos)
-		{
-			prefix = "lib";
-		}
-#endif
-
 		if (hasExtension)
 		{
 			extension = absolutePath.extension().string();
@@ -51,6 +44,13 @@ namespace framework::utility
 			}
 			else
 			{
+#ifdef __LINUX__
+				if (fileName.string().find("lib") == std::string::npos)
+				{
+					prefix = "lib";
+				}
+#endif
+
 				type = LoadSourceType::dynamicLibrary;
 			}
 		}
@@ -66,6 +66,11 @@ namespace framework::utility
 			else
 			{
 #ifdef __LINUX__
+				if (fileName.string().find("lib") == std::string::npos)
+				{
+					prefix = "lib";
+				}
+
 				extension = ".so";
 #else
 				extension = ".dll";
