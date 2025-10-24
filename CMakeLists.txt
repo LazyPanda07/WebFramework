@@ -62,13 +62,16 @@ if (UNIX)
 	else()
 		add_link_options(-rdynamic)
 	endif()
-else ()
+elseif (WIN32)
 	add_definitions(-DNOMINMAX)
+	add_definitions(-DWIN32_LEAN_AND_MEAN)
 
 	set(COMPILE_TARGET Windows)
 
 	list(APPEND LIBS crypt32)
-endif ()
+else()
+	message(FATAL "Does not support ${CMAKE_SYSTEM_NAME}")
+endif()
 
 add_library(
 	${PROJECT_NAME} SHARED

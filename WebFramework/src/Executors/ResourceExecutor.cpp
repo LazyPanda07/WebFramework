@@ -6,6 +6,7 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
+#include "WFDP/CXXDynamicFunction.h"
 
 namespace framework
 {
@@ -158,9 +159,23 @@ namespace framework
 		wfdpRenderer.run(variables, data);
 	}
 
-	void ResourceExecutor::registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function)
+	void ResourceExecutor::registerDynamicFunction(std::string_view functionName, std::string_view apiType, const std::any& function)
 	{
-		wfdpRenderer.registerDynamicFunction(functionName, move(function));
+		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<DynamicFunction>(const std::any&)>> apiDynamicFunctions =
+		{
+			{ json_settings::cxxExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
+			{ json_settings::ccExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
+#ifdef __WITH_PYTHON_EXECUTORS__
+			{ json_settings::pythonExecutorKey, [](const std::any& function) { return nullptr; }},
+#endif
+		};
+
+		if (Log::isValid())
+		{
+			Log::info("Register function: {} from: ", "LogWFDP", functionName, apiType);
+		}
+
+		wfdpRenderer.registerDynamicFunction(functionName, apiDynamicFunctions.at(apiType)(function));
 	}
 
 	void ResourceExecutor::unregisterDynamicFunction(std::string_view functionName)

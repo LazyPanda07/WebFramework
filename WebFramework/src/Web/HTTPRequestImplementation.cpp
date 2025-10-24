@@ -11,6 +11,7 @@
 #include "Managers/DatabasesManager.h"
 #include "Databases/DatabaseImplementation.h"
 #include "Exceptions/APIException.h"
+#include "ExecutorsConstants.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)
@@ -359,10 +360,7 @@ namespace framework
 
 	void HTTPRequestImplementation::registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
-		dynamicResources.registerDynamicFunction
-		(
-			functionName,
-			[function, deleter](const std::vector<std::string>& arguments) -> std::string
+		std::function<std::string(const std::vector<std::string>&)> functor = [function, deleter](const std::vector<std::string>& arguments) -> std::string
 			{
 				const char** temp = new const char* [arguments.size()];
 
@@ -382,8 +380,9 @@ namespace framework
 				delete[] temp;
 
 				return result;
-			}
-		);
+			};
+
+		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, functor);
 	}
 
 	void HTTPRequestImplementation::unregisterWFDPFunction(const char* functionName)
@@ -526,7 +525,7 @@ namespace framework
 			data->errorMessage = exceptionData.errorMessage.data();
 			data->responseCode = exceptionData.responseCode;
 			data->logCategory = exceptionData.getLogCategory().data();
-			
+
 			exceptionData.valid = false;
 
 			return true;

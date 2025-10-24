@@ -6,6 +6,7 @@
 #include "WFDP/StandardWebFrameworkDynamicPagesFunctions.h"
 #include "WFDP/CXXDynamicFunction.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "ExecutorsConstants.h"
 
 #pragma warning(disable: 26800)
 
@@ -115,7 +116,7 @@ namespace framework
 			result.emplace_back
 			(
 				std::move(functionName),
-				utility::strings::split(std::string_view(line.data() + openBracket + 1, line.find(')') - openBracket - 1), argumentsDelimiter)
+				::utility::strings::split(std::string_view(line.data() + openBracket + 1, line.find(')') - openBracket - 1), argumentsDelimiter)
 			);
 
 			startLine = endLine;
@@ -192,9 +193,9 @@ namespace framework
 		}
 	}
 
-	void WFDPRenderer::registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function)
+	void WFDPRenderer::registerDynamicFunction(std::string_view functionName, std::unique_ptr<DynamicFunction>&& dynamicFunction)
 	{
-		dynamicPagesFunctions.emplace(functionName, std::make_unique<CXXDynamicFunction>(std::move(function)));
+		dynamicPagesFunctions.emplace(functionName, std::move(dynamicFunction));
 	}
 
 	void WFDPRenderer::unregisterDynamicFunction(std::string_view functionName)

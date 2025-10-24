@@ -43,7 +43,7 @@ namespace framework
 
 		void run(std::span<const interfaces::CVariable> variables, std::string& source);
 
-		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+		void registerDynamicFunction(std::string_view functionName, std::unique_ptr<DynamicFunction>&& dynamicFunction);
 
 		void unregisterDynamicFunction(std::string_view functionName);
 

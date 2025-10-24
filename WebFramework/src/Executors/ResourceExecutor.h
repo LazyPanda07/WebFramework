@@ -69,7 +69,7 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function) override;
+		void registerDynamicFunction(std::string_view functionName, std::string_view apiType, const std::any& function) override;
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
