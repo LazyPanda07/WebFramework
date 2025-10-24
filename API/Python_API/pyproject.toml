@@ -2,9 +2,6 @@
 requires = ["scikit-build-core[pyproject]"]
 build-backend = "scikit_build_core.build"
 
-[tool.scikit-build]
-wheel.py-api = "py3"
-
 [project]
 name = "web_framework_api"
 description = "Python API for WebFramework"
@@ -20,9 +17,18 @@ maintainers = [
 keywords = ["Web"]
 version = "3.1.3"
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+]
+
+[tool.scikit-build]
+wheel.py-api = "py3"
+sdist.include = [
+  "cxx/include/*.hpp",
+  "lib/*.so",
+  "dll/*.dll",
 ]
 
 [project.urls]

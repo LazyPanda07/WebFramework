@@ -33,6 +33,10 @@ endif(UNIX)
 
 project(web_framework_api VERSION 3.1.3)
 
+if (UNIX)
+    add_definitions(-D__LINUX__)
+endif()
+
 set(WEB_FRAMEWORK_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/../CXX_API/src" CACHE STRING "Path to include directory")
 
 include(FetchContent)
@@ -63,6 +67,7 @@ pybind11_add_module(
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
     include
+    cxx/include
     ${WEB_FRAMEWORK_INCLUDE_PATH}
 )
 
@@ -97,4 +102,12 @@ else()
 
     install(TARGETS ${PROJECT_NAME} DESTINATION .)
     install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pyi DESTINATION .)
+endif()
+
+if (EXISTS lib)
+    install(DIRECTORY lib/ DESTINATION .)
+endif()
+
+if (EXISTS dll)
+    install(DIRECTORY dll/ DESTINATION .)
 endif()

@@ -4,6 +4,7 @@
 #include <utility>
 #include <vector>
 #include <format>
+#include <fstream>
 
 #ifdef __LINUX__
 #include <dlfcn.h>

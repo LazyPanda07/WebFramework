@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <string>
+#include <cstdlib>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -28,7 +29,32 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	m.doc() = "Python API for WebFramework";
 
-	m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
+	m.def
+	(
+		"initialize_web_framework",
+		[](std::string_view pathToDLL)
+		{
+			py::module_ os = py::module_::import("os");
+			py::module_ sys = py::module_::import("sys");
+			std::string separator = os.attr("pathsep").cast<std::string>();
+			py::list dirs = sys.attr("path").cast<py::list>();
+			std::string path = std::getenv("PATH");
+
+			for (py::handle temp : dirs)
+			{
+				path = std::format("{}{}{}", temp.cast<std::string>(), separator, path);
+			}
+
+#ifdef __LINUX__
+			putenv(std::format("PATH={}", path).data());
+#else
+			_putenv_s("PATH", path.data());
+#endif
+
+			framework::utility::initializeWebFramework(pathToDLL);
+		},
+		"path_to_dll"_a = ""
+	);
 	m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
 	m.def("generate_uuid", &framework::utility::uuid::generateUUID);
 

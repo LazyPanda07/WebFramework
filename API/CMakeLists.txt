@@ -28,7 +28,21 @@ if (${BUILD_PYTHON_API})
 		PATTERN "out" EXCLUDE
 		PATTERN ".vs" EXCLUDE
 	)
-	install(DIRECTORY ${CXX_API_INSTALL_DESTINATION}/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/python_api/include)
+	install(DIRECTORY ${CXX_API_INSTALL_DESTINATION}/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/python_api/cxx/include)
+	if (UNIX)
+		install(
+			CODE [[
+				execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/api/python_api/lib)
+			]]
+		)
+	elseif (WIN32)
+		install(
+			CODE [[
+				execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/dll ${CMAKE_INSTALL_PREFIX}/api/python_api/dll)
+			]]
+		)
+	endif()
+	
 	install(
 		CODE [[
 			execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/license ${CMAKE_INSTALL_PREFIX}/api/python_api/license)

@@ -130,6 +130,14 @@ add_library(
 	WebFramework/src/Executors/PythonExecutor.cpp
 )
 
+# Used in Python API install
+install(
+	TARGETS ${PROJECT_NAME}
+	ARCHIVE DESTINATION lib
+	LIBRARY DESTINATION lib
+	RUNTIME DESTINATION dll
+)
+
 if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 endif()
@@ -192,13 +200,6 @@ target_link_libraries(
 	${PROJECT_NAME}
 	${LIBS}
 	${ADDITIONAL_LIBS}
-)
-
-install(
-	TARGETS ${PROJECT_NAME}
-	ARCHIVE DESTINATION lib
-	LIBRARY DESTINATION lib
-	RUNTIME DESTINATION dll
 )
 
 install(FILES WebFrameworkConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
