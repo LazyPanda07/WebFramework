@@ -46,7 +46,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			}
 
 #ifdef __LINUX__
-			putenv(std::format("PATH={}", path).data());
+			putenv(std::format("LD_LIBRARY_PATH={}", path).data());
 #else
 			_putenv_s("PATH", path.data());
 #endif
