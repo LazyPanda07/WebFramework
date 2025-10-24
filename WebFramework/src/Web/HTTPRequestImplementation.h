@@ -212,6 +212,8 @@ namespace framework
 		/// @param function Function implementation
 		void registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) override;
 
+		void registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass) override;
+
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
 		void unregisterWFDPFunction(const char* functionName) override;

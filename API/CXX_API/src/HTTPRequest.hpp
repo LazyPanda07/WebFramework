@@ -215,6 +215,11 @@ namespace framework
 		/// @param function Function implementation
 		void registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 
+		/**
+		 * @brief Internal use only
+		 */
+		void registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass);
+
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
 		void unregisterWFDPFunction(std::string_view functionName);
@@ -703,6 +708,11 @@ namespace framework
 	inline void HTTPRequest::registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
 		implementation->registerWFDPFunction(functionName.data(), function, deleter);
+	}
+
+	inline void HTTPRequest::registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass)
+	{
+		implementation->registerWFDPFunctionClass(functionName.data(), apiType.data(), functionClass);
 	}
 
 	inline void HTTPRequest::unregisterWFDPFunction(std::string_view functionName)

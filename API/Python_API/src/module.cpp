@@ -18,6 +18,7 @@
 #include "Executors/PyHeavyOperationStatefulExecutor.h"
 #include "PyChunkGenerator.h"
 #include "PyLoadBalancerHeuristic.h"
+#include "PyDynamicFunction.h"
 
 namespace py = pybind11;
 
@@ -254,6 +255,10 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("__getitem__", &framework::Database::getTable, "table_name"_a)
 		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a);
 
+	py::class_<framework::IDynamicFunction, framework::PyDynamicFunction>(m, "DynamicFunction")
+		.def(py::init())
+		.def("__call__", &framework::IDynamicFunction::operator());
+
 	m.def
 	(
 		"make_sql_values",
@@ -382,24 +387,22 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("send_static_file", &framework::HTTPRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
 		.def("send_wfdp_file", &framework::HTTPRequest::sendWFDPFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
 		.def("stream_file", &framework::HTTPRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHTTPRequest::defaultChunkSize)
-		/*.def
+		.def
 		(
 			"register_wfdp_function",
-			[](framework::HTTPRequest& self, std::string_view functionName, const std::function<const char*(const char**, size_t)>& function)
+			[](framework::HTTPRequest& self, std::string_view functionName, py::type functionClass)
 			{
-				auto inner = [](const char** args, size_t size) -> const char*
-					{
-						return nullptr;
-					};
-				auto deleter = [](char* result)
-					{
+				py::type dynamicFunctionClass = py::module_::import("web_framework_api").attr("DynamicFunction");
 
-					};
+				if (!py::module_::import("builtins").attr("issubclass")(functionClass, dynamicFunctionClass).cast<bool>())
+				{
+					throw std::runtime_error(std::format("Class {} is not subclass of {}", py::repr(functionClass).cast<std::string>(), py::repr(dynamicFunctionClass).cast<std::string>()));
+				}
 
-				self.registerWFDPFunction(functionName, inner, deleter);
+				self.registerWFDPFunctionClass(functionName, "python", &functionClass);
 			},
-			"function_name"_a, "function"_a
-		)*/
+			"function_name"_a, "function_class"_a
+		)
 		.def("unregister_wfdp_function", &framework::HTTPRequest::unregisterWFDPFunction, "function_name"_a)
 		.def("is_wfdp_function_registered", &framework::HTTPRequest::isWFDPFunctionRegistered, "function_name"_a)
 		.def("get_file", &framework::HTTPRequest::getFile, "file_path"_a)

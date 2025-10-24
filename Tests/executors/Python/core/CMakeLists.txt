@@ -4,3 +4,4 @@ project(CoreExecutors)
 
 install(FILES ${PROJECT_NAME}.py DESTINATION .)
 install(FILES TextGenerator.py DESTINATION .)
+install(FILES CustomFunction.py DESTINATION .)

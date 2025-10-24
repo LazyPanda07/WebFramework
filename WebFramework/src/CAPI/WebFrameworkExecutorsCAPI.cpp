@@ -440,6 +440,22 @@ void registerWFDPFunction(HTTPRequestObject request, const char* functionName, c
 	}
 }
 
+void registerWFDPFunctionClass(HTTPRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->registerWFDPFunctionClass(functionName, apiType, functionClass);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
 void unregisterWFDPFunction(HTTPRequestObject request, const char* functionName, Exception* exception)
 {
 	try

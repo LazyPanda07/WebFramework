@@ -1,6 +1,9 @@
+from multiprocessing.reduction import register
+
 from web_framework_api import *
 
 from TextGenerator import TextGenerator
+from CustomFunction import CustomFunction
 
 
 class HelloExecutor(StatelessExecutor):
@@ -49,8 +52,7 @@ class AssetsExecutor(StatelessExecutor):
         request.send_wfdp_file(f"{request.get_json()["fileName"]}.wfdp", response, request.get_query_parameters())
 
     def do_post(self, request, response):
-        # TODO: register custom function
-        pass
+        request.register_wfdp_function("customFunction", CustomFunction)
 
     def do_delete(self, request, response):
         request.unregister_wfdp_function("custom_function")

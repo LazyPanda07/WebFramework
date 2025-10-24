@@ -385,6 +385,16 @@ namespace framework
 		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, functor);
 	}
 
+	void HTTPRequestImplementation::registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass)
+	{
+#ifdef __WITH_PYTHON_EXECUTORS__
+		if (apiType == json_settings::pythonExecutorKey)
+		{
+			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
+		}
+#endif
+	}
+
 	void HTTPRequestImplementation::unregisterWFDPFunction(const char* functionName)
 	{
 		dynamicResources.unregisterDynamicFunction(functionName);

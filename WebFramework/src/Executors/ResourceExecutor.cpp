@@ -8,6 +8,10 @@
 #include "Exceptions/BadRequestException.h"
 #include "WFDP/CXXDynamicFunction.h"
 
+#ifdef __WITH_PYTHON_EXECUTORS__
+#include "WFDP/PythonDynamicFunction.h"
+#endif
+
 namespace framework
 {
 	void ResourceExecutor::loadHTMLErrorsData()
@@ -166,7 +170,7 @@ namespace framework
 			{ json_settings::cxxExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
 			{ json_settings::ccExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, [](const std::any& function) { return nullptr; }},
+			{ json_settings::pythonExecutorKey, [](const std::any& function) { return std::make_unique<PythonDynamicFunction>(std::any_cast<void*>(function)); }},
 #endif
 		};
 

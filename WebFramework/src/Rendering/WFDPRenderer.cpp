@@ -134,6 +134,11 @@ namespace framework
 		{
 			try
 			{
+				if (Log::isValid())
+				{
+					Log::info("Call {} function", "LogWFDP", functionName);
+				}
+
 				result += (*dynamicPagesFunctions.at(functionName))(arguments);
 			}
 			catch (const std::exception& e)

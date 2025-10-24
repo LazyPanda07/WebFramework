@@ -56,6 +56,8 @@ EXPORT uint16_t getServerPort(HTTPRequestObject request, Exception* exception);
 
 EXPORT void registerWFDPFunction(HTTPRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
 
+EXPORT void registerWFDPFunctionClass(HTTPRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
+
 EXPORT void unregisterWFDPFunction(HTTPRequestObject request, const char* functionName, Exception* exception);
 
 EXPORT bool isWFDPFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception);

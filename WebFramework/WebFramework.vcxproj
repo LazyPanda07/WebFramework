@@ -167,6 +167,7 @@
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
     <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
     <ClCompile Include="src\WFDP\CXXDynamicFunction.cpp" />
+    <ClCompile Include="src\WFDP\PythonDynamicFunction.cpp" />
     <ClCompile Include="src\WFDP\StandardWebFrameworkDynamicPagesFunctions.cpp" />
     <ClCompile Include="src\Exceptions\CantFindFunctionException.cpp" />
     <ClCompile Include="src\Exceptions\CantLoadSourceException.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="src\Rendering\WFDPRenderer.h" />
     <ClInclude Include="src\WFDP\CXXDynamicFunction.h" />
     <ClInclude Include="src\WFDP\DynamicFunction.h" />
+    <ClInclude Include="src\WFDP\PythonDynamicFunction.h" />
     <ClInclude Include="src\WFDP\StandardWebFrameworkDynamicPagesFunctions.h" />
     <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
     <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
