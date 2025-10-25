@@ -6,6 +6,7 @@ add_library(
 	${PROJECT_NAME} STATIC
 	src/Exceptions/BaseWebFrameworkException.cpp
 	src/Managers/SessionsManager.cpp
+	src/Utility/Stopwatch.cpp
 )
 
 if (${WITH_UNITY_BUILD})

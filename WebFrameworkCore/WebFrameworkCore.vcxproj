@@ -101,6 +101,7 @@
     <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h" />
     <ClInclude Include="src\Managers\SessionsManager.h" />
     <ClInclude Include="src\Utility\ChunkGenerator.h" />
+    <ClInclude Include="src\Utility\Stopwatch.h" />
     <ClInclude Include="src\WebFrameworkCoreConstants.h" />
     <ClInclude Include="src\WebInterfaces\IDynamicFile.h" />
     <ClInclude Include="src\WebInterfaces\IFile.h" />
@@ -111,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
+    <ClCompile Include="src\Utility\Stopwatch.cpp" />
     <ClCompile Include="src\WebInterfaces\IHTTPResponse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

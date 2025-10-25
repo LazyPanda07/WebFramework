@@ -6,6 +6,7 @@
 
 #include "Web/HTTPResponseImplementation.h"
 #include "Web/HTTPResponseExecutors.h"
+#include "Utility/Stopwatch.h"
 
 #include "Heuristics/Connections.h"
 #include "Heuristics/CXXHeuristic.h"
@@ -196,6 +197,7 @@ namespace framework::load_balancer
 
 		while (isRunning)
 		{
+			utility::Stopwatch stopwatch;
 			std::vector<size_t> removeIndices;
 
 			for (size_t i = 0; i < requests.size(); i++)
@@ -286,6 +288,11 @@ namespace framework::load_balancer
 				{
 					break;
 				}
+			}
+
+			if (std::chrono::microseconds elapsed = stopwatch.elapsed(); elapsed < threshold)
+			{
+				std::this_thread::sleep_for(threshold - elapsed);
 			}
 		}
 	}
@@ -397,10 +404,9 @@ namespace framework::load_balancer
 		),
 		requestQueues(processingThreads),
 		resources(resources),
+		threshold(decltype(threshold)::period::den / loadBalancingTargetRPS * processingThreads),
 		serversHTTPS(serversHTTPS)
 	{
-		// TODO: add RPS
-
 		const std::string& heuristicName = heuristic.getString("name");
 		std::string apiType = heuristic.getString(json_settings::apiTypeKey);
 

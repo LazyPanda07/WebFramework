@@ -1,14 +1,15 @@
 #include "ThreadPoolWebServer.h"
 
-#include "Log.h"
+#include <Log.h>
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/NotFoundException.h"
 #include "Exceptions/SSLException.h"
-#include <Exceptions/APIException.h>
+#include "Exceptions/APIException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "HTTPSNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
+#include "Utility/Stopwatch.h"
 
 namespace framework
 {
@@ -124,7 +125,7 @@ namespace framework
 									}
 								);
 							}
-							
+
 							if (state == ServiceState::error)
 							{
 								webExceptionAcquired = true;
@@ -185,6 +186,7 @@ namespace framework
 	{
 		for (size_t i = 0; i < clients.size();)
 		{
+			utility::Stopwatch stopwatch;
 			Client* client = clients[i];
 
 			bool finished = client->serve
@@ -212,6 +214,11 @@ namespace framework
 			else
 			{
 				i++;
+			}
+
+			if (std::chrono::microseconds elapsed = stopwatch.elapsed(); elapsed < threshold)
+			{
+				std::this_thread::sleep_for(threshold - elapsed);
 			}
 		}
 	}
@@ -292,8 +299,9 @@ namespace framework
 			additionalSettings,
 			resourcesThreadPool
 		),
-		threadPool(numberOfThreads)
+		threadPool(numberOfThreads),
+		threshold(decltype(threshold)::period::den / targetRPS)
 	{
-		// TODO: add RPS
+		
 	}
 }

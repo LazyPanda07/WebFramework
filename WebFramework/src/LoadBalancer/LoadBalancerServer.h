@@ -1,11 +1,13 @@
 #pragma once
 
-#include "Framework/WebFrameworkPlatform.h"
+#include "Web/Servers/BaseWebServer.h"
+
+#include <chrono>
 
 #include <MultiLocalizationManager.h>
 #include <IOSocketStream.h>
 
-#include "Web/Servers/BaseWebServer.h"
+#include "Framework/WebFrameworkPlatform.h"
 #include "Heuristics/BaseLoadBalancerHeuristic.h"
 #include "Executors/ResourceExecutor.h"
 
@@ -71,6 +73,7 @@ namespace framework::load_balancer
 		std::vector<std::future<void>> threads;
 		threading::utility::ConcurrentQueue<LoadBalancerRequest> queuedRequests;
 		std::shared_ptr<ResourceExecutor> resources;
+		std::chrono::microseconds threshold;
 		bool serversHTTPS;
 
 	private:

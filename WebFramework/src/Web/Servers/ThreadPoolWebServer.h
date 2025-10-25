@@ -3,6 +3,8 @@
 #include "BaseWebServer.h"
 #include "ExecutorServer.h"
 
+#include <chrono>
+
 #include "ThreadPool.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 
@@ -60,6 +62,7 @@ namespace framework
 	private:
 		threading::ThreadPool threadPool;
 		std::vector<Client*> clients;
+		std::chrono::microseconds threshold;
 
 	private:
 		void serveClients();
