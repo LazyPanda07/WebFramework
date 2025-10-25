@@ -45,6 +45,7 @@ namespace json_settings
 	inline constexpr std::string_view loadSourceKey = "loadSource";
 	inline constexpr std::string_view serversHTTPSKey = "serversHTTPS";
 	inline constexpr std::string_view processingThreadsKey = "processingThreads";
+	inline constexpr std::string_view loadBalancingTargetRPSKey = "loadBalancingTarget";
 
 	inline constexpr std::string_view usingLoggingKey = "usingLogging";
 	inline constexpr std::string_view logsPathKey = "logsPath";
@@ -52,6 +53,7 @@ namespace json_settings
 	inline constexpr std::string_view duplicateErrorOutputKey = "duplicateErrorOutput";
 
 	inline constexpr std::string_view threadCountKey = "threadCount";
+	inline constexpr std::string_view targetRPSKey = "targetRPS";
 }
 
 namespace exceptions
@@ -78,6 +80,8 @@ namespace json_settings_values
 {
 	inline constexpr size_t largeBodySizeThresholdValue = 165 * 1024 * 1024;
 	inline constexpr size_t largeBodyPacketSizeValue = 11 * 1024 * 1024;
+	inline constexpr uint32_t targetRPSValue = 5000;
+	inline constexpr uint32_t loadBalancingTargetRPSValue = 5000;
 
 	inline constexpr std::string_view multiThreadedWebServerTypeValue = "multiThreaded";
 	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";

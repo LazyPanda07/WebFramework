@@ -271,7 +271,8 @@ namespace framework
 		DWORD timeout,
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
-		size_t numberOfThreads,
+		uint32_t numberOfThreads,
+		uint32_t targetRPS,
 		std::shared_ptr<threading::ThreadPool> resourcesThreadPool
 	) :
 		BaseTCPServer
@@ -293,6 +294,6 @@ namespace framework
 		),
 		threadPool(numberOfThreads)
 	{
-
+		// TODO: add RPS
 	}
 }

@@ -99,7 +99,8 @@ namespace framework::load_balancer
 			const json::utility::jsonObject& heuristic, utility::LoadSource loadSource,
 			const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 			std::shared_ptr<ResourceExecutor> resources,
-			size_t processingThreads
+			uint32_t processingThreads,
+			uint32_t loadBalancingTargetRPS
 		);
 
 		~LoadBalancerServer() = default;
