@@ -420,7 +420,7 @@ namespace framework::load_balancer
 			false
 		),
 		requestQueues(processingThreads),
-		processingClients(processingThreads, 0),
+		processingClients(processingThreads),
 		resources(resources),
 		threshold(decltype(threshold)::period::den / loadBalancingTargetRPS * processingThreads),
 		serversHTTPS(serversHTTPS)
@@ -434,6 +434,8 @@ namespace framework::load_balancer
 		}
 
 		this->allServers.reserve(allServers.size());
+
+		std::ranges::for_each(processingClients, [](std::atomic_int64_t& value) { value = 0; });
 
 		for (const auto& [ip, ports] : allServers)
 		{
