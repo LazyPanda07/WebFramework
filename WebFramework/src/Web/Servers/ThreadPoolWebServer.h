@@ -62,7 +62,6 @@ namespace framework
 	private:
 		threading::ThreadPool threadPool;
 		std::vector<Client*> clients;
-		std::chrono::microseconds threshold;
 
 	private:
 		void serveClients();
@@ -83,7 +82,6 @@ namespace framework
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,
 			uint32_t numberOfThreads,
-			uint32_t targetRPS,
 			std::shared_ptr<threading::ThreadPool> resourcesThreadPool
 		);
 

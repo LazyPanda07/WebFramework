@@ -323,12 +323,10 @@ namespace framework
 		{
 			json::utility::jsonObject threadPoolServerObject;
 			uint32_t threadPoolThreads = 1;
-			uint32_t targetRPS = json_settings_values::targetRPSValue;
-
+			
 			if ((*config).tryGetObject(json_settings::threadPoolServerObject, threadPoolServerObject))
 			{
 				(*config).tryGet<uint32_t>(json_settings::threadCountKey, threadPoolThreads);
-				(*config).tryGet<uint32_t>(json_settings::targetRPSKey, targetRPS);
 			}
 
 			server = make_unique<ThreadPoolWebServer>
@@ -341,7 +339,6 @@ namespace framework
 					pathToSources,
 					additionalSettings,
 					threadPoolThreads,
-					targetRPS,
 					threadPool
 				);
 		}
@@ -354,11 +351,12 @@ namespace framework
 			const json::utility::jsonObject& listOfServers = loadBalancerSettings.getObject(json_settings::listOfServersKey);
 			std::unordered_map<std::string, std::vector<int64_t>> allServers;
 			uint64_t processingThreads = 1;
-			uint64_t loadBalancingTargetRPS = json_settings_values::loadBalancingTargetRPSValue;
+			uint64_t targetRPS = json_settings_values::targetRPSValue;
 
 			loadBalancerSettings.tryGetString(json_settings::loadSourceKey, loadSource);
 			loadBalancerSettings.tryGetUnsignedInt(json_settings::processingThreadsKey, processingThreads);
-			loadBalancerSettings.tryGetUnsignedInt(json_settings::loadBalancingTargetRPSKey, loadBalancingTargetRPS);
+			loadBalancerSettings.tryGetUnsignedInt(json_settings::targetRPSKey, targetRPS);
+
 			
 			if (!loadBalancerSettings.tryGetObject(json_settings::heuristicKey, heuristic))
 			{
@@ -386,7 +384,7 @@ namespace framework
 					allServers,
 					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
 					static_cast<uint32_t>(processingThreads),
-					static_cast<uint32_t>(loadBalancingTargetRPS)
+					static_cast<uint32_t>(targetRPS)
 				);
 		}
 		else if (webServerType == json_settings_values::proxyWebServerTypeValue)

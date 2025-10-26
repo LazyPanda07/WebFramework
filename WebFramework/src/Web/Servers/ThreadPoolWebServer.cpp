@@ -9,7 +9,6 @@
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "HTTPSNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
-#include "Utility/Stopwatch.h"
 
 namespace framework
 {
@@ -184,12 +183,8 @@ namespace framework
 
 	void ThreadPoolWebServer::serveClients()
 	{
-		utility::Stopwatch stopwatch;
-
 		for (size_t i = 0; i < clients.size();)
 		{
-			stopwatch.restart();
-
 			Client* client = clients[i];
 
 			bool finished = client->serve
@@ -217,11 +212,6 @@ namespace framework
 			else
 			{
 				i++;
-			}
-
-			if (std::chrono::microseconds elapsed = stopwatch.elapsed(); elapsed < threshold)
-			{
-				std::this_thread::sleep_for(threshold - elapsed);
 			}
 		}
 	}
@@ -282,7 +272,6 @@ namespace framework
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
 		uint32_t numberOfThreads,
-		uint32_t targetRPS,
 		std::shared_ptr<threading::ThreadPool> resourcesThreadPool
 	) :
 		BaseTCPServer
@@ -302,9 +291,8 @@ namespace framework
 			additionalSettings,
 			resourcesThreadPool
 		),
-		threadPool(numberOfThreads),
-		threshold(decltype(threshold)::period::den / targetRPS)
+		threadPool(numberOfThreads)
 	{
-		
+
 	}
 }

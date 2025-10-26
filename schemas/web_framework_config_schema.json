@@ -76,7 +76,7 @@
           },
           "additionalProperties": false
         },
-        "loadBalancingTargetRPS": {
+        "targetRPS": {
           "type": "integer",
           "description": "Target RPS for load balancing server across all processingThreads",
           "default": 5000
@@ -282,11 +282,6 @@
         "threadCount": {
           "type": "integer",
           "description": "Number of threads in thread pool(0 means all CPU threads)"
-        },
-        "targetRPS": {
-          "type": "integer",
-          "description": "Target server RPS",
-          "default": 5000
         }
       }
     }
