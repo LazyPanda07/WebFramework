@@ -184,9 +184,12 @@ namespace framework
 
 	void ThreadPoolWebServer::serveClients()
 	{
+		utility::Stopwatch stopwatch;
+
 		for (size_t i = 0; i < clients.size();)
 		{
-			utility::Stopwatch stopwatch;
+			stopwatch.restart();
+
 			Client* client = clients[i];
 
 			bool finished = client->serve

@@ -43,7 +43,7 @@ namespace framework::load_balancer
 		}
 	}
 
-	bool LoadBalancerServer::receiveClientRequest(LoadBalancerRequest& request, std::string & httpRequest)
+	bool LoadBalancerServer::receiveClientRequest(LoadBalancerRequest& request, std::string& httpRequest)
 	{
 		try
 		{
@@ -193,11 +193,15 @@ namespace framework::load_balancer
 
 	void LoadBalancerServer::processing(size_t index)
 	{
-		std::vector<LoadBalancerRequest>& requests = requestQueues[index];
+		threading::utility::ConcurrentQueue<LoadBalancerRequest>& queuedRequests = requestQueues[index];
+		std::atomic_int64_t& currentSize = processingClients[index];
+		std::vector<LoadBalancerRequest> requests;
+		utility::Stopwatch stopwatch;
 
 		while (isRunning)
 		{
-			utility::Stopwatch stopwatch;
+			stopwatch.restart();
+
 			std::vector<size_t> removeIndices;
 
 			for (size_t i = 0; i < requests.size(); i++)
@@ -276,18 +280,15 @@ namespace framework::load_balancer
 				it->heuristic->onEnd();
 
 				requests.erase(it);
+
+				currentSize--;
 			}
 
-			while (true)
+			size_t queuedSize = queuedRequests.size();
+
+			for (size_t i = 0; i < queuedSize; i++)
 			{
-				if (std::optional<LoadBalancerRequest> request = queuedRequests.pop())
-				{
-					requests.emplace_back(std::move(*request));
-				}
-				else
-				{
-					break;
-				}
+				requests.emplace_back(std::move(*queuedRequests.pop()));
 			}
 
 			if (std::chrono::microseconds elapsed = stopwatch.elapsed(); elapsed < threshold)
@@ -374,13 +375,29 @@ namespace framework::load_balancer
 			ssl ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, timeoutInMilliseconds),
 			serversHTTPS ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
 			heuristic,
-			move(cleanup)
+			std::move(cleanup)
 		);
 		std::string httpRequest;
 
 		if (LoadBalancerServer::receiveClientRequest(request, httpRequest) && LoadBalancerServer::sendClientRequest(request, httpRequest))
 		{
-			queuedRequests.push(std::move(request));
+			int64_t minValue = processingClients[0].load(std::memory_order_relaxed);
+			size_t minIndex = 0;
+
+			for (size_t i = 1; i < processingClients.size(); i++)
+			{
+				int64_t value = processingClients[i].load(std::memory_order_relaxed);
+
+				if (value < minValue)
+				{
+					minValue = value;
+					minIndex = i;
+				}
+			}
+
+			requestQueues[minIndex].push(std::move(request));
+
+			processingClients[minIndex]++;
 		}
 	}
 
@@ -388,7 +405,7 @@ namespace framework::load_balancer
 	(
 		std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
 		const json::utility::jsonObject& heuristic, utility::LoadSource loadSource,
-		const std::unordered_map<std::string, std::vector<int64_t>>& allServers, //-V688
+		const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 		std::shared_ptr<ResourceExecutor> resources,
 		uint32_t processingThreads,
 		uint32_t loadBalancingTargetRPS
@@ -403,6 +420,7 @@ namespace framework::load_balancer
 			false
 		),
 		requestQueues(processingThreads),
+		processingClients(processingThreads, 0),
 		resources(resources),
 		threshold(decltype(threshold)::period::den / loadBalancingTargetRPS * processingThreads),
 		serversHTTPS(serversHTTPS)

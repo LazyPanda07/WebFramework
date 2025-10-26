@@ -257,7 +257,7 @@ jobs:
       uses: subosito/flutter-action@v2.16.0
       with:
         channel: stable
-        FLUTTER_VERSION: ${{ env.FLUTTER_VERSION }}
+        flutter-version: ${{ env.FLUTTER_VERSION }}
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0

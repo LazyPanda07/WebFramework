@@ -69,9 +69,9 @@ namespace framework::load_balancer
 
 	private:
 		std::vector<ServerData> allServers;
-		std::vector<std::vector<LoadBalancerRequest>> requestQueues;
+		std::vector<threading::utility::ConcurrentQueue<LoadBalancerRequest>> requestQueues;
+		std::vector<std::atomic_int64_t> processingClients;
 		std::vector<std::future<void>> threads;
-		threading::utility::ConcurrentQueue<LoadBalancerRequest> queuedRequests;
 		std::shared_ptr<ResourceExecutor> resources;
 		std::chrono::microseconds threshold;
 		bool serversHTTPS;
