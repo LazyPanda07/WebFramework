@@ -1,7 +1,7 @@
 #include <Executors/BaseExecutor.h>
 
 #include <JSONBuilder.h>
-#include <JSONParser.h>
+#include <JsonParser.h>
 #include <Utility/WebFrameworkLocalization.h>
 
 DEFINE_DEFAULT_EXECUTOR(LocalizationExecutor, STATELESS_EXECUTOR);

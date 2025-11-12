@@ -2,8 +2,8 @@
 #include <format>
 
 #include "gtest/gtest.h"
-#include "HTTPBuilder.h"
-#include "HTTPParser.h"
+#include "HttpBuilder.h"
+#include "HttpParser.h"
 
 #include "settings.h"
 #include "utilities.h"

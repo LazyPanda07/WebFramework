@@ -1,17 +1,17 @@
 #include <fstream>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "HTTPBuilder.h"
-#include "HTTPParser.h"
-#include "Strings.h"
+#include <HttpBuilder.h>
+#include <HttpParser.h>
+#include <Strings.h>
 
 #include "utilities.h"
 
 TEST(ResourceLoading, StreamFile)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parameters("download").build();
+	std::string request = web::HttpBuilder().getRequest().parameters("download").build();
 	std::string result = (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str();
 	std::string response;
 
@@ -19,7 +19,7 @@ TEST(ResourceLoading, StreamFile)
 
 	stream >> response;
 
-	std::unique_ptr<web::HTTPParser> parser = std::make_unique<web::HTTPParser>(response);
+	std::unique_ptr<web::HttpParser> parser = std::make_unique<web::HttpParser>(response);
 
 	ASSERT_EQ(parser->getBody(), result);
 
@@ -31,7 +31,7 @@ TEST(ResourceLoading, StreamFile)
 
 	stream >> response;
 
-	parser = std::make_unique<web::HTTPParser>(response);
+	parser = std::make_unique<web::HttpParser>(response);
 
 	ASSERT_EQ(parser->getBody(), result);
 
@@ -41,14 +41,14 @@ TEST(ResourceLoading, StreamFile)
 TEST(ResourceLoading, Index)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parameters("index.html").build();
+	std::string request = web::HttpBuilder().getRequest().parameters("index.html").build();
 	std::string response;
 
 	stream << request;
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str());
+	ASSERT_EQ(web::HttpParser(response).getBody(), (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str());
 }
 
 TEST(ResourceLoading, PageMD)
@@ -58,25 +58,25 @@ TEST(ResourceLoading, PageMD)
 	std::string md;
 
 	{
-		std::string request = web::HTTPBuilder().getRequest().parameters("page.html").build();
+		std::string request = web::HttpBuilder().getRequest().parameters("page.html").build();
 		std::string response;
 
 		stream << request;
 
 		stream >> response;
 
-		html = utility::strings::replaceAll(web::HTTPParser(response).getBody(), "\r", "");
+		html = utility::strings::replaceAll(web::HttpParser(response).getBody(), "\r", "");
 	}
 
 	{
-		std::string request = web::HTTPBuilder().getRequest().parameters("page.md").build();
+		std::string request = web::HttpBuilder().getRequest().parameters("page.md").build();
 		std::string response;
 
 		stream << request;
 
 		stream >> response;
 
-		md = web::HTTPParser(response).getBody();
+		md = web::HttpParser(response).getBody();
 	}
 
 	ASSERT_EQ(html, md) << html << std::endl << md;
@@ -87,9 +87,9 @@ TEST(ResourceLoading, DynamicResources)
 	streams::IOSocketStream stream = utility::createSocketStream();
 
 	{
-		std::string request = web::HTTPBuilder().postRequest().parameters("dynamic_resources").build
+		std::string request = web::HttpBuilder().postRequest().parameters("dynamic_resources").build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("data", "Hello, World!")
+			json::JsonBuilder(CP_UTF8).append("data", "Hello, World!")
 		);
 		std::string response;
 
@@ -97,7 +97,7 @@ TEST(ResourceLoading, DynamicResources)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getBody(), "Hello, World!");
+		ASSERT_EQ(web::HttpParser(response).getBody(), "Hello, World!");
 	}
 
 	{
@@ -106,25 +106,25 @@ TEST(ResourceLoading, DynamicResources)
 		std::string md;
 
 		{
-			std::string request = web::HTTPBuilder().getRequest().parameters("dynamic_resources").build();
+			std::string request = web::HttpBuilder().getRequest().parameters("dynamic_resources").build();
 			std::string response;
 
 			stream << request;
 
 			stream >> response;
 
-			html = utility::strings::replaceAll(web::HTTPParser(response).getBody(), "\r", "");
+			html = utility::strings::replaceAll(web::HttpParser(response).getBody(), "\r", "");
 		}
 
 		{
-			std::string request = web::HTTPBuilder().getRequest().parameters("page.md").build();
+			std::string request = web::HttpBuilder().getRequest().parameters("page.md").build();
 			std::string response;
 
 			stream << request;
 
 			stream >> response;
 
-			md = web::HTTPParser(response).getBody();
+			md = web::HttpParser(response).getBody();
 		}
 
 		ASSERT_EQ(html, md) << html << std::endl << md;

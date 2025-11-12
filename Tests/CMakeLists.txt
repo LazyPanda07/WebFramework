@@ -42,6 +42,8 @@ add_definitions(-DSTART_LOAD_BALANCER_9092_SERVER_FILE="start_load_balancer_9092
 add_definitions(-DSTART_LOAD_BALANCER_9093_SERVER_FILE="start_load_balancer_9093_server.txt")
 add_definitions(-DLARGE_FILE_NAME="large_file.bin")
 
+add_definitions(-DWIN32_LEAN_AND_MEAN)
+
 if (UNIX)
     set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/libWebFramework.so)
 else()
@@ -56,6 +58,8 @@ if (${FLUTTER_API})
     add_definitions(-DFLUTTER_API)
 endif()
 
+set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
+
 project(Tests)
 
 if(UNIX)
@@ -67,13 +71,6 @@ if ((NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} EQUAL ${CMAKE_SYSTEM_PROCESSOR}) AND ${C
 endif()
 
 include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
-
-find_package(GTest)
-
-if(NOT ${GTest_FOUND})
-	set(GTEST_BOTH_LIBRARIES gtest gtest_main)
-	set(GTEST_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/gtest/include/)
-endif()
 
 if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
     include(${CMAKE_SOURCE_DIR}/cmake/generate_json.cmake)

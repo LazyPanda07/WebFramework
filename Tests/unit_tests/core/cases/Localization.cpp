@@ -1,12 +1,11 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "HTTPBuilder.h"
-#include "HTTPParser.h"
-#include "JSONParser.h"
+#include <HttpBuilder.h>
+#include <HttpParser.h>
+#include <JsonParser.h>
+#include <MultiLocalizationManager.h>
 
 #include "utilities.h"
-
-#include "MultiLocalizationManager.h"
 
 TEST(Localization, English)
 {
@@ -15,9 +14,9 @@ TEST(Localization, English)
 	try
 	{
 		streams::IOSocketStream stream = utility::createSocketStream();
-		std::string request = web::HTTPBuilder().getRequest().parameters("localization").build
+		std::string request = web::HttpBuilder().getRequest().parameters("localization").build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("language", language)
+			json::JsonBuilder(CP_UTF8).append("language", language)
 		);
 		std::string response;
 
@@ -25,7 +24,7 @@ TEST(Localization, English)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", language));
+		ASSERT_EQ(web::HttpParser(response).getJson().get<std::string>("result"), localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", language));
 	}
 	catch (const std::exception& e)
 	{
@@ -46,9 +45,9 @@ TEST(Localization, Russian)
 	try
 	{
 		streams::IOSocketStream stream = utility::createSocketStream();
-		std::string request = web::HTTPBuilder().getRequest().parameters("localization").build
+		std::string request = web::HttpBuilder().getRequest().parameters("localization").build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("language", language)
+			json::JsonBuilder(CP_UTF8).append("language", language)
 		);
 		std::string response;
 
@@ -56,7 +55,7 @@ TEST(Localization, Russian)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getJSON().getString("result"), localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", language));
+		ASSERT_EQ(web::HttpParser(response).getJson().get<std::string>("result"), localization::MultiLocalizationManager::getManager().getLocalizedString("LocalizationData", "key", language));
 	}
 	catch (const std::exception& e)
 	{

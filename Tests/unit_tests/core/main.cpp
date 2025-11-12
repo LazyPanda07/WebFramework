@@ -3,9 +3,9 @@
 #include <chrono>
 #include <random>
 
-#include "JSONParser.h"
+#include <JsonParser.h>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "settings.h"
 
@@ -57,7 +57,7 @@ void createLargeFile()
 
 int main(int argc, char** argv)
 {
-	useHTTPS = json::JSONParser(std::ifstream(argv[1])).getObject("WebFramework").getObject("HTTPS").getBool("useHTTPS");
+	useHTTPS = json::JsonParser(std::ifstream(argv[1])).get<bool>("useHTTPS", true);
 
 	createLargeFile();
 

@@ -1,10 +1,10 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "HTTPBuilder.h"
-#include "HTTPParser.h"
-#include "JSONParser.h"
+#include <HttpBuilder.h>
+#include <HttpParser.h>
+#include <JsonParser.h>
 
-#include "HTTPSNetwork.h"
+#include <HttpsNetwork.h>
 
 #include "utilities.h"
 
@@ -19,24 +19,24 @@ TEST(HelloExecutor, requestType) \
 	{ \
 		std::string request = constructRequest(#requestType); \
 		std::string response; \
-		json::JSONParser parser; \
+		json::JsonParser parser; \
 		int64_t value; \
  \
 		stream << request; \
  \
 		stream >> response; \
  \
-		parser.setJSONData(web::HTTPParser(response).getBody()); \
+		parser.setJSONData(web::HttpParser(response).getBody()); \
  \
-		ASSERT_EQ(parser.getString("message"), "Hello, World!"); \
-		ASSERT_TRUE(parser.tryGetInt("number", value)); \
+		ASSERT_EQ(parser.get<std::string>("message"), "Hello, World!"); \
+		ASSERT_TRUE(parser.tryGet<int64_t>("number", value)); \
 		ASSERT_EQ(value, 890); \
 	} \
 }
 
 std::string constructRequest(std::string_view requestType)
 {
-	web::HTTPBuilder result;
+	web::HttpBuilder result;
 
 	if (requestType == "GET")
 	{
@@ -91,7 +91,7 @@ TEST(HelloExecutor, OPTIONS)
 
 		stream >> response;
 
-		web::HTTPParser parser(response);
+		web::HttpParser parser(response);
 
 		ASSERT_TRUE
 		(
@@ -114,7 +114,7 @@ TEST(HelloExecutor, TRACE)
 
 		stream >> response;
 
-		web::HTTPParser parser(response);
+		web::HttpParser parser(response);
 
 		bool result = parser.getResponseCode() == web::ResponseCodes::badRequest ||
 			[&]() -> bool
@@ -178,19 +178,19 @@ TEST(RoutePattern, PassingValues)
 		}
 	}
 
-	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "20000", 1h);
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HttpsNetwork>("127.0.0.1", "20000", 1h);
 	std::string request;
 	std::string response;
 
-	request = web::HTTPBuilder().getRequest().parameters(std::format("pattern/{}/{}/{}", "qwe", 200, 25.5)).build();
+	request = web::HttpBuilder().getRequest().parameters(std::format("pattern/{}/{}/{}", "qwe", 200, 25.5)).build();
 
 	stream << request;
 
 	stream >> response;
 
-	json::JSONParser parser = web::HTTPParser(response).getJSON();
+	json::JsonParser parser = web::HttpParser(response).getJson();
 
-	ASSERT_EQ(parser.getString("stringValue"), "qwe");
-	ASSERT_EQ(parser.getInt("integerValue"), 200);
-	ASSERT_FLOAT_EQ(parser.getDouble("doubleValue"), 25.5);
+	ASSERT_EQ(parser.get<std::string>("stringValue"), "qwe");
+	ASSERT_EQ(parser.get<int>("integerValue"), 200);
+	ASSERT_FLOAT_EQ(parser.get<double>("doubleValue"), 25.5);
 }

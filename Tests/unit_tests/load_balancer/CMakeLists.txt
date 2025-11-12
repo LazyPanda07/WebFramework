@@ -19,19 +19,18 @@ target_include_directories(
 	utilities/
 	${WEB_FRAMEWORK_LIBRARY_DIR}/include/
 	${WEB_FRAMEWORK_LIBRARY_DIR}/include/vendor/OpenSSL/
-	${GTEST_INCLUDE_DIRS}
 )
 
 target_link_directories(
 	${PROJECT_NAME} PRIVATE
 	${WEB_FRAMEWORK_LIBRARY_LIB_DIRS}
-	${GTEST_LIB_DIR}
 )
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	${LIBS}
-	${GTEST_BOTH_LIBRARIES}
+	gtest 
+	gtest_main
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})

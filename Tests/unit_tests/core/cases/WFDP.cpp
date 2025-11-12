@@ -1,24 +1,24 @@
 #include <filesystem>
 #include <fstream>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "HTTPBuilder.h"
-#include "HTTPParser.h"
-#include "JSONParser.h"
+#include <HttpBuilder.h>
+#include <HttpParser.h>
+#include <JsonParser.h>
 
 #include "utilities.h"
 
 TEST(WFDP, Print)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parametersWithRoute
+	std::string request = web::HttpBuilder().getRequest().parametersWithRoute
 	(
 		"wfdp",
 		"data", "Hello, World!"
 	).build
 	(
-		json::JSONBuilder(CP_UTF8).appendString("fileName", "print")
+		json::JsonBuilder(CP_UTF8).append("fileName", "print")
 	);
 	std::string response;
 
@@ -26,16 +26,16 @@ TEST(WFDP, Print)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getBody(), "Hello, World!");
+	ASSERT_EQ(web::HttpParser(response).getBody(), "Hello, World!");
 }
 
 TEST(WFDP, For)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parameters("wfdp").
+	std::string request = web::HttpBuilder().getRequest().parameters("wfdp").
 		build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("fileName", "for")
+			json::JsonBuilder(CP_UTF8).append("fileName", "for")
 		);
 	std::string response;
 
@@ -43,16 +43,16 @@ TEST(WFDP, For)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getBody(), "0123456789");
+	ASSERT_EQ(web::HttpParser(response).getBody(), "0123456789");
 }
 
 TEST(WFDP, Include)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HTTPBuilder().getRequest().parameters("wfdp").
+	std::string request = web::HttpBuilder().getRequest().parameters("wfdp").
 		build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("fileName", "include")
+			json::JsonBuilder(CP_UTF8).append("fileName", "include")
 		);
 	std::string response;
 
@@ -60,7 +60,7 @@ TEST(WFDP, Include)
 
 	stream >> response;
 
-	ASSERT_NE(web::HTTPParser(response).getBody().find("<h1>Template</h1>"), std::string::npos);
+	ASSERT_NE(web::HttpParser(response).getBody().find("<h1>Template</h1>"), std::string::npos);
 }
 
 TEST(WFDP, CustomFunction)
@@ -68,18 +68,18 @@ TEST(WFDP, CustomFunction)
 	streams::IOSocketStream stream = utility::createSocketStream();
 
 	{
-		std::string request = web::HTTPBuilder().postRequest().parameters("wfdp").build();
+		std::string request = web::HttpBuilder().postRequest().parameters("wfdp").build();
 		std::string response;
 
 		stream << request;
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok);
+		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok);
 	}
 
 	{
-		std::string request = web::HTTPBuilder().getRequest().parametersWithRoute
+		std::string request = web::HttpBuilder().getRequest().parametersWithRoute
 		(
 			"wfdp",
 			"first", "15",
@@ -87,7 +87,7 @@ TEST(WFDP, CustomFunction)
 			"third", "45"
 		).build
 		(
-			json::JSONBuilder(CP_UTF8).appendString("fileName", "custom_function")
+			json::JsonBuilder(CP_UTF8).append("fileName", "custom_function")
 		);
 		std::string response;
 
@@ -95,17 +95,17 @@ TEST(WFDP, CustomFunction)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getBody(), "Data: 15 30 45");
+		ASSERT_EQ(web::HttpParser(response).getBody(), "Data: 15 30 45");
 	}
 
 	{
-		std::string request = web::HTTPBuilder().deleteRequest().parameters("wfdp").build();
+		std::string request = web::HttpBuilder().deleteRequest().parameters("wfdp").build();
 		std::string response;
 
 		stream << request;
 
 		stream >> response;
 
-		ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok);
+		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok);
 	}
 }

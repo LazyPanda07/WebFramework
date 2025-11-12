@@ -8,12 +8,12 @@
 #include <filesystem>
 #include <array>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "JSONParser.h"
-#include "HTTPParser.h"
-#include "HTTPBuilder.h"
-#include "ConsoleArgumentParser.h"
+#include <JsonParser.h>
+#include <HttpParser.h>
+#include <HttpBuilder.h>
+#include <ConsoleArgumentParser.h>
 
 #include "utilities/utilities.h"
 
@@ -34,14 +34,14 @@ TEST(LoadBalancer, ConnectionsHeuristic)
 	std::vector<std::future<int64_t>> awaiters;
 	auto call = [](streams::IOSocketStream& stream)
 		{
-			std::string request = web::HTTPBuilder().getRequest().build();
+			std::string request = web::HttpBuilder().getRequest().build();
 			std::string response;
 
 			stream << request;
 
 			stream >> response;
 
-			return web::HTTPParser(response).getJSON().getInt("id");
+			return web::HttpParser(response).getJson().get<int64_t>("id");
 		};
 
 	streams.reserve(connections);
@@ -85,7 +85,7 @@ TEST(LoadBalancer, CustomHeuristic)
 	std::mt19937_64 random(time(nullptr));
 	auto call = [&random](streams::IOSocketStream& stream)
 		{
-			std::string request = web::HTTPBuilder().getRequest().build();
+			std::string request = web::HttpBuilder().getRequest().build();
 			std::string response;
 
 			std::this_thread::sleep_for(std::chrono::seconds(random() % 5));
@@ -94,7 +94,7 @@ TEST(LoadBalancer, CustomHeuristic)
 
 			stream >> response;
 
-			return web::HTTPParser(response).getJSON().getInt("id");
+			return web::HttpParser(response).getJson().get<int64_t>("id");
 		};
 
 	streams.reserve(connections);
