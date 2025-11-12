@@ -7,7 +7,7 @@
 #include <HttpBuilder.h>
 #include <HttpParser.h>
 #include <JsonParser.h>
-#include <JSONBuilder.h>
+#include <JsonBuilder.h>
 
 #include "utilities.h"
 

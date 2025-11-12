@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 include(cmake/enums.cmake)
 
+set(GTEST_VERSION 1.17.0)
 set(WEB_FRAMEWORK_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 set(WEB_FRAMEWORK_SDK ${WEB_FRAMEWORK_LIBRARY_DIR})
 set(GTEST_LIB_DIR ${CMAKE_SOURCE_DIR}/gtest/lib/)
@@ -61,6 +62,16 @@ endif()
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 
 project(Tests)
+
+include(FetchContent)
+
+FetchContent_Declare(
+	gtest
+	GIT_REPOSITORY https://github.com/google/googletest.git
+	GIT_TAG v${GTEST_VERSION}
+)
+
+FetchContent_MakeAvailable(gtest)
 
 if(UNIX)
 	file(CHMOD ${WEB_FRAMEWORK_LIBRARY_DIR}/assets/LocalizationUtils PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
