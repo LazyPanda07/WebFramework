@@ -72,11 +72,9 @@
     <PreBuildEvent>
       <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 
-cd $(ProjectDir)
+if not exist $(ProjectDir)build mkdir $(ProjectDir)build
 
-if not exist build mkdir build
-
-cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFramework\API\$(ProjectName) -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
+cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFramework\API\$(ProjectName) -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -100,11 +98,9 @@ cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFramework\API\$(
     <PreBuildEvent>
       <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 
-cd $(ProjectDir)
+if not exist $(ProjectDir)build mkdir $(ProjectDir)build
 
-if not exist build mkdir build
-
-cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFramework\API\$(ProjectName) -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
+cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFramework\API\$(ProjectName) -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

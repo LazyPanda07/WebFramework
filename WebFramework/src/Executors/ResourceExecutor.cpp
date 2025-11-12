@@ -54,11 +54,11 @@ namespace framework
 		}
 	}
 
-	ResourceExecutor::ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
+	ResourceExecutor::ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
 		defaultAssets
 		(
-			configuration.getObject(json_settings::webFrameworkObject).contains(json_settings::webFrameworkDefaultAssetsPath, json::utility::variantTypeEnum::jString) ?
-			configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webFrameworkDefaultAssetsPath) :
+			configuration.get<json::JsonObject>(json_settings::webFrameworkObject).contains<std::string>(json_settings::webFrameworkDefaultAssetsPath) ?
+			configuration.get<json::JsonObject>(json_settings::webFrameworkObject)[json_settings::webFrameworkDefaultAssetsPath].get<std::string>() :
 			webFrameworkDefaultAssests
 		),
 		assets(additionalSettings.assetsPath),
@@ -79,6 +79,116 @@ namespace framework
 
 		this->loadHTMLErrorsData();
 		this->loadStaticRenderers();
+	}
+
+	void ResourceExecutor::notFoundError(HTTPResponseExecutors& response, const std::exception* exception)
+	{
+		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::notFound);
+	}
+
+	void ResourceExecutor::badRequestError(HTTPResponseExecutors& response, const std::exception* exception)
+	{
+		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::badRequest);
+	}
+
+	void ResourceExecutor::forbiddenError(HTTPResponseExecutors& response, const std::exception* exception)
+	{
+		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::forbidden);
+	}
+
+	void ResourceExecutor::internalServerError(HTTPResponseExecutors& response, const std::exception* exception)
+	{
+		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::internalServerError);
+	}
+
+	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const std::exception* exception)
+	{
+		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
+
+#ifdef NDEBUG
+		response.setBody(message);
+#else
+		if (exception)
+		{
+			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+		}
+		else
+		{
+			response.setBody(message.data());
+		}
+#endif
+
+		response.setResponseCode(web::ResponseCodes::badGateway);
+	}
+
+	bool ResourceExecutor::fileExist(const std::filesystem::path& filePath) const
+	{
+		return fileManager.exists(assets / filePath);
+	}
+
+	bool ResourceExecutor::getIsCaching() const
+	{
+		return fileManager.getCache().getCacheSize();
 	}
 
 	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, std::string_view fileName)
@@ -210,110 +320,5 @@ namespace framework
 	void ResourceExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) //-V524
 	{
 		request.sendAssetFile(request.getRawParameters(), response);
-	}
-
-	void ResourceExecutor::notFoundError(HTTPResponseExecutors& response, const std::exception* exception)
-	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
-
-#ifdef NDEBUG
-		response.setBody(message);
-#else
-		if (exception)
-		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
-		}
-		else
-		{
-			response.setBody(message.data());
-		}
-#endif
-
-		response.setResponseCode(web::ResponseCodes::notFound);
-	}
-
-	void ResourceExecutor::badRequestError(HTTPResponseExecutors& response, const std::exception* exception)
-	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
-
-#ifdef NDEBUG
-		response.setBody(message);
-#else
-		if (exception)
-		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
-		}
-		else
-		{
-			response.setBody(message.data());
-		}
-#endif
-
-		response.setResponseCode(web::ResponseCodes::badRequest);
-	}
-
-	void ResourceExecutor::forbiddenError(HTTPResponseExecutors& response, const std::exception* exception)
-	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
-
-#ifdef NDEBUG
-		response.setBody(message);
-#else
-		if (exception)
-		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
-		}
-		else
-		{
-			response.setBody(message.data());
-		}
-#endif
-
-		response.setResponseCode(web::ResponseCodes::forbidden);
-	}
-
-	void ResourceExecutor::internalServerError(HTTPResponseExecutors& response, const std::exception* exception)
-	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
-
-#ifdef NDEBUG
-		response.setBody(message);
-#else
-		if (exception)
-		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
-		}
-		else
-		{
-			response.setBody(message.data());
-		}
-#endif
-
-		response.setResponseCode(web::ResponseCodes::internalServerError);
-	}
-
-	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const std::exception* exception)
-	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
-
-#ifdef NDEBUG
-		response.setBody(message);
-#else
-		if (exception)
-		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
-		}
-		else
-		{
-			response.setBody(message.data());
-		}
-#endif
-
-		response.setResponseCode(web::ResponseCodes::badGateway);
-	}
-
-	bool ResourceExecutor::getIsCaching() const
-	{
-		return fileManager.getCache().getCacheSize();
 	}
 }

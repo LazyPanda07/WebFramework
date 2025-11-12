@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include <JSONParser.h>
+#include <JsonParser.h>
 
 #include "Framework/WebFrameworkPlatform.h"
 
@@ -14,7 +14,7 @@ namespace framework::utility
 	class WEB_FRAMEWORK_API Config
 	{
 	private:
-		json::JSONParser currentConfiguration;
+		json::JsonParser currentConfiguration;
 		std::filesystem::path basePath;
 
 	private:
@@ -54,7 +54,8 @@ namespace framework::utility
 		 * @param recursive Search recursively
 		 * @return
 		 */
-		Config& overrideConfiguration(std::string_view key, const json::utility::jsonObject::variantType& value, bool recursive = true);
+		template<typename T>
+		Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = true) requires (json::utility::JsonValues<T, json::JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
 
 		/**
 		 * @brief Override specific config value
@@ -127,8 +128,19 @@ namespace framework::utility
 		 * @brief Actual settings
 		 * @return
 		 */
-		const json::JSONParser& operator * () const;
+		const json::JsonParser& operator *() const;
 
 		~Config() = default;
 	};
+}
+
+namespace framework::utility
+{
+	template<typename T>
+	Config& Config::overrideConfiguration(std::string_view key, const T& value, bool recursive) requires (json::utility::JsonValues<T, json::JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
+	{
+		currentConfiguration.overrideValue(key, value, recursive);
+
+		return *this;
+	}
 }

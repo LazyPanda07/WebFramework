@@ -99,7 +99,7 @@ namespace framework::load_balancer
 		LoadBalancerServer
 		(
 			std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
-			const json::utility::jsonObject& heuristic, utility::LoadSource loadSource,
+			const json::JsonObject& heuristic, utility::LoadSource loadSource,
 			const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 			std::shared_ptr<ResourceExecutor> resources,
 			uint32_t processingThreads,

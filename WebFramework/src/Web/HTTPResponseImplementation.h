@@ -2,7 +2,7 @@
 
 #include "WebInterfaces/IHTTPResponse.h"
 
-#include <HTTPBuilder.h>
+#include <HttpBuilder.h>
 #include <IOSocketStream.h>
 
 #include "Framework/WebFrameworkPlatform.h"
@@ -16,7 +16,7 @@ namespace framework
 	class WEB_FRAMEWORK_API HTTPResponseImplementation : public interfaces::IHTTPResponse
 	{
 	private:
-		web::HTTPBuilder builder;
+		web::HttpBuilder builder;
 		std::string body;
 		bool isValid;
 
@@ -35,7 +35,7 @@ namespace framework
 		/// </summary>
 		/// <param name="builder">your HTTPBuilder</param>
 		/// <returns>self for builder pattern</returns>
-		HTTPResponseImplementation& operator = (const web::HTTPBuilder& builder);
+		HTTPResponseImplementation& operator = (const web::HttpBuilder& builder);
 
 		/// <summary>
 		/// <para>Set HTTP version</para>

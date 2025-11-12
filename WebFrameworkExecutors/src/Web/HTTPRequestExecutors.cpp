@@ -112,10 +112,10 @@ namespace framework
 		implementation = other.implementation;
 		deleter = other.deleter;
 		json = std::move(other.json);
-		headers = move(other.headers);
-		queryParameters = move(other.queryParameters);
-		multiparts = move(other.multiparts);
-		chunks = move(other.chunks);
+		headers = std::move(other.headers);
+		queryParameters = std::move(other.queryParameters);
+		multiparts = std::move(other.multiparts);
+		chunks = std::move(other.chunks);
 
 		other.implementation = nullptr;
 		other.deleter = nullptr;
@@ -294,7 +294,7 @@ namespace framework
 		return result;
 	}
 
-	const json::JSONParser& HTTPRequestExecutors::getJSON() const
+	const json::JsonParser& HTTPRequestExecutors::getJSON() const
 	{
 		return json;
 	}

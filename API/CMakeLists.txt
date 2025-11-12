@@ -51,5 +51,5 @@ if (${BUILD_PYTHON_API})
 endif()
 
 if (${BUILD_FLUTTER_API})
-	install(DIRECTORY web_framework_flutter_api/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/web_framework_flutter_api/)
+	install(DIRECTORY web_framework_flutter_api/ DESTINATION api/web_framework_flutter_api/)
 endif()

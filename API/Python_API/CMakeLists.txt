@@ -43,7 +43,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
     GIT_TAG ${PYBIND11_TAG}
     OVERRIDE_FIND_PACKAGE
 )
@@ -53,7 +53,7 @@ FetchContent_MakeAvailable(pybind11)
 find_package(pybind11 REQUIRED)
 
 pybind11_add_module(
-    ${PROJECT_NAME} 
+    ${PROJECT_NAME}
     src/module.cpp
     src/Executors/PyStatelessExecutor.cpp
     src/Executors/PyStatefulExecutor.cpp

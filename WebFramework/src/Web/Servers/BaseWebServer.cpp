@@ -1,7 +1,7 @@
 #include "BaseWebServer.h"
 
 #include "Utility/Singletons/HTTPSSingleton.h"
-#include "Exceptions/SSLException.h"
+#include "Exceptions/SslException.h"
 
 namespace framework
 {
@@ -21,17 +21,17 @@ namespace framework
 
 			if (!context)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
+				throw web::exceptions::SslException(__LINE__, __FILE__);
 			}
 
 			if (int errorCode = SSL_CTX_use_certificate_file(context, httpsSettings.getPathToCertificate().string().data(), SSL_FILETYPE_PEM); errorCode != 1)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__, errorCode);
+				throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
 			}
 
 			if (int errorCode = SSL_CTX_use_PrivateKey_file(context, httpsSettings.getPathToKey().string().data(), SSL_FILETYPE_PEM); errorCode != 1)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__, errorCode);
+				throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
 			}
 		}
 	}

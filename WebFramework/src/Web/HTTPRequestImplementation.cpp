@@ -3,10 +3,10 @@
 #include <Log.h>
 #include <MultiLocalizationManager.h>
 #include <Exceptions/FileDoesNotExistException.h>
+#include <BaseTCPServer.h>
+#include <FileManager.h>
+#include <HttpsNetwork.h>
 
-#include "BaseTCPServer.h"
-#include "FileManager.h"
-#include "HTTPSNetwork.h"
 #include "Managers/SessionsManager.h"
 #include "Managers/DatabasesManager.h"
 #include "Databases/DatabaseImplementation.h"
@@ -58,22 +58,22 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::setParser(const web::HTTPParser& parser)
+	void HTTPRequestImplementation::setParser(const web::HttpParser& parser)
 	{
 		this->parser = parser;
 	}
 
-	web::HTTPParser HTTPRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
+	web::HttpParser HTTPRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
 	{
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(ip, port, std::chrono::milliseconds(timeout));
+			streams::IOSocketStream::createStream<web::HttpsNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HttpNetwork>(ip, port, std::chrono::milliseconds(timeout));
 		std::string response;
 
 		stream << request;
 		stream >> response;
 
-		return web::HTTPParser(response);
+		return web::HttpParser(response);
 	}
 
 	HTTPRequestImplementation::HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
@@ -293,7 +293,7 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		web::HTTPBuilder builder = web::HTTPBuilder().
+		web::HttpBuilder builder = web::HttpBuilder().
 			headers
 			(
 				"Date", HTTPResponseImplementation::getFullDate(),
@@ -407,7 +407,7 @@ namespace framework
 
 	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator))
 	{
-		web::HTTPBuilder builder = web::HTTPBuilder().chunk(getChunk(chunkGenerator)).partialChunks().responseCode(web::ResponseCodes::ok).headers
+		web::HttpBuilder builder = web::HttpBuilder().chunk(getChunk(chunkGenerator)).partialChunks().responseCode(web::ResponseCodes::ok).headers
 		(
 			"Date", HTTPResponseImplementation::getFullDate(),
 			"Server", "WebFramework-Server",
@@ -432,11 +432,11 @@ namespace framework
 
 			if (data)
 			{
-				stream << web::HTTPBuilder::getChunk(data);
+				stream << web::HttpBuilder::getChunk(data);
 			}
 			else
 			{
-				stream << web::HTTPBuilder::getChunk("");
+				stream << web::HttpBuilder::getChunk("");
 
 				break;
 			}
@@ -546,7 +546,7 @@ namespace framework
 
 	const char* HTTPRequestImplementation::getJSON() const
 	{
-		return parser.getJSON().getRawData().data();
+		return parser.getJson().getRawData().data();
 	}
 
 	const char* HTTPRequestImplementation::getRawRequest() const
@@ -634,14 +634,14 @@ namespace framework
 
 		stream >> data;
 
-		request.parser = web::HTTPParser(data);
+		request.parser = web::HttpParser(data);
 
 		return stream;
 	}
 
 	std::ostream& operator << (std::ostream& stream, const HTTPRequestImplementation& request)
 	{
-		const web::HTTPParser& parser = request.parser;
+		const web::HttpParser& parser = request.parser;
 		const auto& headers = parser.getHeaders();
 
 		stream << parser.getMethod() << " " << parser.getParameters() << " " << parser.getHTTPVersion() << std::endl;

@@ -1,7 +1,7 @@
 #include "MultithreadedWebServer.h"
 
 #include "Log.h"
-#include "HTTPSNetwork.h"
+#include "HttpsNetwork.h"
 
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
@@ -12,7 +12,7 @@
 #include "Exceptions/BadRequestException.h"
 #include <Exceptions/APIException.h>
 #include "Utility/RouteParameters.h"
-#include "Exceptions/SSLException.h"
+#include "Exceptions/SslException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
 
@@ -34,23 +34,23 @@ namespace framework
 
 				if (!ssl)
 				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
 				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 				{
 					SSL_free(ssl);
 
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
 				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
 		}
-		catch (const web::exceptions::SSLException& e)
+		catch (const web::exceptions::SslException& e)
 		{
 			if (Log::isValid())
 			{
@@ -61,13 +61,13 @@ namespace framework
 		}
 
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, std::chrono::milliseconds(timeout));
+			streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, std::chrono::milliseconds(timeout));
 		ExecutorsManager::StatefulExecutors executors;
 		HTTPResponseImplementation response;
 		HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 		HTTPResponseExecutors responseWrapper(&response);
-		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
+		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
 		bool finish = false;
 
 		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, executors);
@@ -142,7 +142,7 @@ namespace framework
 
 	MultithreadedWebServer::MultithreadedWebServer
 	(
-		const json::JSONParser& configuration,
+		const json::JsonParser& configuration,
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		std::string_view ip,
 		std::string_view port,
@@ -163,7 +163,7 @@ namespace framework
 		ExecutorServer
 		(
 			configuration,
-			move(executorsSettings),
+			std::move(executorsSettings),
 			pathToSources,
 			additionalSettings,
 			threadPool

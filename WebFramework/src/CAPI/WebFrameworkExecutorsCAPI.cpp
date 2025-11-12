@@ -1,8 +1,8 @@
 #include "WebFrameworkExecutorsCAPI.h"
 
 #include <Log.h>
-#include <JSONBuilder.h>
-#include <JSONParser.h>
+#include <JsonBuilder.h>
+#include <JsonParser.h>
 
 #include "WebInterfaces/IHTTPRequest.h"
 #include "Utility/JSONSettingsParser.h"
@@ -36,7 +36,7 @@ void setHTTPResponseJSONBody(HTTPResponseObject response, JSONBuilder builder, E
 
 		implementation->addHeader("Content-Type", "application/json");
 
-		implementation->setBody(static_cast<json::JSONBuilder*>(builder)->build().data());
+		implementation->setBody(static_cast<json::JsonBuilder*>(builder)->build().data());
 	}
 	catch (const std::exception& e)
 	{
@@ -912,7 +912,7 @@ String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* 
 {
 	try
 	{
-		json::JSONParser parser(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->initParameters);
+		json::JsonParser parser(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->initParameters);
 		std::ostringstream stream;
 
 		stream << parser;

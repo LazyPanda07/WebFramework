@@ -449,7 +449,7 @@ namespace framework
 
 	ExecutorsManager::ExecutorsManager
 	(
-		const json::JSONParser& configuration,
+		const json::JsonParser& configuration,
 		const std::vector<std::string>& pathToSources,
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const utility::AdditionalServerSettings& additionalSettings,
@@ -458,7 +458,7 @@ namespace framework
 		settings(move(executorsSettings)),
 		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
 		userAgentFilter(additionalSettings.userAgentFilter),
-		serverType(ExecutorsManager::types.at(configuration.getObject(json_settings::webFrameworkObject).getString(json_settings::webServerTypeKey)))
+		serverType(ExecutorsManager::types.at(configuration.get<json::JsonObject>(json_settings::webFrameworkObject)[json_settings::webServerTypeKey].get<std::string>()))
 	{
 		this->initCreators(pathToSources);
 	}
@@ -551,6 +551,11 @@ namespace framework
 
 			if (!fileRequest && !executor)
 			{
+				if (resources->fileExist(parameters))
+				{
+					return resources.get();
+				}
+
 				throw exceptions::BadRequestException(); // 400
 			}
 

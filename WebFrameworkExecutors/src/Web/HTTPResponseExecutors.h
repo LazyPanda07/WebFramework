@@ -1,9 +1,10 @@
 #pragma once
 
-#include "functional"
+#include <functional>
+
+#include <JSONBuilder.h>
 
 #include "WebInterfaces/IHTTPResponse.h"
-#include "JSONBuilder.h"
 #include "ExecutorsConstants.h"
 #include "HTTPUtility.h"
 
@@ -56,7 +57,7 @@ namespace framework
 		/// <para>Content-Length and Content-Type headers setting automatically</para>
 		/// </summary>
 		/// <param name="json">JSON data</param>
-		void setBody(const json::JSONBuilder& json);
+		void setBody(const json::JsonBuilder& json);
 
 		/// <summary>
 		/// <para>Some data with HTTP response</para>

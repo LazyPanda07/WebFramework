@@ -1,6 +1,6 @@
 #pragma once
 
-#include "JSONUtility.h"
+#include <JsonObject.h>
 
 #include "ExecutorsConstants.h"
 
@@ -24,7 +24,7 @@ namespace framework::utility
 				none
 			};
 
-			json::utility::jsonObject initParameters;
+			json::JsonObject initParameters;
 			std::string name;
 			std::string userAgentFilter;
 			std::string apiType;

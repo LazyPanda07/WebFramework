@@ -17,7 +17,7 @@ namespace framework
 	public:
 		MultithreadedWebServer
 		(
-			const json::JSONParser& configuration,
+			const json::JsonParser& configuration,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			std::string_view ip,
 			std::string_view port,

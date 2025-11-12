@@ -34,7 +34,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
     GIT_TAG ${PYBIND11_TAG}
 )
 
@@ -44,11 +44,9 @@ find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
 set(PYTHON_TEMPORARY_DIRECTORY ${pybind11_SOURCE_DIR}/../python)
 
-execute_process(
-    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${Python_INCLUDE_DIRS} ${PYTHON_TEMPORARY_DIRECTORY}/include
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${PYTHON_TEMPORARY_DIRECTORY}/lib/
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${Python_LIBRARIES} ${PYTHON_TEMPORARY_DIRECTORY}/lib/
-)
+file(COPY ${Python_INCLUDE_DIRS} DESTINATION ${PYTHON_TEMPORARY_DIRECTORY})
+file(MAKE_DIRECTORY ${PYTHON_TEMPORARY_DIRECTORY}/lib/)
+file(COPY ${Python_LIBRARIES} DESTINATION ${PYTHON_TEMPORARY_DIRECTORY}/lib/)
 
 list(APPEND ADDITIONAL_LIBS ${Python_LIBRARIES} pybind11::embed)
 

@@ -230,7 +230,7 @@ void overrideConfigurationBoolean(Config config, const char* key, bool value, bo
 {
 	try
 	{
-		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, static_cast<json::utility::jsonObject::variantType>(value), recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -246,13 +246,13 @@ void overrideConfigurationStringArray(Config config, const char* key, const char
 {
 	try
 	{
-		std::vector<json::utility::jsonObject> data;
+		std::vector<json::JsonObject> data;
 
 		data.reserve(size);
 
 		for (int64_t i = 0; i < size; i++)
 		{
-			json::utility::appendArray(std::string(value[i]), data);
+			data.emplace_back(value[i]);
 		}
 
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);
@@ -271,13 +271,13 @@ void overrideConfigurationIntegerArray(Config config, const char* key, const int
 {
 	try
 	{
-		std::vector<json::utility::jsonObject> data;
+		std::vector<json::JsonObject> data;
 
 		data.reserve(size);
 
 		for (int64_t i = 0; i < size; i++)
 		{
-			json::utility::appendArray(value[i], data);
+			data.emplace_back(value[i]);
 		}
 
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);

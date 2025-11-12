@@ -2,9 +2,9 @@
 
 #include "WebInterfaces/IHTTPRequest.h"
 
-#include <HTTPParser.h>
+#include <HttpParser.h>
 #include <IOSocketStream.h>
-#include <HTTPBuilder.h>
+#include <HttpBuilder.h>
 
 #include "WebInterfaces/IStaticFile.h"
 #include "WebInterfaces/IDynamicFile.h"
@@ -60,7 +60,7 @@ namespace framework
 		streams::IOSocketStream& stream;
 		std::unordered_map<std::string, std::variant<std::string, int64_t, double>> routeParameters;
 		sockaddr clientAddr;
-		web::HTTPParser parser;
+		web::HttpParser parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
 		interfaces::CLargeData largeData;
@@ -73,10 +73,10 @@ namespace framework
 		static void logWebFrameworkModelsError(std::string_view typeName);
 
 	private:
-		void setParser(const web::HTTPParser& parser);
+		void setParser(const web::HttpParser& parser);
 
 	public:
-		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
+		static web::HttpParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
 
 	public:
 		HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);

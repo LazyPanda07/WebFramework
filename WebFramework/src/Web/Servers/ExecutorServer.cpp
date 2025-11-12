@@ -123,7 +123,7 @@ namespace framework
 
 	ExecutorServer::ExecutorServer
 	(
-		const json::JSONParser& configuration,
+		const json::JsonParser& configuration,
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
@@ -133,7 +133,7 @@ namespace framework
 	{
 		try
 		{
-			executorsManager = make_unique<ExecutorsManager>(configuration, pathToSources, move(executorsSettings), additionalSettings, threadPool);
+			executorsManager = std::make_unique<ExecutorsManager>(configuration, pathToSources, std::move(executorsSettings), additionalSettings, threadPool);
 
 			resources = executorsManager->getResourceExecutor();
 		}

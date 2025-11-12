@@ -46,7 +46,42 @@ namespace framework
 		void readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 
 	public:
-		ResourceExecutor(const json::JSONParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
+		ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
+
+		/// <summary>
+		/// Send 404.html from WebFrameworkAssets
+		/// </summary>
+		/// <param name="response">response with error file</param>
+		void notFoundError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+
+		/// <summary>
+		/// Send 400.html from WebFrameworkAssets
+		/// </summary>
+		/// <param name="response">response with error file</param>
+		void badRequestError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+
+		/**
+		 * @brief Send 403.html from WebFrameworkAssets
+		 * @param response Response with error file
+		 * @param exception
+		 */
+		void forbiddenError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+
+		/// <summary>
+		/// Send 500.html from WebFrameworkAssets
+		/// </summary>
+		/// <param name="response">response with error file</param>
+		void internalServerError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+
+		/// <summary>
+		/// Send 502.html from WebFrameworkAssets
+		/// </summary>
+		/// <param name="response">response with error file</param>
+		void badGatewayError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+
+		bool fileExist(const std::filesystem::path& filePath) const;
+
+		bool getIsCaching() const;
 
 		/// <summary>
 		/// Override from IStaticFile interface
@@ -98,39 +133,6 @@ namespace framework
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
 		void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
-
-		/// <summary>
-		/// Send 404.html from WebFrameworkAssets
-		/// </summary>
-		/// <param name="response">response with error file</param>
-		void notFoundError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
-
-		/// <summary>
-		/// Send 400.html from WebFrameworkAssets
-		/// </summary>
-		/// <param name="response">response with error file</param>
-		void badRequestError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
-
-		/**
-		 * @brief Send 403.html from WebFrameworkAssets
-		 * @param response Response with error file
-		 * @param exception
-		 */
-		void forbiddenError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
-
-		/// <summary>
-		/// Send 500.html from WebFrameworkAssets
-		/// </summary>
-		/// <param name="response">response with error file</param>
-		void internalServerError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
-
-		/// <summary>
-		/// Send 502.html from WebFrameworkAssets
-		/// </summary>
-		/// <param name="response">response with error file</param>
-		void badGatewayError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
-
-		bool getIsCaching() const;
 
 		~ResourceExecutor() = default;
 	};

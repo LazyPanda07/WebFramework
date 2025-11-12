@@ -1,8 +1,8 @@
 #include "WebFrameworkUtilityCAPI.h"
 
 #include <Log.h>
-#include <JSONBuilder.h>
-#include <JSONParser.h>
+#include <JsonBuilder.h>
+#include <JsonParser.h>
 #include <UUID.h>
 
 #include "Utility/JSONSettingsParser.h"
@@ -19,8 +19,8 @@ JSONObject createJSONObject(JSONObject object, Exception* exception)
 	try
 	{
 		return object ?
-			new json::utility::jsonObject(*static_cast<json::utility::jsonObject*>(object)) :
-			new json::utility::jsonObject();
+			new json::JsonObject(*static_cast<json::JsonObject*>(object)) :
+			new json::JsonObject();
 	}
 	catch (const std::exception& e)
 	{
@@ -39,8 +39,8 @@ JSONBuilder createJSONBuilder(JSONBuilder builder, Exception* exception)
 	try
 	{
 		return builder ?
-			new json::JSONBuilder(*static_cast<json::JSONBuilder*>(builder)) :
-			new json::JSONBuilder(CP_UTF8);
+			new json::JsonBuilder(*static_cast<json::JsonBuilder*>(builder)) :
+			new json::JsonBuilder(CP_UTF8);
 	}
 	catch (const std::exception& e)
 	{
@@ -58,7 +58,7 @@ JSONBuilder createJSONBuilderFromString(const char* jsonString, Exception* excep
 {
 	try
 	{
-		return new json::JSONBuilder(json::JSONParser(jsonString).getParsedData(), CP_UTF8);
+		return new json::JsonBuilder(json::JsonParser(jsonString).getParsedData(), CP_UTF8);
 	}
 	catch (const std::exception& e)
 	{
@@ -77,8 +77,8 @@ JSONParser createJSONParser(JSONParser parser, Exception* exception)
 	try
 	{
 		return parser ?
-			new json::JSONParser(*static_cast<json::JSONParser*>(parser)) :
-			new json::JSONParser();
+			new json::JsonParser(*static_cast<json::JsonParser*>(parser)) :
+			new json::JsonParser();
 	}
 	catch (const std::exception& e)
 	{
@@ -96,7 +96,7 @@ JSONParser createJSONParserFromString(const char* jsonString, Exception* excepti
 {
 	try
 	{
-		return new json::JSONParser(jsonString);
+		return new json::JsonParser(jsonString);
 	}
 	catch (const std::exception& e)
 	{
@@ -116,7 +116,7 @@ void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject obje
 {
 	try
 	{
-		static_cast<json::utility::jsonObject*>(jsonObject)->setObject(key, *static_cast<json::utility::jsonObject*>(object));
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = *static_cast<json::JsonObject*>(object);
 	}
 	catch (const std::exception& e)
 	{
@@ -132,7 +132,7 @@ void setJSONObjectString(JSONObject jsonObject, const char* key, const char* val
 {
 	try
 	{
-		static_cast<json::utility::jsonObject*>(jsonObject)->setString(key, value);
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -148,7 +148,7 @@ void setJSONObjectInteger(JSONObject jsonObject, const char* key, int64_t value,
 {
 	try
 	{
-		static_cast<json::utility::jsonObject*>(jsonObject)->setInt(key, value);
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -164,7 +164,7 @@ void setJSONObjectUnsignedInteger(JSONObject jsonObject, const char* key, uint64
 {
 	try
 	{
-		static_cast<json::utility::jsonObject*>(jsonObject)->setUnsignedInt(key, value);
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -180,7 +180,7 @@ void setJSONObjectDouble(JSONObject jsonObject, const char* key, double value, E
 {
 	try
 	{
-		static_cast<json::utility::jsonObject*>(jsonObject)->setDouble(key, value);
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -196,7 +196,7 @@ void setJSONObjectBoolean(JSONObject jsonObject, const char* key, bool value, Ex
 {
 	try
 	{
-		static_cast<json::utility::jsonObject*>(jsonObject)->setBool(key, value);
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -212,7 +212,7 @@ void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* except
 {
 	try
 	{
-		static_cast<json::utility::jsonObject*>(jsonObject)->setNull(key);
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = nullptr;
 	}
 	catch (const std::exception& e)
 	{
@@ -228,16 +228,16 @@ void setJSONObjectArray(JSONObject jsonObject, const char* key, const JSONObject
 {
 	try
 	{
-		std::vector<json::utility::jsonObject> values;
+		std::vector<json::JsonObject> values;
 
 		values.reserve(size);
 
 		for (size_t i = 0; i < size; i++)
 		{
-			values.emplace_back(*static_cast<json::utility::jsonObject*>(objects[i]));
+			values.emplace_back(*static_cast<json::JsonObject*>(objects[i]));
 		}
 
-		static_cast<json::utility::jsonObject*>(jsonObject)->setArray(key, std::move(values));
+		(*static_cast<json::JsonObject*>(jsonObject))[key] = std::move(values);
 	}
 	catch (const std::exception& e)
 	{
@@ -253,7 +253,7 @@ String buildJSONBuilder(JSONBuilder builder, Exception* exception)
 {
 	try
 	{
-		return new std::string(static_cast<json::JSONBuilder*>(builder)->build());
+		return new std::string(static_cast<json::JsonBuilder*>(builder)->build());
 	}
 	catch (const std::exception& e)
 	{
@@ -271,7 +271,7 @@ void appendJSONBuilderObject(JSONBuilder builder, const char* key, JSONObject ob
 {
 	try
 	{
-		static_cast<json::JSONBuilder*>(builder)->appendObject(key, *static_cast<json::utility::jsonObject*>(object));
+		(*static_cast<json::JsonBuilder*>(builder))[key] = *static_cast<json::JsonObject*>(object);
 	}
 	catch (const std::exception& e)
 	{
@@ -287,7 +287,7 @@ void appendJSONBuilderString(JSONBuilder builder, const char* key, const char* v
 {
 	try
 	{
-		static_cast<json::JSONBuilder*>(builder)->appendString(key, value);
+		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -303,7 +303,7 @@ void appendJSONBuilderInteger(JSONBuilder builder, const char* key, int64_t valu
 {
 	try
 	{
-		static_cast<json::JSONBuilder*>(builder)->appendInt(key, value);
+		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -319,7 +319,7 @@ void appendJSONBuilderUnsignedInteger(JSONBuilder builder, const char* key, uint
 {
 	try
 	{
-		static_cast<json::JSONBuilder*>(builder)->appendUnsignedInt(key, value);
+		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -335,7 +335,7 @@ void appendJSONBuilderDouble(JSONBuilder builder, const char* key, double value,
 {
 	try
 	{
-		static_cast<json::JSONBuilder*>(builder)->appendDouble(key, value);
+		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -351,7 +351,7 @@ void appendJSONBuilderBoolean(JSONBuilder builder, const char* key, bool value, 
 {
 	try
 	{
-		static_cast<json::JSONBuilder*>(builder)->appendBool(key, value);
+		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -367,7 +367,7 @@ void appendJSONBuilderNull(JSONBuilder builder, const char* key, Exception* exce
 {
 	try
 	{
-		static_cast<json::JSONBuilder*>(builder)->appendNull(key);
+		(*static_cast<json::JsonBuilder*>(builder))[key] = nullptr;
 	}
 	catch (const std::exception& e)
 	{
@@ -383,16 +383,16 @@ void appendJSONBuilderArray(JSONBuilder builder, const char* key, const JSONObje
 {
 	try
 	{
-		std::vector<json::utility::jsonObject> values;
+		std::vector<json::JsonObject> values;
 
 		values.reserve(size);
 
 		for (size_t i = 0; i < size; i++)
 		{
-			values.emplace_back(*static_cast<json::utility::jsonObject*>(objects[i]));
+			values.emplace_back(*static_cast<json::JsonObject*>(objects[i]));
 		}
 
-		static_cast<json::JSONBuilder*>(builder)->appendArray(key, std::move(values));
+		(*static_cast<json::JsonBuilder*>(builder))[key] = std::move(values);
 	}
 	catch (const std::exception& e)
 	{
@@ -408,7 +408,7 @@ JSONObject getJSONParserObject(JSONParser parser, const char* key, bool recursiv
 {
 	try
 	{
-		json::utility::jsonObject& object = const_cast<json::utility::jsonObject&>(static_cast<json::JSONParser*>(parser)->getObject(key, recursive));
+		json::JsonObject& object = const_cast<json::JsonObject&>(static_cast<json::JsonParser*>(parser)->get<json::JsonObject>(key, recursive));
 
 		return createJSONObject(&object, exception);
 	}
@@ -428,7 +428,7 @@ const char* getJSONParserString(JSONParser parser, const char* key, bool recursi
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->getString(key, recursive).data();
+		return static_cast<json::JsonParser*>(parser)->get<std::string>(key, recursive).data();
 	}
 	catch (const std::exception& e)
 	{
@@ -446,7 +446,7 @@ int64_t getJSONParserInteger(JSONParser parser, const char* key, bool recursive,
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->getInt(key, recursive);
+		return static_cast<json::JsonParser*>(parser)->get<int64_t>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -464,7 +464,7 @@ uint64_t getJSONParserUnsignedInteger(JSONParser parser, const char* key, bool r
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->getUnsignedInt(key, recursive);
+		return static_cast<json::JsonParser*>(parser)->get<uint64_t>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -482,7 +482,7 @@ double getJSONParserDouble(JSONParser parser, const char* key, bool recursive, E
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->getDouble(key, recursive);
+		return static_cast<json::JsonParser*>(parser)->get<double>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -500,7 +500,7 @@ bool getJSONParserBoolean(JSONParser parser, const char* key, bool recursive, Ex
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->getBool(key, recursive);
+		return static_cast<json::JsonParser*>(parser)->get<bool>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -518,7 +518,7 @@ void getJSONParserNull(JSONParser parser, const char* key, bool recursive, Excep
 {
 	try
 	{
-		static_cast<json::JSONParser*>(parser)->getNull(key, recursive);
+		static_cast<json::JsonParser*>(parser)->get<std::nullptr_t>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -534,11 +534,11 @@ void getJSONParserArray(JSONParser parser, const char* key, void(*addArrayValue)
 {
 	try
 	{
-		const std::vector<json::utility::jsonObject>& result = static_cast<json::JSONParser*>(parser)->getArray(key, recursive);
+		const std::vector<json::JsonObject>& result = static_cast<json::JsonParser*>(parser)->get<std::vector<json::JsonObject>>(key, recursive);
 
-		for (const json::utility::jsonObject& object : result)
+		for (const json::JsonObject& object : result)
 		{
-			json::utility::jsonObject& temp = const_cast<json::utility::jsonObject&>(object);
+			json::JsonObject& temp = const_cast<json::JsonObject&>(object);
 
 			addArrayValue(&temp, array);
 		}
@@ -557,9 +557,9 @@ bool tryGetJSONParserObject(JSONParser parser, const char* key, JSONObject* valu
 {
 	try
 	{
-		json::utility::jsonObject result;
+		json::JsonObject result;
 
-		if (static_cast<json::JSONParser*>(parser)->tryGetObject(key, result, recursive))
+		if (static_cast<json::JsonParser*>(parser)->tryGet<json::JsonObject>(key, result, recursive))
 		{
 			*value = &result;
 
@@ -584,7 +584,7 @@ bool tryGetJSONParserString(JSONParser parser, const char* key, String* value, b
 	{
 		std::string result;
 
-		if (static_cast<json::JSONParser*>(parser)->tryGetString(key, result, recursive))
+		if (static_cast<json::JsonParser*>(parser)->tryGet<std::string>(key, result, recursive))
 		{
 			*value = new std::string(result);
 
@@ -607,7 +607,7 @@ bool tryGetJSONParserInteger(JSONParser parser, const char* key, int64_t* value,
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->tryGetInt(key, *value, recursive);
+		return static_cast<json::JsonParser*>(parser)->tryGet<int64_t>(key, *value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -625,7 +625,7 @@ bool tryGetJSONParserUnsignedInteger(JSONParser parser, const char* key, uint64_
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->tryGetUnsignedInt(key, *value, recursive);
+		return static_cast<json::JsonParser*>(parser)->tryGet<uint64_t>(key, *value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -643,7 +643,7 @@ bool tryGetJSONParserDouble(JSONParser parser, const char* key, double* value, b
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->tryGetDouble(key, *value, recursive);
+		return static_cast<json::JsonParser*>(parser)->tryGet<double>(key, *value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -661,7 +661,7 @@ bool tryGetJSONParserBoolean(JSONParser parser, const char* key, bool* value, bo
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->tryGetBool(key, *value, recursive);
+		return static_cast<json::JsonParser*>(parser)->tryGet<bool>(key, *value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -679,7 +679,9 @@ bool tryGetJSONParserNull(JSONParser parser, const char* key, bool recursive, Ex
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->tryGetNull(key, recursive);
+		std::nullptr_t value;
+
+		return static_cast<json::JsonParser*>(parser)->tryGet<std::nullptr_t>(key, value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -697,13 +699,13 @@ bool tryGetJSONParserArray(JSONParser parser, const char* key, void(*addArrayVal
 {
 	try
 	{
-		std::vector<json::utility::jsonObject> result;
+		std::vector<json::JsonObject> result;
 
-		if (static_cast<json::JSONParser*>(parser)->tryGetArray(key, result, recursive))
+		if (static_cast<json::JsonParser*>(parser)->tryGet<std::vector<json::JsonObject>>(key, result, recursive))
 		{
-			for (const json::utility::jsonObject& object : result)
+			for (const json::JsonObject& object : result)
 			{
-				json::utility::jsonObject& temp = const_cast<json::utility::jsonObject&>(object);
+				json::JsonObject& temp = const_cast<json::JsonObject&>(object);
 
 				addArrayValue(&temp, array);
 			}
@@ -727,7 +729,7 @@ const char* getJSONParserRawData(JSONParser parser, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JSONParser*>(parser)->getRawData().data();
+		return static_cast<json::JsonParser*>(parser)->getRawData().data();
 	}
 	catch (const std::exception& e)
 	{
@@ -1163,17 +1165,17 @@ String generateWebFrameworkUUID(Exception* exception)
 
 void deleteWebFrameworkJSONObject(JSONObject object)
 {
-	delete static_cast<json::utility::jsonObject*>(object);
+	delete static_cast<json::JsonObject*>(object);
 }
 
 void deleteWebFrameworkJSONBuilder(JSONBuilder builder)
 {
-	delete static_cast<json::JSONBuilder*>(builder);
+	delete static_cast<json::JsonBuilder*>(builder);
 }
 
 void deleteWebFrameworkJSONParser(JSONParser parser)
 {
-	delete static_cast<json::JSONParser*>(parser);
+	delete static_cast<json::JsonParser*>(parser);
 }
 
 void deleteWebFrameworkSQLValue(SQLValueObject value)

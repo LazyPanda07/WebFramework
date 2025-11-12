@@ -35,7 +35,7 @@ namespace framework
 	public:
 		ExecutorServer
 		(
-			const json::JSONParser& configuration,
+			const json::JsonParser& configuration,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,

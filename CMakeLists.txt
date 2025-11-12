@@ -164,9 +164,12 @@ add_subdirectory(Localization)
 add_subdirectory(Log)
 add_subdirectory(Networks)
 add_subdirectory(SHA256)
-add_subdirectory(ThreadPool)
 add_subdirectory(UtilityLibrary)
 add_subdirectory(Databases)
+
+if (NOT TARGET ThreadPool)
+	add_subdirectory(ThreadPool)
+endif()
 
 add_subdirectory(API)
 

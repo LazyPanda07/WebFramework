@@ -1,7 +1,7 @@
 #include "LoadBalancerServer.h"
 
-#include <Exceptions/SSLException.h>
-#include <HTTPSNetwork.h>
+#include <Exceptions/SslException.h>
+#include <HttpsNetwork.h>
 #include <Log.h>
 
 #include "Web/HTTPResponseImplementation.h"
@@ -353,27 +353,27 @@ namespace framework::load_balancer
 
 			if (!ssl)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
+				throw web::exceptions::SslException(__LINE__, __FILE__);
 			}
 
 			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 			{
 				SSL_free(ssl);
 
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
+				throw web::exceptions::SslException(__LINE__, __FILE__);
 			}
 
 			if (int errorCode = SSL_accept(ssl); errorCode != 1)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+				throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 			}
 		}
 
 		std::chrono::milliseconds timeoutInMilliseconds(timeout);
 		LoadBalancerRequest request
 		(
-			ssl ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, timeoutInMilliseconds),
-			serversHTTPS ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
+			ssl ? streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, timeoutInMilliseconds),
+			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
 			heuristic,
 			std::move(cleanup)
 		);
@@ -404,7 +404,7 @@ namespace framework::load_balancer
 	LoadBalancerServer::LoadBalancerServer
 	(
 		std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
-		const json::utility::jsonObject& heuristic, utility::LoadSource loadSource,
+		const json::JsonObject& heuristic, utility::LoadSource loadSource,
 		const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 		std::shared_ptr<ResourceExecutor> resources,
 		uint32_t processingThreads,
@@ -425,8 +425,8 @@ namespace framework::load_balancer
 		threshold(decltype(threshold)::period::den / loadBalancingTargetRPS * processingThreads),
 		serversHTTPS(serversHTTPS)
 	{
-		const std::string& heuristicName = heuristic.getString("name");
-		std::string apiType = heuristic.getString(json_settings::apiTypeKey);
+		const std::string& heuristicName = heuristic["name"].get<std::string>();
+		std::string apiType = heuristic[json_settings::apiTypeKey].get<std::string>();
 
 		if (heuristicName == "Connections")
 		{

@@ -78,7 +78,7 @@ namespace framework
 	public:
 		ExecutorsManager
 		(
-			const json::JSONParser& configuration,
+			const json::JsonParser& configuration,
 			const std::vector<std::string>& pathToSources,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const utility::AdditionalServerSettings& additionalSettings,

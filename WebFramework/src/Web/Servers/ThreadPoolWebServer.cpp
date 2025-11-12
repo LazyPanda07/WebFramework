@@ -4,10 +4,10 @@
 
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/NotFoundException.h"
-#include "Exceptions/SSLException.h"
+#include "Exceptions/SslException.h"
 #include "Exceptions/APIException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
-#include "HTTPSNetwork.h"
+#include "HttpsNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 
 namespace framework
@@ -23,8 +23,8 @@ namespace framework
 		stream
 		(
 			ssl ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, std::chrono::milliseconds(timeout))
+			streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, std::chrono::milliseconds(timeout))
 		),
 		cleanup(std::move(cleanup)),
 		service(service),
@@ -32,7 +32,7 @@ namespace framework
 		isBusy(false),
 		webExceptionAcquired(false)
 	{
-		web::HTTPNetwork& network = stream.getNetwork<web::HTTPNetwork>();
+		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
 
 		network.setLargeBodyHandler<utility::ThreadPoolHandler>
 			(
@@ -66,7 +66,7 @@ namespace framework
 			return false;
 		}
 
-		if (!stream.getNetwork<web::HTTPNetwork>().isDataAvailable())
+		if (!stream.getNetwork<web::HttpNetwork>().isDataAvailable())
 		{
 			return false;
 		}
@@ -228,25 +228,25 @@ namespace framework
 
 				if (!ssl)
 				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
 				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 				{
 					SSL_free(ssl);
 
-					throw web::exceptions::SSLException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
 				{
-					throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
 
 			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
 		}
-		catch (const web::exceptions::SSLException& e)
+		catch (const web::exceptions::SslException& e)
 		{
 			if (Log::isValid())
 			{
@@ -264,7 +264,7 @@ namespace framework
 
 	ThreadPoolWebServer::ThreadPoolWebServer
 	(
-		const json::JSONParser& configuration,
+		const json::JsonParser& configuration,
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 		std::string_view ip,
 		std::string_view port,
@@ -286,7 +286,7 @@ namespace framework
 		ExecutorServer
 		(
 			configuration,
-			move(executorsSettings),
+			std::move(executorsSettings),
 			pathToSources,
 			additionalSettings,
 			resourcesThreadPool
