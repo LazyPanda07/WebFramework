@@ -4,21 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(
-	LIBS
-	WebFrameworkCore
-	WebFrameworkExecutors
-	BaseTCPServer
-	FileManager
-	INIParser
-	Localization
-	Log
-	Networks
-	JSON
-	SocketStreams
-	SHA256
-	ThreadPool
-	UtilityLibrary
-	Databases
+	3RDPARTY_LIBS
 	sqlite3
 	ssl
 	crypto
@@ -68,7 +54,7 @@ elseif (WIN32)
 
 	set(COMPILE_TARGET Windows)
 
-	list(APPEND LIBS crypt32)
+	list(APPEND 3RDPARTY_LIBS crypt32)
 else()
 	message(FATAL "Does not support ${CMAKE_SYSTEM_NAME}")
 endif()
@@ -158,18 +144,16 @@ add_subdirectory(3rdparty)
 add_subdirectory(WebFrameworkCore)
 add_subdirectory(WebFrameworkExecutors)
 add_subdirectory(BaseTCPServer)
-add_subdirectory(FileManager)
+add_subdirectory(ThreadPool)
 add_subdirectory(INIParser)
-add_subdirectory(Localization)
 add_subdirectory(Log)
-add_subdirectory(Networks)
+add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(SHA256)
 add_subdirectory(UtilityLibrary)
 add_subdirectory(Databases)
 
-if (NOT TARGET ThreadPool)
-	add_subdirectory(ThreadPool)
-endif()
+add_subdirectory(Localization) # has JSON as dependency
+add_subdirectory(FileManager) # has ThreadPool as dependency
 
 add_subdirectory(API)
 
@@ -180,16 +164,9 @@ target_include_directories(
 	WebFrameworkCore/vendor/sqlite3/include/
 	WebFrameworkExecutors/src/
 	BaseTCPServer/src/
-	FileManager/src/
 	INIParser/src/
-	Localization/src/
 	Log/src/
-	Networks/src/
-	Networks/HTTP/src/
-	Networks/HTTP/JSON/src/
 	SHA256/src/
-	ThreadPool/src/
-	UtilityLibrary/include/
 	${ADDITIONAL_INCLUDES}
 )
 
@@ -201,7 +178,21 @@ target_link_directories(
 
 target_link_libraries(
 	${PROJECT_NAME}
-	${LIBS}
+	WebFrameworkCore
+	WebFrameworkExecutors
+	BaseTCPServer
+	FileManager
+	INIParser
+	Localization
+	Log
+	Networks
+	JSON
+	SocketStreams
+	SHA256
+	ThreadPool
+	UtilityLibrary
+	Databases
+	${3RDPARTY_LIBS}
 	${ADDITIONAL_LIBS}
 )
 
