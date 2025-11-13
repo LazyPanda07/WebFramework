@@ -2,10 +2,10 @@
 
 #include <stdlib.h>
 
-#include "../HTTPRequest.h"
-#include "../HTTPResponse.h"
+#include "../HttpRequest.h"
+#include "../HttpResponse.h"
 #include "../DLLHandler.h"
-#include "../JSONParser.h"
+#include "../JsonParser.h"
 
 typedef void* Executor;
 typedef void* ExecutorSettings;

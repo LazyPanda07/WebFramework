@@ -1,6 +1,6 @@
 #pragma once
 
-#include "JSONObject.hpp"
+#include "JsonObject.hpp"
 
 namespace framework
 {

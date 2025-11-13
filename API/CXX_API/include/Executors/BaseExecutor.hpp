@@ -2,8 +2,8 @@
 
 #include <format>
 
-#include "../HTTPRequest.hpp"
-#include "../HTTPResponse.hpp"
+#include "../HttpRequest.hpp"
+#include "../HttpResponse.hpp"
 #include "../DLLHandler.hpp"
 #include "../Exceptions/NotImplementedDoMethodException.hpp"
 

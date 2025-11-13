@@ -1,6 +1,6 @@
 #pragma once
 
-#include "HTTPResponse.h"
+#include "HttpResponse.h"
 #include "Databases/Database.h"
 
 typedef void* HTTPRequest;

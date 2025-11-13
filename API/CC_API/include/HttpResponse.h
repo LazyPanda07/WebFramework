@@ -1,6 +1,6 @@
 #pragma once
 
-#include "JSONBuilder.h"
+#include "JsonBuilder.h"
 
 typedef void* HTTPResponse;
 

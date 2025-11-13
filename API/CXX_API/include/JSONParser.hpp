@@ -2,7 +2,7 @@
 
 #include <ostream>
 
-#include "JSONObject.hpp"
+#include "JsonObject.hpp"
 
 namespace framework
 {

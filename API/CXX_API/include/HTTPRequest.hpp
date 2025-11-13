@@ -4,9 +4,9 @@
 #include <algorithm>
 
 #include "WebInterfaces/IHTTPRequest.hpp"
-#include "HTTPResponse.hpp"
+#include "HttpResponse.hpp"
 #include "Utility/ChunkGenerator.hpp"
-#include "JSONParser.hpp"
+#include "JsonParser.hpp"
 #include "Exceptions/WebFrameworkAPIException.hpp"
 #include "DLLHandler.hpp"
 #include "Databases/Database.hpp"
