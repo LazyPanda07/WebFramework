@@ -19,7 +19,9 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	Networks
 	UtilityLibrary
+	-Wl,--whole-archive
 	JSON
+	-Wl,--no-whole-archive
 	HTTP
 	SocketStreams
 	gtest 

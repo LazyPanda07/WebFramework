@@ -29,7 +29,9 @@ target_link_libraries(
 	Localization
 	Networks
 	UtilityLibrary
+	-Wl,--whole-archive
 	JSON
+	-Wl,--no-whole-archive
 	HTTP
 	SocketStreams
 	gtest
