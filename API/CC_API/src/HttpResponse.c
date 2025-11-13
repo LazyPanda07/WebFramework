@@ -1,4 +1,4 @@
-#include "HTTPResponse.h"
+#include "HttpResponse.h"
 
 WebFrameworkException setBody(HTTPResponse implementation, const char* body)
 {

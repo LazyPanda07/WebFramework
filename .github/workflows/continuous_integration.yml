@@ -361,8 +361,8 @@ jobs:
     - name: Merge artifacts
       shell: bash
       run: |
-          mv Executors/* Tests
-          mv WebFrameworkLibrary/lib/* Tests
+          cp -r Executors/* Tests
+          cp -r WebFrameworkLibrary/lib/* Tests
 
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
       working-directory: Tests

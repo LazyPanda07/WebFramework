@@ -1,4 +1,4 @@
-#include "JSONParser.h"
+#include "JsonParser.h"
 
 static void __appendJSONArrayObject(JSONArray_t* array, void* value)
 {
