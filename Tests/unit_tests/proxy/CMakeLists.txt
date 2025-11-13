@@ -19,6 +19,9 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	UtilityLibrary
 	Networks
+	JSON
+	HTTP
+	SocketStreams
 	gtest
 	gtest_main
 )

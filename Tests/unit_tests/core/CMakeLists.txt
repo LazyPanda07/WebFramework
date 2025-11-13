@@ -29,6 +29,9 @@ target_link_libraries(
 	Localization
 	Networks
 	UtilityLibrary
+	JSON
+	HTTP
+	SocketStreams
 	gtest
 	gtest_main
 )
