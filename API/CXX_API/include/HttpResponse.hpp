@@ -4,7 +4,7 @@
 
 #include "WebInterfaces/IHTTPResponse.hpp"
 
-#include "JSONBuilder.hpp"
+#include "JsonBuilder.hpp"
 
 namespace framework
 {
