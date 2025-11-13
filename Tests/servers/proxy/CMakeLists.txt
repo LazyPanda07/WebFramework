@@ -7,11 +7,6 @@ add_executable(
 	main.cpp
 )
 
-target_include_directories(
-	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_INCLUDE}
-)
-
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	UtilityLibrary

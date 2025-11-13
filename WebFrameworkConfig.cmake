@@ -67,13 +67,6 @@ if (CMAKE_SCRIPT_MODE_FILE)
 endif()
 
 set(
-    WEB_FRAMEWORK_INCLUDE
-    ${WEB_FRAMEWORK_SDK}/include/
-    ${WEB_FRAMEWORK_SDK}/include/vendor/OpenSSL/
-    ${WEB_FRAMEWORK_SDK}/include/vendor/sqlite3/
-)
-
-set(
     WEB_FRAMEWORK_LIB
     WebFramework
     WebFrameworkCore
