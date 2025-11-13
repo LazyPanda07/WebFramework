@@ -1,6 +1,5 @@
 #include <Executors/BaseExecutor.h>
 
-#include <JSONBuilder.h>
 #include <JsonParser.h>
 #include <Utility/WebFrameworkLocalization.h>
 
