@@ -39,16 +39,16 @@
     <ClCompile Include="src\DLLHandler.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\HTTPRequest.c">
+    <ClCompile Include="src\HttpRequest.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\HTTPResponse.c">
+    <ClCompile Include="src\HttpResponse.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSONBuilder.c">
+    <ClCompile Include="src\JsonBuilder.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSONObject.c">
+    <ClCompile Include="src\JsonObject.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\WebFramework.c">
@@ -57,7 +57,7 @@
     <ClCompile Include="src\WebFrameworkException.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSONParser.c">
+    <ClCompile Include="src\JsonParser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\WebFrameworkUtility.c">
@@ -86,19 +86,19 @@
     <ClInclude Include="include\WebFrameworkException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\HTTPRequest.h">
+    <ClInclude Include="include\HttpRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\HTTPResponse.h">
+    <ClInclude Include="include\HttpResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\JSONObject.h">
+    <ClInclude Include="include\JsonObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\JSONBuilder.h">
+    <ClInclude Include="include\JsonBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\JSONParser.h">
+    <ClInclude Include="include\JsonParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Databases\Database.h">

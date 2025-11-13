@@ -19,11 +19,11 @@ add_library(
 	src/Utility/WebFrameworkLocalization.c
 	src/Config.c
 	src/DLLHandler.c
-	src/HTTPRequest.c
-	src/HTTPResponse.c
-	src/JSONBuilder.c
-	src/JSONObject.c
-	src/JSONParser.c
+	src/HttpRequest.c
+	src/HttpResponse.c
+	src/JsonBuilder.c
+	src/JsonObject.c
+	src/JsonParser.c
 	src/WebFramework.c
 	src/WebFrameworkException.c
 	src/LoadBalancerHeuristic.c
