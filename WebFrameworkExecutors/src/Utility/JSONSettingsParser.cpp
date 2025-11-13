@@ -35,11 +35,12 @@ namespace framework::utility
 		}
 
 		json::JsonParser parser;
-		json::MapJsonIterator iterator(parser.getParsedData());
 
 		in >> parser;
 
 		in.close();
+
+		json::MapJsonIterator iterator(parser.getParsedData());
 
 		for (const auto& [name, description] : iterator)
 		{

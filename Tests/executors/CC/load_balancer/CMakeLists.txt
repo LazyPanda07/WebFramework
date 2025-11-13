@@ -8,12 +8,6 @@ add_library(
 	src/CustomHeuristic.c
 )
 
-target_include_directories(
-	${PROJECT_NAME} PRIVATE
-	include/
-	${WEB_FRAMEWORK_INCLUDE}
-)
-
 if (UNIX)
 	find_package(Threads REQUIRED)
 
