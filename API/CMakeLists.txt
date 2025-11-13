@@ -28,7 +28,7 @@ if (${BUILD_PYTHON_API})
 		PATTERN "out" EXCLUDE
 		PATTERN ".vs" EXCLUDE
 	)
-	install(DIRECTORY ${CXX_API_INSTALL_DESTINATION}/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/python_api/cxx/include)
+	install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/api/cxx/include DESTINATION ${CMAKE_INSTALL_PREFIX}/api/python_api/cxx)
 	if (UNIX)
 		install(
 			CODE [[

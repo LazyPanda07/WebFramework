@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Executors\BaseExecutor.h">
+    <ClCompile Include="include\Executors\BaseExecutor.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Executors\BaseExecutor.c">
@@ -71,55 +71,55 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\import.h">
+    <ClInclude Include="include\import.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebFramework.h">
+    <ClInclude Include="include\WebFramework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Config.h">
+    <ClInclude Include="include\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DLLHandler.h">
+    <ClInclude Include="include\DLLHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebFrameworkException.h">
+    <ClInclude Include="include\WebFrameworkException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\HTTPRequest.h">
+    <ClInclude Include="include\HTTPRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\HTTPResponse.h">
+    <ClInclude Include="include\HTTPResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\JSONObject.h">
+    <ClInclude Include="include\JSONObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\JSONBuilder.h">
+    <ClInclude Include="include\JSONBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\JSONParser.h">
+    <ClInclude Include="include\JSONParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\Database.h">
+    <ClInclude Include="include\Databases\Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\Table.h">
+    <ClInclude Include="include\Databases\Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\SQLValue.h">
+    <ClInclude Include="include\Databases\SQLValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\SQLResult.h">
+    <ClInclude Include="include\Databases\SQLResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\WebFrameworkUtility.h">
+    <ClInclude Include="include\Utility\WebFrameworkUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\WebFrameworkLocalization.h">
+    <ClInclude Include="include\Utility\WebFrameworkLocalization.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancerHeuristic.h">
+    <ClInclude Include="include\LoadBalancerHeuristic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

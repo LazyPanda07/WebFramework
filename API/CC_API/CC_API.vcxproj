@@ -60,6 +60,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -77,6 +78,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,7 +89,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Executors\BaseExecutor.c" />
-    <ClCompile Include="src\Executors\BaseExecutor.h" />
+    <ClCompile Include="include\Executors\BaseExecutor.h" />
     <ClCompile Include="src\Config.c" />
     <ClCompile Include="src\Databases\Database.c" />
     <ClCompile Include="src\Databases\SQLResult.c" />
@@ -106,23 +108,23 @@
     <ClCompile Include="src\WebFrameworkException.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Config.h" />
-    <ClInclude Include="src\Databases\Database.h" />
-    <ClInclude Include="src\Databases\SQLResult.h" />
-    <ClInclude Include="src\Databases\SQLValue.h" />
-    <ClInclude Include="src\Databases\Table.h" />
-    <ClInclude Include="src\DLLHandler.h" />
-    <ClInclude Include="src\HTTPRequest.h" />
-    <ClInclude Include="src\HTTPResponse.h" />
-    <ClInclude Include="src\import.h" />
-    <ClInclude Include="src\JSONBuilder.h" />
-    <ClInclude Include="src\JSONObject.h" />
-    <ClInclude Include="src\JSONParser.h" />
-    <ClInclude Include="src\LoadBalancerHeuristic.h" />
-    <ClInclude Include="src\Utility\WebFrameworkLocalization.h" />
-    <ClInclude Include="src\Utility\WebFrameworkUtility.h" />
-    <ClInclude Include="src\WebFramework.h" />
-    <ClInclude Include="src\WebFrameworkException.h" />
+    <ClInclude Include="include\Config.h" />
+    <ClInclude Include="include\Databases\Database.h" />
+    <ClInclude Include="include\Databases\SQLResult.h" />
+    <ClInclude Include="include\Databases\SQLValue.h" />
+    <ClInclude Include="include\Databases\Table.h" />
+    <ClInclude Include="include\DLLHandler.h" />
+    <ClInclude Include="include\HTTPRequest.h" />
+    <ClInclude Include="include\HTTPResponse.h" />
+    <ClInclude Include="include\import.h" />
+    <ClInclude Include="include\JSONBuilder.h" />
+    <ClInclude Include="include\JSONObject.h" />
+    <ClInclude Include="include\JSONParser.h" />
+    <ClInclude Include="include\LoadBalancerHeuristic.h" />
+    <ClInclude Include="include\Utility\WebFrameworkLocalization.h" />
+    <ClInclude Include="include\Utility\WebFrameworkUtility.h" />
+    <ClInclude Include="include\WebFramework.h" />
+    <ClInclude Include="include\WebFrameworkException.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

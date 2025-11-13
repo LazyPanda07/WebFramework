@@ -37,7 +37,7 @@ if (UNIX)
     add_definitions(-D__LINUX__)
 endif()
 
-set(WEB_FRAMEWORK_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/../CXX_API/src" CACHE STRING "Path to include directory")
+set(WEB_FRAMEWORK_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/../CXX_API/include" CACHE STRING "Path to include directory")
 
 include(FetchContent)
 

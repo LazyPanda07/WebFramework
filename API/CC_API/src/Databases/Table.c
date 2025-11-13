@@ -1,4 +1,4 @@
-#include "Table.h"
+#include "Databases/Table.h"
 
 WebFrameworkException executeQuery(Table implementation, const char* query, const SQLValue* values, size_t size, SQLResult* result)
 {

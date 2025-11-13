@@ -1,4 +1,4 @@
-#include "WebFrameworkLocalization.h"
+#include "Utility/WebFrameworkLocalization.h"
 
 WebFrameworkException getLocalizedString(const char* localizationModuleName, const char* key, const char* language, const char** result)
 {

@@ -1,4 +1,4 @@
-#include "SQLResult.h"
+#include "Databases/SQLResult.h"
 
 WebFrameworkException getSQLResultSize(SQLResult implementation, size_t* result)
 {
