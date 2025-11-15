@@ -21,7 +21,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -67,11 +67,10 @@
     <PreBuildEvent>
       <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 
-cd $(ProjectDir)
 
-if not exist build mkdir build
+if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
 
-cd build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(ProjectDir)build\_deps\install -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
+cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_BINARY_DIR=$(ProjectDir)build -DCMAKE_BUILD_TYPE=$(Configuration) .. &amp;&amp; cmake --build . -j --config $(Configuration) &amp;&amp; cmake --install . --config $(Configuration)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
