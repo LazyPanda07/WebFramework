@@ -130,3 +130,15 @@ TEST(ResourceLoading, DynamicResources)
 		ASSERT_EQ(html, md) << html << std::endl << md;
 	}
 }
+
+TEST(ResourceLoading, EmptyExtension)
+{
+	streams::IOSocketStream stream = utility::createSocketStream();
+	std::string request = web::HttpBuilder().getRequest().parameters("empty_extension_file").build();
+	std::string response;
+
+	stream << request;
+	stream >> response;
+	
+	ASSERT_EQ(web::HttpParser(response).getBody(), "This is a file without extension.");
+}
