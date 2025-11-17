@@ -3,6 +3,7 @@
 #include <format>
 #include <fstream>
 #include <array>
+#include <cstring>
 
 #include <Exceptions/FileDoesNotExistException.h>
 #include <Strings.h>
