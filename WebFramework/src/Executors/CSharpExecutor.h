@@ -8,14 +8,14 @@
 
 namespace framework
 {
-	class DotNetExecutor : public BaseExecutor
+	class CSharpExecutor : public BaseExecutor
 	{
 	private:
 		void* implementation;
 		runtime::DotNetRuntime::NativeString moduleName;
 
 	public:
-		DotNetExecutor(void* implementation, const std::filesystem::path& modulePath);
+		CSharpExecutor(void* implementation, const std::filesystem::path& modulePath);
 
 		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
@@ -41,7 +41,7 @@ namespace framework
 
 		void destroy() override;
 
-		~DotNetExecutor();
+		~CSharpExecutor();
 	};
 }
 

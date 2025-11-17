@@ -180,7 +180,7 @@
     <ClCompile Include="src\Runtimes\DotNetRuntime.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Executors\DotNetExecutor.cpp">
+    <ClCompile Include="src\Executors\CSharpExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -362,7 +362,7 @@
     <ClInclude Include="src\Runtimes\DotNetRuntime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\DotNetExecutor.h">
+    <ClInclude Include="src\Executors\CSharpExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

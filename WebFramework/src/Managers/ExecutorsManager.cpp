@@ -22,7 +22,7 @@
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
 #include "Executors/PythonExecutor.h"
-#include "Executors/DotNetExecutor.h"
+#include "Executors/CSharpExecutor.h"
 
 template<typename... Ts>
 struct VisitHelper : Ts...
@@ -266,7 +266,7 @@ namespace framework
 			{ json_settings::pythonExecutorKey, [this](const std::string& name) { py::gil_scoped_acquire gil; return std::make_unique<PythonExecutor>(creators.at(name)()); } },
 #endif
 #ifdef __WITH_DOT_NET_EXECUTORS__
-			{ json_settings::csharpExecutorKey, [this](const std::string& name) { return std::make_unique<DotNetExecutor>(creators.at(name)(), std::get<std::filesystem::path>(creatorSources.at(name))); } },
+			{ json_settings::csharpExecutorKey, [this](const std::string& name) { return std::make_unique<CSharpExecutor>(creators.at(name)(), std::get<std::filesystem::path>(creatorSources.at(name))); } },
 #endif
 		};
 

@@ -116,7 +116,7 @@ add_library(
 	WebFramework/src/Executors/CXXExecutor.cpp
 	WebFramework/src/Executors/CCExecutor.cpp
 	WebFramework/src/Executors/PythonExecutor.cpp
-	WebFramework/src/Executors/DotNetExecutor.cpp
+	WebFramework/src/Executors/CSharpExecutor.cpp
 )
 
 # Used in Python API install
