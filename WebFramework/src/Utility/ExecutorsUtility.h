@@ -9,6 +9,7 @@ namespace framework::utility
 		cc,
 		cxx,
 		python,
+		csharp,
 		count
 	};
 

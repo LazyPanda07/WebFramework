@@ -143,6 +143,7 @@
     <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
     <ClCompile Include="src\Executors\CCExecutor.cpp" />
     <ClCompile Include="src\Executors\CXXExecutor.cpp" />
+    <ClCompile Include="src\Executors\DotNetExecutor.cpp" />
     <ClCompile Include="src\Executors\PythonExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
     <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="src\Exceptions\NotFoundException.h" />
     <ClInclude Include="src\Executors\CCExecutor.h" />
     <ClInclude Include="src\Executors\CXXExecutor.h" />
+    <ClInclude Include="src\Executors\DotNetExecutor.h" />
     <ClInclude Include="src\Executors\PythonExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />

@@ -84,7 +84,7 @@ namespace framework::runtime
 #endif
 
 		default:
-			throw std::runtime_error(std::format("No runtime for {}", static_cast<int>(type)));
+			throw std::runtime_error(std::format("No runtime for LoadSourceType {}", static_cast<int>(type)));
 		}
 	}
 
@@ -110,7 +110,53 @@ namespace framework::runtime
 #endif
 
 		default:
-			throw std::runtime_error(std::format("No runtime for {}", static_cast<int>(type)));
+			throw std::runtime_error(std::format("No runtime for LoadSourceType {}", static_cast<int>(type)));
+		}
+	}
+
+	Runtime& RuntimesManager::getRuntime(utility::ExecutorAPIType type)
+	{
+		switch (type)
+		{
+		case framework::utility::ExecutorAPIType::python:
+#ifdef __WITH_PYTHON_EXECUTORS__
+			return this->getRuntime<PythonRuntime>();
+#else
+			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
+#endif
+
+		case framework::utility::ExecutorAPIType::csharp:
+#ifdef __WITH_DOT_NET_EXECUTORS__
+			return this->getRuntime<DotNetRuntime>();
+#else
+			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
+#endif
+
+		default:
+			throw std::runtime_error(std::format("No runtime for ExecutorAPIType {}", static_cast<int>(type)));
+		}
+	}
+
+	const Runtime& RuntimesManager::getRuntime(utility::ExecutorAPIType type) const
+	{
+		switch (type)
+		{
+		case framework::utility::ExecutorAPIType::python:
+#ifdef __WITH_PYTHON_EXECUTORS__
+			return this->getRuntime<PythonRuntime>();
+#else
+			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
+#endif
+
+		case framework::utility::ExecutorAPIType::csharp:
+#ifdef __WITH_DOT_NET_EXECUTORS__
+			return this->getRuntime<DotNetRuntime>();
+#else
+			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
+#endif
+
+		default:
+			throw std::runtime_error(std::format("No runtime for ExecutorAPIType {}", static_cast<int>(type)));
 		}
 	}
 }

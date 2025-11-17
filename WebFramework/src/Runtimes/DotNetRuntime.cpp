@@ -156,6 +156,11 @@ namespace framework::runtime
 		return nullptr;
 	}
 
+	const DotNetRuntime::Module& DotNetRuntime::operator [](const NativeString& moduleName) const
+	{
+		return modules.at(moduleName);
+	}
+
 	void DotNetRuntime::finishInitialization()
 	{
 

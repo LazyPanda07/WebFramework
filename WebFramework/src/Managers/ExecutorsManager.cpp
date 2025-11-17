@@ -22,6 +22,7 @@
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
 #include "Executors/PythonExecutor.h"
+#include "Executors/DotNetExecutor.h"
 
 template<typename... Ts>
 struct VisitHelper : Ts...
@@ -129,7 +130,8 @@ namespace framework
 			}
 
 			startParameter = endParameter + 1;
-		} while (endParameter != std::string::npos);
+		}
+		while (endParameter != std::string::npos);
 	}
 
 	void ExecutorsManager::callInitFunction(const utility::LoadSource& creatorSource, std::string_view webFrameworkSharedLibraryPath, std::string_view apiType)
@@ -149,9 +151,8 @@ namespace framework
 			break;
 
 		case framework::utility::ExecutorAPIType::python:
-#ifdef __WITH_PYTHON_EXECUTORS__
-			runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().initializeWebFramework(webFrameworkSharedLibraryPath.data());
-#endif
+		case framework::utility::ExecutorAPIType::csharp:
+			runtime::RuntimesManager::get().getRuntime(type).initializeWebFramework(webFrameworkSharedLibraryPath.data());
 
 			break;
 
@@ -263,6 +264,9 @@ namespace framework
 			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [this](const std::string& name) { py::gil_scoped_acquire gil; return std::make_unique<PythonExecutor>(creators.at(name)()); } },
+#endif
+#ifdef __WITH_DOT_NET_EXECUTORS__
+			{ json_settings::csharpExecutorKey, [this](const std::string& name) { return std::make_unique<DotNetExecutor>(creators.at(name)(), std::get<std::filesystem::path>(creatorSources.at(name))); } },
 #endif
 		};
 

@@ -20,13 +20,15 @@ namespace framework::runtime
 
 	class DotNetRuntime : public Runtime
 	{
-	private:
+	public:
 		using NativeString = std::filesystem::path;
+
+	private:
 		using HasExecutorSignature = int(*)(const char* executorName);
 		using CreateExecutorSignature = void* (*)(const char* executorName);
 		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
 
-	private:
+	public:
 		struct Module
 		{
 		public:
@@ -48,6 +50,7 @@ namespace framework::runtime
 			~Module() = default;
 		};
 		
+	private:
 		struct NativeStringHash
 		{
 			size_t operator ()(const NativeString& value) const noexcept;
@@ -63,6 +66,7 @@ namespace framework::runtime
 
 		static void createRuntimeConfig();
 
+	public:
 		static NativeString getModuleName(const std::filesystem::path& modulePath);
 
 		static NativeString getModuleName(std::string_view modulePath);
@@ -89,6 +93,8 @@ namespace framework::runtime
 		bool hasExecutor(std::string_view executorName, const std::filesystem::path& modulePath) const;
 
 		CreateExecutorFunction getExecutorFunction(std::string_view executorName, const std::filesystem::path& modulePath);
+
+		const Module& operator [](const NativeString& moduleName) const;
 
 		void finishInitialization() override;
 

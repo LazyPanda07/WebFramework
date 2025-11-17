@@ -5,6 +5,7 @@
 
 #include "Runtimes/Runtime.h"
 #include "Utility/DynamicLibraries.h"
+#include "Utility/ExecutorsUtility.h"
 
 namespace framework::runtime
 {
@@ -60,6 +61,10 @@ namespace framework::runtime
 		Runtime& getRuntime(utility::LoadSourceType type);
 
 		const Runtime& getRuntime(utility::LoadSourceType type) const;
+
+		Runtime& getRuntime(utility::ExecutorAPIType type);
+
+		const Runtime& getRuntime(utility::ExecutorAPIType type) const;
 
 		template<std::derived_from<Runtime> T, typename... Args>
 		void addRuntime(Args&&... args);

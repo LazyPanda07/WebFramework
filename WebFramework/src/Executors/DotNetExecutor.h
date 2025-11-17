@@ -2,30 +2,20 @@
 
 #include <Executors/BaseExecutor.h>
 
-#ifdef __WITH_PYTHON_EXECUTORS__
+#ifdef __WITH_DOT_NET_EXECUTORS__
 
-#include <pybind11/embed.h>
+#include "Runtimes/DotNetRuntime.h"
 
 namespace framework
 {
-	class PythonExecutor : public BaseExecutor
+	class DotNetExecutor : public BaseExecutor
 	{
 	private:
-		void processMethod(std::string_view methodName, HTTPRequestExecutors& request, HTTPResponseExecutors& response);
-
-	private:
-		pybind11::object* implementation;
+		void* implementation;
+		runtime::DotNetRuntime::NativeString moduleName;
 
 	public:
-		PythonExecutor(void* implementation);
-
-		PythonExecutor(const PythonExecutor&) = delete;
-
-		PythonExecutor(PythonExecutor&& other) noexcept;
-
-		PythonExecutor& operator =(const PythonExecutor&) = delete;
-
-		PythonExecutor& operator =(PythonExecutor&& other) noexcept;
+		DotNetExecutor(void* implementation, const std::filesystem::path& modulePath);
 
 		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
@@ -51,7 +41,7 @@ namespace framework
 
 		void destroy() override;
 
-		~PythonExecutor();
+		~DotNetExecutor();
 	};
 }
 

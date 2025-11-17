@@ -1,6 +1,8 @@
 #include "DynamicLibraries.h"
 
 #include <format>
+#include <fstream>
+#include <array>
 
 #include <Exceptions/FileDoesNotExistException.h>
 #include <Strings.h>
@@ -10,6 +12,8 @@
 #include <limits.h>
 #include <unistd.h>
 #endif
+
+static bool isDotNetAssembly(const std::filesystem::path& libraryPath);
 
 namespace framework::utility
 {
@@ -62,6 +66,12 @@ namespace framework::utility
 			if (std::filesystem::exists(generatePath(".py")))
 			{
 				initPy();
+			}
+			else if (std::filesystem::exists(generatePath(".dll")))
+			{
+				extension = ".dll";
+
+				type = isDotNetAssembly(generatePath(".dll")) ? LoadSourceType::dotNet : LoadSourceType::dynamicLibrary;
 			}
 			else
 			{
@@ -127,4 +137,51 @@ namespace framework::utility
 		return LoadLibraryA(pathToLibrary.string().data());
 #endif				
 	}
+}
+
+bool isDotNetAssembly(const std::filesystem::path& libraryPath)
+{
+	constexpr size_t chunkSize = 1 * 1024 * 1024;
+	constexpr std::array<uint8_t, 4> signature = { 0x42, 0x53, 0x4A, 0x42 }; // BSJB
+
+	std::ifstream stream(libraryPath, std::ios::binary);
+	std::vector<uint8_t> chunk(chunkSize, 0);
+	std::vector<uint8_t> last;
+
+	while (true)
+	{
+		size_t extractedBytes = stream.read(reinterpret_cast<char*>(chunk.data() + last.size()), chunk.size() - last.size()).gcount();
+
+		if (last.size())
+		{
+			std::copy(last.begin(), last.end(), chunk.data());
+
+			last.clear();
+		}
+
+		if (!extractedBytes)
+		{
+			break;
+		}
+
+		if (size_t size = extractedBytes % signature.size())
+		{
+			for (size_t i = 0; i < size; i++)
+			{
+				last.push_back(chunk[extractedBytes - 1 - i]);
+			}
+
+			extractedBytes -= size;
+		}
+
+		for (size_t i = 0; i < extractedBytes; i++)
+		{
+			if (!std::memcmp(chunk.data() + i, signature.data(), signature.size()))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
