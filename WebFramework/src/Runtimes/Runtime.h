@@ -2,6 +2,7 @@
 
 #include <string_view>
 #include <any>
+#include <optional>
 
 #include "WebInterfaces/IHTTPRequest.h"
 #include "Utility/Sources.h"
@@ -23,7 +24,7 @@ namespace framework::runtime
 
 		virtual void initializeWebFramework(std::string_view libraryPath) = 0;
 
-		virtual std::any getClass(std::string_view className, const utility::LoadSource& source) const = 0;
+		virtual std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) = 0;
 
 		virtual ~Runtime() = default;
 	};

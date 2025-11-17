@@ -118,4 +118,13 @@ namespace framework::utility
 
 		return "";
 	}
+
+	HMODULE loadLibrary(const std::filesystem::path& pathToLibrary)
+	{
+#ifdef __LINUX__
+		return dlopen(pathToLibrary.string().data(), RTLD_LAZY);
+#else
+		return LoadLibraryA(pathToLibrary.string().data());
+#endif				
+	}
 }

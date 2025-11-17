@@ -12,11 +12,14 @@ namespace framework::utility
 {
 	enum class LoadSourceType
 	{
+		python,
 		dynamicLibrary,
-		python
+		dotNet
 	};
 
 	std::string makePathToLoadSource(const std::filesystem::path& pathToSource, LoadSourceType& type);
 
 	std::string getPathToWebFrameworkSharedLibrary();
+
+	HMODULE loadLibrary(const std::filesystem::path& pathToLibrary);
 }

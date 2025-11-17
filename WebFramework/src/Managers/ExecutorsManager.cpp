@@ -17,6 +17,7 @@
 #include "Utility/ExecutorsUtility.h"
 #include "Managers/RuntimesManager.h"
 #include "Runtimes/PythonRuntime.h"
+#include "Runtimes/DotNetRuntime.h"
 
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
@@ -293,12 +294,12 @@ namespace framework
 		for (const auto& [route, executorSettings] : settings)
 		{
 			CreateExecutorFunction creator = nullptr;
-			utility::LoadSource creatorSource = nullptr;
+			utility::LoadSource creatorSource;
 			std::string apiType;
 
-			std::ranges::transform(executorSettings.apiType, back_inserter(apiType), [](char c) -> char { return toupper(c); });
+			std::ranges::transform(executorSettings.apiType, std::back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
-			std::string creatorFunctionName = format("create{}{}Instance", executorSettings.name, apiType);
+			std::string creatorFunctionName = std::format("create{}{}Instance", executorSettings.name, apiType);
 
 			for (const auto& [source, sourcePath] : sources)
 			{
@@ -323,15 +324,17 @@ namespace framework
 							return false;
 						},
 #ifdef __WITH_PYTHON_EXECUTORS__
-						[&creator, &executorSettings, &source](const py::module_& module) -> bool
+						[&creator, &executorSettings, &creatorSource](const py::module_& module) -> bool
 						{
 							runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
-							std::any temp = runtime.getClass(executorSettings.name, source);
+							std::any temp = runtime.getClass(executorSettings.name, module);
 
 							if (!temp.has_value())
 							{
 								return false;
 							}
+
+							creatorSource = module;
 
 							py::object cls = std::any_cast<py::object>(temp);
 
@@ -344,6 +347,28 @@ namespace framework
 								{
 									return new py::object(cls());
 								};
+
+							return true;
+						},
+#endif
+#ifdef __WITH_DOT_NET_EXECUTORS__
+						[&creator, &executorSettings, &creatorSource](const std::filesystem::path& modulePath) -> bool
+						{
+							runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
+
+							if (!runtime.hasExecutor(executorSettings.name, modulePath))
+							{
+								return false;
+							}
+
+							creatorSource = modulePath;
+
+							if (Log::isValid())
+							{
+								Log::info("Found {} in {}", "LogWebFrameworkInitialization", executorSettings.name, modulePath.string());
+							}
+
+							creator = runtime.getExecutorFunction(executorSettings.name, modulePath);
 
 							return true;
 						},

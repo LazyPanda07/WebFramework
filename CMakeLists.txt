@@ -16,6 +16,7 @@ set(ADDITIONAL_LIB_DIRS "" CACHE INTERNAL "")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
+option(WITH_DOT_NET_EXECUTORS "Build with .NET Executors" OFF)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
@@ -67,6 +68,7 @@ add_library(
 	WebFramework/src/Rendering/WFDPRenderer.cpp
 	WebFramework/src/Rendering/MDRenderer.cpp
 	WebFramework/src/Runtimes/PythonRuntime.cpp
+	WebFramework/src/Runtimes/DotNetRuntime.cpp
 	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
@@ -130,6 +132,10 @@ endif()
 
 if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows AND ${WITH_PYTHON_EXECUTORS})
 	add_definitions(-D__WITH_PYTHON_EXECUTORS__)
+endif()
+
+if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows AND ${WITH_DOT_NET_EXECUTORS})
+	add_definitions(-D__WITH_DOT_NET_EXECUTORS__)
 endif()
 
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")

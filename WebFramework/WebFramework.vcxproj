@@ -65,7 +65,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;__WITH_DOT_NET_EXECUTORS__;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)src\;$(ProjectDir)..\WebFrameworkExecutors\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -153,6 +153,7 @@
     <ClCompile Include="src\Managers\RuntimesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
+    <ClCompile Include="src\Runtimes\DotNetRuntime.cpp" />
     <ClCompile Include="src\Runtimes\PythonRuntime.cpp" />
     <ClCompile Include="src\Runtimes\Runtime.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="src\Managers\RuntimesManager.h" />
     <ClInclude Include="src\Rendering\MDRenderer.h" />
     <ClInclude Include="src\Rendering\WFDPRenderer.h" />
+    <ClInclude Include="src\Runtimes\DotNetRuntime.h" />
     <ClInclude Include="src\WFDP\CXXDynamicFunction.h" />
     <ClInclude Include="src\WFDP\DynamicFunction.h" />
     <ClInclude Include="src\WFDP\PythonDynamicFunction.h" />
@@ -250,6 +252,9 @@
   <ItemGroup>
     <ProjectReference Include="..\3rdparty\cmark-gfm\cmark-gfm.vcxproj">
       <Project>{66216d2f-5851-404b-af2a-da5f216f54af}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\3rdparty\DotNetRuntime\DotNetRuntime.vcxproj">
+      <Project>{c05c4838-8cf9-4965-9c91-b4cf4258576c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\3rdparty\pybind11\pybind11.vcxproj">
       <Project>{fa38c2dc-a207-4048-8c9c-d75bfcacd77b}</Project>

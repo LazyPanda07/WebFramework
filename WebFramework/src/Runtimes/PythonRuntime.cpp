@@ -58,6 +58,25 @@ namespace framework::runtime
 		return *this;
 	}
 
+	std::any PythonRuntime::getClass(std::string_view className, const utility::LoadSource& source) const
+	{
+		const py::module_& module = std::get<py::module_>(source);
+
+		if (!py::hasattr(module, className.data()))
+		{
+			return {};
+		}
+
+		py::object cls = module.attr(className.data());
+
+		if (!py::isinstance<py::type>(cls))
+		{
+			return {};
+		}
+
+		return cls;
+	}
+
 	void PythonRuntime::finishInitialization()
 	{
 		if (guard)
@@ -106,23 +125,24 @@ namespace framework::runtime
 		}
 	}
 
-	std::any PythonRuntime::getClass(std::string_view className, const utility::LoadSource& source) const
+	std::optional<std::string> PythonRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)
 	{
-		const py::module_& module = std::get<py::module_>(source);
-
-		if (!py::hasattr(module, className.data()))
+		try
 		{
-			return {};
+			std::filesystem::path pythonSourcePath(pathToSource);
+			py::module_ sys = py::module_::import("sys");
+
+			sys.attr("path").attr("append")(pythonSourcePath.parent_path().string().data());
+
+			source = py::module_::import(pythonSourcePath.filename().string().data());
+		}
+		catch (const py::error_already_set& e)
+		{
+			return e.what();
 		}
 
-		py::object cls = module.attr(className.data());
-
-		if (!py::isinstance<py::type>(cls))
-		{
-			return {};
-		}
-
-		return cls;
+		return std::nullopt;
 	}
 }
+
 #endif

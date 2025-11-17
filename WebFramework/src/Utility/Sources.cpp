@@ -6,6 +6,7 @@
 #include "DynamicLibraries.h"
 #include "Exceptions/CantLoadSourceException.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "Managers/RuntimesManager.h"
 
 namespace framework::utility
 {
@@ -40,7 +41,7 @@ namespace framework::utility
 			std::string exceptionMessage;
 			LoadSource source;
 
-			if (type == utility::LoadSourceType::dynamicLibrary && !std::filesystem::exists(pathToSource))
+			if (type >= utility::LoadSourceType::dynamicLibrary && !std::filesystem::exists(pathToSource))
 			{
 				if (Log::isValid())
 				{
@@ -50,44 +51,21 @@ namespace framework::utility
 				throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 			}
 
-			switch (type)
+			if (type == LoadSourceType::dynamicLibrary)
 			{
-			case framework::utility::LoadSourceType::dynamicLibrary:
-#ifdef __LINUX__
-				source = dlopen(pathToSource.data(), RTLD_LAZY);
-#else
-				source = LoadLibraryA(pathToSource.data());
-#endif				
+				source = utility::loadLibrary(pathToSource);
+
 				if (!std::get<HMODULE>(source))
 				{
 					exceptionMessage = ::exceptions::missingOtherDLLs;
 				}
-
-				break;
-
-			case framework::utility::LoadSourceType::python:
-#ifdef __WITH_PYTHON_EXECUTORS__
-				try
+			}
+			else
+			{
+				if (std::optional<std::string> message = runtime::RuntimesManager::get().getRuntime(type).loadSource(pathToSource, source))
 				{
-					std::filesystem::path pythonSourcePath(pathToSource);
-					py::module_ sys = py::module_::import("sys");
-
-					sys.attr("path").attr("append")(pythonSourcePath.parent_path().string().data());
-
-					source = py::module_::import(pythonSourcePath.filename().string().data());
+					exceptionMessage = *message;
 				}
-				catch (const py::error_already_set& e)
-				{
-					exceptionMessage = e.what();
-				}
-#else
-				exceptionMessage = "Can't load Python Executor. WebFramework built without Python Executor support";
-#endif
-				
-				break;
-
-			default:
-				throw std::runtime_error("Wrong LoadSourceType");
 			}
 
 			if (exceptionMessage.size())

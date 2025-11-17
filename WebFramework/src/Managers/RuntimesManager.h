@@ -4,6 +4,7 @@
 #include <concepts>
 
 #include "Runtimes/Runtime.h"
+#include "Utility/DynamicLibraries.h"
 
 namespace framework::runtime
 {
@@ -52,6 +53,14 @@ namespace framework::runtime
 	public:
 		static RuntimesManager& get();
 
+		Iterator begin();
+
+		Iterator end();
+
+		Runtime& getRuntime(utility::LoadSourceType type);
+
+		const Runtime& getRuntime(utility::LoadSourceType type) const;
+
 		template<std::derived_from<Runtime> T, typename... Args>
 		void addRuntime(Args&&... args);
 
@@ -60,10 +69,6 @@ namespace framework::runtime
 
 		template<std::derived_from<Runtime> T>
 		const T& getRuntime() const;
-
-		Iterator begin();
-
-		Iterator end();
 	};
 }
 

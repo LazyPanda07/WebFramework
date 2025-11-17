@@ -8,6 +8,10 @@ if (${WITH_STACKTRACE})
 	add_subdirectory(boost)
 endif()
 
-if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+if (${WITH_PYTHON_EXECUTORS} AND ${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
 	add_subdirectory(pybind11)
+endif()
+
+if (${WITH_DOT_NET_EXECUTORS} AND ${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+	add_subdirectory(DotNetRuntime)
 endif()
