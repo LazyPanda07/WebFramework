@@ -90,6 +90,7 @@ namespace json_settings_values
 	inline constexpr std::string_view defaultHeuristicValue = "Connections";
 
 	inline constexpr std::string_view runtimesPythonValue = "python";
+	inline constexpr std::string_view runtimesDotNetValue = ".NET";
 }
 
 namespace web_framework_assets

@@ -35,7 +35,7 @@ VisitHelper(Ts...) -> VisitHelper<Ts...>;
 
 namespace framework
 {
-	const std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator* () const
+	const std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator *() const
 	{
 		return executors;
 	}
@@ -179,7 +179,7 @@ namespace framework
 
 				if (executorSettings == settings.end())
 				{
-					auto it = find_if(routeParameters.begin(), routeParameters.end(),
+					auto it = std::find_if(routeParameters.begin(), routeParameters.end(),
 						[&parameters](const utility::RouteParameters& value) { return parameters.find(value.baseRoute) == 0; });
 
 					if (it == routeParameters.end())
@@ -360,7 +360,7 @@ namespace framework
 						{
 							runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-							if (!runtime.hasExecutor(executorSettings.name, modulePath))
+							if (!runtime.getExecutorFunction(executorSettings.name, modulePath, creator))
 							{
 								return false;
 							}
@@ -371,8 +371,6 @@ namespace framework
 							{
 								Log::info("Found {} in {}", "LogWebFrameworkInitialization", executorSettings.name, modulePath.string());
 							}
-
-							creator = runtime.getExecutorFunction(executorSettings.name, modulePath);
 
 							return true;
 						},

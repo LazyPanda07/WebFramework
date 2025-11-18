@@ -11,6 +11,9 @@ namespace framework
 	class CSharpExecutor : public BaseExecutor
 	{
 	private:
+		void processMethod(runtime::DotNetRuntime& runtime, runtime::DotNetRuntime::DoMethodSignature method, HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+
+	private:
 		void* implementation;
 		runtime::DotNetRuntime::NativeString moduleName;
 

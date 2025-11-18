@@ -19,6 +19,7 @@
 #include "Managers/DatabasesManager.h"
 #include "Managers/RuntimesManager.h"
 #include "Runtimes/PythonRuntime.h"
+#include "Runtimes/DotNetRuntime.h"
 
 namespace framework
 {
@@ -87,6 +88,12 @@ namespace framework
 				json_settings_values::runtimesPythonValue,
 				[]() { runtime::RuntimesManager::get().addRuntime<runtime::PythonRuntime>(); }
 			},
+#endif
+#ifdef __WITH_DOT_NET_EXECUTORS__
+			{
+				json_settings_values::runtimesDotNetValue,
+				[]() { runtime::RuntimesManager::get().addRuntime<runtime::DotNetRuntime>(); }
+			}
 #endif
 		};
 		std::vector<json::JsonObject> runtimes;

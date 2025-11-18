@@ -22,44 +22,16 @@ namespace framework::runtime
 	{
 	public:
 		using NativeString = std::filesystem::path;
-
-	private:
-		using HasExecutorSignature = int(*)(const char* executorName);
-		using CreateExecutorSignature = void* (*)(const char* executorName);
 		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
 
 	public:
-		struct Module
-		{
-		public:
-			HasExecutorSignature hasExecutor;
-			CreateExecutorSignature createExecutor;
-			DoMethodSignature doPost;
-			DoMethodSignature doGet;
-			DoMethodSignature doHead;
-			DoMethodSignature doPut;
-			DoMethodSignature doDelete;
-			DoMethodSignature doPatch;
-			DoMethodSignature doOptions;
-			DoMethodSignature doTrace;
-			DoMethodSignature doConnect;
-
-		public:
-			Module();
-
-			~Module() = default;
-		};
-		
-	private:
-		struct NativeStringHash
-		{
-			size_t operator ()(const NativeString& value) const noexcept;
-		};
-
-		struct NativeStringEqual
-		{
-			bool operator ()(const NativeString& left, const NativeString& right) const noexcept;
-		};
+		using HasExecutorSignature = bool(*)(const char* executorName);
+		using FreeSignature = void(*)(void* implementation);
+		using CreateExecutorSignature = void* (*)(const char* executorName);
+		using CreateHttpRequestSignature = void* (*)(void* implementation);
+		using CreateHttpResponceSignature = void* (*)(void* implementation);
+		using GetExecutorTypeSignature = int(*)(void* implementation);
+		using DestroySignature = void(*)(void* implementation);
 
 	private:
 		static std::filesystem::path getPathToRuntimeConfig();
@@ -79,10 +51,27 @@ namespace framework::runtime
 		load_assembly_fn loadAssembly;
 		get_function_pointer_fn getFunctionPointer;
 		HMODULE runtimeLibrary;
-		std::unordered_map<NativeString, Module, NativeStringHash, NativeStringEqual> modules;
+		HasExecutorSignature hasExecutor;
+		FreeSignature dotNetFree;
+		CreateExecutorSignature createExecutor;
+		CreateHttpRequestSignature createHttpRequest;
+		CreateHttpResponceSignature createHttpResponse;
+
+	public:
+		DoMethodSignature doPost;
+		DoMethodSignature doGet;
+		DoMethodSignature doHead;
+		DoMethodSignature doPut;
+		DoMethodSignature doDelete;
+		DoMethodSignature doPatch;
+		DoMethodSignature doOptions;
+		DoMethodSignature doTrace;
+		DoMethodSignature doConnect;
+		GetExecutorTypeSignature getExecutorType;
+		DestroySignature destroy;
 
 	private:
-		void loadFunctions(std::string_view pathToSource);
+		void loadFunctions(const std::filesystem::path& pathToSource);
 
 		template<FunctionPointer T>
 		void loadMethod(const NativeString& typeName, const NativeString& methodName, T& method);
@@ -90,11 +79,9 @@ namespace framework::runtime
 	public:
 		DotNetRuntime();
 
-		bool hasExecutor(std::string_view executorName, const std::filesystem::path& modulePath) const;
+		void free(void* implementation);
 
-		CreateExecutorFunction getExecutorFunction(std::string_view executorName, const std::filesystem::path& modulePath);
-
-		const Module& operator [](const NativeString& moduleName) const;
+		bool getExecutorFunction(std::string_view executorName, const std::filesystem::path& modulePath, CreateExecutorFunction& creator);
 
 		void finishInitialization() override;
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VisualStudioSample", "VisualStudioSample\VisualStudioSample.vcxproj", "{7185EB3F-7D2C-43B0-A675-EEC6B504BC70}"
 EndProject
@@ -50,6 +50,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Python_API", "..\..\API\Python_API\Python_API.vcxproj", "{C74350E0-4F4E-482F-BA34-87C35CDE54AE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pybind11", "..\..\3rdparty\pybind11\pybind11.vcxproj", "{FA38C2DC-A207-4048-8C9C-D75BFCACD77B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DotNetRuntime", "..\..\3rdparty\DotNetRuntime\DotNetRuntime.vcxproj", "{C05C4838-8CF9-4965-9C91-B4CF4258576C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +147,10 @@ Global
 		{FA38C2DC-A207-4048-8C9C-D75BFCACD77B}.Debug|x64.Build.0 = Debug|x64
 		{FA38C2DC-A207-4048-8C9C-D75BFCACD77B}.Release|x64.ActiveCfg = Release|x64
 		{FA38C2DC-A207-4048-8C9C-D75BFCACD77B}.Release|x64.Build.0 = Release|x64
+		{C05C4838-8CF9-4965-9C91-B4CF4258576C}.Debug|x64.ActiveCfg = Debug|x64
+		{C05C4838-8CF9-4965-9C91-B4CF4258576C}.Debug|x64.Build.0 = Debug|x64
+		{C05C4838-8CF9-4965-9C91-B4CF4258576C}.Release|x64.ActiveCfg = Release|x64
+		{C05C4838-8CF9-4965-9C91-B4CF4258576C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +176,7 @@ Global
 		{66216D2F-5851-404B-AF2A-DA5F216F54AF} = {980BC23C-8F2A-4FBC-A052-30318EA29203}
 		{C74350E0-4F4E-482F-BA34-87C35CDE54AE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{FA38C2DC-A207-4048-8C9C-D75BFCACD77B} = {980BC23C-8F2A-4FBC-A052-30318EA29203}
+		{C05C4838-8CF9-4965-9C91-B4CF4258576C} = {980BC23C-8F2A-4FBC-A052-30318EA29203}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3381BD60-3EF3-4F31-858A-DD62BAD18F6E}

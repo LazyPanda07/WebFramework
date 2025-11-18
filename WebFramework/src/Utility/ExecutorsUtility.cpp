@@ -6,7 +6,7 @@
 
 #include "ExecutorsConstants.h"
 
-static constexpr bool isEquals(std::string_view first, std::string_view second) noexcept
+static constexpr bool equals(std::string_view first, std::string_view second) noexcept
 {
 	if (first.size() != second.size())
 	{
@@ -34,11 +34,12 @@ namespace framework::utility
 			json_settings::ccExecutorKey,
 			json_settings::cxxExecutorKey,
 			json_settings::pythonExecutorKey,
+			json_settings::csharpExecutorKey
 		};
 
 		for (size_t i = 0; i < types.size(); i++)
 		{
-			if (isEquals(types[i], name))
+			if (equals(types[i], name))
 			{
 				return static_cast<ExecutorAPIType>(i);
 			}

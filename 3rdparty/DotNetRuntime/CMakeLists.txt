@@ -3,10 +3,7 @@ cmake_minimum_required(VERSION 3.27.0)
 if (UNIX)
 
 else()
-
+	list(APPEND ADDITIONAL_INCLUDES "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64/8.0.22/runtimes/win-x64/native")
 endif()
-
-list(APPEND ADDITIONAL_INCLUDES ${PYTHON_TEMPORARY_DIRECTORY}/include)
-list(APPEND ADDITIONAL_INCLUDES ${pybind11_SOURCE_DIR}/include)
 
 set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} CACHE INTERNAL "")
