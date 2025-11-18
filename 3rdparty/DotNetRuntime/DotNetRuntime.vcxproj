@@ -46,7 +46,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,9 +71,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PublicIncludeDirectories>C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\8.0.22\runtimes\win-x64\native;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <PublicIncludeDirectories>$(ProjectDir)build\include\</PublicIncludeDirectories>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <PublicIncludeDirectories>$(ProjectDir)build\include\</PublicIncludeDirectories>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,6 +120,17 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
+
+
+if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
+
+cd $(ProjectDir)build &amp;&amp; cmake ..</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y $(ProjectDir)build\dll\*.dll $(OutDir)..\WebFramework</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -130,6 +146,17 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
+
+
+if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
+
+cd $(ProjectDir)build &amp;&amp; cmake ..</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y $(ProjectDir)build\dll\*.dll $(OutDir)..\WebFramework</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
   </ItemGroup>

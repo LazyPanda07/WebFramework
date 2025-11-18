@@ -97,11 +97,10 @@ cd $(ProjectDir)build &amp;&amp; cmake ..</Command>
     <PreBuildEvent>
       <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 
-cd $(ProjectDir)
 
-if not exist build mkdir build
+if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
 
-cd build &amp;&amp; cmake ..</Command>
+cd $(ProjectDir)build &amp;&amp; cmake ..</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
