@@ -106,9 +106,9 @@ namespace framework::runtime
 		DotNetRuntime::createRuntimeConfig();
 
 #ifdef __LINUX__
-		runtimeLibrary = utility::loadLibrary(directoryPath / "libhostfxr.so");
+		runtimeLibrary = utility::loadLibrary("libhostfxr.so");
 #else
-		runtimeLibrary = utility::loadLibrary(directoryPath / "hostfxr.dll");
+		runtimeLibrary = utility::loadLibrary("hostfxr.dll");
 #endif
 		
 		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config");

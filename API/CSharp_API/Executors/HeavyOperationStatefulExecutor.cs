@@ -2,7 +2,7 @@
 
 using Framework.Utility;
 
-public class HeavyOperationStatefulExecutor : Executor
+abstract public class HeavyOperationStatefulExecutor : Executor
 {
 	public override void Destroy()
 	{

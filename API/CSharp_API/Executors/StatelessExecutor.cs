@@ -2,7 +2,7 @@
 
 using Framework.Utility;
 
-public class StatelessExecutor : Executor
+abstract public class StatelessExecutor : Executor
 {
 	public override void Destroy()
 	{

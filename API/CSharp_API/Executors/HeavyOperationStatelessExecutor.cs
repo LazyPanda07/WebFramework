@@ -1,8 +1,8 @@
-﻿using Framework.Utility;
+﻿namespace Framework;
 
-namespace Framework;
+using Framework.Utility;
 
-public class HeavyOperationStatelessExecutor : Executor
+abstract public class HeavyOperationStatelessExecutor : Executor
 {
 	public sealed override void Destroy()
 	{

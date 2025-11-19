@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 public enum ExecutorType
@@ -13,6 +11,81 @@ public enum ExecutorType
 	Stateless,
 	HeavyOperationStateful,
 	HeavyOperationStateless
+}
+
+public enum ResponseCodes
+{
+	ContinueCode = 100,
+	SwitchingProtocols,
+	Processing,
+	Ok = 200,
+	Created,
+	Accepted,
+	NonAuthoritativeInformation,
+	NoContent,
+	ResetContent,
+	PartialContent,
+	MultiStatus,
+	AlreadyReported,
+	IMUsed = 226,
+	MultipleChoices = 300,
+	MovedPermanently,
+	Found,
+	SeeOther,
+	NotModified,
+	UseProxy,
+	TemporaryRedirect = 307,
+	PermanentRedirect,
+	BadRequest = 400,
+	Unauthorized,
+	PaymentRequired,
+	Forbidden,
+	NotFound,
+	MethodNotAllowed,
+	NotAcceptable,
+	ProxyAuthenticationRequired,
+	RequestTimeout,
+	Conflict,
+	Gone,
+	LengthRequired,
+	PreconditionFailed,
+	PayloadTooLarge,
+	URITooLong,
+	UnsupportedMediaType,
+	RangeNotSatisfiable,
+	ExpectationFailed,
+	IamATeapot,
+	AuthenticationTimeout,
+	MisdirectedRequest = 421,
+	UnprocessableEntity,
+	Locked,
+	FailedDependency,
+	UpgradeRequired = 426,
+	PreconditionRequired = 428,
+	TooManyRequests,
+	RequestHeaderFieldsTooLarge = 431,
+	RetryWith = 449,
+	UnavailableForLegalReasons = 451,
+	ClientClosedRequest = 499,
+	InternalServerError = 500,
+	NotImplemented,
+	BadGateway,
+	ServiceUnavailable,
+	GatewayTimeout,
+	HTTPVersionNotSupported,
+	VariantAlsoNegotiates,
+	InsufficientStorage,
+	LoopDetected,
+	BandwidthLimitExceeded,
+	NotExtended,
+	NetworkAuthenticationRequired,
+	UnknownError = 520,
+	WebServerIsDown,
+	ConnectionTimedOut,
+	OriginIsUnreachable,
+	ATimeoutOccurred,
+	SSLHandshakeFailed,
+	InvalidSSLCertificate
 }
 
 public static class Utils
