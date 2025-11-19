@@ -2,6 +2,11 @@
 
 abstract public class Executor
 {
+	public virtual void Init(ExecutorSettings settings)
+	{
+
+	}
+
 	public virtual void DoPost(HttpRequest request, HttpResponse response)
 	{
 

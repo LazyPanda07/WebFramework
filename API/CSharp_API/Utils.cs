@@ -104,6 +104,16 @@ public static class Utils
 		return (IntPtr)handle;
 	}
 
+	[UnmanagedCallersOnly(EntryPoint = "CreateExecutorSettings")]
+	public static IntPtr CreateExecutorSettings(IntPtr implementation)
+	{
+		ExecutorSettings request = new(implementation);
+
+		GCHandle handle = GCHandle.Alloc(request);
+
+		return (IntPtr)handle;
+	}
+
 	[UnmanagedCallersOnly(EntryPoint = "CreateHttpRequest")]
 	public static IntPtr CreateHttpRequest(IntPtr implementation)
 	{
@@ -122,6 +132,25 @@ public static class Utils
 		GCHandle handle = GCHandle.Alloc(response);
 
 		return (IntPtr)handle;
+	}
+
+	public static void Init(IntPtr executor, IntPtr settings)
+	{
+		GCHandle executorHandle = GCHandle.FromIntPtr(executor);
+
+		if (executorHandle.Target is not Executor executorInstance)
+		{
+			return;
+		}
+
+		GCHandle settingsHandle = GCHandle.FromIntPtr(settings);
+
+		if (settingsHandle.Target is not ExecutorSettings settingsInstance)
+		{
+			return;
+		}
+
+		executorInstance.Init(settingsInstance);
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CallDoPost")]

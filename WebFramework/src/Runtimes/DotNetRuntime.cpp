@@ -51,9 +51,11 @@ namespace framework::runtime
 
 		this->loadMethod(typeName, "HasExecutor", hasExecutor);
 		this->loadMethod(typeName, "Free", dotNetFree);
+		this->loadMethod(typeName, "Init", init);
 		this->loadMethod(typeName, "CreateExecutor", createExecutor);
 		this->loadMethod(typeName, "CreateHttpRequest", createHttpRequest);
 		this->loadMethod(typeName, "CreateHttpResponse", createHttpResponse);
+		this->loadMethod(typeName, "CreateExecutorSettings", createExecutorSettingsFunction);
 		this->loadMethod(typeName, "GetExecutorType", getExecutorType);
 		this->loadMethod(typeName, "Destroy", destroy);
 
@@ -81,9 +83,12 @@ namespace framework::runtime
 
 	DotNetRuntime::DotNetRuntime() :
 		hasExecutor(nullptr),
+		dotNetFree(nullptr),
 		createExecutor(nullptr),
 		createHttpRequest(nullptr),
 		createHttpResponse(nullptr),
+		createExecutorSettingsFunction(nullptr),
+		init(nullptr),
 		doPost(nullptr),
 		doGet(nullptr),
 		doHead(nullptr),
@@ -92,7 +97,8 @@ namespace framework::runtime
 		doPatch(nullptr),
 		doOptions(nullptr),
 		doTrace(nullptr),
-		doConnect(nullptr)
+		doConnect(nullptr),
+		destroy(nullptr)
 	{
 		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
@@ -149,7 +155,7 @@ namespace framework::runtime
 
 	void* DotNetRuntime::createExecutorSettings(const void* implementation) const
 	{
-		return nullptr;
+		return createExecutorSettingsFunction(implementation);
 	}
 
 	void* DotNetRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const

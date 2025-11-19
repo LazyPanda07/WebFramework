@@ -22,14 +22,16 @@ namespace framework::runtime
 	{
 	public:
 		using NativeString = std::filesystem::path;
-		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
 
 	public:
 		using HasExecutorSignature = bool(*)(const char* executorName);
+		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
 		using FreeSignature = void(*)(void* implementation);
+		using InitSignature = void(*)(void* executor, void* implementation);
 		using CreateExecutorSignature = void* (*)(const char* executorName);
 		using CreateHttpRequestSignature = void* (*)(void* implementation);
 		using CreateHttpResponceSignature = void* (*)(void* implementation);
+		using CreateExecutorSettingsSignature = void* (*)(const void* implementation);
 		using GetExecutorTypeSignature = int(*)(void* implementation);
 		using DestroySignature = void(*)(void* implementation);
 
@@ -56,8 +58,10 @@ namespace framework::runtime
 		CreateExecutorSignature createExecutor;
 		CreateHttpRequestSignature createHttpRequest;
 		CreateHttpResponceSignature createHttpResponse;
+		CreateExecutorSettingsSignature createExecutorSettingsFunction;
 
 	public:
+		InitSignature init;
 		DoMethodSignature doPost;
 		DoMethodSignature doGet;
 		DoMethodSignature doHead;
