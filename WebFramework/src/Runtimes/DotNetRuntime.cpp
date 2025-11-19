@@ -94,14 +94,17 @@ namespace framework::runtime
 		doTrace(nullptr),
 		doConnect(nullptr)
 	{
-		static const std::filesystem::path hostfxrPath = R"(C:\Program Files\dotnet\host\fxr\8.0.8\hostfxr.dll)";
-
-		std::filesystem::path apiPath = std::filesystem::current_path() / "WebFrameworkCSharpAPI.dll";
+		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
+		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
 
 		DotNetRuntime::createRuntimeConfig();
 
-		runtimeLibrary = utility::loadLibrary(hostfxrPath);
-
+#ifdef __LINUX__
+		runtimeLibrary = utility::loadLibrary(directoryPath / "libhostfxr.so");
+#else
+		runtimeLibrary = utility::loadLibrary(directoryPath / "hostfxr.dll");
+#endif
+		
 		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config");
 		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate");
 		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close");
