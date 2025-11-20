@@ -3,7 +3,9 @@
 using Framework.Exceptions;
 using Framework.Utility;
 using System.Data;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 
 public sealed unsafe partial class HttpRequest(nint implementation)
@@ -14,7 +16,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	internal delegate void InitBufferCallback(nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void InitFileBufferCallback(IntPtr data, nuint size, IntPtr buffer);
+	internal delegate void FillBufferCallback(byte[] data, nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void AddQueryParameterCallback
@@ -24,6 +26,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		nuint index,
 		IntPtr buffer
 	);
+
+	internal struct DynamicPagesVariable
+	{
+		public IntPtr name;
+		public IntPtr value;
+	}
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	internal delegate void AddChunkCallback(IntPtr chunk, nuint size, nuint index, IntPtr buffer);
@@ -89,14 +97,23 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[return: MarshalAs(UnmanagedType.I1)]
 	private static unsafe partial bool isWFDPFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddQueryParameterCallback addQueryParameter, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void getHTTPChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getFile(IntPtr implementation, string filePath, InitFileBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static unsafe partial void getFile(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void processWFDPFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void getHTTPHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddQueryParameterCallback addHeader, IntPtr buffer, ref void* exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -105,6 +122,21 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		deleteWebFrameworkString(stringImplementation);
 
 		return result;
+	}
+
+	private static string ToCString(string source)
+	{
+		return source + "\0";
+	}
+
+	private static IntPtr AllocateString(string source)
+	{
+		byte[] bytes = Encoding.UTF8.GetBytes(ToCString(source));
+		IntPtr ptr = Marshal.AllocHGlobal(bytes.Length);
+
+		Marshal.Copy(bytes, 0, ptr, bytes.Length);
+
+		return ptr;
 	}
 
 	public string GetRawParameters()
@@ -392,31 +424,141 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			throw new WebFrameworkException(exception);
 		}
 
+		handle.Free();
+
 		return chunks;
 	}
 
 	public byte[] GetFile(string filePath)
 	{
 		void* exception = null;
-		byte[] data = [];
-		GCHandle handle = GCHandle.Alloc(data);
+		byte[] result = [];
+		GCHandle handle = GCHandle.Alloc(result);
 
 		getFile
 		(
 			implementation,
 			filePath,
-			(IntPtr data, nuint size, IntPtr buffer) =>
+			(byte[] data, nuint size, IntPtr buffer) =>
 			{
-				byte[] resultData = (byte[])GCHandle.FromIntPtr(buffer).Target!;
+				byte[] result = (byte[])GCHandle.FromIntPtr(buffer).Target!;
 
-				resultData = new byte[(int)size];
+				result = new byte[(int)size];
 
-				Marshal.Copy(data, resultData, 0, (int)size);
+				data.CopyTo(result, 0);
 			},
 			GCHandle.ToIntPtr(handle),
 			ref exception
 		);
 
-		return data;
+		handle.Free();
+
+		return result;
+	}
+
+	public byte[] ProcessStaticFile(byte[] fileData, string fileExtension)
+	{
+		void* exception = null;
+		byte[] result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+
+		processStaticFile
+		(
+			implementation,
+			fileData,
+			(nuint)fileData.Length,
+			fileExtension,
+			(byte[] data, nuint size, IntPtr buffer) =>
+			{
+				byte[] result = (byte[])GCHandle.FromIntPtr(buffer).Target!;
+
+				result = new byte[(int)size];
+
+				data.CopyTo(result, 0);
+			},
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		return result;
+	}
+
+	public byte[] ProcessWfdpFile(byte[] fileData, string fileExtension, IDictionary<string, string> variables)
+	{
+		void* exception = null;
+		byte[] result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables.Count];
+		int index = 0;
+
+		foreach (var (key, value) in variables)
+		{
+			cvariables[index++] = new DynamicPagesVariable
+			{
+				name = AllocateString(key),
+				value = AllocateString(value)
+			};
+		}
+
+		processWFDPFile
+		(
+			implementation,
+			fileData,
+			(nuint)fileData.Length,
+			cvariables,
+			(nuint)cvariables.Length,
+			(byte[] data, nuint size, IntPtr buffer) =>
+			{
+				byte[] result = (byte[])GCHandle.FromIntPtr(buffer).Target!;
+
+				result = new byte[(int)size];
+
+				data.CopyTo(result, 0);
+			},
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		foreach (DynamicPagesVariable variable in cvariables)
+		{
+			Marshal.FreeHGlobal(variable.name);
+			Marshal.FreeHGlobal(variable.value);
+		}
+
+		return result;
+	}
+
+	public IDictionary<string, string> GetHeaders()
+	{
+		void* exception = null;
+		Dictionary<string, string> result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+
+		getHTTPHeaders
+		(
+			implementation,
+			(nuint size, IntPtr buffer) =>
+			{
+				Dictionary<string, string> result = (Dictionary<string, string>)GCHandle.FromIntPtr(buffer).Target!;
+
+				result.EnsureCapacity((int)size);
+			},
+			(string key, string value, nuint index, IntPtr buffer) =>
+			{
+				Dictionary<string, string> result = (Dictionary<string, string>)GCHandle.FromIntPtr(buffer).Target!;
+
+				result[key] = value;
+			},
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		return result;
 	}
 }

@@ -3,14 +3,15 @@
 using Framework.Exceptions;
 using Framework.Utility;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 
 public sealed unsafe partial class HttpResponse(nint implementation)
 {
 	private readonly IntPtr implementation = implementation;
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void setHTTPResponseBody(IntPtr implementation, string body, ref void* exception);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void setHTTPResponseBody(IntPtr implementation, byte[] body, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void setHTTPResponseJSONBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
@@ -40,6 +41,18 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	private static unsafe partial void deleteWebFrameworkJSONBuilder(IntPtr implementation);
 
 	public void SetBody(string body)
+	{
+		void* exception = null;
+
+		setHTTPResponseBody(implementation, Encoding.UTF8.GetBytes(body), ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	public void SetBody(byte[] body)
 	{
 		void* exception = null;
 
