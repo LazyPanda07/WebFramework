@@ -174,7 +174,7 @@ public static class Utils
 
 		GCHandle handle = GCHandle.Alloc(instance);
 
-		return (IntPtr)handle;
+		return GCHandle.ToIntPtr(handle);
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CreateExecutorSettings")]
@@ -184,7 +184,7 @@ public static class Utils
 
 		GCHandle handle = GCHandle.Alloc(request);
 
-		return (IntPtr)handle;
+		return GCHandle.ToIntPtr(handle);
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CreateHttpRequest")]
@@ -194,7 +194,7 @@ public static class Utils
 
 		GCHandle handle = GCHandle.Alloc(request);
 
-		return (IntPtr)handle;
+		return GCHandle.ToIntPtr(handle);
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CreateHttpResponse")]
@@ -204,7 +204,7 @@ public static class Utils
 
 		GCHandle handle = GCHandle.Alloc(response);
 
-		return (IntPtr)handle;
+		return GCHandle.ToIntPtr(handle);
 	}
 
 	public static void Init(IntPtr executor, IntPtr settings)
