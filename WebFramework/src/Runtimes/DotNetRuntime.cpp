@@ -88,6 +88,7 @@ namespace framework::runtime
 		createHttpRequest(nullptr),
 		createHttpResponse(nullptr),
 		createExecutorSettingsFunction(nullptr),
+		getExecutorType(nullptr),
 		init(nullptr),
 		doPost(nullptr),
 		doGet(nullptr),

@@ -104,7 +104,23 @@ cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFra
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Executors\PyHeavyOperationStatefulExecutor.cpp" />
+    <ClCompile Include="src\Executors\PyHeavyOperationStatelessExecutor.cpp" />
+    <ClCompile Include="src\Executors\PyStatefulExecutor.cpp" />
+    <ClCompile Include="src\Executors\PyStatelessExecutor.cpp" />
     <ClCompile Include="src\module.cpp" />
+    <ClCompile Include="src\PyChunkGenerator.cpp" />
+    <ClCompile Include="src\PyDynamicFunction.cpp" />
+    <ClCompile Include="src\PyLoadBalancerHeuristic.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Executors\PyHeavyOperationStatefulExecutor.h" />
+    <ClInclude Include="src\Executors\PyHeavyOperationStatelessExecutor.h" />
+    <ClInclude Include="src\Executors\PyStatefulExecutor.h" />
+    <ClInclude Include="src\Executors\PyStatelessExecutor.h" />
+    <ClInclude Include="src\PyChunkGenerator.h" />
+    <ClInclude Include="src\PyDynamicFunction.h" />
+    <ClInclude Include="src\PyLoadBalancerHeuristic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

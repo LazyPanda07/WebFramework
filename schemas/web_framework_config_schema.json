@@ -201,7 +201,7 @@
           "description": "List of additional API runtimes",
           "items": {
             "type": "string",
-            "enum": [ "python" ]
+            "enum": [ "python", ".NET" ]
           }
         },
         "HTTPS": {

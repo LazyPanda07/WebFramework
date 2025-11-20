@@ -13,7 +13,7 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	private static unsafe partial void setHTTPResponseBody(IntPtr implementation, string body, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setJSONBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
+	private static unsafe partial void setHTTPResponseJSONBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void setHTTPResponseCode(IntPtr implementation, ResponseCodes code, ref void* exception);
@@ -33,6 +33,12 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void setHTTPResponseIsValid(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool isValid, ref void* exception);
 
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial IntPtr createJSONBuilderFromString(string jsonData, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void deleteWebFrameworkJSONBuilder(IntPtr implementation);
+
 	public void SetBody(string body)
 	{
 		void* exception = null;
@@ -49,10 +55,16 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	{
 		void* exception = null;
 		string jsonData = JsonSerializer.Serialize(data, options);
+		IntPtr jsonBuilder = createJSONBuilderFromString(jsonData, ref exception);
 
-		// TODO setJSONBody
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
 
-		setJSONBody(implementation, 0, ref exception);
+		setHTTPResponseJSONBody(implementation, jsonBuilder, ref exception);
+
+		deleteWebFrameworkJSONBuilder(jsonBuilder);
 
 		if (exception != null)
 		{
