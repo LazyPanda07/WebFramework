@@ -2,8 +2,6 @@
 
 using Framework.Exceptions;
 using Framework.Utility;
-using System.Data;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
@@ -19,10 +17,21 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	internal delegate void FillBufferCallback(byte[] data, nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void AddQueryParameterCallback
+	internal delegate void AddKeyValueParameters
 	(
 		[MarshalAs(UnmanagedType.LPUTF8Str)] string key,
 		[MarshalAs(UnmanagedType.LPUTF8Str)] string value,
+		nuint index,
+		IntPtr buffer
+	);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	internal delegate void AddMultipartCallback
+	(
+		[MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+		[MarshalAs(UnmanagedType.LPUTF8Str)] string? fileName,
+		[MarshalAs(UnmanagedType.LPUTF8Str)] string? contentType,
+		byte[] data,
 		nuint index,
 		IntPtr buffer
 	);
@@ -31,6 +40,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		public IntPtr name;
 		public IntPtr value;
+	}
+
+	internal struct InternalLargeData
+	{
+		public IntPtr dataPart;
+		public nuint size;
+		[MarshalAs(UnmanagedType.I1)]
+		public bool isLastPacket;
 	}
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -98,7 +115,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial bool isWFDPFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddQueryParameterCallback addQueryParameter, IntPtr buffer, ref void* exception);
+	private static unsafe partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void getHTTPChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
@@ -113,7 +130,38 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void processWFDPFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getHTTPHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddQueryParameterCallback addHeader, IntPtr buffer, ref void* exception);
+	private static unsafe partial void getHTTPHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void getCookies(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addCookiee, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getLargeData(IntPtr implementaion, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.I1)] bool isBinary, string? fileName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.I1)] bool isBinary, string? fileName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void sendWFDPFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.I1)] bool isBinary, string? fileName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string? fileName, nuint chunkSize, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial int getRouteIntegerParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial double getRouteDoubleParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial string getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -391,6 +439,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
 		return queryParameters;
 	}
 
@@ -419,12 +472,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			ref exception
 		);
 
+		handle.Free();
+
 		if (exception != null)
 		{
 			throw new WebFrameworkException(exception);
 		}
-
-		handle.Free();
 
 		return chunks;
 	}
@@ -452,6 +505,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		);
 
 		handle.Free();
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
 
 		return result;
 	}
@@ -482,24 +540,33 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
 		return result;
 	}
 
-	public byte[] ProcessWfdpFile(byte[] fileData, string fileExtension, IDictionary<string, string> variables)
+	public byte[] ProcessWfdpFile(byte[] fileData, IDictionary<string, string>? variables)
 	{
 		void* exception = null;
 		byte[] result = [];
 		GCHandle handle = GCHandle.Alloc(result);
-		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables.Count];
-		int index = 0;
+		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
 
-		foreach (var (key, value) in variables)
+		if (variables != null)
 		{
-			cvariables[index++] = new DynamicPagesVariable
+			int index = 0;
+
+			foreach (var (key, value) in variables)
 			{
-				name = AllocateString(key),
-				value = AllocateString(value)
-			};
+				cvariables[index++] = new DynamicPagesVariable
+				{
+					name = AllocateString(key),
+					value = AllocateString(value)
+				};
+			}
 		}
 
 		processWFDPFile
@@ -527,6 +594,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		{
 			Marshal.FreeHGlobal(variable.name);
 			Marshal.FreeHGlobal(variable.value);
+		}
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
 		}
 
 		return result;
@@ -559,6 +631,255 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
 		return result;
+	}
+
+	public LargeData GetLargeData()
+	{
+		void* exception = null;
+		IntPtr largeData = getLargeData(implementation, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		InternalLargeData data = Marshal.PtrToStructure<InternalLargeData>(largeData);
+		LargeData result = new()
+		{
+			dataPart = new byte[data.size],
+			isLastPacket = data.isLastPacket
+		};
+
+		Marshal.Copy(data.dataPart, result.dataPart, 0, result.dataPart.Length);
+
+		return result;
+	}
+
+	public IList<Multipart> GetMultiparts()
+	{
+		void* exception = null;
+		List<Multipart> result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+
+		getMultiparts
+		(
+			implementation,
+			(nuint size, IntPtr buffer) =>
+			{
+				List<Multipart> chunks = (List<Multipart>)GCHandle.FromIntPtr(buffer).Target!;
+
+				chunks.EnsureCapacity((int)size);
+			},
+			(string name, string? fileName, string? contentType, byte[] data, nuint index, IntPtr buffer) =>
+			{
+				List<Multipart> chunks = (List<Multipart>)GCHandle.FromIntPtr(buffer).Target!;
+				Multipart multipart = new()
+				{
+					name = name,
+					fileName = fileName,
+					contentType = contentType,
+					data = data,
+				};
+
+				chunks.Add(multipart);
+			},
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return result;
+	}
+
+	public IDictionary<string, string> GetCookies()
+	{
+		void* exception = null;
+		Dictionary<string, string> result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+
+		getCookies
+		(
+			implementation,
+			(nuint size, IntPtr buffer) =>
+			{
+				Dictionary<string, string> result = (Dictionary<string, string>)GCHandle.FromIntPtr(buffer).Target!;
+
+				result.EnsureCapacity((int)size);
+			},
+			(string key, string value, nuint index, IntPtr buffer) =>
+			{
+				Dictionary<string, string> result = (Dictionary<string, string>)GCHandle.FromIntPtr(buffer).Target!;
+
+				result[key] = value;
+			},
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return result;
+	}
+
+	public void SendAssetFile(string filePath, HttpResponse response, IDictionary<string, string>? variables, bool? isBinary, string? fileName)
+	{
+		void* exception = null;
+		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
+
+		if (variables != null)
+		{
+			int index = 0;
+
+			foreach (var (key, value) in variables)
+			{
+				cvariables[index++] = new DynamicPagesVariable
+				{
+					name = AllocateString(key),
+					value = AllocateString(value)
+				};
+			}
+		}
+
+		sendAssetFile
+		(
+			implementation,
+			filePath,
+			response.implementation,
+			cvariables,
+			(nuint)cvariables.Length,
+			(bool)(isBinary == null ? true : isBinary),
+			fileName,
+			ref exception
+		);
+
+		foreach (DynamicPagesVariable variable in cvariables)
+		{
+			Marshal.FreeHGlobal(variable.name);
+			Marshal.FreeHGlobal(variable.value);
+		}
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	public void SendStaticFile(string filePath, HttpResponse response, bool? isBinary, string? fileName)
+	{
+		void* exception = null;
+
+		sendStaticFile
+		(
+			implementation,
+			filePath,
+			response.implementation,
+			(bool)(isBinary == null ? true : isBinary),
+			fileName,
+			ref exception
+		);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	public void SendWfdpFile(string filePath, HttpResponse response, IDictionary<string, string>? variables, bool? isBinary, string? fileName)
+	{
+		void* exception = null;
+		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
+
+		if (variables != null)
+		{
+			int index = 0;
+
+			foreach (var (key, value) in variables)
+			{
+				cvariables[index++] = new DynamicPagesVariable
+				{
+					name = AllocateString(key),
+					value = AllocateString(value)
+				};
+			}
+		}
+
+		sendWFDPFile
+		(
+			implementation,
+			filePath,
+			response.implementation,
+			cvariables,
+			(nuint)cvariables.Length,
+			(bool)(isBinary == null ? true : isBinary),
+			fileName,
+			ref exception
+		);
+
+		foreach (DynamicPagesVariable variable in cvariables)
+		{
+			Marshal.FreeHGlobal(variable.name);
+			Marshal.FreeHGlobal(variable.value);
+		}
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	public void StreamFile(string filePath, HttpResponse response, string? fileName, int? chunkSize)
+	{
+		const nuint defaultChunkSize = 14 * 1024 * 1024;
+
+		void* exception = null;
+
+		streamFile(implementation, filePath, response.implementation, fileName, chunkSize == null ? defaultChunkSize : (nuint)chunkSize, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	public T GetRouteParameter<T>(string name)
+	{
+		void* exception = null;
+		object result = typeof(T) switch
+		{
+			Type t when t == typeof(string)
+				=> getRouteStringParameter(implementation, name, ref exception),
+
+			Type t when t.IsPrimitive && t != typeof(float) && t != typeof(double)
+				=> Convert.ChangeType(getRouteIntegerParameter(implementation, name, ref exception), typeof(T)),
+
+			Type t when t == typeof(float) || t == typeof(double)
+				=> Convert.ChangeType(getRouteDoubleParameter(implementation, name, ref exception), typeof(T)),
+
+			_ => throw new InvalidOperationException($"Wrong route parameter type: {typeof(T).Name}")
+		};
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return (T)result;
 	}
 }

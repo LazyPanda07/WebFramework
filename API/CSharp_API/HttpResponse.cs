@@ -8,7 +8,7 @@ using System.Text.Json;
 
 public sealed unsafe partial class HttpResponse(nint implementation)
 {
-	private readonly IntPtr implementation = implementation;
+	internal readonly IntPtr implementation = implementation;
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void setHTTPResponseBody(IntPtr implementation, byte[] body, ref void* exception);

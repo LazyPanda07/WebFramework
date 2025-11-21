@@ -5,6 +5,20 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 
+public struct LargeData
+{
+	public byte[] dataPart;
+	public bool isLastPacket;
+}
+
+public struct Multipart
+{
+	public string name;
+	public string? fileName;
+	public string? contentType;
+	public byte[] data;
+}
+
 public enum ExecutorType
 {
 	Stateful,
