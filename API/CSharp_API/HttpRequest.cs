@@ -11,13 +11,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private readonly IntPtr implementation = implementation;
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void InitBufferCallback(nuint size, IntPtr buffer);
+	private delegate void InitBufferCallback(nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void FillBufferCallback(byte[] data, nuint size, IntPtr buffer);
+	private delegate void FillBufferCallback(byte[] data, nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void AddKeyValueParameters
+	private delegate void AddKeyValueParameters
 	(
 		[MarshalAs(UnmanagedType.LPUTF8Str)] string key,
 		[MarshalAs(UnmanagedType.LPUTF8Str)] string value,
@@ -26,7 +26,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void AddMultipartCallback
+	private delegate void AddMultipartCallback
 	(
 		[MarshalAs(UnmanagedType.LPUTF8Str)] string name,
 		[MarshalAs(UnmanagedType.LPUTF8Str)] string? fileName,
@@ -46,12 +46,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		public IntPtr dataPart;
 		public nuint size;
-		[MarshalAs(UnmanagedType.I1)]
+		[MarshalAs(UnmanagedType.Bool)]
 		public bool isLastPacket;
 	}
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void AddChunkCallback(IntPtr chunk, nuint size, nuint index, IntPtr buffer);
+	private delegate void AddChunkCallback(IntPtr chunk, nuint size, nuint index, IntPtr buffer);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void deleteWebFrameworkString(IntPtr implementation);
@@ -142,13 +142,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.I1)] bool isBinary, string? fileName, ref void* exception);
+	private static unsafe partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string? fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.I1)] bool isBinary, string? fileName, ref void* exception);
+	private static unsafe partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string? fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendWFDPFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.I1)] bool isBinary, string? fileName, ref void* exception);
+	private static unsafe partial void sendWFDPFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string? fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string? fileName, nuint chunkSize, ref void* exception);
@@ -162,6 +162,17 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial string getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial IntPtr getOrCreateDatabaseHTTPRequest(IntPtr implementation, string databaseName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial IntPtr getDatabaseHTTPRequest(IntPtr implementation, string databaseName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial IntPtr getOrCreateTableHTTPRequest(IntPtr implementation, string databaseName, string tableName, string createTableQuery,	 ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial IntPtr getTableHTTPRequest(IntPtr implementation, string databaseName, string tableName, ref void* exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -863,15 +874,9 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		void* exception = null;
 		object result = typeof(T) switch
 		{
-			Type t when t == typeof(string)
-				=> getRouteStringParameter(implementation, name, ref exception),
-
-			Type t when t.IsPrimitive && t != typeof(float) && t != typeof(double)
-				=> Convert.ChangeType(getRouteIntegerParameter(implementation, name, ref exception), typeof(T)),
-
-			Type t when t == typeof(float) || t == typeof(double)
-				=> Convert.ChangeType(getRouteDoubleParameter(implementation, name, ref exception), typeof(T)),
-
+			Type t when t == typeof(string) => getRouteStringParameter(implementation, name, ref exception),
+			Type t when t.IsPrimitive && t != typeof(float) && t != typeof(double) => Convert.ChangeType(getRouteIntegerParameter(implementation, name, ref exception), typeof(T)),
+			Type t when t == typeof(float) || t == typeof(double) => Convert.ChangeType(getRouteDoubleParameter(implementation, name, ref exception), typeof(T)),
 			_ => throw new InvalidOperationException($"Wrong route parameter type: {typeof(T).Name}")
 		};
 
@@ -881,5 +886,57 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 
 		return (T)result;
+	}
+
+	public Database GetOrCreateDatabase(string databaseName)
+	{
+		void* exception = null;
+		IntPtr result = getOrCreateDatabaseHTTPRequest(implementation, databaseName, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return new(result);
+	}
+
+	public Database GetDatabase(string databaseName)
+	{
+		void* exception = null;
+		IntPtr result = getDatabaseHTTPRequest(implementation, databaseName, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return new(result);
+	}
+
+	public Table GetOrCreateTable(string databaseName, string tableName, string createTableQuery)
+	{
+		void* exception = null;
+		IntPtr result = getOrCreateTableHTTPRequest(implementation, databaseName, tableName, createTableQuery, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return new(result);
+	}
+
+	public Table GetTable(string databaseName, string tableName)
+	{
+		void* exception = null;
+		IntPtr result = getTableHTTPRequest(implementation, databaseName, tableName, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return new(result);
 	}
 }
