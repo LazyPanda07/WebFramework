@@ -25,8 +25,6 @@ if (${WEB_FRAMEWORK_CC_API})
         set(CMAKE_C_STANDARD 11)
     endif()
 
-    link_libraries(CC_API)
-
     if (NOT PROJECT_NAME)
         message(STATUS "WebFramework CC API")
     else()
@@ -99,13 +97,6 @@ if (UNIX)
 elseif(WIN32)
     install(DIRECTORY ${WEB_FRAMEWORK_SDK}/dll/ DESTINATION .)
 endif(UNIX)
-
-if (${WEB_FRAMEWORK_CC_API})
-    include_directories(
-        BEFORE
-        ${WEB_FRAMEWORK_SDK}/api/cc/include/
-    )
-endif()
 
 link_libraries(${WEB_FRAMEWORK_3RDPARTY_LIB})
 

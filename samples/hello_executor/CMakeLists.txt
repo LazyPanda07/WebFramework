@@ -4,7 +4,7 @@ project(hello_executor)
 
 add_library(
 	${PROJECT_NAME} SHARED
-	source/HelloExecutor.cpp
+	src/HelloExecutor.cpp
 )
 
 if (UNIX AND ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
@@ -19,6 +19,11 @@ endif()
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	include
+)
+
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE
+	WebFramework::CXX_API
 )
 
 if (WIN32)

@@ -11,6 +11,7 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	gtest
 	gtest_main
+	WebFramework::CXX_API
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

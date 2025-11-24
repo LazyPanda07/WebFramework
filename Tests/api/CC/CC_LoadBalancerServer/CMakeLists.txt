@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(CMAKE_C_STANDARD 11)
-
 if(UNIX)
 	add_definitions(-D__LINUX__)
 endif(UNIX)
@@ -13,9 +11,9 @@ add_executable(
 	main.c
 )
 
-target_include_directories(
+target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBRARY_DIR}/api/cc/include/
+	WebFramework::CC_API
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(TARGETS ${PROJECT_NAME} DESTINATION .)
