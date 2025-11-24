@@ -1,3 +1,5 @@
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/WebFrameworkTargets.cmake)
+
 if (NOT DEFINED PROJECT_LOCALIZATION_DIR)
     set(PROJECT_LOCALIZATION_DIR ${CMAKE_SOURCE_DIR})
 endif()
@@ -102,11 +104,6 @@ if (${WEB_FRAMEWORK_CC_API})
     include_directories(
         BEFORE
         ${WEB_FRAMEWORK_SDK}/api/cc/include/
-    )
-else()
-    include_directories(
-        BEFORE
-        ${WEB_FRAMEWORK_SDK}/api/cxx/include/
     )
 endif()
 
