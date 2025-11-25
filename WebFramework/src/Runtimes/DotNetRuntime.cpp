@@ -9,6 +9,16 @@
 
 #ifdef __WITH_DOT_NET_EXECUTORS__
 
+static void CALLBACK errorHandler(const char_t* message)
+{
+	if (Log::isValid())
+	{
+		Log::error(".NET error: {}", "LogRuntime", framework::runtime::DotNetRuntime::NativeString(message).string());
+	}
+
+	throw std::runtime_error(std::format(".NET error: {}", framework::runtime::DotNetRuntime::NativeString(message).string()));
+}
+
 namespace framework::runtime
 {
 	std::filesystem::path DotNetRuntime::getPathToRuntimeConfig()
@@ -18,16 +28,17 @@ namespace framework::runtime
 
 	void DotNetRuntime::createRuntimeConfig()
 	{
+		constexpr int dotNetVersion = 8;
+
 		std::ofstream stream(DotNetRuntime::getPathToRuntimeConfig());
 		json::JsonBuilder builder(CP_UTF8);
 		json::JsonObject runtimeOptions;
 		json::JsonObject framework;
-		constexpr int version = 8;
 
 		framework["name"] = "Microsoft.NETCore.App";
-		framework["version"] = std::format("{}.0.0", version);
+		framework["version"] = std::format("{}.0.0", dotNetVersion);
 
-		runtimeOptions["tfm"] = std::format("net{}.0", version);
+		runtimeOptions["tfm"] = std::format("net{}.0", dotNetVersion);
 		runtimeOptions["framework"] = std::move(framework);
 
 		builder["runtimeOptions"] = std::move(runtimeOptions);
@@ -105,102 +116,37 @@ namespace framework::runtime
 		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
 
+		if (!std::filesystem::exists(apiPath))
+		{
+			throw std::runtime_error(std::format("Can't find {}", apiPath.string()));
+		}
+
 #ifdef __LINUX__
-		runtimeLibrary = utility::loadLibrary("libhostfxr.so");
+		std::string runtimeLibraryName = "libhostfxr.so";
 #else
-		runtimeLibrary = utility::loadLibrary("hostfxr.dll");
+		std::string runtimeLibraryName = "hostfxr.dll";
 #endif
+
+		if (runtimeLibrary = utility::loadLibrary(runtimeLibraryName); !runtimeLibrary)
+		{
+			throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
+		}
 		
+		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer");
+		
+		errorHandlerSetter(errorHandler);
+
 		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config");
 		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate");
 		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close");
 
 		DotNetRuntime::createRuntimeConfig();
 
-		int32_t errorCode = initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
-		std::optional<std::string> errorMessage;
-
-		switch (errorCode)
-		{
-		case 0:
-			errorMessage = std::nullopt;
-
-			break;
-
-		case 0x80008096:
-			errorMessage = "E_INVALIDARG: One or more arguments are invalid";
-
-			break;
-
-		case 0x80008098:
-			errorMessage = "ERROR_FILE_NOT_FOUND: Assembly not found";
-
-			break;
-
-		case 0x80008094:
-			errorMessage = "MISSING_METHOD_EXCEPTION: Method not found";
-
-			break;
-
-		case 0x80008097:
-			errorMessage = "TYPE_LOAD_EXCEPTION: Type not found";
-
-			break;
-
-		case 0x8007000E:
-			errorMessage = "INVALID_PROGRAM_EXCEPTION: Invalid method signature or missing [UnmanagedCallersOnly]";
-
-			break;
-
-		case 0x80070002:
-			errorMessage = "FILE_LOAD_EXCEPTION: Assembly failed to load";
-
-			break;
-		}
-
-		errorCode = getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
-
-		switch (errorCode)
-		{
-		case 0:
-			errorMessage = std::nullopt;
-
-			break;
-
-		case 0x80070057:
-			errorMessage = "E_INVALIDARG: One or more arguments are invalid";
-
-			break;
-
-		case 0x8007000E:
-			errorMessage = "ERROR_FILE_NOT_FOUND: Assembly not found";
-
-			break;
-
-		case 0x80008084:
-			errorMessage = "MISSING_METHOD_EXCEPTION: Method not found";
-
-			break;
-
-		case 0x80008083:
-			errorMessage = "TYPE_LOAD_EXCEPTION: Type not found";
-
-			break;
-
-		case 0x80008080:
-			errorMessage = "INVALID_PROGRAM_EXCEPTION: Invalid method signature or missing [UnmanagedCallersOnly]";
-
-			break;
-
-		case 0x80008088:
-			errorMessage = "FILE_LOAD_EXCEPTION: Assembly failed to load";
-
-			break;
-		}
-
+		initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
+		getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
 		getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer));
 
-		errorCode = loadAssembly(apiPath.native().data(), nullptr, nullptr);
+		loadAssembly(apiPath.native().data(), nullptr, nullptr);
 
 		this->loadFunctions(apiPath);
 	}
@@ -256,114 +202,13 @@ namespace framework::runtime
 	std::optional<std::string> DotNetRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)
 	{
 		std::filesystem::path nativePathToSource(pathToSource);
-		int code = loadAssembly(nativePathToSource.native().data(), nullptr, nullptr);
-		std::optional<std::string> errorMessage;
-
-#ifdef __LINUX__
-		switch (code)
-		{
-		case 0:
-			errorMessage = std::nullopt;
-
-			break;
-
-		case -1:
-			errorMessage = "HostApiInitFailed: Failed to initialize hostfxr";
-
-			break;
-
-		case -10:
-			errorMessage = "HostFxrResolveRuntimeFailure: Could not resolve runtime";
-
-			break;
-
-		case -11:
-			errorMessage = "HostFxrDelegateFailure: Failed to get delegate";
-
-			break;
-
-		case -12:
-			errorMessage = "HostFxrIncompatibleVersion: hostfxr incompatible with runtimeconfig.json";
-
-			break;
-
-		default:
-			errorMessage = std::format("Unknown error code: {}", code);
-
-			break;
-		}
-#else
-		switch (code)
-		{
-		case 0:
-			errorMessage = std::nullopt;
-
-			break;
-
-		case 0x80070057:
-			errorMessage = "E_INVALIDARG: One or more arguments are invalid";
-
-			break;
-
-		case 0x80070002:
-			errorMessage = "ERROR_FILE_NOT_FOUND: Assembly not found";
-
-			break;
-
-		case 0x80131522:
-			errorMessage = "MISSING_METHOD_EXCEPTION: Method not found";
-
-			break;
-
-		case 0x80131534:
-			errorMessage = "TYPE_LOAD_EXCEPTION: Type not found";
-
-			break;
-
-		case 0x80131513:
-			errorMessage = "INVALID_PROGRAM_EXCEPTION: Invalid method signature or missing [UnmanagedCallersOnly]";
-
-			break;
-
-		case 0x80131040:
-			errorMessage = "FILE_LOAD_EXCEPTION: Assembly failed to load";
-
-			break;
-
-		default:
-		{
-			char* msg = nullptr;
-			std::ostringstream errorMessageStream;
-
-			FormatMessageA
-			(
-				FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-				nullptr, code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-				reinterpret_cast<LPSTR>(&msg), 0, nullptr
-			);
-
-			if (msg)
-			{
-				errorMessageStream << "HRESULT 0x" << std::hex << code << ": " << msg;
-
-				LocalFree(msg);
-			}
-			else
-			{
-				errorMessageStream << "Unknown HRESULT 0x" << std::hex << code;
-			}
-
-			errorMessage = errorMessageStream.str();
-		}
-		}
-#endif
-
-		if (!errorMessage)
+		
+		if (!loadAssembly(nativePathToSource.native().data(), nullptr, nullptr))
 		{
 			source = nativePathToSource;
 		}
 
-		return errorMessage;
+		return std::nullopt;
 	}
 
 	DotNetRuntime::~DotNetRuntime()
