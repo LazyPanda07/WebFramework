@@ -1,12 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Framework;
 
-namespace CoreExecutors
+public class HelloExecutor : StatelessExecutor
 {
-	internal class HelloExecutor
+	private int value;
+
+	public override void Init(ExecutorSettings executorSettings)
 	{
+		value = (int)executorSettings.GetInitParameters()["number"];
+	}
+
+	public override void DoGet(HttpRequest request, HttpResponse response)
+	{
+		response.SetBody
+		(
+			new
+			{
+				message = "Hello, World!",
+				number = value
+			}
+		);
+	}
+
+	public override void DoPost(HttpRequest request, HttpResponse response)
+	{
+		DoGet(request, response);
+	}
+
+	public override void DoHead(HttpRequest request, HttpResponse response)
+	{
+		DoGet(request, response);
+	}
+
+	public override void DoPut(HttpRequest request, HttpResponse response)
+	{
+		DoGet(request, response);
+	}
+
+	public override void DoDelete(HttpRequest request, HttpResponse response)
+	{
+		DoGet(request, response);
+	}
+
+	public override void DoPatch(HttpRequest request, HttpResponse response)
+	{
+		DoGet(request, response);
+	}
+
+	public override void DoConnect(HttpRequest request, HttpResponse response)
+	{
+		DoGet(request, response);
 	}
 }
