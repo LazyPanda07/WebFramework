@@ -7,4 +7,10 @@
     <BaseOutputPath>$(SolutionDir)bin\</BaseOutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="WebFrameworkCSharpAPI">
+      <HintPath>..\..\..\..\WebFrameworkLibrary\api\csharp\WebFrameworkCSharpAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
