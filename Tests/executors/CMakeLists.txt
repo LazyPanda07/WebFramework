@@ -13,3 +13,7 @@ endif()
 if (${BUILD_EXECUTORS} STREQUAL "Python")
 	add_subdirectory(Python)
 endif()
+
+if (${BUILD_EXECUTORS} STREQUAL "CSharp")
+	add_subdirectory(CSharp)
+endif()

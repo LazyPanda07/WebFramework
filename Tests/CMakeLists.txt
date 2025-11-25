@@ -30,7 +30,7 @@ option(CXX_API "" OFF)
 option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)
 option(BUILD_TESTS "" ON)
-set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "NONE")
+set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "CSharp" "NONE")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 
 add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
