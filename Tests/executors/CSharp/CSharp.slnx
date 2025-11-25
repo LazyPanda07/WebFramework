@@ -5,7 +5,7 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="CoreExecutors/CoreExecutors.csproj" />
-  <Project Path="CSharp.vcxproj" />
+  <Project Path="CSharp.vcxproj" Id="71dd76d5-6a4a-4b0c-b7c1-92226ca65b98" />
   <Project Path="DatabaseExecutors/DatabaseExecutors.csproj" />
   <Project Path="LoadBalancerExecutors/LoadBalancerExecutors.csproj" />
 </Solution>
