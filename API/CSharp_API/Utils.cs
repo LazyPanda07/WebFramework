@@ -221,6 +221,7 @@ public static class Utils
 		return GCHandle.ToIntPtr(handle);
 	}
 
+	[UnmanagedCallersOnly(EntryPoint = "Init")]
 	public static void Init(IntPtr executor, IntPtr settings)
 	{
 		GCHandle executorHandle = GCHandle.FromIntPtr(executor);

@@ -22,11 +22,12 @@ namespace framework::runtime
 		json::JsonBuilder builder(CP_UTF8);
 		json::JsonObject runtimeOptions;
 		json::JsonObject framework;
+		constexpr int version = 8;
 
 		framework["name"] = "Microsoft.NETCore.App";
-		framework["version"] = "8.0.0";
+		framework["version"] = std::format("{}.0.0", version);
 
-		runtimeOptions["tfm"] = "net8.0";
+		runtimeOptions["tfm"] = std::format("net{}.0", version);
 		runtimeOptions["framework"] = std::move(framework);
 
 		builder["runtimeOptions"] = std::move(runtimeOptions);
@@ -104,8 +105,6 @@ namespace framework::runtime
 		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
 
-		DotNetRuntime::createRuntimeConfig();
-
 #ifdef __LINUX__
 		runtimeLibrary = utility::loadLibrary("libhostfxr.so");
 #else
@@ -116,12 +115,92 @@ namespace framework::runtime
 		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate");
 		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close");
 
-		initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
+		DotNetRuntime::createRuntimeConfig();
 
-		getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
+		int32_t errorCode = initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
+		std::optional<std::string> errorMessage;
+
+		switch (errorCode)
+		{
+		case 0:
+			errorMessage = std::nullopt;
+
+			break;
+
+		case 0x80008096:
+			errorMessage = "E_INVALIDARG: One or more arguments are invalid";
+
+			break;
+
+		case 0x80008098:
+			errorMessage = "ERROR_FILE_NOT_FOUND: Assembly not found";
+
+			break;
+
+		case 0x80008094:
+			errorMessage = "MISSING_METHOD_EXCEPTION: Method not found";
+
+			break;
+
+		case 0x80008097:
+			errorMessage = "TYPE_LOAD_EXCEPTION: Type not found";
+
+			break;
+
+		case 0x8007000E:
+			errorMessage = "INVALID_PROGRAM_EXCEPTION: Invalid method signature or missing [UnmanagedCallersOnly]";
+
+			break;
+
+		case 0x80070002:
+			errorMessage = "FILE_LOAD_EXCEPTION: Assembly failed to load";
+
+			break;
+		}
+
+		errorCode = getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
+
+		switch (errorCode)
+		{
+		case 0:
+			errorMessage = std::nullopt;
+
+			break;
+
+		case 0x80070057:
+			errorMessage = "E_INVALIDARG: One or more arguments are invalid";
+
+			break;
+
+		case 0x8007000E:
+			errorMessage = "ERROR_FILE_NOT_FOUND: Assembly not found";
+
+			break;
+
+		case 0x80008084:
+			errorMessage = "MISSING_METHOD_EXCEPTION: Method not found";
+
+			break;
+
+		case 0x80008083:
+			errorMessage = "TYPE_LOAD_EXCEPTION: Type not found";
+
+			break;
+
+		case 0x80008080:
+			errorMessage = "INVALID_PROGRAM_EXCEPTION: Invalid method signature or missing [UnmanagedCallersOnly]";
+
+			break;
+
+		case 0x80008088:
+			errorMessage = "FILE_LOAD_EXCEPTION: Assembly failed to load";
+
+			break;
+		}
+
 		getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer));
 
-		loadAssembly(apiPath.native().data(), nullptr, nullptr);
+		errorCode = loadAssembly(apiPath.native().data(), nullptr, nullptr);
 
 		this->loadFunctions(apiPath);
 	}

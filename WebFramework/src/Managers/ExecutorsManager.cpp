@@ -393,10 +393,10 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::fatalError("Can't find creator function create{}{}Instance for executor {}.", "LogWebFrameworkInitialization", 3, executorSettings.name, apiType, executorSettings.name);
+					Log::error("Can't find creator function create{}{}Instance for executor {}.", "LogWebFrameworkInitialization", executorSettings.name, apiType, executorSettings.name);
 				}
 
-				throw exceptions::CantFindFunctionException(format("create{}{}Instance", executorSettings.name, apiType));
+				throw exceptions::CantFindFunctionException(std::format("create{}{}Instance", executorSettings.name, apiType));
 			}
 
 			creators.try_emplace(executorSettings.name, creator);

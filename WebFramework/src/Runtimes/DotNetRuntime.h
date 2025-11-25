@@ -37,7 +37,7 @@ namespace framework::runtime
 
 	private:
 		static std::filesystem::path getPathToRuntimeConfig();
-
+		
 		static void createRuntimeConfig();
 
 	public:
@@ -76,7 +76,7 @@ namespace framework::runtime
 
 	private:
 		void loadFunctions(const std::filesystem::path& pathToSource);
-
+		
 		template<FunctionPointer T>
 		void loadMethod(const NativeString& typeName, const NativeString& methodName, T& method);
 

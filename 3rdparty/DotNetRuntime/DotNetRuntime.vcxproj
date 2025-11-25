@@ -129,7 +129,8 @@ if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
 cd $(ProjectDir)build &amp;&amp; cmake ..</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)build\dll\*.dll $(OutDir)..\WebFramework</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,7 +156,8 @@ if not exist "$(ProjectDir)build" mkdir "$(ProjectDir)build"
 cd $(ProjectDir)build &amp;&amp; cmake ..</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy /y $(ProjectDir)build\dll\*.dll $(OutDir)..\WebFramework</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
