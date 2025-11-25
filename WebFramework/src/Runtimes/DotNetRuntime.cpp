@@ -9,7 +9,7 @@
 
 #ifdef __WITH_DOT_NET_EXECUTORS__
 
-static void CALLBACK errorHandler(const char_t* message)
+static void errorHandler(const char_t* message)
 {
 	if (Log::isValid())
 	{
