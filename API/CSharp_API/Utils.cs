@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using System.Text;
 
 public struct LargeData
 {
@@ -104,8 +105,10 @@ public enum ResponseCodes
 
 public static class Utils
 {
-	private static readonly ConcurrentDictionary<string, Type?> typeCache = [];
-	private static readonly ConcurrentDictionary<Type, Func<object>> constructorCache = [];
+	private static readonly ConcurrentDictionary<string, Type?> executorTypeCache = [];
+	private static readonly ConcurrentDictionary<Type, Func<object>> executorConstructorCache = [];
+	private static readonly ConcurrentDictionary<string, Type?> dynamicFunctionTypeCache = [];
+	private static readonly ConcurrentDictionary<Type, Func<object>> dynamicFunctionConstructorCache = [];
 
 	private static bool CallDoMethod(IntPtr executor, IntPtr httpRequest, IntPtr httpResponse, Action<Executor, HttpRequest, HttpResponse> method)
 	{
@@ -156,6 +159,12 @@ public static class Utils
 		GCHandle.FromIntPtr(implementation).Free();
 	}
 
+	[UnmanagedCallersOnly(EntryPoint = "Dealloc")]
+	public static void Dealloc(IntPtr implementation)
+	{
+		Marshal.FreeHGlobal(implementation);
+	}
+
 	[UnmanagedCallersOnly(EntryPoint = "CreateExecutor")]
 	public static IntPtr CreateExecutor(IntPtr fullName)
 	{
@@ -166,14 +175,14 @@ public static class Utils
 			return IntPtr.Zero;
 		}
 
-		Type? type = typeCache.GetOrAdd(typeName, static name => Type.GetType(name, throwOnError: false));
+		Type? type = executorTypeCache.GetOrAdd(typeName, static name => Type.GetType(name, throwOnError: false));
 
 		if (type == null)
 		{
 			return IntPtr.Zero;
 		}
 
-		Func<object> constructor = constructorCache.GetOrAdd
+		Func<object> constructor = executorConstructorCache.GetOrAdd
 		(
 			type,
 			static type =>
@@ -217,6 +226,41 @@ public static class Utils
 		HttpResponse response = new(implementation);
 
 		GCHandle handle = GCHandle.Alloc(response);
+
+		return GCHandle.ToIntPtr(handle);
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CreateDynamicFunction")]
+	public static IntPtr CreateDynamicFunction(IntPtr fullName)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(fullName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return IntPtr.Zero;
+		}
+
+		Type? type = dynamicFunctionTypeCache.GetOrAdd(typeName, static name => Type.GetType(name, throwOnError: false));
+
+		if (type == null)
+		{
+			return IntPtr.Zero;
+		}
+
+		Func<object> constructor = dynamicFunctionConstructorCache.GetOrAdd
+		(
+			type,
+			static type =>
+			{
+				NewExpression expression = Expression.New(type);
+
+				return Expression.Lambda<Func<object>>(expression).Compile();
+			}
+		);
+
+		object instance = constructor();
+
+		GCHandle handle = GCHandle.Alloc(instance);
 
 		return GCHandle.ToIntPtr(handle);
 	}
@@ -292,5 +336,40 @@ public static class Utils
 		}
 
 		executorInstance.Destroy();
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CallInvoke")]
+	public static IntPtr CallInvoke(IntPtr dynamicFunction, IntPtr arguments, nuint size)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(dynamicFunction);
+
+		if (handle.Target is not IDynamicFunction dynamicFunctionInstance)
+		{
+			return IntPtr.Zero;
+		}
+
+		List<string> listArguments = [];
+
+		listArguments.EnsureCapacity((int)size);
+
+		unsafe
+		{
+			IntPtr* stringArguments = (IntPtr*)arguments;
+			
+			for (int i = 0; i < (int)size; i++)
+			{
+				string? argument = Marshal.PtrToStringUTF8(stringArguments[i]) ?? throw new ArgumentNullException($"Can't convert argument to string at {i}");
+
+				listArguments.Add(argument);
+			}
+		}
+
+		string resultString = dynamicFunctionInstance.Invoke(listArguments);
+		byte[] resultBytes = Encoding.UTF8.GetBytes(resultString + '\0');
+		IntPtr result = Marshal.AllocHGlobal(resultBytes.Length);
+
+		Marshal.Copy(resultBytes, 0, result, resultBytes.Length);
+
+		return result;
 	}
 }

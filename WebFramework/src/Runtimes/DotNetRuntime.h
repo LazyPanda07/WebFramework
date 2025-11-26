@@ -26,9 +26,11 @@ namespace framework::runtime
 	public:
 		using HasExecutorSignature = bool(*)(const char* executorName);
 		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
+		using CallDynamicFunctionSignature = char* (*)(void* dynamicFunction, const char** arguments, size_t size);
 		using FreeSignature = void(*)(void* implementation);
 		using InitSignature = void(*)(void* executor, void* implementation);
 		using CreateExecutorSignature = void* (*)(const char* executorName);
+		using CreateDynamicFunctionSignature = void* (*)(const char* dynamicFunctionName);
 		using CreateHttpRequestSignature = void* (*)(void* implementation);
 		using CreateHttpResponceSignature = void* (*)(void* implementation);
 		using CreateExecutorSettingsSignature = void* (*)(const void* implementation);
@@ -55,6 +57,7 @@ namespace framework::runtime
 		HMODULE runtimeLibrary;
 		HasExecutorSignature hasExecutor;
 		FreeSignature dotNetFree;
+		FreeSignature dotNetDealloc;
 		CreateExecutorSignature createExecutor;
 		CreateHttpRequestSignature createHttpRequest;
 		CreateHttpResponceSignature createHttpResponse;
@@ -73,6 +76,8 @@ namespace framework::runtime
 		DoMethodSignature doConnect;
 		GetExecutorTypeSignature getExecutorType;
 		DestroySignature destroy;
+		CreateDynamicFunctionSignature createDynamicFunction;
+		CallDynamicFunctionSignature callDynamicFunction;
 
 	private:
 		void loadFunctions(const std::filesystem::path& pathToSource);
@@ -84,6 +89,8 @@ namespace framework::runtime
 		DotNetRuntime();
 
 		void free(void* implementation);
+
+		void dealloc(void* allocatedMemory);
 
 		bool getExecutorFunction(std::string_view executorName, const std::filesystem::path& modulePath, CreateExecutorFunction& creator);
 

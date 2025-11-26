@@ -393,6 +393,12 @@ namespace framework
 			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
 		}
 #endif
+#ifdef __WITH_DOT_NET_EXECUTORS__
+		if (apiType == json_settings::csharpExecutorKey)
+		{
+			dynamicResources.registerDynamicFunction(functionName, apiType, static_cast<char*>(functionClass));
+		}
+#endif
 	}
 
 	void HTTPRequestImplementation::unregisterWFDPFunction(const char* functionName)

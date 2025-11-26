@@ -68,6 +68,7 @@ add_library(
 	WebFramework/src/WFDP/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/WFDP/CXXDynamicFunction.cpp
 	WebFramework/src/WFDP/PythonDynamicFunction.cpp
+	WebFramework/src/WFDP/CSharpDynamicFunction.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp
 	WebFramework/src/Rendering/MDRenderer.cpp
 	WebFramework/src/Runtimes/PythonRuntime.cpp

@@ -63,8 +63,10 @@ namespace framework::runtime
 
 		this->loadMethod(typeName, "HasExecutor", hasExecutor);
 		this->loadMethod(typeName, "Free", dotNetFree);
+		this->loadMethod(typeName, "Dealloc", dotNetDealloc);
 		this->loadMethod(typeName, "Init", init);
 		this->loadMethod(typeName, "CreateExecutor", createExecutor);
+		this->loadMethod(typeName, "CreateDynamicFunction", createDynamicFunction);
 		this->loadMethod(typeName, "CreateHttpRequest", createHttpRequest);
 		this->loadMethod(typeName, "CreateHttpResponse", createHttpResponse);
 		this->loadMethod(typeName, "CreateExecutorSettings", createExecutorSettingsFunction);
@@ -80,6 +82,8 @@ namespace framework::runtime
 		this->loadMethod(typeName, "CallDoOptions", doOptions);
 		this->loadMethod(typeName, "CallDoTrace", doTrace);
 		this->loadMethod(typeName, "CallDoConnect", doConnect);
+
+		this->loadMethod(typeName, "CallInvoke", callDynamicFunction);
 	}
 
 	template<FunctionPointer T>
@@ -96,6 +100,7 @@ namespace framework::runtime
 	DotNetRuntime::DotNetRuntime() :
 		hasExecutor(nullptr),
 		dotNetFree(nullptr),
+		dotNetDealloc(nullptr),
 		createExecutor(nullptr),
 		createHttpRequest(nullptr),
 		createHttpResponse(nullptr),
@@ -111,7 +116,9 @@ namespace framework::runtime
 		doOptions(nullptr),
 		doTrace(nullptr),
 		doConnect(nullptr),
-		destroy(nullptr)
+		destroy(nullptr),
+		createDynamicFunction(nullptr),
+		callDynamicFunction(nullptr)
 	{
 		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
@@ -154,6 +161,11 @@ namespace framework::runtime
 	void DotNetRuntime::free(void* implementation)
 	{
 		dotNetFree(implementation);
+	}
+
+	void DotNetRuntime::dealloc(void* allocatedMemory)
+	{
+		dotNetDealloc(allocatedMemory);
 	}
 
 	bool DotNetRuntime::getExecutorFunction(std::string_view executorName, const std::filesystem::path& modulePath, CreateExecutorFunction& creator)

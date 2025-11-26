@@ -18,7 +18,8 @@
     "cachingSize": 536870912,
     "webServerType": "threadPool",
     "runtimes": [
-      "python"
+      "python",
+      ".NET"
     ],
     "HTTPS": {
       "useHTTPS": false,

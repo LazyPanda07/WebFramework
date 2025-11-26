@@ -168,6 +168,7 @@
     <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
     <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
+    <ClCompile Include="src\WFDP\CSharpDynamicFunction.cpp" />
     <ClCompile Include="src\WFDP\CXXDynamicFunction.cpp" />
     <ClCompile Include="src\WFDP\PythonDynamicFunction.cpp" />
     <ClCompile Include="src\WFDP\StandardWebFrameworkDynamicPagesFunctions.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="src\Rendering\MDRenderer.h" />
     <ClInclude Include="src\Rendering\WFDPRenderer.h" />
     <ClInclude Include="src\Runtimes\DotNetRuntime.h" />
+    <ClInclude Include="src\WFDP\CSharpDynamicFunction.h" />
     <ClInclude Include="src\WFDP\CXXDynamicFunction.h" />
     <ClInclude Include="src\WFDP\DynamicFunction.h" />
     <ClInclude Include="src\WFDP\PythonDynamicFunction.h" />
