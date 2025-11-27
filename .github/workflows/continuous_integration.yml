@@ -305,7 +305,6 @@ jobs:
         path: Executors
 
     - name: Install Python API
-      if: ${{ matrix.api_test == 'run_python_tests.sh' }}
       run: pip3 install WebFrameworkLibrary/api/python_api/
 
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
@@ -352,7 +351,6 @@ jobs:
         python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Install Python API
-      if: ${{ matrix.api_test == 'run_python_tests.bat' }}
       run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Merge artifacts
