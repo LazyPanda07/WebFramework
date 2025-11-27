@@ -143,9 +143,9 @@ namespace framework::runtime
 		{
 			throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
 		}
-		
+
 		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer");
-		
+
 		errorHandlerSetter(errorHandler);
 
 		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config");
@@ -154,13 +154,54 @@ namespace framework::runtime
 
 		DotNetRuntime::createRuntimeConfig();
 
+		std::vector<int> errorCodes;
+
 		initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
-		getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
-		getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer));
+		errorCodes.push_back(getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly)));
+		errorCodes.push_back(getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer)));
+
+		if (Log::isValid())
+		{
+			for (int code : errorCodes)
+			{
+				Log::info("Error code: {}", "LogRuntime", code);
+			}
+		}
 
 		loadAssembly(apiPath.native().data(), nullptr, nullptr);
 
 		this->loadFunctions(apiPath);
+
+		if (Log::isValid())
+		{
+#define LOG_FUNCTION(variableName) Log::info("Function {} state: {}", "LogRuntime", #variableName, static_cast<bool>(variableName))
+
+			LOG_FUNCTION(hasExecutor);
+			LOG_FUNCTION(dotNetFree);
+			LOG_FUNCTION(dotNetDealloc);
+			LOG_FUNCTION(init);
+			LOG_FUNCTION(createExecutor);
+			LOG_FUNCTION(createDynamicFunction);
+			LOG_FUNCTION(createHttpRequest);
+			LOG_FUNCTION(createHttpResponse);
+			LOG_FUNCTION(createExecutorSettingsFunction);
+			LOG_FUNCTION(getExecutorType);
+			LOG_FUNCTION(destroy);
+
+			LOG_FUNCTION(doPost);
+			LOG_FUNCTION(doGet);
+			LOG_FUNCTION(doHead);
+			LOG_FUNCTION(doPut);
+			LOG_FUNCTION(doDelete);
+			LOG_FUNCTION(doPatch);
+			LOG_FUNCTION(doOptions);
+			LOG_FUNCTION(doTrace);
+			LOG_FUNCTION(doConnect);
+
+			LOG_FUNCTION(callDynamicFunction);
+
+#undef LOG_FUNCTION
+		}
 	}
 
 	void DotNetRuntime::free(void* implementation)
@@ -219,7 +260,7 @@ namespace framework::runtime
 	std::optional<std::string> DotNetRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)
 	{
 		std::filesystem::path nativePathToSource(pathToSource);
-		
+
 		if (!loadAssembly(nativePathToSource.native().data(), nullptr, nullptr))
 		{
 			source = nativePathToSource;
