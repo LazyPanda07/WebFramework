@@ -13,6 +13,7 @@ env:
   WINDOWS_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
   LINUX_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
   PYTHON_VERSION: 3.14
+  DOT_NET_PATH_WINDOWS_RUNNER: "C:\\Program Files\\dotnet\\host\\fxr\\"
 
 
 permissions:
@@ -326,6 +327,9 @@ jobs:
         executors: [CXX, CC, Python]
 
     steps:
+    - name: Extend PATH
+      run: echo "${{ env.DOT_NET_PATH_WINDOWS_RUNNER }}" >> $GITHUB_PATH
+
     - name: Download WebFramework
       uses: actions/download-artifact@v4
       with:
