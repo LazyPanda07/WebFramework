@@ -12,8 +12,8 @@ env:
   LINUX_CMAKE_GENERATOR: "Ninja"
   WINDOWS_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
   LINUX_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
-  PYTHON_VERSION: 3.14
   DOT_NET_RUNTIME_PATH_WINDOWS_RUNNER: "C:\\Program Files\\dotnet\\host\\fxr\\8.0.21\\hostfxr.dll"
+  PYTHON_VERSION: 3.14
 
 
 permissions:
@@ -305,6 +305,7 @@ jobs:
         path: Executors
 
     - name: Install Python API
+      if: ${{ matrix.api_test == 'run_python_tests.sh' }}
       run: pip3 install WebFrameworkLibrary/api/python_api/
 
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
@@ -351,6 +352,7 @@ jobs:
         python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Install Python API
+      if: ${{ matrix.api_test == 'run_python_tests.bat' }}
       run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Merge artifacts
@@ -362,7 +364,7 @@ jobs:
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
       working-directory: Tests
       run: |
-        $env:DOT_NET_RUNTIME_PATH = ${{ env.DOT_NET_RUNTIME_PATH_WINDOWS_RUNNER }}
+        $env:DOT_NET_RUNTIME_PATH = "${{ env.DOT_NET_RUNTIME_PATH_WINDOWS_RUNNER }}"
         .\${{ matrix.api_test }} ${{ matrix.config }}
           
 

@@ -24,8 +24,9 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G ..
+          cmake --build . -j
+          cmake --install .
         
     - name: Install Python API
       run: pip3 install WebFrameworkLibrary/api/python_api/
@@ -35,12 +36,14 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -G ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Tests
       working-directory: Tests
       shell: bash
       run: |
           cd build/bin
+          cp ${GITHUB_WORKSPACE}/WebFrameworkLibrary/api/csharp/*.dll .
           source run_memory_leak_tests.sh ${{ matrix.config }}
