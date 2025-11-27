@@ -134,6 +134,11 @@ namespace framework::runtime
 		std::string runtimeLibraryName = "hostfxr.dll";
 #endif
 
+		if (char* runtimePathFromEnv = std::getenv("DOT_NET_RUNTIME_PATH"))
+		{
+			runtimeLibraryName = runtimePathFromEnv;
+		}
+
 		if (runtimeLibrary = utility::loadLibrary(runtimeLibraryName); !runtimeLibrary)
 		{
 			throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
