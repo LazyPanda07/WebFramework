@@ -123,10 +123,18 @@ namespace framework::runtime
 		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
 
+		Log& instance = Log::getInstance();
+
+		instance += std::to_string(__LINE__);
+
 		if (!std::filesystem::exists(apiPath))
 		{
+			instance += std::to_string(__LINE__);
+
 			throw std::runtime_error(std::format("Can't find {}", apiPath.string()));
 		}
+
+		instance += std::to_string(__LINE__);
 
 #ifdef __LINUX__
 		std::string runtimeLibraryName = "libhostfxr.so";
@@ -134,74 +142,71 @@ namespace framework::runtime
 		std::string runtimeLibraryName = "hostfxr.dll";
 #endif
 
+		instance += std::to_string(__LINE__);
+
 		if (char* runtimePathFromEnv = std::getenv("DOT_NET_RUNTIME_PATH"))
 		{
+			instance += std::to_string(__LINE__);
+
 			runtimeLibraryName = runtimePathFromEnv;
+
+			instance += std::to_string(__LINE__);
 		}
+
+		instance += runtimeLibraryName;
 
 		if (runtimeLibrary = utility::loadLibrary(runtimeLibraryName); !runtimeLibrary)
 		{
+			instance += std::to_string(__LINE__);
+
 			throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
 		}
 
+		instance += std::to_string(__LINE__);
+		
 		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer");
+		
+		instance += std::to_string(__LINE__);
 
 		errorHandlerSetter(errorHandler);
 
+		instance += std::to_string(__LINE__);
+
 		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config");
+
+		instance += std::to_string(__LINE__);
+
 		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate");
+		
+		instance += std::to_string(__LINE__);
+
 		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close");
+
+		instance += std::to_string(__LINE__);
 
 		DotNetRuntime::createRuntimeConfig();
 
-		std::vector<int> errorCodes;
+		instance += std::to_string(__LINE__);
 
 		initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
-		errorCodes.push_back(getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly)));
-		errorCodes.push_back(getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer)));
 
-		if (Log::isValid())
-		{
-			for (int code : errorCodes)
-			{
-				Log::info("Error code: {}", "LogRuntime", code);
-			}
-		}
+		instance += std::to_string(__LINE__);
+
+		getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
+
+		instance += std::to_string(__LINE__);
+
+		getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer));
+
+		instance += std::to_string(__LINE__);
 
 		loadAssembly(apiPath.native().data(), nullptr, nullptr);
 
+		instance += std::to_string(__LINE__);
+
 		this->loadFunctions(apiPath);
 
-		if (Log::isValid())
-		{
-#define LOG_FUNCTION(variableName) Log::info("Function {} state: {}", "LogRuntime", #variableName, static_cast<bool>(variableName))
-
-			LOG_FUNCTION(hasExecutor);
-			LOG_FUNCTION(dotNetFree);
-			LOG_FUNCTION(dotNetDealloc);
-			LOG_FUNCTION(init);
-			LOG_FUNCTION(createExecutor);
-			LOG_FUNCTION(createDynamicFunction);
-			LOG_FUNCTION(createHttpRequest);
-			LOG_FUNCTION(createHttpResponse);
-			LOG_FUNCTION(createExecutorSettingsFunction);
-			LOG_FUNCTION(getExecutorType);
-			LOG_FUNCTION(destroy);
-
-			LOG_FUNCTION(doPost);
-			LOG_FUNCTION(doGet);
-			LOG_FUNCTION(doHead);
-			LOG_FUNCTION(doPut);
-			LOG_FUNCTION(doDelete);
-			LOG_FUNCTION(doPatch);
-			LOG_FUNCTION(doOptions);
-			LOG_FUNCTION(doTrace);
-			LOG_FUNCTION(doConnect);
-
-			LOG_FUNCTION(callDynamicFunction);
-
-#undef LOG_FUNCTION
-		}
+		instance += std::to_string(__LINE__);
 	}
 
 	void DotNetRuntime::free(void* implementation)
@@ -260,7 +265,7 @@ namespace framework::runtime
 	std::optional<std::string> DotNetRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)
 	{
 		std::filesystem::path nativePathToSource(pathToSource);
-
+		
 		if (!loadAssembly(nativePathToSource.native().data(), nullptr, nullptr))
 		{
 			source = nativePathToSource;
