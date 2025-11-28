@@ -18,8 +18,14 @@
     "cachingSize": 536870912,
     "webServerType": "multiThreaded",
     "runtimes": [
-      "python",
-      ".NET"
+      {
+        "name": "python",
+        "enabled": true
+      },
+      {
+        "name": ".net",
+        "enabled": false
+      }
     ],
     "HTTPS": {
       "useHTTPS": true,

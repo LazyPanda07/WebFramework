@@ -1,6 +1,8 @@
 #pragma once
 
 #include <filesystem>
+#include <sstream>
+#include <algorithm>
 
 #include <JsonParser.h>
 
@@ -20,6 +22,9 @@ namespace framework::utility
 	private:
 		template<std::ranges::range T>
 		Config& overrideConfigurationArray(std::string_view key, const T& value, bool recursive);
+
+		template<typename T>
+		Config& overrideValue(std::string_view key, const T& value, bool recursive);
 
 	private:
 		Config() = default;
@@ -49,7 +54,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Override specific config value
-		 * @param key Config key
+		 * @param key Config key. Also supports inner keys with .(outerObject.innerObject.value)
 		 * @param value Config value
 		 * @param recursive Search recursively
 		 * @return
@@ -59,7 +64,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Override specific config value
-		 * @param key Config key
+		 * @param key Config key. Also supports inner keys with .(outerObject.innerObject.value)
 		 * @param value Config value
 		 * @param recursive Search recursively
 		 * @return
@@ -68,7 +73,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Override specific config value
-		 * @param key Config key
+		 * @param key Config key. Also supports inner keys with .(outerObject.innerObject.value)
 		 * @param value Config value
 		 * @param recursive Search recursively
 		 * @return
@@ -84,7 +89,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Get string from config
-		 * @param key Config key
+		 * @param key Config key. Also supports inner keys with .(outerObject.innerObject.value)
 		 * @param recursive Search recursively
 		 * @return Config string value
 		 */
@@ -92,7 +97,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Get integer from config
-		 * @param key Config key
+		 * @param key Config key. Also supports inner keys with .(outerObject.innerObject.value)
 		 * @param recursive Search recursively
 		 * @return Config integer value
 		 */
@@ -100,7 +105,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Get boolean from config
-		 * @param key Config key
+		 * @param key Config key. Also supports inner keys with .(outerObject.innerObject.value)
 		 * @param recursive Search recursively
 		 * @return Config boolean value
 		 */
@@ -137,10 +142,44 @@ namespace framework::utility
 namespace framework::utility
 {
 	template<typename T>
-	Config& Config::overrideConfiguration(std::string_view key, const T& value, bool recursive) requires (json::utility::JsonValues<T, json::JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
+	Config& Config::overrideValue(std::string_view key, const T& value, bool recursive)
 	{
-		currentConfiguration.overrideValue(key, value, recursive);
+		if (key.find('.') != std::string_view::npos)
+		{
+			json::JsonObject object;
+			std::istringstream is(key.data());
+			std::string temp;
+			json::JsonObject* current = &object;
+
+			currentConfiguration.getParsedData(object);
+
+			while (std::getline(is, temp, '.'))
+			{
+				if (std::ranges::all_of(temp, [](char c) { return std::isdigit(c); }))
+				{
+					current = &(*current)[std::stoull(temp)];
+				}
+				else
+				{
+					current = &(*current)[temp];
+				}
+			}
+
+			(*current) = value;
+
+			currentConfiguration = object;
+		}
+		else
+		{
+			currentConfiguration.overrideValue(key, value, recursive);
+		}
 
 		return *this;
+	}
+
+	template<typename T>
+	Config& Config::overrideConfiguration(std::string_view key, const T& value, bool recursive) requires (json::utility::JsonValues<T, json::JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
+	{
+		return this->overrideValue(key, value, recursive);
 	}
 }

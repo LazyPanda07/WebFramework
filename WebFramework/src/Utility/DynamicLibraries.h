@@ -22,4 +22,6 @@ namespace framework::utility
 	std::string getPathToWebFrameworkSharedLibrary();
 
 	HMODULE loadLibrary(const std::filesystem::path& pathToLibrary);
+
+	HMODULE getLoadedLibrary(std::string_view libraryName);
 }

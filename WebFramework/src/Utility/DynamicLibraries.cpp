@@ -138,6 +138,15 @@ namespace framework::utility
 		return LoadLibraryA(pathToLibrary.string().data());
 #endif				
 	}
+
+	HMODULE getLoadedLibrary(std::string_view libraryName)
+	{
+#ifdef __LINUX__
+		return dlopen(libraryName.data(), RTLD_NOLOAD | RTLD_NOERROR);
+#else
+		return GetModuleHandleA(libraryName.data());
+#endif	
+	}
 }
 
 bool isDotNetAssembly(const std::filesystem::path& libraryPath)

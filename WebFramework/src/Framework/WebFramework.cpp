@@ -100,11 +100,33 @@ namespace framework
 
 		webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::runtimesKey, runtimes);
 
-		for (const std::string& runtime : json::utility::JsonArrayWrapper(runtimes).as<std::string>())
+		for (const json::JsonObject& runtimeObject : runtimes)
 		{
-			if (auto it = initFunctions.find(runtime); it == initFunctions.end())
+			const std::string* runtime = nullptr;
+
+			if (runtimeObject.is<std::string>())
 			{
-				std::string message = std::format("Can't load {} runtime", runtime);
+				runtime = &runtimeObject.get<std::string>();
+			}
+			else if (runtimeObject.is<json::JsonObject>())
+			{
+				bool enabled = false;
+
+				if (runtimeObject.tryGet<bool>("enabled", enabled); !enabled)
+				{
+					continue;
+				}
+
+				runtime = &runtimeObject["name"].get<std::string>();
+			}
+			else
+			{
+				throw std::runtime_error("Wrong runtimes value type");
+			}
+
+			if (auto it = initFunctions.find(*runtime); it == initFunctions.end())
+			{
+				std::string message = std::format("Can't load {} runtime", *runtime);
 
 				if (Log::isValid())
 				{

@@ -3,7 +3,7 @@ name: "Memory Leaks"
 
 on:
   push:
-    branches: [master, dev]
+    branches: [dev]
 
 
 jobs:

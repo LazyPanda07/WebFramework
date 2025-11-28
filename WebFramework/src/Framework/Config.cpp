@@ -18,9 +18,7 @@ namespace framework::utility
 			data.emplace_back(temp);
 		}
 
-		currentConfiguration.overrideValue(key, data, recursive);
-
-		return *this;
+		return this->overrideValue(key, data, recursive);
 	}
 
 	Config::Config(const std::filesystem::path& configPath)
