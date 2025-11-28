@@ -1,3 +1,7 @@
+#ifndef __LINUX__
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "DotNetRuntime.h"
 
 #include <format>
@@ -141,9 +145,9 @@ namespace framework::runtime
 		size_t size = 0;
 		std::string runtimePathFromEnv(envSize, '\0');
 
-		if (!runtimeLibrary && !getenv_s(&size, runtimePathFromEnv.data(), runtimePathFromEnv.size(), "DOT_NET_RUNTIME_PATH"))
+		if (char* runtimePathFromEnv = std::getenv("DOT_NET_RUNTIME_PATH"); !runtimeLibrary && runtimePathFromEnv)
 		{
-			runtimeLibraryName = std::string(runtimePathFromEnv.begin(), runtimePathFromEnv.begin() + size);
+			runtimeLibraryName = runtimePathFromEnv;
 		}
 
 		if (!runtimeLibrary)
