@@ -137,6 +137,11 @@ namespace framework
 			}
 			else
 			{
+				if (Log::isValid())
+				{
+					Log::info("Add {} runtime", "LogRuntime", *runtime);
+				}
+
 				it->second();
 			}
 		}

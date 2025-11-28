@@ -200,8 +200,27 @@
           "type": "array",
           "description": "List of additional API runtimes",
           "items": {
-            "type": "string",
-            "enum": [ "python", ".NET" ]
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Runtime name to load on startup",
+                "enum": [ "python", ".net" ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Runtime name to load on startup",
+                    "enum": [ "python", ".net" ]
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable runtime"
+                  }
+                }
+              }
+            ]
           }
         },
         "HTTPS": {
