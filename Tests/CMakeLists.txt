@@ -30,6 +30,7 @@ option(CXX_API "" OFF)
 option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)
 option(BUILD_TESTS "" ON)
+option(WITH_ADDRESS_SANITIZER "" OFF)
 set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "CSharp" "NONE")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 
@@ -57,6 +58,10 @@ endif(WIN32)
 
 if (${FLUTTER_API})
     add_definitions(-DFLUTTER_API)
+endif()
+
+if (${WITH_ADDRESS_SANITIZER})
+    add_definitions(-D__WITH_ADDRESS_SANITIZER__)
 endif()
 
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "")

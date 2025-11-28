@@ -19,7 +19,13 @@ int main(int argc, char** argv) try
 
 	framework::utility::initializeWebFramework("WebFramework");
 
-	framework::WebFramework server(argv[1]);
+	framework::utility::Config config(argv[1]);
+
+#ifdef __WITH_ADDRESS_SANITIZER__
+	config.overrideConfiguration("WebFramework.runtimes.1.enabled", false);
+#endif
+
+	framework::WebFramework server(config);
 	
 	server.start
 	(

@@ -24,7 +24,7 @@
       },
       {
         "name": ".net",
-        "enabled": false
+        "enabled": true
       }
     ],
     "HTTPS": {

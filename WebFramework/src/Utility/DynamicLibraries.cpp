@@ -142,7 +142,7 @@ namespace framework::utility
 	HMODULE getLoadedLibrary(std::string_view libraryName)
 	{
 #ifdef __LINUX__
-		return dlopen(libraryName.data(), RTLD_NOLOAD | RTLD_NOERROR);
+		return dlopen(libraryName.data(), RTLD_NOLOAD);
 #else
 		return GetModuleHandleA(libraryName.data());
 #endif	
