@@ -22,7 +22,7 @@ int main(int argc, char** argv) try
 	framework::utility::Config config(argv[1]);
 
 #ifdef __WITH_ADDRESS_SANITIZER__
-	config.overrideConfiguration("WebFramework.runtimes.1.enabled", false);
+	config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", false);
 #endif
 
 	framework::WebFramework server(config);
