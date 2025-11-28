@@ -36,7 +36,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
