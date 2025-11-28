@@ -151,9 +151,10 @@ namespace framework::utility
 			json::JsonObject object;
 			std::istringstream is(key.data() + innerAccessOperatorIdentifier.size());
 			std::string temp;
-			json::JsonObject* current = &object;
 
 			currentConfiguration.getParsedData(object);
+
+			json::JsonObject* current = &object;
 
 			while (std::getline(is, temp, '.'))
 			{
