@@ -13,7 +13,7 @@ class LoadBalancerServer
 
 			if (customHeuristic)
 			{
-				serverConfig.OverrideConfiguration("LoadBalancer.heuristic.name", "CustomHeuristic", true);
+				serverConfig.OverrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic", true);
 			}
 
 			if (type == "server")

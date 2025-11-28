@@ -24,7 +24,7 @@ int main(int argc, char** argv) try
 
 	if (parser.get<bool>("--custom_heuristic"))
 	{
-		config.overrideConfiguration("LoadBalancer.heuristic.name", "CustomHeuristic");
+		config.overrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic");
 	}
 
 	if (std::string type = parser.get<std::string>("--type"); type == "server")

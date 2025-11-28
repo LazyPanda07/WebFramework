@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 		}
 		else if (!strcmp(argv[i], "--custom_heuristic"))
 		{
-			exception = overrideConfigurationString(config, "LoadBalancer.heuristic.name", "CustomHeuristic", true);
+			exception = overrideConfigurationString(config, "$[]LoadBalancer.heuristic.name", "CustomHeuristic", true);
 
 			if (exception)
 			{
