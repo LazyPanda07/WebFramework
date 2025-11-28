@@ -146,7 +146,7 @@ namespace framework::utility
 	{
 		constexpr std::string_view innerAccessOperatorIdentifier = "$[]";
 
-		if (key.starts_with(innerAccessOperatorIdentifier) != std::string_view::npos)
+		if (key.starts_with(innerAccessOperatorIdentifier))
 		{
 			json::JsonObject object;
 			std::istringstream is(key.data() + innerAccessOperatorIdentifier.size());
