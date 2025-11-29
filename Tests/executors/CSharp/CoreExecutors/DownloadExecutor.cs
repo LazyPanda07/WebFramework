@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Framework;
 
-namespace CoreExecutors
+public class DownloadExecutor : HeavyOperationStatelessExecutor
 {
-	internal class DownloadExecutor
+	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
+		request.StreamFile("index.html", response, "index.html");
 	}
 }

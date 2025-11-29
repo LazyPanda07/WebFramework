@@ -1,6 +1,6 @@
 ﻿namespace Framework;
 
-abstract public class Executor
+public abstract class Executor
 {
 	public virtual void Init(ExecutorSettings settings)
 	{

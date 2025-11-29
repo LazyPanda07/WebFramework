@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Framework;
+using Framework.Utility;
 
-namespace CoreExecutors
+public class LocalizationExecutor : StatelessExecutor
 {
-	internal class LocalizationExecutor
+	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
+		response.SetBody
+		(
+			new
+			{
+				result = WebFrameworkLocalization.GetLocalizedString("LocalizationData", "key", (string)request.GetJson()["language"])
+			}
+		);
 	}
 }

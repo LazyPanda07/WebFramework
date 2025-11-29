@@ -1,4 +1,5 @@
-﻿using Framework;
+﻿using CoreExecutors;
+using Framework;
 
 public class AssetsExecutor : StatelessExecutor
 {
@@ -11,6 +12,11 @@ public class AssetsExecutor : StatelessExecutor
 
 	public override void DoPost(HttpRequest request, HttpResponse response)
 	{
-		
+		request.RegisterWfdpFunction<CustomFunction>("customFunction");
+	}
+
+	public override void DoDelete(HttpRequest request, HttpResponse response)
+	{
+		request.UnregisterWfdpFunction("customFunction");
 	}
 }

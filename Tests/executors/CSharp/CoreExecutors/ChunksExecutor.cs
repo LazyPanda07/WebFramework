@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CoreExecutors;
+using Framework;
 
-namespace CoreExecutors
+public class ChunksExecutor : HeavyOperationStatelessExecutor
 {
-	internal class ChunksExecutor
+	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
+		TextGenerator textGenerator = new("Some information here");
+
+		request.SendChunks(response, textGenerator);
+	}
+
+	public override void DoPost(HttpRequest request, HttpResponse response)
+	{
+		TextGenerator textGenerator = new("Some information here");
+
+		request.SendFileChunks(response, textGenerator, "file.txt");
 	}
 }
