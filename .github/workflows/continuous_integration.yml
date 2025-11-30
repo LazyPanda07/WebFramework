@@ -313,7 +313,6 @@ jobs:
           cp -r Executors/* Tests
           cp -r WebFrameworkLibrary/lib/* Tests
           cd Tests
-          ls
           source ${{ matrix.api_test }} ${{ matrix.config }}
           
 
@@ -364,7 +363,6 @@ jobs:
       working-directory: Tests
       run: |
         $env:DOT_NET_RUNTIME_PATH = "${{ env.DOT_NET_RUNTIME_PATH_WINDOWS_RUNNER }}"
-        dir
         .\${{ matrix.api_test }} ${{ matrix.config }}
           
 
@@ -452,6 +450,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: recursive
   
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -493,6 +493,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: recursive
   
     - name: Build WebFramework
       run: |
