@@ -692,11 +692,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		InternalLargeData data = Marshal.PtrToStructure<InternalLargeData>(largeData);
 		LargeData result = new()
 		{
-			dataPart = new byte[data.size],
-			isLastPacket = data.isLastPacket
+			DataPart = new byte[data.size],
+			IsLastPacket = data.isLastPacket
 		};
 
-		Marshal.Copy(data.dataPart, result.dataPart, 0, result.dataPart.Length);
+		Marshal.Copy(data.dataPart, result.DataPart, 0, result.DataPart.Length);
 
 		return result;
 	}
@@ -721,10 +721,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 				List<Multipart> chunks = (List<Multipart>)GCHandle.FromIntPtr(buffer).Target!;
 				Multipart multipart = new()
 				{
-					name = name,
-					fileName = fileName,
-					contentType = contentType,
-					data = data,
+					Name = name,
+					FileName = fileName,
+					ContentType = contentType,
+					Data = data,
 				};
 
 				chunks.Add(multipart);

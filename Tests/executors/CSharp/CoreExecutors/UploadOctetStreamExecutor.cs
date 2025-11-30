@@ -1,12 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Framework;
+using Framework.Utility;
 
-namespace CoreExecutors
+public class UploadOctetStreamExecutor : StatefulExecutor
 {
-	internal class UploadOctetStreamExecutor
+	private FileStream? stream;
+
+	public override void DoPost(HttpRequest request, HttpResponse response)
 	{
+		var (data, last) = request.GetLargeData();
+
+		stream ??= new(request.GetHeaders()["File-Name"], FileMode.Create);
+
+		stream.Write(data);
+
+		if (last)
+		{
+			stream.Close();
+
+			stream = null;
+
+			response.SetResponseCode(ResponseCodes.Created);
+			response.SetBody("Finish uploading file");
+		}
 	}
 }

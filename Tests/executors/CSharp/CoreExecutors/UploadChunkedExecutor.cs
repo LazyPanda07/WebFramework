@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Framework;
+using Framework.Utility;
 
-namespace CoreExecutors
+public class UploadChunkedExecutor : HeavyOperationStatelessExecutor
 {
-	internal class UploadChunkedExecutor
+	public override void DoPost(HttpRequest request, HttpResponse response)
 	{
+		using FileStream stream = new(request.GetHeaders()["File-Name"], FileMode.CreateNew);
+		using BinaryWriter writer = new(stream);
+		List<string> chunks = [.. request.GetChunks()];
+
+		foreach(string chunk in chunks)
+		{
+			writer.Write(chunk);
+		}
+
+		response.SetResponseCode(ResponseCodes.Created);
+		response.SetBody("Finish uploading file");
 	}
 }

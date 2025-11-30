@@ -8,16 +8,22 @@ using System.Text;
 
 public struct LargeData
 {
-	public byte[] dataPart;
-	public bool isLastPacket;
+	public byte[] DataPart;
+	public bool IsLastPacket;
+
+	public readonly void Deconstruct(out byte[] dataPart, out bool isLastPacket)
+	{
+		dataPart = DataPart;
+		isLastPacket = IsLastPacket;
+	}
 }
 
 public struct Multipart
 {
-	public string name;
-	public string? fileName;
-	public string? contentType;
-	public byte[] data;
+	public string Name;
+	public string? FileName;
+	public string? ContentType;
+	public byte[] Data;
 }
 
 public enum ExecutorType

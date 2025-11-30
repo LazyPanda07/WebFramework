@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Framework;
+using Framework.Utility;
 
-namespace CoreExecutors
+public class UploadMultipartExecutor : HeavyOperationStatelessExecutor
 {
-	internal class UploadMultipartExecutor
+	public override void DoPost(HttpRequest request, HttpResponse response)
 	{
+		List<Multipart> multiparts = [.. request.GetMultiparts()];
+
+		foreach (Multipart multipart in multiparts)
+		{
+			using FileStream stream = new(multipart.Name, FileMode.Create);
+			using BinaryWriter writer = new(stream);
+
+			writer.Write(multipart.Data);
+		}
+
+		response.SetResponseCode(ResponseCodes.Created);
+		response.SetBody("Finish uploading file");
 	}
 }
