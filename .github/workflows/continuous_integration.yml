@@ -313,6 +313,7 @@ jobs:
           cp -r Executors/* Tests
           cp -r WebFrameworkLibrary/lib/* Tests
           cd Tests
+          ls
           source ${{ matrix.api_test }} ${{ matrix.config }}
           
 
@@ -363,6 +364,7 @@ jobs:
       working-directory: Tests
       run: |
         $env:DOT_NET_RUNTIME_PATH = "${{ env.DOT_NET_RUNTIME_PATH_WINDOWS_RUNNER }}"
+        dir
         .\${{ matrix.api_test }} ${{ matrix.config }}
           
 
@@ -442,6 +444,81 @@ jobs:
           source run_aarch64_cc_tests.sh ${{ matrix.config }}
           
 
+  windows-csharp-tests:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build WebFramework
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+        mkdir build
+        cd build
+        cmake -DBUILD_EXECUTORS=CSharp -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Run tests
+      working-directory: Tests/build/bin
+      shell: cmd
+      run: |
+        xcopy /y ${{ github.workspace }}/WebFrameworkLibrary/api/csharp/WebFrameworkCSharpAPI.dll ${{ github.workspace }}/Tests/build/bin
+        start DefaultHTTPSServer.exe
+        start Server.exe ${{ matrix.config }}
+        .\Core.exe ${{ matrix.config }}
+
+
+  linux-csharp-tests:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Build WebFramework
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+        mkdir build
+        cd build
+        cmake -DBUILD_EXECUTORS=CSharp -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Run tests
+      working-directory: Tests/build/bin
+      run: |
+        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PAT}
+        cp ${{ github.workspace }}/WebFrameworkLibrary/api/csharp/WebFrameworkCSharpAPI.dll ${{ github.workspace }}/Tests/build/bin
+        ./DefaultHTTPSServer & Server ${{ matrix.config }} & sleep 1
+        ./Core ${{ matrix.config }}
+        
   publish:
     needs: [
       android-build,
