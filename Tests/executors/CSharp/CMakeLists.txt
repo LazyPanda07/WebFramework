@@ -5,5 +5,5 @@ project(csharp_executors)
 add_custom_target(
 	${PROJECT_NAME} ALL
 	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-	COMMAND dotnet publish -o ${CMAKE_BINARY_DIR}/bin /p:DebugType=None /p:DebugSymbols=false
+	COMMAND dotnet publish CSharp.slnx -o ${CMAKE_BINARY_DIR}/bin /p:DebugType=None /p:DebugSymbols=false
 )

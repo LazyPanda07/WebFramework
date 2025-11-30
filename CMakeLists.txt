@@ -135,12 +135,16 @@ if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 endif()
 
-if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows AND ${WITH_PYTHON_EXECUTORS})
-	add_definitions(-D__WITH_PYTHON_EXECUTORS__)
+if (${WITH_PYTHON_EXECUTORS})
+	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+		add_definitions(-D__WITH_PYTHON_EXECUTORS__)
+	endif()
 endif()
 
-if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows AND ${WITH_DOT_NET_EXECUTORS})
-	add_definitions(-D__WITH_DOT_NET_EXECUTORS__)
+if (${WITH_DOT_NET_EXECUTORS})
+	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+		add_definitions(-D__WITH_DOT_NET_EXECUTORS__)
+	endif()
 endif()
 
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
@@ -207,12 +211,12 @@ target_link_libraries(
 	${ADDITIONAL_LIBS}
 )
 
-install(FILES WebFrameworkConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES FindWebFramework.cmake DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES WebFrameworkConfig.cmake DESTINATION .)
+install(FILES FindWebFramework.cmake DESTINATION .)
 
 if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
-	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
+	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION WebFrameworkAssets)
 endif ()
 
-install(DIRECTORY WebFramework/certificates DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(DIRECTORY schemas DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY WebFramework/certificates DESTINATION .)
+install(DIRECTORY schemas DESTINATION .)
