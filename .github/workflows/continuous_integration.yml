@@ -478,6 +478,7 @@ jobs:
       working-directory: Tests/build/bin
       shell: cmd
       run: |
+        dir
         xcopy /y ${{ github.workspace }}/WebFrameworkLibrary/api/csharp/WebFrameworkCSharpAPI.dll ${{ github.workspace }}/Tests/build/bin
         start DefaultHTTPSServer.exe
         start Server.exe ${{ matrix.config }}
@@ -517,6 +518,7 @@ jobs:
     - name: Run tests
       working-directory: Tests/build/bin
       run: |
+        ls
         export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PAT}
         cp ${{ github.workspace }}/WebFrameworkLibrary/api/csharp/WebFrameworkCSharpAPI.dll ${{ github.workspace }}/Tests/build/bin
         ./DefaultHTTPSServer & Server ${{ matrix.config }} & sleep 1
