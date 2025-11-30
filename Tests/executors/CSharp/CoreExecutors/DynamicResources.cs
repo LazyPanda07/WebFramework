@@ -14,7 +14,7 @@ public class DynamicResources : HeavyOperationStatelessExecutor
 		byte[] fileData = request.GetFile("print.wfdp");
 		Dictionary<string, string> variables = new()
 		{
-			["data"] = (string)request.GetJson()["data"]
+			["data"] = request.GetJson()["data"].GetString()!
 		};
 
 		response.SetBody(request.ProcessWfdpFile(fileData, variables));

@@ -1,4 +1,6 @@
-﻿public class CRUDExecutor
+﻿using Framework;
+
+public class CRUDExecutor : StatelessExecutor
 {
 
 }

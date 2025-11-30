@@ -312,9 +312,9 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
-	public Dictionary<string, object> GetJson()
+	public Dictionary<string, JsonElement> GetJson()
 	{
-		return GetJson<Dictionary<string, object>>();
+		return GetJson<Dictionary<string, JsonElement>>();
 	}
 
 	public T GetJson<T>()

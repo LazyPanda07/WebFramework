@@ -6,7 +6,7 @@ public class HelloExecutor : StatelessExecutor
 
 	public override void Init(ExecutorSettings executorSettings)
 	{
-		value = (int)executorSettings.GetInitParameters()["number"];
+		value = executorSettings.GetInitParameters()["number"].GetInt32();
 	}
 
 	public override void DoGet(HttpRequest request, HttpResponse response)

@@ -69,9 +69,9 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 		return result;
 	}
 
-	public Dictionary<string, object> GetInitParameters()
+	public Dictionary<string, JsonElement> GetInitParameters()
 	{
-		return GetInitParameters<Dictionary<string, object>>();
+		return GetInitParameters<Dictionary<string, JsonElement>>();
 	}
 
 	public T GetInitParameters<T>()

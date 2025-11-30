@@ -9,7 +9,7 @@ public class LocalizationExecutor : StatelessExecutor
 		(
 			new
 			{
-				result = WebFrameworkLocalization.GetLocalizedString("LocalizationData", "key", (string)request.GetJson()["language"])
+				result = WebFrameworkLocalization.GetLocalizedString("LocalizationData", "key", request.GetJson()["language"].GetString()!)
 			}
 		);
 	}
