@@ -460,7 +460,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -G "Ninja" ..
+        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
         cmake --build . -j
         cmake --install .
 
@@ -500,7 +500,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -G "Ninja" ..
+        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
         cmake --build . -j
         cmake --install .
 
