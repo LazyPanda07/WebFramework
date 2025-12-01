@@ -456,14 +456,22 @@ jobs:
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
+
     - name: Build WebFramework
       shell: bash
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
+        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
         cmake --build . -j
         cmake --install .
+
+    - name: Install Python API
+      run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Build tests
       working-directory: Tests
@@ -478,7 +486,6 @@ jobs:
       working-directory: Tests/build/bin
       shell: cmd
       run: |
-        Server.exe ${{ matrix.config }}
         start DefaultHTTPSServer.exe
         start Server.exe ${{ matrix.config }}
         .\Core.exe ${{ matrix.config }}
@@ -501,9 +508,12 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
+        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
         cmake --build . -j
         cmake --install .
+
+    - name: Install Python API
+      run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Build tests
       working-directory: Tests
