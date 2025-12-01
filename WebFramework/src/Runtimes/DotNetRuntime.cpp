@@ -147,6 +147,11 @@ namespace framework::runtime
 
 		if (char* runtimePathFromEnv = std::getenv("DOT_NET_RUNTIME_PATH"); !runtimeLibrary && runtimePathFromEnv)
 		{
+			if (Log::isValid())
+			{
+				Log::info("Load .NET from DOT_NET_RUNTIME_PATH: {}", runtimePathFromEnv);
+			}
+
 			runtimeLibraryName = runtimePathFromEnv;
 		}
 
