@@ -7,10 +7,10 @@
   "WebFramework": {
     "webServerType": "multiThreaded",
     "loadSources": [
-      "executors/Executors"
+      "executors/CXXExecutors"
     ],
     "settingsPaths": [
-      "executors/web.json"
+      "executors/cxx_settings.json"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",

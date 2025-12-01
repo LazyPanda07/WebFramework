@@ -2,12 +2,12 @@
 
 #include <Executors/BaseStatelessExecutor.hpp>
 
-class HelloExecutor : public framework::BaseStatelessExecutor
+class CXXHelloExecutor : public framework::BaseStatelessExecutor
 {
 public:
-	HelloExecutor() = default;
+	CXXHelloExecutor() = default;
 
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-	~HelloExecutor() = default;
+	~CXXHelloExecutor() = default;
 };

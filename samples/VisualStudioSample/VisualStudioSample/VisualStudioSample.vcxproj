@@ -67,11 +67,11 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-move "$(OutDir)..\Executors\Executors.dll" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\CXXExecutors\*" "$(OutDir)executors"
 for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
-move "$(OutDir)web.json" "$(OutDir)executors"
-</Command>
+xcopy /y "$(OutDir)web.json" "$(OutDir)executors"
+xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
+del "$(OutDir)CXXExecutors.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -94,11 +94,11 @@ move "$(OutDir)web.json" "$(OutDir)executors"
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-move "$(OutDir)..\Executors\Executors.dll" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\CXXExecutors\*" "$(OutDir)executors"
 for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
-move "$(OutDir)web.json" "$(OutDir)executors"
-</Command>
+xcopy /y "$(OutDir)web.json" "$(OutDir)executors"
+xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
+del "$(OutDir)CXXExecutors.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -114,9 +114,12 @@ move "$(OutDir)web.json" "$(OutDir)executors"
     <ProjectReference Include="..\..\..\WebFramework\WebFramework.vcxproj">
       <Project>{e66352d0-66c8-4bae-85e4-4715d53fd651}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Executors\Executors.vcxproj">
+    <ProjectReference Include="..\CXXExecutors\CXXExecutors.vcxproj">
       <Project>{69729c71-7ef7-4854-a6b4-3a87acd90602}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

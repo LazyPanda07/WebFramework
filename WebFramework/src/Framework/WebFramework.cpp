@@ -63,6 +63,11 @@ namespace framework
 
 			for (const auto& [key, value] : parser.getSettings())
 			{
+				if (auto it = result.find(key); it != result.end())
+				{
+					throw std::runtime_error(std::format("Executor {} has same route as {}", value.name, it->second.name));
+				}
+
 				result.try_emplace(key, value);
 			}
 		}

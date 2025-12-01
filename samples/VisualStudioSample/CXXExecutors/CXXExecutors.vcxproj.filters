@@ -15,17 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\HelloExecutor.h">
+    <ClInclude Include="src\CXXHelloExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\HelloExecutor.cpp">
+    <ClCompile Include="src\CXXHelloExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.json" />
-    <None Include="web.json" />
+    <None Include="cxx_settings.json" />
   </ItemGroup>
 </Project>

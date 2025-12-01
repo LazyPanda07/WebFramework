@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\HelloExecutor.h" />
+    <ClInclude Include="src\CXXHelloExecutor.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\HelloExecutor.cpp" />
+    <ClCompile Include="src\CXXHelloExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\FileManager\FileManager.vcxproj">
@@ -49,15 +49,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.json" />
-    <None Include="web.json" />
+    <None Include="cxx_settings.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{69729c71-7ef7-4854-a6b4-3a87acd90602}</ProjectGuid>
-    <RootNamespace>Executors</RootNamespace>
+    <RootNamespace>CXXExecutors</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CXXExecutors</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

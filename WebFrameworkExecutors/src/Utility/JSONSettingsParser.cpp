@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include <JsonParser.h>
+#include <JsonArrayWrapper.h>
 #include <MapJsonIterator.h>
 #include <Strings.h>
 #include <Exceptions/FileDoesNotExistException.h>
@@ -70,7 +71,23 @@ namespace framework::utility
 				throw std::runtime_error("Wrong loadType");
 			}
 
-			settings.try_emplace(::utility::strings::replaceAll(description[json_settings::routeKey].get<std::string>(), " ", "%20"), std::move(executorSettings));
+			if (description[json_settings::routeKey].is<std::string>())
+			{
+				settings.try_emplace(::utility::strings::replaceAll(description[json_settings::routeKey].get<std::string>(), " ", "%20"), std::move(executorSettings));
+			}
+			else if (description[json_settings::routeKey].is<std::vector<json::JsonObject>>())
+			{
+				const std::vector<json::JsonObject>& routes = description[json_settings::routeKey].get<std::vector<json::JsonObject>>();
+
+				for (const std::string& route : json::utility::JsonArrayWrapper(routes).as<std::string>())
+				{
+					settings.try_emplace(::utility::strings::replaceAll(route, " ", "%20"), executorSettings);
+				}
+			}
+			else
+			{
+				throw std::runtime_error(std::format("Wrong route type for {} executor", name));
+			}
 		}
 	}
 
