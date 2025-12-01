@@ -130,10 +130,16 @@ namespace framework::runtime
 		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
 
+		Log& instance = Log::getInstance();
+
 		if (!std::filesystem::exists(apiPath))
 		{
+			instance += std::to_string(__LINE__);
+
 			throw std::runtime_error(std::format("Can't find {}", apiPath.string()));
 		}
+
+		instance += std::to_string(__LINE__);
 
 #ifdef __LINUX__
 		std::string runtimeLibraryName = "libhostfxr.so";
@@ -141,39 +147,81 @@ namespace framework::runtime
 		std::string runtimeLibraryName = "hostfxr.dll";
 #endif
 
+		instance += std::to_string(__LINE__);
+
 		runtimeLibrary = utility::getLoadedLibrary(runtimeLibraryName);
+
+		instance += std::to_string(__LINE__);
+
 		size_t size = 0;
 		std::string runtimePathFromEnv(envSize, '\0');
 
+		instance += std::to_string(__LINE__);
+
 		if (char* runtimePathFromEnv = std::getenv("DOT_NET_RUNTIME_PATH"); !runtimeLibrary && runtimePathFromEnv)
 		{
+			instance += std::to_string(__LINE__);
+
 			runtimeLibraryName = runtimePathFromEnv;
 		}
 
 		if (!runtimeLibrary)
 		{
+			instance += std::to_string(__LINE__);
+
 			if (runtimeLibrary = utility::loadLibrary(runtimeLibraryName); !runtimeLibrary)
 			{
+				instance += std::to_string(__LINE__);
+
 				throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
 			}
 		}
+
+		instance += std::to_string(__LINE__);
 		
 		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer");
 
 		errorHandlerSetter(errorHandler);
 
+		instance += std::to_string(__LINE__);
+
 		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config");
+
+		instance += std::to_string(__LINE__);
+
 		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate");
+
+		instance += std::to_string(__LINE__);
+
 		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close");
+
+		Log::info("initialization: {}, getRuntimeDelegate: {}, close: {}", "LogRuntime", static_cast<bool>(initialization), static_cast<bool>(getRuntimeDelegate), static_cast<bool>(close));
+
+		instance += std::to_string(__LINE__);
 
 		DotNetRuntime::createRuntimeConfig();
 
+		instance += std::to_string(__LINE__);
+
 		initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
+
+		instance += std::to_string(__LINE__);
+
 		getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
+
+		instance += std::to_string(__LINE__);
+
 		getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer));
+
+		instance += std::to_string(__LINE__);
+
 		loadAssembly(apiPath.native().data(), nullptr, nullptr);
 
+		instance += std::to_string(__LINE__);
+
 		this->loadFunctions(apiPath);
+
+		instance += std::to_string(__LINE__);
 	}
 
 	void DotNetRuntime::free(void* implementation)
