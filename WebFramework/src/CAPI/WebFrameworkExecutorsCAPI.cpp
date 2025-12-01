@@ -908,6 +908,40 @@ void throwWebFrameworkException(HTTPRequestObject request, const char* errorMess
 	}
 }
 
+void setExceptionData(HTTPRequestObject request, const char* errorMessage, int32_t responseCode, const char* logCategory, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->setExceptionData(errorMessage, responseCode, logCategory);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+bool isExceptionDataValid(HTTPRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->isExceptionDataValid();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
 String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception)
 {
 	try

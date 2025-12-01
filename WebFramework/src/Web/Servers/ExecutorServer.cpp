@@ -3,12 +3,9 @@
 #include <Log.h>
 #include <Exceptions/FileDoesNotExistException.h>
 
-#include "Exceptions/CantFindFunctionException.h"
-#include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/NotFoundException.h"
 #include "Exceptions/APIException.h"
-#include "Utility/Sources.h"
-#include "Utility/DynamicLibraries.h"
+#include "Exceptions/CSharpException.h"
 
 namespace framework
 {
@@ -30,6 +27,18 @@ namespace framework
 
 			result = ServiceState::error;
 		}
+#ifdef __WITH_DOT_NET_EXECUTORS__
+		catch (const exceptions::CSharpException& e)
+		{
+			if (Log::isValid())
+			{
+				Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), static_cast<int64_t>(e.getResponseCode()));
+			}
+
+			response.setResponseCode(static_cast<int64_t>(e.getResponseCode()));
+			response.setBody(e.what());
+		}
+#endif
 		catch (const exceptions::BadRequestException& e) // 400
 		{
 			resources.badRequestError(responseWrapper, &e);

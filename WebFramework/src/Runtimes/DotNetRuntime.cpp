@@ -149,7 +149,7 @@ namespace framework::runtime
 		{
 			if (Log::isValid())
 			{
-				Log::info("Load .NET from DOT_NET_RUNTIME_PATH: {}", runtimePathFromEnv);
+				Log::info("Load .NET from DOT_NET_RUNTIME_PATH: {}", "LogRuntime", runtimePathFromEnv);
 			}
 
 			runtimeLibraryName = runtimePathFromEnv;

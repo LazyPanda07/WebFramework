@@ -188,7 +188,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void throwException(IntPtr implementation, string errorMessage, nint responseCode, string logCategory, nuint exceptionClassHash);
+	private static unsafe partial void setExceptionData(IntPtr implementation, string errorMessage, int responseCode, string logCategory, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static unsafe partial bool isExceptionDataValid(IntPtr implementation, ref void* exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -1018,15 +1022,57 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
-	public void ThrowException(string errorMessage, ResponseCodes responceCode, string logCategory = "")
+	/// <summary>
+	/// Sets an exception for the current operation using the specified error message, response code, and optional log
+	/// category.
+	/// </summary>
+	/// <remarks>This method is typically used to signal an error condition in API responses. The exception set will
+	/// be of type WebFrameworkApiException.</remarks>
+	/// <param name="errorMessage">The error message that describes the exception. Cannot be null.</param>
+	/// <param name="responceCode">The response code that categorizes the type of error.</param>
+	/// <param name="logCategory">The log category used for logging the exception. If not specified, no category is applied.</param>
+	public void SetException(string errorMessage, ResponseCodes responceCode, string logCategory = "")
 	{
-		ThrowException<WebFrameworkApiException>(errorMessage, responceCode, logCategory);
+		SetException<WebFrameworkApiException>(errorMessage, responceCode, logCategory);
 	}
 
-	public void ThrowException<T>(params object[] args) where T : WebFrameworkApiException
+	/// <summary>
+	/// Sets the exception data for the current context using an instance of the specified exception type.
+	/// </summary>
+	/// <remarks>Use this method to record exception details for API error handling or logging. The exception
+	/// instance is constructed using the supplied arguments and its data is set in the underlying
+	/// implementation.</remarks>
+	/// <typeparam name="T">The type of exception to create and set. Must derive from WebFrameworkApiException.</typeparam>
+	/// <param name="args">An array of arguments to pass to the constructor of the exception type <typeparamref name="T"/>.</param>
+	/// <exception cref="Exception">Thrown if an instance of <typeparamref name="T"/> cannot be created with the provided arguments.</exception>
+	public void SetException<T>(params object[] args) where T : WebFrameworkApiException
 	{
+		void* exception = null;
 		T? exceptionInstance = Activator.CreateInstance(typeof(T), args) as T ?? throw new Exception($"Can't create {typeof(T).Name}");
 
-		throwException(implementation, exceptionInstance.ToString(), (nint)Convert.ToInt64(exceptionInstance.ResponseCode), exceptionInstance.LogCategory, (nuint)typeof(T).GetHashCode());
+		setExceptionData(implementation, exceptionInstance.ToString(), Convert.ToInt32(exceptionInstance.ResponseCode), exceptionInstance.LogCategory, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	/// <summary>
+	/// Determines whether there is currently an active exception associated with the underlying implementation.
+	/// </summary>
+	/// <returns>true if an active exception is present; otherwise, false.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an active exception is detected in the underlying implementation.</exception>
+	public bool HasActiveException()
+	{
+		void* exception = null;
+		bool result = isExceptionDataValid(implementation, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return result;
 	}
 }

@@ -2,10 +2,9 @@
 
 #ifdef __WITH_DOT_NET_EXECUTORS__
 
-#include <Log.h>
-
 #include "Managers/RuntimesManager.h"
-#include "Exceptions/APIException.h"
+#include "WebInterfaces/IHTTPRequest.h"
+#include "Exceptions/CSharpException.h"
 
 struct Deleter
 {
@@ -16,24 +15,15 @@ namespace framework
 {
 	void CSharpExecutor::processMethod(runtime::DotNetRuntime& runtime, runtime::DotNetRuntime::DoMethodSignature method, HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		try
-		{
-			std::unique_ptr<void, Deleter> dotNetRequest(runtime.createHTTPRequest(request.getImplementation()));
-			std::unique_ptr<void, Deleter> dotNetResponse(runtime.createHTTPResponse(response.getImplementation()));
+		std::unique_ptr<void, Deleter> dotNetRequest(runtime.createHTTPRequest(request.getImplementation()));
+		std::unique_ptr<void, Deleter> dotNetResponse(runtime.createHTTPResponse(response.getImplementation()));
+		framework::interfaces::CExceptionData exceptionData;
 
-			method(implementation, dotNetRequest.get(), dotNetResponse.get());
-		}
-		catch (const exceptions::APIException& e)
-		{
-			Log::info("Catch exception from C#: {}", "LogExecutor", e.what());
+		method(implementation, dotNetRequest.get(), dotNetResponse.get());
 
-			throw;
-		}
-		catch (const std::exception& e)
+		if (static_cast<interfaces::IHTTPRequest*>(request.getImplementation())->getExceptionData(&exceptionData))
 		{
-			Log::info("Catch some exception from C#: {}", "LogExecutor", e.what());
-
-			throw;
+			throw exceptions::CSharpException(exceptionData.errorMessage, static_cast<web::ResponseCodes>(exceptionData.responseCode), exceptionData.logCategory);
 		}
 	}
 
@@ -55,7 +45,7 @@ namespace framework
 	void CSharpExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
-		
+
 		this->processMethod(runtime, runtime.doGet, request, response);
 	}
 

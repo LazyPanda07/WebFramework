@@ -110,6 +110,10 @@ EXPORT void sendFileChunks(HTTPRequestObject request, HTTPResponseObject respons
 
 EXPORT void throwWebFrameworkException(HTTPRequestObject request, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, Exception* exception);
 
+EXPORT void setExceptionData(HTTPRequestObject request, const char* errorMessage, int32_t responseCode, const char* logCategory, Exception* exception);
+
+EXPORT bool isExceptionDataValid(HTTPRequestObject request, Exception* exception);
+
 EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
 
 EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);

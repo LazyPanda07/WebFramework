@@ -534,6 +534,11 @@ namespace framework
 		exceptionData.setLogCategory(logCategory ? logCategory : "");
 	}
 
+	bool HTTPRequestImplementation::isExceptionDataValid() const
+	{
+		return exceptionData.valid;
+	}
+
 	bool HTTPRequestImplementation::getExceptionData(interfaces::CExceptionData* data)
 	{
 		if (exceptionData.valid)

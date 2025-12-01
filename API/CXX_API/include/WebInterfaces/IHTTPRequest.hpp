@@ -148,6 +148,8 @@ namespace framework::interfaces
 
 		virtual void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) = 0;
 
+		virtual bool isExceptionDataValid() const = 0;
+
 		virtual bool getExceptionData(CExceptionData* data) = 0;
 
 		virtual const char* getJSON() const = 0;

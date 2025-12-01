@@ -12,32 +12,32 @@ public abstract class Executor
 
 	public virtual void DoPost(HttpRequest request, HttpResponse response)
 	{
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoPost), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoPost), GetType());
 	}
 
 	public virtual void DoGet(HttpRequest request, HttpResponse response)
 	{
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoGet), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoGet), GetType());
 	}
 
 	public virtual void DoHead(HttpRequest request, HttpResponse response)
 	{
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoHead), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoHead), GetType());
 	}
 
 	public virtual void DoPut(HttpRequest request, HttpResponse response)
 	{
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoPut), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoPut), GetType());
 	}
 
 	public virtual void DoDelete(HttpRequest request, HttpResponse response)
 	{
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoDelete), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoDelete), GetType());
 	}
 
 	public virtual void DoPatch(HttpRequest request, HttpResponse response)
 	{
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoPatch), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoPatch), GetType());
 	}
 
 	public virtual void DoOptions(HttpRequest request, HttpResponse response)
@@ -68,7 +68,7 @@ public abstract class Executor
 
 		response.AddHeader("Allow", allowHeaders);
 #else
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoOptions), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoOptions), GetType());
 #endif
 	}
 
@@ -77,13 +77,13 @@ public abstract class Executor
 #if DEBUG
 		response.SetBody(request.GetHttpRawRequest());
 #else
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoTrace), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoTrace), GetType());
 #endif
 	}
 
 	public virtual void DoConnect(HttpRequest request, HttpResponse response)
 	{
-		request.ThrowException<NotImplementedDoMethodException>(nameof(DoConnect), GetType());
+		request.SetException<NotImplementedDoMethodException>(nameof(DoConnect), GetType());
 	}
 
 	public abstract Utility.ExecutorType GetExecutorType();

@@ -241,6 +241,8 @@ namespace framework
 
 		void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) override;
 
+		bool isExceptionDataValid() const override;
+
 		/**
 		 * @brief Steal current ExceptionData if present
 		 * @param data
