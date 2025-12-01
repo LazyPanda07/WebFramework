@@ -486,7 +486,7 @@ jobs:
       working-directory: Tests/build/bin
       shell: cmd
       run: |
-        set DOT_NET_RUNTIME_PATH=${{ env.DOT_NET_RUNTIME_PATH_WINDOWS_RUNNER }}
+        set DOT_NET_RUNTIME_PATH="${{ env.DOT_NET_RUNTIME_PATH_WINDOWS_RUNNER }}"
         start DefaultHTTPSServer.exe
         start Server.exe ${{ matrix.config }}
         .\Core.exe ${{ matrix.config }}

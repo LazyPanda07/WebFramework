@@ -2,7 +2,10 @@
 
 #ifdef __WITH_DOT_NET_EXECUTORS__
 
+#include <Log.h>
+
 #include "Managers/RuntimesManager.h"
+#include "Exceptions/APIException.h"
 
 struct Deleter
 {
@@ -13,10 +16,25 @@ namespace framework
 {
 	void CSharpExecutor::processMethod(runtime::DotNetRuntime& runtime, runtime::DotNetRuntime::DoMethodSignature method, HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
-		std::unique_ptr<void, Deleter> dotNetRequest(runtime.createHTTPRequest(request.getImplementation()));
-		std::unique_ptr<void, Deleter> dotNetResponse(runtime.createHTTPResponse(response.getImplementation()));
+		try
+		{
+			std::unique_ptr<void, Deleter> dotNetRequest(runtime.createHTTPRequest(request.getImplementation()));
+			std::unique_ptr<void, Deleter> dotNetResponse(runtime.createHTTPResponse(response.getImplementation()));
 
-		method(implementation, dotNetRequest.get(), dotNetResponse.get());
+			method(implementation, dotNetRequest.get(), dotNetResponse.get());
+		}
+		catch (const exceptions::APIException& e)
+		{
+			Log::info("Catch exception from C#: {}", "LogExecutor", e.what());
+
+			throw;
+		}
+		catch (const std::exception& e)
+		{
+			Log::info("Catch some exception from C#: {}", "LogExecutor", e.what());
+
+			throw;
+		}
 	}
 
 	CSharpExecutor::CSharpExecutor(void* implementation, const std::filesystem::path& modulePath) :

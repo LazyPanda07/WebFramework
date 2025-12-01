@@ -153,6 +153,12 @@ namespace framework::runtime
 			}
 
 			runtimeLibraryName = runtimePathFromEnv;
+
+			if (runtimeLibraryName.starts_with("\""))
+			{
+				runtimeLibraryName.erase();
+				runtimeLibraryName.pop_back();
+			}
 		}
 
 		if (!runtimeLibrary)
