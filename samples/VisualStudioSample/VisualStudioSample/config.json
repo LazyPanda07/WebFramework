@@ -7,11 +7,14 @@
   "WebFramework": {
     "webServerType": "multiThreaded",
     "loadSources": [
-      "executors/CXXExecutors"
+      "executors/CXXExecutors",
+      "executors/CSharpExecutors"
     ],
     "settingsPaths": [
-      "executors/cxx_settings.json"
+      "executors/cxx_settings.json",
+      "executors/csharp_settings.json"
     ],
+    "runtimes": [ ".net" ],
     "assetsPath": "assets",
     "templatesPath": "templates",
     "defaultAssetsPath": "WebFrameworkAssets"

@@ -67,11 +67,13 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-xcopy /y "$(OutDir)..\CXXExecutors\*" "$(OutDir)executors"
 for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-xcopy /y "$(OutDir)web.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\CXXExecutors\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\CSharpExecutors.dll" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\WebFrameworkCSharpAPI.dll" "$(OutDir)"
 xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
-del "$(OutDir)CXXExecutors.dll"</Command>
+move "$(OutDir)CXXExecutors.dll" "$(OutDir)executors"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -94,11 +96,13 @@ del "$(OutDir)CXXExecutors.dll"</Command>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-xcopy /y "$(OutDir)..\CXXExecutors\*" "$(OutDir)executors"
 for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-xcopy /y "$(OutDir)web.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\CXXExecutors\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\CSharpExecutors.dll" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\WebFrameworkCSharpAPI.dll" "$(OutDir)"
 xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
-del "$(OutDir)CXXExecutors.dll"</Command>
+move "$(OutDir)CXXExecutors.dll" "$(OutDir)executors"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -113,6 +117,9 @@ del "$(OutDir)CXXExecutors.dll"</Command>
     </ProjectReference>
     <ProjectReference Include="..\..\..\WebFramework\WebFramework.vcxproj">
       <Project>{e66352d0-66c8-4bae-85e4-4715d53fd651}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\CSharpExecutors\CSharpExecutors.csproj">
+      <Project>{1398ebef-ea63-466b-979c-81092840a913}</Project>
     </ProjectReference>
     <ProjectReference Include="..\CXXExecutors\CXXExecutors.vcxproj">
       <Project>{69729c71-7ef7-4854-a6b4-3a87acd90602}</Project>
