@@ -272,7 +272,7 @@ namespace framework
 #endif
 
 		std::vector<std::string> methods = { "OPTIONS" };
-		std::string allowHeader;
+		std::string allowHeaders;
 
 		BaseExecutor::isImplemented(methods, request, response, "GET", &BaseExecutor::doGet, *this);
 		BaseExecutor::isImplemented(methods, request, response, "POST", &BaseExecutor::doPost, *this);
@@ -285,15 +285,15 @@ namespace framework
 
 		for (size_t i = 0; i < methods.size(); i++)
 		{
-			allowHeader += methods[i];
+			allowHeaders += methods[i];
 
 			if (i + 1 != methods.size())
 			{
-				allowHeader += ", ";
+				allowHeaders += ", ";
 			}
 		}
 
-		response.addHeader("Allow", allowHeader);
+		response.addHeader("Allow", allowHeaders);
 	}
 
 	inline void BaseExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)

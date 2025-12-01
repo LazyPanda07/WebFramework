@@ -3,6 +3,7 @@
 using Framework.Exceptions;
 using Framework.Utility;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ObjectiveC;
 using System.Text;
 using System.Text.Json;
 
@@ -48,12 +49,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		public IntPtr value;
 	}
 
-	internal struct InternalLargeData
+	internal struct InternalLargeData()
 	{
-		public IntPtr dataPart;
-		public nuint size;
+		public IntPtr dataPart = IntPtr.Zero;
+		public nuint size = 0;
 		[MarshalAs(UnmanagedType.Bool)]
-		public bool isLastPacket;
+		public bool isLastPacket = false;
 	}
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -185,6 +186,9 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void throwException(IntPtr implementation, string errorMessage, nint responseCode, string logCategory, nuint exceptionClassHash);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -1012,5 +1016,17 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		{
 			throw new WebFrameworkException(exception);
 		}
+	}
+
+	public void ThrowException(string errorMessage, ResponseCodes responceCode, string logCategory = "")
+	{
+		ThrowException<WebFrameworkApiException>(errorMessage, responceCode, logCategory);
+	}
+
+	public void ThrowException<T>(params object[] args) where T : WebFrameworkApiException
+	{
+		T? exceptionInstance = Activator.CreateInstance(typeof(T), args) as T ?? throw new Exception($"Can't create {typeof(T).Name}");
+
+		throwException(implementation, exceptionInstance.ToString(), (nint)Convert.ToInt64(exceptionInstance.ResponseCode), exceptionInstance.LogCategory, (nuint)typeof(T).GetHashCode());
 	}
 }
