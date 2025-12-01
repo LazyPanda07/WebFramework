@@ -478,6 +478,7 @@ jobs:
       working-directory: Tests/build/bin
       shell: cmd
       run: |
+        Server.exe ${{ matrix.config }}
         start DefaultHTTPSServer.exe
         start Server.exe ${{ matrix.config }}
         .\Core.exe ${{ matrix.config }}
@@ -516,7 +517,7 @@ jobs:
     - name: Run tests
       working-directory: Tests/build/bin
       run: |
-        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PAT}
+        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
         ./DefaultHTTPSServer & ./Server ${{ matrix.config }} & sleep 1
         ./Core ${{ matrix.config }}
         
