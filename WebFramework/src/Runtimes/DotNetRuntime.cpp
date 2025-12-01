@@ -145,20 +145,25 @@ namespace framework::runtime
 		size_t size = 0;
 		std::string runtimePathFromEnv(envSize, '\0');
 
-		if (char* runtimePathFromEnv = std::getenv("DOT_NET_RUNTIME_PATH"); !runtimeLibrary && runtimePathFromEnv)
+		if (char* runtimeDirectoryPathFromEnv = std::getenv("DOT_NET_RUNTIME_DIRECTORY"); !runtimeLibrary && runtimeDirectoryPathFromEnv)
 		{
 			if (Log::isValid())
 			{
-				Log::info("Load .NET from DOT_NET_RUNTIME_PATH: {}", "LogRuntime", runtimePathFromEnv);
+				Log::info("Load .NET from DOT_NET_RUNTIME_PATH: {}", "LogRuntime", runtimeDirectoryPathFromEnv);
 			}
 
-			runtimeLibraryName = runtimePathFromEnv;
+#ifdef __LINUX__
+			std::string newPaths(runtimeDirectoryPathFromEnv);
 
-			if (runtimeLibraryName.starts_with("\""))
+			if (char* env = std::getenv("LD_LIBRARY_PATH"))
 			{
-				runtimeLibraryName.erase();
-				runtimeLibraryName.pop_back();
+				newPaths += std::format(":{}", env);
 			}
+
+			setenv("LD_LIBRARY_PATH", newPaths.data(), 1);
+#else
+			AddDllDirectory(NativeString(runtimeDirectoryPathFromEnv).native().data());
+#endif
 		}
 
 		if (!runtimeLibrary)
@@ -168,7 +173,7 @@ namespace framework::runtime
 				throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
 			}
 		}
-		
+
 		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer");
 
 		errorHandlerSetter(errorHandler);
@@ -243,7 +248,7 @@ namespace framework::runtime
 	std::optional<std::string> DotNetRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)
 	{
 		std::filesystem::path nativePathToSource(pathToSource);
-		
+
 		if (!loadAssembly(nativePathToSource.native().data(), nullptr, nullptr))
 		{
 			source = nativePathToSource;
