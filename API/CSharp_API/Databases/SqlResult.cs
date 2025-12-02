@@ -43,11 +43,16 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 
 				rows.EnsureCapacity((int)size);
 			},
-			(string[] columnNames, IntPtr[] columnValues, nuint size, nuint index, IntPtr buffer) =>
+			([Out] string[] columnNames, IntPtr[] columnValues, nuint size, nuint index, IntPtr buffer) =>
 			{
 				GCHandle handle = GCHandle.FromIntPtr(buffer);
 				List<Dictionary<string, SqlValue>> rows = (List<Dictionary<string, SqlValue>>)handle.Target!;
 				Dictionary<string, SqlValue> row = [];
+
+				if (columnNames.Length != (int)size)
+				{
+					throw new Exception($"Wrong columnNames length: {columnNames.Length}");
+				}
 
 				for (int i = 0; i < (int)size; i++)
 				{

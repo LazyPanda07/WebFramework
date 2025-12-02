@@ -19,10 +19,12 @@ namespace framework
 		std::unique_ptr<void, Deleter> dotNetResponse(runtime.createHTTPResponse(response.getImplementation()));
 		framework::interfaces::CExceptionData exceptionData;
 
-		method(implementation, dotNetRequest.get(), dotNetResponse.get());
+		bool success = method(implementation, dotNetRequest.get(), dotNetResponse.get());
 
-		if (static_cast<interfaces::IHTTPRequest*>(request.getImplementation())->getExceptionData(&exceptionData))
+		if (!success)
 		{
+			static_cast<interfaces::IHTTPRequest*>(request.getImplementation())->getExceptionData(&exceptionData);
+
 			throw exceptions::CSharpException(exceptionData.errorMessage, static_cast<web::ResponseCodes>(exceptionData.responseCode), exceptionData.logCategory);
 		}
 	}

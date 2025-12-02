@@ -1,5 +1,6 @@
 ﻿namespace Framework.Utility;
 
+using Framework.Exceptions;
 using System;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
@@ -139,9 +140,32 @@ public static class Utils
 			return false;
 		}
 
-		method(executorInstance, httpRequestInstance, httpResponseInstance);
+		try
+		{
+			method(executorInstance, httpRequestInstance, httpResponseInstance);
 
-		return true;
+			return true;
+		}
+		catch (WebFrameworkException e)
+		{
+			HttpRequest.setExceptionData(httpRequestInstance.implementation, e.ToString(), (int)ResponseCodes.InternalServerError, "");
+
+			e.Dispose();
+
+			return false;
+		}
+		catch (WebFrameworkApiException e)
+		{
+			HttpRequest.setExceptionData(httpRequestInstance.implementation, e.ToString(), (int)e.ResponseCode, e.LogCategory);
+
+			return false;
+		}
+		catch (Exception e)
+		{
+			HttpRequest.setExceptionData(httpRequestInstance.implementation, e.ToString(), (int)ResponseCodes.InternalServerError, "");
+
+			return false;
+		}
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "HasExecutor")]
