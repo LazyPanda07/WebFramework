@@ -49,6 +49,11 @@ public sealed unsafe partial class SqlValue
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial int getSQLValueType(IntPtr implementation);
 
+	internal SqlValue(IntPtr implementation)
+	{
+		this.implementation = implementation;
+	}
+
 	public SqlValue(object? value = null)
 	{
 		implementation = createSQLValue();

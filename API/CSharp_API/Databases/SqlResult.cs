@@ -15,7 +15,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	private delegate void InitBufferCallback(nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	private delegate void IterateCallback([Out] string[] columnNames, [Out] IntPtr[] columnValues, nuint size, nuint index, IntPtr buffer);
+	private delegate void IterateCallback(IntPtr columnNames, IntPtr columnValues, nuint size, nuint index, IntPtr buffer);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref void* exception);
@@ -43,20 +43,20 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 
 				rows.EnsureCapacity((int)size);
 			},
-			([Out] string[] columnNames, IntPtr[] columnValues, nuint size, nuint index, IntPtr buffer) =>
+			(IntPtr columnNames, IntPtr columnValues, nuint size, nuint index, IntPtr buffer) =>
 			{
+				int count = (int)size;
+
 				GCHandle handle = GCHandle.FromIntPtr(buffer);
 				List<Dictionary<string, SqlValue>> rows = (List<Dictionary<string, SqlValue>>)handle.Target!;
 				Dictionary<string, SqlValue> row = [];
-
-				if (columnNames.Length != (int)size)
+				
+				for (int i = 0; i < count; i++)
 				{
-					throw new Exception($"Wrong columnNames length: {columnNames.Length}");
-				}
+					IntPtr keyPtr = Marshal.ReadIntPtr(columnNames, i * IntPtr.Size);
+					IntPtr valuePtr = Marshal.ReadIntPtr(columnValues, i * IntPtr.Size);
 
-				for (int i = 0; i < (int)size; i++)
-				{
-					row[columnNames[i]] = new(columnValues[i]);
+					row[Marshal.PtrToStringUTF8(keyPtr)!] = new(valuePtr);
 				}
 
 				rows.Add(row);
