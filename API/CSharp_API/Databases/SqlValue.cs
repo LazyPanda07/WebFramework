@@ -46,8 +46,8 @@ public sealed unsafe partial class SqlValue
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial double getSQLValueDouble(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getSQLValueString(IntPtr implementation);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getSQLValueString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	[return: MarshalAs(UnmanagedType.I1)]
@@ -77,7 +77,7 @@ public sealed unsafe partial class SqlValue
 				break;
 
 			case SqlValueType.StringType:
-				SetValue(getSQLValueString(implementation));
+				SetValue(Marshal.PtrToStringUTF8(getSQLValueString(implementation))!);
 
 				break;
 
@@ -120,31 +120,31 @@ public sealed unsafe partial class SqlValue
 	public SqlValue(int value) :
 		this(value as object)
 	{
-		
+
 	}
 
 	public SqlValue(long value) :
 		this(value as object)
 	{
-		
+
 	}
 
 	public SqlValue(double value) :
 		this(value as object)
 	{
-		
+
 	}
 
 	public SqlValue(string value) :
 		this(value as object)
 	{
-		
+
 	}
 
 	public SqlValue(bool value) :
 		this(value as object)
 	{
-		
+
 	}
 
 	public bool IsNull()
@@ -247,7 +247,7 @@ public sealed unsafe partial class SqlValue
 		return type switch
 		{
 			Type t when t == typeof(bool) => (T)Convert.ChangeType(getSQLValueBool(implementation), type),
-			Type t when t == typeof(string) => (T)Convert.ChangeType(getSQLValueString(implementation), type),
+			Type t when t == typeof(string) => (T)Convert.ChangeType(Marshal.PtrToStringUTF8(getSQLValueString(implementation))!, type),
 			_ => (T)Convert.ChangeType(getSQLValueInt(implementation), type)
 		};
 	}

@@ -4,7 +4,7 @@ namespace Framework.Utility;
 
 public static class WebFrameworkUtility
 {
-	public static ImmutableArray<SqlValue> MakeSqlValues(params object[] args)
+	public static IList<SqlValue> MakeSqlValues(params object[] args)
 	{
 		SqlValue[] array = new SqlValue[args.Length];
 
@@ -13,6 +13,6 @@ public static class WebFrameworkUtility
 			array[i] = new(args[i]);
 		}
 
-		return ImmutableArray.Create(array);
+		return array;
 	}
 }

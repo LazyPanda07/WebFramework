@@ -170,7 +170,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial double getRouteDoubleParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+	private static unsafe partial IntPtr getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial IntPtr getOrCreateDatabaseHTTPRequest(IntPtr implementation, string databaseName, ref void* exception);
@@ -907,7 +907,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		void* exception = null;
 		object result = typeof(T) switch
 		{
-			Type t when t == typeof(string) => getRouteStringParameter(implementation, name, ref exception),
+			Type t when t == typeof(string) => Marshal.PtrToStringUTF8(getRouteStringParameter(implementation, name, ref exception))!,
 			Type t when t.IsPrimitive && t != typeof(float) && t != typeof(double) => Convert.ChangeType(getRouteIntegerParameter(implementation, name, ref exception), typeof(T)),
 			Type t when t == typeof(float) || t == typeof(double) => Convert.ChangeType(getRouteDoubleParameter(implementation, name, ref exception), typeof(T)),
 			_ => throw new InvalidOperationException($"Wrong route parameter type: {typeof(T).Name}")
@@ -969,7 +969,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		{
 			throw new WebFrameworkException(exception);
 		}
-		
+
 		return new(result);
 	}
 
@@ -985,12 +985,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		sendFileChunks
 		(
-			implementation, 
-			response.implementation, 
-			fileName, 
+			implementation,
+			response.implementation,
+			fileName,
 			(IntPtr data) =>
 			{
-			 	GCHandle handle = GCHandle.FromIntPtr(data);
+				GCHandle handle = GCHandle.FromIntPtr(data);
 				ChunkGenerator generator = (ChunkGenerator)handle.Target!;
 				ReadOnlySpan<char> chunk = generator.Generate();
 				byte[] byteChunk = Encoding.UTF8.GetBytes(chunk.ToArray());

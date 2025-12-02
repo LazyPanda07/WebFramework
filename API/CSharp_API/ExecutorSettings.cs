@@ -8,7 +8,7 @@ using System.Text.Json;
 
 public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 {
-	enum LoadType
+	public enum LoadType
 	{
 		/// <summary>
 		/// Create at initialization
@@ -35,14 +35,14 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial IntPtr getExecutorInitParameters(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getExecutorName(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getExecutorName(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getExecutorUserAgentFilter(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getExecutorUserAgentFilter(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getExecutorAPIType(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getExecutorAPIType(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial int getExecutorLoadType(IntPtr implementation, ref void* exception);
@@ -59,7 +59,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	public string GetName()
 	{
 		void* exception = null;
-		string result = getExecutorName(implementation, ref exception);
+		string result = Marshal.PtrToStringUTF8(getExecutorName(implementation, ref exception))!;
 
 		if (exception != null)
 		{
@@ -90,7 +90,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	public string GetUserAgentFilter()
 	{
 		void* exception = null;
-		string result = getExecutorUserAgentFilter(implementation, ref exception);
+		string result = Marshal.PtrToStringUTF8(getExecutorUserAgentFilter(implementation, ref exception))!;
 
 		if (exception != null)
 		{
@@ -103,7 +103,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	public string GetApiType()
 	{
 		void* exception = null;
-		string result = getExecutorAPIType(implementation, ref exception);
+		string result = Marshal.PtrToStringUTF8(getExecutorAPIType(implementation, ref exception))!;
 
 		if (exception != null)
 		{
@@ -113,7 +113,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 		return result;
 	}
 
-	LoadType GetLoadType()
+	public LoadType GetLoadType()
 	{
 		void* exception = null;
 		int result = getExecutorLoadType(implementation, ref exception);

@@ -2,7 +2,6 @@
 
 using Framework.Exceptions;
 using Framework.Utility;
-using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 public sealed unsafe partial class Table(IntPtr implementation)
@@ -10,22 +9,31 @@ public sealed unsafe partial class Table(IntPtr implementation)
 	private readonly IntPtr implementation = implementation;
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr executeQuery(IntPtr implementation, string query, [In] IntPtr[] values, nuint size, ref void* exception);
+	private static unsafe partial IntPtr executeQuery(IntPtr implementation, string query, [In] IntPtr[]? values, nuint size, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getTableName(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getTableName(IntPtr implementation, ref void* exception);
 
-	public SqlResult ExecuteQuery(string query, ImmutableArray<SqlValue> values = default)
+	public SqlResult ExecuteQuery(string query, IList<SqlValue>? values = null)
 	{
 		void* exception = null;
-		IntPtr[] pointers = new IntPtr[values.Length];
-
-		for (int i = 0; i < values.Length; i++)
+		IntPtr result;
+		
+		if (values != null)
 		{
-			pointers[i] = values[i].implementation;
-		}
+			IntPtr[] pointers = new IntPtr[values.Count];
 
-		IntPtr result = executeQuery(implementation, query, pointers, (nuint)pointers.Length, ref exception);
+			for (int i = 0; i < values.Count; i++)
+			{
+				pointers[i] = values[i].implementation;
+			}
+
+			result = executeQuery(implementation, query, pointers, (nuint)pointers.Length, ref exception);
+		}
+		else
+		{
+			result = executeQuery(implementation, query, null, 0, ref exception);
+		}
 
 		if (exception != null)
 		{
@@ -38,7 +46,7 @@ public sealed unsafe partial class Table(IntPtr implementation)
 	public string GetTableName()
 	{
 		void* exception = null;
-		string result = getTableName(implementation, ref exception);
+		string result = Marshal.PtrToStringUTF8(getTableName(implementation, ref exception))!;
 
 		if (exception != null)
 		{

@@ -19,11 +19,11 @@ public sealed unsafe partial class Database(IntPtr implementation)
 	[return: MarshalAs(UnmanagedType.I1)]
 	private static unsafe partial bool containsTable(IntPtr implementation, string tableName, ref IntPtr outTable, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getDatabaseName(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getDatabaseName(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial string getDatabaseFileName(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getDatabaseFileName(IntPtr implementation, ref void* exception);
 
 	public Table GetOrCreateTable(string tableName, string createTableQuery)
 	{
@@ -84,7 +84,7 @@ public sealed unsafe partial class Database(IntPtr implementation)
 	public string GetDatabaseName()
 	{
 		void* exception = null;
-		string result = getDatabaseName(implementation, ref exception);
+		string result = Marshal.PtrToStringUTF8(getDatabaseName(implementation, ref exception))!;
 
 		if (exception != null)
 		{
@@ -97,7 +97,7 @@ public sealed unsafe partial class Database(IntPtr implementation)
 	public string GetDatabaseFileName()
 	{
 		void* exception = null;
-		string result = getDatabaseFileName(implementation, ref exception);
+		string result = Marshal.PtrToStringUTF8(getDatabaseFileName(implementation, ref exception))!;
 
 		if (exception != null)
 		{

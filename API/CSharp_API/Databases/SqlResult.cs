@@ -23,7 +23,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial nuint getSQLResultSize(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void iterateSQLResult(IntPtr implementation, InitBufferCallback initBuffer, IterateCallback iterate, IntPtr buffer, ref void* exception);
 
 	public SqlResult(IntPtr implementation, IntPtr tableImplementation)
@@ -55,7 +55,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 				{
 					IntPtr keyPtr = Marshal.ReadIntPtr(columnNames, i * IntPtr.Size);
 					IntPtr valuePtr = Marshal.ReadIntPtr(columnValues, i * IntPtr.Size);
-
+					
 					row[Marshal.PtrToStringUTF8(keyPtr)!] = new(valuePtr);
 				}
 
