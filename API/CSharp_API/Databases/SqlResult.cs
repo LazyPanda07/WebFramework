@@ -56,8 +56,6 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 					IntPtr keyPtr = Marshal.ReadIntPtr(columnNames, i * IntPtr.Size);
 					IntPtr valuePtr = Marshal.ReadIntPtr(columnValues, i * IntPtr.Size);
 
-					Console.WriteLine($"{i}: key: {Marshal.PtrToStringUTF8(keyPtr)}");
-
 					row[Marshal.PtrToStringUTF8(keyPtr)!] = new(valuePtr);
 				}
 

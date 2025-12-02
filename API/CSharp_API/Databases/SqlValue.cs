@@ -9,6 +9,16 @@ public sealed unsafe partial class SqlValue
 {
 	internal readonly IntPtr implementation;
 
+	private enum SqlValueType
+	{
+		IntType,
+		DoubleType,
+		StringType,
+		BoolType,
+		NullptrType,
+		BlobType
+	};
+
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial IntPtr createSQLValue();
 
@@ -51,7 +61,53 @@ public sealed unsafe partial class SqlValue
 
 	internal SqlValue(IntPtr implementation)
 	{
-		this.implementation = implementation;
+		this.implementation = createSQLValue();
+		SqlValueType type = (SqlValueType)getSQLValueType(implementation);
+
+		switch (type)
+		{
+			case SqlValueType.IntType:
+				SetValue(getSQLValueInt(implementation));
+
+				break;
+
+			case SqlValueType.DoubleType:
+				SetValue(getSQLValueDouble(implementation));
+
+				break;
+
+			case SqlValueType.StringType:
+				SetValue(getSQLValueString(implementation));
+
+				break;
+
+			case SqlValueType.BoolType:
+				SetValue(getSQLValueBool(implementation));
+
+				break;
+
+			case SqlValueType.NullptrType:
+				SetValue();
+
+				break;
+
+			case SqlValueType.BlobType:
+				IntPtr temp = IntPtr.Zero;
+				nuint size = 0;
+
+				getSQLValueBlob(implementation, ref temp, ref size);
+
+				byte[] result = new byte[size];
+
+				Marshal.Copy(temp, result, 0, result.Length);
+
+				SetValue(result.AsSpan());
+
+				break;
+
+			default:
+				throw new Exception($"Wrong type from SqlValueType: {((int)type)}");
+		}
 	}
 
 	public SqlValue(object? value = null)
@@ -123,7 +179,7 @@ public sealed unsafe partial class SqlValue
 		setSQLValueBool(implementation, value);
 	}
 
-	public void SetValue(object? value)
+	public void SetValue(object? value = null)
 	{
 		if (value == null)
 		{
