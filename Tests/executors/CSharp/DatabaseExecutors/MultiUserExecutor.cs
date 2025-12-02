@@ -28,8 +28,8 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 				new
 				{
 					id = row["id"].GetValue<int>(),
-					name = row["name"].GetValue<string>(),
-					amount = row["amount"].GetValue<int>()
+					user_id = row["user_id"].GetValue<string>(),
+					data = row["data"].GetValue<int>()
 				}
 			);
 		}
