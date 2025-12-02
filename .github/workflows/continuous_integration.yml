@@ -362,7 +362,7 @@ jobs:
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
       working-directory: Tests
       run: |
-        $env:DOT_NET_RUNTIME_DIRECTORY = "${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }}"
+        $env:PATH = ${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }}
         .\${{ matrix.api_test }} ${{ matrix.config }}
           
 
@@ -487,7 +487,6 @@ jobs:
       shell: cmd
       run: |
         set PATH=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }};%PATH%
-        set DOT_NET_RUNTIME_DIRECTORY=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }}
         start DefaultHTTPSServer.exe
         start Server.exe ${{ matrix.config }}
         .\Core.exe ${{ matrix.config }}

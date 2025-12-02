@@ -12,7 +12,7 @@ public sealed unsafe partial class SqlValue
 	private static unsafe partial IntPtr createSQLValue();
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setSQLValueInt(IntPtr implementation, int value);
+	private static unsafe partial void setSQLValueInt(IntPtr implementation, long value);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void setSQLValueDouble(IntPtr implementation, double value);
@@ -59,6 +59,12 @@ public sealed unsafe partial class SqlValue
 		SetValue(value);
 	}
 
+	public SqlValue(long value) :
+		this()
+	{
+		SetValue(value);
+	}
+
 	public SqlValue(double value) :
 		this()
 	{
@@ -95,6 +101,11 @@ public sealed unsafe partial class SqlValue
 	}
 
 	public void SetInt(int value)
+	{
+		setSQLValueInt(implementation, value);
+	}
+
+	public void SetInt(long value)
 	{
 		setSQLValueInt(implementation, value);
 	}

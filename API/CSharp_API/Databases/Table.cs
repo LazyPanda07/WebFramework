@@ -15,7 +15,7 @@ public sealed unsafe partial class Table(IntPtr implementation)
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial string getTableName(IntPtr implementation, ref void* exception);
 
-	public SqlResult ExecuteQuery(string query, ImmutableArray<SqlValue> values)
+	public SqlResult ExecuteQuery(string query, ImmutableArray<SqlValue> values = default)
 	{
 		void* exception = null;
 		IntPtr[] pointers = new IntPtr[values.Length];
