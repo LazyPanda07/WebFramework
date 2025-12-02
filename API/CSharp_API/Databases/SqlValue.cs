@@ -3,6 +3,7 @@
 using Framework.Utility;
 using System;
 using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 public sealed unsafe partial class SqlValue
 {
@@ -48,49 +49,41 @@ public sealed unsafe partial class SqlValue
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial int getSQLValueType(IntPtr implementation);
 
-	private SqlValue()
+	public SqlValue(object? value = null)
 	{
 		implementation = createSQLValue();
+
+		SetValue(value);
 	}
 
 	public SqlValue(int value) :
-		this()
+		this(value as object)
 	{
-		SetValue(value);
+		
 	}
 
 	public SqlValue(long value) :
-		this()
+		this(value as object)
 	{
-		SetValue(value);
+		
 	}
 
 	public SqlValue(double value) :
-		this()
+		this(value as object)
 	{
-		SetValue(value);
+		
 	}
 
 	public SqlValue(string value) :
-		this()
+		this(value as object)
 	{
-		SetValue(value);
+		
 	}
 
 	public SqlValue(bool value) :
-		this()
+		this(value as object)
 	{
-		SetValue(value);
-	}
-
-	/// <summary>
-	/// Set null value
-	/// </summary>
-	/// <param name="value"></param>
-	public SqlValue(object? value) :
-		this()
-	{
-		SetValue(value);
+		
 	}
 
 	public bool IsNull()
@@ -125,13 +118,36 @@ public sealed unsafe partial class SqlValue
 		setSQLValueBool(implementation, value);
 	}
 
-	/// <summary>
-	/// Set null value
-	/// </summary>
-	/// <param name="_"></param>
-	public void SetValue(object? _)
+	public void SetValue(object? value)
 	{
-		setSQLValueNull(implementation);
+		if (value == null)
+		{
+			setSQLValueNull(implementation);
+		}
+		else if (value is string stringValue)
+		{
+			SetValue(stringValue);
+		}
+		else if (value is bool boolValue)
+		{
+			SetValue(boolValue);
+		}
+		else if (value is int intValue)
+		{
+			SetValue(intValue);
+		}
+		else if (value is long longValue)
+		{
+			SetValue(longValue);
+		}
+		else if (value is double doubleValue)
+		{
+			SetValue(doubleValue);
+		}
+		else
+		{
+			throw new InvalidOperationException($"Wrong type: {value.GetType().Name}");
+		}
 	}
 
 	public void SetValue(ReadOnlySpan<byte> value)
