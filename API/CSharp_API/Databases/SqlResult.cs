@@ -15,7 +15,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	private delegate void InitBufferCallback(nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	private delegate void IterateCallback([MarshalAs(UnmanagedType.LPUTF8Str)][Out] string[] columnNames, [Out] IntPtr[] columnValues, nuint size, nuint index, IntPtr buffer);
+	private delegate void IterateCallback([Out] string[] columnNames, [Out] IntPtr[] columnValues, nuint size, nuint index, IntPtr buffer);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref void* exception);
