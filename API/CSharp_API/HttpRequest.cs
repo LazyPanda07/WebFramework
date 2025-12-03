@@ -561,7 +561,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public byte[] ProcessStaticFile(byte[] fileData, string fileExtension)
 	{
 		void* exception = null;
-		byte[] result = [];
+		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
 		processStaticFile
@@ -572,11 +572,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			fileExtension,
 			(byte[] data, nuint size, IntPtr buffer) =>
 			{
-				byte[] result = (byte[])GCHandle.FromIntPtr(buffer).Target!;
+				int count = (int)size;
+				List<byte> result = (List<byte>)GCHandle.FromIntPtr(buffer).Target!;
 
-				result = new byte[(int)size];
+				result.EnsureCapacity(count);
 
-				data.CopyTo(result, 0);
+				result.AddRange(new ReadOnlySpan<byte>(data, 0, count));
 			},
 			GCHandle.ToIntPtr(handle),
 			ref exception
@@ -589,13 +590,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			throw new WebFrameworkException(exception);
 		}
 
-		return result;
+		return [.. result];
 	}
 
 	public byte[] ProcessWfdpFile(byte[] fileData, IDictionary<string, string>? variables = null)
 	{
 		void* exception = null;
-		byte[] result = [];
+		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
 
@@ -622,11 +623,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			(nuint)cvariables.Length,
 			(byte[] data, nuint size, IntPtr buffer) =>
 			{
-				byte[] result = (byte[])GCHandle.FromIntPtr(buffer).Target!;
+				int count = (int)size;
+				List<byte> result = (List<byte>)GCHandle.FromIntPtr(buffer).Target!;
 
-				result = new byte[(int)size];
+				result.EnsureCapacity(count);
 
-				data.CopyTo(result, 0);
+				result.AddRange(new ReadOnlySpan<byte>(data, 0, count));
 			},
 			GCHandle.ToIntPtr(handle),
 			ref exception
@@ -645,7 +647,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			throw new WebFrameworkException(exception);
 		}
 
-		return result;
+		return [.. result];
 	}
 
 	public IDictionary<string, string> GetHeaders()
