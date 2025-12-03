@@ -15,7 +15,7 @@ public class UploadOctetStreamExecutor : StatefulExecutor
 
 		if (last)
 		{
-			stream.Close();
+			stream.Dispose();
 
 			stream = null;
 
