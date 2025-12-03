@@ -2,7 +2,6 @@
 
 public class DynamicResources : HeavyOperationStatelessExecutor
 {
-	/*
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
 		byte[] fileData = request.GetFile("page.md");
@@ -20,5 +19,4 @@ public class DynamicResources : HeavyOperationStatelessExecutor
 
 		response.SetBody(request.ProcessWfdpFile(fileData, variables));
 	}
-	*/
 }

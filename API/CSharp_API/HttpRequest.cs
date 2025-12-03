@@ -152,16 +152,16 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string? fileName, ref void* exception);
+	private static unsafe partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string? fileName, ref void* exception);
+	private static unsafe partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendWFDPFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string? fileName, ref void* exception);
+	private static unsafe partial void sendWFDPFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string? fileName, nuint chunkSize, ref void* exception);
+	private static unsafe partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial int getRouteIntegerParameter(IntPtr implementation, string routeParameterName, ref void* exception);
@@ -417,7 +417,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public void RegisterWfdpFunction<T>(string functionName) where T : IDynamicFunction
 	{
 		void* exception = null;
-		string assemblyName = typeof(T).Assembly.FullName!;
+		string assemblyName = typeof(T).AssemblyQualifiedName!;
 		byte[] assemblyBytes = Encoding.UTF8.GetBytes(assemblyName + '\0');
 		IntPtr result = Marshal.AllocHGlobal(assemblyBytes.Length);
 
@@ -809,7 +809,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			cvariables,
 			(nuint)cvariables.Length,
 			(bool)(isBinary == null ? true : isBinary),
-			fileName,
+			fileName ?? "",
 			ref exception
 		);
 
@@ -835,7 +835,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			filePath,
 			response.implementation,
 			(bool)(isBinary == null ? true : isBinary),
-			fileName,
+			fileName ?? "",
 			ref exception
 		);
 
@@ -872,7 +872,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			cvariables,
 			(nuint)cvariables.Length,
 			(bool)(isBinary == null ? true : isBinary),
-			fileName,
+			(fileName ?? ""),
 			ref exception
 		);
 
@@ -894,7 +894,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		void* exception = null;
 
-		streamFile(implementation, filePath, response.implementation, fileName, chunkSize == null ? defaultChunkSize : (nuint)chunkSize, ref exception);
+		streamFile(implementation, filePath, response.implementation, fileName ?? "", chunkSize == null ? defaultChunkSize : (nuint)chunkSize, ref exception);
 
 		if (exception != null)
 		{
