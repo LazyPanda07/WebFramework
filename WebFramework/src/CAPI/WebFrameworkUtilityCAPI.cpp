@@ -1003,6 +1003,11 @@ int64_t getSQLValueInt(SQLValueObject sqlValue, Exception* exception)
 {
 	try
 	{
+		if (Log::isValid())
+		{
+			Log::info("Current type: {}", "LogType", static_cast<int>(static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getType()));
+		}
+
 		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getInt();
 	}
 	catch (const std::exception& e)

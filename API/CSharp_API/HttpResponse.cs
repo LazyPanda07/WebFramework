@@ -4,7 +4,9 @@ using Framework.Exceptions;
 using Framework.Utility;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 public sealed unsafe partial class HttpResponse(nint implementation)
 {
@@ -66,8 +68,22 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 	public void SetBody(object data, JsonSerializerOptions? options = null)
 	{
+		JsonSerializerOptions wrapperOptions;
+
+		if (options != null)
+		{
+			wrapperOptions = new(options);
+		}
+		else
+		{
+			wrapperOptions = new();
+		}
+
+		wrapperOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+		wrapperOptions.WriteIndented = false;
+
 		void* exception = null;
-		string jsonData = JsonSerializer.Serialize(data, options);
+		string jsonData = JsonSerializer.Serialize(data, wrapperOptions);
 		IntPtr jsonBuilder = createJSONBuilderFromString(jsonData, ref exception);
 
 		if (exception != null)

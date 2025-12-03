@@ -42,15 +42,7 @@ TEST(Database, Select)
 
 	stream >> response;
 
-	web::HttpParser parser(response);
-	const json::JsonParser& json = parser.getJson();
-
-	if (!json.contains<std::vector<json::JsonObject>>("data"))
-	{
-		std::cout << response << std::endl;
-	}
-
-	ASSERT_EQ(json.get<std::vector<json::JsonObject>>("data").size(), 11) << response;
+	ASSERT_EQ(web::HttpParser(response).getJson().get<std::vector<json::JsonObject>>("data").size(), 11) << response;
 }
 
 TEST(Database, Update)
