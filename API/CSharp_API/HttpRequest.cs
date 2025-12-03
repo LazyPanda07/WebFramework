@@ -994,7 +994,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			{
 				GCHandle handle = GCHandle.FromIntPtr(data);
 				ChunkGenerator generator = (ChunkGenerator)handle.Target!;
-				ReadOnlySpan<char> chunk = generator.Generate();
+				bool finished = false;
+				ReadOnlySpan<char> chunk = generator.Generate(ref finished);
+
+				if (finished)
+				{
+					return IntPtr.Zero;
+				}
+
 				byte[] byteChunk = Encoding.UTF8.GetBytes(chunk.ToArray(), 0, chunk.Length);
 
 				if (generator.currentBuffer != IntPtr.Zero)
