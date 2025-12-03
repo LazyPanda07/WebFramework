@@ -15,7 +15,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private delegate void InitBufferCallback(nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	private delegate void FillBufferCallback(byte[] data, nuint size, IntPtr buffer);
+	private delegate void FillBufferCallback(IntPtr data, nuint size, IntPtr buffer);
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	private delegate void AddKeyValueParameters
@@ -197,6 +197,16 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		deleteWebFrameworkString(stringImplementation);
 
 		return result;
+	}
+
+	private static void ReadFileDataCallback(IntPtr data, nuint size, IntPtr buffer)
+	{
+		List<byte> result = (List<byte>)GCHandle.FromIntPtr(buffer).Target!;
+		byte[] dataBytes = new byte[(int)size];
+
+		Marshal.Copy(data, dataBytes, 0, dataBytes.Length);
+
+		result.AddRange(dataBytes);
 	}
 
 	private static string ToCString(string source)
@@ -529,21 +539,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public byte[] GetFile(string filePath)
 	{
 		void* exception = null;
-		byte[] result = [];
+		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
 		getFile
 		(
 			implementation,
 			filePath,
-			(byte[] data, nuint size, IntPtr buffer) =>
-			{
-				byte[] result = (byte[])GCHandle.FromIntPtr(buffer).Target!;
-
-				result = new byte[(int)size];
-
-				data.CopyTo(result, 0);
-			},
+			ReadFileDataCallback,
 			GCHandle.ToIntPtr(handle),
 			ref exception
 		);
@@ -555,7 +558,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			throw new WebFrameworkException(exception);
 		}
 
-		return result;
+		return [.. result];
 	}
 
 	public byte[] ProcessStaticFile(byte[] fileData, string fileExtension)
@@ -570,15 +573,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			fileData,
 			(nuint)fileData.Length,
 			fileExtension,
-			(byte[] data, nuint size, IntPtr buffer) =>
-			{
-				int count = (int)size;
-				List<byte> result = (List<byte>)GCHandle.FromIntPtr(buffer).Target!;
-
-				result.EnsureCapacity(count);
-
-				result.AddRange(new ReadOnlySpan<byte>(data, 0, count));
-			},
+			ReadFileDataCallback,
 			GCHandle.ToIntPtr(handle),
 			ref exception
 		);
@@ -621,15 +616,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			(nuint)fileData.Length,
 			cvariables,
 			(nuint)cvariables.Length,
-			(byte[] data, nuint size, IntPtr buffer) =>
-			{
-				int count = (int)size;
-				List<byte> result = (List<byte>)GCHandle.FromIntPtr(buffer).Target!;
-
-				result.EnsureCapacity(count);
-
-				result.AddRange(new ReadOnlySpan<byte>(data, 0, count));
-			},
+			ReadFileDataCallback,
 			GCHandle.ToIntPtr(handle),
 			ref exception
 		);
