@@ -154,12 +154,12 @@ public sealed unsafe partial class SqlValue
 		return getSQLValueType(implementation) == nullType;
 	}
 
-	public void SetInt(int value)
+	public void SetValue(int value)
 	{
 		setSQLValueInt(implementation, value);
 	}
 
-	public void SetInt(long value)
+	public void SetValue(long value)
 	{
 		setSQLValueInt(implementation, value);
 	}
@@ -236,7 +236,7 @@ public sealed unsafe partial class SqlValue
 
 		if (type == typeof(object))
 		{
-			return default!;
+			throw new Exception("Wrong type object");
 		}
 
 		if (type == typeof(float) || type == typeof(double) || type == typeof(decimal))
