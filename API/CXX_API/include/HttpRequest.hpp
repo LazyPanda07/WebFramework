@@ -25,7 +25,7 @@ namespace framework
 		std::string data;
 
 	public:
-		Multipart(const char* name, const char* fileName, const char* contentType, const char* data);
+		Multipart(const char* name, const char* fileName, const char* contentType, std::string_view data);
 
 		const std::string& getName() const;
 
@@ -440,7 +440,7 @@ namespace framework
 		);
 	}
 
-	inline Multipart::Multipart(const char* name, const char* fileName, const char* contentType, const char* data) :
+	inline Multipart::Multipart(const char* name, const char* fileName, const char* contentType, std::string_view data) :
 		name(name),
 		data(data)
 	{
@@ -516,9 +516,9 @@ namespace framework
 			{
 				static_cast<std::vector<Multipart>*>(buffer)->reserve(size);
 			};
-		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer)
+		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer)
 			{
-				static_cast<std::vector<Multipart>*>(buffer)->emplace_back(name, fileName, contentType, data);
+				static_cast<std::vector<Multipart>*>(buffer)->emplace_back(name, fileName, contentType, std::string(data, dataSize));
 			};
 
 		implementation->getMultiparts(initMultipartsBuffer, addMultipart, &multiparts);

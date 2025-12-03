@@ -110,7 +110,7 @@ static void __addHeader(const char* key, const char* value, size_t index, void* 
 	temp[index].value = value;
 }
 
-static void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer)
+static void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer)
 {
 	Multipart_t* temp = *(Multipart_t**)buffer;
 
@@ -118,6 +118,7 @@ static void __addMultipart(const char* name, const char* fileName, const char* c
 	temp[index].fileName = fileName;
 	temp[index].contentType = contentType;
 	temp[index].data = data;
+	temp[index].dataSize = dataSize;
 }
 
 static void __addCookie(const char* key, const char* value, size_t index, void* buffer)
@@ -354,7 +355,7 @@ WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart_t** re
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*getMultiparts)(void* implementation, void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer, void** exception);
+	typedef void (*getMultiparts)(void* implementation, void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getMultiparts, __initMultipartsBuffer, __addMultipart, result, &exception);
 

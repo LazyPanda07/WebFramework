@@ -75,6 +75,7 @@ typedef struct Multipart
 	 */
 	const char* contentType;
 	const char* data;
+	size_t dataSize;
 } Multipart_t;
 
 /**

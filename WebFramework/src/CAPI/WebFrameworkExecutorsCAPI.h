@@ -78,7 +78,7 @@ EXPORT const char* getHTTPHeader(HTTPRequestObject request, const char* headerNa
 
 EXPORT const void* getLargeData(HTTPRequestObject request, Exception* exception);
 
-EXPORT void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t size, void* buffer), void(addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer, Exception* exception);
+EXPORT void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t size, void* buffer), void(addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer, Exception* exception);
 
 EXPORT void getCookies(HTTPRequestObject request, void(*initCookiesBuffer)(size_t size, void* buffer), void(addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 

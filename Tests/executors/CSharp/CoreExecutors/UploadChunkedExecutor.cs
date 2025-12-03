@@ -7,9 +7,9 @@ public class UploadChunkedExecutor : HeavyOperationStatelessExecutor
 	{
 		using FileStream stream = new(request.GetHeaders()["File-Name"], FileMode.CreateNew);
 		using BinaryWriter writer = new(stream);
-		List<string> chunks = [.. request.GetChunks()];
+		List<byte[]> chunks = [.. request.GetChunks()];
 
-		foreach(string chunk in chunks)
+		foreach(byte[] chunk in chunks)
 		{
 			writer.Write(chunk);
 		}

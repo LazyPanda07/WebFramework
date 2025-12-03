@@ -43,14 +43,14 @@ namespace framework
 			{
 				static_cast<std::vector<web::Multipart>*>(buffer)->reserve(size);
 			};
-		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* additionalData)
+		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* additionalData)
 			{
 				reinterpret_cast<std::vector<web::Multipart>*>(additionalData)->emplace_back
 				(
 					name,
 					fileName,
 					contentType,
-					data
+					std::string(data, dataSize)
 				);
 			};
 

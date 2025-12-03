@@ -232,7 +232,7 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer) const
+	void HTTPRequestImplementation::getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer) const
 	{
 		const std::vector<web::Multipart>& multiparts = parser.getMultiparts();
 
@@ -255,9 +255,10 @@ namespace framework
 				temp.contentType = (*contentType).data();
 			}
 
+			size_t dataSize = multipart.getData().size();
 			temp.data = multipart.getData().data();
 
-			addMultipart(temp.name, temp.fileName, temp.contentType, temp.data, i, buffer);
+			addMultipart(temp.name, temp.fileName, temp.contentType, temp.data, dataSize, i, buffer);
 		}
 	}
 

@@ -29,10 +29,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	private delegate void AddMultipartCallback
 	(
-		[MarshalAs(UnmanagedType.LPUTF8Str)] string name,
-		[MarshalAs(UnmanagedType.LPUTF8Str)] string? fileName,
-		[MarshalAs(UnmanagedType.LPUTF8Str)] string? contentType,
-		byte[] data,
+		IntPtr name,
+		IntPtr fileName,
+		IntPtr contentType,
+		IntPtr data,
+		nuint dataSize,
 		nuint index,
 		IntPtr buffer
 	);
@@ -53,7 +54,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		public IntPtr dataPart = IntPtr.Zero;
 		public nuint size = 0;
-		[MarshalAs(UnmanagedType.Bool)]
+		[MarshalAs(UnmanagedType.I1)]
 		public bool isLastPacket = false;
 	}
 
@@ -501,10 +502,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return queryParameters;
 	}
 
-	public IList<string> GetChunks()
+	public IList<byte[]> GetChunks()
 	{
 		void* exception = null;
-		List<string> chunks = [];
+		List<byte[]> chunks = [];
 		GCHandle handle = GCHandle.Alloc(chunks);
 
 		getHTTPChunks
@@ -512,15 +513,18 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			implementation,
 			(nuint size, IntPtr buffer) =>
 			{
-				List<string> chunks = (List<string>)GCHandle.FromIntPtr(buffer).Target!;
+				List<byte[]> chunks = (List<byte[]>)GCHandle.FromIntPtr(buffer).Target!;
 
 				chunks.EnsureCapacity((int)size);
 			},
 			(IntPtr chunk, nuint size, nuint index, IntPtr buffer) =>
 			{
-				List<string> chunks = (List<string>)GCHandle.FromIntPtr(buffer).Target!;
+				List<byte[]> chunks = (List<byte[]>)GCHandle.FromIntPtr(buffer).Target!;
+				byte[] chunkBytes = new byte[(int)size];
 
-				chunks.Add(Marshal.PtrToStringAuto(chunk, (int)size)!);
+				Marshal.Copy(chunk, chunkBytes, 0, chunkBytes.Length);
+
+				chunks.Add(chunkBytes);
 			},
 			GCHandle.ToIntPtr(handle),
 			ref exception
@@ -709,16 +713,27 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 				chunks.EnsureCapacity((int)size);
 			},
-			(string name, string? fileName, string? contentType, byte[] data, nuint index, IntPtr buffer) =>
+			(IntPtr name, IntPtr fileName, IntPtr contentType, IntPtr data, nuint dataSize, nuint index, IntPtr buffer) =>
 			{
 				List<Multipart> chunks = (List<Multipart>)GCHandle.FromIntPtr(buffer).Target!;
+
 				Multipart multipart = new()
 				{
-					Name = name,
-					FileName = fileName,
-					ContentType = contentType,
-					Data = data,
+					Name = Marshal.PtrToStringUTF8(name)!,
+					Data = new byte[(int)dataSize],
 				};
+
+				if (fileName != IntPtr.Zero)
+				{
+					multipart.FileName = Marshal.PtrToStringUTF8(fileName);
+				}
+
+				if (contentType != IntPtr.Zero)
+				{
+					multipart.ContentType = Marshal.PtrToStringUTF8(contentType);
+				}
+
+				Marshal.Copy(data, multipart.Data, 0, multipart.Data.Length);
 
 				chunks.Add(multipart);
 			},

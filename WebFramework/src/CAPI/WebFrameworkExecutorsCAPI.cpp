@@ -622,7 +622,7 @@ const void* getLargeData(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t size, void* buffer), void(addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer, Exception* exception)
+void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t size, void* buffer), void(addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
