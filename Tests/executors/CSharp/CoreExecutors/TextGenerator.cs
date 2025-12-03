@@ -9,12 +9,14 @@ namespace CoreExecutors
 		private int offset = 0;
 		private string lastResult = "";
 
-		public override ReadOnlySpan<char> Generate()
+		public override ReadOnlySpan<char> Generate(ref bool finished)
 		{
 			const int smallStringSize = 15;
 
 			if (offset >= data.Length)
 			{
+				finished = true;
+
 				return new();
 			}
 
