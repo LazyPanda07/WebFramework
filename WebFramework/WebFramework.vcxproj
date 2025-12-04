@@ -149,6 +149,7 @@
     <ClCompile Include="src\Framework\Config.cpp" />
     <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\CSharpHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\PythonHeuristic.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="src\Executors\PythonExecutor.h" />
     <ClInclude Include="src\Framework\Config.h" />
     <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
+    <ClInclude Include="src\LoadBalancer\Heuristics\CSharpHeuristic.h" />
     <ClInclude Include="src\LoadBalancer\Heuristics\PythonHeuristic.h" />
     <ClInclude Include="src\Managers\RuntimesManager.h" />
     <ClInclude Include="src\Rendering\MDRenderer.h" />

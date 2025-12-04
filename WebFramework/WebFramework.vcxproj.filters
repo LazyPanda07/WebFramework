@@ -189,6 +189,9 @@
     <ClCompile Include="src\Exceptions\CSharpException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\LoadBalancer\Heuristics\CSharpHeuristic.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Framework\WebFramework.h">
@@ -375,6 +378,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\CSharpException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadBalancer\Heuristics\CSharpHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

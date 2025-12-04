@@ -16,6 +16,10 @@
 #include "Heuristics/PythonHeuristic.h"
 #endif
 
+#ifdef __WITH_DOT_NET_EXECUTORS__
+#include "Heuristics/CSharpHeuristic.h"
+#endif
+
 namespace framework::load_balancer
 {
 	LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
@@ -308,6 +312,9 @@ namespace framework::load_balancer
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<PythonHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
 #endif
+#ifdef __WITH_DOT_NET_EXECUTORS__
+			{ json_settings::csharpExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CSharpHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); }}
+#endif
 		};
 
 		if (auto it = apiHeuristics.find(apiType); it != apiHeuristics.end())
@@ -432,7 +439,7 @@ namespace framework::load_balancer
 		{
 			apiType = "";
 		}
-
+		
 		this->allServers.reserve(allServers.size());
 
 		std::ranges::for_each(processingClients, [](std::atomic_int64_t& value) { value = 0; });

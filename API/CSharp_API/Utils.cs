@@ -295,6 +295,33 @@ public static class Utils
 		return GCHandle.ToIntPtr(handle);
 	}
 
+	[UnmanagedCallersOnly(EntryPoint = "CreateHeuristic")]
+	public static IntPtr CreateHeuristic(IntPtr fullName, IntPtr ip, IntPtr port, int userHTTPS)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(fullName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return IntPtr.Zero;
+		}
+
+		Type? type = Type.GetType(typeName, throwOnError: false);
+
+		if (type == null)
+		{
+			return IntPtr.Zero;
+		}
+
+		NewExpression expression = Expression.New(type);
+		Func<string, string, bool, object> constructor = Expression.Lambda<Func<string, string, bool, object>>(expression).Compile();
+
+		object instance = constructor(Marshal.PtrToStringUTF8(ip)!, Marshal.PtrToStringUTF8(port)!, Convert.ToBoolean(userHTTPS));
+
+		GCHandle handle = GCHandle.Alloc(instance);
+
+		return GCHandle.ToIntPtr(handle);
+	}
+
 	[UnmanagedCallersOnly(EntryPoint = "Init")]
 	public static void Init(IntPtr executor, IntPtr settings)
 	{
@@ -385,7 +412,7 @@ public static class Utils
 		unsafe
 		{
 			IntPtr* stringArguments = (IntPtr*)arguments;
-			
+
 			for (int i = 0; i < (int)size; i++)
 			{
 				string? argument = Marshal.PtrToStringUTF8(stringArguments[i]) ?? throw new ArgumentNullException($"Can't convert argument to string at {i}");
@@ -401,5 +428,44 @@ public static class Utils
 		Marshal.Copy(resultBytes, 0, result, resultBytes.Length);
 
 		return result;
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CallHeuristicOnStart")]
+	public static void CallHeuristicOnStart(IntPtr heuristic)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(heuristic);
+
+		if (handle.Target is not LoadBalancerHeuristic loadBalancerHeuristic)
+		{
+			return;
+		}
+
+		loadBalancerHeuristic.OnStart();
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CallHeuristicOnEnd")]
+	public static void CallHeuristicOnEnd(IntPtr heuristic)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(heuristic);
+
+		if (handle.Target is not LoadBalancerHeuristic loadBalancerHeuristic)
+		{
+			return;
+		}
+
+		loadBalancerHeuristic.OnEnd();
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CallHeuristicInvoke")]
+	public static nint CallHeuristicInvoke(IntPtr heuristic)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(heuristic);
+
+		if (handle.Target is not LoadBalancerHeuristic loadBalancerHeuristic)
+		{
+			return 0;
+		}
+
+		return (nint)loadBalancerHeuristic.Invoke();
 	}
 }

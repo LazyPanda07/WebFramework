@@ -70,9 +70,7 @@ namespace framework
 			return;
 		}
 
-		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
-
-		runtime.free(dynamicFunction);
+		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().free(dynamicFunction);
 	}
 }
 

@@ -72,6 +72,7 @@ namespace framework::runtime
 		this->loadMethod(typeName, "Init", init);
 		this->loadMethod(typeName, "CreateExecutor", createExecutor);
 		this->loadMethod(typeName, "CreateDynamicFunction", createDynamicFunction);
+		this->loadMethod(typeName, "CreateHeuristic", createHeuristic);
 		this->loadMethod(typeName, "CreateHttpRequest", createHttpRequest);
 		this->loadMethod(typeName, "CreateHttpResponse", createHttpResponse);
 		this->loadMethod(typeName, "CreateExecutorSettings", createExecutorSettingsFunction);
@@ -89,6 +90,9 @@ namespace framework::runtime
 		this->loadMethod(typeName, "CallDoConnect", doConnect);
 
 		this->loadMethod(typeName, "CallInvoke", callDynamicFunction);
+		this->loadMethod(typeName, "CallHeuristicOnStart", onStartHeuristic);
+		this->loadMethod(typeName, "CallHeuristicOnEnd", onEndHeuristic);
+		this->loadMethod(typeName, "CallHeuristicInvoke", callHeuristic);
 	}
 
 	template<FunctionPointer T>
@@ -123,7 +127,11 @@ namespace framework::runtime
 		doConnect(nullptr),
 		destroy(nullptr),
 		createDynamicFunction(nullptr),
-		callDynamicFunction(nullptr)
+		createHeuristic(nullptr),
+		callDynamicFunction(nullptr),
+		onStartHeuristic(nullptr),
+		onEndHeuristic(nullptr),
+		callHeuristic(nullptr)
 	{
 		constexpr size_t envSize = 512;
 
