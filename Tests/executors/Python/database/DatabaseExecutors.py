@@ -1,5 +1,6 @@
 import random
 import time
+import uuid
 
 from web_framework_api import *
 
@@ -83,7 +84,7 @@ class CRUDExecutor(StatelessExecutor):
 class MultiUserExecutor(HeavyOperationStatefulExecutor):
     def __init__(self):
         super().__init__()
-        self._user_id = generate_uuid()
+        self._user_id = str(uuid.uuid4())
 
     def do_get(self, request, response):
         table = request.get_table("test_database", "multi_user")
