@@ -373,7 +373,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	py::class_<framework::utility::IPyChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
 		.def(py::init())
-		.def("generate", [](framework::utility::PyChunkGenerator& self) -> framework::utility::ChunkGeneratorReturnType { return self.generate(); });
+		.def("generate", &framework::utility::IPyChunkGenerator::generate);
 
 	py::class_<framework::LoadBalancerHeuristic, framework::PyLoadBalancerHeuristic>(m, "LoadBalancerHeuristic")
 		.def(py::init<std::string_view, std::string_view, bool>(), "ip"_a, "port"_a, "use_https"_a)
