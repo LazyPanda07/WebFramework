@@ -361,8 +361,7 @@ jobs:
 
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
       working-directory: Tests
-      run: |
-        .\${{ matrix.api_test }} ${{ matrix.config }}
+      run: .\${{ matrix.api_test }} ${{ matrix.config }}
           
 
   linux-aarch64-cxx-tests:

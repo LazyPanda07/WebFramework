@@ -2,7 +2,7 @@
 
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
-set PATH=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }};%PATH%
+set PATH=C:\Program Files\dotnet\host\fxr\8.0.22\;%PATH%
 
 start python server.py %WEB_FRAMEWORK_SERVER_CONFIG%
 start python proxy_server.py --config proxy_config.json --port 15000

@@ -12,12 +12,11 @@ class TextGenerator(ChunkGenerator):
 
     def generate(self):
         if self._offset > len(self._data):
-            return "", 0
+            return ""
 
         self._last_result = self._data[
             self._offset:self._offset + min(self._STRING_SIZE, len(self._data) - self._offset)]
 
-        size = len(self._last_result)
-        self._offset += size
+        self._offset += len(self._last_result)
 
-        return self._last_result, size
+        return self._last_result

@@ -7,8 +7,6 @@ using System.Runtime.InteropServices;
 
 public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, SqlValue>>
 {
-	private readonly IntPtr implementation;
-	// private readonly IntPtr tableImplementation;
 	private readonly List<Dictionary<string, SqlValue>> rows = [];
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -18,19 +16,10 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	private delegate void IterateCallback(IntPtr columnNames, IntPtr columnValues, nuint size, nuint index, IntPtr buffer);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref void* exception);
-
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial nuint getSQLResultSize(IntPtr implementation, ref void* exception);
-
-	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void iterateSQLResult(IntPtr implementation, InitBufferCallback initBuffer, IterateCallback iterate, IntPtr buffer, ref void* exception);
 
-	public SqlResult(IntPtr implementation, IntPtr tableImplementation)
+	public SqlResult(IntPtr implementation)
 	{
-		this.implementation = implementation;
-		// this.tableImplementation = tableImplementation;
-
 		void* exception = null;
 		GCHandle handle = GCHandle.Alloc(rows);
 
@@ -50,12 +39,12 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 				GCHandle handle = GCHandle.FromIntPtr(buffer);
 				List<Dictionary<string, SqlValue>> rows = (List<Dictionary<string, SqlValue>>)handle.Target!;
 				Dictionary<string, SqlValue> row = [];
-				
+
 				for (int i = 0; i < count; i++)
 				{
 					IntPtr keyPtr = Marshal.ReadIntPtr(columnNames, i * IntPtr.Size);
 					IntPtr valuePtr = Marshal.ReadIntPtr(columnValues, i * IntPtr.Size);
-					
+
 					row[Marshal.PtrToStringUTF8(keyPtr)!] = new(valuePtr);
 				}
 
@@ -78,15 +67,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 
 	public int Size()
 	{
-		void* exception = null;
-		int result = (int)getSQLResultSize(implementation, ref exception);
-
-		if (exception != null)
-		{
-			throw new WebFrameworkException(exception);
-		}
-
-		return result;
+		return rows.Count;
 	}
 
 	public Dictionary<string, SqlValue> this[int index]
@@ -103,21 +84,4 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	}
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-	~SqlResult()
-	{
-		/*
-		if (implementation != IntPtr.Zero)
-		{
-			void* exception = null;
-
-			deleteSQLResult(tableImplementation, implementation, ref exception);
-
-			if (exception != null)
-			{
-				throw new WebFrameworkException(exception);
-			}
-		}
-		*/
-	}
 }

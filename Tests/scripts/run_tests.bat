@@ -2,7 +2,7 @@
 
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
-set PATH=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }};%PATH%
+set PATH=C:\Program Files\dotnet\host\fxr\8.0.22\;%PATH%
 
 start Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 start DefaultHTTPSServer.exe

@@ -1,12 +1,14 @@
 #pragma once
 
-#include <tuple>
+#include <variant>
 
 #include <Utility/ChunkGenerator.hpp>
 
+#include <pybind11/pybind11.h>
+
 namespace framework::utility
 {
-	using ChunkGeneratorReturnType = std::tuple<std::string, size_t>;
+	using ChunkGeneratorReturnType = std::variant<std::string, pybind11::bytes>;
 
 	class IPyChunkGenerator
 	{

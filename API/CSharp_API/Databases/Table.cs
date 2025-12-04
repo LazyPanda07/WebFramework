@@ -14,6 +14,9 @@ public sealed unsafe partial class Table(IntPtr implementation)
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial IntPtr getTableName(IntPtr implementation, ref void* exception);
 
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref void* exception);
+
 	public SqlResult ExecuteQuery(string query, IList<SqlValue>? values = null)
 	{
 		void* exception = null;
@@ -40,7 +43,16 @@ public sealed unsafe partial class Table(IntPtr implementation)
 			throw new WebFrameworkException(exception);
 		}
 
-		return new(result, implementation);
+		SqlResult sqlResult = new(result);
+
+		deleteSQLResult(implementation, result, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return sqlResult;
 	}
 
 	public string GetTableName()
