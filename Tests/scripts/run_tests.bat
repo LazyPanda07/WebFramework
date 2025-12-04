@@ -2,6 +2,8 @@
 
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
+set PATH=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }};%PATH%
+
 start Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 start DefaultHTTPSServer.exe
 start ProxyServer.exe --config proxy_config.json --port 15000

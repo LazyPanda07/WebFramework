@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, SqlValue>>
 {
 	private readonly IntPtr implementation;
-	private readonly IntPtr tableImplementation;
+	// private readonly IntPtr tableImplementation;
 	private readonly List<Dictionary<string, SqlValue>> rows = [];
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -29,7 +29,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	public SqlResult(IntPtr implementation, IntPtr tableImplementation)
 	{
 		this.implementation = implementation;
-		this.tableImplementation = tableImplementation;
+		// this.tableImplementation = tableImplementation;
 
 		void* exception = null;
 		GCHandle handle = GCHandle.Alloc(rows);
@@ -106,6 +106,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 
 	~SqlResult()
 	{
+		/*
 		if (implementation != IntPtr.Zero)
 		{
 			void* exception = null;
@@ -117,5 +118,6 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 				throw new WebFrameworkException(exception);
 			}
 		}
+		*/
 	}
 }

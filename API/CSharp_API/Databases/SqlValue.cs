@@ -3,7 +3,6 @@
 using Framework.Utility;
 using System;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
 public sealed unsafe partial class SqlValue
 {

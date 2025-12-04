@@ -24,7 +24,7 @@ namespace framework::utility
 	{
 		const auto& [key, value] = generator.generate();
 
-		size = value;
+		size = key.size() == value ? value : key.size();
 
 		return key;
 	}

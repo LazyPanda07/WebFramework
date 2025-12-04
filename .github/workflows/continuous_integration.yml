@@ -359,10 +359,6 @@ jobs:
           cp -r Executors/* Tests
           cp -r WebFrameworkLibrary/lib/* Tests
 
-    - name: Append PATH
-      shell: cmd
-      run: set PATH=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }};%PATH%
-
     - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
       working-directory: Tests
       run: |
