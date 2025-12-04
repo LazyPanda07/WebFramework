@@ -41,7 +41,8 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	private delegate IntPtr ChunkGeneratorCallback
 	(
-		IntPtr data
+		IntPtr data,
+		IntPtr size
 	);
 
 	internal struct DynamicPagesVariable
@@ -185,6 +186,9 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial IntPtr getTableHTTPRequest(IntPtr implementation, string databaseName, string tableName, ref void* exception);
 
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void sendChunks(IntPtr implementation, IntPtr response, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
+
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
 
@@ -208,6 +212,37 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		Marshal.Copy(data, dataBytes, 0, dataBytes.Length);
 
 		result.AddRange(dataBytes);
+	}
+
+	private static IntPtr GenerateChunkCallback(IntPtr data, IntPtr size)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(data);
+		ChunkGenerator generator = (ChunkGenerator)handle.Target!;
+		bool finished = false;
+		ReadOnlySpan<byte> chunk = generator.Generate(ref finished);
+
+		if (finished)
+		{
+			return IntPtr.Zero;
+		}
+
+		if (generator.currentBuffer != IntPtr.Zero)
+		{
+			Marshal.FreeHGlobal(generator.currentBuffer);
+		}
+
+		generator.currentBuffer = Marshal.AllocHGlobal(chunk.Length);
+
+		fixed (byte* source = chunk)
+		{
+			byte* destination = (byte*)generator.currentBuffer;
+
+			Buffer.MemoryCopy(source, destination, chunk.Length, chunk.Length);
+
+			Marshal.WriteInt64(size, chunk.Length);
+		}
+
+		return generator.currentBuffer;
 	}
 
 	private static string ToCString(string source)
@@ -979,7 +1014,17 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	public void SendChunks(HttpResponse response, ChunkGenerator generator)
 	{
-		SendFileChunks(response, generator, "");
+		void* exception = null;
+		GCHandle handle = GCHandle.Alloc(generator);
+
+		sendChunks(implementation, response.implementation, GenerateChunkCallback, GCHandle.ToIntPtr(handle), ref exception);
+
+		handle.Free();
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
 	}
 
 	public void SendFileChunks(HttpResponse response, ChunkGenerator generator, string fileName)
@@ -992,31 +1037,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			implementation,
 			response.implementation,
 			fileName,
-			(IntPtr data) =>
-			{
-				GCHandle handle = GCHandle.FromIntPtr(data);
-				ChunkGenerator generator = (ChunkGenerator)handle.Target!;
-				bool finished = false;
-				ReadOnlySpan<char> chunk = generator.Generate(ref finished);
-
-				if (finished)
-				{
-					return IntPtr.Zero;
-				}
-
-				byte[] byteChunk = Encoding.UTF8.GetBytes(chunk.ToArray(), 0, chunk.Length);
-
-				if (generator.currentBuffer != IntPtr.Zero)
-				{
-					Marshal.FreeHGlobal(generator.currentBuffer);
-				}
-
-				generator.currentBuffer = Marshal.AllocHGlobal(byteChunk.Length);
-
-				Marshal.Copy(byteChunk, 0, generator.currentBuffer, byteChunk.Length);
-
-				return generator.currentBuffer;
-			},
+			GenerateChunkCallback,
 			GCHandle.ToIntPtr(handle),
 			ref exception
 		);

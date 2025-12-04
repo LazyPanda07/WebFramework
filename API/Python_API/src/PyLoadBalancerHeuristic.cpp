@@ -16,7 +16,7 @@ namespace framework
 		(
 			uint64_t,
 			LoadBalancerHeuristic,
-			operator()
+			operator ()
 		);
 	}
 

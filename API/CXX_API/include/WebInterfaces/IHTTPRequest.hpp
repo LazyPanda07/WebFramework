@@ -134,7 +134,7 @@ namespace framework::interfaces
 
 		virtual bool isWFDPFunctionRegistered(const char* functionName) = 0;
 
-		virtual void sendFileChunks(IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*addChunk)(void* chunkGenerator)) = 0;
+		virtual void sendFileChunks(IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*addChunk)(void* chunkGenerator, size_t* chunkSize)) = 0;
 
 		virtual void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash) = 0;
 

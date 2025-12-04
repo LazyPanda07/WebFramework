@@ -412,14 +412,21 @@ namespace framework
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}
 
-	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator))
+	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size))
 	{
-		web::HttpBuilder builder = web::HttpBuilder().chunk(getChunk(chunkGenerator)).partialChunks().responseCode(web::ResponseCodes::ok).headers
-		(
-			"Date", HTTPResponseImplementation::getFullDate(),
-			"Server", "WebFramework-Server",
-			"Connection", "keep-alive"
-		);
+		web::HttpBuilder builder;
+		
+		{
+			size_t chunkSize = 0;
+			const char* chunk = getChunk(chunkGenerator, &chunkSize);
+
+			builder = web::HttpBuilder().chunk(std::string_view(chunk, chunkSize)).partialChunks().responseCode(web::ResponseCodes::ok).headers
+			(
+				"Date", HTTPResponseImplementation::getFullDate(),
+				"Server", "WebFramework-Server",
+				"Connection", "keep-alive"
+			);
+		}
 
 		if (fileName)
 		{
@@ -435,11 +442,12 @@ namespace framework
 
 		while (true)
 		{
-			const char* data = getChunk(chunkGenerator);
+			size_t chunkSize = 0;
+			const char* chunk = getChunk(chunkGenerator, &chunkSize);
 
-			if (data)
+			if (chunkSize)
 			{
-				stream << web::HttpBuilder::getChunk(data);
+				stream << web::HttpBuilder::getChunk(std::string_view(chunk, chunkSize));
 			}
 			else
 			{
@@ -448,7 +456,7 @@ namespace framework
 				break;
 			}
 
-			if (stream.eof() || std::string_view(data).empty())
+			if (stream.eof() || !chunkSize)
 			{
 				break;
 			}

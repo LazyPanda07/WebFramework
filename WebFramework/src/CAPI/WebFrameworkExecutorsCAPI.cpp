@@ -860,7 +860,7 @@ TableObject getTableHTTPRequest(HTTPRequestObject request, const char* databaseN
 	return nullptr;
 }
 
-void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const char* (*chunkGenerator)(void* data), void* data, Exception* exception)
+void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception)
 {
 	try
 	{
@@ -876,7 +876,7 @@ void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const ch
 	}
 }
 
-void sendFileChunks(HTTPRequestObject request, HTTPResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data, Exception* exception)
+void sendFileChunks(HTTPRequestObject request, HTTPResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception)
 {
 	try
 	{

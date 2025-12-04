@@ -104,9 +104,9 @@ EXPORT TableObject getOrCreateTableHTTPRequest(HTTPRequestObject request, const 
 
 EXPORT TableObject getTableHTTPRequest(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception);
 
-EXPORT void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const char* (*chunkGenerator)(void* data), void* data, Exception* exception);
+EXPORT void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception);
 
-EXPORT void sendFileChunks(HTTPRequestObject request, HTTPResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data, Exception* exception);
+EXPORT void sendFileChunks(HTTPRequestObject request, HTTPResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception);
 
 EXPORT void throwWebFrameworkException(HTTPRequestObject request, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, Exception* exception);
 

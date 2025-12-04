@@ -389,12 +389,12 @@ namespace framework
 	{
 		T generator(std::forward<Args>(args)...);
 
-		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator) -> const char* { return static_cast<T*>(chunkGenerator)->generate().data(); });
+		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator, size_t* size) -> const char* { return static_cast<T*>(chunkGenerator)->generate(*size).data(); });
 	}
 
 	inline void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, utility::ChunkGenerator& generator)
 	{
-		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator) -> const char* { return static_cast<utility::ChunkGenerator*>(chunkGenerator)->generate().data(); });
+		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator, size_t* size) -> const char* { return static_cast<utility::ChunkGenerator*>(chunkGenerator)->generate(*size).data(); });
 	}
 
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T, typename... Args>

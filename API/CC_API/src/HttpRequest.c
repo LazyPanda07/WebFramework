@@ -689,22 +689,22 @@ WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const 
 	return exception;
 }
 
-WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data), void* data)
+WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*sendChunks)(void* implementation, void* response, const char* (*chunkGenerator)(void* data), void* data, void** exception);
+	typedef void (*sendChunks)(void* implementation, void* response, const char* (*chunkGenerator)(void* data, size_t* size), void* data, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendChunks, response, chunkGenerator, data, &exception);
 
 	return exception;
 }
 
-WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data)
+WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*sendFileChunks)(void* implementation, void* response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data, void** exception);
+	typedef void (*sendFileChunks)(void* implementation, void* response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendFileChunks, response, fileName, chunkGenerator, data, &exception);
 

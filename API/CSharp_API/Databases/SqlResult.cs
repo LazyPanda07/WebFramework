@@ -29,7 +29,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	public SqlResult(IntPtr implementation, IntPtr tableImplementation)
 	{
 		this.implementation = implementation;
-		// this.tableImplementation = tableImplementation;
+		this.tableImplementation = tableImplementation;
 
 		void* exception = null;
 		GCHandle handle = GCHandle.Alloc(rows);
@@ -108,7 +108,6 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	{
 		if (implementation != IntPtr.Zero)
 		{
-			/*
 			void* exception = null;
 
 			deleteSQLResult(tableImplementation, implementation, ref exception);
@@ -117,7 +116,6 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 			{
 				throw new WebFrameworkException(exception);
 			}
-			*/
 		}
 	}
 }

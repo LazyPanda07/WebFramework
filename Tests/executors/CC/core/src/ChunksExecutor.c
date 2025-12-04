@@ -11,7 +11,7 @@ typedef struct
 	size_t offset;
 } TextGenerator;
 
-static const char* generate(void* data);
+static const char* generate(void* data, size_t* size);
 
 DEFINE_DEFAULT_EXECUTOR(ChunksExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
@@ -39,7 +39,7 @@ DEFINE_EXECUTOR_METHOD(ChunksExecutor, POST_METHOD, request, response)
 	sendFileChunks(request, response, "file.txt", generate, &generator);
 }
 
-const char* generate(void* data)
+const char* generate(void* data, size_t* size)
 {
 	TextGenerator* generator = (TextGenerator*)data;
 
@@ -47,6 +47,8 @@ const char* generate(void* data)
 
 	if (generator->offset >= strlen(generator->data))
 	{
+		*size = 0;
+
 		return NULL;
 	}
 
@@ -69,6 +71,8 @@ const char* generate(void* data)
 	memcpy(generator->currentChunk, generator->data + generator->offset, copySize);
 
 	generator->offset += copySize;
+
+	*size = copySize;
 
 	return generator->currentChunk;
 }

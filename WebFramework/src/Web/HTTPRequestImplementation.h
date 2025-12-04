@@ -223,7 +223,7 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isWFDPFunctionRegistered(const char* functionName) override;
 
-		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator)) override;
+		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size)) override;
 
 		void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash) override;
 

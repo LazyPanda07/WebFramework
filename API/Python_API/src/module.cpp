@@ -56,7 +56,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		"path_to_dll"_a = ""
 	);
 	m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
-	m.def("generate_uuid", &framework::utility::uuid::generateUUID);
 
 	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
 
@@ -372,9 +371,9 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("set_response_code", &framework::HTTPResponse::setResponseCode, "response_code"_a)
 		.def("__bool__", [](const framework::HTTPResponse& self) { return static_cast<bool>(self); });
 
-	py::class_<framework::utility::ChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
+	py::class_<framework::utility::IPyChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
 		.def(py::init())
-		.def("generate", &framework::utility::ChunkGenerator::generate);
+		.def("generate", [](framework::utility::PyChunkGenerator& self) -> framework::utility::ChunkGeneratorReturnType { return self.generate(); });
 
 	py::class_<framework::LoadBalancerHeuristic, framework::PyLoadBalancerHeuristic>(m, "LoadBalancerHeuristic")
 		.def(py::init<std::string_view, std::string_view, bool>(), "ip"_a, "port"_a, "use_https"_a)
@@ -465,11 +464,26 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			[](framework::HTTPRequest& self, std::string_view errorMessage, framework::ResponseCodes responseCode, std::string_view logCategory = "") { self.throwException(errorMessage, responseCode, logCategory); },
 			"error_message"_a, "response_code"_a, "log_category"_a = ""
 		)
-		.def("send_chunks", [](framework::HTTPRequest& self, framework::HTTPResponse& response, framework::utility::PyChunkGenerator& generator) { self.sendChunks(response, generator); }, "response"_a, "generator"_a)
+		.def
+		(
+			"send_chunks", 
+			[](framework::HTTPRequest& self, framework::HTTPResponse& response, framework::utility::PyChunkGenerator& generator)
+			{
+				framework::utility::ChunkGeneratorWrapper wrapper(generator); 
+				
+				self.sendChunks(response, wrapper);
+			}, 
+			"response"_a, "generator"_a
+		)
 		.def
 		(
 			"send_file_chunks",
-			[](framework::HTTPRequest& self, framework::HTTPResponse& response, std::string_view fileName, framework::utility::PyChunkGenerator& generator) { self.sendFileChunks(response, fileName, generator); },
+			[](framework::HTTPRequest& self, framework::HTTPResponse& response, std::string_view fileName, framework::utility::PyChunkGenerator& generator)
+			{
+				framework::utility::ChunkGeneratorWrapper wrapper(generator);
+
+				self.sendFileChunks(response, fileName, wrapper);
+			},
 			"response"_a, "file_name"_a, "generator"_a
 		)
 		.def("get_method", &framework::HTTPRequest::getMethod);

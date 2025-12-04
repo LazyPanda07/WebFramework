@@ -8,6 +8,7 @@ namespace framework
 		(
 			std::string,
 			IDynamicFunction,
+			operator ()
 			args
 		);
 	}

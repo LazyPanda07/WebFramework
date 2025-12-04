@@ -437,7 +437,7 @@ WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const 
  * @param data Custom data
  * @return Error if occurred
  */
-WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data), void* data);
+WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data, size_t* size), void* data);
 
 /**
  * @brief Send file as chunks
@@ -448,7 +448,7 @@ WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse respon
  * @param data Custom data
  * @return Error if occurred
  */
-WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data), void* data);
+WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data);
 
 /**
  * @brief Return from function with message and HTTP response code. Used for throwing errors

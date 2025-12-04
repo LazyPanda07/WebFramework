@@ -9,7 +9,7 @@ namespace framework::utility
 	public:
 		ChunkGenerator() = default;
 
-		virtual std::string_view generate() = 0;
+		virtual std::string_view generate(size_t& size) = 0;
 
 		virtual ~ChunkGenerator() = default;
 	};

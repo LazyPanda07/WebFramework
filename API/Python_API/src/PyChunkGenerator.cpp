@@ -4,13 +4,28 @@
 
 namespace framework::utility
 {
-	std::string_view PyChunkGenerator::generate()
+	ChunkGeneratorReturnType PyChunkGenerator::generate()
 	{
 		PYBIND11_OVERRIDE_PURE
 		(
-			std::string_view,
-			ChunkGenerator,
+			ChunkGeneratorReturnType,
+			IPyChunkGenerator,
 			generate
 		);
+	}
+
+	ChunkGeneratorWrapper::ChunkGeneratorWrapper(IPyChunkGenerator& generator) :
+		generator(generator)
+	{
+
+	}
+
+	std::string_view ChunkGeneratorWrapper::generate(size_t& size)
+	{
+		const auto& [key, value] = generator.generate();
+
+		size = value;
+
+		return key;
 	}
 }
