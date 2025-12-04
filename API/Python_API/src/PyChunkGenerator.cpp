@@ -6,22 +6,15 @@
 
 #include <pybind11/pybind11.h>
 
-template<typename... Ts>
-struct VisitHelper : Ts...
-{
-	using Ts::operator()...;
-};
-
-template<typename... Ts>
-VisitHelper(Ts...) -> VisitHelper<Ts...>;
+namespace py = pybind11;
 
 namespace framework::utility
 {
-	ChunkGeneratorReturnType PyChunkGenerator::generate()
+	pybind11::object PyChunkGenerator::generate()
 	{
 		PYBIND11_OVERRIDE_PURE
 		(
-			ChunkGeneratorReturnType,
+			pybind11::object,
 			IPyChunkGenerator,
 			generate
 		);
@@ -35,32 +28,20 @@ namespace framework::utility
 
 	std::string_view ChunkGeneratorWrapper::generate(size_t& size)
 	{
-		ChunkGeneratorReturnType temp = generator.generate();
+		pybind11::object temp = generator.generate();
 
-		std::visit
-		(
-			VisitHelper
-			(
-				[this](const std::string& value)
-				{
-					data = value;
-				},
-				[this](const std::vector<uint8_t>& value)
-				{
-					for (size_t i = 0; i < value.size(); i++)
-					{
-						data[i] = value[i];
-					}
-				},
-				[](auto&& value) -> size_t
-				{
-					throw std::runtime_error(std::format("Wrong type in ChunkGeneratorWrapper: {}", typeid(value).name()));
-
-					return 0;
-				}
-			),
-			temp
-		);
+		if (py::isinstance<py::str>(temp))
+		{
+			data = temp.cast<py::str>();
+		}
+		else if (py::isinstance<py::bytes>(temp))
+		{
+			data = temp.cast<py::bytes>();
+		}
+		else
+		{
+			throw std::runtime_error(std::format("Wrong type in ChunkGeneratorWrapper: {}", static_cast<std::string>(py::repr(temp.get_type()))));
+		}
 
 		size = data.size();
 

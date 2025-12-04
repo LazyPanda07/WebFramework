@@ -373,7 +373,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	py::class_<framework::utility::IPyChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
 		.def(py::init())
-		.def("generate", &framework::utility::IPyChunkGenerator::generate);
+		.def("generate", &framework::utility::IPyChunkGenerator::generate, py::doc("generate() -> str | bytes"));
 
 	py::class_<framework::LoadBalancerHeuristic, framework::PyLoadBalancerHeuristic>(m, "LoadBalancerHeuristic")
 		.def(py::init<std::string_view, std::string_view, bool>(), "ip"_a, "port"_a, "use_https"_a)
@@ -382,7 +382,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_use_https", &framework::LoadBalancerHeuristic::getUseHTTPS)
 		.def("on_start", &framework::LoadBalancerHeuristic::onStart)
 		.def("on_end", &framework::LoadBalancerHeuristic::onEnd)
-		.def("__call__", &framework::LoadBalancerHeuristic::operator());
+		.def("__call__", &framework::LoadBalancerHeuristic::operator ());
 
 	py::class_<framework::HTTPRequest>(m, "HTTPRequest")
 		.def
@@ -466,13 +466,13 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		)
 		.def
 		(
-			"send_chunks", 
+			"send_chunks",
 			[](framework::HTTPRequest& self, framework::HTTPResponse& response, framework::utility::PyChunkGenerator& generator)
 			{
-				framework::utility::ChunkGeneratorWrapper wrapper(generator); 
-				
+				framework::utility::ChunkGeneratorWrapper wrapper(generator);
+
 				self.sendChunks(response, wrapper);
-			}, 
+			},
 			"response"_a, "generator"_a
 		)
 		.def

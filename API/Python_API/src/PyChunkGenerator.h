@@ -15,7 +15,7 @@ namespace framework::utility
 	public:
 		IPyChunkGenerator() = default;
 
-		virtual ChunkGeneratorReturnType generate() = 0;
+		virtual pybind11::object generate() = 0;
 
 		virtual ~IPyChunkGenerator() = default;
 	};
@@ -25,7 +25,7 @@ namespace framework::utility
 	public:
 		PyChunkGenerator() = default;
 
-		ChunkGeneratorReturnType generate() override;
+		pybind11::object generate() override;
 
 		~PyChunkGenerator() = default;
 	};
