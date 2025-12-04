@@ -1,3 +1,5 @@
+#define PYBIND11_DETAILED_ERROR_MESSAGES
+
 #include "PyChunkGenerator.h"
 
 #include <format>
@@ -34,23 +36,18 @@ namespace framework::utility
 	std::string_view ChunkGeneratorWrapper::generate(size_t& size)
 	{
 		ChunkGeneratorReturnType temp = generator.generate();
-		std::string_view result;
 
-		size = std::visit
+		std::visit
 		(
 			VisitHelper
 			(
-				[&result](const std::string& value) -> size_t
+				[this](pybind11::str value)
 				{
-					result = value;
-
-					return value.size();
+					data = value;
 				},
-				[&result](pybind11::bytes value) -> size_t
+				[this](pybind11::bytes value)
 				{
-					result = value;
-
-					return pybind11::len(value);
+					data = value;
 				},
 				[](auto&& value) -> size_t
 				{
@@ -62,6 +59,8 @@ namespace framework::utility
 			temp
 		);
 
-		return result;
+		size = data.size();
+
+		return data;
 	}
 }

@@ -8,7 +8,7 @@
 
 namespace framework::utility
 {
-	using ChunkGeneratorReturnType = std::variant<std::string, pybind11::bytes>;
+	using ChunkGeneratorReturnType = std::variant<pybind11::str, pybind11::bytes>;
 
 	class IPyChunkGenerator
 	{
@@ -34,6 +34,7 @@ namespace framework::utility
 	{
 	private:
 		IPyChunkGenerator& generator;
+		std::string data;
 
 	public:
 		ChunkGeneratorWrapper(IPyChunkGenerator& generator);

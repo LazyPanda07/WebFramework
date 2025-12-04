@@ -1,3 +1,5 @@
+#define PYBIND11_DETAILED_ERROR_MESSAGES
+
 #include "PyDynamicFunction.h"
 
 namespace framework
