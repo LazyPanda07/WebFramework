@@ -364,7 +364,7 @@ jobs:
       shell: cmd
       run: |
         set PATH=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }}
-        .\${{ matrix.api_test }} ${{ matrix.config }}
+        call ${{ matrix.api_test }} ${{ matrix.config }}
           
 
   linux-aarch64-cxx-tests:
