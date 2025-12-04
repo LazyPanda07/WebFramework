@@ -149,7 +149,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        executors: [CXX, CC, Python]
+        executors: [CXX, CC, Python, CSharp]
 
     steps:
     - uses: actions/checkout@v4
@@ -186,7 +186,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        executors: [CXX, CC, Python]
+        executors: [CXX, CC, Python, CSharp]
 
     steps:
     - uses: actions/checkout@v4
@@ -283,7 +283,7 @@ jobs:
         configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
-        executors: [CXX, CC, Python]
+        executors: [CXX, CC, Python, CSharp]
 
     steps:
     - name: Download WebFramework
@@ -324,7 +324,7 @@ jobs:
         configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        executors: [CXX, CC, Python]
+        executors: [CXX, CC, Python, CSharp]
 
     steps:
     - name: Download WebFramework
@@ -440,96 +440,6 @@ jobs:
           source run_aarch64_cc_tests.sh ${{ matrix.config }}
           
 
-  windows-csharp-tests:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-  
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.PYTHON_VERSION }}"
-
-    - name: Build WebFramework
-      shell: bash
-      run: |
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Install Python API
-      run: pip install WebFrameworkLibrary/api/python_api/
-
-    - name: Build tests
-      working-directory: Tests
-      run: |
-        mkdir build
-        cd build
-        cmake -DBUILD_EXECUTORS=CSharp -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Run tests
-      working-directory: Tests/build/bin
-      shell: cmd
-      run: |
-        set PATH=${{ env.DOT_NET_RUNTIME_DIRECTORY_WINDOWS_RUNNER }};%PATH%
-        start DefaultHTTPSServer.exe
-        start Server.exe ${{ matrix.config }}
-        .\Core.exe ${{ matrix.config }}
-
-
-  linux-csharp-tests:
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-  
-    - name: Build WebFramework
-      run: |
-        mkdir build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Install Python API
-      run: pip install WebFrameworkLibrary/api/python_api/
-
-    - name: Build tests
-      working-directory: Tests
-      run: |
-        mkdir build
-        cd build
-        cmake -DBUILD_EXECUTORS=CSharp -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Run tests
-      working-directory: Tests/build/bin
-      run: |
-        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-        ./DefaultHTTPSServer & ./Server ${{ matrix.config }} & sleep 1
-        ./Core ${{ matrix.config }}
-        
   publish:
     needs: [
       android-build,
