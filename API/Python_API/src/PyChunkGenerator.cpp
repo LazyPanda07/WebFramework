@@ -41,13 +41,16 @@ namespace framework::utility
 		(
 			VisitHelper
 			(
-				[this](pybind11::str value)
+				[this](const std::string& value)
 				{
 					data = value;
 				},
-				[this](pybind11::bytes value)
+				[this](const std::vector<uint8_t>& value)
 				{
-					data = value;
+					for (size_t i = 0; i < value.size(); i++)
+					{
+						data[i] = value[i];
+					}
 				},
 				[](auto&& value) -> size_t
 				{
