@@ -32,7 +32,14 @@
     "cachingSize": 536870912,
     "webServerType": "loadBalancer",
     "runtimes": [
-      "python"
+      {
+        "name": "python",
+        "enabled": true
+      },
+      {
+        "name": ".net",
+        "enabled": true
+      }
     ],
     "HTTPS": {
       "useHTTPS": true,
