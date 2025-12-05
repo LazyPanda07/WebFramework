@@ -28,7 +28,15 @@ namespace framework::runtime
 {
 	std::filesystem::path DotNetRuntime::getPathToRuntimeConfig()
 	{
-		return std::filesystem::temp_directory_path() / "web_framework_runtimeconfig.json";
+		static int64_t processId =
+
+#ifdef __LINUX__
+		static_cast<int64_t>(getpid());
+#else
+		static_cast<int64_t>(GetCurrentProcessId());
+#endif
+		
+		return std::filesystem::temp_directory_path() / std::format("web_framework_{}_runtimeconfig.json", processId);
 	}
 
 	void DotNetRuntime::createRuntimeConfig()
