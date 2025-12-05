@@ -2,14 +2,14 @@
 
 void HelloExecutor::init(const framework::utility::ExecutorSettings& executorSettings)
 {
-	framework::JSONParser initParameters = executorSettings.getInitParameters();
+	framework::JsonParser initParameters = executorSettings.getInitParameters();
 
 	value = initParameters.get<int64_t>("number");
 }
 
 void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	framework::JSONBuilder builder;
+	framework::JsonBuilder builder;
 
 	builder["message"] = "Hello, World!";
 	builder["number"] = value;

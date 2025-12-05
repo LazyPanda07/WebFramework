@@ -67,7 +67,7 @@ namespace framework
 
 	private:
 		interfaces::IHTTPRequest* implementation;
-		JSONParser json;
+		JsonParser json;
 		HeadersMap headers;
 		std::unordered_map<std::string, std::string> queryParameters;
 		std::vector<Multipart> multiparts;
@@ -258,10 +258,10 @@ namespace framework
 		void setExceptionData(std::string_view errorMessage, ResponseCodes responseCode, std::string_view logCategory = "");
 
 		/// <summary>
-		/// Getter for JSONParser
+		/// Getter for JsonParser
 		/// </summary>
-		/// <returns>JSONParser</returns>
-		const JSONParser& getJSON() const;
+		/// <returns>JsonParser</returns>
+		const JsonParser& getJSON() const;
 
 		/**
 		 * @brief Get chunks
@@ -770,7 +770,7 @@ namespace framework
 		implementation->setExceptionData(errorMessage.data(), static_cast<int>(responseCode), logCategory.data());
 	}
 
-	inline const JSONParser& HTTPRequest::getJSON() const
+	inline const JsonParser& HTTPRequest::getJSON() const
 	{
 		return json;
 	}

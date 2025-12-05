@@ -1,7 +1,6 @@
 #include "AssetsExecutor.h"
 
 #include <format>
-#include <numeric>
 
 static const char* customFunction(const char** args, size_t agumentsNumber)
 {

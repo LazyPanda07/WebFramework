@@ -129,7 +129,7 @@ namespace framework
 		/// <para>Content-Length and Content-Type headers setting automatically</para>
 		/// </summary>
 		/// <param name="json">JSON data</param>
-		void setBody(const JSONBuilder& json);
+		void setBody(const JsonBuilder& json);
 
 		/// <summary>
 		/// <para>Some data with HTTP response</para>
@@ -211,7 +211,7 @@ namespace framework
 		implementation->setBody(body.data());
 	}
 
-	inline void HTTPResponse::setBody(const JSONBuilder& json)
+	inline void HTTPResponse::setBody(const JsonBuilder& json)
 	{
 		implementation->addHeader("Content-Type", "application/json");
 

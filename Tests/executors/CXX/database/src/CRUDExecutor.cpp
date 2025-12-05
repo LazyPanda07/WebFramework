@@ -10,11 +10,11 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
 	framework::SQLResult result = table.execute("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSQLValues("glue"));
-	std::vector<framework::JSONObject> data;
+	std::vector<framework::JsonObject> data;
 
 	for (const auto& value : result)
 	{
-		framework::JSONObject object;
+		framework::JsonObject object;
 
 		object.setValue("id", value.at("id").get<int64_t>());
 		object.setValue("name", value.at("name").get<std::string>());
@@ -23,7 +23,7 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 		framework::utility::appendArray(data, object);
 	}
 
-	response.setBody(framework::JSONBuilder().append("data", std::move(data)));
+	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
 }
 
 void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
@@ -78,11 +78,11 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 		framework::utility::database::makeSQLValues("empty")
 	);
 
-	std::vector<framework::JSONObject> data;
+	std::vector<framework::JsonObject> data;
 
 	for (const auto& value : result)
 	{
-		framework::JSONObject object;
+		framework::JsonObject object;
 
 		object.setValue("id", value.at("id").get<int64_t>());
 		object.setValue("name", value.at("name").get<std::string>());
@@ -91,7 +91,7 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 		framework::utility::appendArray(data, object);
 	}
 
-	response.setBody(framework::JSONBuilder().append("data", std::move(data)));
+	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
 }
 
 void CRUDExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)

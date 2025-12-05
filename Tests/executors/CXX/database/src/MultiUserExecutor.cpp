@@ -17,11 +17,11 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 		"SELECT * FROM multi_user WHERE user_id = ?",
 		framework::utility::database::makeSQLValues(userId)
 	);
-	std::vector<framework::JSONObject> data;
+	std::vector<framework::JsonObject> data;
 
 	for (const auto& value : result)
 	{
-		framework::JSONObject object;
+		framework::JsonObject object;
 
 		object.setValue("id", value.at("id").get<int64_t>());
 		object.setValue("user_id", value.at("user_id").get<std::string>());
@@ -30,7 +30,7 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 		framework::utility::appendArray(data, object);
 	}
 
-	response.setBody(framework::JSONBuilder().append("data", std::move(data)));
+	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
 }
 
 void MultiUserExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)

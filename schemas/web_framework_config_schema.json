@@ -41,7 +41,7 @@
             "api": {
               "type": "string",
               "description": "API language",
-              "enum": [ "cxx", "cc" ]
+              "enum": [ "cxx", "cc", "python", "csharp" ]
             }
           }
         },

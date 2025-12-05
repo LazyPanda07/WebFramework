@@ -66,7 +66,7 @@ namespace framework
 			 * @brief Get JSON structed values from initParameters section from settings file
 			 * @return
 			 */
-			JSONParser getInitParameters() const;
+			JsonParser getInitParameters() const;
 
 			/**
 			 * @brief Get executor name
@@ -150,7 +150,7 @@ namespace framework
 
 		}
 
-		inline JSONParser ExecutorSettings::getInitParameters() const
+		inline JsonParser ExecutorSettings::getInitParameters() const
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorInitParameters, void*, void** exception);
 			void* exception = nullptr;
@@ -163,7 +163,7 @@ namespace framework
 				throw exceptions::WebFrameworkException(exception);
 			}
 
-			return JSONParser(handler.getString(result));
+			return JsonParser(handler.getString(result));
 		}
 
 		inline std::string ExecutorSettings::getName() const

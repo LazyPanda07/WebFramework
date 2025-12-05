@@ -6,7 +6,7 @@ void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTT
 {
 	response.setBody
 	(
-		framework::JSONBuilder().append
+		framework::JsonBuilder().append
 		(
 			"result",
 			framework::utility::getLocalizedString("LocalizationData", "key", request.getJSON().get<std::string>("language"))

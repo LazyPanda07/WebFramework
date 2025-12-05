@@ -6,7 +6,7 @@
 
 namespace framework
 {
-	class JSONParser
+	class JsonParser
 	{
 	private:
 		void* implementation;
@@ -14,44 +14,44 @@ namespace framework
 	private:
 		static void addArrayValue(void* object, void* array)
 		{
-			static_cast<std::vector<JSONObject>*>(array)->emplace_back(object);
+			static_cast<std::vector<JsonObject>*>(array)->emplace_back(object);
 		}
 
 	public:
-		JSONParser();
+		JsonParser();
 
-		JSONParser(std::string_view jsonString);
+		JsonParser(std::string_view jsonString);
 
-		JSONParser(const JSONParser& other);
+		JsonParser(const JsonParser& other);
 
-		JSONParser(JSONParser&& other) noexcept;
+		JsonParser(JsonParser&& other) noexcept;
 
-		JSONParser& operator =(const JSONParser& other);
+		JsonParser& operator =(const JsonParser& other);
 
-		JSONParser& operator =(JSONParser&& other) noexcept;
+		JsonParser& operator =(JsonParser&& other) noexcept;
 
-		template<JsonValues<JSONObject> T>
+		template<JsonValues<JsonObject> T>
 		T get(std::string_view key, bool recursive = false) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>);
 
-		template<JsonValues<JSONObject> T>
+		template<JsonValues<JsonObject> T>
 		bool tryGet(std::string_view key, T& value, bool recursive = false) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>);
 
 		std::string_view operator *() const;
 
-		friend std::ostream& operator <<(std::ostream& stream, const JSONParser& parser);
+		friend std::ostream& operator <<(std::ostream& stream, const JsonParser& parser);
 
-		~JSONParser();
+		~JsonParser();
 	};
 }
 
 namespace framework
 {
-	inline JSONParser::JSONParser()
+	inline JsonParser::JsonParser()
 	{
-		using createJSONParser = void* (*)(void* builder, void** exception);
+		using createJsonParser = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONParser, nullptr, &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParser, nullptr, &exception);
 
 		if (exception)
 		{
@@ -59,12 +59,12 @@ namespace framework
 		}
 	}
 
-	inline JSONParser::JSONParser(std::string_view jsonString)
+	inline JsonParser::JsonParser(std::string_view jsonString)
 	{
-		using createJSONParserFromString = void* (*)(const char* jsonString, void** exception);
+		using createJsonParserFromString = void* (*)(const char* jsonString, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONParserFromString, jsonString.data(), &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParserFromString, jsonString.data(), &exception);
 
 		if (exception)
 		{
@@ -72,22 +72,22 @@ namespace framework
 		}
 	}
 
-	inline JSONParser::JSONParser(const JSONParser& other)
+	inline JsonParser::JsonParser(const JsonParser& other)
 	{
 		(*this) = other;
 	}
 
-	inline JSONParser::JSONParser(JSONParser&& other) noexcept
+	inline JsonParser::JsonParser(JsonParser&& other) noexcept
 	{
 		(*this) = std::move(other);
 	}
 
-	inline JSONParser& JSONParser::operator =(const JSONParser& other)
+	inline JsonParser& JsonParser::operator =(const JsonParser& other)
 	{
-		using createJSONParser = void* (*)(void* builder, void** exception);
+		using createJsonParser = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONParser, other.implementation, &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParser, other.implementation, &exception);
 
 		if (exception)
 		{
@@ -97,7 +97,7 @@ namespace framework
 		return *this;
 	}
 
-	inline JSONParser& JSONParser::operator =(JSONParser&& other) noexcept
+	inline JsonParser& JsonParser::operator =(JsonParser&& other) noexcept
 	{
 		implementation = other.implementation;
 
@@ -106,8 +106,8 @@ namespace framework
 		return *this;
 	}
 
-	template<JsonValues<JSONObject> T>
-	inline T JSONParser::get(std::string_view key, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
+	template<JsonValues<JsonObject> T>
+	inline T JsonParser::get(std::string_view key, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
 	{
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 		void* exception = nullptr;
@@ -115,53 +115,53 @@ namespace framework
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserBoolean, bool, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserBoolean, bool, const char* key, bool recursive, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserBoolean, key.data(), recursive, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserBoolean, key.data(), recursive, &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserNull, void, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserNull, void, const char* key, bool recursive, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserNull, key.data(), recursive, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserNull, key.data(), recursive, &exception);
 
 			result = nullptr;
 		}
 		else if constexpr (std::is_same_v<T, std::string>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserString, const char*, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserString, const char*, const char* key, bool recursive, void** exception);
 
-			result = std::string(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserString, key.data(), recursive, &exception));
+			result = std::string(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserString, key.data(), recursive, &exception));
 		}
-		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
+		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserArray, void, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserArray, void, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserArray, key.data(), &JSONParser::addArrayValue, &result, recursive, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserArray, key.data(), &JsonParser::addArrayValue, &result, recursive, &exception);
 		}
-		else if constexpr (std::is_same_v<T, JSONObject>)
+		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserObject, void*, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserObject, void*, const char* key, bool recursive, void** exception);
 
-			result = JSONObject(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserObject, key.data(), recursive, &exception));
+			result = JsonObject(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserObject, key.data(), recursive, &exception));
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserDouble, double, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserDouble, double, const char* key, bool recursive, void** exception);
 
-			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserDouble, key.data(), recursive, &exception));
+			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserDouble, key.data(), recursive, &exception));
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserUnsignedInteger, uint64_t, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserUnsignedInteger, uint64_t, const char* key, bool recursive, void** exception);
 
-			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserUnsignedInteger, key.data(), recursive, &exception));
+			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserUnsignedInteger, key.data(), recursive, &exception));
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserInteger, int64_t, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserInteger, int64_t, const char* key, bool recursive, void** exception);
 
-			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserInteger, key.data(), recursive, &exception));
+			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserInteger, key.data(), recursive, &exception));
 		}
 		else
 		{
@@ -176,8 +176,8 @@ namespace framework
 		return result;
 	}
 
-	template<JsonValues<JSONObject> T>
-	inline bool JSONParser::tryGet(std::string_view key, T& value, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
+	template<JsonValues<JsonObject> T>
+	inline bool JsonParser::tryGet(std::string_view key, T& value, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
 	{
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 		void* exception = nullptr;
@@ -185,54 +185,54 @@ namespace framework
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserBoolean, bool, const char* key, bool* value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserBoolean, bool, const char* key, bool* value, bool recursive, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserBoolean, key.data(), &value, recursive, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserBoolean, key.data(), &value, recursive, &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserNull, void, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserNull, void, const char* key, bool recursive, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserNull, key.data(), recursive, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserNull, key.data(), recursive, &exception);
 
 			result = true;
 		}
 		else if constexpr (std::is_same_v<T, std::string>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserString, bool, const char* key, void** value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserString, bool, const char* key, void** value, bool recursive, void** exception);
 			void* string = nullptr;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserString, key.data(), &string, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserString, key.data(), &string, recursive, &exception))
 			{
 				value = handler.getString(string);
 
 				result = true;
 			}
 		}
-		else if constexpr (std::is_same_v<T, std::vector<JSONObject>>)
+		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserArray, bool, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserArray, bool, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserArray, key.data(), &JSONParser::addArrayValue, &value, recursive, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserArray, key.data(), &JsonParser::addArrayValue, &value, recursive, &exception);
 		}
-		else if constexpr (std::is_same_v<T, JSONObject>)
+		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserObject, bool, const char* key, void** value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserObject, bool, const char* key, void** value, bool recursive, void** exception);
 			void* object = nullptr;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserObject, key.data(), &object, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserObject, key.data(), &object, recursive, &exception))
 			{
-				value = JSONObject(object);
+				value = JsonObject(object);
 
 				result = true;
 			}
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserDouble, bool, const char* key, double* value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserDouble, bool, const char* key, double* value, bool recursive, void** exception);
 			double temp = 0.0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserDouble, key.data(), &temp, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserDouble, key.data(), &temp, recursive, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -241,10 +241,10 @@ namespace framework
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserUnsignedInteger, bool, const char* key, uint64_t * value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserUnsignedInteger, bool, const char* key, uint64_t * value, bool recursive, void** exception);
 			uint64_t temp = 0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserUnsignedInteger, key.data(), &temp, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserUnsignedInteger, key.data(), &temp, recursive, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -253,10 +253,10 @@ namespace framework
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserInteger, bool, const char* key, int64_t * value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonParserInteger, bool, const char* key, int64_t * value, bool recursive, void** exception);
 			int64_t temp = 0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserInteger, key.data(), &temp, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonParserInteger, key.data(), &temp, recursive, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -276,12 +276,12 @@ namespace framework
 		return result;
 	}
 
-	inline std::string_view JSONParser::operator *() const
+	inline std::string_view JsonParser::operator *() const
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserRawData, const char*, void** exception);
+		DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserRawData, const char*, void** exception);
 		void* exception = nullptr;
 
-		std::string_view result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserRawData, &exception);
+		std::string_view result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserRawData, &exception);
 
 		if (exception)
 		{
@@ -291,16 +291,16 @@ namespace framework
 		return result;
 	}
 
-	inline std::ostream& operator <<(std::ostream& stream, const JSONParser& parser)
+	inline std::ostream& operator <<(std::ostream& stream, const JsonParser& parser)
 	{
 		return stream << *parser;
 	}
 
-	inline JSONParser::~JSONParser()
+	inline JsonParser::~JsonParser()
 	{
 		if (implementation)
 		{
-			utility::DLLHandler::getInstance().deleteJSONParser(implementation);
+			utility::DLLHandler::getInstance().deleteJsonParser(implementation);
 
 			implementation = nullptr;
 		}

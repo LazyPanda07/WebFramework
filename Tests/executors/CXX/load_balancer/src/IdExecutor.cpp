@@ -19,7 +19,7 @@ void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse&
 
 	response.setBody
 	(
-		framework::JSONBuilder().append("id", getProcessId())
+		framework::JsonBuilder().append("id", getProcessId())
 	);
 }
 

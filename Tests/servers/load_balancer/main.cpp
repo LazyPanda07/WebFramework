@@ -62,6 +62,10 @@ int main(int argc, char** argv) try
 		config.overrideConfiguration("127.0.0.1", listOfServers);
 	}
 
+#ifdef __WITH_ADDRESS_SANITIZER__
+	config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", false);
+#endif
+
 	framework::WebFramework server(config);
 
 	server.start
