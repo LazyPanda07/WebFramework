@@ -15,11 +15,10 @@ namespace framework::load_balancer
 		useHTTPS(useHTTPS),
 		implementation(nullptr)
 	{
-		char* assemblyName = std::any_cast<char*>(source);
-
+		runtime::DotNetRuntime::NativeString moduleName = runtime::DotNetRuntime::getModuleName(std::get<std::filesystem::path>(source));
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		implementation = runtime.createHeuristic(assemblyName, ip.data(), port.data(), useHTTPS);
+		implementation = runtime.createHeuristic(std::format("{}, {}", heuristicName, moduleName.string()).data(), ip.data(), port.data(), useHTTPS);
 
 		if (!implementation)
 		{
@@ -30,8 +29,6 @@ namespace framework::load_balancer
 
 			throw std::runtime_error(std::format("Can't find {}", std::any_cast<char*>(source)));
 		}
-
-		runtime.dealloc(assemblyName);
 	}
 
 	uint64_t CSharpHeuristic::operator ()() const

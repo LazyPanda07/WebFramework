@@ -312,10 +312,7 @@ public static class Utils
 			return IntPtr.Zero;
 		}
 
-		NewExpression expression = Expression.New(type);
-		Func<string, string, bool, object> constructor = Expression.Lambda<Func<string, string, bool, object>>(expression).Compile();
-
-		object instance = constructor(Marshal.PtrToStringUTF8(ip)!, Marshal.PtrToStringUTF8(port)!, Convert.ToBoolean(userHTTPS));
+		object instance = Activator.CreateInstance(type, Marshal.PtrToStringUTF8(ip)!, Marshal.PtrToStringUTF8(port)!, Convert.ToBoolean(userHTTPS))!;
 
 		GCHandle handle = GCHandle.Alloc(instance);
 
