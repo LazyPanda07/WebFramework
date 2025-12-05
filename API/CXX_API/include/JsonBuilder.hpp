@@ -10,19 +10,19 @@ namespace framework
 		void* implementation;
 
 	public:
-		class JsonBuilderHelper
+		class JSONBuilderHelper
 		{
 		private:
 			std::string key;
 			JsonBuilder& builder;
 
 		public:
-			JsonBuilderHelper(std::string_view key, JsonBuilder& builder);
+			JSONBuilderHelper(std::string_view key, JsonBuilder& builder);
 
 			template<JsonValues<JsonObject> T>
 			void operator =(const T& value);
 
-			~JsonBuilderHelper() = default;
+			~JSONBuilderHelper() = default;
 		};
 
 	public:
@@ -43,7 +43,7 @@ namespace framework
 
 		std::string build() const;
 
-		JsonBuilderHelper operator [](std::string_view key);
+		JSONBuilderHelper operator [](std::string_view key);
 
 		explicit operator std::string() const;
 
@@ -53,7 +53,7 @@ namespace framework
 
 namespace framework
 {
-	inline JsonBuilder::JsonBuilderHelper::JsonBuilderHelper(std::string_view key, JsonBuilder& builder) :
+	inline JsonBuilder::JSONBuilderHelper::JSONBuilderHelper(std::string_view key, JsonBuilder& builder) :
 		key(key),
 		builder(builder)
 	{
@@ -61,17 +61,17 @@ namespace framework
 	}
 
 	template<JsonValues<JsonObject> T>
-	inline void JsonBuilder::JsonBuilderHelper::operator =(const T& value)
+	inline void JsonBuilder::JSONBuilderHelper::operator =(const T& value)
 	{
 		builder.append<T>(key, value);
 	}
 
 	inline JsonBuilder::JsonBuilder()
 	{
-		using createJsonBuilder = void* (*)(void* builder, void** exception);
+		using createJSONBuilder = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilder, nullptr, &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONBuilder, nullptr, &exception);
 
 		if (exception)
 		{
@@ -81,10 +81,10 @@ namespace framework
 
 	inline JsonBuilder::JsonBuilder(std::string_view jsonString)
 	{
-		using createJsonBuilderFromString = void* (*)(const char* jsonString, void** exception);
+		using createJSONBuilderFromString = void* (*)(const char* jsonString, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilderFromString, jsonString.data(), &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONBuilderFromString, jsonString.data(), &exception);
 
 		if (exception)
 		{
@@ -104,10 +104,10 @@ namespace framework
 
 	inline JsonBuilder& JsonBuilder::operator =(const JsonBuilder& other)
 	{
-		using createJsonBuilder = void* (*)(void* builder, void** exception);
+		using createJSONBuilder = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilder, other.implementation, &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONBuilder, other.implementation, &exception);
 
 		if (exception)
 		{
@@ -134,25 +134,25 @@ namespace framework
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderBoolean, void, const char* key, bool value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderBoolean, void, const char* key, bool value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderBoolean, key.data(), value, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderBoolean, key.data(), value, &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderNull, void, const char* key, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderNull, void, const char* key, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderNull, key.data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderNull, key.data(), &exception);
 		}
 		else if constexpr (std::convertible_to<T, std::string_view>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderString, void, const char* key, const char* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderString, void, const char* key, const char* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderString, key.data(), static_cast<std::string_view>(value).data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderString, key.data(), static_cast<std::string_view>(value).data(), &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderArray, void, const char* key, const void* value, size_t size, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderArray, void, const char* key, const void* value, size_t size, void** exception);
 			std::vector<void*> temp;
 
 			temp.reserve(value.size());
@@ -162,31 +162,31 @@ namespace framework
 				temp.push_back(object.implementation);
 			}
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderArray, key.data(), temp.data(), temp.size(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderArray, key.data(), temp.data(), temp.size(), &exception);
 		}
 		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderObject, void, const char* key, void* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderObject, void, const char* key, void* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderObject, key.data(), value.implementation, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderObject, key.data(), value.implementation, &exception);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderDouble, void, const char* key, double value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderDouble, void, const char* key, double value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderDouble, key.data(), static_cast<double>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderDouble, key.data(), static_cast<double>(value), &exception);
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderUnsignedInteger, void, const char* key, uint64_t value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderUnsignedInteger, void, const char* key, uint64_t value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderUnsignedInteger, key.data(), static_cast<uint64_t>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderUnsignedInteger, key.data(), static_cast<uint64_t>(value), &exception);
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJsonBuilderInteger, void, const char* key, int64_t value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderInteger, void, const char* key, int64_t value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJsonBuilderInteger, key.data(), static_cast<int64_t>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderInteger, key.data(), static_cast<int64_t>(value), &exception);
 		}
 		else
 		{
@@ -203,11 +203,11 @@ namespace framework
 
 	inline std::string JsonBuilder::build() const
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(buildJsonBuilder, void*, void** exception);
+		DEFINE_CLASS_MEMBER_FUNCTION(buildJSONBuilder, void*, void** exception);
 		void* exception = nullptr;
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 
-		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(buildJsonBuilder, &exception);
+		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(buildJSONBuilder, &exception);
 
 		if (exception)
 		{
@@ -217,9 +217,9 @@ namespace framework
 		return handler.getString(result);
 	}
 
-	inline JsonBuilder::JsonBuilderHelper JsonBuilder::operator [](std::string_view key)
+	inline JsonBuilder::JSONBuilderHelper JsonBuilder::operator [](std::string_view key)
 	{
-		return JsonBuilderHelper(key, *this);
+		return JSONBuilderHelper(key, *this);
 	}
 
 	inline JsonBuilder::operator std::string() const
@@ -231,7 +231,7 @@ namespace framework
 	{
 		if (implementation)
 		{
-			utility::DLLHandler::getInstance().deleteJsonBuilder(implementation);
+			utility::DLLHandler::getInstance().deleteJSONBuilder(implementation);
 
 			implementation = nullptr;
 		}
