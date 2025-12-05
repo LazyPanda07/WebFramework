@@ -168,7 +168,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			[](const framework::utility::ExecutorSettings& self) -> py::dict
 			{
 				py::module_ json = py::module_::import("json");
-				framework::JSONParser parser = self.getInitParameters();
+				framework::JsonParser parser = self.getInitParameters();
 				std::string_view data = *parser;
 
 				return json.attr("loads")(data.data()).cast<py::dict>();
@@ -359,7 +359,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			{
 				py::module_ jsonModule = py::module_::import("json");
 
-				self.setBody(framework::JSONBuilder(jsonModule.attr("dumps")(json, "ensure_ascii"_a = false).cast<std::string>()));
+				self.setBody(framework::JsonBuilder(jsonModule.attr("dumps")(json, "ensure_ascii"_a = false).cast<std::string>()));
 			},
 			"json"_a
 		)
@@ -439,7 +439,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			[](const framework::HTTPRequest& self)
 			{
 				py::module_ json = py::module_::import("json");
-				const framework::JSONParser& parser = self.getJSON();
+				const framework::JsonParser& parser = self.getJSON();
 
 				return json.attr("loads")((*parser).data()).cast<py::dict>();
 			}
