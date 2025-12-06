@@ -10,19 +10,19 @@ namespace framework
 		void* implementation;
 
 	public:
-		class JSONBuilderHelper
+		class JsonBuilderHelper
 		{
 		private:
 			std::string key;
 			JsonBuilder& builder;
 
 		public:
-			JSONBuilderHelper(std::string_view key, JsonBuilder& builder);
+			JsonBuilderHelper(std::string_view key, JsonBuilder& builder);
 
 			template<JsonValues<JsonObject> T>
 			void operator =(const T& value);
 
-			~JSONBuilderHelper() = default;
+			~JsonBuilderHelper() = default;
 		};
 
 	public:
@@ -41,9 +41,16 @@ namespace framework
 		template<JsonValues<JsonObject> T>
 		JsonBuilder& append(std::string_view key, const T& value = T());
 
+		template<JsonValues<JsonObject> T>
+		bool contains(std::string_view key, bool recursive = false) const;
+
 		std::string build() const;
 
-		JSONBuilderHelper operator [](std::string_view key);
+		void standard();
+
+		void minimize();
+
+		JsonBuilderHelper operator [](std::string_view key);
 
 		explicit operator std::string() const;
 
@@ -53,7 +60,7 @@ namespace framework
 
 namespace framework
 {
-	inline JsonBuilder::JSONBuilderHelper::JSONBuilderHelper(std::string_view key, JsonBuilder& builder) :
+	inline JsonBuilder::JsonBuilderHelper::JsonBuilderHelper(std::string_view key, JsonBuilder& builder) :
 		key(key),
 		builder(builder)
 	{
@@ -61,7 +68,7 @@ namespace framework
 	}
 
 	template<JsonValues<JsonObject> T>
-	inline void JsonBuilder::JSONBuilderHelper::operator =(const T& value)
+	inline void JsonBuilder::JsonBuilderHelper::operator =(const T& value)
 	{
 		builder.append<T>(key, value);
 	}
@@ -201,13 +208,81 @@ namespace framework
 		return *this;
 	}
 
+	template<JsonValues<JsonObject> T>
+	inline bool JsonBuilder::contains(std::string_view key, bool recursive) const
+	{
+		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		void* exception = nullptr;
+		bool result = false;
+
+		if constexpr (std::is_same_v<T, bool>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderBoolean, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderBoolean, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_same_v<T, std::nullptr_t>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderNull, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderNull, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderString, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderString, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderArray, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderArray, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_same_v<T, JsonObject>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderObject, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderObject, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderDouble, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderDouble, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_unsigned_v<T>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderUnsignedInteger, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderUnsignedInteger, key.data(), recursive, &exception);
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(containsJsonBuilderInteger, bool, const char* key, bool recursive, void** exception);
+
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(containsJsonBuilderInteger, key.data(), recursive, &exception);
+		}
+		else
+		{
+			throw std::invalid_argument(std::format("Wrong argument type: {}", typeid(T).name()));
+		}
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return result;
+	}
+
 	inline std::string JsonBuilder::build() const
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(buildJSONBuilder, void*, void** exception);
 		void* exception = nullptr;
 		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
 
-		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(buildJSONBuilder, &exception);
+		void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(buildJSONBuilder, &exception);
 
 		if (exception)
 		{
@@ -217,9 +292,35 @@ namespace framework
 		return handler.getString(result);
 	}
 
-	inline JsonBuilder::JSONBuilderHelper JsonBuilder::operator [](std::string_view key)
+	inline void JsonBuilder::standard()
 	{
-		return JSONBuilderHelper(key, *this);
+		DEFINE_CLASS_MEMBER_FUNCTION(standardJSONBuilder, void, void** exception);
+		void* exception = nullptr;
+
+		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(standardJSONBuilder, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+	}
+
+	inline void JsonBuilder::minimize()
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(minimizeJSONBuilder, void, void** exception);
+		void* exception = nullptr;
+
+		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(minimizeJSONBuilder, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+	}
+
+	inline JsonBuilder::JsonBuilderHelper JsonBuilder::operator [](std::string_view key)
+	{
+		return JsonBuilderHelper(key, *this);
 	}
 
 	inline JsonBuilder::operator std::string() const

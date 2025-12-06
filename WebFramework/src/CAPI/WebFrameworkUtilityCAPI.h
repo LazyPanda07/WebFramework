@@ -27,6 +27,10 @@ EXPORT JSONParser createJSONParserFromString(const char* jsonString, Exception* 
 
 EXPORT String buildJSONBuilder(JSONBuilder builder, Exception* exception);
 
+EXPORT void standardJsonBuilder(JSONBuilder builder, Exception* exception);
+
+EXPORT void minimizeJsonBuilder(JSONBuilder builder, Exception* exception);
+
 EXPORT void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception);
 
 EXPORT void setJSONObjectString(JSONObject jsonObject, const char* key, const char* value, Exception* exception);
@@ -42,6 +46,22 @@ EXPORT void setJSONObjectBoolean(JSONObject jsonObject, const char* key, bool va
 EXPORT void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* exception);
 
 EXPORT void setJSONObjectArray(JSONObject jsonObject, const char* key, JSONObject* objects, size_t size, Exception* exception);
+
+EXPORT bool containsJsonBuilderObject(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonBuilderString(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonBuilderInteger(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonBuilderUnsignedInteger(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonBuilderDouble(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonBuilderBoolean(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonBuilderNull(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonBuilderArray(JSONBuilder builder, const char* key, bool recursive, Exception* exception);
 
 EXPORT void appendJSONBuilderObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception);
 

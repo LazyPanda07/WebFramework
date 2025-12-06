@@ -267,6 +267,183 @@ String buildJSONBuilder(JSONBuilder builder, Exception* exception)
 	return nullptr;
 }
 
+void standardJsonBuilder(JSONBuilder builder, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JsonBuilder*>(builder)->standard();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void minimizeJsonBuilder(JSONBuilder builder, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JsonBuilder*>(builder)->minimize();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+bool containsJsonBuilderObject(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<json::JsonObject>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonBuilderString(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<std::string>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonBuilderInteger(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<int64_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonBuilderUnsignedInteger(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<uint64_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonBuilderDouble(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<double>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonBuilderBoolean(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<bool>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonBuilderNull(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<std::nullptr_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonBuilderArray(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonBuilder*>(parser)->contains<std::vector<json::JsonObject>>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+
 void appendJSONBuilderObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception)
 {
 	try
