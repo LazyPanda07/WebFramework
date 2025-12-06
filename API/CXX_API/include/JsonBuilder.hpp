@@ -152,7 +152,7 @@ namespace framework
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderArray, void, const char* key, const void* value, size_t size, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(appendJSONBuilderArray, void, const char* key, void** value, size_t size, void** exception);
 			std::vector<void*> temp;
 
 			temp.reserve(value.size());

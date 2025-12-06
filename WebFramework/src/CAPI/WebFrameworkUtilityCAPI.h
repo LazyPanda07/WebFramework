@@ -41,7 +41,7 @@ EXPORT void setJSONObjectBoolean(JSONObject jsonObject, const char* key, bool va
 
 EXPORT void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* exception);
 
-EXPORT void setJSONObjectArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception);
+EXPORT void setJSONObjectArray(JSONObject jsonObject, const char* key, JSONObject* objects, size_t size, Exception* exception);
 
 EXPORT void appendJSONBuilderObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception);
 
@@ -57,7 +57,7 @@ EXPORT void appendJSONBuilderBoolean(JSONBuilder builder, const char* key, bool 
 
 EXPORT void appendJSONBuilderNull(JSONBuilder builder, const char* key, Exception* exception);
 
-EXPORT void appendJSONBuilderArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception);
+EXPORT void appendJSONBuilderArray(JSONBuilder builder, const char* key, JSONObject* objects, size_t size, Exception* exception);
 
 EXPORT bool containsJsonParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
@@ -89,7 +89,7 @@ EXPORT void overrideJsonParserBoolean(JSONParser parser, const char* key, bool v
 
 EXPORT void overrideJsonParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
-EXPORT void overrideJsonParserArray(JSONParser parser, const char* key, const JSONObject* value, size_t size, bool recursive, Exception* exception);
+EXPORT void overrideJsonParserArray(JSONParser parser, const char* key, JSONObject* value, size_t size, bool recursive, Exception* exception);
 
 EXPORT JSONObject getJSONParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception);
 

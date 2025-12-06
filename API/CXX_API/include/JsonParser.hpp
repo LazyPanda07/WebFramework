@@ -206,7 +206,7 @@ namespace framework
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(overrideJsonParserArray, void, const char* key, const void** value, size_t size, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(overrideJsonParserArray, void, const char* key, void** value, size_t size, bool recursive, void** exception);
 			std::vector<void*> temp;
 
 			temp.reserve(value.size());

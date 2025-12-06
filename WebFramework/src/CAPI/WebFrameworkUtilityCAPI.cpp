@@ -224,7 +224,7 @@ void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* except
 	}
 }
 
-void setJSONObjectArray(JSONObject jsonObject, const char* key, const JSONObject* objects, size_t size, Exception* exception)
+void setJSONObjectArray(JSONObject jsonObject, const char* key, JSONObject* objects, size_t size, Exception* exception)
 {
 	try
 	{
@@ -379,7 +379,7 @@ void appendJSONBuilderNull(JSONBuilder builder, const char* key, Exception* exce
 	}
 }
 
-void appendJSONBuilderArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception)
+void appendJSONBuilderArray(JSONBuilder builder, const char* key, JSONObject* objects, size_t size, Exception* exception)
 {
 	try
 	{
@@ -660,7 +660,7 @@ void overrideJsonParserNull(JSONParser parser, const char* key, bool recursive, 
 	}
 }
 
-void overrideJsonParserArray(JSONParser parser, const char* key, const JSONObject* value, size_t size, bool recursive, Exception* exception)
+void overrideJsonParserArray(JSONParser parser, const char* key, JSONObject* value, size_t size, bool recursive, Exception* exception)
 {
 	try
 	{
