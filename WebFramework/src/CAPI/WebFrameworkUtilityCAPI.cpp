@@ -404,6 +404,287 @@ void appendJSONBuilderArray(JSONBuilder builder, const char* key, const JSONObje
 	}
 }
 
+bool containsJsonParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<json::JsonObject>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonParserString(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<std::string>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonParserInteger(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<int64_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonParserUnsignedInteger(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<uint64_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonParserDouble(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<double>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonParserBoolean(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<bool>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<std::nullptr_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonParserArray(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->contains<std::vector<json::JsonObject>>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+void overrideJsonParserObject(JSONParser parser, const char* key, JSONObject value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->overrideValue(key, *static_cast<json::JsonObject*>(value), recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void overrideJsonParserString(JSONParser parser, const char* key, const char* value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->overrideValue(key, std::string_view(value), recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void overrideJsonParserInteger(JSONParser parser, const char* key, int64_t value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void overrideJsonParserUnsignedInteger(JSONParser parser, const char* key, uint64_t value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void overrideJsonParserDouble(JSONParser parser, const char* key, double value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void overrideJsonParserBoolean(JSONParser parser, const char* key, bool value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void overrideJsonParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonParser*>(parser)->overrideValue(key, nullptr, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void overrideJsonParserArray(JSONParser parser, const char* key, const JSONObject* value, size_t size, bool recursive, Exception* exception)
+{
+	try
+	{
+		std::vector<json::JsonObject> values;
+
+		values.reserve(size);
+
+		for (size_t i = 0; i < size; i++)
+		{
+			values.emplace_back(*static_cast<json::JsonObject*>(value[i]));
+		}
+
+		static_cast<json::JsonParser*>(parser)->overrideValue(key, std::move(values), recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
 JSONObject getJSONParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try

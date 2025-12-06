@@ -59,6 +59,38 @@ EXPORT void appendJSONBuilderNull(JSONBuilder builder, const char* key, Exceptio
 
 EXPORT void appendJSONBuilderArray(JSONBuilder builder, const char* key, const JSONObject* objects, size_t size, Exception* exception);
 
+EXPORT bool containsJsonParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonParserString(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonParserInteger(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonParserUnsignedInteger(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonParserDouble(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonParserBoolean(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT bool containsJsonParserArray(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserObject(JSONParser parser, const char* key, JSONObject value, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserString(JSONParser parser, const char* key, const char* value, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserInteger(JSONParser parser, const char* key, int64_t value, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserUnsignedInteger(JSONParser parser, const char* key, uint64_t value, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserDouble(JSONParser parser, const char* key, double value, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserBoolean(JSONParser parser, const char* key, bool value, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserNull(JSONParser parser, const char* key, bool recursive, Exception* exception);
+
+EXPORT void overrideJsonParserArray(JSONParser parser, const char* key, const JSONObject* value, size_t size, bool recursive, Exception* exception);
+
 EXPORT JSONObject getJSONParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
 EXPORT const char* getJSONParserString(JSONParser parser, const char* key, bool recursive, Exception* exception);
