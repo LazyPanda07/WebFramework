@@ -112,6 +112,195 @@ JSONParser createJSONParserFromString(const char* jsonString, Exception* excepti
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+JSONObject accessIndexOperatorJsonObject(JSONObject jsonObject, size_t index, Exception* exception)
+{
+	try
+	{
+		return &(*static_cast<json::JsonObject*>(jsonObject))[index];
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject accessKeyOperatorJsonObject(JSONObject jsonObject, const char* key, Exception* exception)
+{
+	try
+	{
+		return &(*static_cast<json::JsonObject*>(jsonObject))[key];
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackObject(JSONObject jsonObject, JSONObject value, Exception* exception)
+{
+	try
+	{
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(*static_cast<json::JsonObject*>(value));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackString(JSONObject jsonObject, const char* value, Exception* exception)
+{
+	try
+	{
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(std::string_view(value));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackInteger(JSONObject jsonObject, int64_t value, Exception* exception)
+{
+	try
+	{
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackUnsignedInteger(JSONObject jsonObject, uint64_t value, Exception* exception)
+{
+	try
+	{
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackDouble(JSONObject jsonObject, double value, Exception* exception)
+{
+	try
+	{
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackBoolean(JSONObject jsonObject, bool value, Exception* exception)
+{
+	try
+	{
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackNull(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(nullptr);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JSONObject emplaceBackArray(JSONObject jsonObject, JSONObject* objects, size_t size, Exception* exception)
+{
+	try
+	{
+		std::vector<json::JsonObject> array;
+
+		array.reserve(size);
+
+		for (size_t i = 0; i < size; i++)
+		{
+			array.emplace_back(json::JsonObject(*static_cast<json::JsonObject*>(objects[i])));
+		}
+
+		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(std::move(array));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception)
 {
 	try

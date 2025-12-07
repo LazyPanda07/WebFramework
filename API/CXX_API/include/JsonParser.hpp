@@ -12,10 +12,7 @@ namespace framework
 		void* implementation;
 
 	private:
-		static void addArrayValue(void* object, void* array)
-		{
-			static_cast<std::vector<JsonObject>*>(array)->emplace_back(object);
-		}
+		static void addArrayValue(void* object, void* array);
 
 	public:
 		JsonParser();
@@ -52,6 +49,11 @@ namespace framework
 
 namespace framework
 {
+	inline void JsonParser::addArrayValue(void* object, void* array)
+	{
+		static_cast<std::vector<JsonObject>*>(array)->push_back(JsonObject(object));
+	}
+
 	inline JsonParser::JsonParser()
 	{
 		using createJSONParser = void* (*)(void* builder, void** exception);
