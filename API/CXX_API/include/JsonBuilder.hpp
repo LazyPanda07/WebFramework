@@ -10,22 +10,6 @@ namespace framework
 		void* implementation;
 
 	public:
-		class JsonBuilderHelper
-		{
-		private:
-			std::string key;
-			JsonBuilder& builder;
-
-		public:
-			JsonBuilderHelper(std::string_view key, JsonBuilder& builder);
-
-			template<JsonValues<JsonObject> T>
-			void operator =(const T& value);
-
-			~JsonBuilderHelper() = default;
-		};
-
-	public:
 		JsonBuilder();
 
 		JsonBuilder(std::string_view jsonString);
@@ -50,7 +34,12 @@ namespace framework
 
 		void minimize();
 
-		JsonBuilderHelper operator [](std::string_view key);
+		/**
+		 * @brief Accesses the JSON value associated with the specified key.
+		 * @param key The key to look up in the JSON object.
+		 * @return The JsonObject (returned as weak reference) corresponding to the specified key.
+		 */
+		JsonObject operator [](std::string_view key);
 
 		explicit operator std::string() const;
 
@@ -60,19 +49,6 @@ namespace framework
 
 namespace framework
 {
-	inline JsonBuilder::JsonBuilderHelper::JsonBuilderHelper(std::string_view key, JsonBuilder& builder) :
-		key(key),
-		builder(builder)
-	{
-
-	}
-
-	template<JsonValues<JsonObject> T>
-	inline void JsonBuilder::JsonBuilderHelper::operator =(const T& value)
-	{
-		builder.append<T>(key, value);
-	}
-
 	inline JsonBuilder::JsonBuilder()
 	{
 		using createJSONBuilder = void* (*)(void* builder, void** exception);
@@ -318,9 +294,18 @@ namespace framework
 		}
 	}
 
-	inline JsonBuilder::JsonBuilderHelper JsonBuilder::operator [](std::string_view key)
+	inline JsonObject JsonBuilder::operator [](std::string_view key)
 	{
-		return JsonBuilderHelper(key, *this);
+		DEFINE_CLASS_MEMBER_FUNCTION(accessKeyOperatorJsonBuilder, void*, void** exception);
+		void* exception = nullptr;
+		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonBuilder, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return JsonObject(result);
 	}
 
 	inline JsonBuilder::operator std::string() const
@@ -338,4 +323,3 @@ namespace framework
 		}
 	}
 }
-

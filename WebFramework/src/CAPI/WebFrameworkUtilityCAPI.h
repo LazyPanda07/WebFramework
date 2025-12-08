@@ -181,6 +181,8 @@ EXPORT void appendJSONBuilderNull(JSONBuilder builder, const char* key, Exceptio
 
 EXPORT void appendJSONBuilderArray(JSONBuilder builder, const char* key, JSONObject* objects, size_t size, Exception* exception);
 
+EXPORT JSONObject accessKeyOperatorJsonBuilder(JSONBuilder builder, const char* key, Exception* exception);
+
 EXPORT bool containsJsonParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception);
 
 EXPORT bool containsJsonParserString(JSONParser parser, const char* key, bool recursive, Exception* exception);

@@ -19,6 +19,7 @@ void callback(const char** columnNames, const SQLValue* columnValues, size_t siz
 	for (size_t i = 0; i < size; i++)
 	{
 		SQLValueType_t type;
+		JSONObject_t temp;
 
 		getSQLValueType(columnValues[i], &type);
 
@@ -28,7 +29,9 @@ void callback(const char** columnNames, const SQLValue* columnValues, size_t siz
 
 			getSQLValueInt(columnValues[i], &result);
 
-			setJSONObjectInteger(&object, columnNames[i], result);
+			assignJSONObject(&object, columnNames[i], &temp);
+
+			setJSONObjectInteger(&temp, result);
 		}
 		else if (type == STRING_TYPE)
 		{
@@ -36,7 +39,9 @@ void callback(const char** columnNames, const SQLValue* columnValues, size_t siz
 
 			getSQLValueString(columnValues[i], &result);
 
-			setJSONObjectString(&object, columnNames[i], result);
+			assignJSONObject(&object, columnNames[i], &temp);
+
+			setJSONObjectString(&temp, result);
 		}
 	}
 

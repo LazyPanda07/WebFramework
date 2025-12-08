@@ -117,73 +117,82 @@ WebFrameworkException copyJSONObject(JSONObject_t* jsonObject, const JSONObject_
 /**
  * @brief Set JSONObject to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @param object JSONObject value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectObject(JSONObject_t* jsonObject, const char* key, JSONObject_t* object);
+WebFrameworkException setJSONObjectObject(JSONObject_t* jsonObject, JSONObject_t* object);
 
 /**
  * @brief Set string to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @param value String value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectString(JSONObject_t* jsonObject, const char* key, const char* value);
+WebFrameworkException setJSONObjectString(JSONObject_t* jsonObject, const char* value);
 
 /**
  * @brief Set integer to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @param value Integer value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectInteger(JSONObject_t* jsonObject, const char* key, int64_t value);
+WebFrameworkException setJSONObjectInteger(JSONObject_t* jsonObject, int64_t value);
 
 /**
  * @brief Set unsigned integer to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @param value Unsigned integer value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectUnsignedInteger(JSONObject_t* jsonObject, const char* key, uint64_t value);
+WebFrameworkException setJSONObjectUnsignedInteger(JSONObject_t* jsonObject, uint64_t value);
 
 /**
  * @brief Set double to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @param value Double value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectDouble(JSONObject_t* jsonObject, const char* key, double value);
+WebFrameworkException setJSONObjectDouble(JSONObject_t* jsonObject, double value);
 
 /**
  * @brief Set bool to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @param value Bool value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectBoolean(JSONObject_t* jsonObject, const char* key, bool value);
+WebFrameworkException setJSONObjectBoolean(JSONObject_t* jsonObject, bool value);
 
 /**
  * @brief Set NULL to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectNull(JSONObject_t* jsonObject, const char* key);
+WebFrameworkException setJSONObjectNull(JSONObject_t* jsonObject);
 
 /**
  * @brief Set JSONArray to JSONObject
  * @param jsonObject JSONObject instance
- * @param key JSON key
  * @param value JSONArray value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const char* key, const JSONArray_t* array);
+WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const JSONArray_t* array);
+
+/**
+ * @brief Add key to JSON object and get associated object
+ * @param jsonObject JSONObject instance
+ * @param key JSON key
+ * @param result Associated JSON object
+ * @return 
+ */
+WebFrameworkException assignJSONObject(JSONObject_t* jsonObject, const char* key, JSONObject_t* result);
+
+/**
+ * @brief Add JSON object to an array and get associated object
+ * @param jsonObject JSONObject instance
+ * @param result Associated JSON object
+ * @return
+ */
+WebFrameworkException emplaceJSONObject(JSONObject_t* jsonObject, JSONObject_t* result);
 
 /**
  * @brief Delete JSONObject

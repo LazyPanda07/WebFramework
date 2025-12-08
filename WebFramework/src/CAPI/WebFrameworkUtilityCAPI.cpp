@@ -1572,6 +1572,24 @@ void appendJSONBuilderArray(JSONBuilder builder, const char* key, JSONObject* ob
 	}
 }
 
+JSONObject accessKeyOperatorJsonBuilder(JSONBuilder builder, const char* key, Exception* exception)
+{
+	try
+	{
+		return &(*static_cast<json::JsonBuilder*>(builder))[key];
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 bool containsJsonParserObject(JSONParser parser, const char* key, bool recursive, Exception* exception)
 {
 	try
