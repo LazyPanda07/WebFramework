@@ -23,11 +23,11 @@ void MultiUserExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRe
 	{
 		framework::JsonObject object;
 
-		object.setValue("id", value.at("id").get<int64_t>());
-		object.setValue("user_id", value.at("user_id").get<std::string>());
-		object.setValue("data", value.at("data").get<std::string>());
+		object["id"] = value.at("id").get<int64_t>();
+		object["user_id"] = value.at("user_id").get<std::string>();
+		object["data"] = value.at("data").get<std::string>();
 
-		framework::utility::appendArray(data, object);
+		data.push_back(std::move(object));
 	}
 
 	response.setBody(framework::JsonBuilder().append("data", std::move(data)));

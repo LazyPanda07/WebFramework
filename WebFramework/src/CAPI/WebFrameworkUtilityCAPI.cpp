@@ -301,11 +301,409 @@ JSONObject emplaceBackArray(JSONObject jsonObject, JSONObject* objects, size_t s
 	return nullptr;
 }
 
-void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject object, Exception* exception)
+bool isObject(JSONObject jsonObject, Exception* exception)
 {
 	try
 	{
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = *static_cast<json::JsonObject*>(object);
+		return static_cast<json::JsonObject*>(jsonObject)->is<json::JsonObject>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool isString(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->is<std::string>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool isInteger(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->is<int64_t>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool isUnsignedInteger(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->is<uint64_t>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool isDouble(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->is<double>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool isBoolean(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->is<bool>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool isNull(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->is<std::nullptr_t>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool isArray(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->is<std::vector<json::JsonObject>>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectObject(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<json::JsonObject>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectString(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<std::string>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectInteger(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<int64_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectUnsignedInteger(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<uint64_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectDouble(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<double>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectBoolean(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<bool>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectNull(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<std::nullptr_t>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool containsJsonObjectArray(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->contains<std::vector<json::JsonObject>>(key, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+JSONObject getJSONObjectObject(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		json::JsonObject& object = const_cast<json::JsonObject&>(static_cast<json::JsonObject*>(jsonObject)->get<json::JsonObject>());
+
+		return createJSONObject(&object, exception);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+const char* getJSONObjectString(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->get<std::string>().data();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+int64_t getJSONObjectInteger(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->get<int64_t>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
+uint64_t getJSONObjectUnsignedInteger(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->get<uint64_t>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
+double getJSONObjectDouble(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->get<double>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0.0;
+}
+
+bool getJSONObjectBoolean(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->get<bool>();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+void getJSONObjectNull(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		static_cast<json::JsonObject*>(jsonObject)->get<std::nullptr_t>();
 	}
 	catch (const std::exception& e)
 	{
@@ -317,11 +715,18 @@ void setJSONObjectObject(JSONObject jsonObject, const char* key, JSONObject obje
 	}
 }
 
-void setJSONObjectString(JSONObject jsonObject, const char* key, const char* value, Exception* exception)
+void getJSONObjectArray(JSONObject jsonObject, void(*addArrayValue)(JSONObject object, void* array), void* array, Exception* exception)
 {
 	try
 	{
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
+		const std::vector<json::JsonObject>& result = static_cast<json::JsonObject*>(jsonObject)->get<std::vector<json::JsonObject>>();
+
+		for (const json::JsonObject& object : result)
+		{
+			json::JsonObject& temp = const_cast<json::JsonObject&>(object);
+
+			addArrayValue(&temp, array);
+		}
 	}
 	catch (const std::exception& e)
 	{
@@ -333,11 +738,355 @@ void setJSONObjectString(JSONObject jsonObject, const char* key, const char* val
 	}
 }
 
-void setJSONObjectInteger(JSONObject jsonObject, const char* key, int64_t value, Exception* exception)
+bool tryGetJSONObjectObjectByKey(JSONObject jsonObject, const char* key, JSONObject* value, bool recursive, Exception* exception)
 {
 	try
 	{
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
+		json::JsonObject result;
+
+		if (static_cast<json::JsonObject*>(jsonObject)->tryGet<json::JsonObject>(key, result, recursive))
+		{
+			*value = createJSONObject(&result, exception);
+
+			return true;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectStringByKey(JSONObject jsonObject, const char* key, String* value, bool recursive, Exception* exception)
+{
+	try
+	{
+		std::string result;
+
+		if (static_cast<json::JsonObject*>(jsonObject)->tryGet<std::string>(key, result, recursive))
+		{
+			*value = new std::string(result);
+
+			return true;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectIntegerByKey(JSONObject jsonObject, const char* key, int64_t* value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectUnsignedIntegerByKey(JSONObject jsonObject, const char* key, uint64_t* value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectDoubleByKey(JSONObject jsonObject, const char* key, double* value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectBooleanByKey(JSONObject jsonObject, const char* key, bool* value, bool recursive, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectNullByKey(JSONObject jsonObject, const char* key, bool recursive, Exception* exception)
+{
+	try
+	{
+		std::nullptr_t value;
+
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, value, recursive);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectArrayByKey(JSONObject jsonObject, const char* key, void(*addArrayValue)(JSONObject object, void* array), void* array, bool recursive, Exception* exception)
+{
+	try
+	{
+		std::vector<json::JsonObject> result;
+
+		if (static_cast<json::JsonObject*>(jsonObject)->tryGet<std::vector<json::JsonObject>>(key, result, recursive))
+		{
+			for (const json::JsonObject& object : result)
+			{
+				json::JsonObject& temp = const_cast<json::JsonObject&>(object);
+
+				addArrayValue(&temp, array);
+			}
+
+			return true;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectObject(JSONObject jsonObject, JSONObject* value, Exception* exception)
+{
+	try
+	{
+		json::JsonObject result;
+
+		if (static_cast<json::JsonObject*>(jsonObject)->tryGet(result))
+		{
+			*value = createJSONObject(&result, exception);
+
+			return true;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectString(JSONObject jsonObject, String* value, Exception* exception)
+{
+	try
+	{
+		std::string result;
+
+		if (static_cast<json::JsonObject*>(jsonObject)->tryGet<std::string>(result))
+		{
+			*value = new std::string(result);
+
+			return true;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectInteger(JSONObject jsonObject, int64_t* value, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectUnsignedInteger(JSONObject jsonObject, uint64_t* value, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectDouble(JSONObject jsonObject, double* value, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectBoolean(JSONObject jsonObject, bool* value, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectNull(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		std::nullptr_t value;
+
+		return static_cast<json::JsonObject*>(jsonObject)->tryGet(value);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+bool tryGetJSONObjectArray(JSONObject jsonObject, void(*addArrayValue)(JSONObject object, void* array), void* array, Exception* exception)
+{
+	try
+	{
+		std::vector<json::JsonObject> result;
+
+		if (static_cast<json::JsonObject*>(jsonObject)->tryGet<std::vector<json::JsonObject>>(result))
+		{
+			for (const json::JsonObject& object : result)
+			{
+				json::JsonObject& temp = const_cast<json::JsonObject&>(object);
+
+				addArrayValue(&temp, array);
+			}
+
+			return true;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
+}
+
+void setJSONObjectObject(JSONObject jsonObject, JSONObject value, Exception* exception)
+{
+	try
+	{
+		*static_cast<json::JsonObject*>(jsonObject) = *static_cast<json::JsonObject*>(value);
 	}
 	catch (const std::exception& e)
 	{
@@ -349,11 +1098,11 @@ void setJSONObjectInteger(JSONObject jsonObject, const char* key, int64_t value,
 	}
 }
 
-void setJSONObjectUnsignedInteger(JSONObject jsonObject, const char* key, uint64_t value, Exception* exception)
+void setJSONObjectString(JSONObject jsonObject, const char* value, Exception* exception)
 {
 	try
 	{
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
+		*static_cast<json::JsonObject*>(jsonObject) = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -365,11 +1114,11 @@ void setJSONObjectUnsignedInteger(JSONObject jsonObject, const char* key, uint64
 	}
 }
 
-void setJSONObjectDouble(JSONObject jsonObject, const char* key, double value, Exception* exception)
+void setJSONObjectInteger(JSONObject jsonObject, int64_t value, Exception* exception)
 {
 	try
 	{
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
+		*static_cast<json::JsonObject*>(jsonObject) = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -381,11 +1130,11 @@ void setJSONObjectDouble(JSONObject jsonObject, const char* key, double value, E
 	}
 }
 
-void setJSONObjectBoolean(JSONObject jsonObject, const char* key, bool value, Exception* exception)
+void setJSONObjectUnsignedInteger(JSONObject jsonObject, uint64_t value, Exception* exception)
 {
 	try
 	{
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = value;
+		*static_cast<json::JsonObject*>(jsonObject) = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -397,11 +1146,11 @@ void setJSONObjectBoolean(JSONObject jsonObject, const char* key, bool value, Ex
 	}
 }
 
-void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* exception)
+void setJSONObjectDouble(JSONObject jsonObject, double value, Exception* exception)
 {
 	try
 	{
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = nullptr;
+		*static_cast<json::JsonObject*>(jsonObject) = value;
 	}
 	catch (const std::exception& e)
 	{
@@ -413,7 +1162,39 @@ void setJSONObjectNull(JSONObject jsonObject, const char* key, Exception* except
 	}
 }
 
-void setJSONObjectArray(JSONObject jsonObject, const char* key, JSONObject* objects, size_t size, Exception* exception)
+void setJSONObjectBoolean(JSONObject jsonObject, bool value, Exception* exception)
+{
+	try
+	{
+		*static_cast<json::JsonObject*>(jsonObject) = value;
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void setJSONObjectNull(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		*static_cast<json::JsonObject*>(jsonObject) = nullptr;
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void setJSONObjectArray(JSONObject jsonObject, JSONObject* objects, size_t size, Exception* exception)
 {
 	try
 	{
@@ -426,7 +1207,7 @@ void setJSONObjectArray(JSONObject jsonObject, const char* key, JSONObject* obje
 			values.emplace_back(*static_cast<json::JsonObject*>(objects[i]));
 		}
 
-		(*static_cast<json::JsonObject*>(jsonObject))[key] = std::move(values);
+		*static_cast<json::JsonObject*>(jsonObject) = std::move(values);
 	}
 	catch (const std::exception& e)
 	{
@@ -436,6 +1217,28 @@ void setJSONObjectArray(JSONObject jsonObject, const char* key, JSONObject* obje
 	{
 		UNEXPECTED_EXCEPTION();
 	}
+}
+
+String jsonObjectToString(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		std::ostringstream stream;
+
+		stream << *static_cast<json::JsonObject*>(jsonObject);
+
+		return new std::string(stream.str());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
 }
 
 String buildJSONBuilder(JSONBuilder builder, Exception* exception)
@@ -488,11 +1291,11 @@ void minimizeJsonBuilder(JSONBuilder builder, Exception* exception)
 	}
 }
 
-bool containsJsonBuilderObject(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderObject(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<json::JsonObject>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<json::JsonObject>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -506,11 +1309,11 @@ bool containsJsonBuilderObject(JSONBuilder parser, const char* key, bool recursi
 	return false;
 }
 
-bool containsJsonBuilderString(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderString(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<std::string>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<std::string>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -524,11 +1327,11 @@ bool containsJsonBuilderString(JSONBuilder parser, const char* key, bool recursi
 	return false;
 }
 
-bool containsJsonBuilderInteger(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderInteger(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<int64_t>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<int64_t>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -542,11 +1345,11 @@ bool containsJsonBuilderInteger(JSONBuilder parser, const char* key, bool recurs
 	return false;
 }
 
-bool containsJsonBuilderUnsignedInteger(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderUnsignedInteger(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<uint64_t>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<uint64_t>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -560,11 +1363,11 @@ bool containsJsonBuilderUnsignedInteger(JSONBuilder parser, const char* key, boo
 	return false;
 }
 
-bool containsJsonBuilderDouble(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderDouble(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<double>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<double>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -578,11 +1381,11 @@ bool containsJsonBuilderDouble(JSONBuilder parser, const char* key, bool recursi
 	return false;
 }
 
-bool containsJsonBuilderBoolean(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderBoolean(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<bool>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<bool>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -596,11 +1399,11 @@ bool containsJsonBuilderBoolean(JSONBuilder parser, const char* key, bool recurs
 	return false;
 }
 
-bool containsJsonBuilderNull(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderNull(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<std::nullptr_t>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<std::nullptr_t>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -614,11 +1417,11 @@ bool containsJsonBuilderNull(JSONBuilder parser, const char* key, bool recursive
 	return false;
 }
 
-bool containsJsonBuilderArray(JSONBuilder parser, const char* key, bool recursive, Exception* exception)
+bool containsJsonBuilderArray(JSONBuilder builder, const char* key, bool recursive, Exception* exception)
 {
 	try
 	{
-		return static_cast<json::JsonBuilder*>(parser)->contains<std::vector<json::JsonObject>>(key, recursive);
+		return static_cast<json::JsonBuilder*>(builder)->contains<std::vector<json::JsonObject>>(key, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -631,7 +1434,6 @@ bool containsJsonBuilderArray(JSONBuilder parser, const char* key, bool recursiv
 
 	return false;
 }
-
 
 void appendJSONBuilderObject(JSONBuilder builder, const char* key, JSONObject object, Exception* exception)
 {
@@ -1208,7 +2010,7 @@ bool tryGetJSONParserObject(JSONParser parser, const char* key, JSONObject* valu
 
 		if (static_cast<json::JsonParser*>(parser)->tryGet<json::JsonObject>(key, result, recursive))
 		{
-			*value = &result;
+			*value = createJSONObject(&result, exception);
 
 			return true;
 		}

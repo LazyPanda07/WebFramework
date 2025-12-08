@@ -16,11 +16,11 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 	{
 		framework::JsonObject object;
 
-		object.setValue("id", value.at("id").get<int64_t>());
-		object.setValue("name", value.at("name").get<std::string>());
-		object.setValue("amount", value.at("amount").get<int64_t>());
+		object["id"] = value.at("id").get<int64_t>();
+		object["name"] = value.at("name").get<std::string>();
+		object["amount"] = value.at("amount").get<int64_t>();
 
-		framework::utility::appendArray(data, object);
+		data.push_back(std::move(object));
 	}
 
 	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
@@ -84,11 +84,11 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 	{
 		framework::JsonObject object;
 
-		object.setValue("id", value.at("id").get<int64_t>());
-		object.setValue("name", value.at("name").get<std::string>());
-		object.setValue("amount", value.at("amount").get<int64_t>());
+		object["id"] = value.at("id").get<int64_t>();
+		object["name"] = value.at("name").get<std::string>();
+		object["amount"] = value.at("amount").get<int64_t>();
 
-		framework::utility::appendArray(data, object);
+		data.push_back(std::move(object));
 	}
 
 	response.setBody(framework::JsonBuilder().append("data", std::move(data)));

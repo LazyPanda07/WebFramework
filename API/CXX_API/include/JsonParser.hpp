@@ -11,9 +11,6 @@ namespace framework
 	private:
 		void* implementation;
 
-	private:
-		static void addArrayValue(void* object, void* array);
-
 	public:
 		JsonParser();
 
@@ -49,11 +46,6 @@ namespace framework
 
 namespace framework
 {
-	inline void JsonParser::addArrayValue(void* object, void* array)
-	{
-		static_cast<std::vector<JsonObject>*>(array)->push_back(JsonObject(object));
-	}
-
 	inline JsonParser::JsonParser()
 	{
 		using createJSONParser = void* (*)(void* builder, void** exception);
@@ -286,13 +278,13 @@ namespace framework
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserArray, void, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserArray, key.data(), &JsonParser::addArrayValue, &result, recursive, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserArray, key.data(), &JsonObject::addArrayValue, &result, recursive, &exception);
 		}
 		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(getJSONParserObject, void*, const char* key, bool recursive, void** exception);
 
-			result = JsonObject(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserObject, key.data(), recursive, &exception));
+			result = JsonObject(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONParserObject, key.data(), recursive, &exception), false);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
@@ -362,7 +354,7 @@ namespace framework
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONParserArray, bool, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserArray, key.data(), &JsonParser::addArrayValue, &value, recursive, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserArray, key.data(), &JsonObject::addArrayValue, &value, recursive, &exception);
 		}
 		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
@@ -371,7 +363,7 @@ namespace framework
 
 			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONParserObject, key.data(), &object, recursive, &exception))
 			{
-				value = JsonObject(object);
+				value = JsonObject(object, false);
 
 				result = true;
 			}
