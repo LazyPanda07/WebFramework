@@ -94,4 +94,4 @@ WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, const ch
  * @param value JSON array value
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONArray_t* array);
+WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONObject_t* array, size_t arraySize);

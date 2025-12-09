@@ -589,6 +589,24 @@ bool containsJsonObjectArray(JSONObject jsonObject, const char* key, bool recurs
 	return false;
 }
 
+size_t sizeJsonObject(JSONObject jsonObject, Exception* exception)
+{
+	try
+	{
+		return static_cast<json::JsonObject*>(jsonObject)->size();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return 0;
+}
+
 JSONObject getJSONObjectObject(JSONObject jsonObject, Exception* exception)
 {
 	try

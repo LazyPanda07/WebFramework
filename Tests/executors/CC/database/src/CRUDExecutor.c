@@ -13,8 +13,8 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	Table table;
 	SQLValue value;
 	SQLResult result;
-	JSONArray_t data;
 	JSONBuilder builder;
+	JSONObject_t data;
 
 	getDatabaseHTTPRequest(request, "test_database", &database);
 	getTable(database, "test_table", &table);
@@ -26,12 +26,12 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	executeQuery(table, "SELECT * FROM test_table WHERE name = ?", &value, 1, &result);
 	iterateSQLResult(result, initBuffer, callback, &data);
 
-	appendJSONBuilderArray(builder, "data", &data);
+	appendJSONBuilderObject(builder, "data", &data);
 
 	setJSONBody(response, builder);
 
+	deleteJSONObject(&data);
 	deleteWebFrameworkSQLValue(value);
-	deleteJSONArray(&data);
 	deleteWebFrameworkJSONBuilder(builder);
 	deleteSQLResult(table, result);
 }
@@ -97,8 +97,8 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	Table table;
 	SQLResult result;
 	SQLValue* values = (SQLValue*)malloc(2 * sizeof(SQLValue));
-	JSONArray_t data;
 	JSONBuilder builder;
+	JSONObject_t data;
 
 	if (!values)
 	{
@@ -139,12 +139,13 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 
 	iterateSQLResult(result, initBuffer, callback, &data);
 
-	appendJSONBuilderArray(builder, "data", &data);
+	appendJSONBuilderObject(builder, "data", &data);
+
 	setJSONBody(response, builder);
 
+	deleteJSONObject(&data);
 	deleteWebFrameworkSQLValue(values[0]);
 	deleteWebFrameworkSQLValue(values[1]);
-	deleteJSONArray(&data);
 	deleteWebFrameworkJSONBuilder(builder);
 }
 

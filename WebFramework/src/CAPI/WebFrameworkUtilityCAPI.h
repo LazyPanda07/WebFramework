@@ -77,6 +77,8 @@ EXPORT bool containsJsonObjectNull(JSONObject jsonObject, const char* key, bool 
 
 EXPORT bool containsJsonObjectArray(JSONObject jsonObject, const char* key, bool recursive, Exception* exception);
 
+EXPORT size_t sizeJsonObject(JSONObject jsonObject, Exception* exception);
+
 EXPORT JSONObject getJSONObjectObject(JSONObject jsonObject, Exception* exception);
 
 EXPORT const char* getJSONObjectString(JSONObject jsonObject, Exception* exception);

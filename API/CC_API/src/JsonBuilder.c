@@ -110,10 +110,10 @@ WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, const ch
 	return exception;
 }
 
-WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONArray_t* array)
+WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONObject_t* array, size_t arraySize)
 {
 	WebFrameworkException exception = NULL;
-	void* buffer = malloc(array->size * sizeof(void*));
+	void* buffer = malloc(arraySize * sizeof(void*));
 
 	if (!buffer)
 	{
@@ -124,12 +124,12 @@ WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const c
 
 	typedef void (*appendJSONBuilderArray)(void* implementation, const char* key, void** value, size_t size, void** exception);
 
-	for (size_t i = 0; i < array->size; i++)
+	for (size_t i = 0; i < arraySize; i++)
 	{
-		value[i] = array->data[i].implementation;
+		value[i] = array[i].implementation;
 	}
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderArray, key, value, array->size, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(appendJSONBuilderArray, key, value, arraySize, &exception);
 
 	free(buffer);
 

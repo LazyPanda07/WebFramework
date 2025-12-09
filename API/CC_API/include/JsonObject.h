@@ -12,94 +12,6 @@ typedef struct JSONObject
 } JSONObject_t;
 
 /**
- * @brief Array of JSONObject
- */
-typedef struct JSONArray_t
-{
-	JSONObject_t* data;
-	size_t size;
-	size_t capacity;
-} JSONArray_t;
-
-size_t __getIndex(JSONArray_t* array);
-
-/**
- * @brief Create Array of JSONObject. Delete with deleteJSONArray function
- * @param capacity Start capacity
- * @return JSONArray
- */
-JSONArray_t createJSONArray(size_t capacity);
-
-/**
- * @brief Add JSONObject to JSONArray
- * @param array JSONArray
- * @param value JSONObject
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayObject(JSONArray_t* array, JSONObject_t* value);
-
-/**
- * @brief Add string to JSONArray
- * @param array JSONArray
- * @param value String
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayString(JSONArray_t* array, const char* value);
-
-/**
- * @brief Add integer to JSONArray
- * @param array JSONArray
- * @param value Integer
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayInteger(JSONArray_t* array, int64_t value);
-
-/**
- * @brief Add string to JSONArray
- * @param array JSONArray
- * @param value String
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayUnsignedInteger(JSONArray_t* array, uint64_t value);
-
-/**
- * @brief Add double to JSONArray
- * @param array JSONArray
- * @param value Double
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayDouble(JSONArray_t* array, double value);
-
-/**
- * @brief Add bool to JSONArray
- * @param array JSONArray
- * @param value Bool
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayBoolean(JSONArray_t* array, bool value);
-
-/**
- * @brief Add NULL to JSONArray
- * @param array JSONArray
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayNull(JSONArray_t* array);
-
-/**
- * @brief Add JSONArray to JSONArray
- * @param array JSONArray
- * @param value JSONArray
- * @return Error if occurred
- */
-WebFrameworkException appendJSONArrayArray(JSONArray_t* array, const JSONArray_t* objects);
-
-/**
- * @brief Delete JSONArray
- * @param array JSONArray instance
- */
-void deleteJSONArray(JSONArray_t* array);
-
-/**
  * @brief Create JSONObject. Delete with deleteWebFrameworkJSONObject function
  * @param jsonObject JSONObject
  * @return Error if occurred
@@ -175,7 +87,7 @@ WebFrameworkException setJSONObjectNull(JSONObject_t* jsonObject);
  * @param value JSONArray value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const JSONArray_t* array);
+WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const JSONObject_t* array, size_t arraySize);
 
 /**
  * @brief Add key to JSON object and get associated object
@@ -193,6 +105,14 @@ WebFrameworkException assignJSONObject(JSONObject_t* jsonObject, const char* key
  * @return
  */
 WebFrameworkException emplaceJSONObject(JSONObject_t* jsonObject, JSONObject_t* result);
+
+/**
+ * @brief Obtains the size of a JSON object and writes it to the provided output parameter.
+ * @param jsonObject Pointer to the JSON object whose size will be determined.
+ * @param size Pointer to a size_t where the computed size will be stored on success. If jsonObject is map or array it returns actual size, ULLONG_MAX otherwise
+ * @return A WebFrameworkException value indicating success or failure. On success, *size is set to the object's size.
+ */
+WebFrameworkException sizeJSONObject(JSONObject_t* jsonObject, size_t* size);
 
 /**
  * @brief Delete JSONObject

@@ -1,225 +1,5 @@
 #include "JsonObject.h"
 
-size_t __getIndex(JSONArray_t* array)
-{
-	if (array->size == array->capacity)
-	{
-		JSONObject_t* temp = array->data;
-
-		array->capacity *= 2;
-		array->data = (JSONObject_t*)malloc(array->capacity * sizeof(JSONObject_t));
-
-		if (array->data)
-		{
-			memcpy(array->data, temp, array->size * sizeof(JSONObject_t));
-		}
-
-		free(temp);
-	}
-
-	return array->size++;
-}
-
-JSONArray_t createJSONArray(size_t capacity)
-{
-	JSONArray_t result =
-	{
-		.data = (JSONObject_t*)malloc(capacity * sizeof(JSONObject_t)),
-		.size = 0,
-		.capacity = capacity
-	};
-
-	if (result.data)
-	{
-		memset(result.data, 0, capacity * sizeof(JSONObject_t));
-	}
-
-	return result;
-}
-
-WebFrameworkException appendJSONArrayObject(JSONArray_t* array, JSONObject_t* value)
-{
-	JSONObject_t object;
-	WebFrameworkException exception = createJSONObject(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	exception = setJSONObjectObject(&object, value);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	array->data[__getIndex(array)] = object;
-
-	return exception;
-}
-
-WebFrameworkException appendJSONArrayString(JSONArray_t* array, const char* value)
-{
-	JSONObject_t object;
-	WebFrameworkException exception = createJSONObject(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	exception = setJSONObjectString(&object, value);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	array->data[__getIndex(array)] = object;
-
-	return exception;
-}
-
-WebFrameworkException appendJSONArrayInteger(JSONArray_t* array, int64_t value)
-{
-	JSONObject_t object;
-	WebFrameworkException exception = createJSONObject(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	exception = setJSONObjectInteger(&object, value);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	array->data[__getIndex(array)] = object;
-
-	return exception;
-}
-
-WebFrameworkException appendJSONArrayUnsignedInteger(JSONArray_t* array, uint64_t value)
-{
-	JSONObject_t object;
-	WebFrameworkException exception = createJSONObject(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	exception = setJSONObjectUnsignedInteger(&object, value);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	array->data[__getIndex(array)] = object;
-
-	return exception;
-}
-
-WebFrameworkException appendJSONArrayDouble(JSONArray_t* array, double value)
-{
-	JSONObject_t object;
-	WebFrameworkException exception = createJSONObject(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	exception = setJSONObjectDouble(&object, value);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	array->data[__getIndex(array)] = object;
-
-	return exception;
-}
-
-WebFrameworkException appendJSONArrayBoolean(JSONArray_t* array, bool value)
-{
-	JSONObject_t object;
-	WebFrameworkException exception = createJSONObject(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	exception = setJSONObjectBoolean(&object, value);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	array->data[__getIndex(array)] = object;
-
-	return exception;
-}
-
-WebFrameworkException appendJSONArrayNull(JSONArray_t* array)
-{
-	JSONObject_t object;
-	WebFrameworkException exception = createJSONObject(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	exception = setJSONObjectNull(&object);
-
-	if (exception)
-	{
-		return exception;
-	}
-
-	array->data[__getIndex(array)] = object;
-
-	return exception;
-}
-
-WebFrameworkException appendJSONArrayArray(JSONArray_t* array, const JSONArray_t* objects)
-{
-	WebFrameworkException exception = NULL;
-
-	for (size_t i = 0; i < objects->size; i++)
-	{
-		exception = appendJSONArrayObject(array, &objects->data[i]);
-
-		if (exception)
-		{
-			break;
-		}
-	}
-
-	return exception;
-}
-
-void deleteJSONArray(JSONArray_t* array)
-{
-	for (size_t i = 0; i < array->size; i++)
-	{
-		deleteJSONObject(&array->data[i]);
-	}
-
-	free(array->data);
-	array->capacity = 0;
-	array->size = 0;
-}
-
 WebFrameworkException createJSONObject(JSONObject_t* jsonObject)
 {
 	WebFrameworkException exception = NULL;
@@ -328,21 +108,21 @@ WebFrameworkException setJSONObjectNull(JSONObject_t* jsonObject)
 	return exception;
 }
 
-WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const JSONArray_t* array)
+WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const JSONObject_t* array, size_t arraySize)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
-	void* buffer = malloc(array->size * sizeof(void*));
+	void* buffer = malloc(arraySize * sizeof(void*));
 	void** value = &buffer;
 
 	typedef void (*setJSONObjectArray)(void* implementation, void** value, size_t size, void** exception);
 
-	for (size_t i = 0; i < array->size; i++)
+	for (size_t i = 0; i < arraySize; i++)
 	{
-		value[i] = array->data[i].implementation;
+		value[i] = array[i].implementation;
 	}
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectArray, value, array->size, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectArray, value, arraySize, &exception);
 
 	free(buffer);
 
@@ -375,11 +155,23 @@ WebFrameworkException emplaceJSONObject(JSONObject_t* jsonObject, JSONObject_t* 
 	return exception;
 }
 
+WebFrameworkException sizeJSONObject(JSONObject_t* jsonObject, size_t* size)
+{
+	WebFrameworkException exception = NULL;
+	void* implementation = jsonObject->implementation;
+
+	typedef size_t (*sizeJSONObject)(void* implementation, void** exception);
+
+	*size = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sizeJSONObject, &exception);
+
+	return exception;
+}
+
 void deleteJSONObject(JSONObject_t* jsonObject)
 {
 	typedef void* (*deleteWebFrameworkJSONObject)(void* implementation);
 
-	if (!jsonObject->weak && jsonObject->implementation)
+	if (jsonObject && !jsonObject->weak && jsonObject->implementation)
 	{
 		CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONObject, jsonObject->implementation);
 

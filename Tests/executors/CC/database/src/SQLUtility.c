@@ -4,17 +4,17 @@
 
 void initBuffer(size_t size, void* buffer)
 {
-	JSONArray_t* array = (JSONArray_t*)buffer;
+	JSONObject_t* data = (JSONObject_t*)buffer;
 
-	*array = createJSONArray(size);
+	createJSONObject(data);
 }
 
 void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer)
 {
-	JSONArray_t* array = (JSONArray_t*)buffer;
+	JSONObject_t* array = (JSONObject_t*)buffer;
 	JSONObject_t object;
 
-	createJSONObject(&object);
+	emplaceJSONObject(array, &object);
 
 	for (size_t i = 0; i < size; i++)
 	{
@@ -44,7 +44,4 @@ void callback(const char** columnNames, const SQLValue* columnValues, size_t siz
 			setJSONObjectString(&temp, result);
 		}
 	}
-
-	appendJSONArrayObject(array, &object);
-	deleteJSONObject(&object);
 }

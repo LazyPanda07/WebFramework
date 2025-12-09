@@ -41,6 +41,8 @@ namespace framework
 
 		JsonObject& operator =(JsonObject&& other) noexcept;
 
+		size_t size() const;
+
 		/**
 		 * @brief Returns the JSON element at the specified index.
 		 * @param index The zero-based index of the element to access.
@@ -149,6 +151,21 @@ namespace framework
 		other.implementation = nullptr;
 
 		return *this;
+	}
+
+	inline size_t JsonObject::size() const
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(sizeJsonObject, size_t, void** exception);
+		void* exception = nullptr;
+
+		size_t result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sizeJsonObject, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return result;
 	}
 
 	inline JsonObject JsonObject::operator [](size_t index)

@@ -102,7 +102,7 @@ WebFrameworkException getJSONParserNull(JSONParser implementation, const char* k
  * @param result Result JSONArray
  * @return Error if occurred
  */
-WebFrameworkException getJSONParserArray(JSONParser implementation, const char* key, JSONArray_t* array, bool recursive);
+WebFrameworkException getJSONParserArray(JSONParser implementation, const char* key, JSONObject_t* array, size_t* arraySize, bool recursive);
 
 /**
  * @brief Try to get JSONObject
@@ -189,4 +189,4 @@ bool tryGetJSONParserNull(JSONParser implementation, const char* key, bool recur
  * @param exception Error if occurred
  * @return Has JSON field
  */
-bool tryGetJSONParserArray(JSONParser implementation, const char* key, JSONArray_t* array, bool recursive, WebFrameworkException* exception);
+bool tryGetJSONParserArray(JSONParser implementation, const char* key, JSONObject_t* array, size_t* arraySize, bool recursive, WebFrameworkException* exception);
