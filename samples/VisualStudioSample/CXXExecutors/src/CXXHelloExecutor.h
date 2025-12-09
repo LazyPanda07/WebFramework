@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseStatelessExecutor.hpp>
+#include <Executors/StatelessExecutor.hpp>
 
-class CXXHelloExecutor : public framework::BaseStatelessExecutor
+class CXXHelloExecutor : public framework::StatelessExecutor
 {
 public:
 	CXXHelloExecutor() = default;
