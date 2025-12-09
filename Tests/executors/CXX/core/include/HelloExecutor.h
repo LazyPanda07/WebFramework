@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseStatelessExecutor.hpp>
+#include <Executors/StatelessExecutor.hpp>
 
-class HelloExecutor : public framework::BaseStatelessExecutor
+class HelloExecutor : public framework::StatelessExecutor
 {
 private:
 	int64_t value;

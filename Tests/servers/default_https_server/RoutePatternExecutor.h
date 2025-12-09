@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseStatelessExecutor.hpp>
+#include <Executors/StatelessExecutor.hpp>
 
-class RoutePatternExecutor : public framework::BaseStatelessExecutor
+class RoutePatternExecutor : public framework::StatelessExecutor
 {
 public:
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;

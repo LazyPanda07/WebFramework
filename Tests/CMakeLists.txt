@@ -25,7 +25,7 @@ set(
 )
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-option(CC_API "" ON)
+option(CC_API "" OFF)
 option(CXX_API "" OFF)
 option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)

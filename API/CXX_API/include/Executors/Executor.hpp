@@ -96,7 +96,7 @@ namespace framework
 		};
 	}
 
-	class BaseExecutor
+	class Executor
 	{
 	private:
 		static void isImplemented
@@ -105,12 +105,12 @@ namespace framework
 			HTTPRequest& request,
 			HTTPResponse& response,
 			const std::string& methodName,
-			void(BaseExecutor::* method)(HTTPRequest&, HTTPResponse&),
-			BaseExecutor& executor
+			void(Executor::* method)(HTTPRequest&, HTTPResponse&),
+			Executor& executor
 		);
 
 	public:
-		BaseExecutor() = default;
+		Executor() = default;
 
 		virtual void init(const utility::ExecutorSettings& settings);
 
@@ -136,7 +136,7 @@ namespace framework
 
 		virtual void destroy() = 0;
 
-		virtual ~BaseExecutor() = default;
+		virtual ~Executor() = default;
 	};
 }
 
@@ -230,42 +230,42 @@ namespace framework
 		}
 	}
 
-	inline void BaseExecutor::init(const utility::ExecutorSettings& settings)
+	inline void Executor::init(const utility::ExecutorSettings& settings)
 	{
 
 	}
 
-	inline void BaseExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
-	{
-		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
-	}
-
-	inline void BaseExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doPost(HTTPRequest& request, HTTPResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void BaseExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doGet(HTTPRequest& request, HTTPResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void BaseExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doHead(HTTPRequest& request, HTTPResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void BaseExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doPut(HTTPRequest& request, HTTPResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void BaseExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doDelete(HTTPRequest& request, HTTPResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void BaseExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	{
+		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
+	}
+
+	inline void Executor::doOptions(HTTPRequest& request, HTTPResponse& response)
 	{
 #ifdef NDEBUG
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
@@ -274,14 +274,14 @@ namespace framework
 		std::vector<std::string> methods = { "OPTIONS" };
 		std::string allowHeaders;
 
-		BaseExecutor::isImplemented(methods, request, response, "GET", &BaseExecutor::doGet, *this);
-		BaseExecutor::isImplemented(methods, request, response, "POST", &BaseExecutor::doPost, *this);
-		BaseExecutor::isImplemented(methods, request, response, "HEAD", &BaseExecutor::doHead, *this);
-		BaseExecutor::isImplemented(methods, request, response, "PUT", &BaseExecutor::doPut, *this);
-		BaseExecutor::isImplemented(methods, request, response, "DELETE", &BaseExecutor::doDelete, *this);
-		BaseExecutor::isImplemented(methods, request, response, "PATCH", &BaseExecutor::doPatch, *this);
-		BaseExecutor::isImplemented(methods, request, response, "TRACE", &BaseExecutor::doTrace, *this);
-		BaseExecutor::isImplemented(methods, request, response, "CONNECT", &BaseExecutor::doConnect, *this);
+		Executor::isImplemented(methods, request, response, "GET", &Executor::doGet, *this);
+		Executor::isImplemented(methods, request, response, "POST", &Executor::doPost, *this);
+		Executor::isImplemented(methods, request, response, "HEAD", &Executor::doHead, *this);
+		Executor::isImplemented(methods, request, response, "PUT", &Executor::doPut, *this);
+		Executor::isImplemented(methods, request, response, "DELETE", &Executor::doDelete, *this);
+		Executor::isImplemented(methods, request, response, "PATCH", &Executor::doPatch, *this);
+		Executor::isImplemented(methods, request, response, "TRACE", &Executor::doTrace, *this);
+		Executor::isImplemented(methods, request, response, "CONNECT", &Executor::doConnect, *this);
 
 		for (size_t i = 0; i < methods.size(); i++)
 		{
@@ -296,7 +296,7 @@ namespace framework
 		response.addHeader("Allow", allowHeaders);
 	}
 
-	inline void BaseExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doTrace(HTTPRequest& request, HTTPResponse& response)
 	{
 #ifdef NDEBUG
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
@@ -305,19 +305,19 @@ namespace framework
 		response.setBody(request.getRawRequest());
 	}
 
-	inline void BaseExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doConnect(HTTPRequest& request, HTTPResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void BaseExecutor::isImplemented
+	inline void Executor::isImplemented
 	(
 		std::vector<std::string>& result,
 		HTTPRequest& request,
 		HTTPResponse& response,
 		const std::string& methodName,
-		void(BaseExecutor::* method)(HTTPRequest&, HTTPResponse&),
-		BaseExecutor& executor
+		void(Executor::* method)(HTTPRequest&, HTTPResponse&),
+		Executor& executor
 	)
 	{
 		response.setDefault();
@@ -349,8 +349,8 @@ namespace framework
 #endif
 
 /**
-* Macro for each BaseExecutor subclass
-* Used for loading function that creates BaseExecutor subclass
+* Macro for each Executor subclass
+* Used for loading function that creates Executor subclass
 */
 #define DEFINE_EXECUTOR(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##subclassName##CXXInstance()	\
 {	\
@@ -360,7 +360,7 @@ namespace framework
 #pragma region ExportFunctions
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(void* implementation, void* executorSettings)
 {
-	static_cast<framework::BaseExecutor*>(implementation)->init(framework::utility::ExecutorSettings(executorSettings));
+	static_cast<framework::Executor*>(implementation)->init(framework::utility::ExecutorSettings(executorSettings));
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -368,7 +368,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* imp
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doPost(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doPost(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -376,7 +376,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* impl
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doGet(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doGet(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -384,7 +384,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* imp
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doHead(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doHead(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -392,7 +392,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* impl
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doPut(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doPut(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -400,7 +400,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* i
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doDelete(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doDelete(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -408,7 +408,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* im
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doPatch(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doPatch(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -416,7 +416,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* 
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doOptions(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doOptions(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -424,7 +424,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* im
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doTrace(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doTrace(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
@@ -432,22 +432,22 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* 
 	framework::HTTPRequest requestWrapper(request);
 	framework::HTTPResponse responseWrapper(response);
 
-	static_cast<framework::BaseExecutor*>(implementation)->doConnect(requestWrapper, responseWrapper);
+	static_cast<framework::Executor*>(implementation)->doConnect(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline framework::utility::ExecutorType webFrameworkCXXGetType(void* implementation)
 {
-	return static_cast<framework::BaseExecutor*>(implementation)->getType();
+	return static_cast<framework::Executor*>(implementation)->getType();
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDestroyExecutor(void* implementation)
 {
-	static_cast<framework::BaseExecutor*>(implementation)->destroy();
+	static_cast<framework::Executor*>(implementation)->destroy();
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDeleteExecutor(void* implementation)
 {
-	delete static_cast<framework::BaseExecutor*>(implementation);
+	delete static_cast<framework::Executor*>(implementation);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCXX(const char* webFrameworkSharedLibraryPath)

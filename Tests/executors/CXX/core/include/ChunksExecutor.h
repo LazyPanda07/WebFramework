@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseHeavyOperationStatelessExecutor.hpp>
+#include <Executors/HeavyOperationStatelessExecutor.hpp>
 
-class ChunksExecutor : public framework::BaseHeavyOperationStatelessExecutor
+class ChunksExecutor : public framework::HeavyOperationStatelessExecutor
 {
 public:
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;

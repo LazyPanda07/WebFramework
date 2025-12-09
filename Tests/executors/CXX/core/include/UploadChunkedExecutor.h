@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseHeavyOperationStatelessExecutor.hpp>
+#include <Executors/HeavyOperationStatelessExecutor.hpp>
 
-class UploadChunkedExecutor : public framework::BaseHeavyOperationStatelessExecutor
+class UploadChunkedExecutor : public framework::HeavyOperationStatelessExecutor
 {
 public:
 	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;

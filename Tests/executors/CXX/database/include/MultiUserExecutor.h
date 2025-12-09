@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseHeavyOperationStatefulExecutor.hpp>
+#include <Executors/HeavyOperationStatefulExecutor.hpp>
 
-class MultiUserExecutor : public framework::BaseHeavyOperationStatefulExecutor
+class MultiUserExecutor : public framework::HeavyOperationStatefulExecutor
 {
 private:
 	std::string userId;

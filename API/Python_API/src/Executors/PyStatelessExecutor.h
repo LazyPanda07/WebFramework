@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Executors/BaseStatelessExecutor.hpp>
+#include <Executors/StatelessExecutor.hpp>
 
 namespace framework
 {
-	class PyStatelessExecutor : public BaseStatelessExecutor
+	class PyStatelessExecutor : public StatelessExecutor
 	{
 	public:
 		PyStatelessExecutor() = default;

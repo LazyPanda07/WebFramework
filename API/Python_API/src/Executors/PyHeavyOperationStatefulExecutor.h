@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Executors/BaseHeavyOperationStatefulExecutor.hpp>
+#include <Executors/HeavyOperationStatefulExecutor.hpp>
 
 namespace framework
 {
-	class PyHeavyOperationStatefulExecutor : public BaseHeavyOperationStatefulExecutor
+	class PyHeavyOperationStatefulExecutor : public HeavyOperationStatefulExecutor
 	{
 	public:
 		PyHeavyOperationStatefulExecutor() = default;

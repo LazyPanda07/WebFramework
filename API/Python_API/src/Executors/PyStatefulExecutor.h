@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Executors/BaseStatefulExecutor.hpp>
+#include <Executors/StatefulExecutor.hpp>
 
 namespace framework
 {
-	class PyStatefulExecutor : public BaseStatefulExecutor
+	class PyStatefulExecutor : public StatefulExecutor
 	{
 	public:
 		PyStatefulExecutor() = default;

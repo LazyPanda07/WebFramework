@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseStatelessExecutor.hpp>
+#include <Executors/StatelessExecutor.hpp>
 
-class AssetsExecutor : public framework::BaseStatelessExecutor
+class AssetsExecutor : public framework::StatelessExecutor
 {
 public:
 	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;

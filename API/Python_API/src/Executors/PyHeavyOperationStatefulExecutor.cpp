@@ -11,7 +11,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			init,
 			settings
 		);
@@ -22,7 +22,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doPost,
 			request,
 			response
@@ -34,7 +34,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doGet,
 			request,
 			response
@@ -46,7 +46,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doHead,
 			request,
 			response
@@ -58,7 +58,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doPut,
 			request,
 			response
@@ -70,7 +70,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doDelete,
 			request,
 			response
@@ -82,7 +82,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doPatch,
 			request,
 			response
@@ -94,7 +94,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doOptions,
 			request,
 			response
@@ -106,7 +106,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doTrace,
 			request,
 			response
@@ -118,7 +118,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			doConnect,
 			request,
 			response
@@ -130,7 +130,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatefulExecutor,
+			HeavyOperationStatefulExecutor,
 			destroy
 		);
 	}

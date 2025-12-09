@@ -11,7 +11,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			init,
 			settings
 		);
@@ -22,7 +22,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doPost,
 			request,
 			response
@@ -34,7 +34,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doGet,
 			request,
 			response
@@ -46,7 +46,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doHead,
 			request,
 			response
@@ -58,7 +58,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doPut,
 			request,
 			response
@@ -70,7 +70,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doDelete,
 			request,
 			response
@@ -82,7 +82,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doPatch,
 			request,
 			response
@@ -94,7 +94,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doOptions,
 			request,
 			response
@@ -106,7 +106,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doTrace,
 			request,
 			response
@@ -118,7 +118,7 @@ namespace framework
 		PYBIND11_OVERRIDE
 		(
 			void,
-			BaseHeavyOperationStatelessExecutor,
+			HeavyOperationStatelessExecutor,
 			doConnect,
 			request,
 			response
