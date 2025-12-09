@@ -80,7 +80,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDeleteExecutor##structNa
 
 /**
 * Create custom Executor function
-* Used for loading function that creates BaseExecutor subclass
+* Used for loading function that creates Executor subclass
 * @param structName Create empty struct for stateless executors
 */
 #define DEFINE_DEFAULT_EXECUTOR(structName, executorType) typedef struct { char _; } structName; DEFINE_EXECUTOR(structName, executorType)

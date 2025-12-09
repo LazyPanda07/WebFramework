@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\Executors\BaseExecutor.h">
+    <ClCompile Include="include\Executors\Executor.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Executors\BaseExecutor.c">
+    <ClCompile Include="src\Executors\Executor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Databases\Database.c">

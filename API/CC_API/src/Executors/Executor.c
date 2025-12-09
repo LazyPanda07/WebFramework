@@ -1,4 +1,4 @@
-#include "Executors/BaseExecutor.h"
+#include "Executors/Executor.h"
 
 WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result)
 {
