@@ -296,9 +296,9 @@ namespace framework
 
 	inline JsonObject JsonBuilder::operator [](std::string_view key)
 	{
-		DEFINE_CLASS_MEMBER_FUNCTION(accessKeyOperatorJsonBuilder, void*, void** exception);
+		DEFINE_CLASS_MEMBER_FUNCTION(accessKeyOperatorJsonBuilder, void*, const char* key, void** exception);
 		void* exception = nullptr;
-		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonBuilder, &exception);
+		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonBuilder, key.data(), & exception);
 
 		if (exception)
 		{
