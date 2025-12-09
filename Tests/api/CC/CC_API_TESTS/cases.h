@@ -15,3 +15,4 @@ void configOverrideBool(bool* assertTrue);
 void configOverrideStringArray(bool* assertFalse);
 
 void configOverrideIntegerArray(bool* assertFalse);
+|

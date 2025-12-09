@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(UTILITY_LIBRARY_VERSION 0.8.0)
-set(NETWORKS_VERSION 1.22.5)
-set(LOCALIZATION_VERSION 1.4.5)
+set(NETWORKS_VERSION 1.22.6)
+set(LOCALIZATION_VERSION 1.4.6)
 
 project(test_suites)
 
