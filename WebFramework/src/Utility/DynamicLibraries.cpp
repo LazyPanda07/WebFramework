@@ -151,7 +151,14 @@ namespace framework::utility
 
 	std::filesystem::path getPathToLibrary(HMODULE handle)
 	{
-#ifdef __LINUX__
+#if defined(__LINUX__) && defined(__ANDROID__)
+		Dl_info dlinfo;
+
+		if (dladdr(handle, &dlinfo) != 0 && dlinfo.dli_fname && dlinfo.dli_fname[0] != '\0')
+		{
+			return dlinfo.dli_fname;
+		}
+#elif defined(__LINUX__)
 		struct link_map* linkMap;
 
 		if (dlinfo(handle, RTLD_DI_LINKMAP, &linkMap) == 0)

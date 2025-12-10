@@ -8,6 +8,7 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/RuntimesManager.h"
 #include "Runtimes/CXXRuntime.h"
+#include "Runtimes/CCRuntime.h"
 
 namespace framework::utility
 {
@@ -58,9 +59,9 @@ namespace framework::utility
 
 				if (cxxErrorMessage)
 				{
-					source = utility::loadLibrary(pathToSource);
+					std::optional<std::string> ccErrorMessage = runtime::RuntimesManager::get().getRuntime<runtime::CCRuntime>().loadSource(pathToSource, source);
 
-					if (!std::get<HMODULE>(source))
+					if (ccErrorMessage)
 					{
 						exceptionMessage = ::exceptions::missingOtherDLLs;
 					}
