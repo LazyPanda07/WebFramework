@@ -86,7 +86,7 @@ namespace framework::runtime
 		this->loadMethod(typeName, "CreateHttpRequest", createHttpRequest);
 		this->loadMethod(typeName, "CreateHttpResponse", createHttpResponse);
 		this->loadMethod(typeName, "CreateExecutorSettings", createExecutorSettingsFunction);
-		this->loadMethod(typeName, "GetExecutorType", getExecutorType);
+		this->loadMethod(typeName, "GetExecutorType", getExecutorTypeFunction);
 		this->loadMethod(typeName, "Destroy", destroy);
 
 		this->loadMethod(typeName, "CallDoPost", doPost);
@@ -124,7 +124,7 @@ namespace framework::runtime
 		createHttpRequest(nullptr),
 		createHttpResponse(nullptr),
 		createExecutorSettingsFunction(nullptr),
-		getExecutorType(nullptr),
+		getExecutorTypeFunction(nullptr),
 		init(nullptr),
 		doPost(nullptr),
 		doGet(nullptr),
@@ -187,6 +187,96 @@ namespace framework::runtime
 		loadAssembly(apiPath.native().data(), nullptr, nullptr);
 
 		this->loadFunctions(apiPath);
+	}
+
+	DotNetRuntime::InitSignature DotNetRuntime::getInit() const
+	{
+		return init;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoPost() const
+	{
+		return doPost;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoGet() const
+	{
+		return doGet;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoHead() const
+	{
+		return doHead;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoPut() const
+	{
+		return doPut;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoDelete() const
+	{
+		return doDelete;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoPatch() const
+	{
+		return doPatch;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoOptions() const
+	{
+		return doOptions;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoTrace() const
+	{
+		return doTrace;
+	}
+
+	DotNetRuntime::DoMethodSignature DotNetRuntime::getDoConnect() const
+	{
+		return doConnect;
+	}
+
+	DotNetRuntime::GetExecutorTypeSignature DotNetRuntime::getGetExecutorType() const
+	{
+		return getExecutorTypeFunction;
+	}
+
+	DotNetRuntime::DestroySignature DotNetRuntime::getDestroy() const
+	{
+		return destroy;
+	}
+
+	DotNetRuntime::CreateDynamicFunctionSignature DotNetRuntime::getCreateDynamicFunction() const
+	{
+		return createDynamicFunction;
+	}
+
+	DotNetRuntime::CreateHeuristicFunctionSignature DotNetRuntime::getCreateHeuristic() const
+	{
+		return createHeuristic;
+	}
+
+	DotNetRuntime::CallDynamicFunctionSignature DotNetRuntime::getCallDynamicFunction() const
+	{
+		return callDynamicFunction;
+	}
+
+	DotNetRuntime::EventSignature DotNetRuntime::getOnStartHeuristic() const
+	{
+		return onStartHeuristic;
+	}
+
+	DotNetRuntime::EventSignature DotNetRuntime::getOnEndHeuristic() const
+	{
+		return onEndHeuristic;
+	}
+
+	DotNetRuntime::CallHeuristicSignature DotNetRuntime::getCallHeuristic() const
+	{
+		return callHeuristic;
 	}
 
 	void DotNetRuntime::free(void* implementation)

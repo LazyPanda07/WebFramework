@@ -41,80 +41,80 @@ namespace framework
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 		std::unique_ptr<void, Deleter> dotNetExecutorSettings(runtime.createExecutorSettings(&settings));
 
-		runtime.init(implementation, dotNetExecutorSettings.get());
+		runtime.getInit()(implementation, dotNetExecutorSettings.get());
 	}
 
 	void CSharpExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doGet, request, response);
+		this->processMethod(runtime, runtime.getDoGet(), request, response);
 	}
 
 	void CSharpExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doPost, request, response);
+		this->processMethod(runtime, runtime.getDoPost(), request, response);
 	}
 
 	void CSharpExecutor::doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doHead, request, response);
+		this->processMethod(runtime, runtime.getDoHead(), request, response);
 	}
 
 	void CSharpExecutor::doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doPut, request, response);
+		this->processMethod(runtime, runtime.getDoPut(), request, response);
 	}
 
 	void CSharpExecutor::doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doDelete, request, response);
+		this->processMethod(runtime, runtime.getDoDelete(), request, response);
 	}
 
 	void CSharpExecutor::doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doPatch, request, response);
+		this->processMethod(runtime, runtime.getDoPatch(), request, response);
 	}
 
 	void CSharpExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doOptions, request, response);
+		this->processMethod(runtime, runtime.getDoOptions(), request, response);
 	}
 
 	void CSharpExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doTrace, request, response);
+		this->processMethod(runtime, runtime.getDoTrace(), request, response);
 	}
 
 	void CSharpExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		this->processMethod(runtime, runtime.doConnect, request, response);
+		this->processMethod(runtime, runtime.getDoConnect(), request, response);
 	}
 
 	utility::ExecutorType CSharpExecutor::getType() const
 	{
-		return static_cast<utility::ExecutorType>(runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getExecutorType(implementation));
+		return static_cast<utility::ExecutorType>(runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getGetExecutorType()(implementation));
 	}
 
 	void CSharpExecutor::destroy()
 	{
-		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().destroy(implementation);
+		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getDestroy()(implementation);
 	}
 
 	CSharpExecutor::~CSharpExecutor()

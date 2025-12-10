@@ -18,7 +18,7 @@ namespace framework::load_balancer
 		runtime::DotNetRuntime::NativeString moduleName = runtime::DotNetRuntime::getModuleName(std::get<std::filesystem::path>(source));
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		implementation = runtime.createHeuristic(std::format("{}, {}", heuristicName, moduleName.string()).data(), ip.data(), port.data(), useHTTPS);
+		implementation = runtime.getCreateHeuristic()(std::format("{}, {}", heuristicName, moduleName.string()).data(), ip.data(), port.data(), useHTTPS);
 
 		if (!implementation)
 		{
@@ -33,17 +33,17 @@ namespace framework::load_balancer
 
 	uint64_t CSharpHeuristic::operator ()() const
 	{
-		return runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().callHeuristic(implementation);
+		return runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getCallHeuristic()(implementation);
 	}
 
 	void CSharpHeuristic::onStart()
 	{
-		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().onStartHeuristic(implementation);
+		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getOnStartHeuristic()(implementation);
 	}
 
 	void CSharpHeuristic::onEnd()
 	{
-		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().onEndHeuristic(implementation);
+		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getOnEndHeuristic()(implementation);
 	}
 
 	const std::string& CSharpHeuristic::getIp() const

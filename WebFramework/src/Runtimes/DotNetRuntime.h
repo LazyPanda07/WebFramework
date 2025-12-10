@@ -66,8 +66,6 @@ namespace framework::runtime
 		CreateHttpRequestSignature createHttpRequest;
 		CreateHttpResponceSignature createHttpResponse;
 		CreateExecutorSettingsSignature createExecutorSettingsFunction;
-
-	public:
 		InitSignature init;
 		DoMethodSignature doPost;
 		DoMethodSignature doGet;
@@ -78,7 +76,7 @@ namespace framework::runtime
 		DoMethodSignature doOptions;
 		DoMethodSignature doTrace;
 		DoMethodSignature doConnect;
-		GetExecutorTypeSignature getExecutorType;
+		GetExecutorTypeSignature getExecutorTypeFunction;
 		DestroySignature destroy;
 		CreateDynamicFunctionSignature createDynamicFunction;
 		CreateHeuristicFunctionSignature createHeuristic;
@@ -96,10 +94,49 @@ namespace framework::runtime
 	public:
 		DotNetRuntime();
 
+	public:
+		InitSignature getInit() const;
+
+		DoMethodSignature getDoPost() const;
+
+		DoMethodSignature getDoGet() const;
+
+		DoMethodSignature getDoHead() const;
+
+		DoMethodSignature getDoPut() const;
+
+		DoMethodSignature getDoDelete() const;
+
+		DoMethodSignature getDoPatch() const;
+
+		DoMethodSignature getDoOptions() const;
+
+		DoMethodSignature getDoTrace() const;
+
+		DoMethodSignature getDoConnect() const;
+
+		GetExecutorTypeSignature getGetExecutorType() const;
+
+		DestroySignature getDestroy() const;
+
+		CreateDynamicFunctionSignature getCreateDynamicFunction() const;
+
+		CreateHeuristicFunctionSignature getCreateHeuristic() const;
+
+		CallDynamicFunctionSignature getCallDynamicFunction() const;
+
+		EventSignature getOnStartHeuristic() const;
+
+		EventSignature getOnEndHeuristic() const;
+
+		CallHeuristicSignature getCallHeuristic() const;
+
+	public:
 		void free(void* implementation);
 
 		void dealloc(void* allocatedMemory);
 
+	public:
 		bool loadExecutor(std::string_view name, const utility::LoadSource& source) override;
 
 		std::unique_ptr<BaseExecutor> createExecutor(std::string_view name) const override;

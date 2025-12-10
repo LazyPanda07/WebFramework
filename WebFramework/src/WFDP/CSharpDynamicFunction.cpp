@@ -12,7 +12,7 @@ namespace framework
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		dynamicFunction = runtime.createDynamicFunction(assemblyName);
+		dynamicFunction = runtime.getCreateDynamicFunction()(assemblyName);
 
 		runtime.dealloc(assemblyName);
 	}
@@ -54,7 +54,7 @@ namespace framework
 			args[i] = arguments[i].data();
 		}
 
-		char* resultPtr = runtime.callDynamicFunction(dynamicFunction, args, arguments.size());
+		char* resultPtr = runtime.getCallDynamicFunction()(dynamicFunction, args, arguments.size());
 		std::string result(resultPtr);
 
 		delete[] args;
