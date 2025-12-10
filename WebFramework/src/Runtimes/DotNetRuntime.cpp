@@ -259,7 +259,7 @@ namespace framework::runtime
 		return createHttpResponse(response);
 	}
 
-	void DotNetRuntime::initializeWebFramework(std::string_view libraryPath)
+	void DotNetRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
 	{
 
 	}

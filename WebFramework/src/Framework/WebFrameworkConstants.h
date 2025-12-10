@@ -63,6 +63,7 @@ namespace exceptions
 	inline constexpr std::string_view missingLoadType = "Missing load type of";
 	inline constexpr std::string_view cantLoadSource = "Can't load";
 	inline constexpr std::string_view missingOtherDLLs = "That load source requires to load other dlls";
+	inline constexpr std::string_view notCXXLibrary = "That load source is not cxx";
 
 	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
 

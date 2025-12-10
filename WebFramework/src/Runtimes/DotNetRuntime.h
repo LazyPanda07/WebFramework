@@ -112,7 +112,7 @@ namespace framework::runtime
 
 		void* createHTTPResponse(framework::interfaces::IHTTPResponse* response) const override;
 
-		void initializeWebFramework(std::string_view libraryPath) override;
+		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 

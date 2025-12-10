@@ -7,6 +7,7 @@
 #include "Exceptions/CantLoadSourceException.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/RuntimesManager.h"
+#include "Runtimes/CXXRuntime.h"
 
 namespace framework::utility
 {
@@ -53,11 +54,16 @@ namespace framework::utility
 
 			if (type == LoadSourceType::dynamicLibrary)
 			{
-				source = utility::loadLibrary(pathToSource);
+				std::optional<std::string> cxxErrorMessage = runtime::RuntimesManager::get().getRuntime<runtime::CXXRuntime>().loadSource(pathToSource, source);
 
-				if (!std::get<HMODULE>(source))
+				if (cxxErrorMessage)
 				{
-					exceptionMessage = ::exceptions::missingOtherDLLs;
+					source = utility::loadLibrary(pathToSource);
+
+					if (!std::get<HMODULE>(source))
+					{
+						exceptionMessage = ::exceptions::missingOtherDLLs;
+					}
 				}
 			}
 			else

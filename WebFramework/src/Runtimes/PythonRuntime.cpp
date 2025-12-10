@@ -150,7 +150,7 @@ namespace framework::runtime
 		return new py::object(cls(reinterpret_cast<uint64_t>(response)));
 	}
 
-	void PythonRuntime::initializeWebFramework(std::string_view libraryPath)
+	void PythonRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
 	{
 		if (called)
 		{

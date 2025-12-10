@@ -4,6 +4,7 @@
 
 #include "Runtimes/PythonRuntime.h"
 #include "Runtimes/DotNetRuntime.h"
+#include "Runtimes/CXXRuntime.h"
 
 namespace framework::runtime
 {
@@ -118,6 +119,9 @@ namespace framework::runtime
 	{
 		switch (type)
 		{
+		case framework::utility::ExecutorAPIType::cxx:
+			return this->getRuntime<CXXRuntime>();
+
 		case framework::utility::ExecutorAPIType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();
@@ -141,6 +145,9 @@ namespace framework::runtime
 	{
 		switch (type)
 		{
+		case framework::utility::ExecutorAPIType::cxx:
+			return this->getRuntime<CXXRuntime>();
+
 		case framework::utility::ExecutorAPIType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();

@@ -28,7 +28,7 @@ namespace framework::runtime
 
 		virtual void* createHTTPResponse(framework::interfaces::IHTTPResponse* response) const = 0;
 
-		virtual void initializeWebFramework(std::string_view libraryPath) = 0;
+		virtual void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) = 0;
 
 		virtual std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) = 0;
 

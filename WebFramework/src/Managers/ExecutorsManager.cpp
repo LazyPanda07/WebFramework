@@ -18,6 +18,7 @@
 #include "Managers/RuntimesManager.h"
 #include "Runtimes/PythonRuntime.h"
 #include "Runtimes/DotNetRuntime.h"
+#include "Runtimes/CXXRuntime.h"
 
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
@@ -135,13 +136,9 @@ namespace framework
 			break;
 
 		case framework::utility::ExecutorAPIType::cxx:
-			utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(creatorSource), "initializeWebFrameworkCXX")(webFrameworkSharedLibraryPath.data());
-
-			break;
-
 		case framework::utility::ExecutorAPIType::python:
 		case framework::utility::ExecutorAPIType::csharp:
-			runtime::RuntimesManager::get().getRuntime(type).initializeWebFramework(webFrameworkSharedLibraryPath.data());
+			runtime::RuntimesManager::get().getRuntime(type).initializeWebFramework(creatorSource, webFrameworkSharedLibraryPath.data());
 
 			break;
 
@@ -248,7 +245,7 @@ namespace framework
 	{
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseExecutor>(const std::string& name)>> apiExecutors =
 		{
-			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)()); } },
+			{ json_settings::cxxExecutorKey, [](const std::string& name) { return runtime::RuntimesManager::get().getRuntime<runtime::CXXRuntime>().createExecutor(name); } },
 			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [](const std::string& name) { return runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().createExecutor(name); } },
@@ -296,7 +293,7 @@ namespace framework
 			{
 				bool found = false;
 
-				if (executorSettings.apiType == json_settings::cxxExecutorKey || executorSettings.apiType == json_settings::ccExecutorKey)
+				if (executorSettings.apiType == json_settings::ccExecutorKey)
 				{
 					HMODULE module = std::get<HMODULE>(source);
 					std::string creatorFunctionName = std::format("create{}{}Instance", executorSettings.name, apiType);
@@ -313,7 +310,7 @@ namespace framework
 						found = true;
 					}
 				}
-				else if (executorSettings.apiType == json_settings::pythonExecutorKey || executorSettings.apiType == json_settings::csharpExecutorKey)
+				else if (executorSettings.apiType == json_settings::cxxExecutorKey || executorSettings.apiType == json_settings::pythonExecutorKey || executorSettings.apiType == json_settings::csharpExecutorKey)
 				{
 					found = runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, source);
 
@@ -329,6 +326,8 @@ namespace framework
 
 				if (found)
 				{
+					creatorSource = source;
+
 					break;
 				}
 			}
