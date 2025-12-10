@@ -89,6 +89,11 @@ namespace framework::runtime
 
 	bool PythonRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
 	{
+		if (!std::holds_alternative<py::module_>(source))
+		{
+			return false;
+		}
+
 		py::gil_scoped_acquire gil;
 		const py::module_& module = std::get<py::module_>(source);
 		std::optional<py::object> cls = this->getClass(name, module);

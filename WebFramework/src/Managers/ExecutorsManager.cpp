@@ -251,10 +251,10 @@ namespace framework
 			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)()); } },
 			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, std::bind(&runtime::Runtime::createExecutor, &runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>(), std::placeholders::_1) },
+			{ json_settings::pythonExecutorKey, [](const std::string& name) { return runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().createExecutor(name); } },
 #endif
 #ifdef __WITH_DOT_NET_EXECUTORS__
-			{ json_settings::csharpExecutorKey, std::bind(&runtime::Runtime::createExecutor, &runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>(), std::placeholders::_1) },
+			{ json_settings::csharpExecutorKey, [](const std::string& name) { return runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().createExecutor(name); } },
 #endif
 		};
 
@@ -288,13 +288,13 @@ namespace framework
 			CreateExecutorFunction creator = nullptr;
 			utility::LoadSource creatorSource;
 			std::string apiType;
+			utility::ExecutorAPIType type = utility::getExecutorAPIType(executorSettings.apiType);
 
 			std::ranges::transform(executorSettings.apiType, std::back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
 			for (const auto& [source, sourcePath] : sources)
 			{
 				bool found = false;
-				utility::ExecutorAPIType type = utility::getExecutorAPIType(apiType);
 
 				if (executorSettings.apiType == json_settings::cxxExecutorKey || executorSettings.apiType == json_settings::ccExecutorKey)
 				{
@@ -315,7 +315,12 @@ namespace framework
 				}
 				else if (executorSettings.apiType == json_settings::pythonExecutorKey || executorSettings.apiType == json_settings::csharpExecutorKey)
 				{
-					runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, source);
+					found = runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, source);
+
+					if (found)
+					{
+						creator = CreateExecutorFunction(reinterpret_cast<void* (*)()>(1));
+					}
 				}
 				else
 				{

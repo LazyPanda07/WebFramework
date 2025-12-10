@@ -201,6 +201,11 @@ namespace framework::runtime
 
 	bool DotNetRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
 	{
+		if (!std::holds_alternative<std::filesystem::path>(source))
+		{
+			return false;
+		}
+
 		const std::filesystem::path& modulePath = std::get<std::filesystem::path>(source);
 		NativeString moduleName = DotNetRuntime::getModuleName(modulePath);
 		std::string fullQualifiedName = std::format("{}, {}", name, moduleName.string());
