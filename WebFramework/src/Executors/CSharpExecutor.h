@@ -11,14 +11,13 @@ namespace framework
 	class CSharpExecutor : public BaseExecutor
 	{
 	private:
-		void processMethod(runtime::DotNetRuntime& runtime, runtime::DotNetRuntime::DoMethodSignature method, HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		void processMethod(runtime::Runtime& runtime, runtime::DotNetRuntime::DoMethodSignature method, HTTPRequestExecutors& request, HTTPResponseExecutors& response);
 
 	private:
 		void* implementation;
-		runtime::DotNetRuntime::NativeString moduleName;
 
 	public:
-		CSharpExecutor(void* implementation, const std::filesystem::path& modulePath);
+		CSharpExecutor(void* implementation);
 
 		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 

@@ -5,6 +5,7 @@
 #include "Managers/RuntimesManager.h"
 #include "WebInterfaces/IHTTPRequest.h"
 #include "Exceptions/CSharpException.h"
+#include "Runtimes/DotNetRuntime.h"
 
 struct Deleter
 {
@@ -13,7 +14,7 @@ struct Deleter
 
 namespace framework
 {
-	void CSharpExecutor::processMethod(runtime::DotNetRuntime& runtime, runtime::DotNetRuntime::DoMethodSignature method, HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CSharpExecutor::processMethod(runtime::Runtime& runtime, runtime::DotNetRuntime::DoMethodSignature method, HTTPRequestExecutors& request, HTTPResponseExecutors& response)
 	{
 		std::unique_ptr<void, Deleter> dotNetRequest(runtime.createHTTPRequest(request.getImplementation()));
 		std::unique_ptr<void, Deleter> dotNetResponse(runtime.createHTTPResponse(response.getImplementation()));
@@ -29,9 +30,8 @@ namespace framework
 		}
 	}
 
-	CSharpExecutor::CSharpExecutor(void* implementation, const std::filesystem::path& modulePath) :
-		implementation(implementation),
-		moduleName(runtime::DotNetRuntime::getModuleName(modulePath))
+	CSharpExecutor::CSharpExecutor(void* implementation) :
+		implementation(implementation)
 	{
 
 	}

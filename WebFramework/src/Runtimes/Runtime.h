@@ -4,6 +4,8 @@
 #include <any>
 #include <optional>
 
+#include <Executors/BaseExecutor.h>
+
 #include "WebInterfaces/IHTTPRequest.h"
 #include "Utility/Sources.h"
 
@@ -15,6 +17,10 @@ namespace framework::runtime
 		Runtime() = default;
 
 		virtual void finishInitialization() = 0;
+
+		virtual bool loadExecutor(std::string_view name, const utility::LoadSource& source) = 0;
+
+		virtual std::unique_ptr<BaseExecutor> createExecutor(std::string_view name) const = 0;
 
 		virtual void* createExecutorSettings(const void* implementation) const = 0;
 

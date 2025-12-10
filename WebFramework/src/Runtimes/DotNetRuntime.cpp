@@ -14,6 +14,8 @@
 
 #ifdef __WITH_DOT_NET_EXECUTORS__
 
+#include "Executors/CSharpExecutor.h"
+
 static void errorHandler(const char_t* message)
 {
 	if (Log::isValid())
@@ -31,11 +33,11 @@ namespace framework::runtime
 		static int64_t processId =
 
 #ifdef __LINUX__
-		static_cast<int64_t>(getpid());
+			static_cast<int64_t>(getpid());
 #else
-		static_cast<int64_t>(GetCurrentProcessId());
+			static_cast<int64_t>(GetCurrentProcessId());
 #endif
-		
+
 		return std::filesystem::temp_directory_path() / std::format("web_framework_{}_runtimeconfig.json", processId);
 	}
 
@@ -78,7 +80,7 @@ namespace framework::runtime
 		this->loadMethod(typeName, "Free", dotNetFree);
 		this->loadMethod(typeName, "Dealloc", dotNetDealloc);
 		this->loadMethod(typeName, "Init", init);
-		this->loadMethod(typeName, "CreateExecutor", createExecutor);
+		this->loadMethod(typeName, "CreateExecutor", createExecutorFunction);
 		this->loadMethod(typeName, "CreateDynamicFunction", createDynamicFunction);
 		this->loadMethod(typeName, "CreateHeuristic", createHeuristic);
 		this->loadMethod(typeName, "CreateHttpRequest", createHttpRequest);
@@ -118,7 +120,7 @@ namespace framework::runtime
 		hasExecutor(nullptr),
 		dotNetFree(nullptr),
 		dotNetDealloc(nullptr),
-		createExecutor(nullptr),
+		createExecutorFunction(nullptr),
 		createHttpRequest(nullptr),
 		createHttpResponse(nullptr),
 		createExecutorSettingsFunction(nullptr),
@@ -197,22 +199,39 @@ namespace framework::runtime
 		dotNetDealloc(allocatedMemory);
 	}
 
-	bool DotNetRuntime::getExecutorFunction(std::string_view executorName, const std::filesystem::path& modulePath, CreateExecutorFunction& creator)
+	bool DotNetRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
 	{
+		const std::filesystem::path& modulePath = std::get<std::filesystem::path>(source);
 		NativeString moduleName = DotNetRuntime::getModuleName(modulePath);
-		std::string fullQualifiedName = std::format("{}, {}", executorName, moduleName.string());
+		std::string fullQualifiedName = std::format("{}, {}", name, moduleName.string());
 
-		if (hasExecutor(fullQualifiedName.data()))
+		if (!hasExecutor(fullQualifiedName.data()))
 		{
-			creator = [this, fullQualifiedName]()
-				{
-					return createExecutor(fullQualifiedName.data());
-				};
-
-			return true;
+			return false;
 		}
 
-		return false;
+		if (Log::isValid())
+		{
+			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, modulePath.string());
+		}
+
+		fullQualifiedNames.emplace(name, std::move(fullQualifiedName));
+
+		return true;
+	}
+
+	std::unique_ptr<BaseExecutor> DotNetRuntime::createExecutor(std::string_view name) const
+	{
+		auto it = fullQualifiedNames.find(name);
+
+		if (it == fullQualifiedNames.end())
+		{
+			throw std::runtime_error(std::format("Can't find executor with name {}", name));
+		}
+
+		const auto& [_, fullQualifiedName] = *it;
+
+		return std::make_unique<CSharpExecutor>(createExecutorFunction(fullQualifiedName.data()));
 	}
 
 	void DotNetRuntime::finishInitialization()

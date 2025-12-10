@@ -19,8 +19,8 @@ namespace framework
 		implementation->attr(methodName.data())(*pyRequest, *pyResponse);
 	}
 
-	PythonExecutor::PythonExecutor(void* implementation) :
-		implementation(static_cast<py::object*>(implementation))
+	PythonExecutor::PythonExecutor(pybind11::object* implementation) :
+		implementation(implementation)
 	{
 		
 	}

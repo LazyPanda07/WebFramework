@@ -4,6 +4,8 @@
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 
+#include "Executors/PythonExecutor.h"
+
 namespace py = pybind11;
 
 namespace framework::runtime
@@ -58,20 +60,20 @@ namespace framework::runtime
 		return *this;
 	}
 
-	std::any PythonRuntime::getClass(std::string_view className, const utility::LoadSource& source) const
+	std::optional<py::object> PythonRuntime::getClass(std::string_view className, const utility::LoadSource& source) const
 	{
 		const py::module_& module = std::get<py::module_>(source);
 
 		if (!py::hasattr(module, className.data()))
 		{
-			return {};
+			return std::nullopt;
 		}
 
 		py::object cls = module.attr(className.data());
 
 		if (!py::isinstance<py::type>(cls))
 		{
-			return {};
+			return std::nullopt;
 		}
 
 		return cls;
@@ -83,6 +85,43 @@ namespace framework::runtime
 		{
 			PyEval_SaveThread();
 		}
+	}
+
+	bool PythonRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
+	{
+		py::gil_scoped_acquire gil;
+		const py::module_& module = std::get<py::module_>(source);
+		std::optional<py::object> cls = this->getClass(name, module);
+
+		if (!cls)
+		{
+			return false;
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, py::repr(module).cast<std::string>());
+		}
+
+		classes.emplace(name, *cls);
+
+		return true;
+	}
+
+	std::unique_ptr<BaseExecutor> PythonRuntime::createExecutor(std::string_view name) const
+	{
+		auto it = classes.find(name);
+
+		if (it == classes.end())
+		{
+			throw std::runtime_error(std::format("Can't find executor with name {}", name));
+		}
+
+		py::gil_scoped_acquire gil;
+
+		const auto& [_, cls] = *it;
+
+		return std::make_unique<PythonExecutor>(new py::object(cls()));
 	}
 
 	void* PythonRuntime::createExecutorSettings(const void* implementation) const

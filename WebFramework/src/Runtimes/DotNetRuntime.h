@@ -4,7 +4,7 @@
 
 #include <concepts>
 
-#include "Executors/BaseExecutor.h"
+#include <Strings.h>
 
 #ifdef __WITH_DOT_NET_EXECUTORS__
 
@@ -51,6 +51,7 @@ namespace framework::runtime
 		static NativeString getModuleName(std::string_view modulePath);
 
 	private:
+		::utility::strings::string_based_unordered_map<std::string> fullQualifiedNames;
 		hostfxr_initialize_for_runtime_config_fn initialization;
 		hostfxr_get_runtime_delegate_fn getRuntimeDelegate;
 		hostfxr_close_fn close;
@@ -61,7 +62,7 @@ namespace framework::runtime
 		HasExecutorSignature hasExecutor;
 		FreeSignature dotNetFree;
 		FreeSignature dotNetDealloc;
-		CreateExecutorSignature createExecutor;
+		CreateExecutorSignature createExecutorFunction;
 		CreateHttpRequestSignature createHttpRequest;
 		CreateHttpResponceSignature createHttpResponse;
 		CreateExecutorSettingsSignature createExecutorSettingsFunction;
@@ -99,7 +100,9 @@ namespace framework::runtime
 
 		void dealloc(void* allocatedMemory);
 
-		bool getExecutorFunction(std::string_view executorName, const std::filesystem::path& modulePath, CreateExecutorFunction& creator);
+		bool loadExecutor(std::string_view name, const utility::LoadSource& source) override;
+
+		std::unique_ptr<BaseExecutor> createExecutor(std::string_view name) const override;
 
 		void finishInitialization() override;
 

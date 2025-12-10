@@ -17,7 +17,7 @@ namespace framework
 		pybind11::object* implementation;
 
 	public:
-		PythonExecutor(void* implementation);
+		PythonExecutor(pybind11::object* implementation);
 
 		PythonExecutor(const PythonExecutor&) = delete;
 

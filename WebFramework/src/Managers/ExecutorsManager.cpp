@@ -21,17 +21,6 @@
 
 #include "Executors/CXXExecutor.h"
 #include "Executors/CCExecutor.h"
-#include "Executors/PythonExecutor.h"
-#include "Executors/CSharpExecutor.h"
-
-template<typename... Ts>
-struct VisitHelper : Ts...
-{
-	using Ts::operator()...;
-};
-
-template<typename... Ts>
-VisitHelper(Ts...) -> VisitHelper<Ts...>;
 
 namespace framework
 {
@@ -259,14 +248,13 @@ namespace framework
 	{
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseExecutor>(const std::string& name)>> apiExecutors =
 		{
-			{ "", [this](const std::string& name) { return std::unique_ptr<BaseExecutor>(static_cast<BaseExecutor*>(creators.at(name)())); } },
 			{ json_settings::cxxExecutorKey, [this](const std::string& name) { return std::make_unique<CXXExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)()); } },
 			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, [this](const std::string& name) { py::gil_scoped_acquire gil; return std::make_unique<PythonExecutor>(creators.at(name)()); } },
+			{ json_settings::pythonExecutorKey, std::bind(&runtime::Runtime::createExecutor, &runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>(), std::placeholders::_1) },
 #endif
 #ifdef __WITH_DOT_NET_EXECUTORS__
-			{ json_settings::csharpExecutorKey, [this](const std::string& name) { return std::make_unique<CSharpExecutor>(creators.at(name)(), std::get<std::filesystem::path>(creatorSources.at(name))); } },
+			{ json_settings::csharpExecutorKey, std::bind(&runtime::Runtime::createExecutor, &runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>(), std::placeholders::_1) },
 #endif
 		};
 
@@ -303,85 +291,36 @@ namespace framework
 
 			std::ranges::transform(executorSettings.apiType, std::back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
-			std::string creatorFunctionName = std::format("create{}{}Instance", executorSettings.name, apiType);
-
 			for (const auto& [source, sourcePath] : sources)
 			{
-				bool found = std::visit
-				(
-					VisitHelper
-					(
-						[&creator, &creatorFunctionName, &sourcePath, &creatorSource](HMODULE module) -> bool
+				bool found = false;
+				utility::ExecutorAPIType type = utility::getExecutorAPIType(apiType);
+
+				if (executorSettings.apiType == json_settings::cxxExecutorKey || executorSettings.apiType == json_settings::ccExecutorKey)
+				{
+					HMODULE module = std::get<HMODULE>(source);
+					std::string creatorFunctionName = std::format("create{}{}Instance", executorSettings.name, apiType);
+
+					if (creator = utility::load<CreateExecutorSignature>(module, creatorFunctionName))
+					{
+						creatorSource = module;
+
+						if (Log::isValid())
 						{
-							if (creator = utility::load<CreateExecutorSignature>(module, creatorFunctionName))
-							{
-								creatorSource = module;
-
-								if (Log::isValid())
-								{
-									Log::info("Found {} in {}", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath);
-								}
-
-								return true;
-							}
-
-							return false;
-						},
-#ifdef __WITH_PYTHON_EXECUTORS__
-						[&creator, &executorSettings, &creatorSource](const py::module_& module) -> bool
-						{
-							runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
-							std::any temp = runtime.getClass(executorSettings.name, module);
-
-							if (!temp.has_value())
-							{
-								return false;
-							}
-
-							creatorSource = module;
-
-							py::object cls = std::any_cast<py::object>(temp);
-
-							if (Log::isValid())
-							{
-								Log::info("Found {} in {}", "LogWebFrameworkInitialization", executorSettings.name, py::repr(module).cast<std::string>());
-							}
-
-							creator = [cls]() -> void*
-								{
-									return new py::object(cls());
-								};
-
-							return true;
-						},
-#endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
-						[&creator, &executorSettings, &creatorSource](const std::filesystem::path& modulePath) -> bool
-						{
-							runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
-
-							if (!runtime.getExecutorFunction(executorSettings.name, modulePath, creator))
-							{
-								return false;
-							}
-
-							creatorSource = modulePath;
-
-							if (Log::isValid())
-							{
-								Log::info("Found {} in {}", "LogWebFrameworkInitialization", executorSettings.name, modulePath.string());
-							}
-
-							return true;
-						},
-#endif
-						[](auto&& module)
-						{
-							throw std::runtime_error("Wrong visit module type");
+							Log::info("Found {} in {}", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath);
 						}
-					),
-					source
-				);
+
+						found = true;
+					}
+				}
+				else if (executorSettings.apiType == json_settings::pythonExecutorKey || executorSettings.apiType == json_settings::csharpExecutorKey)
+				{
+					runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, source);
+				}
+				else
+				{
+					throw std::runtime_error("Wrong visit module type");
+				}
 
 				if (found)
 				{
