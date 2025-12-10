@@ -195,6 +195,9 @@
     <ClCompile Include="src\Runtimes\CXXRuntime.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Runtimes\CCRuntime.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Framework\WebFramework.h">
@@ -387,6 +390,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Runtimes\CXXRuntime.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Runtimes\CCRuntime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

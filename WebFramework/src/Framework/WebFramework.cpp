@@ -18,9 +18,10 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/DatabasesManager.h"
 #include "Managers/RuntimesManager.h"
+#include "Runtimes/CXXRuntime.h"
+#include "Runtimes/CCRuntime.h"
 #include "Runtimes/PythonRuntime.h"
 #include "Runtimes/DotNetRuntime.h"
-#include "Runtimes/CXXRuntime.h"
 
 namespace framework
 {
@@ -107,6 +108,7 @@ namespace framework
 		webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::runtimesKey, runtimes);
 
 		runtime::RuntimesManager::get().addRuntime<runtime::CXXRuntime>();
+		runtime::RuntimesManager::get().addRuntime<runtime::CCRuntime>();
 
 		for (const json::JsonObject& runtimeObject : runtimes)
 		{

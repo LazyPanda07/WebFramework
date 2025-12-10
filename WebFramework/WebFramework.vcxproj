@@ -156,6 +156,7 @@
     <ClCompile Include="src\Managers\RuntimesManager.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
+    <ClCompile Include="src\Runtimes\CCRuntime.cpp" />
     <ClCompile Include="src\Runtimes\CXXRuntime.cpp" />
     <ClCompile Include="src\Runtimes\DotNetRuntime.cpp" />
     <ClCompile Include="src\Runtimes\PythonRuntime.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="src\Managers\RuntimesManager.h" />
     <ClInclude Include="src\Rendering\MDRenderer.h" />
     <ClInclude Include="src\Rendering\WFDPRenderer.h" />
+    <ClInclude Include="src\Runtimes\CCRuntime.h" />
     <ClInclude Include="src\Runtimes\CXXRuntime.h" />
     <ClInclude Include="src\Runtimes\DotNetRuntime.h" />
     <ClInclude Include="src\WFDP\CSharpDynamicFunction.h" />

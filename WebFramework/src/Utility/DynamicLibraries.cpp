@@ -10,6 +10,7 @@
 
 #ifdef __LINUX__
 #include <dlfcn.h>
+#include <link.h>
 #include <limits.h>
 #include <unistd.h>
 #endif
@@ -146,6 +147,28 @@ namespace framework::utility
 #else
 		return GetModuleHandleA(libraryName.data());
 #endif	
+	}
+
+	std::filesystem::path getPathToLibrary(HMODULE handle)
+	{
+#ifdef __LINUX__
+		struct link_map* linkMap;
+
+		if (dlinfo(handle, RTLD_DI_LINKMAP, &linkMap) == 0)
+		{
+			return linkMap->l_name;
+		}
+#else
+		char path[MAX_PATH]{};
+		DWORD size = GetModuleFileNameA(handle, path, MAX_PATH);
+
+		if (size)
+		{
+			return path;
+		}
+#endif
+
+		return "";
 	}
 }
 

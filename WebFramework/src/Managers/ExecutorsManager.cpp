@@ -16,12 +16,6 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Utility/ExecutorsUtility.h"
 #include "Managers/RuntimesManager.h"
-#include "Runtimes/PythonRuntime.h"
-#include "Runtimes/DotNetRuntime.h"
-#include "Runtimes/CXXRuntime.h"
-
-#include "Executors/CXXExecutor.h"
-#include "Executors/CCExecutor.h"
 
 namespace framework
 {
@@ -124,29 +118,6 @@ namespace framework
 		while (endParameter != std::string::npos);
 	}
 
-	void ExecutorsManager::callInitFunction(const utility::LoadSource& creatorSource, std::string_view webFrameworkSharedLibraryPath, std::string_view apiType)
-	{
-		utility::ExecutorAPIType type = utility::getExecutorAPIType(apiType);
-
-		switch (type)
-		{
-		case framework::utility::ExecutorAPIType::cc:
-			utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(creatorSource), "initializeWebFrameworkCC")(webFrameworkSharedLibraryPath.data());
-
-			break;
-
-		case framework::utility::ExecutorAPIType::cxx:
-		case framework::utility::ExecutorAPIType::python:
-		case framework::utility::ExecutorAPIType::csharp:
-			runtime::RuntimesManager::get().getRuntime(type).initializeWebFramework(creatorSource, webFrameworkSharedLibraryPath.data());
-
-			break;
-
-		default:
-			throw std::runtime_error("Wrong api type name");
-		}
-	}
-
 	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, StatefulExecutors& executors)
 	{
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors = *executors;
@@ -243,26 +214,7 @@ namespace framework
 
 	std::unique_ptr<BaseExecutor> ExecutorsManager::createAPIExecutor(const std::string& name, std::string_view apiType) const
 	{
-		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseExecutor>(const std::string& name)>> apiExecutors =
-		{
-			{ json_settings::cxxExecutorKey, [](const std::string& name) { return runtime::RuntimesManager::get().getRuntime<runtime::CXXRuntime>().createExecutor(name); } },
-			{ json_settings::ccExecutorKey, [this](const std::string& name) { return std::make_unique<CCExecutor>(std::get<HMODULE>(creatorSources.at(name)), creators.at(name)(), name); } },
-#ifdef __WITH_PYTHON_EXECUTORS__
-			{ json_settings::pythonExecutorKey, [](const std::string& name) { return runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().createExecutor(name); } },
-#endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
-			{ json_settings::csharpExecutorKey, [](const std::string& name) { return runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().createExecutor(name); } },
-#endif
-		};
-
-		if (auto it = apiExecutors.find(apiType); it != apiExecutors.end())
-		{
-			return (it->second)(name);
-		}
-
-		throw std::runtime_error(std::format("Can't find executor type for {}", apiType));
-
-		return nullptr;
+		return runtime::RuntimesManager::get().getRuntime(utility::getExecutorAPIType(apiType)).createExecutor(name);
 	}
 
 	void ExecutorsManager::initCreators(const std::vector<std::string>& pathToSources)
@@ -270,7 +222,6 @@ namespace framework
 		std::vector<std::pair<utility::LoadSource, std::string>> sources = utility::loadSources(pathToSources);
 
 		routes.reserve(settings.size());
-		creators.reserve(settings.size());
 
 		std::vector<std::pair<std::string, std::string>> nodes;
 
@@ -282,49 +233,12 @@ namespace framework
 
 		for (const auto& [route, executorSettings] : settings)
 		{
-			CreateExecutorFunction creator = nullptr;
-			utility::LoadSource creatorSource;
-			std::string apiType;
+			std::optional<utility::LoadSource> creatorSource;
 			utility::ExecutorAPIType type = utility::getExecutorAPIType(executorSettings.apiType);
-
-			std::ranges::transform(executorSettings.apiType, std::back_inserter(apiType), [](char c) -> char { return toupper(c); });
 
 			for (const auto& [source, sourcePath] : sources)
 			{
-				bool found = false;
-
-				if (executorSettings.apiType == json_settings::ccExecutorKey)
-				{
-					HMODULE module = std::get<HMODULE>(source);
-					std::string creatorFunctionName = std::format("create{}{}Instance", executorSettings.name, apiType);
-
-					if (creator = utility::load<CreateExecutorSignature>(module, creatorFunctionName))
-					{
-						creatorSource = module;
-
-						if (Log::isValid())
-						{
-							Log::info("Found {} in {}", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath);
-						}
-
-						found = true;
-					}
-				}
-				else if (executorSettings.apiType == json_settings::cxxExecutorKey || executorSettings.apiType == json_settings::pythonExecutorKey || executorSettings.apiType == json_settings::csharpExecutorKey)
-				{
-					found = runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, source);
-
-					if (found)
-					{
-						creator = CreateExecutorFunction(reinterpret_cast<void* (*)()>(1));
-					}
-				}
-				else
-				{
-					throw std::runtime_error("Wrong visit module type");
-				}
-
-				if (found)
+				if (runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, source))
 				{
 					creatorSource = source;
 
@@ -332,20 +246,17 @@ namespace framework
 				}
 			}
 
-			if (!creator)
+			if (!creatorSource)
 			{
 				if (Log::isValid())
 				{
-					Log::error("Can't find creator function create{}{}Instance for executor {}.", "LogWebFrameworkInitialization", executorSettings.name, apiType, executorSettings.name);
+					Log::error("Can't find creator for executor: {} with API: {}", "LogWebFrameworkInitialization", executorSettings.name, executorSettings.apiType);
 				}
 
-				throw exceptions::CantFindFunctionException(std::format("create{}{}Instance", executorSettings.name, apiType));
+				throw std::runtime_error(std::format("Can't find creator for executor: {} with API: {}", executorSettings.name, executorSettings.apiType));
 			}
 
-			creators.try_emplace(executorSettings.name, creator);
-			creatorSources.try_emplace(executorSettings.name, creatorSource);
-
-			ExecutorsManager::callInitFunction(creatorSource, webFrameworkSharedLibraryPath, executorSettings.apiType);
+			runtime::RuntimesManager::get().getRuntime(utility::getExecutorAPIType(executorSettings.apiType)).initializeWebFramework(*creatorSource, webFrameworkSharedLibraryPath.data());
 
 			switch (executorSettings.executorLoadType)
 			{
@@ -441,8 +352,6 @@ namespace framework
 	ExecutorsManager& ExecutorsManager::operator = (ExecutorsManager&& other) noexcept
 	{
 		this->routes = move(other.routes);
-		this->creators = move(other.creators);
-		this->creatorSources = move(other.creatorSources);
 		this->settings = move(other.settings);
 		this->resources = move(other.resources);
 		this->routeParameters = move(other.routeParameters);

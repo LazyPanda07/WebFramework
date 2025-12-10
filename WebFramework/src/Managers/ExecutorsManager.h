@@ -49,8 +49,6 @@ namespace framework
 	private:
 		std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
-		std::unordered_map<std::string, CreateExecutorFunction> creators; // executor name - create function
-		std::unordered_map<std::string, utility::LoadSource> creatorSources; // executor name - shared library
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -63,8 +61,6 @@ namespace framework
 		static bool isHeavyOperation(BaseExecutor* executor);
 
 		static void parseRouteParameters(const std::string& parameters, HTTPRequestExecutors& request, std::vector<utility::RouteParameters>::iterator it);
-
-		static void callInitFunction(const utility::LoadSource& creatorSource, std::string_view webFrameworkSharedLibraryPath, std::string_view apiType);
 
 	private:
 		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, StatefulExecutors& executors);

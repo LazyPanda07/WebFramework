@@ -24,4 +24,6 @@ namespace framework::utility
 	HMODULE loadLibrary(const std::filesystem::path& pathToLibrary);
 
 	HMODULE getLoadedLibrary(std::string_view libraryName);
+
+	std::filesystem::path getPathToLibrary(HMODULE handle);
 }

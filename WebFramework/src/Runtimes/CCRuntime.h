@@ -6,13 +6,13 @@
 
 namespace framework::runtime
 {
-	class CXXRuntime : public Runtime
+	class CCRuntime : public Runtime
 	{
 	private:
 		::utility::strings::string_based_unordered_map<std::tuple<HMODULE, CreateExecutorSignature>> creators;
 
 	public:
-		CXXRuntime() = default;
+		CCRuntime() = default;
 
 		void finishInitialization() override;
 
@@ -30,6 +30,6 @@ namespace framework::runtime
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 
-		~CXXRuntime() = default;
+		~CCRuntime() = default;
 	};
 }
