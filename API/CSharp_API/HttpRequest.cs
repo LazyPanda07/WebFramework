@@ -3,7 +3,6 @@
 using Framework.Exceptions;
 using Framework.Utility;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ObjectiveC;
 using System.Text;
 using System.Text.Json;
 
@@ -75,34 +74,34 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void deleteWebFrameworkJSONParser(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getHTTPRawParameters(IntPtr implementation, ref void* exception);
+	private static unsafe partial char* getRawParameters(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getHTTPMethod(IntPtr implementation, ref void* exception);
+	private static unsafe partial char* getMethod(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getHTTPVersion(IntPtr implementation, ref void* exception);
+	private static unsafe partial IntPtr getVersion(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getHTTPBody(IntPtr implementation, ref nuint bodySize, ref void* exception);
+	private static unsafe partial char* getBody(IntPtr implementation, ref nuint bodySize, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void setHTTPAttribute(IntPtr implementation, string name, string value, ref void* exception);
+	private static unsafe partial void setAttribute(IntPtr implementation, string name, string value, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getHTTPAttribute(IntPtr implementation, string name, ref void* exception);
+	private static unsafe partial IntPtr getAttribute(IntPtr implementation, string name, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteHTTPSession(IntPtr implementation, ref void* exception);
+	private static unsafe partial void deleteSession(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void removeHTTPAttribute(IntPtr implementation, string name, ref void* exception);
+	private static unsafe partial void removeAttribute(IntPtr implementation, string name, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getHTTPRequestJSON(IntPtr implementation, ref void* exception);
+	private static unsafe partial IntPtr getRequestJSON(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getHTTPRawRequest(IntPtr implementation, ref void* exception);
+	private static unsafe partial char* getRawRequest(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial IntPtr getClientIpV4(IntPtr implementation, ref void* exception);
@@ -130,7 +129,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getHTTPChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
+	private static unsafe partial void getChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void getFile(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
@@ -142,7 +141,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void processWFDPFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getHTTPHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
+	private static unsafe partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void getCookies(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addCookiee, IntPtr buffer, ref void* exception);
@@ -175,16 +174,16 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial IntPtr getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getOrCreateDatabaseHTTPRequest(IntPtr implementation, string databaseName, ref void* exception);
+	private static unsafe partial IntPtr getOrCreateDatabaseRequest(IntPtr implementation, string databaseName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getDatabaseHTTPRequest(IntPtr implementation, string databaseName, ref void* exception);
+	private static unsafe partial IntPtr getDatabaseRequest(IntPtr implementation, string databaseName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getOrCreateTableHTTPRequest(IntPtr implementation, string databaseName, string tableName, string createTableQuery, ref void* exception);
+	private static unsafe partial IntPtr getOrCreateTableRequest(IntPtr implementation, string databaseName, string tableName, string createTableQuery, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getTableHTTPRequest(IntPtr implementation, string databaseName, string tableName, ref void* exception);
+	private static unsafe partial IntPtr getTableRequest(IntPtr implementation, string databaseName, string tableName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void sendChunks(IntPtr implementation, IntPtr response, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
@@ -263,7 +262,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetRawParameters()
 	{
 		void* exception = null;
-		char* result = getHTTPRawParameters(implementation, ref exception);
+		char* result = getRawParameters(implementation, ref exception);
 
 		if (exception != null)
 		{
@@ -276,7 +275,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetHttpMethod()
 	{
 		void* exception = null;
-		char* result = getHTTPMethod(implementation, ref exception);
+		char* result = getMethod(implementation, ref exception);
 
 		if (exception != null)
 		{
@@ -289,7 +288,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetHttpVersion()
 	{
 		void* exception = null;
-		IntPtr result = getHTTPVersion(implementation, ref exception);
+		IntPtr result = getVersion(implementation, ref exception);
 
 		if (exception != null)
 		{
@@ -303,7 +302,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		void* exception = null;
 		nuint bodySize = 0;
-		char* result = getHTTPBody(implementation, ref bodySize, ref exception);
+		char* result = getBody(implementation, ref bodySize, ref exception);
 
 		if (exception != null)
 		{
@@ -317,7 +316,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		void* exception = null;
 
-		setHTTPAttribute(implementation, name, value, ref exception);
+		setAttribute(implementation, name, value, ref exception);
 
 		if (exception != null)
 		{
@@ -328,7 +327,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetHttpAttribute(string name)
 	{
 		void* exception = null;
-		IntPtr result = getHTTPAttribute(implementation, name, ref exception);
+		IntPtr result = getAttribute(implementation, name, ref exception);
 
 		if (exception != null)
 		{
@@ -342,7 +341,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		void* exception = null;
 
-		deleteHTTPSession(implementation, ref exception);
+		deleteSession(implementation, ref exception);
 
 		if (exception != null)
 		{
@@ -354,7 +353,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		void* exception = null;
 
-		removeHTTPAttribute(implementation, name, ref exception);
+		removeAttribute(implementation, name, ref exception);
 
 		if (exception != null)
 		{
@@ -370,7 +369,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public T GetJson<T>()
 	{
 		void* exception = null;
-		IntPtr temp = getHTTPRequestJSON(implementation, ref exception);
+		IntPtr temp = getRequestJSON(implementation, ref exception);
 
 		if (exception != null)
 		{
@@ -398,7 +397,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetHttpRawRequest()
 	{
 		void* exception = null;
-		char* result = getHTTPRawRequest(implementation, ref exception);
+		char* result = getRawRequest(implementation, ref exception);
 
 		if (exception != null)
 		{
@@ -543,7 +542,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		List<byte[]> chunks = [];
 		GCHandle handle = GCHandle.Alloc(chunks);
 
-		getHTTPChunks
+		getChunks
 		(
 			implementation,
 			(nuint size, IntPtr buffer) =>
@@ -682,7 +681,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		Dictionary<string, string> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
-		getHTTPHeaders
+		getHeaders
 		(
 			implementation,
 			(nuint size, IntPtr buffer) =>
@@ -963,7 +962,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public Database GetOrCreateDatabase(string databaseName)
 	{
 		void* exception = null;
-		IntPtr result = getOrCreateDatabaseHTTPRequest(implementation, databaseName, ref exception);
+		IntPtr result = getOrCreateDatabaseRequest(implementation, databaseName, ref exception);
 
 		if (exception != null)
 		{
@@ -976,7 +975,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public Database GetDatabase(string databaseName)
 	{
 		void* exception = null;
-		IntPtr result = getDatabaseHTTPRequest(implementation, databaseName, ref exception);
+		IntPtr result = getDatabaseRequest(implementation, databaseName, ref exception);
 
 		if (exception != null)
 		{
@@ -989,7 +988,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public Table GetOrCreateTable(string databaseName, string tableName, string createTableQuery)
 	{
 		void* exception = null;
-		IntPtr result = getOrCreateTableHTTPRequest(implementation, databaseName, tableName, createTableQuery, ref exception);
+		IntPtr result = getOrCreateTableRequest(implementation, databaseName, tableName, createTableQuery, ref exception);
 
 		if (exception != null)
 		{
@@ -1002,7 +1001,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public Table GetTable(string databaseName, string tableName)
 	{
 		void* exception = null;
-		IntPtr result = getTableHTTPRequest(implementation, databaseName, tableName, ref exception);
+		IntPtr result = getTableRequest(implementation, databaseName, tableName, ref exception);
 
 		if (exception != null)
 		{

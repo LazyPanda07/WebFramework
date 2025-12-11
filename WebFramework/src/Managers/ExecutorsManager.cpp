@@ -322,9 +322,9 @@ namespace framework
 		{
 			auto node = settings.extract(route);
 
-			node.key() = move(executorSettings);
+			node.key() = std::move(executorSettings);
 
-			settings.insert(move(node));
+			settings.insert(std::move(node));
 		}
 	}
 

@@ -154,9 +154,9 @@ WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const cha
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPRawParameters)(void* implementation, void** exception);
+	typedef const char* (*getRawParameters)(void* implementation, void** exception);
 
-	*rawParameters = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPRawParameters, &exception);
+	*rawParameters = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRawParameters, &exception);
 
 	return exception;
 }
@@ -165,9 +165,9 @@ WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** met
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPMethod)(void* implementation, void** exception);
+	typedef const char* (*getMethod)(void* implementation, void** exception);
 
-	*method = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPMethod, &exception);
+	*method = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getMethod, &exception);
 
 	return exception;
 }
@@ -210,9 +210,9 @@ WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkStr
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getHTTPVersion)(void* implementation, void** exception);
+	typedef void* (*getVersion)(void* implementation, void** exception);
 
-	*version = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPVersion, &exception);
+	*version = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getVersion, &exception);
 
 	return exception;
 }
@@ -221,9 +221,9 @@ WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader_t** 
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*getHTTPHeaders)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
+	typedef void (*getHeaders)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeaders, __initHeadersBuffer, __addHeader, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHeaders, __initHeadersBuffer, __addHeader, result, &exception);
 
 	if (exception)
 	{
@@ -255,9 +255,9 @@ WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* head
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPHeader)(void* implementation, const char* headerName, void** exception);
+	typedef const char* (*getHeader)(void* implementation, const char* headerName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPHeader, headerName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHeader, headerName, &exception);
 
 	return exception;
 }
@@ -266,9 +266,9 @@ WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body,
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPBody)(void* implementation, size_t* bodySize, void** exception);
+	typedef const char* (*getBody)(void* implementation, size_t* bodySize, void** exception);
 
-	*body = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPBody, bodySize, &exception);
+	*body = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getBody, bodySize, &exception);
 
 	return exception;
 }
@@ -277,9 +277,9 @@ WebFrameworkException setHTTPAttribute(HTTPRequest implementation, const char* n
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*setHTTPAttribute)(void* implementation, const char* name, const char* value, void** exception);
+	typedef void (*setAttribute)(void* implementation, const char* name, const char* value, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setHTTPAttribute, name, value, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setAttribute, name, value, &exception);
 
 	return exception;
 }
@@ -288,9 +288,9 @@ WebFrameworkException getHTTPAttribute(HTTPRequest implementation, const char* n
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getHTTPAttribute)(void* implementation, const char* name, void** exception);
+	typedef void* (*getAttribute)(void* implementation, const char* name, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPAttribute, name, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getAttribute, name, &exception);
 
 	return exception;
 }
@@ -299,9 +299,9 @@ WebFrameworkException deleteHTTPSession(HTTPRequest implementation)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*deleteHTTPSession)(void* implementation, void** exception);
+	typedef void (*deleteSession)(void* implementation, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(deleteHTTPSession, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(deleteSession, &exception);
 
 	return exception;
 }
@@ -310,9 +310,9 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*removeHTTPAttribute)(void* implementation, const char* name, void** exception);
+	typedef void (*removeAttribute)(void* implementation, const char* name, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeHTTPAttribute, name, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(removeAttribute, name, &exception);
 
 	return exception;
 }
@@ -477,9 +477,9 @@ WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser*
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getHTTPRequestJSON)(void* implementation, void** exception);
+	typedef void* (*getRequestJSON)(void* implementation, void** exception);
 
-	*parser = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPRequestJSON, &exception);
+	*parser = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRequestJSON, &exception);
 
 	return exception;
 }
@@ -488,9 +488,9 @@ WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk_t** re
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*getHTTPChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
+	typedef void (*getChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPChunks, __initChunksBuffer, __addChunk, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getChunks, __initChunksBuffer, __addChunk, result, &exception);
 
 	if (exception)
 	{
@@ -561,9 +561,9 @@ WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const char**
 {
 	WebFrameworkException exception = NULL;
 
-	typedef const char* (*getHTTPRawRequest)(void* implementation, void** exception);
+	typedef const char* (*getRawRequest)(void* implementation, void** exception);
 
-	*rawRequest = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHTTPRawRequest, &exception);
+	*rawRequest = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRawRequest, &exception);
 
 	return exception;
 }
@@ -616,9 +616,9 @@ WebFrameworkException getOrCreateDatabaseHTTPRequest(HTTPRequest implementation,
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getOrCreateDatabaseHTTPRequest)(void* implementation, const char* databaseName, void** exception);
+	typedef void* (*getOrCreateDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseHTTPRequest, databaseName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseRequest, databaseName, &exception);
 
 	return exception;
 }
@@ -627,9 +627,9 @@ WebFrameworkException getDatabaseHTTPRequest(HTTPRequest implementation, const c
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getDatabaseHTTPRequest)(void* implementation, const char* databaseName, void** exception);
+	typedef void* (*getDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseHTTPRequest, databaseName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseRequest, databaseName, &exception);
 
 	return exception;
 }
@@ -638,9 +638,9 @@ WebFrameworkException getOrCreateTableHTTPRequest(HTTPRequest implementation, co
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getOrCreateTableHTTPRequest)(void* implementation, const char* databaseName, const char* tableName, const char* createTableQuery, void** exception);
+	typedef void* (*getOrCreateTableRequest)(void* implementation, const char* databaseName, const char* tableName, const char* createTableQuery, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTableHTTPRequest, databaseName, tableName, createTableQuery, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTableRequest, databaseName, tableName, createTableQuery, &exception);
 
 	return exception;
 }
@@ -649,9 +649,9 @@ WebFrameworkException getTableHTTPRequest(HTTPRequest implementation, const char
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getTableHTTPRequest)(void* implementation, const char* databaseName, const char* tableName, void** exception);
+	typedef void* (*getTableRequest)(void* implementation, const char* databaseName, const char* tableName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTableHTTPRequest, databaseName, tableName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTableRequest, databaseName, tableName, &exception);
 
 	return exception;
 }

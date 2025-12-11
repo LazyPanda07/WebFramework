@@ -12,7 +12,7 @@
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
 #define UNEXPECTED_EXCEPTION() if (Log::isValid()) { Log::error("Somethind went wrong", "C_API"); } *exception = new std::runtime_error(std::format("Something went wrong in file: {} on line: {}", __FILE__, __LINE__));
 
-void setHTTPResponseBody(HTTPResponseObject response, const char* body, Exception* exception)
+void setResponseBody(HttpResponseObject response, const char* body, Exception* exception)
 {
 	try
 	{
@@ -28,7 +28,7 @@ void setHTTPResponseBody(HTTPResponseObject response, const char* body, Exceptio
 	}
 }
 
-void setHTTPResponseJSONBody(HTTPResponseObject response, JSONBuilder builder, Exception* exception)
+void setResponseJSONBody(HttpResponseObject response, JsonBuilder builder, Exception* exception)
 {
 	try
 	{
@@ -48,7 +48,7 @@ void setHTTPResponseJSONBody(HTTPResponseObject response, JSONBuilder builder, E
 	}
 }
 
-void setHTTPVersion(HTTPResponseObject response, const char* version, Exception* exception)
+void setVersion(HttpResponseObject response, const char* version, Exception* exception)
 {
 	try
 	{
@@ -64,7 +64,7 @@ void setHTTPVersion(HTTPResponseObject response, const char* version, Exception*
 	}
 }
 
-void setHTTPResponseCode(HTTPResponseObject response, int64_t responseCode, Exception* exception)
+void setResponseCode(HttpResponseObject response, int64_t responseCode, Exception* exception)
 {
 	try
 	{
@@ -80,7 +80,7 @@ void setHTTPResponseCode(HTTPResponseObject response, int64_t responseCode, Exce
 	}
 }
 
-void addHTTPResponseHeader(HTTPResponseObject response, const char* name, const char* value, Exception* exception)
+void addResponseHeader(HttpResponseObject response, const char* name, const char* value, Exception* exception)
 {
 	try
 	{
@@ -96,7 +96,7 @@ void addHTTPResponseHeader(HTTPResponseObject response, const char* name, const 
 	}
 }
 
-void appendHTTPResponseBody(HTTPResponseObject response, const char* body, Exception* exception)
+void appendResponseBody(HttpResponseObject response, const char* body, Exception* exception)
 {
 	try
 	{
@@ -112,7 +112,7 @@ void appendHTTPResponseBody(HTTPResponseObject response, const char* body, Excep
 	}
 }
 
-void addHTTPResponseCookie(HTTPResponseObject response, const char* name, const char* value, Exception* exception)
+void addResponseCookie(HttpResponseObject response, const char* name, const char* value, Exception* exception)
 {
 	try
 	{
@@ -128,7 +128,7 @@ void addHTTPResponseCookie(HTTPResponseObject response, const char* name, const 
 	}
 }
 
-void setHTTPResponseDefault(HTTPResponseObject response, Exception* exception)
+void setResponseDefault(HttpResponseObject response, Exception* exception)
 {
 	try
 	{
@@ -144,7 +144,7 @@ void setHTTPResponseDefault(HTTPResponseObject response, Exception* exception)
 	}
 }
 
-void setHTTPResponseIsValid(HTTPResponseObject response, bool isValid, Exception* exception)
+void setResponseIsValid(HttpResponseObject response, bool isValid, Exception* exception)
 {
 	try
 	{
@@ -160,7 +160,7 @@ void setHTTPResponseIsValid(HTTPResponseObject response, bool isValid, Exception
 	}
 }
 
-const char* getHTTPRawParameters(HTTPRequestObject request, Exception* exception)
+const char* getRawParameters(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -178,7 +178,7 @@ const char* getHTTPRawParameters(HTTPRequestObject request, Exception* exception
 	return nullptr;
 }
 
-const char* getHTTPMethod(HTTPRequestObject request, Exception* exception)
+const char* getMethod(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -196,7 +196,7 @@ const char* getHTTPMethod(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-void* getHTTPVersion(HTTPRequestObject request, Exception* exception)
+void* getVersion(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -214,7 +214,7 @@ void* getHTTPVersion(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-const char* getHTTPBody(HTTPRequestObject request, size_t* bodySize, Exception* exception)
+const char* getBody(HttpRequestObject request, size_t* bodySize, Exception* exception)
 {
 	try
 	{
@@ -232,7 +232,7 @@ const char* getHTTPBody(HTTPRequestObject request, size_t* bodySize, Exception* 
 	return nullptr;
 }
 
-void setHTTPAttribute(HTTPRequestObject request, const char* name, const char* value, Exception* exception)
+void setAttribute(HttpRequestObject request, const char* name, const char* value, Exception* exception)
 {
 	try
 	{
@@ -248,7 +248,7 @@ void setHTTPAttribute(HTTPRequestObject request, const char* name, const char* v
 	}
 }
 
-void* getHTTPAttribute(HTTPRequestObject request, const char* name, Exception* exception)
+void* getAttribute(HttpRequestObject request, const char* name, Exception* exception)
 {
 	try
 	{
@@ -272,7 +272,7 @@ void* getHTTPAttribute(HTTPRequestObject request, const char* name, Exception* e
 	return nullptr;
 }
 
-void deleteHTTPSession(HTTPRequestObject request, Exception* exception)
+void deleteSession(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -288,7 +288,7 @@ void deleteHTTPSession(HTTPRequestObject request, Exception* exception)
 	}
 }
 
-void removeHTTPAttribute(HTTPRequestObject request, const char* name, Exception* exception)
+void removeAttribute(HttpRequestObject request, const char* name, Exception* exception)
 {
 	try
 	{
@@ -304,7 +304,7 @@ void removeHTTPAttribute(HTTPRequestObject request, const char* name, Exception*
 	}
 }
 
-JSONParser getHTTPRequestJSON(HTTPRequestObject request, Exception* exception)
+JsonParser getRequestJSON(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -322,7 +322,7 @@ JSONParser getHTTPRequestJSON(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-const char* getHTTPRawRequest(HTTPRequestObject request, Exception* exception)
+const char* getRawRequest(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -340,7 +340,7 @@ const char* getHTTPRawRequest(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-void* getClientIpV4(HTTPRequestObject request, Exception* exception)
+void* getClientIpV4(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -364,7 +364,7 @@ void* getClientIpV4(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-void* getServerIpV4(HTTPRequestObject request, Exception* exception)
+void* getServerIpV4(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -388,7 +388,7 @@ void* getServerIpV4(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-uint16_t getClientPort(HTTPRequestObject request, Exception* exception)
+uint16_t getClientPort(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -406,7 +406,7 @@ uint16_t getClientPort(HTTPRequestObject request, Exception* exception)
 	return 0;
 }
 
-uint16_t getServerPort(HTTPRequestObject request, Exception* exception)
+uint16_t getServerPort(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -424,7 +424,7 @@ uint16_t getServerPort(HTTPRequestObject request, Exception* exception)
 	return 0;
 }
 
-void registerWFDPFunction(HTTPRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
+void registerWFDPFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
 {
 	try
 	{
@@ -440,7 +440,7 @@ void registerWFDPFunction(HTTPRequestObject request, const char* functionName, c
 	}
 }
 
-void registerWFDPFunctionClass(HTTPRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
+void registerWFDPFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try
 	{
@@ -456,7 +456,7 @@ void registerWFDPFunctionClass(HTTPRequestObject request, const char* functionNa
 	}
 }
 
-void unregisterWFDPFunction(HTTPRequestObject request, const char* functionName, Exception* exception)
+void unregisterWFDPFunction(HttpRequestObject request, const char* functionName, Exception* exception)
 {
 	try
 	{
@@ -472,7 +472,7 @@ void unregisterWFDPFunction(HTTPRequestObject request, const char* functionName,
 	}
 }
 
-bool isWFDPFunctionRegistered(HTTPRequestObject request, const char* functionName, Exception* exception)
+bool isWFDPFunctionRegistered(HttpRequestObject request, const char* functionName, Exception* exception)
 {
 	try
 	{
@@ -490,7 +490,7 @@ bool isWFDPFunctionRegistered(HTTPRequestObject request, const char* functionNam
 	return false;
 }
 
-void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
+void getQueryParameters(HttpRequestObject request, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -506,7 +506,7 @@ void getQueryParameters(HTTPRequestObject request, void(*initQueryBuffer)(size_t
 	}
 }
 
-void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, Exception* exception)
+void getChunks(HttpRequestObject request, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -522,7 +522,7 @@ void getHTTPChunks(HTTPRequestObject request, void(*initChunkBuffer)(size_t size
 	}
 }
 
-void getFile(HTTPRequestObject request, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void getFile(HttpRequestObject request, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -538,7 +538,7 @@ void getFile(HTTPRequestObject request, const char* filePath, void(*fillBuffer)(
 	}
 }
 
-void processStaticFile(HTTPRequestObject request, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void processStaticFile(HttpRequestObject request, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -554,7 +554,7 @@ void processStaticFile(HTTPRequestObject request, const char* fileData, size_t s
 	}
 }
 
-void processWFDPFile(HTTPRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void processWFDPFile(HttpRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -570,7 +570,7 @@ void processWFDPFile(HTTPRequestObject request, const char* fileData, size_t siz
 	}
 }
 
-void getHTTPHeaders(HTTPRequestObject request, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
+void getHeaders(HttpRequestObject request, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -586,7 +586,7 @@ void getHTTPHeaders(HTTPRequestObject request, void(*initHeadersBuffer)(size_t s
 	}
 }
 
-const char* getHTTPHeader(HTTPRequestObject request, const char* headerName, Exception* exception)
+const char* getHeader(HttpRequestObject request, const char* headerName, Exception* exception)
 {
 	try
 	{
@@ -604,7 +604,7 @@ const char* getHTTPHeader(HTTPRequestObject request, const char* headerName, Exc
 	return nullptr;
 }
 
-const void* getLargeData(HTTPRequestObject request, Exception* exception)
+const void* getLargeData(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
@@ -622,7 +622,7 @@ const void* getLargeData(HTTPRequestObject request, Exception* exception)
 	return nullptr;
 }
 
-void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t size, void* buffer), void(addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer, Exception* exception)
+void getMultiparts(HttpRequestObject request, void(*initMultipartsBuffer)(size_t size, void* buffer), void(addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -638,7 +638,7 @@ void getMultiparts(HTTPRequestObject request, void(*initMultipartsBuffer)(size_t
 	}
 }
 
-void getCookies(HTTPRequestObject request, void(*initCookiesBuffer)(size_t size, void* buffer), void(addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
+void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size, void* buffer), void(addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -654,7 +654,7 @@ void getCookies(HTTPRequestObject request, void(*initCookiesBuffer)(size_t size,
 	}
 }
 
-void sendAssetFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -678,7 +678,7 @@ void sendAssetFile(HTTPRequestObject request, const char* filePath, HTTPResponse
 	}
 }
 
-void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, bool isBinary, const char* fileName, Exception* exception)
+void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -694,7 +694,7 @@ void sendStaticFile(HTTPRequestObject request, const char* filePath, HTTPRespons
 	}
 }
 
-void sendWFDPFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendWFDPFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -718,7 +718,7 @@ void sendWFDPFile(HTTPRequestObject request, const char* filePath, HTTPResponseO
 	}
 }
 
-void streamFile(HTTPRequestObject request, const char* filePath, HTTPResponseObject response, const char* fileName, size_t chunkSize, Exception* exception)
+void streamFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const char* fileName, size_t chunkSize, Exception* exception)
 {
 	try
 	{
@@ -734,7 +734,7 @@ void streamFile(HTTPRequestObject request, const char* filePath, HTTPResponseObj
 	}
 }
 
-int64_t getRouteIntegerParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception)
+int64_t getRouteIntegerParameter(HttpRequestObject request, const char* routeParameterName, Exception* exception)
 {
 	try
 	{
@@ -752,7 +752,7 @@ int64_t getRouteIntegerParameter(HTTPRequestObject request, const char* routePar
 	return 0;
 }
 
-double getRouteDoubleParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception)
+double getRouteDoubleParameter(HttpRequestObject request, const char* routeParameterName, Exception* exception)
 {
 	try
 	{
@@ -770,7 +770,7 @@ double getRouteDoubleParameter(HTTPRequestObject request, const char* routeParam
 	return 0.0;
 }
 
-const char* getRouteStringParameter(HTTPRequestObject request, const char* routeParameterName, Exception* exception)
+const char* getRouteStringParameter(HttpRequestObject request, const char* routeParameterName, Exception* exception)
 {
 	try
 	{
@@ -788,7 +788,7 @@ const char* getRouteStringParameter(HTTPRequestObject request, const char* route
 	return nullptr;
 }
 
-DatabaseObject getOrCreateDatabaseHTTPRequest(HTTPRequestObject request, const char* databaseName, Exception* exception)
+DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, Exception* exception)
 {
 	try
 	{
@@ -806,7 +806,7 @@ DatabaseObject getOrCreateDatabaseHTTPRequest(HTTPRequestObject request, const c
 	return nullptr;
 }
 
-DatabaseObject getDatabaseHTTPRequest(HTTPRequestObject request, const char* databaseName, Exception* exception)
+DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, Exception* exception)
 {
 	try
 	{
@@ -824,7 +824,7 @@ DatabaseObject getDatabaseHTTPRequest(HTTPRequestObject request, const char* dat
 	return nullptr;
 }
 
-TableObject getOrCreateTableHTTPRequest(HTTPRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception)
+TableObject getOrCreateTableRequest(HttpRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception)
 {
 	try
 	{
@@ -842,7 +842,7 @@ TableObject getOrCreateTableHTTPRequest(HTTPRequestObject request, const char* d
 	return nullptr;
 }
 
-TableObject getTableHTTPRequest(HTTPRequestObject request, const char* databaseName, const char* tableName, Exception* exception)
+TableObject getTableRequest(HttpRequestObject request, const char* databaseName, const char* tableName, Exception* exception)
 {
 	try
 	{
@@ -860,7 +860,7 @@ TableObject getTableHTTPRequest(HTTPRequestObject request, const char* databaseN
 	return nullptr;
 }
 
-void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception)
+void sendChunks(HttpRequestObject request, HttpResponseObject response, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception)
 {
 	try
 	{
@@ -876,7 +876,7 @@ void sendChunks(HTTPRequestObject request, HTTPResponseObject response, const ch
 	}
 }
 
-void sendFileChunks(HTTPRequestObject request, HTTPResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception)
+void sendFileChunks(HttpRequestObject request, HttpResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception)
 {
 	try
 	{
@@ -892,7 +892,7 @@ void sendFileChunks(HTTPRequestObject request, HTTPResponseObject response, cons
 	}
 }
 
-void throwWebFrameworkException(HTTPRequestObject request, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, Exception* exception)
+void throwWebFrameworkException(HttpRequestObject request, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, Exception* exception)
 {
 	try
 	{
@@ -908,12 +908,12 @@ void throwWebFrameworkException(HTTPRequestObject request, const char* errorMess
 	}
 }
 
-void setExceptionData(HTTPRequestObject request, const char* errorMessage, int32_t responseCode, const char* logCategory)
+void setExceptionData(HttpRequestObject request, const char* errorMessage, int32_t responseCode, const char* logCategory)
 {
 	static_cast<framework::interfaces::IHTTPRequest*>(request)->setExceptionData(errorMessage, responseCode, logCategory);
 }
 
-bool isExceptionDataValid(HTTPRequestObject request, Exception* exception)
+bool isExceptionDataValid(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
