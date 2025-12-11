@@ -40,7 +40,7 @@ namespace framework::utility
 		}
 		else
 		{
-			throw std::runtime_error(std::format("Wrong type in ChunkGeneratorWrapper: {}", static_cast<std::string>(py::repr(temp.get_type()))));
+			throw std::runtime_error(std::format("Wrong type in ChunkGeneratorWrapper: {}", py::repr(py::type::of(temp)).cast<std::string>()));
 		}
 
 		size = data.size();

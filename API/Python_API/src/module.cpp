@@ -331,7 +331,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 				}
 				else
 				{
-					throw std::runtime_error("Unsupported type: " + py::repr(item.get_type()).cast<std::string>());
+					throw std::runtime_error("Unsupported type: " + py::repr(py::type::of(item)).cast<std::string>());
 				}
 			}
 
