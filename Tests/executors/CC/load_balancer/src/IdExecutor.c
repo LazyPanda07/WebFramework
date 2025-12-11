@@ -14,17 +14,17 @@ DEFINE_DEFAULT_EXECUTOR(IdExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
 DEFINE_EXECUTOR_METHOD(IdExecutor, GET_METHOD, request, response)
 {
-	JSONBuilder builder = NULL;
+	JsonBuilder builder = NULL;
 	struct timespec duration = { 10, 0 };
 
-	createJSONBuilder(&builder);
-	appendJSONBuilderInteger(builder, "id", getProcessId());
+	createJsonBuilder(&builder);
+	appendJsonBuilderInteger(builder, "id", getProcessId());
 
 	thrd_sleep(&duration, NULL);
 
-	setJSONBody(response, builder);
+	setJsonBody(response, builder);
 
-	deleteWebFrameworkJSONBuilder(builder);
+	deleteWebFrameworkJsonBuilder(builder);
 }
 
 int64_t getProcessId()

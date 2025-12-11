@@ -7,20 +7,20 @@ DEFINE_DEFAULT_EXECUTOR(LocalizationExecutor, STATELESS_EXECUTOR);
 
 DEFINE_EXECUTOR_METHOD(LocalizationExecutor, GET_METHOD, request, response)
 {
-	JSONBuilder builder;
-	JSONParser parser;
+	JsonBuilder builder;
+	JsonParser parser;
 	const char* localizedString;
 	const char* language;
 
-	createJSONBuilder(&builder);
-	getHTTPRequestJSON(request, &parser);
+	createJsonBuilder(&builder);
+	getHTTPRequestJson(request, &parser);
 
-	getJSONParserString(parser, "language", true, &language);
+	getJsonParserString(parser, "language", true, &language);
 	getLocalizedString("LocalizationData", "key", language, &localizedString);
 
-	appendJSONBuilderString(builder, "result", localizedString);
+	appendJsonBuilderString(builder, "result", localizedString);
 
-	setJSONBody(response, builder);
+	setJsonBody(response, builder);
 
-	deleteWebFrameworkJSONBuilder(builder);
+	deleteWebFrameworkJsonBuilder(builder);
 }

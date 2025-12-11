@@ -26,12 +26,12 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	Table table;
 	SQLValue value;
 	SQLResult result;
-	JSONBuilder builder;
-	JSONObject_t data;
+	JsonBuilder builder;
+	JsonObject_t data;
 	
 	getTableHTTPRequest(request, "test_database", "multi_user", &table);
 	createSQLValue(&value);
-	createJSONBuilder(&builder);
+	createJsonBuilder(&builder);
 
 	setSQLValueString(value, getDataFromString(self->uuid));
 
@@ -39,13 +39,13 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 
 	iterateSQLResult(result, initBuffer, callback, &data);
 
-	appendJSONBuilderObject(builder, "data", &data);
+	appendJsonBuilderObject(builder, "data", &data);
 
-	setJSONBody(response, builder);
+	setJsonBody(response, builder);
 
-	deleteJSONObject(&data);
+	deleteJsonObject(&data);
 	deleteWebFrameworkSQLValue(value);
-	deleteWebFrameworkJSONBuilder(builder);
+	deleteWebFrameworkJsonBuilder(builder);
 	deleteSQLResult(table, result);
 }
 
@@ -64,7 +64,7 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 	Table table;
 	SQLValue* values = (SQLValue*)malloc(2 * sizeof(SQLValue));
 	SQLResult result;
-	JSONParser parser;
+	JsonParser parser;
 	const char* data = NULL;
 
 	if (!values)
@@ -77,9 +77,9 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 	getTableHTTPRequest(request, "test_database", "multi_user", &table);
 	createSQLValue(&values[0]);
 	createSQLValue(&values[1]);
-	getHTTPRequestJSON(request, &parser);
+	getHTTPRequestJson(request, &parser);
 
-	getJSONParserString(parser, "data", true, &data);
+	getJsonParserString(parser, "data", true, &data);
 	setSQLValueString(values[0], getDataFromString(self->uuid));
 	setSQLValueString(values[1], data);
 

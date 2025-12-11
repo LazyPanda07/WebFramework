@@ -4,22 +4,22 @@
 
 void initBuffer(size_t size, void* buffer)
 {
-	JSONObject_t* data = (JSONObject_t*)buffer;
+	JsonObject_t* data = (JsonObject_t*)buffer;
 
-	createJSONObject(data);
+	createJsonObject(data);
 }
 
 void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer)
 {
-	JSONObject_t* array = (JSONObject_t*)buffer;
-	JSONObject_t object;
+	JsonObject_t* array = (JsonObject_t*)buffer;
+	JsonObject_t object;
 
-	emplaceJSONObject(array, &object);
+	emplaceJsonObject(array, &object);
 
 	for (size_t i = 0; i < size; i++)
 	{
 		SQLValueType_t type;
-		JSONObject_t temp;
+		JsonObject_t temp;
 
 		getSQLValueType(columnValues[i], &type);
 
@@ -29,9 +29,9 @@ void callback(const char** columnNames, const SQLValue* columnValues, size_t siz
 
 			getSQLValueInt(columnValues[i], &result);
 
-			assignJSONObject(&object, columnNames[i], &temp);
+			assignJsonObject(&object, columnNames[i], &temp);
 
-			setJSONObjectInteger(&temp, result);
+			setJsonObjectInteger(&temp, result);
 		}
 		else if (type == STRING_TYPE)
 		{
@@ -39,9 +39,9 @@ void callback(const char** columnNames, const SQLValue* columnValues, size_t siz
 
 			getSQLValueString(columnValues[i], &result);
 
-			assignJSONObject(&object, columnNames[i], &temp);
+			assignJsonObject(&object, columnNames[i], &temp);
 
-			setJSONObjectString(&temp, result);
+			setJsonObjectString(&temp, result);
 		}
 	}
 }

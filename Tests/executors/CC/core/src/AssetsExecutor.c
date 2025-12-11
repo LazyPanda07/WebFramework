@@ -10,16 +10,16 @@ static void deleter(char* ptr);
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 {
-	JSONParser parser;
+	JsonParser parser;
 	const char* fileName;
 	const char extension[] = "wfdp";
 	QueryParameter_t* queryParameters;
 	size_t queryParametersSize;
 
-	getHTTPRequestJSON(request, &parser);
+	getHTTPRequestJson(request, &parser);
 	getQueryParameters(request, &queryParameters, &queryParametersSize);
 
-	getJSONParserString(parser, "fileName", true, &fileName);
+	getJsonParserString(parser, "fileName", true, &fileName);
 
 	DynamicPagesVariable_t* variables = (DynamicPagesVariable_t*)malloc(queryParametersSize * sizeof(DynamicPagesVariable_t));
 

@@ -13,11 +13,11 @@ static void service(Executor executor, HTTPResponse response);
 DEFINE_EXECUTOR_INIT(HelloExecutor)
 {
 	HelloExecutor* self = (HelloExecutor*)executor;
-	JSONParser parser = NULL;
+	JsonParser parser = NULL;
 
 	getExecutorInitParameters(settings, &parser);
 
-	getJSONParserInteger(parser, "number", true, &self->number);
+	getJsonParserInteger(parser, "number", true, &self->number);
 }
 
 DEFINE_EXECUTOR_METHOD(HelloExecutor, GET_METHOD, request, response)
@@ -58,14 +58,14 @@ DEFINE_EXECUTOR_METHOD(HelloExecutor, CONNECT_METHOD, request, response)
 void service(Executor executor, HTTPResponse response)
 {
 	HelloExecutor* self = (HelloExecutor*)executor;
-	JSONBuilder builder;
+	JsonBuilder builder;
 
-	createJSONBuilder(&builder);
+	createJsonBuilder(&builder);
 
-	appendJSONBuilderString(builder, "message", "Hello, World!");
-	appendJSONBuilderInteger(builder, "number", self->number);
+	appendJsonBuilderString(builder, "message", "Hello, World!");
+	appendJsonBuilderInteger(builder, "number", self->number);
 
-	setJSONBody(response, builder);
+	setJsonBody(response, builder);
 
-	deleteWebFrameworkJSONBuilder(builder);
+	deleteWebFrameworkJsonBuilder(builder);
 }
