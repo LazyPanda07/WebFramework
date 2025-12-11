@@ -88,43 +88,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Executors\Executor.c" />
-    <ClCompile Include="include\Executors\Executor.h" />
-    <ClCompile Include="src\Config.c" />
-    <ClCompile Include="src\Databases\Database.c" />
-    <ClCompile Include="src\Databases\SQLResult.c" />
-    <ClCompile Include="src\Databases\SQLValue.c" />
-    <ClCompile Include="src\Databases\Table.c" />
-    <ClCompile Include="src\DLLHandler.c" />
-    <ClCompile Include="src\HttpRequest.c" />
-    <ClCompile Include="src\HttpResponse.c" />
-    <ClCompile Include="src\JsonBuilder.c" />
-    <ClCompile Include="src\JsonObject.c" />
-    <ClCompile Include="src\JsonParser.c" />
-    <ClCompile Include="src\LoadBalancerHeuristic.c" />
-    <ClCompile Include="src\Utility\WebFrameworkLocalization.c" />
-    <ClCompile Include="src\Utility\WebFrameworkUtility.c" />
-    <ClCompile Include="src\WebFramework.c" />
-    <ClCompile Include="src\WebFrameworkException.c" />
+    <ClCompile Include="src\Executors\executor.c" />
+    <ClCompile Include="include\Executors\executor.h" />
+    <ClCompile Include="src\config.c" />
+    <ClCompile Include="src\Databases\database.c" />
+    <ClCompile Include="src\Databases\sql_result.c" />
+    <ClCompile Include="src\Databases\sql_value.c" />
+    <ClCompile Include="src\Databases\table.c" />
+    <ClCompile Include="src\dll_handler.c" />
+    <ClCompile Include="src\http_request.c" />
+    <ClCompile Include="src\http_response.c" />
+    <ClCompile Include="src\json_builder.c" />
+    <ClCompile Include="src\json_object.c" />
+    <ClCompile Include="src\json_parser.c" />
+    <ClCompile Include="src\load_balancer_heuristic.c" />
+    <ClCompile Include="src\Utility\web_framework_localization.c" />
+    <ClCompile Include="src\Utility\web_ramework_utility.c" />
+    <ClCompile Include="src\web_framework.c" />
+    <ClCompile Include="src\web_framework_exception.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Config.h" />
-    <ClInclude Include="include\Databases\Database.h" />
-    <ClInclude Include="include\Databases\SQLResult.h" />
-    <ClInclude Include="include\Databases\SQLValue.h" />
-    <ClInclude Include="include\Databases\Table.h" />
-    <ClInclude Include="include\DLLHandler.h" />
-    <ClInclude Include="include\HttpRequest.h" />
-    <ClInclude Include="include\HttpResponse.h" />
+    <ClInclude Include="include\config.h" />
+    <ClInclude Include="include\Databases\database.h" />
+    <ClInclude Include="include\Databases\sql_result.h" />
+    <ClInclude Include="include\Databases\sql_value.h" />
+    <ClInclude Include="include\Databases\table.h" />
+    <ClInclude Include="include\dll_handler.h" />
+    <ClInclude Include="include\http_request.h" />
+    <ClInclude Include="include\http_response.h" />
     <ClInclude Include="include\import.h" />
-    <ClInclude Include="include\JsonBuilder.h" />
-    <ClInclude Include="include\JsonObject.h" />
-    <ClInclude Include="include\JsonParser.h" />
-    <ClInclude Include="include\LoadBalancerHeuristic.h" />
-    <ClInclude Include="include\Utility\WebFrameworkLocalization.h" />
-    <ClInclude Include="include\Utility\WebFrameworkUtility.h" />
-    <ClInclude Include="include\WebFramework.h" />
-    <ClInclude Include="include\WebFrameworkException.h" />
+    <ClInclude Include="include\json_builder.h" />
+    <ClInclude Include="include\json_object.h" />
+    <ClInclude Include="include\json_parser.h" />
+    <ClInclude Include="include\load_balancer_heuristic.h" />
+    <ClInclude Include="include\Utility\web_framework_localization.h" />
+    <ClInclude Include="include\Utility\web_framework_utility.h" />
+    <ClInclude Include="include\web_framework.h" />
+    <ClInclude Include="include\web_framework_exception.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
