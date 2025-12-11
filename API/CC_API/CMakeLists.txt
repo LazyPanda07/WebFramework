@@ -10,23 +10,23 @@ project(CC_API)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/Executors/Executor.c
-	src/Databases/Database.c
-	src/Databases/SQLResult.c
-	src/Databases/SQLValue.c
-	src/Databases/Table.c
-	src/Utility/WebFrameworkUtility.c
-	src/Utility/WebFrameworkLocalization.c
-	src/Config.c
-	src/DLLHandler.c
-	src/HttpRequest.c
-	src/HttpResponse.c
-	src/JsonBuilder.c
-	src/JsonObject.c
-	src/JsonParser.c
-	src/WebFramework.c
-	src/WebFrameworkException.c
-	src/LoadBalancerHeuristic.c
+	src/Executors/executor.c
+	src/Databases/database.c
+	src/Databases/sql_result.c
+	src/Databases/sql_value.c
+	src/Databases/table.c
+	src/Utility/web_framework_utility.c
+	src/Utility/web_framework_localization.c
+	src/config.c
+	src/dll_handler.c
+	src/http_request.c
+	src/http_response.c
+	src/json_builder.c
+	src/json_object.c
+	src/json_parser.c
+	src/web_framework.c
+	src/web_framework_exception.c
+	src/load_balancer_heuristic.c
 )
 
 target_include_directories(

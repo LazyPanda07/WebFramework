@@ -8,7 +8,7 @@
  * @param config Result Config
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException createConfigFromPath(const char* configPath, Config* config);
+WebFrameworkException wf_create_config_from_path(const char* config_path, Config* config);
 
 /**
  * @brief Create Config
@@ -17,7 +17,7 @@ WebFrameworkException createConfigFromPath(const char* configPath, Config* confi
  * @param config Result Config
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException createConfigFromString(const char* serverConfiguration, const char* applicationDirectory, Config* config);
+WebFrameworkException wf_create_config_from_string(const char* server_configuration, const char* application_directory, Config* config);
 
 /**
  * @brief Override Config string
@@ -27,7 +27,7 @@ WebFrameworkException createConfigFromString(const char* serverConfiguration, co
  * @param recursive Recursive search for key
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException overrideConfigurationString(Config implementation, const char* key, const char* value, bool recursive);
+WebFrameworkException wf_override_configuration_string(Config implementation, const char* key, const char* value, bool recursive);
 
 /**
  * @brief Override Config integer
@@ -37,7 +37,7 @@ WebFrameworkException overrideConfigurationString(Config implementation, const c
  * @param recursive Recursive search for key
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException overrideConfigurationInteger(Config implementation, const char* key, int64_t value, bool recursive);
+WebFrameworkException wf_override_configuration_integer(Config implementation, const char* key, int64_t value, bool recursive);
 
 /**
  * @brief Override Config bool
@@ -47,7 +47,7 @@ WebFrameworkException overrideConfigurationInteger(Config implementation, const 
  * @param recursive Recursive search for key
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException overrideConfigurationBoolean(Config implementation, const char* key, bool value, bool recursive);
+WebFrameworkException wf_override_configuration_boolean(Config implementation, const char* key, bool value, bool recursive);
 
 /**
  * @brief Override Config string array
@@ -57,7 +57,7 @@ WebFrameworkException overrideConfigurationBoolean(Config implementation, const 
  * @param recursive Recursive search for key
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException overrideConfigurationStringArray(Config implementation, const char* key, const char** value, bool recursive, int64_t size);
+WebFrameworkException wf_override_configuration_string_array(Config implementation, const char* key, const char** value, bool recursive, int64_t size);
 
 /**
  * @brief Override Config integer array
@@ -67,7 +67,7 @@ WebFrameworkException overrideConfigurationStringArray(Config implementation, co
  * @param recursive Recursive search for key
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException overrideConfigurationIntegerArray(Config implementation, const char* key, int64_t* value, bool recursive, int64_t size);
+WebFrameworkException wf_override_configuration_integer_array(Config implementation, const char* key, int64_t* value, bool recursive, int64_t size);
 
 /**
  * @brief Override config file directory
@@ -75,7 +75,7 @@ WebFrameworkException overrideConfigurationIntegerArray(Config implementation, c
  * @param basePath New base path
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException overrideBasePath(Config implementation, const char* basePath);
+WebFrameworkException wf_override_base_path(Config implementation, const char* basePath);
 
 /**
  * @brief Get string from config
@@ -85,7 +85,7 @@ WebFrameworkException overrideBasePath(Config implementation, const char* basePa
  * @param result Config string value
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException getConfigurationString(Config implementation, const char* key, bool recursive, WebFrameworkString* result);
+WebFrameworkException wf_get_configuration_string(Config implementation, const char* key, bool recursive, WebFrameworkString* result);
 
 /**
  * @brief Get integer from config
@@ -95,7 +95,7 @@ WebFrameworkException getConfigurationString(Config implementation, const char* 
  * @param result Config integer value
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException getConfigurationInteger(Config implementation, const char* key, bool recursive, int64_t* result);
+WebFrameworkException wf_get_configuration_integer(Config implementation, const char* key, bool recursive, int64_t* result);
 
 /**
  * @brief Get boolean from config
@@ -105,7 +105,7 @@ WebFrameworkException getConfigurationInteger(Config implementation, const char*
  * @param result Config boolean value
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException getConfigurationBoolean(Config implementation, const char* key, bool recursive, bool* result);
+WebFrameworkException wf_get_configuration_boolean(Config implementation, const char* key, bool recursive, bool* result);
 
 /**
  * @brief Get current config Json string data
@@ -113,7 +113,7 @@ WebFrameworkException getConfigurationBoolean(Config implementation, const char*
  * @param configuration Result string
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException getConfiguration(Config implementation, WebFrameworkString* configuration);
+WebFrameworkException wf_get_configuration(Config implementation, WebFrameworkString* configuration);
 
 /**
  * @brief Get raw config Json string data
@@ -121,7 +121,7 @@ WebFrameworkException getConfiguration(Config implementation, WebFrameworkString
  * @param rawConfiguration
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException getRawConfiguration(Config implementation, const char** rawConfiguration);
+WebFrameworkException wf_get_raw_configuration(Config implementation, const char** rawConfiguration);
 
 /**
  * @brief Get config file directory
@@ -129,4 +129,4 @@ WebFrameworkException getRawConfiguration(Config implementation, const char** ra
  * @param basePath Result string
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException getBasePath(Config implementation, WebFrameworkString* basePath);
+WebFrameworkException wf_get_base_path(Config implementation, WebFrameworkString* basePath);

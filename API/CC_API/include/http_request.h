@@ -3,80 +3,80 @@
 #include "HttpResponse.h"
 #include "Databases/Database.h"
 
-typedef void* HTTPRequest;
+typedef void* http_request;
 
 /**
  * @brief URL encoded parameters
  */
-typedef struct QueryParameter
+typedef struct query_parameter
 {
 	const char* key;
 	const char* value;
-} QueryParameter_t;
+} query_parameter_t;
 
 /**
  * @brief Single chunk in request with Transfer-Encoding: chunk header
  */
-typedef struct HTTPChunk
+typedef struct http_chunk
 {
 	const char* data;
 	size_t size;
-} HTTPChunk_t;
+} http_chunk_t;
 
 /**
  * @brief HTTP header
  */
-typedef struct HTTPHeader
+typedef struct http_header
 {
 	const char* key;
 	const char* value;
-} HTTPHeader_t;
+} http_header_t;
 
 /**
  * @brief HTTP cookie
  */
-typedef struct Cookie
+typedef struct cookie
 {
 	const char* key;
 	const char* value;
-} Cookie_t;
+} cookie_t;
 
 /**
  * @brief Variable for processing .wfdp files
  */
-typedef struct DynamicPagesVariable
+typedef struct dynamic_pages_variable
 {
 	const char* name;
 	const char* value;
-} DynamicPagesVariable_t;
+} dynamic_pages_variable_t;
 
 /**
  * @brief Data part if file passes large files threshold
  */
-typedef struct LargeData
+typedef struct large_data
 {
-	const char* dataPart;
-	size_t dataPartSize;
-	bool isLastPacket;
-} LargeData_t;
+	const char* data_part;
+	size_t data_part_size;
+	bool is_last_packet;
+} large_data_t;
 
 /**
  * @brief Mutilpart data from forms
  */
-typedef struct Multipart
+typedef struct multipart
 {
 	const char* name;
 	/**
 	 * @brief May be NULL
 	 */
-	const char* fileName;
+	const char* file_name;
 	/**
 	 * @brief May be NULL
 	 */
-	const char* contentType;
+	const char* content_type;
 	const char* data;
-	size_t dataSize;
-} Multipart_t;
+	size_t data_size;
+} multipart_t;
 
 /**
  * @brief Raw string with query parameters

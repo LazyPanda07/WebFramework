@@ -1,6 +1,6 @@
 #include "DLLHandler.h"
 
-void initializeWebFramework(const char* pathToDLL)
+void wf_initialize_web_framework(const char* pathToDLL)
 {
 #ifdef __ANDROID__
 	getInstance("libWebFramework.so");
@@ -75,7 +75,7 @@ void initializeWebFramework(const char* pathToDLL)
 #undef MAX_PATH_SIZE
 }
 
-HMODULE getInstance(const char* pathToDLL)
+HMODULE wf_get_instance(const char* pathToDLL)
 {
 	static HMODULE instance = NULL;
 
@@ -110,7 +110,7 @@ HMODULE getInstance(const char* pathToDLL)
 	return instance;
 }
 
-void* findFunction(const char* name)
+void* wf_find_function(const char* name)
 {
 	HMODULE instance = getInstance(NULL);
 
@@ -121,56 +121,56 @@ void* findFunction(const char* name)
 #endif
 }
 
-void deleteWebFrameworkString(WebFrameworkString string)
+void wf_delete_web_framework_string(WebFrameworkString string)
 {
 	typedef void (*deleteWebFrameworkString)(void* string);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, string);
 }
 
-void deleteWebFrameworkConfig(Config config)
+void wf_delete_web_framework_config(Config config)
 {
 	typedef void (*deleteWebFrameworkConfig)(void* config);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkConfig, config);
 }
 
-void deleteWebFramework(WebFramework webFramework)
+void wf_delete_web_framework(WebFramework webFramework)
 {
 	typedef void (*deleteWebFramework)(void* webFramework);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, webFramework);
 }
 
-void deleteWebFrameworkException(WebFrameworkException exception)
+void wf_delete_web_framework_exception(WebFrameworkException exception)
 {
 	typedef void (*deleteWebFrameworkException)(void* exception);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
 }
 
-void deleteWebFrameworkJsonBuilder(JsonBuilder builder)
+void wf_delete_web_framework_json_builder(JsonBuilder builder)
 {
 	typedef void (*deleteWebFrameworkJsonBuilder)(void* builder);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonBuilder, builder);
 }
 
-void deleteWebFrameworkJsonParser(JsonParser parser)
+void wf_delete_web_framework_json_parser(JsonParser parser)
 {
 	typedef void (*deleteWebFrameworkJsonParser)(void* parser);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonParser, parser);
 }
 
-const char* getDataFromString(WebFrameworkString string)
+const char* wf_get_data_from_string(WebFrameworkString string)
 {
 	typedef const char* (*getDataFromString)(void* implementation);
 
 	return CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, string);
 }
 
-size_t findLastChar(char* ptr, char c)
+size_t wf_find_last_char(char* ptr, char c)
 {
 	size_t result = -1;
 
