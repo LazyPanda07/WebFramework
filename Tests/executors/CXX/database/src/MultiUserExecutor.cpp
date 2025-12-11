@@ -45,7 +45,7 @@ void MultiUserExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRe
 	table.execute
 	(
 		"INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
-		framework::utility::database::makeSQLValues(userId, request.getJSON().get<std::string>("data"))
+		framework::utility::database::makeSQLValues(userId, request.getJson().get<std::string>("data"))
 	);
 }
 

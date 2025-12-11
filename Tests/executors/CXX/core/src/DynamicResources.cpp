@@ -12,7 +12,7 @@ void DynamicResources::doPost(framework::HTTPRequest& request, framework::HTTPRe
 	std::string fileData = request.getFile("print.wfdp");
 	std::unordered_map<std::string, std::string> variables;
 
-	variables.try_emplace("data", request.getJSON().get<std::string>("data"));
+	variables.try_emplace("data", request.getJson().get<std::string>("data"));
 
 	response.setBody(request.processWFDPFile(fileData, variables));
 }

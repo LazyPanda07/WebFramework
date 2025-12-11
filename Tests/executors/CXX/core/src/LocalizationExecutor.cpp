@@ -9,7 +9,7 @@ void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTT
 		framework::JsonBuilder().append
 		(
 			"result",
-			framework::utility::getLocalizedString("LocalizationData", "key", request.getJSON().get<std::string>("language"))
+			framework::utility::getLocalizedString("LocalizationData", "key", request.getJson().get<std::string>("language"))
 		)
 	);
 }
