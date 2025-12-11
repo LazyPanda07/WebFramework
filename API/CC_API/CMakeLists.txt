@@ -19,7 +19,7 @@ add_library(
 	src/utility/web_framework_localization.c
 	src/config.c
 	src/dll_handler.c
-	src/http_request.c
+	src/http_request_t.c
 	src/http_response.c
 	src/json_builder.c
 	src/json_object.c

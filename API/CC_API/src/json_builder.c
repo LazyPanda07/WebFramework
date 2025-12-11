@@ -1,8 +1,8 @@
-#include "JsonBuilder.h"
+#include "json_builder_t.h"
 
-WebFrameworkException createJsonBuilder(JsonBuilder* builder)
+web_framework_exception_t createJsonBuilder(json_builder_t* builder)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*createJsonBuilder)(void* _, void** exception);
 
@@ -11,9 +11,9 @@ WebFrameworkException createJsonBuilder(JsonBuilder* builder)
 	return exception;
 }
 
-WebFrameworkException copyJsonBuilder(JsonBuilder* builder, JsonBuilder other)
+web_framework_exception_t copyJsonBuilder(json_builder_t* builder, json_builder_t other)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*createJsonBuilder)(void* other, void** exception);
 
@@ -22,9 +22,9 @@ WebFrameworkException copyJsonBuilder(JsonBuilder* builder, JsonBuilder other)
 	return exception;
 }
 
-WebFrameworkException buildJsonBuilder(JsonBuilder implementation, WebFrameworkString* result)
+web_framework_exception_t buildJsonBuilder(json_builder_t implementation, web_framework_string_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*buildJsonBuilder)(void* implementation, void** exception);
 
@@ -33,9 +33,9 @@ WebFrameworkException buildJsonBuilder(JsonBuilder implementation, WebFrameworkS
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderObject(JsonBuilder implementation, const char* key, JsonObject_t* object)
+web_framework_exception_t appendJsonBuilderObject(json_builder_t implementation, const char* key, JsonObject_t* object)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*appendJsonBuilderObject)(void* implementation, const char* key, void* value, void** exception);
 
@@ -44,9 +44,9 @@ WebFrameworkException appendJsonBuilderObject(JsonBuilder implementation, const 
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderString(JsonBuilder implementation, const char* key, const char* value)
+web_framework_exception_t appendJsonBuilderString(json_builder_t implementation, const char* key, const char* value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*appendJsonBuilderString)(void* implementation, const char* key, const char* value, void** exception);
 
@@ -55,9 +55,9 @@ WebFrameworkException appendJsonBuilderString(JsonBuilder implementation, const 
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderInteger(JsonBuilder implementation, const char* key, int64_t value)
+web_framework_exception_t appendJsonBuilderInteger(json_builder_t implementation, const char* key, int64_t value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*appendJsonBuilderInteger)(void* implementation, const char* key, int64_t value, void** exception);
 
@@ -66,9 +66,9 @@ WebFrameworkException appendJsonBuilderInteger(JsonBuilder implementation, const
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderUnsignedInteger(JsonBuilder implementation, const char* key, uint64_t value)
+web_framework_exception_t appendJsonBuilderUnsignedInteger(json_builder_t implementation, const char* key, uint64_t value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*appendJsonBuilderUnsignedInteger)(void* implementation, const char* key, uint64_t value, void** exception);
 
@@ -77,9 +77,9 @@ WebFrameworkException appendJsonBuilderUnsignedInteger(JsonBuilder implementatio
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderDouble(JsonBuilder implementation, const char* key, double value)
+web_framework_exception_t appendJsonBuilderDouble(json_builder_t implementation, const char* key, double value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*appendJsonBuilderDouble)(void* implementation, const char* key, double value, void** exception);
 
@@ -88,9 +88,9 @@ WebFrameworkException appendJsonBuilderDouble(JsonBuilder implementation, const 
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderBoolean(JsonBuilder implementation, const char* key, bool value)
+web_framework_exception_t appendJsonBuilderBoolean(json_builder_t implementation, const char* key, bool value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*appendJsonBuilderBoolean)(void* implementation, const char* key, bool value, void** exception);
 
@@ -99,9 +99,9 @@ WebFrameworkException appendJsonBuilderBoolean(JsonBuilder implementation, const
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderNull(JsonBuilder implementation, const char* key)
+web_framework_exception_t appendJsonBuilderNull(json_builder_t implementation, const char* key)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*appendJsonBuilderBoolean)(void* implementation, const char* key, void** exception);
 
@@ -110,9 +110,9 @@ WebFrameworkException appendJsonBuilderNull(JsonBuilder implementation, const ch
 	return exception;
 }
 
-WebFrameworkException appendJsonBuilderArray(JsonBuilder implementation, const char* key, const JsonObject_t* array, size_t arraySize)
+web_framework_exception_t appendJsonBuilderArray(json_builder_t implementation, const char* key, const JsonObject_t* array, size_t arraySize)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* buffer = malloc(arraySize * sizeof(void*));
 
 	if (!buffer)

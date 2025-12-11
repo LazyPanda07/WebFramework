@@ -1,50 +1,50 @@
 #pragma once
 
-#include "Table.h"
+#include "table.h"
 
-typedef void* Database;
+typedef void* database_t;
 
 /**
  * @brief Tries to get table from database or create if can't get
- * @param implementation Database instance
+ * @param implementation database_t instance
  * @param tableName Name of table
  * @param createTableQuery Create table query if can't get table
- * @param result Table instance
+ * @param result table_t instance
  * @return Error if occurred
  */
-WebFrameworkException getOrCreateTable(Database implementation, const char* tableName, const char* createTableQuery, Table* result);
+web_framework_exception_t wf_get_or_create_table(database_t implementation, const char* table_name, const char* create_table_query, table_t* result);
 
 /**
  * @brief Get table from database
- * @param implementation Database instance
+ * @param implementation database_t instance
  * @param tableName Name of table
- * @param result Table instance
+ * @param result table_t instance
  * @return Error if occurred
  */
-WebFrameworkException getTable(Database implementation, const char* tableName, Table* result);
+web_framework_exception_t wf_get_table(database_t implementation, const char* table_name, table_t* result);
 
 /**
  * @brief Check if table exists in database
- * @param implementation Database instance
+ * @param implementation database_t instance
  * @param tableName Name of table
- * @param outTable Optional parameter. Also receive Table instance
+ * @param outTable Optional parameter. Also receive table_t instance
  * @param result Does table contain table
  * @return Error if occurred
  */
-WebFrameworkException containsTable(Database implementation, const char* tableName, Table* outTable, bool* result);
+web_framework_exception_t wf_contains_table(database_t implementation, const char* table_name, table_t* out_table, bool* result);
 
 /**
  * @brief Get database name
- * @param implementation Database instance
- * @param result Database name
+ * @param implementation database_t instance
+ * @param result database_t name
  * @return Error if occurred
  */
-WebFrameworkException getDatabaseName(Database implementation, const char** result);
+web_framework_exception_t wf_get_database_name(database_t implementation, const char** result);
 
 /**
  * @brief Get database file name
- * @param implementation Database instance
- * @param result Database file name
+ * @param implementation database_t instance
+ * @param result database_t file name
  * @return Error if occurred
  */
-WebFrameworkException getDatabaseFileName(Database implementation, const char** result);
+web_framework_exception_t wf_get_database_file_name(database_t implementation, const char** result);

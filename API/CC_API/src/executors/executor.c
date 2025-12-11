@@ -1,12 +1,12 @@
-#include "Executors/Executor.h"
+#include "executors/executor_t.h"
 
-WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JsonParser* result)
+web_framework_exception_t wf_get_executor_init_parameters(executor_settings_t implementation, json_parser_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getExecutorInitParameters)(void* implementation, void** exception);
 
-	WebFrameworkString temp = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorInitParameters, &exception);
+	web_framework_string_t temp = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorInitParameters, &exception);
 
 	if (exception)
 	{
@@ -20,9 +20,9 @@ WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation,
 	return exception;
 }
 
-WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFrameworkString* result)
+web_framework_exception_t wf_get_executor_name(executor_settings_t implementation, web_framework_string_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getExecutorName)(void* implementation, void** exception);
 
@@ -31,9 +31,9 @@ WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFramew
 	return exception;
 }
 
-WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation, WebFrameworkString* result)
+web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t implementation, web_framework_string_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getExecutorUserAgentFilter)(void* implementation, void** exception);
 
@@ -42,9 +42,9 @@ WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation
 	return exception;
 }
 
-WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFrameworkString* result)
+web_framework_exception_t wf_get_executor_api_type(executor_settings_t implementation, web_framework_string_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getExecutorAPIType)(void* implementation, void** exception);
 
@@ -53,13 +53,13 @@ WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFra
 	return exception;
 }
 
-WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadType_t* result)
+web_framework_exception_t wf_get_executor_load_type(executor_settings_t implementation, load_type_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef int (*getExecutorLoadType)(void* implementation, void** exception);
 
-	*result = (LoadType_t)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorLoadType, &exception);
+	*result = (load_type_t)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorLoadType, &exception);
 
 	return exception;
 }

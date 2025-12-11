@@ -1,8 +1,8 @@
-#include "Utility/WebFrameworkUtility.h"
+#include "utility/web_framework_utility.h"
 
-WebFrameworkException generateUUID(WebFrameworkString* result)
+web_framework_exception_t wf_generate_uuid(web_framework_string_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*generateWebFrameworkUUID)(void** exception);
 

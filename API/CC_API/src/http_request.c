@@ -1,16 +1,16 @@
-#include "HttpRequest.h"
+#include "http_request.h"
 
-typedef struct FileBuffer
+typedef struct file_buffer
 {
 	char** data;
 	size_t* size;
-} FileBuffer_t;
+} file_buffer_t;
 
-static void __initQueryBuffer(size_t querySize, void* buffer)
+static void __init_query_buffer(size_t querySize, void* buffer)
 {
-	QueryParameter_t** temp = (QueryParameter_t**)buffer;
+	query_parameter_t** temp = (query_parameter_t**)buffer;
 
-	*temp = (QueryParameter_t*)malloc((querySize + 1) * sizeof(QueryParameter_t)); // + 1 uses as \0
+	*temp = (query_parameter_t*)malloc((querySize + 1) * sizeof(query_parameter_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -19,10 +19,10 @@ static void __initQueryBuffer(size_t querySize, void* buffer)
 		exit(1);
 	}
 
-	memset(&(*temp)[querySize], 0, sizeof(QueryParameter_t)); // fill with zeros last element
+	memset(&(*temp)[querySize], 0, sizeof(query_parameter_t)); // fill with zeros last element
 }
 
-static void __initChunksBuffer(size_t size, void* buffer)
+static void __init_chunks_buffer(size_t size, void* buffer)
 {
 	HTTPChunk_t** temp = (HTTPChunk_t**)buffer;
 
@@ -38,7 +38,7 @@ static void __initChunksBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], 0, sizeof(HTTPChunk_t)); // fill with zeros last element
 }
 
-static void __initHeadersBuffer(size_t size, void* buffer)
+static void __init_headers_buffer(size_t size, void* buffer)
 {
 	HTTPHeader_t** temp = (HTTPHeader_t**)buffer;
 
@@ -54,11 +54,11 @@ static void __initHeadersBuffer(size_t size, void* buffer)
 	memset(&(*temp)[size], 0, sizeof(HTTPHeader_t)); // fill with zeros last element
 }
 
-static void __initMultipartsBuffer(size_t size, void* buffer)
+static void __init_multiparts_buffer(size_t size, void* buffer)
 {
-	Multipart_t** temp = (Multipart_t**)buffer;
+	multipart_t** temp = (multipart_t**)buffer;
 
-	*temp = (Multipart_t*)malloc((size + 1) * sizeof(Multipart_t)); // + 1 uses as \0
+	*temp = (multipart_t*)malloc((size + 1) * sizeof(multipart_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -67,14 +67,14 @@ static void __initMultipartsBuffer(size_t size, void* buffer)
 		exit(4);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(Multipart_t)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(multipart_t)); // fill with zeros last element
 }
 
-static void __initCookiesBuffer(size_t size, void* buffer)
+static void __init_cookies_buffer(size_t size, void* buffer)
 {
-	Cookie_t** temp = (Cookie_t**)buffer;
+	cookie_t** temp = (cookie_t**)buffer;
 
-	*temp = (Cookie_t*)malloc((size + 1) * sizeof(Cookie_t)); // + 1 uses as \0
+	*temp = (cookie_t*)malloc((size + 1) * sizeof(cookie_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -83,18 +83,18 @@ static void __initCookiesBuffer(size_t size, void* buffer)
 		exit(5);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(Cookie_t)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(cookie_t)); // fill with zeros last element
 }
 
-static void __addQueryParameter(const char* key, const char* value, size_t index, void* buffer)
+static void __add_query_parameter(const char* key, const char* value, size_t index, void* buffer)
 {
-	QueryParameter_t* temp = *(QueryParameter_t**)buffer;
+	query_parameter_t* temp = *(query_parameter_t**)buffer;
 
 	temp[index].key = key;
 	temp[index].value = value;
 }
 
-static void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
+static void __add_chunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
 {
 	HTTPChunk_t* temp = *(HTTPChunk_t**)buffer;
 
@@ -102,7 +102,7 @@ static void __addChunk(const char* chunk, size_t chunkSize, size_t index, void* 
 	temp[index].size = chunkSize;
 }
 
-static void __addHeader(const char* key, const char* value, size_t index, void* buffer)
+static void __add_header(const char* key, const char* value, size_t index, void* buffer)
 {
 	HTTPHeader_t* temp = *(HTTPHeader_t**)buffer;
 
@@ -110,9 +110,9 @@ static void __addHeader(const char* key, const char* value, size_t index, void* 
 	temp[index].value = value;
 }
 
-static void __addMultipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer)
+static void __add_multipart(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer)
 {
-	Multipart_t* temp = *(Multipart_t**)buffer;
+	multipart_t* temp = *(multipart_t**)buffer;
 
 	temp[index].name = name;
 	temp[index].fileName = fileName;
@@ -121,15 +121,15 @@ static void __addMultipart(const char* name, const char* fileName, const char* c
 	temp[index].dataSize = dataSize;
 }
 
-static void __addCookie(const char* key, const char* value, size_t index, void* buffer)
+static void __add_cookie(const char* key, const char* value, size_t index, void* buffer)
 {
-	Cookie_t* temp = *(Cookie_t**)buffer;
+	cookie_t* temp = *(cookie_t**)buffer;
 
 	temp[index].key = key;
 	temp[index].value = value;
 }
 
-static void __fillFileBuffer(const char* data, size_t size, void* buffer)
+static void __fill_file_buffer(const char* data, size_t size, void* buffer)
 {
 	FileBuffer_t* fileBuffer = (FileBuffer_t*)buffer;
 	char** result = fileBuffer->data;
@@ -150,9 +150,9 @@ static void __fillFileBuffer(const char* data, size_t size, void* buffer)
 	memcpy(*result, data, size);
 }
 
-WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const char** rawParameters)
+web_framework_exception_t wf_get_raw_parameters(http_request_t implementation, const char** rawParameters)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getRawParameters)(void* implementation, void** exception);
 
@@ -161,9 +161,9 @@ WebFrameworkException getHTTPRawParameters(HTTPRequest implementation, const cha
 	return exception;
 }
 
-WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** method)
+web_framework_exception_t wf_get_method(http_request_t implementation, const char** method)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getMethod)(void* implementation, void** exception);
 
@@ -172,28 +172,28 @@ WebFrameworkException getHTTPMethod(HTTPRequest implementation, const char** met
 	return exception;
 }
 
-WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParameter_t** result, size_t* size)
+web_framework_exception_t wf_get_query_parameters(http_request_t implementation, query_parameter_t** result, size_t* size)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getQueryParameters)(void* implementation, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getQueryParameters, __initQueryBuffer, __addQueryParameter, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getQueryParameters, __init_query_buffer, __addQueryParameter, result, &exception);
 
 	if (exception)
 	{
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(QueryParameter_t)];
-	QueryParameter_t* temp = *result;
+	uint8_t emptyBuffer[sizeof(query_parameter_t)];
+	query_parameter_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(QueryParameter_t));
+	memset(emptyBuffer, 0, sizeof(query_parameter_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(QueryParameter_t)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(query_parameter_t)))
 		{
 			*size = index;
 
@@ -206,9 +206,9 @@ WebFrameworkException getQueryParameters(HTTPRequest implementation, QueryParame
 	return exception;
 }
 
-WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkString* version)
+web_framework_exception_t wf_get_http_version(http_request_t implementation, web_framework_string_t* version)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getVersion)(void* implementation, void** exception);
 
@@ -217,9 +217,9 @@ WebFrameworkException getHTTPVersion(HTTPRequest implementation, WebFrameworkStr
 	return exception;
 }
 
-WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader_t** result, size_t* size)
+web_framework_exception_t wf_get_http_headers(http_request_t implementation, HTTPHeader_t** result, size_t* size)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*getHeaders)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
@@ -251,9 +251,9 @@ WebFrameworkException getHTTPHeaders(HTTPRequest implementation, HTTPHeader_t** 
 	return exception;
 }
 
-WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* headerName, const char** result)
+web_framework_exception_t wf_get_http_header(http_request_t implementation, const char* headerName, const char** result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getHeader)(void* implementation, const char* headerName, void** exception);
 
@@ -262,9 +262,9 @@ WebFrameworkException getHTTPHeader(HTTPRequest implementation, const char* head
 	return exception;
 }
 
-WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body, size_t* bodySize)
+web_framework_exception_t wf_get_http_body(http_request_t implementation, const char** body, size_t* bodySize)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getBody)(void* implementation, size_t* bodySize, void** exception);
 
@@ -273,9 +273,9 @@ WebFrameworkException getHTTPBody(HTTPRequest implementation, const char** body,
 	return exception;
 }
 
-WebFrameworkException setHTTPAttribute(HTTPRequest implementation, const char* name, const char* value)
+web_framework_exception_t wf_set_attribute(http_request_t implementation, const char* name, const char* value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*setAttribute)(void* implementation, const char* name, const char* value, void** exception);
 
@@ -284,9 +284,9 @@ WebFrameworkException setHTTPAttribute(HTTPRequest implementation, const char* n
 	return exception;
 }
 
-WebFrameworkException getHTTPAttribute(HTTPRequest implementation, const char* name, WebFrameworkString* result)
+web_framework_exception_t wf_get_attribute(http_request_t implementation, const char* name, web_framework_string_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getAttribute)(void* implementation, const char* name, void** exception);
 
@@ -295,9 +295,9 @@ WebFrameworkException getHTTPAttribute(HTTPRequest implementation, const char* n
 	return exception;
 }
 
-WebFrameworkException deleteHTTPSession(HTTPRequest implementation)
+web_framework_exception_t wf_delete_session(http_request_t implementation)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*deleteSession)(void* implementation, void** exception);
 
@@ -306,9 +306,9 @@ WebFrameworkException deleteHTTPSession(HTTPRequest implementation)
 	return exception;
 }
 
-WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char* name)
+web_framework_exception_t wf_remove_attribute(http_request_t implementation, const char* name)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*removeAttribute)(void* implementation, const char* name, void** exception);
 
@@ -317,9 +317,9 @@ WebFrameworkException removeHTTPAttribute(HTTPRequest implementation, const char
 	return exception;
 }
 
-WebFrameworkException getCookies(HTTPRequest implementation, Cookie_t** result, size_t* size)
+web_framework_exception_t wf_get_cookies(http_request_t implementation, cookie_t** result, size_t* size)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*getCookies)(void* implementation, void(*__initCookiesBuffer)(size_t size, void* buffer), void(*__addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
@@ -330,15 +330,15 @@ WebFrameworkException getCookies(HTTPRequest implementation, Cookie_t** result, 
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(Cookie_t)];
-	Cookie_t* temp = *result;
+	uint8_t emptyBuffer[sizeof(cookie_t)];
+	cookie_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(Cookie_t));
+	memset(emptyBuffer, 0, sizeof(cookie_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(Cookie_t)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(cookie_t)))
 		{
 			*size = index;
 
@@ -351,9 +351,9 @@ WebFrameworkException getCookies(HTTPRequest implementation, Cookie_t** result, 
 	return exception;
 }
 
-WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart_t** result, size_t* size)
+web_framework_exception_t wf_get_multiparts(http_request_t implementation, multipart_t** result, size_t* size)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*getMultiparts)(void* implementation, void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer, void** exception);
 
@@ -364,15 +364,15 @@ WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart_t** re
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(Multipart_t)];
-	Multipart_t* temp = *result;
+	uint8_t emptyBuffer[sizeof(multipart_t)];
+	multipart_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(Multipart_t));
+	memset(emptyBuffer, 0, sizeof(multipart_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(Multipart_t)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(multipart_t)))
 		{
 			*size = index;
 
@@ -385,20 +385,20 @@ WebFrameworkException getMultiparts(HTTPRequest implementation, Multipart_t** re
 	return exception;
 }
 
-WebFrameworkException getLargeData(HTTPRequest implementation, const LargeData_t** result)
+web_framework_exception_t wf_get_large_data(http_request_t implementation, const large_data_t** result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const void* (*getLargeData)(void* implementation, void** exception);
 
-	*result = (const LargeData_t*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getLargeData, &exception);
+	*result = (const large_data_t*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getLargeData, &exception);
 
 	return exception;
 }
 
-WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* filePath, http_response_t response, const dynamic_pages_variable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*sendAssetFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
 
@@ -407,9 +407,9 @@ WebFrameworkException sendAssetFile(HTTPRequest implementation, const char* file
 	return exception;
 }
 
-WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* filePath, http_response_t response, bool isBinary, const char* fileName)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, bool isBinary, const char* fileName, void** exception);
 
@@ -418,9 +418,9 @@ WebFrameworkException sendStaticFile(HTTPRequest implementation, const char* fil
 	return exception;
 }
 
-WebFrameworkException sendWFDPFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const DynamicPagesVariable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_wfdp_file(http_request_t implementation, const char* filePath, http_response_t response, const dynamic_pages_variable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*sendWFDPFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
 
@@ -429,9 +429,9 @@ WebFrameworkException sendWFDPFile(HTTPRequest implementation, const char* fileP
 	return exception;
 }
 
-WebFrameworkException streamFile(HTTPRequest implementation, const char* filePath, HTTPResponse response, const char* fileName, size_t chunkSize)
+web_framework_exception_t wf_stream_file(http_request_t implementation, const char* filePath, http_response_t response, const char* fileName, size_t chunkSize)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*streamFile)(void* implementation, const char* filePath, void* response, const char* fileName, size_t chunkSize, void** exception);
 
@@ -440,9 +440,9 @@ WebFrameworkException streamFile(HTTPRequest implementation, const char* filePat
 	return exception;
 }
 
-WebFrameworkException registerWFDPFunction(HTTPRequest implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+web_framework_exception_t wf_register_wfdp_function(http_request_t implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*registerWFDPFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
 
@@ -451,9 +451,9 @@ WebFrameworkException registerWFDPFunction(HTTPRequest implementation, const cha
 	return exception;
 }
 
-WebFrameworkException unregisterWFDPFunction(HTTPRequest implementation, const char* functionName)
+web_framework_exception_t wf_unregister_wfdp_function(http_request_t implementation, const char* functionName)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*unregisterWFDPFunction)(void* implementation, const char* functionName, void** exception);
 
@@ -462,9 +462,9 @@ WebFrameworkException unregisterWFDPFunction(HTTPRequest implementation, const c
 	return exception;
 }
 
-WebFrameworkException isWFDPFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result)
+web_framework_exception_t wf_is_wfdp_function_registered(http_request_t implementation, const char* functionName, bool* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef bool (*isDynamicFunctionRegistered)(void* implementation, const char* functionName, void** exception);
 
@@ -473,9 +473,9 @@ WebFrameworkException isWFDPFunctionRegistered(HTTPRequest implementation, const
 	return exception;
 }
 
-WebFrameworkException getHTTPRequestJson(HTTPRequest implementation, JsonParser* parser)
+web_framework_exception_t wf_get_request_json(http_request_t implementation, json_parser_t* parser)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getRequestJson)(void* implementation, void** exception);
 
@@ -484,13 +484,13 @@ WebFrameworkException getHTTPRequestJson(HTTPRequest implementation, JsonParser*
 	return exception;
 }
 
-WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk_t** result, size_t* size)
+web_framework_exception_t wf_get_chunks(http_request_t implementation, HTTPChunk_t** result, size_t* size)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*getChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getChunks, __initChunksBuffer, __addChunk, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getChunks, __init_chunks_buffer, __addChunk, result, &exception);
 
 	if (exception)
 	{
@@ -518,9 +518,9 @@ WebFrameworkException getHTTPChunks(HTTPRequest implementation, HTTPChunk_t** re
 	return exception;
 }
 
-WebFrameworkException getFile(HTTPRequest implementation, const char* filePath, const char** result, size_t* size)
+web_framework_exception_t wf_get_file(http_request_t implementation, const char* filePath, const char** result, size_t* size)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*getFile)(void* implementation, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
@@ -531,9 +531,9 @@ WebFrameworkException getFile(HTTPRequest implementation, const char* filePath, 
 	return exception;
 }
 
-WebFrameworkException processStaticFile(HTTPRequest implementation, const char* fileData, size_t size, const char* fileExtension, const char** result, size_t* resultSize)
+web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* fileData, size_t size, const char* fileExtension, const char** result, size_t* resultSize)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*processStaticFile)(void* implementation, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
@@ -544,9 +544,9 @@ WebFrameworkException processStaticFile(HTTPRequest implementation, const char* 
 	return exception;
 }
 
-WebFrameworkException processWFDPFile(HTTPRequest implementation, const char* fileData, size_t size, const DynamicPagesVariable_t* variables, size_t variablesSize, const char** result, size_t* resultSize)
+web_framework_exception_t wf_process_wfdp_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, const char** result, size_t* resultSize)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*processWFDPFile)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
@@ -557,9 +557,9 @@ WebFrameworkException processWFDPFile(HTTPRequest implementation, const char* fi
 	return exception;
 }
 
-WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const char** rawRequest)
+web_framework_exception_t wf_get_raw_request(http_request_t implementation, const char** rawRequest)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getRawRequest)(void* implementation, void** exception);
 
@@ -568,9 +568,9 @@ WebFrameworkException getHTTPRawRequest(HTTPRequest implementation, const char**
 	return exception;
 }
 
-WebFrameworkException getClientIpV4(HTTPRequest implementation, WebFrameworkString* ip)
+web_framework_exception_t wf_get_client_ip_v4(http_request_t implementation, web_framework_string_t* ip)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getClientIpV4)(void* implementation, void** exception);
 
@@ -579,9 +579,9 @@ WebFrameworkException getClientIpV4(HTTPRequest implementation, WebFrameworkStri
 	return exception;
 }
 
-WebFrameworkException getServerIpV4(HTTPRequest implementation, WebFrameworkString* ip)
+web_framework_exception_t wf_get_server_ip_v4(http_request_t implementation, web_framework_string_t* ip)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getServerIpV4)(void* implementation, void** exception);
 
@@ -590,9 +590,9 @@ WebFrameworkException getServerIpV4(HTTPRequest implementation, WebFrameworkStri
 	return exception;
 }
 
-WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port)
+web_framework_exception_t wf_get_client_port(http_request_t implementation, uint16_t* port)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef uint16_t(*getClientPort)(void* implementation, void** exception);
 
@@ -601,9 +601,9 @@ WebFrameworkException getClientPort(HTTPRequest implementation, uint16_t* port)
 	return exception;
 }
 
-WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port)
+web_framework_exception_t wf_get_server_port(http_request_t implementation, uint16_t* port)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef uint16_t(*getServerPort)(void* implementation, void** exception);
 
@@ -612,9 +612,9 @@ WebFrameworkException getServerPort(HTTPRequest implementation, uint16_t* port)
 	return exception;
 }
 
-WebFrameworkException getOrCreateDatabaseHTTPRequest(HTTPRequest implementation, const char* databaseName, Database* result)
+web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* databaseName, database_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getOrCreateDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
 
@@ -623,9 +623,9 @@ WebFrameworkException getOrCreateDatabaseHTTPRequest(HTTPRequest implementation,
 	return exception;
 }
 
-WebFrameworkException getDatabaseHTTPRequest(HTTPRequest implementation, const char* databaseName, Database* result)
+web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* databaseName, database_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
 
@@ -634,9 +634,9 @@ WebFrameworkException getDatabaseHTTPRequest(HTTPRequest implementation, const c
 	return exception;
 }
 
-WebFrameworkException getOrCreateTableHTTPRequest(HTTPRequest implementation, const char* databaseName, const char* tableName, const char* createTableQuery, Table* result)
+web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* databaseName, const char* tableName, const char* createTableQuery, table_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getOrCreateTableRequest)(void* implementation, const char* databaseName, const char* tableName, const char* createTableQuery, void** exception);
 
@@ -645,9 +645,9 @@ WebFrameworkException getOrCreateTableHTTPRequest(HTTPRequest implementation, co
 	return exception;
 }
 
-WebFrameworkException getTableHTTPRequest(HTTPRequest implementation, const char* databaseName, const char* tableName, Table* result)
+web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* databaseName, const char* tableName, table_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getTableRequest)(void* implementation, const char* databaseName, const char* tableName, void** exception);
 
@@ -656,9 +656,9 @@ WebFrameworkException getTableHTTPRequest(HTTPRequest implementation, const char
 	return exception;
 }
 
-WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const char* routeParameterName, int64_t* result)
+web_framework_exception_t wf_get_route_integer_parameter(http_request_t implementation, const char* routeParameterName, int64_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef int64_t(*getRouteIntegerParameter)(void* implementation, const char* routeParameterName, void** exception);
 
@@ -667,9 +667,9 @@ WebFrameworkException getRouteIntegerParameter(HTTPRequest implementation, const
 	return exception;
 }
 
-WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation, const char* routeParameterName, double* result)
+web_framework_exception_t wf_get_route_double_parameter(http_request_t implementation, const char* routeParameterName, double* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef double(*getRouteDoubleParameter)(void* implementation, const char* routeParameterName, void** exception);
 
@@ -678,9 +678,9 @@ WebFrameworkException getRouteDoubleParameter(HTTPRequest implementation, const 
 	return exception;
 }
 
-WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const char* routeParameterName, const char** result)
+web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* routeParameterName, const char** result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getRouteStringParameter)(void* implementation, const char* routeParameterName, void** exception);
 
@@ -689,9 +689,9 @@ WebFrameworkException getRouteStringParameter(HTTPRequest implementation, const 
 	return exception;
 }
 
-WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse response, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
+web_framework_exception_t wf_send_chunks(http_request_t implementation, http_response_t response, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*sendChunks)(void* implementation, void* response, const char* (*chunkGenerator)(void* data, size_t* size), void* data, void** exception);
 
@@ -700,9 +700,9 @@ WebFrameworkException sendChunks(HTTPRequest implementation, HTTPResponse respon
 	return exception;
 }
 
-WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
+web_framework_exception_t wf_send_file_chunks(http_request_t implementation, http_response_t response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*sendFileChunks)(void* implementation, void* response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, void** exception);
 
@@ -711,9 +711,9 @@ WebFrameworkException sendFileChunks(HTTPRequest implementation, HTTPResponse re
 	return exception;
 }
 
-WebFrameworkException throwWebFrameworkException(HTTPRequest implementation, const char* errorMessage, ResponseCodes_t responseCode, const char* logCategory, size_t exceptionHash)
+web_framework_exception_t wf_throw_web_framework_exception(http_request_t implementation, const char* errorMessage, ResponseCodes_t responseCode, const char* logCategory, size_t exceptionHash)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*throwWebFrameworkException)(void* implementation, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, void** exception);
 

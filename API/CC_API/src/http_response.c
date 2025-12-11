@@ -1,8 +1,8 @@
 #include "HttpResponse.h"
 
-WebFrameworkException setBody(HTTPResponse implementation, const char* body)
+web_framework_exception_t setBody(http_response_t implementation, const char* body)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*setResponseBody)(void* implementation, const char* body, void** exception);
 
@@ -11,9 +11,9 @@ WebFrameworkException setBody(HTTPResponse implementation, const char* body)
 	return exception;
 }
 
-WebFrameworkException setJsonBody(HTTPResponse implementation, JsonBuilder body)
+web_framework_exception_t setJsonBody(http_response_t implementation, json_builder_t body)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*setResponseJsonBody)(void* implementation, void* body, void** exception);
 
@@ -22,9 +22,9 @@ WebFrameworkException setJsonBody(HTTPResponse implementation, JsonBuilder body)
 	return exception;
 }
 
-WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* version)
+web_framework_exception_t setHTTPVersion(http_response_t implementation, const char* version)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*setVersion)(void* implementation, const char* version, void** exception);
 
@@ -33,9 +33,9 @@ WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* ve
 	return exception;
 }
 
-WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseCodes_t responseCode)
+web_framework_exception_t setHTTPResponseCode(http_response_t implementation, ResponseCodes_t responseCode)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*setResponseCode)(void* implementation, int64_t code, void** exception);
 
@@ -44,9 +44,9 @@ WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseC
 	return exception;
 }
 
-WebFrameworkException addHTTPResponseHeader(HTTPResponse implementation, const char* name, const char* value)
+web_framework_exception_t addHTTPResponseHeader(http_response_t implementation, const char* name, const char* value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*addResponseHeader)(void* implementation, const char* name, const char* value, void** exception);
 
@@ -55,9 +55,9 @@ WebFrameworkException addHTTPResponseHeader(HTTPResponse implementation, const c
 	return exception;
 }
 
-WebFrameworkException appendHTTPResponseBody(HTTPResponse implementation, const char* body)
+web_framework_exception_t appendHTTPResponseBody(http_response_t implementation, const char* body)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*appendResponseBody)(void* implementation, const char* body, void** exception);
 
@@ -66,9 +66,9 @@ WebFrameworkException appendHTTPResponseBody(HTTPResponse implementation, const 
 	return exception;
 }
 
-WebFrameworkException addHTTPResponseCookie(HTTPResponse implementation, const char* name, const char* value)
+web_framework_exception_t addHTTPResponseCookie(http_response_t implementation, const char* name, const char* value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*addResponseCookie)(void* implementation, const char* name, const char* value, void** exception);
 
@@ -77,9 +77,9 @@ WebFrameworkException addHTTPResponseCookie(HTTPResponse implementation, const c
 	return exception;
 }
 
-WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation)
+web_framework_exception_t setHTTPResponseDefault(http_response_t implementation)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*setResponseDefault)(void* implementation, void** exception);
 
@@ -88,9 +88,9 @@ WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation)
 	return exception;
 }
 
-WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid)
+web_framework_exception_t setHTTPResponseIsValid(http_response_t implementation, bool isValid)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*setResponseDefault)(void* implementation, bool isValid, void** exception);
 

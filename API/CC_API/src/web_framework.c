@@ -1,8 +1,8 @@
-#include "WebFramework.h"
+#include "web_framework_t.h"
 
-WebFrameworkException createWebFrameworkFromPath(const char* configPath, WebFramework* server)
+web_framework_exception_t createWebFrameworkFromPath(const char* configPath, web_framework_t* server)
 {
-    WebFrameworkException exception = NULL;
+    web_framework_exception_t exception = NULL;
 
     typedef void* (*createWebFrameworkFromPath)(const char* configPath, void** exception);
 
@@ -11,9 +11,9 @@ WebFrameworkException createWebFrameworkFromPath(const char* configPath, WebFram
     return exception;
 }
 
-WebFrameworkException createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, WebFramework* server)
+web_framework_exception_t createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, web_framework_t* server)
 {
-    WebFrameworkException exception = NULL;
+    web_framework_exception_t exception = NULL;
 
     typedef void* (*createWebFrameworkFromString)(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 
@@ -22,9 +22,9 @@ WebFrameworkException createWebFrameworkFromString(const char* serverConfigurati
     return exception;
 }
 
-WebFrameworkException createWebFrameworkFromConfig(Config config, WebFramework* server)
+web_framework_exception_t createWebFrameworkFromConfig(config_t config, web_framework_t* server)
 {
-    WebFrameworkException exception = NULL;
+    web_framework_exception_t exception = NULL;
 
     typedef void* (*createWebFrameworkFromConfig)(void* config, void** exception);
 
@@ -33,9 +33,9 @@ WebFrameworkException createWebFrameworkFromConfig(Config config, WebFramework* 
     return exception;
 }
 
-WebFrameworkException startWebFrameworkServer(WebFramework implementation, bool wait, void (*onStartServer)())
+web_framework_exception_t startWebFrameworkServer(web_framework_t implementation, bool wait, void (*onStartServer)())
 {
-    WebFrameworkException exception = NULL;
+    web_framework_exception_t exception = NULL;
 
     typedef void (*startWebFrameworkServer)(void* implementation, bool wait, void (*onStartServer)(), void** exception);
 
@@ -44,9 +44,9 @@ WebFrameworkException startWebFrameworkServer(WebFramework implementation, bool 
     return exception;
 }
 
-WebFrameworkException stopWebFrameworkServer(WebFramework implementation, bool wait)
+web_framework_exception_t stopWebFrameworkServer(web_framework_t implementation, bool wait)
 {
-    WebFrameworkException exception = NULL;
+    web_framework_exception_t exception = NULL;
 
     typedef void (*stopWebFrameworkServer)(void* implementation, bool wait, void** exception);
 
@@ -55,9 +55,9 @@ WebFrameworkException stopWebFrameworkServer(WebFramework implementation, bool w
     return exception;
 }
 
-WebFrameworkException isServerRunning(WebFramework implementation, bool* result)
+web_framework_exception_t isServerRunning(web_framework_t implementation, bool* result)
 {
-    WebFrameworkException exception = NULL;
+    web_framework_exception_t exception = NULL;
 
     typedef bool (*isServerRunning)(void* implementation, void** exception);
 

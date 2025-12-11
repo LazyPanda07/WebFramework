@@ -39,7 +39,7 @@
     <ClCompile Include="src\dll_handler.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\http_request.c">
+    <ClCompile Include="src\http_request_t.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\http_response.c">
@@ -86,7 +86,7 @@
     <ClInclude Include="include\web_framework_exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\http_request.h">
+    <ClInclude Include="include\http_request_t.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\http_response.h">

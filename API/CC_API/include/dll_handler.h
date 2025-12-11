@@ -18,21 +18,21 @@ typedef void* HMODULE;
 #define CALL_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)findFunction(#functionName))(__VA_ARGS__)
 #define CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)findFunction(#functionName))(implementation, __VA_ARGS__)
 
-typedef HMODULE DllHandler;
-typedef void* WebFrameworkString;
-typedef void* Config;
-typedef void* WebFramework;
-typedef void* WebFrameworkException;
-typedef void* JsonBuilder;
-typedef void* JsonParser;
+typedef HMODULE dll_handler_t;
+typedef void* web_framework_string_t;
+typedef void* config_t;
+typedef void* web_framework_t;
+typedef void* web_framework_exception_t;
+typedef void* json_builder_t;
+typedef void* json_parser_t;
 
 /**
- * @brief Load WebFramework shared library
+ * @brief Load web_framework_t shared library
  * @param pathToDLL Path to shared library without prefixes(lib for Linux) and file extensions(.dll, .so)
  */
-void wf_initialize_web_framework(const char* pathToDLL);
+void wf_initialize_web_framework(const char* path_to_dll);
 
-HMODULE wf_get_instance(const char* pathToDLL);
+HMODULE wf_get_instance(const char* path_to_dll);
 
 void* wf_find_function(const char* name);
 
@@ -40,44 +40,44 @@ void* wf_find_function(const char* name);
  * @brief Free memory
  * @param string String object
  */
-void wf_delete_web_framework_string(WebFrameworkString string);
+void wf_delete_web_framework_string(web_framework_string_t string);
 
 /**
  * @brief Free memory
- * @param config Config object
+ * @param config config_t object
  */
-void wf_delete_web_framework_config(Config config);
+void wf_delete_web_framework_config(config_t config);
 
 /**
  * @brief Free memory
- * @param webFramework WebFramework object
+ * @param webFramework web_framework_t object
  */
-void wf_delete_web_framework(WebFramework webFramework);
+void wf_delete_web_framework(web_framework_t web_framework);
 
 /**
  * @brief Free memory
  * @param exception Exception object
  */
-void wf_delete_web_framework_exception(WebFrameworkException exception);
+void wf_delete_web_framework_exception(web_framework_exception_t exception);
 
 /**
  * @brief Free memory
- * @param builder JsonBuilder object
+ * @param builder json_builder_t object
  */
-void wf_delete_web_framework_json_builder(JsonBuilder builder);
+void wf_delete_web_framework_json_builder(json_builder_t builder);
 
 /**
  * @brief Free memory
- * @param parser JsonParser object
+ * @param parser json_parser_t object
  */
-void wf_delete_web_framework_json_parser(JsonParser parser);
+void wf_delete_web_framework_json_parser(json_parser_t parser);
 
 /**
- * @brief Get string from WebFrameworkString
- * @param string WebFrameworkString
+ * @brief Get string from web_framework_string_t
+ * @param string web_framework_string_t
  * @return String data
  */
-const char* wf_get_data_from_string(WebFrameworkString string);
+const char* wf_get_data_from_string(web_framework_string_t string);
 
 size_t wf_find_last_char(char* ptr, char c);
 

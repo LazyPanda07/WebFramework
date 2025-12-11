@@ -1,8 +1,8 @@
-#include "Databases/Table.h"
+#include "databases/table.h"
 
-WebFrameworkException executeQuery(Table implementation, const char* query, const SQLValue* values, size_t size, SQLResult* result)
+web_framework_exception_t wf_execute_query(table_t implementation, const char* query, const sql_value_t* values, size_t size, sql_result_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*executeQuery)(void* implementation, const char* query, const void** values, size_t size, void** exception);
 
@@ -11,9 +11,9 @@ WebFrameworkException executeQuery(Table implementation, const char* query, cons
 	return exception;
 }
 
-WebFrameworkException deleteSQLResult(Table implementation, SQLResult result)
+web_framework_exception_t wf_delete_sql_result(table_t implementation, sql_result_t result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void (*deleteSQLResult)(void* implementation, void* result, void** exception);
 
@@ -22,9 +22,9 @@ WebFrameworkException deleteSQLResult(Table implementation, SQLResult result)
 	return exception;
 }
 
-WebFrameworkException getTableName(Table implementation, const char** result)
+web_framework_exception_t wf_get_table_name(table_t implementation, const char** result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef const char* (*getTableName)(void* implementation, void** exception);
 

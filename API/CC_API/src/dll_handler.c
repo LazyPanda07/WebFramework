@@ -1,6 +1,6 @@
-#include "DLLHandler.h"
+#include "dll_handler.h"
 
-void wf_initialize_web_framework(const char* pathToDLL)
+void wf_initialize_web_framework(const char* path_to_dll)
 {
 #ifdef __ANDROID__
 	getInstance("libWebFramework.so");
@@ -8,18 +8,18 @@ void wf_initialize_web_framework(const char* pathToDLL)
 	return;
 #endif
 
-	if (pathToDLL == NULL || !strcmp(pathToDLL, "") || !strcmp(pathToDLL, "WebFramework") ||
+	if (path_to_dll == NULL || !strcmp(path_to_dll, "") || !strcmp(path_to_dll, "web_framework_t") ||
 #ifdef __LINUX__
-		!strcmp(pathToDLL, "libWebFramework.so")
+		!strcmp(path_to_dll, "libWebFramework.so")
 #else
-		!strcmp(pathToDLL, "WebFramework.dll")
+		!strcmp(path_to_dll, "web_framework_t.dll")
 #endif
 		)
 	{
 #ifdef __LINUX__
 		getInstance("libWebFramework.so");
 #else
-		getInstance("WebFramework.dll");
+		getInstance("web_framework_t.dll");
 #endif
 
 		return;
@@ -36,9 +36,9 @@ void wf_initialize_web_framework(const char* pathToDLL)
 	memset(realPath, 0, sizeof(realPath));
 
 #ifdef __LINUX__
-	realpath(pathToDLL, fullPath);
+	realpath(path_to_dll, fullPath);
 #else
-	GetFullPathNameA(pathToDLL, sizeof(fullPath), fullPath, NULL);
+	GetFullPathNameA(path_to_dll, sizeof(fullPath), fullPath, NULL);
 #endif
 
 #ifdef __LINUX__
@@ -75,23 +75,23 @@ void wf_initialize_web_framework(const char* pathToDLL)
 #undef MAX_PATH_SIZE
 }
 
-HMODULE wf_get_instance(const char* pathToDLL)
+HMODULE wf_get_instance(const char* path_to_dll)
 {
 	static HMODULE instance = NULL;
 
 	if (!instance)
 	{
-		if (pathToDLL)
+		if (path_to_dll)
 		{
 #ifdef __LINUX__
-			instance = dlopen(pathToDLL, RTLD_LAZY);
+			instance = dlopen(path_to_dll, RTLD_LAZY);
 #else
-			instance = LoadLibraryA(pathToDLL);
+			instance = LoadLibraryA(path_to_dll);
 #endif
 			if (!instance)
 			{
 #ifdef __LINUX__
-				printf("Can't load %s or its dependencies\n", pathToDLL);
+				printf("Can't load %s or its dependencies\n", path_to_dll);
 #else
 				printf("GetLastError(): %llu\n", (uint64_t)GetLastError());
 #endif
@@ -101,7 +101,7 @@ HMODULE wf_get_instance(const char* pathToDLL)
 		}
 		else
 		{
-			printf("WebFramework must be initialized with initializeWebFramework function\n");
+			printf("web_framework_t must be initialized with initializeWebFramework function\n");
 
 			exit(-1);
 		}
@@ -121,49 +121,49 @@ void* wf_find_function(const char* name)
 #endif
 }
 
-void wf_delete_web_framework_string(WebFrameworkString string)
+void wf_delete_web_framework_string(web_framework_string_t string)
 {
 	typedef void (*deleteWebFrameworkString)(void* string);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, string);
 }
 
-void wf_delete_web_framework_config(Config config)
+void wf_delete_web_framework_config(config_t config)
 {
 	typedef void (*deleteWebFrameworkConfig)(void* config);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkConfig, config);
 }
 
-void wf_delete_web_framework(WebFramework webFramework)
+void wf_delete_web_framework(web_framework_t webFramework)
 {
 	typedef void (*deleteWebFramework)(void* webFramework);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, webFramework);
 }
 
-void wf_delete_web_framework_exception(WebFrameworkException exception)
+void wf_delete_web_framework_exception(web_framework_exception_t exception)
 {
 	typedef void (*deleteWebFrameworkException)(void* exception);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
 }
 
-void wf_delete_web_framework_json_builder(JsonBuilder builder)
+void wf_delete_web_framework_json_builder(json_builder_t builder)
 {
 	typedef void (*deleteWebFrameworkJsonBuilder)(void* builder);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonBuilder, builder);
 }
 
-void wf_delete_web_framework_json_parser(JsonParser parser)
+void wf_delete_web_framework_json_parser(json_parser_t parser)
 {
 	typedef void (*deleteWebFrameworkJsonParser)(void* parser);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonParser, parser);
 }
 
-const char* wf_get_data_from_string(WebFrameworkString string)
+const char* wf_get_data_from_string(web_framework_string_t string)
 {
 	typedef const char* (*getDataFromString)(void* implementation);
 

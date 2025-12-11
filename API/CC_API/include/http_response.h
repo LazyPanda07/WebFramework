@@ -1,8 +1,8 @@
 #pragma once
 
-#include "JsonBuilder.h"
+#include "json_builder_t.h"
 
-typedef void* HTTPResponse;
+typedef void* http_response_t;
 
 /**
  * @brief HTTP response codes
@@ -84,73 +84,73 @@ typedef enum ResponseCodes
 
 /**
  * @brief Set HTTP body
- * @param implementation HTTPResponse instance
+ * @param implementation http_response_t instance
  * @param body HTTP body
  * @return Error if occurred
  */
-WebFrameworkException setBody(HTTPResponse implementation, const char* body);
+web_framework_exception_t setBody(http_response_t implementation, const char* body);
 
 /**
  * @brief Set HTTP body
- * @param implementation HTTPResponse instance
+ * @param implementation http_response_t instance
  * @param body HTTP Json body
  * @return Error if occurred
  */
-WebFrameworkException setJsonBody(HTTPResponse implementation, JsonBuilder body);
+web_framework_exception_t setJsonBody(http_response_t implementation, json_builder_t body);
 
 /**
  * @brief Set HTTP version
- * @param implementation HTTPResponse instance
+ * @param implementation http_response_t instance
  * @param version HTTP version
  * @return Error if occurred
  */
-WebFrameworkException setHTTPVersion(HTTPResponse implementation, const char* version);
+web_framework_exception_t setHTTPVersion(http_response_t implementation, const char* version);
 
 /**
  * @brief Set HTTP response code
- * @param implementation HTTPResponse instance
+ * @param implementation http_response_t instance
  * @param responseCode HTTP response code
  * @return Error if occurred
  */
-WebFrameworkException setHTTPResponseCode(HTTPResponse implementation, ResponseCodes_t responseCode);
+web_framework_exception_t setHTTPResponseCode(http_response_t implementation, ResponseCodes_t responseCode);
 
 /**
  * @brief Add HTTP header
- * @param implementation HTTPResponse instance
+ * @param implementation http_response_t instance
  * @param name HTTP header name
  * @param value HTTP header value
  * @return Error if occurred
  */
-WebFrameworkException addHTTPResponseHeader(HTTPResponse implementation, const char* name, const char* value);
+web_framework_exception_t addHTTPResponseHeader(http_response_t implementation, const char* name, const char* value);
 
 /**
  * @brief Append HTTP body
- * @param implementation HTTPResponse instance
+ * @param implementation http_response_t instance
  * @param body HTTP body
  * @return Error if occurred
  */
-WebFrameworkException appendHTTPResponseBody(HTTPResponse implementation, const char* body);
+web_framework_exception_t appendHTTPResponseBody(http_response_t implementation, const char* body);
 
 /**
  * @brief Add cookie
- * @param implementation HTTPResponse instance
+ * @param implementation http_response_t instance
  * @param name Cookie name
  * @param value Cookie value
  * @return Error if occurred
  */
-WebFrameworkException addHTTPResponseCookie(HTTPResponse implementation, const char* name, const char* value);
+web_framework_exception_t addHTTPResponseCookie(http_response_t implementation, const char* name, const char* value);
 
 /**
- * @brief Set HTTPResponse to default state
- * @param implementation HTTPResponse instance
+ * @brief Set http_response_t to default state
+ * @param implementation http_response_t instance
  * @return Error if occurred
  */
-WebFrameworkException setHTTPResponseDefault(HTTPResponse implementation);
+web_framework_exception_t setHTTPResponseDefault(http_response_t implementation);
 
 /**
- * @brief Set state of HTTPResponse
- * @param implementation HTTPResponse instance
- * @param isValid HTTPResponse state
+ * @brief Set state of http_response_t
+ * @param implementation http_response_t instance
+ * @param isValid http_response_t state
  * @return Error if occurred
  */
-WebFrameworkException setHTTPResponseIsValid(HTTPResponse implementation, bool isValid);
+web_framework_exception_t setHTTPResponseIsValid(http_response_t implementation, bool isValid);

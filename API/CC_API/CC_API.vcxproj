@@ -96,7 +96,7 @@
     <ClCompile Include="src\Databases\sql_value.c" />
     <ClCompile Include="src\Databases\table.c" />
     <ClCompile Include="src\dll_handler.c" />
-    <ClCompile Include="src\http_request.c" />
+    <ClCompile Include="src\http_request_t.c" />
     <ClCompile Include="src\http_response.c" />
     <ClCompile Include="src\json_builder.c" />
     <ClCompile Include="src\json_object.c" />
@@ -114,7 +114,7 @@
     <ClInclude Include="include\Databases\sql_value.h" />
     <ClInclude Include="include\Databases\table.h" />
     <ClInclude Include="include\dll_handler.h" />
-    <ClInclude Include="include\http_request.h" />
+    <ClInclude Include="include\http_request_t.h" />
     <ClInclude Include="include\http_response.h" />
     <ClInclude Include="include\import.h" />
     <ClInclude Include="include\json_builder.h" />

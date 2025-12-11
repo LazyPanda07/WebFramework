@@ -1,12 +1,12 @@
-#include "Utility/WebFrameworkLocalization.h"
+#include "utility/web_framework_localization.h"
 
-WebFrameworkException getLocalizedString(const char* localizationModuleName, const char* key, const char* language, const char** result)
+web_framework_exception_t wf_get_localized_string(const char* localization_module_name, const char* key, const char* language, const char** result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getWebFrameworkLocalizedString)(const char* localizationModuleName, const char* key, const char* language, void** exception);
+	typedef void* (*getWebFrameworkLocalizedString)(const char* localization_module_name, const char* key, const char* language, void** exception);
 
-	*result = CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkLocalizedString, localizationModuleName, key, language, &exception);
+	*result = CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkLocalizedString, localization_module_name, key, language, &exception);
 
 	return exception;
 }

@@ -1,6 +1,6 @@
-#include "WebFrameworkException.h"
+#include "web_framework_exception_t.h"
 
-const char* getErrorMessage(WebFrameworkException exception)
+const char* getErrorMessage(web_framework_exception_t exception)
 {
     if (exception)
     {

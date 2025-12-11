@@ -1,8 +1,8 @@
 #include "JsonObject.h"
 
-WebFrameworkException createJsonObject(JsonObject_t* jsonObject)
+web_framework_exception_t createJsonObject(JsonObject_t* jsonObject)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*createJsonObject)(void* _, void** exception);
 
@@ -12,9 +12,9 @@ WebFrameworkException createJsonObject(JsonObject_t* jsonObject)
 	return exception;
 }
 
-WebFrameworkException copyJsonObject(JsonObject_t* jsonObject, const JsonObject_t* other)
+web_framework_exception_t copyJsonObject(JsonObject_t* jsonObject, const JsonObject_t* other)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 
 	typedef void* (*createJsonObject)(void* other, void** exception);
 
@@ -24,9 +24,9 @@ WebFrameworkException copyJsonObject(JsonObject_t* jsonObject, const JsonObject_
 	return exception;
 }
 
-WebFrameworkException setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t* object)
+web_framework_exception_t setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t* object)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void (*setJsonObjectObject)(void* implementation, void* value, void** exception);
@@ -36,9 +36,9 @@ WebFrameworkException setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t
 	return exception;
 }
 
-WebFrameworkException setJsonObjectString(JsonObject_t* jsonObject, const char* value)
+web_framework_exception_t setJsonObjectString(JsonObject_t* jsonObject, const char* value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void (*setJsonObjectString)(void* implementation, const char* value, void** exception);
@@ -48,9 +48,9 @@ WebFrameworkException setJsonObjectString(JsonObject_t* jsonObject, const char* 
 	return exception;
 }
 
-WebFrameworkException setJsonObjectInteger(JsonObject_t* jsonObject, int64_t value)
+web_framework_exception_t setJsonObjectInteger(JsonObject_t* jsonObject, int64_t value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void (*setJsonObjectInteger)(void* implementation, int64_t value, void** exception);
@@ -60,9 +60,9 @@ WebFrameworkException setJsonObjectInteger(JsonObject_t* jsonObject, int64_t val
 	return exception;
 }
 
-WebFrameworkException setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uint64_t value)
+web_framework_exception_t setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uint64_t value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void (*setJsonObjectUnsignedInteger)(void* implementation, uint64_t value, void** exception);
@@ -72,9 +72,9 @@ WebFrameworkException setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uin
 	return exception;
 }
 
-WebFrameworkException setJsonObjectDouble(JsonObject_t* jsonObject, double value)
+web_framework_exception_t setJsonObjectDouble(JsonObject_t* jsonObject, double value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void (*setJsonObjectDouble)(void* implementation, double value, void** exception);
@@ -84,9 +84,9 @@ WebFrameworkException setJsonObjectDouble(JsonObject_t* jsonObject, double value
 	return exception;
 }
 
-WebFrameworkException setJsonObjectBoolean(JsonObject_t* jsonObject, bool value)
+web_framework_exception_t setJsonObjectBoolean(JsonObject_t* jsonObject, bool value)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void (*setJsonObjectBoolean)(void* implementation, bool value, void** exception);
@@ -96,9 +96,9 @@ WebFrameworkException setJsonObjectBoolean(JsonObject_t* jsonObject, bool value)
 	return exception;
 }
 
-WebFrameworkException setJsonObjectNull(JsonObject_t* jsonObject)
+web_framework_exception_t setJsonObjectNull(JsonObject_t* jsonObject)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void (*setJsonObjectNull)(void* implementation, void** exception);
@@ -108,9 +108,9 @@ WebFrameworkException setJsonObjectNull(JsonObject_t* jsonObject)
 	return exception;
 }
 
-WebFrameworkException setJsonObjectArray(JsonObject_t* jsonObject, const JsonObject_t* array, size_t arraySize)
+web_framework_exception_t setJsonObjectArray(JsonObject_t* jsonObject, const JsonObject_t* array, size_t arraySize)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 	void* buffer = malloc(arraySize * sizeof(void*));
 	void** value = &buffer;
@@ -129,9 +129,9 @@ WebFrameworkException setJsonObjectArray(JsonObject_t* jsonObject, const JsonObj
 	return exception;
 }
 
-WebFrameworkException assignJsonObject(JsonObject_t* jsonObject, const char* key, JsonObject_t* result)
+web_framework_exception_t assignJsonObject(JsonObject_t* jsonObject, const char* key, JsonObject_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void* (*accessKeyOperatorJsonObject)(void* implementation, const char* key, void** exception);
@@ -142,9 +142,9 @@ WebFrameworkException assignJsonObject(JsonObject_t* jsonObject, const char* key
 	return exception;
 }
 
-WebFrameworkException emplaceJsonObject(JsonObject_t* jsonObject, JsonObject_t* result)
+web_framework_exception_t emplaceJsonObject(JsonObject_t* jsonObject, JsonObject_t* result)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef void* (*emplaceBackNull)(void* implementation, void** exception);
@@ -155,9 +155,9 @@ WebFrameworkException emplaceJsonObject(JsonObject_t* jsonObject, JsonObject_t* 
 	return exception;
 }
 
-WebFrameworkException sizeJsonObject(JsonObject_t* jsonObject, size_t* size)
+web_framework_exception_t sizeJsonObject(JsonObject_t* jsonObject, size_t* size)
 {
-	WebFrameworkException exception = NULL;
+	web_framework_exception_t exception = NULL;
 	void* implementation = jsonObject->implementation;
 
 	typedef size_t (*sizeJsonObject)(void* implementation, void** exception);

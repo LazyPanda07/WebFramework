@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../DLLHandler.h"
+#include "../dll_handler.h"
 
 /**
  * @brief Get localized string from specific language
@@ -10,4 +10,4 @@
  * @param result Localized string
  * @return Error if occurred
  */
-WebFrameworkException getLocalizedString(const char* localizationModuleName, const char* key, const char* language, const char** result);
+web_framework_exception_t wf_get_localized_string(const char* localization_module_name, const char* key, const char* language, const char** result);

@@ -16,7 +16,7 @@ typedef struct JsonObject
  * @param jsonObject JsonObject
  * @return Error if occurred
  */
-WebFrameworkException createJsonObject(JsonObject_t* jsonObject);
+web_framework_exception_t createJsonObject(JsonObject_t* jsonObject);
 
 /**
  * @brief Copy JsonObject.
@@ -24,7 +24,7 @@ WebFrameworkException createJsonObject(JsonObject_t* jsonObject);
  * @param other Other JsonObject
  * @return Error if occurred
  */
-WebFrameworkException copyJsonObject(JsonObject_t* jsonObject, const JsonObject_t* other);
+web_framework_exception_t copyJsonObject(JsonObject_t* jsonObject, const JsonObject_t* other);
 
 /**
  * @brief Set JsonObject to JsonObject
@@ -32,7 +32,7 @@ WebFrameworkException copyJsonObject(JsonObject_t* jsonObject, const JsonObject_
  * @param object JsonObject value
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t* object);
+web_framework_exception_t setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t* object);
 
 /**
  * @brief Set string to JsonObject
@@ -40,7 +40,7 @@ WebFrameworkException setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t
  * @param value String value
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectString(JsonObject_t* jsonObject, const char* value);
+web_framework_exception_t setJsonObjectString(JsonObject_t* jsonObject, const char* value);
 
 /**
  * @brief Set integer to JsonObject
@@ -48,7 +48,7 @@ WebFrameworkException setJsonObjectString(JsonObject_t* jsonObject, const char* 
  * @param value Integer value
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectInteger(JsonObject_t* jsonObject, int64_t value);
+web_framework_exception_t setJsonObjectInteger(JsonObject_t* jsonObject, int64_t value);
 
 /**
  * @brief Set unsigned integer to JsonObject
@@ -56,7 +56,7 @@ WebFrameworkException setJsonObjectInteger(JsonObject_t* jsonObject, int64_t val
  * @param value Unsigned integer value
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uint64_t value);
+web_framework_exception_t setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uint64_t value);
 
 /**
  * @brief Set double to JsonObject
@@ -64,7 +64,7 @@ WebFrameworkException setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uin
  * @param value Double value
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectDouble(JsonObject_t* jsonObject, double value);
+web_framework_exception_t setJsonObjectDouble(JsonObject_t* jsonObject, double value);
 
 /**
  * @brief Set bool to JsonObject
@@ -72,14 +72,14 @@ WebFrameworkException setJsonObjectDouble(JsonObject_t* jsonObject, double value
  * @param value Bool value
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectBoolean(JsonObject_t* jsonObject, bool value);
+web_framework_exception_t setJsonObjectBoolean(JsonObject_t* jsonObject, bool value);
 
 /**
  * @brief Set NULL to JsonObject
  * @param jsonObject JsonObject instance
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectNull(JsonObject_t* jsonObject);
+web_framework_exception_t setJsonObjectNull(JsonObject_t* jsonObject);
 
 /**
  * @brief Set JsonArray to JsonObject
@@ -87,7 +87,7 @@ WebFrameworkException setJsonObjectNull(JsonObject_t* jsonObject);
  * @param value JsonArray value
  * @return Error if occurred
  */
-WebFrameworkException setJsonObjectArray(JsonObject_t* jsonObject, const JsonObject_t* array, size_t arraySize);
+web_framework_exception_t setJsonObjectArray(JsonObject_t* jsonObject, const JsonObject_t* array, size_t arraySize);
 
 /**
  * @brief Add key to Json object and get associated object
@@ -96,7 +96,7 @@ WebFrameworkException setJsonObjectArray(JsonObject_t* jsonObject, const JsonObj
  * @param result Associated Json object
  * @return 
  */
-WebFrameworkException assignJsonObject(JsonObject_t* jsonObject, const char* key, JsonObject_t* result);
+web_framework_exception_t assignJsonObject(JsonObject_t* jsonObject, const char* key, JsonObject_t* result);
 
 /**
  * @brief Add Json object to an array and get associated object
@@ -104,15 +104,15 @@ WebFrameworkException assignJsonObject(JsonObject_t* jsonObject, const char* key
  * @param result Associated Json object
  * @return
  */
-WebFrameworkException emplaceJsonObject(JsonObject_t* jsonObject, JsonObject_t* result);
+web_framework_exception_t emplaceJsonObject(JsonObject_t* jsonObject, JsonObject_t* result);
 
 /**
  * @brief Obtains the size of a Json object and writes it to the provided output parameter.
  * @param jsonObject Pointer to the Json object whose size will be determined.
  * @param size Pointer to a size_t where the computed size will be stored on success. If jsonObject is map or array it returns actual size, ULLONG_MAX otherwise
- * @return A WebFrameworkException value indicating success or failure. On success, *size is set to the object's size.
+ * @return A web_framework_exception_t value indicating success or failure. On success, *size is set to the object's size.
  */
-WebFrameworkException sizeJsonObject(JsonObject_t* jsonObject, size_t* size);
+web_framework_exception_t sizeJsonObject(JsonObject_t* jsonObject, size_t* size);
 
 /**
  * @brief Delete JsonObject

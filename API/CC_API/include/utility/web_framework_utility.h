@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../DLLHandler.h"
+#include "../dlL_handler.h"
 
 #define DEFAULT_CHUNK_SIZE 14680064
 
@@ -9,4 +9,4 @@
  * @param result UUID. Delete with deleteWebFrameworkString function
  * @return Error if occurred
  */
-WebFrameworkException generateUUID(WebFrameworkString* result);
+web_framework_exception_t wf_generate_uuid(web_framework_string_t* result);

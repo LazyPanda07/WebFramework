@@ -1,61 +1,61 @@
 #pragma once
 
 #include "DLLHandler.h"
-#include "Config.h"
-#include "WebFrameworkException.h"
+#include "config_t.h"
+#include "web_framework_exception_t.h"
 
 /**
- * @brief Create WebFramework
+ * @brief Create web_framework_t
  * @param configPath Path to *.json config
- * @param server Result WebFramework
+ * @param server Result web_framework_t
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException createWebFrameworkFromPath(const char* configPath, WebFramework* server);
+web_framework_exception_t createWebFrameworkFromPath(const char* configPath, web_framework_t* server);
 
 /**
- * @brief Create WebFramework
+ * @brief Create web_framework_t
  * @param serverConfiguration *.json config file content 
  * @param applicationDirectory Working directory
- * @param server Result WebFramework
+ * @param server Result web_framework_t
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, WebFramework* server);
+web_framework_exception_t createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, web_framework_t* server);
 
 /**
- * @brief Create WebFramework
- * @param config Config from one of createConfig functions
- * @param server Result WebFramework
+ * @brief Create web_framework_t
+ * @param config config_t from one of createConfig functions
+ * @param server Result web_framework_t
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException createWebFrameworkFromConfig(Config config, WebFramework* server);
+web_framework_exception_t createWebFrameworkFromConfig(config_t config, web_framework_t* server);
 
 /**
  * @brief Start server
- * @param implementation WebFramework
+ * @param implementation web_framework_t
  * @param wait Wait until server stop
  * @param onStartServer On start server callback
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException startWebFrameworkServer(WebFramework implementation, bool wait, void (*onStartServer)());
+web_framework_exception_t startWebFrameworkServer(web_framework_t implementation, bool wait, void (*onStartServer)());
 
 /**
  * @brief Stop server
- * @param implementation WebFramework
+ * @param implementation web_framework_t
  * @param wait Wait until server stop
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException stopWebFrameworkServer(WebFramework implementation, bool wait);
+web_framework_exception_t stopWebFrameworkServer(web_framework_t implementation, bool wait);
 
 /**
  * @brief Is server running
- * @param implementation WebFramework
+ * @param implementation web_framework_t
  * @param isServerRunning Result
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-WebFrameworkException isServerRunning(WebFramework implementation, bool* result);
+web_framework_exception_t isServerRunning(web_framework_t implementation, bool* result);
 
 /**
- * @brief Get WebFramework version
+ * @brief Get web_framework_t version
  * @return String representation of version in format {major}.{minor}.{patch}
  */
 const char* getWebFrameworkVersion();

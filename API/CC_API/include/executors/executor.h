@@ -2,13 +2,13 @@
 
 #include <stdlib.h>
 
-#include "../HttpRequest.h"
-#include "../HttpResponse.h"
-#include "../DLLHandler.h"
-#include "../JsonParser.h"
+#include "../http_request_t.h"
+#include "../http_response.h"
+#include "../dll_handler.h"
+#include "../json_parser.h"
 
-typedef void* Executor;
-typedef void* ExecutorSettings;
+typedef void* executor_t;
+typedef void* executor_settings_t;
 
 #ifdef __LINUX__
 #define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API __attribute__((visibility("default"))) __attribute__((used))
@@ -17,32 +17,32 @@ typedef void* ExecutorSettings;
 #endif
 
 /**
- * @brief Behavior of created Executor
+ * @brief Behavior of created executor_t
  */
-typedef enum ExecutorType
+typedef enum executor_type
 {
 	/**
-	 * @brief Create Executor for each client
+	 * @brief Create executor_t for each client
 	 */
 	STATEFUL_EXECUTOR,
 	/**
-	 * @brief Create Executor once while server is initializing
+	 * @brief Create executor_t once while server is initializing
 	 */
 	STATELESS_EXECUTOR,
 	/**
-	 * @brief Create Executor for each client. If server type is threadPool then DO methods runs in thread pool
+	 * @brief Create executor_t for each client. If server type is threadPool then DO methods runs in thread pool
 	 */
 	HEAVY_OPERATION_STATEFUL_EXECUTOR,
 	/**
-	 * @brief Create Executor once while server is initializing. If server type is threadPool then DO methods runs in thread pool
+	 * @brief Create executor_t once while server is initializing. If server type is threadPool then DO methods runs in thread pool
 	 */
 	HEAVY_OPERATION_STATELESS_EXECUTOR
-} ExecutorType_t;
+} executor_type_t;
 
 /**
  * @brief When Executors created
  */
-typedef enum LoadType
+typedef enum load_type
 {
 	/**
 	 * @brief Create at initialization
@@ -56,11 +56,11 @@ typedef enum LoadType
 	 * @brief Signal that error happened
 	 */
 	NONE
-} LoadType_t;
+} load_type_t;
 
 /**
-* Create custom Executor function
-* Used for loading function that creates Executor instance
+* Create custom executor_t function
+* Used for loading function that creates executor_t instance
 * @param structName Already defined struct name
 */
 #define DEFINE_EXECUTOR(structName, executorType) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##structName##CCInstance()	\
@@ -79,16 +79,16 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDeleteExecutor##structNa
 }
 
 /**
-* Create custom Executor function
-* Used for loading function that creates Executor subclass
+* Create custom executor_t function
+* Used for loading function that creates executor_t subclass
 * @param structName Create empty struct for stateless executors
 */
 #define DEFINE_DEFAULT_EXECUTOR(structName, executorType) typedef struct { char _; } structName; DEFINE_EXECUTOR(structName, executorType)
 
 /**
- * @brief Available Executor methods
+ * @brief Available executor_t methods
  */
-typedef enum Methods
+typedef enum methods
 {
 	POST_METHOD,
 	GET_METHOD,
@@ -99,65 +99,65 @@ typedef enum Methods
 	OPTIONS_METHOD,
 	TRACE_METHOD,
 	CONNECT_METHOD,
-} Methods_t;
+} methods_t;
 
 /**
  * Create method function
- * @param structName Executor name
+ * @param structName executor_t name
  * @param method One of Methods value
- * @param requestVariableName Input HTTPRequest variable name
- * @param responseVariableName Input HTTPResponse variable name
+ * @param requestVariableName Input http_request_t variable name
+ * @param responseVariableName Input http_response_t variable name
  */
-#define DEFINE_EXECUTOR_METHOD(structName, method, requestVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##structName(Executor executor, HTTPRequest requestVariableName, HTTPResponse responseVariableName)
+#define DEFINE_EXECUTOR_METHOD(structName, method, requestVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##structName(executor_t executor, http_request_t requestVariableName, http_response_t responseVariableName)
 
 /**
  * Create initialization function
- * @param structName Executor name
+ * @param structName executor_t name
  */
-#define DEFINE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(Executor executor, ExecutorSettings settings)
+#define DEFINE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(executor_t executor, executor_settings_t settings)
 
 /**
- * Create destroy function that would be called if Executor is destroyed
- * @param structName Executor name
+ * Create destroy function that would be called if executor_t is destroyed
+ * @param structName executor_t name
  */
-#define DEFINE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(Executor executor)
+#define DEFINE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(executor_t executor)
 
 /**
  * @brief Get Json structed values from initParameters section from settings file
- * @param implementation ExecutorSettings instance
+ * @param implementation executor_settings_t instance
  * @param result Json structed values
  * @return Error if occurred
  */
-WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JsonParser* result);
+web_framework_exception_t wf_get_executor_init_parameters(executor_settings_t implementation, json_parser_t* result);
 
 /**
  * @brief Get executor name
- * @param implementation ExecutorSettings instance
+ * @param implementation executor_settings_t instance
  * @param result String with executor name. Delete with deleteWebFrameworkString function
  * @return Error if occurred
  */
-WebFrameworkException getExecutorName(ExecutorSettings implementation, WebFrameworkString* result);
+web_framework_exception_t wf_get_executor_name(executor_settings_t implementation, web_framework_string_t* result);
 
 /**
  * @brief Get filter by User-Agent header
- * @param implementation ExecutorSettings instance
+ * @param implementation executor_settings_t instance
  * @param result String with executor name. Delete with deleteWebFrameworkString function
  * @return Error if occurred
  */
-WebFrameworkException getExecutorUserAgentFilter(ExecutorSettings implementation, WebFrameworkString* result);
+web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t implementation, web_framework_string_t* result);
 
 /**
- * @brief Get API language of Executor
- * @param implementation ExecutorSettings instance
+ * @brief Get API language of executor_t
+ * @param implementation executor_settings_t instance
  * @param result String with executor name. Delete with deleteWebFrameworkString function
  * @return Error if occurred
  */
-WebFrameworkException getExecutorAPIType(ExecutorSettings implementation, WebFrameworkString* result);
+web_framework_exception_t wf_get_executor_api_type(executor_settings_t implementation, web_framework_string_t* result);
 
 /**
- * @brief Get LoadType of Executor
- * @param implementation ExecutorSettings instance
+ * @brief Get LoadType of executor_t
+ * @param implementation executor_settings_t instance
  * @param result String with executor name. Delete with deleteWebFrameworkString function
  * @return Error if occurred
  */
-WebFrameworkException getExecutorLoadType(ExecutorSettings implementation, LoadType_t* result);
+web_framework_exception_t wf_get_executor_load_type(executor_settings_t implementation, load_type_t* result);
