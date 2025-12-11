@@ -16,7 +16,7 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	private static unsafe partial void setResponseBody(IntPtr implementation, byte[] body, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setResponseJSONBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
+	private static unsafe partial void setResponseJsonBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void setResponseCode(IntPtr implementation, ResponseCodes code, ref void* exception);
@@ -37,10 +37,10 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	private static unsafe partial void setResponseIsValid(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool isValid, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr createJSONBuilderFromString(string jsonData, ref void* exception);
+	private static unsafe partial IntPtr createJsonBuilderFromString(string jsonData, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteWebFrameworkJSONBuilder(IntPtr implementation);
+	private static unsafe partial void deleteWebFrameworkJsonBuilder(IntPtr implementation);
 
 	public void SetBody(string body)
 	{
@@ -84,16 +84,16 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 		void* exception = null;
 		string jsonData = JsonSerializer.Serialize(data, wrapperOptions);
-		IntPtr jsonBuilder = createJSONBuilderFromString(jsonData, ref exception);
+		IntPtr jsonBuilder = createJsonBuilderFromString(jsonData, ref exception);
 
 		if (exception != null)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		setResponseJSONBody(implementation, jsonBuilder, ref exception);
+		setResponseJsonBody(implementation, jsonBuilder, ref exception);
 
-		deleteWebFrameworkJSONBuilder(jsonBuilder);
+		deleteWebFrameworkJsonBuilder(jsonBuilder);
 
 		if (exception != null)
 		{

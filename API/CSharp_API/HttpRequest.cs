@@ -68,10 +68,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial IntPtr getDataFromString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getJSONParserRawData(IntPtr implementation, ref void* exception);
+	private static unsafe partial char* getJsonParserRawData(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteWebFrameworkJSONParser(IntPtr implementation);
+	private static unsafe partial void deleteWebFrameworkJsonParser(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial char* getRawParameters(IntPtr implementation, ref void* exception);
@@ -98,7 +98,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void removeAttribute(IntPtr implementation, string name, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getRequestJSON(IntPtr implementation, ref void* exception);
+	private static unsafe partial IntPtr getRequestJson(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial char* getRawRequest(IntPtr implementation, ref void* exception);
@@ -369,25 +369,25 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public T GetJson<T>()
 	{
 		void* exception = null;
-		IntPtr temp = getRequestJSON(implementation, ref exception);
+		IntPtr temp = getRequestJson(implementation, ref exception);
 
 		if (exception != null)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		char* jsonDataPtr = getJSONParserRawData(temp, ref exception);
+		char* jsonDataPtr = getJsonParserRawData(temp, ref exception);
 
 		if (exception != null)
 		{
-			deleteWebFrameworkJSONParser(temp);
+			deleteWebFrameworkJsonParser(temp);
 
 			throw new WebFrameworkException(exception);
 		}
 
 		string jsonData = Marshal.PtrToStringUTF8((IntPtr)jsonDataPtr)!;
 
-		deleteWebFrameworkJSONParser(temp);
+		deleteWebFrameworkJsonParser(temp);
 
 		T? result = JsonSerializer.Deserialize<T>(jsonData);
 
