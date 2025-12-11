@@ -439,7 +439,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			[](const framework::HTTPRequest& self)
 			{
 				py::module_ json = py::module_::import("json");
-				const framework::JsonParser& parser = self.getJSON();
+				const framework::JsonParser& parser = self.getJson();
 
 				return json.attr("loads")((*parser).data()).cast<py::dict>();
 			}
