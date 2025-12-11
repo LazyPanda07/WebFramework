@@ -10,13 +10,13 @@ project(CC_API)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/Executors/executor.c
-	src/Databases/database.c
-	src/Databases/sql_result.c
-	src/Databases/sql_value.c
-	src/Databases/table.c
-	src/Utility/web_framework_utility.c
-	src/Utility/web_framework_localization.c
+	src/executors/executor.c
+	src/databases/database.c
+	src/databases/sql_result.c
+	src/databases/sql_value.c
+	src/databases/table.c
+	src/utility/web_framework_utility.c
+	src/utility/web_framework_localization.c
 	src/config.c
 	src/dll_handler.c
 	src/http_request.c
