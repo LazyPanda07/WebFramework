@@ -149,18 +149,18 @@ void deleteWebFrameworkException(WebFrameworkException exception)
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
 }
 
-void deleteWebFrameworkJSONBuilder(JSONBuilder builder)
+void deleteWebFrameworkJsonBuilder(JsonBuilder builder)
 {
-	typedef void (*deleteWebFrameworkJSONBuilder)(void* builder);
+	typedef void (*deleteWebFrameworkJsonBuilder)(void* builder);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONBuilder, builder);
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonBuilder, builder);
 }
 
-void deleteWebFrameworkJSONParser(JSONParser parser)
+void deleteWebFrameworkJsonParser(JsonParser parser)
 {
-	typedef void (*deleteWebFrameworkJSONParser)(void* parser);
+	typedef void (*deleteWebFrameworkJsonParser)(void* parser);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONParser, parser);
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonParser, parser);
 }
 
 const char* getDataFromString(WebFrameworkString string)

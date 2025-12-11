@@ -261,7 +261,7 @@ namespace framework
 		/// Getter for JsonParser
 		/// </summary>
 		/// <returns>JsonParser</returns>
-		const JsonParser& getJSON() const;
+		const JsonParser& getJson() const;
 
 		/**
 		 * @brief Get chunks
@@ -567,7 +567,7 @@ namespace framework
 
 	inline HTTPRequest::HTTPRequest(interfaces::IHTTPRequest* implementation) :
 		implementation(implementation),
-		json(implementation->getJSON())
+		json(implementation->getJson())
 	{
 		this->initHeaders();
 		this->initQueryParameters();
@@ -770,7 +770,7 @@ namespace framework
 		implementation->setExceptionData(errorMessage.data(), static_cast<int>(responseCode), logCategory.data());
 	}
 
-	inline const JsonParser& HTTPRequest::getJSON() const
+	inline const JsonParser& HTTPRequest::getJson() const
 	{
 		return json;
 	}

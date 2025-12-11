@@ -1,135 +1,135 @@
 #include "JsonObject.h"
 
-WebFrameworkException createJSONObject(JSONObject_t* jsonObject)
+WebFrameworkException createJsonObject(JsonObject_t* jsonObject)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*createJSONObject)(void* _, void** exception);
+	typedef void* (*createJsonObject)(void* _, void** exception);
 
-	jsonObject->implementation = CALL_WEB_FRAMEWORK_FUNCTION(createJSONObject, NULL, &exception);
+	jsonObject->implementation = CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, NULL, &exception);
 	jsonObject->weak = false;
 
 	return exception;
 }
 
-WebFrameworkException copyJSONObject(JSONObject_t* jsonObject, const JSONObject_t* other)
+WebFrameworkException copyJsonObject(JsonObject_t* jsonObject, const JsonObject_t* other)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*createJSONObject)(void* other, void** exception);
+	typedef void* (*createJsonObject)(void* other, void** exception);
 
-	jsonObject->implementation = CALL_WEB_FRAMEWORK_FUNCTION(createJSONObject, other->implementation, &exception);
+	jsonObject->implementation = CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, other->implementation, &exception);
 	jsonObject->weak = false;
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectObject(JSONObject_t* jsonObject, JSONObject_t* object)
+WebFrameworkException setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t* object)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef void (*setJSONObjectObject)(void* implementation, void* value, void** exception);
+	typedef void (*setJsonObjectObject)(void* implementation, void* value, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectObject, object->implementation, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectObject, object->implementation, &exception);
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectString(JSONObject_t* jsonObject, const char* value)
+WebFrameworkException setJsonObjectString(JsonObject_t* jsonObject, const char* value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef void (*setJSONObjectString)(void* implementation, const char* value, void** exception);
+	typedef void (*setJsonObjectString)(void* implementation, const char* value, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectString, value, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectString, value, &exception);
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectInteger(JSONObject_t* jsonObject, int64_t value)
+WebFrameworkException setJsonObjectInteger(JsonObject_t* jsonObject, int64_t value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef void (*setJSONObjectInteger)(void* implementation, int64_t value, void** exception);
+	typedef void (*setJsonObjectInteger)(void* implementation, int64_t value, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectInteger, value, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectInteger, value, &exception);
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectUnsignedInteger(JSONObject_t* jsonObject, uint64_t value)
+WebFrameworkException setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uint64_t value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef void (*setJSONObjectUnsignedInteger)(void* implementation, uint64_t value, void** exception);
+	typedef void (*setJsonObjectUnsignedInteger)(void* implementation, uint64_t value, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectUnsignedInteger, value, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectUnsignedInteger, value, &exception);
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectDouble(JSONObject_t* jsonObject, double value)
+WebFrameworkException setJsonObjectDouble(JsonObject_t* jsonObject, double value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef void (*setJSONObjectDouble)(void* implementation, double value, void** exception);
+	typedef void (*setJsonObjectDouble)(void* implementation, double value, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectDouble, value, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectDouble, value, &exception);
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectBoolean(JSONObject_t* jsonObject, bool value)
+WebFrameworkException setJsonObjectBoolean(JsonObject_t* jsonObject, bool value)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef void (*setJSONObjectBoolean)(void* implementation, bool value, void** exception);
+	typedef void (*setJsonObjectBoolean)(void* implementation, bool value, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectBoolean, value, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectBoolean, value, &exception);
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectNull(JSONObject_t* jsonObject)
+WebFrameworkException setJsonObjectNull(JsonObject_t* jsonObject)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef void (*setJSONObjectNull)(void* implementation, void** exception);
+	typedef void (*setJsonObjectNull)(void* implementation, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectNull, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectNull, &exception);
 
 	return exception;
 }
 
-WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const JSONObject_t* array, size_t arraySize)
+WebFrameworkException setJsonObjectArray(JsonObject_t* jsonObject, const JsonObject_t* array, size_t arraySize)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 	void* buffer = malloc(arraySize * sizeof(void*));
 	void** value = &buffer;
 
-	typedef void (*setJSONObjectArray)(void* implementation, void** value, size_t size, void** exception);
+	typedef void (*setJsonObjectArray)(void* implementation, void** value, size_t size, void** exception);
 
 	for (size_t i = 0; i < arraySize; i++)
 	{
 		value[i] = array[i].implementation;
 	}
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectArray, value, arraySize, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectArray, value, arraySize, &exception);
 
 	free(buffer);
 
 	return exception;
 }
 
-WebFrameworkException assignJSONObject(JSONObject_t* jsonObject, const char* key, JSONObject_t* result)
+WebFrameworkException assignJsonObject(JsonObject_t* jsonObject, const char* key, JsonObject_t* result)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -142,7 +142,7 @@ WebFrameworkException assignJSONObject(JSONObject_t* jsonObject, const char* key
 	return exception;
 }
 
-WebFrameworkException emplaceJSONObject(JSONObject_t* jsonObject, JSONObject_t* result)
+WebFrameworkException emplaceJsonObject(JsonObject_t* jsonObject, JsonObject_t* result)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
@@ -155,25 +155,25 @@ WebFrameworkException emplaceJSONObject(JSONObject_t* jsonObject, JSONObject_t* 
 	return exception;
 }
 
-WebFrameworkException sizeJSONObject(JSONObject_t* jsonObject, size_t* size)
+WebFrameworkException sizeJsonObject(JsonObject_t* jsonObject, size_t* size)
 {
 	WebFrameworkException exception = NULL;
 	void* implementation = jsonObject->implementation;
 
-	typedef size_t (*sizeJSONObject)(void* implementation, void** exception);
+	typedef size_t (*sizeJsonObject)(void* implementation, void** exception);
 
-	*size = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sizeJSONObject, &exception);
+	*size = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sizeJsonObject, &exception);
 
 	return exception;
 }
 
-void deleteJSONObject(JSONObject_t* jsonObject)
+void deleteJsonObject(JsonObject_t* jsonObject)
 {
-	typedef void* (*deleteWebFrameworkJSONObject)(void* implementation);
+	typedef void* (*deleteWebFrameworkJsonObject)(void* implementation);
 
 	if (jsonObject && !jsonObject->weak && jsonObject->implementation)
 	{
-		CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJSONObject, jsonObject->implementation);
+		CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonObject, jsonObject->implementation);
 
 		jsonObject->implementation = NULL;
 	}

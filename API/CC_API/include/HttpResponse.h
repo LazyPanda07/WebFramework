@@ -93,10 +93,10 @@ WebFrameworkException setBody(HTTPResponse implementation, const char* body);
 /**
  * @brief Set HTTP body
  * @param implementation HTTPResponse instance
- * @param body HTTP JSON body
+ * @param body HTTP Json body
  * @return Error if occurred
  */
-WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilder body);
+WebFrameworkException setJsonBody(HTTPResponse implementation, JsonBuilder body);
 
 /**
  * @brief Set HTTP version

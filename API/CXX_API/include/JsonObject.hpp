@@ -44,7 +44,7 @@ namespace framework
 		size_t size() const;
 
 		/**
-		 * @brief Returns the JSON element at the specified index.
+		 * @brief Returns the Json element at the specified index.
 		 * @param index The zero-based index of the element to access.
 		 * @return A JsonObject (returned as weak reference) representing the element at the given index.
 		 */
@@ -69,8 +69,8 @@ namespace framework
 		bool tryGet(T& value) const;
 
 		/**
-		 * @brief Accesses the JSON value associated with the specified key.
-		 * @param key The key to look up in the JSON object.
+		 * @brief Accesses the Json value associated with the specified key.
+		 * @param key The key to look up in the Json object.
 		 * @return The JsonObject (returned as weak reference) corresponding to the specified key.
 		 */
 		template<typename T>
@@ -105,10 +105,10 @@ namespace framework
 	inline JsonObject::JsonObject() :
 		weak(false)
 	{
-		using createJSONObject = void* (*)(void* object, void** exception);
+		using createJsonObject = void* (*)(void* object, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONObject, nullptr, &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, nullptr, &exception);
 
 		if (exception)
 		{
@@ -128,10 +128,10 @@ namespace framework
 
 	inline JsonObject& JsonObject::operator =(const JsonObject& other)
 	{
-		using createJSONObject = void* (*)(void* object, void** exception);
+		using createJsonObject = void* (*)(void* object, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJSONObject, other.implementation, &exception);
+		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, other.implementation, &exception);
 
 		if (exception)
 		{
@@ -402,53 +402,53 @@ namespace framework
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectBoolean, bool, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectBoolean, bool, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectBoolean, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectBoolean, &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectNull, void, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectNull, void, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectNull, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectNull, &exception);
 
 			result = nullptr;
 		}
 		else if constexpr (std::is_same_v<T, std::string>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectString, const char*, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectString, const char*, void** exception);
 
-			result = std::string(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectString, &exception));
+			result = std::string(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectString, &exception));
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectArray, void, void(*addArrayValue)(void* object, void* array), void* array, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectArray, void, void(*addArrayValue)(void* object, void* array), void* array, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectArray, &JsonObject::addArrayValue, &result, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectArray, &JsonObject::addArrayValue, &result, &exception);
 		}
 		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectObject, void*, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectObject, void*, void** exception);
 
-			result = JsonObject(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectObject, &exception), false);
+			result = JsonObject(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectObject, &exception), false);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectDouble, double, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectDouble, double, void** exception);
 
-			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectDouble, &exception));
+			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectDouble, &exception));
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectUnsignedInteger, uint64_t, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectUnsignedInteger, uint64_t, void** exception);
 
-			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectUnsignedInteger, &exception));
+			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectUnsignedInteger, &exception));
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getJSONObjectInteger, int64_t, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getJsonObjectInteger, int64_t, void** exception);
 
-			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJSONObjectInteger, &exception));
+			result = static_cast<T>(handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectInteger, &exception));
 		}
 		else
 		{
@@ -472,24 +472,24 @@ namespace framework
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectBooleanByKey, bool, const char* key, bool* value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectBooleanByKey, bool, const char* key, bool* value, bool recursive, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectBooleanByKey, key.data(), &value, recursive, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectBooleanByKey, key.data(), &value, recursive, &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectNull, void, const char* key, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectNull, void, const char* key, bool recursive, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectNull, key.data(), recursive, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectNull, key.data(), recursive, &exception);
 
 			result = true;
 		}
 		else if constexpr (std::is_same_v<T, std::string>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectStringByKey, bool, const char* key, void** value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectStringByKey, bool, const char* key, void** value, bool recursive, void** exception);
 			void* string = nullptr;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectStringByKey, key.data(), &string, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectStringByKey, key.data(), &string, recursive, &exception))
 			{
 				value = handler.getString(string);
 
@@ -498,16 +498,16 @@ namespace framework
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectArrayByKey, bool, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectArrayByKey, bool, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectArrayByKey, key.data(), &JsonObject::addArrayValue, &value, recursive, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectArrayByKey, key.data(), &JsonObject::addArrayValue, &value, recursive, &exception);
 		}
 		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectObjectByKey, bool, const char* key, void** value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectObjectByKey, bool, const char* key, void** value, bool recursive, void** exception);
 			void* object = nullptr;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectObjectByKey, key.data(), &object, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectObjectByKey, key.data(), &object, recursive, &exception))
 			{
 				value = JsonObject(object, false);
 
@@ -516,10 +516,10 @@ namespace framework
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectDoubleByKey, bool, const char* key, double* value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectDoubleByKey, bool, const char* key, double* value, bool recursive, void** exception);
 			double temp = 0.0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectDoubleByKey, key.data(), &temp, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectDoubleByKey, key.data(), &temp, recursive, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -528,10 +528,10 @@ namespace framework
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectUnsignedIntegerByKey, bool, const char* key, uint64_t * value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectUnsignedIntegerByKey, bool, const char* key, uint64_t * value, bool recursive, void** exception);
 			uint64_t temp = 0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectUnsignedIntegerByKey, key.data(), &temp, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectUnsignedIntegerByKey, key.data(), &temp, recursive, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -540,10 +540,10 @@ namespace framework
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectIntegerByKey, bool, const char* key, int64_t * value, bool recursive, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectIntegerByKey, bool, const char* key, int64_t * value, bool recursive, void** exception);
 			int64_t temp = 0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectIntegerByKey, key.data(), &temp, recursive, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectIntegerByKey, key.data(), &temp, recursive, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -572,24 +572,24 @@ namespace framework
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectBoolean, bool, bool* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectBoolean, bool, bool* value, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectBoolean, &value, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectBoolean, &value, &exception);
 		}
 		else if constexpr (std::is_same_v<T, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectNull, void, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectNull, void, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectNull, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectNull, &exception);
 
 			result = true;
 		}
 		else if constexpr (std::is_same_v<T, std::string>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectString, bool, void** value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectString, bool, void** value, void** exception);
 			void* string = nullptr;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectString, &string, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectString, &string, &exception))
 			{
 				value = handler.getString(string);
 
@@ -598,16 +598,16 @@ namespace framework
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectArray, bool, void(*addArrayValue)(void* object, void* array), void* array, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectArray, bool, void(*addArrayValue)(void* object, void* array), void* array, void** exception);
 
-			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectArray, &JsonObject::addArrayValue, &value, &exception);
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectArray, &JsonObject::addArrayValue, &value, &exception);
 		}
 		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectObject, bool, void** value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectObject, bool, void** value, void** exception);
 			void* object = nullptr;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectObject, &object, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectObject, &object, &exception))
 			{
 				value = JsonObject(object, false);
 
@@ -616,10 +616,10 @@ namespace framework
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectDouble, bool, double* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectDouble, bool, double* value, void** exception);
 			double temp = 0.0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectDouble, &temp, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectDouble, &temp, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -628,10 +628,10 @@ namespace framework
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectUnsignedInteger, bool, uint64_t* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectUnsignedInteger, bool, uint64_t* value, void** exception);
 			uint64_t temp = 0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectUnsignedInteger, &temp, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectUnsignedInteger, &temp, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -640,10 +640,10 @@ namespace framework
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJSONObjectInteger, bool, int64_t* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(tryGetJsonObjectInteger, bool, int64_t* value, void** exception);
 			int64_t temp = 0;
 
-			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJSONObjectInteger, &temp, &exception))
+			if (handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(tryGetJsonObjectInteger, &temp, &exception))
 			{
 				value = static_cast<T>(temp);
 
@@ -698,37 +698,37 @@ namespace framework
 
 		if constexpr (std::is_same_v<ActualT, bool>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectBoolean, void, bool value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectBoolean, void, bool value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectBoolean, value, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectBoolean, value, &exception);
 		}
 		else if constexpr (std::is_same_v<ActualT, std::nullptr_t>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectNull, void, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectNull, void, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectNull, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectNull, &exception);
 		}
 		else if constexpr (std::same_as<ActualT, std::string>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectString, void, const char* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectString, void, const char* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectString, value.data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectString, value.data(), &exception);
 		}
 		else if constexpr (std::convertible_to<ActualT, std::string_view>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectString, void, const char* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectString, void, const char* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectString, static_cast<std::string_view>(value).data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectString, static_cast<std::string_view>(value).data(), &exception);
 		}
 		else if constexpr (std::convertible_to<ActualT, std::string>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectString, void, const char* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectString, void, const char* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectString, static_cast<std::string>(value).data(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectString, static_cast<std::string>(value).data(), &exception);
 		}
 		else if constexpr (std::is_same_v<ActualT, std::vector<JsonObject>>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectArray, void, const void* value, size_t size, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectArray, void, const void* value, size_t size, void** exception);
 			std::vector<void*> temp;
 
 			temp.reserve(value.size());
@@ -738,31 +738,31 @@ namespace framework
 				temp.push_back(object.implementation);
 			}
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectArray, temp.data(), temp.size(), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectArray, temp.data(), temp.size(), &exception);
 		}
 		else if constexpr (std::is_same_v<ActualT, JsonObject>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectObject, void, void* value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectObject, void, void* value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectObject, value.implementation, &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectObject, value.implementation, &exception);
 		}
 		else if constexpr (std::is_floating_point_v<ActualT>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectDouble, void, double value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectDouble, void, double value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectDouble, static_cast<double>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectDouble, static_cast<double>(value), &exception);
 		}
 		else if constexpr (std::is_unsigned_v<ActualT>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectUnsignedInteger, void, uint64_t value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectUnsignedInteger, void, uint64_t value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectUnsignedInteger, static_cast<uint64_t>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectUnsignedInteger, static_cast<uint64_t>(value), &exception);
 		}
 		else if constexpr (std::is_signed_v<ActualT>)
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(setJSONObjectInteger, void, int64_t value, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(setJsonObjectInteger, void, int64_t value, void** exception);
 
-			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJSONObjectInteger, static_cast<int64_t>(value), &exception);
+			handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectInteger, static_cast<int64_t>(value), &exception);
 		}
 		else
 		{
@@ -797,7 +797,7 @@ namespace framework
 	{
 		if (!weak && implementation)
 		{
-			utility::DLLHandler::getInstance().deleteJSONObject(implementation);
+			utility::DLLHandler::getInstance().deleteJsonObject(implementation);
 
 			implementation = nullptr;
 		}

@@ -1,6 +1,6 @@
 #include "Executors/Executor.h"
 
-WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result)
+WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JsonParser* result)
 {
 	WebFrameworkException exception = NULL;
 
@@ -13,7 +13,7 @@ WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation,
 		return exception;
 	}
 
-	exception = createJSONParserFromString(getDataFromString(temp), result);
+	exception = createJsonParserFromString(getDataFromString(temp), result);
 
 	deleteWebFrameworkString(temp);
 

@@ -94,7 +94,7 @@ namespace framework
 		implementation(implementation),
 		deleter(deleter)
 	{
-		json.setJSONData(std::string_view(implementation->getJSON()));
+		json.setJSONData(std::string_view(implementation->getJson()));
 
 		this->initHeaders();
 		this->initQueryParameters();

@@ -254,7 +254,7 @@ namespace framework
 		/// Getter for JSONParser
 		/// </summary>
 		/// <returns>JSONParser</returns>
-		const char* getJSON() const override;
+		const char* getJson() const override;
 
 		const char* getRawRequest() const override;
 

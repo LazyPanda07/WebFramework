@@ -123,12 +123,12 @@ typedef enum Methods
 #define DEFINE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(Executor executor)
 
 /**
- * @brief Get JSON structed values from initParameters section from settings file
+ * @brief Get Json structed values from initParameters section from settings file
  * @param implementation ExecutorSettings instance
- * @param result JSON structed values
+ * @param result Json structed values
  * @return Error if occurred
  */
-WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JSONParser* result);
+WebFrameworkException getExecutorInitParameters(ExecutorSettings implementation, JsonParser* result);
 
 /**
  * @brief Get executor name

@@ -125,10 +125,10 @@ namespace framework
 		void setBody(std::string_view body);
 
 		/// <summary>
-		/// <para>Some JSON data with HTTP response</para>
+		/// <para>Some Json data with HTTP response</para>
 		/// <para>Content-Length and Content-Type headers setting automatically</para>
 		/// </summary>
-		/// <param name="json">JSON data</param>
+		/// <param name="json">Json data</param>
 		void setBody(const JsonBuilder& json);
 
 		/// <summary>

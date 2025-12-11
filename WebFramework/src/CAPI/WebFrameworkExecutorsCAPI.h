@@ -10,7 +10,7 @@ typedef void* DynamicPagesVariable;
 
 EXPORT void setResponseBody(HttpResponseObject response, const char* body, Exception* exception);
 
-EXPORT void setResponseJSONBody(HttpResponseObject response, JsonBuilder builder, Exception* exception);
+EXPORT void setResponseJsonBody(HttpResponseObject response, JsonBuilder builder, Exception* exception);
 
 EXPORT void setVersion(HttpResponseObject response, const char* version, Exception* exception);
 
@@ -42,7 +42,7 @@ EXPORT void deleteSession(HttpRequestObject request, Exception* exception);
 
 EXPORT void removeAttribute(HttpRequestObject request, const char* name, Exception* exception);
 
-EXPORT JsonParser getRequestJSON(HttpRequestObject request, Exception* exception);
+EXPORT JsonParser getRequestJson(HttpRequestObject request, Exception* exception);
 
 EXPORT const char* getRawRequest(HttpRequestObject request, Exception* exception);
 

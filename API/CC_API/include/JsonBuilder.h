@@ -3,95 +3,95 @@
 #include "JsonObject.h"
 
 /**
- * @brief Create JSONBuilder
- * @param builder JSONBuilder. Delete with deleteWebFrameworkJSONBuilder function
+ * @brief Create JsonBuilder
+ * @param builder JsonBuilder. Delete with deleteWebFrameworkJsonBuilder function
  * @return Error if occurred
  */
-WebFrameworkException createJSONBuilder(JSONBuilder* builder);
+WebFrameworkException createJsonBuilder(JsonBuilder* builder);
 
 /**
- * @brief Copy JSONBuilder
- * @param builder Result. Delete with deleteWebFrameworkJSONBuilder function
- * @param other Other JSONBuilder
+ * @brief Copy JsonBuilder
+ * @param builder Result. Delete with deleteWebFrameworkJsonBuilder function
+ * @param other Other JsonBuilder
  * @return Error if occurred
  */
-WebFrameworkException copyJSONBuilder(JSONBuilder* builder, JSONBuilder other);
+WebFrameworkException copyJsonBuilder(JsonBuilder* builder, JsonBuilder other);
 
 /**
- * @brief Get JSON formatted text
- * @param implementation JSONBuilder instance
- * @param result JSON formatted text. Delete with deleteWebFrameworkString function
+ * @brief Get Json formatted text
+ * @param implementation JsonBuilder instance
+ * @param result Json formatted text. Delete with deleteWebFrameworkString function
  * @return 
  */
-WebFrameworkException buildJSONBuilder(JSONBuilder implementation, WebFrameworkString* result);
+WebFrameworkException buildJsonBuilder(JsonBuilder implementation, WebFrameworkString* result);
 
 /**
- * @brief Add JSONObject
- * @param implementation JSONBuilder instance 
+ * @brief Add JsonObject
+ * @param implementation JsonBuilder instance 
  * @param key JSON key
- * @param object JSON object
+ * @param object Json object
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderObject(JSONBuilder implementation, const char* key, JSONObject_t* object);
+WebFrameworkException appendJsonBuilderObject(JsonBuilder implementation, const char* key, JsonObject_t* object);
 
 /**
  * @brief Add string
- * @param implementation JSONBuilder instance
+ * @param implementation JsonBuilder instance
  * @param key JSON key
  * @param value String value
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderString(JSONBuilder implementation, const char* key, const char* value);
+WebFrameworkException appendJsonBuilderString(JsonBuilder implementation, const char* key, const char* value);
 
 /**
  * @brief Add integer
- * @param implementation JSONBuilder instance
+ * @param implementation JsonBuilder instance
  * @param key JSON key
  * @param value Integer value
  * @return 
  */
-WebFrameworkException appendJSONBuilderInteger(JSONBuilder implementation, const char* key, int64_t value);
+WebFrameworkException appendJsonBuilderInteger(JsonBuilder implementation, const char* key, int64_t value);
 
 /**
  * @brief Add unsigned integer
- * @param implementation JSONBuilder instance
+ * @param implementation JsonBuilder instance
  * @param key JSON key
  * @param value Unsigned integer value
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderUnsignedInteger(JSONBuilder implementation, const char* key, uint64_t value);
+WebFrameworkException appendJsonBuilderUnsignedInteger(JsonBuilder implementation, const char* key, uint64_t value);
 
 /**
  * @brief Add double
- * @param implementation JSONBuilder instance
+ * @param implementation JsonBuilder instance
  * @param key JSON key
  * @param value Double value
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderDouble(JSONBuilder implementation, const char* key, double value);
+WebFrameworkException appendJsonBuilderDouble(JsonBuilder implementation, const char* key, double value);
 
 /**
  * @brief Add bool
- * @param implementation JSONBuilder instance
+ * @param implementation JsonBuilder instance
  * @param key JSON key
  * @param value Bool value
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderBoolean(JSONBuilder implementation, const char* key, bool value);
+WebFrameworkException appendJsonBuilderBoolean(JsonBuilder implementation, const char* key, bool value);
 
 /**
  * @brief Add NULL
- * @param implementation JSONBuilder instance
+ * @param implementation JsonBuilder instance
  * @param key JSON key
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderNull(JSONBuilder implementation, const char* key);
+WebFrameworkException appendJsonBuilderNull(JsonBuilder implementation, const char* key);
 
 /**
- * @brief Add JSON array
- * @param implementation JSONBuilder instance
+ * @brief Add Json array
+ * @param implementation JsonBuilder instance
  * @param key JSON key
- * @param value JSON array value
+ * @param value Json array value
  * @return Error if occurred
  */
-WebFrameworkException appendJSONBuilderArray(JSONBuilder implementation, const char* key, const JSONObject_t* array, size_t arraySize);
+WebFrameworkException appendJsonBuilderArray(JsonBuilder implementation, const char* key, const JsonObject_t* array, size_t arraySize);

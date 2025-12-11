@@ -63,7 +63,7 @@ namespace framework
 			ExecutorSettings(void* implementation);
 
 			/**
-			 * @brief Get JSON structed values from initParameters section from settings file
+			 * @brief Get Json structed values from initParameters section from settings file
 			 * @return
 			 */
 			JsonParser getInitParameters() const;

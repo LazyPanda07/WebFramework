@@ -273,12 +273,12 @@ WebFrameworkException unregisterWFDPFunction(HTTPRequest implementation, const c
 WebFrameworkException isWFDPFunctionRegistered(HTTPRequest implementation, const char* functionName, bool* result);
 
 /**
- * @brief Get HTTP body as JSON
+ * @brief Get HTTP body as Json
  * @param implementation HTTPRequest instance
- * @param parser JSON data
+ * @param parser Json data
  * @return Error if occurred
  */
-WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser);
+WebFrameworkException getHTTPRequestJson(HTTPRequest implementation, JsonParser* parser);
 
 /**
  * @brief Get HTTP chunks

@@ -41,7 +41,7 @@ namespace framework::utility
 		/**
 		 * @brief Override string
 		 * @tparam T
-		 * @param key JSON key
+		 * @param key Json key
 		 * @param value New string value
 		 * @param recursive Recursive search for key
 		 * @return Self
@@ -52,7 +52,7 @@ namespace framework::utility
 		/**
 		 * @brief Override integer
 		 * @tparam T
-		 * @param key JSON key
+		 * @param key Json key
 		 * @param value New integer value
 		 * @param recursive Recursive search for key
 		 * @return Self
@@ -62,7 +62,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Override string array
-		 * @param key JSON key
+		 * @param key Json key
 		 * @param value New string array value
 		 * @param recursive Recursive search for key
 		 * @return Self
@@ -71,7 +71,7 @@ namespace framework::utility
 
 		/**
 		 * @brief Override integer array
-		 * @param key JSON key
+		 * @param key Json key
 		 * @param value New integer array value
 		 * @param recursive Recursive search for key
 		 * @return Self
@@ -102,13 +102,13 @@ namespace framework::utility
 		std::string getBasePath() const;
 
 		/**
-		 * @brief Get current config JSON string data
+		 * @brief Get current config Json string data
 		 * @return
 		 */
 		std::string getConfiguration() const;
 
 		/**
-		 * @brief Get raw config JSON string data
+		 * @brief Get raw config Json string data
 		 * @return
 		 */
 		std::string_view getRawConfiguration() const;

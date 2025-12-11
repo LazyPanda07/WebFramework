@@ -11,13 +11,13 @@ WebFrameworkException setBody(HTTPResponse implementation, const char* body)
 	return exception;
 }
 
-WebFrameworkException setJSONBody(HTTPResponse implementation, JSONBuilder body)
+WebFrameworkException setJsonBody(HTTPResponse implementation, JsonBuilder body)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void (*setResponseJSONBody)(void* implementation, void* body, void** exception);
+	typedef void (*setResponseJsonBody)(void* implementation, void* body, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setResponseJSONBody, body, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setResponseJsonBody, body, &exception);
 
 	return exception;
 }

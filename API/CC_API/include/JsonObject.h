@@ -3,119 +3,119 @@
 #include "DLLHandler.h"
 
 /**
- * @brief JSONObject
+ * @brief JsonObject
  */
-typedef struct JSONObject
+typedef struct JsonObject
 {
 	void* implementation;
 	bool weak;
-} JSONObject_t;
+} JsonObject_t;
 
 /**
- * @brief Create JSONObject. Delete with deleteWebFrameworkJSONObject function
- * @param jsonObject JSONObject
+ * @brief Create JsonObject. Delete with deleteWebFrameworkJsonObject function
+ * @param jsonObject JsonObject
  * @return Error if occurred
  */
-WebFrameworkException createJSONObject(JSONObject_t* jsonObject);
+WebFrameworkException createJsonObject(JsonObject_t* jsonObject);
 
 /**
- * @brief Copy JSONObject.
- * @param jsonObject Result. Delete with deleteWebFrameworkJSONObject function
- * @param other Other JSONObject
+ * @brief Copy JsonObject.
+ * @param jsonObject Result. Delete with deleteWebFrameworkJsonObject function
+ * @param other Other JsonObject
  * @return Error if occurred
  */
-WebFrameworkException copyJSONObject(JSONObject_t* jsonObject, const JSONObject_t* other);
+WebFrameworkException copyJsonObject(JsonObject_t* jsonObject, const JsonObject_t* other);
 
 /**
- * @brief Set JSONObject to JSONObject
- * @param jsonObject JSONObject instance
- * @param object JSONObject value
+ * @brief Set JsonObject to JsonObject
+ * @param jsonObject JsonObject instance
+ * @param object JsonObject value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectObject(JSONObject_t* jsonObject, JSONObject_t* object);
+WebFrameworkException setJsonObjectObject(JsonObject_t* jsonObject, JsonObject_t* object);
 
 /**
- * @brief Set string to JSONObject
- * @param jsonObject JSONObject instance
+ * @brief Set string to JsonObject
+ * @param jsonObject JsonObject instance
  * @param value String value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectString(JSONObject_t* jsonObject, const char* value);
+WebFrameworkException setJsonObjectString(JsonObject_t* jsonObject, const char* value);
 
 /**
- * @brief Set integer to JSONObject
- * @param jsonObject JSONObject instance
+ * @brief Set integer to JsonObject
+ * @param jsonObject JsonObject instance
  * @param value Integer value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectInteger(JSONObject_t* jsonObject, int64_t value);
+WebFrameworkException setJsonObjectInteger(JsonObject_t* jsonObject, int64_t value);
 
 /**
- * @brief Set unsigned integer to JSONObject
- * @param jsonObject JSONObject instance
+ * @brief Set unsigned integer to JsonObject
+ * @param jsonObject JsonObject instance
  * @param value Unsigned integer value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectUnsignedInteger(JSONObject_t* jsonObject, uint64_t value);
+WebFrameworkException setJsonObjectUnsignedInteger(JsonObject_t* jsonObject, uint64_t value);
 
 /**
- * @brief Set double to JSONObject
- * @param jsonObject JSONObject instance
+ * @brief Set double to JsonObject
+ * @param jsonObject JsonObject instance
  * @param value Double value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectDouble(JSONObject_t* jsonObject, double value);
+WebFrameworkException setJsonObjectDouble(JsonObject_t* jsonObject, double value);
 
 /**
- * @brief Set bool to JSONObject
- * @param jsonObject JSONObject instance
+ * @brief Set bool to JsonObject
+ * @param jsonObject JsonObject instance
  * @param value Bool value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectBoolean(JSONObject_t* jsonObject, bool value);
+WebFrameworkException setJsonObjectBoolean(JsonObject_t* jsonObject, bool value);
 
 /**
- * @brief Set NULL to JSONObject
- * @param jsonObject JSONObject instance
+ * @brief Set NULL to JsonObject
+ * @param jsonObject JsonObject instance
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectNull(JSONObject_t* jsonObject);
+WebFrameworkException setJsonObjectNull(JsonObject_t* jsonObject);
 
 /**
- * @brief Set JSONArray to JSONObject
- * @param jsonObject JSONObject instance
- * @param value JSONArray value
+ * @brief Set JsonArray to JsonObject
+ * @param jsonObject JsonObject instance
+ * @param value JsonArray value
  * @return Error if occurred
  */
-WebFrameworkException setJSONObjectArray(JSONObject_t* jsonObject, const JSONObject_t* array, size_t arraySize);
+WebFrameworkException setJsonObjectArray(JsonObject_t* jsonObject, const JsonObject_t* array, size_t arraySize);
 
 /**
- * @brief Add key to JSON object and get associated object
- * @param jsonObject JSONObject instance
+ * @brief Add key to Json object and get associated object
+ * @param jsonObject JsonObject instance
  * @param key JSON key
- * @param result Associated JSON object
+ * @param result Associated Json object
  * @return 
  */
-WebFrameworkException assignJSONObject(JSONObject_t* jsonObject, const char* key, JSONObject_t* result);
+WebFrameworkException assignJsonObject(JsonObject_t* jsonObject, const char* key, JsonObject_t* result);
 
 /**
- * @brief Add JSON object to an array and get associated object
- * @param jsonObject JSONObject instance
- * @param result Associated JSON object
+ * @brief Add Json object to an array and get associated object
+ * @param jsonObject JsonObject instance
+ * @param result Associated Json object
  * @return
  */
-WebFrameworkException emplaceJSONObject(JSONObject_t* jsonObject, JSONObject_t* result);
+WebFrameworkException emplaceJsonObject(JsonObject_t* jsonObject, JsonObject_t* result);
 
 /**
- * @brief Obtains the size of a JSON object and writes it to the provided output parameter.
- * @param jsonObject Pointer to the JSON object whose size will be determined.
+ * @brief Obtains the size of a Json object and writes it to the provided output parameter.
+ * @param jsonObject Pointer to the Json object whose size will be determined.
  * @param size Pointer to a size_t where the computed size will be stored on success. If jsonObject is map or array it returns actual size, ULLONG_MAX otherwise
  * @return A WebFrameworkException value indicating success or failure. On success, *size is set to the object's size.
  */
-WebFrameworkException sizeJSONObject(JSONObject_t* jsonObject, size_t* size);
+WebFrameworkException sizeJsonObject(JsonObject_t* jsonObject, size_t* size);
 
 /**
- * @brief Delete JSONObject
- * @param jsonObject JSONObject instance
+ * @brief Delete JsonObject
+ * @param jsonObject JsonObject instance
  */
-void deleteJSONObject(JSONObject_t* jsonObject);
+void deleteJsonObject(JsonObject_t* jsonObject);

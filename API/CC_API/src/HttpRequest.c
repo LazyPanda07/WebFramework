@@ -473,13 +473,13 @@ WebFrameworkException isWFDPFunctionRegistered(HTTPRequest implementation, const
 	return exception;
 }
 
-WebFrameworkException getHTTPRequestJSON(HTTPRequest implementation, JSONParser* parser)
+WebFrameworkException getHTTPRequestJson(HTTPRequest implementation, JsonParser* parser)
 {
 	WebFrameworkException exception = NULL;
 
-	typedef void* (*getRequestJSON)(void* implementation, void** exception);
+	typedef void* (*getRequestJson)(void* implementation, void** exception);
 
-	*parser = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRequestJSON, &exception);
+	*parser = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRequestJson, &exception);
 
 	return exception;
 }

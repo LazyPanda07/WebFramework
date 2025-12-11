@@ -153,7 +153,7 @@ namespace framework::interfaces
 
 		virtual bool getExceptionData(CExceptionData* data) = 0;
 
-		virtual const char* getJSON() const = 0;
+		virtual const char* getJson() const = 0;
 
 		virtual const char* getRawRequest() const = 0;
 

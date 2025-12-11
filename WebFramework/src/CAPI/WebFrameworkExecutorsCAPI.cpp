@@ -28,7 +28,7 @@ void setResponseBody(HttpResponseObject response, const char* body, Exception* e
 	}
 }
 
-void setResponseJSONBody(HttpResponseObject response, JsonBuilder builder, Exception* exception)
+void setResponseJsonBody(HttpResponseObject response, JsonBuilder builder, Exception* exception)
 {
 	try
 	{
@@ -304,11 +304,11 @@ void removeAttribute(HttpRequestObject request, const char* name, Exception* exc
 	}
 }
 
-JsonParser getRequestJSON(HttpRequestObject request, Exception* exception)
+JsonParser getRequestJson(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return createJSONParserFromString(static_cast<framework::interfaces::IHTTPRequest*>(request)->getJSON(), exception);
+		return createJsonParserFromString(static_cast<framework::interfaces::IHTTPRequest*>(request)->getJson(), exception);
 	}
 	catch (const std::exception& e)
 	{

@@ -108,7 +108,7 @@ WebFrameworkException getConfigurationInteger(Config implementation, const char*
 WebFrameworkException getConfigurationBoolean(Config implementation, const char* key, bool recursive, bool* result);
 
 /**
- * @brief Get current config JSON string data
+ * @brief Get current config Json string data
  * @param implementation Config
  * @param configuration Result string
  * @return NULL if no errors. Call getErrorMessage for getting error message
@@ -116,7 +116,7 @@ WebFrameworkException getConfigurationBoolean(Config implementation, const char*
 WebFrameworkException getConfiguration(Config implementation, WebFrameworkString* configuration);
 
 /**
- * @brief Get raw config JSON string data
+ * @brief Get raw config Json string data
  * @param implementation
  * @param rawConfiguration
  * @return NULL if no errors. Call getErrorMessage for getting error message

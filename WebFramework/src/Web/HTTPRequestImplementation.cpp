@@ -564,7 +564,7 @@ namespace framework
 		return false;
 	}
 
-	const char* HTTPRequestImplementation::getJSON() const
+	const char* HTTPRequestImplementation::getJson() const
 	{
 		return parser.getJson().getRawData().data();
 	}
