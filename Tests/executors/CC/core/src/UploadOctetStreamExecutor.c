@@ -1,4 +1,4 @@
-#include <Executors/Executor.h>
+#include <executors/executor.h>
 
 typedef struct
 {
@@ -18,28 +18,28 @@ DEFINE_EXECUTOR_METHOD(UploadOctetStreamExecutor, POST_METHOD, request, response
 {
 	UploadOctetStreamExecutor* self = (UploadOctetStreamExecutor*)executor;
 	char* endPtr = NULL;
-	LargeData_t* data = NULL;
+	large_data_t* data = NULL;
 
-	getLargeData(request, &data);
+	wf_get_large_data(request, &data);
 
 	if (!self->stream)
 	{
 		const char* fileName;
 
-		getHTTPHeader(request, "File-Name", &fileName);
+		wf_get_http_header(request, "File-Name", &fileName);
 
 		self->stream = fopen(fileName, "wb");
 	}
 
-	fwrite(data->dataPart, sizeof(char), data->dataPartSize, self->stream);
+	fwrite(data->data_part, sizeof(char), data->data_part_size, self->stream);
 
-	if (data->isLastPacket)
+	if (data->is_last_packet)
 	{
 		fclose(self->stream);
 
 		self->stream = NULL;
 
-		setHTTPResponseCode(response, CREATED);
-		setBody(response, "Finish uploading file");
+		wf_set_http_response_code(response, CREATED);
+		wf_set_body(response, "Finish uploading file");
 	}
 }

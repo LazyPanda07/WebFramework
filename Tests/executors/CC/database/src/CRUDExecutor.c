@@ -1,4 +1,4 @@
-#include <Executors/Executor.h>
+#include <executors/executor.h>
 
 #include <time.h>
 #include <signal.h>
@@ -9,40 +9,40 @@ DEFINE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR);
 
 DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 {
-	Database database;
-	Table table;
-	SQLValue value;
-	SQLResult result;
-	JsonBuilder builder;
-	JsonObject_t data;
+	database_t database;
+	table_t table;
+	sql_value_t value;
+	sql_result_t result;
+	json_builder_t builder;
+	json_object_t data;
 
-	getDatabaseHTTPRequest(request, "test_database", &database);
-	getTable(database, "test_table", &table);
-	createSQLValue(&value);
-	createJsonBuilder(&builder);
+	wf_get_database_request(request, "test_database", &database);
+	wf_get_table(database, "test_table", &table);
+	wf_create_sql_value(&value);
+	wf_create_json_builder(&builder);
 
-	setSQLValueString(value, "glue");
+	wf_set_sql_value_string(value, "glue");
 
-	executeQuery(table, "SELECT * FROM test_table WHERE name = ?", &value, 1, &result);
-	iterateSQLResult(result, initBuffer, callback, &data);
+	wf_execute_query(table, "SELECT * FROM test_table WHERE name = ?", &value, 1, &result);
+	wf_iterate_sql_result(result, initBuffer, callback, &data);
 
-	appendJsonBuilderObject(builder, "data", &data);
+	wf_append_json_builder_object(builder, "data", &data);
 
-	setJsonBody(response, builder);
+	wf_set_json_body(response, builder);
 
-	deleteJsonObject(&data);
-	deleteWebFrameworkSQLValue(value);
-	deleteWebFrameworkJsonBuilder(builder);
-	deleteSQLResult(table, result);
+	wf_delete_json_object(&data);
+	wf_delete_web_framework_sql_value(value);
+	wf_delete_web_framework_json_parser(builder);
+	wf_delete_sql_result(table, result);
 }
 
 DEFINE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
 {
-	Database database;
-	Table table;
+	database_t database;
+	table_t table;
 
-	getOrCreateDatabaseHTTPRequest(request, "test_database", &database);
-	getOrCreateTable
+	wf_get_or_create_database_request(request, "test_database", &database);
+	wf_get_or_create_table
 	(
 		database,
 		"test_table",
@@ -56,10 +56,10 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
 
 DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 {
-	Database database;
-	Table table;
-	SQLResult result;
-	SQLValue* values = (SQLValue*)malloc(2 * sizeof(SQLValue));
+	database_t database;
+	table_t table;
+	sql_result_t result;
+	sql_value_t* values = (sql_value_t*)malloc(2 * sizeof(sql_value_t));
 
 	if (!values)
 	{
@@ -70,22 +70,22 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 
 	srand(time(NULL));
 
-	getDatabaseHTTPRequest(request, "test_database", &database);
-	getTable(database, "test_table", &table);
+	wf_get_database_request(request, "test_database", &database);
+	wf_get_table(database, "test_table", &table);
 
-	createSQLValue(&(values[0]));
-	createSQLValue(&(values[1]));
+	wf_create_sql_value(&(values[0]));
+	wf_create_sql_value(&(values[1]));
 
-	setSQLValueString(values[0], "glue");
-	setSQLValueInt(values[1], -1);
+	wf_set_sql_value_string(values[0], "glue");
+	wf_set_sql_value_int(values[1], -1);
 
-	executeQuery(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
+	wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
 
 	for (size_t i = 0; i < 10; i++)
 	{
-		setSQLValueInt(values[1], rand() % 200);
+		wf_set_sql_value_int(values[1], rand() % 200);
 
-		executeQuery(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
+		wf_execute_query(table, "INSERT INTO test_table (name, amount) VALUES(?, ?)", values, 2, &result);
 	}
 
 	free(values);
@@ -93,12 +93,12 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 
 DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 {
-	Database database;
-	Table table;
-	SQLResult result;
-	SQLValue* values = (SQLValue*)malloc(2 * sizeof(SQLValue));
-	JsonBuilder builder;
-	JsonObject_t data;
+	database_t database;
+	table_t table;
+	sql_result_t result;
+	sql_value_t* values = (sql_value_t*)malloc(2 * sizeof(sql_value_t));
+	json_builder_t builder;
+	json_object_t data;
 
 	if (!values)
 	{
@@ -107,17 +107,17 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 		return;
 	}
 
-	getDatabaseHTTPRequest(request, "test_database", &database);
-	getTable(database, "test_table", &table);
-	createJsonBuilder(&builder);
+	wf_get_database_request(request, "test_database", &database);
+	wf_get_table(database, "test_table", &table);
+	wf_create_json_builder(&builder);
 
-	createSQLValue(&(values[0]));
-	createSQLValue(&(values[1]));
+	wf_create_sql_value(&(values[0]));
+	wf_create_sql_value(&(values[1]));
 
-	setSQLValueString(values[0], "empty");
-	setSQLValueInt(values[1], -1);
+	wf_set_sql_value_string(values[0], "empty");
+	wf_set_sql_value_int(values[1], -1);
 
-	executeQuery
+	wf_execute_query
 	(
 		table,
 		"UPDATE test_table "
@@ -128,7 +128,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 		&result
 	);
 
-	executeQuery
+	wf_execute_query
 	(
 		table,
 		"SELECT * FROM test_table WHERE name = ?",
@@ -137,16 +137,16 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 		&result
 	);
 
-	iterateSQLResult(result, initBuffer, callback, &data);
+	wf_iterate_sql_result(result, initBuffer, callback, &data);
 
-	appendJsonBuilderObject(builder, "data", &data);
+	wf_append_json_builder_object(builder, "data", &data);
 
-	setJsonBody(response, builder);
+	wf_set_json_body(response, builder);
 
-	deleteJsonObject(&data);
-	deleteWebFrameworkSQLValue(values[0]);
-	deleteWebFrameworkSQLValue(values[1]);
-	deleteWebFrameworkJsonBuilder(builder);
+	wf_delete_json_object(&data);
+	wf_delete_web_framework_sql_value(values[0]);
+	wf_delete_web_framework_sql_value(values[1]);
+	wf_delete_web_framework_json_builder(builder);
 }
 
 DEFINE_INITIALIZE_WEB_FRAMEWORK();

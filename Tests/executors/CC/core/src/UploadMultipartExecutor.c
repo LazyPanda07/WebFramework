@@ -1,13 +1,13 @@
-#include <Executors/Executor.h>
+#include <executors/executor.h>
 
 DEFINE_DEFAULT_EXECUTOR(UploadMultipartExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 {
-	Multipart_t* multiparts = NULL;
+	multipart_t* multiparts = NULL;
 	size_t size;
 
-	getMultiparts(request, &multiparts, &size);
+	wf_get_multiparts(request, &multiparts, &size);
 
 	for (size_t i = 0; i < size; i++)
 	{
@@ -18,8 +18,8 @@ DEFINE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 		fclose(file);
 	}
 
-	setHTTPResponseCode(response, CREATED);
-	setBody(response, "Finish uploading files");
+	wf_set_http_response_code(response, CREATED);
+	wf_set_body(response, "Finish uploading files");
 
 	free(multiparts);
 }

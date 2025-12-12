@@ -1,14 +1,14 @@
-#include <Executors/Executor.h>
+#include <executors/executor.h>
 
 #include <signal.h>
 
-#include <Utility/WebFrameworkUtility.h>
+#include <utility/web_framework_utility.h>
 
 #include "SQLUtility.h"
 
 typedef struct
 {
-	WebFrameworkString uuid;
+	web_framework_string_t uuid;
 } MultiUserExecutor;
 
 DEFINE_EXECUTOR(MultiUserExecutor, HEAVY_OPERATION_STATEFUL_EXECUTOR);
@@ -17,54 +17,54 @@ DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
 
-	generateUUID(&self->uuid);
+	wf_generate_uuid(&self->uuid);
 }
 
 DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
-	Table table;
-	SQLValue value;
-	SQLResult result;
-	JsonBuilder builder;
-	JsonObject_t data;
+	table_t table;
+	sql_value_t value;
+	sql_result_t result;
+	json_builder_t builder;
+	json_object_t data;
 	
-	getTableHTTPRequest(request, "test_database", "multi_user", &table);
-	createSQLValue(&value);
-	createJsonBuilder(&builder);
+	wf_get_table_request(request, "test_database", "multi_user", &table);
+	wf_create_sql_value(&value);
+	wf_create_json_builder(&builder);
 
-	setSQLValueString(value, getDataFromString(self->uuid));
+	wf_set_sql_value_string(value, wf_get_data_from_string(self->uuid));
 
-	executeQuery(table, "SELECT * FROM multi_user WHERE user_id = ?", &value, 1, &result);
+	wf_execute_query(table, "SELECT * FROM multi_user WHERE user_id = ?", &value, 1, &result);
 
-	iterateSQLResult(result, initBuffer, callback, &data);
+	wf_iterate_sql_result(result, initBuffer, callback, &data);
 
-	appendJsonBuilderObject(builder, "data", &data);
+	wf_append_json_builder_object(builder, "data", &data);
 
-	setJsonBody(response, builder);
+	wf_set_json_body(response, builder);
 
-	deleteJsonObject(&data);
-	deleteWebFrameworkSQLValue(value);
-	deleteWebFrameworkJsonBuilder(builder);
-	deleteSQLResult(table, result);
+	wf_delete_json_object(&data);
+	wf_delete_web_framework_sql_value(value);
+	wf_delete_web_framework_json_builder(builder);
+	wf_delete_sql_result(table, result);
 }
 
 DEFINE_EXECUTOR_METHOD(MultiUserExecutor, POST_METHOD, request, response)
 {
-	Database database;
-	Table table;
+	database_t database;
+	table_t table;
 
-	getOrCreateDatabaseHTTPRequest(request, "test_database", &database);
-	getOrCreateTable(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
+	wf_get_or_create_database_request(request, "test_database", &database);
+	wf_get_or_create_table(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
 }
 
 DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
-	Table table;
-	SQLValue* values = (SQLValue*)malloc(2 * sizeof(SQLValue));
-	SQLResult result;
-	JsonParser parser;
+	table_t table;
+	sql_value_t* values = (sql_value_t*)malloc(2 * sizeof(sql_value_t));
+	sql_result_t result;
+	json_parser_t parser;
 	const char* data = NULL;
 
 	if (!values)
@@ -74,20 +74,20 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 		return;
 	}
 
-	getTableHTTPRequest(request, "test_database", "multi_user", &table);
-	createSQLValue(&values[0]);
-	createSQLValue(&values[1]);
-	getHTTPRequestJson(request, &parser);
+	wf_get_table_request(request, "test_database", "multi_user", &table);
+	wf_create_sql_value(&values[0]);
+	wf_create_sql_value(&values[1]);
+	wf_get_request_json(request, &parser);
 
-	getJsonParserString(parser, "data", true, &data);
-	setSQLValueString(values[0], getDataFromString(self->uuid));
-	setSQLValueString(values[1], data);
+	wf_get_json_parser_string(parser, "data", true, &data);
+	wf_set_sql_value_string(values[0], wf_get_data_from_string(self->uuid));
+	wf_set_sql_value_string(values[1], data);
 
-	executeQuery(table, "INSERT INTO multi_user (user_id, data) VALUES(?, ?)", values, 2, &result);
+	wf_execute_query(table, "INSERT INTO multi_user (user_id, data) VALUES(?, ?)", values, 2, &result);
 
-	deleteWebFrameworkSQLValue(values[0]);
-	deleteWebFrameworkSQLValue(values[1]);
-	deleteSQLResult(table, result);
+	wf_delete_web_framework_sql_value(values[0]);
+	wf_delete_web_framework_sql_value(values[1]);
+	wf_delete_sql_result(table, result);
 
 	free(values);
 }
@@ -96,5 +96,5 @@ DEFINE_EXECUTOR_DESTROY(MultiUserExecutor)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
 
-	deleteWebFrameworkString(self->uuid);
+	wf_delete_web_framework_string(self->uuid);
 }

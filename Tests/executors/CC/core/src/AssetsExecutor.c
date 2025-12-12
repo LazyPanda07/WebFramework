@@ -1,4 +1,4 @@
-#include <Executors/Executor.h>
+#include <executors/executor.h>
 
 #include <signal.h>
 
@@ -10,18 +10,18 @@ static void deleter(char* ptr);
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 {
-	JsonParser parser;
+	json_parser_t parser;
 	const char* fileName;
 	const char extension[] = "wfdp";
-	QueryParameter_t* queryParameters;
+	query_parameter_t* queryParameters;
 	size_t queryParametersSize;
 
-	getHTTPRequestJson(request, &parser);
-	getQueryParameters(request, &queryParameters, &queryParametersSize);
+	wf_get_request_json(request, &parser);
+	wf_get_query_parameters(request, &queryParameters, &queryParametersSize);
 
-	getJsonParserString(parser, "fileName", true, &fileName);
+	wf_get_json_parser_string(parser, "fileName", true, &fileName);
 
-	DynamicPagesVariable_t* variables = (DynamicPagesVariable_t*)malloc(queryParametersSize * sizeof(DynamicPagesVariable_t));
+	dynamic_pages_variable_t* variables = (dynamic_pages_variable_t*)malloc(queryParametersSize * sizeof(dynamic_pages_variable_t));
 
 	if (!variables)
 	{
@@ -48,7 +48,7 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 	snprintf(fullName, fullNameSize, "%s.%s", fileName, extension);
 
-	sendWFDPFile(request, fullName, response, variables, queryParametersSize, false, "");
+	wf_send_wfdp_file(request, fullName, response, variables, queryParametersSize, false, "");
 
 	free(variables);
 	free(fullName);
@@ -56,12 +56,12 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
 {
-	registerWFDPFunction(request, "customFunction", customFunction, deleter);
+	wf_register_wfdp_function(request, "customFunction", customFunction, deleter);
 }
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 {
-	unregisterWFDPFunction(request, "customFunction");
+	wf_unregister_wfdp_function(request, "customFunction");
 }
 
 const char* customFunction(const char** args, size_t agumentsNumber)

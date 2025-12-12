@@ -1,15 +1,15 @@
-#include <Executors/Executor.h>
+#include <executors/executor.h>
 
 #include <signal.h>
 
 #define SMALL_SIZE 15
 
-typedef struct
+typedef struct text_generator
 {
 	char* data;
 	char* currentChunk;
 	size_t offset;
-} TextGenerator;
+} text_generator_t;
 
 static const char* generate(void* data, size_t* size);
 
@@ -17,31 +17,31 @@ DEFINE_DEFAULT_EXECUTOR(ChunksExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
 DEFINE_EXECUTOR_METHOD(ChunksExecutor, GET_METHOD, request, response)
 {
-	TextGenerator generator =
+	text_generator_t generator =
 	{
 		.data = "Some information here",
 		.currentChunk = NULL,
 		.offset = 0
 	};
 
-	sendChunks(request, response, generate, &generator);
+	wf_send_chunks(request, response, generate, &generator);
 }
 
 DEFINE_EXECUTOR_METHOD(ChunksExecutor, POST_METHOD, request, response)
 {
-	TextGenerator generator =
+	text_generator_t generator =
 	{
 		.data = "Some information here",
 		.currentChunk = NULL,
 		.offset = 0
 	};
 
-	sendFileChunks(request, response, "file.txt", generate, &generator);
+	wf_send_file_chunks(request, response, "file.txt", generate, &generator);
 }
 
 const char* generate(void* data, size_t* size)
 {
-	TextGenerator* generator = (TextGenerator*)data;
+	text_generator_t* generator = (text_generator_t*)data;
 
 	free(generator->currentChunk);
 

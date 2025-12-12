@@ -1,47 +1,47 @@
 #include "SQLUtility.h"
 
-#include <JsonParser.h>
+#include <json_parser.h>
 
 void initBuffer(size_t size, void* buffer)
 {
-	JsonObject_t* data = (JsonObject_t*)buffer;
+	json_object_t* data = (json_object_t*)buffer;
 
-	createJsonObject(data);
+	wf_create_json_object(data);
 }
 
-void callback(const char** columnNames, const SQLValue* columnValues, size_t size, size_t index, void* buffer)
+void callback(const char** columnNames, const sql_value_t* columnValues, size_t size, size_t index, void* buffer)
 {
-	JsonObject_t* array = (JsonObject_t*)buffer;
-	JsonObject_t object;
+	json_object_t* array = (json_object_t*)buffer;
+	json_object_t object;
 
-	emplaceJsonObject(array, &object);
+	wf_emplace_json_object(array, &object);
 
 	for (size_t i = 0; i < size; i++)
 	{
-		SQLValueType_t type;
-		JsonObject_t temp;
+		sql_value_type_t type;
+		json_object_t temp;
 
-		getSQLValueType(columnValues[i], &type);
+		wf_get_sql_value_type(columnValues[i], &type);
 
 		if (type == INT_TYPE)
 		{
 			int64_t result;
 
-			getSQLValueInt(columnValues[i], &result);
+			wf_get_sql_value_int(columnValues[i], &result);
 
-			assignJsonObject(&object, columnNames[i], &temp);
+			wf_assign_json_object(&object, columnNames[i], &temp);
 
-			setJsonObjectInteger(&temp, result);
+			wf_set_json_object_integer(&temp, result);
 		}
 		else if (type == STRING_TYPE)
 		{
 			const char* result;
 
-			getSQLValueString(columnValues[i], &result);
+			wf_get_sql_value_string(columnValues[i], &result);
 
-			assignJsonObject(&object, columnNames[i], &temp);
+			wf_assign_json_object(&object, columnNames[i], &temp);
 
-			setJsonObjectString(&temp, result);
+			wf_set_json_object_string(&temp, result);
 		}
 	}
 }

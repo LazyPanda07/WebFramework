@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "import.h"
+#include <import.h>
 
 #ifdef __LINUX__
 #include <unistd.h> 
@@ -57,18 +57,18 @@ void writeProcessId()
 
 int main(int argc, char** argv)
 {
-	initializeWebFramework("WebFramework");
+	wf_initialize_web_framework("WebFramework");
 
-	Config config;
-	WebFramework server;
+	config_t config;
+	web_framework_t server;
 
-	WebFrameworkException exception = createConfigFromPath(argv[1], &config);
+	web_framework_exception_t exception = wf_create_config_from_path(argv[1], &config);
 	bool serversHTTPS = false;
 	const char* type = "";
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -1;
 	}
@@ -79,11 +79,11 @@ int main(int argc, char** argv)
 		{
 			port = atoi(argv[i + 1]);
 
-			exception = overrideConfigurationInteger(config, "port", port, true);
+			exception = wf_override_configuration_integer(config, "port", port, true);
 
 			if (exception)
 			{
-				printf("%s\n", getErrorMessage(exception));
+				printf("%s\n", wf_get_error_message(exception));
 
 				return -2;
 			}
@@ -98,11 +98,11 @@ int main(int argc, char** argv)
 		}
 		else if (!strcmp(argv[i], "--custom_heuristic"))
 		{
-			exception = overrideConfigurationString(config, "$[]LoadBalancer.heuristic.name", "CustomHeuristic", true);
+			exception = wf_override_configuration_string(config, "$[]LoadBalancer.heuristic.name", "CustomHeuristic", true);
 
 			if (exception)
 			{
-				printf("%s\n", getErrorMessage(exception));
+				printf("%s\n", wf_get_error_message(exception));
 
 				return -3;
 			}
@@ -123,20 +123,20 @@ int main(int argc, char** argv)
 
 		settingsPaths[0] = "load_balancer_web.json";
 
-		exception = overrideConfigurationString(config, "webServerType", "multiThreaded", true);
+		exception = wf_override_configuration_string(config, "webServerType", "multiThreaded", true);
 
 		if (exception)
 		{
-			printf("%s\n", getErrorMessage(exception));
+			printf("%s\n", wf_get_error_message(exception));
 
 			return -4;
 		}
 
-		exception = overrideConfigurationStringArray(config, "settingsPaths", settingsPaths, true, 1);
+		exception = wf_override_configuration_string_array(config, "settingsPaths", settingsPaths, true, 1);
 
 		if (exception)
 		{
-			printf("%s\n", getErrorMessage(exception));
+			printf("%s\n", wf_get_error_message(exception));
 
 			return -5;
 		}
@@ -147,11 +147,11 @@ int main(int argc, char** argv)
 	{
 		int64_t* listOfServers = malloc(sizeof(int64_t) * 2);
 
-		exception = overrideConfigurationBoolean(config, "serversHTTPS", serversHTTPS, true);
+		exception = wf_override_configuration_boolean(config, "serversHTTPS", serversHTTPS, true);
 
 		if (exception)
 		{
-			printf("%s\n", getErrorMessage(exception));
+			printf("%s\n", wf_get_error_message(exception));
 
 			return -6;
 		}
@@ -167,11 +167,11 @@ int main(int argc, char** argv)
 			listOfServers[1] = 10001;
 		}
 
-		exception = overrideConfigurationIntegerArray(config, "127.0.0.1", listOfServers, true, 2);
+		exception = wf_override_configuration_integer_array(config, "127.0.0.1", listOfServers, true, 2);
 
 		if (exception)
 		{
-			printf("%s\n", getErrorMessage(exception));
+			printf("%s\n", wf_get_error_message(exception));
 
 			return -7;
 		}
@@ -179,20 +179,20 @@ int main(int argc, char** argv)
 		free(listOfServers);
 	}
 
-	exception = createWebFrameworkFromConfig(config, &server);
+	exception = wf_create_web_framework_from_config(config, &server);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -8;
 	}
 
-	exception = startWebFrameworkServer(server, true, writeProcessId);
+	exception = wf_start_web_framework_server(server, true, writeProcessId);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -9;
 	}
