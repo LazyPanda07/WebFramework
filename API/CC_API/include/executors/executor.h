@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#include "../http_request_t.h"
+#include "../http_request.h"
 #include "../http_response.h"
 #include "../dll_handler.h"
 #include "../json_parser.h"

@@ -24,9 +24,9 @@ static void __init_query_buffer(size_t querySize, void* buffer)
 
 static void __init_chunks_buffer(size_t size, void* buffer)
 {
-	HTTPChunk_t** temp = (HTTPChunk_t**)buffer;
+	http_chunk_t** temp = (http_chunk_t**)buffer;
 
-	*temp = (HTTPChunk_t*)malloc((size + 1) * sizeof(HTTPChunk_t)); // + 1 uses as \0
+	*temp = (http_chunk_t*)malloc((size + 1) * sizeof(http_chunk_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -35,14 +35,14 @@ static void __init_chunks_buffer(size_t size, void* buffer)
 		exit(2);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(HTTPChunk_t)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(http_chunk_t)); // fill with zeros last element
 }
 
 static void __init_headers_buffer(size_t size, void* buffer)
 {
-	HTTPHeader_t** temp = (HTTPHeader_t**)buffer;
+	http_header_t** temp = (http_header_t**)buffer;
 
-	*temp = (HTTPHeader_t*)malloc((size + 1) * sizeof(HTTPHeader_t)); // + 1 uses as \0
+	*temp = (http_header_t*)malloc((size + 1) * sizeof(http_header_t)); // + 1 uses as \0
 
 	if (!*temp)
 	{
@@ -51,7 +51,7 @@ static void __init_headers_buffer(size_t size, void* buffer)
 		exit(3);
 	}
 
-	memset(&(*temp)[size], 0, sizeof(HTTPHeader_t)); // fill with zeros last element
+	memset(&(*temp)[size], 0, sizeof(http_header_t)); // fill with zeros last element
 }
 
 static void __init_multiparts_buffer(size_t size, void* buffer)
@@ -96,7 +96,7 @@ static void __add_query_parameter(const char* key, const char* value, size_t ind
 
 static void __add_chunk(const char* chunk, size_t chunkSize, size_t index, void* buffer)
 {
-	HTTPChunk_t* temp = *(HTTPChunk_t**)buffer;
+	http_chunk_t* temp = *(http_chunk_t**)buffer;
 
 	temp[index].data = chunk;
 	temp[index].size = chunkSize;
@@ -104,7 +104,7 @@ static void __add_chunk(const char* chunk, size_t chunkSize, size_t index, void*
 
 static void __add_header(const char* key, const char* value, size_t index, void* buffer)
 {
-	HTTPHeader_t* temp = *(HTTPHeader_t**)buffer;
+	http_header_t* temp = *(http_header_t**)buffer;
 
 	temp[index].key = key;
 	temp[index].value = value;
@@ -115,10 +115,10 @@ static void __add_multipart(const char* name, const char* fileName, const char* 
 	multipart_t* temp = *(multipart_t**)buffer;
 
 	temp[index].name = name;
-	temp[index].fileName = fileName;
-	temp[index].contentType = contentType;
+	temp[index].file_name = fileName;
+	temp[index].content_type = contentType;
 	temp[index].data = data;
-	temp[index].dataSize = dataSize;
+	temp[index].data_size = dataSize;
 }
 
 static void __add_cookie(const char* key, const char* value, size_t index, void* buffer)
@@ -131,7 +131,7 @@ static void __add_cookie(const char* key, const char* value, size_t index, void*
 
 static void __fill_file_buffer(const char* data, size_t size, void* buffer)
 {
-	FileBuffer_t* fileBuffer = (FileBuffer_t*)buffer;
+	file_buffer_t* fileBuffer = (file_buffer_t*)buffer;
 	char** result = fileBuffer->data;
 	size_t* resultSize = fileBuffer->size;
 
@@ -178,7 +178,7 @@ web_framework_exception_t wf_get_query_parameters(http_request_t implementation,
 
 	typedef const char* (*getQueryParameters)(void* implementation, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getQueryParameters, __init_query_buffer, __addQueryParameter, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getQueryParameters, __init_query_buffer, __add_query_parameter, result, &exception);
 
 	if (exception)
 	{
@@ -217,28 +217,28 @@ web_framework_exception_t wf_get_http_version(http_request_t implementation, web
 	return exception;
 }
 
-web_framework_exception_t wf_get_http_headers(http_request_t implementation, HTTPHeader_t** result, size_t* size)
+web_framework_exception_t wf_get_http_headers(http_request_t implementation, http_header_t** result, size_t* size)
 {
 	web_framework_exception_t exception = NULL;
 
 	typedef void (*getHeaders)(void* implementation, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHeaders, __initHeadersBuffer, __addHeader, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getHeaders, __init_headers_buffer, __add_header, result, &exception);
 
 	if (exception)
 	{
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(HTTPHeader_t)];
-	HTTPHeader_t* temp = *result;
+	uint8_t emptyBuffer[sizeof(http_header_t)];
+	http_header_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(HTTPHeader_t));
+	memset(emptyBuffer, 0, sizeof(http_header_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPHeader_t)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(http_header_t)))
 		{
 			*size = index;
 
@@ -323,7 +323,7 @@ web_framework_exception_t wf_get_cookies(http_request_t implementation, cookie_t
 
 	typedef void (*getCookies)(void* implementation, void(*__initCookiesBuffer)(size_t size, void* buffer), void(*__addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getCookies, __initCookiesBuffer, __addCookie, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getCookies, __init_cookies_buffer, __add_cookie, result, &exception);
 
 	if (exception)
 	{
@@ -357,7 +357,7 @@ web_framework_exception_t wf_get_multiparts(http_request_t implementation, multi
 
 	typedef void (*getMultiparts)(void* implementation, void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getMultiparts, __initMultipartsBuffer, __addMultipart, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getMultiparts, __init_multiparts_buffer, __add_multipart, result, &exception);
 
 	if (exception)
 	{
@@ -484,28 +484,28 @@ web_framework_exception_t wf_get_request_json(http_request_t implementation, jso
 	return exception;
 }
 
-web_framework_exception_t wf_get_chunks(http_request_t implementation, HTTPChunk_t** result, size_t* size)
+web_framework_exception_t wf_get_chunks(http_request_t implementation, http_chunk_t** result, size_t* size)
 {
 	web_framework_exception_t exception = NULL;
 
 	typedef void (*getChunks)(void* implementation, void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getChunks, __init_chunks_buffer, __addChunk, result, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getChunks, __init_chunks_buffer, __add_chunk, result, &exception);
 
 	if (exception)
 	{
 		return exception;
 	}
 
-	uint8_t emptyBuffer[sizeof(HTTPChunk_t)];
-	HTTPChunk_t* temp = *result;
+	uint8_t emptyBuffer[sizeof(http_chunk_t)];
+	http_chunk_t* temp = *result;
 	size_t index = 0;
 
-	memset(emptyBuffer, 0, sizeof(HTTPChunk_t));
+	memset(emptyBuffer, 0, sizeof(http_chunk_t));
 
 	while (true)
 	{
-		if (!memcmp(&temp[index], emptyBuffer, sizeof(HTTPChunk_t)))
+		if (!memcmp(&temp[index], emptyBuffer, sizeof(http_chunk_t)))
 		{
 			*size = index;
 
@@ -524,9 +524,9 @@ web_framework_exception_t wf_get_file(http_request_t implementation, const char*
 
 	typedef void (*getFile)(void* implementation, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
-	FileBuffer_t buffer = { .data = result, .size = size };
+	file_buffer_t buffer = { .data = result, .size = size };
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFile, filePath, __fillFileBuffer, &buffer, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFile, filePath, __fill_file_buffer, &buffer, &exception);
 
 	return exception;
 }
@@ -537,9 +537,9 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
 
 	typedef void (*processStaticFile)(void* implementation, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
-	FileBuffer_t buffer = { .data = result, .size = resultSize };
+	file_buffer_t buffer = { .data = result, .size = resultSize };
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processStaticFile, fileData, size, fileExtension, __fillFileBuffer, &buffer, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processStaticFile, fileData, size, fileExtension, __fill_file_buffer, &buffer, &exception);
 
 	return exception;
 }
@@ -550,9 +550,9 @@ web_framework_exception_t wf_process_wfdp_file(http_request_t implementation, co
 
 	typedef void (*processWFDPFile)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
-	FileBuffer_t buffer = { .data = result, .size = resultSize };
+	file_buffer_t buffer = { .data = result, .size = resultSize };
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processWFDPFile, fileData, size, variables, variablesSize, __fillFileBuffer, &buffer, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processWFDPFile, fileData, size, variables, variablesSize, __fill_file_buffer, &buffer, &exception);
 
 	return exception;
 }
@@ -711,7 +711,7 @@ web_framework_exception_t wf_send_file_chunks(http_request_t implementation, htt
 	return exception;
 }
 
-web_framework_exception_t wf_throw_web_framework_exception(http_request_t implementation, const char* errorMessage, ResponseCodes_t responseCode, const char* logCategory, size_t exceptionHash)
+web_framework_exception_t wf_throw_web_framework_exception(http_request_t implementation, const char* errorMessage, response_codes_t responseCode, const char* logCategory, size_t exceptionHash)
 {
 	web_framework_exception_t exception = NULL;
 

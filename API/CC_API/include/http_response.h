@@ -1,13 +1,13 @@
 #pragma once
 
-#include "json_builder_t.h"
+#include "json_builder.h"
 
 typedef void* http_response_t;
 
 /**
  * @brief HTTP response codes
  */
-typedef enum ResponseCodes
+typedef enum response_codes
 {
 	CONTINUE_CODE = 100,
 	SWITCHING_PROTOCOLS,
@@ -80,7 +80,7 @@ typedef enum ResponseCodes
 	A_TIMEOUT_OCCURRED,
 	SSL_HANDSHAKE_FAILED,
 	INVALID_SSL_CERTIFICATE
-} ResponseCodes_t;
+} response_codes_t;
 
 /**
  * @brief Set HTTP body
@@ -88,7 +88,7 @@ typedef enum ResponseCodes
  * @param body HTTP body
  * @return Error if occurred
  */
-web_framework_exception_t setBody(http_response_t implementation, const char* body);
+web_framework_exception_t wf_set_body(http_response_t implementation, const char* body);
 
 /**
  * @brief Set HTTP body
@@ -96,7 +96,7 @@ web_framework_exception_t setBody(http_response_t implementation, const char* bo
  * @param body HTTP Json body
  * @return Error if occurred
  */
-web_framework_exception_t setJsonBody(http_response_t implementation, json_builder_t body);
+web_framework_exception_t wf_set_json_body(http_response_t implementation, json_builder_t body);
 
 /**
  * @brief Set HTTP version
@@ -104,7 +104,7 @@ web_framework_exception_t setJsonBody(http_response_t implementation, json_build
  * @param version HTTP version
  * @return Error if occurred
  */
-web_framework_exception_t setHTTPVersion(http_response_t implementation, const char* version);
+web_framework_exception_t wf_set_http_version(http_response_t implementation, const char* version);
 
 /**
  * @brief Set HTTP response code
@@ -112,7 +112,7 @@ web_framework_exception_t setHTTPVersion(http_response_t implementation, const c
  * @param responseCode HTTP response code
  * @return Error if occurred
  */
-web_framework_exception_t setHTTPResponseCode(http_response_t implementation, ResponseCodes_t responseCode);
+web_framework_exception_t wf_set_http_response_code(http_response_t implementation, response_codes_t responseCode);
 
 /**
  * @brief Add HTTP header
@@ -121,7 +121,7 @@ web_framework_exception_t setHTTPResponseCode(http_response_t implementation, Re
  * @param value HTTP header value
  * @return Error if occurred
  */
-web_framework_exception_t addHTTPResponseHeader(http_response_t implementation, const char* name, const char* value);
+web_framework_exception_t wf_add_http_response_header(http_response_t implementation, const char* name, const char* value);
 
 /**
  * @brief Append HTTP body
@@ -129,7 +129,7 @@ web_framework_exception_t addHTTPResponseHeader(http_response_t implementation, 
  * @param body HTTP body
  * @return Error if occurred
  */
-web_framework_exception_t appendHTTPResponseBody(http_response_t implementation, const char* body);
+web_framework_exception_t wf_append_http_response_body(http_response_t implementation, const char* body);
 
 /**
  * @brief Add cookie
@@ -138,14 +138,14 @@ web_framework_exception_t appendHTTPResponseBody(http_response_t implementation,
  * @param value Cookie value
  * @return Error if occurred
  */
-web_framework_exception_t addHTTPResponseCookie(http_response_t implementation, const char* name, const char* value);
+web_framework_exception_t wf_add_http_response_cookie(http_response_t implementation, const char* name, const char* value);
 
 /**
  * @brief Set http_response_t to default state
  * @param implementation http_response_t instance
  * @return Error if occurred
  */
-web_framework_exception_t setHTTPResponseDefault(http_response_t implementation);
+web_framework_exception_t wf_set_http_response_default(http_response_t implementation);
 
 /**
  * @brief Set state of http_response_t
@@ -153,4 +153,4 @@ web_framework_exception_t setHTTPResponseDefault(http_response_t implementation)
  * @param isValid http_response_t state
  * @return Error if occurred
  */
-web_framework_exception_t setHTTPResponseIsValid(http_response_t implementation, bool isValid);
+web_framework_exception_t wf_set_http_response_is_valid(http_response_t implementation, bool isValid);

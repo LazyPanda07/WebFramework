@@ -1,13 +1,13 @@
 #pragma once
 
-#include "JsonObject.h"
+#include "json_object.h"
 
 /**
  * @brief Create json_parser_t
  * @param builder Parser. Delete with deleteWebFrameworkJsonParser function
  * @return Error if occurred
  */
-web_framework_exception_t createJsonParser(json_parser_t* parser);
+web_framework_exception_t wf_create_json_parser(json_parser_t* parser);
 
 /**
  * @brief Copy Parser
@@ -15,14 +15,14 @@ web_framework_exception_t createJsonParser(json_parser_t* parser);
  * @param other Other Parser
  * @return Error if occurred
  */
-web_framework_exception_t copyJsonParser(json_parser_t* parser, const json_parser_t* other);
+web_framework_exception_t wf_copy_json_parser(json_parser_t* parser, const json_parser_t* other);
 
 /**
  * @brief Create json_parser_t from Json formatted string
  * @param builder Parser. Delete with deleteWebFrameworkJsonParser function
  * @return Error if occurred
  */
-web_framework_exception_t createJsonParserFromString(const char* jsonString, json_parser_t* parser);
+web_framework_exception_t wf_create_json_parser_from_string(const char* jsonString, json_parser_t* parser);
 
 /**
  * @brief Get JsonObject
@@ -32,7 +32,7 @@ web_framework_exception_t createJsonParserFromString(const char* jsonString, jso
  * @param result Result JsonObject
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserObject(json_parser_t implementation, const char* key, bool recursive, JsonObject_t* result);
+web_framework_exception_t wf_get_json_parser_object(json_parser_t implementation, const char* key, bool recursive, json_object_t* result);
 
 /**
  * @brief Get string
@@ -42,7 +42,7 @@ web_framework_exception_t getJsonParserObject(json_parser_t implementation, cons
  * @param result Result string
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserString(json_parser_t implementation, const char* key, bool recursive, const char** result);
+web_framework_exception_t wf_get_json_parser_string(json_parser_t implementation, const char* key, bool recursive, const char** result);
 
 /**
  * @brief Get integer
@@ -52,7 +52,7 @@ web_framework_exception_t getJsonParserString(json_parser_t implementation, cons
  * @param result Result integer
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserInteger(json_parser_t implementation, const char* key, bool recursive, int64_t* result);
+web_framework_exception_t wf_get_json_parser_integer(json_parser_t implementation, const char* key, bool recursive, int64_t* result);
 
 /**
  * @brief Get unsigned integer
@@ -62,7 +62,7 @@ web_framework_exception_t getJsonParserInteger(json_parser_t implementation, con
  * @param result Result unsigned integer
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserUnsignedInteger(json_parser_t implementation, const char* key, bool recursive, uint64_t* result);
+web_framework_exception_t wf_get_json_parser_unsigned_integer(json_parser_t implementation, const char* key, bool recursive, uint64_t* result);
 
 /**
  * @brief Get double
@@ -72,7 +72,7 @@ web_framework_exception_t getJsonParserUnsignedInteger(json_parser_t implementat
  * @param result Result double
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserDouble(json_parser_t implementation, const char* key, bool recursive, double* result);
+web_framework_exception_t wf_get_json_parser_double(json_parser_t implementation, const char* key, bool recursive, double* result);
 
 /**
  * @brief Get bool
@@ -82,7 +82,7 @@ web_framework_exception_t getJsonParserDouble(json_parser_t implementation, cons
  * @param result Result bool
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserBoolean(json_parser_t implementation, const char* key, bool recursive, bool* result);
+web_framework_exception_t wf_get_json_parser_boolean(json_parser_t implementation, const char* key, bool recursive, bool* result);
 
 /**
  * @brief Get NULL
@@ -92,7 +92,7 @@ web_framework_exception_t getJsonParserBoolean(json_parser_t implementation, con
  * @param result Is NULL
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserNull(json_parser_t implementation, const char* key, bool recursive, bool* result);
+web_framework_exception_t wf_get_json_parser_null(json_parser_t implementation, const char* key, bool recursive, bool* result);
 
 /**
  * @brief Get JsonArray
@@ -102,7 +102,7 @@ web_framework_exception_t getJsonParserNull(json_parser_t implementation, const 
  * @param result Result JsonArray
  * @return Error if occurred
  */
-web_framework_exception_t getJsonParserArray(json_parser_t implementation, const char* key, JsonObject_t* array, size_t* arraySize, bool recursive);
+web_framework_exception_t wf_get_json_parser_array(json_parser_t implementation, const char* key, json_object_t* array, size_t* arraySize, bool recursive);
 
 /**
  * @brief Try to get JsonObject
@@ -113,7 +113,7 @@ web_framework_exception_t getJsonParserArray(json_parser_t implementation, const
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserObject(json_parser_t implementation, const char* key, JsonObject_t* value, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_object(json_parser_t implementation, const char* key, json_object_t* value, bool recursive, web_framework_exception_t* exception);
 
 /**
  * @brief Try to get string
@@ -124,7 +124,7 @@ bool tryGetJsonParserObject(json_parser_t implementation, const char* key, JsonO
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserString(json_parser_t implementation, const char* key, const char** value, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_string(json_parser_t implementation, const char* key, const char** value, bool recursive, web_framework_exception_t* exception);
 
 /**
  * @brief Try to get integer
@@ -135,7 +135,7 @@ bool tryGetJsonParserString(json_parser_t implementation, const char* key, const
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserInteger(json_parser_t implementation, const char* key, int64_t* value, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_integer(json_parser_t implementation, const char* key, int64_t* value, bool recursive, web_framework_exception_t* exception);
 
 /**
  * @brief Try to get unsigned integer
@@ -146,7 +146,7 @@ bool tryGetJsonParserInteger(json_parser_t implementation, const char* key, int6
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserUnsignedInteger(json_parser_t implementation, const char* key, uint64_t* value, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_unsigned_integer(json_parser_t implementation, const char* key, uint64_t* value, bool recursive, web_framework_exception_t* exception);
 
 /**
  * @brief Try to get double
@@ -157,7 +157,7 @@ bool tryGetJsonParserUnsignedInteger(json_parser_t implementation, const char* k
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserDouble(json_parser_t implementation, const char* key, double* value, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_double(json_parser_t implementation, const char* key, double* value, bool recursive, web_framework_exception_t* exception);
 
 /**
  * @brief Try to get bool
@@ -168,7 +168,7 @@ bool tryGetJsonParserDouble(json_parser_t implementation, const char* key, doubl
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserBoolean(json_parser_t implementation, const char* key, bool* value, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_boolean(json_parser_t implementation, const char* key, bool* value, bool recursive, web_framework_exception_t* exception);
 
 /**
  * @brief Try to get NULL
@@ -178,7 +178,7 @@ bool tryGetJsonParserBoolean(json_parser_t implementation, const char* key, bool
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserNull(json_parser_t implementation, const char* key, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_null(json_parser_t implementation, const char* key, bool recursive, web_framework_exception_t* exception);
 
 /**
  * @brief Try to get JsonArray
@@ -189,4 +189,4 @@ bool tryGetJsonParserNull(json_parser_t implementation, const char* key, bool re
  * @param exception Error if occurred
  * @return Has Json field
  */
-bool tryGetJsonParserArray(json_parser_t implementation, const char* key, JsonObject_t* array, size_t* arraySize, bool recursive, web_framework_exception_t* exception);
+bool wf_try_get_json_parser_array(json_parser_t implementation, const char* key, json_object_t* array, size_t* arraySize, bool recursive, web_framework_exception_t* exception);

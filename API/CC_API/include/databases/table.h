@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sql_result_t.h"
+#include "sql_result.h"
 
 typedef void* table_t;
 

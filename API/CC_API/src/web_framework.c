@@ -1,6 +1,6 @@
-#include "web_framework_t.h"
+#include "web_framework.h"
 
-web_framework_exception_t createWebFrameworkFromPath(const char* configPath, web_framework_t* server)
+web_framework_exception_t wf_create_web_framework_from_path(const char* configPath, web_framework_t* server)
 {
     web_framework_exception_t exception = NULL;
 
@@ -11,7 +11,7 @@ web_framework_exception_t createWebFrameworkFromPath(const char* configPath, web
     return exception;
 }
 
-web_framework_exception_t createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, web_framework_t* server)
+web_framework_exception_t wf_create_web_framework_from_string(const char* serverConfiguration, const char* applicationDirectory, web_framework_t* server)
 {
     web_framework_exception_t exception = NULL;
 
@@ -22,7 +22,7 @@ web_framework_exception_t createWebFrameworkFromString(const char* serverConfigu
     return exception;
 }
 
-web_framework_exception_t createWebFrameworkFromConfig(config_t config, web_framework_t* server)
+web_framework_exception_t wf_create_web_framework_from_config(config_t config, web_framework_t* server)
 {
     web_framework_exception_t exception = NULL;
 
@@ -33,7 +33,7 @@ web_framework_exception_t createWebFrameworkFromConfig(config_t config, web_fram
     return exception;
 }
 
-web_framework_exception_t startWebFrameworkServer(web_framework_t implementation, bool wait, void (*onStartServer)())
+web_framework_exception_t wf_start_web_framework_server(web_framework_t implementation, bool wait, void (*onStartServer)())
 {
     web_framework_exception_t exception = NULL;
 
@@ -44,7 +44,7 @@ web_framework_exception_t startWebFrameworkServer(web_framework_t implementation
     return exception;
 }
 
-web_framework_exception_t stopWebFrameworkServer(web_framework_t implementation, bool wait)
+web_framework_exception_t wf_stop_web_framework_server(web_framework_t implementation, bool wait)
 {
     web_framework_exception_t exception = NULL;
 
@@ -55,7 +55,7 @@ web_framework_exception_t stopWebFrameworkServer(web_framework_t implementation,
     return exception;
 }
 
-web_framework_exception_t isServerRunning(web_framework_t implementation, bool* result)
+web_framework_exception_t wf_is_server_running(web_framework_t implementation, bool* result)
 {
     web_framework_exception_t exception = NULL;
 
@@ -66,7 +66,7 @@ web_framework_exception_t isServerRunning(web_framework_t implementation, bool* 
     return exception;
 }
 
-const char* getWebFrameworkVersion()
+const char* wf_get_web_framework_version()
 {
     typedef const char* (*getWebFrameworkVersion)();
 

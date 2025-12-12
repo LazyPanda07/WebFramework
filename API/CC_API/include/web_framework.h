@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DLLHandler.h"
-#include "config_t.h"
-#include "web_framework_exception_t.h"
+#include "dll_handler.h"
+#include "config.h"
+#include "web_framework_exception.h"
 
 /**
  * @brief Create web_framework_t
@@ -10,7 +10,7 @@
  * @param server Result web_framework_t
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t createWebFrameworkFromPath(const char* configPath, web_framework_t* server);
+web_framework_exception_t wf_create_web_framework_from_path(const char* configPath, web_framework_t* server);
 
 /**
  * @brief Create web_framework_t
@@ -19,7 +19,7 @@ web_framework_exception_t createWebFrameworkFromPath(const char* configPath, web
  * @param server Result web_framework_t
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t createWebFrameworkFromString(const char* serverConfiguration, const char* applicationDirectory, web_framework_t* server);
+web_framework_exception_t wf_create_web_framework_from_string(const char* serverConfiguration, const char* applicationDirectory, web_framework_t* server);
 
 /**
  * @brief Create web_framework_t
@@ -27,7 +27,7 @@ web_framework_exception_t createWebFrameworkFromString(const char* serverConfigu
  * @param server Result web_framework_t
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t createWebFrameworkFromConfig(config_t config, web_framework_t* server);
+web_framework_exception_t wf_create_web_framework_from_config(config_t config, web_framework_t* server);
 
 /**
  * @brief Start server
@@ -36,7 +36,7 @@ web_framework_exception_t createWebFrameworkFromConfig(config_t config, web_fram
  * @param onStartServer On start server callback
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t startWebFrameworkServer(web_framework_t implementation, bool wait, void (*onStartServer)());
+web_framework_exception_t wf_start_web_framework_server(web_framework_t implementation, bool wait, void (*onStartServer)());
 
 /**
  * @brief Stop server
@@ -44,7 +44,7 @@ web_framework_exception_t startWebFrameworkServer(web_framework_t implementation
  * @param wait Wait until server stop
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t stopWebFrameworkServer(web_framework_t implementation, bool wait);
+web_framework_exception_t wf_stop_web_framework_server(web_framework_t implementation, bool wait);
 
 /**
  * @brief Is server running
@@ -52,10 +52,10 @@ web_framework_exception_t stopWebFrameworkServer(web_framework_t implementation,
  * @param isServerRunning Result
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t isServerRunning(web_framework_t implementation, bool* result);
+web_framework_exception_t wf_is_server_running(web_framework_t implementation, bool* result);
 
 /**
  * @brief Get web_framework_t version
  * @return String representation of version in format {major}.{minor}.{patch}
  */
-const char* getWebFrameworkVersion();
+const char* wf_get_web_framework_version();

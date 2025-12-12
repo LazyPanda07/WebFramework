@@ -118,7 +118,7 @@ web_framework_exception_t wf_get_http_version(http_request_t implementation, web
  * @param size Size of HTTP headers
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_http_headers(http_request_t implementation, HTTPHeader_t** result, size_t* size);
+web_framework_exception_t wf_get_http_headers(http_request_t implementation, http_header_t** result, size_t* size);
 
 /**
  * @brief Get single HTTP header
@@ -287,7 +287,7 @@ web_framework_exception_t wf_get_request_json(http_request_t implementation, jso
  * @param size Size of chunks
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_chunks(http_request_t implementation, HTTPChunk_t** result, size_t* size);
+web_framework_exception_t wf_get_chunks(http_request_t implementation, http_chunk_t** result, size_t* size);
 
 /**
  * @brief Get file content
@@ -459,4 +459,4 @@ web_framework_exception_t wf_send_file_chunks(http_request_t implementation, htt
  * @param exceptionHash Same errors must have same hash
  * @return 
  */
-web_framework_exception_t wf_throw_web_framework_exception(http_request_t implementation, const char* exception_message, ResponseCodes_t response_code, const char* log_category, size_t exception_hash);
+web_framework_exception_t wf_throw_web_framework_exception(http_request_t implementation, const char* exception_message, response_codes_t response_code, const char* log_category, size_t exception_hash);

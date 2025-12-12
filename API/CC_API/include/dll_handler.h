@@ -15,8 +15,8 @@ typedef void* HMODULE;
 #include <Windows.h>
 #endif
 
-#define CALL_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)findFunction(#functionName))(__VA_ARGS__)
-#define CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)findFunction(#functionName))(implementation, __VA_ARGS__)
+#define CALL_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)wf_find_function(#functionName))(__VA_ARGS__)
+#define CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)wf_find_function(#functionName))(implementation, __VA_ARGS__)
 
 typedef HMODULE dll_handler_t;
 typedef void* web_framework_string_t;

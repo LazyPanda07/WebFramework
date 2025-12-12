@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DLLHandler.h"
+#include "dll_handler.h"
 
-typedef void Heuristic;
+typedef void heuristic_t;
 
 #ifdef __LINUX__
 #define WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API __attribute__((visibility("default"))) __attribute__((used))
@@ -45,10 +45,10 @@ WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API void webFrameworkCCDeleteHeuristic##struct
 
 #define DEFINE_DEFAULT_HEURISTIC(structName) typedef struct { GENERATE_HEURISTIC_STRUCT_BODY(); } structName; DEFINE_HEURISTIC(structName)
 
-#define DEFINE_HEURISTIC_INIT(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API void webFrameworkCCHeuristicInit##structName(Heuristic* heuristic)
+#define DEFINE_HEURISTIC_INIT(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API void webFrameworkCCHeuristicInit##structName(heuristic_t* heuristic)
 
-#define DEFINE_HEURISTIC_FUNCTION(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API uint64_t webFrameworkCCHeuristicOperator##structName(Heuristic* heuristic)
+#define DEFINE_HEURISTIC_FUNCTION(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API uint64_t webFrameworkCCHeuristicOperator##structName(heuristic_t* heuristic)
 
-#define DEFINE_HEURISTIC_ON_START(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API uint64_t webFrameworkCCHeuristicOnStart##structName(Heuristic* heuristic)
+#define DEFINE_HEURISTIC_ON_START(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API uint64_t webFrameworkCCHeuristicOnStart##structName(heuristic_t* heuristic)
 
-#define DEFINE_HEURISTIC_ON_END(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API uint64_t webFrameworkCCHeuristicOnEnd##structName(Heuristic* heuristic)
+#define DEFINE_HEURISTIC_ON_END(structName) WEB_FRAMEWORK_HEURISTIC_FUNCTIONS_API uint64_t webFrameworkCCHeuristicOnEnd##structName(heuristic_t* heuristic)

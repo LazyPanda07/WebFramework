@@ -1,10 +1,10 @@
-#include "web_framework_exception_t.h"
+#include "web_framework_exception.h"
 
-const char* getErrorMessage(web_framework_exception_t exception)
+const char* wf_get_error_message(web_framework_exception_t exception)
 {
     if (exception)
     {
-        return getDataFromString(exception);
+        return wf_get_data_from_string(exception);
     }
 
     return NULL;

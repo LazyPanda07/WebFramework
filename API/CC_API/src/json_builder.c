@@ -1,6 +1,6 @@
-#include "json_builder_t.h"
+#include "json_builder.h"
 
-web_framework_exception_t createJsonBuilder(json_builder_t* builder)
+web_framework_exception_t wf_create_json_builder(json_builder_t* builder)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -11,7 +11,7 @@ web_framework_exception_t createJsonBuilder(json_builder_t* builder)
 	return exception;
 }
 
-web_framework_exception_t copyJsonBuilder(json_builder_t* builder, json_builder_t other)
+web_framework_exception_t wf_copy_json_builder(json_builder_t* builder, json_builder_t other)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -22,7 +22,7 @@ web_framework_exception_t copyJsonBuilder(json_builder_t* builder, json_builder_
 	return exception;
 }
 
-web_framework_exception_t buildJsonBuilder(json_builder_t implementation, web_framework_string_t* result)
+web_framework_exception_t wf_build_json_builder(json_builder_t implementation, web_framework_string_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -33,7 +33,7 @@ web_framework_exception_t buildJsonBuilder(json_builder_t implementation, web_fr
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderObject(json_builder_t implementation, const char* key, JsonObject_t* object)
+web_framework_exception_t wf_append_json_builder_object(json_builder_t implementation, const char* key, json_object_t* object)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -44,7 +44,7 @@ web_framework_exception_t appendJsonBuilderObject(json_builder_t implementation,
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderString(json_builder_t implementation, const char* key, const char* value)
+web_framework_exception_t wf_append_json_builder_string(json_builder_t implementation, const char* key, const char* value)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -55,7 +55,7 @@ web_framework_exception_t appendJsonBuilderString(json_builder_t implementation,
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderInteger(json_builder_t implementation, const char* key, int64_t value)
+web_framework_exception_t wf_append_json_builder_integer(json_builder_t implementation, const char* key, int64_t value)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -66,7 +66,7 @@ web_framework_exception_t appendJsonBuilderInteger(json_builder_t implementation
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderUnsignedInteger(json_builder_t implementation, const char* key, uint64_t value)
+web_framework_exception_t wf_append_json_builder_unsigned_integer(json_builder_t implementation, const char* key, uint64_t value)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -77,7 +77,7 @@ web_framework_exception_t appendJsonBuilderUnsignedInteger(json_builder_t implem
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderDouble(json_builder_t implementation, const char* key, double value)
+web_framework_exception_t wf_append_json_builder_double(json_builder_t implementation, const char* key, double value)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -88,7 +88,7 @@ web_framework_exception_t appendJsonBuilderDouble(json_builder_t implementation,
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderBoolean(json_builder_t implementation, const char* key, bool value)
+web_framework_exception_t wf_append_json_builder_boolean(json_builder_t implementation, const char* key, bool value)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -99,7 +99,7 @@ web_framework_exception_t appendJsonBuilderBoolean(json_builder_t implementation
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderNull(json_builder_t implementation, const char* key)
+web_framework_exception_t wf_append_json_builder_null(json_builder_t implementation, const char* key)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -110,7 +110,7 @@ web_framework_exception_t appendJsonBuilderNull(json_builder_t implementation, c
 	return exception;
 }
 
-web_framework_exception_t appendJsonBuilderArray(json_builder_t implementation, const char* key, const JsonObject_t* array, size_t arraySize)
+web_framework_exception_t wf_append_json_builder_array(json_builder_t implementation, const char* key, const json_object_t* array, size_t arraySize)
 {
 	web_framework_exception_t exception = NULL;
 	void* buffer = malloc(arraySize * sizeof(void*));

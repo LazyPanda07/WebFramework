@@ -1,6 +1,6 @@
-#include "HttpResponse.h"
+#include "http_response.h"
 
-web_framework_exception_t setBody(http_response_t implementation, const char* body)
+web_framework_exception_t wf_set_body(http_response_t implementation, const char* body)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -11,7 +11,7 @@ web_framework_exception_t setBody(http_response_t implementation, const char* bo
 	return exception;
 }
 
-web_framework_exception_t setJsonBody(http_response_t implementation, json_builder_t body)
+web_framework_exception_t wf_set_json_body(http_response_t implementation, json_builder_t body)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -22,7 +22,7 @@ web_framework_exception_t setJsonBody(http_response_t implementation, json_build
 	return exception;
 }
 
-web_framework_exception_t setHTTPVersion(http_response_t implementation, const char* version)
+web_framework_exception_t wf_set_http_version(http_response_t implementation, const char* version)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -33,7 +33,7 @@ web_framework_exception_t setHTTPVersion(http_response_t implementation, const c
 	return exception;
 }
 
-web_framework_exception_t setHTTPResponseCode(http_response_t implementation, ResponseCodes_t responseCode)
+web_framework_exception_t wf_set_http_response_code(http_response_t implementation, response_codes_t responseCode)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -44,7 +44,7 @@ web_framework_exception_t setHTTPResponseCode(http_response_t implementation, Re
 	return exception;
 }
 
-web_framework_exception_t addHTTPResponseHeader(http_response_t implementation, const char* name, const char* value)
+web_framework_exception_t wf_add_http_response_header(http_response_t implementation, const char* name, const char* value)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -55,7 +55,7 @@ web_framework_exception_t addHTTPResponseHeader(http_response_t implementation, 
 	return exception;
 }
 
-web_framework_exception_t appendHTTPResponseBody(http_response_t implementation, const char* body)
+web_framework_exception_t wf_append_http_response_body(http_response_t implementation, const char* body)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -66,7 +66,7 @@ web_framework_exception_t appendHTTPResponseBody(http_response_t implementation,
 	return exception;
 }
 
-web_framework_exception_t addHTTPResponseCookie(http_response_t implementation, const char* name, const char* value)
+web_framework_exception_t wf_add_http_response_cookie(http_response_t implementation, const char* name, const char* value)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -77,7 +77,7 @@ web_framework_exception_t addHTTPResponseCookie(http_response_t implementation, 
 	return exception;
 }
 
-web_framework_exception_t setHTTPResponseDefault(http_response_t implementation)
+web_framework_exception_t wf_set_http_response_default(http_response_t implementation)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -88,7 +88,7 @@ web_framework_exception_t setHTTPResponseDefault(http_response_t implementation)
 	return exception;
 }
 
-web_framework_exception_t setHTTPResponseIsValid(http_response_t implementation, bool isValid)
+web_framework_exception_t wf_set_http_response_is_valid(http_response_t implementation, bool isValid)
 {
 	web_framework_exception_t exception = NULL;
 

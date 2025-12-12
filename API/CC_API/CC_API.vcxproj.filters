@@ -21,18 +21,6 @@
     <ClCompile Include="src\Executors\executor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\database_ts\database_t.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\database_ts\sql_result.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\database_ts\sql_value.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\database_ts\table.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\config.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +57,24 @@
     <ClCompile Include="src\load_balancer_heuristic.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Databases\database.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Databases\sql_result.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Databases\sql_value.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Databases\table.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utility\web_framework_utility.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\http_request.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\import.h">
@@ -101,18 +107,6 @@
     <ClInclude Include="include\json_parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\database_ts\database_t.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\database_ts\table.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\database_ts\sql_value.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\database_ts\sql_result.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utility\web_framework_utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -120,6 +114,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\load_balancer_heuristic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Databases\database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Databases\sql_result.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Databases\sql_value.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Databases\table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\http_request.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,7 @@
 void wf_initialize_web_framework(const char* path_to_dll)
 {
 #ifdef __ANDROID__
-	getInstance("libWebFramework.so");
+	wf_get_instance("libWebFramework.so");
 
 	return;
 #endif
@@ -17,9 +17,9 @@ void wf_initialize_web_framework(const char* path_to_dll)
 		)
 	{
 #ifdef __LINUX__
-		getInstance("libWebFramework.so");
+		wf_get_instance("libWebFramework.so");
 #else
-		getInstance("web_framework_t.dll");
+		wf_get_instance("web_framework_t.dll");
 #endif
 
 		return;
@@ -70,7 +70,7 @@ void wf_initialize_web_framework(const char* path_to_dll)
 	sprintf_s(realPath, MAX_PATH_SIZE, "%s%s", fullPath, suffix);
 #endif
 
-	getInstance(realPath);
+	wf_get_instance(realPath);
 
 #undef MAX_PATH_SIZE
 }
@@ -112,7 +112,7 @@ HMODULE wf_get_instance(const char* path_to_dll)
 
 void* wf_find_function(const char* name)
 {
-	HMODULE instance = getInstance(NULL);
+	HMODULE instance = wf_get_instance(NULL);
 
 #ifdef __LINUX__
 	return dlsym(instance, name);
