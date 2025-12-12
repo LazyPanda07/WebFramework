@@ -79,8 +79,6 @@ void wf_delete_web_framework_json_parser(json_parser_t parser);
  */
 const char* wf_get_data_from_string(web_framework_string_t string);
 
-size_t wf_find_last_char(char* ptr, char c);
-
 #define DEFINE_INITIALIZE_WEB_FRAMEWORK() WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath) \
 { \
 	wf_initialize_web_framework(webFrameworkSharedLibraryPath); \

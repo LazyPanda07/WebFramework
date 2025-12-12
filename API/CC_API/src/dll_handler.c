@@ -1,5 +1,7 @@
 #include "dll_handler.h"
 
+static size_t findLastChar(char* ptr, char c);
+
 void wf_initialize_web_framework(const char* path_to_dll)
 {
 #ifdef __ANDROID__
