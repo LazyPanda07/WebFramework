@@ -8,18 +8,18 @@ void wf_initialize_web_framework(const char* path_to_dll)
 	return;
 #endif
 
-	if (path_to_dll == NULL || !strcmp(path_to_dll, "") || !strcmp(path_to_dll, "web_framework_t") ||
+	if (path_to_dll == NULL || !strcmp(path_to_dll, "") || !strcmp(path_to_dll, "WebFramework") ||
 #ifdef __LINUX__
 		!strcmp(path_to_dll, "libWebFramework.so")
 #else
-		!strcmp(path_to_dll, "web_framework_t.dll")
+		!strcmp(path_to_dll, "WebFramework.dll")
 #endif
 		)
 	{
 #ifdef __LINUX__
 		wf_get_instance("libWebFramework.so");
 #else
-		wf_get_instance("web_framework_t.dll");
+		wf_get_instance("WebFramework.dll");
 #endif
 
 		return;
@@ -170,7 +170,7 @@ const char* wf_get_data_from_string(web_framework_string_t string)
 	return CALL_WEB_FRAMEWORK_FUNCTION(getDataFromString, string);
 }
 
-size_t wf_find_last_char(char* ptr, char c)
+size_t findLastChar(char* ptr, char c)
 {
 	size_t result = -1;
 
