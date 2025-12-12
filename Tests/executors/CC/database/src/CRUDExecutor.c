@@ -32,7 +32,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 
 	wf_delete_json_object(&data);
 	wf_delete_web_framework_sql_value(value);
-	wf_delete_web_framework_json_parser(builder);
+	wf_delete_web_framework_json_builder(builder);
 	wf_delete_sql_result(table, result);
 }
 

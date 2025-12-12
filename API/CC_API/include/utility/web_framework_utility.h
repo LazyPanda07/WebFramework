@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../dlL_handler.h"
+#include "../dll_handler.h"
 
 #define DEFAULT_CHUNK_SIZE 14680064
 
