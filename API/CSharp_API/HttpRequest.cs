@@ -138,7 +138,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void processWFDPFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static unsafe partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
@@ -159,7 +159,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static unsafe partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendWFDPFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
+	private static unsafe partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static unsafe partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref void* exception);
@@ -626,7 +626,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return [.. result];
 	}
 
-	public byte[] ProcessWfdpFile(byte[] fileData, IDictionary<string, string>? variables = null)
+	public byte[] ProcessDynamicFile(byte[] fileData, IDictionary<string, string>? variables = null)
 	{
 		void* exception = null;
 		List<byte> result = [];
@@ -647,7 +647,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			}
 		}
 
-		processWFDPFile
+		processDynamicFile
 		(
 			implementation,
 			fileData,
@@ -883,7 +883,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
-	public void SendWfdpFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
+	public void SendDynamicFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
 		void* exception = null;
 		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
@@ -902,7 +902,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			}
 		}
 
-		sendWFDPFile
+		sendDynamicFile
 		(
 			implementation,
 			filePath,

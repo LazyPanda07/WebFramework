@@ -35,7 +35,7 @@ DEFINE_EXECUTOR_METHOD(DynamicResources, POST_METHOD, request, response)
 	wf_get_file(request, "print.wfdp", &fileData, &size);
 	wf_get_json_parser_string(parser, "data", true, &variable.value);
 
-	wf_process_wfdp_file(request, fileData, size, &variable, 1, &result, &resultSize);
+	wf_process_dynamic_file(request, fileData, size, &variable, 1, &result, &resultSize);
 
 	wf_set_body(response, result);
 

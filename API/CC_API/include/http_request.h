@@ -232,7 +232,7 @@ web_framework_exception_t wf_send_static_file(http_request_t implementation, con
  * @param fileName Optional parameter. Custom name
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_wfdp_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
 
 /**
  * @brief Send file with specific chunk size
@@ -321,7 +321,7 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
  * @param resultSize Processed data size
  * @return 
  */
-web_framework_exception_t wf_process_wfdp_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size);
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size);
 
 /**
  * @brief Get raw HTTP request

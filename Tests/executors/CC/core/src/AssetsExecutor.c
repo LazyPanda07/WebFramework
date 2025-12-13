@@ -48,7 +48,7 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 	snprintf(fullName, fullNameSize, "%s.%s", fileName, extension);
 
-	wf_send_wfdp_file(request, fullName, response, variables, queryParametersSize, false, "");
+	wf_send_dynamic_file(request, fullName, response, variables, queryParametersSize, false, "");
 
 	free(variables);
 	free(fullName);

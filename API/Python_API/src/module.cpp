@@ -410,7 +410,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_large_data", &framework::HTTPRequest::getLargeData)
 		.def("send_asset_file", &framework::HTTPRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
 		.def("send_static_file", &framework::HTTPRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
-		.def("send_wfdp_file", &framework::HTTPRequest::sendWFDPFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
+		.def("send_dynamic_file", &framework::HTTPRequest::sendDynamicFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
 		.def("stream_file", &framework::HTTPRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHTTPRequest::defaultChunkSize)
 		.def
 		(
@@ -432,7 +432,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("is_wfdp_function_registered", &framework::HTTPRequest::isWFDPFunctionRegistered, "function_name"_a)
 		.def("get_file", &framework::HTTPRequest::getFile, "file_path"_a)
 		.def("process_static_file", &framework::HTTPRequest::processStaticFile, "file_data"_a, "file_extension"_a)
-		.def("process_wfdp_file", &framework::HTTPRequest::processWFDPFile, "file_data"_a, "variables"_a)
+		.def("process_dynamic_file", &framework::HTTPRequest::processDynamicFile, "file_data"_a, "variables"_a)
 		.def
 		(
 			"get_json",

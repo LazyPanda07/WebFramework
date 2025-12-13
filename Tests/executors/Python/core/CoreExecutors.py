@@ -49,7 +49,7 @@ class LocalizationExecutor(StatelessExecutor):
 
 class AssetsExecutor(StatelessExecutor):
     def do_get(self, request, response):
-        request.send_wfdp_file(f"{request.get_json()["fileName"]}.wfdp", response, request.get_query_parameters())
+        request.send_dynamic_file(f"{request.get_json()["fileName"]}.wfdp", response, request.get_query_parameters())
 
     def do_post(self, request, response):
         request.register_wfdp_function("customFunction", CustomFunction)
@@ -87,7 +87,7 @@ class DynamicResources(HeavyOperationStatelessExecutor):
             "data": request.get_json()["data"]
         }
 
-        response.set_body(request.process_wfdp_file(file_data, variables))
+        response.set_body(request.process_dynamic_file(file_data, variables))
 
 
 class UploadChunkedExecutor(HeavyOperationStatelessExecutor):

@@ -554,7 +554,7 @@ void processStaticFile(HttpRequestObject request, const char* fileData, size_t s
 	}
 }
 
-void processWFDPFile(HttpRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void processDynamicFile(HttpRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -694,7 +694,7 @@ void sendStaticFile(HttpRequestObject request, const char* filePath, HttpRespons
 	}
 }
 
-void sendWFDPFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{

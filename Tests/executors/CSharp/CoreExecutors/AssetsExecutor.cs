@@ -7,7 +7,7 @@ public class AssetsExecutor : StatelessExecutor
 	{
 		string fileName = request.GetJson()["fileName"].GetString()!;
 
-		request.SendWfdpFile($"{fileName}.wfdp", response, request.GetQueryParameters());
+		request.SendDynamicFile($"{fileName}.wfdp", response, request.GetQueryParameters());
 	}
 
 	public override void DoPost(HttpRequest request, HttpResponse response)

@@ -418,13 +418,13 @@ web_framework_exception_t wf_send_static_file(http_request_t implementation, con
 	return exception;
 }
 
-web_framework_exception_t wf_send_wfdp_file(http_request_t implementation, const char* filePath, http_response_t response, const dynamic_pages_variable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* filePath, http_response_t response, const dynamic_pages_variable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*sendWFDPFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendDynamicFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendWFDPFile, filePath, response, variables, variablesSize, isBinary, fileName ? fileName : "", &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendDynamicFile, filePath, response, variables, variablesSize, isBinary, fileName ? fileName : "", &exception);
 
 	return exception;
 }
@@ -544,15 +544,15 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
 	return exception;
 }
 
-web_framework_exception_t wf_process_wfdp_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, const char** result, size_t* resultSize)
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, const char** result, size_t* resultSize)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*processWFDPFile)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+	typedef void (*processDynamicFile)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
 	file_buffer_t buffer = { .data = result, .size = resultSize };
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processWFDPFile, fileData, size, variables, variablesSize, __fill_file_buffer, &buffer, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFile, fileData, size, variables, variablesSize, __fill_file_buffer, &buffer, &exception);
 
 	return exception;
 }

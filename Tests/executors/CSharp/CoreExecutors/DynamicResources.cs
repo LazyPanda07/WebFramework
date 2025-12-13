@@ -17,6 +17,6 @@ public class DynamicResources : HeavyOperationStatelessExecutor
 			["data"] = request.GetJson()["data"].GetString()!
 		};
 
-		response.SetBody(request.ProcessWfdpFile(fileData, variables));
+		response.SetBody(request.ProcessDynamicFile(fileData, variables));
 	}
 }
