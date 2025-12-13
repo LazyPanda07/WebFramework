@@ -255,11 +255,11 @@ namespace framework
 
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
+			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
 		}
 
 		wfdpRenderer.run(variables, result);
@@ -272,7 +272,7 @@ namespace framework
 		response.setBody(result.data());
 	}
 
-	void ResourceExecutor::processWFDPFile(std::string& data, std::span<const interfaces::CVariable> variables)
+	void ResourceExecutor::processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables)
 	{
 		wfdpRenderer.run(variables, data);
 	}

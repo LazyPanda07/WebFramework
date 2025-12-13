@@ -558,7 +558,7 @@ void processWFDPFile(HttpRequestObject request, const char* fileData, size_t siz
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->processWFDPFile(fileData, size, static_cast<framework::interfaces::CVariable*>(variables), variablesSize, fillBuffer, buffer);
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->processDynamicFile(fileData, size, static_cast<framework::interfaces::CVariable*>(variables), variablesSize, fillBuffer, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -698,7 +698,7 @@ void sendWFDPFile(HttpRequestObject request, const char* filePath, HttpResponseO
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendWFDPFile
+		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendDynamicFile
 		(
 			filePath,
 			static_cast<framework::interfaces::IHTTPResponse*>(response),

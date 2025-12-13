@@ -122,7 +122,7 @@ namespace framework::interfaces
 
 		virtual void sendStaticFile(const char* filePath, IHTTPResponse* response, bool isBinary = true, const char* fileName = "") = 0;
 
-		virtual void sendWFDPFile(const char* filePath, IHTTPResponse* response, size_t variablesSize, const CVariable* variables, bool isBinary = false, const char* fileName = "") = 0;
+		virtual void sendDynamicFile(const char* filePath, IHTTPResponse* response, size_t variablesSize, const CVariable* variables, bool isBinary = false, const char* fileName = "") = 0;
 
 		virtual void streamFile(const char* filePath, IHTTPResponse* response, const char* fileName, size_t chunkSize = IHTTPRequest::defaultChunkSize) = 0;
 
@@ -144,7 +144,7 @@ namespace framework::interfaces
 
 		virtual void processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
 
-		virtual void processWFDPFile(const char* fileData, size_t size, const CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
+		virtual void processDynamicFile(const char* fileData, size_t size, const CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
 
 		virtual void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) = 0;
 

@@ -231,7 +231,7 @@ namespace framework
 	{
 		std::vector<interfaces::CVariable> temp = HTTPRequestExecutors::convertVariables(variables);
 
-		implementation->sendWFDPFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
+		implementation->sendDynamicFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
 	void HTTPRequestExecutors::streamFile(std::string_view filePath, HTTPResponseExecutors& response, std::string_view fileName, size_t chunkSize)
@@ -289,7 +289,7 @@ namespace framework
 				static_cast<std::string*>(buffer)->append(data, size);
 			};
 
-		implementation->processWFDPFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
+		implementation->processDynamicFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
 
 		return result;
 	}

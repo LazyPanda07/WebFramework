@@ -14,7 +14,7 @@ void DynamicResources::doPost(framework::HTTPRequest& request, framework::HTTPRe
 
 	variables.try_emplace("data", request.getJson().get<std::string>("data"));
 
-	response.setBody(request.processWFDPFile(fileData, variables));
+	response.setBody(request.processDynamicFile(fileData, variables));
 }
 
 DEFINE_EXECUTOR(DynamicResources)

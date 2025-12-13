@@ -200,7 +200,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendWFDPFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
+		void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
 
 		/**
 		* Send large files
@@ -250,7 +250,7 @@ namespace framework
 		 * @param variables 
 		 * @return 
 		 */
-		std::string processWFDPFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables);
+		std::string processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables);
 
 		/**
 		 * @brief Internal use
@@ -693,11 +693,11 @@ namespace framework
 		implementation->sendStaticFile(filePath.data(), response.implementation, isBinary, fileName.data());
 	}
 
-	inline void HTTPRequest::sendWFDPFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
+	inline void HTTPRequest::sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
 	{
 		std::vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
 
-		implementation->sendWFDPFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
+		implementation->sendDynamicFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
 	inline void HTTPRequest::streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize)
@@ -751,7 +751,7 @@ namespace framework
 		return result;
 	}
 
-	inline std::string HTTPRequest::processWFDPFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables)
+	inline std::string HTTPRequest::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables)
 	{
 		std::string result;
 		std::vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
@@ -760,7 +760,7 @@ namespace framework
 				static_cast<std::string*>(buffer)->append(data, size);
 			};
 
-		implementation->processWFDPFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
+		implementation->processDynamicFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
 
 		return result;
 	}

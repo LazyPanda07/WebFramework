@@ -99,7 +99,7 @@ namespace framework
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		void sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary = true, std::string_view fileName = "") override;
 
-		void processWFDPFile(std::string& data, std::span<const interfaces::CVariable> variables) override;
+		void processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables) override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

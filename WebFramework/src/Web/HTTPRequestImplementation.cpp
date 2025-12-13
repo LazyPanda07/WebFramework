@@ -270,7 +270,7 @@ namespace framework
 	void HTTPRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		HTTPRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
-			this->sendWFDPFile(filePath, response, variablesSize, variables, isBinary, fileName) :
+			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
@@ -279,7 +279,7 @@ namespace framework
 		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::sendWFDPFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HTTPRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, *response, std::span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
 	}
@@ -525,11 +525,11 @@ namespace framework
 		fillBuffer(result.data(), result.size(), buffer);
 	}
 
-	void HTTPRequestImplementation::processWFDPFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	void HTTPRequestImplementation::processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
 	{
 		std::string result(fileData, size);
 
-		dynamicResources.processWFDPFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
+		dynamicResources.processDynamicFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
 
 		fillBuffer(result.data(), result.size(), buffer);
 	}

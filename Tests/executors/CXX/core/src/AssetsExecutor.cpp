@@ -16,7 +16,7 @@ static const char* customFunction(const char** args, size_t agumentsNumber)
 
 void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	request.sendWFDPFile
+	request.sendDynamicFile
 	(
 		std::format("{}.wfdp", request.getJson().get<std::string>("fileName")),
 		response,
