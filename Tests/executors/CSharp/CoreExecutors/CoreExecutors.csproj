@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <Reference Include="WebFrameworkCSharpAPI">
-      <HintPath>..\..\..\..\WebFrameworkLibrary\api\csharp\WebFrameworkCSharpAPI.dll</HintPath>
+      <HintPath>$(WebFrameworkCSharpAPIPath)/WebFrameworkCSharpAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
 

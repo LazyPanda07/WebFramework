@@ -33,3 +33,5 @@ DEFINE_EXECUTOR_METHOD(CCHelloExecutor, GET_METHOD, request, response)
 	wf_delete_web_framework_json_builder(builder);
 	wf_delete_web_framework_exception(exception);
 }
+
+DEFINE_INITIALIZE_WEB_FRAMEWORK();

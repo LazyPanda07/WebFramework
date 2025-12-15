@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(WEB_FRAMEWORK_CC_API ON)
 
-project(cc_hello_executors)
+project(cc_hello_executor)
 
 include(${WEB_FRAMEWORK_DIRECTORY}/WebFrameworkConfig.cmake)
 
-add_executable(
-	${PROJECT_NAME}
+add_library(
+	${PROJECT_NAME} SHARED
 	src/hello_executor.c
 )
 

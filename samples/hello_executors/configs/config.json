@@ -6,10 +6,13 @@
   },
   "WebFramework": {
     "settingsPaths": [
-      "web.json"
+{SETTINGS}
     ],
     "loadSources": [
-      "hello_executor"
+{LOAD_SOURCES}
+    ],
+    "runtimes": [
+{RUNTIMES}
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",

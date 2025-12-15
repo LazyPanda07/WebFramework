@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-option(PYTHON_SAMPLE "Build Python sample" ON)
 option(CXX_SAMPLE "Build C++ sample" ON)
 option(CC_SAMPLE "Build C sample" ON)
+option(PYTHON_SAMPLE "Build Python sample" ON)
 option(CSHARP_SAMPLE "Build C# sample" ON)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")

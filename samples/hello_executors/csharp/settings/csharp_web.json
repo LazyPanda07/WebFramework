@@ -1,0 +1,7 @@
+{
+  "CSharpHelloExecutor": {
+    "route": "csharp",
+    "loadType": "initialization",
+    "api": "csharp"
+  }
+}
