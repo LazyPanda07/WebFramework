@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   windows-visual-studio-build:
-    # if: false # Disabled until Visual Studio 2026 in Github Actions
+    if: false # Disabled until Visual Studio 2026 in Github Actions
     runs-on: windows-latest
 
     steps:

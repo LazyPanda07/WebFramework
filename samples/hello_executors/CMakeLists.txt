@@ -18,7 +18,7 @@ project(hello_executors)
 
 set(SETTINGS "")
 set(LOAD_SOURCES "")
-set(RUNTIMES "")
+set(RUNTIMES "      ")
 set(RUNTIMES_LENGTH 0)
 
 if (${CXX_SAMPLE})
