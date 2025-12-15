@@ -46,7 +46,7 @@ namespace framework
 		LargeData(std::string_view dataPart, bool isLastPacket);
 	};
 
-	class HTTPRequest
+	class HttpRequest
 	{
 	public:
 		struct InsensitiveStringHash
@@ -90,15 +90,15 @@ namespace framework
 		interfaces::IHTTPRequest* getImplementation() const;
 
 	public:
-		HTTPRequest(interfaces::IHTTPRequest* implementation);
+		HttpRequest(interfaces::IHTTPRequest* implementation);
 
-		HTTPRequest(const HTTPRequest&) = delete;
+		HttpRequest(const HttpRequest&) = delete;
 
-		HTTPRequest(HTTPRequest&& other) noexcept;
+		HttpRequest(HttpRequest&& other) noexcept;
 
-		HTTPRequest& operator =(const HTTPRequest&) = delete;
+		HttpRequest& operator =(const HttpRequest&) = delete;
 
-		HTTPRequest& operator =(HTTPRequest&& other) noexcept;
+		HttpRequest& operator =(HttpRequest&& other) noexcept;
 
 		/// <summary>
 		/// Parameters string from HTTP
@@ -183,7 +183,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
+		void sendAssetFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
 
 		/**
 		* Send non dynamic file
@@ -191,7 +191,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary = true, std::string_view fileName = "");
+		void sendStaticFile(std::string_view filePath, HttpResponse& response, bool isBinary = true, std::string_view fileName = "");
 
 		/**
 		* Send .wfdp file
@@ -200,7 +200,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
+		void sendDynamicFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
 
 		/**
 		* Send large files
@@ -208,7 +208,7 @@ namespace framework
 		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
 		* @param chunkSize Desired size of read data before sending
 		*/
-		void streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHTTPRequest::defaultChunkSize);
+		void streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHTTPRequest::defaultChunkSize);
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
@@ -314,13 +314,13 @@ namespace framework
 		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendChunks(HTTPResponse& response, Args&&... args);
+		void sendChunks(HttpResponse& response, Args&&... args);
 
 		/**
 		 * @brief Send runtime generated content
 		 * @param response
 		 */
-		void sendChunks(HTTPResponse& response, utility::ChunkGenerator& generator);
+		void sendChunks(HttpResponse& response, utility::ChunkGenerator& generator);
 
 		/**
 		 * @brief Send file
@@ -331,25 +331,25 @@ namespace framework
 		 * @param ...args
 		 */
 		template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-		void sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args);
+		void sendFileChunks(HttpResponse& response, std::string_view fileName, Args&&... args);
 
 		/**
 		 * @brief Send file
 		 * @param response
 		 * @param fileName
 		 */
-		void sendFileChunks(HTTPResponse& response, std::string_view fileName, utility::ChunkGenerator& generator);
+		void sendFileChunks(HttpResponse& response, std::string_view fileName, utility::ChunkGenerator& generator);
 
 		template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
 		void throwException(Args&&... args);
 
-		~HTTPRequest();
+		~HttpRequest();
 
 		friend class ExecutorsManager;
 	};
 
 	template<RouteParameterType T>
-	T HTTPRequest::getRouteParameter(std::string_view routeParameterName) const
+	T HttpRequest::getRouteParameter(std::string_view routeParameterName) const
 	{
 		if constexpr (std::is_same_v<T, std::string>)
 		{
@@ -374,31 +374,31 @@ namespace framework
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	inline void HTTPRequest::sendChunks(HTTPResponse& response, Args&&... args)
+	inline void HttpRequest::sendChunks(HttpResponse& response, Args&&... args)
 	{
 		this->sendFileChunks<T>(response, "", std::forward<Args>(args)...);
 	}
 
-	inline void HTTPRequest::sendChunks(HTTPResponse& response, utility::ChunkGenerator& generator)
+	inline void HttpRequest::sendChunks(HttpResponse& response, utility::ChunkGenerator& generator)
 	{
 		this->sendFileChunks(response, "", generator);
 	}
 
 	template<std::derived_from<utility::ChunkGenerator> T, typename... Args>
-	inline void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, Args&&... args)
+	inline void HttpRequest::sendFileChunks(HttpResponse& response, std::string_view fileName, Args&&... args)
 	{
 		T generator(std::forward<Args>(args)...);
 
 		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator, size_t* size) -> const char* { return static_cast<T*>(chunkGenerator)->generate(*size).data(); });
 	}
 
-	inline void HTTPRequest::sendFileChunks(HTTPResponse& response, std::string_view fileName, utility::ChunkGenerator& generator)
+	inline void HttpRequest::sendFileChunks(HttpResponse& response, std::string_view fileName, utility::ChunkGenerator& generator)
 	{
 		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator, size_t* size) -> const char* { return static_cast<utility::ChunkGenerator*>(chunkGenerator)->generate(*size).data(); });
 	}
 
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T, typename... Args>
-	inline void HTTPRequest::throwException(Args&&... args)
+	inline void HttpRequest::throwException(Args&&... args)
 	{
 		T exception(std::forward<Args>(args)...);
 
@@ -410,7 +410,7 @@ namespace framework
 
 namespace framework
 {
-	inline size_t HTTPRequest::InsensitiveStringHash::operator() (const std::string& value) const
+	inline size_t HttpRequest::InsensitiveStringHash::operator() (const std::string& value) const
 	{
 		std::string temp;
 
@@ -430,7 +430,7 @@ namespace framework
 		return std::hash<std::string>()(temp);
 	}
 
-	inline bool HTTPRequest::InsensitiveStringEqual::operator () (const std::string& left, const std::string& right) const
+	inline bool HttpRequest::InsensitiveStringEqual::operator () (const std::string& left, const std::string& right) const
 	{
 		return std::equal
 		(
@@ -482,21 +482,21 @@ namespace framework
 
 	}
 
-	inline void HTTPRequest::initHeaders()
+	inline void HttpRequest::initHeaders()
 	{
 		auto initHeadersBuffer = [](size_t size, void* buffer)
 			{
-				reinterpret_cast<HTTPRequest::HeadersMap*>(buffer)->reserve(size);
+				reinterpret_cast<HttpRequest::HeadersMap*>(buffer)->reserve(size);
 			};
 		auto addHeader = [](const char* key, const char* value, size_t index, void* buffer)
 			{
-				reinterpret_cast<HTTPRequest::HeadersMap*>(buffer)->try_emplace(key, value);
+				reinterpret_cast<HttpRequest::HeadersMap*>(buffer)->try_emplace(key, value);
 			};
 
 		implementation->getHeaders(initHeadersBuffer, addHeader, &headers);
 	}
 
-	inline void HTTPRequest::initQueryParameters()
+	inline void HttpRequest::initQueryParameters()
 	{
 		auto initQueryBuffer = [](size_t size, void* buffer)
 			{
@@ -510,7 +510,7 @@ namespace framework
 		implementation->getQueryParameters(initQueryBuffer, addQueryParameter, &queryParameters);
 	}
 
-	inline void HTTPRequest::initMultiparts()
+	inline void HttpRequest::initMultiparts()
 	{
 		auto initMultipartsBuffer = [](size_t size, void* buffer)
 			{
@@ -524,7 +524,7 @@ namespace framework
 		implementation->getMultiparts(initMultipartsBuffer, addMultipart, &multiparts);
 	}
 
-	inline void HTTPRequest::initChunks()
+	inline void HttpRequest::initChunks()
 	{
 		auto addChunk = [](const char* chunk, size_t chunkSize, size_t index, void* buffer)
 			{
@@ -539,19 +539,19 @@ namespace framework
 	}
 
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T>
-	inline bool HTTPRequest::isException(const std::exception& exception)
+	inline bool HttpRequest::isException(const std::exception& exception)
 	{
 		using checkExceptionHash = bool (*)(const void* exception, size_t hash);
 
 		return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(checkExceptionHash, &exception, typeid(T).hash_code());
 	}
 
-	inline interfaces::IHTTPRequest* HTTPRequest::getImplementation() const
+	inline interfaces::IHTTPRequest* HttpRequest::getImplementation() const
 	{
 		return implementation;
 	}
 
-	inline std::vector<interfaces::CVariable> HTTPRequest::convertVariables(const std::unordered_map<std::string, std::string>& variables)
+	inline std::vector<interfaces::CVariable> HttpRequest::convertVariables(const std::unordered_map<std::string, std::string>& variables)
 	{
 		std::vector<interfaces::CVariable> result;
 
@@ -565,7 +565,7 @@ namespace framework
 		return result;
 	}
 
-	inline HTTPRequest::HTTPRequest(interfaces::IHTTPRequest* implementation) :
+	inline HttpRequest::HttpRequest(interfaces::IHTTPRequest* implementation) :
 		implementation(implementation),
 		json(implementation->getJson())
 	{
@@ -575,12 +575,12 @@ namespace framework
 		this->initChunks();
 	}
 
-	inline HTTPRequest::HTTPRequest(HTTPRequest&& other) noexcept
+	inline HttpRequest::HttpRequest(HttpRequest&& other) noexcept
 	{
 		(*this) = std::move(other);
 	}
 
-	inline HTTPRequest& HTTPRequest::operator =(HTTPRequest&& other) noexcept
+	inline HttpRequest& HttpRequest::operator =(HttpRequest&& other) noexcept
 	{
 		implementation = other.implementation;
 		json = std::move(other.json);
@@ -594,32 +594,32 @@ namespace framework
 		return *this;
 	}
 
-	inline std::string_view HTTPRequest::getRawParameters() const
+	inline std::string_view HttpRequest::getRawParameters() const
 	{
 		return implementation->getRawParameters();
 	}
 
-	inline std::string_view HTTPRequest::getMethod() const
+	inline std::string_view HttpRequest::getMethod() const
 	{
 		return implementation->getMethod();
 	}
 
-	inline const std::unordered_map<std::string, std::string>& HTTPRequest::getQueryParameters() const
+	inline const std::unordered_map<std::string, std::string>& HttpRequest::getQueryParameters() const
 	{
 		return queryParameters;
 	}
 
-	inline std::string HTTPRequest::getHTTPVersion() const
+	inline std::string HttpRequest::getHTTPVersion() const
 	{
 		return std::format("HTTP/{}", implementation->getHTTPVersion());
 	}
 
-	inline const HTTPRequest::HeadersMap& HTTPRequest::getHeaders() const
+	inline const HttpRequest::HeadersMap& HttpRequest::getHeaders() const
 	{
 		return headers;
 	}
 
-	inline std::string_view HTTPRequest::getBody() const
+	inline std::string_view HttpRequest::getBody() const
 	{
 		size_t bodySize = 0;
 		const char* result = implementation->getBody(&bodySize);
@@ -627,12 +627,12 @@ namespace framework
 		return std::string_view(result, bodySize);
 	}
 
-	inline void HTTPRequest::setAttribute(std::string_view name, std::string_view value)
+	inline void HttpRequest::setAttribute(std::string_view name, std::string_view value)
 	{
 		implementation->setAttribute(name.data(), value.data());
 	}
 
-	inline std::string HTTPRequest::getAttribute(std::string_view name)
+	inline std::string HttpRequest::getAttribute(std::string_view name)
 	{
 		const char* temp = implementation->getAttribute(name.data());
 		std::string result(temp);
@@ -642,26 +642,26 @@ namespace framework
 		return result;
 	}
 
-	inline void HTTPRequest::deleteSession()
+	inline void HttpRequest::deleteSession()
 	{
 		implementation->deleteSession();
 	}
 
-	inline void HTTPRequest::removeAttribute(std::string_view name)
+	inline void HttpRequest::removeAttribute(std::string_view name)
 	{
 		implementation->removeAttribute(name.data());
 	}
 
-	inline HTTPRequest::HeadersMap HTTPRequest::getCookies() const
+	inline HttpRequest::HeadersMap HttpRequest::getCookies() const
 	{
 		HeadersMap result;
 		auto initCookiesBuffer = [](size_t size, void* buffer)
 			{
-				reinterpret_cast<HTTPRequest::HeadersMap*>(buffer)->reserve(size);
+				reinterpret_cast<HttpRequest::HeadersMap*>(buffer)->reserve(size);
 			};
 		auto addCookie = [](const char* key, const char* value, size_t index, void* buffer)
 			{
-				reinterpret_cast<HTTPRequest::HeadersMap*>(buffer)->try_emplace(key, value);
+				reinterpret_cast<HttpRequest::HeadersMap*>(buffer)->try_emplace(key, value);
 			};
 
 		implementation->getCookies(initCookiesBuffer, addCookie, &result);
@@ -669,63 +669,63 @@ namespace framework
 		return result;
 	}
 
-	inline const std::vector<Multipart>& HTTPRequest::getMultiparts() const
+	inline const std::vector<Multipart>& HttpRequest::getMultiparts() const
 	{
 		return multiparts;
 	}
 
-	inline LargeData HTTPRequest::getLargeData() const
+	inline LargeData HttpRequest::getLargeData() const
 	{
 		const interfaces::CLargeData* data = implementation->getLargeData();
 
 		return LargeData(std::string_view(data->dataPart, data->dataPartSize), data->isLastPacket);
 	}
 
-	inline void HTTPRequest::sendAssetFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendAssetFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
 	{
-		std::vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
+		std::vector<interfaces::CVariable> temp = HttpRequest::convertVariables(variables);
 
 		implementation->sendAssetFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
-	inline void HTTPRequest::sendStaticFile(std::string_view filePath, HTTPResponse& response, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendStaticFile(std::string_view filePath, HttpResponse& response, bool isBinary, std::string_view fileName)
 	{
 		implementation->sendStaticFile(filePath.data(), response.implementation, isBinary, fileName.data());
 	}
 
-	inline void HTTPRequest::sendDynamicFile(std::string_view filePath, HTTPResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendDynamicFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
 	{
-		std::vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
+		std::vector<interfaces::CVariable> temp = HttpRequest::convertVariables(variables);
 
 		implementation->sendDynamicFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
-	inline void HTTPRequest::streamFile(std::string_view filePath, HTTPResponse& response, std::string_view fileName, size_t chunkSize)
+	inline void HttpRequest::streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize)
 	{
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
 	}
 
-	inline void HTTPRequest::registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+	inline void HttpRequest::registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
 		implementation->registerWFDPFunction(functionName.data(), function, deleter);
 	}
 
-	inline void HTTPRequest::registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass)
+	inline void HttpRequest::registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass)
 	{
 		implementation->registerWFDPFunctionClass(functionName.data(), apiType.data(), functionClass);
 	}
 
-	inline void HTTPRequest::unregisterWFDPFunction(std::string_view functionName)
+	inline void HttpRequest::unregisterWFDPFunction(std::string_view functionName)
 	{
 		implementation->unregisterWFDPFunction(functionName.data());
 	}
 
-	inline bool HTTPRequest::isWFDPFunctionRegistered(std::string_view functionName)
+	inline bool HttpRequest::isWFDPFunctionRegistered(std::string_view functionName)
 	{
 		return implementation->isWFDPFunctionRegistered(functionName.data());
 	}
 
-	inline std::string HTTPRequest::getFile(const std::filesystem::path& filePath) const
+	inline std::string HttpRequest::getFile(const std::filesystem::path& filePath) const
 	{
 		std::string result;
 		auto fillBuffer = [](const char* data, size_t size, void* buffer)
@@ -738,7 +738,7 @@ namespace framework
 		return result;
 	}
 
-	inline std::string HTTPRequest::processStaticFile(std::string_view fileData, std::string_view fileExtension)
+	inline std::string HttpRequest::processStaticFile(std::string_view fileData, std::string_view fileExtension)
 	{
 		std::string result;
 		auto fillBuffer = [](const char* data, size_t size, void* buffer)
@@ -751,10 +751,10 @@ namespace framework
 		return result;
 	}
 
-	inline std::string HTTPRequest::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables)
+	inline std::string HttpRequest::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables)
 	{
 		std::string result;
-		std::vector<interfaces::CVariable> temp = HTTPRequest::convertVariables(variables);
+		std::vector<interfaces::CVariable> temp = HttpRequest::convertVariables(variables);
 		auto fillBuffer = [](const char* data, size_t size, void* buffer)
 			{
 				static_cast<std::string*>(buffer)->append(data, size);
@@ -765,27 +765,27 @@ namespace framework
 		return result;
 	}
 
-	inline void HTTPRequest::setExceptionData(std::string_view errorMessage, ResponseCodes responseCode, std::string_view logCategory)
+	inline void HttpRequest::setExceptionData(std::string_view errorMessage, ResponseCodes responseCode, std::string_view logCategory)
 	{
 		implementation->setExceptionData(errorMessage.data(), static_cast<int>(responseCode), logCategory.data());
 	}
 
-	inline const JsonParser& HTTPRequest::getJson() const
+	inline const JsonParser& HttpRequest::getJson() const
 	{
 		return json;
 	}
 
-	inline const std::vector<std::string>& HTTPRequest::getChunks() const
+	inline const std::vector<std::string>& HttpRequest::getChunks() const
 	{
 		return chunks;
 	}
 
-	inline std::string_view HTTPRequest::getRawRequest() const
+	inline std::string_view HttpRequest::getRawRequest() const
 	{
 		return implementation->getRawRequest();
 	}
 
-	inline std::string HTTPRequest::getClientIpV4() const
+	inline std::string HttpRequest::getClientIpV4() const
 	{
 		const char* temp = implementation->getClientIpV4();
 		std::string result(temp);
@@ -795,7 +795,7 @@ namespace framework
 		return result;
 	}
 
-	inline std::string HTTPRequest::getServerIpV4() const
+	inline std::string HttpRequest::getServerIpV4() const
 	{
 		const char* temp = implementation->getServerIpV4();
 		std::string result(temp);
@@ -805,37 +805,37 @@ namespace framework
 		return result;
 	}
 
-	inline uint16_t HTTPRequest::getClientPort() const
+	inline uint16_t HttpRequest::getClientPort() const
 	{
 		return implementation->getClientPort();
 	}
 
-	inline uint16_t HTTPRequest::getServerPort() const
+	inline uint16_t HttpRequest::getServerPort() const
 	{
 		return implementation->getServerPort();
 	}
 
-	inline Database HTTPRequest::getOrCreateDatabase(std::string_view databaseName)
+	inline Database HttpRequest::getOrCreateDatabase(std::string_view databaseName)
 	{
 		return Database(implementation->getOrCreateDatabase(databaseName.data()));
 	}
 
-	inline Database HTTPRequest::getDatabase(std::string_view databaseName) const
+	inline Database HttpRequest::getDatabase(std::string_view databaseName) const
 	{
 		return Database(implementation->getDatabase(databaseName.data()));
 	}
 
-	inline Table HTTPRequest::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery)
+	inline Table HttpRequest::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery)
 	{
 		return this->getOrCreateDatabase(databaseName).getOrCreateTable(tableName, createTableQuery);
 	}
 
-	inline Table HTTPRequest::getTable(std::string_view databaseName, std::string_view tableName) const
+	inline Table HttpRequest::getTable(std::string_view databaseName, std::string_view tableName) const
 	{
 		return this->getDatabase(databaseName).getTable(tableName);
 	}
 
-	inline HTTPRequest::~HTTPRequest()
+	inline HttpRequest::~HttpRequest()
 	{
 		implementation = nullptr;
 	}

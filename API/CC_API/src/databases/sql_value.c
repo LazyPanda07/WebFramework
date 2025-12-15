@@ -143,7 +143,7 @@ web_framework_exception_t wf_get_sql_value_type(sql_value_t implementation, sql_
 	return exception;
 }
 
-void wf_delete_web_framework_sql_value(sql_value_t implementation)
+void wf_delete_sql_value(sql_value_t implementation)
 {
 	typedef void* (*deleteWebFrameworkSQLValue)(void* implementation);
 

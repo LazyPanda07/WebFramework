@@ -22,5 +22,5 @@ DEFINE_EXECUTOR_METHOD(LocalizationExecutor, GET_METHOD, request, response)
 
 	wf_set_json_body(response, builder);
 
-	wf_delete_web_framework_json_builder(builder);
+	wf_delete_json_builder(builder);
 }

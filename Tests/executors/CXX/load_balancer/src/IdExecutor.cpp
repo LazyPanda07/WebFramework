@@ -11,7 +11,7 @@
 
 static int64_t getProcessId();
 
-void IdExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void IdExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	using namespace std::chrono_literals;
 

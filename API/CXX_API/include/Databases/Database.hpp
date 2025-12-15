@@ -39,7 +39,7 @@ namespace framework
 
 		~Database() = default;
 
-		friend class HTTPRequest;
+		friend class HttpRequest;
 	};
 }
 

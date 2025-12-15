@@ -2,7 +2,7 @@
 
 #include <Utility/WebFrameworkLocalization.hpp>
 
-void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void LocalizationExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	response.setBody
 	(

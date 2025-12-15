@@ -1,6 +1,6 @@
 #include "Executor.h"
 
-void Executor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void Executor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	response.setBody(framework::JsonBuilder().append("data", "data"));
 }

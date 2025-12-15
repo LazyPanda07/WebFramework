@@ -143,4 +143,4 @@ web_framework_exception_t wf_get_sql_value_type(sql_value_t implementation, sql_
  * @brief Delete sql_value_t
  * @param implementation sql_value_t instance 
  */
-void wf_delete_web_framework_sql_value(sql_value_t implementation);
+void wf_delete_sql_value(sql_value_t implementation);

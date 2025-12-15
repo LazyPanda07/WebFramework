@@ -123,14 +123,14 @@ void* wf_find_function(const char* name)
 #endif
 }
 
-void wf_delete_web_framework_string(web_framework_string_t string)
+void wf_delete_string(web_framework_string_t string)
 {
 	typedef void (*deleteWebFrameworkString)(void* string);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, string);
 }
 
-void wf_delete_web_framework_config(config_t config)
+void wf_delete_config(config_t config)
 {
 	typedef void (*deleteWebFrameworkConfig)(void* config);
 
@@ -151,14 +151,14 @@ void wf_delete_web_framework_exception(web_framework_exception_t exception)
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, exception);
 }
 
-void wf_delete_web_framework_json_builder(json_builder_t builder)
+void wf_delete_json_builder(json_builder_t builder)
 {
 	typedef void (*deleteWebFrameworkJsonBuilder)(void* builder);
 
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonBuilder, builder);
 }
 
-void wf_delete_web_framework_json_parser(json_parser_t parser)
+void wf_delete_json_parser(json_parser_t parser)
 {
 	typedef void (*deleteWebFrameworkJsonParser)(void* parser);
 

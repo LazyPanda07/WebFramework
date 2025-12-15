@@ -40,13 +40,13 @@ void* wf_find_function(const char* name);
  * @brief Free memory
  * @param string String object
  */
-void wf_delete_web_framework_string(web_framework_string_t string);
+void wf_delete_string(web_framework_string_t string);
 
 /**
  * @brief Free memory
  * @param config config_t object
  */
-void wf_delete_web_framework_config(config_t config);
+void wf_delete_config(config_t config);
 
 /**
  * @brief Free memory
@@ -64,13 +64,13 @@ void wf_delete_web_framework_exception(web_framework_exception_t exception);
  * @brief Free memory
  * @param builder json_builder_t object
  */
-void wf_delete_web_framework_json_builder(json_builder_t builder);
+void wf_delete_json_builder(json_builder_t builder);
 
 /**
  * @brief Free memory
  * @param parser json_parser_t object
  */
-void wf_delete_web_framework_json_parser(json_parser_t parser);
+void wf_delete_json_parser(json_parser_t parser);
 
 /**
  * @brief Get string from web_framework_string_t

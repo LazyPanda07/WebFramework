@@ -83,7 +83,7 @@ namespace framework
 		invalidSSLCertificate
 	};
 
-	class HTTPResponse
+	class HttpResponse
 	{
 	private:
 		interfaces::IHTTPResponse* implementation;
@@ -92,15 +92,15 @@ namespace framework
 		interfaces::IHTTPResponse* getImplementation() const;
 
 	public:
-		HTTPResponse(interfaces::IHTTPResponse* implementation);
+		HttpResponse(interfaces::IHTTPResponse* implementation);
 
-		HTTPResponse(const HTTPResponse&) = delete;
+		HttpResponse(const HttpResponse&) = delete;
 
-		HTTPResponse& operator =(const HTTPResponse&) = delete;
+		HttpResponse& operator =(const HttpResponse&) = delete;
 
-		HTTPResponse(HTTPResponse&& other) noexcept;
+		HttpResponse(HttpResponse&& other) noexcept;
 
-		HTTPResponse& operator =(HTTPResponse&& other) noexcept;
+		HttpResponse& operator =(HttpResponse&& other) noexcept;
 
 		void setHTTPVersion(std::string_view version);
 
@@ -137,7 +137,7 @@ namespace framework
 		/// </summary>
 		/// <param name="body">data</param>
 		/// <returns>reference to self</returns>
-		HTTPResponse& appendBody(std::string_view body);
+		HttpResponse& appendBody(std::string_view body);
 
 		/// <summary>
 		/// Add cookie to HTTP response
@@ -158,31 +158,31 @@ namespace framework
 		*/
 		explicit operator bool() const;
 
-		~HTTPResponse();
+		~HttpResponse();
 
-		friend class HTTPRequest;
+		friend class HttpRequest;
 	};
 }
 
 namespace framework
 {
-	inline interfaces::IHTTPResponse* HTTPResponse::getImplementation() const
+	inline interfaces::IHTTPResponse* HttpResponse::getImplementation() const
 	{
 		return implementation;
 	}
 
-	inline HTTPResponse::HTTPResponse(interfaces::IHTTPResponse* implementation) :
+	inline HttpResponse::HttpResponse(interfaces::IHTTPResponse* implementation) :
 		implementation(implementation)
 	{
 
 	}
 
-	inline HTTPResponse::HTTPResponse(HTTPResponse&& other) noexcept
+	inline HttpResponse::HttpResponse(HttpResponse&& other) noexcept
 	{
 		(*this) = std::move(other);
 	}
 
-	inline HTTPResponse& HTTPResponse::operator =(HTTPResponse&& other) noexcept
+	inline HttpResponse& HttpResponse::operator =(HttpResponse&& other) noexcept
 	{
 		implementation = other.implementation;
 
@@ -191,61 +191,61 @@ namespace framework
 		return *this;
 	}
 
-	inline void HTTPResponse::setHTTPVersion(std::string_view version)
+	inline void HttpResponse::setHTTPVersion(std::string_view version)
 	{
 		implementation->setHTTPVersion(version.data());
 	}
 
-	inline void HTTPResponse::setResponseCode(ResponseCodes code)
+	inline void HttpResponse::setResponseCode(ResponseCodes code)
 	{
 		implementation->setResponseCode(static_cast<int>(code));
 	}
 
-	inline void HTTPResponse::addHeader(std::string_view name, std::string_view value)
+	inline void HttpResponse::addHeader(std::string_view name, std::string_view value)
 	{
 		implementation->addHeader(name.data(), value.data());
 	}
 
-	inline void HTTPResponse::setBody(std::string_view body)
+	inline void HttpResponse::setBody(std::string_view body)
 	{
 		implementation->setBody(body.data());
 	}
 
-	inline void HTTPResponse::setBody(const JsonBuilder& json)
+	inline void HttpResponse::setBody(const JsonBuilder& json)
 	{
 		implementation->addHeader("Content-Type", "application/json");
 
 		implementation->setBody(json.build().data());
 	}
 
-	inline HTTPResponse& HTTPResponse::appendBody(std::string_view body)
+	inline HttpResponse& HttpResponse::appendBody(std::string_view body)
 	{
 		implementation->appendBody(body.data());
 
 		return *this;
 	}
 
-	inline void HTTPResponse::addCookie(std::string_view name, std::string_view value)
+	inline void HttpResponse::addCookie(std::string_view name, std::string_view value)
 	{
 		implementation->addCookie(name.data(), value.data());
 	}
 
-	inline void HTTPResponse::setDefault()
+	inline void HttpResponse::setDefault()
 	{
 		implementation->setDefault();
 	}
 
-	inline void HTTPResponse::setIsValid(bool isValid)
+	inline void HttpResponse::setIsValid(bool isValid)
 	{
 		implementation->setIsValid(isValid);
 	}
 
-	inline HTTPResponse::operator bool() const
+	inline HttpResponse::operator bool() const
 	{
 		return implementation->getIsValid();
 	}
 
-	inline HTTPResponse::~HTTPResponse()
+	inline HttpResponse::~HttpResponse()
 	{
 		implementation = nullptr;
 	}

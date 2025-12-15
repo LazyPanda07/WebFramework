@@ -5,9 +5,9 @@
 class AssetsExecutor : public framework::StatelessExecutor
 {
 public:
-	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
-	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doPost(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
-	void doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doDelete(framework::HttpRequest& request, framework::HttpResponse& response) override;
 };

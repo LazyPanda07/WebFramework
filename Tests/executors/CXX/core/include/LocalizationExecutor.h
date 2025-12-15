@@ -5,5 +5,5 @@
 class LocalizationExecutor : public framework::StatelessExecutor
 {
 public:
-	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 };

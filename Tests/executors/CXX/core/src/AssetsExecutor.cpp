@@ -14,7 +14,7 @@ static const char* customFunction(const char** args, size_t agumentsNumber)
 	return result;
 }
 
-void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void AssetsExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.sendDynamicFile
 	(
@@ -24,12 +24,12 @@ void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespo
 	);
 }
 
-void AssetsExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void AssetsExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.registerWFDPFunction("customFunction", customFunction, [](char* result) { delete[] result; });
 }
 
-void AssetsExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void AssetsExecutor::doDelete(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.unregisterWFDPFunction("customFunction");
 }

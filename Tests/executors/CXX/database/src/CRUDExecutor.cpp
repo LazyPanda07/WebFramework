@@ -5,7 +5,7 @@
 
 #include <Utility/WebFrameworkUtility.hpp>
 
-void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
@@ -26,7 +26,7 @@ void CRUDExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespons
 	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
 }
 
-void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.getOrCreateDatabase("test_database").getOrCreateTable
 	(
@@ -38,7 +38,7 @@ void CRUDExecutor::doPost(framework::HTTPRequest& request, framework::HTTPRespon
 	);
 }
 
-void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
@@ -60,7 +60,7 @@ void CRUDExecutor::doPut(framework::HTTPRequest& request, framework::HTTPRespons
 	}
 }
 
-void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doPatch(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
@@ -94,7 +94,7 @@ void CRUDExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPRespo
 	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
 }
 
-void CRUDExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void CRUDExecutor::doDelete(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.getDatabase("test_database").getTable("test_table").execute("DROP TABLE test_table", {});
 }

@@ -15,7 +15,7 @@ web_framework_exception_t wf_get_executor_init_parameters(executor_settings_t im
 
 	exception = wf_create_json_parser_from_string(wf_get_data_from_string(temp), result);
 
-	wf_delete_web_framework_string(temp);
+	wf_delete_string(temp);
 
 	return exception;
 }

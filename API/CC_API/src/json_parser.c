@@ -171,7 +171,7 @@ bool wf_try_get_json_parser_string(json_parser_t implementation, const char* key
 	{
 		*value = wf_get_data_from_string(string);
 
-		wf_delete_web_framework_string(string);
+		wf_delete_string(string);
 
 		return true;
 	}

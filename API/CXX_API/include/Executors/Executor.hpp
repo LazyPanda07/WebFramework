@@ -102,10 +102,10 @@ namespace framework
 		static void isImplemented
 		(
 			std::vector<std::string>& result,
-			HTTPRequest& request,
-			HTTPResponse& response,
+			HttpRequest& request,
+			HttpResponse& response,
 			const std::string& methodName,
-			void(Executor::* method)(HTTPRequest&, HTTPResponse&),
+			void(Executor::* method)(HttpRequest&, HttpResponse&),
 			Executor& executor
 		);
 
@@ -114,23 +114,23 @@ namespace framework
 
 		virtual void init(const utility::ExecutorSettings& settings);
 
-		virtual void doPost(HTTPRequest& request, HTTPResponse& response);
+		virtual void doPost(HttpRequest& request, HttpResponse& response);
 
-		virtual void doGet(HTTPRequest& request, HTTPResponse& response);
+		virtual void doGet(HttpRequest& request, HttpResponse& response);
 
-		virtual void doHead(HTTPRequest& request, HTTPResponse& response);
+		virtual void doHead(HttpRequest& request, HttpResponse& response);
 
-		virtual void doPut(HTTPRequest& request, HTTPResponse& response);
+		virtual void doPut(HttpRequest& request, HttpResponse& response);
 
-		virtual void doDelete(HTTPRequest& request, HTTPResponse& response);
+		virtual void doDelete(HttpRequest& request, HttpResponse& response);
 
-		virtual void doPatch(HTTPRequest& request, HTTPResponse& response);
+		virtual void doPatch(HttpRequest& request, HttpResponse& response);
 
-		virtual void doOptions(HTTPRequest& request, HTTPResponse& response);
+		virtual void doOptions(HttpRequest& request, HttpResponse& response);
 
-		virtual void doTrace(HTTPRequest& request, HTTPResponse& response);
+		virtual void doTrace(HttpRequest& request, HttpResponse& response);
 
-		virtual void doConnect(HTTPRequest& request, HTTPResponse& response);
+		virtual void doConnect(HttpRequest& request, HttpResponse& response);
 
 		virtual utility::ExecutorType getType() const = 0;
 
@@ -235,37 +235,37 @@ namespace framework
 
 	}
 
-	inline void Executor::doPost(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doPost(HttpRequest& request, HttpResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void Executor::doGet(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doGet(HttpRequest& request, HttpResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void Executor::doHead(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doHead(HttpRequest& request, HttpResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void Executor::doPut(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doPut(HttpRequest& request, HttpResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void Executor::doDelete(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doDelete(HttpRequest& request, HttpResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void Executor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doPatch(HttpRequest& request, HttpResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
 
-	inline void Executor::doOptions(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doOptions(HttpRequest& request, HttpResponse& response)
 	{
 #ifdef NDEBUG
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
@@ -296,7 +296,7 @@ namespace framework
 		response.addHeader("Allow", allowHeaders);
 	}
 
-	inline void Executor::doTrace(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doTrace(HttpRequest& request, HttpResponse& response)
 	{
 #ifdef NDEBUG
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
@@ -305,7 +305,7 @@ namespace framework
 		response.setBody(request.getRawRequest());
 	}
 
-	inline void Executor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	inline void Executor::doConnect(HttpRequest& request, HttpResponse& response)
 	{
 		request.throwException<exceptions::NotImplementedDoMethodException>(__func__, typeid(*this).name());
 	}
@@ -313,10 +313,10 @@ namespace framework
 	inline void Executor::isImplemented
 	(
 		std::vector<std::string>& result,
-		HTTPRequest& request,
-		HTTPResponse& response,
+		HttpRequest& request,
+		HttpResponse& response,
 		const std::string& methodName,
-		void(Executor::* method)(HTTPRequest&, HTTPResponse&),
+		void(Executor::* method)(HttpRequest&, HttpResponse&),
 		Executor& executor
 	)
 	{
@@ -330,7 +330,7 @@ namespace framework
 		}
 		catch (const std::exception& e)
 		{
-			if (!HTTPRequest::isException<exceptions::NotImplementedDoMethodException>(e))
+			if (!HttpRequest::isException<exceptions::NotImplementedDoMethodException>(e))
 			{
 				result.push_back(methodName);
 			}
@@ -365,72 +365,72 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(voi
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doPost(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doGet(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doHead(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doPut(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doDelete(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doPatch(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doOptions(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doTrace(requestWrapper, responseWrapper);
 }
 
 WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
 {
-	framework::HTTPRequest requestWrapper(request);
-	framework::HTTPResponse responseWrapper(response);
+	framework::HttpRequest requestWrapper(request);
+	framework::HttpResponse responseWrapper(response);
 
 	static_cast<framework::Executor*>(implementation)->doConnect(requestWrapper, responseWrapper);
 }

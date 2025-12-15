@@ -1,6 +1,6 @@
 #include "UploadOctetStreamExecutor.h"
 
-void UploadOctetStreamExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void UploadOctetStreamExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	const auto& [data, last] = request.getLargeData();
 

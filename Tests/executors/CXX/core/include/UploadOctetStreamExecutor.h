@@ -10,5 +10,5 @@ private:
 	std::ofstream stream;
 
 public:
-	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doPost(framework::HttpRequest& request, framework::HttpResponse& response) override;
 };

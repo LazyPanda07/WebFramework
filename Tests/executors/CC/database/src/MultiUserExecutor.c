@@ -44,8 +44,8 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	wf_set_json_body(response, builder);
 
 	wf_delete_json_object(&data);
-	wf_delete_web_framework_sql_value(value);
-	wf_delete_web_framework_json_builder(builder);
+	wf_delete_value(value);
+	wf_delete_json_builder(builder);
 	wf_delete_sql_result(table, result);
 }
 
@@ -85,8 +85,8 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 
 	wf_execute_query(table, "INSERT INTO multi_user (user_id, data) VALUES(?, ?)", values, 2, &result);
 
-	wf_delete_web_framework_sql_value(values[0]);
-	wf_delete_web_framework_sql_value(values[1]);
+	wf_delete_sql_value(values[0]);
+	wf_delete_sql_value(values[1]);
 	wf_delete_sql_result(table, result);
 
 	free(values);
@@ -96,5 +96,5 @@ DEFINE_EXECUTOR_DESTROY(MultiUserExecutor)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
 
-	wf_delete_web_framework_string(self->uuid);
+	wf_delete_string(self->uuid);
 }

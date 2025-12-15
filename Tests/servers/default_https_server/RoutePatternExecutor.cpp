@@ -1,6 +1,6 @@
 #include "RoutePatternExecutor.h"
 
-void RoutePatternExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void RoutePatternExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	response.setBody
 	(
