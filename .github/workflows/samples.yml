@@ -272,51 +272,74 @@ jobs:
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
         
         
-  # windows-tests:
-  #   runs-on: windows-latest
-  #   strategy:
-  #     matrix:
-  #       run: [.\hello_cpp, .\hello_c, .\hello_csharp, python main.py]
+  windows-tests:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        run: [.\hello_cpp, .\hello_c, .\hello_csharp, python main.py]
+        samples: 
+          - [ ON, OFF, OFF, OFF ] # cxx
+          - [ OFF, ON, OFF, OFF ] # cc
+          - [ OFF, OFF, ON, OFF ] # python
+          - [ OFF, OFF, OFF, ON ] # csharp
+          - [ ON, ON, OFF, OFF ]  # cxx, cc
+          - [ ON, OFF, ON, OFF ]  # cxx, python
+          - [ OFF, ON, ON, OFF ]  # cc, python
+          - [ OFF, ON, OFF, ON ]  # cc, csharp
+          - [ OFF, OFF, ON, ON ]  # python csharp
+          - [ ON, OFF, OFF, ON ]  # csharp cxx
+          - [ ON, ON, ON, OFF ]   # cxx cc python
+          - [ OFF, ON, ON, ON ]   # cc python csharp
+          - [ ON, ON, ON, OFF ]   # python csharp cxx
+          - [ ON, ON, OFF, ON ]   # csharp cxx cc
+          - [ ON, ON, ON, ON ]    # cxx cc python csharp
 
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #     with:
-  #       submodules: recursive
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
         
-  #   - name: Install Python
-  #     uses: actions/setup-python@v6
-  #     with:
-  #       python-version: "${{ env.PYTHON_VERSION }}"
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
 
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
-  #   - name: Build WebFramework
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
-  #         cmake --build . -j
-  #         cmake --install .
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
-  #   - name: Build samples
-  #     run: |
-  #         cd samples
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
-  #         cmake --build . -j
-  #         cmake --install .
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_SAMPLE=${{ matrix.samples[0] }} -DCC_SAMPLE=${{ matrix.samples[1] }} -DPYTHON_SAMPLE=${{ matrix.samples[2] }} -DCSHARP_SAMPLE=${{ matrix.samples[3] }} -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
-  #   - name: Install Python API
-  #     run: pip install WebFrameworkLibrary/api/python_api/
+    - name: Install Python API
+      run: pip install WebFrameworkLibrary/api/python_api/
 
-  #   - name: Run samples
-  #     working-directory: samples/build/bin
-  #     run: |
-  #         start ${{ matrix.run }}
-  #         while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
-  #         curl http://127.0.0.1:8080
+    - name: Create test script
+      shell: cmd
+      run: |
+        echo @echo off > script.bat
+        echo set PATH=C:\Program Files\dotnet\host\fxr\8.0.22\;^%PATH^% >> script.bat
+        echo start ${{ matrix.run }} >> script.bat
+
+    - name: Run samples
+      working-directory: samples/build/bin
+      run: |
+          .\script.bat
+          while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
+          curl http://127.0.0.1:8080
 
 
   linux-tests:

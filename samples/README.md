@@ -4,8 +4,8 @@
 ## Requirements
 * CMake >= 3.27.0
 * Compiler with C++20 support(MSVC, GCC, Clang)
-* Python(-DPYTHON_SAMPLE=ON)
-* .NET 8.0(-DCSHARP_SAMPLE=ON)
+* Python 3.14(if -DPYTHON_SAMPLE=ON)
+* .NET 8.0(if -DCSHARP_SAMPLE=ON)
 
 
 ## Build
@@ -14,7 +14,7 @@
 ```console
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DWEB_FRAMEWORK_SDK=<path to WebFramework directory> -DWEB_FRAMEWORK_DIRECTORY=<path to directory with WebFramework.cmake file> ..
+cmake -DCMAKE_BUILD_TYPE=Release  ..
 cmake --build . -j --config Release
 cmake --install . --config Release
 ```
@@ -23,9 +23,11 @@ cmake --install . --config Release
 ---
 **NOTE**
 
-By default all samples will be builded. If you want to build specific sample you need to disable all other samples.
-* -DPYTHON_SAMPLE=ON (by default)
-* -DCXX_SAMPLE=ON (by default)
-* -DCC_SAMPLE=ON (by default)
-* -DCSHARP_SAMPLE=ON (by default)
+Default options:
+* -DWEB_FRAMEWORK_SDK=../WebFrameworkLibrary
+* -DWEB_FRAMEWORK_DIRECTORY=../WebFrameworkLibrary
+* -DCXX_SAMPLE=ON
+* -DCC_SAMPLE=ON
+* -DPYTHON_SAMPLE=OFF
+* -DCSHARP_SAMPLE=OFF
 ---
