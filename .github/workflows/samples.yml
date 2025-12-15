@@ -331,6 +331,7 @@ jobs:
       run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Create test script
+      working-directory: samples/build/bin
       shell: cmd
       run: |
         echo @echo off > script.bat

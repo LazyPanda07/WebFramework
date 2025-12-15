@@ -94,8 +94,8 @@ void configConstructors(bool* configuration, bool* basePath, bool* rawConfigurat
 
 		*configuration = strcmp(wf_get_data_from_string(fromPathString), wf_get_data_from_string(fromStringsString));
 
-		wf_delete_web_framework_string(fromPathString);
-		wf_delete_web_framework_string(fromStringsString);
+		wf_delete_string(fromPathString);
+		wf_delete_string(fromStringsString);
 	}
 
 	{
@@ -107,8 +107,8 @@ void configConstructors(bool* configuration, bool* basePath, bool* rawConfigurat
 
 		*basePath = strcmp(wf_get_data_from_string(fromPathString), wf_get_data_from_string(fromStringsString));
 
-		wf_delete_web_framework_string(fromPathString);
-		wf_delete_web_framework_string(fromStringsString);
+		wf_delete_string(fromPathString);
+		wf_delete_string(fromStringsString);
 	}
 
 	{
@@ -121,8 +121,8 @@ void configConstructors(bool* configuration, bool* basePath, bool* rawConfigurat
 		*rawConfiguration = strcmp(fromPathString, fromStringsString);
 	}
 
-	wf_delete_web_framework_config(configFromPath);
-	wf_delete_web_framework_config(configFromStrings);
+	wf_delete_config(configFromPath);
+	wf_delete_config(configFromStrings);
 }
 
 void configOverrideString(bool* assertTrue)
@@ -136,8 +136,8 @@ void configOverrideString(bool* assertTrue)
 
 	*assertTrue = strstr(wf_get_data_from_string(data), "\"webServerType\": \"threadPool\"");
 
-	wf_delete_web_framework_string(data);
-	wf_delete_web_framework_config(config);
+	wf_delete_string(data);
+	wf_delete_config(config);
 }
 
 void configOverrideInteger(bool* assertTrue)
@@ -151,8 +151,8 @@ void configOverrideInteger(bool* assertTrue)
 
 	*assertTrue = strstr(wf_get_data_from_string(data), "\"cachingSize\": 0");
 
-	wf_delete_web_framework_string(data);
-	wf_delete_web_framework_config(config);
+	wf_delete_string(data);
+	wf_delete_config(config);
 }
 
 void configOverrideBool(bool* assertTrue)
@@ -166,8 +166,8 @@ void configOverrideBool(bool* assertTrue)
 
 	*assertTrue = strstr(wf_get_data_from_string(data), "\"usingLogging\": false");
 
-	wf_delete_web_framework_string(data);
-	wf_delete_web_framework_config(config);
+	wf_delete_string(data);
+	wf_delete_config(config);
 }
 
 void configOverrideStringArray(bool* assertFalse)
@@ -186,9 +186,9 @@ void configOverrideStringArray(bool* assertFalse)
 
 	*assertFalse = strcmp(wf_get_data_from_string(data), wf_get_data_from_string(rawData));
 
-	wf_delete_web_framework_string(data);
-	wf_delete_web_framework_string(rawData);
-	wf_delete_web_framework_config(config);
+	wf_delete_string(data);
+	wf_delete_string(rawData);
+	wf_delete_config(config);
 
 	free(values);
 }
@@ -209,9 +209,9 @@ void configOverrideIntegerArray(bool* assertFalse)
 
 	*assertFalse = strcmp(wf_get_data_from_string(data), wf_get_data_from_string(rawData));
 
-	wf_delete_web_framework_string(data);
-	wf_delete_web_framework_string(rawData);
-	wf_delete_web_framework_config(config);
+	wf_delete_string(data);
+	wf_delete_string(rawData);
+	wf_delete_config(config);
 
 	free(values);
 }
