@@ -138,14 +138,14 @@ namespace framework::runtime
 
 	void* PythonRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const
 	{
-		py::object cls = api.attr("HTTPRequest");
+		py::object cls = api.attr("HttpRequest");
 
 		return new py::object(cls(reinterpret_cast<uint64_t>(request)));
 	}
 
 	void* PythonRuntime::createHTTPResponse(framework::interfaces::IHTTPResponse* response) const
 	{
-		py::object cls = api.attr("HTTPResponse");
+		py::object cls = api.attr("HttpResponse");
 
 		return new py::object(cls(reinterpret_cast<uint64_t>(response)));
 	}
