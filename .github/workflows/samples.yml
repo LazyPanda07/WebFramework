@@ -113,6 +113,40 @@ jobs:
         path: samples/build/bin
         
 
+  android-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:android
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake --build . -j
+          make install/strip
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake --build . -j
+          make install/strip
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Android
+        path: samples/build/bin
+
+
   android-hello-executor:
     runs-on: ubuntu-latest
     container:
