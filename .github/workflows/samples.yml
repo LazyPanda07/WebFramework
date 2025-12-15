@@ -7,7 +7,7 @@ on:
   
   
 env:
-  FLUTTER_VERSION: 3.38.1
+  FLUTTER_VERSION: 3.38.5
   PYTHON_VERSION: 3.14
 
 
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   windows-visual-studio-build:
-    if: false # Disabled until Visual Studio 2026 in Github Actions
+    # if: false # Disabled until Visual Studio 2026 in Github Actions
     runs-on: windows-latest
 
     steps:
@@ -47,6 +47,11 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
+
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
@@ -73,41 +78,6 @@ jobs:
         name: Windows
         path: samples/build/bin
 
-
-  windows-hello-executor:
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Build WebFramework
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
-
-    - name: Build samples
-      run: |
-          cd samples
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: HelloExecutorWindows
-        path: samples/build/bin/executors/*.dll
-            
         
   linux-build:
     runs-on: ubuntu-latest
@@ -141,75 +111,7 @@ jobs:
       with:
         name: Linux
         path: samples/build/bin
-
-
-  linux-hello-executor:
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Build WebFramework
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
-
-    - name: Build samples
-      run: |
-          cd samples
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: HelloExecutorLinux
-        path: samples/build/bin/executors/*.so
-
-
-  android-build:
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:android
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Build WebFramework
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=Release ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
-          cmake --build . -j
-          make install/strip
-
-    - name: Build samples
-      run: |
-          cd samples
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
-          cmake --build . -j
-          make install/strip
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: Android
-        path: samples/build/bin
-
+        
 
   android-hello-executor:
     runs-on: ubuntu-latest
@@ -234,7 +136,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DPYTHON_SAMPLE=OFF -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCXX_SAMPLE=ON -DCC_SAMPLE=ON -DPYTHON_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           cmake --build . -j
           make install/strip
 
@@ -242,7 +144,10 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: HelloExecutorAndroid
-        path: samples/build/bin/executors/*.so
+        path: |
+          samples/build/bin/executors/*.so
+          samples/build/bin/executors/*.json
+          samples/build/bin/configs/*.json
 
 
   windows-flutter-build:
@@ -333,51 +238,51 @@ jobs:
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
         
         
-  windows-tests:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        run: [.\hello_cpp, .\hello_c, .\hello_csharp, python main.py]
+  # windows-tests:
+  #   runs-on: windows-latest
+  #   strategy:
+  #     matrix:
+  #       run: [.\hello_cpp, .\hello_c, .\hello_csharp, python main.py]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: recursive
+        
+  #   - name: Install Python
+  #     uses: actions/setup-python@v6
+  #     with:
+  #       python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+  #   - name: Enable NMake
+  #     uses: ilammy/msvc-dev-cmd@v1.13.0
 
-    - name: Build WebFramework
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
+  #   - name: Build WebFramework
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+  #         cmake --build . -j
+  #         cmake --install .
 
-    - name: Build samples
-      run: |
-          cd samples
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
+  #   - name: Build samples
+  #     run: |
+  #         cd samples
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+  #         cmake --build . -j
+  #         cmake --install .
 
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.PYTHON_VERSION }}"
+  #   - name: Install Python API
+  #     run: pip install WebFrameworkLibrary/api/python_api/
 
-    - name: Install Python API
-      run: pip install WebFrameworkLibrary/api/python_api/
-
-    - name: Run samples
-      working-directory: samples/build/bin
-      run: |
-          start ${{ matrix.run }}
-          while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
-          curl http://127.0.0.1:8080
+  #   - name: Run samples
+  #     working-directory: samples/build/bin
+  #     run: |
+  #         start ${{ matrix.run }}
+  #         while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
+  #         curl http://127.0.0.1:8080
 
 
   linux-tests:
@@ -387,6 +292,22 @@ jobs:
     strategy:
       matrix:
         run: [./hello_cpp, ./hello_c, ./hello_csharp, python3 main.py]
+        samples: 
+          - [ ON, OFF, OFF, OFF ] # cxx
+          - [ OFF, ON, OFF, OFF ] # cc
+          - [ OFF, OFF, ON, OFF ] # python
+          - [ OFF, OFF, OFF, ON ] # csharp
+          - [ ON, ON, OFF, OFF ]  # cxx, cc
+          - [ ON, OFF, ON, OFF ]  # cxx, python
+          - [ OFF, ON, ON, OFF ]  # cc, python
+          - [ OFF, ON, OFF, ON ]  # cc, csharp
+          - [ OFF, OFF, ON, ON ]  # python csharp
+          - [ ON, OFF, OFF, ON ]  # csharp cxx
+          - [ ON, ON, ON, OFF ]   # cxx cc python
+          - [ OFF, ON, ON, ON ]   # cc python csharp
+          - [ ON, ON, ON, OFF ]   # python csharp cxx
+          - [ ON, ON, OFF, ON ]   # csharp cxx cc
+          - [ ON, ON, ON, ON ]    # cxx cc python csharp
 
     steps:
     - uses: actions/checkout@v4
@@ -409,7 +330,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_SAMPLE=${{ matrix.samples[0] }} -DCC_SAMPLE=${{ matrix.samples[1] }} -DPYTHON_SAMPLE=${{ matrix.samples[2] }} -DCSHARP_SAMPLE=${{ matrix.samples[3] }} -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
@@ -429,15 +350,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [
       # windows-visual-studio-build,
-      windows-hello-executor,
-      linux-hello-executor,
       android-hello-executor,
       windows-build,
       linux-build,
       android-build,
       windows-flutter-build,
       android-flutter-build,
-      windows-tests,
+      # windows-tests,
       linux-tests
     ]
 

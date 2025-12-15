@@ -19,6 +19,7 @@ project(hello_executors)
 set(SETTINGS "")
 set(LOAD_SOURCES "")
 set(RUNTIMES "")
+set(RUNTIMES_LENGTH 0)
 
 if (${CXX_SAMPLE})
 	add_subdirectory(cxx)
@@ -56,7 +57,10 @@ list(LENGTH RUNTIMES RUNTIMES_LENGTH)
 
 list_to_string_array(SETTINGS)
 list_to_string_array(LOAD_SOURCES)
-list_to_string_array(RUNTIMES)
+
+if (NOT ${RUNTIMES_LENGTH} EQUAL 0)
+	list_to_string_array(RUNTIMES)
+endif()
 
 string(REPLACE "{SETTINGS}" ${SETTINGS} OUTPUT_DATA ${OUTPUT_DATA})
 string(REPLACE "{LOAD_SOURCES}" ${LOAD_SOURCES} OUTPUT_DATA ${OUTPUT_DATA})

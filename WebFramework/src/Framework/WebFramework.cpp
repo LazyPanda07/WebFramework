@@ -136,7 +136,7 @@ namespace framework
 
 			if (auto it = initFunctions.find(*runtime); it == initFunctions.end())
 			{
-				std::string message = std::format("Can't load {} runtime", *runtime);
+				std::string message = std::format("Wrong runtimes: {}", *runtime);
 
 				if (Log::isValid())
 				{
