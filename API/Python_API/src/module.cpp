@@ -251,8 +251,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("is_server_running", &framework::WebFramework::isServerRunning)
 		.def_static("get_web_framework_version", &framework::WebFramework::getWebFrameworkVersion);
 
-	py::class_<framework::interfaces::IHTTPRequest> request(m, "IHTTPRequest");
-	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHTTPResponse");
+	py::class_<framework::interfaces::IHTTPRequest> request(m, "IHttpRequest");
+	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHttpResponse");
 
 	py::class_<framework::SQLValue>(m, "SQLValue")
 		.def(py::init<int64_t>(), "value"_a)
@@ -339,23 +339,23 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		}
 	);
 
-	py::class_<framework::HTTPResponse>(m, "HTTPResponse")
+	py::class_<framework::HttpResponse>(m, "HttpResponse")
 		.def
 		(
 			py::init
 			(
 				[](uint64_t pointer)
 				{
-					return framework::HTTPResponse(reinterpret_cast<framework::interfaces::IHTTPResponse*>(pointer));
+					return framework::HttpResponse(reinterpret_cast<framework::interfaces::IHTTPResponse*>(pointer));
 				}
 			),
 			"pointer_a"
 		)
-		.def("set_body", py::overload_cast<std::string_view>(&framework::HTTPResponse::setBody), "body"_a)
+		.def("set_body", py::overload_cast<std::string_view>(&framework::HttpResponse::setBody), "body"_a)
 		.def
 		(
 			"set_body",
-			[](framework::HTTPResponse& self, const py::dict& json)
+			[](framework::HttpResponse& self, const py::dict& json)
 			{
 				py::module_ jsonModule = py::module_::import("json");
 
@@ -363,13 +363,13 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			},
 			"json"_a
 		)
-		.def("append_body", &framework::HTTPResponse::appendBody, "body"_a)
-		.def("add_cookie", &framework::HTTPResponse::addCookie, "name"_a, "value"_a)
-		.def("add_header", &framework::HTTPResponse::addHeader, "name"_a, "value"_a)
-		.def("set_default", &framework::HTTPResponse::setDefault)
-		.def("set_is_valid", &framework::HTTPResponse::setIsValid)
-		.def("set_response_code", &framework::HTTPResponse::setResponseCode, "response_code"_a)
-		.def("__bool__", [](const framework::HTTPResponse& self) { return static_cast<bool>(self); });
+		.def("append_body", &framework::HttpResponse::appendBody, "body"_a)
+		.def("add_cookie", &framework::HttpResponse::addCookie, "name"_a, "value"_a)
+		.def("add_header", &framework::HttpResponse::addHeader, "name"_a, "value"_a)
+		.def("set_default", &framework::HttpResponse::setDefault)
+		.def("set_is_valid", &framework::HttpResponse::setIsValid)
+		.def("set_response_code", &framework::HttpResponse::setResponseCode, "response_code"_a)
+		.def("__bool__", [](const framework::HttpResponse& self) { return static_cast<bool>(self); });
 
 	py::class_<framework::utility::IPyChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
 		.def(py::init())
@@ -384,38 +384,38 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("on_end", &framework::LoadBalancerHeuristic::onEnd)
 		.def("__call__", &framework::LoadBalancerHeuristic::operator ());
 
-	py::class_<framework::HTTPRequest>(m, "HTTPRequest")
+	py::class_<framework::HttpRequest>(m, "HttpRequest")
 		.def
 		(
 			py::init
 			(
 				[](uint64_t pointer)
 				{
-					return framework::HTTPRequest(reinterpret_cast<framework::interfaces::IHTTPRequest*>(pointer));
+					return framework::HttpRequest(reinterpret_cast<framework::interfaces::IHTTPRequest*>(pointer));
 				}
 			),
 			"pointer"_a
 		)
-		.def("get_raw_parameters", &framework::HTTPRequest::getRawParameters)
-		.def("get_query_parameters", &framework::HTTPRequest::getQueryParameters)
-		.def("get_http_version", &framework::HTTPRequest::getHTTPVersion)
-		.def("get_headers", &framework::HTTPRequest::getHeaders)
-		.def("get_body", &framework::HTTPRequest::getBody)
-		.def("set_attribute", &framework::HTTPRequest::setAttribute, "name"_a, "value"_a)
-		.def("get_attribute", &framework::HTTPRequest::setAttribute)
-		.def("delete_session", &framework::HTTPRequest::deleteSession)
-		.def("remove_attribute", &framework::HTTPRequest::removeAttribute, "name"_a)
-		.def("get_cookies", &framework::HTTPRequest::getCookies)
-		.def("get_multiparts", &framework::HTTPRequest::getMultiparts)
-		.def("get_large_data", &framework::HTTPRequest::getLargeData)
-		.def("send_asset_file", &framework::HTTPRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
-		.def("send_static_file", &framework::HTTPRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
-		.def("send_dynamic_file", &framework::HTTPRequest::sendDynamicFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
-		.def("stream_file", &framework::HTTPRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHTTPRequest::defaultChunkSize)
+		.def("get_raw_parameters", &framework::HttpRequest::getRawParameters)
+		.def("get_query_parameters", &framework::HttpRequest::getQueryParameters)
+		.def("get_http_version", &framework::HttpRequest::getHTTPVersion)
+		.def("get_headers", &framework::HttpRequest::getHeaders)
+		.def("get_body", &framework::HttpRequest::getBody)
+		.def("set_attribute", &framework::HttpRequest::setAttribute, "name"_a, "value"_a)
+		.def("get_attribute", &framework::HttpRequest::setAttribute)
+		.def("delete_session", &framework::HttpRequest::deleteSession)
+		.def("remove_attribute", &framework::HttpRequest::removeAttribute, "name"_a)
+		.def("get_cookies", &framework::HttpRequest::getCookies)
+		.def("get_multiparts", &framework::HttpRequest::getMultiparts)
+		.def("get_large_data", &framework::HttpRequest::getLargeData)
+		.def("send_asset_file", &framework::HttpRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
+		.def("send_static_file", &framework::HttpRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
+		.def("send_dynamic_file", &framework::HttpRequest::sendDynamicFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
+		.def("stream_file", &framework::HttpRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHTTPRequest::defaultChunkSize)
 		.def
 		(
 			"register_wfdp_function",
-			[](framework::HTTPRequest& self, std::string_view functionName, py::type functionClass)
+			[](framework::HttpRequest& self, std::string_view functionName, py::type functionClass)
 			{
 				py::type dynamicFunctionClass = py::module_::import("web_framework_api").attr("DynamicFunction");
 
@@ -428,15 +428,15 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			},
 			"function_name"_a, "function_class"_a
 		)
-		.def("unregister_wfdp_function", &framework::HTTPRequest::unregisterWFDPFunction, "function_name"_a)
-		.def("is_wfdp_function_registered", &framework::HTTPRequest::isWFDPFunctionRegistered, "function_name"_a)
-		.def("get_file", &framework::HTTPRequest::getFile, "file_path"_a)
-		.def("process_static_file", &framework::HTTPRequest::processStaticFile, "file_data"_a, "file_extension"_a)
-		.def("process_dynamic_file", &framework::HTTPRequest::processDynamicFile, "file_data"_a, "variables"_a)
+		.def("unregister_wfdp_function", &framework::HttpRequest::unregisterWFDPFunction, "function_name"_a)
+		.def("is_wfdp_function_registered", &framework::HttpRequest::isWFDPFunctionRegistered, "function_name"_a)
+		.def("get_file", &framework::HttpRequest::getFile, "file_path"_a)
+		.def("process_static_file", &framework::HttpRequest::processStaticFile, "file_data"_a, "file_extension"_a)
+		.def("process_dynamic_file", &framework::HttpRequest::processDynamicFile, "file_data"_a, "variables"_a)
 		.def
 		(
 			"get_json",
-			[](const framework::HTTPRequest& self)
+			[](const framework::HttpRequest& self)
 			{
 				py::module_ json = py::module_::import("json");
 				const framework::JsonParser& parser = self.getJson();
@@ -444,30 +444,30 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 				return json.attr("loads")((*parser).data()).cast<py::dict>();
 			}
 		)
-		.def("get_chunks", &framework::HTTPRequest::getChunks)
-		.def("get_raw_request", &framework::HTTPRequest::getRawRequest)
-		.def("get_client_ip_v4", &framework::HTTPRequest::getClientIpV4)
-		.def("get_server_ip_v4", &framework::HTTPRequest::getServerIpV4)
-		.def("get_client_port", &framework::HTTPRequest::getClientPort)
-		.def("get_server_port", &framework::HTTPRequest::getServerPort)
-		.def("get_or_create_database", &framework::HTTPRequest::getOrCreateDatabase, "database_name"_a)
-		.def("get_database", &framework::HTTPRequest::getDatabase, "database_name"_a)
-		.def("get_or_create_table", &framework::HTTPRequest::getOrCreateTable, "database_name"_a, "table_name"_a, "create_table_query"_a)
-		.def("get_table", &framework::HTTPRequest::getTable, "database_name"_a, "table_name"_a)
-		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<std::string>, "route_parameter_name"_a)
-		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<bool>, "route_parameter_name"_a)
-		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<int64_t>, "route_parameter_name"_a)
-		.def("get_route_parameter", &framework::HTTPRequest::getRouteParameter<double>, "route_parameter_name"_a)
+		.def("get_chunks", &framework::HttpRequest::getChunks)
+		.def("get_raw_request", &framework::HttpRequest::getRawRequest)
+		.def("get_client_ip_v4", &framework::HttpRequest::getClientIpV4)
+		.def("get_server_ip_v4", &framework::HttpRequest::getServerIpV4)
+		.def("get_client_port", &framework::HttpRequest::getClientPort)
+		.def("get_server_port", &framework::HttpRequest::getServerPort)
+		.def("get_or_create_database", &framework::HttpRequest::getOrCreateDatabase, "database_name"_a)
+		.def("get_database", &framework::HttpRequest::getDatabase, "database_name"_a)
+		.def("get_or_create_table", &framework::HttpRequest::getOrCreateTable, "database_name"_a, "table_name"_a, "create_table_query"_a)
+		.def("get_table", &framework::HttpRequest::getTable, "database_name"_a, "table_name"_a)
+		.def("get_route_parameter", &framework::HttpRequest::getRouteParameter<std::string>, "route_parameter_name"_a)
+		.def("get_route_parameter", &framework::HttpRequest::getRouteParameter<bool>, "route_parameter_name"_a)
+		.def("get_route_parameter", &framework::HttpRequest::getRouteParameter<int64_t>, "route_parameter_name"_a)
+		.def("get_route_parameter", &framework::HttpRequest::getRouteParameter<double>, "route_parameter_name"_a)
 		.def
 		(
 			"throw_exception",
-			[](framework::HTTPRequest& self, std::string_view errorMessage, framework::ResponseCodes responseCode, std::string_view logCategory = "") { self.throwException(errorMessage, responseCode, logCategory); },
+			[](framework::HttpRequest& self, std::string_view errorMessage, framework::ResponseCodes responseCode, std::string_view logCategory = "") { self.throwException(errorMessage, responseCode, logCategory); },
 			"error_message"_a, "response_code"_a, "log_category"_a = ""
 		)
 		.def
 		(
 			"send_chunks",
-			[](framework::HTTPRequest& self, framework::HTTPResponse& response, framework::utility::PyChunkGenerator& generator)
+			[](framework::HttpRequest& self, framework::HttpResponse& response, framework::utility::PyChunkGenerator& generator)
 			{
 				framework::utility::ChunkGeneratorWrapper wrapper(generator);
 
@@ -478,7 +478,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"send_file_chunks",
-			[](framework::HTTPRequest& self, framework::HTTPResponse& response, std::string_view fileName, framework::utility::PyChunkGenerator& generator)
+			[](framework::HttpRequest& self, framework::HttpResponse& response, std::string_view fileName, framework::utility::PyChunkGenerator& generator)
 			{
 				framework::utility::ChunkGeneratorWrapper wrapper(generator);
 
@@ -486,7 +486,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			},
 			"response"_a, "file_name"_a, "generator"_a
 		)
-		.def("get_method", &framework::HTTPRequest::getMethod);
+		.def("get_method", &framework::HttpRequest::getMethod);
 
 	py::class_<framework::StatelessExecutor, framework::PyStatelessExecutor>(m, "StatelessExecutor")
 		.def(py::init())

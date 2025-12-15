@@ -11,23 +11,23 @@ namespace framework
 
 		void init(const utility::ExecutorSettings& settings) override;
 
-		void doPost(HTTPRequest& request, HTTPResponse& response) override;
+		void doPost(HttpRequest& request, HttpResponse& response) override;
 
-		void doGet(HTTPRequest& request, HTTPResponse& response) override;
+		void doGet(HttpRequest& request, HttpResponse& response) override;
 
-		void doHead(HTTPRequest& request, HTTPResponse& response) override;
+		void doHead(HttpRequest& request, HttpResponse& response) override;
 
-		void doPut(HTTPRequest& request, HTTPResponse& response) override;
+		void doPut(HttpRequest& request, HttpResponse& response) override;
 
-		void doDelete(HTTPRequest& request, HTTPResponse& response) override;
+		void doDelete(HttpRequest& request, HttpResponse& response) override;
 
-		void doPatch(HTTPRequest& request, HTTPResponse& response) override;
+		void doPatch(HttpRequest& request, HttpResponse& response) override;
 
-		void doOptions(HTTPRequest& request, HTTPResponse& response) override;
+		void doOptions(HttpRequest& request, HttpResponse& response) override;
 
-		void doTrace(HTTPRequest& request, HTTPResponse& response) override;
+		void doTrace(HttpRequest& request, HttpResponse& response) override;
 
-		void doConnect(HTTPRequest& request, HTTPResponse& response) override;
+		void doConnect(HttpRequest& request, HttpResponse& response) override;
 
 		~PyHeavyOperationStatelessExecutor() = default;
 	};

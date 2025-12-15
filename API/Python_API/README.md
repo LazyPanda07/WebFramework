@@ -119,7 +119,7 @@ namespace executors
 	public:
 		HelloExecutor() = default;
 
-		void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+		void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
 		~HelloExecutor() = default;
 	};
@@ -133,7 +133,7 @@ namespace executors
 
 namespace executors
 {
-	void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	void HelloExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 	{
 		response.addBody(json::JSONBuilder(CP_UTF8).appendString("message", "Hello, World!"));
 	}

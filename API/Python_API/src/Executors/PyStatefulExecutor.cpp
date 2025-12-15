@@ -17,7 +17,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doPost(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -29,7 +29,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doGet(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -41,7 +41,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doHead(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -53,7 +53,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doPut(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -65,7 +65,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doDelete(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -77,7 +77,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doPatch(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -89,7 +89,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doOptions(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -101,7 +101,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doTrace(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -113,7 +113,7 @@ namespace framework
 		);
 	}
 
-	void PyStatefulExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	void PyStatefulExecutor::doConnect(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(

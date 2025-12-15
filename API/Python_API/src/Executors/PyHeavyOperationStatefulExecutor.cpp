@@ -17,7 +17,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doPost(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doPost(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -29,7 +29,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doGet(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doGet(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -41,7 +41,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doHead(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doHead(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -53,7 +53,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doPut(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doPut(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -65,7 +65,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doDelete(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doDelete(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -77,7 +77,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doPatch(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doPatch(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -89,7 +89,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doOptions(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doOptions(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -101,7 +101,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doTrace(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doTrace(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
@@ -113,7 +113,7 @@ namespace framework
 		);
 	}
 
-	void PyHeavyOperationStatefulExecutor::doConnect(HTTPRequest& request, HTTPResponse& response)
+	void PyHeavyOperationStatefulExecutor::doConnect(HttpRequest& request, HttpResponse& response)
 	{
 		PYBIND11_OVERRIDE
 		(
