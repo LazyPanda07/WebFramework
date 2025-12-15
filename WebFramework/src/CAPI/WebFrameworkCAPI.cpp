@@ -441,7 +441,10 @@ bool checkExceptionHash(const Exception exception, size_t hash)
 
 void deleteWebFrameworkString(String string)
 {
-	delete static_cast<std::string*>(string);
+	if (string)
+	{
+		delete static_cast<std::string*>(string);
+	}
 }
 
 void deleteWebFrameworkConfig(Config config)
@@ -456,5 +459,8 @@ void deleteWebFramework(WebFramework webFramework)
 
 void deleteWebFrameworkException(Exception exception)
 {
-	delete static_cast<std::runtime_error*>(exception);
+	if (exception)
+	{
+		delete static_cast<std::runtime_error*>(exception);
+	}
 }

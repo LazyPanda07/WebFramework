@@ -2,7 +2,7 @@
 
 void CXXHelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	response.setBody(framework::JsonBuilder().append("message", "Hello, World from C++!"));
+	response.setBody(framework::JsonBuilder().append("message", "Hello from C++"));
 }
 
 DEFINE_EXECUTOR(CXXHelloExecutor)

@@ -4,13 +4,13 @@
 
 namespace executors
 {
-	class HelloExecutor : public framework::StatelessExecutor
+	class CXXHelloExecutor : public framework::StatelessExecutor
 	{
 	public:
-		HelloExecutor() = default;
+		CXXHelloExecutor() = default;
 
 		void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-		~HelloExecutor() = default;
+		~CXXHelloExecutor() = default;
 	};
 }

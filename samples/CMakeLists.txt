@@ -15,7 +15,7 @@ set(WEB_FRAMEWORK_DIRECTORY ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE S
 
 include(${WEB_FRAMEWORK_DIRECTORY}/WebFrameworkConfig.cmake)
 
-add_subdirectory(hello_executor)
+add_subdirectory(hello_executors)
 
 if (${PYTHON_SAMPLE})
 	add_subdirectory(hello_python)
