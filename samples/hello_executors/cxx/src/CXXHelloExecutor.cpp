@@ -2,7 +2,7 @@
 
 namespace executors
 {
-	void CXXHelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	void CXXHelloExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 	{
 		response.setBody(framework::JsonBuilder().append("message", "Hello from C++"));
 	}

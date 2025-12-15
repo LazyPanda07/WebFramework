@@ -9,6 +9,11 @@ add_library(
 	src/SQLUtility.c
 )
 
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
+	include
+)
+
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	WebFramework::CC_API

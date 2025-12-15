@@ -9,7 +9,7 @@ namespace executors
 	public:
 		CXXHelloExecutor() = default;
 
-		void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+		void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
 		~CXXHelloExecutor() = default;
 	};

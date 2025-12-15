@@ -44,7 +44,7 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	wf_set_json_body(response, builder);
 
 	wf_delete_json_object(&data);
-	wf_delete_value(value);
+	wf_delete_sql_value(value);
 	wf_delete_json_builder(builder);
 	wf_delete_sql_result(table, result);
 }

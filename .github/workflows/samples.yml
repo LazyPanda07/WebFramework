@@ -413,7 +413,7 @@ jobs:
       android-build,
       windows-flutter-build,
       android-flutter-build,
-      # windows-tests,
+      windows-tests,
       linux-tests
     ]
 
