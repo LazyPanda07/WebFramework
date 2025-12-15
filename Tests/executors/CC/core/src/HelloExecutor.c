@@ -68,5 +68,5 @@ void service(executor_t executor, http_response_t response)
 
 	wf_set_json_body(response, builder);
 
-	wf_delete_web_framework_json_builder(builder);
+	wf_delete_json_builder(builder);
 }

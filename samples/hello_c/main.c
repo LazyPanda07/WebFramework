@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr, "%s\n", wf_get_error_message(exception)); // Print error message
 
-		wf_delete_web_framework_config(config); // Free Config memory
+		wf_delete_config(config); // Free Config memory
 		wf_delete_web_framework_exception(exception); // Free WebFrameworkException memory
 
 		return -2;
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr, "%s\n", wf_get_error_message(exception)); // Print error message
 
-		wf_delete_web_framework_config(config); // Free Config memory
+		wf_delete_config(config); // Free Config memory
 		wf_delete_web_framework_exception(exception); // Free WebFrameworkException memory
 
 		return -3;
@@ -51,14 +51,14 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr, "%s\n", wf_get_error_message(exception)); // Print error message
 
-		wf_delete_web_framework_config(config); // Free Config memory
+		wf_delete_config(config); // Free Config memory
 		wf_delete_web_framework(server); // Free WebFramework memory
 		wf_delete_web_framework_exception(exception); // Free WebFrameworkException memory
 
 		return -4;
 	}
 
-	wf_delete_web_framework_config(config); // Free Config memory
+	wf_delete_config(config); // Free Config memory
 	wf_delete_web_framework(server); // Free WebFramework memory
 
 	return 0;

@@ -24,7 +24,7 @@ DEFINE_EXECUTOR_METHOD(IdExecutor, GET_METHOD, request, response)
 
 	wf_set_json_body(response, builder);
 
-	wf_delete_builder(builder);
+	wf_delete_json_builder(builder);
 }
 
 int64_t getProcessId()
