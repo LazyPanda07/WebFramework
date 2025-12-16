@@ -1,7 +1,7 @@
 {
-  "CXXHelloExecutor": {
-    "route": [ "", "cxx" ],
+  "CCHelloExecutor": {
+    "route": "cc",
     "loadType": "initialization",
-    "api": "cxx"
+    "api": "cc"
   }
 }
