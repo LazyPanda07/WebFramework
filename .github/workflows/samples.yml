@@ -342,6 +342,8 @@ jobs:
       working-directory: samples/build/bin
       run: |
           .\script.bat
+          sleep 5
+          Get-ChildItem -Recurse -File -Include *.txt,*.log | ForEach-Object { "`n===== $($_.FullName) ====="; Get-Content $_ }
           while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
           curl http://127.0.0.1:8080
 
