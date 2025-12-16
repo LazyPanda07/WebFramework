@@ -132,9 +132,9 @@ namespace framework::runtime
 		CallHeuristicSignature getCallHeuristic() const;
 
 	public:
-		void free(void* implementation);
+		void free(void* implementation) const;
 
-		void dealloc(void* allocatedMemory);
+		void dealloc(void* allocatedMemory) const;
 
 	public:
 		bool loadExecutor(std::string_view name, const utility::LoadSource& source) override;

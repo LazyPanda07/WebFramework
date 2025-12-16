@@ -279,12 +279,12 @@ namespace framework::runtime
 		return callHeuristic;
 	}
 
-	void DotNetRuntime::free(void* implementation)
+	void DotNetRuntime::free(void* implementation) const
 	{
 		dotNetFree(implementation);
 	}
 
-	void DotNetRuntime::dealloc(void* allocatedMemory)
+	void DotNetRuntime::dealloc(void* allocatedMemory) const
 	{
 		dotNetDealloc(allocatedMemory);
 	}

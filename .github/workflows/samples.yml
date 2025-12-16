@@ -323,10 +323,10 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_SAMPLE=${{ matrix.samples[0] }} -DCC_SAMPLE=${{ matrix.samples[1] }} -DPYTHON_SAMPLE=${{ matrix.samples[2] }} -DCSHARP_SAMPLE=${{ matrix.samples[3] }} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_EXECUTOR=${{ matrix.samples[0] }} -DCC_EXECUTOR=${{ matrix.samples[1] }} -DPYTHON_EXECUTOR=${{ matrix.samples[2] }} -DCSHARP_EXECUTOR=${{ matrix.samples[3] }} -DPYTHON_SAMPLE=ON -DCSHARP_SAMPLE=ON -G "Ninja" ..
           cmake --build . -j
           cmake --install .
-
+          
     - name: Install Python API
       run: pip install WebFrameworkLibrary/api/python_api/
 
@@ -342,8 +342,6 @@ jobs:
       working-directory: samples/build/bin
       run: |
           .\script.bat
-          sleep 5
-          Get-ChildItem -Recurse -File -Include *.txt,*.log | ForEach-Object { "`n===== $($_.FullName) ====="; Get-Content $_ }
           while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
           curl http://127.0.0.1:8080
 
@@ -393,7 +391,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_SAMPLE=${{ matrix.samples[0] }} -DCC_SAMPLE=${{ matrix.samples[1] }} -DPYTHON_SAMPLE=${{ matrix.samples[2] }} -DCSHARP_SAMPLE=${{ matrix.samples[3] }} -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_EXECUTOR=${{ matrix.samples[0] }} -DCC_EXECUTOR=${{ matrix.samples[1] }} -DPYTHON_EXECUTOR=${{ matrix.samples[2] }} -DCSHARP_EXECUTOR=${{ matrix.samples[3] }} -DPYTHON_SAMPLE=ON -DCSHARP_SAMPLE=ON -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
