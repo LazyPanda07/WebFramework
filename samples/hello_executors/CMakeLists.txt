@@ -21,21 +21,21 @@ set(LOAD_SOURCES "")
 set(RUNTIMES "")
 set(CHECK_LENGTH 0)
 
-if (${CXX_SAMPLE})
+if (${CXX_EXECUTOR})
 	add_subdirectory(cxx)
 
 	list(APPEND SETTINGS cxx_web.json)
 	list(APPEND LOAD_SOURCES cxx_hello_executor)
 endif()
 
-if (${CC_SAMPLE})
+if (${CC_EXECUTOR})
 	add_subdirectory(cc)
 
 	list(APPEND SETTINGS cc_web.json)
 	list(APPEND LOAD_SOURCES cc_hello_executor)
 endif()
 
-if (${PYTHON_SAMPLE})
+if (${PYTHON_EXECUTOR})
 	add_subdirectory(python)
 
 	list(APPEND SETTINGS python_web.json)
@@ -43,7 +43,7 @@ if (${PYTHON_SAMPLE})
 	list(APPEND RUNTIMES python)
 endif()
 
-if (${CSHARP_SAMPLE})
+if (${CSHARP_EXECUTOR})
 	add_subdirectory(csharp)
 
 	list(APPEND SETTINGS csharp_web.json)

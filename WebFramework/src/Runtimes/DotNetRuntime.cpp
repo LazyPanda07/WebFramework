@@ -171,13 +171,13 @@ namespace framework::runtime
 			}
 		}
 
-		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer");
+		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer", true);
 
 		errorHandlerSetter(errorHandler);
 
-		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config");
-		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate");
-		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close");
+		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config", true);
+		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate", true);
+		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close", true);
 
 		DotNetRuntime::createRuntimeConfig();
 

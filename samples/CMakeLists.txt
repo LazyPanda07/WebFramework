@@ -5,6 +5,10 @@ option(CXX_SAMPLE "Build C++ sample" ON)
 option(CC_SAMPLE "Build C sample" ON)
 option(PYTHON_SAMPLE "Build Python sample" ON)
 option(CSHARP_SAMPLE "Build C# sample" ON)
+option(CXX_EXECUTOR "Build C++ executor" OFF)
+option(CC_EXECUTOR "Build C executor" OFF)
+option(PYTHON_EXECUTOR "Build Python executor" OFF)
+option(CSHARP_EXECUTOR "Build C# executor" OFF)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 
