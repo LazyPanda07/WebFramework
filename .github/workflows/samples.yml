@@ -136,7 +136,7 @@ jobs:
           cd samples
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCXX_SAMPLE=ON -DCC_SAMPLE=ON -DPYTHON_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DPYTHON_SAMPLE=OFF -DCSHARP_SAMPLE=OFF ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           cmake --build . -j
           make install/strip
 
@@ -148,6 +148,7 @@ jobs:
           samples/build/bin/executors/*.so
           samples/build/bin/executors/*.json
           samples/build/bin/configs/*.json
+          samples/build/bin/*.so
 
 
   android-hello-executor:
@@ -281,17 +282,17 @@ jobs:
       matrix:
         run: [.\hello_cpp, .\hello_c, .\hello_csharp, python main.py]
         samples: 
-          - [ ON, OFF, OFF, OFF, cxx ]    # cxx /cxx
-          - [ OFF, ON, OFF, OFF, cc ]     # cc /cc
-          - [ OFF, OFF, ON, OFF, python ] # python /python
+          - [ ON, OFF, OFF, OFF, cxx ]      # cxx /cxx
+          - [ OFF, ON, OFF, OFF, cc ]       # cc /cc
+          - [ OFF, OFF, ON, OFF, python ]   # python /python
           # - [ OFF, OFF, OFF, ON, csharp ] # csharp /csharp
-          - [ ON, ON, OFF, OFF, cxx ]     # cxx, cc /cxx
-          - [ ON, OFF, ON, OFF, cxx ]     # cxx, python /cxx
-          - [ OFF, ON, ON, OFF, cc ]      # cc, python /cc
+          - [ ON, ON, OFF, OFF, cxx ]       # cxx, cc /cxx
+          - [ ON, OFF, ON, OFF, cxx ]       # cxx, python /cxx
+          - [ OFF, ON, ON, OFF, cc ]        # cc, python /cc
           # - [ OFF, ON, OFF, ON, cc ]      # cc, csharp /cc
           # - [ OFF, OFF, ON, ON, python ]  # python csharp /python
           # - [ ON, OFF, OFF, ON, csharp ]  # csharp cxx /csharp
-          - [ ON, ON, ON, OFF, cxx ]      # cxx cc python /cxx
+          - [ ON, ON, ON, OFF, cxx ]        # cxx cc python /cxx
           # - [ OFF, ON, ON, ON, cc ]       # cc python csharp /cc
           # - [ ON, ON, ON, OFF, python ]   # python csharp cxx /python
           # - [ ON, ON, OFF, ON, csharp ]   # csharp cxx cc /csharp

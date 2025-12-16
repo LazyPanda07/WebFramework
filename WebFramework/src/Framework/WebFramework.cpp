@@ -50,8 +50,8 @@ namespace framework
 			std::vector<std::string> tempSettingsPaths = json::utility::JsonArrayWrapper(parser.get<std::vector<json::JsonObject>>(json_settings::settingsPathsKey)).as<std::string>();
 			std::vector<std::string> tempLoadSources = json::utility::JsonArrayWrapper(parser.get<std::vector<json::JsonObject>>(json_settings::loadSourcesKey)).as<std::string>();
 
-			std::move(tempSettingsPaths.begin(), tempSettingsPaths.end(), back_inserter(settingsPaths));
-			std::move(tempLoadSources.begin(), tempLoadSources.end(), back_inserter(loadSources));
+			std::move(tempSettingsPaths.begin(), tempSettingsPaths.end(), std::back_inserter(settingsPaths));
+			std::move(tempLoadSources.begin(), tempLoadSources.end(), std::back_inserter(loadSources));
 		}
 	}
 
@@ -352,7 +352,7 @@ namespace framework
 
 		if (webServerType == json_settings_values::multiThreadedWebServerTypeValue)
 		{
-			server = make_unique<MultithreadedWebServer>
+			server = std::make_unique<MultithreadedWebServer>
 				(
 					*config,
 					move(executorsSettings),
@@ -374,7 +374,7 @@ namespace framework
 				(*config).tryGet<uint32_t>(json_settings::threadCountKey, threadPoolThreads);
 			}
 
-			server = make_unique<ThreadPoolWebServer>
+			server = std::make_unique<ThreadPoolWebServer>
 				(
 					*config,
 					move(executorsSettings),
