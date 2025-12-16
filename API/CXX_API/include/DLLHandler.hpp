@@ -85,7 +85,7 @@ namespace framework::utility
 		}
 
 #ifdef __ANDROID__
-		DLLHandler::instance = std::unique_ptr<DLLHandler>(new DLLHandler("libWebFramework.so"));
+		DllHandler::instance = std::unique_ptr<DllHandler>(new DLLHandler("libWebFramework.so"));
 
 		return;
 #endif
