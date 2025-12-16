@@ -36,7 +36,7 @@ namespace framework::utility
 		{
 			using generateWebFrameworkUUID = void* (*)(void** exception);
 			void* exception = nullptr;
-			DLLHandler& instance = DLLHandler::getInstance();
+			DllHandler& instance = DllHandler::getInstance();
 
 			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(generateWebFrameworkUUID, &exception);
 

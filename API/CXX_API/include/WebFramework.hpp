@@ -81,7 +81,7 @@ namespace framework
 {
 	inline std::string_view WebFramework::getWebFrameworkVersion()
 	{
-		return utility::DLLHandler::getInstance().callFunction<const char* (*)()>("getWebFrameworkVersion");
+		return utility::DllHandler::getInstance().callFunction<const char* (*)()>("getWebFrameworkVersion");
 	}
 
 	inline WebFramework::WebFramework(std::string_view configPath) :
@@ -96,7 +96,7 @@ namespace framework
 
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, configPath.data(), &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, configPath.data(), &exception);
 
 		if (exception) //-V547
 		{
@@ -110,7 +110,7 @@ namespace framework
 		using createWebFrameworkFromString = void* (*)(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
 
 		if (exception) //-V547
 		{
@@ -124,7 +124,7 @@ namespace framework
 		using createWebFrameworkFromConfig = void* (*)(void* config, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromConfig, config.getImplementation(), &exception);
 
 		if (exception) //-V547
 		{
@@ -152,7 +152,7 @@ namespace framework
 
 		this->onStartServer = onStartServer;
 
-		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
+		utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(startWebFrameworkServerCXX, wait, static_cast<void*>(&this->onStartServer), &exception);
 
 		if (exception) //-V547
 		{
@@ -165,7 +165,7 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(stopWebFrameworkServer, void, bool wait, void** exception);
 		void* exception = nullptr;
 
-		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(stopWebFrameworkServer, wait, &exception);
+		utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(stopWebFrameworkServer, wait, &exception);
 
 		if (exception) //-V547
 		{
@@ -178,7 +178,7 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(isServerRunning, bool, void** exception);
 		void* exception = nullptr;
 
-		bool result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isServerRunning, &exception);
+		bool result = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isServerRunning, &exception);
 
 		if (exception)
 		{
@@ -192,7 +192,7 @@ namespace framework
 	{
 		if (!weak)
 		{
-			utility::DLLHandler::getInstance().deleteWebFramework(implementation);
+			utility::DllHandler::getInstance().deleteWebFramework(implementation);
 		}
 	}
 }

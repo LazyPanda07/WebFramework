@@ -30,7 +30,7 @@ namespace framework::exceptions
 				implementation,
 				[this](void* block)
 				{
-					utility::DLLHandler::getInstance().deleteException(block); //-V1067
+					utility::DllHandler::getInstance().deleteException(block); //-V1067
 				}
 			)
 		)
@@ -42,6 +42,6 @@ namespace framework::exceptions
 	{
 		using getErrorMessage = const char* (*)(void* implementation);
 
-		return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getErrorMessage, implementation.get()); //-V509
+		return utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getErrorMessage, implementation.get()); //-V509
 	}
 }

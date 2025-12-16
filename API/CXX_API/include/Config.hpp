@@ -134,7 +134,7 @@ namespace framework::utility
 
 		void* exception = nullptr;
 
-		implementation = DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createConfigFromPath, configPath.string().data(), &exception);
+		implementation = DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createConfigFromPath, configPath.string().data(), &exception);
 
 		if (exception) //-V547
 		{
@@ -149,7 +149,7 @@ namespace framework::utility
 		using createConfigFromString = void* (*)(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 		void* exception = nullptr;
 
-		implementation = DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createConfigFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
+		implementation = DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createConfigFromString, serverConfiguration.data(), applicationDirectory.data(), &exception);
 
 		if (exception) //-V547
 		{
@@ -176,7 +176,7 @@ namespace framework::utility
 		DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationString, void, const char* key, const char* value, bool recursive, void** exception);
 		void* exception = nullptr;
 
-		DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
+		DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationString, key.data(), static_cast<std::string_view>(value).data(), recursive, &exception);
 
 		if (exception) //-V547
 		{
@@ -192,7 +192,7 @@ namespace framework::utility
 		DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationInteger, void, const char* key, int64_t value, bool recursive, void** exception);
 		void* exception = nullptr;
 
-		DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationInteger, key.data(), static_cast<int64_t>(value), recursive, &exception);
+		DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationInteger, key.data(), static_cast<int64_t>(value), recursive, &exception);
 
 		if (exception) //-V547
 		{
@@ -208,7 +208,7 @@ namespace framework::utility
 		DEFINE_CLASS_MEMBER_FUNCTION(overrideConfigurationBoolean, void, const char* key, bool value, bool recursive, void** exception);
 		void* exception = nullptr;
 
-		DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationBoolean, key.data(), value, recursive, &exception);
+		DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationBoolean, key.data(), value, recursive, &exception);
 
 		if (exception) //-V547
 		{
@@ -239,7 +239,7 @@ namespace framework::utility
 #pragma warning(pop)
 #endif
 
-		DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationStringArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
+		DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationStringArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
 
 		delete[] data;
 
@@ -272,7 +272,7 @@ namespace framework::utility
 #pragma warning(pop)
 #endif
 
-		DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationIntegerArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
+		DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideConfigurationIntegerArray, key.data(), data, recursive, static_cast<int64_t>(value.size()), &exception);
 
 		delete[] data;
 
@@ -289,7 +289,7 @@ namespace framework::utility
 		DEFINE_CLASS_MEMBER_FUNCTION(overrideBasePath, void, const char* basePath, void** exception);
 		void* exception = nullptr;
 
-		DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideBasePath, basePath.data(), &exception);
+		DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(overrideBasePath, basePath.data(), &exception);
 
 		if (exception) //-V547
 		{
@@ -303,7 +303,7 @@ namespace framework::utility
 	inline T Config::get(std::string_view key, bool recursive) const requires(std::same_as<T, std::string> || std::convertible_to<T, int64_t> || std::same_as<T, bool>)
 	{
 		void* exception = nullptr;
-		DLLHandler& instance = DLLHandler::getInstance();
+		DllHandler& instance = DllHandler::getInstance();
 		T result;
 
 		if constexpr (std::is_same_v<T, bool>)
@@ -344,7 +344,7 @@ namespace framework::utility
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(getBasePath, void*, void** exception);
 		void* exception = nullptr;
-		DLLHandler& handler = DLLHandler::getInstance();
+		DllHandler& handler = DllHandler::getInstance();
 
 		void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getBasePath, &exception);
 
@@ -360,7 +360,7 @@ namespace framework::utility
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(getConfiguration, void*, void** exception);
 		void* exception = nullptr;
-		DLLHandler& handler = DLLHandler::getInstance();
+		DllHandler& handler = DllHandler::getInstance();
 
 		void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getConfiguration, &exception);
 
@@ -377,7 +377,7 @@ namespace framework::utility
 		DEFINE_CLASS_MEMBER_FUNCTION(getRawConfiguration, const char*, void** exception);
 		void* exception = nullptr;
 
-		const char* result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRawConfiguration, &exception);
+		const char* result = DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getRawConfiguration, &exception);
 
 		if (exception)
 		{
@@ -396,7 +396,7 @@ namespace framework::utility
 	{
 		if (!weak)
 		{
-			DLLHandler::getInstance().deleteConfig(implementation);
+			DllHandler::getInstance().deleteConfig(implementation);
 		}
 	}
 }

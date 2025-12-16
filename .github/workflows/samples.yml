@@ -447,10 +447,7 @@ jobs:
       run: zip -r ../samples.zip . -i *.*
 
     - name: Create hello executors zip archives
-      run: |
-          cd HelloExecutorWindows && zip ../hello_executor_windows.zip *.* && cd ..
-          cd HelloExecutorLinux && zip ../hello_executor_linux.zip *.* && cd ..
-          cd HelloExecutorAndroid && zip ../hello_executor_android.zip *.* && cd ..
+      run: cd HelloExecutorAndroid && zip ../hello_executor_android.zip *.* && cd ..
           
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}

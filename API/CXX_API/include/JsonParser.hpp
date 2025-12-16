@@ -51,7 +51,7 @@ namespace framework
 		using createJsonParser = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParser, nullptr, &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParser, nullptr, &exception);
 
 		if (exception)
 		{
@@ -64,7 +64,7 @@ namespace framework
 		using createJsonParserFromString = void* (*)(const char* jsonString, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParserFromString, jsonString.data(), &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParserFromString, jsonString.data(), &exception);
 
 		if (exception)
 		{
@@ -87,7 +87,7 @@ namespace framework
 		using createJsonParser = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParser, other.implementation, &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonParser, other.implementation, &exception);
 
 		if (exception)
 		{
@@ -109,7 +109,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline bool JsonParser::contains(std::string_view key, bool recursive) const
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		bool result = false;
 
@@ -177,7 +177,7 @@ namespace framework
 	template<typename T>
 	inline void JsonParser::overrideValue(std::string_view key, T&& value, bool recursive) requires (JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 
 		if constexpr (std::is_same_v<T, bool>)
@@ -250,7 +250,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline T JsonParser::get(std::string_view key, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		T result;
 
@@ -320,7 +320,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline bool JsonParser::tryGet(std::string_view key, T& value, bool recursive) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		bool result = false;
 
@@ -422,7 +422,7 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserRawData, const char*, void** exception);
 		void* exception = nullptr;
 
-		std::string_view result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserRawData, &exception);
+		std::string_view result = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserRawData, &exception);
 
 		if (exception)
 		{
@@ -441,7 +441,7 @@ namespace framework
 	{
 		if (implementation)
 		{
-			utility::DLLHandler::getInstance().deleteJsonParser(implementation);
+			utility::DllHandler::getInstance().deleteJsonParser(implementation);
 
 			implementation = nullptr;
 		}

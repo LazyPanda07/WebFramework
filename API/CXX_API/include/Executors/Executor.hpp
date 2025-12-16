@@ -154,7 +154,7 @@ namespace framework
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorInitParameters, void*, void** exception);
 			void* exception = nullptr;
-			DLLHandler& handler = DLLHandler::getInstance();
+			DllHandler& handler = DllHandler::getInstance();
 
 			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorInitParameters, &exception);
 
@@ -170,7 +170,7 @@ namespace framework
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorName, void*, void** exception);
 			void* exception = nullptr;
-			DLLHandler& handler = DLLHandler::getInstance();
+			DllHandler& handler = DllHandler::getInstance();
 
 			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorName, &exception);
 
@@ -186,7 +186,7 @@ namespace framework
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorUserAgentFilter, void*, void** exception);
 			void* exception = nullptr;
-			DLLHandler& handler = DLLHandler::getInstance();
+			DllHandler& handler = DllHandler::getInstance();
 
 			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, &exception);
 
@@ -202,7 +202,7 @@ namespace framework
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorAPIType, void*, void** exception);
 			void* exception = nullptr;
-			DLLHandler& handler = DLLHandler::getInstance();
+			DllHandler& handler = DllHandler::getInstance();
 
 			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorAPIType, &exception);
 
@@ -219,7 +219,7 @@ namespace framework
 			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorLoadType, int, void** exception);
 			void* exception = nullptr;
 
-			int result = DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorLoadType, &exception);
+			int result = DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorLoadType, &exception);
 
 			if (exception)
 			{

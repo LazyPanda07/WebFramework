@@ -108,7 +108,7 @@ namespace framework
 		using createJsonObject = void* (*)(void* object, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, nullptr, &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, nullptr, &exception);
 
 		if (exception)
 		{
@@ -131,7 +131,7 @@ namespace framework
 		using createJsonObject = void* (*)(void* object, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, other.implementation, &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonObject, other.implementation, &exception);
 
 		if (exception)
 		{
@@ -158,7 +158,7 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(sizeJsonObject, size_t, void** exception);
 		void* exception = nullptr;
 
-		size_t result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sizeJsonObject, &exception);
+		size_t result = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sizeJsonObject, &exception);
 
 		if (exception)
 		{
@@ -171,7 +171,7 @@ namespace framework
 	inline JsonObject JsonObject::operator [](size_t index)
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(accessIndexOperatorJsonObject, void*, size_t index, void** exception);
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessIndexOperatorJsonObject, index, &exception);
 
@@ -188,7 +188,7 @@ namespace framework
 	{
 		using ActualT = std::remove_cvref_t<T>;
 
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		void* result = nullptr;
 
@@ -264,7 +264,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline bool JsonObject::is() const
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		bool result = false;
 
@@ -328,7 +328,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline bool JsonObject::contains(std::string_view key, bool recursive) const
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		bool result = false;
 
@@ -396,7 +396,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline T JsonObject::get() const
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		T result;
 
@@ -466,7 +466,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline bool JsonObject::tryGet(std::string_view key, T& value, bool recursive) const
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		bool result = false;
 
@@ -566,7 +566,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline bool JsonObject::tryGet(T& value) const
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		bool result = false;
 
@@ -667,7 +667,7 @@ namespace framework
 	inline JsonObject JsonObject::operator [](T&& key) requires(std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(accessKeyOperatorJsonObject, void*, const char* key, void** exception);
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		void* result = nullptr;
 
@@ -693,7 +693,7 @@ namespace framework
 	{
 		using ActualT = std::remove_cvref_t<T>;
 
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 
 		if constexpr (std::is_same_v<ActualT, bool>)
@@ -781,7 +781,7 @@ namespace framework
 	{
 		using jsonObjectToString = void* (*)(void* implementation, void** exception);
 		void* exception = nullptr;
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 
 		void* result = handler.CALL_WEB_FRAMEWORK_FUNCTION(jsonObjectToString, object.implementation, &exception);
 
@@ -797,7 +797,7 @@ namespace framework
 	{
 		if (!weak && implementation)
 		{
-			utility::DLLHandler::getInstance().deleteJsonObject(implementation);
+			utility::DllHandler::getInstance().deleteJsonObject(implementation);
 
 			implementation = nullptr;
 		}

@@ -26,21 +26,21 @@ namespace framework::utility
 	 */
 	void initializeWebFramework(const std::filesystem::path& pathToDLL = "");
 
-	class DLLHandler
+	class DllHandler
 	{
 	private:
-		static inline std::unique_ptr<DLLHandler> instance;
+		static inline std::unique_ptr<DllHandler> instance;
 
 	private:
 		HMODULE handle;
 
 	private:
-		DLLHandler(const std::filesystem::path& pathToDLL);
+		DllHandler(const std::filesystem::path& pathToDLL);
 
-		~DLLHandler() = default;
+		~DllHandler() = default;
 
 	public:
-		static DLLHandler& getInstance();
+		static DllHandler& getInstance();
 
 	public:
 		template<typename T, typename... Args>
@@ -71,7 +71,7 @@ namespace framework::utility
 		std::string getString(void* implementation);
 
 		friend void utility::initializeWebFramework(const std::filesystem::path& pathToDLL);
-		friend struct std::default_delete<DLLHandler>;
+		friend struct std::default_delete<DllHandler>;
 	};
 }
 
@@ -79,7 +79,7 @@ namespace framework::utility
 {
 	inline void initializeWebFramework(const std::filesystem::path& pathToDLL)
 	{
-		if (DLLHandler::instance)
+		if (DllHandler::instance)
 		{
 			return;
 		}
@@ -128,10 +128,10 @@ namespace framework::utility
 			throw std::runtime_error(std::format("Path {} doesn't exist", realPath.string()));
 		}
 
-		DLLHandler::instance = std::unique_ptr<DLLHandler>(new DLLHandler(realPath));
+		DllHandler::instance = std::unique_ptr<DllHandler>(new DllHandler(realPath));
 	}
 
-	inline DLLHandler::DLLHandler(const std::filesystem::path& pathToDLL)
+	inline DllHandler::DllHandler(const std::filesystem::path& pathToDLL)
 	{
 #ifdef __LINUX__
 		handle = dlopen(pathToDLL.string().data(), RTLD_LAZY);
@@ -149,18 +149,18 @@ namespace framework::utility
 		}
 	}
 
-	inline DLLHandler& DLLHandler::getInstance()
+	inline DllHandler& DllHandler::getInstance()
 	{
-		if (!DLLHandler::instance)
+		if (!DllHandler::instance)
 		{
 			throw std::runtime_error("WebFramework must be initialized with initializeWebFramework function");
 		}
 
-		return *DLLHandler::instance;
+		return *DllHandler::instance;
 	}
 
 	template<typename T, typename... Args>
-	inline auto DLLHandler::callFunction(std::string_view functionName, Args&&... args)
+	inline auto DllHandler::callFunction(std::string_view functionName, Args&&... args)
 	{
 		T function;
 
@@ -174,7 +174,7 @@ namespace framework::utility
 	}
 
 	template<typename T, typename... Args>
-	inline auto DLLHandler::callClassMemberFunction(std::string_view functionName, void* implementation, Args&&... args)
+	inline auto DllHandler::callClassMemberFunction(std::string_view functionName, void* implementation, Args&&... args)
 	{
 		T function;
 
@@ -187,56 +187,56 @@ namespace framework::utility
 		return function(implementation, std::forward<Args>(args)...);
 	}
 
-	inline void DLLHandler::deleteString(void* implementation)
+	inline void DllHandler::deleteString(void* implementation)
 	{
 		using deleteWebFrameworkString = void (*)(void* implementation);
 
 		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, implementation);
 	}
 
-	inline void DLLHandler::deleteConfig(void* implementation)
+	inline void DllHandler::deleteConfig(void* implementation)
 	{
 		using deleteWebFrameworkConfig = void (*)(void* implementation);
 
 		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkConfig, implementation);
 	}
 
-	inline void DLLHandler::deleteWebFramework(void* implementation)
+	inline void DllHandler::deleteWebFramework(void* implementation)
 	{
 		using deleteWebFramework = void (*)(void* implementation);
 
 		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, implementation);
 	}
 
-	inline void DLLHandler::deleteException(void* implementation)
+	inline void DllHandler::deleteException(void* implementation)
 	{
 		using deleteWebFrameworkException = void (*)(void* implementation);
 
 		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkException, implementation);
 	}
 
-	inline void DLLHandler::deleteJsonObject(void* implementation)
+	inline void DllHandler::deleteJsonObject(void* implementation)
 	{
 		using deleteWebFrameworkJsonObject = void (*)(void* implementation);
 
 		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonObject, implementation);
 	}
 
-	inline void DLLHandler::deleteJsonBuilder(void* implementation)
+	inline void DllHandler::deleteJsonBuilder(void* implementation)
 	{
 		using deleteWebFrameworkJsonBuilder = void (*)(void* implementation);
 
 		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonBuilder, implementation);
 	}
 
-	inline void DLLHandler::deleteJsonParser(void* implementation)
+	inline void DllHandler::deleteJsonParser(void* implementation)
 	{
 		using deleteWebFrameworkJsonParser = void (*)(void* implementation);
 
 		this->CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonParser, implementation);
 	}
 
-	inline std::string DLLHandler::getString(void* implementation)
+	inline std::string DllHandler::getString(void* implementation)
 	{
 		using getDataFromString = const char* (*)(void* implementation);
 

@@ -54,7 +54,7 @@ namespace framework
 		using createJsonBuilder = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilder, nullptr, &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilder, nullptr, &exception);
 
 		if (exception)
 		{
@@ -67,7 +67,7 @@ namespace framework
 		using createJsonBuilderFromString = void* (*)(const char* jsonString, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilderFromString, jsonString.data(), &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilderFromString, jsonString.data(), &exception);
 
 		if (exception)
 		{
@@ -90,7 +90,7 @@ namespace framework
 		using createJsonBuilder = void* (*)(void* builder, void** exception);
 		void* exception = nullptr;
 
-		implementation = utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilder, other.implementation, &exception);
+		implementation = utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(createJsonBuilder, other.implementation, &exception);
 
 		if (exception)
 		{
@@ -112,7 +112,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline JsonBuilder& JsonBuilder::append(std::string_view key, const T& value)
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 
 		if constexpr (std::is_same_v<T, bool>)
@@ -187,7 +187,7 @@ namespace framework
 	template<JsonValues<JsonObject> T>
 	inline bool JsonBuilder::contains(std::string_view key, bool recursive) const
 	{
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 		void* exception = nullptr;
 		bool result = false;
 
@@ -256,7 +256,7 @@ namespace framework
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(buildJsonBuilder, void*, void** exception);
 		void* exception = nullptr;
-		utility::DLLHandler& handler = utility::DLLHandler::getInstance();
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
 
 		void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(buildJsonBuilder, &exception);
 
@@ -273,7 +273,7 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(standardJsonBuilder, void, void** exception);
 		void* exception = nullptr;
 
-		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(standardJsonBuilder, &exception);
+		utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(standardJsonBuilder, &exception);
 
 		if (exception)
 		{
@@ -286,7 +286,7 @@ namespace framework
 		DEFINE_CLASS_MEMBER_FUNCTION(minimizeJsonBuilder, void, void** exception);
 		void* exception = nullptr;
 
-		utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(minimizeJsonBuilder, &exception);
+		utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(minimizeJsonBuilder, &exception);
 
 		if (exception)
 		{
@@ -298,7 +298,7 @@ namespace framework
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(accessKeyOperatorJsonBuilder, void*, const char* key, void** exception);
 		void* exception = nullptr;
-		void* result = utility::DLLHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonBuilder, key.data(), & exception);
+		void* result = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonBuilder, key.data(), & exception);
 
 		if (exception)
 		{
@@ -317,7 +317,7 @@ namespace framework
 	{
 		if (implementation)
 		{
-			utility::DLLHandler::getInstance().deleteJsonBuilder(implementation);
+			utility::DllHandler::getInstance().deleteJsonBuilder(implementation);
 
 			implementation = nullptr;
 		}

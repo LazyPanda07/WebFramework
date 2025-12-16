@@ -22,7 +22,7 @@ namespace framework::utility
 		using getWebFrameworkLocalizedString = const char* (*)(const char* localizationModuleName, const char* key, const char* language, void** exception);
 		void* exception = nullptr;
 
-		const char* result = DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkLocalizedString, localizationModuleName.data(), key.data(), language.data(), &exception);
+		const char* result = DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(getWebFrameworkLocalizedString, localizationModuleName.data(), key.data(), language.data(), &exception);
 
 		if (exception)
 		{

@@ -543,7 +543,7 @@ namespace framework
 	{
 		using checkExceptionHash = bool (*)(const void* exception, size_t hash);
 
-		return utility::DLLHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(checkExceptionHash, &exception, typeid(T).hash_code());
+		return utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(checkExceptionHash, &exception, typeid(T).hash_code());
 	}
 
 	inline interfaces::IHTTPRequest* HttpRequest::getImplementation() const
