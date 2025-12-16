@@ -190,9 +190,10 @@ class _AppState extends State<App> {
 ```assets/executors/web.json```
 ```json
 {
-  "HelloExecutor": {
+  "CXXHelloExecutor": {
     "route": "",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "cxx"
   }
 }
 ```
@@ -212,7 +213,7 @@ class _AppState extends State<App> {
       "web.json"
     ],
     "loadSources": [
-      "hello_executor"
+      "cxx_hello_executor"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",
@@ -248,41 +249,39 @@ You will see response from server
 
 
 ## Executors
-Executors are C++ classes that responsible for giving responses for their route(url).  
+Executors are C++, C, Python or C# classes that responsible for giving responses for their route(url).  
 Source code of HelloExecutor from example  
-```HelloExecutor.h```
+```CXXHelloExecutor.h```
 ```cpp
 #pragma once
 
-#include "Executors/BaseStatelessExecutor.h"
+#include <Executors/StatelessExecutor.h>
 
 namespace executors
 {
-	class HelloExecutor : public framework::BaseStatelessExecutor
+	class CXXHelloExecutor : public framework::StatelessExecutor
 	{
 	public:
-		HelloExecutor() = default;
+		CXXHelloExecutor() = default;
 
-		void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+		void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
-		~HelloExecutor() = default;
+		~CXXHelloExecutor() = default;
 	};
 }
 ```
-```HelloExecutor.cpp```
+```CXXHelloExecutor.cpp```
 ```cpp
-#include "HelloExecutor.h"
-
-#include "JSONBuilder.h"
+#include "CXXHelloExecutor.h"
 
 namespace executors
 {
-	void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	void CXXHelloExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 	{
-		response.addBody(json::JSONBuilder(CP_UTF8).appendString("message", "Hello, World!"));
+		response.setBody(framework::JsonBuilder().append("message", "Hello, World!"));
 	}
 
-	DECLARE_EXECUTOR(HelloExecutor);
+	DECLARE_EXECUTOR(CXXHelloExecutor);
 }
 ```
-More information you can find in [wiki](https://github.com/LazyPanda07/WebFramework/wiki/Executors).
+More information you can find in [wiki](https://github.com/LazyPanda07/WebFramework/wiki/Executors-API).

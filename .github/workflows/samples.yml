@@ -151,6 +151,41 @@ jobs:
           samples/build/bin/*.so
 
 
+  windows-hello-executor:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build WebFramework
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Build samples
+      run: |
+          cd samples
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_SAMPLE=OFF -DCC_SAMPLE=OFF -DPYTHON_SAMPLE=OFF -DCSHARP_SAMPLE=OFF -DCC_EXECUTOR=OFF -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: HelloExecutorWindows
+        path: samples/build/bin/executors/*.dll
+
+
   android-hello-executor:
     runs-on: ubuntu-latest
     container:
@@ -447,7 +482,9 @@ jobs:
       run: zip -r ../samples.zip . -i *.*
 
     - name: Create hello executors zip archives
-      run: cd HelloExecutorAndroid && zip ../hello_executor_android.zip *.* && cd ..
+      run: |
+        cd HelloExecutorWindows && zip -r ../hello_executor_windows.zip * && cd ..
+        cd HelloExecutorAndroid && zip -r ../hello_executor_android.zip * && cd .. 
           
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}

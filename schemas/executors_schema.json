@@ -28,7 +28,7 @@
         "api": {
           "type": "string",
           "description": "API language",
-          "enum": [ "cxx", "cc", "py", "csharp" ]
+          "enum": [ "cxx", "cc", "python", "csharp" ]
         }
       },
       "required": [ "route", "loadType", "api" ]
