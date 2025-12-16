@@ -2,11 +2,15 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_C_STANDARD 11)
 
+project(CC_API)
+
 if (UNIX)
 	add_definitions(-D__LINUX__)
-endif(UNIX)
 
-project(CC_API)
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+		add_definitions(-D__ANDROID__)
+	endif()
+endif(UNIX)
 
 add_library(
 	${PROJECT_NAME} STATIC
