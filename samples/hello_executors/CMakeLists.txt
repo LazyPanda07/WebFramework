@@ -16,10 +16,10 @@ endfunction()
 
 project(hello_executors)
 
-set(SETTINGS "      ")
-set(LOAD_SOURCES "      ")
-set(RUNTIMES "      ")
-set(RUNTIMES_LENGTH 0)
+set(SETTINGS "")
+set(LOAD_SOURCES "")
+set(RUNTIMES "")
+set(CHECK_LENGTH 0)
 
 if (${CXX_SAMPLE})
 	add_subdirectory(cxx)
@@ -53,17 +53,35 @@ endif()
 
 file(READ configs/config.json OUTPUT_DATA)
 
-list(LENGTH RUNTIMES RUNTIMES_LENGTH)
+list(LENGTH SETTINGS CHECK_LENGTH)
 
-list_to_string_array(SETTINGS)
-list_to_string_array(LOAD_SOURCES)
+if (NOT ${CHECK_LENGTH} EQUAL 0)
+	list_to_string_array(SETTINGS)
 
-if (NOT ${RUNTIMES_LENGTH} EQUAL 0)
-	list_to_string_array(RUNTIMES)
+	string(REPLACE "{SETTINGS}" ${SETTINGS} OUTPUT_DATA ${OUTPUT_DATA})
+else()
+	string(REPLACE "{SETTINGS}" "" OUTPUT_DATA ${OUTPUT_DATA})
 endif()
 
-string(REPLACE "{SETTINGS}" ${SETTINGS} OUTPUT_DATA ${OUTPUT_DATA})
-string(REPLACE "{LOAD_SOURCES}" ${LOAD_SOURCES} OUTPUT_DATA ${OUTPUT_DATA})
-string(REPLACE "{RUNTIMES}" ${RUNTIMES} OUTPUT_DATA ${OUTPUT_DATA})
+list(LENGTH LOAD_SOURCES CHECK_LENGTH)
+
+if (NOT ${CHECK_LENGTH} EQUAL 0)
+	list_to_string_array(LOAD_SOURCES)
+
+	string(REPLACE "{LOAD_SOURCES}" ${LOAD_SOURCES} OUTPUT_DATA ${OUTPUT_DATA})
+else()
+	string(REPLACE "{LOAD_SOURCES}" "" OUTPUT_DATA ${OUTPUT_DATA})
+endif()
+
+list(LENGTH RUNTIMES CHECK_LENGTH)
+
+if (NOT ${CHECK_LENGTH} EQUAL 0)
+	list_to_string_array(RUNTIMES)
+
+	string(REPLACE "{RUNTIMES}" ${RUNTIMES} OUTPUT_DATA ${OUTPUT_DATA})
+else()
+	string(REPLACE "{RUNTIMES}" "" OUTPUT_DATA ${OUTPUT_DATA})
+endif()
+
 
 file(WRITE ${CMAKE_INSTALL_PREFIX}/configs/config.json ${OUTPUT_DATA})
