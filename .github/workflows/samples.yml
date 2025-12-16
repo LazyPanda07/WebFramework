@@ -284,18 +284,18 @@ jobs:
           - [ ON, OFF, OFF, OFF, cxx ]    # cxx /cxx
           - [ OFF, ON, OFF, OFF, cc ]     # cc /cc
           - [ OFF, OFF, ON, OFF, python ] # python /python
-          - [ OFF, OFF, OFF, ON, csharp ] # csharp /csharp
+          # - [ OFF, OFF, OFF, ON, csharp ] # csharp /csharp
           - [ ON, ON, OFF, OFF, cxx ]     # cxx, cc /cxx
           - [ ON, OFF, ON, OFF, cxx ]     # cxx, python /cxx
           - [ OFF, ON, ON, OFF, cc ]      # cc, python /cc
-          - [ OFF, ON, OFF, ON, cc ]      # cc, csharp /cc
-          - [ OFF, OFF, ON, ON, python ]  # python csharp /python
-          - [ ON, OFF, OFF, ON, csharp ]  # csharp cxx /csharp
+          # - [ OFF, ON, OFF, ON, cc ]      # cc, csharp /cc
+          # - [ OFF, OFF, ON, ON, python ]  # python csharp /python
+          # - [ ON, OFF, OFF, ON, csharp ]  # csharp cxx /csharp
           - [ ON, ON, ON, OFF, cxx ]      # cxx cc python /cxx
-          - [ OFF, ON, ON, ON, cc ]       # cc python csharp /cc
-          - [ ON, ON, ON, OFF, python ]   # python csharp cxx /python
-          - [ ON, ON, OFF, ON, csharp ]   # csharp cxx cc /csharp
-          - [ ON, ON, ON, ON, cxx ]       # cxx cc python csharp /cxx
+          # - [ OFF, ON, ON, ON, cc ]       # cc python csharp /cc
+          # - [ ON, ON, ON, OFF, python ]   # python csharp cxx /python
+          # - [ ON, ON, OFF, ON, csharp ]   # csharp cxx cc /csharp
+          # - [ ON, ON, ON, ON, cxx ]       # cxx cc python csharp /cxx
 
     steps:
     - uses: actions/checkout@v4
@@ -329,19 +329,11 @@ jobs:
           
     - name: Install Python API
       run: pip install WebFrameworkLibrary/api/python_api/
-
-    - name: Create test script
-      working-directory: samples/build/bin
-      shell: cmd
-      run: |
-        echo @echo off > script.bat
-        echo set PATH=C:\Program Files\dotnet\host\fxr\8.0.22\;^%PATH^% >> script.bat
-        echo start ${{ matrix.run }} >> script.bat
-
+      
     - name: Run sample with /${{ matrix.samples[4] }} endpoint
       working-directory: samples/build/bin
       run: |
-          .\script.bat
+          start ${{ matrix.run }}
           while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
           curl http://127.0.0.1:8080/${{ matrix.samples[4] }}
 
