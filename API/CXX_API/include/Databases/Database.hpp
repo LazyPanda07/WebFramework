@@ -23,6 +23,11 @@ namespace framework
 		 */
 		bool contains(std::string_view tableName, Table* outTable = nullptr) const;
 
+		/**
+		 * @brief Returns the table with the specified name.
+		 * @param tableName The name of the table to retrieve.
+		 * @return A Table object corresponding to the specified table name.
+		 */
 		Table getTable(std::string_view tableName) const;
 
 		/**
@@ -33,8 +38,16 @@ namespace framework
 		 */
 		Table getOrCreateTable(std::string_view tableName, std::string_view createTableQuery);
 
+		/**
+		 * @brief Returns a view of the database name for this object. This const method does not modify the object.
+		 * @return A std::string_view referencing the database name. The view does not own the underlying characters; its validity is tied to the lifetime and state of the object.
+		 */
 		std::string_view getDatabaseName() const;
 
+		/**
+		 * @brief Returns the database file name.
+		 * @return The database file name as a std::string.
+		 */
 		std::string getDatabaseFileName() const;
 
 		~Database() = default;

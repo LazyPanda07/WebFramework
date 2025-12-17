@@ -24,7 +24,7 @@ namespace framework::utility
 		 * @return 
 		 */
 		template<typename... Args>
-		std::array<SQLValue, sizeof...(Args)> makeSQLValues(Args&&... args);
+		std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args);
 	}
 }
 
@@ -52,9 +52,9 @@ namespace framework::utility
 	namespace database
 	{
 		template<typename... Args>
-		inline std::array<SQLValue, sizeof...(Args)> makeSQLValues(Args&&... args)
+		inline std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args)
 		{
-			std::array<SQLValue, sizeof...(Args)> result({ std::forward<Args>(args)... });
+			std::array<SqlValue, sizeof...(Args)> result({ std::forward<Args>(args)... });
 
 			return result;
 		}

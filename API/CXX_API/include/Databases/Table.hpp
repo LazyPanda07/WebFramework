@@ -17,10 +17,23 @@ namespace framework
 		Table(interfaces::ITable* implementation);
 
 	public:
-		SQLResult execute(std::string_view query, const std::vector<SQLValue>& values = {});
+		/**
+		 * @brief Executes the specified SQL query with optional parameter values and returns the execution result.
+		 * @param query The SQL query or statement to execute.
+		 * @param values Optional vector of values to bind to parameter placeholders in the query (defaults to empty).
+		 * @return SqlResult representing the outcome of the execution (e.g., returned rows, affected row count, and status).
+		 */
+		SqlResult execute(std::string_view query, const std::vector<SqlValue>& values = {});
 
+		/**
+		 * @brief Executes an SQL query using a fixed-size array of parameter values.
+		 * @tparam SizeT The compile-time number of elements in the values array (the number of parameters).
+		 * @param query The SQL statement to execute, provided as a std::string_view.
+		 * @param values A const reference to a std::array of SqlValue items to bind to the query parameters.
+		 * @return An SqlResult representing the outcome of the execution (e.g., status, affected rows, or returned result set).
+		 */
 		template<size_t SizeT>
-		SQLResult execute(std::string_view query, const std::array<SQLValue, SizeT>& values);
+		SqlResult execute(std::string_view query, const std::array<SqlValue, SizeT>& values);
 
 		~Table() = default;
 
@@ -33,10 +46,10 @@ namespace __framework
 	class CSQLValue : public framework::interfaces::ISQLValue
 	{
 	private:
-		const framework::SQLValue& value;
+		const framework::SqlValue& value;
 
 	public:
-		CSQLValue(const framework::SQLValue& value);
+		CSQLValue(const framework::SqlValue& value);
 
 		void setInt(int64_t value) override;
 
@@ -65,7 +78,7 @@ namespace __framework
 		~CSQLValue() = default;
 	};
 
-	inline CSQLValue::CSQLValue(const framework::SQLValue& value) :
+	inline CSQLValue::CSQLValue(const framework::SqlValue& value) :
 		value(value)
 	{
 
@@ -144,7 +157,7 @@ namespace framework
 
 	}
 
-	inline SQLResult Table::execute(std::string_view query, const std::vector<SQLValue>& values)
+	inline SqlResult Table::execute(std::string_view query, const std::vector<SqlValue>& values)
 	{
 		std::vector<__framework::CSQLValue> tempValues;
 		std::vector<const interfaces::ISQLValue*> pointers;
@@ -152,13 +165,13 @@ namespace framework
 		tempValues.reserve(values.size());
 		pointers.reserve(values.size());
 
-		for (const SQLValue& value : values)
+		for (const SqlValue& value : values)
 		{
 			pointers.push_back(&tempValues.emplace_back(value));
 		}
 
 		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), pointers.data(), pointers.size());
-		SQLResult result(tempResult);
+		SqlResult result(tempResult);
 
 		implementation->deleteResult(tempResult);
 
@@ -166,7 +179,7 @@ namespace framework
 	}
 
 	template<size_t SizeT>
-	inline SQLResult Table::execute(std::string_view query, const std::array<SQLValue, SizeT>& values)
+	inline SqlResult Table::execute(std::string_view query, const std::array<SqlValue, SizeT>& values)
 	{
 		std::vector<__framework::CSQLValue> tempValues;
 		std::vector<const interfaces::ISQLValue*> pointers;
@@ -174,13 +187,13 @@ namespace framework
 		tempValues.reserve(SizeT);
 		pointers.reserve(SizeT);
 
-		for (const SQLValue& value : values)
+		for (const SqlValue& value : values)
 		{
 			pointers.push_back(&tempValues.emplace_back(value));
 		}
 
 		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), pointers.data(), pointers.size());
-		SQLResult result(tempResult);
+		SqlResult result(tempResult);
 
 		implementation->deleteResult(tempResult);
 

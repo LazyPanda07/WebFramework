@@ -9,7 +9,7 @@ void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpRespons
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
-	framework::SQLResult result = table.execute("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSQLValues("glue"));
+	framework::SqlResult result = table.execute("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSQLValues("glue"));
 	std::vector<framework::JsonObject> data;
 
 	for (const auto& value : result)
@@ -72,7 +72,7 @@ void CRUDExecutor::doPatch(framework::HttpRequest& request, framework::HttpRespo
 		"WHERE amount = ?",
 		framework::utility::database::makeSQLValues("empty", -1)
 	);
-	framework::SQLResult result = table.execute
+	framework::SqlResult result = table.execute
 	(
 		"SELECT * FROM test_table WHERE name = ?",
 		framework::utility::database::makeSQLValues("empty")

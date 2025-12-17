@@ -12,7 +12,7 @@ void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpRe
 {
 	framework::Table table = request.getTable("test_database", "multi_user");
 
-	framework::SQLResult result = table.execute
+	framework::SqlResult result = table.execute
 	(
 		"SELECT * FROM multi_user WHERE user_id = ?",
 		framework::utility::database::makeSQLValues(userId)

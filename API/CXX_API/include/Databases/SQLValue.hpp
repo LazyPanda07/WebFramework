@@ -10,9 +10,9 @@
 namespace framework
 {
 	template<typename T>
-	concept OneOf = std::is_same_v<T, int64_t> || std::is_same_v<T, double> || std::is_same_v<T, std::string> || std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::vector<uint8_t>>;
+	concept OneOf = std::same_as<T, int64_t> || std::same_as<T, double> || std::same_as<T, std::string> || std::same_as<T, bool> || std::same_as<T, std::nullptr_t> || std::same_as<T, std::vector<uint8_t>>;
 
-	class SQLValue
+	class SqlValue
 	{
 	public:
 		using ValueType = std::variant<int64_t, double, std::string, bool, std::nullptr_t, std::vector<uint8_t>>;
@@ -21,26 +21,26 @@ namespace framework
 		ValueType value;
 
 	private:
-		explicit SQLValue(const interfaces::ISQLValue* implementation);
+		explicit SqlValue(const interfaces::ISQLValue* implementation);
 
 	public:
 		template<typename... Args>
-		SQLValue(Args&&... args) requires std::constructible_from<ValueType, Args...>;
+		SqlValue(Args&&... args) requires std::constructible_from<ValueType, Args...>;
 
-		SQLValue(size_t value);
+		SqlValue(size_t value);
 
 		template<OneOf T>
 		const T& get() const;
 
 		const ValueType& operator *() const;
 
-		~SQLValue() = default;
+		~SqlValue() = default;
 
-		friend class SQLResult;
+		friend class SqlResult;
 	};
 
 	template<OneOf T>
-	const T& SQLValue::get() const
+	const T& SqlValue::get() const
 	{
 		return std::get<T>(value);
 	}
@@ -48,7 +48,7 @@ namespace framework
 
 namespace framework
 {
-	inline SQLValue::SQLValue(const interfaces::ISQLValue* implementation)
+	inline SqlValue::SqlValue(const interfaces::ISQLValue* implementation)
 	{
 		switch (implementation->getType())
 		{
@@ -93,19 +93,19 @@ namespace framework
 	}
 
 	template<typename... Args>
-	inline SQLValue::SQLValue(Args&&... args) requires std::constructible_from<ValueType, Args...> :
+	inline SqlValue::SqlValue(Args&&... args) requires std::constructible_from<ValueType, Args...> :
 		value(std::forward<Args>(args)...)
 	{
 
 	}
 
-	inline SQLValue::SQLValue(size_t value) :
+	inline SqlValue::SqlValue(size_t value) :
 		value(static_cast<int64_t>(value))
 	{
 
 	}
 
-	inline const SQLValue::ValueType& SQLValue::operator *() const
+	inline const SqlValue::ValueType& SqlValue::operator *() const
 	{
 		return value;
 	}
