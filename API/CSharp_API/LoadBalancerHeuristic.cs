@@ -6,6 +6,10 @@ public abstract class LoadBalancerHeuristic(string ip, string port, bool useHTTP
 	public string Port { get; } = port;
 	public bool UseHTTPS { get; } = useHTTPS;
 
+	/// <summary>
+	/// Used for load balancing. Lowest value will be picked
+	/// </summary>
+	/// <returns></returns>
 	public abstract ulong Invoke();
 
 	public virtual void OnStart()

@@ -254,22 +254,22 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	py::class_<framework::interfaces::IHTTPRequest> request(m, "IHttpRequest");
 	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHttpResponse");
 
-	py::class_<framework::SQLValue>(m, "SQLValue")
+	py::class_<framework::SqlValue>(m, "SqlValue")
 		.def(py::init<int64_t>(), "value"_a)
 		.def(py::init<double>(), "value"_a)
 		.def(py::init<const std::string&>(), "value"_a)
 		.def(py::init<std::nullptr_t>(), "value"_a)
 		.def(py::init<const std::vector<uint8_t>&>(), "value"_a)
-		.def("get", &framework::SQLValue::operator*);
+		.def("get", &framework::SqlValue::operator*);
 
-	py::class_<framework::SQLResult>(m, "SQLResult")
-		.def("at", [](const framework::SQLResult& self, size_t index) { return self.at(index); }, "index"_a)
-		.def("__len__", &framework::SQLResult::size)
-		.def("__iter__", [](framework::SQLResult& self) { return py::make_iterator(self.begin(), self.end()); }, py::keep_alive<0, 1>())
-		.def("__getitem__", [](const framework::SQLResult& self, size_t index) { return self[index]; }, "index"_a);
+	py::class_<framework::SqlResult>(m, "SqlResult")
+		.def("at", [](const framework::SqlResult& self, size_t index) { return self.at(index); }, "index"_a)
+		.def("__len__", &framework::SqlResult::size)
+		.def("__iter__", [](framework::SqlResult& self) { return py::make_iterator(self.begin(), self.end()); }, py::keep_alive<0, 1>())
+		.def("__getitem__", [](const framework::SqlResult& self, size_t index) { return self[index]; }, "index"_a);
 
 	py::class_<framework::Table>(m, "Table")
-		.def("execute", [](framework::Table& table, std::string_view query, const std::vector<framework::SQLValue>& values = {}) { return table.execute(query, values); }, "query"_a, "values"_a = py::list());
+		.def("execute", [](framework::Table& table, std::string_view query, const std::vector<framework::SqlValue>& values = {}) { return table.execute(query, values); }, "query"_a, "values"_a = py::list());
 
 	py::class_<framework::Database>(m, "Database")
 		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a)
@@ -287,9 +287,9 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	m.def
 	(
 		"make_sql_values",
-		[](py::args args) -> std::vector<framework::SQLValue>
+		[](py::args args) -> std::vector<framework::SqlValue>
 		{
-			std::vector<framework::SQLValue> result;
+			std::vector<framework::SqlValue> result;
 
 			result.reserve(args.size());
 

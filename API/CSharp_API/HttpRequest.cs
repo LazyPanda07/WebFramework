@@ -259,6 +259,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return ptr;
 	}
 
+	/// <summary>
+	/// Retrieves the raw parameter string associated with the current implementation.
+	/// </summary>
+	/// <returns>A UTF-8 encoded string containing the raw parameters. The string is never null.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the raw parameters.</exception>
 	public string GetRawParameters()
 	{
 		void* exception = null;
@@ -272,6 +277,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return Marshal.PtrToStringUTF8((IntPtr)result)!;
 	}
 
+	/// <summary>
+	/// Gets the HTTP method (such as "GET", "POST", or "PUT") associated with the current request.
+	/// </summary>
+	/// <returns>A string representing the HTTP method of the request.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP method.</exception>
 	public string GetHttpMethod()
 	{
 		void* exception = null;
@@ -285,6 +295,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return Marshal.PtrToStringUTF8((IntPtr)result)!;
 	}
 
+	/// <summary>
+	/// Gets the HTTP protocol version used by the current connection.
+	/// </summary>
+	/// <returns>A string representing the HTTP version (for example, "1.1").</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP version from the underlying implementation.</exception>
 	public string GetHttpVersion()
 	{
 		void* exception = null;
@@ -298,6 +313,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return GetStringData(result);
 	}
 
+	/// <summary>
+	/// Retrieves the body content of the current HTTP request as a UTF-8 encoded string.
+	/// </summary>
+	/// <returns>A string containing the HTTP request body. Returns an empty string if the request body is empty.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP request body.</exception>
 	public string GetHttpBody()
 	{
 		void* exception = null;
@@ -312,6 +332,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return Marshal.PtrToStringUTF8((IntPtr)result, (int)bodySize);
 	}
 
+	/// <summary>
+	/// Sets an HTTP attribute with the specified name and value for the current context.
+	/// </summary>
+	/// <param name="name">The name of the HTTP attribute to set. Cannot be null.</param>
+	/// <param name="value">The value to assign to the HTTP attribute. Cannot be null.</param>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while setting the HTTP attribute.</exception>
 	public void SetHttpAttribute(string name, string value)
 	{
 		void* exception = null;
@@ -324,6 +350,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Retrieves the value of the specified HTTP attribute by name.
+	/// </summary>
+	/// <param name="name">The name of the HTTP attribute to retrieve. Cannot be null.</param>
+	/// <returns>A string containing the value of the specified HTTP attribute, or null if the attribute does not exist.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP attribute.</exception>
 	public string GetHttpAttribute(string name)
 	{
 		void* exception = null;
@@ -337,6 +369,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return GetStringData(result);
 	}
 
+	/// <summary>
+	/// Deletes the current HTTP session and releases all associated resources.
+	/// </summary>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while deleting the HTTP session.</exception>
 	public void DeleteHttpSession()
 	{
 		void* exception = null;
@@ -349,6 +385,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Removes the HTTP attribute with the specified name from the current object.
+	/// </summary>
+	/// <param name="name">The name of the HTTP attribute to remove. Cannot be null.</param>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while removing the HTTP attribute.</exception>
 	public void RemoveHttpAttribute(string name)
 	{
 		void* exception = null;
@@ -361,11 +402,23 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Retrieves the JSON content as a dictionary of property names and their corresponding JSON elements.
+	/// </summary>
+	/// <returns>A dictionary containing the JSON property names as keys and their associated <see
+	/// cref="System.Text.Json.JsonElement"/> values. The dictionary will be empty if there are no properties.</returns>
 	public Dictionary<string, JsonElement> GetJson()
 	{
 		return GetJson<Dictionary<string, JsonElement>>();
 	}
 
+	/// <summary>
+	/// Deserializes the JSON response content to an object of the specified type.
+	/// </summary>
+	/// <typeparam name="T">The type to which the JSON response will be deserialized.</typeparam>
+	/// <returns>An instance of type <typeparamref name="T"/> containing the deserialized data from the JSON response.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving or parsing the JSON response from the underlying web framework.</exception>
+	/// <exception cref="Exception">Thrown if the JSON response cannot be deserialized to the specified type <typeparamref name="T"/>.</exception>
 	public T GetJson<T>()
 	{
 		void* exception = null;
@@ -459,6 +512,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return result;
 	}
 
+	/// <summary>
+	/// Register function that can be called from .wfdp files
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="functionName"></param>
+	/// <exception cref="WebFrameworkException"></exception>
 	public void RegisterWfdpFunction<T>(string functionName) where T : IDynamicFunction
 	{
 		void* exception = null;
@@ -476,6 +535,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Unregister function that can be used from .wfdp files
+	/// </summary>
+	/// <param name="functionName"></param>
+	/// <exception cref="WebFrameworkException"></exception>
 	public void UnregisterWfdpFunction(string functionName)
 	{
 		void* exception = null;
@@ -488,6 +552,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Check if function with functionName registered for processing .wfdp files
+	/// </summary>
+	/// <param name="functionName"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public bool IsWfdpFunctionRegistered(string functionName)
 	{
 		void* exception = null;
@@ -501,6 +571,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return result;
 	}
 
+	/// <summary>
+	/// Get HTTP query parameters
+	/// </summary>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public IDictionary<string, string> GetQueryParameters()
 	{
 		void* exception = null;
@@ -536,6 +611,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return queryParameters;
 	}
 
+	/// <summary>
+	/// Get HTTP chunks
+	/// </summary>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public IList<byte[]> GetChunks()
 	{
 		void* exception = null;
@@ -574,6 +654,12 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return chunks;
 	}
 
+	/// <summary>
+	/// Load file from assets
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] GetFile(string filePath)
 	{
 		void* exception = null;
@@ -599,6 +685,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return [.. result];
 	}
 
+	/// <summary>
+	/// Process static file such as .md
+	/// </summary>
+	/// <param name="fileData"></param>
+	/// <param name="fileExtension"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] ProcessStaticFile(byte[] fileData, string fileExtension)
 	{
 		void* exception = null;
@@ -626,6 +719,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return [.. result];
 	}
 
+	/// <summary>
+	/// Process dynamic files such as .wfdp
+	/// </summary>
+	/// <param name="fileData"></param>
+	/// <param name="variables"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] ProcessDynamicFile(byte[] fileData, IDictionary<string, string>? variables = null)
 	{
 		void* exception = null;
@@ -675,6 +775,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return [.. result];
 	}
 
+	/// <summary>
+	/// Get HTTP headers
+	/// </summary>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public IDictionary<string, string> GetHeaders()
 	{
 		void* exception = null;
@@ -710,6 +815,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return result;
 	}
 
+	/// <summary>
+	/// Get current chunk of data if input file size is too big
+	/// </summary>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public LargeData GetLargeData()
 	{
 		void* exception = null;
@@ -732,6 +842,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return result;
 	}
 
+	/// <summary>
+	/// Get multiparts from data from form
+	/// </summary>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public IList<Multipart> GetMultiparts()
 	{
 		void* exception = null;
@@ -785,6 +900,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return result;
 	}
 
+	/// <summary>
+	/// Get cookies
+	/// </summary>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
 	public IDictionary<string, string> GetCookies()
 	{
 		void* exception = null;
@@ -820,6 +940,15 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return result;
 	}
 
+	/// <summary>
+	/// Send file from assets
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <param name="response"></param>
+	/// <param name="variables"></param>
+	/// <param name="isBinary"></param>
+	/// <param name="fileName"></param>
+	/// <exception cref="WebFrameworkException"></exception>
 	public void SendAssetFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
 		void* exception = null;
@@ -863,6 +992,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Send static file from assets
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <param name="response"></param>
+	/// <param name="isBinary"></param>
+	/// <param name="fileName"></param>
+	/// <exception cref="WebFrameworkException"></exception>
 	public void SendStaticFile(string filePath, HttpResponse response, bool? isBinary = null, string? fileName = null)
 	{
 		void* exception = null;
@@ -883,6 +1020,15 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Send dynamic file from assets
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <param name="response"></param>
+	/// <param name="variables"></param>
+	/// <param name="isBinary"></param>
+	/// <param name="fileName"></param>
+	/// <exception cref="WebFrameworkException"></exception>
 	public void SendDynamicFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
 		void* exception = null;
@@ -926,6 +1072,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Stream big file from assets
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <param name="response"></param>
+	/// <param name="fileName"></param>
+	/// <param name="chunkSize"></param>
+	/// <exception cref="WebFrameworkException"></exception>
 	public void StreamFile(string filePath, HttpResponse response, string? fileName = null, int? chunkSize = null)
 	{
 		const nuint defaultChunkSize = 14 * 1024 * 1024;
@@ -940,6 +1094,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Get value from route parameters such as /{string}/{int}/{double}
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="name"></param>
+	/// <returns></returns>
+	/// <exception cref="InvalidOperationException"></exception>
+	/// <exception cref="WebFrameworkException"></exception>
 	public T GetRouteParameter<T>(string name)
 	{
 		void* exception = null;
