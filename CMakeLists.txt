@@ -230,12 +230,18 @@ install(
 		if (UNIX)
 			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.a")
 
-			if (FILES_TO_REMOVE)
-				file(REMOVE ${FILES_TO_REMOVE})
-			endif()
+			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/CC_API.a")
 		else()
-			file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/")
+			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.lib")
+
+			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/CC_API.lib")
 		endif()
+
+		if (FILES_TO_REMOVE)
+			file(REMOVE ${FILES_TO_REMOVE})
+		endif()
+
+		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
 	]]
 )
 install(
