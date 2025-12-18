@@ -66,13 +66,6 @@ if (CMAKE_SCRIPT_MODE_FILE)
     return()
 endif()
 
-set(
-    WEB_FRAMEWORK_3RDPARTY_LIB
-    ssl
-    crypto
-    sqlite3
-)
-
 if (WIN32)
     list(APPEND WEB_FRAMEWORK_3RDPARTY_LIB crypt32 Rpcrt4)
 elseif (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
@@ -89,8 +82,6 @@ if (UNIX)
 elseif(WIN32)
     install(DIRECTORY ${WEB_FRAMEWORK_SDK}/dll/ DESTINATION .)
 endif(UNIX)
-
-link_libraries(${WEB_FRAMEWORK_3RDPARTY_LIB})
 
 if (NOT TARGET generate_localization)
     if ((NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} EQUAL ${CMAKE_SYSTEM_PROCESSOR}) AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
