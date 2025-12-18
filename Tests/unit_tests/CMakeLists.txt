@@ -4,6 +4,16 @@ set(UTILITY_LIBRARY_VERSION 0.8.0)
 set(NETWORKS_VERSION 1.22.6)
 set(LOCALIZATION_VERSION 1.4.6)
 
+set(
+	3RDPARTY_LIBRARIES
+	ssl
+	crypto
+)
+
+if (WIN32)
+	list(APPEND 3RDPARTY_LIBRARIES crypt32)
+endif()
+
 project(test_suites)
 
 if(UNIX)

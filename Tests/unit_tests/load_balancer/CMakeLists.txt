@@ -26,6 +26,7 @@ target_link_libraries(
 	SocketStreams
 	gtest 
 	gtest_main
+	${3RDPARTY_LIBRARIES}
 	WebFramework::CXX_API
 )
 
