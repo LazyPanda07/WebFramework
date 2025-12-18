@@ -224,3 +224,22 @@ endif ()
 
 install(DIRECTORY WebFramework/certificates DESTINATION .)
 install(DIRECTORY schemas DESTINATION .)
+
+install(
+	CODE [[
+		if (UNIX)
+			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.a")
+
+			if (FILES_TO_REMOVE)
+				file(REMOVE ${FILES_TO_REMOVE})
+			endif()
+		else()
+			file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/")
+		endif()
+	]]
+)
+install(
+	CODE [[
+		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/include/")
+	]]
+)

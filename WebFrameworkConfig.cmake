@@ -73,13 +73,6 @@ set(
     sqlite3
 )
 
-link_directories(
-    BEFORE
-    ${WEB_FRAMEWORK_SDK}/lib/
-    ${WEB_FRAMEWORK_SDK}/lib/vendor/OpenSSL/
-    ${WEB_FRAMEWORK_SDK}/lib/vendor/sqlite3/
-)
-
 if (WIN32)
     list(APPEND WEB_FRAMEWORK_3RDPARTY_LIB crypt32 Rpcrt4)
 elseif (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
@@ -92,7 +85,6 @@ if (UNIX)
         DESTINATION .
         FILES_MATCHING 
         PATTERN "*.so"
-        PATTERN "vendor" EXCLUDE
     )
 elseif(WIN32)
     install(DIRECTORY ${WEB_FRAMEWORK_SDK}/dll/ DESTINATION .)
