@@ -11,4 +11,4 @@
 ## API versions update
 - [ ] C#(package version, assembly version, file version)
 - [ ] Flutter(pubspec.yml, CHANGELOG.md)
-- [ ] Python(Utils.py, pyproject.toml, CMakeLists.txt)
+- [ ] Python(pyproject.toml, CMakeLists.txt)
