@@ -5,7 +5,8 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "import.h"
+#include <import.h>
+#include <json_object.h>
 
 #ifdef __LINUX__
 #include <unistd.h>
@@ -51,24 +52,24 @@ static char* getConfigurationData()
 	return data;
 }
 
-static Config createConfig()
+static config_t createConfig()
 {
-	Config result;
+	config_t result;
 
-	createConfigFromPath("multi_threaded_config.json", &result);
+	wf_create_config_from_path("multi_threaded_config.json", &result);
 
 	return result;
 }
 
 void initialize()
 {
-	initializeWebFramework("WebFramework");
+	wf_initialize_web_framework("WebFramework");
 }
 
 void configConstructors(bool* configuration, bool* basePath, bool* rawConfiguration)
 {
-	Config configFromPath = createConfig();
-	Config configFromStrings;
+	config_t configFromPath = createConfig();
+	config_t configFromStrings;
 	char* data = getConfigurationData();
 	char currentDirectory[4096];
 
@@ -80,137 +81,137 @@ void configConstructors(bool* configuration, bool* basePath, bool* rawConfigurat
 	GetCurrentDirectoryA(sizeof(currentDirectory), currentDirectory);
 #endif
 
-	createConfigFromString(data, currentDirectory, &configFromStrings);
+	wf_create_config_from_string(data, currentDirectory, &configFromStrings);
 
 	free(data);
 
 	{
-		WebFrameworkString fromPathString;
-		WebFrameworkString fromStringsString;
+		web_framework_string_t fromPathString;
+		web_framework_string_t fromStringsString;
 
-		getConfiguration(configFromPath, &fromPathString);
-		getConfiguration(configFromStrings, &fromStringsString);
+		wf_get_configuration(configFromPath, &fromPathString);
+		wf_get_configuration(configFromStrings, &fromStringsString);
 
-		*configuration = strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString));
+		*configuration = strcmp(wf_get_data_from_string(fromPathString), wf_get_data_from_string(fromStringsString));
 
-		deleteWebFrameworkString(fromPathString);
-		deleteWebFrameworkString(fromStringsString);
+		wf_delete_string(fromPathString);
+		wf_delete_string(fromStringsString);
 	}
 
 	{
-		WebFrameworkString fromPathString;
-		WebFrameworkString fromStringsString;
+		web_framework_string_t fromPathString;
+		web_framework_string_t fromStringsString;
 
-		getBasePath(configFromPath, &fromPathString);
-		getBasePath(configFromStrings, &fromStringsString);
+		wf_get_base_path(configFromPath, &fromPathString);
+		wf_get_base_path(configFromStrings, &fromStringsString);
 
-		*basePath = strcmp(getDataFromString(fromPathString), getDataFromString(fromStringsString));
+		*basePath = strcmp(wf_get_data_from_string(fromPathString), wf_get_data_from_string(fromStringsString));
 
-		deleteWebFrameworkString(fromPathString);
-		deleteWebFrameworkString(fromStringsString);
+		wf_delete_string(fromPathString);
+		wf_delete_string(fromStringsString);
 	}
 
 	{
 		const char* fromPathString;
 		const char* fromStringsString;
 
-		getRawConfiguration(configFromPath, &fromPathString);
-		getRawConfiguration(configFromStrings, &fromStringsString);
+		wf_get_raw_configuration(configFromPath, &fromPathString);
+		wf_get_raw_configuration(configFromStrings, &fromStringsString);
 
 		*rawConfiguration = strcmp(fromPathString, fromStringsString);
 	}
 
-	deleteWebFrameworkConfig(configFromPath);
-	deleteWebFrameworkConfig(configFromStrings);
+	wf_delete_config(configFromPath);
+	wf_delete_config(configFromStrings);
 }
 
 void configOverrideString(bool* assertTrue)
 {
-	Config config = createConfig();
-	WebFrameworkString data = NULL;
+	config_t config = createConfig();
+	web_framework_string_t data = NULL;
 
-	overrideConfigurationString(config, "webServerType", "threadPool", true);
+	wf_override_configuration_string(config, "webServerType", "threadPool", true);
 
-	getConfiguration(config, &data);
+	wf_get_configuration(config, &data);
 
-	*assertTrue = strstr(getDataFromString(data), "\"webServerType\": \"threadPool\"");
+	*assertTrue = strstr(wf_get_data_from_string(data), "\"webServerType\": \"threadPool\"");
 
-	deleteWebFrameworkString(data);
-	deleteWebFrameworkConfig(config);
+	wf_delete_string(data);
+	wf_delete_config(config);
 }
 
 void configOverrideInteger(bool* assertTrue)
 {
-	Config config = createConfig();
-	WebFrameworkString data = NULL;
+	config_t config = createConfig();
+	web_framework_string_t data = NULL;
 
-	overrideConfigurationInteger(config, "cachingSize", 0, true);
+	wf_override_configuration_integer(config, "cachingSize", 0, true);
 
-	getConfiguration(config, &data);
+	wf_get_configuration(config, &data);
 
-	*assertTrue = strstr(getDataFromString(data), "\"cachingSize\": 0");
+	*assertTrue = strstr(wf_get_data_from_string(data), "\"cachingSize\": 0");
 
-	deleteWebFrameworkString(data);
-	deleteWebFrameworkConfig(config);
+	wf_delete_string(data);
+	wf_delete_config(config);
 }
 
 void configOverrideBool(bool* assertTrue)
 {
-	Config config = createConfig();
-	WebFrameworkString data = NULL;
+	config_t config = createConfig();
+	web_framework_string_t data = NULL;
 
-	overrideConfigurationBoolean(config, "usingLogging", false, true);
+	wf_override_configuration_boolean(config, "usingLogging", false, true);
 
-	getConfiguration(config, &data);
+	wf_get_configuration(config, &data);
 
-	*assertTrue = strstr(getDataFromString(data), "\"usingLogging\": false");
+	*assertTrue = strstr(wf_get_data_from_string(data), "\"usingLogging\": false");
 
-	deleteWebFrameworkString(data);
-	deleteWebFrameworkConfig(config);
+	wf_delete_string(data);
+	wf_delete_config(config);
 }
 
 void configOverrideStringArray(bool* assertFalse)
 {
-	Config config = createConfig();
-	WebFrameworkString data = NULL;
-	WebFrameworkString rawData = NULL;
+	config_t config = createConfig();
+	web_framework_string_t data = NULL;
+	web_framework_string_t rawData = NULL;
 	const char** values = malloc(sizeof(const char*));
 
 	values[0] = "anotherSource";
 
-	overrideConfigurationStringArray(config, "loadSources", values, true, 1);
+	wf_override_configuration_string_array(config, "loadSources", values, true, 1);
 
-	getConfiguration(config, &data);
-	getConfiguration(config, &rawData);
+	wf_get_configuration(config, &data);
+	wf_get_configuration(config, &rawData);
 
-	*assertFalse = strcmp(getDataFromString(data), getDataFromString(rawData));
+	*assertFalse = strcmp(wf_get_data_from_string(data), wf_get_data_from_string(rawData));
 
-	deleteWebFrameworkString(data);
-	deleteWebFrameworkString(rawData);
-	deleteWebFrameworkConfig(config);
+	wf_delete_string(data);
+	wf_delete_string(rawData);
+	wf_delete_config(config);
 
 	free(values);
 }
 
 void configOverrideIntegerArray(bool* assertFalse)
 {
-	Config config = createConfig();
-	WebFrameworkString data = NULL;
-	WebFrameworkString rawData = NULL;
+	config_t config = createConfig();
+	web_framework_string_t data = NULL;
+	web_framework_string_t rawData = NULL;
 	int64_t* values = malloc(sizeof(int64_t));
 
 	values[0] = 15;
 
-	overrideConfigurationIntegerArray(config, "port", values, true, 1);
+	wf_override_configuration_integer_array(config, "port", values, true, 1);
 
-	getConfiguration(config, &data);
-	getConfiguration(config, &rawData);
+	wf_get_configuration(config, &data);
+	wf_get_configuration(config, &rawData);
 
-	*assertFalse = strcmp(getDataFromString(data), getDataFromString(rawData));
+	*assertFalse = strcmp(wf_get_data_from_string(data), wf_get_data_from_string(rawData));
 
-	deleteWebFrameworkString(data);
-	deleteWebFrameworkString(rawData);
-	deleteWebFrameworkConfig(config);
+	wf_delete_string(data);
+	wf_delete_string(rawData);
+	wf_delete_config(config);
 
 	free(values);
 }

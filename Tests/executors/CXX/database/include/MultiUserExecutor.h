@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Executors/BaseHeavyOperationStatefulExecutor.hpp>
+#include <Executors/HeavyOperationStatefulExecutor.hpp>
 
-class MultiUserExecutor : public framework::BaseHeavyOperationStatefulExecutor
+class MultiUserExecutor : public framework::HeavyOperationStatefulExecutor
 {
 private:
 	std::string userId;
@@ -10,9 +10,9 @@ private:
 public:
 	MultiUserExecutor();
 
-	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
-	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doPost(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
-	void doPut(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doPut(framework::HttpRequest& request, framework::HttpResponse& response) override;
 };

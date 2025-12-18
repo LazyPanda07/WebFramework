@@ -1,0 +1,36 @@
+[build-system]
+requires = ["scikit-build-core[pyproject]"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "web_framework_api"
+description = "Python API for WebFramework"
+readme = "README.md"
+license = { file = "license/LICENSE" }
+requires-python = "==3.14.*"
+authors = [
+    { name = "LazyPanda07", email = "semengricenko@gmail.com" }
+]
+maintainers = [
+    { name = "LazyPanda07", email = "semengricenko@gmail.com" }
+]
+keywords = ["Web"]
+version = "3.2.0"
+classifiers = [
+    "Programming Language :: Python :: 3.14",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+]
+
+[tool.scikit-build]
+wheel.py-api = "py3"
+sdist.include = [
+  "cxx/include/*.hpp",
+  "lib/*.so",
+  "dll/*.dll",
+]
+
+[project.urls]
+Repository = "http://github.com/LazyPanda07/WebFramework"
+Wiki = "http://github.com/LazyPanda07/WebFramework/wiki"

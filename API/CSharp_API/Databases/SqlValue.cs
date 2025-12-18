@@ -1,0 +1,253 @@
+﻿namespace Framework;
+
+using Framework.Utility;
+using System;
+using System.Runtime.InteropServices;
+
+public sealed unsafe partial class SqlValue
+{
+	internal readonly IntPtr implementation;
+
+	private enum SqlValueType
+	{
+		IntType,
+		DoubleType,
+		StringType,
+		BoolType,
+		NullptrType,
+		BlobType
+	};
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr createSQLValue();
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void setSQLValueInt(IntPtr implementation, long value);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void setSQLValueDouble(IntPtr implementation, double value);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void setSQLValueString(IntPtr implementation, string value);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void setSQLValueBool(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool value);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void setSQLValueNull(IntPtr implementation);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void setSQLValueBlob(IntPtr implementation, byte[] value, nuint size);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial int getSQLValueInt(IntPtr implementation);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial double getSQLValueDouble(IntPtr implementation);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial IntPtr getSQLValueString(IntPtr implementation);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static unsafe partial bool getSQLValueBool(IntPtr implementation);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void getSQLValueBlob(IntPtr implementation, ref IntPtr result, ref nuint size);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial int getSQLValueType(IntPtr implementation);
+
+	internal SqlValue(IntPtr implementation)
+	{
+		this.implementation = createSQLValue();
+		SqlValueType type = (SqlValueType)getSQLValueType(implementation);
+
+		switch (type)
+		{
+			case SqlValueType.IntType:
+				SetValue(getSQLValueInt(implementation));
+
+				break;
+
+			case SqlValueType.DoubleType:
+				SetValue(getSQLValueDouble(implementation));
+
+				break;
+
+			case SqlValueType.StringType:
+				SetValue(Marshal.PtrToStringUTF8(getSQLValueString(implementation))!);
+
+				break;
+
+			case SqlValueType.BoolType:
+				SetValue(getSQLValueBool(implementation));
+
+				break;
+
+			case SqlValueType.NullptrType:
+				SetValue();
+
+				break;
+
+			case SqlValueType.BlobType:
+				IntPtr temp = IntPtr.Zero;
+				nuint size = 0;
+
+				getSQLValueBlob(implementation, ref temp, ref size);
+
+				byte[] result = new byte[size];
+
+				Marshal.Copy(temp, result, 0, result.Length);
+
+				SetValue(result.AsSpan());
+
+				break;
+
+			default:
+				throw new Exception($"Wrong type from SqlValueType: {((int)type)}");
+		}
+	}
+
+	public SqlValue(object? value = null)
+	{
+		implementation = createSQLValue();
+
+		SetValue(value);
+	}
+
+	public SqlValue(int value) :
+		this(value as object)
+	{
+
+	}
+
+	public SqlValue(long value) :
+		this(value as object)
+	{
+
+	}
+
+	public SqlValue(double value) :
+		this(value as object)
+	{
+
+	}
+
+	public SqlValue(string value) :
+		this(value as object)
+	{
+
+	}
+
+	public SqlValue(bool value) :
+		this(value as object)
+	{
+
+	}
+
+	public bool IsNull()
+	{
+		const int nullType = 4;
+
+		return getSQLValueType(implementation) == nullType;
+	}
+
+	public void SetValue(int value)
+	{
+		setSQLValueInt(implementation, value);
+	}
+
+	public void SetValue(long value)
+	{
+		setSQLValueInt(implementation, value);
+	}
+
+	public void SetValue(double value)
+	{
+		setSQLValueDouble(implementation, value);
+	}
+
+	public void SetValue(string value)
+	{
+		setSQLValueString(implementation, value);
+	}
+
+	public void SetValue(bool value)
+	{
+		setSQLValueBool(implementation, value);
+	}
+
+	public void SetValue(object? value = null)
+	{
+		if (value == null)
+		{
+			setSQLValueNull(implementation);
+		}
+		else if (value is string stringValue)
+		{
+			SetValue(stringValue);
+		}
+		else if (value is bool boolValue)
+		{
+			SetValue(boolValue);
+		}
+		else if (value is int intValue)
+		{
+			SetValue(intValue);
+		}
+		else if (value is long longValue)
+		{
+			SetValue(longValue);
+		}
+		else if (value is double doubleValue)
+		{
+			SetValue(doubleValue);
+		}
+		else
+		{
+			throw new InvalidOperationException($"Wrong type: {value.GetType().Name}");
+		}
+	}
+
+	public void SetValue(ReadOnlySpan<byte> value)
+	{
+		setSQLValueBlob(implementation, value.ToArray(), (nuint)value.Length);
+	}
+
+	public byte[] GetValue()
+	{
+		IntPtr temp = IntPtr.Zero;
+		nuint size = 0;
+
+		getSQLValueBlob(implementation, ref temp, ref size);
+
+		byte[] result = new byte[size];
+
+		Marshal.Copy(temp, result, 0, result.Length);
+
+		return result;
+	}
+
+	public T GetValue<T>()
+	{
+		Type type = typeof(T);
+
+		if (type == typeof(object))
+		{
+			throw new Exception("Wrong type object");
+		}
+
+		if (type == typeof(float) || type == typeof(double) || type == typeof(decimal))
+		{
+			return (T)Convert.ChangeType(getSQLValueDouble(implementation), type);
+		}
+
+		return type switch
+		{
+			Type t when t == typeof(bool) => (T)Convert.ChangeType(getSQLValueBool(implementation), type),
+			Type t when t == typeof(string) => (T)Convert.ChangeType(Marshal.PtrToStringUTF8(getSQLValueString(implementation))!, type),
+			_ => (T)Convert.ChangeType(getSQLValueInt(implementation), type)
+		};
+	}
+}

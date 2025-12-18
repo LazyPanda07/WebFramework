@@ -3,12 +3,14 @@
 #include "BaseWebServer.h"
 #include "ExecutorServer.h"
 
+#include <chrono>
+
 #include "ThreadPool.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 
 namespace framework
 {
-	class ThreadPoolWebServer : 
+	class ThreadPoolWebServer :
 		public virtual BaseWebServer,
 		public ExecutorServer
 	{
@@ -17,15 +19,23 @@ namespace framework
 		{
 		private:
 			streams::IOSocketStream stream;
-			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> statefulExecutors;
+			ExecutorsManager::StatefulExecutors executors;
 			std::function<void()> cleanup;
+			std::function<ExecutorServer::ServiceState(streams::IOSocketStream& stream, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)> service;
 			sockaddr address;
 			bool isBusy;
 			bool webExceptionAcquired;
 			web::LargeBodyHandler* largeBodyHandler;
 
 		public:
-			Client(SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup, ThreadPoolWebServer& server, DWORD timeout);
+			Client
+			(
+				SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address,
+				std::function<void()>&& cleanup,
+				const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& task,
+				ThreadPoolWebServer& server,
+				DWORD timeout
+			);
 
 			Client(const Client&) = delete;
 
@@ -64,14 +74,14 @@ namespace framework
 	public:
 		ThreadPoolWebServer
 		(
-			const json::JSONParser& configuration,
+			const json::JsonParser& configuration,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			std::string_view ip,
 			std::string_view port,
 			DWORD timeout,
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,
-			size_t numberOfThreads,
+			uint32_t numberOfThreads,
 			std::shared_ptr<threading::ThreadPool> resourcesThreadPool
 		);
 

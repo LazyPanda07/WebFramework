@@ -13,8 +13,6 @@ C++ HTTP/HTTPS server with C# API
 Server needs few files to run: 
 * [web.json](#settings) with routes
 * [Executors](#executors)
-	* [Windows](https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_windows.zip)
-	* [Linux](https://github.com/LazyPanda07/WebFramework/releases/latest/download/hello_executor_linux.zip)
 * [config.json](#config) with server settings  
 All these files must be in the same directory as executable
 
@@ -60,7 +58,8 @@ namespace hello_csharp
 {
   "HelloExecutor": {
     "route": "",
-    "loadType": "initialization"
+    "loadType": "initialization",
+    "api": "csharp"
   }
 }
 ```
@@ -81,6 +80,9 @@ namespace hello_csharp
     ],
     "loadSources": [
       "hello_executor"
+    ],
+    "runtimes": [
+      ".net"
     ],
     "assetsPath": "assets",
     "templatesPath": "templates",
@@ -116,41 +118,24 @@ You will see response from server
 
 
 ## Executors
-Executors are C++ classes that responsible for giving responses for their route(url).  
+Executors are C++, C, Python or C# classes that responsible for giving responses for their route(url).  
 Source code of HelloExecutor from example  
 ```HelloExecutor.h```
-```cpp
-#pragma once
+```csharp
+using Framework;
 
-#include "Executors/BaseStatelessExecutor.h"
-
-namespace executors
+public class HelloExecutor : StatelessExecutor
 {
-	class HelloExecutor : public framework::BaseStatelessExecutor
-	{
-	public:
-		HelloExecutor() = default;
-
-		void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
-
-		~HelloExecutor() = default;
-	};
+    public override void DoGet(HttpRequest request, HttpResponse response)
+    {
+        response.SetBody
+        (
+            new
+            {
+                message = "Hello, World!"
+            }
+        );
+    }
 }
 ```
-```HelloExecutor.cpp```
-```cpp
-#include "HelloExecutor.h"
-
-#include "JSONBuilder.h"
-
-namespace executors
-{
-	void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
-	{
-		response.addBody(json::JSONBuilder(CP_UTF8).appendString("message", "Hello, World!"));
-	}
-
-	DECLARE_EXECUTOR(HelloExecutor);
-}
-```
-More information you can find in [wiki](https://github.com/LazyPanda07/WebFramework/wiki/Executors).
+More information you can find in [wiki](https://github.com/LazyPanda07/WebFramework/wiki/Executors-API).

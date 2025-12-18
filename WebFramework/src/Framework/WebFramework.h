@@ -1,9 +1,10 @@
 #pragma once
 
+#include <ThreadPool.h>
+
 #include "Framework/WebFrameworkPlatform.h"
 
 #include "Web/Servers/BaseWebServer.h"
-#include "ThreadPool.h"
 #include "Config.h"
 
 #ifdef __WITH_STACKTRACE__
@@ -26,7 +27,7 @@ namespace framework
 		static bool getUseHTTPS();
 
 	private:
-		static void parseAdditionalConfigs(const json::utility::jsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources);
+		static void parseAdditionalConfigs(const json::JsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources);
 
 		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
 
@@ -38,22 +39,23 @@ namespace framework
 #ifdef __WITH_STACKTRACE__
 		utility::SegfaultHandler segfaultHandler;
 #endif
+	private:
+		uint64_t parseLoggingFlags(const json::JsonObject& loggingSettings) const;
 
 	private:
-		uint64_t parseLoggingFlags(const json::utility::jsonObject& loggingSettings) const;
+		void initAPIs(const json::JsonObject& webFrameworkSettings);
 
-	private:
 		void initLogging() const;
 
-		void initExecutors(const json::utility::jsonObject& webFrameworkSettings, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, std::vector<std::string>& pathToSources);
+		void initExecutors(const json::JsonObject& webFrameworkSettings, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, std::vector<std::string>& pathToSources);
 
-		void initHTTPS(const json::utility::jsonObject& webFrameworkSettings) const;
+		void initHTTPS(const json::JsonObject& webFrameworkSettings) const;
 
-		void initDatabase(const json::utility::jsonObject& webFrameworkSettings);
+		void initDatabase(const json::JsonObject& webFrameworkSettings);
 
 		void initServer
 		(
-			const json::utility::jsonObject& webFrameworkSettings,
+			const json::JsonObject& webFrameworkSettings,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::vector<std::string>& pathToSources
 		);
@@ -96,7 +98,7 @@ namespace framework
 
 		/// @brief Getter for currentConfiguration
 		/// @return Get current running configuration JSON 
-		const json::JSONParser& getCurrentConfiguration() const;
+		const json::JsonParser& getCurrentConfiguration() const;
 
 		~WebFramework();
 	};

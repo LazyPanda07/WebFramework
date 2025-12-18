@@ -4,6 +4,7 @@
 
 namespace framework::interfaces
 {
+	// Also update CXX_API
 	class IHTTPResponse
 	{
 	public:

@@ -38,27 +38,21 @@ namespace json_settings
 	inline constexpr std::string_view largeBodyPacketSizeKey = "largeBodyPacketSize";
 	inline constexpr std::string_view databaseImplementationKey = "databaseImplementation";
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
+	inline constexpr std::string_view runtimesKey = "runtimes";
 
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
 	inline constexpr std::string_view heuristicKey = "heuristic";
 	inline constexpr std::string_view loadSourceKey = "loadSource";
 	inline constexpr std::string_view serversHTTPSKey = "serversHTTPS";
 	inline constexpr std::string_view processingThreadsKey = "processingThreads";
+	inline constexpr std::string_view targetRPSKey = "targetRPS";
 
 	inline constexpr std::string_view usingLoggingKey = "usingLogging";
 	inline constexpr std::string_view logsPathKey = "logsPath";
 	inline constexpr std::string_view duplicateOutputKey = "duplicateOutput";
 	inline constexpr std::string_view duplicateErrorOutputKey = "duplicateErrorOutput";
 
-	inline constexpr std::string_view defaultLoadSourceValue = "current";
-	inline constexpr std::string_view defaultHeuristicValue = "Connections";
-
 	inline constexpr std::string_view threadCountKey = "threadCount";
-
-	inline constexpr std::string_view multiThreadedWebServerTypeValue = "multiThreaded";
-	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";
-	inline constexpr std::string_view loadBalancerWebServerTypeValue = "loadBalancer";
-	inline constexpr std::string_view proxyWebServerTypeValue = "proxy";
 }
 
 namespace exceptions
@@ -69,6 +63,8 @@ namespace exceptions
 	inline constexpr std::string_view missingLoadType = "Missing load type of";
 	inline constexpr std::string_view cantLoadSource = "Can't load";
 	inline constexpr std::string_view missingOtherDLLs = "That load source requires to load other dlls";
+	inline constexpr std::string_view notCXXLibrary = "That load source is not cxx";
+	inline constexpr std::string_view notCCLibrary = "That load source is not cc";
 
 	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
 
@@ -85,6 +81,18 @@ namespace json_settings_values
 {
 	inline constexpr size_t largeBodySizeThresholdValue = 165 * 1024 * 1024;
 	inline constexpr size_t largeBodyPacketSizeValue = 11 * 1024 * 1024;
+	inline constexpr uint32_t targetRPSValue = 5000;
+
+	inline constexpr std::string_view multiThreadedWebServerTypeValue = "multiThreaded";
+	inline constexpr std::string_view threadPoolWebServerTypeValue = "threadPool";
+	inline constexpr std::string_view loadBalancerWebServerTypeValue = "loadBalancer";
+	inline constexpr std::string_view proxyWebServerTypeValue = "proxy";
+
+	inline constexpr std::string_view defaultLoadSourceValue = "current";
+	inline constexpr std::string_view defaultHeuristicValue = "Connections";
+
+	inline constexpr std::string_view runtimesPythonValue = "python";
+	inline constexpr std::string_view runtimesDotNetValue = ".net";
 }
 
 namespace web_framework_assets

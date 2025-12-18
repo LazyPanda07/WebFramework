@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "WebFramework config",
   "type": "object",
   "description": "Settings for WebFramework server",
@@ -40,7 +41,7 @@
             "api": {
               "type": "string",
               "description": "API language",
-              "enum": [ "cxx", "cc" ]
+              "enum": [ "cxx", "cc", "python", "csharp" ]
             }
           }
         },
@@ -59,7 +60,7 @@
         },
         "listOfServers": {
           "type": "object",
-          "description": "List of all balancing servers in format IP address: [ port1, port2 ]",
+          "description": "List of all balancing servers in format IP address: [port1, port2, ...]",
           "minProperties": 1,
           "patternProperties": {
             "^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))$": {
@@ -75,6 +76,11 @@
             }
           },
           "additionalProperties": false
+        },
+        "targetRPS": {
+          "type": "integer",
+          "description": "Target RPS for load balancing server across all processingThreads",
+          "default": 5000
         }
       },
       "required": [ "serversHTTPS", "listOfServers" ]
@@ -190,6 +196,33 @@
           "type": "integer",
           "description": "Number of threads to send files",
           "minimum": 1
+        },
+        "runtimes": {
+          "type": "array",
+          "description": "List of additional API runtimes",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Runtime name to load on startup",
+                "enum": [ "python", ".net" ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Runtime name to load on startup",
+                    "enum": [ "python", ".net" ]
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable or disable runtime"
+                  }
+                }
+              }
+            ]
+          }
         },
         "HTTPS": {
           "type": "object",

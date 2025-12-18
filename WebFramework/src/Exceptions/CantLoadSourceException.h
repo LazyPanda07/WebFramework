@@ -12,7 +12,7 @@ namespace framework::exceptions
 	class WEB_FRAMEWORK_API CantLoadSourceException : public BaseWebFrameworkException
 	{
 	public:
-		CantLoadSourceException(std::string_view source);
+		CantLoadSourceException(std::string_view source, std::string_view additionalInformation);
 
 		~CantLoadSourceException() = default;
 	};

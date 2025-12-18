@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Executors/BaseHeavyOperationStatelessExecutor.hpp>
+#include <Executors/HeavyOperationStatelessExecutor.hpp>
 
-class DownloadExecutor : public framework::BaseHeavyOperationStatelessExecutor
+class DownloadExecutor : public framework::HeavyOperationStatelessExecutor
 {
 public:
-	void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 };

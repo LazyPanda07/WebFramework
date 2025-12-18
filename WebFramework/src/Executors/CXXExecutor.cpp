@@ -121,8 +121,6 @@ namespace framework
 
 	CXXExecutor::~CXXExecutor()
 	{
-		this->destroy();
-
 		deleteFunction(implementation);
 	}
 }

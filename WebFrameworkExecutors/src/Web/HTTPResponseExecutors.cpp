@@ -50,7 +50,7 @@ namespace framework
 		implementation->setBody(body.data());
 	}
 
-	void HTTPResponseExecutors::setBody(const json::JSONBuilder& json)
+	void HTTPResponseExecutors::setBody(const json::JsonBuilder& json)
 	{
 		implementation->addHeader("Content-Type", "application/json");
 

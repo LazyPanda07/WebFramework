@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-if(UNIX)
-	add_definitions(-D__LINUX__)
-endif(UNIX)
-
 project(ProxyCore)
 
 add_executable(
@@ -16,21 +12,22 @@ add_executable(
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
-	utilities/
-	${WEB_FRAMEWORK_INCLUDE}
-	${GTEST_INCLUDE_DIRS}
-)
-
-target_link_directories(
-	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBRARY_LIB_DIRS}
-	${GTEST_LIB_DIR}
+	utilities
 )
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${LIBS}
-	${GTEST_BOTH_LIBRARIES}
+	UtilityLibrary
+	Networks
+	-Wl,--whole-archive
+	JSON
+	-Wl,--no-whole-archive
+	HTTP
+	SocketStreams
+	gtest
+	gtest_main
+	${3RDPARTY_LIBRARIES}
+	WebFramework::CXX_API
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

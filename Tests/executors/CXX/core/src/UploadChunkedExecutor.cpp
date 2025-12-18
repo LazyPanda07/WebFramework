@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-void UploadChunkedExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void UploadChunkedExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	std::ofstream stream(request.getHeaders().at("File-Name"), std::ios::binary);
 

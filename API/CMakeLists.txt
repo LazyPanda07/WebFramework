@@ -21,7 +21,28 @@ if (${BUILD_CSHARP_API})
 endif()
 
 if (${BUILD_PYTHON_API})
-	install(DIRECTORY python_api DESTINATION api)
+	install(
+		DIRECTORY Python_API/ DESTINATION api/python_api
+		PATTERN "*.vcxproj*" EXCLUDE
+		PATTERN "build" EXCLUDE
+		PATTERN "out" EXCLUDE
+		PATTERN ".vs" EXCLUDE
+	)
+	install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/api/cxx/include DESTINATION ${CMAKE_INSTALL_PREFIX}/api/python_api/cxx)
+	if (UNIX)
+		install(
+			CODE [[
+				execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/api/python_api/lib)
+			]]
+		)
+	elseif (WIN32)
+		install(
+			CODE [[
+				execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/dll ${CMAKE_INSTALL_PREFIX}/api/python_api/dll)
+			]]
+		)
+	endif()
+	
 	install(
 		CODE [[
 			execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/license ${CMAKE_INSTALL_PREFIX}/api/python_api/license)
@@ -30,5 +51,5 @@ if (${BUILD_PYTHON_API})
 endif()
 
 if (${BUILD_FLUTTER_API})
-	install(DIRECTORY web_framework_flutter_api/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/web_framework_flutter_api/)
+	install(DIRECTORY web_framework_flutter_api/ DESTINATION api/web_framework_flutter_api/)
 endif()

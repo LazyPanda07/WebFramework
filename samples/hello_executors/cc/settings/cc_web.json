@@ -1,0 +1,7 @@
+{
+  "CCHelloExecutor": {
+    "route": "cc",
+    "loadType": "initialization",
+    "api": "cc"
+  }
+}

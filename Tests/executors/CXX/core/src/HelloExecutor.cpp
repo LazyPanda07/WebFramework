@@ -2,14 +2,14 @@
 
 void HelloExecutor::init(const framework::utility::ExecutorSettings& executorSettings)
 {
-	framework::JSONParser initParameters = executorSettings.getInitParameters();
+	framework::JsonParser initParameters = executorSettings.getInitParameters();
 
 	value = initParameters.get<int64_t>("number");
 }
 
-void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void HelloExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::JSONBuilder builder;
+	framework::JsonBuilder builder;
 
 	builder["message"] = "Hello, World!";
 	builder["number"] = value;
@@ -17,32 +17,32 @@ void HelloExecutor::doGet(framework::HTTPRequest& request, framework::HTTPRespon
 	response.setBody(builder);
 }
 
-void HelloExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void HelloExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	this->doGet(request, response);
 }
 
-void HelloExecutor::doHead(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void HelloExecutor::doHead(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	this->doGet(request, response);
 }
 
-void HelloExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void HelloExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	this->doGet(request, response);
 }
 
-void HelloExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void HelloExecutor::doDelete(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	this->doGet(request, response);
 }
 
-void HelloExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void HelloExecutor::doPatch(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	this->doGet(request, response);
 }
 
-void HelloExecutor::doConnect(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void HelloExecutor::doConnect(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	this->doGet(request, response);
 }

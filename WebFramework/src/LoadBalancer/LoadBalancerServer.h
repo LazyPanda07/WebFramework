@@ -1,17 +1,20 @@
 #pragma once
 
-#include "Framework/WebFrameworkPlatform.h"
+#include "Web/Servers/BaseWebServer.h"
+
+#include <chrono>
 
 #include <MultiLocalizationManager.h>
 #include <IOSocketStream.h>
 
-#include "Web/Servers/BaseWebServer.h"
+#include "Framework/WebFrameworkPlatform.h"
 #include "Heuristics/BaseLoadBalancerHeuristic.h"
 #include "Executors/ResourceExecutor.h"
 
 #include "Utility/BaseConnectionData.h"
 #include "Utility/AdditionalServerSettings.h"
 #include "Utility/ConcurrentQueue.h"
+#include "Utility/Sources.h"
 
 namespace framework::load_balancer
 {
@@ -66,10 +69,11 @@ namespace framework::load_balancer
 
 	private:
 		std::vector<ServerData> allServers;
-		std::vector<std::vector<LoadBalancerRequest>> requestQueues;
+		std::vector<threading::utility::ConcurrentQueue<LoadBalancerRequest>> requestQueues;
+		std::vector<std::atomic_int64_t> processingClients;
 		std::vector<std::future<void>> threads;
-		threading::utility::ConcurrentQueue<LoadBalancerRequest> queuedRequests;
 		std::shared_ptr<ResourceExecutor> resources;
+		std::chrono::microseconds threshold;
 		bool serversHTTPS;
 
 	private:
@@ -84,7 +88,7 @@ namespace framework::load_balancer
 	private:
 		void processing(size_t index);
 
-		std::unique_ptr<BaseLoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, HMODULE loadSource) const;
+		std::unique_ptr<BaseLoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const;
 
 	private:
 		void receiveConnections(const std::function<void()>& onStartServer, std::exception** outException) override;
@@ -95,10 +99,11 @@ namespace framework::load_balancer
 		LoadBalancerServer
 		(
 			std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
-			const json::utility::jsonObject& heuristic, HMODULE loadSource,
+			const json::JsonObject& heuristic, utility::LoadSource loadSource,
 			const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 			std::shared_ptr<ResourceExecutor> resources,
-			size_t processingThreads
+			uint32_t processingThreads,
+			uint32_t loadBalancingTargetRPS
 		);
 
 		~LoadBalancerServer() = default;

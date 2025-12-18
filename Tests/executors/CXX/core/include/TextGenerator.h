@@ -12,7 +12,7 @@ private:
 public:
 	TextGenerator(std::string_view data);
 
-	std::string_view generate() override;
+	std::string_view generate(size_t& size) override;
 
 	~TextGenerator() = default;
 };

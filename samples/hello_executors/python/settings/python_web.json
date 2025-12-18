@@ -1,0 +1,7 @@
+{
+  "PythonHelloExecutor": {
+    "route": "python",
+    "loadType": "initialization",
+    "api": "python"
+  }
+}

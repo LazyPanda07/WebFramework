@@ -2,14 +2,14 @@
 
 #include <Utility/WebFrameworkLocalization.hpp>
 
-void LocalizationExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void LocalizationExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	response.setBody
 	(
-		framework::JSONBuilder().append
+		framework::JsonBuilder().append
 		(
 			"result",
-			framework::utility::getLocalizedString("LocalizationData", "key", request.getJSON().get<std::string>("language"))
+			framework::utility::getLocalizedString("LocalizationData", "key", request.getJson().get<std::string>("language"))
 		)
 	);
 }

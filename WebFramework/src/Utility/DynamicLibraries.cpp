@@ -1,44 +1,97 @@
 #include "DynamicLibraries.h"
 
 #include <format>
+#include <fstream>
+#include <array>
+#include <cstring>
 
 #include <Exceptions/FileDoesNotExistException.h>
 #include <Strings.h>
 
 #ifdef __LINUX__
 #include <dlfcn.h>
+#include <link.h>
 #include <limits.h>
 #include <unistd.h>
 #endif
 
+static bool isDotNetAssembly(const std::filesystem::path& libraryPath);
+
 namespace framework::utility
 {
-	std::string makePathToDynamicLibrary(const std::filesystem::path& pathToSource)
+	std::string makePathToLoadSource(const std::filesystem::path& pathToSource, LoadSourceType& type)
 	{
 		std::filesystem::path absolutePath = std::filesystem::absolute(pathToSource);
-		std::string fileName = absolutePath.filename().string();
+		std::filesystem::path fileName = absolutePath.filename();
+		bool hasExtension = absolutePath.has_extension();
 		std::string extension;
 		std::string prefix;
+		auto initPy = [&]()
+			{
+				extension = "";
+				prefix = "";
 
-		if (!absolutePath.has_extension())
+				fileName.replace_extension();
+
+				type = LoadSourceType::python;
+			};
+		auto generatePath = [&](std::string_view extension) -> std::string
+			{
+				return std::filesystem::path(std::format("{}/{}{}{}", absolutePath.string(), prefix, fileName.string(), extension)).make_preferred().string();
+			};
+
+		if (hasExtension)
 		{
+			extension = absolutePath.extension().string();
+
+			if (extension == ".py")
+			{
+				initPy();
+			}
+			else
+			{
 #ifdef __LINUX__
-			extension = ".so";
+				if (fileName.string().find("lib") == std::string::npos)
+				{
+					prefix = "lib";
+				}
+#endif
+
+				type = LoadSourceType::dynamicLibrary;
+			}
+		}
+
+		absolutePath = absolutePath.parent_path();
+
+		if (!hasExtension)
+		{
+			if (std::filesystem::exists(generatePath(".py")))
+			{
+				initPy();
+			}
+			else if (std::filesystem::exists(generatePath(".dll")))
+			{
+				extension = ".dll";
+
+				type = isDotNetAssembly(generatePath(".dll")) ? LoadSourceType::dotNet : LoadSourceType::dynamicLibrary;
+			}
+			else
+			{
+#ifdef __LINUX__
+				if (fileName.string().find("lib") == std::string::npos)
+				{
+					prefix = "lib";
+				}
+
+				extension = ".so";
 #else
-			extension = ".dll";
+				extension = ".dll";
 #endif
+				type = LoadSourceType::dynamicLibrary;
+			}
 		}
 
-		absolutePath.remove_filename();
-
-#ifdef __LINUX__
-		if (fileName.find("lib") == std::string::npos)
-		{
-			prefix = "lib";
-		}
-#endif
-
-		return std::format("{}{}{}{}", absolutePath.string(), prefix, fileName, extension);
+		return generatePath(extension);
 	}
 
 	std::string getPathToWebFrameworkSharedLibrary()
@@ -77,4 +130,98 @@ namespace framework::utility
 
 		return "";
 	}
+
+	HMODULE loadLibrary(const std::filesystem::path& pathToLibrary)
+	{
+#ifdef __LINUX__
+		return dlopen(pathToLibrary.string().data(), RTLD_LAZY);
+#else
+		return LoadLibraryA(pathToLibrary.string().data());
+#endif				
+	}
+
+	HMODULE getLoadedLibrary(std::string_view libraryName)
+	{
+#ifdef __LINUX__
+		return dlopen(libraryName.data(), RTLD_NOLOAD);
+#else
+		return GetModuleHandleA(libraryName.data());
+#endif	
+	}
+
+	std::filesystem::path getPathToLibrary(HMODULE handle)
+	{
+#if defined(__LINUX__) && defined(__ANDROID__)
+		Dl_info dlinfo;
+
+		if (dladdr(handle, &dlinfo) != 0 && dlinfo.dli_fname && dlinfo.dli_fname[0] != '\0')
+		{
+			return dlinfo.dli_fname;
+		}
+#elif defined(__LINUX__)
+		struct link_map* linkMap;
+
+		if (dlinfo(handle, RTLD_DI_LINKMAP, &linkMap) == 0)
+		{
+			return linkMap->l_name;
+		}
+#else
+		char path[MAX_PATH]{};
+		DWORD size = GetModuleFileNameA(handle, path, MAX_PATH);
+
+		if (size)
+		{
+			return path;
+		}
+#endif
+
+		return "";
+	}
+}
+
+bool isDotNetAssembly(const std::filesystem::path& libraryPath)
+{
+	constexpr size_t chunkSize = 1 * 1024 * 1024;
+	constexpr std::array<uint8_t, 4> signature = { 0x42, 0x53, 0x4A, 0x42 }; // BSJB
+
+	std::ifstream stream(libraryPath, std::ios::binary);
+	std::vector<uint8_t> chunk(chunkSize, 0);
+	std::vector<uint8_t> last;
+
+	while (true)
+	{
+		size_t extractedBytes = stream.read(reinterpret_cast<char*>(chunk.data() + last.size()), chunk.size() - last.size()).gcount();
+
+		if (last.size())
+		{
+			std::copy(last.begin(), last.end(), chunk.data());
+
+			last.clear();
+		}
+
+		if (!extractedBytes)
+		{
+			break;
+		}
+
+		if (size_t size = extractedBytes % signature.size())
+		{
+			for (size_t i = 0; i < size; i++)
+			{
+				last.push_back(chunk[extractedBytes - 1 - i]);
+			}
+
+			extractedBytes -= size;
+		}
+
+		for (size_t i = 0; i < extractedBytes; i++)
+		{
+			if (!std::memcmp(chunk.data() + i, signature.data(), signature.size()))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

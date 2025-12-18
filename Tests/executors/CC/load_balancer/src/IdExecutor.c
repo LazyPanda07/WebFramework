@@ -1,4 +1,4 @@
-#include <Executors/BaseExecutor.h>
+#include <executors/executor.h>
 
 #include <threads.h>
 
@@ -14,17 +14,17 @@ DEFINE_DEFAULT_EXECUTOR(IdExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
 
 DEFINE_EXECUTOR_METHOD(IdExecutor, GET_METHOD, request, response)
 {
-	JSONBuilder builder = NULL;
+	json_builder_t builder = NULL;
 	struct timespec duration = { 10, 0 };
 
-	createJSONBuilder(&builder);
-	appendJSONBuilderInteger(builder, "id", getProcessId());
+	wf_create_json_builder(&builder);
+	wf_append_json_builder_integer(builder, "id", getProcessId());
 
 	thrd_sleep(&duration, NULL);
 
-	setJSONBody(response, builder);
+	wf_set_json_body(response, builder);
 
-	deleteWebFrameworkJSONBuilder(builder);
+	wf_delete_json_builder(builder);
 }
 
 int64_t getProcessId()

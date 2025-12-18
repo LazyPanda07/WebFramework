@@ -3,14 +3,14 @@ name: "Memory Leaks"
 
 on:
   push:
-    branches: [master, dev]
+    branches: [dev]
 
 
 jobs:
   memory-leak-tests:
     runs-on: ubuntu-latest
     container:
-      image: lazypanda07/ubuntu_cxx20:24.04
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
@@ -24,16 +24,21 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOT_NET_EXECUTORS=OFF -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
         
+    - name: Install Python API
+      run: pip3 install WebFrameworkLibrary/api/python_api/
+
     - name: Build tests
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Tests
       working-directory: Tests

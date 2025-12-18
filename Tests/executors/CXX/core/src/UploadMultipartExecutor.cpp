@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-void UploadMultipartExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void UploadMultipartExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	for (const framework::Multipart& multipart : request.getMultiparts())
 	{

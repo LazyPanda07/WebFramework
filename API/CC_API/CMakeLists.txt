@@ -1,41 +1,49 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/WebFrameworkLibrary CACHE STRING "")
-set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-
-if(UNIX)
-	add_definitions(-D__LINUX__)
-endif(UNIX)
 
 project(CC_API)
 
+if (UNIX)
+	add_definitions(-D__LINUX__)
+
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+		add_definitions(-D__ANDROID__)
+	endif()
+endif(UNIX)
+
 add_library(
 	${PROJECT_NAME} STATIC
-	src/Executors/BaseExecutor.c
-	src/Databases/Database.c
-	src/Databases/SQLResult.c
-	src/Databases/SQLValue.c
-	src/Databases/Table.c
-	src/Utility/WebFrameworkUtility.c
-	src/Utility/WebFrameworkLocalization.c
-	src/Config.c
-	src/DLLHandler.c
-	src/HTTPRequest.c
-	src/HTTPResponse.c
-	src/JSONBuilder.c
-	src/JSONObject.c
-	src/JSONParser.c
-	src/WebFramework.c
-	src/WebFrameworkException.c
-	src/LoadBalancerHeuristic.c
+	src/executors/executor.c
+	src/databases/database.c
+	src/databases/sql_result.c
+	src/databases/sql_value.c
+	src/databases/table.c
+	src/utility/web_framework_utility.c
+	src/utility/web_framework_localization.c
+	src/config.c
+	src/dll_handler.c
+	src/http_request.c
+	src/http_response.c
+	src/json_builder.c
+	src/json_object.c
+	src/json_parser.c
+	src/web_framework.c
+	src/web_framework_exception.c
+	src/load_balancer_heuristic.c
 )
 
+target_include_directories(
+	${PROJECT_NAME} PUBLIC
+	$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:api/cc/include>
+)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION lib EXPORT ${WEB_FRAMEWORK_EXPORT_TARGETS})
+install(DIRECTORY include DESTINATION api/cc)
 install(
-	TARGETS ${PROJECT_NAME}
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
+	EXPORT ${WEB_FRAMEWORK_EXPORT_TARGETS}
+	FILE ${WEB_FRAMEWORK_EXPORT_TARGETS_FILE}
+	NAMESPACE ${WEB_FRAMEWORK_EXPORT_TARGETS_NAMESPACE}
+	DESTINATION cmake
 )
-
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cc/include FILES_MATCHING PATTERN "*.h")

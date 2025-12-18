@@ -1,8 +1,10 @@
 #pragma once
 
 #include <filesystem>
+#include <sstream>
+#include <algorithm>
 
-#include <JSONParser.h>
+#include <JsonParser.h>
 
 #include "Framework/WebFrameworkPlatform.h"
 
@@ -14,12 +16,15 @@ namespace framework::utility
 	class WEB_FRAMEWORK_API Config
 	{
 	private:
-		json::JSONParser currentConfiguration;
+		json::JsonParser currentConfiguration;
 		std::filesystem::path basePath;
 
 	private:
 		template<std::ranges::range T>
 		Config& overrideConfigurationArray(std::string_view key, const T& value, bool recursive);
+
+		template<typename T>
+		Config& overrideValue(std::string_view key, const T& value, bool recursive);
 
 	private:
 		Config() = default;
@@ -54,7 +59,8 @@ namespace framework::utility
 		 * @param recursive Search recursively
 		 * @return
 		 */
-		Config& overrideConfiguration(std::string_view key, const json::utility::jsonObject::variantType& value, bool recursive = true);
+		template<typename T>
+		Config& overrideConfiguration(std::string_view key, const T& value, bool recursive = true) requires (json::utility::JsonValues<T, json::JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
 
 		/**
 		 * @brief Override specific config value
@@ -127,8 +133,56 @@ namespace framework::utility
 		 * @brief Actual settings
 		 * @return
 		 */
-		const json::JSONParser& operator * () const;
+		const json::JsonParser& operator *() const;
 
 		~Config() = default;
 	};
+}
+
+namespace framework::utility
+{
+	template<typename T>
+	Config& Config::overrideValue(std::string_view key, const T& value, bool recursive)
+	{
+		constexpr std::string_view innerAccessOperatorIdentifier = "$[]";
+
+		if (key.starts_with(innerAccessOperatorIdentifier))
+		{
+			json::JsonObject object;
+			std::istringstream is(key.data() + innerAccessOperatorIdentifier.size());
+			std::string temp;
+
+			currentConfiguration.getParsedData(object);
+
+			json::JsonObject* current = &object;
+
+			while (std::getline(is, temp, '.'))
+			{
+				if (std::ranges::all_of(temp, [](char c) { return std::isdigit(c); }))
+				{
+					current = &(*current)[std::stoull(temp)];
+				}
+				else
+				{
+					current = &(*current)[temp];
+				}
+			}
+
+			(*current) = value;
+
+			currentConfiguration = object;
+		}
+		else
+		{
+			currentConfiguration.overrideValue(key, value, recursive);
+		}
+
+		return *this;
+	}
+
+	template<typename T>
+	Config& Config::overrideConfiguration(std::string_view key, const T& value, bool recursive) requires (json::utility::JsonValues<T, json::JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
+	{
+		return this->overrideValue(key, value, recursive);
+	}
 }

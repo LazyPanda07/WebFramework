@@ -3,9 +3,9 @@
 #include <filesystem>
 #include <fstream>
 
-#include "HTTPParser.h"
-#include "HTTPBuilder.h"
-#include "ConsoleArgumentParser.h"
+#include <HttpParser.h>
+#include <HttpBuilder.h>
+#include <ConsoleArgumentParser.h>
 
 #include "utilities.h"
 
@@ -15,7 +15,7 @@ int64_t port;
 TEST(Proxy, DefaultRoute)
 {
 	streams::IOSocketStream stream = utility::createSocketStream(port, useHTTPS);
-	std::string request = web::HTTPBuilder().getRequest().build();
+	std::string request = web::HttpBuilder().getRequest().build();
 	std::string response;
 	int64_t id;
 
@@ -23,20 +23,20 @@ TEST(Proxy, DefaultRoute)
 
 	stream >> response;
 
-	ASSERT_TRUE(web::HTTPParser(response).getJSON().tryGetInt("id", id));
+	ASSERT_TRUE(web::HttpParser(response).getJson().tryGet<int64_t>("id", id));
 }
 
 TEST(Proxy, DefaultRequestRoute)
 {
 	streams::IOSocketStream stream = utility::createSocketStream(port, useHTTPS);
-	std::string request = web::HTTPBuilder().getRequest().parameters("default_request").build();
+	std::string request = web::HttpBuilder().getRequest().parameters("default_request").build();
 	std::string response;
 
 	stream << request;
 
 	stream >> response;
 
-	ASSERT_EQ(web::HTTPParser(response).getJSON().getString("data"), "data");
+	ASSERT_EQ(web::HttpParser(response).getJson().get<std::string>("data"), "data");
 }
 
 void printLog()

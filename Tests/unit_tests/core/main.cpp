@@ -3,9 +3,9 @@
 #include <chrono>
 #include <random>
 
-#include "JSONParser.h"
+#include <JsonParser.h>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "settings.h"
 
@@ -57,7 +57,7 @@ void createLargeFile()
 
 int main(int argc, char** argv)
 {
-	useHTTPS = json::JSONParser(std::ifstream(argv[1])).getObject("WebFramework").getObject("HTTPS").getBool("useHTTPS");
+	useHTTPS = json::JsonParser(std::ifstream(argv[1])).get<bool>("useHTTPS", true);
 
 	createLargeFile();
 
@@ -81,6 +81,8 @@ int main(int argc, char** argv)
 
 		if (std::chrono::duration_cast<std::chrono::minutes>(std::chrono::high_resolution_clock::now() - start).count() > 1)
 		{
+			std::cout << "Still no " << START_CORE_SERVER_FILE << " file. Exit" << std::endl;
+
 			break;
 		}
 	}

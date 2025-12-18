@@ -15,6 +15,21 @@ namespace framework
 	class ExecutorsManager
 	{
 	public:
+		class StatefulExecutors
+		{
+		private:
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> executors;
+
+		public:
+			StatefulExecutors() = default;
+
+			const std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& operator *() const;
+
+			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& operator *();
+
+			~StatefulExecutors();
+		};
+
 		enum class WebServerType
 		{
 			loadBalancer,
@@ -25,17 +40,15 @@ namespace framework
 		
 		static inline const std::unordered_map<std::string_view, WebServerType> types =
 		{
-			{ json_settings::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
-			{ json_settings::proxyWebServerTypeValue, WebServerType::proxy },
-			{ json_settings::multiThreadedWebServerTypeValue, WebServerType::multiThreaded },
-			{ json_settings::threadPoolWebServerTypeValue, WebServerType::threadPool }
+			{ json_settings_values::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
+			{ json_settings_values::proxyWebServerTypeValue, WebServerType::proxy },
+			{ json_settings_values::multiThreadedWebServerTypeValue, WebServerType::multiThreaded },
+			{ json_settings_values::threadPoolWebServerTypeValue, WebServerType::threadPool }
 		};
 
 	private:
 		std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
-		std::unordered_map<std::string, CreateExecutorFunction> creators; // executor name - create function
-		std::unordered_map<std::string, HMODULE> creatorSources; // executor name - shared library
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -50,16 +63,18 @@ namespace framework
 		static void parseRouteParameters(const std::string& parameters, HTTPRequestExecutors& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, StatefulExecutors& executors);
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const;
 
 		std::unique_ptr<BaseExecutor> createAPIExecutor(const std::string& name, std::string_view apiType) const;
 
+		void initCreators(const std::vector<std::string>& pathToSources);
+
 	public:
 		ExecutorsManager
 		(
-			const json::JSONParser& configuration,
+			const json::JsonParser& configuration,
 			const std::vector<std::string>& pathToSources,
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const utility::AdditionalServerSettings& additionalSettings,
@@ -74,9 +89,9 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors);
 
-		BaseExecutor* getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors);
+		BaseExecutor* getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

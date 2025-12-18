@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <WebFrameworkCSharpAPIPath>../../WebFrameworkLibrary/api/csharp</WebFrameworkCSharpAPIPath>
+  </PropertyGroup>
+</Project>

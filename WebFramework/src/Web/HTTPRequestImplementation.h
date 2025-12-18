@@ -2,9 +2,9 @@
 
 #include "WebInterfaces/IHTTPRequest.h"
 
-#include <HTTPParser.h>
+#include <HttpParser.h>
 #include <IOSocketStream.h>
-#include <HTTPBuilder.h>
+#include <HttpBuilder.h>
 
 #include "WebInterfaces/IStaticFile.h"
 #include "WebInterfaces/IDynamicFile.h"
@@ -34,15 +34,37 @@ namespace framework
 	class WEB_FRAMEWORK_API HTTPRequestImplementation : public interfaces::IHTTPRequest
 	{
 	private:
+		class ExceptionData
+		{
+		private:
+			std::string logCategory;
+			
+		public:
+			std::string errorMessage;
+			int responseCode;
+			bool valid;
+
+		public:
+			ExceptionData();
+
+			void setLogCategory(std::string_view logCategory);
+
+			std::string_view getLogCategory() const;
+
+			~ExceptionData() = default;
+		};
+
+	private:
 		SessionsManager& session;
 		const web::BaseTCPServer& serverReference;
 		streams::IOSocketStream& stream;
 		std::unordered_map<std::string, std::variant<std::string, int64_t, double>> routeParameters;
 		sockaddr clientAddr;
-		web::HTTPParser parser;
+		web::HttpParser parser;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
 		interfaces::CLargeData largeData;
+		ExceptionData exceptionData;
 		mutable std::vector<interfaces::IDatabase*> databases;
 
 	private:
@@ -51,10 +73,10 @@ namespace framework
 		static void logWebFrameworkModelsError(std::string_view typeName);
 
 	private:
-		void setParser(const web::HTTPParser& parser);
+		void setParser(const web::HttpParser& parser);
 
 	public:
-		static web::HTTPParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
+		static web::HttpParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
 
 	public:
 		HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
@@ -147,7 +169,7 @@ namespace framework
 		 * @brief Get data from multipart/form-data
 		 * @return
 		 */
-		void getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer) const override;
+		void getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer) const override;
 
 		const interfaces::CLargeData* getLargeData() const override;
 
@@ -175,7 +197,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendWFDPFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary = false, const char* fileName = "") override;
+		void sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary = false, const char* fileName = "") override;
 
 		/**
 		* Send large files
@@ -190,6 +212,8 @@ namespace framework
 		/// @param function Function implementation
 		void registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) override;
 
+		void registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass) override;
+
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
 		void unregisterWFDPFunction(const char* functionName) override;
@@ -199,7 +223,7 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isWFDPFunctionRegistered(const char* functionName) override;
 
-		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator)) override;
+		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size)) override;
 
 		void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash) override;
 
@@ -213,13 +237,24 @@ namespace framework
 
 		void processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
 
-		void processWFDPFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
+		void processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
+
+		void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) override;
+
+		bool isExceptionDataValid() const override;
+
+		/**
+		 * @brief Steal current ExceptionData if present
+		 * @param data
+		 * @return
+		 */
+		bool getExceptionData(interfaces::CExceptionData* data) override;
 
 		/// <summary>
 		/// Getter for JSONParser
 		/// </summary>
 		/// <returns>JSONParser</returns>
-		const char* getJSON() const override;
+		const char* getJson() const override;
 
 		const char* getRawRequest() const override;
 

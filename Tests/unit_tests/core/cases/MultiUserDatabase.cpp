@@ -2,12 +2,12 @@
 #include <random>
 #include <ctime>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "HTTPBuilder.h"
-#include "HTTPParser.h"
-#include "JSONParser.h"
-#include "JSONBuilder.h"
+#include <HttpBuilder.h>
+#include <HttpParser.h>
+#include <JsonParser.h>
+#include <JsonBuilder.h>
 
 #include "utilities.h"
 
@@ -33,37 +33,37 @@ TEST(Database, MultiUser)
 	std::vector<std::future<void>> awaiters;
 	auto requests = [](streams::IOSocketStream& stream)
 		{
-			std::string request = web::HTTPBuilder().postRequest().parameters("multi_user_database").build();
+			std::string request = web::HttpBuilder().postRequest().parameters("multi_user_database").build();
 			std::string response;
 
 			stream << request;
 
 			stream >> response;
 
-			ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
+			ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 
 			for (size_t i = 0; i < requestsNumber; i++)
 			{
-				request = web::HTTPBuilder().putRequest().parameters("multi_user_database").build(json::JSONBuilder(CP_UTF8).appendString("data", generateRandomString()));
+				request = web::HttpBuilder().putRequest().parameters("multi_user_database").build(json::JsonBuilder(CP_UTF8).append("data", generateRandomString()));
 
 				stream << request;
 
 				stream >> response;
 
-				ASSERT_EQ(web::HTTPParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
+				ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 			}
 
-			request = web::HTTPBuilder().getRequest().parameters("multi_user_database").build();
+			request = web::HttpBuilder().getRequest().parameters("multi_user_database").build();
 
 			stream << request;
 
 			stream >> response;
 
-			web::HTTPParser parser(response);
+			web::HttpParser parser(response);
 
 			ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::ok) << response;
 
-			ASSERT_EQ(parser.getJSON().getArray("data").size(), requestsNumber) << response;
+			ASSERT_EQ(parser.getJson().get<std::vector<json::JsonObject>>("data").size(), requestsNumber) << response;
 		};
 
 	clients.reserve(clientsNumber);

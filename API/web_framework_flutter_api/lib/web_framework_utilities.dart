@@ -7,15 +7,14 @@ import 'package:crypto/crypto.dart';
 
 /// Extract assets from *.apk file
 Future<String> unpackAndroidAssets() async {
-  String manifest = await rootBundle.loadString("AssetManifest.json");
-  Map<String, dynamic> manifestContent = jsonDecode(manifest);
+  AssetManifest assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+  List<String> assets = assetManifest.listAssets();
   Directory documentsDirectory = await getApplicationDocumentsDirectory();
 
-  for (String key in manifestContent.keys) {
-    String filePath = "${documentsDirectory.path}/$key";
-    ByteData data = await rootBundle.load(key);
-    List<int> bytes =
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  for (String asset in assets) {
+    String filePath = "${documentsDirectory.path}/$asset";
+    ByteData data = await rootBundle.load(asset);
+    List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     File file = File(filePath);
     FileSystemEntityType type = FileSystemEntity.typeSync(filePath);
 

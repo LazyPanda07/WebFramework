@@ -9,18 +9,16 @@ namespace framework::utility
 	template<std::ranges::range T>
 	Config& Config::overrideConfigurationArray(std::string_view key, const T& value, bool recursive)
 	{
-		std::vector<json::utility::jsonObject> data;
+		std::vector<json::JsonObject> data;
 
-		data.reserve(distance(value.begin(), value.end()));
+		data.reserve(std::distance(value.begin(), value.end()));
 
 		for (const auto& temp : value)
 		{
-			json::utility::appendArray(temp, data);
+			data.emplace_back(temp);
 		}
 
-		currentConfiguration.overrideValue(key, data, recursive);
-
-		return *this;
+		return this->overrideValue(key, data, recursive);
 	}
 
 	Config::Config(const std::filesystem::path& configPath)
@@ -40,13 +38,6 @@ namespace framework::utility
 		basePath(std::filesystem::absolute(applicationDirectory))
 	{
 
-	}
-
-	Config& Config::overrideConfiguration(std::string_view key, const json::utility::jsonObject::variantType& value, bool recursive)
-	{
-		currentConfiguration.overrideValue(key, value, recursive);
-
-		return *this;
 	}
 
 	Config& Config::overrideConfiguration(std::string_view key, const std::vector<int64_t>& value, bool recursive)
@@ -73,17 +64,17 @@ namespace framework::utility
 
 	const std::string& Config::getConfigurationString(std::string_view key, bool recursive) const
 	{
-		return currentConfiguration.getString(key, recursive);
+		return currentConfiguration.get<std::string>(key, recursive);
 	}
 
 	int64_t Config::getConfigurationInteger(std::string_view key, bool recursive) const
 	{
-		return currentConfiguration.getInt(key, recursive);
+		return currentConfiguration.get<int64_t>(key, recursive);
 	}
 
 	bool Config::getConfigurationBoolean(std::string_view key, bool recursive) const
 	{
-		return currentConfiguration.getBool(key, recursive);
+		return currentConfiguration.get<bool>(key, recursive);
 	}
 
 	const std::filesystem::path& Config::getBasePath() const
@@ -101,7 +92,7 @@ namespace framework::utility
 		return currentConfiguration.getRawData();
 	}
 
-	const json::JSONParser& Config::operator * () const
+	const json::JsonParser& Config::operator *() const
 	{
 		return currentConfiguration;
 	}

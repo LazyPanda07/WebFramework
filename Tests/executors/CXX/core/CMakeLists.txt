@@ -18,8 +18,12 @@ add_library(
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
-	include/
-	${WEB_FRAMEWORK_INCLUDE}
+	include
+)
+
+target_link_libraries(
+    ${PROJECT_NAME} PRIVATE
+    WebFramework::CXX_API
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

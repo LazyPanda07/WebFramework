@@ -14,7 +14,7 @@ namespace framework
 		this->setDefault();
 	}
 
-	HTTPResponseImplementation& HTTPResponseImplementation::operator = (const web::HTTPBuilder& builder)
+	HTTPResponseImplementation& HTTPResponseImplementation::operator = (const web::HttpBuilder& builder)
 	{
 		this->builder = builder;
 

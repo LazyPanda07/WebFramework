@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "import.h"
+#include <import.h>
 
 #ifdef __LINUX__
 #include <unistd.h> 
@@ -47,26 +47,26 @@ void writeProcessId()
 
 int main(int argc, char** argv)
 {
-	initializeWebFramework("WebFramework");
+	wf_initialize_web_framework("WebFramework");
 
-	WebFramework server;
-	Config config;
-	WebFrameworkException exception = createConfigFromPath(argv[1], &config);
+	web_framework_t server;
+	config_t config;
+	web_framework_exception_t exception = wf_create_config_from_path(argv[1], &config);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -1;
 	}
 
 	port = atoi(argv[2]);
 
-	exception = overrideConfigurationInteger(config, "port", port, true);
+	exception = wf_override_configuration_integer(config, "port", port, true);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -2;
 	}
@@ -75,31 +75,31 @@ int main(int argc, char** argv)
 	{
 		if (!strcmp(argv[i], "--useHTTPS"))
 		{
-			exception = overrideConfigurationBoolean(config, "useHTTPS", true, true);
+			exception = wf_override_configuration_boolean(config, "useHTTPS", true, true);
 
 			if (exception)
 			{
-				printf("%s\n", getErrorMessage(exception));
+				printf("%s\n", wf_get_error_message(exception));
 
 				return -3;
 			}	
 		}
 	}
 
-	exception = createWebFrameworkFromConfig(config, &server);
+	exception = wf_create_web_framework_from_config(config, &server);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -4;
 	}
 
-	exception = startWebFrameworkServer(server, true, writeProcessId);
+	exception = wf_start_web_framework_server(server, true, writeProcessId);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -5;
 	}

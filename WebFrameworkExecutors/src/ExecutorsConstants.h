@@ -11,6 +11,8 @@ namespace json_settings
 
 	inline constexpr std::string_view cxxExecutorKey = "cxx";
 	inline constexpr std::string_view ccExecutorKey = "cc";
+	inline constexpr std::string_view pythonExecutorKey = "python";
+	inline constexpr std::string_view csharpExecutorKey = "csharp";
 }
 
 namespace json_settings_values

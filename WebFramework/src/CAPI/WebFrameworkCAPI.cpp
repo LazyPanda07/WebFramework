@@ -10,7 +10,7 @@
 #include "WebInterfaces/IHTTPRequest.h"
 #include "Exceptions/APIException.h"
 
-#define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {}", "C_API", e.what()); }
+#define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
 #define UNEXPECTED_EXCEPTION() if (Log::isValid()) { Log::error("Somethind went wrong", "C_API"); } *exception = new std::runtime_error(std::format("Something went wrong in file: {} on line: {}", __FILE__, __LINE__));
@@ -189,7 +189,7 @@ bool isServerRunning(WebFramework server, Exception* exception)
 
 const char* getWebFrameworkVersion()
 {
-	constexpr std::string_view version = "3.1.3";
+	constexpr std::string_view version = "3.2.0";
 
 	return version.data();
 }
@@ -230,7 +230,7 @@ void overrideConfigurationBoolean(Config config, const char* key, bool value, bo
 {
 	try
 	{
-		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, static_cast<json::utility::jsonObject::variantType>(value), recursive);
+		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, value, recursive);
 	}
 	catch (const std::exception& e)
 	{
@@ -246,13 +246,13 @@ void overrideConfigurationStringArray(Config config, const char* key, const char
 {
 	try
 	{
-		std::vector<json::utility::jsonObject> data;
+		std::vector<json::JsonObject> data;
 
 		data.reserve(size);
 
 		for (int64_t i = 0; i < size; i++)
 		{
-			json::utility::appendArray(std::string(value[i]), data);
+			data.emplace_back(value[i]);
 		}
 
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);
@@ -271,13 +271,13 @@ void overrideConfigurationIntegerArray(Config config, const char* key, const int
 {
 	try
 	{
-		std::vector<json::utility::jsonObject> data;
+		std::vector<json::JsonObject> data;
 
 		data.reserve(size);
 
 		for (int64_t i = 0; i < size; i++)
 		{
-			json::utility::appendArray(value[i], data);
+			data.emplace_back(value[i]);
 		}
 
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);
@@ -441,7 +441,10 @@ bool checkExceptionHash(const Exception exception, size_t hash)
 
 void deleteWebFrameworkString(String string)
 {
-	delete static_cast<std::string*>(string);
+	if (string)
+	{
+		delete static_cast<std::string*>(string);
+	}
 }
 
 void deleteWebFrameworkConfig(Config config)
@@ -456,5 +459,8 @@ void deleteWebFramework(WebFramework webFramework)
 
 void deleteWebFrameworkException(Exception exception)
 {
-	delete static_cast<std::runtime_error*>(exception);
+	if (exception)
+	{
+		delete static_cast<std::runtime_error*>(exception);
+	}
 }

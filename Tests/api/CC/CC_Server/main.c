@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "import.h"
+#include <import.h>
 
 #ifdef __LINUX__
 #include <unistd.h> 
@@ -37,23 +37,23 @@ int main(int argc, char** argv)
 		}
 	}
 
-	initializeWebFramework("WebFramework");
+	wf_initialize_web_framework("WebFramework");
 
-	WebFramework server;
-	WebFrameworkException exception = createWebFrameworkFromPath(argv[1], &server);
+	web_framework_t server;
+	web_framework_exception_t exception = wf_create_web_framework_from_path(argv[1], &server);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -1;
 	}
 
-	exception = startWebFrameworkServer(server, true, writeProcessId);
+	exception = wf_start_web_framework_server(server, true, writeProcessId);
 
 	if (exception)
 	{
-		printf("%s\n", getErrorMessage(exception));
+		printf("%s\n", wf_get_error_message(exception));
 
 		return -2;
 	}

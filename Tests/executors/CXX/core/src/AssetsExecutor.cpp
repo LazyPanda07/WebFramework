@@ -1,7 +1,6 @@
 #include "AssetsExecutor.h"
 
 #include <format>
-#include <numeric>
 
 static const char* customFunction(const char** args, size_t agumentsNumber)
 {
@@ -15,22 +14,22 @@ static const char* customFunction(const char** args, size_t agumentsNumber)
 	return result;
 }
 
-void AssetsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void AssetsExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	request.sendWFDPFile
+	request.sendDynamicFile
 	(
-		std::format("{}.wfdp", request.getJSON().get<std::string>("fileName")),
+		std::format("{}.wfdp", request.getJson().get<std::string>("fileName")),
 		response,
 		request.getQueryParameters()
 	);
 }
 
-void AssetsExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void AssetsExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.registerWFDPFunction("customFunction", customFunction, [](char* result) { delete[] result; });
 }
 
-void AssetsExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void AssetsExecutor::doDelete(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.unregisterWFDPFunction("customFunction");
 }

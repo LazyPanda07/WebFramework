@@ -1,3 +1,7 @@
+## 3.2.0
+* Update WebFramework to 3.2.0
+* Add Executors API for Python and C# for Windows 
+
 ## 3.1.3
 * Update WebFramework to 3.1.3
 

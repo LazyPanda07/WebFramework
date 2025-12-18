@@ -5,8 +5,8 @@
 
 #include "WebInterfaces/IHTTPRequest.h"
 #include "HTTPResponseExecutors.h"
-#include "JSONParser.h"
-#include "HTTPParser.h"
+#include "JsonParser.h"
+#include "HttpParser.h"
 #include "ExecutorsConstants.h"
 #include "Utility/ChunkGenerator.h"
 #include "Databases/DatabaseExecutors.h"
@@ -32,7 +32,7 @@ namespace framework
 	private:
 		interfaces::IHTTPRequest* implementation;
 		std::function<void(interfaces::IHTTPRequest*)> deleter;
-		json::JSONParser json;
+		json::JsonParser json;
 		web::HeadersMap headers;
 		std::unordered_map<std::string, std::string> queryParameters;
 		std::vector<web::Multipart> multiparts;
@@ -197,7 +197,7 @@ namespace framework
 		/// Getter for JSONParser
 		/// </summary>
 		/// <returns>JSONParser</returns>
-		const json::JSONParser& getJSON() const;
+		const json::JsonParser& getJSON() const;
 
 		/**
 		 * @brief Get chunks

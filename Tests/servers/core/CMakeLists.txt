@@ -9,9 +9,9 @@ add_executable(
 	main.cpp
 )
 
-target_include_directories(
+target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_INCLUDE}
+	WebFramework::CXX_API
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

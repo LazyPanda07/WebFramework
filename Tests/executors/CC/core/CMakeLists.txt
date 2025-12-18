@@ -15,10 +15,9 @@ add_library(
 	src/DynamicResources.c
 )
 
-target_include_directories(
+target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	include/
-	${WEB_FRAMEWORK_INCLUDE}
+	WebFramework::CC_API
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

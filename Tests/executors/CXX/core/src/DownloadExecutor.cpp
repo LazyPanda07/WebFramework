@@ -1,6 +1,6 @@
 #include "DownloadExecutor.h"
 
-void DownloadExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void DownloadExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.streamFile("index.html", response, "index.html");
 }

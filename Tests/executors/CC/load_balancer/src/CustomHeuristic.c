@@ -1,4 +1,4 @@
-#include <LoadBalancerHeuristic.h>
+#include <load_balancer_heuristic.h>
 
 #include <threads.h>
 

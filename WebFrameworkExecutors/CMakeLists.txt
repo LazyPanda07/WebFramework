@@ -22,6 +22,10 @@ add_library(
 	src/Databases/SQLResultExecutors.cpp
 )
 
+if (${WITH_UNITY_BUILD})
+	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+endif()
+
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	src/

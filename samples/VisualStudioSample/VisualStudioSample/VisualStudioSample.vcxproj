@@ -21,13 +21,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -59,7 +59,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\API\CXX_API\src\;$(SolutionDir)..\..\Databases\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\include\;$(SolutionDir)..\..\FileManager\include\;$(SolutionDir)..\..\INIParser\include\;$(SolutionDir)..\..\Localization\include\;$(SolutionDir)..\..\Log\include\;$(SolutionDir)..\..\ThreadPool\include\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\include\;$(SolutionDir)..\..\Networks\HTTP\include\;$(SolutionDir)..\..\Networks\SocketStreams\include\;$(SolutionDir)..\..\Networks\include\;$(SolutionDir)..\..\SHA256\include\;$(SolutionDir)..\..\API\CXX_API\include\;$(SolutionDir)..\..\Databases\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -67,11 +67,13 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-move "$(OutDir)..\Executors\Executors.dll" "$(OutDir)executors"
 for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
-move "$(OutDir)web.json" "$(OutDir)executors"
-</Command>
+xcopy /y "$(OutDir)..\CXXExecutors\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\CSharpExecutors.dll" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\WebFrameworkCSharpAPI.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
+move "$(OutDir)CXXExecutors.dll" "$(OutDir)executors"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,7 +86,7 @@ move "$(OutDir)web.json" "$(OutDir)executors"
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\FileManager\src\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\src\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\ThreadPool\src\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\src\;$(SolutionDir)..\..\Networks\HTTP\src\;$(SolutionDir)..\..\Networks\SocketStreams\src\;$(SolutionDir)..\..\Networks\src\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\API\CXX_API\src\;$(SolutionDir)..\..\Databases\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\;$(SolutionDir)..\..\WebFramework\src\;$(SolutionDir)..\..\WebFrameworkCore\src\;$(SolutionDir)..\..\WebFrameworkExecutors\src\;$(SolutionDir)..\..\BaseTCPServer\src\;$(SolutionDir)..\..\FileManager\include\;$(SolutionDir)..\..\INIParser\src\;$(SolutionDir)..\..\Localization\include\;$(SolutionDir)..\..\Log\src\;$(SolutionDir)..\..\ThreadPool\include\;$(SolutionDir)..\..\UtilityLibrary\include\;$(SolutionDir)..\..\Networks\HTTP\JSON\include\;$(SolutionDir)..\..\Networks\HTTP\include\;$(SolutionDir)..\..\Networks\SocketStreams\include\;$(SolutionDir)..\..\Networks\include\;$(SolutionDir)..\..\SHA256\src\;$(SolutionDir)..\..\API\CXX_API\include\;$(SolutionDir)..\..\Databases\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,26 +96,37 @@ move "$(OutDir)web.json" "$(OutDir)executors"
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
-move "$(OutDir)..\Executors\Executors.dll" "$(OutDir)executors"
 for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
-xcopy /y "$(OutDir)..\Executors\*.json" "$(OutDir)"
-move "$(OutDir)web.json" "$(OutDir)executors"
-</Command>
+xcopy /y "$(OutDir)..\CXXExecutors\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\CSharpExecutors.dll" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\WebFrameworkCSharpAPI.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
+move "$(OutDir)CXXExecutors.dll" "$(OutDir)executors"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\3rdparty\pybind11\pybind11.vcxproj">
+      <Project>{fa38c2dc-a207-4048-8c9c-d75bfcacd77b}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\API\CXX_API\CXX_API.vcxproj">
       <Project>{3f4d262a-28bd-49d4-bb24-a83363263739}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\WebFramework\WebFramework.vcxproj">
       <Project>{e66352d0-66c8-4bae-85e4-4715d53fd651}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Executors\Executors.vcxproj">
+    <ProjectReference Include="..\CSharpExecutors\CSharpExecutors.csproj">
+      <Project>{1398ebef-ea63-466b-979c-81092840a913}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\CXXExecutors\CXXExecutors.vcxproj">
       <Project>{69729c71-7ef7-4854-a6b4-3a87acd90602}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

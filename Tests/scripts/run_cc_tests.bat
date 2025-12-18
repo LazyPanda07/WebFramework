@@ -2,6 +2,8 @@
 
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
+set PATH=C:\Program Files\dotnet\host\fxr\8.0.22\;%PATH%
+
 start CC_Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 start DefaultHTTPSServer.exe
 start CC_ProxyServer.exe proxy_config.json 15000

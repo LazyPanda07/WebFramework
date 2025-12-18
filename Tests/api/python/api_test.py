@@ -2,8 +2,7 @@ import json
 import pathlib
 import unittest
 
-from web_framework_api.utility.DLLHandler import initialize_web_framework
-from web_framework_api.utility.Config import Config
+from web_framework_api import *
 
 
 def get_configuration():
@@ -19,14 +18,14 @@ def get_configuration():
 
 
 def create_config():
-    return Config.from_path("multi_threaded_config.json")
+    return Config("multi_threaded_config.json")
 
 
 class ConfigConstructors(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_from_path = create_config()
-        cls.config_from_strings = Config.from_string(get_configuration(), str(pathlib.Path().resolve()))
+        cls.config_from_strings = Config(get_configuration(), str(pathlib.Path().resolve()))
 
     def test(self):
         self.assertEqual(self.config_from_path.get_raw_configuration(),
@@ -80,7 +79,7 @@ class ConfigOverrideStringArray(unittest.TestCase):
         cls.config = create_config()
 
     def test(self):
-        self.config.override_configuration_string_array("loadSources", ["anotherSource"], True)
+        self.config.override_configuration("loadSources", ["anotherSource"], True)
 
         value = json.loads(self.config.get_configuration())["WebFramework"]["loadSources"]
 
@@ -93,7 +92,7 @@ class ConfigOverrideIntegerArray(unittest.TestCase):
         cls.config = create_config()
 
     def test(self):
-        self.config.override_configuration_integer_array("port", [15], True)
+        self.config.override_configuration("port", [15], True)
 
         value = json.loads(self.config.get_configuration())["WebServer"]["port"]
 

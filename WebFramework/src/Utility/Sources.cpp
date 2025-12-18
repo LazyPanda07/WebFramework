@@ -6,12 +6,15 @@
 #include "DynamicLibraries.h"
 #include "Exceptions/CantLoadSourceException.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "Managers/RuntimesManager.h"
+#include "Runtimes/CXXRuntime.h"
+#include "Runtimes/CCRuntime.h"
 
 namespace framework::utility
 {
-	std::vector<std::pair<HMODULE, std::string>> loadSources(const std::vector<std::string>& pathToSources)
+	std::vector<std::pair<LoadSource, std::string>> loadSources(const std::vector<std::string>& pathToSources)
 	{
-		std::vector<std::pair<HMODULE, std::string>> result;
+		std::vector<std::pair<LoadSource, std::string>> result;
 
 		if (pathToSources.size())
 		{
@@ -24,7 +27,7 @@ namespace framework::utility
 
 		for (const std::string& temp : pathToSources)
 		{
-			if (temp == json_settings::defaultLoadSourceValue)
+			if (temp == json_settings_values::defaultLoadSourceValue)
 			{
 #ifdef __LINUX__
 				result.emplace_back(dlopen(nullptr, RTLD_LAZY), "");
@@ -35,20 +38,12 @@ namespace framework::utility
 				continue;
 			}
 
-			std::string pathToSource = makePathToDynamicLibrary(temp);
+			utility::LoadSourceType type;
+			std::string pathToSource = makePathToLoadSource(temp, type);
+			std::string exceptionMessage;
+			LoadSource source;
 
-			if (std::filesystem::exists(pathToSource))
-			{
-				HMODULE handle = nullptr;
-
-#ifdef __LINUX__
-				handle = dlopen(pathToSource.data(), RTLD_LAZY);
-#else
-				handle = LoadLibraryA(pathToSource.data());
-#endif
-				result.emplace_back(handle, pathToSource);
-			}
-			else
+			if (type >= utility::LoadSourceType::dynamicLibrary && !std::filesystem::exists(pathToSource))
 			{
 				if (Log::isValid())
 				{
@@ -58,15 +53,39 @@ namespace framework::utility
 				throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
 			}
 
-			if (!result.back().first)
+			if (type == LoadSourceType::dynamicLibrary)
+			{
+				std::optional<std::string> cxxErrorMessage = runtime::RuntimesManager::get().getRuntime<runtime::CXXRuntime>().loadSource(pathToSource, source);
+
+				if (cxxErrorMessage)
+				{
+					std::optional<std::string> ccErrorMessage = runtime::RuntimesManager::get().getRuntime<runtime::CCRuntime>().loadSource(pathToSource, source);
+
+					if (ccErrorMessage)
+					{
+						exceptionMessage = ::exceptions::missingOtherDLLs;
+					}
+				}
+			}
+			else
+			{
+				if (std::optional<std::string> message = runtime::RuntimesManager::get().getRuntime(type).loadSource(pathToSource, source))
+				{
+					exceptionMessage = *message;
+				}
+			}
+
+			if (exceptionMessage.size())
 			{
 				if (Log::isValid())
 				{
-					Log::error("Can't load source {}", "LogWebFrameworkSources", pathToSource);
+					Log::error("Can't load source {}, {}", "LogWebFrameworkSources", pathToSource, exceptionMessage);
 				}
 
-				throw exceptions::CantLoadSourceException(pathToSource);
+				throw exceptions::CantLoadSourceException(pathToSource, exceptionMessage);
 			}
+
+			result.emplace_back(std::move(source), pathToSource);
 		}
 
 		return result;

@@ -24,7 +24,7 @@ int main(int argc, char** argv) try
 
 	if (parser.get<bool>("--custom_heuristic"))
 	{
-		config.overrideConfiguration("name", "CustomHeuristic");
+		config.overrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic");
 	}
 
 	if (std::string type = parser.get<std::string>("--type"); type == "server")
@@ -62,6 +62,10 @@ int main(int argc, char** argv) try
 		config.overrideConfiguration("127.0.0.1", listOfServers);
 	}
 
+#ifdef __WITH_ADDRESS_SANITIZER__
+	config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", false);
+#endif
+
 	framework::WebFramework server(config);
 
 	server.start
@@ -74,32 +78,7 @@ int main(int argc, char** argv) try
 #else
 			DWORD processId = GetCurrentProcessId();
 #endif
-			switch (port)
-			{
-			case 9090:
-				std::ofstream(START_LOAD_BALANCER_9090_SERVER_FILE) << processId;
-
-				break;
-
-			case 9091:
-				std::ofstream(START_LOAD_BALANCER_9091_SERVER_FILE) << processId;
-
-				break;
-
-			case 9092:
-				std::ofstream(START_LOAD_BALANCER_9092_SERVER_FILE) << processId;
-
-				break;
-
-			case 9093:
-				std::ofstream(START_LOAD_BALANCER_9093_SERVER_FILE) << processId;
-
-				break;
-
-			default:
-				break;
-			}
-
+			std::ofstream(std::format("start_load_balancer_{}_server.txt", port)) << processId;
 		}
 	);
 

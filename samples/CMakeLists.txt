@@ -1,10 +1,14 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-option(PYTHON_SAMPLE "Build Python sample" ON)
 option(CXX_SAMPLE "Build C++ sample" ON)
 option(CC_SAMPLE "Build C sample" ON)
+option(PYTHON_SAMPLE "Build Python sample" ON)
 option(CSHARP_SAMPLE "Build C# sample" ON)
+option(CXX_EXECUTOR "Build C++ executor" ON)
+option(CC_EXECUTOR "Build C executor" ON)
+option(PYTHON_EXECUTOR "Build Python executor" OFF)
+option(CSHARP_EXECUTOR "Build C# executor" OFF)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 
@@ -15,7 +19,7 @@ set(WEB_FRAMEWORK_DIRECTORY ${PROJECT_SOURCE_DIR}/../WebFrameworkLibrary CACHE S
 
 include(${WEB_FRAMEWORK_DIRECTORY}/WebFrameworkConfig.cmake)
 
-add_subdirectory(hello_executor)
+add_subdirectory(hello_executors)
 
 if (${PYTHON_SAMPLE})
 	add_subdirectory(hello_python)

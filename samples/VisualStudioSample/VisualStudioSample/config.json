@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/dev/schemas/web_framework_config_schema.json",
+  "WebServer": {
+    "ip": "127.0.0.1",
+    "port": 8080
+  },
+  "WebFramework": {
+    "webServerType": "multiThreaded",
+    "loadSources": [
+      "executors/CXXExecutors",
+      "executors/CSharpExecutors"
+    ],
+    "settingsPaths": [
+      "executors/cxx_settings.json",
+      "executors/csharp_settings.json"
+    ],
+    "runtimes": [ ".net" ],
+    "assetsPath": "assets",
+    "templatesPath": "templates",
+    "defaultAssetsPath": "WebFrameworkAssets"
+  },
+  "Logging": {
+    "usingLogging": true,
+    "dateFormat": "DMY",
+    "logFileSize": 134217728
+  }
+}

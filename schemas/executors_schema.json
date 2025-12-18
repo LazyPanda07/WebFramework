@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "WebFramework executors",
   "type": "object",
   "description": "Executors setup",
@@ -7,7 +8,8 @@
       "type": "object",
       "properties": {
         "route": {
-          "type": "string",
+          "type": [ "string", "array" ],
+          "items": { "type": "string" },
           "description": "API endpoint"
         },
         "loadType": {
@@ -26,11 +28,12 @@
         "api": {
           "type": "string",
           "description": "API language",
-          "enum": ["cxx", "cc"]
+          "enum": [ "cxx", "cc", "python", "csharp" ]
         }
       },
       "required": [ "route", "loadType", "api" ]
-    }
+    },
+    "^\\$schema$": true
   },
   "additionalProperties": false
 }

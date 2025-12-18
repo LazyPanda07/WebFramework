@@ -43,14 +43,14 @@ namespace framework
 			{
 				static_cast<std::vector<web::Multipart>*>(buffer)->reserve(size);
 			};
-		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* additionalData)
+		auto addMultipart = [](const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* additionalData)
 			{
 				reinterpret_cast<std::vector<web::Multipart>*>(additionalData)->emplace_back
 				(
 					name,
 					fileName,
 					contentType,
-					data
+					std::string(data, dataSize)
 				);
 			};
 
@@ -94,7 +94,7 @@ namespace framework
 		implementation(implementation),
 		deleter(deleter)
 	{
-		json.setJSONData(std::string_view(implementation->getJSON()));
+		json.setJSONData(std::string_view(implementation->getJson()));
 
 		this->initHeaders();
 		this->initQueryParameters();
@@ -112,10 +112,10 @@ namespace framework
 		implementation = other.implementation;
 		deleter = other.deleter;
 		json = std::move(other.json);
-		headers = move(other.headers);
-		queryParameters = move(other.queryParameters);
-		multiparts = move(other.multiparts);
-		chunks = move(other.chunks);
+		headers = std::move(other.headers);
+		queryParameters = std::move(other.queryParameters);
+		multiparts = std::move(other.multiparts);
+		chunks = std::move(other.chunks);
 
 		other.implementation = nullptr;
 		other.deleter = nullptr;
@@ -231,7 +231,7 @@ namespace framework
 	{
 		std::vector<interfaces::CVariable> temp = HTTPRequestExecutors::convertVariables(variables);
 
-		implementation->sendWFDPFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
+		implementation->sendDynamicFile(filePath.data(), response.implementation, temp.size(), temp.data(), isBinary, fileName.data());
 	}
 
 	void HTTPRequestExecutors::streamFile(std::string_view filePath, HTTPResponseExecutors& response, std::string_view fileName, size_t chunkSize)
@@ -289,12 +289,12 @@ namespace framework
 				static_cast<std::string*>(buffer)->append(data, size);
 			};
 
-		implementation->processWFDPFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
+		implementation->processDynamicFile(fileData.data(), fileData.size(), temp.data(), temp.size(), fillBuffer, &result);
 
 		return result;
 	}
 
-	const json::JSONParser& HTTPRequestExecutors::getJSON() const
+	const json::JsonParser& HTTPRequestExecutors::getJSON() const
 	{
 		return json;
 	}

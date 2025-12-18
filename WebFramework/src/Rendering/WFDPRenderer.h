@@ -8,6 +8,7 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 #include "WebInterfaces/IHTTPRequest.h"
+#include "WFDP/DynamicFunction.h"
 
 namespace framework
 {
@@ -23,7 +24,7 @@ namespace framework
 		};
 
 	private:
-		::utility::strings::string_based_unordered_map<std::function<std::string(const std::vector<std::string>&)>> dynamicPagesFunctions;
+		::utility::strings::string_based_unordered_map<std::unique_ptr<DynamicFunction>> dynamicPagesFunctions;
 		const std::filesystem::path pathToTemplates;
 
 	private:
@@ -42,7 +43,7 @@ namespace framework
 
 		void run(std::span<const interfaces::CVariable> variables, std::string& source);
 
-		void registerDynamicFunction(std::string_view functionName, std::function<std::string(const std::vector<std::string>&)>&& function);
+		void registerDynamicFunction(std::string_view functionName, std::unique_ptr<DynamicFunction>&& dynamicFunction);
 
 		void unregisterDynamicFunction(std::string_view functionName);
 

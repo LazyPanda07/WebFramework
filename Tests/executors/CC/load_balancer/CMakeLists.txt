@@ -8,12 +8,6 @@ add_library(
 	src/CustomHeuristic.c
 )
 
-target_include_directories(
-	${PROJECT_NAME} PRIVATE
-	include/
-	${WEB_FRAMEWORK_INCLUDE}
-)
-
 if (UNIX)
 	find_package(Threads REQUIRED)
 
@@ -22,5 +16,10 @@ if (UNIX)
 		Threads::Threads
 	)
 endif()
+
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE
+	WebFramework::CC_API
+)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

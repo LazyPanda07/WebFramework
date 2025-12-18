@@ -23,11 +23,13 @@ namespace framework::utility
 	void HTTPSSingleton::setPathToCertificate(const std::filesystem::path& pathToCertificate)
 	{
 		this->pathToCertificate = pathToCertificate;
+		this->pathToCertificate = this->pathToCertificate.make_preferred();
 	}
 
 	void HTTPSSingleton::setPathToKey(const std::filesystem::path& pathToKey)
 	{
 		this->pathToKey = pathToKey;
+		this->pathToKey = this->pathToKey.make_preferred();
 	}
 
 	bool HTTPSSingleton::getUseHTTPS() const

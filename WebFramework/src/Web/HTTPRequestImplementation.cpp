@@ -3,14 +3,15 @@
 #include <Log.h>
 #include <MultiLocalizationManager.h>
 #include <Exceptions/FileDoesNotExistException.h>
+#include <BaseTCPServer.h>
+#include <FileManager.h>
+#include <HttpsNetwork.h>
 
-#include "BaseTCPServer.h"
-#include "FileManager.h"
-#include "HTTPSNetwork.h"
 #include "Managers/SessionsManager.h"
 #include "Managers/DatabasesManager.h"
 #include "Databases/DatabaseImplementation.h"
 #include "Exceptions/APIException.h"
+#include "ExecutorsConstants.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)
@@ -18,6 +19,25 @@
 
 namespace framework
 {
+	HTTPRequestImplementation::ExceptionData::ExceptionData() :
+		responseCode(0),
+		valid(false)
+	{
+
+	}
+
+	void HTTPRequestImplementation::ExceptionData::setLogCategory(std::string_view logCategory)
+	{
+		this->logCategory = logCategory.empty() ?
+			"LogAPI" :
+			logCategory;
+	}
+
+	std::string_view HTTPRequestImplementation::ExceptionData::getLogCategory() const
+	{
+		return logCategory;
+	}
+
 	bool HTTPRequestImplementation::isWebFrameworkDynamicPages(std::string_view filePath)
 	{
 		size_t extension = filePath.find('.');
@@ -38,22 +58,22 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::setParser(const web::HTTPParser& parser)
+	void HTTPRequestImplementation::setParser(const web::HttpParser& parser)
 	{
 		this->parser = parser;
 	}
 
-	web::HTTPParser HTTPRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
+	web::HttpParser HTTPRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
 	{
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>(ip, port, std::chrono::milliseconds(timeout));
+			streams::IOSocketStream::createStream<web::HttpsNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::HttpNetwork>(ip, port, std::chrono::milliseconds(timeout));
 		std::string response;
 
 		stream << request;
 		stream >> response;
 
-		return web::HTTPParser(response);
+		return web::HttpParser(response);
 	}
 
 	HTTPRequestImplementation::HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
@@ -212,7 +232,7 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t index, void* buffer), void* buffer) const
+	void HTTPRequestImplementation::getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer) const
 	{
 		const std::vector<web::Multipart>& multiparts = parser.getMultiparts();
 
@@ -235,9 +255,10 @@ namespace framework
 				temp.contentType = (*contentType).data();
 			}
 
+			size_t dataSize = multipart.getData().size();
 			temp.data = multipart.getData().data();
 
-			addMultipart(temp.name, temp.fileName, temp.contentType, temp.data, i, buffer);
+			addMultipart(temp.name, temp.fileName, temp.contentType, temp.data, dataSize, i, buffer);
 		}
 	}
 
@@ -249,7 +270,7 @@ namespace framework
 	void HTTPRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		HTTPRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
-			this->sendWFDPFile(filePath, response, variablesSize, variables, isBinary, fileName) :
+			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
@@ -258,7 +279,7 @@ namespace framework
 		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::sendWFDPFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HTTPRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, *response, std::span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
 	}
@@ -273,7 +294,7 @@ namespace framework
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		web::HTTPBuilder builder = web::HTTPBuilder().
+		web::HttpBuilder builder = web::HttpBuilder().
 			headers
 			(
 				"Date", HTTPResponseImplementation::getFullDate(),
@@ -340,10 +361,7 @@ namespace framework
 
 	void HTTPRequestImplementation::registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
-		dynamicResources.registerDynamicFunction
-		(
-			functionName,
-			[function, deleter](const std::vector<std::string>& arguments) -> std::string
+		std::function<std::string(const std::vector<std::string>&)> functor = [function, deleter](const std::vector<std::string>& arguments) -> std::string
 			{
 				const char** temp = new const char* [arguments.size()];
 
@@ -363,8 +381,25 @@ namespace framework
 				delete[] temp;
 
 				return result;
-			}
-		);
+			};
+
+		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, functor);
+	}
+
+	void HTTPRequestImplementation::registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass)
+	{
+#ifdef __WITH_PYTHON_EXECUTORS__
+		if (apiType == json_settings::pythonExecutorKey)
+		{
+			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
+		}
+#endif
+#ifdef __WITH_DOT_NET_EXECUTORS__
+		if (apiType == json_settings::csharpExecutorKey)
+		{
+			dynamicResources.registerDynamicFunction(functionName, apiType, static_cast<char*>(functionClass));
+		}
+#endif
 	}
 
 	void HTTPRequestImplementation::unregisterWFDPFunction(const char* functionName)
@@ -377,14 +412,21 @@ namespace framework
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}
 
-	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator))
+	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size))
 	{
-		web::HTTPBuilder builder = web::HTTPBuilder().chunk(getChunk(chunkGenerator)).partialChunks().responseCode(web::ResponseCodes::ok).headers
-		(
-			"Date", HTTPResponseImplementation::getFullDate(),
-			"Server", "WebFramework-Server",
-			"Connection", "keep-alive"
-		);
+		web::HttpBuilder builder;
+		
+		{
+			size_t chunkSize = 0;
+			const char* chunk = getChunk(chunkGenerator, &chunkSize);
+
+			builder = web::HttpBuilder().chunk(std::string_view(chunk, chunkSize)).partialChunks().responseCode(web::ResponseCodes::ok).headers
+			(
+				"Date", HTTPResponseImplementation::getFullDate(),
+				"Server", "WebFramework-Server",
+				"Connection", "keep-alive"
+			);
+		}
 
 		if (fileName)
 		{
@@ -400,20 +442,21 @@ namespace framework
 
 		while (true)
 		{
-			const char* data = getChunk(chunkGenerator);
+			size_t chunkSize = 0;
+			const char* chunk = getChunk(chunkGenerator, &chunkSize);
 
-			if (data)
+			if (chunkSize)
 			{
-				stream << web::HTTPBuilder::getChunk(data);
+				stream << web::HttpBuilder::getChunk(std::string_view(chunk, chunkSize));
 			}
 			else
 			{
-				stream << web::HTTPBuilder::getChunk("");
+				stream << web::HttpBuilder::getChunk("");
 
 				break;
 			}
 
-			if (stream.eof() || std::string_view(data).empty())
+			if (stream.eof() || !chunkSize)
 			{
 				break;
 			}
@@ -482,18 +525,48 @@ namespace framework
 		fillBuffer(result.data(), result.size(), buffer);
 	}
 
-	void HTTPRequestImplementation::processWFDPFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	void HTTPRequestImplementation::processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
 	{
 		std::string result(fileData, size);
 
-		dynamicResources.processWFDPFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
+		dynamicResources.processDynamicFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
 
 		fillBuffer(result.data(), result.size(), buffer);
 	}
 
-	const char* HTTPRequestImplementation::getJSON() const
+	void HTTPRequestImplementation::setExceptionData(const char* errorMessage, int responseCode, const char* logCategory)
 	{
-		return parser.getJSON().getRawData().data();
+		exceptionData.errorMessage = errorMessage;
+		exceptionData.responseCode = responseCode;
+		exceptionData.valid = true;
+
+		exceptionData.setLogCategory(logCategory ? logCategory : "");
+	}
+
+	bool HTTPRequestImplementation::isExceptionDataValid() const
+	{
+		return exceptionData.valid;
+	}
+
+	bool HTTPRequestImplementation::getExceptionData(interfaces::CExceptionData* data)
+	{
+		if (exceptionData.valid)
+		{
+			data->errorMessage = exceptionData.errorMessage.data();
+			data->responseCode = exceptionData.responseCode;
+			data->logCategory = exceptionData.getLogCategory().data();
+
+			exceptionData.valid = false;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	const char* HTTPRequestImplementation::getJson() const
+	{
+		return parser.getJson().getRawData().data();
 	}
 
 	const char* HTTPRequestImplementation::getRawRequest() const
@@ -581,14 +654,14 @@ namespace framework
 
 		stream >> data;
 
-		request.parser.parse(data);
+		request.parser = web::HttpParser(data);
 
 		return stream;
 	}
 
 	std::ostream& operator << (std::ostream& stream, const HTTPRequestImplementation& request)
 	{
-		const web::HTTPParser& parser = request.parser;
+		const web::HttpParser& parser = request.parser;
 		const auto& headers = parser.getHeaders();
 
 		stream << parser.getMethod() << " " << parser.getParameters() << " " << parser.getHTTPVersion() << std::endl;

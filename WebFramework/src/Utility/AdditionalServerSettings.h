@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include <JSONParser.h>
+#include <JsonParser.h>
 
 namespace framework::utility
 {
@@ -20,6 +20,9 @@ namespace framework::utility
 		uint64_t cachingSize;
 
 	public:
-		static AdditionalServerSettings createSettings(const json::JSONParser& parser, const std::filesystem::path& basePath);
+		static AdditionalServerSettings createSettings(const json::JsonParser& parser, const std::filesystem::path& basePath);
+
+	public:
+		~AdditionalServerSettings() = default;
 	};
 }

@@ -1,17 +1,14 @@
 #pragma once
 
-#include <Executors/BaseStatefulExecutor.hpp>
+#include <Executors/StatefulExecutor.hpp>
 
 #include <fstream>
 
-class UploadOctetStreamExecutor : public framework::BaseStatefulExecutor
+class UploadOctetStreamExecutor : public framework::StatefulExecutor
 {
 private:
-	int64_t currentSize;
 	std::ofstream stream;
 
 public:
-	void init(const framework::utility::ExecutorSettings& settings) override;
-
-	void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+	void doPost(framework::HttpRequest& request, framework::HttpResponse& response) override;
 };

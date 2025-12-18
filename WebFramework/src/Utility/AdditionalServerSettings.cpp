@@ -13,24 +13,24 @@ namespace framework::utility
 
 	}
 
-	AdditionalServerSettings AdditionalServerSettings::createSettings(const json::JSONParser& parser, const std::filesystem::path& basePath)
+	AdditionalServerSettings AdditionalServerSettings::createSettings(const json::JsonParser& parser, const std::filesystem::path& basePath)
 	{
 		AdditionalServerSettings result;
 		std::string value;
 
-		parser.tryGetString(json_settings::userAgentFilterKey, result.userAgentFilter);
-		parser.tryGetUnsignedInt(json_settings::largeBodySizeThresholdKey, result.largeBodySizeThreshold);
-		parser.tryGetUnsignedInt(json_settings::largeBodyPacketSizeKey, result.largeBodyPacketSize);
-		parser.tryGetUnsignedInt(json_settings::cachingSize, result.cachingSize);
+		parser.tryGet<std::string>(json_settings::userAgentFilterKey, result.userAgentFilter);
+		parser.tryGet<size_t>(json_settings::largeBodySizeThresholdKey, result.largeBodySizeThreshold);
+		parser.tryGet<size_t>(json_settings::largeBodyPacketSizeKey, result.largeBodyPacketSize);
+		parser.tryGet<uint64_t>(json_settings::cachingSize, result.cachingSize);
 
-		if (parser.tryGetString(json_settings::assetsPathKey, value))
+		if (parser.tryGet<std::string>(json_settings::assetsPathKey, value))
 		{
 			std::filesystem::path temp(value);
 
 			result.assetsPath = temp.is_absolute() ? temp : (basePath / temp);
 		}
 
-		if (parser.tryGetString(json_settings::templatesPathKey, value))
+		if (parser.tryGet<std::string>(json_settings::templatesPathKey, value))
 		{
 			std::filesystem::path temp(value);
 

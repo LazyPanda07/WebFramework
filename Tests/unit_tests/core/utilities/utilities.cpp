@@ -3,7 +3,7 @@
 #include <fstream>
 #include <chrono>
 
-#include "HTTPSNetwork.h"
+#include <HttpsNetwork.h>
 
 #include "settings.h"
 
@@ -14,8 +14,8 @@ namespace utility
 	streams::IOSocketStream createSocketStream()
 	{
 		return useHTTPS ?
-			streams::IOSocketStream::createStream<web::HTTPSNetwork>("127.0.0.1", "8080", 1h) :
-			streams::IOSocketStream::createStream<web::HTTPNetwork>("127.0.0.1", "8080", 1h);
+			streams::IOSocketStream::createStream<web::HttpsNetwork>("127.0.0.1", "8080", 1h) :
+			streams::IOSocketStream::createStream<web::HttpNetwork>("127.0.0.1", "8080", 1h);
 	}
 
 	bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second)

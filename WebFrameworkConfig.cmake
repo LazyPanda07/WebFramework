@@ -1,3 +1,5 @@
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/WebFrameworkTargets.cmake)
+
 if (NOT DEFINED PROJECT_LOCALIZATION_DIR)
     set(PROJECT_LOCALIZATION_DIR ${CMAKE_SOURCE_DIR})
 endif()
@@ -22,8 +24,6 @@ if (${WEB_FRAMEWORK_CC_API})
     if (${CMAKE_C_STANDARD} LESS 11)
         set(CMAKE_C_STANDARD 11)
     endif()
-
-    link_libraries(CC_API)
 
     if (NOT PROJECT_NAME)
         message(STATUS "WebFramework CC API")
@@ -66,55 +66,10 @@ if (CMAKE_SCRIPT_MODE_FILE)
     return()
 endif()
 
-set(
-    WEB_FRAMEWORK_INCLUDE
-    ${WEB_FRAMEWORK_SDK}/include/
-    ${WEB_FRAMEWORK_SDK}/include/vendor/OpenSSL/
-    ${WEB_FRAMEWORK_SDK}/include/vendor/sqlite3/
-)
-
-set(
-    WEB_FRAMEWORK_LIB
-    WebFramework
-    WebFrameworkCore
-    WebFrameworkExecutors
-    BaseTCPServer
-    FileManager
-    Log
-    ThreadPool
-    UtilityLibrary
-    HTTP
-    JSON
-    SocketStreams
-    Networks
-    INIParser
-    Localization
-    SHA256
-    ssl
-    crypto
-    sqlite3
-)
-
-link_directories(
-    BEFORE
-    ${WEB_FRAMEWORK_SDK}/lib/
-    ${WEB_FRAMEWORK_SDK}/lib/vendor/OpenSSL/
-    ${WEB_FRAMEWORK_SDK}/lib/vendor/sqlite3/
-)
-
 if (WIN32)
-    set(
-        WEB_FRAMEWORK_LIB
-        ${WEB_FRAMEWORK_LIB}
-        crypt32
-        Rpcrt4
-    )
+    list(APPEND WEB_FRAMEWORK_3RDPARTY_LIB crypt32 Rpcrt4)
 elseif (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-    set(
-        WEB_FRAMEWORK_LIB
-        ${WEB_FRAMEWORK_LIB}
-        uuid
-    )
+    list(APPEND WEB_FRAMEWORK_3RDPARTY_LIB uuid)
 endif()
 
 if (UNIX)
@@ -123,23 +78,10 @@ if (UNIX)
         DESTINATION .
         FILES_MATCHING 
         PATTERN "*.so"
-        PATTERN "vendor" EXCLUDE
     )
 elseif(WIN32)
     install(DIRECTORY ${WEB_FRAMEWORK_SDK}/dll/ DESTINATION .)
 endif(UNIX)
-
-if (${WEB_FRAMEWORK_CC_API})
-    include_directories(
-        BEFORE
-        ${WEB_FRAMEWORK_SDK}/api/cc/include/
-    )
-else()
-    include_directories(
-        BEFORE
-        ${WEB_FRAMEWORK_SDK}/api/cxx/include/
-    )
-endif()
 
 if (NOT TARGET generate_localization)
     if ((NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} EQUAL ${CMAKE_SYSTEM_PROCESSOR}) AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")

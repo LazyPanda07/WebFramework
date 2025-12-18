@@ -6,13 +6,14 @@
 #include <algorithm>
 #include <thread>
 #include <filesystem>
+#include <array>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "JSONParser.h"
-#include "HTTPParser.h"
-#include "HTTPBuilder.h"
-#include "ConsoleArgumentParser.h"
+#include <JsonParser.h>
+#include <HttpParser.h>
+#include <HttpBuilder.h>
+#include <ConsoleArgumentParser.h>
 
 #include "utilities/utilities.h"
 
@@ -33,14 +34,14 @@ TEST(LoadBalancer, ConnectionsHeuristic)
 	std::vector<std::future<int64_t>> awaiters;
 	auto call = [](streams::IOSocketStream& stream)
 		{
-			std::string request = web::HTTPBuilder().getRequest().build();
+			std::string request = web::HttpBuilder().getRequest().build();
 			std::string response;
 
 			stream << request;
 
 			stream >> response;
 
-			return web::HTTPParser(response).getJSON().getInt("id");
+			return web::HttpParser(response).getJson().get<int64_t>("id");
 		};
 
 	streams.reserve(connections);
@@ -84,7 +85,7 @@ TEST(LoadBalancer, CustomHeuristic)
 	std::mt19937_64 random(time(nullptr));
 	auto call = [&random](streams::IOSocketStream& stream)
 		{
-			std::string request = web::HTTPBuilder().getRequest().build();
+			std::string request = web::HttpBuilder().getRequest().build();
 			std::string response;
 
 			std::this_thread::sleep_for(std::chrono::seconds(random() % 5));
@@ -93,7 +94,7 @@ TEST(LoadBalancer, CustomHeuristic)
 
 			stream >> response;
 
-			return web::HTTPParser(response).getJSON().getInt("id");
+			return web::HttpParser(response).getJson().get<int64_t>("id");
 		};
 
 	streams.reserve(connections);
@@ -137,6 +138,32 @@ int main(int argc, char** argv)
 	customHeuristic = parser.get<bool>("--custom_heuristic");
 
 	testing::InitGoogleTest(&argc, argv);
+
+	constexpr std::array<std::string_view, 4> loadBalancers =
+	{
+		START_LOAD_BALANCER_9090_SERVER_FILE,
+		START_LOAD_BALANCER_9091_SERVER_FILE,
+		START_LOAD_BALANCER_9092_SERVER_FILE,
+		START_LOAD_BALANCER_9093_SERVER_FILE
+	};
+
+	auto start = std::chrono::high_resolution_clock::now();
+
+	while (!std::ranges::all_of(loadBalancers, [](std::string_view file) { return std::filesystem::exists(file); }))
+	{
+		std::cout << "Wait for all load balancers..." << std::endl;
+
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+
+		auto end = std::chrono::high_resolution_clock::now();
+
+		if (std::chrono::duration_cast<std::chrono::minutes>(end - start).count() > 5)
+		{
+			printLog();
+
+			return -1;
+		}
+	}
 
 	int result = RUN_ALL_TESTS();
 

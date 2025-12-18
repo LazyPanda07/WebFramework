@@ -1,14 +1,24 @@
 #include "LoadBalancerServer.h"
 
-#include <Exceptions/SSLException.h>
-#include <HTTPSNetwork.h>
+#include <Exceptions/SslException.h>
+#include <HttpsNetwork.h>
 #include <Log.h>
+
+#include "Web/HTTPResponseImplementation.h"
+#include "Web/HTTPResponseExecutors.h"
+#include "Utility/Stopwatch.h"
 
 #include "Heuristics/Connections.h"
 #include "Heuristics/CXXHeuristic.h"
 #include "Heuristics/CCHeuristic.h"
-#include "Web/HTTPResponseImplementation.h"
-#include "Web/HTTPResponseExecutors.h"
+
+#ifdef __WITH_PYTHON_EXECUTORS__
+#include "Heuristics/PythonHeuristic.h"
+#endif
+
+#ifdef __WITH_DOT_NET_EXECUTORS__
+#include "Heuristics/CSharpHeuristic.h"
+#endif
 
 namespace framework::load_balancer
 {
@@ -37,7 +47,7 @@ namespace framework::load_balancer
 		}
 	}
 
-	bool LoadBalancerServer::receiveClientRequest(LoadBalancerRequest& request, std::string & httpRequest)
+	bool LoadBalancerServer::receiveClientRequest(LoadBalancerRequest& request, std::string& httpRequest)
 	{
 		try
 		{
@@ -187,10 +197,15 @@ namespace framework::load_balancer
 
 	void LoadBalancerServer::processing(size_t index)
 	{
-		std::vector<LoadBalancerRequest>& requests = requestQueues[index];
+		threading::utility::ConcurrentQueue<LoadBalancerRequest>& queuedRequests = requestQueues[index];
+		std::atomic_int64_t& currentSize = processingClients[index];
+		std::vector<LoadBalancerRequest> requests;
+		utility::Stopwatch stopwatch;
 
 		while (isRunning)
 		{
+			stopwatch.restart();
+
 			std::vector<size_t> removeIndices;
 
 			for (size_t i = 0; i < requests.size(); i++)
@@ -269,29 +284,37 @@ namespace framework::load_balancer
 				it->heuristic->onEnd();
 
 				requests.erase(it);
+
+				currentSize--;
 			}
 
-			while (true)
+			size_t queuedSize = queuedRequests.size();
+
+			for (size_t i = 0; i < queuedSize; i++)
 			{
-				if (std::optional<LoadBalancerRequest> request = queuedRequests.pop())
-				{
-					requests.emplace_back(std::move(*request));
-				}
-				else
-				{
-					break;
-				}
+				requests.emplace_back(std::move(*queuedRequests.pop()));
+			}
+
+			if (std::chrono::microseconds elapsed = stopwatch.elapsed(); elapsed < threshold)
+			{
+				std::this_thread::sleep_for(threshold - elapsed);
 			}
 		}
 	}
 
-	std::unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, HMODULE loadSource) const
+	std::unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
 	{
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseLoadBalancerHeuristic>(std::string_view, std::string_view, bool)>> apiHeuristics =
 		{
 			{ "", [](std::string_view ip, std::string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
-			{ json_settings::cxxExecutorKey, [heuristicName, loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
-			{ json_settings::ccExecutorKey, [heuristicName, loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } }
+			{ json_settings::cxxExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
+			{ json_settings::ccExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CCHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
+#ifdef __WITH_PYTHON_EXECUTORS__
+			{ json_settings::pythonExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<PythonHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
+#endif
+#ifdef __WITH_DOT_NET_EXECUTORS__
+			{ json_settings::csharpExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CSharpHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); }}
+#endif
 		};
 
 		if (auto it = apiHeuristics.find(apiType); it != apiHeuristics.end())
@@ -337,45 +360,62 @@ namespace framework::load_balancer
 
 			if (!ssl)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
+				throw web::exceptions::SslException(__LINE__, __FILE__);
 			}
 
 			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 			{
 				SSL_free(ssl);
 
-				throw web::exceptions::SSLException(__LINE__, __FILE__);
+				throw web::exceptions::SslException(__LINE__, __FILE__);
 			}
 
 			if (int errorCode = SSL_accept(ssl); errorCode != 1)
 			{
-				throw web::exceptions::SSLException(__LINE__, __FILE__, ssl, errorCode);
+				throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 			}
 		}
 
 		std::chrono::milliseconds timeoutInMilliseconds(timeout);
 		LoadBalancerRequest request
 		(
-			ssl ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(clientSocket, timeoutInMilliseconds),
-			serversHTTPS ? streams::IOSocketStream::createStream<web::HTTPSNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HTTPNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
+			ssl ? streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, timeoutInMilliseconds),
+			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
 			heuristic,
-			move(cleanup)
+			std::move(cleanup)
 		);
 		std::string httpRequest;
 
 		if (LoadBalancerServer::receiveClientRequest(request, httpRequest) && LoadBalancerServer::sendClientRequest(request, httpRequest))
 		{
-			queuedRequests.push(std::move(request));
+			int64_t minValue = processingClients[0].load(std::memory_order_relaxed);
+			size_t minIndex = 0;
+
+			for (size_t i = 1; i < processingClients.size(); i++)
+			{
+				int64_t value = processingClients[i].load(std::memory_order_relaxed);
+
+				if (value < minValue)
+				{
+					minValue = value;
+					minIndex = i;
+				}
+			}
+
+			requestQueues[minIndex].push(std::move(request));
+
+			processingClients[minIndex]++;
 		}
 	}
 
 	LoadBalancerServer::LoadBalancerServer
 	(
 		std::string_view ip, std::string_view port, DWORD timeout, bool serversHTTPS,
-		const json::utility::jsonObject& heuristic, HMODULE loadSource,
-		const std::unordered_map<std::string, std::vector<int64_t>>& allServers, //-V688
+		const json::JsonObject& heuristic, utility::LoadSource loadSource,
+		const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 		std::shared_ptr<ResourceExecutor> resources,
-		size_t processingThreads
+		uint32_t processingThreads,
+		uint32_t loadBalancingTargetRPS
 	) :
 		BaseTCPServer
 		(
@@ -387,18 +427,22 @@ namespace framework::load_balancer
 			false
 		),
 		requestQueues(processingThreads),
+		processingClients(processingThreads),
 		resources(resources),
+		threshold(decltype(threshold)::period::den / loadBalancingTargetRPS * processingThreads),
 		serversHTTPS(serversHTTPS)
 	{
-		const std::string& heuristicName = heuristic.getString("name");
-		std::string apiType = heuristic.getString(json_settings::apiTypeKey);
+		const std::string& heuristicName = heuristic["name"].get<std::string>();
+		std::string apiType = heuristic[json_settings::apiTypeKey].get<std::string>();
 
 		if (heuristicName == "Connections")
 		{
 			apiType = "";
 		}
-
+		
 		this->allServers.reserve(allServers.size());
+
+		std::ranges::for_each(processingClients, [](std::atomic_int64_t& value) { value = 0; });
 
 		for (const auto& [ip, ports] : allServers)
 		{

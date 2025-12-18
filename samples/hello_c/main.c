@@ -6,60 +6,60 @@ static void printServerState();
 
 int main(int argc, char** argv)
 {
-	initializeWebFramework("WebFramework"); // Load WebFramework shared library
+	wf_initialize_web_framework("WebFramework"); // Load WebFramework shared library
 
-	Config config;
-	WebFramework server;
-	WebFrameworkException exception = createConfigFromPath("configs/config.json", &config); // Load config.json
+	config_t config;
+	web_framework_t server;
+	web_framework_exception_t exception = wf_create_config_from_path("configs/config.json", &config); // Load config.json
 
 	if (exception) // Check error
 	{
-		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
+		fprintf(stderr, "%s\n", wf_get_error_message(exception)); // Print error message
 
-		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
+		wf_delete_web_framework_exception(exception); // Free WebFrameworkException memory
 
 		return -1;
 	}
 
-	exception = overrideBasePath(config, "executors"); // Override base path for loading executors
+	exception = wf_override_base_path(config, "executors"); // Override base path for loading executors
 
 	if (exception) // Check error
 	{
-		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
+		fprintf(stderr, "%s\n", wf_get_error_message(exception)); // Print error message
 
-		deleteWebFrameworkConfig(config); // Free Config memory
-		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
+		wf_delete_config(config); // Free Config memory
+		wf_delete_web_framework_exception(exception); // Free WebFrameworkException memory
 
 		return -2;
 	}
 
-	exception = createWebFrameworkFromConfig(config, &server); // Create server
+	exception = wf_create_web_framework_from_config(config, &server); // Create server
 
 	if (exception) // Check error
 	{
-		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
+		fprintf(stderr, "%s\n", wf_get_error_message(exception)); // Print error message
 
-		deleteWebFrameworkConfig(config); // Free Config memory
-		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
+		wf_delete_config(config); // Free Config memory
+		wf_delete_web_framework_exception(exception); // Free WebFrameworkException memory
 
 		return -3;
 	}
 
-	exception = startWebFrameworkServer(server, true, printServerState); // Start server and wait
+	exception = wf_start_web_framework_server(server, true, printServerState); // Start server and wait
 
 	if (exception) // Check error
 	{
-		fprintf(stderr, "%s\n", getErrorMessage(exception)); // Print error message
+		fprintf(stderr, "%s\n", wf_get_error_message(exception)); // Print error message
 
-		deleteWebFrameworkConfig(config); // Free Config memory
-		deleteWebFramework(server); // Free WebFramework memory
-		deleteWebFrameworkException(exception); // Free WebFrameworkException memory
+		wf_delete_config(config); // Free Config memory
+		wf_delete_web_framework(server); // Free WebFramework memory
+		wf_delete_web_framework_exception(exception); // Free WebFrameworkException memory
 
 		return -4;
 	}
 
-	deleteWebFrameworkConfig(config); // Free Config memory
-	deleteWebFramework(server); // Free WebFramework memory
+	wf_delete_config(config); // Free Config memory
+	wf_delete_web_framework(server); // Free WebFramework memory
 
 	return 0;
 }

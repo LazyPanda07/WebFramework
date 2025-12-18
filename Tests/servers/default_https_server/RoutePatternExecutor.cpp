@@ -1,10 +1,10 @@
 #include "RoutePatternExecutor.h"
 
-void RoutePatternExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+void RoutePatternExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	response.setBody
 	(
-		framework::JSONBuilder().
+		framework::JsonBuilder().
 		append("doubleValue", request.getRouteParameter<double>("doubleValue")).
 		append("integerValue", request.getRouteParameter<int64_t>("integerValue")).
 		append("stringValue", request.getRouteParameter<std::string>("stringValue"))

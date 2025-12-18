@@ -54,6 +54,9 @@
     <ClInclude Include="src\Rendering\IStaticFileRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utility\Stopwatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\WebInterfaces\IHTTPResponse.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\Stopwatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

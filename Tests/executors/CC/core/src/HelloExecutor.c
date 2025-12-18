@@ -1,5 +1,6 @@
-#include <Executors/BaseExecutor.h>
-#include <JSONParser.h>
+#include <executors/executor.h>
+
+#include <json_parser.h>
 
 typedef struct
 {
@@ -8,16 +9,16 @@ typedef struct
 
 DEFINE_EXECUTOR(HelloExecutor, STATELESS_EXECUTOR);
 
-static void service(Executor executor, HTTPResponse response);
+static void service(executor_t executor, http_response_t response);
 
 DEFINE_EXECUTOR_INIT(HelloExecutor)
 {
 	HelloExecutor* self = (HelloExecutor*)executor;
-	JSONParser parser = NULL;
+	json_parser_t parser = NULL;
 
-	getExecutorInitParameters(settings, &parser);
+	wf_get_executor_init_parameters(settings, &parser);
 
-	getJSONParserInteger(parser, "number", true, &self->number);
+	wf_get_json_parser_integer(parser, "number", true, &self->number);
 }
 
 DEFINE_EXECUTOR_METHOD(HelloExecutor, GET_METHOD, request, response)
@@ -55,17 +56,17 @@ DEFINE_EXECUTOR_METHOD(HelloExecutor, CONNECT_METHOD, request, response)
 	service(executor, response);
 }
 
-void service(Executor executor, HTTPResponse response)
+void service(executor_t executor, http_response_t response)
 {
 	HelloExecutor* self = (HelloExecutor*)executor;
-	JSONBuilder builder;
+	json_builder_t builder;
 
-	createJSONBuilder(&builder);
+	wf_create_json_builder(&builder);
 
-	appendJSONBuilderString(builder, "message", "Hello, World!");
-	appendJSONBuilderInteger(builder, "number", self->number);
+	wf_append_json_builder_string(builder, "message", "Hello, World!");
+	wf_append_json_builder_integer(builder, "number", self->number);
 
-	setJSONBody(response, builder);
+	wf_set_json_body(response, builder);
 
-	deleteWebFrameworkJSONBuilder(builder);
+	wf_delete_json_builder(builder);
 }

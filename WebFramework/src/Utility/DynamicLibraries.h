@@ -10,7 +10,20 @@ using HMODULE = void*;
 
 namespace framework::utility
 {
-	std::string makePathToDynamicLibrary(const std::filesystem::path& pathToSource);
+	enum class LoadSourceType
+	{
+		python,
+		dynamicLibrary,
+		dotNet
+	};
+
+	std::string makePathToLoadSource(const std::filesystem::path& pathToSource, LoadSourceType& type);
 
 	std::string getPathToWebFrameworkSharedLibrary();
+
+	HMODULE loadLibrary(const std::filesystem::path& pathToLibrary);
+
+	HMODULE getLoadedLibrary(std::string_view libraryName);
+
+	std::filesystem::path getPathToLibrary(HMODULE handle);
 }

@@ -1,9 +1,6 @@
 import argparse
 
-from web_framework_api.WebFramework import WebFramework
-from web_framework_api.utility.DLLHandler import initialize_web_framework
-from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException
-from web_framework_api.utility.Config import Config
+from web_framework_api import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -17,12 +14,12 @@ if __name__ == '__main__':
     try:
         initialize_web_framework("WebFramework")
 
-        config = Config.from_path(args.config)
+        config = Config(args.config)
 
         config.override_configuration("useHTTPS", args.useHTTPS, True)
         config.override_configuration("port", args.port, True)
 
-        server = WebFramework.from_config(config)
+        server = WebFramework(config)
 
         server.start(True)
     except WebFrameworkException as exception:

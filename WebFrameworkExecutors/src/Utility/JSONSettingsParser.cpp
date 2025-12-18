@@ -2,11 +2,13 @@
 
 #include <fstream>
 
-#include <JSONParser.h>
+#include <JsonParser.h>
+#include <JsonArrayWrapper.h>
+#include <MapJsonIterator.h>
 #include <Strings.h>
+#include <Exceptions/FileDoesNotExistException.h>
+#include <Exceptions/CantFindValueException.h>
 
-#include "Exceptions/FileDoesNotExistException.h"
-#include "Exceptions/CantFindValueException.h"
 #include "WebFrameworkCoreConstants.h"
 
 namespace framework::utility
@@ -33,22 +35,28 @@ namespace framework::utility
 			throw file_manager::exceptions::FileDoesNotExistException(JSONSettings);
 		}
 
-		json::JSONParser parser;
+		json::JsonParser parser;
 
 		in >> parser;
 
 		in.close();
 
-		for (const auto& [name, description] : parser)
+		json::MapJsonIterator iterator(parser.getParsedData());
+
+		for (const auto& [name, description] : iterator)
 		{
-			const json::utility::jsonObject& data = get<json::utility::jsonObject>(description);
-			const std::string& loadType = data.getString(json_settings::loadTypeKey);
+			if (name == "$schema")
+			{
+				continue;
+			}
+
+			const std::string& loadType = description[json_settings::loadTypeKey].get<std::string>();
 			ExecutorSettings executorSettings(name);
 
-			data.tryGetObject(json_settings::initParametersKey, executorSettings.initParameters);
-			data.tryGetString(json_settings::userAgentFilterKey, executorSettings.userAgentFilter);
+			description.tryGet<json::JsonObject>(json_settings::initParametersKey, executorSettings.initParameters);
+			description.tryGet<std::string>(json_settings::userAgentFilterKey, executorSettings.userAgentFilter);
 			
-			executorSettings.apiType = data.getString(json_settings::apiTypeKey);
+			executorSettings.apiType = description[json_settings::apiTypeKey].get<std::string>();
 
 			if (loadType == json_settings_values::initializationLoadTypeValue)
 			{
@@ -63,7 +71,23 @@ namespace framework::utility
 				throw std::runtime_error("Wrong loadType");
 			}
 
-			settings.try_emplace(::utility::strings::replaceAll(data.getString(json_settings::routeKey), " ", "%20"), std::move(executorSettings));
+			if (description[json_settings::routeKey].is<std::string>())
+			{
+				settings.try_emplace(::utility::strings::replaceAll(description[json_settings::routeKey].get<std::string>(), " ", "%20"), std::move(executorSettings));
+			}
+			else if (description[json_settings::routeKey].is<std::vector<json::JsonObject>>())
+			{
+				const std::vector<json::JsonObject>& routes = description[json_settings::routeKey].get<std::vector<json::JsonObject>>();
+
+				for (const std::string& route : json::utility::JsonArrayWrapper(routes).as<std::string>())
+				{
+					settings.try_emplace(::utility::strings::replaceAll(route, " ", "%20"), executorSettings);
+				}
+			}
+			else
+			{
+				throw std::runtime_error(std::format("Wrong route type for {} executor", name));
+			}
 		}
 	}
 
