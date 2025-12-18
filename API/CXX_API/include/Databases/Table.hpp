@@ -4,7 +4,7 @@
 
 #include "DatabaseInterfaces/ITable.hpp"
 
-#include "SQLResult.hpp"
+#include "SqlResult.hpp"
 
 namespace framework
 {

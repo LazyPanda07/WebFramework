@@ -93,8 +93,8 @@
     <ClInclude Include="include\DatabaseInterfaces\ISQLValue.hpp" />
     <ClInclude Include="include\DatabaseInterfaces\ITable.hpp" />
     <ClInclude Include="include\Databases\Database.hpp" />
-    <ClInclude Include="include\Databases\SQLResult.hpp" />
-    <ClInclude Include="include\Databases\SQLValue.hpp" />
+    <ClInclude Include="include\Databases\SqlResult.hpp" />
+    <ClInclude Include="include\Databases\SqlValue.hpp" />
     <ClInclude Include="include\Databases\Table.hpp" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="include\Exceptions\NotImplementedDoMethodException.hpp" />

@@ -2,7 +2,7 @@
 
 #include "../DLLHandler.hpp"
 #include "../Exceptions/WebFrameworkException.hpp"
-#include "../Databases/SQLValue.hpp"
+#include "../Databases/SqlValue.hpp"
 
 namespace framework::utility
 {
@@ -18,7 +18,7 @@ namespace framework::utility
 	namespace database
 	{
 		/**
-		 * @brief Helper function for SQLValue
+		 * @brief Helper function for SqlValue
 		 * @tparam ...Args 
 		 * @param ...args 
 		 * @return 
