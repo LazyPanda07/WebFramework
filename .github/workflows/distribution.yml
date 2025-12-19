@@ -163,6 +163,7 @@ jobs:
       run: |
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib/cmake
           chmod 0755 deb_packages/web-framework/DEBIAN/postinst
           cp deb_packages/web-framework/DEBIAN/copyright web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
@@ -269,11 +270,9 @@ jobs:
           pip3 install python_api/${PYTHON_API_NAME}
 
     - name: Build and test
-      working-directory: DistributionTests
+      working-directory: DistributionTests/build
       shell: bash
       run: |
-        mkdir build
-        cd build
         cmake -DTEST_PYTHON=ON ..
         cmake --build . -j --config Release
         cmake --install . --config Release
@@ -308,10 +307,8 @@ jobs:
           pip install python_api/${PYTHON_API_NAME}
           
     - name: Build and test
+      working-directory: DistributionTests/build
       run: |
-        cd DistributionTests
-        mkdir build
-        cd build
         cmake -DTEST_PYTHON=ON .. 
         cmake --build . -j --config Release
         cmake --install . --config Release
@@ -429,11 +426,11 @@ jobs:
         name: nuget-package
 
     - name: Build test
-      working-directory: DistributionTests
+      working-directory: DistributionTests/build
       run: |
-          mkdir build
-          cd build
-          cmake -DTEST_CSHARP=ON .. && cmake --build . -j && cmake --install .
+          cmake -DTEST_CSHARP=ON ..
+          cmake --build . -j --config Release 
+          cmake --install . --config Release
           cd bin
           ${{ matrix.config.run_command }}${{ matrix.config.script }}
 
