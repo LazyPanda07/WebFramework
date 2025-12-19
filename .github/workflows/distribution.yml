@@ -233,7 +233,7 @@ jobs:
     - name: Upload executor
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.upload_name }}
+        name: ${{ matrix.config.upload_name }}
         path: |
           DistributionTests/build/bin/config.json
           DistributionTests/build/bin/web.json
@@ -322,7 +322,7 @@ jobs:
   dev-deb-package-test:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:24.04
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     needs: [deb-package]
     strategy:
       matrix:
