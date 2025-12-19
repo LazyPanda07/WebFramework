@@ -4,12 +4,12 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 
 project(distribution)
 
-include(FetchContent)
-
 option(TEST_PYTHON "" OFF)
 option(TEST_CSHARP "" OFF)
 option(TEST_DEV_CC "" OFF)
 option(TEST_DEV_CXX "" OFF)
+
+add_subdirectory(hello_executor)
 
 if (${TEST_PYTHON})
 	add_subdirectory(python)

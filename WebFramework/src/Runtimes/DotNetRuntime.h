@@ -45,6 +45,8 @@ namespace framework::runtime
 		
 		static void createRuntimeConfig();
 
+		static std::filesystem::path getPathToApi();
+
 	public:
 		static NativeString getModuleName(const std::filesystem::path& modulePath);
 

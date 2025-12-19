@@ -1,4 +1,4 @@
-#include "DynamicLibraries.h"
+﻿#include "DynamicLibraries.h"
 
 #include <format>
 #include <fstream>
@@ -176,6 +176,32 @@ namespace framework::utility
 #endif
 
 		return "";
+	}
+
+	std::filesystem::path getExecutablePath()
+	{
+#ifdef __LINUX__
+		char buffer[PATH_MAX];
+		ssize_t length = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
+
+		if (length == -1)
+		{
+			return "";
+		}
+
+		buffer[length] = '\0';
+		
+#else
+		wchar_t buffer[MAX_PATH];
+		DWORD length = GetModuleFileNameW(NULL, buffer, MAX_PATH);
+
+		if (!length)
+		{
+			return "";
+		}
+#endif
+
+		return buffer;
 	}
 }
 

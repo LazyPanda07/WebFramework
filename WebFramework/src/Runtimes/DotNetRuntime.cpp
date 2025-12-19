@@ -61,6 +61,26 @@ namespace framework::runtime
 		stream << builder;
 	}
 
+	std::filesystem::path DotNetRuntime::getPathToApi()
+	{
+		constexpr std::string_view apiName = "WebFrameworkCSharpAPI.dll";
+
+		std::filesystem::path libraryDirectoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
+		std::filesystem::path executableDirectoryPath = utility::getExecutablePath().parent_path();
+		std::filesystem::path result;
+
+		if (std::filesystem::exists(executableDirectoryPath / apiName))
+		{
+			result = executableDirectoryPath / apiName;
+		}
+		else if (std::filesystem::exists(libraryDirectoryPath / apiName))
+		{
+			result = libraryDirectoryPath / apiName;
+		}
+		
+		return result;
+	}
+
 	DotNetRuntime::NativeString DotNetRuntime::getModuleName(const std::filesystem::path& modulePath)
 	{
 		return std::filesystem::path(modulePath).filename().replace_extension();
@@ -145,8 +165,7 @@ namespace framework::runtime
 	{
 		constexpr size_t envSize = 512;
 
-		const std::filesystem::path directoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
-		const std::filesystem::path apiPath = directoryPath / "WebFrameworkCSharpAPI.dll";
+		const std::filesystem::path apiPath = DotNetRuntime::getPathToApi();
 
 		if (!std::filesystem::exists(apiPath))
 		{

@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.27.0)
 
 project(hello_executor)
 
+if (UNIX)
+	list(APPEND CMAKE_MODULE_PATH /usr/lib/web-framework)
+endif()
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
+
+find_package(WebFramework REQUIRED)
+
 add_library(
 	${PROJECT_NAME} SHARED
 	src/HelloExecutor.cpp

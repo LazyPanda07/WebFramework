@@ -8,10 +8,18 @@ if (NOT DEFINED WEB_FRAMEWORK_SDK)
             set(WEB_FRAMEWORK_SDK /usr/lib/web-framework)
         endif()
     endif()
+
+    if (NOT DEFINED WEB_FRAMEWORK_SDK)
+        if (EXISTS ${CMAKE_CURRENT_LIST_DIR}/WebFrameworkConfig.cmake)
+            set(WEB_FRAMEWORK_SDK ${CMAKE_CURRENT_LIST_DIR})
+        endif()
+    endif()
 endif()
 
 if (NOT DEFINED WEB_FRAMEWORK_SDK)
     message(FATAL_ERROR "WEB_FRAMEWORK_SDK variable doesn't set")
+else()
+    message("Found WebFrameworkConfig.cmake in ${WEB_FRAMEWORK_SDK}")
 endif()
 
 include(${WEB_FRAMEWORK_SDK}/WebFrameworkConfig.cmake)

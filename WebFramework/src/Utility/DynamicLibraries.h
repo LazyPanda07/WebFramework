@@ -26,4 +26,6 @@ namespace framework::utility
 	HMODULE getLoadedLibrary(std::string_view libraryName);
 
 	std::filesystem::path getPathToLibrary(HMODULE handle);
+
+	std::filesystem::path getExecutablePath();
 }

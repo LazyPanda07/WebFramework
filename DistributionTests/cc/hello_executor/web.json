@@ -1,7 +1,0 @@
-{
-  "HelloExecutor": {
-    "route": "",
-    "loadType": "initialization",
-    "api": "cc"
-  }
-}
