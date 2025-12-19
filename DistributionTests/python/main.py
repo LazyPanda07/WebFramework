@@ -1,6 +1,4 @@
-from web_framework_api.WebFramework import WebFramework  # Server
-from web_framework_api.utility.DLLHandler import initialize_web_framework  # WebFramework initialization
-from web_framework_api.exceptions.WebFrameworkException import WebFrameworkException  # Exception
+from web_framework_api import *
 
 
 def on_start():

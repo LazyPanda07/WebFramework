@@ -163,7 +163,7 @@ jobs:
       run: |
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib/cmake
+          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
           chmod 0755 deb_packages/web-framework/DEBIAN/postinst
           cp deb_packages/web-framework/DEBIAN/copyright web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
@@ -186,7 +186,7 @@ jobs:
           cp -r Release_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           cp -r Release_Linux/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Release_Linux/FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r Release_Linux/cmake/WebFrameworkTargets.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/cmake/web-framework
+          cp -r Release_Linux/cmake/WebFrameworkTargets.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib/cmake
           cp -r Release_Linux/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Release_Linux/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
@@ -287,6 +287,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Download executor
       uses: actions/download-artifact@v4
