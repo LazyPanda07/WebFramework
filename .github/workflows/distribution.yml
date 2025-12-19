@@ -185,6 +185,7 @@ jobs:
           cp -r Release_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           cp -r Release_Linux/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Release_Linux/FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Release_Linux/cmake/WebFrameworkTargets.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/cmake/web-framework
           cp -r Release_Linux/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Release_Linux/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
@@ -227,8 +228,8 @@ jobs:
         mkdir build
         cd build
         cmake -DBUILD_EXECUTOR=ON ..
-        cmake --build . -j
-        cmake --install .
+        cmake --build . -j --config Release
+        cmake --install . --config Release
 
     - name: Upload executor
       uses: actions/upload-artifact@v4
@@ -329,11 +330,6 @@ jobs:
         configuration: [[TEST_DEV_CC, run_cc_test.sh, cc_test], [TEST_DEV_CXX, run_cxx_test.sh, cxx_test]]
 
     steps:
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y git unzip zip wget cmake gcc g++ 
-
     - uses: actions/checkout@v4
       with:
         submodules: recursive
