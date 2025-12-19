@@ -14,7 +14,10 @@ env:
 
 jobs:
   pip-package:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        config: [ { os: ubuntu-latest, release_name: linux.zip, source_name: Linux, python: python3, output_prefix: linux }, { os: windows-latest, release_name: windows.zip, source_name: Windows, python: python, output_prefix: windows } ]
+    runs-on: ${{ matrix.config.os }}
     
     steps:
     - name: Install Python
@@ -22,29 +25,29 @@ jobs:
       with:
         python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Get Linux latest release
+    - name: Get latest release
       uses: robinraju/release-downloader@v1.11
       with:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: linux.zip
+        fileName: ${{ matrix.config.release_name }}
         
     - name: Create package folder
       run: |
           mkdir package
-          mv Release_Linux/api/python_api/* package/
+          mv Release_${{ matrix.config.source_name }}/api/python_api/* package/
 
     - name: Build wheel
       working-directory: package
       run: |
-          python3 -m pip install build
-          python3 -m build
+          ${{ matrix.python }} -m pip install build
+          ${{ matrix.python }} -m build
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: pip-package
+        name: ${{ config.output_prefix }}-pip-package
         path: package/dist
 
 
@@ -203,7 +206,7 @@ jobs:
     - name: Download pip package
       uses: actions/download-artifact@v4
       with:
-        name: pip-package
+        name: linux-pip-package
         path: python_api
 
     - name: Install Python API
@@ -235,7 +238,7 @@ jobs:
     - name: Download pip package
       uses: actions/download-artifact@v4
       with:
-        name: pip-package
+        name: windows-pip-package
         path: python_api
 
     - name: Install Python API
