@@ -462,11 +462,9 @@ jobs:
       run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
       uses: actions/download-artifact@v4
 
     - name: Remove Windows tests
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: |
           rm -rf WindowsTests
           rm -rf WindowsExecutors*
@@ -475,23 +473,19 @@ jobs:
       run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
       
     - name: Create Windows zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
 
     - name: Create Linux zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r linux.zip Release_Linux
 
     - name: Create Android zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r android.zip Release_Android
 
     - name: Create Linux ARM64 zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r linux_aarch64.zip Release_LinuxARM
 
     - name: Publish
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: gh release upload v${{ env.VERSION }} *.zip --clobber
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

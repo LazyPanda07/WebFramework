@@ -487,7 +487,7 @@ jobs:
         cd HelloExecutorAndroid && zip -r ../hello_executor_android.zip * && cd .. 
           
     - name: Publish
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: gh release create v${{ env.VERSION }} *.zip --title v${{ env.VERSION }} --generate-notes
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
