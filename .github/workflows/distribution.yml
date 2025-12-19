@@ -1,13 +1,15 @@
 name: Distribution
 
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
 
 env:
   dotnet-version: 8.0
   deb-package-version: 3.2.0
   deb-package-release-number: 13
+  PYTHON_VERSION: 3.14
 
 
 jobs:
@@ -15,6 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
+
     - name: Get Linux latest release
       uses: robinraju/release-downloader@v1.11
       with:
@@ -33,7 +40,6 @@ jobs:
       run: |
           python3 -m pip install build
           python3 -m build
-          mv dist/*.whl dist/web_framework_api-${{ env.deb-package-version }}-py3-none-any.whl
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -164,14 +170,12 @@ jobs:
       run: |
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
           cp deb_packages/web-framework-dev/DEBIAN/copyright web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           cp -r Release_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r Release_Linux/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/include
           cp -r Release_Linux/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           cp -r Release_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           cp -r Release_Linux/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
@@ -283,7 +287,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -D${{ matrix.configuration[0] }}=ON .. && make install -j $(nproc)
+          cmake -D${{ matrix.configuration[0] }}=ON .. && cmake --build . -j && cmake --install .
 
     - name: Run test
       working-directory: DistributionTests/build/bin

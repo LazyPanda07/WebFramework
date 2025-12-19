@@ -15,8 +15,10 @@ add_executable(
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	${WEB_FRAMEWORK_LIBS}
+	WebFramework::CXX_API
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
-install(FILES run_cxx_test.sh DESTINATION ${CMAKE_INSTALL_PREFIX})
+add_subdirectory(hello_executor)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION .)
+install(FILES run_cxx_test.sh DESTINATION .)

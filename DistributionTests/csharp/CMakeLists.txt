@@ -8,5 +8,5 @@ add_custom_target(
 	COMMAND dotnet publish csharp_test.csproj --output ${CMAKE_BINARY_DIR}/bin /p:DebugType=None /p:DebugSymbols=false
 )
 
-install(FILES run_csharp_test.bat DESTINATION bin)
-install(FILES run_csharp_test.sh DESTINATION bin)
+install(FILES run_csharp_test.bat DESTINATION .)
+install(FILES run_csharp_test.sh DESTINATION .)
