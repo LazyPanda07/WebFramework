@@ -219,7 +219,7 @@ jobs:
       shell: bash
       run: |
         mkdir WebFrameworkLibrary
-        mv ${{ matrix.library_path }}/* WebFrameworkLibrary
+        mv ${{ matrix.config.library_path }}/* WebFrameworkLibrary
 
     - name: Build executor
       working-directory: DistributionTests
@@ -242,7 +242,7 @@ jobs:
 
   linux-pip-package-test:
     runs-on: ubuntu-latest
-    needs: [pip-package]
+    needs: [pip-package, executor-build]
     container:
       image: lazypanda07/ubuntu_cxx20:24.04
 
@@ -283,7 +283,7 @@ jobs:
 
   windows-pip-package-test:
     runs-on: windows-latest
-    needs: [pip-package]
+    needs: [pip-package, executor-build]
     
     steps:
     - uses: actions/checkout@v4
@@ -329,6 +329,11 @@ jobs:
         configuration: [[TEST_DEV_CC, run_cc_test.sh, cc_test], [TEST_DEV_CXX, run_cxx_test.sh, cxx_test]]
 
     steps:
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y git unzip zip wget cmake gcc g++ 
+
     - uses: actions/checkout@v4
       with:
         submodules: recursive
@@ -353,6 +358,7 @@ jobs:
 
     - name: Run test
       working-directory: DistributionTests/build/bin
+      shell: bash
       run: |
           source ${{ matrix.configuration[1] }}
           diff reference.json out.json
