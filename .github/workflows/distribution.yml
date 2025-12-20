@@ -175,7 +175,7 @@ jobs:
       run: |
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
+          mkdir -p web-framework_dev${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
@@ -412,13 +412,18 @@ jobs:
     strategy:
       matrix:
         config:
-          - { os: ubuntu-latest, script: run_csharp_test.sh, executor_name: "windows-executor", run_command: "source " }
-          - { os: windows-latest, script: run_csharp_test.bat, executor_name: "linux-executor", run_command: ".\\" }
+          - { os: ubuntu-latest, script: run_csharp_test.sh, executor_name: "linux-executor", run_command: "source " }
+          - { os: windows-latest, script: run_csharp_test.bat, executor_name: "windows-executor", run_command: ".\\" }
     runs-on: ${{ matrix.config.os }}
 
     steps:
     - uses: actions/checkout@v4
   
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
+
     - name: Download executor
       uses: actions/download-artifact@v4
       with:
