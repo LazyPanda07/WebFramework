@@ -27,3 +27,4 @@ target_link_libraries(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 install(FILES web.json DESTINATION .)
+install(FILES config.json DESTINATION .)

@@ -12,7 +12,7 @@ if __name__ == '__main__':
     try:
         initialize_web_framework()
 
-        server = WebFramework.from_path("config.json")
+        server = WebFramework("config.json")
 
         server.start(True, on_start)
     except Exception as exception:

@@ -2,6 +2,12 @@
 
 start csharp_test.exe
 
+:loop
+if not exist "start.txt" (
+    ping 127.0.0.1 -n 2 > nul
+    goto loop
+)
+
 curl http://127.0.0.1:8080 > out.json
 
 fc reference.json out.json > nul

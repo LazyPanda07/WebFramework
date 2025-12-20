@@ -30,5 +30,4 @@ if (${TEST_DEV_CXX})
 	add_subdirectory(cxx)
 endif()
 
-install(FILES config.json DESTINATION .)
 install(FILES reference.json DESTINATION .)

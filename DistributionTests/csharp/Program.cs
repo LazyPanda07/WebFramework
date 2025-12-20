@@ -8,7 +8,7 @@ namespace csharp_test
 		{
 			WebFramework server = new("config.json");
 
-			server.Start(true);
+			server.Start(true, () => File.Create("start.txt"));
 		}
 	}
 }

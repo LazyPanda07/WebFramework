@@ -175,7 +175,7 @@ jobs:
       run: |
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          mkdir -p web-framework_dev${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
+          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
