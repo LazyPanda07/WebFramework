@@ -380,7 +380,7 @@ jobs:
     needs: [dev-deb-package-test]
     strategy:
       matrix:
-        test: [cc_test, cxx_test]
+        config: [ { executable_name: cc_test, script: run_cc_test.sh }, { executable_name: cxx_test, script: run_cxx_test.sh } ]
 
     steps:
     - name: Download deb packages
@@ -396,18 +396,12 @@ jobs:
     - name: Download binaries
       uses: actions/download-artifact@v4
       with:
-        name: binaries_${{ matrix.test }}
+        name: binaries_${{ matrix.config.executable_name }}
 
     - name: Run test
       run: |
-        chmod +x ${{ matrix.test }}
-        ./${{ matrix.test }} & sleep 1
-        while [ ! -f "start.txt" ]; do
-          sleep 1
-        done
-        curl http://127.0.0.1:8080 > out.json
-        md5sum reference.json
-        md5sum out.json
+        chmod +x ${{ matrix.config.executable_name }}
+        source ${{ matrix.config.script }}
         diff reference.json out.json
       
   
