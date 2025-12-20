@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include <import.hpp>
 
@@ -8,7 +9,7 @@ int main(int argc, char** argv) try
 
 	framework::WebFramework server("config.json");
 
-	server.start(true);
+	server.start(true, []() { std::ofstream("start.txt"); });
 
 	return 0;
 }

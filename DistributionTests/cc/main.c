@@ -3,6 +3,20 @@
 
 #include "import.h"
 
+void onStart()
+{
+	FILE* file = fopen("start.txt", "w");
+
+	if (file)
+	{
+		fclose(file);
+	}
+	else
+	{
+		printf("Can't create start.txt\n");
+	}
+}
+
 int main(int argc, char** argv)
 {
 	if (argc == 2)
@@ -24,7 +38,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	exception = wf_start_web_framework_server(server, true, NULL);
+	exception = wf_start_web_framework_server(server, true, onStart);
 
 	if (exception)
 	{
