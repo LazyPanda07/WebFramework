@@ -3,7 +3,5 @@
 set -e
 
 if [ configure = "$1" ]; then
-  echo "/usr/lib/web-framework/lib" >> /etc/ld.so.conf
-
   ldconfig
 fi

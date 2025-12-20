@@ -3,7 +3,6 @@
 set -e
 
 if [ configure = "$1" ]; then
-  echo "/usr/lib/web-framework/lib" >> /etc/ld.so.conf
   echo "WEB_FRAMEWORK_SDK=/usr/lib/web-framework" >> /etc/environment
 
   ldconfig
