@@ -4,7 +4,11 @@ project(cxx_test)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
-list(APPEND CMAKE_MODULE_PATH /usr/lib/web-framework)
+if (UNIX)
+	list(APPEND CMAKE_MODULE_PATH /usr/lib/web-framework)
+endif()
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 
 find_package(WebFramework REQUIRED)
 
@@ -17,8 +21,6 @@ target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	WebFramework::CXX_API
 )
-
-add_subdirectory(hello_executor)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 install(FILES run_cxx_test.sh DESTINATION .)

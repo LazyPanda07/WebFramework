@@ -66,12 +66,6 @@ if (CMAKE_SCRIPT_MODE_FILE)
     return()
 endif()
 
-if (WIN32)
-    list(APPEND WEB_FRAMEWORK_3RDPARTY_LIB crypt32 Rpcrt4)
-elseif (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-    list(APPEND WEB_FRAMEWORK_3RDPARTY_LIB uuid)
-endif()
-
 if (UNIX)
     install(
         DIRECTORY ${WEB_FRAMEWORK_SDK}/lib/ 

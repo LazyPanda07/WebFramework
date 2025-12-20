@@ -5,7 +5,11 @@ project(cc_test)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 set(WEB_FRAMEWORK_CC_API TRUE)
 
-list(APPEND CMAKE_MODULE_PATH /usr/lib/web-framework)
+if (UNIX)
+	list(APPEND CMAKE_MODULE_PATH /usr/lib/web-framework)
+endif()
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../WebFrameworkLibrary)
 
 find_package(WebFramework REQUIRED)
 
