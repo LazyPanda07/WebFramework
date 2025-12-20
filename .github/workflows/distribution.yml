@@ -369,6 +369,7 @@ jobs:
         name: binaries_${{ matrix.config.asset_name }}
         path: |
             DistributionTests/build/bin/libhello_executor.so
+            DistributionTests/build/bin/${{ matrix.config.script }}
             DistributionTests/build/bin/${{ matrix.config.asset_name }}
             DistributionTests/build/bin/config.json
             DistributionTests/build/bin/web.json
