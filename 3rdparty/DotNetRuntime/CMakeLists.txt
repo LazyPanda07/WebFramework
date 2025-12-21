@@ -6,8 +6,7 @@ project(external_dot_net)
 
 if (UNIX)
 	set(BASE_DOTNET_HOST_SDK_PATH "/usr/lib/dotnet/packs/Microsoft.NETCore.App.Host.*-x64" CACHE STRING "")
-
-	list(APPEND BASE_DOTNET_HOST_SDK_PATH "/usr/share/dotnet/host/fxr")
+	set(BASE_DOTNET_HOST_SDK_PATH "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.*-x64" CACHE STRING "")
 else()
 	set(BASE_DOTNET_HOST_SDK_PATH "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64" CACHE STRING "")
 endif()
