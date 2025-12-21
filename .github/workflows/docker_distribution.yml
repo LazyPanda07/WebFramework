@@ -49,6 +49,15 @@ jobs:
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=../../DockerTests/app -DPYTHON_SAMPLE=OFF -DCC_SAMPLE=OFF -DCSHARP_SAMPLE=OFF .. && make install -j $(nproc)
     
+    - name: Remove libraries
+      working-directory: DockerTests/app
+      run: |
+        rm -rf libWebFramework.so
+        rm -rf libFileManager.so
+        rm -rf libLocalization.so
+        rm -rf ligLog.so
+        rm -rf libsqlite3.so
+        
     - name: Build base image
       working-directory: Docker/web_framework_deploy
       run: sudo docker build . -t base_image
@@ -56,16 +65,7 @@ jobs:
     - name: Build image
       working-directory: DockerTests
       run: sudo docker build . -t test_image
-
-    - name: Save test image
-      run: sudo docker save test_image:latest > test_image.tar
-
-    - name: Upload test image
-      uses: actions/upload-artifact@v4
-      with:
-        name: test_image
-        path: test_image.tar
-
+      
     - name: Run container
       run: |
           sudo docker run -d -p 8080:8080 test_image:latest
