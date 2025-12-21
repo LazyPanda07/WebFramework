@@ -52,7 +52,7 @@ jobs:
     - name: Run container
       run: |
           sudo docker run -d -p 8080:8080 test_image:latest
-          curl http://127.0.0.1:8080
+          curl --retry 10 --retry-delay 3 --retry-max-time 60 http://127.0.0.1:8080
 
 
   docker-publish-deploy:
