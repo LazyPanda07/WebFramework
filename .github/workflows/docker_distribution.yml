@@ -52,16 +52,7 @@ jobs:
     - name: Build base image
       working-directory: Docker/web_framework_deploy
       run: sudo docker build . -t base_image
-
-    - name: Save base image
-      run: sudo docker save base_image:latest > base_image.tar
-
-    - name: Upload base image
-      uses: actions/upload-artifact@v4
-      with:
-        name: base_image
-        path: base_image.tar
-        
+      
     - name: Build image
       working-directory: DockerTests
       run: sudo docker build . -t test_image
@@ -69,6 +60,7 @@ jobs:
     - name: Run container
       run: |
           sudo docker run -d -p 8080:8080 test_image:latest
+          sleep 60
           curl --retry 10 --retry-delay 3 --retry-max-time 60 http://127.0.0.1:8080
 
 
