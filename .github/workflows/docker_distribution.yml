@@ -52,10 +52,19 @@ jobs:
     - name: Build base image
       working-directory: Docker/web_framework_deploy
       run: sudo docker build . -t base_image
-      
+        
     - name: Build image
       working-directory: DockerTests
       run: sudo docker build . -t test_image
+
+    - name: Save test image
+      run: sudo docker save test_image:latest > test_image.tar
+
+    - name: Upload test image
+      uses: actions/upload-artifact@v4
+      with:
+        name: test_image
+        path: test_image.tar
 
     - name: Run container
       run: |
