@@ -6,11 +6,17 @@ project(external_dot_net)
 
 if (UNIX)
 	set(BASE_DOTNET_HOST_SDK_PATH "/usr/lib/dotnet/packs/Microsoft.NETCore.App.Host.*-x64" CACHE STRING "")
+	set(BASE_DOTNET_HOST_SDK_PATH "/usr/share/dotnet/host/fxr" CACHE STRING "")
 else()
 	set(BASE_DOTNET_HOST_SDK_PATH "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64" CACHE STRING "")
 endif()
 
-file(GLOB DOTNET_SDKS "${BASE_DOTNET_HOST_SDK_PATH}/*")
+foreach (SDK_PATH ${BASE_DOTNET_HOST_SDK_PATH})
+	file(GLOB TEMP "${SDK_PATH}/*")
+
+	list(APPEND DOTNET_SDKS ${TEMP})
+endforeach()
+
 list(SORT DOTNET_SDKS COMPARE NATURAL ORDER DESCENDING)
 list(FILTER DOTNET_SDKS INCLUDE REGEX "${DOTNET_RUNTIME_VERSION}.*.*")
 
