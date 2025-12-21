@@ -7,7 +7,7 @@ RUN mkdir -p web_framework_server/build
 
 WORKDIR /web_framework_server/build
 
-RUN cmake -DWEB_FRAMEWORK_TAG=v3.2.0 -G "Ninja" ..
+RUN cmake -DCMAKE_INSTALL_PREFIX=bin -DWEB_FRAMEWORK_TAG=v3.2.0 -G "Ninja" ..
 RUN cmake --build .
 RUN cmake --install .
 RUN mkdir /opt/web_framework_server && cp /web_framework_server/build/bin/web_framework_server /opt/web_framework_server
