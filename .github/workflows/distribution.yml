@@ -177,6 +177,7 @@ jobs:
       run: |
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
@@ -191,6 +192,7 @@ jobs:
           cp -r Release_Linux/cmake/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
           cp -r Release_Linux/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Release_Linux/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          echo "/usr/lib/web-framework/lib" > web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d/web-framework-dev.conf
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           
     - name: Upload artifacts
@@ -382,7 +384,9 @@ jobs:
     needs: [dev-deb-package-test]
     strategy:
       matrix:
-        config: [ { executable_name: cc_test, script: run_cc_test.sh }, { executable_name: cxx_test, script: run_cxx_test.sh } ]
+        config:
+          - { executable_name: cc_test, script: run_cc_test.sh }
+          - { executable_name: cxx_test, script: run_cxx_test.sh }
 
     steps:
     - name: Download deb packages
@@ -390,6 +394,11 @@ jobs:
       with:
         name: deb-packages
         path: packages
+
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Install deb package
       working-directory: packages
