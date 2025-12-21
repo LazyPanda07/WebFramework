@@ -21,8 +21,14 @@ RUN rm -rf web_framework_server
 
 FROM ubuntu:24.04 AS deploy
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LD_LIBRARY_PATH="/usr/lib/dotnet/host/fxr/8.0.22":${LD_LIBRARY_PATH}
+
 RUN apt update
-RUN apt install -y curl bash gpg sudo
+RUN apt install -y curl bash gpg sudo dotnet-sdk-8.0 software-properties-common
+RUN add-apt-repository -y ppa:deadsnakes/ppa
+RUN apt update
+RUN apt install -y python3.14 python3.14-venv libpython3.14
 
 COPY --from=build /opt/web_framework_server /opt/web_framework_server
 

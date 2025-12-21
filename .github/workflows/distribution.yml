@@ -6,7 +6,6 @@ on:
 
 
 env:
-  dotnet-version: 8.0
   deb-package-version: 3.2.0
   deb-package-release-number: 13
   PYTHON_VERSION: 3.14
@@ -455,7 +454,6 @@ jobs:
 
 
   publish-nuget-package:
-    if: false
     runs-on: ubuntu-latest
     needs: [
       linux-pip-package-test,
@@ -488,10 +486,6 @@ jobs:
     ]
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-        
     - name: Download Windows pip package
       uses: actions/download-artifact@v4
       with:
@@ -510,7 +504,6 @@ jobs:
 
 
   publish-deb-packages:
-    if: false
     runs-on: ubuntu-latest
     needs: [
       linux-pip-package-test,

@@ -18,15 +18,14 @@ permissions:
 jobs:
   docker-test:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
 
     steps:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-
-    - name: Install UUID
-      run: sudo apt update && sudo apt -y install uuid-dev
-
+        
     - name: Build WebFramework
       run: |
           mkdir build
