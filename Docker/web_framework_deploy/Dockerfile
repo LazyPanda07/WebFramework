@@ -3,7 +3,10 @@ FROM ubuntu:24.04 AS build
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
-RUN apt install -y cmake build-essential git uuid-dev ninja-build
+RUN apt install -y cmake build-essential git uuid-dev ninja-build dotnet-sdk-8.0 software-properties-common
+RUN add-apt-repository -y ppa:deadsnakes/ppa
+RUN apt update
+RUN apt install -y python3.14 python3.14-venv libpython3.14
 
 RUN git clone https://github.com/LazyPanda07/web_framework_server.git
 RUN mkdir -p web_framework_server/build
