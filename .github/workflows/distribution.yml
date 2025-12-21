@@ -455,7 +455,6 @@ jobs:
 
 
   publish-nuget-package:
-    if: false
     runs-on: ubuntu-latest
     needs: [
       linux-pip-package-test,
@@ -477,7 +476,6 @@ jobs:
 
 
   publish-pip-package:
-    if: false
     runs-on: ubuntu-latest
     needs: [
       linux-pip-package-test,
@@ -493,12 +491,25 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Download pip package
+    - name: Download Linux pip package
       uses: actions/download-artifact@v4
       with:
-        name: pip-package
-        path: dist
+        name: linux-pip-package
+        path: linux
 
+    - name: Download Windows pip package
+      uses: actions/download-artifact@v4
+      with:
+        name: windows-pip-package
+        path: windows
+
+    - name: Merge pip packages
+      run: |
+        rm -rf windows/web_framework_api-${{ env.deb-package-version }}.tar.gz
+        mkdir dist
+        mv linux/* dist
+        mv windows/* dist
+        
     - name: Prepare
       run: python3 -m pip install twine
       
@@ -511,7 +522,6 @@ jobs:
 
 
   publish-deb-packages:
-    if: false
     runs-on: ubuntu-latest
     needs: [
       linux-pip-package-test,
@@ -557,5 +567,4 @@ jobs:
 
           git config --unset-all http.https://github.com/.extraheader
           git push https://${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa
-          
           
