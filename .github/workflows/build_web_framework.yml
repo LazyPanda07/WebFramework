@@ -33,6 +33,7 @@ on:
         description: "Python version for Windows build"
         required: false
         type: string
+        default: ''
 
 
 jobs:
@@ -51,7 +52,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Install Python
-      if: ${{ inputs.os == 'windows-latest' }}
+      if: ${{ inputs.python-version != '' }}
       uses: actions/setup-python@v6
       with:
         python-version: "${{ inputs.python-version }}"

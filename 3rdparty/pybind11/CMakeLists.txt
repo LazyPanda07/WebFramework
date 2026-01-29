@@ -6,13 +6,13 @@ set(PYBIND11_VERSION 3.0.1)
 set(PYBIND11_FINDPYTHON OFF)
 set(PYTHON_EXECUTABLE "" CACHE STRING "Path to Python executable")
 
-if (NOT DEFINED PYTHON_EXECUTABLE OR ${PYTHON_EXECUTABLE} STREQUAL "")
+if (NOT DEFINED ${PYTHON_EXECUTABLE})
     if (UNIX)
-        set(PYTHON_EXECUTABLE /usr/bin/python3 CACHE STRING "Path to Python executable")
+        set(PYTHON_EXECUTABLE /usr/bin/python3)
     else()
         find_package(Python REQUIRED)
     
-        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE} CACHE STRING "Path to Python executable")
+        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
     endif()
 endif()
 
