@@ -20,7 +20,7 @@ namespace framework::proxy
 
 		if (useHTTPS)
 		{
-			ssl = SSL_new(context);
+			ssl = this->getNewSsl();
 
 			if (!ssl)
 			{
@@ -36,14 +36,13 @@ namespace framework::proxy
 
 			if (int errorCode = SSL_accept(ssl); errorCode != 1)
 			{
+				SSL_free(ssl);
+
 				throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 			}
 		}
 
-		streams::IOSocketStream clientStream = ssl ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, std::chrono::milliseconds(timeout));
-
+		streams::IOSocketStream clientStream = this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout));
 		std::string request;
 		std::string response;
 

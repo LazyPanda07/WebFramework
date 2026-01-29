@@ -140,29 +140,8 @@ namespace framework
 	) :
 		additionalSettings(additionalSettings)
 	{
-		try
-		{
-			executorsManager = std::make_unique<ExecutorsManager>(configuration, pathToSources, std::move(executorsSettings), additionalSettings, threadPool);
+		executorsManager = std::make_unique<ExecutorsManager>(configuration, pathToSources, std::move(executorsSettings), additionalSettings, threadPool);
 
-			resources = executorsManager->getResourceExecutor();
-		}
-		catch (const std::exception& e)
-		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Can't create server: {}", "LogExecutorServer", 2, e.what());
-			}
-
-			throw;
-		}
-		catch (...)
-		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Something went wrong", "LogExecutorServer", 2);
-			}
-
-			throw;
-		}
+		resources = executorsManager->getResourceExecutor();
 	}
 }

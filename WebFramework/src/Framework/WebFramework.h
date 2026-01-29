@@ -33,7 +33,7 @@ namespace framework
 
 	private:
 		utility::Config config;
-		std::unique_ptr<web::BaseTCPServer> server;
+		std::unique_ptr<BaseWebServer> server;
 		std::exception** serverException;
 		std::string webServerType;
 #ifdef __WITH_STACKTRACE__
@@ -65,39 +65,18 @@ namespace framework
 
 		WebFramework(const std::filesystem::path& webFrameworkConfigPath);
 
-		/**
-		 * @brief Start server
-		 * @param wait Wait until server stop
-		 * @param onStartServer On start server callback
-		 */
 		void start(bool wait = false, const std::function<void()>& onStartServer = []() {});
 		
-		/**
-		 * @brief Stop server
-		 * @param wait Wait until server stop
-		 */
 		void stop(bool wait = true);
 
-		/// <summary>
-		/// Kick specific client
-		/// </summary>
-		/// <param name="ip">client's address</param>
 		void kick(const std::string& ip) const;
 
-		/// <summary>
-		/// Get ip addresses of all currently connected clients
-		/// </summary>
-		/// <returns></returns>
+		void updateSslCertificates();
+
 		std::vector<std::string> getClientsIp() const;
 
-		/// <summary>
-		/// Is server running
-		/// </summary>
-		/// <returns>is server running</returns>
 		bool isServerRunning() const;
 
-		/// @brief Getter for currentConfiguration
-		/// @return Get current running configuration JSON 
 		const json::JsonParser& getCurrentConfiguration() const;
 
 		~WebFramework();

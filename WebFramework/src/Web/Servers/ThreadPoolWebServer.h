@@ -30,7 +30,7 @@ namespace framework
 		public:
 			Client
 			(
-				SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address,
+				SSL* ssl, SOCKET clientSocket, sockaddr address,
 				std::function<void()>&& cleanup,
 				const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& task,
 				ThreadPoolWebServer& server,

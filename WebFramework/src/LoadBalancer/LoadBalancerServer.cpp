@@ -356,7 +356,7 @@ namespace framework::load_balancer
 
 		if (useHTTPS)
 		{
-			ssl = SSL_new(context);
+			ssl = this->getNewSsl();
 
 			if (!ssl)
 			{
@@ -372,6 +372,8 @@ namespace framework::load_balancer
 
 			if (int errorCode = SSL_accept(ssl); errorCode != 1)
 			{
+				SSL_free(ssl);
+
 				throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 			}
 		}
@@ -379,7 +381,7 @@ namespace framework::load_balancer
 		std::chrono::milliseconds timeoutInMilliseconds(timeout);
 		LoadBalancerRequest request
 		(
-			ssl ? streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, timeoutInMilliseconds),
+			this->createServerSideStream(clientSocket, ssl, timeoutInMilliseconds),
 			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
 			heuristic,
 			std::move(cleanup)

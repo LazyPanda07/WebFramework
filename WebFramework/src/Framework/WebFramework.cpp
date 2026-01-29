@@ -507,6 +507,11 @@ namespace framework
 		server->kick(ip);
 	}
 
+	void WebFramework::updateSslCertificates()
+	{
+		server->updateCertificates();
+	}
+
 	std::vector<std::string> WebFramework::getClientsIp() const
 	{
 		std::vector<std::pair<std::string, std::vector<SOCKET>>> clients = server->getClients();

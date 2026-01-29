@@ -384,7 +384,7 @@ namespace framework
 
 	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors)
 	{
-		try
+		try // TODO: remake
 		{
 			const web::HeadersMap& headers = request.getHeaders();
 

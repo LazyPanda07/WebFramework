@@ -24,33 +24,19 @@ namespace framework
 		destroyFunction(utility::load<DestroySignature>(module, "webFrameworkCXXDestroyExecutor")),
 		deleteFunction(utility::load<DeleteSignature>(module, "webFrameworkCXXDeleteExecutor"))
 	{
-		try
-		{
-			ASSERT_LOAD_FUNCTION(initFunction);
-			ASSERT_LOAD_FUNCTION(doPostFunction);
-			ASSERT_LOAD_FUNCTION(doGetFunction);
-			ASSERT_LOAD_FUNCTION(doHeadFunction);
-			ASSERT_LOAD_FUNCTION(doPutFunction);
-			ASSERT_LOAD_FUNCTION(doDeleteFunction);
-			ASSERT_LOAD_FUNCTION(doPatchFunction);
-			ASSERT_LOAD_FUNCTION(doOptionsFunction);
-			ASSERT_LOAD_FUNCTION(doTraceFunction);
-			ASSERT_LOAD_FUNCTION(doConnectFunction);
-			ASSERT_LOAD_FUNCTION(getTypeFunction);
-			ASSERT_LOAD_FUNCTION(destroyFunction);
-			ASSERT_LOAD_FUNCTION(deleteFunction);
-		}
-		catch (const std::exception& e)
-		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Load function error: {}", "LogCXXExecutor", 1, e.what());
-			}
-			else
-			{
-				throw;
-			}
-		}
+		ASSERT_LOAD_FUNCTION(initFunction);
+		ASSERT_LOAD_FUNCTION(doPostFunction);
+		ASSERT_LOAD_FUNCTION(doGetFunction);
+		ASSERT_LOAD_FUNCTION(doHeadFunction);
+		ASSERT_LOAD_FUNCTION(doPutFunction);
+		ASSERT_LOAD_FUNCTION(doDeleteFunction);
+		ASSERT_LOAD_FUNCTION(doPatchFunction);
+		ASSERT_LOAD_FUNCTION(doOptionsFunction);
+		ASSERT_LOAD_FUNCTION(doTraceFunction);
+		ASSERT_LOAD_FUNCTION(doConnectFunction);
+		ASSERT_LOAD_FUNCTION(getTypeFunction);
+		ASSERT_LOAD_FUNCTION(destroyFunction);
+		ASSERT_LOAD_FUNCTION(deleteFunction);
 	}
 
 	void CXXExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)

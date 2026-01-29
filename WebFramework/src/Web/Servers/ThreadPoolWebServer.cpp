@@ -14,7 +14,7 @@ namespace framework
 {
 	ThreadPoolWebServer::Client::Client
 	(
-		SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address,
+		SSL* ssl, SOCKET clientSocket, sockaddr address,
 		std::function<void()>&& cleanup,
 		const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& service,
 		ThreadPoolWebServer& server,
@@ -22,9 +22,7 @@ namespace framework
 	) :
 		stream
 		(
-			ssl ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, std::chrono::milliseconds(timeout))
+			server.createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout))
 		),
 		cleanup(std::move(cleanup)),
 		service(service),
@@ -220,11 +218,11 @@ namespace framework
 	{
 		SSL* ssl = nullptr;
 
-		try
+		try // TODO: remake
 		{
 			if (useHTTPS)
 			{
-				ssl = SSL_new(context);
+				ssl = this->getNewSsl();
 
 				if (!ssl)
 				{
@@ -240,11 +238,13 @@ namespace framework
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
 				{
+					SSL_free(ssl);
+
 					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
 
-			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
+			clients.push_back(new Client(ssl, clientSocket, address, move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
 		}
 		catch (const web::exceptions::SslException& e)
 		{

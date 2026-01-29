@@ -132,7 +132,7 @@ namespace framework
 
 		for (const auto& [functionName, arguments] : codes)
 		{
-			try
+			try // TODO: remake
 			{
 				if (Log::isValid())
 				{

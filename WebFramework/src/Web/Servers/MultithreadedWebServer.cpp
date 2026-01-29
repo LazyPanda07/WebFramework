@@ -26,11 +26,11 @@ namespace framework
 	{
 		SSL* ssl = nullptr;
 
-		try
+		try // TODO: remake
 		{
 			if (useHTTPS)
 			{
-				ssl = SSL_new(context);
+				ssl = this->getNewSsl();
 
 				if (!ssl)
 				{
@@ -46,6 +46,8 @@ namespace framework
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
 				{
+					SSL_free(ssl);
+
 					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
@@ -60,9 +62,7 @@ namespace framework
 			return;
 		}
 
-		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, std::chrono::milliseconds(timeout));
+		streams::IOSocketStream stream = this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout));
 		ExecutorsManager::StatefulExecutors executors;
 		HTTPResponseImplementation response;
 		HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
