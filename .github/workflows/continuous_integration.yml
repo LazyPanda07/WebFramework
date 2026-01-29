@@ -13,6 +13,7 @@ env:
   WINDOWS_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
   LINUX_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
   PYTHON_VERSION: 3.14
+  CHECKOUT_VERSION: 6
 
 
 permissions:
@@ -27,9 +28,9 @@ jobs:
         configuration: [Debug, Release]
   
     steps:
-    # - uses: actions/checkout@v4
-    #   with:
-    #     submodules: recursive
+    - uses: actions/checkout@v${{ env.CHECKOUT_VERSION }}
+      with:
+        submodules: recursive
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -70,6 +71,10 @@ jobs:
         configuration: [Debug, Release]
 
     steps:
+    - uses: actions/checkout@v${{ env.CHECKOUT_VERSION }}
+      with:
+        submodules: recursive
+
     - uses: ./.github/workflows/build_web_framework.yml
       with:
         os: ubuntu-latest

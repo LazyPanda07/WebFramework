@@ -2,8 +2,6 @@ name: "Build WebFramework"
 
 
 env:
-  DEFAULT_CMAKE_GENERATOR: "Ninja"
-  CHECKOUT_VERSION: 6
   UPLOAD_ARTIFACT_VERSION: 6
 
 
@@ -30,7 +28,7 @@ on:
         description: "CMake generator"
         required: false
         type: string
-        default: ${{ env.DEFAULT_CMAKE_GENERATOR }}
+        default: "Ninja"
       upload-artifact-name:
         description: "Name of uploaded artifact zip"
         required: true
@@ -43,10 +41,6 @@ jobs:
     container: ${{ inputs.os == 'ubuntu-latest' && '${{ inputs.image }}' || null }}
 
     steps:
-    - uses: actions/checkout@v${{ env.CHECKOUT_VERSION }}
-      with:
-        submodules: recursive
-
     - name: Build
       shell: bash
       run: |
