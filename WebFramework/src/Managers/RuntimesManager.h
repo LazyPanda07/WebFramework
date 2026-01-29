@@ -93,12 +93,26 @@ namespace framework::runtime
 	template<std::derived_from<Runtime> T>
 	T& RuntimesManager::getRuntime()
 	{
-		return *static_cast<T*>(runtimes.at(typeid(T).hash_code()));
+		size_t key = typeid(T).hash_code();
+
+		if (auto it = runtimes.find(key); it != runtimes.end())
+		{
+			return *static_cast<T*>(it->second);
+		}
+
+		throw std::runtime_error(std::format("Can't find {} runtime", T::runtimeName));
 	}
 
 	template<std::derived_from<Runtime> T>
 	const T& RuntimesManager::getRuntime() const
 	{
-		return *static_cast<T*>(runtimes.at(typeid(T).hash_code()));
+		size_t key = typeid(T).hash_code();
+
+		if (auto it = runtimes.find(key); it != runtimes.end())
+		{
+			return *static_cast<T*>(it->second);
+		}
+
+		throw std::runtime_error(std::format("Can't find {} runtime", T::runtimeName));
 	}
 }

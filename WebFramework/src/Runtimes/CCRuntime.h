@@ -8,6 +8,9 @@ namespace framework::runtime
 {
 	class CCRuntime : public Runtime
 	{
+	public:
+		static constexpr std::string_view runtimeName = "cc";
+
 	private:
 		::utility::strings::string_based_unordered_map<std::tuple<HMODULE, CreateExecutorSignature>> creators;
 

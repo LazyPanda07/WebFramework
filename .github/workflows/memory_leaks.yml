@@ -16,7 +16,7 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
         
@@ -41,8 +41,6 @@ jobs:
           cmake --install .
 
     - name: Tests
-      working-directory: Tests
+      working-directory: Tests/build/bin
       shell: bash
-      run: |
-          cd build/bin
-          source run_memory_leak_tests.sh ${{ matrix.config }}
+      run: source run_memory_leak_tests.sh ${{ matrix.config }}

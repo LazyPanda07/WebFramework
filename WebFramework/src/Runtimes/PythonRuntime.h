@@ -12,6 +12,9 @@ namespace framework::runtime
 {
 	class PythonRuntime : public Runtime
 	{
+	public:
+		static constexpr std::string_view runtimeName = "python";
+
 	private:
 		static void loadSymbols();
 

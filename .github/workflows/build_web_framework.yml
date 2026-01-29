@@ -27,7 +27,7 @@ on:
         default: "Ninja"
       upload-artifact-name:
         description: "Name of uploaded artifact zip"
-        required: true
+        required: false
         type: string
       python-version:
         description: "Python version for Windows build"
@@ -66,6 +66,7 @@ jobs:
           cmake --install . --config ${{ inputs.configuration }}
   
     - name: Upload artifacts
+      if: ${{ inputs.upload-artifact-name != '' }}
       uses: actions/upload-artifact@v6
       with:
         name: ${{ inputs.upload-artifact-name }}

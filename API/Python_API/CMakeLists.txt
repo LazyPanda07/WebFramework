@@ -2,16 +2,18 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(PYBIND11_TAG v3.0.1)
+set(PYBIND11_VERSION 3.0.1)
+set(PYBIND11_FINDPYTHON OFF)
+set(PYTHON_EXECUTABLE "" CACHE STRING "Path to Python executable")
 
-if (UNIX)
-    set(PYTHON_EXECUTABLE /usr/bin/python3 CACHE STRING "Path to Python executable")
-else()
-    set(PYBIND11_FINDPYTHON OFF)
+if (${PYTHON_EXECUTABLE} STREQUAL "")
+    if (UNIX)
+        set(PYTHON_EXECUTABLE /usr/bin/python3 CACHE STRING "Path to Python executable")
+    else()
+        find_package(Python REQUIRED)
 
-    find_package(Python REQUIRED)
-
-    set(PYTHON_EXECUTABLE ${Python_EXECUTABLE} CACHE STRING "Path to Python executable")
+        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE} CACHE STRING "Path to Python executable")
+    endif()
 endif()
 
 if (NOT DEFINED ${PYTHON_MINOR_VERSION})
@@ -44,7 +46,7 @@ include(FetchContent)
 FetchContent_Declare(
     pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11.git
-    GIT_TAG ${PYBIND11_TAG}
+    GIT_TAG v${PYBIND11_VERSION}
     OVERRIDE_FIND_PACKAGE
 )
 

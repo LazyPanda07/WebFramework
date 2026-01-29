@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(DOTNET_RUNTIME_VERSION 8)
+set(DOTNET_RUNTIME_VERSION 8 CACHE STRING ".NET version")
 
 project(external_dot_net)
 

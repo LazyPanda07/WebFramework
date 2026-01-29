@@ -10,8 +10,6 @@ on:
 env:
   WINDOWS_CMAKE_GENERATOR: "Ninja"
   LINUX_CMAKE_GENERATOR: "Ninja"
-  WINDOWS_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
-  LINUX_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
   PYTHON_VERSION: 3.14
 
 
@@ -21,90 +19,34 @@ permissions:
 
 jobs:
   windows-build:
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-    
     uses: ./.github/workflows/build_web_framework.yml
     with:
       os: windows-latest
-      configuration: ${{ matrix.configuration }}
+      configuration: Release
       build-parameters: "-DWITH_STACKTRACE=ON"
-      upload-artifact-name: ${{ matrix.configuration }}_Windows
+      upload-artifact-name: Windows
       python-version: 3.14
-
-    # - name: Build
-    #   shell: bash
-    #   run: |
-    #       mkdir build
-    #       cd build
-    #       cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-    #       cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    # - name: Upload artifacts
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: ${{ matrix.configuration }}_Windows
-    #     path: WebFrameworkLibrary
-
+      
 
   linux-build:
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
     uses: ./.github/workflows/build_web_framework.yml
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
-      configuration: ${{ matrix.configuration }}
+      configuration: Release
       build-parameters: "-DWITH_STACKTRACE=ON"
-      upload-artifact-name: ${{ matrix.configuration }}_Linux
-
-    # - uses: actions/checkout@v4
-    #   with:
-    #     submodules: recursive
-
-    # - name: Build
-    #   run: |
-    #       mkdir build
-    #       cd build
-    #       cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-    #       cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    # - name: Upload artifacts
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: ${{ matrix.configuration }}_Linux
-    #     path: WebFrameworkLibrary
+      upload-artifact-name: Linux
 
 
   linux-aarch64-build:
-    runs-on: ubuntu-latest
-    container:
+    uses: ./.github/workflows/build_web_framework.yml
+    with:
+      os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Build
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_LinuxARM
-        path: WebFrameworkLibrary
-
+      configuration: Release
+      build-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF"
+      upload-artifact-name: LinuxARM
+      
 
   android-build:
     runs-on: ubuntu-latest
@@ -112,7 +54,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -134,9 +76,9 @@ jobs:
           rm -rf vendor
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: Release_Android
+        name: Android
         path: WebFrameworkLibrary
         
 
@@ -145,11 +87,10 @@ jobs:
     needs: windows-build
     strategy:
       matrix:
-        configuration: [Debug, Release]
         executors: [CXX, CC, Python, CSharp]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -160,18 +101,19 @@ jobs:
         name: Release_Windows
         path: WebFrameworkLibrary
 
-    - name: Build ${{ matrix.executors }} ${{ matrix.configuration }} Executors
+    - name: Build ${{ matrix.executors }} Executors
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        name: WindowsExecutors-${{ matrix.executors }}
         path: Tests/build/bin
 
 
@@ -182,11 +124,10 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        configuration: [Debug, Release]
         executors: [CXX, CC, Python, CSharp]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       
     - name: Download WebFramework
       uses: actions/download-artifact@v4
@@ -194,18 +135,19 @@ jobs:
         name: Release_Linux
         path: WebFrameworkLibrary
 
-    - name: Build ${{ matrix.executors }} ${{ matrix.configuration }} Executors
+    - name: Build ${{ matrix.executors }} Executors
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: LinuxExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        name: LinuxExecutors-${{ matrix.executors }}
         path: Tests/build/bin
 
 
@@ -214,7 +156,7 @@ jobs:
     needs: windows-build
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -234,7 +176,7 @@ jobs:
           cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Upload tests
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: WindowsTests
         path: Tests/build/bin
@@ -247,7 +189,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       
     - name: Download WebFramework
       uses: actions/download-artifact@v4
@@ -264,7 +206,7 @@ jobs:
           cmake --build . --config Release -j && cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: LinuxTests
         path: Tests/build/bin
@@ -277,7 +219,6 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
         executors: [CXX, CC, Python, CSharp]
@@ -295,16 +236,16 @@ jobs:
         name: LinuxTests
         path: Tests
 
-    - name: Download ${{ matrix.configuration }} ${{ matrix.executors }} Executors
+    - name: Download ${{ matrix.executors }} Executors
       uses: actions/download-artifact@v4
       with:
-        name: LinuxExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        name: LinuxExecutors-${{ matrix.executors }}
         path: Executors
 
     - name: Install Python API
       run: pip3 install WebFrameworkLibrary/api/python_api/
 
-    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
+    - name: Run ${{ matrix.api_test }} ${{ matrix.executors }} Tests
       shell: bash
       run: |
           cp -r Executors/* Tests
@@ -318,7 +259,6 @@ jobs:
     needs: [windows-tests-build, windows-executors-build]
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
         executors: [CXX, CC, Python, CSharp]
@@ -336,10 +276,10 @@ jobs:
         name: WindowsTests
         path: Tests
 
-    - name: Download ${{ matrix.configuration }} ${{ matrix.executors }} Executors
+    - name: Download ${{ matrix.executors }} Executors
       uses: actions/download-artifact@v4
       with:
-        name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        name: WindowsExecutors-${{ matrix.executors }}
         path: Executors
 
     - name: Install Python
@@ -356,7 +296,7 @@ jobs:
           cp -r Executors/* Tests
           cp -r WebFrameworkLibrary/lib/* Tests
 
-    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
+    - name: Run ${{ matrix.api_test }} ${{ matrix.executors }} Tests
       working-directory: Tests
       run: .\${{ matrix.api_test }} ${{ matrix.config }}
           
@@ -368,16 +308,15 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}_LinuxARM
+        name: LinuxARM
         path: WebFrameworkLibrary
         
     - name: Build tests
@@ -385,8 +324,9 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Install curl
       run: apt update && apt install -y curl
@@ -406,16 +346,15 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}_LinuxARM
+        name: LinuxARM
         path: WebFrameworkLibrary
         
     - name: Build tests
@@ -423,8 +362,9 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CC -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CC -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Install curl
       run: apt update && apt install -y curl
@@ -448,7 +388,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -467,20 +407,17 @@ jobs:
           rm -rf WindowsTests
           rm -rf WindowsExecutors*
       
-    - name: Setup Windows build list
-      run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
-      
     - name: Create Windows zip
-      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
+      run: zip -r windows.zip Windows
 
     - name: Create Linux zip
-      run: zip -r linux.zip Release_Linux
+      run: zip -r linux.zip Linux
 
     - name: Create Android zip
-      run: zip -r android.zip Release_Android
+      run: zip -r android.zip Android
 
     - name: Create Linux ARM64 zip
-      run: zip -r linux_aarch64.zip Release_LinuxARM
+      run: zip -r linux_aarch64.zip LinuxARM
 
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'main' }}

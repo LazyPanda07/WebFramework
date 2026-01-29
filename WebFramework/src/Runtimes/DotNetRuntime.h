@@ -21,6 +21,9 @@ namespace framework::runtime
 	class DotNetRuntime : public Runtime
 	{
 	public:
+		static constexpr std::string_view runtimeName = ".net";
+
+	public:
 		using NativeString = std::filesystem::path;
 
 	public:
