@@ -39,7 +39,7 @@ jobs:
   run:
     runs-on: ${{ inputs.os }}
     container: 
-      image: ${{ inputs.os == 'ubuntu-latest' && '${{ inputs.image }}' || null }}
+      image: ${{ inputs.image }}
 
     steps:
     - uses: actions/checkout@v6
