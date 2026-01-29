@@ -1,10 +1,6 @@
 name: "Build WebFramework"
 
 
-env:
-  UPLOAD_ARTIFACT_VERSION: 6
-
-
 on:
   workflow_call:
     inputs:
@@ -51,7 +47,7 @@ jobs:
           cmake --install . --config ${{ inputs.configuration }}
   
     - name: Upload artifacts
-      uses: actions/upload-artifact@v${{ env.UPLOAD_ARTIFACT_VERSION }}
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ inputs.upload-artifact-name }}
         path: WebFrameworkLibrary
