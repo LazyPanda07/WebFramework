@@ -38,10 +38,13 @@ on:
 jobs:
   run:
     runs-on: ${{ inputs.os }}
-    container: ${{ inputs.os == 'ubuntu-latest' && '${{ inputs.image }}' || null }}
+    container: 
+      image: ${{ inputs.os == 'ubuntu-latest' && '${{ inputs.image }}' || null }}
 
     steps:
     - uses: actions/checkout@v6
+      with:
+        submodules: recursive
 
     - name: Enable NMake
       if: ${{ inputs.os == 'windows-latest' }}
