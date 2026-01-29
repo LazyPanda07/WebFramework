@@ -24,16 +24,14 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        build-parameters: ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }}
-        python-version: ${{ env.PYTHON_VERSION }}
     
     uses: ./.github/workflows/build_web_framework.yml
     with:
       os: windows-latest
       configuration: ${{ matrix.configuration }}
-      build-parameters: ${{ materix.build-parameters }}
+      build-parameters: "-DWITH_STACKTRACE=ON"
       upload-artifact-name: ${{ matrix.configuration }}_Windows
-      python-version: ${{ matrix.python-version }}
+      python-version: 3.14
 
     # - name: Build
     #   shell: bash
@@ -54,14 +52,13 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        build-parameters: ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }}
 
     uses: ./.github/workflows/build_web_framework.yml
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
       configuration: ${{ matrix.configuration }}
-      build-parameters: ${{ materix.build-parameters }}
+      build-parameters: "-DWITH_STACKTRACE=ON"
       upload-artifact-name: ${{ matrix.configuration }}_Linux
 
     # - uses: actions/checkout@v4
