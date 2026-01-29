@@ -1,0 +1,63 @@
+name: "Build WebFramework"
+
+
+env:
+  DEFAULT_CMAKE_GENERATOR: "Ninja"
+  CHECKOUT_VERSION: 6
+  UPLOAD_ARTIFACT_VERSION: 6
+
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: "runs-on OS"
+        required: true
+        type: string
+      image:
+        description: "Custom Docker image"
+        required: false
+        type: string
+      configuration:
+        description: "Build configuration"
+        required: true
+        type: string
+      build-parameters:
+        description: "CMake build parameters"
+        required: true
+        type: string
+      cmake-generator:
+        description: "CMake generator"
+        required: false
+        type: string
+        default: ${{ env.DEFAULT_CMAKE_GENERATOR }}
+      upload-artifact-name:
+        description: "Name of uploaded artifact zip"
+        required: true
+        type: string
+
+
+jobs:
+  run:
+    runs-on: ${{ inputs.os }}
+    container: ${{ inputs.os == 'ubuntu-latest' && '${{ inputs.image }}' || null }}
+
+    steps:
+    - uses: actions/checkout@v${{ env.CHECKOUT_VERSION }}
+      with:
+        submodules: recursive
+
+    - name: Build
+      shell: bash
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ inputs.configuration }} ${{ inputs.build-parameters }} -G ${{ inputs.cmake-generator }} ..
+          cmake --build . --config ${{ inputs.configuration }} -j
+          cmake --install . --config ${{ inputs.configuration }}
+  
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v${{ env.UPLOAD_ARTIFACT_VERSION }}
+      with:
+        name: ${{ inputs.upload-artifact-name }}
+        path: WebFrameworkLibrary

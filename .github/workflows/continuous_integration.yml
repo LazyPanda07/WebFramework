@@ -27,9 +27,9 @@ jobs:
         configuration: [Debug, Release]
   
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+    # - uses: actions/checkout@v4
+    #   with:
+    #     submodules: recursive
 
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -39,46 +39,61 @@ jobs:
       with:
         python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Build
-      shell: bash
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+    - uses: ./.github/workflows/build_web_framework.yml
       with:
-        name: ${{ matrix.configuration }}_Windows
-        path: WebFrameworkLibrary
+        os: windows-latest
+        configuration: ${{ matrix.configuration }}
+        build-parameters: ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }}
+        upload-artifact-name: ${{ matrix.configuration }}_Windows
+
+    # - name: Build
+    #   shell: bash
+    #   run: |
+    #       mkdir build
+    #       cd build
+    #       cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+    #       cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+
+    # - name: Upload artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: ${{ matrix.configuration }}_Windows
+    #     path: WebFrameworkLibrary
 
 
   linux-build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+    # container:
+    #   image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
         configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: ./.github/workflows/build_web_framework.yml
       with:
-        submodules: recursive
+        os: ubuntu-latest
+        image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+        configuration: ${{ matrix.configuration }}
+        build-parameters: ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }}
+        upload-artifact-name: ${{ matrix.configuration }}_Linux
 
-    - name: Build
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+    # - uses: actions/checkout@v4
+    #   with:
+    #     submodules: recursive
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_Linux
-        path: WebFrameworkLibrary
+    # - name: Build
+    #   run: |
+    #       mkdir build
+    #       cd build
+    #       cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+    #       cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+
+    # - name: Upload artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: ${{ matrix.configuration }}_Linux
+    #     path: WebFrameworkLibrary
 
 
   linux-aarch64-build:
