@@ -29,6 +29,10 @@ on:
         description: "Name of uploaded artifact zip"
         required: true
         type: string
+      python-version:
+        description: "Python version for Windows build"
+        required: false
+        type: string
 
 
 jobs:
@@ -37,6 +41,18 @@ jobs:
     container: ${{ inputs.os == 'ubuntu-latest' && '${{ inputs.image }}' || null }}
 
     steps:
+    - uses: actions/checkout@v6
+
+    - name: Enable NMake
+      if: ${{ inputs.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+      
+    - name: Install Python
+      if: ${{ inputs.os == 'windows-latest' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ inputs.python-version }}"
+
     - name: Build
       shell: bash
       run: |

@@ -21,30 +21,17 @@ permissions:
 
 jobs:
   windows-build:
-    runs-on: windows-latest
     strategy:
       matrix:
         configuration: [Debug, Release]
-  
-    steps:
-    - uses: actions/checkout@6
-      with:
-        submodules: recursive
-
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.PYTHON_VERSION }}"
-
-    - uses: ./.github/workflows/build_web_framework.yml
-      with:
-        os: windows-latest
-        configuration: ${{ matrix.configuration }}
-        build-parameters: ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }}
-        upload-artifact-name: ${{ matrix.configuration }}_Windows
+    
+    uses: ./.github/workflows/build_web_framework.yml
+    with:
+      os: windows-latest
+      configuration: ${{ matrix.configuration }}
+      build-parameters: ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }}
+      upload-artifact-name: ${{ matrix.configuration }}_Windows
+      python-version: ${{ env.PYTHON_VERSION }}
 
     # - name: Build
     #   shell: bash
@@ -62,25 +49,17 @@ jobs:
 
 
   linux-build:
-    runs-on: ubuntu-latest
-    # container:
-    #   image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
         configuration: [Debug, Release]
 
-    steps:
-    - uses: actions/checkout@v6
-      with:
-        submodules: recursive
-
-    - uses: ./.github/workflows/build_web_framework.yml
-      with:
-        os: ubuntu-latest
-        image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
-        configuration: ${{ matrix.configuration }}
-        build-parameters: ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }}
-        upload-artifact-name: ${{ matrix.configuration }}_Linux
+    uses: ./.github/workflows/build_web_framework.yml
+    with:
+      os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+      configuration: ${{ matrix.configuration }}
+      build-parameters: ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }}
+      upload-artifact-name: ${{ matrix.configuration }}_Linux
 
     # - uses: actions/checkout@v4
     #   with:
