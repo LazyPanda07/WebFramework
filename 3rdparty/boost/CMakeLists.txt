@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(BOOST_VERSION 1.89.0)
 set(BOOST_TAG boost-${BOOST_VERSION})
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
 project(external_boost)
 
-find_package(Boost QUIET COMPONENTS stacktrace)
+find_package(Boost CONFIG QUIET COMPONENTS stacktrace)
 
 if (NOT ${Boost_FOUND})
     set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
