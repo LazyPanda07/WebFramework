@@ -46,7 +46,7 @@ jobs:
           ${{ matrix.config.python }} -m build
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ matrix.config.output_prefix }}-pip-package
         path: package/dist
@@ -56,7 +56,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -93,7 +93,7 @@ jobs:
           msbuild -t:pack -p:Configuration=Release
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: nuget-package
         path: API/CSharp_API/bin/Release/*.nupkg
@@ -105,7 +105,7 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -136,7 +136,7 @@ jobs:
       run: dart pub publish --dry-run
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: flutter-package
         path: API/web_framework_flutter_api
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -195,7 +195,7 @@ jobs:
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: deb-packages
         path: ${{ github.workspace }}/*.deb
@@ -210,7 +210,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Get latest release
       uses: robinraju/release-downloader@v1.11
@@ -236,7 +236,7 @@ jobs:
         cmake --install . --config Release
 
     - name: Upload executor
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ matrix.config.upload_name }}
         path: |
@@ -252,16 +252,16 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:24.04
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Download executor
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: linux-executor
         path: DistributionTests/build/bin
 
     - name: Download pip package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: linux-pip-package
         path: python_api
@@ -289,7 +289,7 @@ jobs:
     needs: [pip-package, executor-build]
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Install Python
       uses: actions/setup-python@v6
@@ -297,13 +297,13 @@ jobs:
         python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Download executor
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: windows-executor
         path: DistributionTests/build/bin
 
     - name: Download pip package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: windows-pip-package
         path: python_api
@@ -335,12 +335,12 @@ jobs:
         config: [ { api_name: TEST_DEV_CC, script: run_cc_test.sh, asset_name: cc_test }, { api_name: TEST_DEV_CXX, script: run_cxx_test.sh, asset_name: cxx_test } ]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Download deb packages
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: deb-packages
         path: packages
@@ -366,7 +366,7 @@ jobs:
           diff reference.json out.json
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: binaries_${{ matrix.config.asset_name }}
         path: |
@@ -389,7 +389,7 @@ jobs:
 
     steps:
     - name: Download deb packages
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: deb-packages
         path: packages
@@ -404,7 +404,7 @@ jobs:
       run: sudo apt install -y ./web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64.deb
 
     - name: Download binaries
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: binaries_${{ matrix.config.executable_name }}
 
@@ -425,7 +425,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
   
     - name: Install Python
       uses: actions/setup-python@v6
@@ -433,13 +433,13 @@ jobs:
         python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Download executor
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: ${{ matrix.config.executor_name }}
         path: DistributionTests/build/bin
         
     - name: Download nuget package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: nuget-package
 
@@ -466,7 +466,7 @@ jobs:
 
     steps:
     - name: Download nuget package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: nuget-package
 
@@ -487,7 +487,7 @@ jobs:
 
     steps:
     - name: Download Windows pip package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: windows-pip-package
         path: dist
@@ -517,12 +517,12 @@ jobs:
       EMAIL: semengricenko@gmail.com
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         repository: LazyPanda07/web_framework_ppa
 
     - name: Download deb packages
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: deb-packages
 

@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
        submodules: recursive
    
@@ -43,7 +43,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -73,7 +73,7 @@ jobs:
           cmake --install .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Windows
         path: samples/build/bin
@@ -85,7 +85,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -107,7 +107,7 @@ jobs:
           cmake --install .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Linux
         path: samples/build/bin
@@ -119,7 +119,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -141,7 +141,7 @@ jobs:
           make install/strip
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Android
         path: |
@@ -155,7 +155,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -180,7 +180,7 @@ jobs:
           cmake --install .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: HelloExecutorWindows
         path: samples/build/bin/executors/*.dll
@@ -192,7 +192,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -214,7 +214,7 @@ jobs:
           make install/strip
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: HelloExecutorAndroid
         path: |
@@ -228,7 +228,7 @@ jobs:
     needs: windows-build
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -242,7 +242,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download assets
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Windows
         path: Windows
@@ -265,7 +265,7 @@ jobs:
       run: mv Windows/*.dll API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: WindowsFlutterSample
         path: API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
@@ -278,12 +278,12 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Download executors
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Android
         path: Android
@@ -305,7 +305,7 @@ jobs:
       run: flutter build apk --release --split-per-abi
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: AndroidFlutterSample
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
@@ -334,7 +334,7 @@ jobs:
           # - [ ON, ON, ON, ON, cxx ]       # cxx cc python csharp /cxx
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
         
@@ -399,7 +399,7 @@ jobs:
           - [ ON, ON, ON, ON, cxx ]       # cxx cc python csharp /cxx
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
         
@@ -447,7 +447,7 @@ jobs:
     ]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -459,7 +459,7 @@ jobs:
       run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       
     - name: Move samples
       run: |

@@ -18,17 +18,17 @@ permissions:
 
 
 jobs:
-  windows-build:
-    uses: ./.github/workflows/build_web_framework.yml
-    with:
-      os: windows-latest
-      configuration: Release
-      build-parameters: "-DWITH_STACKTRACE=ON"
-      upload-artifact-name: Windows
-      python-version: 3.14
+  # windows-build:
+  #   uses: ./.github/workflows/build_web_framework.yml
+  #   with:
+  #     os: windows-latest
+  #     configuration: Release
+  #     build-parameters: "-DWITH_STACKTRACE=ON"
+  #     upload-artifact-name: Windows
+  #     python-version: 3.14
       
 
-  new-windows-build:
+  windows-build:
     strategy:
       matrix:
         python-version: ["", 3.12, 3.13, 3.14]
@@ -102,7 +102,11 @@ jobs:
     needs: windows-build
     strategy:
       matrix:
-        executors: [CXX, CC, Python, CSharp]
+        executors: 
+          - { api: CXX, python-version: "", dotnet-version: "" }
+          - { api: CC, python-version: "", dotnet-version: "" }
+          - { api: Python, python-version: 3.14, dotnet-version: "" }
+          - { api: CSharp, python-version: "", dotnet-version: 10 }
 
     steps:
     - uses: actions/checkout@v6
@@ -113,7 +117,7 @@ jobs:
     - name: Download WebFramework
       uses: actions/download-artifact@v4
       with:
-        name: Windows
+        name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
         path: WebFrameworkLibrary
 
     - name: Build ${{ matrix.executors }} Executors
@@ -121,14 +125,14 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
           cmake --build . -j --config Release
           cmake --install . --config Release
 
     - name: Upload executors
       uses: actions/upload-artifact@v6
       with:
-        name: WindowsExecutors-${{ matrix.executors }}
+        name: WindowsExecutors-${{ matrix.executors.api }}
         path: Tests/build/bin
 
 
@@ -179,7 +183,7 @@ jobs:
     - name: Download WebFramework
       uses: actions/download-artifact@v4
       with:
-        name: Windows
+        name: Windows_Python-3.14_DOTNET-10
         path: WebFrameworkLibrary
 
     - name: Build tests
@@ -276,13 +280,17 @@ jobs:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        executors: [CXX, CC, Python, CSharp]
+        executors: 
+          - { api: CXX, python-version: "", dotnet-version: "" }
+          - { api: CC, python-version: "", dotnet-version: "" }
+          - { api: Python, python-version: 3.14, dotnet-version: "" }
+          - { api: CSharp, python-version: "", dotnet-version: 10 }
 
     steps:
     - name: Download WebFramework
       uses: actions/download-artifact@v4
       with:
-        name: Windows
+        name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
         path: WebFrameworkLibrary
 
     - name: Download Tests
@@ -291,10 +299,10 @@ jobs:
         name: WindowsTests
         path: Tests
 
-    - name: Download ${{ matrix.executors }} Executors
+    - name: Download ${{ matrix.executors.api }} Executors
       uses: actions/download-artifact@v4
       with:
-        name: WindowsExecutors-${{ matrix.executors }}
+        name: WindowsExecutors-${{ matrix.executors.api }}
         path: Executors
 
     - name: Install Python
@@ -311,7 +319,7 @@ jobs:
           cp -r Executors/* Tests
           cp -r WebFrameworkLibrary/lib/* Tests
 
-    - name: Run ${{ matrix.api_test }} ${{ matrix.executors }} Tests
+    - name: Run ${{ matrix.api_test }} ${{ matrix.executors.api }} Tests
       working-directory: Tests
       run: .\${{ matrix.api_test }} ${{ matrix.config }}
           
@@ -423,7 +431,7 @@ jobs:
           rm -rf WindowsExecutors*
       
     - name: Create Windows zip
-      run: zip -r windows.zip Windows
+      run: zip -r windows.zip Windows*
 
     - name: Create Linux zip
       run: zip -r linux.zip Linux

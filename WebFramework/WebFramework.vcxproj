@@ -100,7 +100,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;WIN32_LEAN_AND_MEAN;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;__WITH_DOT_NET_EXECUTORS__;WIN32_LEAN_AND_MEAN;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)src\;$(ProjectDir)..\WebFrameworkExecutors\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
