@@ -62,12 +62,22 @@ jobs:
       with:
         python-version: "${{ inputs.python-version }}"
 
-    - name: Append WITH_PYTHON_EXECUTORS to ADDITIONAL_BUILD_PARAMETERS
+    - name: Append WITH_PYTHON_EXECUTORS=OFF to ADDITIONAL_BUILD_PARAMETERS
+      if: ${{ inputs.python-version == '' }}
+      shell: bash
+      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=OFF"
+
+    - name: Append WITH_PYTHON_EXECUTORS=ON to ADDITIONAL_BUILD_PARAMETERS
       if: ${{ inputs.python-version != '' }}
       shell: bash
       run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=ON"
 
-    - name: Append WITH_DOT_NET_EXECUTORS to ADDITIONAL_BUILD_PARAMETERS
+    - name: Append WITH_DOT_NET_EXECUTORS=OFF to ADDITIONAL_BUILD_PARAMETERS
+      if: ${{ inputs.dotnet-version == '' }}
+      shell: bash
+      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOT_NET_EXECUTORS=OFF"
+
+    - name: Append WITH_DOT_NET_EXECUTORS=ON to ADDITIONAL_BUILD_PARAMETERS
       if: ${{ inputs.dotnet-version != '' }}
       shell: bash
       run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOT_NET_EXECUTORS=ON"
