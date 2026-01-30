@@ -26,8 +26,22 @@ jobs:
       build-parameters: "-DWITH_STACKTRACE=ON"
       upload-artifact-name: Windows
       python-version: 3.14
-      
 
+
+  windows-python-build:
+    strategy:
+      matrix:
+        python-version: [3.12, 3.13, 3.14]
+
+    uses: ./.github/workflows/build_web_framewok.yml
+    with:
+      os: windows-latest
+      configuration: Release
+      build-parameters: "-DWITH_STACKTRACE=ON -DWITH_DOT_NET_EXECUTORS=OFF"
+      upload-artifact-name: Windows_Python${{ matrix.python-version }}
+      python-vesion: ${{ matrix.python-version }}
+    
+      
   linux-build:
     uses: ./.github/workflows/build_web_framework.yml
     with:
