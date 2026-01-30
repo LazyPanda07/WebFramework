@@ -39,7 +39,7 @@ jobs:
       configuration: Release
       build-parameters: "-DWITH_STACKTRACE=ON -DWITH_DOT_NET_EXECUTORS=OFF"
       upload-artifact-name: Windows_Python${{ matrix.python-version }}
-      python-vesion: ${{ matrix.python-version }}
+      python-version: ${{ matrix.python-version }}
     
       
   linux-build:
