@@ -24,19 +24,16 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOT_NET_EXECUTORS=OFF -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DWITH_DOT_NET_EXECUTORS=OFF -G "Ninja" ..
           cmake --build . -j
           cmake --install .
-        
-    - name: Install Python API
-      run: pip3 install WebFrameworkLibrary/api/python_api/
-
+      
     - name: Build tests
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 

@@ -18,7 +18,7 @@ on:
         type: string
       build-parameters:
         description: "CMake build parameters"
-        required: true
+        required: false
         type: string
       cmake-generator:
         description: "CMake generator"
