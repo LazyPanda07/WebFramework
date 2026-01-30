@@ -33,7 +33,7 @@ jobs:
       matrix:
         python-version: [3.12, 3.13, 3.14]
 
-    uses: ./.github/workflows/build_web_framewok.yml
+    uses: ./.github/workflows/build_web_framework.yml
     with:
       os: windows-latest
       configuration: Release
