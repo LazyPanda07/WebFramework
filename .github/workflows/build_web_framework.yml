@@ -62,6 +62,14 @@ jobs:
       with:
         python-version: "${{ inputs.python-version }}"
 
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
+
+    - name: Append WITH_STACKTRACE=ON to ADDITIONAL_BUILD_PARAMETERS on Windows at main branch
+      if: ${{ inputs.os == 'windows-latest' && env.CURRENT_BRANCH == 'main' }}
+      shell: bash
+      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_STACKTRACE=ON"
+
     - name: Append WITH_PYTHON_EXECUTORS=OFF to ADDITIONAL_BUILD_PARAMETERS
       if: ${{ inputs.python-version == '' }}
       shell: bash
@@ -80,7 +88,7 @@ jobs:
     - name: Append WITH_DOT_NET_EXECUTORS=ON to ADDITIONAL_BUILD_PARAMETERS
       if: ${{ inputs.dotnet-version != '' }}
       shell: bash
-      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOT_NET_EXECUTORS=ON"
+      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOT_NET_EXECUTORS=ON -DDOTNET_RUNTIME_VERSION=${{ inputs.dotnet-version }}"
 
     - name: Build
       shell: bash
