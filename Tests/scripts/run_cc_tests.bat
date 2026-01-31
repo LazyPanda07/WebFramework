@@ -2,7 +2,7 @@
 
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
-set PATH=C:\Program Files\dotnet\host\fxr\8.0.22\;%PATH%
+set PATH=C:\Program Files\dotnet\host\fxr\10.0.2\;C:\Program Files\dotnet\host\fxr\8.0.23\;%PATH%
 
 start CC_Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
 start DefaultHTTPSServer.exe
