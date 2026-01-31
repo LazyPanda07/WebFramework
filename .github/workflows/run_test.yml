@@ -41,6 +41,9 @@ jobs:
     runs-on: ${{ inputs.os }}
     container: 
       image: ${{ inputs.image }}
+    env:
+      override-python-version: ''
+      override-dotnet-version: ''
 
     steps:  
     - name: Prepare download artifact name from Windows
@@ -61,11 +64,24 @@ jobs:
       shell: bash
       run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}_Python-${{ inputs.python-version }}" >> ${GITHUB_ENV}
 
+    - name: Append download artifact name if Python test script using
+      if: ${{ inputs.python-version == '' && contains(inputs.test-script, 'python') }}
+      shell: bash
+      run: |
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}3.14" >> ${GITHUB_ENV}
+        echo "override-python-version=3.14" >> ${GITHUB_ENV}
+
     - name: Prepare download artifact name from .NET
       shell: bash
       run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}_DOTNET-${{ inputs.dotnet-version }}" >> ${GITHUB_ENV}
       
-    - name: Download WebFramework
+    - name: Append download artifact name if C# test script using
+      if: ${{ inputs.dotnet-version == '' && contains(inputs.test-script, 'csharp') }}
+      run: |
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}10" >> ${GITHUB_ENV} 
+        echo "override-dotnet-version=10" >> ${GITHUB_ENV}
+
+    - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
       uses: actions/download-artifact@v4
       with:
         name: ${{ env.DOWNLOAD_ARTIFACT_NAME }}
@@ -84,13 +100,19 @@ jobs:
         path: Executors
 
     - name: Install Python
-      if: ${{ inputs.python-version != '' }}
+      if: ${{ inputs.python-version != '' && env.override-python-version == '' }}
       uses: actions/setup-python@v6
       with:
         python-version: "${{ inputs.python-version }}"
 
+    - name: Install override Python
+      if: ${{ env.override-python-version != '' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.override-python-version }}"
+
     - name: Install Python API
-      if: ${{ inputs.python-version != '' }}
+      if: ${{ inputs.python-version != '' || env.override-python-version != '' }}
       run: pip install WebFrameworkLibrary/api/python_api/
 
     - name: Merge artifacts

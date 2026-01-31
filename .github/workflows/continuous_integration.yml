@@ -105,7 +105,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Download WebFramework
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
         path: WebFrameworkLibrary
@@ -139,7 +139,7 @@ jobs:
     - uses: actions/checkout@v6
       
     - name: Download WebFramework
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Linux
         path: WebFrameworkLibrary
@@ -171,7 +171,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download WebFramework
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Windows_Python-3.14_DOTNET-10
         path: WebFrameworkLibrary
@@ -201,7 +201,7 @@ jobs:
     - uses: actions/checkout@v6
       
     - name: Download WebFramework
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Linux
         path: WebFrameworkLibrary
@@ -234,19 +234,19 @@ jobs:
 
     steps:
     - name: Download WebFramework
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Linux
         path: WebFrameworkLibrary
 
     - name: Download Tests
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: LinuxTests
         path: Tests
 
     - name: Download ${{ matrix.executors }} Executors
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: LinuxExecutors-${{ matrix.executors }}
         path: Executors
@@ -305,7 +305,7 @@ jobs:
     - uses: actions/checkout@v6
 
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: LinuxARM
         path: WebFrameworkLibrary
@@ -343,7 +343,7 @@ jobs:
     - uses: actions/checkout@v6
 
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: LinuxARM
         path: WebFrameworkLibrary
@@ -391,7 +391,7 @@ jobs:
       run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
 
     - name: Remove Windows tests
       run: |
