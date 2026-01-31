@@ -1,0 +1,111 @@
+name: "Run test"
+
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: "runs-on OS"
+        required: true
+        type: string
+      image:
+        description: "Custom Docker image"
+        required: false
+        type: string
+      executors-api:
+        description: "Executors build API"
+        required: true
+        type: string
+      web-framework-config:
+        description: "WebFramework config"
+        required: true
+        type: string
+      test-script:
+        description: "Script for running tests"
+        required: true
+        type: string
+      python-version:
+        description: "Python version"
+        required: false
+        type: string
+        default: ''
+      dotnet-version:
+        description: ".NET version"
+        required: false
+        type: string
+        default: ''
+
+
+jobs:
+  build:
+    runs-on: ${{ inputs.os }}
+    container: 
+      image: ${{ inputs.image }}
+
+    steps:  
+    - name: Prepare download artifact name from Windows
+      if: ${{ inputs.os == 'windows-latest' }}
+      shell: bash
+      run: |
+        echo "CURRENT_OS=Windows" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_ARTIFACT_NAME=Windows" >> ${GITHUB_ENV}
+
+    - name: Prepare download artifact name from Linux
+      if: ${{ inputs.os == 'ubuntu-latest' }}
+      shell: bash
+      run: |
+        echo "CURRENT_OS=Linux" >> ${GITHUB_ENV}
+        export DOWNLOAD_ARTIFACT_NAME=Linux
+      
+    - name: Prepare download artifact name from Python
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}_Python-${{ inputs.python-version }}" >> ${GITHUB_ENV}
+
+    - name: Prepare download artifact name from .NET
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}_DOTNET-${{ inputs.dotnet-version }}" >> ${GITHUB_ENV}
+      
+    - name: Download WebFramework
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.DOWNLOAD_ARTIFACT_NAME }}
+        path: WebFrameworkLibrary
+
+    - name: Download tests
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.CURRENT_OS }}Tests
+        path: Tests
+
+    - name: Download ${{ inputs.executors-api }} executors
+      uses: actions/download-artifact@v7
+      with:
+        name: ${{ env.CURRENT_OS }}Executors-${{ matrix.executors.api }}
+        path: Executors
+
+    - name: Install Python
+      if: ${{ inputs.python-version != '' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ inputs.python-version }}"
+
+    - name: Install Python API
+      if: ${{ inputs.python-version != '' }}
+      run: pip install WebFrameworkLibrary/api/python_api/
+
+    - name: Merge artifacts
+      shell: bash
+      run: |
+          cp -r Executors/* Tests
+          cp -r WebFrameworkLibrary/lib/* Tests
+
+    - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Windows
+      if: ${{ inputs.os == 'windows-latest' }}
+      working-directory: Tests
+      run: .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
+    
+    - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
+      if: ${{ inputs.os == 'linux-latest' }}
+      working-directory: Tests
+      shell: bash
+      run: source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}

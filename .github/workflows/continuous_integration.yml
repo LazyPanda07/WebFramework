@@ -18,16 +18,6 @@ permissions:
 
 
 jobs:
-  # windows-build:
-  #   uses: ./.github/workflows/build_web_framework.yml
-  #   with:
-  #     os: windows-latest
-  #     configuration: Release
-  #     build-parameters: "-DWITH_STACKTRACE=ON"
-  #     upload-artifact-name: Windows
-  #     python-version: 3.14
-      
-
   windows-build:
     strategy:
       matrix:
@@ -274,54 +264,82 @@ jobs:
           
 
   windows-tests:
-    runs-on: windows-latest
     needs: [windows-tests-build, windows-executors-build]
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        executors: 
+        test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
+        executors:
           - { api: CXX, python-version: "", dotnet-version: "" }
           - { api: CC, python-version: "", dotnet-version: "" }
+          - { api: Python, python-version: 3.12, dotnet-version: "" }
+          - { api: Python, python-version: 3.13, dotnet-version: "" }
           - { api: Python, python-version: 3.14, dotnet-version: "" }
+          - { api: CSharp, python-version: "", dotnet-version: 8 }
           - { api: CSharp, python-version: "", dotnet-version: 10 }
+          - { api: CXX, python-version: 3.14, dotnet-version: 10 }
+          - { api: CC, python-version: 3.14, dotnet-version: 10 }
+          - { api: Python, python-version: 3.14, dotnet-version: 10 }
+          - { api: CSharp, python-version: 3.14, dotnet-version: 10 }
 
-    steps:
-    - name: Download WebFramework
-      uses: actions/download-artifact@v4
-      with:
-        name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
-        path: WebFrameworkLibrary
+    uses: ./.github/workflows/run_test.yml
+    with:
+      os: windows-latest
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet-version: ${{ matrix.executors.dotnet-version }}
 
-    - name: Download Tests
-      uses: actions/download-artifact@v4
-      with:
-        name: WindowsTests
-        path: Tests
+  # windows-tests:
+  #   runs-on: windows-latest
+  #   needs: [windows-tests-build, windows-executors-build]
+  #   strategy:
+  #     matrix:
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  #       api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
+  #       executors: 
+  #         - { api: CXX, python-version: "", dotnet-version: "" }
+  #         - { api: CC, python-version: "", dotnet-version: "" }
+  #         - { api: Python, python-version: 3.14, dotnet-version: "" }
+  #         - { api: CSharp, python-version: "", dotnet-version: 10 }
 
-    - name: Download ${{ matrix.executors.api }} Executors
-      uses: actions/download-artifact@v4
-      with:
-        name: WindowsExecutors-${{ matrix.executors.api }}
-        path: Executors
+  #   steps:
+  #   - name: Download WebFramework
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
+  #       path: WebFrameworkLibrary
 
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.PYTHON_VERSION }}"
+  #   - name: Download Tests
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: WindowsTests
+  #       path: Tests
+        
+  #   - name: Download ${{ matrix.executors.api }} Executors
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: WindowsExecutors-${{ matrix.executors.api }}
+  #       path: Executors
 
-    - name: Install Python API
-      run: pip install WebFrameworkLibrary/api/python_api/
+  #   - name: Install Python
+  #     uses: actions/setup-python@v6
+  #     with:
+  #       python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Merge artifacts
-      shell: bash
-      run: |
-          cp -r Executors/* Tests
-          cp -r WebFrameworkLibrary/lib/* Tests
+  #   - name: Install Python API
+  #     run: pip install WebFrameworkLibrary/api/python_api/
 
-    - name: Run ${{ matrix.api_test }} ${{ matrix.executors.api }} Tests
-      working-directory: Tests
-      run: .\${{ matrix.api_test }} ${{ matrix.config }}
+  #   - name: Merge artifacts
+  #     shell: bash
+  #     run: |
+  #         cp -r Executors/* Tests
+  #         cp -r WebFrameworkLibrary/lib/* Tests
+
+  #   - name: Run ${{ matrix.api_test }} ${{ matrix.executors.api }} Tests
+  #     working-directory: Tests
+  #     run: .\${{ matrix.api_test }} ${{ matrix.config }}
           
 
   linux-aarch64-cxx-tests:
