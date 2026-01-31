@@ -43,7 +43,7 @@ namespace framework::runtime
 
 	void DotNetRuntime::createRuntimeConfig()
 	{
-		constexpr int dotNetVersion = 8;
+		constexpr int dotNetVersion = 10;
 
 		std::ofstream stream(DotNetRuntime::getPathToRuntimeConfig());
 		json::JsonBuilder builder(CP_UTF8);

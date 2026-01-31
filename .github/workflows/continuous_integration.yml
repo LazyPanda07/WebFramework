@@ -31,6 +31,14 @@ jobs:
       python-version: ${{ matrix.python-version }}
       dotnet-version: ${{ matrix.dotnet-version }}
       upload-artifact-name: Windows_Python-${{ matrix.python-version }}_DOTNET-${{ matrix.dotnet-version }}
+
+
+  windows-dev-branch-build:
+    uses: ./.github/workflows/build_web_framework.yml
+    with:
+      os: windows-latest
+      configuration: Release
+      build-parameters: "-DWITH_STACKTRACE=ON"
     
       
   linux-build:
