@@ -80,7 +80,7 @@ jobs:
     - name: Download ${{ inputs.executors-api }} executors
       uses: actions/download-artifact@v7
       with:
-        name: ${{ env.CURRENT_OS }}Executors-${{ matrix.executors.api }}
+        name: ${{ env.CURRENT_OS }}Executors-${{ inputs.executors-api }}
         path: Executors
 
     - name: Install Python

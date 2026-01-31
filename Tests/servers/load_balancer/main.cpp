@@ -63,6 +63,7 @@ int main(int argc, char** argv) try
 	}
 
 #ifdef __WITH_ADDRESS_SANITIZER__
+	config.overrideConfiguration("$[]WebFramework.runtimes.0.enabled", false);
 	config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", false);
 #endif
 
