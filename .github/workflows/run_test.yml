@@ -87,13 +87,13 @@ jobs:
         name: ${{ env.DOWNLOAD_ARTIFACT_NAME }}
         path: WebFrameworkLibrary
 
-    - name: Download tests
+    - name: Download ${{ env.CURRENT_OS }}Tests
       uses: actions/download-artifact@v4
       with:
         name: ${{ env.CURRENT_OS }}Tests
         path: Tests
 
-    - name: Download ${{ inputs.executors-api }} executors
+    - name: Download ${{ env.CURRENT_OS }}Executors-${{ inputs.executors-api }}
       uses: actions/download-artifact@v7
       with:
         name: ${{ env.CURRENT_OS }}Executors-${{ inputs.executors-api }}
@@ -120,8 +120,6 @@ jobs:
       run: |
           cp -r Executors/* Tests
           cp -r WebFrameworkLibrary/lib/* Tests
-          [ -f WebFrameworkLibrary/dll ] && cp -r WebFrameworkLibrary/dll/* Tests
-          ls Tests
 
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Windows
       if: ${{ inputs.os == 'windows-latest' }}

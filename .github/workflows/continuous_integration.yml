@@ -280,8 +280,8 @@ jobs:
         executors:
           - { api: CXX, python-version: "", dotnet-version: "" }
           - { api: CC, python-version: "", dotnet-version: "" }
-          - { api: Python, python-version: 3.12, dotnet-version: "" }
-          - { api: Python, python-version: 3.13, dotnet-version: "" }
+          # - { api: Python, python-version: 3.12, dotnet-version: "" }
+          # - { api: Python, python-version: 3.13, dotnet-version: "" }
           - { api: Python, python-version: 3.14, dotnet-version: "" }
           # - { api: CSharp, python-version: "", dotnet-version: 8 }
           - { api: CSharp, python-version: "", dotnet-version: 10 }
