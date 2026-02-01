@@ -106,6 +106,6 @@ TEST(WFDP, CustomFunction)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok);
+		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent);
 	}
 }

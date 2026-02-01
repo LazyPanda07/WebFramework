@@ -50,7 +50,7 @@ TEST(Database, MultiUser)
 
 				stream >> response;
 
-				ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
+				ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
 			}
 
 			request = web::HttpBuilder().getRequest().parameters("multi_user_database").build();
