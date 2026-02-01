@@ -92,10 +92,14 @@ jobs:
     - name: Append ADDITIONAL_BUILD_PARAMETERS with options
       shell: bash
       run: |
-        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=${{ inputs.with-python-executors }}" >> ${GITHUB_ENV}
-        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_PYTHON_API=${{ inputs.build-python-api }}" >> ${GITHUB_ENV}
-        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOTNET_EXECUTORS=${{ inputs.with-dotnet-executors }}" >> ${GITHUB_ENV}
-        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CSHARP_API=${{ inputs.build-csharp-api }}" >> ${GITHUB_ENV}
+        ADDITIONAL_BUILD_PARAMETERS=""
+
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=${{ inputs.with-python-executors }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_PYTHON_API=${{ inputs.build-python-api }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOTNET_EXECUTORS=${{ inputs.with-dotnet-executors }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CSHARP_API=${{ inputs.build-csharp-api }}"
+
+        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS}" >> ${GITHUB_ENV}
       
     - name: Build
       shell: bash

@@ -108,9 +108,14 @@ jobs:
       with:
         python-version: "${{ env.override-python-version }}"
 
+    - name: Enable NMake
+      if: ${{ inputs.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
     - name: Install Python API
       if: ${{ inputs.python-version != '' || env.override-python-version != '' }}
-      run: pip install WebFrameworkLibrary/api/python_api/
+      shell: bash
+      run: pip install WebFrameworkLibrary/api/python_api/dist/*.whl
 
     - name: Merge artifacts
       shell: bash
