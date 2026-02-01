@@ -77,6 +77,10 @@ jobs:
       with:
         python-version: "${{ inputs.python-version }}"
 
+    - name: Install Python build
+      if: ${{ inputs.python-version != '' }}
+      run: pip install build
+
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master
 
