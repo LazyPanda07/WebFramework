@@ -42,7 +42,7 @@ jobs:
       with-python-executors: ${{ matrix.python-config.with-python-executors }}
       build-python-api: ${{ matrix.python-config.build-python-api }}
       python-version: ${{ matrix.python-config.python-version }}
-      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}
+      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}
 
 
   windows-dev-branch-build:
@@ -108,43 +108,43 @@ jobs:
         path: WebFrameworkLibrary
         
 
-  # windows-executors-build:
-  #   runs-on: windows-latest
-  #   needs: windows-build
-  #   strategy:
-  #     matrix:
-  #       executors: 
-  #         - { api: CXX, python-version: "", dotnet-version: "" }
-  #         - { api: CC, python-version: "", dotnet-version: "" }
-  #         - { api: Python, python-version: 3.14, dotnet-version: "" }
-  #         - { api: CSharp, python-version: "", dotnet-version: 10 }
+  windows-executors-build:
+    runs-on: windows-latest
+    needs: windows-build
+    strategy:
+      matrix:
+        executors: 
+          - { api: CXX, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF }
+          - { api: CC, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF }
+          - { api: Python, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF }
+          - { api: CSharp, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON }
 
-  #   steps:
-  #   - uses: actions/checkout@v6
+    steps:
+    - uses: actions/checkout@v6
     
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
-  #   - name: Download WebFramework
-  #     uses: actions/download-artifact@v6
-  #     with:
-  #       name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
-  #       path: WebFrameworkLibrary
+    - name: Download ${{ matrix.executors.artifact-name }}
+      uses: actions/download-artifact@v6
+      with:
+        name: ${{ matrix.executors.artifact-name }}
+        path: WebFrameworkLibrary
 
-  #   - name: Build ${{ matrix.executors }} Executors
-  #     working-directory: Tests
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-  #         cmake --build . -j --config Release
-  #         cmake --install . --config Release
+    - name: Build ${{ matrix.executors }} Executors
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
-  #   - name: Upload executors
-  #     uses: actions/upload-artifact@v6
-  #     with:
-  #       name: WindowsExecutors-${{ matrix.executors.api }}
-  #       path: Tests/build/bin
+    - name: Upload executors
+      uses: actions/upload-artifact@v6
+      with:
+        name: WindowsExecutors-${{ matrix.executors.api }}
+        path: Tests/build/bin
 
 
   linux-executors-build:
@@ -181,35 +181,36 @@ jobs:
         path: Tests/build/bin
 
 
-  # windows-tests-build:
-  #   runs-on: windows-latest
-  #   needs: windows-build
+  windows-tests-build:
+    runs-on: windows-latest
+    needs: windows-build
 
-  #   steps:
-  #   - uses: actions/checkout@v6
+    steps:
+    - uses: actions/checkout@v6
     
-  #   - name: Enable NMake
-  #     uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Enable NMake
+      uses: ilammy/msvc-dev-cmd@v1.13.0
       
-  #   - name: Download WebFramework
-  #     uses: actions/download-artifact@v6
-  #     with:
-  #       name: Windows_Python-3.14_DOTNET-10
-  #       path: WebFrameworkLibrary
+    - name: Download WebFramework
+      uses: actions/download-artifact@v6
+      with:
+        name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON
+        path: WebFrameworkLibrary
 
-  #   - name: Build tests
-  #     working-directory: Tests
-  #     run: |
-  #         mkdir build
-  #         cd build
-  #         cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-  #         cmake --build . --config Release -j && cmake --install . --config Release
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DPYTHON_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
-  #   - name: Upload tests
-  #     uses: actions/upload-artifact@v6
-  #     with:
-  #       name: WindowsTests
-  #       path: Tests/build/bin
+    - name: Upload tests
+      uses: actions/upload-artifact@v6
+      with:
+        name: WindowsTests
+        path: Tests/build/bin
 
 
   linux-tests-build:
@@ -232,8 +233,9 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config Release -j && cmake --install . --config Release
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DPYTHON_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Upload executors
       uses: actions/upload-artifact@v6
