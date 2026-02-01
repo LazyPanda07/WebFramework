@@ -24,10 +24,10 @@ TEST(ResourceUploading, Multipart)
 {
 	constexpr std::string_view httpUrl = "http://127.0.0.1:8080/upload_multipart";
 	constexpr std::string_view httpsUrl = "https://127.0.0.1:8080/upload_multipart";
-	constexpr std::string_view firstFileName = "uploaded_api_test.py";
+	constexpr std::string_view firstFileName = "uploaded_load_balancer_web.json";
 	constexpr std::string_view secondFileName = "uploaded_web.json";
 
-	int errorCode = std::system(std::format(R"(curl --max-time 1800 --insecure -X POST -F "{}=@api_test.py;type=text/plain" -F "{}=@web.json;type=application/json" {})", firstFileName, secondFileName, (useHTTPS ? httpsUrl : httpUrl)).data());
+	int errorCode = std::system(std::format(R"(curl --max-time 1800 --insecure -X POST -F "{}=@load_balancer_web.json;type=text/plain" -F "{}=@web.json;type=application/json" {})", firstFileName, secondFileName, (useHTTPS ? httpsUrl : httpUrl)).data());
 
 	ASSERT_EQ(errorCode, 0);
 	ASSERT_TRUE(utility::compareFiles(firstFileName, utility::removeUploadedPrefix(firstFileName)));
