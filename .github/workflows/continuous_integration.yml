@@ -59,7 +59,7 @@ jobs:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
       configuration: Release
-      python-executors-version: 3.14
+      python-version: 3.14
       build-parameters: "-DWITH_STACKTRACE=ON"
       upload-artifact-name: Linux
 
