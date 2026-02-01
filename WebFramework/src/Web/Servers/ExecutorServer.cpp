@@ -27,7 +27,7 @@ namespace framework
 
 			result = ServiceState::error;
 		}
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 		catch (const exceptions::CSharpException& e)
 		{
 			if (Log::isValid())

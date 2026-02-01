@@ -96,7 +96,7 @@ namespace framework
 				[]() { runtime::RuntimesManager::get().addRuntime<runtime::PythonRuntime>(); }
 			},
 #endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			{
 				json_settings_values::runtimesDotNetValue,
 				[]() { runtime::RuntimesManager::get().addRuntime<runtime::DotNetRuntime>(); }

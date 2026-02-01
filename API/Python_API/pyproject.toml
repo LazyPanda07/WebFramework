@@ -26,6 +26,9 @@ classifiers = [
 ]
 
 [tool.scikit-build]
+build.verbose = true
+build.tool-args = ["-j0"]
+cmake.args = ["-G", "Ninja"]
 wheel.py-api = "py3"
 sdist.include = [
   "cxx/include/*.hpp",

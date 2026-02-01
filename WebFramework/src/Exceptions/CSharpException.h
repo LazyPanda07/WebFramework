@@ -4,7 +4,7 @@
 
 #include <HttpUtility.h>
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 
 namespace framework::exceptions
 {

@@ -14,7 +14,7 @@ if (${WITH_PYTHON_EXECUTORS})
 	endif()
 endif()
 
-if (${WITH_DOT_NET_EXECUTORS})
+if (${WITH_DOTNET_EXECUTORS})
 	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
 		add_subdirectory(DotNetRuntime)
 	endif()

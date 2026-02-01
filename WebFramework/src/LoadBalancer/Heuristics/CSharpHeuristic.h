@@ -2,7 +2,7 @@
 
 #include "BaseLoadBalancerHeuristic.h"
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 
 #include "Utility/Sources.h"
 

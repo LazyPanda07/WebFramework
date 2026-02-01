@@ -2,7 +2,7 @@
 
 #include <Log.h>
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 
 #include "Managers/RuntimesManager.h"
 #include "Runtimes/DotNetRuntime.h"

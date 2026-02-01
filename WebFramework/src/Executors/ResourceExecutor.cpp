@@ -12,7 +12,7 @@
 #include "WFDP/PythonDynamicFunction.h"
 #endif
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 #include "WFDP/CSharpDynamicFunction.h"
 #endif
 
@@ -286,7 +286,7 @@ namespace framework
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [](const std::any& function) { return std::make_unique<PythonDynamicFunction>(std::any_cast<void*>(function)); }},
 #endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			{ json_settings::csharpExecutorKey, [](const std::any& function) { return std::make_unique<CSharpDynamicFunction>(std::any_cast<char*>(function)); }},
 #endif
 		};

@@ -6,7 +6,7 @@
 
 #include <Strings.h>
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 
 #include <hostfxr.h>
 #include <coreclr_delegates.h>

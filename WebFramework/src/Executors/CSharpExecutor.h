@@ -2,7 +2,7 @@
 
 #include <Executors/BaseExecutor.h>
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 
 #include "Runtimes/DotNetRuntime.h"
 

@@ -33,7 +33,7 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 
 
 ## Build
-* Default build(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOT_NET_EXECUTORS=ON)
+* Default build(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOTNET_EXECUTORS=ON)
 ```console
 mkdir build
 cd build
@@ -41,7 +41,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary .
 cmake --build . -j --config Release
 cmake --install . --config Release
 ```
-* Default build with stacktrace(-DWITH_STACKTRACE=ON, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOT_NET_EXECUTORS=ON)
+* Default build with stacktrace(-DWITH_STACKTRACE=ON, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOTNET_EXECUTORS=ON)
 ```console
 mkdir build
 cd build
@@ -49,7 +49,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -
 cmake --build . -j --config Release
 cmake --install . --config Release
 ```
-* Build with Python embed(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOT_NET_EXECUTORS=OFF)
+* Build with Python embed(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOTNET_EXECUTORS=OFF)
 ```console
 mkdir build
 cd build
@@ -57,11 +57,11 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -
 cmake --build . -j --config Release
 cmake --install . --config Release
 ```
-* Build with .NET embed(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=OFF, -DWITH_DOT_NET_EXECUTORS=ON)
+* Build with .NET embed(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=OFF, -DWITH_DOTNET_EXECUTORS=ON)
 ```console
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOT_NET_EXECUTORS=ON ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOTNET_EXECUTORS=ON ..
 cmake --build . -j --config Release
 cmake --install . --config Release
 ```

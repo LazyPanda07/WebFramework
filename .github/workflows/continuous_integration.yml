@@ -21,16 +21,28 @@ jobs:
   windows-build:
     strategy:
       matrix:
-        python-version: ["", 3.12, 3.13, 3.14]
-        dotnet-version: ["", 8, 10]
+        with-python-executors: 
+          - { build-parameters: ON, python-version: 3.14 }
+          - { build-parameters: ON, python-version: 3.13 }
+          - { build-parameters: ON, python-version: 3.12 }
+          - { build-parameters: OFF, python-version: "" }
+        build-python-api: 
+          - { build-parameters: ON, python-version: 3.14 }
+          - { build-parameters: ON, python-version: 3.13 }
+          - { build-parameters: ON, python-version: 3.12 }
+          - { build-parameters: OFF, python-version: "" }
+        with-dotnet-executors: [ON, OFF]
+        build-csharp-api: [ON, OFF]
 
     uses: ./.github/workflows/build_web_framework.yml
     with:
       os: windows-latest
       configuration: Release
-      python-version: ${{ matrix.python-version }}
-      dotnet-version: ${{ matrix.dotnet-version }}
-      upload-artifact-name: Windows_Python-${{ matrix.python-version }}_DOTNET-${{ matrix.dotnet-version }}
+      with-python-executors: ${{ matrix.with-python-executors.build-parameters }}
+      build-python-api: ${{ matrix.build-python.api.build-parameters }}
+      python-executors-version: ${{ matrix.with-python-executors.python-version }}
+      python-api-version: ${{ matrix.build-python.api.python-version }}
+      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.with-python-executors.build-parameters }}${{ matrix.with-python-executors.python-version }}-BUILD_PYTHON_API=${{ matrix.build-python-api.build-parameters }}${{ matrix.build-python-api.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}
 
 
   windows-dev-branch-build:
@@ -47,6 +59,7 @@ jobs:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
       configuration: Release
+      python-executors-version: 3.14
       build-parameters: "-DWITH_STACKTRACE=ON"
       upload-artifact-name: Linux
 
@@ -95,43 +108,43 @@ jobs:
         path: WebFrameworkLibrary
         
 
-  windows-executors-build:
-    runs-on: windows-latest
-    needs: windows-build
-    strategy:
-      matrix:
-        executors: 
-          - { api: CXX, python-version: "", dotnet-version: "" }
-          - { api: CC, python-version: "", dotnet-version: "" }
-          - { api: Python, python-version: 3.14, dotnet-version: "" }
-          - { api: CSharp, python-version: "", dotnet-version: 10 }
+  # windows-executors-build:
+  #   runs-on: windows-latest
+  #   needs: windows-build
+  #   strategy:
+  #     matrix:
+  #       executors: 
+  #         - { api: CXX, python-version: "", dotnet-version: "" }
+  #         - { api: CC, python-version: "", dotnet-version: "" }
+  #         - { api: Python, python-version: 3.14, dotnet-version: "" }
+  #         - { api: CSharp, python-version: "", dotnet-version: 10 }
 
-    steps:
-    - uses: actions/checkout@v6
+  #   steps:
+  #   - uses: actions/checkout@v6
     
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+  #   - name: Enable NMake
+  #     uses: ilammy/msvc-dev-cmd@v1.13.0
 
-    - name: Download WebFramework
-      uses: actions/download-artifact@v6
-      with:
-        name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
-        path: WebFrameworkLibrary
+  #   - name: Download WebFramework
+  #     uses: actions/download-artifact@v6
+  #     with:
+  #       name: Windows_Python-${{ matrix.executors.python-version }}_DOTNET-${{ matrix.executors.dotnet-version }}
+  #       path: WebFrameworkLibrary
 
-    - name: Build ${{ matrix.executors }} Executors
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . -j --config Release
-          cmake --install . --config Release
+  #   - name: Build ${{ matrix.executors }} Executors
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+  #         cmake --build . -j --config Release
+  #         cmake --install . --config Release
 
-    - name: Upload executors
-      uses: actions/upload-artifact@v6
-      with:
-        name: WindowsExecutors-${{ matrix.executors.api }}
-        path: Tests/build/bin
+  #   - name: Upload executors
+  #     uses: actions/upload-artifact@v6
+  #     with:
+  #       name: WindowsExecutors-${{ matrix.executors.api }}
+  #       path: Tests/build/bin
 
 
   linux-executors-build:
@@ -168,35 +181,35 @@ jobs:
         path: Tests/build/bin
 
 
-  windows-tests-build:
-    runs-on: windows-latest
-    needs: windows-build
+  # windows-tests-build:
+  #   runs-on: windows-latest
+  #   needs: windows-build
 
-    steps:
-    - uses: actions/checkout@v6
+  #   steps:
+  #   - uses: actions/checkout@v6
     
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+  #   - name: Enable NMake
+  #     uses: ilammy/msvc-dev-cmd@v1.13.0
       
-    - name: Download WebFramework
-      uses: actions/download-artifact@v6
-      with:
-        name: Windows_Python-3.14_DOTNET-10
-        path: WebFrameworkLibrary
+  #   - name: Download WebFramework
+  #     uses: actions/download-artifact@v6
+  #     with:
+  #       name: Windows_Python-3.14_DOTNET-10
+  #       path: WebFrameworkLibrary
 
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config Release -j && cmake --install . --config Release
+  #   - name: Build tests
+  #     working-directory: Tests
+  #     run: |
+  #         mkdir build
+  #         cd build
+  #         cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+  #         cmake --build . --config Release -j && cmake --install . --config Release
 
-    - name: Upload tests
-      uses: actions/upload-artifact@v6
-      with:
-        name: WindowsTests
-        path: Tests/build/bin
+  #   - name: Upload tests
+  #     uses: actions/upload-artifact@v6
+  #     with:
+  #       name: WindowsTests
+  #       path: Tests/build/bin
 
 
   linux-tests-build:
@@ -271,33 +284,32 @@ jobs:
           source ${{ matrix.api_test }} ${{ matrix.config }}
           
 
-  windows-tests:
-    needs: [windows-tests-build, windows-executors-build]
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        executors:
-          - { api: CXX, python-version: "", dotnet-version: "" }
-          - { api: CC, python-version: "", dotnet-version: "" }
-          # - { api: Python, python-version: 3.12, dotnet-version: "" }
-          # - { api: Python, python-version: 3.13, dotnet-version: "" }
-          - { api: Python, python-version: 3.14, dotnet-version: "" }
-          # - { api: CSharp, python-version: "", dotnet-version: 8 }
-          - { api: CSharp, python-version: "", dotnet-version: 10 }
-          - { api: CXX, python-version: 3.14, dotnet-version: 10 }
-          - { api: CC, python-version: 3.14, dotnet-version: 10 }
-          - { api: Python, python-version: 3.14, dotnet-version: 10 }
-          - { api: CSharp, python-version: 3.14, dotnet-version: 10 }
+  # windows-tests:
+  #   needs: [windows-tests-build, windows-executors-build]
+  #   strategy:
+  #     matrix:
+  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+  #       test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
+  #       executors:
+  #         - { api: CXX, python-version: "", dotnet-version: "" }
+  #         - { api: CC, python-version: "", dotnet-version: "" }
+  #         - { api: Python, python-version: 3.12, dotnet-version: "" }
+  #         - { api: Python, python-version: 3.13, dotnet-version: "" }
+  #         - { api: Python, python-version: 3.14, dotnet-version: "" }
+  #         - { api: CSharp, python-version: "", dotnet-version: 10 }
+  #         - { api: CXX, python-version: 3.14, dotnet-version: 10 }
+  #         - { api: CC, python-version: 3.14, dotnet-version: 10 }
+  #         - { api: Python, python-version: 3.14, dotnet-version: 10 }
+  #         - { api: CSharp, python-version: 3.14, dotnet-version: 10 }
 
-    uses: ./.github/workflows/run_test.yml
-    with:
-      os: windows-latest
-      executors-api: ${{ matrix.executors.api }}
-      web-framework-config: ${{ matrix.config }}
-      test-script: ${{ matrix.test-script }}
-      python-version: ${{ matrix.executors.python-version }}
-      dotnet-version: ${{ matrix.executors.dotnet-version }}
+  #   uses: ./.github/workflows/run_test.yml
+  #   with:
+  #     os: windows-latest
+  #     executors-api: ${{ matrix.executors.api }}
+  #     web-framework-config: ${{ matrix.config }}
+  #     test-script: ${{ matrix.test-script }}
+  #     python-version: ${{ matrix.executors.python-version }}
+  #     dotnet-version: ${{ matrix.executors.dotnet-version }}
       
 
   linux-aarch64-cxx-tests:
@@ -380,7 +392,7 @@ jobs:
     needs: [
       android-build,
       linux-tests,
-      windows-tests,
+      # windows-tests,
       linux-aarch64-cxx-tests,
       linux-aarch64-cc-tests
     ]

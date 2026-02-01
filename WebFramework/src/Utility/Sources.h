@@ -19,7 +19,7 @@ namespace framework::utility
 #ifdef __WITH_PYTHON_EXECUTORS__
 		, py::module_
 #endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 		, std::filesystem::path // absolute path to .NET module
 #endif
 		>;

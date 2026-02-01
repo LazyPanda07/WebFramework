@@ -79,7 +79,7 @@ namespace framework::runtime
 			throw std::runtime_error("No runtime for LoadSourceType::dynamicLibrary");
 
 		case framework::utility::LoadSourceType::dotNet:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
 			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
@@ -105,7 +105,7 @@ namespace framework::runtime
 			throw std::runtime_error("No runtime for LoadSourceType::dynamicLibrary");
 
 		case framework::utility::LoadSourceType::dotNet:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
 			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
@@ -134,7 +134,7 @@ namespace framework::runtime
 #endif
 
 		case framework::utility::ExecutorAPIType::csharp:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
 			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
@@ -163,7 +163,7 @@ namespace framework::runtime
 #endif
 
 		case framework::utility::ExecutorAPIType::csharp:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
 			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");

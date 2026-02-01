@@ -25,16 +25,36 @@ on:
         required: false
         type: string
         default: "Ninja"
-      python-version:
-        description: "Python version"
+      with-python-executors:
+        description: "-DWITH_PYTHON_EXECUTORS option"
+        required: false
+        type: string
+        default: "ON"
+      python-executors-version:
+        description: "Python Executors API version"
         required: false
         type: string
         default: ''
-      dotnet-version:
-        description: ".NET version"
+      build-python-api:
+        description: "-DBUILD_PYTHON_API option"
+        required: false
+        type: string
+        default: "ON"
+      python-api-version:
+        description: "Python API version"
         required: false
         type: string
         default: ''
+      with-dotnet-executors:
+        description: "-DWITH_DOTNET_EXECUTORS option"
+        required: false
+        type: string
+        default: "ON"
+      build-csharp-api:
+        description: "-DBUILD_CSHARP_API option"
+        required: false
+        type: string
+        default: "ON"
       upload-artifact-name:
         description: "Name of uploaded artifact zip"
         required: false
@@ -56,11 +76,21 @@ jobs:
       if: ${{ inputs.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
+    - name: Determine Python version from python-executors-version
+      if: ${{ inputs.python-executors-version != '' }}
+      shell: bash
+      run: echo "CURRENT_PYTHON_VERSION=${{ inputs.python-executors-version }}" >> ${GITHUB_ENV}
+
+    - name: Determine Python version from python-api-version
+      if: ${{ inputs.python-executors-version == '' && inputs.python-api-version != '' }}
+      shell: bash
+      run: echo "CURRENT_PYTHON_VERSION=${{ inputs.python-api-version }}" >> ${GITHUB_ENV}
+
     - name: Install Python
-      if: ${{ inputs.python-version != '' }}
+      if: ${{ inputs.python-executors-version != '' || inputs.python-api-version != '' }}
       uses: actions/setup-python@v6
       with:
-        python-version: "${{ inputs.python-version }}"
+        python-version: "${{ env.CURRENT_PYTHON_VERSION }}"
 
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master
@@ -68,28 +98,16 @@ jobs:
     - name: Append WITH_STACKTRACE=ON to ADDITIONAL_BUILD_PARAMETERS on Windows at main branch
       if: ${{ inputs.os == 'windows-latest' && env.CURRENT_BRANCH == 'main' }}
       shell: bash
-      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_STACKTRACE=ON"
+      run: echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_STACKTRACE=ON" >> ${GITHUB_ENV}
 
-    - name: Append WITH_PYTHON_EXECUTORS=OFF to ADDITIONAL_BUILD_PARAMETERS
-      if: ${{ inputs.python-version == '' }}
+    - name: Append ADDITIONAL_BUILD_PARAMETERS with options
       shell: bash
-      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=OFF"
-
-    - name: Append WITH_PYTHON_EXECUTORS=ON to ADDITIONAL_BUILD_PARAMETERS
-      if: ${{ inputs.python-version != '' }}
-      shell: bash
-      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=ON"
-
-    - name: Append WITH_DOT_NET_EXECUTORS=OFF to ADDITIONAL_BUILD_PARAMETERS
-      if: ${{ inputs.dotnet-version == '' }}
-      shell: bash
-      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOT_NET_EXECUTORS=OFF"
-
-    - name: Append WITH_DOT_NET_EXECUTORS=ON to ADDITIONAL_BUILD_PARAMETERS
-      if: ${{ inputs.dotnet-version != '' }}
-      shell: bash
-      run: export ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOT_NET_EXECUTORS=ON -DDOTNET_RUNTIME_VERSION=${{ inputs.dotnet-version }}"
-
+      run: |
+        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=${{ inputs.with-python-executors }}" >> ${GITHUB_ENV}
+        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_PYTHON_API=${{ inputs.build-python-api }}" >> ${GITHUB_ENV}
+        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOTNET_EXECUTORS=${{ inputs.with-dotnet-executors }}" >> ${GITHUB_ENV}
+        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CSHARP_API=${{ inputs.build-csharp-api }}" >> ${GITHUB_ENV}
+      
     - name: Build
       shell: bash
       run: |
