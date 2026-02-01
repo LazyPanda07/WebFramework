@@ -16,7 +16,7 @@ TEST(Database, Create)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
+	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
 }
 
 TEST(Database, Insert)
@@ -29,7 +29,7 @@ TEST(Database, Insert)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
+	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
 }
 
 TEST(Database, Select)

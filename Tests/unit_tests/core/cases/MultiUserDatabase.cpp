@@ -40,7 +40,7 @@ TEST(Database, MultiUser)
 
 			stream >> response;
 
-			ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
+			ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
 
 			for (size_t i = 0; i < requestsNumber; i++)
 			{
