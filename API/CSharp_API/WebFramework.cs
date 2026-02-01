@@ -27,6 +27,12 @@ public sealed unsafe partial class WebFramework : IDisposable
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void startWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, IntPtr onStartServer, ref void* exception);
 
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static unsafe partial void kickWebFrameworkServer(void* implementation, string ip, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName)]
+	private static unsafe partial void updateSslCertificatesWebFrameworkServer(void* implementation, ref void* exception);
+
 	[LibraryImport(DLLHandler.libraryName)]
 	private static unsafe partial void stopWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, ref void* exception);
 
@@ -134,6 +140,42 @@ public sealed unsafe partial class WebFramework : IDisposable
 		void* exception = null;
 
 		stopWebFrameworkServer(implementation, wait, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	/// <summary>
+	/// Disconnects the client associated with the specified IP address from the web framework server.
+	/// </summary>
+	/// <param name="ip">The IP address of the client to disconnect. Cannot be null or empty.</param>
+	/// <exception cref="WebFrameworkException">Thrown when the server fails to disconnect the specified client.</exception>
+	public void Kick(string ip)
+	{
+		void* exception = null;
+
+		kickWebFrameworkServer(implementation, ip, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	/// <summary>
+	/// Updates the SSL certificates used by the web framework server.
+	/// </summary>
+	/// <remarks>This method applies new SSL certificates to the server. The update may cause active connections to
+	/// be reset if certificate changes require a restart. Ensure that the server is in a suitable state before invoking
+	/// this method.</remarks>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while updating the SSL certificates.</exception>
+	public void UpdateSslCertificates()
+	{
+		void* exception = null;
+
+		updateSslCertificatesWebFrameworkServer(implementation, ref exception);
 
 		if (exception != null)
 		{

@@ -40,6 +40,10 @@ EXPORT void startWebFrameworkServer(WebFramework server, bool wait, void (*onSta
 
 EXPORT void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception);
 
+EXPORT void kickWebFrameworkServer(WebFramework server, const char* ip, Exception* exception);
+
+EXPORT void updateSslCertificatesWebFrameworkServer(WebFramework server, Exception* exception);
+
 EXPORT bool isServerRunning(WebFramework server, Exception* exception);
 
 EXPORT const char* getWebFrameworkVersion();

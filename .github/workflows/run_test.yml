@@ -122,7 +122,11 @@ jobs:
       run: |
           cp -r Executors/* Tests
           cp -r WebFrameworkLibrary/lib/* Tests
-          [ -f WebFrameworkLibrary/dll ] && cp -r WebFrameworkLibrary/dll/*.dll Tests
+
+    - name: Copy dlls
+      if: ${{ inputs.os == 'windows-latest' }}
+      shell: bash
+      run: cp -rf WebFrameworkLibrary/dll/* Tests
 
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Windows
       if: ${{ inputs.os == 'windows-latest' }}

@@ -248,6 +248,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def(py::init<const framework::utility::Config&>(), "config"_a)
 		.def("start", &framework::WebFramework::start, "wait"_a = false, "on_start_server"_a = py::none(), py::call_guard<py::gil_scoped_release>())
 		.def("stop", &framework::WebFramework::stop, "wait"_a = true)
+		.def("kick", &framework::WebFramework::kick, "ip"_a)
+		.def("update_ssl_certificates", &framework::WebFramework::updateSslCertificates)
 		.def("is_server_running", &framework::WebFramework::isServerRunning)
 		.def_static("get_web_framework_version", &framework::WebFramework::getWebFrameworkVersion);
 

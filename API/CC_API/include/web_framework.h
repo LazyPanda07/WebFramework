@@ -47,6 +47,21 @@ web_framework_exception_t wf_start_web_framework_server(web_framework_t implemen
 web_framework_exception_t wf_stop_web_framework_server(web_framework_t implementation, bool wait);
 
 /**
+ * @brief Kick specific client from server
+ * @param implementation web_framework_t
+ * @param ip Client's IP address to be kicked.
+ * @return NULL if no errors. Call getErrorMessage for getting error message
+ */
+web_framework_exception_t wf_kick_web_framework_server(web_framework_t implementation, const char* ip);
+
+/**
+ * @brief Reloads or updates the SSL/TLS certificates used by the specified web framework server implementation.
+ * @param implementation web_framework_t
+ * @return NULL if no errors. Call getErrorMessage for getting error message
+ */
+web_framework_exception_t wf_update_ssl_certificates_web_framework_server(web_framework_t implementation);
+
+/**
  * @brief Is server running
  * @param implementation web_framework_t
  * @param isServerRunning Result

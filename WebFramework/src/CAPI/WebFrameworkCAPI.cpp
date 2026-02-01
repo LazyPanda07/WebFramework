@@ -169,6 +169,38 @@ void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception
 	}
 }
 
+void kickWebFrameworkServer(WebFramework server, const char* ip, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::WebFramework*>(server)->kick(ip);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void updateSslCertificatesWebFrameworkServer(WebFramework server, Exception* exception)
+{
+	try
+	{
+		static_cast<framework::WebFramework*>(server)->updateSslCertificates();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
 bool isServerRunning(WebFramework server, Exception* exception)
 {
 	try
