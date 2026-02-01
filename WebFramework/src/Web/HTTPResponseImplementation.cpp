@@ -29,6 +29,8 @@ namespace framework
 	void HTTPResponseImplementation::setResponseCode(int64_t code)
 	{
 		builder.responseCode(static_cast<web::ResponseCodes>(code));
+
+		defaultResponseCode = false;
 	}
 
 	void HTTPResponseImplementation::addHeader(const char* name, const char* value)
@@ -65,6 +67,8 @@ namespace framework
 		body.clear();
 
 		this->setIsValid(true);
+
+		defaultResponseCode = true;
 	}
 
 	void HTTPResponseImplementation::setIsValid(bool isValid)
@@ -98,6 +102,11 @@ namespace framework
 		}
 		else
 		{
+			if (response.defaultResponseCode)
+			{
+				response.builder.responseCode(web::ResponseCodes::noContent);
+			}
+
 			result = response.builder.build();
 		}
 

@@ -19,6 +19,7 @@ namespace framework
 		web::HttpBuilder builder;
 		std::string body;
 		bool isValid;
+		bool defaultResponseCode;
 
 	public:
 		/// <summary>

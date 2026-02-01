@@ -25,7 +25,7 @@ namespace framework::runtime
 	{
 		if (!Py_IsInitialized())
 		{
-			guard = std::make_unique<py::scoped_interpreter>();
+			guard = std::make_unique<py::scoped_interpreter>(); // Trying to load python shared library and uses it's web_framework_api
 
 			if (Log::isValid())
 			{
