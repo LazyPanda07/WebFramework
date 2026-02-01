@@ -29,11 +29,11 @@ on:
         required: false
         type: string
         default: ''
-      dotnet-version:
-        description: ".NET version"
+      dotnet:
+        description: ".NET option"
         required: false
-        type: string
-        default: ''
+        type: boolean
+        default: false
 
 
 jobs:
@@ -43,7 +43,6 @@ jobs:
       image: ${{ inputs.image }}
     env:
       override-python-version: ''
-      override-dotnet-version: ''
 
     steps:  
     - name: Prepare download artifact name from Windows
@@ -58,28 +57,26 @@ jobs:
       shell: bash
       run: |
         echo "CURRENT_OS=Linux" >> ${GITHUB_ENV}
-        export DOWNLOAD_ARTIFACT_NAME=Linux
+        echo "DOWNLOAD_ARTIFACT_NAME=Linux" >> ${GITHUB_ENV}
       
     - name: Prepare download artifact name from Python
       shell: bash
-      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}_Python-${{ inputs.python-version }}" >> ${GITHUB_ENV}
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_EXECUTORS=ON-${{ inputs.python-version }}" >> ${GITHUB_ENV}
 
     - name: Append download artifact name if Python test script using
       if: ${{ inputs.python-version == '' && contains(inputs.test-script, 'python') }}
       shell: bash
       run: |
-        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}3.14" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_EXECUTORS=ON-3.14" >> ${GITHUB_ENV}
         echo "override-python-version=3.14" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name from .NET
       shell: bash
-      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}_DOTNET-${{ inputs.dotnet-version }}" >> ${GITHUB_ENV}
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON" >> ${GITHUB_ENV}
       
     - name: Append download artifact name if C# test script using
-      if: ${{ inputs.dotnet-version == '' && contains(inputs.test-script, 'csharp') }}
-      run: |
-        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}10" >> ${GITHUB_ENV} 
-        echo "override-dotnet-version=10" >> ${GITHUB_ENV}
+      if: ${{ inputs.dotnet == false && contains(inputs.test-script, 'csharp') }}
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON" >> ${GITHUB_ENV}
 
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
       uses: actions/download-artifact@v4

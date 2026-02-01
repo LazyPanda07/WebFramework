@@ -22,15 +22,15 @@ jobs:
     strategy:
       matrix:
         python-config:
-          - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
-          - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
-          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
-          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
           - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
-          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
-          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
           - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
@@ -131,7 +131,7 @@ jobs:
         name: ${{ matrix.executors.artifact-name }}
         path: WebFrameworkLibrary
 
-    - name: Build ${{ matrix.executors }} Executors
+    - name: Build ${{ matrix.executors.api }} Executors
       working-directory: Tests
       run: |
           mkdir build
@@ -286,32 +286,34 @@ jobs:
           source ${{ matrix.api_test }} ${{ matrix.config }}
           
 
-  # windows-tests:
-  #   needs: [windows-tests-build, windows-executors-build]
-  #   strategy:
-  #     matrix:
-  #       config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-  #       test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-  #       executors:
-  #         - { api: CXX, python-version: "", dotnet-version: "" }
-  #         - { api: CC, python-version: "", dotnet-version: "" }
-  #         - { api: Python, python-version: 3.12, dotnet-version: "" }
-  #         - { api: Python, python-version: 3.13, dotnet-version: "" }
-  #         - { api: Python, python-version: 3.14, dotnet-version: "" }
-  #         - { api: CSharp, python-version: "", dotnet-version: 10 }
-  #         - { api: CXX, python-version: 3.14, dotnet-version: 10 }
-  #         - { api: CC, python-version: 3.14, dotnet-version: 10 }
-  #         - { api: Python, python-version: 3.14, dotnet-version: 10 }
-  #         - { api: CSharp, python-version: 3.14, dotnet-version: 10 }
+  windows-tests:
+    needs: [windows-tests-build, windows-executors-build]
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
+        executors:
+          - { api: CXX, python-version: 3.14, dotnet: true }
+          - { api: CC, python-version: 3.14, dotnet: true }
+          - { api: Python, python-version: 3.14, dotnet: true }
+          - { api: CSharp, python-version: 3.14, dotnet: true }
+          - { api: CXX, python-version: 3.13, dotnet: true }
+          - { api: CC, python-version: 3.13, dotnet: true }
+          - { api: Python, python-version: 3.13, dotnet: true }
+          - { api: CSharp, python-version: 3.13, dotnet: true }
+          - { api: CXX, python-version: 3.12, dotnet: true }
+          - { api: CC, python-version: 3.12, dotnet: true }
+          - { api: Python, python-version: 3.12, dotnet: true }
+          - { api: CSharp, python-version: 3.12, dotnet: true }
 
-  #   uses: ./.github/workflows/run_test.yml
-  #   with:
-  #     os: windows-latest
-  #     executors-api: ${{ matrix.executors.api }}
-  #     web-framework-config: ${{ matrix.config }}
-  #     test-script: ${{ matrix.test-script }}
-  #     python-version: ${{ matrix.executors.python-version }}
-  #     dotnet-version: ${{ matrix.executors.dotnet-version }}
+    uses: ./.github/workflows/run_test.yml
+    with:
+      os: windows-latest
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
       
 
   linux-aarch64-cxx-tests:
