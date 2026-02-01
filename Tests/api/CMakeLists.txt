@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 project(API)
 
-if (${PYTHON_API}
+if (${PYTHON_API})
 	add_subdirectory(python)
 endif()
 
