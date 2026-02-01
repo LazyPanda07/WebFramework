@@ -61,7 +61,7 @@ jobs:
       
     - name: Prepare download artifact name from Python
       shell: bash
-      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_EXECUTORS=ON-${{ inputs.python-version }}" >> ${GITHUB_ENV}
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-${{ inputs.python-version }}" >> ${GITHUB_ENV}
 
     - name: Append download artifact name if Python test script using
       if: ${{ inputs.python-version == '' && contains(inputs.test-script, 'python') }}
