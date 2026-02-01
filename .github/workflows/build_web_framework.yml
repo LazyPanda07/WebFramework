@@ -30,18 +30,13 @@ on:
         required: false
         type: string
         default: "ON"
-      python-executors-version:
-        description: "Python Executors API version"
-        required: false
-        type: string
-        default: ''
       build-python-api:
         description: "-DBUILD_PYTHON_API option"
         required: false
         type: string
         default: "ON"
-      python-api-version:
-        description: "Python API version"
+      python-version:
+        description: "Python version"
         required: false
         type: string
         default: ''
@@ -76,21 +71,11 @@ jobs:
       if: ${{ inputs.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
-    - name: Determine Python version from python-executors-version
-      if: ${{ inputs.python-executors-version != '' }}
-      shell: bash
-      run: echo "CURRENT_PYTHON_VERSION=${{ inputs.python-executors-version }}" >> ${GITHUB_ENV}
-
-    - name: Determine Python version from python-api-version
-      if: ${{ inputs.python-executors-version == '' && inputs.python-api-version != '' }}
-      shell: bash
-      run: echo "CURRENT_PYTHON_VERSION=${{ inputs.python-api-version }}" >> ${GITHUB_ENV}
-
     - name: Install Python
-      if: ${{ inputs.python-executors-version != '' || inputs.python-api-version != '' }}
+      if: ${{ inputs.python-version != '' }}
       uses: actions/setup-python@v6
       with:
-        python-version: "${{ env.CURRENT_PYTHON_VERSION }}"
+        python-version: "${{ inputs.python-version }}"
 
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master

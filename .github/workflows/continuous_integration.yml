@@ -21,16 +21,17 @@ jobs:
   windows-build:
     strategy:
       matrix:
-        with-python-executors: 
-          - { build-parameters: ON, python-version: 3.14 }
-          - { build-parameters: ON, python-version: 3.13 }
-          - { build-parameters: ON, python-version: 3.12 }
-          - { build-parameters: OFF, python-version: "" }
-        build-python-api: 
-          - { build-parameters: ON, python-version: 3.14 }
-          - { build-parameters: ON, python-version: 3.13 }
-          - { build-parameters: ON, python-version: 3.12 }
-          - { build-parameters: OFF, python-version: "" }
+        python-config:
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
 
@@ -38,11 +39,10 @@ jobs:
     with:
       os: windows-latest
       configuration: Release
-      with-python-executors: ${{ matrix.with-python-executors.build-parameters }}
-      build-python-api: ${{ matrix.build-python.api.build-parameters }}
-      python-executors-version: ${{ matrix.with-python-executors.python-version }}
-      python-api-version: ${{ matrix.build-python.api.python-version }}
-      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.with-python-executors.build-parameters }}${{ matrix.with-python-executors.python-version }}-BUILD_PYTHON_API=${{ matrix.build-python-api.build-parameters }}${{ matrix.build-python-api.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}
+      with-python-executors: ${{ matrix.python-config.with-python-executors }}
+      build-python-api: ${{ matrix.python-config.build-python-api }}
+      python-version: ${{ matrix.python-config.python-version }}
+      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}
 
 
   windows-dev-branch-build:
