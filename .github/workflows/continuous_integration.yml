@@ -35,7 +35,7 @@ jobs:
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
 
-    uses: ./.github/workflows/reusable/build_web_framework.yml
+    uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: windows-latest
       configuration: Release
@@ -46,7 +46,7 @@ jobs:
 
 
   windows-dev-branch-build:
-    uses: ./.github/workflows/reusable/build_web_framework.yml
+    uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: windows-latest
       configuration: Release
@@ -70,7 +70,7 @@ jobs:
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
 
-    uses: ./.github/workflows/reusable/build_web_framework.yml
+    uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
@@ -83,7 +83,7 @@ jobs:
 
 
   linux-aarch64-build:
-    uses: ./.github/workflows/reusable/build_web_framework.yml
+    uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
@@ -286,7 +286,7 @@ jobs:
           - { api: Python, python-version: 3.12, dotnet: true }
           - { api: CSharp, python-version: 3.12, dotnet: true }
 
-    uses: ./.github/workflows/reusable/run_test.yml
+    uses: ./.github/workflows/reusable_run_test.yml
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
@@ -317,7 +317,7 @@ jobs:
           - { api: Python, python-version: 3.12, dotnet: true }
           - { api: CSharp, python-version: 3.12, dotnet: true }
 
-    uses: ./.github/workflows/reusable/run_test.yml
+    uses: ./.github/workflows/reusable_run_test.yml
     with:
       os: windows-latest
       executors-api: ${{ matrix.executors.api }}
