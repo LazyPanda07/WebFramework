@@ -126,7 +126,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ inputs.configuration }} ${{ inputs.build-parameters }} ${ADDITIONAL_BUILD_PARAMETERS} -G ${{ inputs.cmake-generator }} ..
-          cmake --build . --config ${{ inputs.configuration }} -j
+          cmake --build . -j --config ${{ inputs.configuration }}
           cmake --install . --config ${{ inputs.configuration }}
   
     - name: Upload artifacts

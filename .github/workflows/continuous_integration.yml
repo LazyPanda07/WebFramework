@@ -48,7 +48,7 @@ jobs:
       python-version: ${{ matrix.python-config.python-version }}
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
-      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_AP=${{ matrix.build-cc-api }}
+      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
   windows-dev-branch-build:
@@ -91,7 +91,7 @@ jobs:
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
       build-parameters: "-DWITH_STACKTRACE=ON"
-      upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_AP=${{ matrix.build-cc-api }}
+      upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
   linux-aarch64-build:
