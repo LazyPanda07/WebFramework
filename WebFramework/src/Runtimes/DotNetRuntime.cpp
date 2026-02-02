@@ -308,7 +308,7 @@ namespace framework::runtime
 		dotNetDealloc(allocatedMemory);
 	}
 
-	bool DotNetRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
+	bool DotNetRuntime::loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<std::filesystem::path>(source))
 		{
@@ -326,7 +326,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, modulePath.string());
+			Log::info("Found {} in {} for {} route", "LogWebFrameworkInitialization", name, modulePath.string(), route.empty() ? R"("")" : route);
 		}
 
 		fullQualifiedNames.emplace(name, std::move(fullQualifiedName));

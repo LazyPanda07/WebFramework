@@ -238,7 +238,7 @@ namespace framework
 
 			for (const auto& [source, sourcePath] : sources)
 			{
-				if (runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, source))
+				if (runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, route, source))
 				{
 					creatorSource = source;
 

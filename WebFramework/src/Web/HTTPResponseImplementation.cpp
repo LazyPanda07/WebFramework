@@ -1,12 +1,42 @@
 #include "HTTPResponseImplementation.h"
 
 #include <chrono>
+#include <ctime>
+
+#include <Log.h>
 
 namespace framework
 {
 	std::string HTTPResponseImplementation::getFullDate()
 	{
-		return std::format("{:%a, %d %b %Y %H:%M:%OS} GMT", std::chrono::system_clock::now());
+		constexpr size_t bufferSize = 64;
+		constexpr size_t resultSize = 96;
+
+		std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+		std::time_t seconds = std::chrono::system_clock::to_time_t(now);
+		std::tm time;
+
+#ifdef __LINUX__
+		gmtime_r(&seconds, &time);
+#else
+		gmtime_s(&time, &seconds);
+#endif
+
+		char buffer[bufferSize]{};
+		char result[resultSize]{};
+
+		if (std::strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S", &time) == 0)
+		{
+			Log::error("Can't put time into buffer", "LogTime");
+
+			return "";
+		}
+
+		std::chrono::milliseconds milliseconds = duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+		std::snprintf(result, sizeof(result), "%s.%03d GMT", buffer, static_cast<int>(milliseconds.count()));
+
+		return result;
 	}
 
 	HTTPResponseImplementation::HTTPResponseImplementation()

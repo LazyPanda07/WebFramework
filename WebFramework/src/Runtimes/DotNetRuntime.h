@@ -142,7 +142,7 @@ namespace framework::runtime
 		void dealloc(void* allocatedMemory) const;
 
 	public:
-		bool loadExecutor(std::string_view name, const utility::LoadSource& source) override;
+		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;
 
 		std::unique_ptr<BaseExecutor> createExecutor(std::string_view name) const override;
 

@@ -13,7 +13,7 @@ namespace framework::runtime
 
 	}
 
-	bool CXXRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
+	bool CXXRuntime::loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<HMODULE>(source))
 		{
@@ -29,7 +29,7 @@ namespace framework::runtime
 
 			if (Log::isValid())
 			{
-				Log::info("Found {} in {}", "LogRuntime", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+				Log::info("Found {} in {} for {} route", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string(), route.empty() ? R"("")" : route);
 			}
 
 			creators.emplace(name, std::make_tuple(module, creator));

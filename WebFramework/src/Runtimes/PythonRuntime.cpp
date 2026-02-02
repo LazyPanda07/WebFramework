@@ -87,7 +87,7 @@ namespace framework::runtime
 		}
 	}
 
-	bool PythonRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
+	bool PythonRuntime::loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<py::module_>(source))
 		{
@@ -105,7 +105,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, py::repr(module).cast<std::string>());
+			Log::info("Found {} in {} for {} route", "LogWebFrameworkInitialization", name, py::repr(module).cast<std::string>(), route.empty() ? R"("")" : route);
 		}
 
 		classes.emplace(name, *cls);
