@@ -60,11 +60,6 @@ on:
         required: false
         type: string
         default: "ON"
-      build-flutter-api:
-        description: "-DBUILD_FLUTTER_API option"
-        required: false
-        type: string
-        default: "ON"
       upload-artifact-name:
         description: "Name of uploaded artifact zip"
         required: false
@@ -117,7 +112,6 @@ jobs:
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CSHARP_API=${{ inputs.build-csharp-api }}"
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CXX_API=${{ inputs.build-cxx-api }}"
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CC_API=${{ inputs.build-cc-api }}"
-        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_FLUTTER_API=${{ inputs.build-flutter-api }}"
 
         echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS}" >> ${GITHUB_ENV}
       

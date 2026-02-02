@@ -36,7 +36,6 @@ jobs:
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
-        build-flutter-api: [ON, OFF]
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
@@ -49,7 +48,6 @@ jobs:
       python-version: ${{ matrix.python-config.python-version }}
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
-      build-flutter-api: ${{ matrix.build-flutter-api }}
       upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_AP=${{ matrix.build-cc-api }}
 
 
@@ -79,7 +77,6 @@ jobs:
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
-        build-flutter-api: [ON, OFF]
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
@@ -93,7 +90,6 @@ jobs:
       python-version: ${{ matrix.python-config.python-version }}
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
-      build-flutter-api: ${{ matrix.build-flutter-api }}
       build-parameters: "-DWITH_STACKTRACE=ON"
       upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_AP=${{ matrix.build-cc-api }}
 
@@ -111,7 +107,6 @@ jobs:
       build-python-api: OFF
       with-dotnet-executors: OFF
       build-csharp-api: OFF
-      build-flutter-api: OFF
       upload-artifact-name: LinuxARM
       
 
