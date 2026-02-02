@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Installer selector</title>
+<style>
+  /* ---------- color vars ---------- */
+  :root{
+    --accent:#2563eb;
+    --muted:#666;
+    --bg:#ffffff;
+    --text:#111;
+    --card:#f8fafc;
+    --code-bg:#0f172a;
+    --code-text:#fff;
+    --surface-border: #e6e6e6;
+    --select-bg: #ffffff;
+    --select-text: #111;
+    --select-border: #e6e6e6;
+    --select-arrow: #666;
+  }
+
+  /* explicit theme classes */
+  .dark {
+    --accent:#3b82f6;
+    --muted:#a6adbb;
+    --bg:#0b1220;
+    --text:#e6eef8;
+    --card:#071025;
+    --code-bg:#0b122a;
+    --code-text:#e6eef8;
+    --surface-border: rgba(255,255,255,0.06);
+    --select-bg: #1e293b;
+    --select-text: #e6eef8;
+    --select-border: rgba(255,255,255,0.1);
+    --select-arrow: #a6adbb;
+  }
+
+  .light {
+    /* explicit light override (keeps base values for clarity) */
+    --accent:#2563eb;
+    --muted:#666;
+    --bg:#ffffff;
+    --text:#111;
+    --card:#f8fafc;
+    --code-bg:#0f172a;
+    --code-text:#fff;
+    --surface-border: #e6e6e6;
+    --select-bg: #ffffff;
+    --select-text: #111;
+    --select-border: #e6e6e6;
+    --select-arrow: #666;
+  }
+
+  /* Auto mode: applies only when neither .dark nor .light is present */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light):not(.dark) {
+      --accent:#3b82f6;
+      --muted:#a6adbb;
+      --bg:#0b1220;
+      --text:#e6eef8;
+      --card:#071025;
+      --code-bg:#0b122a;
+      --code-text:#e6eef8;
+      --surface-border: rgba(255,255,255,0.06);
+      --select-bg: #1e293b;
+      --select-text: #e6eef8;
+      --select-border: rgba(255,255,255,0.1);
+      --select-arrow: #a6adbb;
+    }
+  }
+
+  /* ---------- layout ---------- */
+  html,body{height:100%;}
+  body{
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    margin:20px; color:var(--text); background:var(--bg);
+  }
+
+  .card{
+    background:var(--card);
+    padding:18px;
+    border-radius:10px;
+    box-shadow:0 6px 18px rgba(20,20,20,0.06);
+    max-width:1200px; /* Increased from 1000px to 1200px for more space */
+    margin:0 auto;
+    border:1px solid var(--surface-border);
+  }
+
+  h1{margin:0 0 12px 0; font-size:20px; display:inline-block;}
+  .top-row{display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  .row{display:flex; gap:16px; flex-wrap:wrap; align-items:center;}
+  .section{margin:12px 0; width:100%;}
+  .platforms{display:flex; gap:8px;}
+  .plat-btn{
+    padding:8px 14px; border-radius:8px; border:1px solid var(--surface-border);
+    background:transparent; color:var(--text); cursor:pointer; user-select:none;
+    box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  .plat-btn[aria-pressed="true"]{
+    background:var(--accent); color:#fff; border-color:rgba(0,0,0,0.08);
+  }
+
+  .label{font-weight:600; margin-bottom:8px; display:block; color:var(--text);}
+  .grid{display:flex; gap:12px; flex-wrap:wrap;}
+  .checkbox {
+    display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:8px;
+    background:transparent; border:1px solid var(--surface-border); cursor:pointer; color:var(--text);
+  }
+  .checkbox input {margin:0;}
+
+  /* Build command - expanded width */
+  pre.command {
+    background:var(--code-bg); color:var(--code-text); padding:16px;
+    border-radius:8px; overflow:auto; margin:8px 0; border:1px solid rgba(0,0,0,0.12);
+    white-space:pre-wrap;
+    word-break:break-word;
+    min-height: 60px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .controls{display:flex; gap:8px; align-items:center; margin-top:8px;}
+  .btn {padding:8px 12px; border-radius:8px; border:none; cursor:pointer;}
+  .btn.primary{background:var(--accent); color:#fff;}
+  .btn.ghost{background:transparent; border:1px solid var(--surface-border); color:var(--text);}
+
+  .meta{color:var(--muted); font-size:13px; margin-top:8px;}
+  
+  /* Responsive layout adjustments */
+  @media (min-width:700px){
+    .two {
+      display:flex; 
+      gap:24px; /* Increased gap for more space */
+    }
+    .left{
+      flex: 1 1 65%; /* Takes 65% of width */
+      min-width: 0; /* Important for proper flexbox behavior */
+    }
+    .right{
+      flex: 0 0 35%; /* Takes 35% of width */
+      max-width: 35%;
+      min-width: 0; /* Important for proper flexbox behavior */
+    }
+  }
+  
+  @media (min-width:1000px){
+    .two {
+      gap:32px; /* Even more space on larger screens */
+    }
+    .left{
+      flex: 1 1 70%; /* More space for command on very large screens */
+    }
+    .right{
+      flex: 0 0 30%; /* Less space for preview on very large screens */
+      max-width: 30%;
+    }
+  }
+
+  /* theme toggle */
+  .theme-toggle { background:transparent; border:1px solid var(--surface-border); padding:8px 10px; border-radius:8px; cursor:pointer; color:var(--text); }
+  .small { font-size:13px; padding:6px 8px; border-radius:6px; }
+
+  /* small helpers */
+  [aria-disabled="true"]{opacity:0.6; cursor:not-allowed;}
+  
+  /* Python version selector */
+  .python-version-section {
+    display: none;
+  }
+  
+  .python-version-section.visible {
+    display: block;
+  }
+  
+  .select-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .select-wrapper select {
+    padding: 8px 12px;
+    padding-right: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--select-border);
+    background: var(--select-bg);
+    color: var(--select-text);
+    cursor: pointer;
+    width: 150px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 14px;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  
+  .select-wrapper select:hover {
+    border-color: var(--accent);
+  }
+  
+  .select-wrapper select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+  }
+  
+  .select-wrapper::after {
+    content: "▼";
+    font-size: 10px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--select-arrow);
+  }
+  
+  /* Dark theme specific select styling */
+  .dark .select-wrapper select {
+    background: var(--select-bg);
+    color: var(--select-text);
+    border: 1px solid var(--select-border);
+  }
+  
+  .dark .select-wrapper select option {
+    background: var(--select-bg);
+    color: var(--select-text);
+  }
+  
+  /* Improve dropdown appearance in dark mode */
+  .select-wrapper select::-ms-expand {
+    display: none;
+  }
+  
+  /* Ensure preview content doesn't overflow */
+  #preview {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+</style>
+</head>
+<body>
+<main class="card" id="app" role="region" aria-label="Installer selector">
+  <div class="top-row">
+    <h1>Installer selector</h1>
+    <div>
+      <button id="themeToggle" class="theme-toggle small" aria-pressed="false" title="Toggle dark/light theme">Auto</button>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="left">
+      <div class="section" id="platform-section">
+        <span class="label">Platform (choose one)</span>
+        <div class="platforms" role="radiogroup" aria-label="Platform">
+          <button class="plat-btn" data-val="windows" role="radio" aria-pressed="false">Windows</button>
+          <button class="plat-btn" data-val="linux" role="radio" aria-pressed="false">Linux</button>
+        </div>
+      </div>
+
+      <div class="section" id="apis-section">
+        <span class="label">APIs (you may select multiple)</span>
+        <div class="grid" aria-label="APIs">
+          <label class="checkbox"><input type="checkbox" id="Python" value="-DBUILD_PYTHON_API">Python</label>
+          <label class="checkbox"><input type="checkbox" id="C++" value="-DBUILD_CXX_API">C++</label>
+          <label class="checkbox"><input type="checkbox" id="C" value="-DBUILD_CC_API">C</label>
+          <label class="checkbox"><input type="checkbox" id="C#" value="-DBUILD_CSHARP_API">C#</label>
+          <label class="checkbox"><input type="checkbox" id="Flutter" value="-DBUILD_FLUTTER_API">Flutter</label>
+        </div>
+      </div>
+
+      <div class="section" id="features-section">
+        <span class="label">Features (optional, choose any)</span>
+        <div class="grid" aria-label="Features">
+          <label class="checkbox"><input type="checkbox" id="Python Executors" value="-DWITH_PYTHON_EXECUTORS">Python Executors</label>
+          <label class="checkbox"><input type="checkbox" id=".NET Executors" value="-DWITH_DOTNET_EXECUTORS">.NET Executors</label>
+        </div>
+      </div>
+
+      <!-- New Python version section -->
+      <div class="section python-version-section" id="python-version-section">
+        <span class="label">Python version</span>
+        <div class="select-wrapper">
+          <select id="pythonVersion">
+            <option value="3.12">Python 3.12</option>
+            <option value="3.13">Python 3.13</option>
+            <option value="3.14" selected>Python 3.14</option>
+          </select>
+        </div>
+        <div class="meta">Required when Python API or Python Executors are selected</div>
+      </div>
+
+      <div class="section">
+        <span class="label">Build command</span>
+        <pre class="command" id="generated" aria-live="polite"># Select options to generate install command</pre>
+
+        <div class="controls">
+          <button class="btn primary" id="copyBtn" aria-disabled="true" disabled>Copy</button>
+          <button class="btn ghost" id="resetBtn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="section">
+        <span class="label">Quick preview</span>
+        <div id="preview" style="
+          background:transparent;
+          padding:12px;
+          border-radius:8px;
+          border:1px solid var(--surface-border);
+          font-size:14px;
+          color:var(--text);
+          width:100%;
+          max-width:100%;
+          word-break:break-word;
+          overflow-wrap:break-word;
+          box-sizing:border-box;
+        ">
+          Platform: <strong id="pval">—</strong><br>
+          APIs: <strong id="aval">—</strong><br>
+          Features: <strong id="fval">—</strong><br>
+          Python Version: <strong id="pyval">—</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+/* ---------- elements ---------- */
+const app = document.getElementById('app');
+const platformBtns = [...app.querySelectorAll('.plat-btn')];
+const apiCheckboxes = [...app.querySelectorAll('#apis-section input[type="checkbox"]')];
+const featCheckboxes = [...app.querySelectorAll('#features-section input[type="checkbox"]')];
+const generatedEl = document.getElementById('generated');
+const pval = document.getElementById('pval');
+const aval = document.getElementById('aval');
+const fval = document.getElementById('fval');
+const pyval = document.getElementById('pyval');
+const copyBtn = document.getElementById('copyBtn');
+const resetBtn = document.getElementById('resetBtn');
+const pythonVersionSection = document.getElementById('python-version-section');
+const pythonVersionSelect = document.getElementById('pythonVersion');
+
+/* ---------- state helpers ---------- */
+function getState(){
+  const activePlatformEl = platformBtns.find(b => b.getAttribute('aria-pressed') === 'true');
+  const platform = activePlatformEl ? activePlatformEl.dataset.val : null;
+  const apis = apiCheckboxes.map(c => { return { value: c.value, checked: c.checked, content: c.id } });
+  const features = featCheckboxes.map(c => { return { value: c.value, checked: c.checked, content: c.id } });
+  const pythonVersion = pythonVersionSelect.value;
+  const pythonSelected = apis.some(a => a.content === 'Python' && a.checked) || 
+                        features.some(f => f.content === 'Python Executors' && f.checked);
+  
+  return { platform, apis, features, pythonVersion, pythonSelected };
+}
+
+function buildCommand(state){
+  // placeholder if nothing selected
+  const nothingSelected = !state.platform && state.apis.length === 0 && state.features.length === 0;
+  if (nothingSelected) return '# Select options to generate install command';
+
+  const parts = ['cmake'];
+
+  state.apis.forEach(a => parts.push(`${a.value}=${a.checked ? "ON" : "OFF"}`));
+  state.features.forEach(f => parts.push(`${f.value}=${f.checked ? "ON" : "OFF"}`));
+  
+  // Add Python version if Python is selected
+  /*if (state.pythonSelected) {
+    parts.push(`-DPYTHON_VERSION=${state.pythonVersion}`);
+  }*/
+  
+  parts.push("..")
+  return parts.join(' ');
+}
+
+/* ---------- UI updates ---------- */
+function updateUI(){
+  const s = getState();
+  const cmd = buildCommand(s);
+  generatedEl.textContent = cmd;
+
+  pval.textContent = s.platform ?? '—';
+  aval.textContent = s.apis.length ? s.apis.filter(v => v.checked).map(v => v.content).join(', ') : '—';
+  fval.textContent = s.features.length ? s.features.filter(v => v.checked).map(v => v.content).join(', ') : '—';
+  
+  // Update Python version display
+  if (s.pythonSelected) {
+    pyval.textContent = s.pythonVersion;
+    pythonVersionSection.classList.add('visible');
+  } else {
+    pyval.textContent = '—';
+    pythonVersionSection.classList.remove('visible');
+  }
+
+  // enable copy only when command is real (not placeholder)
+  const isPlaceholder = cmd.startsWith('# Select');
+  copyBtn.disabled = isPlaceholder;
+  copyBtn.setAttribute('aria-disabled', isPlaceholder ? 'true' : 'false');
+}
+
+/* ---------- platform behavior (toggleable) ---------- */
+/* Clicking a platform selects it; clicking again clears it (platform optional). */
+platformBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const currentlyPressed = btn.getAttribute('aria-pressed') === 'true';
+    // clear all first
+    platformBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+    // toggle: if it was not pressed, set to true; otherwise leave all false (cleared)
+    if (!currentlyPressed) btn.setAttribute('aria-pressed', 'true');
+    updateUI();
+  });
+
+  // keyboard support
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      btn.click();
+    }
+    // left/right arrow to move focus between platform buttons
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const idx = platformBtns.indexOf(btn);
+      const nextIdx = e.key === 'ArrowRight' ? (idx + 1) % platformBtns.length : (idx - 1 + platformBtns.length) % platformBtns.length;
+      platformBtns[nextIdx].focus();
+    }
+  });
+});
+
+/* ---------- checkboxes ---------- */
+[...apiCheckboxes, ...featCheckboxes].forEach(ch => {
+  ch.addEventListener('change', updateUI);
+});
+
+/* ---------- Python version selector ---------- */
+pythonVersionSelect.addEventListener('change', updateUI);
+
+/* ---------- copy & reset ---------- */
+copyBtn.addEventListener('click', async () => {
+  const text = generatedEl.textContent;
+  if (!text || text.startsWith('# Select')) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    // subtle feedback rather than alert
+    const prev = copyBtn.textContent;
+    copyBtn.textContent = 'Copied';
+    setTimeout(() => copyBtn.textContent = prev, 1200);
+  } catch (err) {
+    alert('Copy failed — select the command text and press Ctrl/Cmd+C manually.');
+  }
+});
+
+resetBtn.addEventListener('click', () => {
+  // clear platform buttons
+  platformBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+  // clear checkboxes
+  [...apiCheckboxes, ...featCheckboxes].forEach(c => { c.checked = false; });
+  // reset Python version to default
+  pythonVersionSelect.value = '3.12';
+  // hide Python version section
+  pythonVersionSection.classList.remove('visible');
+  updateUI();
+});
+
+/* ---------- theme toggle (persisted) ---------- */
+const themeToggle = document.getElementById('themeToggle');
+const stored = localStorage.getItem('theme'); // 'dark' | 'light' | null
+
+function applyTheme(name){
+  if (name === 'dark') {
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+    themeToggle.setAttribute('aria-pressed','true');
+    themeToggle.textContent = 'Dark';
+  } else if (name === 'light'){
+    document.documentElement.classList.add('light');
+    document.documentElement.classList.remove('dark');
+    themeToggle.setAttribute('aria-pressed','false');
+    themeToggle.textContent = 'Light';
+  } else {
+    // Auto: remove explicit classes so prefers-color-scheme takes over
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.remove('light');
+    themeToggle.setAttribute('aria-pressed','false');
+    themeToggle.textContent = 'Auto';
+  }
+}
+
+if (stored === 'dark' || stored === 'light') applyTheme(stored);
+else applyTheme(null);
+
+// cycle: Auto -> Dark -> Light -> Auto
+themeToggle.addEventListener('click', () => {
+  const cur = localStorage.getItem('theme'); // may be null
+  let next;
+  if (!cur) next = 'dark';
+  else if (cur === 'dark') next = 'light';
+  else next = null;
+  if (next) localStorage.setItem('theme', next);
+  else localStorage.removeItem('theme');
+  applyTheme(next);
+});
+
+/* ---------- initialize ---------- */
+updateUI();
+</script>
+</body>
+</html>
