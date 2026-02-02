@@ -90,8 +90,8 @@ jobs:
     - name: Install Python build
       if: ${{ inputs.python-version != '' }}
       run: |
-        python${{ inputs.python-version }} -m pip install --upgrade pip
-        python${{ inputs.python-version }} -m pip install build
+        python -m pip install --upgrade pip
+        python -m pip install build
 
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master

@@ -4,9 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(PYBIND11_VERSION 3.0.1)
 set(PYBIND11_FINDPYTHON OFF)
-set(PYTHON_EXECUTABLE "" CACHE STRING "Path to Python executable")
 
-if (NOT DEFINED ${PYTHON_EXECUTABLE})
+if (NOT DEFINED PYTHON_EXECUTABLE)
     if (UNIX)
         set(PYTHON_EXECUTABLE /usr/bin/python3)
     else()
@@ -40,6 +39,8 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(pybind11)
+
+cmake_path(GET PYTHON_EXECUTABLE PARENT_PATH Python_ROOT_DIR)
 
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
