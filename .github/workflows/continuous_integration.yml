@@ -36,6 +36,7 @@ jobs:
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
+        build-flutter-api: [ON, OFF]
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
@@ -46,6 +47,9 @@ jobs:
       with-python-executors: ${{ matrix.python-config.with-python-executors }}
       build-python-api: ${{ matrix.python-config.build-python-api }}
       python-version: ${{ matrix.python-config.python-version }}
+      with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
+      build-csharp-api: ${{ matrix.build-csharp-api }}
+      build-flutter-api: ${{ matrix.build-flutter-api }}
       upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_AP=${{ matrix.build-cc-api }}
 
 
@@ -75,6 +79,7 @@ jobs:
           - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
+        build-flutter-api: [ON, OFF]
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
@@ -86,6 +91,9 @@ jobs:
       with-python-executors: ${{ matrix.python-config.with-python-executors }}
       build-python-api: ${{ matrix.python-config.build-python-api }}
       python-version: ${{ matrix.python-config.python-version }}
+      with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
+      build-csharp-api: ${{ matrix.build-csharp-api }}
+      build-flutter-api: ${{ matrix.build-flutter-api }}
       build-parameters: "-DWITH_STACKTRACE=ON"
       upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_AP=${{ matrix.build-cc-api }}
 
@@ -97,6 +105,13 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
       configuration: Release
       build-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF"
+      build-cxx-api: ON
+      build-cc-api: ON
+      with-python-executors: OFF
+      build-python-api: OFF
+      with-dotnet-executors: OFF
+      build-csharp-api: OFF
+      build-flutter-api: OFF
       upload-artifact-name: LinuxARM
       
 
