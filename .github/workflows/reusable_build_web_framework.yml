@@ -112,10 +112,14 @@ jobs:
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CSHARP_API=${{ inputs.build-csharp-api }}"
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CXX_API=${{ inputs.build-cxx-api }}"
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CC_API=${{ inputs.build-cc-api }}"
-        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DPYTHON_EXECUTABLE=$(which python${{ inputs.python-version }})"
 
         echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS}" >> ${GITHUB_ENV}
       
+    - name: Append ADDITIONAL_BUILD_PARAMETERS with options
+      if: ${{ inputs.python-version != '' }}
+      shell: bash
+      run: echo "ADDITIONAL_BUILD_PARAMETERS=${{ env.ADDITIONAL_BUILD_PARAMETERS }} -DPYTHON_EXECUTABLE=$(which python${{ inputs.python-version }})" >> ${GITHUB_ENV}
+
     - name: Build
       shell: bash
       run: |
