@@ -33,39 +33,15 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 
 
 ## Build
-* Default build(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOTNET_EXECUTORS=ON)
+* Create ```build``` inside cloned directory
+* Run all commands from ```build``` directory
+* Default build
 ```console
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary .. 
 cmake --build . -j --config Release
 cmake --install . --config Release
 ```
-* Default build with stacktrace(-DWITH_STACKTRACE=ON, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOTNET_EXECUTORS=ON)
-```console
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_STACKTRACE=ON ..
-cmake --build . -j --config Release
-cmake --install . --config Release
-```
-* Build with Python embed(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=ON, -DWITH_DOTNET_EXECUTORS=OFF)
-```console
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=ON ..
-cmake --build . -j --config Release
-cmake --install . --config Release
-```
-* Build with .NET embed(-DWITH_STACKTRACE=OFF, -DWITH_PYTHON_EXECUTORS=OFF, -DWITH_DOTNET_EXECUTORS=ON)
-```console
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOTNET_EXECUTORS=ON ..
-cmake --build . -j --config Release
-cmake --install . --config Release
-```
-
+* For generating configure command and getting download link use this [site](https://lazypanda07.github.io/WebFramework/)
 
 ## Samples
 [Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 10.0, Python

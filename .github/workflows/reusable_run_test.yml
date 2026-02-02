@@ -79,7 +79,7 @@ jobs:
     - name: Append download artifact name if C# test script using
       if: ${{ inputs.dotnet == false && contains(inputs.test-script, 'csharp') }}
       run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON" >> ${GITHUB_ENV}
-
+      
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
       uses: actions/download-artifact@v4
       with:

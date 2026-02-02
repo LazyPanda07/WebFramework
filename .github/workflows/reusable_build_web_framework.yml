@@ -25,6 +25,16 @@ on:
         required: false
         type: string
         default: "Ninja"
+      build-cxx-api:
+        description: "-DBUILD_CXX_API option"
+        required: false
+        type: string
+        default: "ON"
+      build-cc-api:
+        description: "-DBUILD_CC_API option"
+        required: false
+        type: string
+        default: "ON"
       with-python-executors:
         description: "-DWITH_PYTHON_EXECUTORS option"
         required: false
@@ -79,7 +89,9 @@ jobs:
 
     - name: Install Python build
       if: ${{ inputs.python-version != '' }}
-      run: pip install build
+      run: |
+        python${{ inputs.python-version }} -m pip install --upgrade pip
+        python${{ inputs.python-version }} -m pip install build
 
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master
@@ -98,6 +110,9 @@ jobs:
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_PYTHON_API=${{ inputs.build-python-api }}"
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOTNET_EXECUTORS=${{ inputs.with-dotnet-executors }}"
         ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CSHARP_API=${{ inputs.build-csharp-api }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CXX_API=${{ inputs.build-cxx-api }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CC_API=${{ inputs.build-cc-api }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DPYTHON_EXECUTABLE=$(which python${{ inputs.python-version }})"
 
         echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS}" >> ${GITHUB_ENV}
       
@@ -106,7 +121,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ inputs.configuration }} ${{ inputs.build-parameters }} "${ADDITIONAL_BUILD_PARAMETERS}" -G ${{ inputs.cmake-generator }} ..
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ inputs.configuration }} ${{ inputs.build-parameters }} ${ADDITIONAL_BUILD_PARAMETERS} -G ${{ inputs.cmake-generator }} ..
           cmake --build . --config ${{ inputs.configuration }} -j
           cmake --install . --config ${{ inputs.configuration }}
   
