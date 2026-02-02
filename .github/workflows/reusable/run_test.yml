@@ -134,7 +134,7 @@ jobs:
       run: .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' }}
+      if: ${{ inputs.os == 'linux-latest' }}
       working-directory: Tests
       shell: bash
       run: source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}

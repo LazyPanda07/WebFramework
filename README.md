@@ -24,8 +24,8 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 ## Build Requirements
 * CMake >= 3.27.0
 * Compiler with C++20 support(MSVC, GCC, Clang)
-* With Python embed requires ```Python 3.14```
-* With .NET embed requires ```.NET 8.0```
+* With Python embed requires ```Python >= 3.12```
+* With .NET embed requires ```.NET 10.0```
 ### Windows
 * Windows >= 10
 ### Linux
@@ -68,7 +68,7 @@ cmake --install . --config Release
 
 
 ## Samples
-[Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 8.0, Python
+[Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 10.0, Python
 
 
 ## Getting Started Application
@@ -84,5 +84,5 @@ You can use this repositories as templates with [cookiecutter](https://github.co
 ---
 **NOTE**
 
-.NET 8.0 requires ```hostfxr.dll``` in ```PATH``` for Windows and ```libhostfxr.so``` in ```LD_LIBRARY_PATH``` for Linux
+.NET 10.0 requires ```hostfxr.dll``` in ```PATH``` for Windows and ```libhostfxr.so``` in ```LD_LIBRARY_PATH``` for Linux
 ---

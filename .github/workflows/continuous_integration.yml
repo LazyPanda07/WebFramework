@@ -35,7 +35,7 @@ jobs:
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
 
-    uses: ./.github/workflows/build_web_framework.yml
+    uses: ./.github/workflows/reusable/build_web_framework.yml
     with:
       os: windows-latest
       configuration: Release
@@ -46,7 +46,7 @@ jobs:
 
 
   windows-dev-branch-build:
-    uses: ./.github/workflows/build_web_framework.yml
+    uses: ./.github/workflows/reusable/build_web_framework.yml
     with:
       os: windows-latest
       configuration: Release
@@ -70,7 +70,7 @@ jobs:
         with-dotnet-executors: [ON, OFF]
         build-csharp-api: [ON, OFF]
 
-    uses: ./.github/workflows/build_web_framework.yml
+    uses: ./.github/workflows/reusable/build_web_framework.yml
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
@@ -83,7 +83,7 @@ jobs:
 
 
   linux-aarch64-build:
-    uses: ./.github/workflows/build_web_framework.yml
+    uses: ./.github/workflows/reusable/build_web_framework.yml
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
@@ -286,46 +286,16 @@ jobs:
           - { api: Python, python-version: 3.12, dotnet: true }
           - { api: CSharp, python-version: 3.12, dotnet: true }
 
-    uses: ./.github/workflows/run_test.yml
+    uses: ./.github/workflows/reusable/run_test.yml
     with:
-      os: windows-latest
+      os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
       python-version: ${{ matrix.executors.python-version }}
       dotnet: ${{ matrix.executors.dotnet }}
-
-    # steps:
-    # - name: Download WebFramework
-    #   uses: actions/download-artifact@v6
-    #   with:
-    #     name: Linux
-    #     path: WebFrameworkLibrary
-
-    # - name: Download Tests
-    #   uses: actions/download-artifact@v6
-    #   with:
-    #     name: LinuxTests
-    #     path: Tests
-
-    # - name: Download ${{ matrix.executors }} Executors
-    #   uses: actions/download-artifact@v6
-    #   with:
-    #     name: LinuxExecutors-${{ matrix.executors }}
-    #     path: Executors
-
-    # - name: Install Python API
-    #   run: pip3 install WebFrameworkLibrary/api/python_api/
-
-    # - name: Run ${{ matrix.api_test }} ${{ matrix.executors }} Tests
-    #   shell: bash
-    #   run: |
-    #       cp -r Executors/* Tests
-    #       cp -r WebFrameworkLibrary/lib/* Tests
-    #       cd Tests
-    #       source ${{ matrix.api_test }} ${{ matrix.config }}
-          
+      
 
   windows-tests:
     needs: [windows-tests-build, windows-executors-build]
@@ -347,7 +317,7 @@ jobs:
           - { api: Python, python-version: 3.12, dotnet: true }
           - { api: CSharp, python-version: 3.12, dotnet: true }
 
-    uses: ./.github/workflows/run_test.yml
+    uses: ./.github/workflows/reusable/run_test.yml
     with:
       os: windows-latest
       executors-api: ${{ matrix.executors.api }}
@@ -464,10 +434,10 @@ jobs:
           rm -rf WindowsExecutors*
       
     - name: Create Windows zip
-      run: zip -r windows.zip Windows*
+      run: zip -r windows.zip Windows-*
 
     - name: Create Linux zip
-      run: zip -r linux.zip Linux
+      run: zip -r linux.zip Linux-*
 
     - name: Create Android zip
       run: zip -r android.zip Android
