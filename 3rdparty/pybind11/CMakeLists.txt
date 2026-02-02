@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(PYBIND11_VERSION 3.0.1)
 set(PYBIND11_FINDPYTHON OFF)
 
-if (NOT DEFINED PYTHON_EXECUTABLE)
+if ("${PYTHON_EXECUTABLE}" STREQUAL "")
     if (UNIX)
         set(PYTHON_EXECUTABLE /usr/bin/python3)
     else()
@@ -15,7 +15,7 @@ if (NOT DEFINED PYTHON_EXECUTABLE)
     endif()
 endif()
 
-if (NOT DEFINED ${PYTHON_MINOR_VERSION})
+if (NOT DEFINED PYTHON_MINOR_VERSION)
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} --version
         OUTPUT_VARIABLE PYTHON_FULL_VERSION
@@ -40,7 +40,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(pybind11)
 
-cmake_path(GET PYTHON_EXECUTABLE PARENT_PATH Python_ROOT_DIR)
+set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
 
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
