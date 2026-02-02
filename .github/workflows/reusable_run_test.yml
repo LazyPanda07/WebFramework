@@ -42,7 +42,7 @@ jobs:
     container: 
       image: ${{ inputs.image }}
     env:
-      override-python-version: ''
+      actual-python-version: ''
 
     steps:  
     - name: Prepare download artifact name from Windows
@@ -61,14 +61,16 @@ jobs:
       
     - name: Prepare download artifact name from Python
       shell: bash
-      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-${{ inputs.python-version }}" >> ${GITHUB_ENV}
+      run: |
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-${{ inputs.python-version }}" >> ${GITHUB_ENV}
+        echo "actual-python-version=${{ inputs.python-version }}" >> ${GITHUB_ENV}
 
     - name: Append download artifact name if Python test script using
       if: ${{ inputs.python-version == '' && contains(inputs.test-script, 'python') }}
       shell: bash
       run: |
         echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_EXECUTORS=ON-3.14" >> ${GITHUB_ENV}
-        echo "override-python-version=3.14" >> ${GITHUB_ENV}
+        echo "actual-python-version=3.14" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name from .NET
       shell: bash
@@ -97,25 +99,21 @@ jobs:
         path: Executors
 
     - name: Install Python
-      if: ${{ inputs.python-version != '' && env.override-python-version == '' }}
+      if: ${{ env.actual-python-version != '' }}
       uses: actions/setup-python@v6
       with:
-        python-version: "${{ inputs.python-version }}"
-
-    - name: Install override Python
-      if: ${{ env.override-python-version != '' }}
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.override-python-version }}"
-
+        python-version: "${{ env.actual-python-version }}"
+        
     - name: Enable NMake
       if: ${{ inputs.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Install Python API
-      if: ${{ inputs.python-version != '' || env.override-python-version != '' }}
+      if: ${{ env.actual-python-version != '' }}
       shell: bash
-      run: pip install WebFrameworkLibrary/api/python_api/dist/*.whl
+      run: |
+        python${{ env.actual-python-version }} -m pip install --upgrade pip
+        python${{ env.actual-python-version }} -m pip install WebFrameworkLibrary/api/python_api/dist/*.whl
 
     - name: Merge artifacts
       shell: bash
