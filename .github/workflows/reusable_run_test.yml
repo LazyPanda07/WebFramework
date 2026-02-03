@@ -139,13 +139,17 @@ jobs:
       shell: bash
       run: |
           cp -r Executors/* Tests
-          cp -r WebFrameworkLibrary/lib/* Tests
 
-    - name: Copy dlls
-      if: ${{ inputs.os == 'windows-latest' }}
-      shell: bash
-      run: cp -rf WebFrameworkLibrary/dll/* Tests
-
+          if [ -d "WebFrameworkLibrary/lib" ];
+          then
+            cp -r WebFrameworkLibrary/lib/* Tests  
+          fi
+          
+          if [ -d "WebFrameworkLibrary/dll" ];
+          then
+            cp -rf WebFrameworkLibrary/dll/* Tests
+          fi
+          
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Windows
       if: ${{ inputs.os == 'windows-latest' }}
       working-directory: Tests
