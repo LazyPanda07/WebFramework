@@ -132,8 +132,8 @@ jobs:
       if: ${{ env.actual-python-version != '' }}
       shell: bash
       run: |
-        python${{ env.actual-python-version }} -m pip install --upgrade pip
-        python${{ env.actual-python-version }} -m pip install WebFrameworkLibrary/api/python_api/dist/*.whl
+        python -m pip install --upgrade pip
+        python -m pip install WebFrameworkLibrary/api/python_api/dist/*.whl
 
     - name: Merge artifacts
       shell: bash

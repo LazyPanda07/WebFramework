@@ -277,7 +277,7 @@ jobs:
           cmake --build . -j --config Release
           cmake --install . --config Release
 
-    - name: Upload executors
+    - name: Upload tests
       uses: actions/upload-artifact@v6
       with:
         name: LinuxTests
