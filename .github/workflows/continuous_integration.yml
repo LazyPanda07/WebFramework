@@ -21,7 +21,6 @@ jobs:
   windows-build:
     strategy:
       matrix:
-        build-cxx-api: [ON, OFF]
         build-cc-api: [ON, OFF]
         python-config:
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
@@ -41,14 +40,14 @@ jobs:
     with:
       os: windows-latest
       configuration: Release
-      build-cxx-api: ${{ matrix.build-cxx-api }}
+      build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
       with-python-executors: ${{ matrix.python-config.with-python-executors }}
       build-python-api: ${{ matrix.python-config.build-python-api }}
       python-version: ${{ matrix.python-config.python-version }}
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
-      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
+      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
   windows-dev-branch-build:
@@ -62,7 +61,6 @@ jobs:
   linux-build:
     strategy:
       matrix:
-        build-cxx-api: [ON, OFF]
         build-cc-api: [ON, OFF]
         python-config:
           - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
@@ -83,7 +81,7 @@ jobs:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
       configuration: Release
-      build-cxx-api: ${{ matrix.build-cxx-api }}
+      build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
       with-python-executors: ${{ matrix.python-config.with-python-executors }}
       build-python-api: ${{ matrix.python-config.build-python-api }}
@@ -91,7 +89,7 @@ jobs:
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
       build-parameters: "-DWITH_STACKTRACE=ON"
-      upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CXX_API=${{ matrix.build-cxx-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
+      upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
   linux-aarch64-build:
@@ -150,10 +148,10 @@ jobs:
     strategy:
       matrix:
         executors: 
-          - { api: CXX, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CXX_API=ON-BUILD_CC_API=OFF }
-          - { api: CC, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CXX_API=OFF-BUILD_CC_API=ON }
-          - { api: Python, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CXX_API=ON-BUILD_CC_API=OFF }
-          - { api: CSharp, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CXX_API=ON-BUILD_CC_API=OFF }
+          - { api: CXX, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CC, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON }
+          - { api: Python, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CSharp, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
     - uses: actions/checkout@v6
@@ -191,10 +189,10 @@ jobs:
     strategy:
       matrix:
         executors: 
-          - { api: CXX, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CXX_API=ON-BUILD_CC_API=OFF }
-          - { api: CC, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CXX_API=OFF-BUILD_CC_API=ON }
-          - { api: Python, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CXX_API=ON-BUILD_CC_API=OFF }
-          - { api: CSharp, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CXX_API=ON-BUILD_CC_API=OFF }
+          - { api: CXX, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CC, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFFF-BUILD_CC_API=ON }
+          - { api: Python, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CSharp, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
     - uses: actions/checkout@v6
@@ -234,7 +232,7 @@ jobs:
     - name: Download WebFramework
       uses: actions/download-artifact@v6
       with:
-        name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CXX_API=ON-BUILD_CC_API=ON
+        name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
 
     - name: Build tests
@@ -265,7 +263,7 @@ jobs:
     - name: Download WebFramework
       uses: actions/download-artifact@v6
       with:
-        name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CXX_API=ON-BUILD_CC_API=ON
+        name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
 
     - name: Build tests

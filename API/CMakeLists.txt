@@ -4,7 +4,7 @@ option(BUILD_CC_API "Build CC API" ON)
 option(BUILD_CXX_API "Build C++ API" ON)
 option(BUILD_CSHARP_API "Build C# API" ON)
 option(BUILD_PYTHON_API "Build Python API" ON)
-option(BUILD_FLUTTER_API "Build Flutter API" ON)
+option(BUILD_FLUTTER_API "Build Flutter API" OFF)
 
 project(API)
 
