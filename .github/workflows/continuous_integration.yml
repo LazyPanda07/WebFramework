@@ -454,11 +454,11 @@ jobs:
     - name: Create Windows and Linux zips
       run: |
         for directory in Windows-*/; do
-          zip -r "${directory%/}" ${directory}
+          zip -r "${directory%/}.zip" ${directory}
         done
         
         for directory in Linux-*/; do
-          zip -r "${directory%/}" ${directory}
+          zip -r "${directory%/}.zip" ${directory}
         done
         
     - name: Create Android zip
