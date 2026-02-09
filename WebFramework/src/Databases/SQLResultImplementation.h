@@ -4,17 +4,17 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 
-#include "SQLResult.h"
+#include "SqlResult.h"
 
 namespace framework
 {
 	class WEB_FRAMEWORK_API SQLResultImplementation : public interfaces::ISQLResult
 	{
 	private:
-		database::SQLResult result;
+		database::SqlResult result;
 
 	public:
-		SQLResultImplementation(database::SQLResult&& result);
+		SQLResultImplementation(database::SqlResult&& result);
 
 		size_t size() const override;
 

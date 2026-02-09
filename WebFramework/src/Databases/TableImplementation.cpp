@@ -14,7 +14,7 @@ namespace framework
 
 	interfaces::ISQLResult* TableImplementation::execute(const char* query, const interfaces::ISQLValue** values, size_t size)
 	{
-		std::vector<database::SQLValue> temp;
+		std::vector<database::SqlValue> temp;
 
 		temp.reserve(size);
 

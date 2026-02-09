@@ -4,7 +4,7 @@
 
 namespace framework
 {
-	SQLResultImplementation::SQLResultImplementation(database::SQLResult&& result) :
+	SQLResultImplementation::SQLResultImplementation(database::SqlResult&& result) :
 		result(std::move(result))
 	{
 

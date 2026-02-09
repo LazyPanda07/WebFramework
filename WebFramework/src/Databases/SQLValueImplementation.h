@@ -11,14 +11,14 @@ namespace framework
 	class WEB_FRAMEWORK_API SQLValueImplementation : public interfaces::ISQLValue
 	{
 	private:
-		database::SQLValue value;
+		database::SqlValue value;
 
 	public:
 		SQLValueImplementation() = default;
 
-		SQLValueImplementation(const database::SQLValue& value);
+		SQLValueImplementation(const database::SqlValue& value);
 
-		SQLValueImplementation(database::SQLValue&& value);
+		SQLValueImplementation(database::SqlValue&& value);
 
 		void setInt(int64_t value) override;
 

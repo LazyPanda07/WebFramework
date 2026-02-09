@@ -190,7 +190,7 @@
         "databaseImplementation": {
           "type": "string",
           "description": "Database implementation name",
-          "enum": [ "sqlite" ]
+          "enum": [ "sqlite", "redis" ]
         },
         "resourcesThreads": {
           "type": "integer",

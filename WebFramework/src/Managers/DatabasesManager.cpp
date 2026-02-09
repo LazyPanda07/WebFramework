@@ -20,7 +20,7 @@ namespace framework
 
 	std::shared_ptr<database::Database> DatabasesManager::getOrCreateDatabase(std::string_view databaseName)
 	{
-		std::unique_lock<std::mutex> lock(databasesMutex);
+		std::lock_guard<std::mutex> lock(databasesMutex);
 		auto it = databases.find(databaseName);
 
 		if (it == databases.end())
@@ -33,7 +33,7 @@ namespace framework
 
 	std::shared_ptr<database::Database> DatabasesManager::getDatabase(std::string_view databaseName)
 	{
-		std::unique_lock<std::mutex> lock(databasesMutex);
+		std::lock_guard<std::mutex> lock(databasesMutex);
 		auto it = databases.find(databaseName);
 
 		if (it == databases.end())
