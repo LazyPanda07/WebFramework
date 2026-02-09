@@ -182,7 +182,6 @@ target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	WebFramework/src/
 	WebFrameworkCore/src/
-	WebFrameworkCore/vendor/sqlite3/include/
 	WebFrameworkExecutors/src/
 	BaseTCPServer/src/
 	INIParser/src/
@@ -194,6 +193,7 @@ target_include_directories(
 target_link_directories(
 	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
+	${HIREDIS_LIBRARY_PATH}
 	${ADDITIONAL_LIB_DIRS}
 )
 
