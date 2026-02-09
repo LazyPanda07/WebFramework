@@ -5,6 +5,7 @@
 #include <Log.h>
 #include <JsonArrayWrapper.h>
 #include <MapJsonIterator.h>
+#include <DatabaseUtility.h>
 
 #include "Exceptions/BaseJSONException.h"
 #include "Exceptions/FileDoesNotExistException.h"
@@ -305,19 +306,31 @@ namespace framework
 
 	void WebFramework::initDatabase(const json::JsonObject& webFrameworkSettings)
 	{
-		std::string databaseImplementationName;
-
-		if (!webFrameworkSettings.tryGet<std::string>(json_settings::databaseImplementationKey, databaseImplementationName))
+		std::vector<std::string> databases;
+		
+		if (std::vector<json::JsonObject> temp; webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::databaseImplementationKey, temp))
 		{
-			databaseImplementationName = "sqlite";
+			databases = json::utility::JsonArrayWrapper(temp).as<std::string>();
+		}
+		else if (std::string databaseImplementationName; webFrameworkSettings.tryGet<std::string>(json_settings::databaseImplementationKey, databaseImplementationName))
+		{
+			databases.emplace_back(std::move(databaseImplementationName));
+		}
+
+		if (databases.empty())
+		{
+			databases.emplace_back(database::implementation::sqlite);
 		}
 
 		if (Log::isValid())
 		{
-			Log::info("Using {} database", "LogWebFramework", databaseImplementationName);
+			for (const std::string& database : databases)
+			{
+				Log::info("Using {} database", "LogWebFramework", database);
+			}
 		}
 
-		DatabasesManager::get().initDatabaseImplementation(databaseImplementationName);
+		DatabasesManager::get().initDatabaseImplementation(databases);
 	}
 
 	void WebFramework::initServer

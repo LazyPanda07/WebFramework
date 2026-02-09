@@ -188,7 +188,8 @@
           "description": "Size of single packet from large message"
         },
         "databaseImplementation": {
-          "type": "string",
+          "type": [ "string", "array" ],
+          "items": { "type": "string" },
           "description": "Database implementation name",
           "enum": [ "sqlite", "redis" ]
         },

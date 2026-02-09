@@ -22,7 +22,7 @@ namespace framework
 	public:
 		static DatabasesManager& get();
 
-		void initDatabaseImplementation(std::string_view databaseImplementationName);
+		void initDatabaseImplementation(const std::vector<std::string>& databases);
 
 		std::shared_ptr<database::Database> getOrCreateDatabase(std::string_view databaseName);
 		

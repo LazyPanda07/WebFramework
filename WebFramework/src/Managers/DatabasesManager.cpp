@@ -13,9 +13,9 @@ namespace framework
 		return instance;
 	}
 
-	void DatabasesManager::initDatabaseImplementation(std::string_view databaseImplementationName)
+	void DatabasesManager::initDatabaseImplementation(const std::vector<std::string>& databases)
 	{
-		this->databaseImplementationName = databaseImplementationName;
+		databaseImplementationName = databases.front();
 	}
 
 	std::shared_ptr<database::Database> DatabasesManager::getOrCreateDatabase(std::string_view databaseName)
