@@ -168,11 +168,11 @@ add_subdirectory(BaseTCPServer)
 add_subdirectory(ThreadPool)
 add_subdirectory(INIParser)
 add_subdirectory(Log)
-add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(SHA256)
 add_subdirectory(UtilityLibrary)
 add_subdirectory(Databases)
 
+add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(Localization) # has JSON as dependency
 add_subdirectory(FileManager) # has ThreadPool as dependency
 
