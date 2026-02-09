@@ -9,6 +9,7 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(
 	3RDPARTY_LIBS
 	sqlite3
+	hiredis
 	ssl
 	crypto
 	CACHE INTERNAL ""
