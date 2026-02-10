@@ -10,11 +10,18 @@
 #include "Exceptions/WebFrameworkAPIException.hpp"
 #include "DLLHandler.hpp"
 #include "Databases/Database.hpp"
+#include "Databases/Implementations/DefaultDatabase.hpp"
 
 namespace framework
 {
 	template<typename T>
 	concept RouteParameterType = std::same_as<T, std::string> || std::integral<T> || std::floating_point<T>;
+
+	template<typename T>
+	concept DatabaseImplementation = requires
+	{
+		{ std::string(T::databaseImplementationName) } -> std::same_as<std::string>;
+	};
 
 	class Multipart
 	{
@@ -295,8 +302,10 @@ namespace framework
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const;
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Database getOrCreateDatabase(std::string_view databaseName);
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Database getDatabase(std::string_view databaseName) const;
 
 		Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
@@ -815,14 +824,16 @@ namespace framework
 		return implementation->getServerPort();
 	}
 
+	template<DatabaseImplementation T>
 	inline Database HttpRequest::getOrCreateDatabase(std::string_view databaseName)
 	{
-		return Database(implementation->getOrCreateDatabase(databaseName.data()));
+		return Database(implementation->getOrCreateDatabase(databaseName.data(), T::databaseImplementationName.data()));
 	}
 
+	template<DatabaseImplementation T>
 	inline Database HttpRequest::getDatabase(std::string_view databaseName) const
 	{
-		return Database(implementation->getDatabase(databaseName.data()));
+		return Database(implementation->getDatabase(databaseName.data(), T::databaseImplementationName.data()));
 	}
 
 	inline Table HttpRequest::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery)

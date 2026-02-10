@@ -17,7 +17,6 @@ permissions:
 
 jobs:
   windows-visual-studio-build:
-    # if: false # Disabled until Visual Studio 2026 in Github Actions
     runs-on: windows-2025-vs2026
 
     steps:
@@ -36,6 +35,7 @@ jobs:
     - name: Build VisualStudioSample
       run: |
          cd samples\VisualStudioSample
+         dotnet restore
          msbuild VisualStudioSample.sln -property:Configuration=Release
 
 

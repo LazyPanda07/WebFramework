@@ -792,7 +792,7 @@ DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char*
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, "");
 	}
 	catch (const std::exception& e)
 	{
@@ -810,7 +810,7 @@ DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databas
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, "");
 	}
 	catch (const std::exception& e)
 	{
@@ -828,7 +828,7 @@ TableObject getOrCreateTableRequest(HttpRequestObject request, const char* datab
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName)->getOrCreateTable(tableName, createTableQuery);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, "")->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const std::exception& e)
 	{
@@ -846,7 +846,7 @@ TableObject getTableRequest(HttpRequestObject request, const char* databaseName,
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName)->get(tableName);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, "")->get(tableName);
 	}
 	catch (const std::exception& e)
 	{

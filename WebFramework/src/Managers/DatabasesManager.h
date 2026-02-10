@@ -10,8 +10,14 @@ namespace framework
 	class DatabasesManager
 	{
 	private:
-		std::string databaseImplementationName;
-		::utility::strings::string_based_unordered_map<std::shared_ptr<database::Database>> databases;
+		struct DatabasesHolder
+		{
+			std::string databaseImplementationName;
+			::utility::strings::string_based_unordered_map<std::shared_ptr<database::Database>> databases;
+		};
+
+	private:
+		std::vector<DatabasesHolder> holders;
 		mutable std::mutex databasesMutex;
 
 	private:
@@ -24,9 +30,9 @@ namespace framework
 
 		void initDatabaseImplementation(const std::vector<std::string>& databases);
 
-		std::shared_ptr<database::Database> getOrCreateDatabase(std::string_view databaseName);
+		std::shared_ptr<database::Database> getOrCreateDatabase(std::string_view databaseName, std::string_view databaseImplementationName);
 		
-		std::shared_ptr<database::Database> getDatabase(std::string_view databaseName);
+		std::shared_ptr<database::Database> getDatabase(std::string_view databaseName, std::string_view databaseImplementationName) const;
 
 		std::string_view getDatabaseImplementationName() const;
 	};

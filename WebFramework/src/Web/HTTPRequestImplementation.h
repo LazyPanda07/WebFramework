@@ -292,9 +292,9 @@ namespace framework
 
 		double getRouteDoubleParameter(const char* routeParameterName) const override;
 
-		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName) override;
+		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName) override;
 
-		interfaces::IDatabase* getDatabase(const char* databaseName) const override;
+		interfaces::IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const override;
 
 		~HTTPRequestImplementation();
 

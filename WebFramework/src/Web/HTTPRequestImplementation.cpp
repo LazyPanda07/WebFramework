@@ -415,7 +415,7 @@ namespace framework
 	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size))
 	{
 		web::HttpBuilder builder;
-		
+
 		{
 			size_t chunkSize = 0;
 			const char* chunk = getChunk(chunkGenerator, &chunkSize);
@@ -633,14 +633,14 @@ namespace framework
 		return std::get<double>(routeParameters.at(routeParameterName));
 	}
 
-	interfaces::IDatabase* HTTPRequestImplementation::getOrCreateDatabase(const char* databaseName)
+	interfaces::IDatabase* HTTPRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)
 	{
-		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getOrCreateDatabase(databaseName)));
+		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getOrCreateDatabase(databaseName, databaseImplementationName)));
 	}
 
-	interfaces::IDatabase* HTTPRequestImplementation::getDatabase(const char* databaseName) const
+	interfaces::IDatabase* HTTPRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
 	{
-		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getDatabase(databaseName)));
+		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getDatabase(databaseName, databaseImplementationName)));
 	}
 
 	HTTPRequestImplementation::~HTTPRequestImplementation()

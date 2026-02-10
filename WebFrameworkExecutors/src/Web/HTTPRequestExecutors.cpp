@@ -341,12 +341,12 @@ namespace framework
 
 	DatabaseExecutors HTTPRequestExecutors::getOrCreateDatabase(std::string_view databaseName)
 	{
-		return DatabaseExecutors(implementation->getOrCreateDatabase(databaseName.data()));
+		return DatabaseExecutors(implementation->getOrCreateDatabase(databaseName.data(), ""));
 	}
 
 	DatabaseExecutors HTTPRequestExecutors::getDatabase(std::string_view databaseName) const
 	{
-		return DatabaseExecutors(implementation->getDatabase(databaseName.data()));
+		return DatabaseExecutors(implementation->getDatabase(databaseName.data(), ""));
 	}
 
 	TableExecutors HTTPRequestExecutors::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery)
