@@ -71,9 +71,4 @@ namespace framework
 
 		return it->second;
 	}
-
-	std::string_view DatabasesManager::getDatabaseImplementationName() const
-	{
-		return database::implementation::sqlite;
-	}
 }

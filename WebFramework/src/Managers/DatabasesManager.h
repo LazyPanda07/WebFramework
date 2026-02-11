@@ -39,7 +39,5 @@ namespace framework
 		std::shared_ptr<database::Database> getOrCreateDatabase(std::string_view databaseName, std::string_view databaseImplementationName);
 		
 		std::shared_ptr<database::Database> getDatabase(std::string_view databaseName, std::string_view databaseImplementationName) const;
-
-		std::string_view getDatabaseImplementationName() const;
 	};
 }

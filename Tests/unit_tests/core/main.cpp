@@ -7,7 +7,8 @@
 #include <ConsoleArgumentParser.h>
 
 #include <gtest/gtest.h>
-#include <reproc++/run.hpp>
+
+#include <ProcessWrapper.h>
 
 #include "settings.h"
 
@@ -59,49 +60,12 @@ void createLargeFile()
 
 int main(int argc, char** argv) try
 {
-	std::unique_ptr<reproc::process> server;
-	std::unique_ptr<reproc::process> defaultHttpsServer;
+	utility::parsers::ConsoleArgumentParser parser(argc, argv);
+	std::string serverConfig = parser.getRequired<std::string>("server_config");
+	process_utils::ProcessWrapper server(std::filesystem::current_path() / "Server", serverConfig);
+	process_utils::ProcessWrapper defaultHttpsServer(std::filesystem::current_path() / "DefaultHTTPSServer");
 
-	if (argc == 2)
-	{
-		useHTTPS = json::JsonParser(std::ifstream(argv[1])).get<bool>("useHTTPS", true);
-	}
-	else
-	{
-		utility::parsers::ConsoleArgumentParser parser(argc, argv);
-		std::string serverConfig = parser.getRequired<std::string>("server_config");
-
-		useHTTPS = json::JsonParser(std::ifstream(serverConfig)).get<bool>("useHTTPS", true);
-
-		{
-			std::vector<std::string> arguments;
-
-			arguments.emplace_back((std::filesystem::current_path() / "Server").string());
-			arguments.emplace_back(serverConfig);
-
-			server = std::make_unique<reproc::process>();
-			std::error_code code = server->start(reproc::arguments(arguments));
-
-			if (code)
-			{
-				std::cout << code << std::endl;
-			}
-		}
-
-		{
-			std::vector<std::string> arguments;
-
-			arguments.emplace_back((std::filesystem::current_path() / "DefaultHTTPSServer").string());
-
-			defaultHttpsServer = std::make_unique<reproc::process>();
-			std::error_code code = defaultHttpsServer->start(reproc::arguments(arguments));
-
-			if (code)
-			{
-				std::cout << code << std::endl;
-			}
-		}
-	}
+	useHTTPS = json::JsonParser(std::ifstream(serverConfig)).get<bool>("useHTTPS", true);
 
 	testing::InitGoogleTest(&argc, argv);
 
@@ -139,16 +103,6 @@ int main(int argc, char** argv) try
 	if (result)
 	{
 		printLog();
-	}
-
-	if (server)
-	{
-		server->kill();
-	}
-
-	if (defaultHttpsServer)
-	{
-		defaultHttpsServer->kill();
 	}
 
 	return result;

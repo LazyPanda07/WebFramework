@@ -41,7 +41,6 @@ namespace framework
 			(
 				database::createRawTable
 				(
-					DatabasesManager::get().getDatabaseImplementationName(),
 					tableName,
 					database::CreateTableQuery(createTableQuery),
 					database.get()

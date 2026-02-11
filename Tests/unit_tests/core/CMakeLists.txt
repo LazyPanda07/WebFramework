@@ -1,17 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(REPROC_TAG v14.2.5)
-
-FetchContent_Declare(
-	reproc++
-	GIT_REPOSITORY https://github.com/DaanDeMeyer/reproc.git
-	GIT_TAG ${REPROC_TAG}
-)
-
-set(REPROC++ ON CACHE BOOL "" FORCE)
-
-FetchContent_MakeAvailable(reproc++)
 
 project(Core)
 
@@ -49,7 +38,7 @@ target_link_libraries(
 	GTest::gtest_main
 	${3RDPARTY_LIBRARIES}
 	WebFramework::CXX_API
-	reproc++
+	process_utils
 )
 
 add_custom_command(

@@ -116,6 +116,7 @@ if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
 endif()
 
 if (${BUILD_TESTS})
+    add_subdirectory(process_utils)
     add_subdirectory(servers)
     add_subdirectory(unit_tests)
     add_subdirectory(api)
