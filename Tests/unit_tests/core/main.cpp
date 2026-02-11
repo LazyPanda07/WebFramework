@@ -4,8 +4,10 @@
 #include <random>
 
 #include <JsonParser.h>
+#include <ConsoleArgumentParser.h>
 
 #include <gtest/gtest.h>
+#include <reproc++/run.hpp>
 
 #include "settings.h"
 
@@ -55,13 +57,55 @@ void createLargeFile()
 	}
 }
 
-int main(int argc, char** argv)
+int main(int argc, char** argv) try
 {
-	useHTTPS = json::JsonParser(std::ifstream(argv[1])).get<bool>("useHTTPS", true);
+	std::unique_ptr<reproc::process> server;
+	std::unique_ptr<reproc::process> defaultHttpsServer;
 
-	createLargeFile();
+	if (argc == 2)
+	{
+		useHTTPS = json::JsonParser(std::ifstream(argv[1])).get<bool>("useHTTPS", true);
+	}
+	else
+	{
+		utility::parsers::ConsoleArgumentParser parser(argc, argv);
+		std::string serverConfig = parser.getRequired<std::string>("server_config");
+
+		useHTTPS = json::JsonParser(std::ifstream(serverConfig)).get<bool>("useHTTPS", true);
+
+		{
+			std::vector<std::string> arguments;
+
+			arguments.emplace_back((std::filesystem::current_path() / "Server").string());
+			arguments.emplace_back(serverConfig);
+
+			server = std::make_unique<reproc::process>();
+			std::error_code code = server->start(reproc::arguments(arguments));
+
+			if (code)
+			{
+				std::cout << code << std::endl;
+			}
+		}
+
+		{
+			std::vector<std::string> arguments;
+
+			arguments.emplace_back((std::filesystem::current_path() / "DefaultHTTPSServer").string());
+
+			defaultHttpsServer = std::make_unique<reproc::process>();
+			std::error_code code = defaultHttpsServer->start(reproc::arguments(arguments));
+
+			if (code)
+			{
+				std::cout << code << std::endl;
+			}
+		}
+	}
 
 	testing::InitGoogleTest(&argc, argv);
+
+	createLargeFile();
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -97,5 +141,21 @@ int main(int argc, char** argv)
 		printLog();
 	}
 
+	if (server)
+	{
+		server->kill();
+	}
+
+	if (defaultHttpsServer)
+	{
+		defaultHttpsServer->kill();
+	}
+
 	return result;
+}
+catch (const std::exception& e)
+{
+	std::cerr << e.what() << std::endl;
+
+	exit(-1);
 }

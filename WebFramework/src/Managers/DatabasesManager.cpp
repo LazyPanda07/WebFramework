@@ -7,6 +7,12 @@
 
 namespace framework
 {
+	DatabasesManager::DatabasesHolder::DatabasesHolder(std::string_view databaseImplementationName) :
+		databaseImplementationName(databaseImplementationName)
+	{
+
+	}
+
 	DatabasesManager& DatabasesManager::get()
 	{
 		static DatabasesManager instance;
@@ -24,21 +30,21 @@ namespace framework
 
 	std::shared_ptr<database::Database> DatabasesManager::getOrCreateDatabase(std::string_view databaseName, std::string_view databaseImplementationName)
 	{
-		::utility::strings::string_based_unordered_map<std::shared_ptr<database::Database>>& databases = databaseImplementationName.size() ? std::ranges::find_if
+		auto& [name, databases]= databaseImplementationName.size() ? *std::ranges::find_if
 		(
 			holders,
 			[databaseImplementationName](const DatabasesHolder& holder)
 			{
 				return holder.databaseImplementationName == databaseImplementationName;
 			}
-		)->databases : holders.front().databases;
+		) : holders.front();
 
 		std::lock_guard<std::mutex> lock(databasesMutex);
 		auto it = databases.find(databaseName);
 
 		if (it == databases.end())
 		{
-			it = databases.emplace(databaseName, database::createDatabase(databaseImplementationName, databaseName)).first;
+			it = databases.emplace(databaseName, database::createDatabase(name, databaseName)).first;
 		}
 
 		return it->second;

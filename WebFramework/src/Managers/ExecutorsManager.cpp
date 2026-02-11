@@ -80,7 +80,7 @@ namespace framework
 			case utility::RouteParameters::RouteParametersType::integerTypeIndex:
 				try
 				{
-					requestImplementation.routeParameters[it->indices[i++]] = stoll(parameters.substr(startParameter, endParameter - startParameter));
+					requestImplementation.routeParameters[it->indices[i++]] = std::stoll(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const std::invalid_argument&)
 				{
@@ -96,7 +96,7 @@ namespace framework
 			case utility::RouteParameters::RouteParametersType::doubleTypeIndex:
 				try
 				{
-					requestImplementation.routeParameters[it->indices[i++]] = stod(parameters.substr(startParameter, endParameter - startParameter));
+					requestImplementation.routeParameters[it->indices[i++]] = std::stod(parameters.substr(startParameter, endParameter - startParameter));
 				}
 				catch (const std::invalid_argument&)
 				{

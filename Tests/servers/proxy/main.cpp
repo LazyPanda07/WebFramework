@@ -15,11 +15,11 @@ int main(int argc, char** argv) try
 
 	framework::utility::initializeWebFramework("WebFramework");
 
-	framework::utility::Config config(parser.get<std::string>("--config"));
+	framework::utility::Config config(parser.get<std::string>("-config"));
 
-	int64_t port = parser.get<int64_t>("--port");
+	int64_t port = parser.get<int64_t>("port");
 
-	config.overrideConfiguration("useHTTPS", parser.get<bool>("--useHTTPS"));
+	config.overrideConfiguration("useHTTPS", parser.get<bool>("useHTTPS"));
 	config.overrideConfiguration("port", port);
 
 	framework::WebFramework server(config);

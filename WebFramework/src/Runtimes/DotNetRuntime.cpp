@@ -77,6 +77,10 @@ namespace framework::runtime
 		{
 			result = libraryDirectoryPath / apiName;
 		}
+		else
+		{
+			throw std::runtime_error(std::format("Can't find {} or {}", (executableDirectoryPath / apiName).string(), (libraryDirectoryPath / apiName).string()));
+		}
 		
 		return result;
 	}
@@ -166,11 +170,6 @@ namespace framework::runtime
 		constexpr size_t envSize = 512;
 
 		const std::filesystem::path apiPath = DotNetRuntime::getPathToApi();
-
-		if (!std::filesystem::exists(apiPath))
-		{
-			throw std::runtime_error(std::format("Can't find {}", apiPath.string()));
-		}
 
 #ifdef __LINUX__
 		std::string runtimeLibraryName = "libhostfxr.so";

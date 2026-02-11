@@ -12,8 +12,14 @@ namespace framework
 	private:
 		struct DatabasesHolder
 		{
+		public:
 			std::string databaseImplementationName;
 			::utility::strings::string_based_unordered_map<std::shared_ptr<database::Database>> databases;
+
+		public:
+			DatabasesHolder(std::string_view databaseImplementationName);
+
+			~DatabasesHolder() = default;
 		};
 
 	private:

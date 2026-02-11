@@ -133,9 +133,9 @@ int main(int argc, char** argv)
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 
-	port = parser.get<int64_t>("--port");
-	useHTTPS = parser.get<bool>("--useHTTPS");
-	customHeuristic = parser.get<bool>("--custom_heuristic");
+	port = parser.get<int64_t>("port");
+	useHTTPS = parser.get<bool>("useHTTPS");
+	customHeuristic = parser.get<bool>("custom_heuristic");
 
 	testing::InitGoogleTest(&argc, argv);
 

@@ -69,6 +69,7 @@ set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 
 project(Tests)
 
+include(CTest)
 include(FetchContent)
 
 FetchContent_Declare(
