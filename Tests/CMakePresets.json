@@ -1,5 +1,5 @@
 ﻿{
-  "version": 3,
+  "version": 9,
   "configurePresets": [
     {
       "name": "linux-debug",
@@ -43,8 +43,7 @@
         "strategy": "external"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CSHARP_API": "ON"
+        "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
@@ -53,17 +52,6 @@
       "description": "Target Windows (64-bit) with the Visual Studio development environment. (RelWithDebInfo)",
       "inherits": "x64-debug",
       "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
-    }
-  ],
-  "testPresets": [
-    {
-      "configurePreset": "x64-debug",
-      "name": "tests",
-      "hidden": false,
-      "displayName": "Tests",
-      "output": {
-        "verbosity": "verbose"
-      }
     }
   ]
 }

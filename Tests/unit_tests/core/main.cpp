@@ -4,6 +4,7 @@
 #include <random>
 
 #include <JsonParser.h>
+#include <JsonBuilder.h>
 #include <ConsoleArgumentParser.h>
 
 #include <gtest/gtest.h>
@@ -17,55 +18,27 @@ constexpr size_t largeFileSize = 200 * 1024 * 1024;
 constexpr size_t fileChunkSize = largeFileSize / 256;
 constexpr size_t randomNumbers = fileChunkSize / sizeof(size_t);
 
-void printLog()
-{
-	for (const auto& it : std::filesystem::recursive_directory_iterator(std::filesystem::current_path() / "logs"))
-	{
-		if (it.is_regular_file())
-		{
-			std::ifstream log(it.path());
+void printLog();
 
-			std::cout << (std::ostringstream() << log.rdbuf()).str() << std::endl;
-		}
-	}
-}
+void createLargeFile();
 
-void createLargeFile()
-{
-	if (std::filesystem::exists(LARGE_FILE_NAME))
-	{
-		return;
-	}
+template<typename... Args>
+std::vector<std::string> splitArguments(const std::string& arguments, Args&&... args);
 
-	std::ofstream out(LARGE_FILE_NAME, std::ios::binary);
-	size_t currentSize = 0;
-	std::string data(fileChunkSize, '\0');
-	std::mt19937_64 random;
-
-	while (currentSize != largeFileSize)
-	{
-		for (size_t i = 0; i < randomNumbers; i++)
-		{
-			size_t number = random();
-			const char* ptr = reinterpret_cast<const char*>(&number);
-
-			std::copy(ptr, ptr + sizeof(size_t), data.data() + i * sizeof(size_t));
-		}
-
-		out.write(data.data(), data.size());
-
-		currentSize += fileChunkSize;
-	}
-}
+json::JsonBuilder updateConfig(json::JsonParser&& configParser, const utility::parsers::ConsoleArgumentParser& consoleParser);
 
 int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 	std::string serverConfig = parser.getRequired<std::string>("server_config");
-	process_utils::ProcessWrapper server(std::filesystem::current_path() / "Server", serverConfig);
-	process_utils::ProcessWrapper defaultHttpsServer(std::filesystem::current_path() / "DefaultHTTPSServer");
+	json::JsonParser configParser = std::ifstream(serverConfig);
 
-	useHTTPS = json::JsonParser(std::ifstream(serverConfig)).get<bool>("useHTTPS", true);
+	useHTTPS = configParser.get<bool>("useHTTPS", true);
+
+	std::ofstream(serverConfig) << updateConfig(std::move(configParser), parser);
+
+	process_utils::ProcessWrapper server(splitArguments(parser.getRequired<std::string>("run_arguments"), serverConfig));
+	process_utils::ProcessWrapper defaultHttpsServer("DefaultHTTPSServer");
 
 	testing::InitGoogleTest(&argc, argv);
 
@@ -112,4 +85,103 @@ catch (const std::exception& e)
 	std::cerr << e.what() << std::endl;
 
 	exit(-1);
+}
+
+void printLog()
+{
+	for (const auto& it : std::filesystem::recursive_directory_iterator(std::filesystem::current_path() / "logs"))
+	{
+		if (it.is_regular_file())
+		{
+			std::ifstream log(it.path());
+
+			std::cout << (std::ostringstream() << log.rdbuf()).str() << std::endl;
+		}
+	}
+}
+
+void createLargeFile()
+{
+	if (std::filesystem::exists(LARGE_FILE_NAME))
+	{
+		return;
+	}
+
+	std::ofstream out(LARGE_FILE_NAME, std::ios::binary);
+	size_t currentSize = 0;
+	std::string data(fileChunkSize, '\0');
+	std::mt19937_64 random;
+
+	while (currentSize != largeFileSize)
+	{
+		for (size_t i = 0; i < randomNumbers; i++)
+		{
+			size_t number = random();
+			const char* ptr = reinterpret_cast<const char*>(&number);
+
+			std::copy(ptr, ptr + sizeof(size_t), data.data() + i * sizeof(size_t));
+		}
+
+		out.write(data.data(), data.size());
+
+		currentSize += fileChunkSize;
+	}
+}
+
+template<typename... Args>
+std::vector<std::string> splitArguments(const std::string& arguments, Args&&... args)
+{
+	std::istringstream stream(arguments);
+	std::vector<std::string> result;
+
+	while (true)
+	{
+		std::string temp;
+
+		stream >> temp;
+
+		if (temp.empty())
+		{
+			break;
+		}
+
+		result.emplace_back(std::move(temp));
+	}
+
+	(result.emplace_back(std::forward<Args>(args)), ...);
+
+	return result;
+}
+
+json::JsonBuilder updateConfig(json::JsonParser&& configParser, const utility::parsers::ConsoleArgumentParser& consoleParser)
+{
+	json::JsonBuilder result(CP_UTF8);
+
+	{
+		json::JsonObject object;
+
+		configParser.getParsedData(object);
+
+		result = json::JsonBuilder(object, CP_UTF8);
+
+		if (!object.contains<std::vector<json::JsonObject>>("runtimes", true))
+		{
+			return result;
+		}
+	}
+	
+	json::JsonObject& webFramework = result["WebFramework"];
+
+	for (const std::string& runtime : consoleParser.getValues<std::string>("runtimes"))
+	{
+		for (json::JsonObject& object : webFramework["runtimes"])
+		{
+			if (object["name"].get<std::string>() == runtime)
+			{
+				object["enabled"] = true;
+			}
+		}
+	}
+
+	return result;
 }

@@ -20,11 +20,11 @@
     "runtimes": [
       {
         "name": "python",
-        "enabled": true
+        "enabled": false
       },
       {
         "name": ".net",
-        "enabled": true
+        "enabled": false
       }
     ],
     "HTTPS": {

@@ -3,6 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <format>
+#include <iostream>
 
 #include <reproc++/run.hpp>
 
@@ -16,6 +17,8 @@ namespace process_utils
 	public:
 		template<typename... Args>
 		ProcessWrapper(Args&&... args);
+
+		ProcessWrapper(const std::vector<std::string>& args);
 
 		~ProcessWrapper();
 	};
@@ -43,6 +46,15 @@ namespace process_utils
 
 		if (errorCode)
 		{
+			std::string argumentsSingleLine;
+
+			for (const std::string& arg : arguments)
+			{
+				argumentsSingleLine += arg + ' ';
+			}
+
+			std::cerr << argumentsSingleLine << std::endl;
+
 			throw std::runtime_error(std::format("Error while creating new process: {}", errorCode.message()));
 		}
 	}
