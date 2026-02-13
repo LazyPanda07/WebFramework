@@ -28,6 +28,9 @@ target_link_libraries(
 	gtest_main
 	${3RDPARTY_LIBRARIES}
 	WebFramework::CXX_API
+	unit_test_utils
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+add_test(NAME ${PROJECT_NAME} COMMAND LoadBalancerCore --port 9090 WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

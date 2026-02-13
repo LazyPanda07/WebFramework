@@ -10,6 +10,7 @@
 #include <gtest/gtest.h>
 
 #include <ProcessWrapper.h>
+#include <UnitTestUtils.h>
 
 #include "settings.h"
 
@@ -22,23 +23,20 @@ void printLog();
 
 void createLargeFile();
 
-template<typename... Args>
-std::vector<std::string> splitArguments(const std::string& arguments, Args&&... args);
-
 json::JsonBuilder updateConfig(json::JsonParser&& configParser, const utility::parsers::ConsoleArgumentParser& consoleParser);
 
 int main(int argc, char** argv) try
 {
-	utility::parsers::ConsoleArgumentParser parser(argc, argv);
-	std::string serverConfig = parser.getRequired<std::string>("server_config");
+	utility::parsers::ConsoleArgumentParser consoleParser(argc, argv);
+	std::string serverConfig = consoleParser.getRequired<std::string>("server_config");
 	json::JsonParser configParser = std::ifstream(serverConfig);
 
 	useHTTPS = configParser.get<bool>("useHTTPS", true);
 
-	std::ofstream(serverConfig) << updateConfig(std::move(configParser), parser);
+	std::ofstream(serverConfig) << updateConfig(std::move(configParser), consoleParser);
 
-	process_utils::ProcessWrapper server(splitArguments(parser.getRequired<std::string>("run_arguments"), serverConfig));
-	process_utils::ProcessWrapper defaultHttpsServer("DefaultHTTPSServer");
+	unit_test_utils::ProcessWrapper server(unit_test_utils::ProcessWrapper(unit_test_utils::splitArguments(consoleParser.getRequired<std::string>("run_arguments"), serverConfig)));
+	unit_test_utils::ProcessWrapper defaultHttpsServer = unit_test_utils::ProcessWrapper::runDefaultHttpsServer();
 
 	testing::InitGoogleTest(&argc, argv);
 
@@ -128,31 +126,6 @@ void createLargeFile()
 	}
 }
 
-template<typename... Args>
-std::vector<std::string> splitArguments(const std::string& arguments, Args&&... args)
-{
-	std::istringstream stream(arguments);
-	std::vector<std::string> result;
-
-	while (true)
-	{
-		std::string temp;
-
-		stream >> temp;
-
-		if (temp.empty())
-		{
-			break;
-		}
-
-		result.emplace_back(std::move(temp));
-	}
-
-	(result.emplace_back(std::forward<Args>(args)), ...);
-
-	return result;
-}
-
 json::JsonBuilder updateConfig(json::JsonParser&& configParser, const utility::parsers::ConsoleArgumentParser& consoleParser)
 {
 	json::JsonBuilder result(CP_UTF8);
@@ -169,7 +142,7 @@ json::JsonBuilder updateConfig(json::JsonParser&& configParser, const utility::p
 			return result;
 		}
 	}
-	
+
 	json::JsonObject& webFramework = result["WebFramework"];
 
 	for (const std::string& runtime : consoleParser.getValues<std::string>("runtimes"))

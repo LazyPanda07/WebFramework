@@ -38,7 +38,7 @@ target_link_libraries(
 	GTest::gtest_main
 	${3RDPARTY_LIBRARIES}
 	WebFramework::CXX_API
-	process_utils
+	unit_test_utils
 )
 
 add_custom_command(

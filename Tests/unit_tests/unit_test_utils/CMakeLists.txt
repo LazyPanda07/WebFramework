@@ -14,11 +14,12 @@ FetchContent_MakeAvailable(reproc++)
 
 set(CMAKE_CXX_STANDARD 20)
 
-project(process_utils)
+project(unit_test_utils)
 
 add_library(
 	${PROJECT_NAME}	STATIC
 	src/ProcessWrapper.cpp
+	src/UnitTestUtils.cpp
 )
 
 target_include_directories(

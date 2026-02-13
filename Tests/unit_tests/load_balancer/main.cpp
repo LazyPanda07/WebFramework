@@ -14,6 +14,7 @@
 #include <HttpParser.h>
 #include <HttpBuilder.h>
 #include <ConsoleArgumentParser.h>
+#include <ProcessWrapper.h>
 
 #include "utilities/utilities.h"
 
@@ -129,9 +130,25 @@ void printLog()
 	}
 }
 
-int main(int argc, char** argv)
+int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
+	std::vector<unit_test_utils::ProcessWrapper> loadBalancerServers;
+	std::vector<unit_test_utils::ProcessWrapper> loadBalancers;
+
+	loadBalancerServers.reserve(4);
+	loadBalancers.reserve(5);
+
+	loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", 10000, "--type", "server");
+	loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", 10001, "--type", "server", "--serversHTTPS");
+	// loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "10002", "--type", "server");
+	// loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "10003", "--type", "server", "--serversHTTPS");
+
+	loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", 9090);
+	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", "9091", "--serversHTTPS");
+	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "9092");
+	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "9093", "--serversHTTPS");
+	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", "9094", "--custom_heuristic");
 
 	port = parser.get<int64_t>("port");
 	useHTTPS = parser.get<bool>("useHTTPS");
@@ -139,17 +156,22 @@ int main(int argc, char** argv)
 
 	testing::InitGoogleTest(&argc, argv);
 
-	constexpr std::array<std::string_view, 4> loadBalancers =
+	/*constexpr std::array<std::string_view, 4> loadBalancersStartFiles =
 	{
 		START_LOAD_BALANCER_9090_SERVER_FILE,
 		START_LOAD_BALANCER_9091_SERVER_FILE,
 		START_LOAD_BALANCER_9092_SERVER_FILE,
 		START_LOAD_BALANCER_9093_SERVER_FILE
+	};*/
+
+	constexpr std::array<std::string_view, 1> loadBalancersStartFiles =
+	{
+		START_LOAD_BALANCER_9090_SERVER_FILE
 	};
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	while (!std::ranges::all_of(loadBalancers, [](std::string_view file) { return std::filesystem::exists(file); }))
+	while (!std::ranges::all_of(loadBalancersStartFiles, [](std::string_view file) { return std::filesystem::exists(file); }))
 	{
 		std::cout << "Wait for all load balancers..." << std::endl;
 
@@ -173,4 +195,10 @@ int main(int argc, char** argv)
 	}
 
 	return result;
+}
+catch (const std::exception& e)
+{
+	std::cerr << e.what() << std::endl;
+
+	exit(-1);
 }
