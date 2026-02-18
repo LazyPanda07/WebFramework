@@ -134,46 +134,43 @@ int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 	std::vector<unit_test_utils::ProcessWrapper> loadBalancerServers;
-	std::vector<unit_test_utils::ProcessWrapper> loadBalancers;
+	std::string loadBalancerServerFile = std::format("start_load_balancer_{}_server.txt", parser.getRequired<int64_t>("port"));
 
-	loadBalancerServers.reserve(4);
-	loadBalancers.reserve(5);
+	loadBalancerServers.reserve(2);
 
-	loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", 10000, "--type", "server");
-	loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", 10001, "--type", "server", "--serversHTTPS");
-	// loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "10002", "--type", "server");
-	// loadBalancerServers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "10003", "--type", "server", "--serversHTTPS");
-
-	loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", 9090);
-	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", "9091", "--serversHTTPS");
-	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "9092");
-	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config_https.json", "--port", "9093", "--serversHTTPS");
-	// loadBalancers.emplace_back("LoadBalancerServer", "--config", "load_balancer_config.json", "--port", "9094", "--custom_heuristic");
-
-	port = parser.get<int64_t>("port");
+	port = parser.getRequired<int64_t>("port");
 	useHTTPS = parser.get<bool>("useHTTPS");
 	customHeuristic = parser.get<bool>("custom_heuristic");
 
+	std::vector<std::string> loadBalancerRunArguments = unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", parser.getRequired<std::string>("config"), "--port", port);
+
+	if (parser.get<bool>("serversHTTPS"))
+	{
+		loadBalancerRunArguments.emplace_back("--serversHTTPS");
+
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config_https.json", "--port", 10002, "--type", "server"));
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config_https.json", "--port", 10003, "--type", "server"));
+	}
+	else
+	{
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config.json", "--port", 10000, "--type", "server"));
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config.json", "--port", 10001, "--type", "server"));
+	}
+
+	if (customHeuristic)
+	{
+		loadBalancerRunArguments.emplace_back("--custom_heuristic");
+	}
+
+	unit_test_utils::ProcessWrapper loadBalancer(loadBalancerRunArguments);
+
 	testing::InitGoogleTest(&argc, argv);
-
-	/*constexpr std::array<std::string_view, 4> loadBalancersStartFiles =
-	{
-		START_LOAD_BALANCER_9090_SERVER_FILE,
-		START_LOAD_BALANCER_9091_SERVER_FILE,
-		START_LOAD_BALANCER_9092_SERVER_FILE,
-		START_LOAD_BALANCER_9093_SERVER_FILE
-	};*/
-
-	constexpr std::array<std::string_view, 1> loadBalancersStartFiles =
-	{
-		START_LOAD_BALANCER_9090_SERVER_FILE
-	};
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	while (!std::ranges::all_of(loadBalancersStartFiles, [](std::string_view file) { return std::filesystem::exists(file); }))
+	while (!std::filesystem::exists(loadBalancerServerFile))
 	{
-		std::cout << "Wait for all load balancers..." << std::endl;
+		std::cout << std::format("Wait for load balancer on port: {} ...", port) << std::endl;
 
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 

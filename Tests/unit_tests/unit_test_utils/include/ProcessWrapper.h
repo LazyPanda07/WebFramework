@@ -13,6 +13,10 @@ namespace unit_test_utils
 {
 	class ProcessWrapper
 	{
+	private:
+		template<typename... Args>
+		void runProcessFromStrings(Args&&... args);
+
 	public:
 		static ProcessWrapper runDefaultHttpsServer();
 
@@ -33,6 +37,27 @@ namespace unit_test_utils
 
 namespace unit_test_utils
 {
+	template<typename... Args>
+	void ProcessWrapper::runProcessFromStrings(Args&&... args)
+	{
+		std::vector<std::string> arguments({ convertToString(std::forward<Args>(args))... });
+		std::error_code errorCode = process.start(reproc::arguments(arguments));
+
+		if (errorCode)
+		{
+			std::string argumentsSingleLine;
+
+			for (const std::string& arg : arguments)
+			{
+				argumentsSingleLine += arg + ' ';
+			}
+
+			std::cerr << argumentsSingleLine << std::endl;
+
+			throw std::runtime_error(std::format("Error while creating new process: {}", errorCode.message()));
+		}
+	}
+
 	template<typename... Args>
 	ProcessWrapper::ProcessWrapper(Args&&... args)
 	{
@@ -62,42 +87,12 @@ namespace unit_test_utils
 			}
 			else
 			{
-				std::vector<std::string> arguments({ convertToString(std::forward<Args>(args))... });
-				std::error_code errorCode = process.start(reproc::arguments(arguments));
-
-				if (errorCode)
-				{
-					std::string argumentsSingleLine;
-
-					for (const std::string& arg : arguments)
-					{
-						argumentsSingleLine += arg + ' ';
-					}
-
-					std::cerr << argumentsSingleLine << std::endl;
-
-					throw std::runtime_error(std::format("Error while creating new process: {}", errorCode.message()));
-				}
+				this->runProcessFromStrings(std::forward<Args>(args)...);
 			}
 		}
 		else
 		{
-			std::vector<std::string> arguments({ convertToString(std::forward<Args>(args))... });
-			std::error_code errorCode = process.start(reproc::arguments(arguments));
-
-			if (errorCode)
-			{
-				std::string argumentsSingleLine;
-
-				for (const std::string& arg : arguments)
-				{
-					argumentsSingleLine += arg + ' ';
-				}
-
-				std::cerr << argumentsSingleLine << std::endl;
-
-				throw std::runtime_error(std::format("Error while creating new process: {}", errorCode.message()));
-			}
+			this->runProcessFromStrings(std::forward<Args>(args)...);
 		}
 	}
 }
