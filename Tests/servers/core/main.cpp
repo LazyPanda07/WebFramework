@@ -33,13 +33,7 @@ int main(int argc, char** argv) try
 		true,
 		[]() 
 		{
-#ifdef __LINUX__
-			pid_t processId = getpid();
-#else
-			DWORD processId = GetCurrentProcessId();
-#endif
-
-			std::ofstream(START_CORE_SERVER_FILE) << processId;
+			std::cout << "Server is running" << std::endl;
 		}
 	);
 

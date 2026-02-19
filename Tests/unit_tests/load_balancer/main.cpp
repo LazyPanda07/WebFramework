@@ -170,22 +170,6 @@ int main(int argc, char** argv) try
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	while (!std::filesystem::exists(loadBalancerServerFile))
-	{
-		std::cout << std::format("Wait for load balancer on port: {} ...", port) << std::endl;
-
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-
-		auto end = std::chrono::high_resolution_clock::now();
-
-		if (std::chrono::duration_cast<std::chrono::minutes>(end - start).count() > 5)
-		{
-			printLog();
-
-			return -1;
-		}
-	}
-
 	int result = RUN_ALL_TESTS();
 
 	if (result)

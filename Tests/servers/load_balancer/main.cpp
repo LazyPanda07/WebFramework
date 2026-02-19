@@ -72,14 +72,9 @@ int main(int argc, char** argv) try
 	server.start
 	(
 		true,
-		[port]()
+		[]()
 		{
-#ifdef __LINUX__
-			pid_t processId = getpid();
-#else
-			DWORD processId = GetCurrentProcessId();
-#endif
-			std::ofstream(std::format("start_load_balancer_{}_server.txt", port)) << processId;
+			std::cout << "Server is running" << std::endl;
 		}
 	);
 

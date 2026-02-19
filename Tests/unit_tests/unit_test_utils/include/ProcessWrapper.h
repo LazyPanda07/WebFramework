@@ -41,9 +41,9 @@ namespace unit_test_utils
 	void ProcessWrapper::runProcessFromStrings(Args&&... args)
 	{
 		std::vector<std::string> arguments({ convertToString(std::forward<Args>(args))... });
-		std::error_code errorCode = process.start(reproc::arguments(arguments));
+		std::error_code error = process.start(reproc::arguments(arguments));
 
-		if (errorCode)
+		if (error)
 		{
 			std::string argumentsSingleLine;
 
@@ -54,13 +54,15 @@ namespace unit_test_utils
 
 			std::cerr << argumentsSingleLine << std::endl;
 
-			throw std::runtime_error(std::format("Error while creating new process: {}", errorCode.message()));
+			throw std::runtime_error(std::format("Error while creating new process: {}", error.message()));
 		}
 	}
 
 	template<typename... Args>
 	ProcessWrapper::ProcessWrapper(Args&&... args)
 	{
+		constexpr size_t outputBufferSize = 256;
+
 		if constexpr (sizeof...(Args) == 1)
 		{
 			using FirstArg = std::tuple_element_t<0, std::tuple<Args...>>;
@@ -70,9 +72,9 @@ namespace unit_test_utils
 			{
 				std::vector<std::string> temp(args...);
 
-				std::error_code errorCode = process.start(reproc::arguments(temp));
+				std::error_code error = process.start(reproc::arguments(temp));
 
-				if (errorCode)
+				if (error)
 				{
 					std::string argumentsSingleLine;
 
@@ -83,7 +85,7 @@ namespace unit_test_utils
 
 					std::cerr << argumentsSingleLine << std::endl;
 
-					throw std::runtime_error(std::format("Error while creating new process: {}", errorCode.message()));
+					throw std::runtime_error(std::format("Error while creating new process: {}", error.message()));
 				}
 			}
 			else
@@ -94,6 +96,27 @@ namespace unit_test_utils
 		else
 		{
 			this->runProcessFromStrings(std::forward<Args>(args)...);
+		}
+
+		std::vector<uint8_t> buffer(outputBufferSize, 0);
+
+		while (true)
+		{
+			auto [size, error] = process.read(reproc::stream::out, buffer.data(), buffer.size());
+
+			if (error)
+			{
+				throw std::runtime_error(std::format("Error while running new process: {}", error.message()));
+			}
+
+			if (size)
+			{
+				break;
+			}
+
+			// TODO: timeout
+
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
 	}
 }

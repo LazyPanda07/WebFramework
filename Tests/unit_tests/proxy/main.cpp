@@ -11,8 +11,8 @@
 
 #include "utilities.h"
 
-bool useHTTPS;
 int64_t port;
+bool useHTTPS;
 
 TEST(Proxy, DefaultRoute)
 {
@@ -47,8 +47,8 @@ int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 
+	port = parser.getRequired<int64_t>("port");
 	useHTTPS = parser.get<bool>("useHTTPS");
-	port = parser.get<int64_t>("port");
 
 	unit_test_utils::updateConfigRuntimes("load_balancer_config.json", parser);
 	unit_test_utils::updateConfigRuntimes("proxy_config.json", parser);

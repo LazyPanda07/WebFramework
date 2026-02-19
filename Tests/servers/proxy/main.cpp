@@ -27,29 +27,9 @@ int main(int argc, char** argv) try
 	server.start
 	(
 		true,
-		[port]()
+		[]()
 		{
-#ifdef __LINUX__
-			pid_t processId = getpid();
-#else
-			DWORD processId = GetCurrentProcessId();
-#endif
-			switch (port)
-			{
-			case 15000:
-				std::ofstream(START_PROXY_SERVER_FILE) << processId;
-
-				break;
-
-			case 15001:
-				std::ofstream(START_PROXY_HTTPS_SERVER_FILE) << processId;
-
-				break;
-
-			default:
-				break;
-			}
-
+			std::cout << "Server is running" << std::endl;
 		}
 	);
 
