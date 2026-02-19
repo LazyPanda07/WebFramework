@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <format>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include <reproc++/run.hpp>
 
