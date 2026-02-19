@@ -11,48 +11,9 @@
 
 int port;
 
-void writeProcessId()
+void printRunningState()
 {
-#ifdef __LINUX__
-	pid_t processId = getpid();
-#else
-	DWORD processId = GetCurrentProcessId();
-#endif
-
-	FILE* file = NULL;
-
-	switch (port)
-	{
-	case 9090:
-		file = fopen(START_LOAD_BALANCER_9090_SERVER_FILE, "w");
-
-		break;
-
-	case 9091:
-		file = fopen(START_LOAD_BALANCER_9091_SERVER_FILE, "w");
-
-		break;
-
-	case 9092:
-		file = fopen(START_LOAD_BALANCER_9092_SERVER_FILE, "w");
-
-		break;
-
-	case 9093:
-		file = fopen(START_LOAD_BALANCER_9093_SERVER_FILE, "w");
-
-		break;
-
-	default:
-		break;
-	}
-
-	if (file)
-	{
-		fwrite(&processId, sizeof(processId), 1, file);
-
-		fclose(file);
-	}
+	printf("Server is running...\n");
 }
 
 int main(int argc, char** argv)
@@ -188,7 +149,7 @@ int main(int argc, char** argv)
 		return -8;
 	}
 
-	exception = wf_start_web_framework_server(server, true, writeProcessId);
+	exception = wf_start_web_framework_server(server, true, printRunningState);
 
 	if (exception)
 	{

@@ -14,34 +14,7 @@ class ProxyServer
 
 			WebFramework server = new(serverConfig);
 
-			server.Start
-			(
-				true,
-				() =>
-				{
-					FileStream file;
-
-					switch (port)
-					{
-						case 15000:
-							file = File.OpenWrite("start_proxy_server.txt");
-
-							break;
-
-						case 15001:
-							file = File.OpenWrite("start_proxy_https_server.txt");
-
-							break;
-
-						default:
-							return;
-					}
-
-					using StreamWriter writer = new(file);
-
-					writer.Write($"{Environment.ProcessId}");
-				}
-			);
+			server.Start(true, () => Console.WriteLine("Server is running..."));
 		}
 		catch (Exception exception)
 		{

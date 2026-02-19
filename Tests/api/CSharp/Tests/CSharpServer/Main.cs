@@ -13,13 +13,7 @@ class Server
 
 			WebFramework server = new(args[0]);
 
-			server.Start(true, () =>
-			{
-				using FileStream stream = File.OpenWrite("start_core_server.txt");
-				using StreamWriter writer = new(stream);
-
-				writer.Write($"{Environment.ProcessId}");
-			});
+			server.Start(true, () => Console.WriteLine("Server is running..."));
 		}
 		catch (Exception exception)
 		{

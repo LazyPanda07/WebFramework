@@ -52,17 +52,7 @@ class LoadBalancerServer
 
 			WebFramework server = new(serverConfig);
 
-			server.Start
-			(
-				true,
-				() =>
-				{
-					using FileStream file = File.OpenWrite($"start_load_balancer_{port}_server.txt");
-					using StreamWriter writer = new(file);
-
-					writer.Write($"{Environment.ProcessId}");
-				}
-			);
+			server.Start(true, () => Console.WriteLine("Server is running..."));
 		}
 		catch (Exception exception)
 		{
