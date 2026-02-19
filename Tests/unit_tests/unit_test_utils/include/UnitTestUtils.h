@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <format>
 #include <filesystem>
 
 #include <ConsoleArgumentParser.h>
@@ -30,6 +31,9 @@ namespace unit_test_utils
 
 	template<typename T>
 	std::string convertToString(T&& value);
+
+	template<typename... Args>
+	std::string concat(Args&&... args);
 }
 
 namespace unit_test_utils
@@ -84,5 +88,15 @@ namespace unit_test_utils
 		{
 			throw std::runtime_error(std::format("Wrong type: {}", typeid(T).name()));
 		}
+	}
+
+	template<typename... Args>
+	std::string concat(Args&&... args)
+	{
+		std::string result;
+
+		(result.append(std::format("{} ", convertToString(std::forward<Args>(args)))), ...);
+
+		return result;
 	}
 }

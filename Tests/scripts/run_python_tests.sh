@@ -10,29 +10,16 @@ chmod +x ./LoadBalancerCore
 chmod +x ./ProxyCore
 chmod +x ./DefaultHTTPSServer
 
-python3 server.py ${WEB_FRAMEWORK_SERVER_CONFIG} &
-python3 proxy_server.py --config proxy_config.json --port 15000 &
-python3 proxy_server.py --config proxy_config.json --port 15001 --useHTTPS &
-python3 load_balancer_server.py --config load_balancer_config.json --port 9090 &
-python3 load_balancer_server.py --config load_balancer_config.json --port 9091 --serversHTTPS &
-python3 load_balancer_server.py --config load_balancer_config_https.json --port 9092 &
-python3 load_balancer_server.py --config load_balancer_config_https.json --port 9093 --serversHTTPS &
+# RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 
-python3 load_balancer_server.py --config load_balancer_config.json --type server --port 10000 &
-python3 load_balancer_server.py --config load_balancer_config.json --type server --port 10001 --serversHTTPS &
-python3 load_balancer_server.py --config load_balancer_config_https.json  --type server --port 10002 &
-python3 load_balancer_server.py --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
-python3 load_balancer_server.py --config load_balancer_config.json --port 9094 --custom_heuristic &
-
-./DefaultHTTPSServer &
-sleep 1
+echo "Current runtimes: ${RUNTIMES}"
 
 python3 api_test.py
-./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
-./LoadBalancerCore --port 9090
-./LoadBalancerCore --port 9091
-./LoadBalancerCore --port 9092 --useHTTPS
-./LoadBalancerCore --port 9093 --useHTTPS
-./LoadBalancerCore --port 9094 --custom_heuristic
-./ProxyCore --port 15000
-./ProxyCore --port 15001 --useHTTPS
+./Core --server_config ${WEB_FRAMEWORK_SERVER_CONFIG} --run_arguments "python3 server.py" ${RUNTIMES}
+./LoadBalancerCore --port 9090 --load_balancer_run_arguments "python3 load_balancer_server.py" --config load_balancer_config.json ${RUNTIMES}
+./LoadBalancerCore --port 9092 --load_balancer_run_arguments "python3 load_balancer_server.py" --config load_balancer_config_https.json --useHTTPS ${RUNTIMES} # needs to initialize runtimes for https config before using it
+./LoadBalancerCore --port 9091 --load_balancer_run_arguments "python3 load_balancer_server.py" --config load_balancer_config.json --serversHTTPS ${RUNTIMES}
+./LoadBalancerCore --port 9093 --load_balancer_run_arguments "python3 load_balancer_server.py" --config load_balancer_config_https.json --serversHTTPS --useHTTPS ${RUNTIMES}
+./LoadBalancerCore --port 9094 --load_balancer_run_arguments "python3 load_balancer_server.py" --config load_balancer_config.json --custom_heuristic ${RUNTIMES}
+./ProxyCore --port 15000 --load_balancer_run_arguments "python3 load_balancer_server.py" --proxy_run_arguments "python3 proxy_server.py" ${RUNTIMES}
+./ProxyCore --port 15001 --load_balancer_run_arguments "python3 load_balancer_server.py" --proxy_run_arguments "python3 proxy_server.py" --useHTTPS ${RUNTIMES}

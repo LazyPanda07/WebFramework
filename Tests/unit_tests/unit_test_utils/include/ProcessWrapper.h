@@ -64,6 +64,7 @@ namespace unit_test_utils
 	ProcessWrapper::ProcessWrapper(Args&&... args)
 	{
 		constexpr size_t outputBufferSize = 256;
+		std::string argumentsSingleLine;
 
 		if constexpr (sizeof...(Args) == 1)
 		{
@@ -73,18 +74,15 @@ namespace unit_test_utils
 			if constexpr (std::same_as<std::vector<std::string>, ActualT>)
 			{
 				std::vector<std::string> temp(args...);
-
 				std::error_code error = process.start(reproc::arguments(temp));
+
+				for (const std::string& arg : temp)
+				{
+					argumentsSingleLine += arg + ' ';
+				}
 
 				if (error)
 				{
-					std::string argumentsSingleLine;
-
-					for (const std::string& arg : temp)
-					{
-						argumentsSingleLine += arg + ' ';
-					}
-
 					std::cerr << argumentsSingleLine << std::endl;
 
 					throw std::runtime_error(std::format("Error while creating new process: {}", error.message()));
@@ -92,15 +90,20 @@ namespace unit_test_utils
 			}
 			else
 			{
+				argumentsSingleLine = concat(std::forward<Args>(args)...);
+
 				this->runProcessFromStrings(std::forward<Args>(args)...);
 			}
 		}
 		else
 		{
+			argumentsSingleLine = concat(std::forward<Args>(args)...);
+
 			this->runProcessFromStrings(std::forward<Args>(args)...);
 		}
 
 		std::vector<uint8_t> buffer(outputBufferSize, 0);
+		auto start = std::chrono::steady_clock::now();
 
 		while (true)
 		{
@@ -116,7 +119,12 @@ namespace unit_test_utils
 				break;
 			}
 
-			// TODO: timeout
+			auto end = std::chrono::steady_clock::now();
+
+			if (std::chrono::duration_cast<std::chrono::seconds>(end - start).count() > 30)
+			{
+				throw std::runtime_error(std::format("Timeout reached for {}", argumentsSingleLine));
+			}
 
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}

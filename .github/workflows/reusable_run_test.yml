@@ -129,6 +129,7 @@ jobs:
 
     - name: Append .net runtime
       if: ${{ inputs.dotnet == true || contains(inputs.test-script, 'csharp') }}
+      shell: bash
       run: echo "runtimes=${{ env.runtimes }} --runtimes .net" >> ${GITHUB_ENV}
 
     - name: Merge artifacts

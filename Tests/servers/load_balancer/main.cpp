@@ -74,7 +74,7 @@ int main(int argc, char** argv) try
 		true,
 		[]()
 		{
-			std::cout << "Server is running" << std::endl;
+			std::cout << "Server is running..." << std::endl;
 		}
 	);
 

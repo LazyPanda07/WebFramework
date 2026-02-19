@@ -2,6 +2,9 @@ import argparse
 
 from web_framework_api import *
 
+def print_running_state():
+    print("Server is running...")
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
@@ -21,7 +24,7 @@ if __name__ == '__main__':
 
         server = WebFramework(config)
 
-        server.start(True)
+        server.start(True, print_running_state)
     except WebFrameworkException as exception:
         print(exception)
 

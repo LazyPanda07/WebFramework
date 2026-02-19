@@ -4,9 +4,8 @@ import os
 from web_framework_api import *
 
 
-def write_process_id():
-    with open("start_core_server.txt", "w") as file:
-        file.write(str(os.getpid()))
+def print_running_state():
+    print("Server is running...")
 
 
 if __name__ == '__main__':
@@ -18,7 +17,7 @@ if __name__ == '__main__':
 
         server = WebFramework(sys.argv[1])
 
-        server.start(True, write_process_id)
+        server.start(True, print_running_state)
     except WebFrameworkException as exception:
         print(exception)
 
