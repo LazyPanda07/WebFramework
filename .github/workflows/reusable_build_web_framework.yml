@@ -60,6 +60,11 @@ on:
         required: false
         type: string
         default: "ON"
+      build-branch-strict:
+        description: "Build only in selected branch"
+        required: false
+        type: string
+        default: ''
       upload-artifact-name:
         description: "Name of uploaded artifact zip"
         required: false
@@ -76,6 +81,9 @@ jobs:
     - uses: actions/checkout@v6
       with:
         submodules: recursive
+
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
 
     - name: Enable NMake
       if: ${{ inputs.os == 'windows-latest' }}
@@ -121,6 +129,7 @@ jobs:
       run: echo "ADDITIONAL_BUILD_PARAMETERS=${{ env.ADDITIONAL_BUILD_PARAMETERS }} -DPYTHON_EXECUTABLE=$(which python)" >> ${GITHUB_ENV}
 
     - name: Build
+      if: ${{ (inputs.build-branch-strict != '' && inputs.build-branch-strict == env.CURRENT_BRANCH) || inputs.build-branch-strict == '' }}
       shell: bash
       run: |
           mkdir build
@@ -130,7 +139,7 @@ jobs:
           cmake --install . --config ${{ inputs.configuration }}
   
     - name: Upload artifacts
-      if: ${{ inputs.upload-artifact-name != '' }}
+      if: ${{ inputs.upload-artifact-name != '' && ((inputs.build-branch-strict != '' && inputs.build-branch-strict == env.CURRENT_BRANCH) || inputs.build-branch-strict == '') }}
       uses: actions/upload-artifact@v6
       with:
         name: ${{ inputs.upload-artifact-name }}

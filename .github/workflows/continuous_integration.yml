@@ -56,6 +56,7 @@ jobs:
       os: windows-latest
       configuration: Release
       build-parameters: "-DWITH_STACKTRACE=ON"
+      build-branch-strict: main
     
       
   linux-build:
