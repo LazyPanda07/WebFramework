@@ -4,32 +4,16 @@ set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
 set PATH=C:\Program Files\dotnet\host\fxr\10.0.2\;%PATH%
 
-start CC_Server.exe %WEB_FRAMEWORK_SERVER_CONFIG%
-start DefaultHTTPSServer.exe
-start CC_ProxyServer.exe proxy_config.json 15000
-start CC_ProxyServer.exe proxy_config.json 15001 --useHTTPS
-start CC_LoadBalancerServer.exe load_balancer_config.json --port 9090
-start CC_LoadBalancerServer.exe load_balancer_config.json --port 9091 --serversHTTPS
-start CC_LoadBalancerServer.exe load_balancer_config_https.json --port 9092
-start CC_LoadBalancerServer.exe load_balancer_config_https.json --port 9093 --serversHTTPS
-start CC_LoadBalancerServer.exe load_balancer_config.json --port 9094 --custom_heuristic
+REM RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 
-start CC_LoadBalancerServer.exe load_balancer_config.json --type server --port 10000
-start CC_LoadBalancerServer.exe load_balancer_config.json --type server --port 10001 --serversHTTPS
-start CC_LoadBalancerServer.exe load_balancer_config_https.json  --type server --port 10002
-start CC_LoadBalancerServer.exe load_balancer_config_https.json --type server --port 10003 --serversHTTPS
+echo "Current runtimes: %RUNTIMES%"
 
 call CC_API_TESTS.exe || exit 1
-call Core.exe %WEB_FRAMEWORK_SERVER_CONFIG% || exit 1
-call LoadBalancerCore.exe --port 9090 || exit 1
-call LoadBalancerCore.exe --port 9091 || exit 1
-call LoadBalancerCore.exe --port 9092 --useHTTPS || exit 1
-call LoadBalancerCore.exe --port 9093 --useHTTPS || exit 1
-call LoadBalancerCore.exe --port 9094 --custom_heuristic || exit 1
-call ProxyCore.exe --port 15000 || exit 1
-call ProxyCore.exe --port 15001 --useHTTPS || exit 1
-
-taskkill /IM CC_Server.exe /F
-taskkill /IM DefaultHTTPSServer.exe /F
-taskkill /IM CC_ProxyServer.exe /F
-taskkill /IM CC_LoadBalancerServer.exe /F
+call Core.exe --server_config %WEB_FRAMEWORK_SERVER_CONFIG% --run_arguments CC_Server.exe %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9090 --load_balancer_run_arguments CC_LoadBalancerServer.exe --config load_balancer_config.json %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9092 --load_balancer_run_arguments CC_LoadBalancerServer.exe --config load_balancer_config_https.json --useHTTPS %RUNTIMES% || exit 1 REM needs to initialize runtimes for https config before using it
+call LoadBalancerCore.exe --port 9091 --load_balancer_run_arguments CC_LoadBalancerServer.exe --config load_balancer_config.json --serversHTTPS %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9093 --load_balancer_run_arguments CC_LoadBalancerServer.exe --config load_balancer_config_https.json --serversHTTPS --useHTTPS %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9094 --load_balancer_run_arguments CC_LoadBalancerServer.exe --config load_balancer_config.json --custom_heuristic %RUNTIMES% || exit 1
+call ProxyCore.exe --port 15000 --load_balancer_run_arguments CC_LoadBalancerServer.exe --proxy_run_arguments CC_ProxyServer.exe %RUNTIMES% || exit 1
+call ProxyCore.exe --port 15001 --load_balancer_run_arguments CC_LoadBalancerServer.exe --proxy_run_arguments CC_ProxyServer.exe --useHTTPS %RUNTIMES% || exit 1

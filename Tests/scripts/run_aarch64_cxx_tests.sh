@@ -5,6 +5,10 @@ set -e
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+# RUNTIMES variable contains list of all needed runtimes like this: --runtime python
+
+echo "Current runtimes: ${RUNTIMES}"
+
 qemu-aarch64 ./CXX_API_TESTS
 qemu-aarch64 ./Core --server_config ${WEB_FRAMEWORK_SERVER_CONFIG} --run_arguments "qemu-aarch64 ./Server" ${RUNTIMES}
 qemu-aarch64 ./LoadBalancerCore --port 9090 --load_balancer_run_arguments "qemu-aarch64 ./LoadBalancerServer" --config load_balancer_config.json ${RUNTIMES}

@@ -4,22 +4,6 @@ set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
 set PATH=C:\Program Files\dotnet\host\fxr\10.0.2\;%PATH%
 
-start python server.py %WEB_FRAMEWORK_SERVER_CONFIG%
-start python proxy_server.py --config proxy_config.json --port 15000
-start python proxy_server.py --config proxy_config.json --port 15001 --useHTTPS
-start python load_balancer_server.py --config load_balancer_config.json --port 9090
-start python load_balancer_server.py --config load_balancer_config.json --port 9091 --serversHTTPS
-start python load_balancer_server.py --config load_balancer_config_https.json --port 9092
-start python load_balancer_server.py --config load_balancer_config_https.json --port 9093 --serversHTTPS
-start python load_balancer_server.py --config load_balancer_config.json --port 9094 --custom_heuristic
-
-start python load_balancer_server.py --config load_balancer_config.json --type server --port 10000
-start python load_balancer_server.py --config load_balancer_config.json --type server --port 10001 --serversHTTPS
-start python load_balancer_server.py --config load_balancer_config_https.json  --type server --port 10002
-start python load_balancer_server.py --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS
-
-start DefaultHTTPSServer.exe
-
 REM RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 
 echo "Current runtimes: %RUNTIMES%"
