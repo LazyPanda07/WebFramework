@@ -14,28 +14,16 @@ chmod +x ./Core
 chmod +x ./LoadBalancerCore
 chmod +x ./ProxyCore
 
-./Server ${WEB_FRAMEWORK_SERVER_CONFIG} &
-./DefaultHTTPSServer &
-./ProxyServer --config proxy_config.json --port 15000 &
-./ProxyServer --config proxy_config.json --port 15001 --useHTTPS &
-./LoadBalancerServer --config load_balancer_config.json --port 9090 &
-./LoadBalancerServer --config load_balancer_config.json --port 9091 --serversHTTPS &
-./LoadBalancerServer --config load_balancer_config_https.json --port 9092 &
-./LoadBalancerServer --config load_balancer_config_https.json --port 9093 --serversHTTPS &
-./LoadBalancerServer --config load_balancer_config.json --port 9094 --custom_heuristic &
+# RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 
-./LoadBalancerServer --config load_balancer_config.json --type server --port 10000 &
-./LoadBalancerServer --config load_balancer_config.json --type server --port 10001 --serversHTTPS &
-./LoadBalancerServer --config load_balancer_config_https.json  --type server --port 10002 &
-./LoadBalancerServer --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS &
-sleep 1
+echo "Current runtimes: ${RUNTIMES}"
 
 ./CXX_API_TESTS
-./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
-./LoadBalancerCore --port 9090
-./LoadBalancerCore --port 9091
-./LoadBalancerCore --port 9092 --useHTTPS
-./LoadBalancerCore --port 9093 --useHTTPS
-./LoadBalancerCore --port 9094 --custom_heuristic
-./ProxyCore --port 15000
-./ProxyCore --port 15001 --useHTTPS
+./Core --server_config ${WEB_FRAMEWORK_SERVER_CONFIG} --run_arguments ./Server ${RUNTIMES}
+./LoadBalancerCore --port 9090 --load_balancer_run_arguments ./LoadBalancerServer --config load_balancer_config.json ${RUNTIMES}
+./LoadBalancerCore --port 9092 --load_balancer_run_arguments ./LoadBalancerServer --config load_balancer_config_https.json --useHTTPS ${RUNTIMES} # needs to initialize runtimes for https config before using it
+./LoadBalancerCore --port 9091 --load_balancer_run_arguments ./LoadBalancerServer --config load_balancer_config.json --serversHTTPS ${RUNTIMES}
+./LoadBalancerCore --port 9093 --load_balancer_run_arguments ./LoadBalancerServer --config load_balancer_config_https.json --serversHTTPS --useHTTPS ${RUNTIMES}
+./LoadBalancerCore --port 9094 --load_balancer_run_arguments ./LoadBalancerServer --config load_balancer_config.json --custom_heuristic ${RUNTIMES}
+./ProxyCore --port 15000 --load_balancer_run_arguments ./LoadBalancerServer --proxy_run_arguments ./ProxyServer ${RUNTIMES}
+./ProxyCore --port 15001 --load_balancer_run_arguments ./LoadBalancerServer --proxy_run_arguments ./ProxyServer --useHTTPS ${RUNTIMES}

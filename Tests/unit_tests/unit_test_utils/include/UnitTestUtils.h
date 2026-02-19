@@ -3,8 +3,11 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <filesystem>
 
-#include <ProcessWrapper.h>
+#include <ConsoleArgumentParser.h>
+
+#include "ProcessWrapper.h"
 
 namespace unit_test_utils
 {
@@ -16,6 +19,11 @@ namespace unit_test_utils
 			{ std::to_string(value) } -> std::same_as<std::string>;
 		};
 	}
+}
+
+namespace unit_test_utils
+{
+	void updateConfigRuntimes(const std::filesystem::path& configPath, const utility::parsers::ConsoleArgumentParser& consoleParser);
 
 	template<typename... Args>
 	std::vector<std::string> splitArguments(const std::string& arguments, Args&&... args);

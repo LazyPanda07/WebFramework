@@ -23,8 +23,6 @@ void printLog();
 
 void createLargeFile();
 
-json::JsonBuilder updateConfig(json::JsonParser&& configParser, const utility::parsers::ConsoleArgumentParser& consoleParser);
-
 int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser consoleParser(argc, argv);
@@ -33,7 +31,7 @@ int main(int argc, char** argv) try
 
 	useHTTPS = configParser.get<bool>("useHTTPS", true);
 
-	std::ofstream(serverConfig) << updateConfig(std::move(configParser), consoleParser);
+	unit_test_utils::updateConfigRuntimes(serverConfig, consoleParser);
 
 	unit_test_utils::ProcessWrapper server(unit_test_utils::ProcessWrapper(unit_test_utils::splitArguments(consoleParser.getRequired<std::string>("run_arguments"), serverConfig)));
 	unit_test_utils::ProcessWrapper defaultHttpsServer = unit_test_utils::ProcessWrapper::runDefaultHttpsServer();
@@ -124,37 +122,4 @@ void createLargeFile()
 
 		currentSize += fileChunkSize;
 	}
-}
-
-json::JsonBuilder updateConfig(json::JsonParser&& configParser, const utility::parsers::ConsoleArgumentParser& consoleParser)
-{
-	json::JsonBuilder result(CP_UTF8);
-
-	{
-		json::JsonObject object;
-
-		configParser.getParsedData(object);
-
-		result = json::JsonBuilder(object, CP_UTF8);
-
-		if (!object.contains<std::vector<json::JsonObject>>("runtimes", true))
-		{
-			return result;
-		}
-	}
-
-	json::JsonObject& webFramework = result["WebFramework"];
-
-	for (const std::string& runtime : consoleParser.getValues<std::string>("runtimes"))
-	{
-		for (json::JsonObject& object : webFramework["runtimes"])
-		{
-			if (object["name"].get<std::string>() == runtime)
-			{
-				object["enabled"] = true;
-			}
-		}
-	}
-
-	return result;
 }

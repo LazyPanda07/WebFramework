@@ -50,6 +50,9 @@ int main(int argc, char** argv) try
 	useHTTPS = parser.get<bool>("useHTTPS");
 	port = parser.get<int64_t>("port");
 
+	unit_test_utils::updateConfigRuntimes("load_balancer_config.json", parser);
+	unit_test_utils::updateConfigRuntimes("proxy_config.json", parser);
+
 	std::vector<std::string> loadBalancerRunArguments = unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config.json", "--type", "server", "--port", 10000);
 	std::vector<std::string> proxyRunArguments = unit_test_utils::splitArguments(parser.getRequired<std::string>("proxy_run_arguments"), "--config", "proxy_config.json", "--port", port);
 
