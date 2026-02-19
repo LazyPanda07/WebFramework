@@ -288,20 +288,33 @@ jobs:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         # api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
-        api_test: [run_tests.sh]
+        api_test: [run_tests.sh, run_python_tests.sh]
+        dotnet: [true, false]
         executors:
-          - { api: CXX, python-version: 3.14, dotnet: true }
-          - { api: CC, python-version: 3.14, dotnet: true }
-          - { api: Python, python-version: 3.14, dotnet: true }
-          - { api: CSharp, python-version: 3.14, dotnet: true }
-          - { api: CXX, python-version: 3.13, dotnet: true }
-          - { api: CC, python-version: 3.13, dotnet: true }
-          - { api: Python, python-version: 3.13, dotnet: true }
-          - { api: CSharp, python-version: 3.13, dotnet: true }
-          - { api: CXX, python-version: 3.12, dotnet: true }
-          - { api: CC, python-version: 3.12, dotnet: true }
-          - { api: Python, python-version: 3.12, dotnet: true }
-          - { api: CSharp, python-version: 3.12, dotnet: true }
+          # - { api: CXX, python-version: 3.14, dotnet: true }
+          # - { api: CC, python-version: 3.14, dotnet: true }
+          # - { api: Python, python-version: 3.14, dotnet: true }
+          # - { api: CSharp, python-version: 3.14, dotnet: true }
+          # - { api: CXX, python-version: 3.13, dotnet: true }
+          # - { api: CC, python-version: 3.13, dotnet: true }
+          # - { api: Python, python-version: 3.13, dotnet: true }
+          # - { api: CSharp, python-version: 3.13, dotnet: true }
+          # - { api: CXX, python-version: 3.12, dotnet: true }
+          # - { api: CC, python-version: 3.12, dotnet: true }
+          # - { api: Python, python-version: 3.12, dotnet: true }
+          # - { api: CSharp, python-version: 3.12, dotnet: true }
+          - { api: CXX, python-version: 3.14 }
+          - { api: CC, python-version: 3.14 }
+          - { api: Python, python-version: 3.14 }
+          - { api: CSharp, python-version: 3.14 }
+          - { api: CXX, python-version: 3.13 }
+          - { api: CC, python-version: 3.13 }
+          - { api: Python, python-version: 3.13 }
+          - { api: CSharp, python-version: 3.13 }
+          - { api: CXX, python-version: 3.12 }
+          - { api: CC, python-version: 3.12 }
+          - { api: Python, python-version: 3.12 }
+          - { api: CSharp, python-version: 3.12 }
 
     uses: ./.github/workflows/reusable_run_test.yml
     with:
@@ -311,7 +324,8 @@ jobs:
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
       python-version: ${{ matrix.executors.python-version }}
-      dotnet: ${{ matrix.executors.dotnet }}
+      # dotnet: ${{ matrix.executors.dotnet }}
+      dotnet: ${{ matrix.dotnet }}
       
 
   windows-tests:
@@ -320,7 +334,7 @@ jobs:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
         # test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        test-script: [run_tests.bat]
+        test-script: [run_tests.bat, run_python_tests.bat]
         executors:
           - { api: CXX, python-version: 3.14, dotnet: true }
           - { api: CC, python-version: 3.14, dotnet: true }
