@@ -168,8 +168,6 @@ int main(int argc, char** argv) try
 
 	testing::InitGoogleTest(&argc, argv);
 
-	auto start = std::chrono::high_resolution_clock::now();
-
 	int result = RUN_ALL_TESTS();
 
 	if (result)
