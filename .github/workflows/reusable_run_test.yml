@@ -37,7 +37,7 @@ on:
 
 
 jobs:
-  build:
+  run:
     runs-on: ${{ inputs.os }}
     container: 
       image: ${{ inputs.image }}
@@ -150,7 +150,7 @@ jobs:
       if: ${{ inputs.os == 'windows-latest' }}
       working-directory: Tests
       run: |
-        $env:RUNTIMES=${{ env.runtimes }}
+        $env:RUNTIMES="${{ env.runtimes }}"
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
@@ -158,5 +158,5 @@ jobs:
       working-directory: Tests
       shell: bash
       run: |
-        export RUNTIMES=${{ env.runtimes }}
+        export RUNTIMES="${{ env.runtimes }}"
         source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}

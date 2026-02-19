@@ -63,7 +63,8 @@ namespace unit_test_utils
 	{
 		if constexpr (sizeof...(Args) == 1)
 		{
-			using ActualT = std::remove_cvref_t<decltype(args)...>;
+			using FirstArg = std::tuple_element_t<0, std::tuple<Args...>>;
+			using ActualT = std::remove_cvref_t<FirstArg>;
 
 			if constexpr (std::same_as<std::vector<std::string>, ActualT>)
 			{
