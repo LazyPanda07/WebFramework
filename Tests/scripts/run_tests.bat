@@ -9,7 +9,7 @@ REM RUNTIMES variable contains list of all needed runtimes like this: --runtime 
 echo "Current runtimes: %RUNTIMES%"
 
 call CXX_API_TESTS.exe || exit 1
-call Core.exe --server_config %WEB_FRAMEWORK_SERVER_CONFIG% --runtimes .net --run_arguments Server.exe %RUNTIMES% || exit 1
+call Core.exe --server_config %WEB_FRAMEWORK_SERVER_CONFIG% --run_arguments Server.exe %RUNTIMES% || exit 1
 call LoadBalancerCore.exe --port 9090 --load_balancer_run_arguments LoadBalancerServer.exe --config load_balancer_config.json %RUNTIMES% || exit 1
 call LoadBalancerCore.exe --port 9092 --load_balancer_run_arguments LoadBalancerServer.exe --config load_balancer_config_https.json --useHTTPS %RUNTIMES% || exit 1 REM needs to initialize runtimes for https config before using it
 call LoadBalancerCore.exe --port 9091 --load_balancer_run_arguments LoadBalancerServer.exe --config load_balancer_config.json --serversHTTPS %RUNTIMES% || exit 1

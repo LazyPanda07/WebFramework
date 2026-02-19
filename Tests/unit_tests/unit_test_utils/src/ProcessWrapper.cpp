@@ -4,7 +4,7 @@ namespace unit_test_utils
 {
 	ProcessWrapper ProcessWrapper::runDefaultHttpsServer()
 	{
-		return ProcessWrapper("DefaultHTTPSServer");
+		return ProcessWrapper("./DefaultHTTPSServer");
 	}
 
 	ProcessWrapper::~ProcessWrapper()
