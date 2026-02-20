@@ -16,7 +16,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	json_builder_t builder;
 	json_object_t data;
 
-	wf_get_database_request(request, "test_database", &database);
+	wf_get_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
 	wf_get_table(database, "test_table", &table);
 	wf_create_sql_value(&value);
 	wf_create_json_builder(&builder);
@@ -41,7 +41,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
 	database_t database;
 	table_t table;
 
-	wf_get_or_create_database_request(request, "test_database", &database);
+	wf_get_or_create_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
 	wf_get_or_create_table
 	(
 		database,
@@ -70,7 +70,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)
 
 	srand(time(NULL));
 
-	wf_get_database_request(request, "test_database", &database);
+	wf_get_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
 	wf_get_table(database, "test_table", &table);
 
 	wf_create_sql_value(&(values[0]));
@@ -107,7 +107,7 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 		return;
 	}
 
-	wf_get_database_request(request, "test_database", &database);
+	wf_get_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
 	wf_get_table(database, "test_table", &table);
 	wf_create_json_builder(&builder);
 

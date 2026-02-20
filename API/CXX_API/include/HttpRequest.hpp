@@ -308,8 +308,10 @@ namespace framework
 		template<DatabaseImplementation T = DefaultDatabase>
 		Database getDatabase(std::string_view databaseName) const;
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Table getTable(std::string_view databaseName, std::string_view tableName) const;
 
 		template<RouteParameterType T>
@@ -836,14 +838,16 @@ namespace framework
 		return Database(implementation->getDatabase(databaseName.data(), T::databaseImplementationName.data()));
 	}
 
+	template<DatabaseImplementation T>
 	inline Table HttpRequest::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery)
 	{
-		return this->getOrCreateDatabase(databaseName).getOrCreateTable(tableName, createTableQuery);
+		return this->getOrCreateDatabase<T>(databaseName).getOrCreateTable(tableName, createTableQuery);
 	}
 
+	template<DatabaseImplementation T>
 	inline Table HttpRequest::getTable(std::string_view databaseName, std::string_view tableName) const
 	{
-		return this->getDatabase(databaseName).getTable(tableName);
+		return this->getDatabase<T>(databaseName).getTable(tableName);
 	}
 
 	inline HttpRequest::~HttpRequest()

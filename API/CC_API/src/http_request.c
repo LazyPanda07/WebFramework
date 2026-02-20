@@ -440,13 +440,13 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
 	return exception;
 }
 
-web_framework_exception_t wf_register_wfdp_function(http_request_t implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+web_framework_exception_t wf_register_wfdp_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
 
 	typedef void (*registerWFDPFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerWFDPFunction, functionName, function, deleter, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerWFDPFunction, function_name, function, deleter, &exception);
 
 	return exception;
 }
@@ -612,46 +612,46 @@ web_framework_exception_t wf_get_server_port(http_request_t implementation, uint
 	return exception;
 }
 
-web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* databaseName, database_t* result)
+web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* databaseName, const char* implementationName, database_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getOrCreateDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
+	typedef void* (*getOrCreateDatabaseRequest)(void* implementation, const char* databaseName, const char* implementationName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseRequest, databaseName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseRequest, databaseName, implementationName, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* databaseName, database_t* result)
+web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* databaseName, const char* implementationName, database_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
+	typedef void* (*getDatabaseRequest)(void* implementation, const char* databaseName, const char* implementationName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseRequest, databaseName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseRequest, databaseName, implementationName, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* databaseName, const char* tableName, const char* createTableQuery, table_t* result)
+web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, table_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getOrCreateTableRequest)(void* implementation, const char* databaseName, const char* tableName, const char* createTableQuery, void** exception);
+	typedef void* (*getOrCreateTableRequest)(void* implementation, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTableRequest, databaseName, tableName, createTableQuery, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTableRequest, databaseName, implementationName, tableName, createTableQuery, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* databaseName, const char* tableName, table_t* result)
+web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* databaseName, const char* implementationName, const char* tableName, table_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getTableRequest)(void* implementation, const char* databaseName, const char* tableName, void** exception);
+	typedef void* (*getTableRequest)(void* implementation, const char* databaseName, const char* implementationName, const char* tableName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTableRequest, databaseName, tableName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTableRequest, databaseName, implementationName, tableName, &exception);
 
 	return exception;
 }

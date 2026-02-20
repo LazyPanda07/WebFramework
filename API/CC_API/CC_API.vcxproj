@@ -110,6 +110,9 @@
   <ItemGroup>
     <ClInclude Include="include\config.h" />
     <ClInclude Include="include\Databases\database.h" />
+    <ClInclude Include="include\databases\implementations\default_database.h" />
+    <ClInclude Include="include\databases\implementations\redis_database.h" />
+    <ClInclude Include="include\databases\implementations\sqlite_database.h" />
     <ClInclude Include="include\Databases\sql_result.h" />
     <ClInclude Include="include\Databases\sql_value.h" />
     <ClInclude Include="include\Databases\table.h" />

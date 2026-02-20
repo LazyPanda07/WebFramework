@@ -96,13 +96,13 @@ EXPORT double getRouteDoubleParameter(HttpRequestObject request, const char* rou
 
 EXPORT const char* getRouteStringParameter(HttpRequestObject request, const char* routeParameterName, Exception* exception);
 
-EXPORT DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, Exception* exception);
+EXPORT DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception);
 
-EXPORT DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, Exception* exception);
+EXPORT DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception);
 
-EXPORT TableObject getOrCreateTableRequest(HttpRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception);
+EXPORT TableObject getOrCreateTableRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception);
 
-EXPORT TableObject getTableRequest(HttpRequestObject request, const char* databaseName, const char* tableName, Exception* exception);
+EXPORT TableObject getTableRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception);
 
 EXPORT void sendChunks(HttpRequestObject request, HttpResponseObject response, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception);
 

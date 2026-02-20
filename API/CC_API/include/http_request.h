@@ -2,6 +2,9 @@
 
 #include "http_response.h"
 #include "databases/database.h"
+#include "databases/implementations/default_database.h"
+#include "databases/implementations/redis_database.h"
+#include "databases/implementations/sqlite_database.h"
 
 typedef void* http_request_t;
 
@@ -367,40 +370,44 @@ web_framework_exception_t wf_get_server_port(http_request_t implementation, uint
  * @brief Tries to get database or create if can't get
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* database_name, database_t* result);
+web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* database_name, const char* implementationName, database_t* result);
 
 /**
  * @brief Get database
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* database_name, database_t* result);
+web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* database_name, const char* implementationName, database_t* result);
 
 /**
  * @brief Tries to get table from database or create if can't get
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param tableName Name of table
  * @param createTableQuery Create table query if can't get table
  * @param result table_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* database_name, const char* table_name, const char* create_table_query, table_t* result);
+web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* database_name, const char* implementationName, const char* table_name, const char* create_table_query, table_t* result);
 
 /**
  * @brief Get table from database
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param tableName Name of table
  * @param result table_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* database_name, const char* table_name, table_t* result);
+web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* database_name, const char* implementationName, const char* table_name, table_t* result);
 
 /**
  * @brief Get route parameter as /page/{}

@@ -788,11 +788,11 @@ const char* getRouteStringParameter(HttpRequestObject request, const char* route
 	return nullptr;
 }
 
-DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, Exception* exception)
+DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, "");
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, implementationName);
 	}
 	catch (const std::exception& e)
 	{
@@ -806,11 +806,11 @@ DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char*
 	return nullptr;
 }
 
-DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, Exception* exception)
+DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, "");
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, implementationName);
 	}
 	catch (const std::exception& e)
 	{
@@ -824,11 +824,11 @@ DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databas
 	return nullptr;
 }
 
-TableObject getOrCreateTableRequest(HttpRequestObject request, const char* databaseName, const char* tableName, const char* createTableQuery, Exception* exception)
+TableObject getOrCreateTableRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, "")->getOrCreateTable(tableName, createTableQuery);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, implementationName)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const std::exception& e)
 	{
@@ -842,11 +842,11 @@ TableObject getOrCreateTableRequest(HttpRequestObject request, const char* datab
 	return nullptr;
 }
 
-TableObject getTableRequest(HttpRequestObject request, const char* databaseName, const char* tableName, Exception* exception)
+TableObject getTableRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, "")->get(tableName);
+		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, implementationName)->get(tableName);
 	}
 	catch (const std::exception& e)
 	{

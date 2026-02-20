@@ -15,5 +15,5 @@ call LoadBalancerCore.exe --port 9092 --load_balancer_run_arguments "dotnet CSha
 call LoadBalancerCore.exe --port 9091 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config.json --serversHTTPS %RUNTIMES% || exit 1
 call LoadBalancerCore.exe --port 9093 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config_https.json --serversHTTPS --useHTTPS %RUNTIMES% || exit 1
 call LoadBalancerCore.exe --port 9094 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config.json --custom_heuristic %RUNTIMES% || exit 1
-call ProxyCore.exe --port 15000 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer" %RUNTIMES% || exit 1
-call ProxyCore.exe --port 15001 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer" --useHTTPS %RUNTIMES% || exit 1
+call ProxyCore.exe --port 15000 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer.dll" %RUNTIMES% || exit 1
+call ProxyCore.exe --port 15001 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer.dll" --useHTTPS %RUNTIMES% || exit 1
