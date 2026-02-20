@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	web_framework_exception_t exception = wf_create_config_from_path(argv[1], &config);
+	web_framework_exception_t exception = wf_create_config_from_path(configName, &config);
 
 	if (exception)
 	{
