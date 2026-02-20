@@ -94,7 +94,7 @@
     <ClInclude Include="include\DatabaseInterfaces\ITable.hpp" />
     <ClInclude Include="include\Databases\Database.hpp" />
     <ClInclude Include="include\Databases\Implementations\DefaultDatabase.hpp" />
-    <ClInclude Include="include\Databases\Implementations\RedisDatabase.h" />
+    <ClInclude Include="include\Databases\Implementations\RedisDatabase.hpp" />
     <ClInclude Include="include\Databases\Implementations\SqliteDatabase.hpp" />
     <ClInclude Include="include\Databases\SqlResult.hpp" />
     <ClInclude Include="include\Databases\SqlValue.hpp" />
