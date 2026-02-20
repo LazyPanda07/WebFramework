@@ -498,7 +498,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_or_create_database",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::type databaseImplementationClass)
+			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
 				{
@@ -522,7 +522,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_database",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::type databaseImplementationClass)
+			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
 				{
@@ -546,7 +546,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_or_create_table",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::type databaseImplementationClass)
+			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
 				{
@@ -570,7 +570,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_table",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, py::type databaseImplementationClass)
+			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
 				{

@@ -32,8 +32,6 @@
         }
       },
       "required": [ "route", "loadType", "api" ]
-    },
-    "^\\$schema$": true
-  },
-  "additionalProperties": false
+    }
+  }
 }

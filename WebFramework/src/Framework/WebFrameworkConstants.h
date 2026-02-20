@@ -36,7 +36,7 @@ namespace json_settings
 	inline constexpr std::string_view webFrameworkDefaultAssetsPath = "defaultAssetsPath";
 	inline constexpr std::string_view largeBodySizeThresholdKey = "largeBodySizeThreshold";
 	inline constexpr std::string_view largeBodyPacketSizeKey = "largeBodyPacketSize";
-	inline constexpr std::string_view databaseImplementationKey = "databaseImplementation";
+	inline constexpr std::string_view databasesKey = "databases";
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
 	inline constexpr std::string_view runtimesKey = "runtimes";
 

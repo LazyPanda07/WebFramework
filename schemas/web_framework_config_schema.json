@@ -187,10 +187,10 @@
           "type": "integer",
           "description": "Size of single packet from large message"
         },
-        "databaseImplementation": {
+        "databases": {
           "type": [ "string", "array" ],
           "items": { "type": "string" },
-          "description": "Database implementation name",
+          "description": "Database implementation names",
           "enum": [ "sqlite", "redis" ]
         },
         "resourcesThreads": {

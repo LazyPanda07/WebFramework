@@ -308,13 +308,13 @@ namespace framework
 	{
 		std::vector<std::string> databases;
 		
-		if (std::vector<json::JsonObject> temp; webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::databaseImplementationKey, temp))
+		if (std::vector<json::JsonObject> temp; webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::databasesKey, temp))
 		{
 			databases = json::utility::JsonArrayWrapper(temp).as<std::string>();
 		}
-		else if (std::string databaseImplementationName; webFrameworkSettings.tryGet<std::string>(json_settings::databaseImplementationKey, databaseImplementationName))
+		else if (std::string database; webFrameworkSettings.tryGet<std::string>(json_settings::databasesKey, database))
 		{
-			databases.emplace_back(std::move(databaseImplementationName));
+			databases.emplace_back(std::move(database));
 		}
 
 		if (databases.empty())
