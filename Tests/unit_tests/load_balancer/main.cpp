@@ -134,7 +134,6 @@ int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 	std::vector<unit_test_utils::ProcessWrapper> loadBalancerServers;
-	std::string loadBalancerServerFile = std::format("start_load_balancer_{}_server.txt", parser.getRequired<int64_t>("port"));
 
 	unit_test_utils::updateConfigRuntimes(parser.getRequired<std::string>("config"), parser);
 

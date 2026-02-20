@@ -23,6 +23,18 @@ int main(int argc, char** argv)
 
 	web_framework_t server;
 	config_t config;
+	const char* configName = NULL;
+
+	for (int i = 1; i < argc; i++)
+	{
+		if (!strcmp(argv[i], "--config"))
+		{
+			configName = argv[i + 1];
+
+			break;
+		}
+	}
+
 	web_framework_exception_t exception = wf_create_config_from_path(argv[1], &config);
 
 	if (exception)

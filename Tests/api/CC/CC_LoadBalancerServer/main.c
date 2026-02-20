@@ -23,8 +23,19 @@ int main(int argc, char** argv)
 
 	config_t config;
 	web_framework_t server;
+	const char* configName = NULL;
 
-	web_framework_exception_t exception = wf_create_config_from_path(argv[1], &config);
+	for (int i = 1; i < argc; i++)
+	{
+		if (!strcmp(argv[i], "--config"))
+		{
+			configName = argv[i + 1];
+
+			break;
+		}
+	}
+
+	web_framework_exception_t exception = wf_create_config_from_path(configName, &config);
 	bool serversHTTPS = false;
 	const char* type = "";
 
@@ -35,7 +46,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	for (int i = 2; i < argc;)
+	for (int i = 2; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "--port"))
 		{
@@ -50,13 +61,11 @@ int main(int argc, char** argv)
 				return -2;
 			}
 
-			i += 2;
+			i++;
 		}
 		else if (!strcmp(argv[i], "--serversHTTPS"))
 		{
 			serversHTTPS = true;
-
-			i++;
 		}
 		else if (!strcmp(argv[i], "--custom_heuristic"))
 		{
@@ -68,20 +77,23 @@ int main(int argc, char** argv)
 
 				return -3;
 			}
-
-			i++;
 		}
 		else if (!strcmp(argv[i], "--type"))
 		{
 			type = argv[i + 1];
 
-			i += 2;
+			i++;
 		}
 	}
 
 	if (!strcmp(type, "server"))
 	{
 		const char** settingsPaths = malloc(sizeof(const char*));
+
+		if (!settingsPaths)
+		{
+			return -4;
+		}
 
 		settingsPaths[0] = "load_balancer_web.json";
 
@@ -91,7 +103,7 @@ int main(int argc, char** argv)
 		{
 			printf("%s\n", wf_get_error_message(exception));
 
-			return -4;
+			return -5;
 		}
 
 		exception = wf_override_configuration_string_array(config, "settingsPaths", settingsPaths, true, 1);
@@ -100,7 +112,7 @@ int main(int argc, char** argv)
 		{
 			printf("%s\n", wf_get_error_message(exception));
 
-			return -5;
+			return -6;
 		}
 
 		free(settingsPaths);
@@ -109,13 +121,18 @@ int main(int argc, char** argv)
 	{
 		int64_t* listOfServers = malloc(sizeof(int64_t) * 2);
 
+		if (!listOfServers)
+		{
+			return -7;
+		}
+
 		exception = wf_override_configuration_boolean(config, "serversHTTPS", serversHTTPS, true);
 
 		if (exception)
 		{
 			printf("%s\n", wf_get_error_message(exception));
 
-			return -6;
+			return -8;
 		}
 
 		if (serversHTTPS)
@@ -135,7 +152,7 @@ int main(int argc, char** argv)
 		{
 			printf("%s\n", wf_get_error_message(exception));
 
-			return -7;
+			return -9;
 		}
 
 		free(listOfServers);
@@ -147,7 +164,7 @@ int main(int argc, char** argv)
 	{
 		printf("%s\n", wf_get_error_message(exception));
 
-		return -8;
+		return -10;
 	}
 
 	exception = wf_start_web_framework_server(server, true, printRunningState);
@@ -156,7 +173,7 @@ int main(int argc, char** argv)
 	{
 		printf("%s\n", wf_get_error_message(exception));
 
-		return -9;
+		return -11;
 	}
 
 	return 0;
