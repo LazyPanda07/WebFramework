@@ -50,4 +50,4 @@ add_custom_command(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments Server WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments "dotnet CSharpServer.dll" WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

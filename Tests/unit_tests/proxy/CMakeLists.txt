@@ -33,5 +33,5 @@ target_link_libraries(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-add_test(NAME ${PROJECT_NAME} COMMAND ProxyCore --load_balancer_run_arguments LoadBalancerServer --proxy_run_arguments ProxyServer --port 15000 WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
-add_test(NAME ${PROJECT_NAME}HTTPS COMMAND ProxyCore --load_balancer_run_arguments LoadBalancerServer --proxy_run_arguments ProxyServer --port 15001 --useHTTPS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME} COMMAND ProxyCore --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer.dll" --port 15000 WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME}HTTPS COMMAND ProxyCore --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer.dll" --port 15001 --useHTTPS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

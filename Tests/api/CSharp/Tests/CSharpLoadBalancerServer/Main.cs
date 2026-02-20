@@ -1,58 +1,103 @@
 ﻿using Framework;
 using Framework.Utility;
+using System.CommandLine;
 
 class LoadBalancerServer
 {
-	static int Main(string config, long port, bool customHeuristic = false, string type = "", bool serversHTTPS = false)
+	static int Main(string[] args)
 	{
 		try
 		{
-			Config serverConfig = new(config);
-
-			serverConfig.OverrideConfiguration("port", port, true);
-
-			if (customHeuristic)
+			var configOption = new Option<string>("--config")
 			{
-				serverConfig.OverrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic", true);
-			}
-
-			if (type == "server")
+				Required = true
+			};
+			var portOption = new Option<int>("--port")
 			{
-				List<string> settingsPaths = ["load_balancer_web.json"];
-
-				serverConfig.OverrideConfiguration("webServerType", "multiThreaded", true);
-
-				serverConfig.OverrideConfiguration("settingsPaths", settingsPaths, true);
-			}
-			else
+				Required = true
+			};
+			var customHeuristicOption = new Option<bool>("--custom_heuristic")
 			{
-				List<long> listOfServers = [];
+				DefaultValueFactory = _ => false
+			};
+			var typeOption = new Option<string>("--type")
+			{
+				DefaultValueFactory = _ => ""
+			};
+			var serversHTTPSOption = new Option<bool>("--serversHTTPS")
+			{
+				DefaultValueFactory = _ => false
+			};
 
-				serverConfig.OverrideConfiguration("serversHTTPS", serversHTTPS, true);
+			RootCommand root =
+			[
+				configOption,
+				portOption,
+				customHeuristicOption,
+				typeOption,
+				serversHTTPSOption
+			];
 
-				if (serversHTTPS)
+			root.SetAction
+			(
+				parseResult =>
 				{
-					listOfServers =
-					[
-						10002,
-						10003
-					];
+					string config = parseResult.GetRequiredValue(configOption);
+					int port = parseResult.GetRequiredValue(portOption);
+					bool customHeuristic = parseResult.GetValue(customHeuristicOption);
+					string? type = parseResult.GetValue(typeOption);
+					bool serversHTTPS = parseResult.GetValue(serversHTTPSOption);
+
+					Config serverConfig = new(config);
+
+					serverConfig.OverrideConfiguration("port", port, true);
+
+					if (customHeuristic)
+					{
+						serverConfig.OverrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic", true);
+					}
+
+					if (type == "server")
+					{
+						List<string> settingsPaths = ["load_balancer_web.json"];
+
+						serverConfig.OverrideConfiguration("webServerType", "multiThreaded", true);
+
+						serverConfig.OverrideConfiguration("settingsPaths", settingsPaths, true);
+					}
+					else
+					{
+						List<long> listOfServers = [];
+
+						serverConfig.OverrideConfiguration("serversHTTPS", serversHTTPS, true);
+
+						if (serversHTTPS)
+						{
+							listOfServers =
+							[
+								10002,
+								10003
+							];
+						}
+						else
+						{
+							listOfServers =
+							[
+								10000,
+								10001,
+							];
+						}
+
+						serverConfig.OverrideConfiguration("127.0.0.1", listOfServers, true);
+					}
+
+					WebFramework server = new(serverConfig);
+
+					server.Start(true, () => Console.WriteLine("Server is running..."));
 				}
-				else
-				{
-					listOfServers =
-					[
-						10000,
-						10001,
-					];
-				}
+			);
 
-				serverConfig.OverrideConfiguration("127.0.0.1", listOfServers, true);
-			}
-
-			WebFramework server = new(serverConfig);
-
-			server.Start(true, () => Console.WriteLine("Server is running..."));
+			return root.Parse(args).Invoke();
 		}
 		catch (Exception exception)
 		{
@@ -60,7 +105,5 @@ class LoadBalancerServer
 
 			return -1;
 		}
-
-		return 0;
 	}
 }
