@@ -71,13 +71,13 @@ jobs:
       if: ${{ inputs.python-version == '' && contains(inputs.test-script, 'python') }}
       shell: bash
       run: |
-        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_EXECUTORS=ON-3.14" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14" >> ${GITHUB_ENV}
         echo "actual-python-version=3.14" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name if no Python and no test script using
       if: ${{ inputs.python-version == '' && !contains(inputs.test-script, 'python') }}
       shell: bash
-      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_EXECUTORS=OFF-" >> ${GITHUB_ENV}
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF-" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name from .NET
       if: ${{ inputs.dotnet == true }}
