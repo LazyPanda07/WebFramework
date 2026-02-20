@@ -11,6 +11,8 @@
 #include "DLLHandler.hpp"
 #include "Databases/Database.hpp"
 #include "Databases/Implementations/DefaultDatabase.hpp"
+#include "Databases/Implementations/SqliteDatabase.hpp"
+#include "Databases/Implementations/RedisDatabase.hpp"
 
 namespace framework
 {

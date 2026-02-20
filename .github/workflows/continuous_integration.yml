@@ -308,6 +308,53 @@ jobs:
       dotnet: ${{ matrix.executors.dotnet }}
       
 
+  redis-tests:
+    strategy:
+      matrix:
+        config:
+          # - { os: windows-latest, image: "", install-redis: "", run-redis: "" }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, install-redis: "sudo apt update && sudo apt install -y redis-server", run-redis: "redis-server --port 8080 --requirepass password & sleep 1", run-tests-script: "source run_redis_tests.sh" }
+    runs-on: ${{ matrix.config.os }}
+
+    env:
+      WINDOWS_REDIS_VERSION: 7.4.6
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Enable NMake
+      if: ${{ inputs.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Install Redis
+      run: ${{ matrix.config.install-redis }}
+
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+        mkdir build
+        cd build
+        cmake -DBUILD_EXECUTORS=CXX -DCXX_API=ON -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Run Redis tests
+      working-directory: Tests/build/bin
+      run: |
+        ${{ matrix.config.run-redis }}
+        ${{ matrix.config.run-tests-script }}
+        
+        
   windows-tests:
     needs: [windows-tests-build, windows-executors-build]
     strategy:
@@ -408,7 +455,8 @@ jobs:
       linux-tests,
       windows-tests,
       linux-aarch64-cxx-tests,
-      linux-aarch64-cc-tests
+      linux-aarch64-cc-tests,
+      redis-tests
     ]
     runs-on: ubuntu-latest
 

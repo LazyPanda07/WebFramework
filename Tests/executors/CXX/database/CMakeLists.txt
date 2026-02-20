@@ -6,6 +6,7 @@ add_library(
 	${PROJECT_NAME} SHARED
 	src/CRUDExecutor.cpp
 	src/MultiUserExecutor.cpp
+	src/RedisExecutor.cpp
 )
 
 target_include_directories(

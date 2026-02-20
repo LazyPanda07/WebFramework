@@ -117,3 +117,14 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
             "INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
             make_sql_values(self._user_id, request.get_json()["data"])
         )
+
+
+class RedisExecutor(StatelessExecutor):
+    def do_get(self, request, response):
+        super().do_get(request, response)
+
+    def do_put(self, request, response):
+        super().do_put(request, response)
+
+    def do_post(self, request, response):
+        super().do_post(request, response)

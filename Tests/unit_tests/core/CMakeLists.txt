@@ -17,6 +17,7 @@ add_executable(
 	cases/Localization.cpp
 	cases/UserAgentFilter.cpp
 	cases/ResourceUploading.cpp
+	cases/Redis.cpp
 )
 
 target_include_directories(

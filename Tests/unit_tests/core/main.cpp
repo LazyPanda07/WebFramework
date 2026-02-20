@@ -15,6 +15,7 @@
 #include "settings.h"
 
 bool useHTTPS;
+bool runRedisTests;
 constexpr size_t largeFileSize = 200 * 1024 * 1024;
 constexpr size_t fileChunkSize = largeFileSize / 256;
 constexpr size_t randomNumbers = fileChunkSize / sizeof(size_t);
@@ -30,6 +31,7 @@ int main(int argc, char** argv) try
 	json::JsonParser configParser = std::ifstream(serverConfig);
 
 	useHTTPS = configParser.get<bool>("useHTTPS", true);
+	runRedisTests = consoleParser.get<bool>("run_redis_tests");
 
 	unit_test_utils::updateConfigRuntimes(serverConfig, consoleParser);
 
