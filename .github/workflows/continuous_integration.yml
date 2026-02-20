@@ -358,10 +358,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . -j --config Release
           cmake --install . --config Release
-
-    - name: Install curl
-      run: apt update && apt install -y curl
-
+          
     - name: Tests
       working-directory: Tests
       shell: bash
@@ -396,10 +393,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CC -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . -j --config Release
           cmake --install . --config Release
-
-    - name: Install curl
-      run: apt update && apt install -y curl
-
+          
     - name: Tests
       working-directory: Tests
       shell: bash

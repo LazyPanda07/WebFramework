@@ -12,6 +12,7 @@
 void printRunningState()
 {
 	printf("Server is running...\n");
+	fflush(stdout);
 }
 
 int main(int argc, char** argv)

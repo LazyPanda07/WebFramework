@@ -103,30 +103,12 @@ namespace unit_test_utils
 		}
 
 		std::vector<uint8_t> buffer(outputBufferSize, 0);
-		auto start = std::chrono::steady_clock::now();
+		
+		auto [_, error] = process.read(reproc::stream::out, buffer.data(), buffer.size());
 
-		while (true)
+		if (error)
 		{
-			auto [size, error] = process.read(reproc::stream::out, buffer.data(), buffer.size());
-
-			if (error)
-			{
-				throw std::runtime_error(std::format("Error while running new process: {}", error.message()));
-			}
-
-			if (size)
-			{
-				break;
-			}
-
-			auto end = std::chrono::steady_clock::now();
-
-			if (std::chrono::duration_cast<std::chrono::seconds>(end - start).count() > 30)
-			{
-				throw std::runtime_error(std::format("Timeout reached for {}", argumentsSingleLine));
-			}
-
-			std::this_thread::sleep_for(std::chrono::seconds(1));
+			throw std::runtime_error(std::format("Error while running new process: {}", error.message()));
 		}
 	}
 }

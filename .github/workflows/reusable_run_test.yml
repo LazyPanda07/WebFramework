@@ -61,6 +61,7 @@ jobs:
         echo "DOWNLOAD_ARTIFACT_NAME=Linux" >> ${GITHUB_ENV}
       
     - name: Prepare download artifact name from Python
+      if: ${{ inputs.python-version != '' }}
       shell: bash
       run: |
         echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-${{ inputs.python-version }}" >> ${GITHUB_ENV}
@@ -74,6 +75,7 @@ jobs:
         echo "actual-python-version=3.14" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name from .NET
+      if: ${{ inputs.dotnet == true }}
       shell: bash
       run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON" >> ${GITHUB_ENV}
       
