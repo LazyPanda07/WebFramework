@@ -86,10 +86,12 @@ jobs:
       
     - name: Prepare download artifact name if C# test script using
       if: ${{ inputs.dotnet == false && contains(inputs.test-script, 'csharp') }}
+      shell: bash
       run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name if no C# and no test script using
       if: ${{ inputs.dotnet == false && !contains(inputs.test-script, 'csharp') }}
+      shell: bash
       run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name from CC ON

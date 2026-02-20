@@ -44,18 +44,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	port = atoi(argv[2]);
-
-	exception = wf_override_configuration_integer(config, "port", port, true);
-
-	if (exception)
-	{
-		printf("%s\n", wf_get_error_message(exception));
-
-		return -2;
-	}
-
-	for (int i = 0; i < argc; i++)
+	for (int i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "--useHTTPS"))
 		{
@@ -65,8 +54,23 @@ int main(int argc, char** argv)
 			{
 				printf("%s\n", wf_get_error_message(exception));
 
-				return -3;
+				return -2;
 			}	
+		}
+		else if (!strcmp(argv[i], "--port"))
+		{
+			port = atoi(argv[i + 1]);
+
+			exception = wf_override_configuration_integer(config, "port", port, true);
+
+			if (exception)
+			{
+				printf("%s\n", wf_get_error_message(exception));
+
+				return -3;
+			}
+
+			i++;
 		}
 	}
 
