@@ -42,6 +42,18 @@ namespace framework
 	template<OneOf T>
 	const T& SqlValue::get() const
 	{
+		if constexpr (std::same_as<bool, T>)
+		{
+			if (std::holds_alternative<bool>(value))
+			{
+				return std::get<bool>(value);
+			}
+			else if (std::holds_alternative<int64_t>(value))
+			{
+				return std::get<int64_t>(value) == 1;
+			}
+		}
+
 		return std::get<T>(value);
 	}
 }

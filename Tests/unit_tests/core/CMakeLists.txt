@@ -51,4 +51,4 @@ add_custom_command(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments "python server.py" --runtimes python WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME} COMMAND Core.exe --server_config multi_threaded_redis_config.json --run_redis_tests --run_arguments Server.exe WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

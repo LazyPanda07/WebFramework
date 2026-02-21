@@ -33,5 +33,5 @@ target_link_libraries(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-add_test(NAME ${PROJECT_NAME} COMMAND ProxyCore --load_balancer_run_arguments "python load_balancer_server.py" --proxy_run_arguments "python proxy_server.py" --port 15000 --runtimes python WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
-add_test(NAME ${PROJECT_NAME}HTTPS COMMAND ProxyCore --load_balancer_run_arguments "python load_balancer_server.py" --proxy_run_arguments "python proxy_server.py" --port 15001 --useHTTPS --runtimes python WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME} COMMAND ProxyCore --load_balancer_run_arguments LoadBalancerServer --proxy_run_arguments ProxyServer --port 15000 --runtimes python WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME}HTTPS COMMAND ProxyCore --load_balancer_run_arguments LoadBalancerServer --proxy_run_arguments ProxyServer --port 15001 --useHTTPS --runtimes python WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
