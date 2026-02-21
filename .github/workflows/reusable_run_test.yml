@@ -34,6 +34,21 @@ on:
         required: false
         type: boolean
         default: false
+      download-web-framework-name:
+        description: "Download WebFramework artifact name"
+        required: false
+        type: string
+        default: ''
+      download-executors-name:
+        description: "Download executors artifact name"
+        required: false
+        type: string
+        default: ''
+      download-tests-name:
+        description: "Download tests artifact name"
+        required: false
+        type: string
+        default: ''
 
 
 jobs:
@@ -44,14 +59,18 @@ jobs:
     env:
       actual-python-version: ''
       runtimes: ''
+      windows-redis-version: 7.4.6
 
-    steps:  
+    steps:
+
     - name: Prepare download artifact name from Windows
       if: ${{ inputs.os == 'windows-latest' }}
       shell: bash
       run: |
         echo "CURRENT_OS=Windows" >> ${GITHUB_ENV}
         echo "DOWNLOAD_ARTIFACT_NAME=Windows" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=WindowsExecutors-${{ inputs.executors-api }}" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_TESTS_ARTIFACT_NAME=WindowsTests" >> ${GITHUB_ENV}
 
     - name: Prepare download artifact name from Linux
       if: ${{ inputs.os == 'ubuntu-latest' }}
@@ -59,6 +78,8 @@ jobs:
       run: |
         echo "CURRENT_OS=Linux" >> ${GITHUB_ENV}
         echo "DOWNLOAD_ARTIFACT_NAME=Linux" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=LinuxExecutors-${{ inputs.executors-api }}" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_TESTS_ARTIFACT_NAME=LinuxTests" >> ${GITHUB_ENV}
       
     - name: Prepare download artifact name from Python
       if: ${{ inputs.python-version != '' }}
@@ -104,22 +125,46 @@ jobs:
       shell: bash
       run: echo "DOWNLOAD_ARTIFACT_NAME=${DOWNLOAD_ARTIFACT_NAME}-BUILD_CC_API=OFF" >> ${GITHUB_ENV}
 
+    - name: Finish download artifact name
+      if: ${{ inputs.download-web-framework-name != '' }}
+      shell: bash
+      run: echo "DOWNLOAD_ARTIFACT_NAME=${{ inputs.download-web-framework-name }}" >> ${GITHUB_ENV}
+
+    - name: Finish download executors name
+      if: ${{ inputs.download-executors-name != '' }}
+      shell: bash
+      run: echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=inputs.download-executors-name" >> ${GITHUB_ENV}
+
+    - name: Finish download tests artifact name
+      if: ${{ inputs.download-test-name != '' }}
+      shell: bash
+      run: echo "DOWNLOAD_TESTS_ARTIFACT_NAME=${{ inputs.download-test-name }}" >> ${GITHUB_ENV}
+
+    - name: Get Redis on Windows
+      if: ${{ inputs.os == 'windows-latest' }}
+      uses: robinraju/release-downloader@v1.11
+      with:
+        repository: redis-windows/redis-windows
+        extract: true
+        tag: ${{ env.windows-redis-version }}
+        fileName: Redis-${{ env.windows-redis-version }}-Windows-x64-msys2.zip
+
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
       uses: actions/download-artifact@v4
       with:
         name: ${{ env.DOWNLOAD_ARTIFACT_NAME }}
         path: WebFrameworkLibrary
 
-    - name: Download ${{ env.CURRENT_OS }}Tests
+    - name: Download ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
       uses: actions/download-artifact@v4
       with:
-        name: ${{ env.CURRENT_OS }}Tests
+        name: ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
         path: Tests
 
-    - name: Download ${{ env.CURRENT_OS }}Executors-${{ inputs.executors-api }}
+    - name: Download ${{ env.DOWNLOAD_EXECUTORS_ARTIFACT_NAME }}
       uses: actions/download-artifact@v7
       with:
-        name: ${{ env.CURRENT_OS }}Executors-${{ inputs.executors-api }}
+        name: ${{ env.DOWNLOAD_EXECUTORS_ARTIFACT_NAME }}
         path: Executors
 
     - name: Install Python
@@ -162,9 +207,11 @@ jobs:
           
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Windows
       if: ${{ inputs.os == 'windows-latest' }}
-      working-directory: Tests
+      shell: cmd
       run: |
-        $env:RUNTIMES="${{ env.runtimes }}"
+        start ${{ github.workspace }}\Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2\redis-server --port 10010 --requirepass password
+        set RUNTIMES="${{ env.runtimes }}"
+        cd Tests
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
@@ -173,4 +220,5 @@ jobs:
       shell: bash
       run: |
         export RUNTIMES="${{ env.runtimes }}"
+        redis-server --port 10010 --requirepass password & sleep 1
         source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}

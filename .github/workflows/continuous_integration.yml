@@ -94,6 +94,10 @@ jobs:
 
 
   linux-aarch64-build:
+    strategy:
+      matrix:
+        build-cc-api: [ON, OFF]
+
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: ubuntu-latest
@@ -101,12 +105,12 @@ jobs:
       configuration: Release
       build-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF"
       build-cxx-api: ON
-      build-cc-api: ON
+      build-cc-api: ${{ matrix.build-cc-api }}
       with-python-executors: OFF
       build-python-api: OFF
       with-dotnet-executors: OFF
       build-csharp-api: OFF
-      upload-artifact-name: LinuxARM
+      upload-artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=${{ matrix.build-cc-api }}
       
 
   android-build:
@@ -220,6 +224,42 @@ jobs:
         path: Tests/build/bin
 
 
+  linux-aarch64-executors-build:
+    runs-on: ubuntu-latest
+    needs: linux-aarch64-build
+    container:
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+    strategy:
+      matrix:
+        executors:
+          - { api: CXX, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CC, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON }
+
+    steps:
+    - uses: actions/checkout@v6
+      
+    - name: Download ${{ matrix.executors.artifact-name }}
+      uses: actions/download-artifact@v6
+      with:
+        name: ${{ matrix.executors.artifact-name }}
+        path: WebFrameworkLibrary
+
+    - name: Build ${{ matrix.executors.api }} Executors
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
+
+    - name: Upload executors
+      uses: actions/upload-artifact@v6
+      with:
+        name: LinuxARMExecutors-${{ matrix.executors.api }}
+        path: Tests/build/bin
+
+
   windows-tests-build:
     runs-on: windows-latest
     needs: windows-build
@@ -283,6 +323,37 @@ jobs:
         path: Tests/build/bin
 
 
+  linux-aarch64-tests-build:
+    runs-on: ubuntu-latest
+    needs: linux-aarch64-build
+    container:
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v6
+      with:
+        name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON
+        path: WebFrameworkLibrary
+        
+    - name: Build tests
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
+
+    - name: Upload tests
+      uses: actions/upload-artifact@v6
+      with:
+        name: LinuxARMTests
+        path: Tests/build/bin
+
+
   linux-tests:
     needs: [linux-tests-build, linux-executors-build]
     strategy:
@@ -308,78 +379,6 @@ jobs:
       dotnet: ${{ matrix.executors.dotnet }}
       
 
-  redis-tests:
-    strategy:
-      matrix:
-        config:
-          - { os: windows-latest, image: "" }
-          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04 }
-    runs-on: ${{ matrix.config.os }}
-    container:
-      image: ${{ matrix.config.image }}
-
-    env:
-      WINDOWS_REDIS_VERSION: 7.4.6
-
-    steps:
-    - uses: actions/checkout@v6
-      with:
-        submodules: recursive
-        
-    - name: Enable NMake
-      if: ${{ matrix.config.os == 'windows-latest' }}
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Get Redis on Windows
-      if: ${{ matrix.config.os == 'windows-latest' }}
-      uses: robinraju/release-downloader@v1.11
-      with:
-        repository: redis-windows/redis-windows
-        extract: true
-        tag: ${{ env.WINDOWS_REDIS_VERSION }}
-        fileName: Redis-${{ env.WINDOWS_REDIS_VERSION }}-Windows-x64-msys2.zip
-        out-file-path: Redis
-
-    - name: Install Redis on Linux
-      if: ${{ matrix.config.os == 'ubuntu-latest' }}
-      run: |
-        sudo apt update 
-        sudo apt install -y redis-server
-
-    - name: Build
-      shell: bash
-      run: |
-        mkdir build
-        cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Build tests
-      working-directory: Tests
-      run: |
-        mkdir build
-        cd build
-        cmake -DBUILD_EXECUTORS=CXX -DCXX_API=ON -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Run Redis Windows tests
-      if: ${{ matrix.config.os == 'windows-latest' }}
-      run: |
-        Start-Process -NoNewWindow -FilePath "Redis/redis-server.exe" -ArgumentList "--port 10010 --requirepass password"
-        cd Tests/build/bin
-        .\run_redis_tests.bat
-
-    - name: Run Redis tests
-      if: ${{ matrix.config.os == 'ubuntu-latest' }}
-      shell: bash
-      run: |
-        redis-server --port 10010 --requirepass password & sleep 1
-        cd Tests/build/bin
-        source run_redis_tests.sh
-        
-        
   windows-tests:
     needs: [windows-tests-build, windows-executors-build]
     strategy:
@@ -404,84 +403,33 @@ jobs:
       dotnet: ${{ matrix.executors.dotnet }}
       
 
-  linux-aarch64-cxx-tests:
-    runs-on: ubuntu-latest
-    needs: linux-aarch64-build
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+  linux-aarch64-tests:
+    needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
     strategy:
       matrix:
         config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
+        additional-settings:
+          - { test-script: run_aarch64_cxx_tests.sh, api: CXX, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF, download-executors-name: LinuxARMExecutors-CXX }
+          - { test-script: run_aarch64_cc_tests.sh, api: CC, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON, download-executors-name: LinuxARMExecutors-CC }
 
-    steps:
-    - uses: actions/checkout@v6
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v6
-      with:
-        name: LinuxARM
-        path: WebFrameworkLibrary
-        
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . -j --config Release
-          cmake --install . --config Release
-          
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          source run_aarch64_cxx_tests.sh ${{ matrix.config }}
-          
-          
-  linux-aarch64-cc-tests:
-    runs-on: ubuntu-latest
-    needs: linux-aarch64-build
-    container:
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-    strategy:
-      matrix:
-        config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v6
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v6
-      with:
-        name: LinuxARM
-        path: WebFrameworkLibrary
-        
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CC -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . -j --config Release
-          cmake --install . --config Release
-          
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          source run_aarch64_cc_tests.sh ${{ matrix.config }}
-          
+      executors-api: ${{ matrix.additional-settings.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.additional-settings.test-script }}
+      download-web-framework-name: ${{ matrix.additional-settings.download-web-framework-name }}
+      download-executors-name: ${{ matrix.additional-settings.download-executors-name }}
+      download-tests-name: LinuxARMTests
+      
 
   publish:
     needs: [
       android-build,
       linux-tests,
       windows-tests,
-      linux-aarch64-cxx-tests,
-      linux-aarch64-cc-tests,
-      redis-tests
+      linux-aarch64-tests
     ]
     runs-on: ubuntu-latest
 
@@ -506,8 +454,10 @@ jobs:
           rm -rf WindowsExecutors*
           rm -rf LinuxTests
           rm -rf LinuxExecutors*
+          rm -rf LinuxARMTests
+          rm -rf LinuxARMExecutors*
       
-    - name: Create Windows and Linux zips
+    - name: Create Windows, Linux and LinuxARM zips
       run: |
         for directory in Windows-*/; do
           zip -r "${directory%/}.zip" ${directory}
@@ -516,13 +466,14 @@ jobs:
         for directory in Linux-*/; do
           zip -r "${directory%/}.zip" ${directory}
         done
+
+        for directory in LinuxARM-*/; do
+          zip -r "${directory%/}.zip" ${directory}
+        done
         
     - name: Create Android zip
       run: zip -r android.zip Android
-
-    - name: Create Linux ARM64 zip
-      run: zip -r linux_aarch64.zip LinuxARM
-
+      
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: gh release upload v${{ env.VERSION }} *.zip --clobber

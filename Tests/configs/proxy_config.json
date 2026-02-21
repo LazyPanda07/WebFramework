@@ -53,10 +53,7 @@
       "pathToCertificate": "certificates/cert.pem",
       "pathToKey": "certificates/key.pem"
     },
-    "defaultAssetsPath": "WebFrameworkAssets",
-    "databases": [
-      "sqlite"
-    ]
+    "defaultAssetsPath": "WebFrameworkAssets"
   },
   "Logging": {
     "usingLogging": true,

@@ -11,11 +11,6 @@
 
 TEST(Redis, CommonOperations)
 {
-	if (!runRedisTests)
-	{
-		GTEST_SKIP();
-	}
-
 	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string response;
 	

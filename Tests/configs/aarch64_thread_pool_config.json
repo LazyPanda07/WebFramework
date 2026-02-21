@@ -24,7 +24,8 @@
     },
     "defaultAssetsPath": "WebFrameworkAssets",
     "databases": [
-      "sqlite"
+      "sqlite",
+      "redis"
     ]
   },
   "Logging": {
