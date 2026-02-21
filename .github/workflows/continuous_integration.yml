@@ -312,8 +312,8 @@ jobs:
     strategy:
       matrix:
         config:
-          - { os: windows-latest, image: "", run-redis: Start-Process -NoNewWindow -FilePath "Redis/redis-server.exe" -ArgumentList "--port 8080 --requirepass password", run-tests-script: .\run_redis_tests.bat }
-          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, run-redis: "redis-server --port 8080 --requirepass password & sleep 1", run-tests-script: "source run_redis_tests.sh" }
+          - { os: windows-latest, image: "" }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04 }
     runs-on: ${{ matrix.config.os }}
     container:
       image: ${{ matrix.config.image }}
@@ -342,7 +342,9 @@ jobs:
 
     - name: Install Redis on Linux
       if: ${{ matrix.config.os == 'ubuntu-latest' }}
-      run: sudo apt update && sudo apt install -y redis-server
+      run: |
+        sudo apt update 
+        sudo apt install -y redis-server
 
     - name: Build
       shell: bash
@@ -362,11 +364,20 @@ jobs:
         cmake --build . -j
         cmake --install .
 
-    - name: Run Redis tests
+    - name: Run Redis Windows tests
+      if: ${{ matrix.config.os == 'windows-latest' }}
       run: |
-        ${{ matrix.config.run-redis }}
+        Start-Process -NoNewWindow -FilePath "Redis/redis-server.exe" -ArgumentList "--port 8080 --requirepass password"
         cd Tests/build/bin
-        ${{ matrix.config.run-tests-script }}
+        .\run_redis_tests.bat
+
+    - name: Run Redis tests
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      shell: bash
+      run: |
+        redis-server --port 8080 --requirepass password & sleep 1
+        cd Tests/build/bin
+        source run_redis_tests.sh
         
         
   windows-tests:
