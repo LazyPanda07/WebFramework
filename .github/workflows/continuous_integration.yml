@@ -312,9 +312,11 @@ jobs:
     strategy:
       matrix:
         config:
-          # - { os: windows-latest, image: "", install-redis: "", run-redis: "" }
-          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, install-redis: "sudo apt update && sudo apt install -y redis-server uuid-dev", run-redis: "redis-server --port 8080 --requirepass password & sleep 1", run-tests-script: "source run_redis_tests.sh" }
+          - { os: windows-latest, image: "", run-redis: Start-Process -NoNewWindow -FilePath "Redis/redis-server.exe" -ArgumentList "--port 8080 --requirepass password", run-tests-script: .\run_redis_tests.bat }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, run-redis: "redis-server --port 8080 --requirepass password & sleep 1", run-tests-script: "source run_redis_tests.sh" }
     runs-on: ${{ matrix.config.os }}
+    container:
+      image: ${{ matrix.config.image }}
 
     env:
       WINDOWS_REDIS_VERSION: 7.4.6
@@ -325,11 +327,22 @@ jobs:
         submodules: recursive
         
     - name: Enable NMake
-      if: ${{ inputs.os == 'windows-latest' }}
+      if: ${{ matrix.config.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
-    - name: Install Redis
-      run: ${{ matrix.config.install-redis }}
+    - name: Get Redis on Windows
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      uses: robinraju/release-downloader@v1.11
+      with:
+        repository: redis-windows/redis-windows
+        extract: true
+        tag: ${{ env.WINDOWS_REDIS_VERSION }}
+        fileName: Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2.zip
+        out-file-path: Redis
+
+    - name: Install Redis on Linux
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      run: sudo apt update && sudo apt install -y redis-server
 
     - name: Build
       run: |
@@ -349,9 +362,9 @@ jobs:
         cmake --install .
 
     - name: Run Redis tests
-      working-directory: Tests/build/bin
       run: |
         ${{ matrix.config.run-redis }}
+        cd Tests/build/bin
         ${{ matrix.config.run-tests-script }}
         
         
