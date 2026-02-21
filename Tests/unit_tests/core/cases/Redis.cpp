@@ -38,7 +38,7 @@ TEST(Redis, CommonOperations)
 
 	web::HttpParser parser(response);
 
-	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok);
+	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
 
 	json::JsonParser body(parser.getBody());
 
