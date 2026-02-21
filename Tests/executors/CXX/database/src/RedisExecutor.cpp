@@ -4,7 +4,7 @@
 
 void RedisExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Table connect = request.getTable<framework::RedisDatabase>("127.0.0.1:8080:password", "");
+	framework::Table connect = request.getTable<framework::RedisDatabase>("127.0.0.1:10010:password", "");
 	framework::JsonBuilder result;
 	
 	{
@@ -36,14 +36,14 @@ void RedisExecutor::doGet(framework::HttpRequest& request, framework::HttpRespon
 
 void RedisExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	request.getOrCreateDatabase<framework::RedisDatabase>("127.0.0.1:8080:password").getOrCreateTable("", "");
+	request.getOrCreateDatabase<framework::RedisDatabase>("127.0.0.1:10010:password").getOrCreateTable("", "");
 
 	response.setResponseCode(framework::ResponseCodes::created);
 }
 
 void RedisExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	framework::Table connect = request.getTable<framework::RedisDatabase>("127.0.0.1:8080:password", "");
+	framework::Table connect = request.getTable<framework::RedisDatabase>("127.0.0.1:10010:password", "");
 	
 	connect.execute("SET", framework::utility::database::makeSQLValues("string", "qwe"));
 	connect.execute("SET", framework::utility::database::makeSQLValues("int", 5));

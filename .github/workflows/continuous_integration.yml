@@ -367,7 +367,7 @@ jobs:
     - name: Run Redis Windows tests
       if: ${{ matrix.config.os == 'windows-latest' }}
       run: |
-        Start-Process -NoNewWindow -FilePath "Redis/redis-server.exe" -ArgumentList "--port 8080 --requirepass password"
+        Start-Process -NoNewWindow -FilePath "Redis/redis-server.exe" -ArgumentList "--port 10010 --requirepass password"
         cd Tests/build/bin
         .\run_redis_tests.bat
 
@@ -375,7 +375,7 @@ jobs:
       if: ${{ matrix.config.os == 'ubuntu-latest' }}
       shell: bash
       run: |
-        redis-server --port 8080 --requirepass password & sleep 1
+        redis-server --port 10010 --requirepass password & sleep 1
         cd Tests/build/bin
         source run_redis_tests.sh
         

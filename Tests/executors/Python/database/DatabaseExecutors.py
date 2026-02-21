@@ -121,7 +121,7 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
 
 class RedisExecutor(StatelessExecutor):
     def do_get(self, request, response):
-        connect = request.get_table("127.0.0.1:8080:password", "", RedisDatabase)
+        connect = request.get_table("127.0.0.1:10010:password", "", RedisDatabase)
         result = {
             "string": next(iter(connect.execute("GET", make_sql_values("string"))[0].values()), None),
             "int": next(iter(connect.execute("GET", make_sql_values("int"))[0].values()), None),
@@ -132,12 +132,12 @@ class RedisExecutor(StatelessExecutor):
         response.set_body(result)
 
     def do_post(self, request, response):
-        request.get_or_create_database("127.0.0.1:8080:password", RedisDatabase).get_or_create_table("", "")
+        request.get_or_create_database("127.0.0.1:10010:password", RedisDatabase).get_or_create_table("", "")
 
         response.set_response_code(ResponseCodes.CREATED)
 
     def do_put(self, request, response):
-        connect = request.get_table("127.0.0.1:8080:password", "", RedisDatabase)
+        connect = request.get_table("127.0.0.1:10010:password", "", RedisDatabase)
 
         connect.execute("SET", make_sql_values("string", "qwe"))
         connect.execute("SET", make_sql_values("int", 5))

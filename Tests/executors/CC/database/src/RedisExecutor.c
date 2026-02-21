@@ -15,7 +15,7 @@ DEFINE_EXECUTOR_METHOD(RedisExecutor, GET_METHOD, request, response)
 	sql_result_t temp;
 	json_builder_t result;
 
-	wf_get_table_request(request, "127.0.0.1:8080:password", REDIS_DATABASE_IMPLEMENTATION_NAME, "", &connect);
+	wf_get_table_request(request, "127.0.0.1:10010:password", REDIS_DATABASE_IMPLEMENTATION_NAME, "", &connect);
 	wf_create_sql_value(&key);
 
 	wf_set_sql_value_string(key, "string");
@@ -49,7 +49,7 @@ DEFINE_EXECUTOR_METHOD(RedisExecutor, POST_METHOD, request, response)
 	database_t database;
 	table_t connect;
 
-	wf_get_or_create_database_request(request, "127.0.0.1:8080:password", REDIS_DATABASE_IMPLEMENTATION_NAME, &database);
+	wf_get_or_create_database_request(request, "127.0.0.1:10010:password", REDIS_DATABASE_IMPLEMENTATION_NAME, &database);
 
 	wf_get_or_create_table(database, "", "", &connect);
 
@@ -62,7 +62,7 @@ DEFINE_EXECUTOR_METHOD(RedisExecutor, PUT_METHOD, request, response)
 	sql_value_t keyValue[2];
 	sql_result_t temp;
 
-	wf_get_table_request(request, "127.0.0.1:8080:password", REDIS_DATABASE_IMPLEMENTATION_NAME, "", &connect);
+	wf_get_table_request(request, "127.0.0.1:10010:password", REDIS_DATABASE_IMPLEMENTATION_NAME, "", &connect);
 	wf_create_sql_value(&keyValue[0]);
 	wf_create_sql_value(&keyValue[1]);
 	
