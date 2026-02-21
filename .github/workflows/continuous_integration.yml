@@ -337,7 +337,7 @@ jobs:
         repository: redis-windows/redis-windows
         extract: true
         tag: ${{ env.WINDOWS_REDIS_VERSION }}
-        fileName: Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2.zip
+        fileName: Redis-${{ env.WINDOWS_REDIS_VERSION }}-Windows-x64-msys2.zip
         out-file-path: Redis
 
     - name: Install Redis on Linux

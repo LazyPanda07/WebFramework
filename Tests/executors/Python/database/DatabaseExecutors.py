@@ -121,10 +121,27 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
 
 class RedisExecutor(StatelessExecutor):
     def do_get(self, request, response):
-        super().do_get(request, response)
+        connect = request.get_table("127.0.0.1:8080:password", "", RedisDatabase)
+        result = {
+            "string": next(iter(connect.execute("GET", make_sql_values("string"))[0].values()), None),
+            "int": next(iter(connect.execute("GET", make_sql_values("int"))[0].values()), None),
+            "double": next(iter(connect.execute("GET", make_sql_values("double"))[0].values()), None),
+            "bool": next(iter(connect.execute("GET", make_sql_values("bool"))[0].values()), None),
+        }
 
-    def do_put(self, request, response):
-        super().do_put(request, response)
+        response.set_body(result)
 
     def do_post(self, request, response):
-        super().do_post(request, response)
+        request.get_or_create_database("127.0.0.1:8080:password", RedisDatabase).get_or_create_table("", "")
+
+        response.set_response_code(ResponseCodes.CREATED)
+
+    def do_put(self, request, response):
+        connect = request.get_table("127.0.0.1:8080:password", "", RedisDatabase)
+
+        connect.execute("SET", make_sql_values("string", "qwe"))
+        connect.execute("SET", make_sql_values("int", 5))
+        connect.execute("SET", make_sql_values("double", 2.3))
+        connect.execute("SET", make_sql_values("bool", True))
+
+        response.set_response_code(ResponseCodes.CREATED)
