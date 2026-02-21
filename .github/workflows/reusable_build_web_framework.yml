@@ -100,10 +100,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install build
-
-    - name: Get current branch
-      uses : LazyPanda07/extract-current-branch@master
-
+        
     - name: Append WITH_STACKTRACE=ON to ADDITIONAL_BUILD_PARAMETERS on Windows at main branch
       if: ${{ inputs.os == 'windows-latest' && env.CURRENT_BRANCH == 'main' }}
       shell: bash

@@ -136,9 +136,9 @@ jobs:
       run: echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=inputs.download-executors-name" >> ${GITHUB_ENV}
 
     - name: Finish download tests artifact name
-      if: ${{ inputs.download-test-name != '' }}
+      if: ${{ inputs.download-tests-name != '' }}
       shell: bash
-      run: echo "DOWNLOAD_TESTS_ARTIFACT_NAME=${{ inputs.download-test-name }}" >> ${GITHUB_ENV}
+      run: echo "DOWNLOAD_TESTS_ARTIFACT_NAME=${{ inputs.download-tests-name }}" >> ${GITHUB_ENV}
 
     - name: Get Redis on Windows
       if: ${{ inputs.os == 'windows-latest' }}
@@ -215,7 +215,7 @@ jobs:
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
-      if: ${{ inputs.os == 'linux-latest' }}
+      if: ${{ inputs.os == 'ubuntu-latest' }}
       working-directory: Tests
       shell: bash
       run: |
