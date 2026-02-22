@@ -54,7 +54,7 @@ namespace unit_test_utils
 				argumentsSingleLine += arg + ' ';
 			}
 
-			throw std::runtime_error(std::format("Error while creating new process: {} from {}", error.message()), argumentsSingleLine);
+			throw std::runtime_error(std::format("Error while creating new process: {} from {}", error.message(), argumentsSingleLine));
 		}
 	}
 
@@ -81,7 +81,7 @@ namespace unit_test_utils
 
 				if (error)
 				{
-					throw std::runtime_error(std::format("Error while creating new process: {} from {}", error.message()), argumentsSingleLine);
+					throw std::runtime_error(std::format("Error while creating new process: {} from {}", error.message(), argumentsSingleLine));
 				}
 			}
 			else
@@ -104,7 +104,7 @@ namespace unit_test_utils
 
 		if (error)
 		{
-			throw std::runtime_error(std::format("Error while running new process: {} from {}", error.message()), argumentsSingleLine);
+			throw std::runtime_error(std::format("Error while running new process: {} from {}", error.message(), argumentsSingleLine));
 		}
 	}
 }
