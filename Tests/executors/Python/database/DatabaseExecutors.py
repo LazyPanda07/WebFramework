@@ -126,7 +126,7 @@ class RedisExecutor(StatelessExecutor):
             "string": next(iter(connect.execute("GET", make_sql_values("string"))[0].values()), None).get(),
             "int": next(iter(connect.execute("GET", make_sql_values("int"))[0].values()), None).get(),
             "double": next(iter(connect.execute("GET", make_sql_values("double"))[0].values()), None).get(),
-            "bool": next(iter(connect.execute("GET", make_sql_values("bool"))[0].values()), None).get(),
+            "bool": next(iter(connect.execute("GET", make_sql_values("bool"))[0].values()), None).get_as_bool(),
         }
 
         response.set_body(result)

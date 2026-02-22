@@ -262,7 +262,12 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def(py::init<const std::string&>(), "value"_a)
 		.def(py::init<std::nullptr_t>(), "value"_a)
 		.def(py::init<const std::vector<uint8_t>&>(), "value"_a)
-		.def("get", &framework::SqlValue::operator*);
+		.def("get", &framework::SqlValue::operator*)
+		.def("get_as_int", [](framework::SqlValue& self) { return self.get<int64_t>(); })
+		.def("get_as_bool", [](framework::SqlValue& self) { return self.get<bool>(); })
+		.def("get_as_float", [](framework::SqlValue& self) { return self.get<double>(); })
+		.def("get_as_string", [](framework::SqlValue& self) { return self.get<std::string>(); })
+		.def("get_as_blob", [](framework::SqlValue& self) { return self.get<std::vector<uint8_t>>(); });
 
 	py::class_<framework::SqlResult>(m, "SqlResult")
 		.def("at", [](const framework::SqlResult& self, size_t index) { return self.at(index); }, "index"_a)
