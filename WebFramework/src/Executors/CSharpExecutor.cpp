@@ -114,7 +114,13 @@ namespace framework
 
 	void CSharpExecutor::destroy()
 	{
-		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getDestroy()(implementation);
+		utility::ExecutorType executorType = this->getType();
+
+		if (executorType == utility::ExecutorType::stateful ||
+			executorType == utility::ExecutorType::heavyOperationStateful)
+		{
+			runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().getDestroy()(implementation);
+		}
 	}
 
 	CSharpExecutor::~CSharpExecutor()

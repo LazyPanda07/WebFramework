@@ -102,9 +102,15 @@ namespace framework
 
 	void PythonExecutor::destroy()
 	{
-		py::gil_scoped_acquire gil;
+		utility::ExecutorType executorType = this->getType();
 
-		implementation->attr("destroy")();
+		if (executorType == utility::ExecutorType::stateful ||
+			executorType == utility::ExecutorType::heavyOperationStateful)
+		{
+			py::gil_scoped_acquire gil;
+
+			implementation->attr("destroy")();
+		}
 	}
 
 	PythonExecutor::~PythonExecutor()

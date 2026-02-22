@@ -159,9 +159,10 @@ namespace framework
 				executor = routes.try_emplace
 				(
 					move(parameters),
-					this->createAPIExecutor(executorSettings->second.name, executorSettings->second.apiType)
+					this->createApiExecutor(executorSettings->second.name, executorSettings->second.apiType)
 				).first;
 
+				// TODO: stateful init
 				executor->second->init(executorSettings->second);
 
 				utility::ExecutorType executorType = executor->second->getType();
@@ -212,7 +213,7 @@ namespace framework
 		return true;
 	}
 
-	std::unique_ptr<BaseExecutor> ExecutorsManager::createAPIExecutor(const std::string& name, std::string_view apiType) const
+	std::unique_ptr<BaseExecutor> ExecutorsManager::createApiExecutor(const std::string& name, std::string_view apiType) const
 	{
 		return runtime::RuntimesManager::get().getRuntime(utility::getExecutorAPIType(apiType)).createExecutor(name);
 	}
@@ -266,7 +267,7 @@ namespace framework
 					auto [it, success] = routes.try_emplace
 					(
 						route,
-						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
+						this->createApiExecutor(executorSettings.name, executorSettings.apiType)
 					);
 
 					if (success)
@@ -277,6 +278,8 @@ namespace framework
 						}
 						else
 						{
+							// TODO: stateless init
+
 							it->second->init(executorSettings);
 						}
 					}
@@ -288,13 +291,15 @@ namespace framework
 					auto [it, success] = routes.try_emplace
 					(
 						routeParameters.back().baseRoute,
-						this->createAPIExecutor(executorSettings.name, executorSettings.apiType)
+						this->createApiExecutor(executorSettings.name, executorSettings.apiType)
 					);
 
 					nodes.emplace_back(route, routeParameters.back().baseRoute);
 
 					if (success)
 					{
+						// TODO: stateless init
+
 						it->second->init(executorSettings);
 					}
 				}
