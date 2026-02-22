@@ -293,7 +293,7 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info("Register function: {} from: ", "LogWFDP", functionName, apiType);
+			Log::info("Register function: {} from: {}", "LogWFDP", functionName, apiType);
 		}
 
 		wfdpRenderer.registerDynamicFunction(functionName, apiDynamicFunctions.at(apiType)(function));

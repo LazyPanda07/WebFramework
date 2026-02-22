@@ -359,7 +359,7 @@ jobs:
     strategy:
       matrix:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
+        test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
         executors:
             - { api: CXX, python-version: "", dotnet: false }
             - { api: CC, python-version: "", dotnet: false }
