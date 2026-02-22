@@ -123,10 +123,10 @@ class RedisExecutor(StatelessExecutor):
     def do_get(self, request, response):
         connect = request.get_table("127.0.0.1:10010:password", "", RedisDatabase)
         result = {
-            "string": next(iter(connect.execute("GET", make_sql_values("string"))[0].values()), None),
-            "int": next(iter(connect.execute("GET", make_sql_values("int"))[0].values()), None),
-            "double": next(iter(connect.execute("GET", make_sql_values("double"))[0].values()), None),
-            "bool": next(iter(connect.execute("GET", make_sql_values("bool"))[0].values()), None),
+            "string": next(iter(connect.execute("GET", make_sql_values("string"))[0].values()), None).get(),
+            "int": next(iter(connect.execute("GET", make_sql_values("int"))[0].values()), None).get(),
+            "double": next(iter(connect.execute("GET", make_sql_values("double"))[0].values()), None).get(),
+            "bool": next(iter(connect.execute("GET", make_sql_values("bool"))[0].values()), None).get(),
         }
 
         response.set_body(result)
