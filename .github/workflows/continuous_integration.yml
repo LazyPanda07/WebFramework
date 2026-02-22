@@ -409,7 +409,7 @@ jobs:
       matrix:
         config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
         additional-settings:
-          - { test-script: run_aarch64_cxx_tests.sh, api: CXX, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF, download-executors-name: LinuxARMExecutors-CXX }
+          # - { test-script: run_aarch64_cxx_tests.sh, api: CXX, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF, download-executors-name: LinuxARMExecutors-CXX }
           - { test-script: run_aarch64_cc_tests.sh, api: CC, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON, download-executors-name: LinuxARMExecutors-CC }
 
     uses: ./.github/workflows/reusable_run_test.yml

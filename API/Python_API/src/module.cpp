@@ -498,15 +498,15 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			"get_or_create_database",
 			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
-				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
 					return self.getOrCreateDatabase<framework::DefaultDatabase>(databaseName);
 				}
-				else if (py::isinstance<framework::SqliteDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
 				{
 					return self.getOrCreateDatabase<framework::SqliteDatabase>(databaseName);
 				}
-				else if (py::isinstance<framework::RedisDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 				{
 					return self.getOrCreateDatabase<framework::RedisDatabase>(databaseName);
 				}
@@ -522,15 +522,15 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			"get_database",
 			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
-				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
 					return self.getDatabase<framework::DefaultDatabase>(databaseName);
 				}
-				else if (py::isinstance<framework::SqliteDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
 				{
 					return self.getDatabase<framework::SqliteDatabase>(databaseName);
 				}
-				else if (py::isinstance<framework::RedisDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 				{
 					return self.getDatabase<framework::RedisDatabase>(databaseName);
 				}
@@ -546,15 +546,15 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			"get_or_create_table",
 			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::handle databaseImplementationClass)
 			{
-				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
 					return self.getOrCreateTable<framework::DefaultDatabase>(databaseName, tableName, createTableQuery);
 				}
-				else if (py::isinstance<framework::SqliteDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
 				{
 					return self.getOrCreateTable<framework::SqliteDatabase>(databaseName, tableName, createTableQuery);
 				}
-				else if (py::isinstance<framework::RedisDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 				{
 					return self.getOrCreateTable<framework::RedisDatabase>(databaseName, tableName, createTableQuery);
 				}
@@ -570,15 +570,15 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			"get_table",
 			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, py::handle databaseImplementationClass)
 			{
-				if (databaseImplementationClass.is_none() || py::isinstance<framework::DefaultDatabase>(databaseImplementationClass))
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
 					return self.getTable<framework::DefaultDatabase>(databaseName, tableName);
 				}
-				else if (py::isinstance<framework::SqliteDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
 				{
 					return self.getTable<framework::SqliteDatabase>(databaseName, tableName);
 				}
-				else if (py::isinstance<framework::RedisDatabase>(databaseImplementationClass))
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
 				{
 					return self.getTable<framework::RedisDatabase>(databaseName, tableName);
 				}

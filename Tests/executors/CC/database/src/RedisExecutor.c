@@ -13,35 +13,36 @@ DEFINE_EXECUTOR_METHOD(RedisExecutor, GET_METHOD, request, response)
 	table_t connect;
 	sql_value_t key;
 	sql_result_t temp;
-	json_builder_t result;
+	json_builder_t builder;
 
 	wf_get_table_request(request, "127.0.0.1:10010:password", REDIS_DATABASE_IMPLEMENTATION_NAME, "", &connect);
 	wf_create_sql_value(&key);
+	wf_create_json_builder(&builder);
 
 	wf_set_sql_value_string(key, "string");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &result);
+	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
 	wf_delete_sql_result(connect, temp);
 
 	wf_set_sql_value_string(key, "int");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &result);
+	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
 	wf_delete_sql_result(connect, temp);
 
 	wf_set_sql_value_string(key, "double");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &result);
+	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
 	wf_delete_sql_result(connect, temp);
 
 	wf_set_sql_value_string(key, "bool");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &result);
+	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
 	wf_delete_sql_result(connect, temp);
 
-	wf_set_json_body(request, result);
+	wf_set_json_body(request, builder);
 
 	wf_delete_sql_value(key);
-	wf_delete_json_builder(result);
+	wf_delete_json_builder(builder);
 }
 
 DEFINE_EXECUTOR_METHOD(RedisExecutor, POST_METHOD, request, response)
