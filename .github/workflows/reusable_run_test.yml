@@ -133,7 +133,7 @@ jobs:
     - name: Finish download executors name
       if: ${{ inputs.download-executors-name != '' }}
       shell: bash
-      run: echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=inputs.download-executors-name" >> ${GITHUB_ENV}
+      run: echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=${{ inputs.download-executors-name }}" >> ${GITHUB_ENV}
 
     - name: Finish download tests artifact name
       if: ${{ inputs.download-tests-name != '' }}
@@ -150,13 +150,13 @@ jobs:
         fileName: Redis-${{ env.windows-redis-version }}-Windows-x64-msys2.zip
 
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: ${{ env.DOWNLOAD_ARTIFACT_NAME }}
         path: WebFrameworkLibrary
 
     - name: Download ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
         path: Tests
@@ -209,7 +209,7 @@ jobs:
       if: ${{ inputs.os == 'windows-latest' }}
       shell: cmd
       run: |
-        start ${{ github.workspace }}\Redis-${{ env.REDIS_VERSION }}-Windows-x64-msys2\redis-server --port 10010 --requirepass password
+        start ${{ github.workspace }}\Redis-${{ env.windows-redis-version }}-Windows-x64-msys2\redis-server --port 10010 --requirepass password
         set RUNTIMES="${{ env.runtimes }}"
         cd Tests
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
