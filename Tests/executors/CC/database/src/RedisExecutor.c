@@ -14,32 +14,32 @@ DEFINE_EXECUTOR_METHOD(RedisExecutor, GET_METHOD, request, response)
 	sql_value_t key;
 	sql_result_t temp;
 	json_builder_t builder;
-
+	
 	wf_get_table_request(request, "127.0.0.1:10010:password", REDIS_DATABASE_IMPLEMENTATION_NAME, "", &connect);
 	wf_create_sql_value(&key);
 	wf_create_json_builder(&builder);
 
 	wf_set_sql_value_string(key, "string");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
+	wf_iterate_sql_result(temp, redisInitBuffer, redisCallback, builder);
 	wf_delete_sql_result(connect, temp);
 
 	wf_set_sql_value_string(key, "int");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
+	wf_iterate_sql_result(temp, redisInitBuffer, redisCallback, builder);
 	wf_delete_sql_result(connect, temp);
 
 	wf_set_sql_value_string(key, "double");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
+	wf_iterate_sql_result(temp, redisInitBuffer, redisCallback, builder);
 	wf_delete_sql_result(connect, temp);
 
 	wf_set_sql_value_string(key, "bool");
 	wf_execute_query(connect, "GET", &key, 1, &temp);
-	wf_iterate_sql_result(temp, initBuffer, redisCallback, &builder);
+	wf_iterate_sql_result(temp, redisInitBuffer, redisCallback, builder);
 	wf_delete_sql_result(connect, temp);
 
-	wf_set_json_body(request, builder);
+	wf_set_json_body(response, builder);
 
 	wf_delete_sql_value(key);
 	wf_delete_json_builder(builder);
@@ -104,7 +104,7 @@ void redisInitBuffer(size_t size, void* buffer)
 
 void redisCallback(const char** columnNames, const sql_value_t* columnValues, size_t size, size_t index, void* buffer)
 {
-	json_builder_t* builder = (json_builder_t*)buffer;
+	json_builder_t builder = (json_builder_t)buffer;
 	sql_value_type_t type;
 
 	wf_get_sql_value_type(columnValues[0], &type);
@@ -115,15 +115,22 @@ void redisCallback(const char** columnNames, const sql_value_t* columnValues, si
 
 		wf_get_sql_value_string(columnValues[0], &result);
 
-		wf_append_json_builder_string(*builder, "string", result);
+		wf_append_json_builder_string(builder, "string", result);
 	}
 	else if (type == INT_TYPE)
 	{
 		int64_t result;
 
 		wf_get_sql_value_int(columnValues[0], &result);
-
-		wf_append_json_builder_integer(*builder, "int", result);
+		
+		if (result == 1)
+		{
+			wf_append_json_builder_boolean(builder, "bool", (bool)result);
+		}
+		else
+		{
+			wf_append_json_builder_integer(builder, "int", result);
+		}
 	}
 	else if (type == DOUBLE_TYPE)
 	{
@@ -131,14 +138,6 @@ void redisCallback(const char** columnNames, const sql_value_t* columnValues, si
 
 		wf_get_sql_value_double(columnValues[0], &result);
 
-		wf_append_json_builder_double(*builder, "double", result);
-	}
-	else if (type == BOOL_TYPE)
-	{
-		bool result;
-
-		wf_get_sql_value_bool(*builder, &result);
-
-		wf_append_json_builder_boolean(*builder, "bool", result);
+		wf_append_json_builder_double(builder, "double", result);
 	}
 }

@@ -9,7 +9,10 @@ export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
 echo "Current runtimes: ${RUNTIMES}"
 
+echo "CC_API_TESTS"
 qemu-aarch64 ./CC_API_TESTS
+
+echo "Core"
 qemu-aarch64 ./Core --server_config ${WEB_FRAMEWORK_SERVER_CONFIG} --run_arguments "qemu-aarch64 ./CC_Server" ${RUNTIMES}
 qemu-aarch64 ./LoadBalancerCore --port 9090 --load_balancer_run_arguments "qemu-aarch64 ./CC_LoadBalancerServer" --config load_balancer_config.json ${RUNTIMES}
 qemu-aarch64 ./LoadBalancerCore --port 9092 --load_balancer_run_arguments "qemu-aarch64 ./CC_LoadBalancerServer" --config load_balancer_config_https.json --useHTTPS ${RUNTIMES} # needs to initialize runtimes for https config before using it
