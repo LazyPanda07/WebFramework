@@ -6,7 +6,7 @@
 
 #include <Executors/Executor.h>
 
-#include "WebInterfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHttpRequest.h"
 #include "Utility/Sources.h"
 
 namespace framework::runtime
@@ -24,9 +24,9 @@ namespace framework::runtime
 
 		virtual void* createExecutorSettings(const void* implementation) const = 0;
 
-		virtual void* createHTTPRequest(framework::interfaces::IHTTPRequest* request) const = 0;
+		virtual void* createHTTPRequest(framework::interfaces::IHttpRequest* request) const = 0;
 
-		virtual void* createHTTPResponse(framework::interfaces::IHTTPResponse* response) const = 0;
+		virtual void* createHTTPResponse(framework::interfaces::IHttpResponse* response) const = 0;
 
 		virtual void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) = 0;
 

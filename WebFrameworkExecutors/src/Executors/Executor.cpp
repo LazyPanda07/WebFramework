@@ -5,18 +5,18 @@
 static void isImplemented
 (
 	std::vector<std::string>& result,
-	framework::interfaces::IHTTPRequest& request, 
-	framework::interfaces::IHTTPResponse& response,
+	framework::interfaces::IHttpRequest& request, 
+	framework::interfaces::IHttpResponse& response,
 	const std::string& methodName, 
-	void(framework::Executor::*method)(framework::interfaces::IHTTPRequest&, framework::interfaces::IHTTPResponse&), 
+	void(framework::Executor::*method)(framework::interfaces::IHttpRequest&, framework::interfaces::IHttpResponse&), 
 	framework::Executor& executor
 );
 
 namespace framework
 {
-	void (Executor::* Executor::getMethod(std::string_view methodName))(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)
+	void (Executor::* Executor::getMethod(std::string_view methodName))(interfaces::IHttpRequest&, interfaces::IHttpResponse&)
 	{
-		static const ::utility::strings::string_based_unordered_map<void(Executor::*)(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)> methods =
+		static const ::utility::strings::string_based_unordered_map<void(Executor::*)(interfaces::IHttpRequest&, interfaces::IHttpResponse&)> methods =
 		{
 			{ "GET", &Executor::doGet },
 			{ "POST", &Executor::doPost },
@@ -37,37 +37,37 @@ namespace framework
 
 	}
 
-	void Executor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void Executor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void Executor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doHead(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void Executor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doPut(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void Executor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doDelete(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void Executor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doPatch(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void Executor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doOptions(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 #ifdef NDEBUG
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
@@ -98,7 +98,7 @@ namespace framework
 		response.addHeader("Allow", allowHeader.data());
 	}
 
-	void Executor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doTrace(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 #ifdef NDEBUG
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
@@ -107,7 +107,7 @@ namespace framework
 		response.setBody(request.getRawRequest());
 	}
 
-	void Executor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void Executor::doConnect(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
@@ -116,10 +116,10 @@ namespace framework
 void isImplemented
 (
 	std::vector<std::string>& result,
-	framework::interfaces::IHTTPRequest& request,
-	framework::interfaces::IHTTPResponse& response,
+	framework::interfaces::IHttpRequest& request,
+	framework::interfaces::IHttpResponse& response,
 	const std::string& methodName, 
-	void(framework::Executor::*method)(framework::interfaces::IHTTPRequest&, framework::interfaces::IHTTPResponse&), 
+	void(framework::Executor::*method)(framework::interfaces::IHttpRequest&, framework::interfaces::IHttpResponse&), 
 	framework::Executor& executor
 )
 {

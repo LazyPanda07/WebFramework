@@ -11,6 +11,7 @@
 
 TEST(Redis, CommonOperations)
 {
+#ifndef WITHOUT_REDIS_TESTS
 	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string response;
 	
@@ -41,4 +42,5 @@ TEST(Redis, CommonOperations)
 	ASSERT_EQ(body.get<int>("int"), 5);
 	ASSERT_EQ(body.get<double>("double"), 2.3);
 	ASSERT_EQ(body.get<bool>("bool"), true);
+#endif
 }

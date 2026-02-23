@@ -119,8 +119,8 @@
     <ClInclude Include="include\Utility\WebFrameworkLocalization.hpp" />
     <ClInclude Include="include\Utility\WebFrameworkUtility.hpp" />
     <ClInclude Include="include\WebFramework.hpp" />
-    <ClInclude Include="include\WebInterfaces\IHTTPRequest.hpp" />
-    <ClInclude Include="include\WebInterfaces\IHTTPResponse.hpp" />
+    <ClInclude Include="include\WebInterfaces\IHttpRequest.hpp" />
+    <ClInclude Include="include\WebInterfaces\IHttpResponse.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Exceptions\WebFrameworkException.hpp" />

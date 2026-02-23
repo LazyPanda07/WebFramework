@@ -9,7 +9,7 @@ namespace py = pybind11;
 
 namespace framework
 {
-	void PythonExecutor::processMethod(std::string_view methodName, interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::processMethod(std::string_view methodName, interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		py::gil_scoped_acquire gil;
 		const runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
@@ -48,47 +48,47 @@ namespace framework
 		implementation->attr("init")(*pyExecutorSettings);
 	}
 
-	void PythonExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_get", request, response);
 	}
 
-	void PythonExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_post", request, response);
 	}
 
-	void PythonExecutor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doHead(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_head", request, response);
 	}
 
-	void PythonExecutor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doPut(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_put", request, response);
 	}
 
-	void PythonExecutor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doDelete(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_delete", request, response);
 	}
 
-	void PythonExecutor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doPatch(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_patch", request, response);
 	}
 
-	void PythonExecutor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doOptions(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_options", request, response);
 	}
 
-	void PythonExecutor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doTrace(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_trace", request, response);
 	}
 
-	void PythonExecutor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void PythonExecutor::doConnect(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->processMethod("do_connect", request, response);
 	}

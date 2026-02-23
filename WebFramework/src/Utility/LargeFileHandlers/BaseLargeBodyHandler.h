@@ -25,7 +25,7 @@ namespace framework::utility
 		std::unique_ptr<HTTPRequestImplementation> request;
 		HTTPResponseImplementation response;
 		Executor* executor;
-		void(Executor::* method)(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&);
+		void(Executor::* method)(interfaces::IHttpRequest&, interfaces::IHttpResponse&);
 
 	private:
 		bool handleChunk(std::string_view data) override;

@@ -3,7 +3,7 @@
 #ifdef __WITH_DOTNET_EXECUTORS__
 
 #include "Managers/RuntimesManager.h"
-#include "WebInterfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHttpRequest.h"
 #include "Exceptions/CSharpException.h"
 #include "Runtimes/DotNetRuntime.h"
 
@@ -14,7 +14,7 @@ struct Deleter
 
 namespace framework
 {
-	void CSharpExecutor::processMethod(runtime::Runtime& runtime, runtime::DotNetRuntime::DoMethodSignature method, interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::processMethod(runtime::Runtime& runtime, runtime::DotNetRuntime::DoMethodSignature method, interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		std::unique_ptr<void, Deleter> dotNetRequest(runtime.createHTTPRequest(&request));
 		std::unique_ptr<void, Deleter> dotNetResponse(runtime.createHTTPResponse(&response));
@@ -44,63 +44,63 @@ namespace framework
 		runtime.getInit()(implementation, dotNetExecutorSettings.get());
 	}
 
-	void CSharpExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoGet(), request, response);
 	}
 
-	void CSharpExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoPost(), request, response);
 	}
 
-	void CSharpExecutor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doHead(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoHead(), request, response);
 	}
 
-	void CSharpExecutor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doPut(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoPut(), request, response);
 	}
 
-	void CSharpExecutor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doDelete(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoDelete(), request, response);
 	}
 
-	void CSharpExecutor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doPatch(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoPatch(), request, response);
 	}
 
-	void CSharpExecutor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doOptions(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoOptions(), request, response);
 	}
 
-	void CSharpExecutor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doTrace(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
 		this->processMethod(runtime, runtime.getDoTrace(), request, response);
 	}
 
-	void CSharpExecutor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CSharpExecutor::doConnect(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 

@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "WebInterfaces/IHTTPResponse.hpp"
+#include "WebInterfaces/IHttpResponse.hpp"
 
 #include "JsonBuilder.hpp"
 
@@ -86,13 +86,13 @@ namespace framework
 	class HttpResponse
 	{
 	private:
-		interfaces::IHTTPResponse* implementation;
+		interfaces::IHttpResponse* implementation;
 
 	public:
-		interfaces::IHTTPResponse* getImplementation() const;
+		interfaces::IHttpResponse* getImplementation() const;
 
 	public:
-		HttpResponse(interfaces::IHTTPResponse* implementation);
+		HttpResponse(interfaces::IHttpResponse* implementation);
 
 		HttpResponse(const HttpResponse&) = delete;
 
@@ -166,12 +166,12 @@ namespace framework
 
 namespace framework
 {
-	inline interfaces::IHTTPResponse* HttpResponse::getImplementation() const
+	inline interfaces::IHttpResponse* HttpResponse::getImplementation() const
 	{
 		return implementation;
 	}
 
-	inline HttpResponse::HttpResponse(interfaces::IHTTPResponse* implementation) :
+	inline HttpResponse::HttpResponse(interfaces::IHttpResponse* implementation) :
 		implementation(implementation)
 	{
 

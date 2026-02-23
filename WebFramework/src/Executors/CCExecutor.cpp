@@ -50,37 +50,37 @@ namespace framework
 		initFunction(implementation, &settings);
 	}
 
-	void CCExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->callBindedMethodFunction(doPostFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->callBindedMethodFunction(doGetFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doHead(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->callBindedMethodFunction(doHeadFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doPut(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->callBindedMethodFunction(doPutFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doDelete(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->callBindedMethodFunction(doDeleteFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doPatch(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->callBindedMethodFunction(doPatchFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doOptions(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		if (doOptionsFunction)
 		{
@@ -92,7 +92,7 @@ namespace framework
 		}
 	}
 
-	void CCExecutor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doTrace(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		if (doTraceFunction)
 		{
@@ -104,7 +104,7 @@ namespace framework
 		}
 	}
 
-	void CCExecutor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CCExecutor::doConnect(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		this->callBindedMethodFunction(doConnectFunction, __func__, implementation, &request, &response);
 	}

@@ -253,8 +253,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("is_server_running", &framework::WebFramework::isServerRunning)
 		.def_static("get_web_framework_version", &framework::WebFramework::getWebFrameworkVersion);
 
-	py::class_<framework::interfaces::IHTTPRequest> request(m, "IHttpRequest");
-	py::class_<framework::interfaces::IHTTPResponse> response(m, "IHttpResponse");
+	py::class_<framework::interfaces::IHttpRequest> request(m, "IHttpRequest");
+	py::class_<framework::interfaces::IHttpResponse> response(m, "IHttpResponse");
 
 	py::class_<framework::SqlValue>(m, "SqlValue")
 		.def(py::init<int64_t>(), "value"_a)
@@ -361,7 +361,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			(
 				[](uint64_t pointer)
 				{
-					return framework::HttpResponse(reinterpret_cast<framework::interfaces::IHTTPResponse*>(pointer));
+					return framework::HttpResponse(reinterpret_cast<framework::interfaces::IHttpResponse*>(pointer));
 				}
 			),
 			"pointer_a"
@@ -406,7 +406,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			(
 				[](uint64_t pointer)
 				{
-					return framework::HttpRequest(reinterpret_cast<framework::interfaces::IHTTPRequest*>(pointer));
+					return framework::HttpRequest(reinterpret_cast<framework::interfaces::IHttpRequest*>(pointer));
 				}
 			),
 			"pointer"_a
@@ -426,7 +426,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("send_asset_file", &framework::HttpRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a)
 		.def("send_static_file", &framework::HttpRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a, "file_name"_a)
 		.def("send_dynamic_file", &framework::HttpRequest::sendDynamicFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
-		.def("stream_file", &framework::HttpRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHTTPRequest::defaultChunkSize)
+		.def("stream_file", &framework::HttpRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHttpRequest::defaultChunkSize)
 		.def
 		(
 			"register_wfdp_function",

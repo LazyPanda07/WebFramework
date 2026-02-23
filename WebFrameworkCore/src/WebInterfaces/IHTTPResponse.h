@@ -5,10 +5,10 @@
 namespace framework::interfaces
 {
 	// Also update CXX_API
-	class IHTTPResponse
+	class IHttpResponse
 	{
 	public:
-		IHTTPResponse() = default;
+		IHttpResponse() = default;
 
 		virtual void setHTTPVersion(const char* version) = 0;
 
@@ -18,7 +18,7 @@ namespace framework::interfaces
 
 		virtual void setBody(const char* body) = 0;
 
-		virtual IHTTPResponse* appendBody(const char* body) = 0;
+		virtual IHttpResponse* appendBody(const char* body) = 0;
 
 		virtual void addCookie(const char* name, const char* value) = 0;
 
@@ -28,6 +28,6 @@ namespace framework::interfaces
 
 		virtual bool getIsValid() const = 0;
 
-		virtual ~IHTTPResponse() = default;
+		virtual ~IHttpResponse() = default;
 	};
 }

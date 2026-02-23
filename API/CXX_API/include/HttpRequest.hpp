@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "WebInterfaces/IHTTPRequest.hpp"
+#include "WebInterfaces/IHttpRequest.hpp"
 #include "HttpResponse.hpp"
 #include "Utility/ChunkGenerator.hpp"
 #include "JsonParser.hpp"
@@ -75,7 +75,7 @@ namespace framework
 		static std::vector<interfaces::CVariable> convertVariables(const std::unordered_map<std::string, std::string>& variables);
 
 	private:
-		interfaces::IHTTPRequest* implementation;
+		interfaces::IHttpRequest* implementation;
 		JsonParser json;
 		HeadersMap headers;
 		std::unordered_map<std::string, std::string> queryParameters;
@@ -96,10 +96,10 @@ namespace framework
 		static bool isException(const std::exception& exception);
 
 	public:
-		interfaces::IHTTPRequest* getImplementation() const;
+		interfaces::IHttpRequest* getImplementation() const;
 
 	public:
-		HttpRequest(interfaces::IHTTPRequest* implementation);
+		HttpRequest(interfaces::IHttpRequest* implementation);
 
 		HttpRequest(const HttpRequest&) = delete;
 
@@ -217,7 +217,7 @@ namespace framework
 		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
 		* @param chunkSize Desired size of read data before sending
 		*/
-		void streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHTTPRequest::defaultChunkSize);
+		void streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHttpRequest::defaultChunkSize);
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
@@ -559,7 +559,7 @@ namespace framework
 		return utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(checkExceptionHash, &exception, typeid(T).hash_code());
 	}
 
-	inline interfaces::IHTTPRequest* HttpRequest::getImplementation() const
+	inline interfaces::IHttpRequest* HttpRequest::getImplementation() const
 	{
 		return implementation;
 	}
@@ -578,7 +578,7 @@ namespace framework
 		return result;
 	}
 
-	inline HttpRequest::HttpRequest(interfaces::IHTTPRequest* implementation) :
+	inline HttpRequest::HttpRequest(interfaces::IHttpRequest* implementation) :
 		implementation(implementation),
 		json(implementation->getJson())
 	{

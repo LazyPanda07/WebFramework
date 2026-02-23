@@ -25,9 +25,9 @@ namespace framework::runtime
 
 		void* createExecutorSettings(const void* implementation) const override;
 
-		void* createHTTPRequest(framework::interfaces::IHTTPRequest* request) const override;
+		void* createHTTPRequest(framework::interfaces::IHttpRequest* request) const override;
 
-		void* createHTTPResponse(framework::interfaces::IHTTPResponse* response) const override;
+		void* createHTTPResponse(framework::interfaces::IHttpResponse* response) const override;
 
 		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
 

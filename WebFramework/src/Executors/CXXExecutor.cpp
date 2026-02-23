@@ -44,47 +44,47 @@ namespace framework
 		initFunction(implementation, &settings);
 	}
 
-	void CXXExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doPostFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doGetFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doHead(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doHeadFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doPut(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doPutFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doDelete(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doDeleteFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doPatch(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doPatchFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doOptions(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doOptionsFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doTrace(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doTraceFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void CXXExecutor::doConnect(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		doConnectFunction(implementation, &request, &response);
 	}

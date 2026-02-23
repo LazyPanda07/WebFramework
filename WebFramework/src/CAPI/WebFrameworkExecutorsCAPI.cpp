@@ -4,7 +4,7 @@
 #include <JsonBuilder.h>
 #include <JsonParser.h>
 
-#include "WebInterfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHttpRequest.h"
 #include "Utility/JSONSettingsParser.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
@@ -16,7 +16,7 @@ void setResponseBody(HttpResponseObject response, const char* body, Exception* e
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->setBody(body);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->setBody(body);
 	}
 	catch (const std::exception& e)
 	{
@@ -32,7 +32,7 @@ void setResponseJsonBody(HttpResponseObject response, JsonBuilder builder, Excep
 {
 	try
 	{
-		framework::interfaces::IHTTPResponse* implementation = static_cast<framework::interfaces::IHTTPResponse*>(response);
+		framework::interfaces::IHttpResponse* implementation = static_cast<framework::interfaces::IHttpResponse*>(response);
 
 		implementation->addHeader("Content-Type", "application/json");
 
@@ -52,7 +52,7 @@ void setVersion(HttpResponseObject response, const char* version, Exception* exc
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->setHTTPVersion(version);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->setHTTPVersion(version);
 	}
 	catch (const std::exception& e)
 	{
@@ -68,7 +68,7 @@ void setResponseCode(HttpResponseObject response, int64_t responseCode, Exceptio
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->setResponseCode(responseCode);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->setResponseCode(responseCode);
 	}
 	catch (const std::exception& e)
 	{
@@ -84,7 +84,7 @@ void addResponseHeader(HttpResponseObject response, const char* name, const char
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->addHeader(name, value);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->addHeader(name, value);
 	}
 	catch (const std::exception& e)
 	{
@@ -100,7 +100,7 @@ void appendResponseBody(HttpResponseObject response, const char* body, Exception
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->appendBody(body);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->appendBody(body);
 	}
 	catch (const std::exception& e)
 	{
@@ -116,7 +116,7 @@ void addResponseCookie(HttpResponseObject response, const char* name, const char
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->addCookie(name, value);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->addCookie(name, value);
 	}
 	catch (const std::exception& e)
 	{
@@ -132,7 +132,7 @@ void setResponseDefault(HttpResponseObject response, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->setDefault();
+		static_cast<framework::interfaces::IHttpResponse*>(response)->setDefault();
 	}
 	catch (const std::exception& e)
 	{
@@ -148,7 +148,7 @@ void setResponseIsValid(HttpResponseObject response, bool isValid, Exception* ex
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPResponse*>(response)->setIsValid(isValid);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->setIsValid(isValid);
 	}
 	catch (const std::exception& e)
 	{
@@ -164,7 +164,7 @@ const char* getRawParameters(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRawParameters();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRawParameters();
 	}
 	catch (const std::exception& e)
 	{
@@ -182,7 +182,7 @@ const char* getMethod(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getMethod();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getMethod();
 	}
 	catch (const std::exception& e)
 	{
@@ -200,7 +200,7 @@ void* getVersion(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return new std::string(std::format("HTTP/{}", static_cast<framework::interfaces::IHTTPRequest*>(request)->getHTTPVersion()));
+		return new std::string(std::format("HTTP/{}", static_cast<framework::interfaces::IHttpRequest*>(request)->getHTTPVersion()));
 	}
 	catch (const std::exception& e)
 	{
@@ -218,7 +218,7 @@ const char* getBody(HttpRequestObject request, size_t* bodySize, Exception* exce
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getBody(bodySize);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getBody(bodySize);
 	}
 	catch (const std::exception& e)
 	{
@@ -236,7 +236,7 @@ void setAttribute(HttpRequestObject request, const char* name, const char* value
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->setAttribute(name, value);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->setAttribute(name, value);
 	}
 	catch (const std::exception& e)
 	{
@@ -252,7 +252,7 @@ void* getAttribute(HttpRequestObject request, const char* name, Exception* excep
 {
 	try
 	{
-		framework::interfaces::IHTTPRequest* implementation = static_cast<framework::interfaces::IHTTPRequest*>(request);
+		framework::interfaces::IHttpRequest* implementation = static_cast<framework::interfaces::IHttpRequest*>(request);
 		const char* temp = implementation->getAttribute(name);
 		std::string* result = new std::string(temp);
 
@@ -276,7 +276,7 @@ void deleteSession(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->deleteSession();
+		static_cast<framework::interfaces::IHttpRequest*>(request)->deleteSession();
 	}
 	catch (const std::exception& e)
 	{
@@ -292,7 +292,7 @@ void removeAttribute(HttpRequestObject request, const char* name, Exception* exc
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->removeAttribute(name);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->removeAttribute(name);
 	}
 	catch (const std::exception& e)
 	{
@@ -308,7 +308,7 @@ JsonParser getRequestJson(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return createJsonParserFromString(static_cast<framework::interfaces::IHTTPRequest*>(request)->getJson(), exception);
+		return createJsonParserFromString(static_cast<framework::interfaces::IHttpRequest*>(request)->getJson(), exception);
 	}
 	catch (const std::exception& e)
 	{
@@ -326,7 +326,7 @@ const char* getRawRequest(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRawRequest();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRawRequest();
 	}
 	catch (const std::exception& e)
 	{
@@ -344,7 +344,7 @@ void* getClientIpV4(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		framework::interfaces::IHTTPRequest* implementation = static_cast<framework::interfaces::IHTTPRequest*>(request);
+		framework::interfaces::IHttpRequest* implementation = static_cast<framework::interfaces::IHttpRequest*>(request);
 		const char* temp = implementation->getClientIpV4();
 		std::string* result = new std::string(temp);
 
@@ -368,7 +368,7 @@ void* getServerIpV4(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		framework::interfaces::IHTTPRequest* implementation = static_cast<framework::interfaces::IHTTPRequest*>(request);
+		framework::interfaces::IHttpRequest* implementation = static_cast<framework::interfaces::IHttpRequest*>(request);
 		const char* temp = implementation->getServerIpV4();
 		std::string* result = new std::string(temp);
 
@@ -392,7 +392,7 @@ uint16_t getClientPort(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getClientPort();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getClientPort();
 	}
 	catch (const std::exception& e)
 	{
@@ -410,7 +410,7 @@ uint16_t getServerPort(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getServerPort();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getServerPort();
 	}
 	catch (const std::exception& e)
 	{
@@ -428,7 +428,7 @@ void registerWFDPFunction(HttpRequestObject request, const char* functionName, c
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->registerWFDPFunction(functionName, function, deleter);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->registerWFDPFunction(functionName, function, deleter);
 	}
 	catch (const std::exception& e)
 	{
@@ -444,7 +444,7 @@ void registerWFDPFunctionClass(HttpRequestObject request, const char* functionNa
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->registerWFDPFunctionClass(functionName, apiType, functionClass);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->registerWFDPFunctionClass(functionName, apiType, functionClass);
 	}
 	catch (const std::exception& e)
 	{
@@ -460,7 +460,7 @@ void unregisterWFDPFunction(HttpRequestObject request, const char* functionName,
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->unregisterWFDPFunction(functionName);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->unregisterWFDPFunction(functionName);
 	}
 	catch (const std::exception& e)
 	{
@@ -476,7 +476,7 @@ bool isWFDPFunctionRegistered(HttpRequestObject request, const char* functionNam
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->isWFDPFunctionRegistered(functionName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->isWFDPFunctionRegistered(functionName);
 	}
 	catch (const std::exception& e)
 	{
@@ -494,7 +494,7 @@ void getQueryParameters(HttpRequestObject request, void(*initQueryBuffer)(size_t
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->getQueryParameters(initQueryBuffer, addQueryParameter, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->getQueryParameters(initQueryBuffer, addQueryParameter, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -510,7 +510,7 @@ void getChunks(HttpRequestObject request, void(*initChunkBuffer)(size_t size, vo
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->getChunks(initChunkBuffer, addChunk, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->getChunks(initChunkBuffer, addChunk, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -526,7 +526,7 @@ void getFile(HttpRequestObject request, const char* filePath, void(*fillBuffer)(
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->getFile(filePath, fillBuffer, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->getFile(filePath, fillBuffer, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -542,7 +542,7 @@ void processStaticFile(HttpRequestObject request, const char* fileData, size_t s
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->processStaticFile(fileData, size, fileExtension, fillBuffer, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->processStaticFile(fileData, size, fileExtension, fillBuffer, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -558,7 +558,7 @@ void processDynamicFile(HttpRequestObject request, const char* fileData, size_t 
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->processDynamicFile(fileData, size, static_cast<framework::interfaces::CVariable*>(variables), variablesSize, fillBuffer, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->processDynamicFile(fileData, size, static_cast<framework::interfaces::CVariable*>(variables), variablesSize, fillBuffer, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -574,7 +574,7 @@ void getHeaders(HttpRequestObject request, void(*initHeadersBuffer)(size_t size,
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->getHeaders(initHeadersBuffer, addHeader, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->getHeaders(initHeadersBuffer, addHeader, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -590,7 +590,7 @@ const char* getHeader(HttpRequestObject request, const char* headerName, Excepti
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getHeaderValue(headerName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getHeaderValue(headerName);
 	}
 	catch (const std::exception& e)
 	{
@@ -608,7 +608,7 @@ const void* getLargeData(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getLargeData();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getLargeData();
 	}
 	catch (const std::exception& e)
 	{
@@ -626,7 +626,7 @@ void getMultiparts(HttpRequestObject request, void(*initMultipartsBuffer)(size_t
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->getMultiparts(initMultipartsBuffer, addMultipart, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->getMultiparts(initMultipartsBuffer, addMultipart, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -642,7 +642,7 @@ void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size,
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->getCookies(initCookiesBuffer, addCookie, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->getCookies(initCookiesBuffer, addCookie, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -658,10 +658,10 @@ void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponse
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendAssetFile
+		static_cast<framework::interfaces::IHttpRequest*>(request)->sendAssetFile
 		(
 			filePath,
-			static_cast<framework::interfaces::IHTTPResponse*>(response),
+			static_cast<framework::interfaces::IHttpResponse*>(response),
 			variableSize,
 			static_cast<framework::interfaces::CVariable*>(variables),
 			isBinary,
@@ -682,7 +682,7 @@ void sendStaticFile(HttpRequestObject request, const char* filePath, HttpRespons
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendStaticFile(filePath, static_cast<framework::interfaces::IHTTPResponse*>(response), isBinary, fileName);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->sendStaticFile(filePath, static_cast<framework::interfaces::IHttpResponse*>(response), isBinary, fileName);
 	}
 	catch (const std::exception& e)
 	{
@@ -698,10 +698,10 @@ void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpRespon
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->sendDynamicFile
+		static_cast<framework::interfaces::IHttpRequest*>(request)->sendDynamicFile
 		(
 			filePath,
-			static_cast<framework::interfaces::IHTTPResponse*>(response),
+			static_cast<framework::interfaces::IHttpResponse*>(response),
 			variableSize,
 			static_cast<framework::interfaces::CVariable*>(variables),
 			isBinary,
@@ -722,7 +722,7 @@ void streamFile(HttpRequestObject request, const char* filePath, HttpResponseObj
 {
 	try
 	{
-		static_cast<framework::interfaces::IHTTPRequest*>(request)->streamFile(filePath, static_cast<framework::interfaces::IHTTPResponse*>(response), fileName, chunkSize);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->streamFile(filePath, static_cast<framework::interfaces::IHttpResponse*>(response), fileName, chunkSize);
 	}
 	catch (const std::exception& e)
 	{
@@ -738,7 +738,7 @@ int64_t getRouteIntegerParameter(HttpRequestObject request, const char* routePar
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRouteIntegerParameter(routeParameterName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRouteIntegerParameter(routeParameterName);
 	}
 	catch (const std::exception& e)
 	{
@@ -756,7 +756,7 @@ double getRouteDoubleParameter(HttpRequestObject request, const char* routeParam
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRouteDoubleParameter(routeParameterName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRouteDoubleParameter(routeParameterName);
 	}
 	catch (const std::exception& e)
 	{
@@ -774,7 +774,7 @@ const char* getRouteStringParameter(HttpRequestObject request, const char* route
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getRouteStringParameter(routeParameterName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRouteStringParameter(routeParameterName);
 	}
 	catch (const std::exception& e)
 	{
@@ -792,7 +792,7 @@ DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char*
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, implementationName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getOrCreateDatabase(databaseName, implementationName);
 	}
 	catch (const std::exception& e)
 	{
@@ -810,7 +810,7 @@ DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databas
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, implementationName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getDatabase(databaseName, implementationName);
 	}
 	catch (const std::exception& e)
 	{
@@ -828,7 +828,7 @@ TableObject getOrCreateTableRequest(HttpRequestObject request, const char* datab
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getOrCreateDatabase(databaseName, implementationName)->getOrCreateTable(tableName, createTableQuery);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getOrCreateDatabase(databaseName, implementationName)->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const std::exception& e)
 	{
@@ -846,7 +846,7 @@ TableObject getTableRequest(HttpRequestObject request, const char* databaseName,
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->getDatabase(databaseName, implementationName)->get(tableName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getDatabase(databaseName, implementationName)->get(tableName);
 	}
 	catch (const std::exception& e)
 	{
@@ -864,7 +864,7 @@ void sendChunks(HttpRequestObject request, HttpResponseObject response, const ch
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->sendFileChunks(static_cast<framework::interfaces::IHTTPResponse*>(response), "", data, chunkGenerator);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->sendFileChunks(static_cast<framework::interfaces::IHttpResponse*>(response), "", data, chunkGenerator);
 	}
 	catch (const std::exception& e)
 	{
@@ -880,7 +880,7 @@ void sendFileChunks(HttpRequestObject request, HttpResponseObject response, cons
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->sendFileChunks(static_cast<framework::interfaces::IHTTPResponse*>(response), fileName, data, chunkGenerator);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->sendFileChunks(static_cast<framework::interfaces::IHttpResponse*>(response), fileName, data, chunkGenerator);
 	}
 	catch (const std::exception& e)
 	{
@@ -896,7 +896,7 @@ void throwWebFrameworkException(HttpRequestObject request, const char* errorMess
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->throwException(errorMessage, responseCode, logCategory, exceptionHash);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->throwException(errorMessage, responseCode, logCategory, exceptionHash);
 	}
 	catch (const std::exception& e)
 	{
@@ -910,14 +910,14 @@ void throwWebFrameworkException(HttpRequestObject request, const char* errorMess
 
 void setExceptionData(HttpRequestObject request, const char* errorMessage, int32_t responseCode, const char* logCategory)
 {
-	static_cast<framework::interfaces::IHTTPRequest*>(request)->setExceptionData(errorMessage, responseCode, logCategory);
+	static_cast<framework::interfaces::IHttpRequest*>(request)->setExceptionData(errorMessage, responseCode, logCategory);
 }
 
 bool isExceptionDataValid(HttpRequestObject request, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHTTPRequest*>(request)->isExceptionDataValid();
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->isExceptionDataValid();
 	}
 	catch (const std::exception& e)
 	{

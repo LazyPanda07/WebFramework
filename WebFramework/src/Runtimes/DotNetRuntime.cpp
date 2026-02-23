@@ -357,12 +357,12 @@ namespace framework::runtime
 		return createExecutorSettingsFunction(implementation);
 	}
 
-	void* DotNetRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const
+	void* DotNetRuntime::createHTTPRequest(framework::interfaces::IHttpRequest* request) const
 	{
 		return createHttpRequest(request);
 	}
 
-	void* DotNetRuntime::createHTTPResponse(framework::interfaces::IHTTPResponse* response) const
+	void* DotNetRuntime::createHTTPResponse(framework::interfaces::IHttpResponse* response) const
 	{
 		return createHttpResponse(response);
 	}

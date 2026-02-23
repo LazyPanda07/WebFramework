@@ -62,12 +62,12 @@ namespace framework
 
 		static bool isHeavyOperation(Executor* executor);
 
-		static void parseRouteParameters(const std::string& parameters, interfaces::IHTTPRequest& request, std::vector<utility::RouteParameters>::iterator it);
+		static void parseRouteParameters(const std::string& parameters, interfaces::IHttpRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHTTPRequest& request, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors);
 
-		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHTTPResponse& response) const;
+		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHttpResponse& response) const;
 
 		std::unique_ptr<Executor> createApiExecutor(const std::string& name, std::string_view apiType) const;
 
@@ -91,9 +91,9 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		std::optional<std::function<void(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)>> service(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors);
+		std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors);
 
-		Executor* getOrCreateExecutor(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

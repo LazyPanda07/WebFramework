@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WebInterfaces/IHTTPResponse.h"
+#include "WebInterfaces/IHttpResponse.h"
 
 #include <HttpBuilder.h>
 #include <IOSocketStream.h>
@@ -13,7 +13,7 @@ namespace framework
 	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API HTTPResponseImplementation : public interfaces::IHTTPResponse
+	class WEB_FRAMEWORK_API HTTPResponseImplementation : public interfaces::IHttpResponse
 	{
 	private:
 		web::HttpBuilder builder;
@@ -71,7 +71,7 @@ namespace framework
 		/// </summary>
 		/// <param name="body">data</param>
 		/// <returns>reference to self</returns>
-		interfaces::IHTTPResponse* appendBody(const char* body) override;
+		interfaces::IHttpResponse* appendBody(const char* body) override;
 
 		/// <summary>
 		/// Add cookie to HTTP response

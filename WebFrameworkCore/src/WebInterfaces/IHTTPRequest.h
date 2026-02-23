@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IHTTPResponse.h"
+#include "IHttpResponse.h"
 
 #include "DatabaseInterfaces/IDatabase.h"
 
@@ -77,13 +77,13 @@ namespace framework::interfaces
 	};
 
 	// Also update CXX_API
-	class IHTTPRequest
+	class IHttpRequest
 	{
 	public:
 		static inline constexpr size_t defaultChunkSize = 14 * 1024 * 1024;
 
 	public:
-		IHTTPRequest() = default;
+		IHttpRequest() = default;
 
 		virtual void updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast) = 0;
 
@@ -119,13 +119,13 @@ namespace framework::interfaces
 
 		virtual const CLargeData* getLargeData() const = 0;
 
-		virtual void sendAssetFile(const char* filePath, IHTTPResponse* response, size_t variablesSize = 0, const CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") = 0;
+		virtual void sendAssetFile(const char* filePath, IHttpResponse* response, size_t variablesSize = 0, const CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") = 0;
 
-		virtual void sendStaticFile(const char* filePath, IHTTPResponse* response, bool isBinary = true, const char* fileName = "") = 0;
+		virtual void sendStaticFile(const char* filePath, IHttpResponse* response, bool isBinary = true, const char* fileName = "") = 0;
 
-		virtual void sendDynamicFile(const char* filePath, IHTTPResponse* response, size_t variablesSize, const CVariable* variables, bool isBinary = false, const char* fileName = "") = 0;
+		virtual void sendDynamicFile(const char* filePath, IHttpResponse* response, size_t variablesSize, const CVariable* variables, bool isBinary = false, const char* fileName = "") = 0;
 
-		virtual void streamFile(const char* filePath, IHTTPResponse* response, const char* fileName, size_t chunkSize = IHTTPRequest::defaultChunkSize) = 0;
+		virtual void streamFile(const char* filePath, IHttpResponse* response, const char* fileName, size_t chunkSize = IHttpRequest::defaultChunkSize) = 0;
 
 		virtual void registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(char* result)) = 0;
 
@@ -135,7 +135,7 @@ namespace framework::interfaces
 
 		virtual bool isWFDPFunctionRegistered(const char* functionName) = 0;
 
-		virtual void sendFileChunks(IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*addChunk)(void* chunkGenerator, size_t* chunkSize)) = 0;
+		virtual void sendFileChunks(IHttpResponse* response, const char* fileName, void* chunkGenerator, const char* (*addChunk)(void* chunkGenerator, size_t* chunkSize)) = 0;
 
 		virtual void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash) = 0;
 
@@ -179,6 +179,6 @@ namespace framework::interfaces
 
 		virtual IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const = 0;
 
-		virtual ~IHTTPRequest() = default;
+		virtual ~IHttpRequest() = default;
 	};
 }

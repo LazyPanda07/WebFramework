@@ -60,12 +60,12 @@ namespace framework::runtime
 		return const_cast<void*>(implementation);
 	}
 
-	void* CCRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const
+	void* CCRuntime::createHTTPRequest(framework::interfaces::IHttpRequest* request) const
 	{
 		return request;
 	}
 
-	void* CCRuntime::createHTTPResponse(framework::interfaces::IHTTPResponse* response) const
+	void* CCRuntime::createHTTPResponse(framework::interfaces::IHttpResponse* response) const
 	{
 		return response;
 	}

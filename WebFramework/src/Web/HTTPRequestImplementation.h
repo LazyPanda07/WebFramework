@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WebInterfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHttpRequest.h"
 
 #include <HttpParser.h>
 #include <IOSocketStream.h>
@@ -31,7 +31,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API HTTPRequestImplementation : public interfaces::IHTTPRequest
+	class WEB_FRAMEWORK_API HTTPRequestImplementation : public interfaces::IHttpRequest
 	{
 	private:
 		class ExceptionData
@@ -180,7 +180,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize = 0, const interfaces::CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") override;
+		void sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize = 0, const interfaces::CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") override;
 
 		/**
 		* Send non dynamic file
@@ -188,7 +188,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(const char* filePath, interfaces::IHTTPResponse* response, bool isBinary = true, const char* fileName = "") override;
+		void sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary = true, const char* fileName = "") override;
 
 		/**
 		* Send dynamic file(.wfdp)
@@ -197,7 +197,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary = false, const char* fileName = "") override;
+		void sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary = false, const char* fileName = "") override;
 
 		/**
 		* Send large files
@@ -205,7 +205,7 @@ namespace framework
 		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
 		* @param chunkSize Desired size of read data before sending
 		*/
-		void streamFile(const char* filePath, interfaces::IHTTPResponse* response, const char* fileName, size_t chunkSize = defaultChunkSize) override;
+		void streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize = defaultChunkSize) override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
@@ -223,7 +223,7 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isWFDPFunctionRegistered(const char* functionName) override;
 
-		void sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size)) override;
+		void sendFileChunks(interfaces::IHttpResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size)) override;
 
 		void throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash) override;
 

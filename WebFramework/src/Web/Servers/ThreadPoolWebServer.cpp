@@ -88,7 +88,7 @@ namespace framework
 			},
 			[this, &request, &response, &executorsManager, &resourceExecutor, &threadPool](ServiceState& state)
 			{
-				if (std::optional<std::function<void(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)>> threadPoolFunction = executorsManager.service(request, response, executors))
+				if (std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> threadPoolFunction = executorsManager.service(request, response, executors))
 				{
 					isBusy = true;
 

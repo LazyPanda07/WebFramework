@@ -126,7 +126,7 @@ namespace framework
 		this->loadStaticRenderers();
 	}
 
-	void ResourceExecutor::notFoundError(interfaces::IHTTPResponse& response, const std::exception* exception)
+	void ResourceExecutor::notFoundError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
@@ -146,7 +146,7 @@ namespace framework
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::notFound));
 	}
 
-	void ResourceExecutor::badRequestError(interfaces::IHTTPResponse& response, const std::exception* exception)
+	void ResourceExecutor::badRequestError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
@@ -166,7 +166,7 @@ namespace framework
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::badRequest));
 	}
 
-	void ResourceExecutor::forbiddenError(interfaces::IHTTPResponse& response, const std::exception* exception)
+	void ResourceExecutor::forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
@@ -186,7 +186,7 @@ namespace framework
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::forbidden));
 	}
 
-	void ResourceExecutor::internalServerError(interfaces::IHTTPResponse& response, const std::exception* exception)
+	void ResourceExecutor::internalServerError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
@@ -206,7 +206,7 @@ namespace framework
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::internalServerError));
 	}
 
-	void ResourceExecutor::badGatewayError(interfaces::IHTTPResponse& response, const std::exception* exception)
+	void ResourceExecutor::badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
 
@@ -241,7 +241,7 @@ namespace framework
 		return fileManager.getCache().getCacheSize();
 	}
 
-	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary, std::string_view fileName)
 	{
 		if (this->escapeFromAssets(filePath))
 		{
@@ -289,7 +289,7 @@ namespace framework
 		response.setBody(result.data());
 	}
 
-	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
 	{
 		if (this->escapeFromAssets(filePath))
 		{
@@ -379,12 +379,12 @@ namespace framework
 		return staticRenderers;
 	}
 
-	void ResourceExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
+	void ResourceExecutor::doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
 		request.sendAssetFile(request.getRawParameters(), &response);
 	}
 
-	void ResourceExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) //-V524
+	void ResourceExecutor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) //-V524
 	{
 		request.sendAssetFile(request.getRawParameters(), &response);
 	}

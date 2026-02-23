@@ -7,7 +7,7 @@
 #include <Strings.h>
 
 #include "Framework/WebFrameworkPlatform.h"
-#include "WebInterfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHttpRequest.h"
 #include "WFDP/DynamicFunction.h"
 
 namespace framework

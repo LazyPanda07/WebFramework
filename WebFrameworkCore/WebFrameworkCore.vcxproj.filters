@@ -36,7 +36,7 @@
     <ClInclude Include="src\Managers\SessionsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebInterfaces\IHTTPRequest.h">
+    <ClInclude Include="src\WebInterfaces\IHttpRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DatabaseInterfaces\IDatabase.h">
@@ -65,7 +65,7 @@
     <ClCompile Include="src\Managers\SessionsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebInterfaces\IHTTPResponse.h">
+    <ClCompile Include="src\WebInterfaces\IHttpResponse.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\Stopwatch.cpp">

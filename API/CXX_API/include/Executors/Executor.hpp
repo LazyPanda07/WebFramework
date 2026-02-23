@@ -363,7 +363,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(voi
 	static_cast<framework::Executor*>(implementation)->init(framework::utility::ExecutorSettings(executorSettings));
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -371,7 +371,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* imp
 	static_cast<framework::Executor*>(implementation)->doPost(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -379,7 +379,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* impl
 	static_cast<framework::Executor*>(implementation)->doGet(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -387,7 +387,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* imp
 	static_cast<framework::Executor*>(implementation)->doHead(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -395,7 +395,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* impl
 	static_cast<framework::Executor*>(implementation)->doPut(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -403,7 +403,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* i
 	static_cast<framework::Executor*>(implementation)->doDelete(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -411,7 +411,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* im
 	static_cast<framework::Executor*>(implementation)->doPatch(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -419,7 +419,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* 
 	static_cast<framework::Executor*>(implementation)->doOptions(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -427,7 +427,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* im
 	static_cast<framework::Executor*>(implementation)->doTrace(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);

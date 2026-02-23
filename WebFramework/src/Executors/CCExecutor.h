@@ -43,23 +43,23 @@ namespace framework
 
 		void init(const utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
-		void doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doHead(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doPut(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doDelete(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doPatch(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doOptions(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doTrace(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
-		void doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doConnect(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
 		utility::ExecutorType getType() const override;
 

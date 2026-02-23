@@ -105,7 +105,7 @@
     <ClInclude Include="src\WebFrameworkCoreConstants.h" />
     <ClInclude Include="src\WebInterfaces\IDynamicFile.h" />
     <ClInclude Include="src\WebInterfaces\IFile.h" />
-    <ClInclude Include="src\WebInterfaces\IHTTPRequest.h" />
+    <ClInclude Include="src\WebInterfaces\IHttpRequest.h" />
     <ClInclude Include="src\WebInterfaces\IStaticFile.h" />
     <ClInclude Include="src\Rendering\IStaticFileRenderer.h" />
   </ItemGroup>
@@ -113,7 +113,7 @@
     <ClCompile Include="src\Exceptions\BaseWebFrameworkException.cpp" />
     <ClCompile Include="src\Managers\SessionsManager.cpp" />
     <ClCompile Include="src\Utility\Stopwatch.cpp" />
-    <ClCompile Include="src\WebInterfaces\IHTTPResponse.h" />
+    <ClCompile Include="src\WebInterfaces\IHttpResponse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,7 +7,7 @@
 
 #include "Framework/WebFramework.h"
 #include "Framework/Config.h"
-#include "WebInterfaces/IHTTPRequest.h"
+#include "WebInterfaces/IHttpRequest.h"
 #include "Exceptions/APIException.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
@@ -454,7 +454,7 @@ String getBasePath(Config config, Exception* exception)
 
 void throwException(void* httpRequest, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash)
 {
-	static_cast<framework::interfaces::IHTTPRequest*>(httpRequest)->throwException(errorMessage, responseCode, logCategory, exceptionClassHash);
+	static_cast<framework::interfaces::IHttpRequest*>(httpRequest)->throwException(errorMessage, responseCode, logCategory, exceptionClassHash);
 }
 
 bool checkExceptionHash(const Exception exception, size_t hash)

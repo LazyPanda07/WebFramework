@@ -54,32 +54,32 @@ namespace framework
 		/// Send 404.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void notFoundError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
+		void notFoundError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 400.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badRequestError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
+		void badRequestError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
 
 		/**
 		 * @brief Send 403.html from WebFrameworkAssets
 		 * @param response Response with error file
 		 * @param exception
 		 */
-		void forbiddenError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
+		void forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 500.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void internalServerError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
+		void internalServerError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 502.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badGatewayError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
+		void badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
 
 		bool fileExist(const std::filesystem::path& filePath) const;
 
@@ -91,7 +91,7 @@ namespace framework
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendStaticFile(std::string_view filePath, interfaces::IHTTPResponse& response, bool isBinary = true, std::string_view fileName = "") override;
+		void sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary = true, std::string_view fileName = "") override;
 
 		/// <summary>
 		/// Override from IDynamicFile interface
@@ -99,7 +99,7 @@ namespace framework
 		/// <param name="filePath">path to file from assets folder</param>
 		/// <param name="response">used for sending file</param>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary = true, std::string_view fileName = "") override;
+		void sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary = true, std::string_view fileName = "") override;
 
 		void processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables) override;
 
@@ -127,14 +127,14 @@ namespace framework
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		void doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
 		/// <summary>
 		/// Send file via POST request
 		/// </summary>
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
-		void doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
+		void doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) override;
 
 		~ResourceExecutor() = default;
 	};

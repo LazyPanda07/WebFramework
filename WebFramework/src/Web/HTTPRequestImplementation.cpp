@@ -267,24 +267,24 @@ namespace framework
 		return &largeData;
 	}
 
-	void HTTPRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HTTPRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		HTTPRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
 			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHTTPResponse* response, bool isBinary, const char* fileName)
+	void HTTPRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary, const char* fileName)
 	{
 		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHTTPResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HTTPRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, *response, std::span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::streamFile(const char* filePath, interfaces::IHTTPResponse* response, const char* fileName, size_t chunkSize)
+	void HTTPRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)
 	{
 		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
 		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
@@ -412,7 +412,7 @@ namespace framework
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}
 
-	void HTTPRequestImplementation::sendFileChunks(interfaces::IHTTPResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size))
+	void HTTPRequestImplementation::sendFileChunks(interfaces::IHttpResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size))
 	{
 		web::HttpBuilder builder;
 
