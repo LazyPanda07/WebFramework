@@ -215,7 +215,7 @@ namespace framework
 
 	std::unique_ptr<Executor> ExecutorsManager::createApiExecutor(const std::string& name, std::string_view apiType) const
 	{
-		return runtime::RuntimesManager::get().getRuntime(utility::getExecutorAPIType(apiType)).createExecutor(name);
+		return runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(apiType)).createExecutor(name);
 	}
 
 	void ExecutorsManager::initCreators(const std::vector<std::string>& pathToSources)
@@ -232,10 +232,12 @@ namespace framework
 		std::string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
 #endif
 
-		for (const auto& [route, executorSettings] : settings)
+		for (auto& [route, executorSettings] : settings)
 		{
 			std::optional<utility::LoadSource> creatorSource;
-			utility::ExecutorAPIType type = utility::getExecutorAPIType(executorSettings.apiType);
+			utility::ExecutorApiType type = utility::getExecutorApiType(executorSettings.apiType);
+
+			executorSettings.resourceExecutor = resources;
 
 			for (const auto& [source, sourcePath] : sources)
 			{
@@ -257,7 +259,7 @@ namespace framework
 				throw std::runtime_error(std::format("Can't find creator for executor: {} with API: {}", executorSettings.name, executorSettings.apiType));
 			}
 
-			runtime::RuntimesManager::get().getRuntime(utility::getExecutorAPIType(executorSettings.apiType)).initializeWebFramework(*creatorSource, webFrameworkSharedLibraryPath.data());
+			runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource, webFrameworkSharedLibraryPath.data());
 
 			switch (executorSettings.executorLoadType)
 			{
@@ -341,8 +343,8 @@ namespace framework
 		const utility::AdditionalServerSettings& additionalSettings,
 		std::shared_ptr<threading::ThreadPool> threadPool
 	) :
-		settings(move(executorsSettings)),
-		resources(make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
+		settings(std::move(executorsSettings)),
+		resources(std::make_shared<ResourceExecutor>(configuration, additionalSettings, threadPool)),
 		userAgentFilter(additionalSettings.userAgentFilter),
 		serverType(ExecutorsManager::types.at(configuration.get<json::JsonObject>(json_settings::webFrameworkObject)[json_settings::webServerTypeKey].get<std::string>()))
 	{

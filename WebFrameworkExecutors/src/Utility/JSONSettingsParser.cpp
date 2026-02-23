@@ -13,6 +13,11 @@
 
 namespace framework::utility
 {
+	JSONSettingsParser::ExecutorSettings::~ExecutorSettings()
+	{
+		std::ranges::for_each(databases, [](interfaces::IDatabase* database) { delete database; });
+	}
+
 	JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
 		executorLoadType(LoadType::none)
 	{

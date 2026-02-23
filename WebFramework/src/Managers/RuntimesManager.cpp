@@ -116,24 +116,24 @@ namespace framework::runtime
 		}
 	}
 
-	Runtime& RuntimesManager::getRuntime(utility::ExecutorAPIType type)
+	Runtime& RuntimesManager::getRuntime(utility::ExecutorApiType type)
 	{
 		switch (type)
 		{
-		case framework::utility::ExecutorAPIType::cc:
+		case framework::utility::ExecutorApiType::cc:
 			return this->getRuntime<CCRuntime>();
 
-		case framework::utility::ExecutorAPIType::cxx:
+		case framework::utility::ExecutorApiType::cxx:
 			return this->getRuntime<CXXRuntime>();
 
-		case framework::utility::ExecutorAPIType::python:
+		case framework::utility::ExecutorApiType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();
 #else
 			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
 #endif
 
-		case framework::utility::ExecutorAPIType::csharp:
+		case framework::utility::ExecutorApiType::csharp:
 #ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
@@ -145,24 +145,24 @@ namespace framework::runtime
 		}
 	}
 
-	const Runtime& RuntimesManager::getRuntime(utility::ExecutorAPIType type) const
+	const Runtime& RuntimesManager::getRuntime(utility::ExecutorApiType type) const
 	{
 		switch (type)
 		{
-		case framework::utility::ExecutorAPIType::cc:
+		case framework::utility::ExecutorApiType::cc:
 			return this->getRuntime<CCRuntime>();
 
-		case framework::utility::ExecutorAPIType::cxx:
+		case framework::utility::ExecutorApiType::cxx:
 			return this->getRuntime<CXXRuntime>();
 
-		case framework::utility::ExecutorAPIType::python:
+		case framework::utility::ExecutorApiType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();
 #else
 			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
 #endif
 
-		case framework::utility::ExecutorAPIType::csharp:
+		case framework::utility::ExecutorApiType::csharp:
 #ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else

@@ -3,6 +3,12 @@
 #include <JsonObject.h>
 
 #include "ExecutorsConstants.h"
+#include "WebInterfaces/IHttpRequest.h"
+
+namespace framework
+{
+	class Executor;
+}
 
 namespace framework::utility
 {
@@ -29,6 +35,8 @@ namespace framework::utility
 			std::string userAgentFilter;
 			std::string apiType;
 			LoadType executorLoadType;
+			std::shared_ptr<Executor> resourceExecutor;
+			std::vector<interfaces::IDatabase*> databases;
 
 		public:
 			ExecutorSettings();
@@ -43,7 +51,7 @@ namespace framework::utility
 
 			ExecutorSettings& operator =(ExecutorSettings&& other) noexcept = default;
 
-			~ExecutorSettings() = default;
+			~ExecutorSettings();
 		};
 
 	private:

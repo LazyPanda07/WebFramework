@@ -12,6 +12,7 @@
 #include "Databases/DatabaseImplementation.h"
 #include "Exceptions/APIException.h"
 #include "ExecutorsConstants.h"
+#include "Utility/ExecutorsUtility.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)
@@ -74,6 +75,22 @@ namespace framework
 		stream >> response;
 
 		return web::HttpParser(response);
+	}
+
+	void HTTPRequestImplementation::registerWFDPFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
+	{
+#ifdef __WITH_PYTHON_EXECUTORS__
+		if (apiType == json_settings::pythonExecutorKey)
+		{
+			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
+		}
+#endif
+#ifdef __WITH_DOTNET_EXECUTORS__
+		if (apiType == json_settings::csharpExecutorKey)
+		{
+			dynamicResources.registerDynamicFunction(functionName, apiType, static_cast<char*>(functionClass));
+		}
+#endif
 	}
 
 	HTTPRequestImplementation::HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
@@ -361,45 +378,12 @@ namespace framework
 
 	void HTTPRequestImplementation::registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
-		std::function<std::string(const std::vector<std::string>&)> functor = [function, deleter](const std::vector<std::string>& arguments) -> std::string
-			{
-				const char** temp = new const char* [arguments.size()];
-
-				for (size_t i = 0; i < arguments.size(); i++)
-				{
-					temp[i] = arguments[i].data();
-				}
-
-				const char* tempResult = function(temp, arguments.size());
-				std::string result(tempResult);
-
-				if (deleter)
-				{
-					deleter(const_cast<char*>(tempResult));
-				}
-
-				delete[] temp;
-
-				return result;
-			};
-
-		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, functor);
+		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, utility::createCxxDynamicFunction(function, deleter));
 	}
 
 	void HTTPRequestImplementation::registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass)
 	{
-#ifdef __WITH_PYTHON_EXECUTORS__
-		if (apiType == json_settings::pythonExecutorKey)
-		{
-			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
-		}
-#endif
-#ifdef __WITH_DOTNET_EXECUTORS__
-		if (apiType == json_settings::csharpExecutorKey)
-		{
-			dynamicResources.registerDynamicFunction(functionName, apiType, static_cast<char*>(functionClass));
-		}
-#endif
+		HTTPRequestImplementation::registerWFDPFunctionClassStatic(functionName, apiType, functionClass, dynamicResources);
 	}
 
 	void HTTPRequestImplementation::unregisterWFDPFunction(const char* functionName)

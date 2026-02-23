@@ -124,4 +124,18 @@ EXPORT String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* 
 
 EXPORT int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception);
 
+EXPORT DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, Exception* exception);
+
+EXPORT DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, Exception* exception);
+
+EXPORT TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception);
+
+EXPORT TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception);
+
+EXPORT void registerWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
+
+EXPORT void registerWFDPFunctionClasExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
+
+EXPORT void unregisterWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -6,6 +6,11 @@
 
 #include "WebInterfaces/IHttpRequest.h"
 #include "Utility/JSONSettingsParser.h"
+#include "Utility/ExecutorsUtility.h"
+#include "Executors/ResourceExecutor.h"
+#include "Databases/DatabaseImplementation.h"
+#include "Managers/DatabasesManager.h"
+#include "Web/HTTPRequestImplementation.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -1024,4 +1029,134 @@ int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception
 	}
 
 	return -1;
+}
+
+DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
+			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getOrCreateDatabase(databaseName, implementationName)));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
+			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getDatabase(databaseName, implementationName)));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
+			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
+			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getDatabase(databaseName, implementationName)))->get(tableName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void registerWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
+{
+	try
+	{
+		std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->
+			registerDynamicFunction(functionName, json_settings::cxxExecutorKey, framework::utility::createCxxDynamicFunction(function, deleter));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void registerWFDPFunctionClasExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
+{
+	try
+	{
+		framework::HTTPRequestImplementation::registerWFDPFunctionClassStatic
+		(
+			functionName, apiType, functionClass,
+			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)
+		);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void unregisterWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception)
+{
+	try
+	{
+		std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->
+			unregisterDynamicFunction(functionName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 }

@@ -27,9 +27,9 @@ static constexpr bool equals(std::string_view first, std::string_view second) no
 
 namespace framework::utility
 {
-	ExecutorAPIType getExecutorAPIType(std::string_view name)
+	ExecutorApiType getExecutorApiType(std::string_view name)
 	{
-		constexpr std::array<std::string_view, static_cast<size_t>(ExecutorAPIType::count)> types =
+		constexpr std::array<std::string_view, static_cast<size_t>(ExecutorApiType::count)> types =
 		{
 			json_settings::ccExecutorKey,
 			json_settings::cxxExecutorKey,
@@ -41,12 +41,38 @@ namespace framework::utility
 		{
 			if (equals(types[i], name))
 			{
-				return static_cast<ExecutorAPIType>(i);
+				return static_cast<ExecutorApiType>(i);
 			}
 		}
 
 		throw std::runtime_error(std::format("Wrong executor type name: {}", name));
 
-		return ExecutorAPIType::count;
+		return ExecutorApiType::count;
+	}
+
+	std::function<std::string(const std::vector<std::string>&)> createCxxDynamicFunction(const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+	{
+		return
+			[function, deleter](const std::vector<std::string>& arguments) -> std::string
+			{
+				const char** temp = new const char* [arguments.size()];
+
+				for (size_t i = 0; i < arguments.size(); i++)
+				{
+					temp[i] = arguments[i].data();
+				}
+
+				const char* tempResult = function(temp, arguments.size());
+				std::string result(tempResult);
+
+				if (deleter)
+				{
+					deleter(const_cast<char*>(tempResult));
+				}
+
+				delete[] temp;
+
+				return result;
+			};
 	}
 }

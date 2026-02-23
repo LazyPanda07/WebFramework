@@ -1,10 +1,12 @@
 #pragma once
 
-#include <string_view>
+#include <string>
+#include <vector>
+#include <functional>
 
 namespace framework::utility
 {
-	enum class ExecutorAPIType
+	enum class ExecutorApiType
 	{
 		cc,
 		cxx,
@@ -13,5 +15,7 @@ namespace framework::utility
 		count
 	};
 
-	ExecutorAPIType getExecutorAPIType(std::string_view name);
+	ExecutorApiType getExecutorApiType(std::string_view name);
+
+	std::function<std::string(const std::vector<std::string>&)> createCxxDynamicFunction(const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 }

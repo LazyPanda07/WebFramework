@@ -62,9 +62,9 @@ namespace framework::runtime
 
 		const Runtime& getRuntime(utility::LoadSourceType type) const;
 
-		Runtime& getRuntime(utility::ExecutorAPIType type);
+		Runtime& getRuntime(utility::ExecutorApiType type);
 
-		const Runtime& getRuntime(utility::ExecutorAPIType type) const;
+		const Runtime& getRuntime(utility::ExecutorApiType type) const;
 
 		template<std::derived_from<Runtime> T, typename... Args>
 		void addRuntime(Args&&... args);
