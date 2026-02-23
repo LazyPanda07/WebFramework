@@ -454,7 +454,9 @@ jobs:
     - name: Run tests
       working-directory: Tests/build/bin
       shell: bash
-      run: source run_aarch64_cxx_tests.sh ${{ matrix.config }}
+      run: |
+        redis-server --port 10010 --requirepass password & sleep 1
+        source run_aarch64_cxx_tests.sh ${{ matrix.config }}
 
       
   publish:
