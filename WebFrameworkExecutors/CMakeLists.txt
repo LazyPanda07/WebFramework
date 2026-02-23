@@ -13,12 +13,6 @@ add_library(
 	src/Exceptions/ExecutorException.cpp
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
-	src/Web/HTTPRequestExecutors.cpp
-	src/Web/HTTPResponseExecutors.cpp
-	src/Databases/DatabaseExecutors.cpp
-	src/Databases/TableExecutors.cpp
-	src/Databases/SQLValueExecutors.cpp
-	src/Databases/SQLResultExecutors.cpp
 )
 
 if (${WITH_UNITY_BUILD})

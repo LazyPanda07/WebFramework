@@ -87,10 +87,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Databases\DatabaseExecutors.cpp" />
-    <ClCompile Include="src\Databases\SQLResultExecutors.cpp" />
-    <ClCompile Include="src\Databases\SQLValueExecutors.cpp" />
-    <ClCompile Include="src\Databases\TableExecutors.cpp" />
     <ClCompile Include="src\Executors\Executor.cpp" />
     <ClCompile Include="src\Executors\HeavyOperationStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\HeavyOperationStatelessExecutor.cpp" />
@@ -100,14 +96,8 @@
     <ClCompile Include="src\Exceptions\ExecutorException.cpp" />
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp" />
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
-    <ClCompile Include="src\Web\HTTPRequestExecutors.cpp" />
-    <ClCompile Include="src\Web\HTTPResponseExecutors.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Databases\DatabaseExecutors.h" />
-    <ClInclude Include="src\Databases\SQLResultExecutors.h" />
-    <ClInclude Include="src\Databases\SQLValueExecutors.h" />
-    <ClInclude Include="src\Databases\TableExecutors.h" />
     <ClInclude Include="src\Executors\Executor.h" />
     <ClInclude Include="src\Executors\HeavyOperationStatefulExecutor.h" />
     <ClInclude Include="src\Executors\HeavyOperationStatelessExecutor.h" />
@@ -118,8 +108,6 @@
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="src\ExecutorsConstants.h" />
     <ClInclude Include="src\Utility\JSONSettingsParser.h" />
-    <ClInclude Include="src\Web\HTTPRequestExecutors.h" />
-    <ClInclude Include="src\Web\HTTPResponseExecutors.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileManager\FileManager.vcxproj">

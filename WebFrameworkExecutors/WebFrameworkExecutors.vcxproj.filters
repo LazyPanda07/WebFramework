@@ -42,24 +42,6 @@
     <ClCompile Include="src\Exceptions\BadRequestException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Web\HTTPRequestExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Web\HTTPResponseExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\DatabaseExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\TableExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\SQLValueExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\SQLResultExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Executors\Executor.h">
@@ -90,24 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ExecutorsConstants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Web\HTTPRequestExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Web\HTTPResponseExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\DatabaseExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\TableExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\SQLValueExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\SQLResultExecutors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
