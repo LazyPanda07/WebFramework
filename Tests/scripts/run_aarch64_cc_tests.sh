@@ -5,6 +5,15 @@ set -e
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+chmod +x ./CC_Server
+chmod +x ./DefaultHTTPSServer
+chmod +x ./CC_ProxyServer
+chmod +x ./CC_LoadBalancerServer
+chmod +x ./CC_API_TESTS
+chmod +x ./Core
+chmod +x ./LoadBalancerCore
+chmod +x ./ProxyCore
+
 # RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 
 echo "Current runtimes: ${RUNTIMES}"

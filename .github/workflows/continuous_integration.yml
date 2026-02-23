@@ -404,59 +404,24 @@ jobs:
       
 
   linux-aarch64-tests:
-    # needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
-    # strategy:
-    #   matrix:
-    #     config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
-    #     additional-settings:
-    #       - { test-script: run_aarch64_cxx_tests.sh, api: CXX, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF, download-executors-name: LinuxARMExecutors-CXX }
-    #       - { test-script: run_aarch64_cc_tests.sh, api: CC, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON, download-executors-name: LinuxARMExecutors-CC }
-
-    # uses: ./.github/workflows/reusable_run_test.yml
-    # with:
-    #   os: ubuntu-latest
-    #   image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-    #   executors-api: ${{ matrix.additional-settings.api }}
-    #   web-framework-config: ${{ matrix.config }}
-    #   test-script: ${{ matrix.additional-settings.test-script }}
-    #   download-web-framework-name: ${{ matrix.additional-settings.download-web-framework-name }}
-    #   download-executors-name: ${{ matrix.additional-settings.download-executors-name }}
-    #   download-tests-name: LinuxARMTests
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+    needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
     strategy:
       matrix:
         config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
+        additional-settings:
+          - { test-script: run_aarch64_cxx_tests.sh, api: CXX, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF, download-executors-name: LinuxARMExecutors-CXX }
+          - { test-script: run_aarch64_cc_tests.sh, api: CC, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON, download-executors-name: LinuxARMExecutors-CC }
 
-    steps:
-    - uses: actions/checkout@v6
-      with:
-        submodules: recursive
-  
-    - name: Build WebFramework
-      run: |
-        mkdir build
-        cd build
-        cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Build tests
-      working-directory: Tests
-      run: |
-        mkdir build
-        cd build
-        cmake -DCXX_API=ON -DBUILD_EXECUTORS=CXX -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
-
-    - name: Run tests
-      working-directory: Tests/build/bin
-      shell: bash
-      run: |
-        redis-server --port 10010 --requirepass password & sleep 1
-        source run_aarch64_cxx_tests.sh ${{ matrix.config }}
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+      executors-api: ${{ matrix.additional-settings.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.additional-settings.test-script }}
+      download-web-framework-name: ${{ matrix.additional-settings.download-web-framework-name }}
+      download-executors-name: ${{ matrix.additional-settings.download-executors-name }}
+      download-tests-name: LinuxARMTests
 
       
   publish:

@@ -13,7 +13,6 @@ add_library(
 	src/Exceptions/BaseExecutorException.cpp
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
-	src/c_api/executors_c_api.cpp
 	src/Web/HTTPRequestExecutors.cpp
 	src/Web/HTTPResponseExecutors.cpp
 	src/Databases/DatabaseExecutors.cpp
@@ -44,7 +43,7 @@ target_link_libraries(
 
 install(
 	TARGETS ${PROJECT_NAME} 
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
+	ARCHIVE DESTINATION lib
+	LIBRARY DESTINATION lib
+	RUNTIME DESTINATION dll
 )
