@@ -131,7 +131,7 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data());
 #else
 		if (exception)
 		{
@@ -151,7 +151,7 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data());
 #else
 		if (exception)
 		{
@@ -171,7 +171,7 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data());
 #else
 		if (exception)
 		{
@@ -191,7 +191,7 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data());
 #else
 		if (exception)
 		{
@@ -211,7 +211,7 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data());
 #else
 		if (exception)
 		{
