@@ -59,12 +59,12 @@ namespace framework
 			executorType == utility::ExecutorType::heavyOperationStateful;
 	}
 
-	void ExecutorsManager::parseRouteParameters(const std::string& parameters, HTTPRequestExecutors& request, std::vector<utility::RouteParameters>::iterator it)
+	void ExecutorsManager::parseRouteParameters(const std::string& parameters, interfaces::IHTTPRequest& request, std::vector<utility::RouteParameters>::iterator it)
 	{
 		size_t i = 0;
 		size_t startParameter = it->baseRoute.size() + 1;
 		size_t endParameter;
-		HTTPRequestImplementation& requestImplementation = *static_cast<HTTPRequestImplementation*>(request.getImplementation());
+		HTTPRequestImplementation& requestImplementation = *static_cast<HTTPRequestImplementation*>(&request);
 
 		do
 		{
@@ -118,7 +118,7 @@ namespace framework
 		while (endParameter != std::string::npos);
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, StatefulExecutors& executors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, interfaces::IHTTPRequest& request, StatefulExecutors& executors)
 	{
 		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors = *executors;
 
@@ -177,7 +177,7 @@ namespace framework
 		return executor->second.get();
 	}
 
-	bool ExecutorsManager::filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const
+	bool ExecutorsManager::filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHTTPResponse& response) const
 	{
 		const std::string& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
 
@@ -366,7 +366,7 @@ namespace framework
 		return *this;
 	}
 
-	std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> ExecutorsManager::service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors)
+	std::optional<std::function<void(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)>> ExecutorsManager::service(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors)
 	{
 		BaseExecutor* executor = this->getOrCreateExecutor(request, response, executors);
 
@@ -375,7 +375,7 @@ namespace framework
 			return std::nullopt;
 		}
 
-		void (BaseExecutor:: * method)(HTTPRequestExecutors&, HTTPResponseExecutors&) = BaseExecutor::getMethod(request.getMethod());
+		void (BaseExecutor:: * method)(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&) = BaseExecutor::getMethod(request.getMethod());
 
 		if (serverType == WebServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 		{
@@ -387,11 +387,12 @@ namespace framework
 		return std::nullopt;
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors)
+	BaseExecutor* ExecutorsManager::getOrCreateExecutor(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors)
 	{
 		try // TODO: remake
 		{
-			const web::HeadersMap& headers = request.getHeaders();
+			HTTPRequestImplementation& requestImplementation = *static_cast<HTTPRequestImplementation*>(&request);
+			const web::HeadersMap& headers = requestImplementation.parser.getHeaders();
 
 			if (userAgentFilter.size())
 			{

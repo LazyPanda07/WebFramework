@@ -42,9 +42,6 @@
     <ClCompile Include="src\Exceptions\BadRequestException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\c_api\executors_c_api.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Web\HTTPRequestExecutors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -93,9 +90,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ExecutorsConstants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\c_api\executors_c_api.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Web\HTTPRequestExecutors.h">

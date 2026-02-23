@@ -1,5 +1,7 @@
 #pragma once
 
+#include <HttpBuilder.h>
+
 #include "Framework/WebFrameworkPlatform.h"
 
 #include "Executors/BaseExecutor.h"
@@ -60,12 +62,12 @@ namespace framework
 
 		static bool isHeavyOperation(BaseExecutor* executor);
 
-		static void parseRouteParameters(const std::string& parameters, HTTPRequestExecutors& request, std::vector<utility::RouteParameters>::iterator it);
+		static void parseRouteParameters(const std::string& parameters, interfaces::IHTTPRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		BaseExecutor* getOrCreateExecutor(std::string& parameters, HTTPRequestExecutors& request, StatefulExecutors& executors);
+		BaseExecutor* getOrCreateExecutor(std::string& parameters, interfaces::IHTTPRequest& request, StatefulExecutors& executors);
 
-		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, HTTPResponseExecutors& response) const;
+		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHTTPResponse& response) const;
 
 		std::unique_ptr<BaseExecutor> createApiExecutor(const std::string& name, std::string_view apiType) const;
 
@@ -89,9 +91,9 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> service(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors);
+		std::optional<std::function<void(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)>> service(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors);
 
-		BaseExecutor* getOrCreateExecutor(HTTPRequestExecutors& request, HTTPResponseExecutors& response, StatefulExecutors& executors);
+		BaseExecutor* getOrCreateExecutor(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

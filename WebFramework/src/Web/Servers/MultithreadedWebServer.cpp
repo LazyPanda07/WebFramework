@@ -66,7 +66,6 @@ namespace framework
 		ExecutorsManager::StatefulExecutors executors;
 		HTTPResponseImplementation response;
 		HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
-		HTTPResponseExecutors responseWrapper(&response);
 		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
 		bool finish = false;
 
@@ -90,11 +89,9 @@ namespace framework
 					state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
 				}
 			},
-			[this, &request, &responseWrapper, &executors](ServiceState& _)
+			[this, &request, &response, &executors](ServiceState& _)
 			{
-				HTTPRequestExecutors requestWrapper(&request);
-
-				executorsManager->service(requestWrapper, responseWrapper, executors);
+				executorsManager->service(request, response, executors);
 			},
 			[&stream, &response](ServiceState& _)
 			{

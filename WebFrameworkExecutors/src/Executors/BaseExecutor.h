@@ -6,8 +6,9 @@
 */
 #pragma once
 
-#include "Web/HTTPRequestExecutors.h"
-#include "Web/HTTPResponseExecutors.h"
+#include <functional>
+
+#include "WebInterfaces/IHTTPRequest.h"
 #include "Exceptions/NotImplementedException.h"
 #include "Utility/JSONSettingsParser.h"
 #include "ExecutorsConstants.h"
@@ -20,7 +21,7 @@ namespace framework
 	class EXECUTORS_API BaseExecutor
 	{
 	public:
-		static void (BaseExecutor::* getMethod(std::string_view methodName))(HTTPRequestExecutors&, HTTPResponseExecutors&);
+		static void (BaseExecutor::* getMethod(std::string_view methodName))(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&);
 
 	public:
 		BaseExecutor() = default;
@@ -37,7 +38,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
 		/// Process GET request
@@ -45,7 +46,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
 		/// Process HEAD request
@@ -53,7 +54,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
 		/// Process PUT request
@@ -61,7 +62,7 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
 		/// Process DELETE request
@@ -69,14 +70,14 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/**
 		 * @brief Process PATCH request
 		 * @param request Request controller
 		 * @param response Response controller
 		 */
-		virtual void doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
 		/// Process OPTIONS request
@@ -84,21 +85,21 @@ namespace framework
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		virtual void doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
 		/// Process TRACE request
 		/// </summary>
 		/// <param name="request">Request controller</param>
 		/// <param name="response">Response controller</param>
-		virtual void doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/**
 		 * @brief Process CONNECT request
 		 * @param request Request controller
 		 * @param response Response controller
 		 */
-		virtual void doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response);
+		virtual void doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
 		/// <para>By default all executors must be inherited from BaseStatelessExecutor or BaseStatefullExecutor</para>

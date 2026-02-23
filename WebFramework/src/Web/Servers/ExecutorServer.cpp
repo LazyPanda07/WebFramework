@@ -12,7 +12,6 @@ namespace framework
 	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
 	{
 		ServiceState result = ServiceState::success;
-		HTTPResponseExecutors responseWrapper(&response);
 
 		try
 		{
@@ -41,7 +40,7 @@ namespace framework
 #endif
 		catch (const exceptions::BadRequestException& e) // 400
 		{
-			resources.badRequestError(responseWrapper, &e);
+			resources.badRequestError(response, &e);
 
 			stream << response;
 
@@ -49,7 +48,7 @@ namespace framework
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
-			resources.notFoundError(responseWrapper, &e);
+			resources.notFoundError(response, &e);
 
 			stream << response;
 
@@ -57,7 +56,7 @@ namespace framework
 		}
 		catch (const exceptions::NotFoundException& e) // 404
 		{
-			resources.notFoundError(responseWrapper, &e);
+			resources.notFoundError(response, &e);
 
 			stream << response;
 
@@ -84,7 +83,7 @@ namespace framework
 				Log::error("Internal server error: {}", "LogExecutorServer", e.what());
 			}
 
-			resources.internalServerError(responseWrapper, &e);
+			resources.internalServerError(response, &e);
 
 			stream << response;
 
@@ -111,7 +110,7 @@ namespace framework
 					Log::error("Internal server error: {}", "LogExecutorServer", e.what());
 				}
 
-				resources.internalServerError(responseWrapper, &e);
+				resources.internalServerError(response, &e);
 			}
 
 			stream << response;
@@ -120,7 +119,7 @@ namespace framework
 		}
 		catch (...)	// 500
 		{
-			resources.internalServerError(responseWrapper, nullptr);
+			resources.internalServerError(response, nullptr);
 
 			stream << response;
 

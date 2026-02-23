@@ -50,41 +50,41 @@ namespace framework
 		initFunction(implementation, &settings);
 	}
 
-	void CCExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		this->callBindedMethodFunction(doPostFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doPostFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		this->callBindedMethodFunction(doGetFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doGetFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		this->callBindedMethodFunction(doHeadFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doHeadFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		this->callBindedMethodFunction(doPutFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doPutFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		this->callBindedMethodFunction(doDeleteFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doDeleteFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		this->callBindedMethodFunction(doPatchFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doPatchFunction, __func__, implementation, &request, &response);
 	}
 
-	void CCExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		if (doOptionsFunction)
 		{
-			doOptionsFunction(implementation, request.getImplementation(), response.getImplementation());
+			doOptionsFunction(implementation, &request, &response);
 		}
 		else
 		{
@@ -92,11 +92,11 @@ namespace framework
 		}
 	}
 
-	void CCExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		if (doTraceFunction)
 		{
-			doTraceFunction(implementation, request.getImplementation(), response.getImplementation());
+			doTraceFunction(implementation, &request, &response);
 		}
 		else
 		{
@@ -104,9 +104,9 @@ namespace framework
 		}
 	}
 
-	void CCExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CCExecutor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		this->callBindedMethodFunction(doConnectFunction, __func__, implementation, request.getImplementation(), response.getImplementation());
+		this->callBindedMethodFunction(doConnectFunction, __func__, implementation, &request, &response);
 	}
 
 	utility::ExecutorType CCExecutor::getType() const

@@ -87,7 +87,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\c_api\executors_c_api.cpp" />
     <ClCompile Include="src\Databases\DatabaseExecutors.cpp" />
     <ClCompile Include="src\Databases\SQLResultExecutors.cpp" />
     <ClCompile Include="src\Databases\SQLValueExecutors.cpp" />
@@ -105,7 +104,6 @@
     <ClCompile Include="src\Web\HTTPResponseExecutors.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\c_api\executors_c_api.h" />
     <ClInclude Include="src\Databases\DatabaseExecutors.h" />
     <ClInclude Include="src\Databases\SQLResultExecutors.h" />
     <ClInclude Include="src\Databases\SQLValueExecutors.h" />

@@ -44,49 +44,49 @@ namespace framework
 		initFunction(implementation, &settings);
 	}
 
-	void CXXExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doPostFunction(implementation, request.getImplementation(), response.getImplementation());
+		doPostFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doGetFunction(implementation, request.getImplementation(), response.getImplementation());
+		doGetFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doHeadFunction(implementation, request.getImplementation(), response.getImplementation());
+		doHeadFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doPutFunction(implementation, request.getImplementation(), response.getImplementation());
+		doPutFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doDeleteFunction(implementation, request.getImplementation(), response.getImplementation());
+		doDeleteFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doPatchFunction(implementation, request.getImplementation(), response.getImplementation());
+		doPatchFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doOptionsFunction(implementation, request.getImplementation(), response.getImplementation());
+		doOptionsFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doTraceFunction(implementation, request.getImplementation(), response.getImplementation());
+		doTraceFunction(implementation, &request, &response);
 	}
 
-	void CXXExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void CXXExecutor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
-		doConnectFunction(implementation, request.getImplementation(), response.getImplementation());
+		doConnectFunction(implementation, &request, &response);
 	}
 
 	utility::ExecutorType CXXExecutor::getType() const

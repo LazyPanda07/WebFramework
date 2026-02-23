@@ -5,18 +5,18 @@
 static void isImplemented
 (
 	std::vector<std::string>& result,
-	framework::HTTPRequestExecutors& request, 
-	framework::HTTPResponseExecutors& response,
+	framework::interfaces::IHTTPRequest& request, 
+	framework::interfaces::IHTTPResponse& response,
 	const std::string& methodName, 
-	void(framework::BaseExecutor::*method)(framework::HTTPRequestExecutors&, framework::HTTPResponseExecutors&), 
+	void(framework::BaseExecutor::*method)(framework::interfaces::IHTTPRequest&, framework::interfaces::IHTTPResponse&), 
 	framework::BaseExecutor& executor
 );
 
 namespace framework
 {
-	void (BaseExecutor::* BaseExecutor::getMethod(std::string_view methodName))(HTTPRequestExecutors&, HTTPResponseExecutors&)
+	void (BaseExecutor::* BaseExecutor::getMethod(std::string_view methodName))(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)
 	{
-		static const ::utility::strings::string_based_unordered_map<void(BaseExecutor::*)(HTTPRequestExecutors&, HTTPResponseExecutors&)> methods =
+		static const ::utility::strings::string_based_unordered_map<void(BaseExecutor::*)(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)> methods =
 		{
 			{ "GET", &BaseExecutor::doGet },
 			{ "POST", &BaseExecutor::doPost },
@@ -37,37 +37,37 @@ namespace framework
 
 	}
 
-	void BaseExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doHead(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doHead(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doPut(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doPut(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doDelete(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doDelete(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doPatch(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doPatch(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
 
-	void BaseExecutor::doOptions(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doOptions(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 #ifdef NDEBUG
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
@@ -95,10 +95,10 @@ namespace framework
 			}
 		}
 
-		response.addHeader("Allow", allowHeader);
+		response.addHeader("Allow", allowHeader.data());
 	}
 
-	void BaseExecutor::doTrace(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doTrace(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 #ifdef NDEBUG
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
@@ -107,7 +107,7 @@ namespace framework
 		response.setBody(request.getRawRequest());
 	}
 
-	void BaseExecutor::doConnect(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void BaseExecutor::doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response)
 	{
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 	}
@@ -116,10 +116,10 @@ namespace framework
 void isImplemented
 (
 	std::vector<std::string>& result,
-	framework::HTTPRequestExecutors& request,
-	framework::HTTPResponseExecutors& response,
+	framework::interfaces::IHTTPRequest& request,
+	framework::interfaces::IHTTPResponse& response,
 	const std::string& methodName, 
-	void(framework::BaseExecutor::*method)(framework::HTTPRequestExecutors&, framework::HTTPResponseExecutors&), 
+	void(framework::BaseExecutor::*method)(framework::interfaces::IHTTPRequest&, framework::interfaces::IHTTPResponse&), 
 	framework::BaseExecutor& executor
 )
 {

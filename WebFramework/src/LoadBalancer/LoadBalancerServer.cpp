@@ -228,9 +228,8 @@ namespace framework::load_balancer
 							else
 							{
 								HTTPResponseImplementation response;
-								HTTPResponseExecutors responseWrapper(&response);
 
-								resources->badGatewayError(responseWrapper);
+								resources->badGatewayError(response);
 
 								request.clientStream << response;
 							}
@@ -262,9 +261,8 @@ namespace framework::load_balancer
 						else
 						{
 							HTTPResponseImplementation response;
-							HTTPResponseExecutors responseWrapper(&response);
 
-							resources->badGatewayError(responseWrapper);
+							resources->badGatewayError(response);
 
 							request.clientStream << response;
 						}

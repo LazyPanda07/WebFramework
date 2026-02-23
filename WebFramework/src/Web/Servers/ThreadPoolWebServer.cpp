@@ -88,10 +88,7 @@ namespace framework
 			},
 			[this, &request, &response, &executorsManager, &resourceExecutor, &threadPool](ServiceState& state)
 			{
-				HTTPRequestExecutors requestWrapper(&request);
-				HTTPResponseExecutors responseWrapper(&response);
-
-				if (std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, executors))
+				if (std::optional<std::function<void(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)>> threadPoolFunction = executorsManager.service(request, response, executors))
 				{
 					isBusy = true;
 
@@ -104,10 +101,7 @@ namespace framework
 								stream, request, response, resourceExecutor,
 								[&request, &response, &threadPoolFunction](ServiceState& _)
 								{
-									HTTPRequestExecutors requestWrapper(&request);
-									HTTPResponseExecutors responseWrapper(&response);
-
-									(*threadPoolFunction)(requestWrapper, responseWrapper);
+									(*threadPoolFunction)(request, response);
 								}
 							);
 

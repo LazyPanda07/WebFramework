@@ -24,10 +24,8 @@ namespace framework::utility
 		ExecutorsManager::StatefulExecutors& executors;
 		std::unique_ptr<HTTPRequestImplementation> request;
 		HTTPResponseImplementation response;
-		std::unique_ptr<HTTPRequestExecutors> requestWrapper;
-		HTTPResponseExecutors responseWrapper;
 		BaseExecutor* executor;
-		void(BaseExecutor::* method)(HTTPRequestExecutors&, HTTPResponseExecutors&);
+		void(BaseExecutor::* method)(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&);
 
 	private:
 		bool handleChunk(std::string_view data) override;

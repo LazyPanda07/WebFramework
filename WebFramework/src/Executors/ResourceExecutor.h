@@ -52,32 +52,32 @@ namespace framework
 		/// Send 404.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void notFoundError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+		void notFoundError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 400.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badRequestError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+		void badRequestError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
 
 		/**
 		 * @brief Send 403.html from WebFrameworkAssets
 		 * @param response Response with error file
 		 * @param exception
 		 */
-		void forbiddenError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+		void forbiddenError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 500.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void internalServerError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+		void internalServerError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
 
 		/// <summary>
 		/// Send 502.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badGatewayError(HTTPResponseExecutors& response, const std::exception* exception = nullptr);
+		void badGatewayError(interfaces::IHTTPResponse& response, const std::exception* exception = nullptr);
 
 		bool fileExist(const std::filesystem::path& filePath) const;
 
@@ -125,14 +125,14 @@ namespace framework
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
 		/// <exception cref="framework::exceptions::NotImplementedException"></exception>
-		void doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+		void doGet(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
 
 		/// <summary>
 		/// Send file via POST request
 		/// </summary>
 		/// <param name="request">file request</param>
 		/// <param name="response">response with asset file</param>
-		void doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) override;
+		void doPost(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response) override;
 
 		~ResourceExecutor() = default;
 	};
