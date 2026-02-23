@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseExecutor.h"
+#include "Executor.h"
 
 namespace framework
 {
@@ -10,10 +10,10 @@ namespace framework
 	/// <para>Can't work in multi-threaded mode</para>
 	/// <para>Run in separate thread</para>
 	/// </summary>
-	class EXECUTORS_API BaseHeavyOperationStatelessExecutor : public BaseExecutor
+	class EXECUTORS_API HeavyOperationStatelessExecutor : public Executor
 	{
 	public:
-		BaseHeavyOperationStatelessExecutor() = default;
+		HeavyOperationStatelessExecutor() = default;
 
 		/// @brief Get executor type
 		/// @return ExecutorType::heavyOperationStateless
@@ -22,6 +22,6 @@ namespace framework
 		/// @brief Stateless executors can't call destroy method
 		virtual void destroy() final override;
 
-		virtual ~BaseHeavyOperationStatelessExecutor() = default;
+		virtual ~HeavyOperationStatelessExecutor() = default;
 	};
 }

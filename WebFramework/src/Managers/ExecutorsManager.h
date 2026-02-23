@@ -4,7 +4,7 @@
 
 #include "Framework/WebFrameworkPlatform.h"
 
-#include "Executors/BaseExecutor.h"
+#include "Executors/Executor.h"
 #include "Utility/JSONSettingsParser.h"
 #include "Executors/ResourceExecutor.h"
 #include "Utility/RouteParameters.h"
@@ -20,14 +20,14 @@ namespace framework
 		class StatefulExecutors
 		{
 		private:
-			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> executors;
+			std::unordered_map<std::string, std::unique_ptr<Executor>> executors;
 
 		public:
 			StatefulExecutors() = default;
 
-			const std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& operator *() const;
+			const std::unordered_map<std::string, std::unique_ptr<Executor>>& operator *() const;
 
-			std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& operator *();
+			std::unordered_map<std::string, std::unique_ptr<Executor>>& operator *();
 
 			~StatefulExecutors();
 		};
@@ -50,7 +50,7 @@ namespace framework
 
 	private:
 		std::mutex checkExecutor;
-		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>> routes; // route - executor
+		std::unordered_map<std::string, std::unique_ptr<Executor>> routes; // route - executor
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -60,16 +60,16 @@ namespace framework
 	private:
 		static bool isFileRequest(std::string_view parameters);
 
-		static bool isHeavyOperation(BaseExecutor* executor);
+		static bool isHeavyOperation(Executor* executor);
 
 		static void parseRouteParameters(const std::string& parameters, interfaces::IHTTPRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		BaseExecutor* getOrCreateExecutor(std::string& parameters, interfaces::IHTTPRequest& request, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHTTPRequest& request, StatefulExecutors& executors);
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHTTPResponse& response) const;
 
-		std::unique_ptr<BaseExecutor> createApiExecutor(const std::string& name, std::string_view apiType) const;
+		std::unique_ptr<Executor> createApiExecutor(const std::string& name, std::string_view apiType) const;
 
 		void initCreators(const std::vector<std::string>& pathToSources);
 
@@ -93,7 +93,7 @@ namespace framework
 
 		std::optional<std::function<void(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)>> service(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors);
 
-		BaseExecutor* getOrCreateExecutor(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

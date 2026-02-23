@@ -19,12 +19,12 @@
 
 namespace framework
 {
-	const std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator *() const
+	const std::unordered_map<std::string, std::unique_ptr<Executor>>& ExecutorsManager::StatefulExecutors::operator *() const
 	{
 		return executors;
 	}
 
-	std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& ExecutorsManager::StatefulExecutors::operator *()
+	std::unordered_map<std::string, std::unique_ptr<Executor>>& ExecutorsManager::StatefulExecutors::operator *()
 	{
 		return executors;
 	}
@@ -51,7 +51,7 @@ namespace framework
 		return fileExtension.size() > 1 && std::ranges::all_of(fileExtension, [](char c) { return c != '/'; });
 	}
 
-	bool ExecutorsManager::isHeavyOperation(BaseExecutor* executor)
+	bool ExecutorsManager::isHeavyOperation(Executor* executor)
 	{
 		utility::ExecutorType executorType = executor->getType();
 
@@ -118,9 +118,9 @@ namespace framework
 		while (endParameter != std::string::npos);
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, interfaces::IHTTPRequest& request, StatefulExecutors& executors)
+	Executor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, interfaces::IHTTPRequest& request, StatefulExecutors& executors)
 	{
-		std::unordered_map<std::string, std::unique_ptr<BaseExecutor>>& statefulExecutors = *executors;
+		std::unordered_map<std::string, std::unique_ptr<Executor>>& statefulExecutors = *executors;
 
 		auto executor = statefulExecutors.find(parameters);
 
@@ -213,7 +213,7 @@ namespace framework
 		return true;
 	}
 
-	std::unique_ptr<BaseExecutor> ExecutorsManager::createApiExecutor(const std::string& name, std::string_view apiType) const
+	std::unique_ptr<Executor> ExecutorsManager::createApiExecutor(const std::string& name, std::string_view apiType) const
 	{
 		return runtime::RuntimesManager::get().getRuntime(utility::getExecutorAPIType(apiType)).createExecutor(name);
 	}
@@ -368,14 +368,14 @@ namespace framework
 
 	std::optional<std::function<void(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&)>> ExecutorsManager::service(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors)
 	{
-		BaseExecutor* executor = this->getOrCreateExecutor(request, response, executors);
+		Executor* executor = this->getOrCreateExecutor(request, response, executors);
 
 		if (!executor)
 		{
 			return std::nullopt;
 		}
 
-		void (BaseExecutor:: * method)(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&) = BaseExecutor::getMethod(request.getMethod());
+		void (Executor:: * method)(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&) = Executor::getMethod(request.getMethod());
 
 		if (serverType == WebServerType::threadPool && ExecutorsManager::isHeavyOperation(executor))
 		{
@@ -387,7 +387,7 @@ namespace framework
 		return std::nullopt;
 	}
 
-	BaseExecutor* ExecutorsManager::getOrCreateExecutor(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors)
+	Executor* ExecutorsManager::getOrCreateExecutor(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response, StatefulExecutors& executors)
 	{
 		try // TODO: remake
 		{
@@ -424,7 +424,7 @@ namespace framework
 			}
 
 			std::string parameters(request.getRawParameters());
-			BaseExecutor* executor = nullptr;
+			Executor* executor = nullptr;
 			bool fileRequest = ExecutorsManager::isFileRequest(parameters);
 
 			if (parameters.find('?') != std::string::npos)
@@ -471,7 +471,7 @@ namespace framework
 
 			return nullptr;
 		}
-		catch (const exceptions::BaseExecutorException& e)
+		catch (const exceptions::ExecutorException& e)
 		{
 			if (Log::isValid())
 			{

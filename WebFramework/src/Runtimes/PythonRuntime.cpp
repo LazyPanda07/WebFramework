@@ -113,7 +113,7 @@ namespace framework::runtime
 		return true;
 	}
 
-	std::unique_ptr<BaseExecutor> PythonRuntime::createExecutor(std::string_view name) const
+	std::unique_ptr<Executor> PythonRuntime::createExecutor(std::string_view name) const
 	{
 		auto it = classes.find(name);
 

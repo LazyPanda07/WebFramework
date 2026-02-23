@@ -88,7 +88,7 @@ namespace framework
 		}
 		else
 		{
-			BaseExecutor::doOptions(request, response);
+			Executor::doOptions(request, response);
 		}
 	}
 
@@ -100,7 +100,7 @@ namespace framework
 		}
 		else
 		{
-			BaseExecutor::doTrace(request, response);
+			Executor::doTrace(request, response);
 		}
 	}
 

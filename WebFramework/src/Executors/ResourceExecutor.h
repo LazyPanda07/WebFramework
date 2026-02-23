@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Executors/BaseStatelessExecutor.h"
+#include "Executors/StatelessExecutor.h"
 #include "WebInterfaces/IStaticFile.h"
 #include "WebInterfaces/IDynamicFile.h"
 
@@ -17,7 +17,7 @@ namespace framework
 	/// <summary>
 	/// Used for sending asset files
 	/// </summary>
-	class ResourceExecutor : public interfaces::IStaticFile, public interfaces::IDynamicFile, public BaseStatelessExecutor
+	class ResourceExecutor : public interfaces::IStaticFile, public interfaces::IDynamicFile, public StatelessExecutor
 	{
 	private:
 		enum HTMLErrors
@@ -39,6 +39,8 @@ namespace framework
 		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual> staticRenderers;
 
 	private:
+		bool escapeFromAssets(std::string_view filePath) const noexcept;
+
 		void loadHTMLErrorsData();
 
 		void loadStaticRenderers();

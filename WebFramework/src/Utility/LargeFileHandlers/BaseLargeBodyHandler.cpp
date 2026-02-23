@@ -35,7 +35,7 @@ namespace framework::utility
 		request->setParser(parser);
 
 		executor = executorsManager.getOrCreateExecutor(*request, response, executors);
-		method = BaseExecutor::getMethod(parser.getMethod());
+		method = Executor::getMethod(parser.getMethod());
 	}
 
 	void BaseLargeBodyHandler::onFinishHandleChunks()

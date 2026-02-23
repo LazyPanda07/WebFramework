@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Executors/BaseExecutor.h>
+#include <Executors/Executor.h>
 
 #include <concepts>
 
@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class CCExecutor : public BaseExecutor
+	class CCExecutor : public Executor
 	{
 	private:
 		using InitExecutorSignature = void(*)(void*, const void*);

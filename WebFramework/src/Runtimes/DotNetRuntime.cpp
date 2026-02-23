@@ -333,7 +333,7 @@ namespace framework::runtime
 		return true;
 	}
 
-	std::unique_ptr<BaseExecutor> DotNetRuntime::createExecutor(std::string_view name) const
+	std::unique_ptr<Executor> DotNetRuntime::createExecutor(std::string_view name) const
 	{
 		auto it = fullQualifiedNames.find(name);
 

@@ -40,7 +40,7 @@ namespace framework::runtime
 		return false;
 	}
 
-	std::unique_ptr<BaseExecutor> CCRuntime::createExecutor(std::string_view name) const
+	std::unique_ptr<Executor> CCRuntime::createExecutor(std::string_view name) const
 	{
 		auto it = creators.find(name);
 

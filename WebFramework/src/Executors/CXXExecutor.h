@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Executors/BaseExecutor.h>
+#include <Executors/Executor.h>
 
 #include <Utility/Sources.h>
 #include <WebInterfaces/IHTTPRequest.h>
@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class CXXExecutor : public BaseExecutor
+	class CXXExecutor : public Executor
 	{
 	private:
 		using InitExecutorSignature = void(*)(void*, const void*);

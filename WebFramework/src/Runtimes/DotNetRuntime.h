@@ -144,7 +144,7 @@ namespace framework::runtime
 	public:
 		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;
 
-		std::unique_ptr<BaseExecutor> createExecutor(std::string_view name) const override;
+		std::unique_ptr<Executor> createExecutor(std::string_view name) const override;
 
 		void finishInitialization() override;
 

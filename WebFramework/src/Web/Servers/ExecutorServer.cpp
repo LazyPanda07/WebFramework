@@ -76,7 +76,7 @@ namespace framework
 
 			result = ServiceState::skipResponse;
 		}
-		catch (const exceptions::BaseExecutorException& e) // 500
+		catch (const exceptions::ExecutorException& e) // 500
 		{
 			if (Log::isValid())
 			{

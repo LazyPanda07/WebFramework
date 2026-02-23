@@ -5,7 +5,7 @@
 namespace framework::exceptions
 {
 	/// <summary>
-	/// Default exception for all HTTP methods in BaseExecutor
+	/// Default exception for all HTTP methods in Executor
 	/// <para>Server throws 400 error</para>
 	/// </summary>
 	class EXECUTORS_API NotImplementedException : public BadRequestException

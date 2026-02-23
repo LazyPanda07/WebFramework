@@ -18,13 +18,13 @@ namespace framework
 	/// <summary>
 	/// Base class for all executors
 	/// </summary>
-	class EXECUTORS_API BaseExecutor
+	class EXECUTORS_API Executor
 	{
 	public:
-		static void (BaseExecutor::* getMethod(std::string_view methodName))(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&);
+		static void (Executor::* getMethod(std::string_view methodName))(interfaces::IHTTPRequest&, interfaces::IHTTPResponse&);
 
 	public:
-		BaseExecutor() = default;
+		Executor() = default;
 
 		/// <summary>
 		/// Initializing executor before use
@@ -102,9 +102,9 @@ namespace framework
 		virtual void doConnect(interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
 
 		/// <summary>
-		/// <para>By default all executors must be inherited from BaseStatelessExecutor or BaseStatefullExecutor</para>
-		/// <para>BaseStatelessExecutor override this method by getting ExecutorType::stateless</para>
-		/// <para>BaseStatefulExecutor override this method by getting ExecutorType::stateful</para>
+		/// <para>By default all executors must be inherited from StatelessExecutor or BaseStatefullExecutor</para>
+		/// <para>StatelessExecutor override this method by getting ExecutorType::stateless</para>
+		/// <para>StatefulExecutor override this method by getting ExecutorType::stateful</para>
 		/// <para>ExecutorsManager can manage executors by getting type of ExecutorType enum class</para>
 		/// </summary>
 		/// <returns>stateful, stateless or none value</returns>
@@ -112,11 +112,11 @@ namespace framework
 
 		/// <summary>
 		/// <para>Destroy and unload executor</para>
-		/// <para>Executors inherited from BaseStatelessExecutor no need this method</para>
+		/// <para>Executors inherited from StatelessExecutor no need this method</para>
 		/// </summary>
 		virtual void destroy() = 0;
 
-		virtual ~BaseExecutor() = default;
+		virtual ~Executor() = default;
 	};
 
 	using CreateExecutorSignature = void* (*)();
@@ -131,8 +131,8 @@ namespace framework
 #endif
 
 /**
-* Macro for each BaseExecutor subclass
-* Used for loading function that creates BaseExecutor subclass
+* Macro for each Executor subclass
+* Used for loading function that creates Executor subclass
 */
 #define DEFINE_EXECUTOR(subclassName) EXPORT_EXECUTOR_FUNCTION void* create##subclassName##Instance()	\
 {	\

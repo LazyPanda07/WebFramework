@@ -1,13 +1,13 @@
 #pragma once
 
-#include "BaseExecutorException.h"
+#include "ExecutorException.h"
 
 namespace framework::exceptions
 {
 	/// <summary>
 	/// HTTP bad request 400 error code
 	/// </summary>
-	class EXECUTORS_API BadRequestException : public BaseExecutorException
+	class EXECUTORS_API BadRequestException : public ExecutorException
 	{
 	public:
 		BadRequestException(std::string_view additionalInformation = "");

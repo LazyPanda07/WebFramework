@@ -4,13 +4,13 @@ project(WebFrameworkExecutors)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/Executors/BaseExecutor.cpp
-	src/Executors/BaseHeavyOperationStatefulExecutor.cpp
-	src/Executors/BaseHeavyOperationStatelessExecutor.cpp
-	src/Executors/BaseStatefulExecutor.cpp
-	src/Executors/BaseStatelessExecutor.cpp
+	src/Executors/Executor.cpp
+	src/Executors/HeavyOperationStatefulExecutor.cpp
+	src/Executors/HeavyOperationStatelessExecutor.cpp
+	src/Executors/StatefulExecutor.cpp
+	src/Executors/StatelessExecutor.cpp
 	src/Utility/JSONSettingsParser.cpp
-	src/Exceptions/BaseExecutorException.cpp
+	src/Exceptions/ExecutorException.cpp
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
 	src/Web/HTTPRequestExecutors.cpp

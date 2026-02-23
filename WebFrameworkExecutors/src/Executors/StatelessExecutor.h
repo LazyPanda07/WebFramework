@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseExecutor.h"
+#include "Executor.h"
 
 namespace framework
 {
@@ -9,10 +9,10 @@ namespace framework
 	/// <para>This type of executors creating during server initializing</para>
 	/// <para>Can't work in multi-threaded mode</para>
 	/// </summary>
-	class EXECUTORS_API BaseStatelessExecutor : public BaseExecutor
+	class EXECUTORS_API StatelessExecutor : public Executor
 	{
 	public:
-		BaseStatelessExecutor() = default;
+		StatelessExecutor() = default;
 
 		/// <summary>
 		/// Get executor type
@@ -25,6 +25,6 @@ namespace framework
 		/// </summary>
 		virtual void destroy() final override;
 
-		virtual ~BaseStatelessExecutor() = default;
+		virtual ~StatelessExecutor() = default;
 	};
 }

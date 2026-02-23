@@ -5,7 +5,7 @@
 namespace framework::exceptions
 {
 	MissingLoadTypeException::MissingLoadTypeException(std::string_view className) :
-		BaseExecutorException(std::format("{} {}", ::exceptions::missingLoadType, className))
+		ExecutorException(std::format("{} {}", ::exceptions::missingLoadType, className))
 	{
 
 	}

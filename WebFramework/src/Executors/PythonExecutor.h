@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Executors/BaseExecutor.h>
+#include <Executors/Executor.h>
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 
@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class PythonExecutor : public BaseExecutor
+	class PythonExecutor : public Executor
 	{
 	private:
 		void processMethod(std::string_view methodName, interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);

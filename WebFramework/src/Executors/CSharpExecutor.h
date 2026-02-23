@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Executors/BaseExecutor.h>
+#include <Executors/Executor.h>
 
 #ifdef __WITH_DOTNET_EXECUTORS__
 
@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class CSharpExecutor : public BaseExecutor
+	class CSharpExecutor : public Executor
 	{
 	private:
 		void processMethod(runtime::Runtime& runtime, runtime::DotNetRuntime::DoMethodSignature method, interfaces::IHTTPRequest& request, interfaces::IHTTPResponse& response);
