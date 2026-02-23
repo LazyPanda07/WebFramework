@@ -32,6 +32,7 @@ option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)
 option(BUILD_TESTS "" ON)
 option(WITH_ADDRESS_SANITIZER "" OFF)
+option(WITHOUT_REDIS_TESTS "" OFF)
 set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "CSharp" "NONE")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 

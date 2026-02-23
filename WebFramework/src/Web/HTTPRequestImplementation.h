@@ -78,7 +78,7 @@ namespace framework
 	public:
 		static web::HttpParser sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout = 30'000, bool useHTTPS = false);
 
-		static void registerWFDPFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources);
+		static void registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources);
 
 	public:
 		HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
@@ -212,18 +212,18 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) override;
+		void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) override;
 
-		void registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass) override;
+		void registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass) override;
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterWFDPFunction(const char* functionName) override;
+		void unregisterDynamicFunction(const char* functionName) override;
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isWFDPFunctionRegistered(const char* functionName) override;
+		bool isDynamicFunctionRegistered(const char* functionName) override;
 
 		void sendFileChunks(interfaces::IHttpResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size)) override;
 

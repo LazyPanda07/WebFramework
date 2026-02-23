@@ -77,7 +77,7 @@ namespace framework
 		return web::HttpParser(response);
 	}
 
-	void HTTPRequestImplementation::registerWFDPFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
+	void HTTPRequestImplementation::registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
 	{
 #ifdef __WITH_PYTHON_EXECUTORS__
 		if (apiType == json_settings::pythonExecutorKey)
@@ -376,22 +376,22 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+	void HTTPRequestImplementation::registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
 		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, utility::createCxxDynamicFunction(function, deleter));
 	}
 
-	void HTTPRequestImplementation::registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass)
+	void HTTPRequestImplementation::registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass)
 	{
-		HTTPRequestImplementation::registerWFDPFunctionClassStatic(functionName, apiType, functionClass, dynamicResources);
+		HTTPRequestImplementation::registerDynamicFunctionClassStatic(functionName, apiType, functionClass, dynamicResources);
 	}
 
-	void HTTPRequestImplementation::unregisterWFDPFunction(const char* functionName)
+	void HTTPRequestImplementation::unregisterDynamicFunction(const char* functionName)
 	{
 		dynamicResources.unregisterDynamicFunction(functionName);
 	}
 
-	bool HTTPRequestImplementation::isWFDPFunctionRegistered(const char* functionName)
+	bool HTTPRequestImplementation::isDynamicFunctionRegistered(const char* functionName)
 	{
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}

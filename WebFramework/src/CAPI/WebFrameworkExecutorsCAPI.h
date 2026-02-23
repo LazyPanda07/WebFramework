@@ -54,13 +54,13 @@ EXPORT uint16_t getClientPort(HttpRequestObject request, Exception* exception);
 
 EXPORT uint16_t getServerPort(HttpRequestObject request, Exception* exception);
 
-EXPORT void registerWFDPFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
+EXPORT void registerDynamicFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
 
-EXPORT void registerWFDPFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
+EXPORT void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 
-EXPORT void unregisterWFDPFunction(HttpRequestObject request, const char* functionName, Exception* exception);
+EXPORT void unregisterDynamicFunction(HttpRequestObject request, const char* functionName, Exception* exception);
 
-EXPORT bool isWFDPFunctionRegistered(HttpRequestObject request, const char* functionName, Exception* exception);
+EXPORT bool isDynamicFunctionRegistered(HttpRequestObject request, const char* functionName, Exception* exception);
 
 EXPORT void getQueryParameters(HttpRequestObject request, void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 
@@ -132,11 +132,13 @@ EXPORT TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSe
 
 EXPORT TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception);
 
-EXPORT void registerWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
+EXPORT void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
 
-EXPORT void registerWFDPFunctionClasExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
+EXPORT void registerDynamicFunctionClassExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 
-EXPORT void unregisterWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception);
+EXPORT void unregisterDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception);
+
+EXPORT bool isDynamicFunctionRegisteredExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception);
 
 // TODO: processing(rendering), reading files
 

@@ -56,12 +56,12 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
 {
-	wf_register_wfdp_function(request, "customFunction", customFunction, deleter);
+	wf_register_dynamic_function(request, "customFunction", customFunction, deleter);
 }
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 {
-	wf_unregister_wfdp_function(request, "customFunction");
+	wf_unregister_dynamic_function(request, "customFunction");
 }
 
 const char* customFunction(const char** args, size_t agumentsNumber)

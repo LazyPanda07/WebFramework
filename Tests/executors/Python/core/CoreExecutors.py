@@ -1,5 +1,3 @@
-from multiprocessing.reduction import register
-
 from web_framework_api import *
 
 from TextGenerator import TextGenerator
@@ -52,10 +50,10 @@ class AssetsExecutor(StatelessExecutor):
         request.send_dynamic_file(f"{request.get_json()["fileName"]}.wfdp", response, request.get_query_parameters())
 
     def do_post(self, request, response):
-        request.register_wfdp_function("customFunction", CustomFunction)
+        request.register_dynamic_function("customFunction", CustomFunction)
 
     def do_delete(self, request, response):
-        request.unregister_wfdp_function("custom_function")
+        request.unregister_dynamic_function("custom_function")
 
 
 class ChunksExecutor(HeavyOperationStatelessExecutor):

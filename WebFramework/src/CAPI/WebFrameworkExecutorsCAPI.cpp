@@ -429,11 +429,11 @@ uint16_t getServerPort(HttpRequestObject request, Exception* exception)
 	return 0;
 }
 
-void registerWFDPFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
+void registerDynamicFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->registerWFDPFunction(functionName, function, deleter);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->registerDynamicFunction(functionName, function, deleter);
 	}
 	catch (const std::exception& e)
 	{
@@ -445,11 +445,11 @@ void registerWFDPFunction(HttpRequestObject request, const char* functionName, c
 	}
 }
 
-void registerWFDPFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
+void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->registerWFDPFunctionClass(functionName, apiType, functionClass);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->registerDynamicFunctionClass(functionName, apiType, functionClass);
 	}
 	catch (const std::exception& e)
 	{
@@ -461,11 +461,11 @@ void registerWFDPFunctionClass(HttpRequestObject request, const char* functionNa
 	}
 }
 
-void unregisterWFDPFunction(HttpRequestObject request, const char* functionName, Exception* exception)
+void unregisterDynamicFunction(HttpRequestObject request, const char* functionName, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->unregisterWFDPFunction(functionName);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->unregisterDynamicFunction(functionName);
 	}
 	catch (const std::exception& e)
 	{
@@ -477,11 +477,11 @@ void unregisterWFDPFunction(HttpRequestObject request, const char* functionName,
 	}
 }
 
-bool isWFDPFunctionRegistered(HttpRequestObject request, const char* functionName, Exception* exception)
+bool isDynamicFunctionRegistered(HttpRequestObject request, const char* functionName, Exception* exception)
 {
 	try
 	{
-		return static_cast<framework::interfaces::IHttpRequest*>(request)->isWFDPFunctionRegistered(functionName);
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->isDynamicFunctionRegistered(functionName);
 	}
 	catch (const std::exception& e)
 	{
@@ -1107,7 +1107,7 @@ TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const c
 	return nullptr;
 }
 
-void registerWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
+void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
 {
 	try
 	{
@@ -1124,11 +1124,11 @@ void registerWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, co
 	}
 }
 
-void registerWFDPFunctionClasExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
+void registerDynamicFunctionClassExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try
 	{
-		framework::HTTPRequestImplementation::registerWFDPFunctionClassStatic
+		framework::HTTPRequestImplementation::registerDynamicFunctionClassStatic
 		(
 			functionName, apiType, functionClass,
 			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)
@@ -1144,7 +1144,7 @@ void registerWFDPFunctionClasExecutorSettingss(ExecutorSettings executorsSetting
 	}
 }
 
-void unregisterWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception)
+void unregisterDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception)
 {
 	try
 	{
@@ -1159,4 +1159,23 @@ void unregisterWFDPFunctionExecutorSettings(ExecutorSettings executorsSettings, 
 	{
 		UNEXPECTED_EXCEPTION();
 	}
+}
+
+bool isDynamicFunctionRegisteredExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception)
+{
+	try
+	{
+		return std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->
+			isDynamicFunctionRegistered(functionName);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return false;
 }

@@ -256,7 +256,7 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
  * @param deleter Deleter for values from function
  * @return 
  */
-web_framework_exception_t wf_register_wfdp_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
 
 /**
  * @brief Unregister function for processing .wfdp files
@@ -264,7 +264,7 @@ web_framework_exception_t wf_register_wfdp_function(http_request_t implementatio
  * @param functionName Function name
  * @return Error if occurred
  */
-web_framework_exception_t wf_unregister_wfdp_function(http_request_t implementation, const char* function_name);
+web_framework_exception_t wf_unregister_dynamic_function(http_request_t implementation, const char* function_name);
 
 /**
  * @brief Check is WFDP function registered
@@ -273,7 +273,7 @@ web_framework_exception_t wf_unregister_wfdp_function(http_request_t implementat
  * @param result Is function registered
  * @return Error if occurred
  */
-web_framework_exception_t wf_is_wfdp_function_registered(http_request_t implementation, const char* function_name, bool* result);
+web_framework_exception_t wf_is_dynamic_function_registered(http_request_t implementation, const char* function_name, bool* result);
 
 /**
  * @brief Get HTTP body as Json

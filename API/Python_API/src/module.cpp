@@ -429,7 +429,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("stream_file", &framework::HttpRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHttpRequest::defaultChunkSize)
 		.def
 		(
-			"register_wfdp_function",
+			"register_dynamic_function",
 			[](framework::HttpRequest& self, std::string_view functionName, py::type functionClass)
 			{
 				py::type dynamicFunctionClass = py::module_::import("web_framework_api").attr("DynamicFunction");
@@ -439,12 +439,12 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 					throw std::runtime_error(std::format("Class {} is not subclass of {}", py::repr(functionClass).cast<std::string>(), py::repr(dynamicFunctionClass).cast<std::string>()));
 				}
 
-				self.registerWFDPFunctionClass(functionName, "python", &functionClass);
+				self.registerDynamicFunctionClass(functionName, "python", &functionClass);
 			},
 			"function_name"_a, "function_class"_a
 		)
-		.def("unregister_wfdp_function", &framework::HttpRequest::unregisterWFDPFunction, "function_name"_a)
-		.def("is_wfdp_function_registered", &framework::HttpRequest::isWFDPFunctionRegistered, "function_name"_a)
+		.def("unregister_dynamic_function", &framework::HttpRequest::unregisterDynamicFunction, "function_name"_a)
+		.def("is_dynamic_function_registered", &framework::HttpRequest::isDynamicFunctionRegistered, "function_name"_a)
 		.def("get_file", &framework::HttpRequest::getFile, "file_path"_a)
 		.def("process_static_file", &framework::HttpRequest::processStaticFile, "file_data"_a, "file_extension"_a)
 		.def("process_dynamic_file", &framework::HttpRequest::processDynamicFile, "file_data"_a, "variables"_a)

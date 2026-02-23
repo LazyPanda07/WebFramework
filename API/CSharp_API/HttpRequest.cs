@@ -117,14 +117,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial ushort getServerPort(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void registerWFDPFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
+	private static partial void registerDynamicFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void unregisterWFDPFunction(IntPtr implementation, string functionName, ref void* exception);
+	private static partial void unregisterDynamicFunction(IntPtr implementation, string functionName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool isWFDPFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
+	private static partial bool isDynamicFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref void* exception);
@@ -519,7 +519,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <typeparam name="T"></typeparam>
 	/// <param name="functionName"></param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void RegisterWfdpFunction<T>(string functionName) where T : IDynamicFunction
+	public void RegisterDynamicFunction<T>(string functionName) where T : IDynamicFunction
 	{
 		void* exception = null;
 		string assemblyName = typeof(T).AssemblyQualifiedName!;
@@ -528,7 +528,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		Marshal.Copy(assemblyBytes, 0, result, assemblyBytes.Length);
 
-		registerWFDPFunctionClass(implementation, functionName, "csharp", result, ref exception);
+		registerDynamicFunctionClass(implementation, functionName, "csharp", result, ref exception);
 
 		if (exception != null)
 		{
@@ -541,11 +541,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// </summary>
 	/// <param name="functionName"></param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void UnregisterWfdpFunction(string functionName)
+	public void UnregisterDynamicFunction(string functionName)
 	{
 		void* exception = null;
 
-		unregisterWFDPFunction(implementation, functionName, ref exception);
+		unregisterDynamicFunction(implementation, functionName, ref exception);
 
 		if (exception != null)
 		{
@@ -559,10 +559,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="functionName"></param>
 	/// <returns></returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public bool IsWfdpFunctionRegistered(string functionName)
+	public bool IsDynamicFunctionRegistered(string functionName)
 	{
 		void* exception = null;
-		bool result = isWFDPFunctionRegistered(implementation, functionName, ref exception);
+		bool result = isDynamicFunctionRegistered(implementation, functionName, ref exception);
 
 		if (exception != null)
 		{

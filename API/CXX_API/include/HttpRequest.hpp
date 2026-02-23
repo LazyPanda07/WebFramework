@@ -222,21 +222,21 @@ namespace framework
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
+		void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 
 		/**
 		 * @brief Internal use only
 		 */
-		void registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass);
+		void registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass);
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterWFDPFunction(std::string_view functionName);
+		void unregisterDynamicFunction(std::string_view functionName);
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isWFDPFunctionRegistered(std::string_view functionName);
+		bool isDynamicFunctionRegistered(std::string_view functionName);
 
 		/**
 		 * @brief Get file content
@@ -718,24 +718,24 @@ namespace framework
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
 	}
 
-	inline void HttpRequest::registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+	inline void HttpRequest::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
-		implementation->registerWFDPFunction(functionName.data(), function, deleter);
+		implementation->registerDynamicFunction(functionName.data(), function, deleter);
 	}
 
-	inline void HttpRequest::registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass)
+	inline void HttpRequest::registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass)
 	{
-		implementation->registerWFDPFunctionClass(functionName.data(), apiType.data(), functionClass);
+		implementation->registerDynamicFunctionClass(functionName.data(), apiType.data(), functionClass);
 	}
 
-	inline void HttpRequest::unregisterWFDPFunction(std::string_view functionName)
+	inline void HttpRequest::unregisterDynamicFunction(std::string_view functionName)
 	{
-		implementation->unregisterWFDPFunction(functionName.data());
+		implementation->unregisterDynamicFunction(functionName.data());
 	}
 
-	inline bool HttpRequest::isWFDPFunctionRegistered(std::string_view functionName)
+	inline bool HttpRequest::isDynamicFunctionRegistered(std::string_view functionName)
 	{
-		return implementation->isWFDPFunctionRegistered(functionName.data());
+		return implementation->isDynamicFunctionRegistered(functionName.data());
 	}
 
 	inline std::string HttpRequest::getFile(const std::filesystem::path& filePath) const

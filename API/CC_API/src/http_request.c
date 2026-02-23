@@ -440,29 +440,29 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
 	return exception;
 }
 
-web_framework_exception_t wf_register_wfdp_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*registerWFDPFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+	typedef void (*registerDynamicFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerWFDPFunction, function_name, function, deleter, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunction, function_name, function, deleter, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_unregister_wfdp_function(http_request_t implementation, const char* functionName)
+web_framework_exception_t wf_unregister_dynamic_function(http_request_t implementation, const char* functionName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*unregisterWFDPFunction)(void* implementation, const char* functionName, void** exception);
+	typedef void (*unregisterDynamicFunction)(void* implementation, const char* functionName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterWFDPFunction, functionName, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterDynamicFunction, functionName, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_is_wfdp_function_registered(http_request_t implementation, const char* functionName, bool* result)
+web_framework_exception_t wf_is_dynamic_function_registered(http_request_t implementation, const char* functionName, bool* result)
 {
 	web_framework_exception_t exception = NULL;
 

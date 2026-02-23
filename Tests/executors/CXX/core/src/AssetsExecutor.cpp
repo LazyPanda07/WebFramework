@@ -26,12 +26,12 @@ void AssetsExecutor::doGet(framework::HttpRequest& request, framework::HttpRespo
 
 void AssetsExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	request.registerWFDPFunction("customFunction", customFunction, [](char* result) { delete[] result; });
+	request.registerDynamicFunction("customFunction", customFunction, [](char* result) { delete[] result; });
 }
 
 void AssetsExecutor::doDelete(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	request.unregisterWFDPFunction("customFunction");
+	request.unregisterDynamicFunction("customFunction");
 }
 
 DEFINE_EXECUTOR(AssetsExecutor)

@@ -127,13 +127,13 @@ namespace framework::interfaces
 
 		virtual void streamFile(const char* filePath, IHttpResponse* response, const char* fileName, size_t chunkSize = IHttpRequest::defaultChunkSize) = 0;
 
-		virtual void registerWFDPFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(char* result)) = 0;
+		virtual void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*resultDeleter)(char* result)) = 0;
 
-		virtual void registerWFDPFunctionClass(const char* functionName, const char* apiType, void* functionClass) = 0;
+		virtual void registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass) = 0;
 
-		virtual void unregisterWFDPFunction(const char* functionName) = 0;
+		virtual void unregisterDynamicFunction(const char* functionName) = 0;
 
-		virtual bool isWFDPFunctionRegistered(const char* functionName) = 0;
+		virtual bool isDynamicFunctionRegistered(const char* functionName) = 0;
 
 		virtual void sendFileChunks(IHttpResponse* response, const char* fileName, void* chunkGenerator, const char* (*addChunk)(void* chunkGenerator, size_t* chunkSize)) = 0;
 
