@@ -93,6 +93,46 @@ namespace framework
 #endif
 	}
 
+	void HTTPRequestImplementation::getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources)
+	{
+		if (utility::escapeFromAssets(filePath))
+		{
+			return;
+		}
+
+		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
+		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
+
+		if (!std::filesystem::exists(assetFilePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		if (cache.contains(assetFilePath))
+		{
+			std::string_view data = cache.getCacheData(assetFilePath);
+
+			fillBuffer(data.data(), data.size(), buffer);
+		}
+		else
+		{
+			std::string data;
+
+			{
+				std::ifstream file(assetFilePath);
+				std::ostringstream os;
+
+				os << file.rdbuf();
+
+				data = os.str();
+			}
+
+			cache.appendCache(assetFilePath, data);
+
+			fillBuffer(data.data(), data.size(), buffer);
+		}
+	}
+
 	HTTPRequestImplementation::HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
@@ -468,37 +508,7 @@ namespace framework
 
 	void HTTPRequestImplementation::getFile(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) const
 	{
-		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
-		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
-
-		if (!std::filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
-		}
-
-		if (cache.contains(assetFilePath))
-		{
-			std::string_view data = cache.getCacheData(assetFilePath);
-
-			fillBuffer(data.data(), data.size(), buffer);
-		}
-		else
-		{
-			std::string data;
-
-			{
-				std::ifstream file(assetFilePath);
-				std::ostringstream os;
-
-				os << file.rdbuf();
-
-				data = os.str();
-			}
-
-			cache.appendCache(assetFilePath, data);
-
-			fillBuffer(data.data(), data.size(), buffer);
-		}
+		HTTPRequestImplementation::getFileStatic(filePath, fillBuffer, buffer, staticResources);
 	}
 
 	void HTTPRequestImplementation::processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)

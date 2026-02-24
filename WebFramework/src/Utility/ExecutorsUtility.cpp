@@ -75,4 +75,44 @@ namespace framework::utility
 				return result;
 			};
 	}
+
+	bool escapeFromAssets(std::string_view filePath) noexcept
+	{
+		int depth = 0;
+
+		while (filePath.size())
+		{
+			size_t i = 0;
+
+			while (i < filePath.size() && filePath[i] != '/')
+			{
+				i++;
+			};
+
+			std::string_view part = filePath.substr(0, i);
+
+			if (part == "..")
+			{
+				if (!depth)
+				{
+					return true;
+				}
+
+				depth--;
+			}
+			else if (part.size() && part != ".")
+			{
+				depth++;
+			}
+
+			if (i == filePath.size())
+			{
+				break;
+			}
+
+			filePath.remove_prefix(i + 1);
+		}
+
+		return false;
+	}
 }

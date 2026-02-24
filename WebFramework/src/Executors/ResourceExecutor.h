@@ -39,8 +39,6 @@ namespace framework
 		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual> staticRenderers;
 
 	private:
-		bool escapeFromAssets(std::string_view filePath) const noexcept;
-
 		void loadHTMLErrorsData();
 
 		void loadStaticRenderers();

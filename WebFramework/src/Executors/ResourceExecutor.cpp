@@ -8,6 +8,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
 #include "WFDP/CXXDynamicFunction.h"
+#include "Utility/ExecutorsUtility.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 #include "WFDP/PythonDynamicFunction.h"
@@ -19,46 +20,6 @@
 
 namespace framework
 {
-	bool ResourceExecutor::escapeFromAssets(std::string_view filePath) const noexcept
-	{
-		int depth = 0;
-
-		while (filePath.size())
-		{
-			size_t i = 0;
-
-			while (i < filePath.size() && filePath[i] != '/')
-			{
-				i++;
-			};
-
-			std::string_view part = filePath.substr(0, i);
-
-			if (part == "..")
-			{
-				if (!depth)
-				{
-					return true;
-				}
-
-				depth--;
-			}
-			else if (part.size() && part != ".")
-			{
-				depth++;
-			}
-
-			if (i == filePath.size())
-			{
-				break;
-			}
-
-			filePath.remove_prefix(i + 1);
-		}
-
-		return false;
-	}
-
 	void ResourceExecutor::loadHTMLErrorsData()
 	{
 		auto readFile = [](const std::filesystem::path& errorPath) -> std::string
@@ -228,7 +189,7 @@ namespace framework
 
 	bool ResourceExecutor::fileExist(const std::filesystem::path& filePath) const
 	{
-		if (this->escapeFromAssets(filePath.string()))
+		if (utility::escapeFromAssets(filePath.string()))
 		{
 			return false;
 		}
@@ -243,7 +204,7 @@ namespace framework
 
 	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary, std::string_view fileName)
 	{
-		if (this->escapeFromAssets(filePath))
+		if (utility::escapeFromAssets(filePath))
 		{
 			this->forbiddenError(response);
 
@@ -291,7 +252,7 @@ namespace framework
 
 	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
 	{
-		if (this->escapeFromAssets(filePath))
+		if (utility::escapeFromAssets(filePath))
 		{
 			this->forbiddenError(response);
 

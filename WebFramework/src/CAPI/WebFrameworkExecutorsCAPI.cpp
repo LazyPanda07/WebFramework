@@ -1179,3 +1179,65 @@ bool isDynamicFunctionRegisteredExecutorSettings(ExecutorSettings executorsSetti
 
 	return false;
 }
+
+void getFileExecutorSettings(ExecutorSettings executorsSettings, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		framework::HTTPRequestImplementation::getFileStatic
+		(
+			filePath, fillBuffer, buffer,
+			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)
+		);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void processStaticFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		std::shared_ptr<framework::ResourceExecutor> resources = std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor);
+		const std::unique_ptr<framework::interfaces::IStaticFileRenderer>& renderer = resources->getStaticRenderers().at(fileExtension);
+		std::string result = renderer->render(std::string_view(fileData, size));
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		std::shared_ptr<framework::ResourceExecutor> resources = std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor);
+		
+		std::string result(fileData, size);
+
+		resources->processDynamicFile(result, std::span<const framework::interfaces::CVariable>(static_cast<framework::interfaces::CVariable*>(variables), variablesSize));
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}

@@ -140,6 +140,10 @@ EXPORT void unregisterDynamicFunctionExecutorSettings(ExecutorSettings executors
 
 EXPORT bool isDynamicFunctionRegisteredExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception);
 
-// TODO: processing(rendering), reading files
+EXPORT void getFileExecutorSettings(ExecutorSettings executorsSettings, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processStaticFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
