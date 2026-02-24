@@ -3,7 +3,6 @@
 #include <format>
 
 #include "../HttpRequest.hpp"
-#include "../HttpResponse.hpp"
 #include "../DLLHandler.hpp"
 #include "../Exceptions/NotImplementedDoMethodException.hpp"
 
@@ -97,6 +96,18 @@ namespace framework
 			 * @return
 			 */
 			LoadType getLoadType() const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Database getOrCreateDatabase(std::string_view databaseName) const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Database getDatabase(std::string_view databaseName) const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery) const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Table getTable(std::string_view databaseName, std::string_view tableName) const;
 
 			~ExecutorSettings() = default;
 		};
@@ -272,6 +283,50 @@ namespace framework
 			}
 
 			return static_cast<LoadType>(result);
+		}
+
+		template<DatabaseImplementation T>
+		inline Database ExecutorSettings::getOrCreateDatabase(std::string_view databaseName) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getOrCreateDatabaseExecutorSettings, void*, const char* databaseName, const char* implementationName, void** exception);
+			void* exception = nullptr;
+			
+			Database result(static_cast<interfaces::IDatabase*>(DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseExecutorSettings, databaseName.data(), T::databaseImplementationName.data(), &exception)));
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		template<DatabaseImplementation T>
+		inline Database ExecutorSettings::getDatabase(std::string_view databaseName) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getDatabaseExecutorSettings, void*, const char* databaseName, const char* implementationName, void** exception);
+			void* exception = nullptr;
+
+			Database result(static_cast<interfaces::IDatabase*>(DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseExecutorSettings, databaseName.data(), T::databaseImplementationName.data(), &exception)));
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		template<DatabaseImplementation T>
+		inline Table ExecutorSettings::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery) const
+		{
+			return this->getOrCreateDatabase<T>(databaseName).getOrCreateTable(tableName, createTableQuery);
+		}
+
+		template<DatabaseImplementation T>
+		inline Table ExecutorSettings::getTable(std::string_view databaseName, std::string_view tableName) const
+		{
+			return this->getDatabase<T>(databaseName).getTable(tableName);
 		}
 	}
 

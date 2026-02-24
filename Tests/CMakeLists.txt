@@ -58,6 +58,10 @@ if (${WITH_ADDRESS_SANITIZER})
     add_definitions(-D__WITH_ADDRESS_SANITIZER__)
 endif()
 
+if (${WITHOUT_REDIS_TESTS})
+	add_definitions(-DWITHOUT_REDIS_TESTS)
+endif()
+
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 
 project(Tests)

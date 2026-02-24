@@ -74,3 +74,47 @@ web_framework_exception_t wf_get_executor_load_type(executor_settings_t implemen
 
 	return exception;
 }
+
+web_framework_exception_t wf_get_or_create_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, database_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getOrCreateDatabaseExecutorSettings)(void* implementation, const char* databaseName, const char* implementationName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseExecutorSettings, database_name, implementationName, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_get_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, database_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getDatabaseExecutorSettings)(void* implementation, const char* databaseName, const char* implementationName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseExecutorSettings, database_name, implementationName, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_get_or_create_table_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, const char* table_name, const char* create_table_query, table_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getOrCreateTableExecutorSettings)(void* implementation, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTableExecutorSettings, database_name, implementationName, table_name, create_table_query, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_get_table_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, const char* table_name, table_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getTableExecutorSettings)(void* implementation, const char* databaseName, const char* implementationName, const char* tableName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTableExecutorSettings, database_name, implementationName, table_name, &exception);
+
+	return exception;
+}

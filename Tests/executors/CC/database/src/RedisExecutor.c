@@ -8,6 +8,19 @@ static void redisCallback(const char** columnNames, const sql_value_t* columnVal
 
 DEFINE_DEFAULT_EXECUTOR(RedisExecutor, STATELESS_EXECUTOR);
 
+DEFINE_EXECUTOR_INIT(RedisExecutor)
+{
+#ifdef WITHOUT_REDIS_TESTS
+	return;
+#endif
+	database_t database;
+	table_t connect;
+
+	wf_get_or_create_database_executor_settings(settings, "127.0.0.1:10010:password", REDIS_DATABASE_IMPLEMENTATION_NAME, &database);
+
+	wf_get_or_create_table(database, "", "", &connect);
+}
+
 DEFINE_EXECUTOR_METHOD(RedisExecutor, GET_METHOD, request, response)
 {
 	table_t connect;
@@ -43,18 +56,6 @@ DEFINE_EXECUTOR_METHOD(RedisExecutor, GET_METHOD, request, response)
 
 	wf_delete_sql_value(key);
 	wf_delete_json_builder(builder);
-}
-
-DEFINE_EXECUTOR_METHOD(RedisExecutor, POST_METHOD, request, response)
-{
-	database_t database;
-	table_t connect;
-
-	wf_get_or_create_database_request(request, "127.0.0.1:10010:password", REDIS_DATABASE_IMPLEMENTATION_NAME, &database);
-
-	wf_get_or_create_table(database, "", "", &connect);
-
-	wf_set_http_response_code(response, CREATED);
 }
 
 DEFINE_EXECUTOR_METHOD(RedisExecutor, PUT_METHOD, request, response)

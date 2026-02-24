@@ -16,8 +16,13 @@ DEFINE_EXECUTOR(MultiUserExecutor, HEAVY_OPERATION_STATEFUL_EXECUTOR);
 DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 {
 	MultiUserExecutor* self = (MultiUserExecutor*)executor;
+	database_t database;
+	table_t table;
 
 	wf_generate_uuid(&self->uuid);
+
+	wf_get_or_create_database_executor_settings(settings, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
+	wf_get_or_create_table(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
 }
 
 DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
@@ -47,15 +52,6 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, GET_METHOD, request, response)
 	wf_delete_sql_value(value);
 	wf_delete_json_builder(builder);
 	wf_delete_sql_result(table, result);
-}
-
-DEFINE_EXECUTOR_METHOD(MultiUserExecutor, POST_METHOD, request, response)
-{
-	database_t database;
-	table_t table;
-
-	wf_get_or_create_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
-	wf_get_or_create_table(database, "multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)", &table);
 }
 
 DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)

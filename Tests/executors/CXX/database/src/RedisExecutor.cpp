@@ -1,6 +1,15 @@
-#include "RedisExecutors.h"
+#include "RedisExecutor.h"
 
 #include <Utility/WebFrameworkUtility.hpp>
+
+void RedisExecutor::init(const framework::utility::ExecutorSettings& settings)
+{
+#ifdef WITHOUT_REDIS_TESTS
+	return;
+#endif
+
+	settings.getOrCreateDatabase<framework::RedisDatabase>("127.0.0.1:10010:password").getOrCreateTable("", "");
+}
 
 void RedisExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
@@ -32,13 +41,6 @@ void RedisExecutor::doGet(framework::HttpRequest& request, framework::HttpRespon
 	}
 
 	response.setBody(result);
-}
-
-void RedisExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
-{
-	request.getOrCreateDatabase<framework::RedisDatabase>("127.0.0.1:10010:password").getOrCreateTable("", "");
-
-	response.setResponseCode(framework::ResponseCodes::created);
 }
 
 void RedisExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)

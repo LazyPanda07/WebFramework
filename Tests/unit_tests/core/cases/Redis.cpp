@@ -18,11 +18,6 @@ TEST(Redis, CommonOperations)
 	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string response;
 	
-	stream << web::HttpBuilder().postRequest().parameters("redis");
-	stream >> response;
-
-	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::created);
-
 	response.clear();
 
 	stream << web::HttpBuilder().putRequest().parameters("redis");

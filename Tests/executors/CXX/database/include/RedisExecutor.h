@@ -5,9 +5,9 @@
 class RedisExecutor : public framework::StatelessExecutor
 {
 public:
-	void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
+	void init(const framework::utility::ExecutorSettings& settings) override;
 
-	void doPost(framework::HttpRequest& request, framework::HttpResponse& response) override;
+	void doGet(framework::HttpRequest& request, framework::HttpResponse& response) override;
 
 	void doPut(framework::HttpRequest& request, framework::HttpResponse& response) override;
 };

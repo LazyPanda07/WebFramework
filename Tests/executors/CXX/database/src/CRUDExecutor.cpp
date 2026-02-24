@@ -5,6 +5,18 @@
 
 #include <Utility/WebFrameworkUtility.hpp>
 
+void CRUDExecutor::init(const framework::utility::ExecutorSettings& settings)
+{
+	settings.getOrCreateDatabase("test_database").getOrCreateTable
+	(
+		"test_table",
+		"CREATE TABLE IF NOT EXISTS test_table ("
+		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+		"name VARCHAR(255) NOT NULL, "
+		"amount INTEGER NOT NULL)"
+	);
+}
+
 void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	framework::Database database = request.getDatabase("test_database");
@@ -24,18 +36,6 @@ void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpRespons
 	}
 
 	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
-}
-
-void CRUDExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
-{
-	request.getOrCreateDatabase("test_database").getOrCreateTable
-	(
-		"test_table",
-		"CREATE TABLE IF NOT EXISTS test_table ("
-		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-		"name VARCHAR(255) NOT NULL, "
-		"amount INTEGER NOT NULL)"
-	);
 }
 
 void CRUDExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)

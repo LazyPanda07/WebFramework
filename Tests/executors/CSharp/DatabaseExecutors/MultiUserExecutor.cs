@@ -10,6 +10,11 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 		userId = Guid.NewGuid().ToString();
 	}
 
+	public override void Init(ExecutorSettings settings)
+	{
+		settings.GetOrCreateDatabase("test_database").GetOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
+	}
+
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
 		Table table = request.GetTable("test_database", "multi_user");
@@ -41,11 +46,6 @@ public class MultiUserExecutor : HeavyOperationStatefulExecutor
 				data = jsonData
 			}
 		);
-	}
-
-	public override void DoPost(HttpRequest request, HttpResponse response)
-	{
-		request.GetOrCreateDatabase("test_database").GetOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
 	}
 
 	public override void DoPut(HttpRequest request, HttpResponse response)

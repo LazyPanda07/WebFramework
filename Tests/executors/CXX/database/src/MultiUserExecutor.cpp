@@ -8,6 +8,11 @@ MultiUserExecutor::MultiUserExecutor() :
 	
 }
 
+void MultiUserExecutor::init(const framework::utility::ExecutorSettings& settings)
+{
+	settings.getOrCreateDatabase("test_database").getOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
+}
+
 void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	framework::Table table = request.getTable("test_database", "multi_user");
@@ -31,11 +36,6 @@ void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpRe
 	}
 
 	response.setBody(framework::JsonBuilder().append("data", std::move(data)));
-}
-
-void MultiUserExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
-{
-	request.getOrCreateDatabase("test_database").getOrCreateTable("multi_user", "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)");
 }
 
 void MultiUserExecutor::doPut(framework::HttpRequest& request, framework::HttpResponse& response)

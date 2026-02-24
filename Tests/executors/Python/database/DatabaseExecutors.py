@@ -1,11 +1,21 @@
 import random
 import time
 import uuid
+import os
 
 from web_framework_api import *
 
 
 class CRUDExecutor(StatelessExecutor):
+    def init(self, settings):
+        settings.get_or_create_database("test_database").get_or_create_table(
+            "test_table",
+            "CREATE TABLE IF NOT EXISTS test_table ("
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "name VARCHAR(255) NOT NULL, "
+            "amount INTEGER NOT NULL)"
+        )
+
     def do_get(self, request, response):
         database = request.get_database("test_database")
         table = database.get_table("test_table")
@@ -22,15 +32,6 @@ class CRUDExecutor(StatelessExecutor):
         response.set_body({
             "data": data
         })
-
-    def do_post(self, request, response):
-        request.get_or_create_database("test_database").get_or_create_table(
-            "test_table",
-            "CREATE TABLE IF NOT EXISTS test_table ("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            "name VARCHAR(255) NOT NULL, "
-            "amount INTEGER NOT NULL)"
-        )
 
     def do_put(self, request, response):
         database = request.get_database("test_database")
@@ -86,6 +87,10 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
         super().__init__()
         self._user_id = str(uuid.uuid4())
 
+    def init(self, settings):
+        settings.get_or_create_database("test_database").get_or_create_table("multi_user",
+                                                                             "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)")
+
     def do_get(self, request, response):
         table = request.get_table("test_database", "multi_user")
         data = []
@@ -106,10 +111,6 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
             "data": data
         })
 
-    def do_post(self, request, response):
-        request.get_or_create_database("test_database").get_or_create_table("multi_user",
-                                                                            "CREATE TABLE IF NOT EXISTS multi_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, data TEXT NOT NULL)")
-
     def do_put(self, request, response):
         table = request.get_table("test_database", "multi_user")
 
@@ -120,6 +121,12 @@ class MultiUserExecutor(HeavyOperationStatefulExecutor):
 
 
 class RedisExecutor(StatelessExecutor):
+    def init(self, settings):
+        without_redis_tests = os.getenv("WITHOUT_REDIS_TESTS", "OFF")
+
+        if without_redis_tests == "OFF":
+            settings.get_or_create_database("127.0.0.1:10010:password", RedisDatabase).get_or_create_table("", "")
+
     def do_get(self, request, response):
         connect = request.get_table("127.0.0.1:10010:password", "", RedisDatabase)
         result = {
@@ -130,11 +137,6 @@ class RedisExecutor(StatelessExecutor):
         }
 
         response.set_body(result)
-
-    def do_post(self, request, response):
-        request.get_or_create_database("127.0.0.1:10010:password", RedisDatabase).get_or_create_table("", "")
-
-        response.set_response_code(ResponseCodes.CREATED)
 
     def do_put(self, request, response):
         connect = request.get_table("127.0.0.1:10010:password", "", RedisDatabase)

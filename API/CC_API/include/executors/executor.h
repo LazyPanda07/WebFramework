@@ -105,10 +105,10 @@ typedef enum methods
  * Create method function
  * @param structName executor_t name
  * @param method One of Methods value
- * @param requestVariableName Input http_request_t variable name
+ * @param executor_settingsVariableName Input executor_settings_t variable name
  * @param responseVariableName Input http_response_t variable name
  */
-#define DEFINE_EXECUTOR_METHOD(structName, method, requestVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##structName(executor_t executor, http_request_t requestVariableName, http_response_t responseVariableName)
+#define DEFINE_EXECUTOR_METHOD(structName, method, executor_settingsVariableName, responseVariableName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDo##method##structName(executor_t executor, executor_settings_t executor_settingsVariableName, http_response_t responseVariableName)
 
 /**
  * Create initialization function
@@ -171,3 +171,46 @@ web_framework_exception_t wf_get_executor_api_type(executor_settings_t implement
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_executor_load_type(executor_settings_t implementation, load_type_t* result);
+
+/**
+ * @brief Tries to get database or create if can't get
+ * @param implementation executor_settings_t instance
+ * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
+ * @param result database_t instance
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_or_create_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, database_t* result);
+
+/**
+ * @brief Get database
+ * @param implementation executor_settings_t instance
+ * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
+ * @param result database_t instance
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_database_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, database_t* result);
+
+/**
+ * @brief Tries to get table from database or create if can't get
+ * @param implementation executor_settings_t instance
+ * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
+ * @param tableName Name of table
+ * @param createTableQuery Create table query if can't get table
+ * @param result table_t instance
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_or_create_table_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, const char* table_name, const char* create_table_query, table_t* result);
+
+/**
+ * @brief Get table from database
+ * @param implementation executor_settings_t instance
+ * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
+ * @param tableName Name of table
+ * @param result table_t instance
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_table_executor_settings(executor_settings_t implementation, const char* database_name, const char* implementationName, const char* table_name, table_t* result);

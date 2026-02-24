@@ -7,6 +7,24 @@
 
 DEFINE_DEFAULT_EXECUTOR(CRUDExecutor, STATELESS_EXECUTOR);
 
+DEFINE_EXECUTOR_INIT(CRUDExecutor)
+{
+	database_t database;
+	table_t table;
+
+	wf_get_or_create_database_executor_settings(settings, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
+	wf_get_or_create_table
+	(
+		database,
+		"test_table",
+		"CREATE TABLE IF NOT EXISTS test_table ("
+		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+		"name VARCHAR(255) NOT NULL, "
+		"amount INTEGER NOT NULL)",
+		&table
+	);
+}
+
 DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 {
 	database_t database;
@@ -34,24 +52,6 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, GET_METHOD, request, response)
 	wf_delete_sql_value(value);
 	wf_delete_json_builder(builder);
 	wf_delete_sql_result(table, result);
-}
-
-DEFINE_EXECUTOR_METHOD(CRUDExecutor, POST_METHOD, request, response)
-{
-	database_t database;
-	table_t table;
-
-	wf_get_or_create_database_request(request, "test_database", DEFAULT_DATABASE_IMPLEMENTATION_NAME, &database);
-	wf_get_or_create_table
-	(
-		database,
-		"test_table",
-		"CREATE TABLE IF NOT EXISTS test_table ("
-		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-		"name VARCHAR(255) NOT NULL, "
-		"amount INTEGER NOT NULL)",
-		&table
-	);
 }
 
 DEFINE_EXECUTOR_METHOD(CRUDExecutor, PUT_METHOD, request, response)

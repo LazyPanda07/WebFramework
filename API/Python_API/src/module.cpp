@@ -29,6 +29,14 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	m.doc() = "Python API for WebFramework";
 
+	py::class_<framework::DefaultDatabase> defaultDatabase(m, "DefaultDatabase");
+	py::class_<framework::SqliteDatabase> sqliteDatabase(m, "SqliteDatabase");
+	py::class_<framework::RedisDatabase> redisDatabase(m, "RedisDatabase");
+
+	defaultDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::DefaultDatabase::databaseImplementationName); });
+	sqliteDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::SqliteDatabase::databaseImplementationName); });
+	redisDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::RedisDatabase::databaseImplementationName); });
+
 	m.def
 	(
 		"initialize_web_framework",
@@ -189,6 +197,102 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 				self.registerDynamicFunctionClass(functionName, "python", &functionClass);
 			},
 			"function_name"_a, "function_class"_a
+		)
+		.def
+		(
+			"get_or_create_database",
+			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, py::handle databaseImplementationClass)
+			{
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
+				{
+					return self.getOrCreateDatabase<framework::DefaultDatabase>(databaseName);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
+				{
+					return self.getOrCreateDatabase<framework::SqliteDatabase>(databaseName);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
+				{
+					return self.getOrCreateDatabase<framework::RedisDatabase>(databaseName);
+				}
+				else
+				{
+					throw std::runtime_error(std::format("Wrong database_implementation_class: {}", py::repr(databaseImplementationClass).cast<std::string>()));
+				}
+			},
+			"database_name"_a, "database_implementation_class"_a = py::none()
+		)
+		.def
+		(
+			"get_database",
+			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, py::handle databaseImplementationClass)
+			{
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
+				{
+					return self.getDatabase<framework::DefaultDatabase>(databaseName);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
+				{
+					return self.getDatabase<framework::SqliteDatabase>(databaseName);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
+				{
+					return self.getDatabase<framework::RedisDatabase>(databaseName);
+				}
+				else
+				{
+					throw std::runtime_error(std::format("Wrong database_implementation_class: {}", py::repr(databaseImplementationClass).cast<std::string>()));
+				}
+			},
+			"database_name"_a, "database_implementation_class"_a = py::none()
+		)
+		.def
+		(
+			"get_or_create_table",
+			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::handle databaseImplementationClass)
+			{
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
+				{
+					return self.getOrCreateTable<framework::DefaultDatabase>(databaseName, tableName, createTableQuery);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
+				{
+					return self.getOrCreateTable<framework::SqliteDatabase>(databaseName, tableName, createTableQuery);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
+				{
+					return self.getOrCreateTable<framework::RedisDatabase>(databaseName, tableName, createTableQuery);
+				}
+				else
+				{
+					throw std::runtime_error(std::format("Wrong database_implementation_class: {}", py::repr(databaseImplementationClass).cast<std::string>()));
+				}
+			},
+			"database_name"_a, "table_name"_a, "create_table_query"_a, "database_implementation_class"_a = py::none()
+		)
+		.def
+		(
+			"get_table",
+			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, std::string_view tableName, py::handle databaseImplementationClass)
+			{
+				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
+				{
+					return self.getTable<framework::DefaultDatabase>(databaseName, tableName);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::SqliteDatabase>()))
+				{
+					return self.getTable<framework::SqliteDatabase>(databaseName, tableName);
+				}
+				else if (databaseImplementationClass.is(py::type::of<framework::RedisDatabase>()))
+				{
+					return self.getTable<framework::RedisDatabase>(databaseName, tableName);
+				}
+				else
+				{
+					throw std::runtime_error(std::format("Wrong database_implementation_class: {}", py::repr(databaseImplementationClass).cast<std::string>()));
+				}
+			},
+			"database_name"_a, "table_name"_a, "database_implementation_class"_a = py::none()
 		);
 
 	py::class_<framework::Multipart>(m, "Multipart")
@@ -306,14 +410,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	py::class_<framework::IDynamicFunction, framework::PyDynamicFunction>(m, "DynamicFunction")
 		.def(py::init())
 		.def("__call__", &framework::IDynamicFunction::operator());
-
-	py::class_<framework::DefaultDatabase> defaultDatabase(m, "DefaultDatabase");
-	py::class_<framework::SqliteDatabase> sqliteDatabase(m, "SqliteDatabase");
-	py::class_<framework::RedisDatabase> redisDatabase(m, "RedisDatabase");
-
-	defaultDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::DefaultDatabase::databaseImplementationName); });
-	sqliteDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::SqliteDatabase::databaseImplementationName); });
-	redisDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::RedisDatabase::databaseImplementationName); });
 
 	m.def
 	(

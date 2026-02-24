@@ -33,14 +33,8 @@ TEST(Database, MultiUser)
 	std::vector<std::future<void>> awaiters;
 	auto requests = [](streams::IOSocketStream& stream)
 		{
-			std::string request = web::HttpBuilder().postRequest().parameters("multi_user_database").build();
+			std::string request;
 			std::string response;
-
-			stream << request;
-
-			stream >> response;
-
-			ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
 
 			for (size_t i = 0; i < requestsNumber; i++)
 			{

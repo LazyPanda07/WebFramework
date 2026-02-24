@@ -4,6 +4,11 @@
 
 #include "Table.hpp"
 
+namespace framework::utility
+{
+	class ExecutorSettings;
+}
+
 namespace framework
 {
 	class Database
@@ -53,6 +58,7 @@ namespace framework
 		~Database() = default;
 
 		friend class HttpRequest;
+		friend class utility::ExecutorSettings;
 	};
 }
 
