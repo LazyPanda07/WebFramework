@@ -117,8 +117,8 @@ add_library(
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
 	WebFramework/src/Utility/AdditionalServerSettings.cpp
 	WebFramework/src/Utility/ExecutorsUtility.cpp
-	WebFramework/src/Web/HTTPRequestImplementation.cpp
-	WebFramework/src/Web/HTTPResponseImplementation.cpp
+	WebFramework/src/Web/HttpRequestImplementation.cpp
+	WebFramework/src/Web/HttpResponseImplementation.cpp
 	WebFramework/src/Databases/DatabaseImplementation.cpp
 	WebFramework/src/Databases/TableImplementation.cpp
 	WebFramework/src/Databases/SQLResultImplementation.cpp

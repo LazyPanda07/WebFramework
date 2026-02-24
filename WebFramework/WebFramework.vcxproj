@@ -168,8 +168,8 @@
     <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
     <ClCompile Include="src\Utility\SegfaultHandler.cpp" />
-    <ClCompile Include="src\Web\HTTPRequestImplementation.cpp" />
-    <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
+    <ClCompile Include="src\Web\HttpRequestImplementation.cpp" />
+    <ClCompile Include="src\Web\HttpResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
     <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
     <ClCompile Include="src\WFDP\CSharpDynamicFunction.cpp" />
@@ -252,8 +252,8 @@
     <ClInclude Include="src\Managers\ExecutorsManager.h" />
     <ClInclude Include="src\Utility\BaseConnectionData.h" />
     <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
-    <ClInclude Include="src\Web\HTTPRequestImplementation.h" />
-    <ClInclude Include="src\Web\HTTPResponseImplementation.h" />
+    <ClInclude Include="src\Web\HttpRequestImplementation.h" />
+    <ClInclude Include="src\Web\HttpResponseImplementation.h" />
     <ClInclude Include="src\Web\Servers\ExecutorServer.h" />
     <ClInclude Include="src\Framework\WebFrameworkConstants.h" />
     <ClInclude Include="src\Framework\WebFramework.h" />

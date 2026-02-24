@@ -27,7 +27,7 @@ namespace framework::utility
 
 	void BaseLargeBodyHandler::onParseHeaders()
 	{
-		request = make_unique<HTTPRequestImplementation>(sessionsManager, serverReference, staticResources, dynamicResources, clientAddr, stream);
+		request = make_unique<HttpRequestImplementation>(sessionsManager, serverReference, staticResources, dynamicResources, clientAddr, stream);
 		response.setDefault();
 
 		response.setIsValid(false);

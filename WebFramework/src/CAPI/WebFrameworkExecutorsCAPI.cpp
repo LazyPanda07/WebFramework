@@ -1128,7 +1128,7 @@ void registerDynamicFunctionClassExecutorSettingss(ExecutorSettings executorsSet
 {
 	try
 	{
-		framework::HTTPRequestImplementation::registerDynamicFunctionClassStatic
+		framework::HttpRequestImplementation::registerDynamicFunctionClassStatic
 		(
 			functionName, apiType, functionClass,
 			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)
@@ -1184,7 +1184,7 @@ void getFileExecutorSettings(ExecutorSettings executorsSettings, const char* fil
 {
 	try
 	{
-		framework::HTTPRequestImplementation::getFileStatic
+		framework::HttpRequestImplementation::getFileStatic
 		(
 			filePath, fillBuffer, buffer,
 			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)

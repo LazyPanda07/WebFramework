@@ -31,7 +31,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API HTTPRequestImplementation : public interfaces::IHttpRequest
+	class WEB_FRAMEWORK_API HttpRequestImplementation : public interfaces::IHttpRequest
 	{
 	private:
 		class ExceptionData
@@ -83,15 +83,15 @@ namespace framework
 		static void getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources);
 
 	public:
-		HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
+		HttpRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
 
-		HTTPRequestImplementation(HTTPRequestImplementation&&) noexcept = default;
+		HttpRequestImplementation(HttpRequestImplementation&&) noexcept = default;
 
-		HTTPRequestImplementation(const HTTPRequestImplementation&) = default;
+		HttpRequestImplementation(const HttpRequestImplementation&) = default;
 
-		HTTPRequestImplementation& operator =(HTTPRequestImplementation&&) noexcept = default;
+		HttpRequestImplementation& operator =(HttpRequestImplementation&&) noexcept = default;
 
-		HTTPRequestImplementation& operator =(const HTTPRequestImplementation&) = default;
+		HttpRequestImplementation& operator =(const HttpRequestImplementation&) = default;
 
 		void updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast) override;
 
@@ -300,7 +300,7 @@ namespace framework
 
 		interfaces::IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const override;
 
-		~HTTPRequestImplementation();
+		~HttpRequestImplementation();
 
 		/// <summary>
 		/// Reading HTTP request from network
@@ -309,7 +309,7 @@ namespace framework
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
 		/// <exception cref="web::WebException"></exception>
-		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequestImplementation& request);
+		friend streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HttpRequestImplementation& request);
 
 		/// <summary>
 		/// Logging operator
@@ -317,7 +317,7 @@ namespace framework
 		/// <param name="stream">any output source</param>
 		/// <param name="request">class instance</param>
 		/// <returns>self for builder pattern</returns>
-		friend std::ostream& operator << (std::ostream& stream, const HTTPRequestImplementation& request);
+		friend std::ostream& operator << (std::ostream& stream, const HttpRequestImplementation& request);
 
 		friend class ExecutorsManager;
 		friend class utility::BaseLargeBodyHandler;

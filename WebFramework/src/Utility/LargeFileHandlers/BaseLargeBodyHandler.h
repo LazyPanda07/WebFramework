@@ -22,7 +22,7 @@ namespace framework::utility
 		streams::IOSocketStream& stream;
 		ExecutorsManager& executorsManager;
 		ExecutorsManager::StatefulExecutors& executors;
-		std::unique_ptr<HTTPRequestImplementation> request;
+		std::unique_ptr<HttpRequestImplementation> request;
 		HTTPResponseImplementation response;
 		Executor* executor;
 		void(Executor::* method)(interfaces::IHttpRequest&, interfaces::IHttpResponse&);

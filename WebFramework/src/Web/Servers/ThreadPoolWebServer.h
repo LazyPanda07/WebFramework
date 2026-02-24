@@ -21,7 +21,7 @@ namespace framework
 			streams::IOSocketStream stream;
 			ExecutorsManager::StatefulExecutors executors;
 			std::function<void()> cleanup;
-			std::function<ExecutorServer::ServiceState(streams::IOSocketStream& stream, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)> service;
+			std::function<ExecutorServer::ServiceState(streams::IOSocketStream& stream, HttpRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)> service;
 			sockaddr address;
 			bool isBusy;
 			bool webExceptionAcquired;
@@ -32,7 +32,7 @@ namespace framework
 			(
 				SSL* ssl, SOCKET clientSocket, sockaddr address,
 				std::function<void()>&& cleanup,
-				const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& task,
+				const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HttpRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& task,
 				ThreadPoolWebServer& server,
 				DWORD timeout
 			);

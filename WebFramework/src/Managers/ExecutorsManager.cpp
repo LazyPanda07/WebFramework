@@ -64,7 +64,7 @@ namespace framework
 		size_t i = 0;
 		size_t startParameter = it->baseRoute.size() + 1;
 		size_t endParameter;
-		HTTPRequestImplementation& requestImplementation = *static_cast<HTTPRequestImplementation*>(&request);
+		HttpRequestImplementation& requestImplementation = *static_cast<HttpRequestImplementation*>(&request);
 
 		do
 		{
@@ -393,7 +393,7 @@ namespace framework
 	{
 		try // TODO: remake
 		{
-			HTTPRequestImplementation& requestImplementation = *static_cast<HTTPRequestImplementation*>(&request);
+			HttpRequestImplementation& requestImplementation = *static_cast<HttpRequestImplementation*>(&request);
 			const web::HeadersMap& headers = requestImplementation.parser.getHeaders();
 
 			if (userAgentFilter.size())

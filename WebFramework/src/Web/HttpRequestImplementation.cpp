@@ -20,26 +20,26 @@
 
 namespace framework
 {
-	HTTPRequestImplementation::ExceptionData::ExceptionData() :
+	HttpRequestImplementation::ExceptionData::ExceptionData() :
 		responseCode(0),
 		valid(false)
 	{
 
 	}
 
-	void HTTPRequestImplementation::ExceptionData::setLogCategory(std::string_view logCategory)
+	void HttpRequestImplementation::ExceptionData::setLogCategory(std::string_view logCategory)
 	{
 		this->logCategory = logCategory.empty() ?
 			"LogAPI" :
 			logCategory;
 	}
 
-	std::string_view HTTPRequestImplementation::ExceptionData::getLogCategory() const
+	std::string_view HttpRequestImplementation::ExceptionData::getLogCategory() const
 	{
 		return logCategory;
 	}
 
-	bool HTTPRequestImplementation::isWebFrameworkDynamicPages(std::string_view filePath)
+	bool HttpRequestImplementation::isWebFrameworkDynamicPages(std::string_view filePath)
 	{
 		size_t extension = filePath.find('.');
 
@@ -51,7 +51,7 @@ namespace framework
 		return filePath.substr(extension) == webFrameworkDynamicPagesExtension;
 	}
 
-	void HTTPRequestImplementation::logWebFrameworkModelsError(std::string_view typeName)
+	void HttpRequestImplementation::logWebFrameworkModelsError(std::string_view typeName)
 	{
 		if (Log::isValid())
 		{
@@ -59,12 +59,12 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::setParser(const web::HttpParser& parser)
+	void HttpRequestImplementation::setParser(const web::HttpParser& parser)
 	{
 		this->parser = parser;
 	}
 
-	web::HttpParser HTTPRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
+	web::HttpParser HttpRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
 	{
 		streams::IOSocketStream stream = useHTTPS ?
 			streams::IOSocketStream::createStream<web::HttpsNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
@@ -77,7 +77,7 @@ namespace framework
 		return web::HttpParser(response);
 	}
 
-	void HTTPRequestImplementation::registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
+	void HttpRequestImplementation::registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
 	{
 #ifdef __WITH_PYTHON_EXECUTORS__
 		if (apiType == json_settings::pythonExecutorKey)
@@ -93,7 +93,7 @@ namespace framework
 #endif
 	}
 
-	void HTTPRequestImplementation::getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources)
+	void HttpRequestImplementation::getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources)
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
@@ -133,7 +133,7 @@ namespace framework
 		}
 	}
 
-	HTTPRequestImplementation::HTTPRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
+	HttpRequestImplementation::HttpRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
 		stream(stream),
@@ -144,24 +144,24 @@ namespace framework
 
 	}
 
-	void HTTPRequestImplementation::updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast)
+	void HttpRequestImplementation::updateLargeData(const char* dataPart, size_t dataPartSize, bool isLast)
 	{
 		largeData.dataPart = dataPart;
 		largeData.dataPartSize = dataPartSize;
 		largeData.isLastPacket = isLast;
 	}
 
-	const char* HTTPRequestImplementation::getRawParameters() const
+	const char* HttpRequestImplementation::getRawParameters() const
 	{
 		return parser.getParameters().data();
 	}
 
-	const char* HTTPRequestImplementation::getMethod() const
+	const char* HttpRequestImplementation::getMethod() const
 	{
 		return parser.getMethod().data();
 	}
 
-	void HTTPRequestImplementation::getQueryParameters(void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
+	void HttpRequestImplementation::getQueryParameters(void(*initQueryBuffer)(size_t querySize, void* buffer), void(*addQueryParameter)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
 	{
 		const std::unordered_map<std::string, std::string>& queryParameters = parser.getQueryParameters();
 		size_t index = 0;
@@ -174,17 +174,17 @@ namespace framework
 		}
 	}
 
-	const char* HTTPRequestImplementation::getQueryParameter(const char* key) const
+	const char* HttpRequestImplementation::getQueryParameter(const char* key) const
 	{
 		return parser.getQueryParameters().at(key).data();
 	}
 
-	double HTTPRequestImplementation::getHTTPVersion() const
+	double HttpRequestImplementation::getHTTPVersion() const
 	{
 		return parser.getHTTPVersion();
 	}
 
-	void HTTPRequestImplementation::getHeaders(void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
+	void HttpRequestImplementation::getHeaders(void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
 	{
 		const web::HeadersMap& headers = parser.getHeaders();
 		size_t index = 0;
@@ -197,7 +197,7 @@ namespace framework
 		}
 	}
 
-	const char* HTTPRequestImplementation::getHeaderValue(const char* headerName, bool throwException) const
+	const char* HttpRequestImplementation::getHeaderValue(const char* headerName, bool throwException) const
 	{
 		const web::HeadersMap& headers = parser.getHeaders();
 
@@ -211,19 +211,19 @@ namespace framework
 		return it != headers.end() ? it->second.data() : nullptr;
 	}
 
-	const char* HTTPRequestImplementation::getBody(size_t* bodySize) const
+	const char* HttpRequestImplementation::getBody(size_t* bodySize) const
 	{
 		*bodySize = parser.getBody().size();
 
 		return parser.getBody().data();
 	}
 
-	void HTTPRequestImplementation::setAttribute(const char* name, const char* value)
+	void HttpRequestImplementation::setAttribute(const char* name, const char* value)
 	{
 		session.setAttribute(this->getClientIpV4(), name, value);
 	}
 
-	const char* HTTPRequestImplementation::getAttribute(const char* name)
+	const char* HttpRequestImplementation::getAttribute(const char* name)
 	{
 		std::string temp = session.getAttribute(this->getClientIpV4(), name);
 		char* result = new char[temp.size() + 1];
@@ -235,22 +235,22 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequestImplementation::deleteAttribute(const char* attribute)
+	void HttpRequestImplementation::deleteAttribute(const char* attribute)
 	{
 		delete[] attribute;
 	}
 
-	void HTTPRequestImplementation::deleteSession()
+	void HttpRequestImplementation::deleteSession()
 	{
 		session.deleteSession(this->getClientIpV4());
 	}
 
-	void HTTPRequestImplementation::removeAttribute(const char* name)
+	void HttpRequestImplementation::removeAttribute(const char* name)
 	{
 		session.deleteAttribute(this->getClientIpV4(), name);
 	}
 
-	void HTTPRequestImplementation::getCookies(void(initCookiesBuffer)(size_t size, void* buffer), void(*addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
+	void HttpRequestImplementation::getCookies(void(initCookiesBuffer)(size_t size, void* buffer), void(*addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer) const
 	{
 		const web::HeadersMap& headers = parser.getHeaders();
 
@@ -289,7 +289,7 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer) const
+	void HttpRequestImplementation::getMultiparts(void(*initMultipartsBuffer)(size_t size, void* buffer), void(*addMultipart)(const char* name, const char* fileName, const char* contentType, const char* data, size_t dataSize, size_t index, void* buffer), void* buffer) const
 	{
 		const std::vector<web::Multipart>& multiparts = parser.getMultiparts();
 
@@ -319,29 +319,29 @@ namespace framework
 		}
 	}
 
-	const interfaces::CLargeData* HTTPRequestImplementation::getLargeData() const
+	const interfaces::CLargeData* HttpRequestImplementation::getLargeData() const
 	{
 		return &largeData;
 	}
 
-	void HTTPRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
-		HTTPRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
+		HttpRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
 			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary, const char* fileName)
 	{
 		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
 	{
 		dynamicResources.sendDynamicFile(filePath, *response, std::span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
 	}
 
-	void HTTPRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)
+	void HttpRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)
 	{
 		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
 		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
@@ -416,27 +416,27 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+	void HttpRequestImplementation::registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
 		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, utility::createCxxDynamicFunction(function, deleter));
 	}
 
-	void HTTPRequestImplementation::registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass)
+	void HttpRequestImplementation::registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass)
 	{
-		HTTPRequestImplementation::registerDynamicFunctionClassStatic(functionName, apiType, functionClass, dynamicResources);
+		HttpRequestImplementation::registerDynamicFunctionClassStatic(functionName, apiType, functionClass, dynamicResources);
 	}
 
-	void HTTPRequestImplementation::unregisterDynamicFunction(const char* functionName)
+	void HttpRequestImplementation::unregisterDynamicFunction(const char* functionName)
 	{
 		dynamicResources.unregisterDynamicFunction(functionName);
 	}
 
-	bool HTTPRequestImplementation::isDynamicFunctionRegistered(const char* functionName)
+	bool HttpRequestImplementation::isDynamicFunctionRegistered(const char* functionName)
 	{
 		return dynamicResources.isDynamicFunctionRegistered(functionName);
 	}
 
-	void HTTPRequestImplementation::sendFileChunks(interfaces::IHttpResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size))
+	void HttpRequestImplementation::sendFileChunks(interfaces::IHttpResponse* response, const char* fileName, void* chunkGenerator, const char* (*getChunk)(void* chunkGenerator, size_t* size))
 	{
 		web::HttpBuilder builder;
 
@@ -487,12 +487,12 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash)
+	void HttpRequestImplementation::throwException(const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionClassHash)
 	{
 		throw framework::exceptions::APIException(errorMessage, responseCode, logCategory ? logCategory : "", exceptionClassHash);
 	}
 
-	void HTTPRequestImplementation::getChunks(void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer) const
+	void HttpRequestImplementation::getChunks(void(*initChunkBuffer)(size_t size, void* buffer), void(*addChunk)(const char* chunk, size_t chunkSize, size_t index, void* buffer), void* buffer) const
 	{
 		const std::vector<std::string>& chunks = parser.getChunks();
 
@@ -506,12 +506,12 @@ namespace framework
 		}
 	}
 
-	void HTTPRequestImplementation::getFile(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) const
+	void HttpRequestImplementation::getFile(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) const
 	{
-		HTTPRequestImplementation::getFileStatic(filePath, fillBuffer, buffer, staticResources);
+		HttpRequestImplementation::getFileStatic(filePath, fillBuffer, buffer, staticResources);
 	}
 
-	void HTTPRequestImplementation::processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	void HttpRequestImplementation::processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
 	{
 		const std::unique_ptr<interfaces::IStaticFileRenderer>& renderer = staticResources.getStaticRenderers().at(fileExtension);
 		std::string result = renderer->render(std::string_view(fileData, size));
@@ -519,7 +519,7 @@ namespace framework
 		fillBuffer(result.data(), result.size(), buffer);
 	}
 
-	void HTTPRequestImplementation::processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	void HttpRequestImplementation::processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
 	{
 		std::string result(fileData, size);
 
@@ -528,7 +528,7 @@ namespace framework
 		fillBuffer(result.data(), result.size(), buffer);
 	}
 
-	void HTTPRequestImplementation::setExceptionData(const char* errorMessage, int responseCode, const char* logCategory)
+	void HttpRequestImplementation::setExceptionData(const char* errorMessage, int responseCode, const char* logCategory)
 	{
 		exceptionData.errorMessage = errorMessage;
 		exceptionData.responseCode = responseCode;
@@ -537,12 +537,12 @@ namespace framework
 		exceptionData.setLogCategory(logCategory ? logCategory : "");
 	}
 
-	bool HTTPRequestImplementation::isExceptionDataValid() const
+	bool HttpRequestImplementation::isExceptionDataValid() const
 	{
 		return exceptionData.valid;
 	}
 
-	bool HTTPRequestImplementation::getExceptionData(interfaces::CExceptionData* data)
+	bool HttpRequestImplementation::getExceptionData(interfaces::CExceptionData* data)
 	{
 		if (exceptionData.valid)
 		{
@@ -558,17 +558,17 @@ namespace framework
 		return false;
 	}
 
-	const char* HTTPRequestImplementation::getJson() const
+	const char* HttpRequestImplementation::getJson() const
 	{
 		return parser.getJson().getRawData().data();
 	}
 
-	const char* HTTPRequestImplementation::getRawRequest() const
+	const char* HttpRequestImplementation::getRawRequest() const
 	{
 		return parser.getRawData().data();
 	}
 
-	const char* HTTPRequestImplementation::getClientIpV4() const
+	const char* HttpRequestImplementation::getClientIpV4() const
 	{
 		std::string ip = web::BaseTCPServer::getClientIpV4(clientAddr);
 		char* result = new char[ip.size() + 1];
@@ -580,12 +580,12 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequestImplementation::deleteClientIpV4(const char* ip) const
+	void HttpRequestImplementation::deleteClientIpV4(const char* ip) const
 	{
 		delete[] ip;
 	}
 
-	const char* HTTPRequestImplementation::getServerIpV4() const
+	const char* HttpRequestImplementation::getServerIpV4() const
 	{
 		std::string ip = serverReference.getServerIpV4();
 		char* result = new char[ip.size() + 1];
@@ -597,52 +597,52 @@ namespace framework
 		return result;
 	}
 
-	void HTTPRequestImplementation::deleteServerIpV4(const char* ip) const
+	void HttpRequestImplementation::deleteServerIpV4(const char* ip) const
 	{
 		delete[] ip;
 	}
 
-	uint16_t HTTPRequestImplementation::getClientPort() const
+	uint16_t HttpRequestImplementation::getClientPort() const
 	{
 		return web::BaseTCPServer::getClientPortV4(clientAddr);
 	}
 
-	uint16_t HTTPRequestImplementation::getServerPort() const
+	uint16_t HttpRequestImplementation::getServerPort() const
 	{
 		return serverReference.getServerPortV4();
 	}
 
-	const char* HTTPRequestImplementation::getRouteStringParameter(const char* routeParameterName) const
+	const char* HttpRequestImplementation::getRouteStringParameter(const char* routeParameterName) const
 	{
 		return std::get<std::string>(routeParameters.at(routeParameterName)).data();
 	}
 
-	int64_t HTTPRequestImplementation::getRouteIntegerParameter(const char* routeParameterName) const
+	int64_t HttpRequestImplementation::getRouteIntegerParameter(const char* routeParameterName) const
 	{
 		return std::get<int64_t>(routeParameters.at(routeParameterName));
 	}
 
-	double HTTPRequestImplementation::getRouteDoubleParameter(const char* routeParameterName) const
+	double HttpRequestImplementation::getRouteDoubleParameter(const char* routeParameterName) const
 	{
 		return std::get<double>(routeParameters.at(routeParameterName));
 	}
 
-	interfaces::IDatabase* HTTPRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)
+	interfaces::IDatabase* HttpRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)
 	{
 		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getOrCreateDatabase(databaseName, databaseImplementationName)));
 	}
 
-	interfaces::IDatabase* HTTPRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
+	interfaces::IDatabase* HttpRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
 	{
 		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getDatabase(databaseName, databaseImplementationName)));
 	}
 
-	HTTPRequestImplementation::~HTTPRequestImplementation()
+	HttpRequestImplementation::~HttpRequestImplementation()
 	{
 		std::ranges::for_each(databases, [](interfaces::IDatabase* database) { delete database; });
 	}
 
-	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HTTPRequestImplementation& request)
+	streams::IOSocketStream& operator >> (streams::IOSocketStream& stream, HttpRequestImplementation& request)
 	{
 		std::string data;
 
@@ -653,7 +653,7 @@ namespace framework
 		return stream;
 	}
 
-	std::ostream& operator << (std::ostream& stream, const HTTPRequestImplementation& request)
+	std::ostream& operator << (std::ostream& stream, const HttpRequestImplementation& request)
 	{
 		const web::HttpParser& parser = request.parser;
 		const auto& headers = parser.getHeaders();

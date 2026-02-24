@@ -102,10 +102,10 @@
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Web\HTTPRequestImplementation.cpp">
+    <ClCompile Include="src\Web\HttpRequestImplementation.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Web\HTTPResponseImplementation.cpp">
+    <ClCompile Include="src\Web\HttpResponseImplementation.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Managers\DatabasesManager.cpp">
@@ -296,10 +296,10 @@
     <ClInclude Include="src\Utility\AdditionalServerSettings.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\HTTPResponseImplementation.h">
+    <ClInclude Include="src\Web\HttpResponseImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\HTTPRequestImplementation.h">
+    <ClInclude Include="src\Web\HttpRequestImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Managers\DatabasesManager.h">
