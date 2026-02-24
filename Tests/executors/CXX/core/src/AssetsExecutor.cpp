@@ -14,6 +14,11 @@ static const char* customFunction(const char** args, size_t agumentsNumber)
 	return result;
 }
 
+void AssetsExecutor::init(const framework::utility::ExecutorSettings& settings)
+{
+	settings.registerDynamicFunction("customFunction", customFunction, [](char* result) { delete[] result; });
+}
+
 void AssetsExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	request.sendDynamicFile
@@ -22,11 +27,6 @@ void AssetsExecutor::doGet(framework::HttpRequest& request, framework::HttpRespo
 		response,
 		request.getQueryParameters()
 	);
-}
-
-void AssetsExecutor::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
-{
-	request.registerDynamicFunction("customFunction", customFunction, [](char* result) { delete[] result; });
 }
 
 void AssetsExecutor::doDelete(framework::HttpRequest& request, framework::HttpResponse& response)

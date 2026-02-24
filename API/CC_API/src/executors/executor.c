@@ -1,5 +1,16 @@
 #include "executors/executor.h"
 
+web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*registerDynamicFunctionExecutorSettings)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionExecutorSettings, function_name, function, deleter, &exception);
+
+	return exception;
+}
+
 web_framework_exception_t wf_get_executor_init_parameters(executor_settings_t implementation, json_parser_t* result)
 {
 	web_framework_exception_t exception = NULL;

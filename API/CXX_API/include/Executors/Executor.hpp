@@ -62,6 +62,12 @@ namespace framework
 		public:
 			ExecutorSettings(void* implementation);
 
+			void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const;
+
+			void registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass) const;
+
+			void unregisterDynamicFunction(std::string_view functionName) const;
+
 			/**
 			 * @brief Get Json structed values from initParameters section from settings file
 			 * @return
@@ -148,6 +154,45 @@ namespace framework
 			implementation(implementation)
 		{
 
+		}
+
+		inline void ExecutorSettings::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionExecutorSettings, void, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+			void* exception = nullptr;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionExecutorSettings, functionName.data(), function, deleter, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+		}
+
+		inline void ExecutorSettings::registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionClassExecutorSettingss, void, const char* functionName, const char* apiType, void* functionClass, void** exception);
+			void* exception = nullptr;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettingss, functionName.data(), apiType.data(), functionClass, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+		}
+
+		inline void ExecutorSettings::unregisterDynamicFunction(std::string_view functionName) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(unregisterDynamicFunction, void, const char* functionName, void** exception);
+			void* exception = nullptr;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterDynamicFunction, functionName.data(), &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
 		}
 
 		inline JsonParser ExecutorSettings::getInitParameters() const

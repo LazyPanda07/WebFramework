@@ -8,6 +8,11 @@ static const char* customFunction(const char** args, size_t agumentsNumber);
 
 static void deleter(char* ptr);
 
+DEFINE_EXECUTOR_INIT(AssetsExecutor)
+{
+	wf_register_dynamic_function_executor_settings(settings, "customFunction", customFunction, deleter);
+}
+
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 {
 	json_parser_t parser;
@@ -52,11 +57,6 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 	free(variables);
 	free(fullName);
-}
-
-DEFINE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
-{
-	wf_register_dynamic_function(request, "customFunction", customFunction, deleter);
 }
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)

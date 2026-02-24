@@ -68,17 +68,6 @@ TEST(WFDP, CustomFunction)
 	streams::IOSocketStream stream = utility::createSocketStream();
 
 	{
-		std::string request = web::HttpBuilder().postRequest().parameters("wfdp").build();
-		std::string response;
-
-		stream << request;
-
-		stream >> response;
-
-		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent);
-	}
-
-	{
 		std::string request = web::HttpBuilder().getRequest().parametersWithRoute
 		(
 			"wfdp",

@@ -46,11 +46,11 @@ class LocalizationExecutor(StatelessExecutor):
 
 
 class AssetsExecutor(StatelessExecutor):
+    def init(self, settings):
+        settings.register_dynamic_function("customFunction", CustomFunction)
+
     def do_get(self, request, response):
         request.send_dynamic_file(f"{request.get_json()["fileName"]}.wfdp", response, request.get_query_parameters())
-
-    def do_post(self, request, response):
-        request.register_dynamic_function("customFunction", CustomFunction)
 
     def do_delete(self, request, response):
         request.unregister_dynamic_function("custom_function")

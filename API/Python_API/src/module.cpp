@@ -173,6 +173,22 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 				return json.attr("loads")(data.data()).cast<py::dict>();
 			}
+		)
+		.def
+		(
+			"register_dynamic_function",
+			[](const framework::utility::ExecutorSettings& self, std::string_view functionName, py::type functionClass)
+			{
+				py::type dynamicFunctionClass = py::module_::import("web_framework_api").attr("DynamicFunction");
+
+				if (!py::module_::import("builtins").attr("issubclass")(functionClass, dynamicFunctionClass).cast<bool>())
+				{
+					throw std::runtime_error(std::format("Class {} is not subclass of {}", py::repr(functionClass).cast<std::string>(), py::repr(dynamicFunctionClass).cast<std::string>()));
+				}
+
+				self.registerDynamicFunctionClass(functionName, "python", &functionClass);
+			},
+			"function_name"_a, "function_class"_a
 		);
 
 	py::class_<framework::Multipart>(m, "Multipart")

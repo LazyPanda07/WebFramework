@@ -122,6 +122,16 @@ typedef enum methods
  */
 #define DEFINE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(executor_t executor)
 
+ /**
+  * @brief Register function for processing .wfdp files
+  * @param implementation executor_settings_t instance
+  * @param functionName Function name
+  * @param function Callback called in processing .wfdp files
+  * @param deleter Deleter for values from function
+  * @return
+  */
+web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
+
 /**
  * @brief Get Json structed values from initParameters section from settings file
  * @param implementation executor_settings_t instance
