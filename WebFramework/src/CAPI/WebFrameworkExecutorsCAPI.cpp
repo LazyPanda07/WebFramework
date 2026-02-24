@@ -10,7 +10,7 @@
 #include "Executors/ResourceExecutor.h"
 #include "Databases/DatabaseImplementation.h"
 #include "Managers/DatabasesManager.h"
-#include "Web/HTTPRequestImplementation.h"
+#include "Web/HttpRequestImplementation.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())

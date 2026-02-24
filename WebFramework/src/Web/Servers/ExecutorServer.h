@@ -9,7 +9,7 @@
 #include "Managers/SessionsManager.h"
 #include "Utility/AdditionalServerSettings.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
-#include "Web/HTTPRequestImplementation.h"
+#include "Web/HttpRequestImplementation.h"
 
 namespace framework
 {
@@ -30,7 +30,7 @@ namespace framework
 		std::shared_ptr<ResourceExecutor> resources;
 
 	protected:
-		static ServiceState serviceRequests(streams::IOSocketStream& stream, HttpRequestImplementation& request, HTTPResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task);
+		static ServiceState serviceRequests(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task);
 
 	public:
 		ExecutorServer

@@ -16,7 +16,7 @@ namespace framework
 	(
 		SSL* ssl, SOCKET clientSocket, sockaddr address,
 		std::function<void()>&& cleanup,
-		const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HttpRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& service,
+		const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& service,
 		ThreadPoolWebServer& server,
 		DWORD timeout
 	) :
@@ -70,7 +70,7 @@ namespace framework
 		}
 
 		HttpRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, address, stream);
-		HTTPResponseImplementation response;
+		HttpResponseImplementation response;
 		std::vector<std::function<void(ServiceState&)>> chain =
 		{
 			[this, &request](ServiceState& state)

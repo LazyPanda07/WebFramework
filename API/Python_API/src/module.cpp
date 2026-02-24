@@ -229,6 +229,11 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 			},
 			"function_name"_a, "function_class"_a
 		)
+		.def("unregister_dynamic_function", &framework::utility::ExecutorSettings::unregisterDynamicFunction, "function_name"_a)
+		.def("is_dynamic_function_registered", &framework::utility::ExecutorSettings::isDynamicFunctionRegistered, "function_name"_a)
+		.def("get_file", &framework::utility::ExecutorSettings::getFile, "file_path"_a)
+		.def("process_static_file", &framework::utility::ExecutorSettings::processStaticFile, "file_data"_a, "file_extension"_a)
+		.def("process_dynamic_file", &framework::utility::ExecutorSettings::processDynamicFile, "file_data"_a, "variables"_a)
 		.def
 		(
 			"get_or_create_database",

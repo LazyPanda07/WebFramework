@@ -1,4 +1,4 @@
-#include "HTTPRequestImplementation.h"
+#include "HttpRequestImplementation.h"
 
 #include <Log.h>
 #include <MultiLocalizationManager.h>
@@ -354,7 +354,7 @@ namespace framework
 		web::HttpBuilder builder = web::HttpBuilder().
 			headers
 			(
-				"Date", HTTPResponseImplementation::getFullDate(),
+				"Date", HttpResponseImplementation::getFullDate(),
 				"Server", "WebFramework-Server",
 				"Content-Type", "application/octet-stream",
 				"Content-Disposition", std::format(R"(attachment; filename="{}")", fileName),
@@ -446,7 +446,7 @@ namespace framework
 
 			builder = web::HttpBuilder().chunk(std::string_view(chunk, chunkSize)).partialChunks().responseCode(web::ResponseCodes::ok).headers
 			(
-				"Date", HTTPResponseImplementation::getFullDate(),
+				"Date", HttpResponseImplementation::getFullDate(),
 				"Server", "WebFramework-Server",
 				"Connection", "keep-alive"
 			);

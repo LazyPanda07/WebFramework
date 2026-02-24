@@ -7,6 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using static Framework.HttpRequest;
 
 public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 {
@@ -28,11 +29,30 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 	private readonly IntPtr implementation = implementation;
 
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	private delegate void FillBufferCallback(IntPtr data, nuint size, IntPtr buffer);
+
 	[LibraryImport(DLLHandler.libraryName)]
 	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void registerDynamicFunctionClassExecutorSettingss(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
+	private static partial void registerDynamicFunctionClassExecutorSettings(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void unregisterDynamicFunctionExecutorSettings(IntPtr implementation, string functionName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[return: MarshalAs(UnmanagedType.I1)]
+	private static partial bool isDynamicFunctionRegisteredExecutorSettings(IntPtr implementation, string functionName, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void getFileExecutorSettings(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void processStaticFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+
+	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void processDynamicFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.libraryName)]
 	private static partial IntPtr getDataFromString(IntPtr implementation);
@@ -73,6 +93,31 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 		return result;
 	}
 
+	private static void ReadFileDataCallback(IntPtr data, nuint size, IntPtr buffer)
+	{
+		List<byte> result = (List<byte>)GCHandle.FromIntPtr(buffer).Target!;
+		byte[] dataBytes = new byte[(int)size];
+
+		Marshal.Copy(data, dataBytes, 0, dataBytes.Length);
+
+		result.AddRange(dataBytes);
+	}
+
+	private static string ToCString(string source)
+	{
+		return source + "\0";
+	}
+
+	private static IntPtr AllocateString(string source)
+	{
+		byte[] bytes = Encoding.UTF8.GetBytes(ToCString(source));
+		IntPtr ptr = Marshal.AllocHGlobal(bytes.Length);
+
+		Marshal.Copy(bytes, 0, ptr, bytes.Length);
+
+		return ptr;
+	}
+
 	/// <summary>
 	/// Register function that can be called from .wfdp files
 	/// </summary>
@@ -88,12 +133,133 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 		Marshal.Copy(assemblyBytes, 0, result, assemblyBytes.Length);
 
-		registerDynamicFunctionClassExecutorSettingss(implementation, functionName, "csharp", result, ref exception);
+		registerDynamicFunctionClassExecutorSettings(implementation, functionName, "csharp", result, ref exception);
 
 		if (exception != null)
 		{
 			throw new WebFrameworkException(exception);
 		}
+	}
+
+	/// <summary>
+	/// Load file from assets
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public byte[] GetFile(string filePath)
+	{
+		void* exception = null;
+		List<byte> result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+
+		getFileExecutorSettings
+		(
+			implementation,
+			filePath,
+			ReadFileDataCallback,
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return [.. result];
+	}
+
+	/// <summary>
+	/// Process static file such as .md
+	/// </summary>
+	/// <param name="fileData"></param>
+	/// <param name="fileExtension"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public byte[] ProcessStaticFile(byte[] fileData, string fileExtension)
+	{
+		void* exception = null;
+		List<byte> result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+
+		processStaticFileExecutorSettings
+		(
+			implementation,
+			fileData,
+			(nuint)fileData.Length,
+			fileExtension,
+			ReadFileDataCallback,
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return [.. result];
+	}
+
+	/// <summary>
+	/// Process dynamic files such as .wfdp
+	/// </summary>
+	/// <param name="fileData"></param>
+	/// <param name="variables"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public byte[] ProcessDynamicFile(byte[] fileData, IDictionary<string, string>? variables = null)
+	{
+		void* exception = null;
+		List<byte> result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
+
+		if (variables != null)
+		{
+			int index = 0;
+
+			foreach (var (key, value) in variables)
+			{
+				cvariables[index++] = new DynamicPagesVariable
+				{
+					name = AllocateString(key),
+					value = AllocateString(value)
+				};
+			}
+		}
+
+		processDynamicFileExecutorSettings
+		(
+			implementation,
+			fileData,
+			(nuint)fileData.Length,
+			cvariables,
+			(nuint)cvariables.Length,
+			ReadFileDataCallback,
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
+
+		handle.Free();
+
+		foreach (DynamicPagesVariable variable in cvariables)
+		{
+			Marshal.FreeHGlobal(variable.name);
+			Marshal.FreeHGlobal(variable.value);
+		}
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return [.. result];
 	}
 
 	public string GetName()

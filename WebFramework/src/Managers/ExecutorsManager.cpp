@@ -9,7 +9,7 @@
 #include <Exceptions/DatabaseException.h>
 
 #include "Exceptions/BadRequestException.h"
-#include "Web/HTTPRequestImplementation.h"
+#include "Web/HttpRequestImplementation.h"
 #include "Utility/Sources.h"
 #include "Utility/DynamicLibraries.h"
 #include "Exceptions/MissingLoadTypeException.h"

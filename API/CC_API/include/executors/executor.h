@@ -133,6 +133,57 @@ typedef enum methods
 web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
 
 /**
+ * @brief Unregister function for processing .wfdp files
+ * @param implementation executor_settings_t instance
+ * @param functionName Function name
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_unregister_dynamic_function_executor_settings(executor_settings_t implementation, const char* functionName);
+
+/**
+ * @brief Check is WFDP function registered
+ * @param implementation executor_settings_t instance
+ * @param functionName Function name
+ * @param result Is function registered
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_is_dynamic_function_registered_executor_settings(executor_settings_t implementation, const char* functionName, bool* result);
+
+/**
+ * @brief Get file content
+ * @param implementation executor_settings_t instance
+ * @param filePath Path to asset file from assets folder
+ * @param result File content. Delete with free function
+ * @param size File content size
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_file_executor_settings(executor_settings_t implementation, const char* file_path, const char** result, size_t* size);
+
+/**
+ * @brief Process static files like .md
+ * @param implementation executor_settings_t instance
+ * @param fileData Static file content
+ * @param size fileData size
+ * @param fileExtension Supported processing extension
+ * @param result Processed data
+ * @param resultSize Processed data size
+ * @return
+ */
+web_framework_exception_t wf_process_static_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const char* file_extension, const char** result, size_t* result_size);
+
+/**
+ * @brief Process .wfdp files
+ * @param implementation executor_settings_t instance
+ * @param fileData WFDP file content
+ * @param variables Variables for processing .wfdp file
+ * @param variablesSize Size of variables
+ * @param result Processed data
+ * @param resultSize Processed data size
+ * @return
+ */
+web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size);
+
+/**
  * @brief Get Json structed values from initParameters section from settings file
  * @param implementation executor_settings_t instance
  * @param result Json structed values

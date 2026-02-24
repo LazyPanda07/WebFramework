@@ -1,5 +1,32 @@
 #include "executors/executor.h"
 
+typedef struct file_buffer
+{
+	char** data;
+	size_t* size;
+} file_buffer_t;
+
+static void __fill_file_buffer(const char* data, size_t size, void* buffer)
+{
+	file_buffer_t* fileBuffer = (file_buffer_t*)buffer;
+	char** result = fileBuffer->data;
+	size_t* resultSize = fileBuffer->size;
+
+	*result = malloc(size + 1);
+
+	if (!*result)
+	{
+		fprintf(stderr, "Can't allocate memory for file buffer\n");
+
+		exit(6);
+	}
+
+	(*result)[size] = '\0';
+	*resultSize = size;
+
+	memcpy(*result, data, size);
+}
+
 web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
@@ -7,6 +34,67 @@ web_framework_exception_t wf_register_dynamic_function_executor_settings(executo
 	typedef void (*registerDynamicFunctionExecutorSettings)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionExecutorSettings, function_name, function, deleter, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_unregister_dynamic_function_executor_settings(executor_settings_t implementation, const char* functionName)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*unregisterDynamicFunctionExecutorSettings)(void* implementation, const char* functionName, void** exception);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterDynamicFunctionExecutorSettings, functionName, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_is_dynamic_function_registered_executor_settings(executor_settings_t implementation, const char* functionName, bool* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef bool (*isDynamicFunctionRegisteredExecutorSettings)(void* implementation, const char* functionName, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isDynamicFunctionRegisteredExecutorSettings, functionName, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_get_file_executor_settings(executor_settings_t implementation, const char* file_path, const char** result, size_t* size)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*getFileExecutorSettings)(void* implementation, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+
+	file_buffer_t buffer = { .data = result, .size = size };
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFileExecutorSettings, file_path, __fill_file_buffer, &buffer, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_process_static_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const char* file_extension, const char** result, size_t* result_size)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*processStaticFileExecutorSettings)(void* implementation, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+
+	file_buffer_t buffer = { .data = result, .size = result_size };
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processStaticFileExecutorSettings, file_data, size, file_extension, __fill_file_buffer, &buffer, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*processDynamicFileExecutorSettings)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+
+	file_buffer_t buffer = { .data = result, .size = result_size };
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, file_data, size, variables, variables_size, __fill_file_buffer, &buffer, &exception);
 
 	return exception;
 }

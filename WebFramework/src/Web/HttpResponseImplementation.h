@@ -13,7 +13,7 @@ namespace framework
 	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API HTTPResponseImplementation : public interfaces::IHttpResponse
+	class WEB_FRAMEWORK_API HttpResponseImplementation : public interfaces::IHttpResponse
 	{
 	private:
 		web::HttpBuilder builder;
@@ -29,14 +29,14 @@ namespace framework
 		static std::string getFullDate();
 
 	public:
-		HTTPResponseImplementation();
+		HttpResponseImplementation();
 
 		/// <summary>
 		/// Assign operator for HTTPBuilder
 		/// </summary>
 		/// <param name="builder">your HTTPBuilder</param>
 		/// <returns>self for builder pattern</returns>
-		HTTPResponseImplementation& operator = (const web::HttpBuilder& builder);
+		HttpResponseImplementation& operator = (const web::HttpBuilder& builder);
 
 		/// <summary>
 		/// <para>Set HTTP version</para>
@@ -101,8 +101,8 @@ namespace framework
 		/// <param name="response">class instance</param>
 		/// <returns>reference to self</returns>
 		/// <exception cref="web::WebException"></exception>
-		friend streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponseImplementation& response);
+		friend streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HttpResponseImplementation& response);
 
-		~HTTPResponseImplementation() = default;
+		~HttpResponseImplementation() = default;
 	};
 }

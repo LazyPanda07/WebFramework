@@ -4,7 +4,7 @@
 #include <HttpsNetwork.h>
 #include <Log.h>
 
-#include "Web/HTTPResponseImplementation.h"
+#include "Web/HttpResponseImplementation.h"
 #include "Utility/Stopwatch.h"
 
 #include "Heuristics/Connections.h"
@@ -226,7 +226,7 @@ namespace framework::load_balancer
 							}
 							else
 							{
-								HTTPResponseImplementation response;
+								HttpResponseImplementation response;
 
 								resources->badGatewayError(response);
 
@@ -259,7 +259,7 @@ namespace framework::load_balancer
 						}
 						else
 						{
-							HTTPResponseImplementation response;
+							HttpResponseImplementation response;
 
 							resources->badGatewayError(response);
 

@@ -10,7 +10,7 @@
 #include "WebInterfaces/IDynamicFile.h"
 #include "Utility/ChunkGenerator.h"
 #include "WebFrameworkCoreConstants.h"
-#include "HTTPResponseImplementation.h"
+#include "HttpResponseImplementation.h"
 
 namespace web
 {

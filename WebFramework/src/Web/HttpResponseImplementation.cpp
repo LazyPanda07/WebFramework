@@ -1,4 +1,4 @@
-#include "HTTPResponseImplementation.h"
+#include "HttpResponseImplementation.h"
 
 #include <chrono>
 #include <ctime>
@@ -7,7 +7,7 @@
 
 namespace framework
 {
-	std::string HTTPResponseImplementation::getFullDate()
+	std::string HttpResponseImplementation::getFullDate()
 	{
 		constexpr size_t bufferSize = 64;
 		constexpr size_t resultSize = 96;
@@ -39,48 +39,48 @@ namespace framework
 		return result;
 	}
 
-	HTTPResponseImplementation::HTTPResponseImplementation()
+	HttpResponseImplementation::HttpResponseImplementation()
 	{
 		this->setDefault();
 	}
 
-	HTTPResponseImplementation& HTTPResponseImplementation::operator = (const web::HttpBuilder& builder)
+	HttpResponseImplementation& HttpResponseImplementation::operator = (const web::HttpBuilder& builder)
 	{
 		this->builder = builder;
 
 		return *this;
 	}
 
-	void HTTPResponseImplementation::setHTTPVersion(const char* version)
+	void HttpResponseImplementation::setHTTPVersion(const char* version)
 	{
 		builder.HTTPVersion(version);
 	}
 
-	void HTTPResponseImplementation::setResponseCode(int64_t code)
+	void HttpResponseImplementation::setResponseCode(int64_t code)
 	{
 		builder.responseCode(static_cast<web::ResponseCodes>(code));
 
 		defaultResponseCode = false;
 	}
 
-	void HTTPResponseImplementation::addHeader(const char* name, const char* value)
+	void HttpResponseImplementation::addHeader(const char* name, const char* value)
 	{
 		builder.headers(name, value);
 	}
 
-	void HTTPResponseImplementation::setBody(const char* body)
+	void HttpResponseImplementation::setBody(const char* body)
 	{
 		this->body = body;
 	}
 
-	interfaces::IHttpResponse* HTTPResponseImplementation::appendBody(const char* body)
+	interfaces::IHttpResponse* HttpResponseImplementation::appendBody(const char* body)
 	{
 		this->body += body;
 
 		return this;
 	}
 
-	void HTTPResponseImplementation::addCookie(const char* name, const char* value)
+	void HttpResponseImplementation::addCookie(const char* name, const char* value)
 	{
 		builder.headers
 		(
@@ -88,7 +88,7 @@ namespace framework
 		);
 	}
 
-	void HTTPResponseImplementation::setDefault()
+	void HttpResponseImplementation::setDefault()
 	{
 		builder.clear();
 
@@ -101,28 +101,28 @@ namespace framework
 		defaultResponseCode = true;
 	}
 
-	void HTTPResponseImplementation::setIsValid(bool isValid)
+	void HttpResponseImplementation::setIsValid(bool isValid)
 	{
 		this->isValid = isValid;
 	}
 
-	bool HTTPResponseImplementation::getIsValid() const
+	bool HttpResponseImplementation::getIsValid() const
 	{
 		return isValid;
 	}
 
-	HTTPResponseImplementation::operator bool() const
+	HttpResponseImplementation::operator bool() const
 	{
 		return this->getIsValid();
 	}
 
-	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HTTPResponseImplementation& response)
+	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HttpResponseImplementation& response)
 	{
 		std::string result;
 
 		response.builder.headers
 		(
-			"Date", HTTPResponseImplementation::getFullDate(),
+			"Date", HttpResponseImplementation::getFullDate(),
 			"Server", "WebFramework-Server"
 		);
 

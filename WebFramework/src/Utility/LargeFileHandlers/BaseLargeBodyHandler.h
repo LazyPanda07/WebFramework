@@ -7,7 +7,7 @@
 #include "Managers/ExecutorsManager.h"
 #include "WebInterfaces/IStaticFile.h"
 #include "WebInterfaces/IDynamicFile.h"
-#include "Web/HTTPRequestImplementation.h"
+#include "Web/HttpRequestImplementation.h"
 
 namespace framework::utility
 {
@@ -23,7 +23,7 @@ namespace framework::utility
 		ExecutorsManager& executorsManager;
 		ExecutorsManager::StatefulExecutors& executors;
 		std::unique_ptr<HttpRequestImplementation> request;
-		HTTPResponseImplementation response;
+		HttpResponseImplementation response;
 		Executor* executor;
 		void(Executor::* method)(interfaces::IHttpRequest&, interfaces::IHttpResponse&);
 

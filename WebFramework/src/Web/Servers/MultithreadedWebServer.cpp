@@ -64,7 +64,7 @@ namespace framework
 
 		streams::IOSocketStream stream = this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout));
 		ExecutorsManager::StatefulExecutors executors;
-		HTTPResponseImplementation response;
+		HttpResponseImplementation response;
 		HttpRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
 		bool finish = false;
