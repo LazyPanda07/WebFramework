@@ -66,7 +66,8 @@ namespace framework
 
 			void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const;
 
-			void registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass) const;
+			template<DynamicFunctionImplementation T = DynamicFunction, typename... Args>
+			void registerDynamicFunctionClass(std::string_view functionName, Args&&... args) const;
 
 			void unregisterDynamicFunction(std::string_view functionName) const;
 
@@ -196,16 +197,37 @@ namespace framework
 			}
 		}
 
-		inline void ExecutorSettings::registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass) const
+		template<DynamicFunctionImplementation T, typename... Args>
+		inline void ExecutorSettings::registerDynamicFunctionClass(std::string_view functionName, Args&&... args) const
 		{
 			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionClassExecutorSettings, void, const char* functionName, const char* apiType, void* functionClass, void** exception);
 			void* exception = nullptr;
 
-			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettings, functionName.data(), apiType.data(), functionClass, &exception);
-
-			if (exception)
+			if constexpr (std::derived_from<T, DynamicFunction> && T::dynamicFunctionImplementationName == DynamicFunction::dynamicFunctionImplementationName)
 			{
-				throw exceptions::WebFrameworkException(exception);
+				T* dynamicFunction = new T(std::forward<Args>(args)...);
+				struct
+				{
+					void* dynamicFunction;
+					void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+					void (*deleter)(void* implementation);
+				} dynamicFunctionController;
+
+				dynamicFunctionController.dynamicFunction = dynamicFunction;
+				dynamicFunctionController.callFunction = &DynamicFunction::call;
+				dynamicFunctionController.deleter = &DynamicFunction::deleter;
+
+				DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettings, functionName.data(), T::dynamicFunctionImplementationName.data(), static_cast<void*>(&dynamicFunctionController), &exception);
+			}
+			else if constexpr (T::dynamicFunctionImplementationName == "python")
+			{
+				static_assert(sizeof...(Args) == 1);
+
+				DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettings, functionName.data(), T::dynamicFunctionImplementationName.data(), args..., &exception);
+			}
+			else
+			{
+				throw std::runtime_error(std::format("Can't register dynamic function class with name: {}", functionName));
 			}
 		}
 
