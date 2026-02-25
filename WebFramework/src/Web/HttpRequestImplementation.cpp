@@ -79,6 +79,11 @@ namespace framework
 
 	void HttpRequestImplementation::registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
 	{
+		if (apiType == json_settings::cxxExecutorKey)
+		{
+			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
+		}
+
 #ifdef __WITH_PYTHON_EXECUTORS__
 		if (apiType == json_settings::pythonExecutorKey)
 		{

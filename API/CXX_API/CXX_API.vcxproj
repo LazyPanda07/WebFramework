@@ -99,6 +99,7 @@
     <ClInclude Include="include\Databases\SqlResult.hpp" />
     <ClInclude Include="include\Databases\SqlValue.hpp" />
     <ClInclude Include="include\Databases\Table.hpp" />
+    <ClInclude Include="include\DynamicFunction.hpp" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="include\Exceptions\NotImplementedDoMethodException.hpp" />
     <ClInclude Include="include\Exceptions\WebFrameworkAPIException.hpp" />

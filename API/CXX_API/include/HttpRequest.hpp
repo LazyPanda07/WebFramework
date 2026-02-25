@@ -234,10 +234,9 @@ namespace framework
 		/**
 		 * @brief Add new function in .wfdp interpreter
 		 * @param functionName Name of new function
-		 * @param functionClass A pointer to the function class or factory object to register (passed as void*).
 		 */
-		template<DynamicFunctionImplementation T = DynamicFunction>
-		void registerDynamicFunctionClass(std::string_view functionName, void* functionClass);
+		template<DynamicFunctionImplementation T = DynamicFunction, typename... Args>
+		void registerDynamicFunctionClass(std::string_view functionName, Args&&... args);
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
@@ -733,10 +732,35 @@ namespace framework
 		implementation->registerDynamicFunction(functionName.data(), function, deleter);
 	}
 
-	template<DynamicFunctionImplementation T>
-	inline void HttpRequest::registerDynamicFunctionClass(std::string_view functionName, void* functionClass)
+	template<DynamicFunctionImplementation T, typename... Args>
+	inline void HttpRequest::registerDynamicFunctionClass(std::string_view functionName, Args&&... args)
 	{
-		implementation->registerDynamicFunctionClass(functionName.data(), T::dynamicFunctionImplementationName.data(), functionClass);
+		if constexpr (std::derived_from<T, DynamicFunction> && T::dynamicFunctionImplementationName == DynamicFunction::dynamicFunctionImplementationName)
+		{
+			T* dynamicFunction = new T(std::forward<Args>(args)...);
+			struct
+			{
+				void* dynamicFunction;
+				void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+				void (*deleter)(void* implementation);
+			} dynamicFunctionController;
+
+			dynamicFunctionController.dynamicFunction = dynamicFunction;
+			dynamicFunctionController.callFunction = &DynamicFunction::call;
+			dynamicFunctionController.deleter = &DynamicFunction::deleter;
+			
+			implementation->registerDynamicFunctionClass(functionName.data(), T::dynamicFunctionImplementationName.data(), static_cast<void*>(&dynamicFunctionController));
+		}
+		else if constexpr (T::dynamicFunctionImplementationName == "python")
+		{
+			static_assert(sizeof...(Args) == 1);
+
+			implementation->registerDynamicFunctionClass(functionName.data(), T::dynamicFunctionImplementationName.data(), args...);
+		}
+		else
+		{
+			this->throwException(std::format("Can't register dynamic function class with name: {}", functionName), ResponseCodes::internalServerError);
+		}
 	}
 
 	inline void HttpRequest::unregisterDynamicFunction(std::string_view functionName)
