@@ -556,7 +556,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 					throw std::runtime_error(std::format("Class {} is not subclass of {}", py::repr(functionClass).cast<std::string>(), py::repr(dynamicFunctionClass).cast<std::string>()));
 				}
 
-				self.registerDynamicFunctionClass(functionName, "python", &functionClass);
+				self.registerDynamicFunctionClass<framework::PyDynamicFunction>(functionName, &functionClass);
 			},
 			"function_name"_a, "function_class"_a
 		)

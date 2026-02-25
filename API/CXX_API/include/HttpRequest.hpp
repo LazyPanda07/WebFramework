@@ -13,6 +13,7 @@
 #include "Databases/Implementations/DefaultDatabase.hpp"
 #include "Databases/Implementations/SqliteDatabase.hpp"
 #include "Databases/Implementations/RedisDatabase.hpp"
+#include "DynamicFunction.hpp"
 
 namespace framework
 {
@@ -23,6 +24,12 @@ namespace framework
 	concept DatabaseImplementation = requires
 	{
 		{ std::string(T::databaseImplementationName) } -> std::same_as<std::string>;
+	};
+
+	template<typename T>
+	concept DynamicFunctionImplementation = requires
+	{
+		{ std::string(T::dynamicFunctionImplementationName) } -> std::same_as<std::string>;
 	};
 
 	class Multipart
@@ -225,9 +232,12 @@ namespace framework
 		void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 
 		/**
-		 * @brief Internal use only
+		 * @brief Add new function in .wfdp interpreter
+		 * @param functionName Name of new function
+		 * @param functionClass A pointer to the function class or factory object to register (passed as void*).
 		 */
-		void registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass);
+		template<DynamicFunctionImplementation T = DynamicFunction>
+		void registerDynamicFunctionClass(std::string_view functionName, void* functionClass);
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
@@ -723,9 +733,10 @@ namespace framework
 		implementation->registerDynamicFunction(functionName.data(), function, deleter);
 	}
 
-	inline void HttpRequest::registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass)
+	template<DynamicFunctionImplementation T>
+	inline void HttpRequest::registerDynamicFunctionClass(std::string_view functionName, void* functionClass)
 	{
-		implementation->registerDynamicFunctionClass(functionName.data(), apiType.data(), functionClass);
+		implementation->registerDynamicFunctionClass(functionName.data(), T::dynamicFunctionImplementationName.data(), functionClass);
 	}
 
 	inline void HttpRequest::unregisterDynamicFunction(std::string_view functionName)

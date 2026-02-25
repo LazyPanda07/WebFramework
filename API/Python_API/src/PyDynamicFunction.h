@@ -20,6 +20,9 @@ namespace framework
 	class PyDynamicFunction : public IDynamicFunction
 	{
 	public:
+		static constexpr std::string_view dynamicFunctionImplementationName = "python";
+
+	public:
 		PyDynamicFunction() = default;
 
 		std::string operator ()(pybind11::args args) const override;
