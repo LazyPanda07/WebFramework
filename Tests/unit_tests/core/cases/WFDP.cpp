@@ -84,7 +84,10 @@ TEST(WFDP, CustomFunction)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HttpParser(response).getBody(), "Data: 15 30 45");
+		web::HttpParser parser(response);
+
+		ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::ok);
+		ASSERT_EQ(parser.getBody(), "Data: 15 30 45");
 	}
 
 	{

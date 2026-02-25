@@ -302,7 +302,22 @@ namespace framework
 	{
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<DynamicFunction>(const std::any&)>> apiDynamicFunctions =
 		{
-			{ json_settings::cxxExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(function); } },
+			{
+				json_settings::cxxExecutorKey,
+				[](const std::any& function)
+				{
+					if (auto value = std::any_cast<void*>(&function))
+					{
+						std::unique_ptr<CXXDynamicFunction> result = std::make_unique<CXXDynamicFunction>();
+
+						result->initClass(*value);
+
+						return result;
+					}
+
+					return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function));
+				}
+			},
 			{ json_settings::ccExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [](const std::any& function) { return std::make_unique<PythonDynamicFunction>(std::any_cast<void*>(function)); }},

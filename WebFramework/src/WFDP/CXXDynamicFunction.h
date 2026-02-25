@@ -3,7 +3,7 @@
 #include "DynamicFunction.h"
 
 #include <functional>
-#include <any>
+#include <variant>
 #include <span>
 
 namespace framework
@@ -17,7 +17,11 @@ namespace framework
 		void (*deleter)(void* implementation);
 
 	public:
-		CXXDynamicFunction(const std::any& data);
+		CXXDynamicFunction();
+
+		CXXDynamicFunction(const std::function<std::string(const std::vector<std::string>&)>& functor);
+
+		void initClass(void* data);
 
 		std::string operator ()(const std::vector<std::string>& arguments) const override;
 
