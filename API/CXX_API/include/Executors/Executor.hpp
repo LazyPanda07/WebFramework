@@ -198,10 +198,10 @@ namespace framework
 
 		inline void ExecutorSettings::registerDynamicFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass) const
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionClassExecutorSettingss, void, const char* functionName, const char* apiType, void* functionClass, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionClassExecutorSettings, void, const char* functionName, const char* apiType, void* functionClass, void** exception);
 			void* exception = nullptr;
 
-			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettingss, functionName.data(), apiType.data(), functionClass, &exception);
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettings, functionName.data(), apiType.data(), functionClass, &exception);
 
 			if (exception)
 			{

@@ -1124,7 +1124,7 @@ void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings,
 	}
 }
 
-void registerDynamicFunctionClassExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
+void registerDynamicFunctionClassExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try
 	{

@@ -32,56 +32,56 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	private delegate void FillBufferCallback(IntPtr data, nuint size, IntPtr buffer);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void registerDynamicFunctionClassExecutorSettings(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void unregisterDynamicFunctionExecutorSettings(IntPtr implementation, string functionName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
 	private static partial bool isDynamicFunctionRegisteredExecutorSettings(IntPtr implementation, string functionName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getFileExecutorSettings(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void processStaticFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void processDynamicFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getDataFromString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getExecutorInitParameters(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getExecutorName(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getExecutorUserAgentFilter(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getExecutorAPIType(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial int getExecutorLoadType(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getOrCreateDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getOrCreateTableExecutorSettings(IntPtr implementation, string databaseName, string implementationName, string tableName, string createTableQuery, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getTableExecutorSettings(IntPtr implementation, string databaseName, string implementationName, string tableName, ref void* exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
@@ -139,6 +139,42 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 		{
 			throw new WebFrameworkException(exception);
 		}
+	}
+
+	/// <summary>
+	/// Unregister function that can be used from .wfdp files
+	/// </summary>
+	/// <param name="functionName"></param>
+	/// <exception cref="WebFrameworkException"></exception>
+	public void UnregisterDynamicFunction(string functionName)
+	{
+		void* exception = null;
+
+		unregisterDynamicFunctionExecutorSettings(implementation, functionName, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+	}
+
+	/// <summary>
+	/// Check if function with functionName registered for processing .wfdp files
+	/// </summary>
+	/// <param name="functionName"></param>
+	/// <returns></returns>
+	/// <exception cref="WebFrameworkException"></exception>
+	public bool IsDynamicFunctionRegistered(string functionName)
+	{
+		void* exception = null;
+		bool result = isDynamicFunctionRegisteredExecutorSettings(implementation, functionName, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return result;
 	}
 
 	/// <summary>

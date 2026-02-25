@@ -134,7 +134,7 @@ EXPORT TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, 
 
 EXPORT void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
 
-EXPORT void registerDynamicFunctionClassExecutorSettingss(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
+EXPORT void registerDynamicFunctionClassExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 
 EXPORT void unregisterDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception);
 

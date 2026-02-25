@@ -12,10 +12,10 @@ public sealed unsafe partial class WebFrameworkException(void* implementation) :
 {
 	private readonly unsafe void* implementation = implementation;
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static unsafe partial char* getErrorMessage(void* implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static unsafe partial void deleteWebFrameworkException(void* implementation);
 
 	public void Dispose() => deleteWebFrameworkException(implementation);

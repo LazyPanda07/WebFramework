@@ -2,5 +2,5 @@
 
 internal class DLLHandler
 {
-	public const string libraryName = "WebFramework";
+	public const string LIBRARY_NAME = "WebFramework";
 }

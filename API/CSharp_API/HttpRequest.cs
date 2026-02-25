@@ -62,137 +62,137 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	private delegate void AddChunkCallback(IntPtr chunk, nuint size, nuint index, IntPtr buffer);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getDataFromString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial char* getJsonParserRawData(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteWebFrameworkJsonParser(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial char* getRawParameters(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial char* getMethod(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getVersion(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial char* getBody(IntPtr implementation, ref nuint bodySize, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void setAttribute(IntPtr implementation, string name, string value, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getAttribute(IntPtr implementation, string name, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteSession(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void removeAttribute(IntPtr implementation, string name, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getRequestJson(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial char* getRawRequest(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getClientIpV4(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getServerIpV4(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial ushort getClientPort(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial ushort getServerPort(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void registerDynamicFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void unregisterDynamicFunction(IntPtr implementation, string functionName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
 	private static partial bool isDynamicFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getFile(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getCookies(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addCookiee, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getLargeData(IntPtr implementaion, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial int getRouteIntegerParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial double getRouteDoubleParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getOrCreateDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getOrCreateTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, string createTableQuery, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void sendChunks(IntPtr implementation, IntPtr response, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	internal static partial void setExceptionData(IntPtr implementation, string errorMessage, int responseCode, string logCategory);
 
 	private static string GetStringData(IntPtr stringImplementation)
