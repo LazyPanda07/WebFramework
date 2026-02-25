@@ -518,7 +518,7 @@ web_framework_exception_t wf_get_chunks(http_request_t implementation, http_chun
 	return exception;
 }
 
-web_framework_exception_t wf_get_file(http_request_t implementation, const char* filePath, const char** result, size_t* size)
+web_framework_exception_t wf_get_file(http_request_t implementation, const char* filePath, char** result, size_t* size)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -531,7 +531,7 @@ web_framework_exception_t wf_get_file(http_request_t implementation, const char*
 	return exception;
 }
 
-web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* fileData, size_t size, const char* fileExtension, const char** result, size_t* resultSize)
+web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* fileData, size_t size, const char* fileExtension, char** result, size_t* resultSize)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -544,7 +544,7 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
 	return exception;
 }
 
-web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, const char** result, size_t* resultSize)
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, char** result, size_t* resultSize)
 {
 	web_framework_exception_t exception = NULL;
 

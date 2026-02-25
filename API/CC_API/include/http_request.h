@@ -300,7 +300,7 @@ web_framework_exception_t wf_get_chunks(http_request_t implementation, http_chun
  * @param size File content size
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_file(http_request_t implementation, const char* file_path, const char** result, size_t* size);
+web_framework_exception_t wf_get_file(http_request_t implementation, const char* file_path, char** result, size_t* size);
 
 /**
  * @brief Process static files like .md
@@ -312,7 +312,7 @@ web_framework_exception_t wf_get_file(http_request_t implementation, const char*
  * @param resultSize Processed data size
  * @return 
  */
-web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* file_data, size_t size, const char* file_extension, const char** result, size_t* result_size);
+web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* file_data, size_t size, const char* file_extension, char** result, size_t* result_size);
 
 /**
  * @brief Process .wfdp files
@@ -324,7 +324,7 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
  * @param resultSize Processed data size
  * @return 
  */
-web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size);
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, char** result, size_t* result_size);
 
 /**
  * @brief Get raw HTTP request
