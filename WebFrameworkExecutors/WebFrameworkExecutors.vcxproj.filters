@@ -44,34 +44,34 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Executors\Executor.h">
+    <ClInclude Include="include\Executors\Executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\HeavyOperationStatefulExecutor.h">
+    <ClInclude Include="include\Executors\HeavyOperationStatefulExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\HeavyOperationStatelessExecutor.h">
+    <ClInclude Include="include\Executors\HeavyOperationStatelessExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\StatefulExecutor.h">
+    <ClInclude Include="include\Executors\StatefulExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\StatelessExecutor.h">
+    <ClInclude Include="include\Executors\StatelessExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\JSONSettingsParser.h">
+    <ClInclude Include="include\Utility\JSONSettingsParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\NotImplementedException.h">
+    <ClInclude Include="include\Exceptions\NotImplementedException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\ExecutorException.h">
+    <ClInclude Include="include\Exceptions\ExecutorException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\BadRequestException.h">
+    <ClInclude Include="include\Exceptions\BadRequestException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ExecutorsConstants.h">
+    <ClInclude Include="include\ExecutorsConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

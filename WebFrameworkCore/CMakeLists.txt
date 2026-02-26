@@ -15,16 +15,16 @@ endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	src/
-	${PROJECT_SOURCE_DIR}/../Networks/src/
-	${PROJECT_SOURCE_DIR}/../Networks/HTTP/src/
-	${PROJECT_SOURCE_DIR}/../Networks/HTTP/JSON/src/
-	${PROJECT_SOURCE_DIR}/../Networks/SocketStreams/src/
+	include/
+	${PROJECT_SOURCE_DIR}/../Networks/include/
+	${PROJECT_SOURCE_DIR}/../Networks/HTTP/include/
+	${PROJECT_SOURCE_DIR}/../Networks/HTTP/JSON/include/
+	${PROJECT_SOURCE_DIR}/../Networks/SocketStreams/include/
 	${PROJECT_SOURCE_DIR}/../Networks/vendor/OpenSSL/include/
-	${PROJECT_SOURCE_DIR}/../Log/src/
-	${PROJECT_SOURCE_DIR}/../Localization/src/
-	${PROJECT_SOURCE_DIR}/../BaseTCPServer/src/
-	${PROJECT_SOURCE_DIR}/../FileManager/src/
+	${PROJECT_SOURCE_DIR}/../Log/include/
+	${PROJECT_SOURCE_DIR}/../Localization/include/
+	${PROJECT_SOURCE_DIR}/../BaseTCPServer/include/
+	${PROJECT_SOURCE_DIR}/../FileManager/include/
 	${PROJECT_SOURCE_DIR}/../UtilityLibrary/include/
 )
 

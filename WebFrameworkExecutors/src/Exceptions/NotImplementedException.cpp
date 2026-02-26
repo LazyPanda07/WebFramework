@@ -1,4 +1,4 @@
-#include "NotImplementedException.h"
+#include "Exceptions/NotImplementedException.h"
 
 #include <format>
 

@@ -1,4 +1,4 @@
-#include "SessionsManager.h"
+#include "Managers/SessionsManager.h"
 
 #include <thread>
 

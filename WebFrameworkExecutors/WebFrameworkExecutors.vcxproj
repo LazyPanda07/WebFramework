@@ -59,7 +59,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\;$(ProjectDir)..\Log\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\WebFrameworkCore\include\;$(ProjectDir)include\;$(ProjectDir)..\Log\include\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -76,7 +76,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)src\;$(ProjectDir)..\Log\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\WebFrameworkCore\include\;$(ProjectDir)include\;$(ProjectDir)..\Log\src\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -98,16 +98,16 @@
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Executors\Executor.h" />
-    <ClInclude Include="src\Executors\HeavyOperationStatefulExecutor.h" />
-    <ClInclude Include="src\Executors\HeavyOperationStatelessExecutor.h" />
-    <ClInclude Include="src\Executors\StatefulExecutor.h" />
-    <ClInclude Include="src\Executors\StatelessExecutor.h" />
-    <ClInclude Include="src\Exceptions\BadRequestException.h" />
-    <ClInclude Include="src\Exceptions\ExecutorException.h" />
-    <ClInclude Include="src\Exceptions\NotImplementedException.h" />
-    <ClInclude Include="src\ExecutorsConstants.h" />
-    <ClInclude Include="src\Utility\JSONSettingsParser.h" />
+    <ClInclude Include="include\Executors\Executor.h" />
+    <ClInclude Include="include\Executors\HeavyOperationStatefulExecutor.h" />
+    <ClInclude Include="include\Executors\HeavyOperationStatelessExecutor.h" />
+    <ClInclude Include="include\Executors\StatefulExecutor.h" />
+    <ClInclude Include="include\Executors\StatelessExecutor.h" />
+    <ClInclude Include="include\Exceptions\BadRequestException.h" />
+    <ClInclude Include="include\Exceptions\ExecutorException.h" />
+    <ClInclude Include="include\Exceptions\NotImplementedException.h" />
+    <ClInclude Include="include\ExecutorsConstants.h" />
+    <ClInclude Include="include\Utility\JSONSettingsParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileManager\FileManager.vcxproj">

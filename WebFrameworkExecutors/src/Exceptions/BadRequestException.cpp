@@ -1,4 +1,4 @@
-#include "BadRequestException.h"
+#include "Exceptions/BadRequestException.h"
 
 namespace framework::exceptions
 {
