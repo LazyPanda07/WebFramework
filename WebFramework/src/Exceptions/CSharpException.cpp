@@ -1,4 +1,4 @@
-#include "CSharpException.h"
+#include "Exceptions/CSharpException.h"
 
 #ifdef __WITH_DOTNET_EXECUTORS__
 

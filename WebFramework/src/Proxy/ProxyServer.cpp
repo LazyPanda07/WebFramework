@@ -1,4 +1,4 @@
-#include "ProxyServer.h"
+#include "Proxy/ProxyServer.h"
 
 #include <Exceptions/SslException.h>
 #include <HttpsNetwork.h>

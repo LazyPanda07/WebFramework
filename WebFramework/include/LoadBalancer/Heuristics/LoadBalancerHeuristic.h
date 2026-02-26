@@ -10,10 +10,10 @@ namespace framework::load_balancer
 	/**
 	 * @brief Determine which server use
 	 */
-	class WEB_FRAMEWORK_EXPORT_API BaseLoadBalancerHeuristic
+	class WEB_FRAMEWORK_EXPORT_API LoadBalancerHeuristic
 	{
 	public:
-		BaseLoadBalancerHeuristic() = default;
+		LoadBalancerHeuristic() = default;
 
 		/**
 		 * @brief Calculate load score(choose server with lowest score)
@@ -49,7 +49,7 @@ namespace framework::load_balancer
 		 */
 		virtual bool getUseHTTPS() const = 0;
 
-		virtual ~BaseLoadBalancerHeuristic() = default;
+		virtual ~LoadBalancerHeuristic() = default;
 	};
 
 	using CreateHeuristicFunction = void* (*)(const char* ip, const char* port, bool useHTTPS);
@@ -57,8 +57,8 @@ namespace framework::load_balancer
 
 #ifdef __LINUX__
 /**
-* Macro for each BaseLoadBalancerHeuristic subclass
-* Used for loading function that creates BaseLoadBalancerHeuristic subclass
+* Macro for each LoadBalancerHeuristic subclass
+* Used for loading function that creates LoadBalancerHeuristic subclass
 */
 #define DEFINE_HEURISTIC(subclassName) extern "C" __attribute__((visibility("default"))) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
 {	\
@@ -66,8 +66,8 @@ namespace framework::load_balancer
 }
 #else
 /**
-* Macro for each BaseLoadBalancerHeuristic subclass
-* Used for loading function that creates BaseLoadBalancerHeuristic subclass
+* Macro for each LoadBalancerHeuristic subclass
+* Used for loading function that creates LoadBalancerHeuristic subclass
 */
 #define DEFINE_HEURISTIC(subclassName) extern "C" __declspec(dllexport) void* create##subclassName##Heuristic(std::string_view ip, std::string_view port, bool useHTTPS)	\
 {	\

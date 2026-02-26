@@ -1,4 +1,4 @@
-#include "WebFrameworkLocalizationCAPI.h"
+#include "C_API/WebFrameworkLocalizationCAPI.h"
 
 #include <MultiLocalizationManager.h>
 #include <Log.h>

@@ -86,7 +86,7 @@ add_library(
 	WebFramework/src/Exceptions/CSharpException.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
-	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
+	WebFramework/src/LoadBalancer/Heuristics/LoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
 	WebFramework/src/LoadBalancer/Heuristics/CXXHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/CCHeuristic.cpp
@@ -108,10 +108,10 @@ add_library(
 	WebFramework/src/Web/Servers/ExecutorServer.cpp
 	WebFramework/src/Framework/Config.cpp
 	WebFramework/src/Framework/WebFramework.cpp
-	WebFramework/src/CAPI/WebFrameworkCAPI.cpp
-	WebFramework/src/CAPI/WebFrameworkExecutorsCAPI.cpp
-	WebFramework/src/CAPI/WebFrameworkUtilityCAPI.cpp
-	WebFramework/src/CAPI/WebFrameworkLocalizationCAPI.cpp
+	WebFramework/src/C_API/WebFrameworkCAPI.cpp
+	WebFramework/src/C_API/WebFrameworkExecutorsCAPI.cpp
+	WebFramework/src/C_API/WebFrameworkUtilityCAPI.cpp
+	WebFramework/src/C_API/WebFrameworkLocalizationCAPI.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
@@ -180,7 +180,7 @@ add_subdirectory(API)
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	WebFramework/src/
+	WebFramework/include/
 	WebFrameworkCore/src/
 	WebFrameworkExecutors/src/
 	BaseTCPServer/src/

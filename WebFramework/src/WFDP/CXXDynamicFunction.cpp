@@ -1,4 +1,4 @@
-#include "CXXDynamicFunction.h"
+#include "WFDP/CXXDynamicFunction.h"
 
 namespace framework
 {

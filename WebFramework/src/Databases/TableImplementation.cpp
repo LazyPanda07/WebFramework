@@ -1,8 +1,8 @@
-#include "TableImplementation.h"
+#include "Databases/TableImplementation.h"
 
 #include <stdexcept>
 
-#include "SQLResultImplementation.h"
+#include "Databases/SQLResultImplementation.h"
 
 namespace framework
 {

@@ -1,23 +1,21 @@
 #pragma once
 
-#include "BaseLoadBalancerHeuristic.h"
+#include "LoadBalancerHeuristic.h"
 
-#ifdef __WITH_DOTNET_EXECUTORS__
-
-#include "Utility/Sources.h"
+#include <atomic>
 
 namespace framework::load_balancer
 {
-	class CSharpHeuristic : public BaseLoadBalancerHeuristic
+	class Connections : public LoadBalancerHeuristic
 	{
 	private:
 		std::string ip;
 		std::string port;
 		bool useHTTPS;
-		void* implementation;
+		std::atomic_uint64_t connections;
 
 	public:
-		CSharpHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, const utility::LoadSource& source);
+		Connections(std::string_view ip, std::string_view port, bool useHTTPS);
 
 		uint64_t operator ()() const override;
 
@@ -31,8 +29,6 @@ namespace framework::load_balancer
 
 		bool getUseHTTPS() const override;
 
-		~CSharpHeuristic();
+		~Connections() = default;
 	};
 }
-
-#endif

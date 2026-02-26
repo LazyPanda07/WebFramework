@@ -1,4 +1,4 @@
-#include "StandardWebFrameworkDynamicPagesFunctions.h"
+#include "WFDP/StandardWebFrameworkDynamicPagesFunctions.h"
 
 #include <fstream>
 
@@ -45,10 +45,10 @@ namespace framework
 		return result;
 	}
 
-	std::string forWFDP(const std::vector<std::string>& arguments, const utility::strings::string_based_unordered_map<std::unique_ptr<DynamicFunction>>& dynamicPagesFunctions)
+	std::string forWFDP(const std::vector<std::string>& arguments, const ::utility::strings::string_based_unordered_map<std::unique_ptr<DynamicFunction>>& dynamicPagesFunctions)
 	{
-		int64_t start = stoll(arguments[0]);
-		int64_t end = stoll(arguments[1]);
+		int64_t start = std::stoll(arguments[0]);
+		int64_t end = std::stoll(arguments[1]);
 		DynamicFunction& repeatableFunction = *dynamicPagesFunctions.at(arguments[2]);
 		int64_t step = 1;
 		std::string result;

@@ -1,4 +1,4 @@
-#include "NotFoundException.h"
+#include "Exceptions/NotFoundException.h"
 
 #include "Framework/WebFrameworkConstants.h"
 

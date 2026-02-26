@@ -1,4 +1,4 @@
-#include "WFDPRenderer.h"
+#include "Rendering/WFDPRenderer.h"
 
 #include <Log.h>
 
@@ -8,7 +8,9 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "ExecutorsConstants.h"
 
+#ifndef __LINUX__
 #pragma warning(disable: 26800)
+#endif
 
 static constexpr std::string_view argumentsDelimiter = "</arg>";
 

@@ -1,10 +1,10 @@
-#include "DatabaseImplementation.h"
+#include "Databases/DatabaseImplementation.h"
 
 #include <algorithm>
 
 #include <DatabaseFactory.h>
 
-#include "TableImplementation.h"
+#include "Databases/TableImplementation.h"
 #include "Managers/DatabasesManager.h"
 
 namespace framework

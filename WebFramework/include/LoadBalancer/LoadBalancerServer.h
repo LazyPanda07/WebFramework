@@ -8,7 +8,7 @@
 #include <IOSocketStream.h>
 
 #include "Framework/WebFrameworkPlatform.h"
-#include "Heuristics/BaseLoadBalancerHeuristic.h"
+#include "Heuristics/LoadBalancerHeuristic.h"
 #include "Executors/ResourceExecutor.h"
 
 #include "Utility/BaseConnectionData.h"
@@ -25,10 +25,10 @@ namespace framework::load_balancer
 		{
 		public:
 			utility::BaseConnectionData connectionData;
-			std::unique_ptr<BaseLoadBalancerHeuristic> heuristic;
+			std::unique_ptr<LoadBalancerHeuristic> heuristic;
 
 		public:
-			ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept;
+			ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<LoadBalancerHeuristic>&& heuristic) noexcept;
 
 			ServerData(const ServerData&) = delete;
 
@@ -54,11 +54,11 @@ namespace framework::load_balancer
 			streams::IOSocketStream clientStream;
 			streams::IOSocketStream serverStream;
 			std::function<void()> cleanup;
-			BaseLoadBalancerHeuristic* heuristic;
+			LoadBalancerHeuristic* heuristic;
 			State currentState;
 
 		public:
-			LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<BaseLoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup);
+			LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<LoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup);
 
 			LoadBalancerRequest(LoadBalancerRequest&& other) noexcept = default;
 
@@ -88,7 +88,7 @@ namespace framework::load_balancer
 	private:
 		void processing(size_t index);
 
-		std::unique_ptr<BaseLoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const;
+		std::unique_ptr<LoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const;
 
 	private:
 		void receiveConnections(const std::function<void()>& onStartServer, std::exception** outException) override;

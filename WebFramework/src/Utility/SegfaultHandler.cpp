@@ -1,4 +1,4 @@
-#include "SegfaultHandler.h"
+#include "Utility/SegfaultHandler.h"
 
 #ifdef __WITH_STACKTRACE__
 

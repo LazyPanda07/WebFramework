@@ -1,4 +1,4 @@
-#include "LoadBalancerServer.h"
+#include "LoadBalancer/LoadBalancerServer.h"
 
 #include <Exceptions/SslException.h>
 #include <HttpsNetwork.h>
@@ -7,28 +7,28 @@
 #include "Web/HttpResponseImplementation.h"
 #include "Utility/Stopwatch.h"
 
-#include "Heuristics/Connections.h"
-#include "Heuristics/CXXHeuristic.h"
-#include "Heuristics/CCHeuristic.h"
+#include "LoadBalancer/Heuristics/Connections.h"
+#include "LoadBalancer/Heuristics/CXXHeuristic.h"
+#include "LoadBalancer/Heuristics/CCHeuristic.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
-#include "Heuristics/PythonHeuristic.h"
+#include "LoadBalancer/Heuristics/PythonHeuristic.h"
 #endif
 
 #ifdef __WITH_DOTNET_EXECUTORS__
-#include "Heuristics/CSharpHeuristic.h"
+#include "LoadBalancer/Heuristics/CSharpHeuristic.h"
 #endif
 
 namespace framework::load_balancer
 {
-	LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
+	LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<LoadBalancerHeuristic>&& heuristic) noexcept :
 		connectionData(std::move(connectionData)),
 		heuristic(std::move(heuristic))
 	{
 
 	}
 
-	LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<BaseLoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup) :
+	LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<LoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup) :
 		clientStream(std::move(clientStream)),
 		serverStream(std::move(serverStream)),
 		cleanup(std::move(cleanup)),
@@ -299,9 +299,9 @@ namespace framework::load_balancer
 		}
 	}
 
-	std::unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
+	std::unique_ptr<LoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
 	{
-		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseLoadBalancerHeuristic>(std::string_view, std::string_view, bool)>> apiHeuristics =
+		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<LoadBalancerHeuristic>(std::string_view, std::string_view, bool)>> apiHeuristics =
 		{
 			{ "", [](std::string_view ip, std::string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
 			{ json_settings::cxxExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },

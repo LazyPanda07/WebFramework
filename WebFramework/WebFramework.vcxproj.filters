@@ -66,7 +66,7 @@
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp">
+    <ClCompile Include="src\LoadBalancer\Heuristics\LoadBalancerHeuristic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp">
@@ -81,7 +81,7 @@
     <ClCompile Include="src\Proxy\ProxyServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\DynamicLibraries.cpp">
@@ -126,16 +126,16 @@
     <ClCompile Include="src\Executors\CXXExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\CAPI\WebFrameworkExecutorsCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkExecutorsCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\CAPI\WebFrameworkUtilityCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkUtilityCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\APIException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\CAPI\WebFrameworkLocalizationCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkLocalizationCAPI.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp">
@@ -200,199 +200,199 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Framework\WebFramework.h">
+    <ClInclude Include="include\Framework\WebFramework.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Framework\WebFrameworkConstants.h">
+    <ClInclude Include="include\Framework\WebFrameworkConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\Servers\MultithreadedWebServer.h">
+    <ClInclude Include="include\Web\Servers\MultithreadedWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\CantFindFunctionException.h">
+    <ClInclude Include="include\Exceptions\CantFindFunctionException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\MissingLoadTypeException.h">
+    <ClInclude Include="include\Exceptions\MissingLoadTypeException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\ResourceExecutor.h">
+    <ClInclude Include="include\Executors\ResourceExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\CantLoadSourceException.h">
+    <ClInclude Include="include\Exceptions\CantLoadSourceException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\WFDPRenderer.h">
+    <ClInclude Include="include\Rendering\WFDPRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h">
+    <ClInclude Include="include\Exceptions\DynamicPagesSyntaxException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WFDP\StandardWebFrameworkDynamicPagesFunctions.h">
+    <ClInclude Include="include\WFDP\StandardWebFrameworkDynamicPagesFunctions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h">
+    <ClInclude Include="include\LoadBalancer\LoadBalancerServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\BaseConnectionData.h">
+    <ClInclude Include="include\Utility\BaseConnectionData.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\ExecutorsManager.h">
+    <ClInclude Include="include\Managers\ExecutorsManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\RouteParameters.h">
+    <ClInclude Include="include\Utility\RouteParameters.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\Servers\BaseWebServer.h">
+    <ClInclude Include="include\Web\Servers\BaseWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\Servers\ThreadPoolWebServer.h">
+    <ClInclude Include="include\Web\Servers\ThreadPoolWebServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h">
+    <ClInclude Include="include\Utility\Singletons\HTTPSSingleton.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Framework\WebFrameworkPlatform.h">
+    <ClInclude Include="include\Framework\WebFrameworkPlatform.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h">
+    <ClInclude Include="include\LoadBalancer\Heuristics\LoadBalancerHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h">
+    <ClInclude Include="include\LoadBalancer\Heuristics\Connections.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\Servers\ExecutorServer.h">
+    <ClInclude Include="include\Web\Servers\ExecutorServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Framework\Config.h">
+    <ClInclude Include="include\Framework\Config.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\Sources.h">
+    <ClInclude Include="include\Utility\Sources.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Proxy\ProxyServer.h">
+    <ClInclude Include="include\Proxy\ProxyServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\CAPI\WebFrameworkCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkCAPI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\DynamicLibraries.h">
+    <ClInclude Include="include\Utility\DynamicLibraries.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\WebFrameworkConcepts.h">
+    <ClInclude Include="include\Utility\WebFrameworkConcepts.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\NotFoundException.h">
+    <ClInclude Include="include\Exceptions\NotFoundException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.h">
+    <ClInclude Include="include\Utility\LargeFileHandlers\BaseLargeBodyHandler.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\LargeFileHandlers\MultithreadedHandler.h">
+    <ClInclude Include="include\Utility\LargeFileHandlers\MultithreadedHandler.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.h">
+    <ClInclude Include="include\Utility\LargeFileHandlers\ThreadPoolHandler.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\AdditionalServerSettings.h">
+    <ClInclude Include="include\Utility\AdditionalServerSettings.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\HttpResponseImplementation.h">
+    <ClInclude Include="include\Web\HttpResponseImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Web\HttpRequestImplementation.h">
+    <ClInclude Include="include\Web\HttpRequestImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\DatabasesManager.h">
+    <ClInclude Include="include\Managers\DatabasesManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\DatabaseImplementation.h">
+    <ClInclude Include="include\Databases\DatabaseImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\TableImplementation.h">
+    <ClInclude Include="include\Databases\TableImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\SQLResultImplementation.h">
+    <ClInclude Include="include\Databases\SQLResultImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Databases\SQLValueImplementation.h">
+    <ClInclude Include="include\Databases\SQLValueImplementation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\CXXExecutor.h">
+    <ClInclude Include="include\Executors\CXXExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\CAPI\WebFrameworkExecutorsCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkExecutorsCAPI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\CAPI\WebFrameworkUtilityCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkUtilityCAPI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\APIException.h">
+    <ClInclude Include="include\Exceptions\APIException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\CAPI\WebFrameworkLocalizationCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkLocalizationCAPI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\Heuristics\CXXHeuristic.h">
+    <ClInclude Include="include\LoadBalancer\Heuristics\CXXHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\CCExecutor.h">
+    <ClInclude Include="include\Executors\CCExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\Heuristics\CCHeuristic.h">
+    <ClInclude Include="include\LoadBalancer\Heuristics\CCHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\SegfaultHandler.h">
+    <ClInclude Include="include\Utility\SegfaultHandler.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\MDRenderer.h">
+    <ClInclude Include="include\Rendering\MDRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\PythonExecutor.h">
+    <ClInclude Include="include\Executors\PythonExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\ExecutorsUtility.h">
+    <ClInclude Include="include\Utility\ExecutorsUtility.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Runtimes\PythonRuntime.h">
+    <ClInclude Include="include\Runtimes\PythonRuntime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Runtimes\Runtime.h">
+    <ClInclude Include="include\Runtimes\Runtime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\RuntimesManager.h">
+    <ClInclude Include="include\Managers\RuntimesManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\Heuristics\PythonHeuristic.h">
+    <ClInclude Include="include\LoadBalancer\Heuristics\PythonHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WFDP\CXXDynamicFunction.h">
+    <ClInclude Include="include\WFDP\CXXDynamicFunction.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WFDP\DynamicFunction.h">
+    <ClInclude Include="include\WFDP\DynamicFunction.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WFDP\PythonDynamicFunction.h">
+    <ClInclude Include="include\WFDP\PythonDynamicFunction.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Runtimes\DotNetRuntime.h">
+    <ClInclude Include="include\Runtimes\DotNetRuntime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\CSharpExecutor.h">
+    <ClInclude Include="include\Executors\CSharpExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\WFDP\CSharpDynamicFunction.h">
+    <ClInclude Include="include\WFDP\CSharpDynamicFunction.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\CSharpException.h">
+    <ClInclude Include="include\Exceptions\CSharpException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\LoadBalancer\Heuristics\CSharpHeuristic.h">
+    <ClInclude Include="include\LoadBalancer\Heuristics\CSharpHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Runtimes\CXXRuntime.h">
+    <ClInclude Include="include\Runtimes\CXXRuntime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Runtimes\CCRuntime.h">
+    <ClInclude Include="include\Runtimes\CCRuntime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

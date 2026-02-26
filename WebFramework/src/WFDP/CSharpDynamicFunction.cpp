@@ -1,4 +1,4 @@
-#include "CSharpDynamicFunction.h"
+#include "WFDP/CSharpDynamicFunction.h"
 
 #ifdef __WITH_DOTNET_EXECUTORS__
 

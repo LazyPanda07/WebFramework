@@ -1,4 +1,4 @@
-#include "CCHeuristic.h"
+#include "LoadBalancer/Heuristics/CCHeuristic.h"
 
 #include "Utility/Sources.h"
 

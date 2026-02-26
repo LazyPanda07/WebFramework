@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseLoadBalancerHeuristic.h"
+#include "LoadBalancerHeuristic.h"
 
 #ifdef __LINUX__
 using HMODULE = void*;
@@ -8,7 +8,7 @@ using HMODULE = void*;
 
 namespace framework::load_balancer
 {
-	class CXXHeuristic : public BaseLoadBalancerHeuristic
+	class CXXHeuristic : public LoadBalancerHeuristic
 	{
 	private:
 		using OperatorSignature = uint64_t(*)(void*);
