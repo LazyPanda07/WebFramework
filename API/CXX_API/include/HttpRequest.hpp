@@ -14,6 +14,7 @@
 #include "Databases/Implementations/SqliteDatabase.hpp"
 #include "Databases/Implementations/RedisDatabase.hpp"
 #include "DynamicFunction.hpp"
+#include "MessageBroker/TaskSerializer.hpp"
 
 namespace framework
 {
@@ -30,6 +31,12 @@ namespace framework
 	concept DynamicFunctionImplementation = requires
 	{
 		{ std::string(T::dynamicFunctionImplementationName) } -> std::same_as<std::string>;
+	};
+
+	template<typename T>
+	concept MessageBrokerImplementation = requires
+	{
+		{ std::string(T::messageBrokerName) } -> std::same_as<std::string>;
 	};
 
 	class Multipart
@@ -362,6 +369,9 @@ namespace framework
 		 */
 		void sendFileChunks(HttpResponse& response, std::string_view fileName, utility::ChunkGenerator& generator);
 
+		template<MessageBrokerImplementation MessageBrokerT, message_broker::DerivedFromTaskSerializer TaskSerializerT, typename... Args>
+		void enqueueTask(Args&&... args);
+
 		template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
 		void throwException(Args&&... args);
 
@@ -417,6 +427,15 @@ namespace framework
 	inline void HttpRequest::sendFileChunks(HttpResponse& response, std::string_view fileName, utility::ChunkGenerator& generator)
 	{
 		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator, size_t* size) -> const char* { return static_cast<utility::ChunkGenerator*>(chunkGenerator)->generate(*size).data(); });
+	}
+
+	template<MessageBrokerImplementation MessageBrokerT, message_broker::DerivedFromTaskSerializer TaskSerializerT, typename... Args>
+	inline void HttpRequest::enqueueTask(Args&&... args)
+	{
+		TaskSerializerT serializer(std::forward<Args>(args)...);
+		JsonObject data = serializer.serialize();
+
+		implementation->enqueueTask(MessageBrokerT::messageBrokerName.data(), data.implementation);
 	}
 
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T, typename... Args>

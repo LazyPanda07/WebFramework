@@ -13,6 +13,9 @@
 #include "Exceptions/APIException.h"
 #include "ExecutorsConstants.h"
 #include "Utility/ExecutorsUtility.h"
+#include "Managers/MessageBrokersManager.h"
+
+#include "MessageBroker/InternalMessageBroker.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)
@@ -531,6 +534,14 @@ namespace framework
 		dynamicResources.processDynamicFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
 
 		fillBuffer(result.data(), result.size(), buffer);
+	}
+
+	void HttpRequestImplementation::enqueueTask(const char* messageBrokerName, void* jsonObjectData)
+	{
+		json::JsonObject& data = *static_cast<json::JsonObject*>(jsonObjectData);
+		framework::message_broker::MessageBrokersManager& manager = framework::message_broker::MessageBrokersManager::get();
+
+		manager.getMessageBroker(messageBrokerName).enqueueTask(data);
 	}
 
 	void HttpRequestImplementation::setExceptionData(const char* errorMessage, int responseCode, const char* logCategory)

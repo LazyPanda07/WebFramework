@@ -146,6 +146,8 @@ namespace framework::interfaces
 
 		virtual void processDynamicFile(const char* fileData, size_t size, const CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
 
+		virtual void enqueueTask(const char* messageBrokerName, void* jsonObjectData) = 0;
+
 		virtual void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) = 0;
 
 		virtual bool isExceptionDataValid() const = 0;

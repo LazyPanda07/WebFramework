@@ -243,6 +243,8 @@ namespace framework
 
 		void processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
 
+		void enqueueTask(const char* messageBrokerName, void* jsonObjectData) override;
+
 		void setExceptionData(const char* errorMessage, int responseCode, const char* logCategory) override;
 
 		bool isExceptionDataValid() const override;
