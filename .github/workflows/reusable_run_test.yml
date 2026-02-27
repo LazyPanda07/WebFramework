@@ -210,6 +210,7 @@ jobs:
       shell: cmd
       run: |
         start ${{ github.workspace }}\Redis-${{ env.windows-redis-version }}-Windows-x64-msys2\redis-server --port 10010 --requirepass password
+        timeout /t 10 /nobreak
         set RUNTIMES=${{ env.runtimes }}
         cd Tests
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
@@ -220,5 +221,5 @@ jobs:
       shell: bash
       run: |
         export RUNTIMES="${{ env.runtimes }}"
-        redis-server --port 10010 --requirepass password & sleep 1
+        redis-server --port 10010 --requirepass password & sleep 10
         source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}
