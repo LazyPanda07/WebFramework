@@ -2,7 +2,7 @@
 
 #include <string_view>
 
-namespace framework::message_broker
+namespace framework::task_broker
 {
 	struct CXXApi
 	{

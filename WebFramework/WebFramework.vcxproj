@@ -153,10 +153,10 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\PythonHeuristic.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
-    <ClCompile Include="src\Managers\MessageBrokersManager.cpp" />
+    <ClCompile Include="src\Managers\TaskBrokersManager.cpp" />
     <ClCompile Include="src\Managers\RuntimesManager.cpp" />
-    <ClCompile Include="src\MessageBroker\InternalMessageBroker.cpp" />
-    <ClCompile Include="src\MessageBroker\MessageBroker.cpp" />
+    <ClCompile Include="src\TaskBroker\InternalTaskBroker.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskBroker.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
     <ClCompile Include="src\Runtimes\CCRuntime.cpp" />
@@ -216,10 +216,10 @@
     <ClInclude Include="include\C_API\WebFrameworkCAPI.h" />
     <ClInclude Include="include\LoadBalancer\Heuristics\CSharpHeuristic.h" />
     <ClInclude Include="include\LoadBalancer\Heuristics\PythonHeuristic.h" />
-    <ClInclude Include="include\Managers\MessageBrokersManager.h" />
+    <ClInclude Include="include\Managers\TaskBrokersManager.h" />
     <ClInclude Include="include\Managers\RuntimesManager.h" />
-    <ClInclude Include="include\MessageBroker\InternalMessageBroker.h" />
-    <ClInclude Include="include\MessageBroker\MessageBroker.h" />
+    <ClInclude Include="include\TaskBroker\InternalTaskBroker.h" />
+    <ClInclude Include="include\TaskBroker\TaskBroker.h" />
     <ClInclude Include="include\Rendering\MDRenderer.h" />
     <ClInclude Include="include\Rendering\WFDPRenderer.h" />
     <ClInclude Include="include\Runtimes\CCRuntime.h" />

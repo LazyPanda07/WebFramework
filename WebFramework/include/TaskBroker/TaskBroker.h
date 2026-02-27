@@ -2,17 +2,17 @@
 
 #include <JsonObject.h>
 
-namespace framework::message_broker
+namespace framework::task_broker
 {
-	class MessageBroker
+	class TaskBroker
 	{
 	public:
-		MessageBroker() = default;
+		TaskBroker() = default;
 
 		virtual void enqueueTask(const json::JsonObject& data) = 0;
 
 		virtual constexpr std::string_view getName() const = 0;
 
-		virtual ~MessageBroker() = default;
+		virtual ~TaskBroker() = default;
 	};
 }

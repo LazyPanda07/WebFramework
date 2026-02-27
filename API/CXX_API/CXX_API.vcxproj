@@ -100,9 +100,9 @@
     <ClInclude Include="include\Databases\SqlValue.hpp" />
     <ClInclude Include="include\Databases\Table.hpp" />
     <ClInclude Include="include\DynamicFunction.hpp" />
-    <ClInclude Include="include\MessageBroker\MessageBrokers.h" />
-    <ClInclude Include="include\MessageBroker\TaskSerializer.hpp" />
-    <ClInclude Include="include\MessageBroker\TaskApis.hpp" />
+    <ClInclude Include="include\TaskBroker\TaskBrokers.h" />
+    <ClInclude Include="include\TaskBroker\TaskSerializer.hpp" />
+    <ClInclude Include="include\TaskBroker\TaskApis.hpp" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="include\Exceptions\NotImplementedDoMethodException.hpp" />
     <ClInclude Include="include\Exceptions\WebFrameworkAPIException.hpp" />

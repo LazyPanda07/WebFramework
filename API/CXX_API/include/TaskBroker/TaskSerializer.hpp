@@ -6,15 +6,15 @@
 #include "TaskApis.hpp"
 #include "JsonObject.hpp"
 
-namespace framework::message_broker
+namespace framework::task_broker
 {
 	template<typename T>
-	concept MessageBrokerApiImplementation = requires
+	concept TaskBrokerApiImplementation = requires
 	{
-		{ std::string(T::messageBrokerApi) } -> std::same_as<std::string>;
+		{ std::string(T::taskBrokerApi) } -> std::same_as<std::string>;
 	};
 
-	template<MessageBrokerApiImplementation T = CXXApi>
+	template<TaskBrokerApiImplementation T = CXXApi>
 	class TaskSerializer
 	{
 	protected:
@@ -37,14 +37,14 @@ namespace framework::message_broker
 										std::derived_from<T, TaskSerializer<CSharpApi>>;
 }
 
-namespace framework::message_broker
+namespace framework::task_broker
 {
-	template<MessageBrokerApiImplementation T>
+	template<TaskBrokerApiImplementation T>
 	inline JsonObject TaskSerializer<T>::serialize() const
 	{
 		JsonObject arguments = this->serializeArguments();
 
-		arguments["api"] = T::messageBrokerApi;
+		arguments["api"] = T::taskBrokerApi;
 		arguments["name"] = this->getName();
 
 		return arguments;

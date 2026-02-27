@@ -198,13 +198,13 @@
     <ClCompile Include="src\Runtimes\CCRuntime.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\MessageBrokersManager.cpp">
+    <ClCompile Include="src\Managers\TaskBrokersManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\MessageBroker\MessageBroker.cpp">
+    <ClCompile Include="src\TaskBroker\TaskBroker.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\MessageBroker\InternalMessageBroker.cpp">
+    <ClCompile Include="src\TaskBroker\InternalTaskBroker.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -404,13 +404,13 @@
     <ClInclude Include="include\Runtimes\CCRuntime.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\Managers\MessageBrokersManager.h">
+    <ClInclude Include="include\Managers\TaskBrokersManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\MessageBroker\MessageBroker.h">
+    <ClInclude Include="include\TaskBroker\TaskBroker.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\MessageBroker\InternalMessageBroker.h">
+    <ClInclude Include="include\TaskBroker\InternalTaskBroker.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
