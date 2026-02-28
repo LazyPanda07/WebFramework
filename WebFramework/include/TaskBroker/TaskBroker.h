@@ -9,7 +9,9 @@ namespace framework::task_broker
 	public:
 		TaskBroker() = default;
 
-		virtual void enqueueTask(const json::JsonObject& data) = 0;
+		virtual void enqueueTask(json::JsonObject&& data) = 0;
+
+		virtual std::optional<json::JsonObject> requestTask() = 0;
 
 		virtual constexpr std::string_view getName() const = 0;
 

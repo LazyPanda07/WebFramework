@@ -32,6 +32,8 @@ namespace framework::runtime
 
 		virtual std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) = 0;
 
+		virtual constexpr std::string_view getName() const = 0;
+
 		virtual ~Runtime() = default;
 	};
 }

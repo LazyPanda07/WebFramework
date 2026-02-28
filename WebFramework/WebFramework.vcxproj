@@ -155,6 +155,7 @@
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
     <ClCompile Include="src\Managers\TaskBrokersManager.cpp" />
     <ClCompile Include="src\Managers\RuntimesManager.cpp" />
+    <ClCompile Include="src\Managers\TaskExecutorsManager.cpp" />
     <ClCompile Include="src\TaskBroker\InternalTaskBroker.cpp" />
     <ClCompile Include="src\TaskBroker\TaskBroker.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
@@ -164,6 +165,8 @@
     <ClCompile Include="src\Runtimes\DotNetRuntime.cpp" />
     <ClCompile Include="src\Runtimes\PythonRuntime.cpp" />
     <ClCompile Include="src\Runtimes\Runtime.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskConsumer.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutor.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\ExecutorsUtility.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
@@ -218,6 +221,7 @@
     <ClInclude Include="include\LoadBalancer\Heuristics\PythonHeuristic.h" />
     <ClInclude Include="include\Managers\TaskBrokersManager.h" />
     <ClInclude Include="include\Managers\RuntimesManager.h" />
+    <ClInclude Include="include\Managers\TaskExecutorsManager.h" />
     <ClInclude Include="include\TaskBroker\InternalTaskBroker.h" />
     <ClInclude Include="include\TaskBroker\TaskBroker.h" />
     <ClInclude Include="include\Rendering\MDRenderer.h" />
@@ -225,6 +229,8 @@
     <ClInclude Include="include\Runtimes\CCRuntime.h" />
     <ClInclude Include="include\Runtimes\CXXRuntime.h" />
     <ClInclude Include="include\Runtimes\DotNetRuntime.h" />
+    <ClInclude Include="include\TaskBroker\TaskConsumer.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutor.h" />
     <ClInclude Include="include\WFDP\CSharpDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CXXDynamicFunction.h" />
     <ClInclude Include="include\WFDP\DynamicFunction.h" />

@@ -2,9 +2,14 @@
 
 namespace framework::task_broker
 {
-	void InternalTaskBroker::enqueueTask(const json::JsonObject& data)
+	void InternalTaskBroker::enqueueTask(json::JsonObject&& data)
 	{
+		tasks.push(std::move(data));
+	}
 
+	std::optional<json::JsonObject> InternalTaskBroker::requestTask()
+	{
+		return tasks.pop();
 	}
 
 	constexpr std::string_view InternalTaskBroker::getName() const

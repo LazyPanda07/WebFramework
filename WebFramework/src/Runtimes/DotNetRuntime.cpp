@@ -384,6 +384,11 @@ namespace framework::runtime
 		return std::nullopt;
 	}
 
+	constexpr std::string_view DotNetRuntime::getName() const
+	{
+		return DotNetRuntime::runtimeName;
+	}
+
 	DotNetRuntime::~DotNetRuntime()
 	{
 		if (!close)

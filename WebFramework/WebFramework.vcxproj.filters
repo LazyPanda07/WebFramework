@@ -207,6 +207,18 @@
     <ClCompile Include="src\TaskBroker\InternalTaskBroker.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="include\Managers\TaskExecutorsManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TaskBroker\TaskConsumer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\TaskExecutorsManager.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TaskBroker\TaskExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Framework\WebFramework.h">
@@ -411,6 +423,15 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\TaskBroker\InternalTaskBroker.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskBroker\TaskConsumer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Managers\TaskExecutorsManager.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskBroker\TaskExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

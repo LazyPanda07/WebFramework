@@ -541,7 +541,7 @@ namespace framework
 		json::JsonObject& data = *static_cast<json::JsonObject*>(jsonObjectData);
 		framework::task_broker::TaskBrokersManager& manager = framework::task_broker::TaskBrokersManager::get();
 
-		manager.getTaskBroker(messageBrokerName).enqueueTask(data);
+		manager.getTaskBroker(messageBrokerName).enqueueTask(std::move(data));
 	}
 
 	void HttpRequestImplementation::setExceptionData(const char* errorMessage, int responseCode, const char* logCategory)

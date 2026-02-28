@@ -158,6 +158,8 @@ namespace framework::runtime
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 
+		constexpr std::string_view getName() const override;
+
 		~DotNetRuntime();
 	};
 }

@@ -9,7 +9,7 @@ namespace framework::runtime
 	class CXXRuntime : public Runtime
 	{
 	public:
-		static constexpr std::string_view runtimeName = "cc";
+		static constexpr std::string_view runtimeName = "cxx";
 
 	private:
 		::utility::strings::string_based_unordered_map<std::tuple<HMODULE, CreateExecutorSignature>> creators;
@@ -33,6 +33,16 @@ namespace framework::runtime
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 
+		constexpr std::string_view getName() const override;
+
 		~CXXRuntime() = default;
 	};
+}
+
+namespace framework::runtime
+{
+	inline constexpr std::string_view CXXRuntime::getName() const
+	{
+		return CXXRuntime::runtimeName;
+	}
 }

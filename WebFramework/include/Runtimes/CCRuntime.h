@@ -33,6 +33,16 @@ namespace framework::runtime
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 
+		constexpr std::string_view getName() const override;
+
 		~CCRuntime() = default;
 	};
+}
+
+namespace framework::runtime
+{
+	inline constexpr std::string_view CCRuntime::getName() const
+	{
+		return CCRuntime::runtimeName;
+	}
 }

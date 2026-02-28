@@ -103,6 +103,7 @@ add_library(
 	WebFramework/src/Managers/ExecutorsManager.cpp
 	WebFramework/src/Managers/RuntimesManager.cpp
 	WebFramework/src/Managers/TaskBrokersManager.cpp
+	WebFramework/src/Managers/TaskExecutorsManager.cpp
 	WebFramework/src/Web/Servers/BaseWebServer.cpp
 	WebFramework/src/Web/Servers/MultithreadedWebServer.cpp
 	WebFramework/src/Web/Servers/ThreadPoolWebServer.cpp
@@ -130,6 +131,8 @@ add_library(
 	WebFramework/src/Executors/CSharpExecutor.cpp
 	WebFramework/src/TaskBroker/TaskBroker.cpp
 	WebFramework/src/TaskBroker/InternalTaskBroker.cpp
+	WebFramework/src/TaskBroker/TaskConsumer.cpp
+	WebFramework/src/TaskBroker/TaskExecutor.cpp
 )
 
 # Used in Python API install

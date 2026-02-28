@@ -435,6 +435,8 @@ namespace framework
 		TaskSerializerT serializer(std::forward<Args>(args)...);
 		JsonObject data = serializer.serialize();
 
+		data.weak = true;
+
 		implementation->enqueueTask(MessageBrokerT::taskBrokerName.data(), data.implementation);
 	}
 

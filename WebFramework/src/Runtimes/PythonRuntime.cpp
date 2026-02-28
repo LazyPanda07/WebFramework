@@ -187,6 +187,11 @@ namespace framework::runtime
 
 		return std::nullopt;
 	}
+
+	constexpr std::string_view PythonRuntime::getName() const
+	{
+		return PythonRuntime::runtimeName;
+	}
 }
 
 #endif
