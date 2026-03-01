@@ -174,6 +174,7 @@
     <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
     <ClCompile Include="src\Utility\SegfaultHandler.cpp" />
+    <ClCompile Include="src\Utility\TaskExecutorsSettings.cpp" />
     <ClCompile Include="src\Web\HttpRequestImplementation.cpp" />
     <ClCompile Include="src\Web\HttpResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="include\Runtimes\DotNetRuntime.h" />
     <ClInclude Include="include\TaskBroker\TaskConsumer.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutor.h" />
+    <ClInclude Include="include\Utility\TaskExecutorsSettings.h" />
     <ClInclude Include="include\WFDP\CSharpDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CXXDynamicFunction.h" />
     <ClInclude Include="include\WFDP\DynamicFunction.h" />

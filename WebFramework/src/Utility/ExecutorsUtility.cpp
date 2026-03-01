@@ -55,22 +55,20 @@ namespace framework::utility
 		return
 			[function, deleter](const std::vector<std::string>& arguments) -> std::string
 			{
-				const char** temp = new const char* [arguments.size()];
+				std::vector<const char*> temp(arguments.size());
 
 				for (size_t i = 0; i < arguments.size(); i++)
 				{
 					temp[i] = arguments[i].data();
 				}
 
-				const char* tempResult = function(temp, arguments.size());
+				const char* tempResult = function(temp.data(), arguments.size());
 				std::string result(tempResult);
 
 				if (deleter)
 				{
 					deleter(const_cast<char*>(tempResult));
 				}
-
-				delete[] temp;
 
 				return result;
 			};

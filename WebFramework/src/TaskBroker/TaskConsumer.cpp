@@ -41,7 +41,7 @@ namespace framework::task_broker
 		{
 			for (TaskBroker* broker : brokers)
 			{
-				TaskConsumer::processTasks(*broker);
+				this->processTasks(*broker);
 			}
 
 			std::this_thread::sleep_for(checkPeriod);

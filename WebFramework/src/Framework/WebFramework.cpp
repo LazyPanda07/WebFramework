@@ -19,6 +19,7 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/DatabasesManager.h"
 #include "Managers/RuntimesManager.h"
+#include "Managers/TaskExecutorsManager.h"
 #include "Runtimes/CXXRuntime.h"
 #include "Runtimes/CCRuntime.h"
 #include "Runtimes/PythonRuntime.h"
@@ -264,12 +265,46 @@ namespace framework
 		{
 			if (settingsPaths.empty())
 			{
-				throw std::runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
+				throw std::runtime_error(std::format("Can't find {}", json_settings::settingsPathsKey));
 			}
 
 			if (pathToSources.empty())
 			{
-				throw std::runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
+				throw std::runtime_error(std::format("Can't find {}", json_settings::loadSourcesKey));
+			}
+		}
+	}
+
+	void WebFramework::initTaskExecutors(const json::JsonObject& webFrameworkSettings, std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings)
+	{
+		std::vector<json::JsonObject> taskExecutorPaths;
+
+		if (!webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsKey, taskExecutorPaths))
+		{
+			return;
+		}
+
+		const std::filesystem::path& basePath = config.getBasePath();
+
+		for (const json::JsonObject& taskExecutorPath : taskExecutorPaths)
+		{
+			std::filesystem::path temp = taskExecutorPath.get<std::string>();
+			std::ifstream stream;
+
+			if (temp.is_absolute())
+			{
+				stream.open(temp);
+			}
+			else
+			{
+				stream.open(basePath / temp);
+			}
+
+			json::JsonParser parser(stream);
+
+			for (const json::JsonObject& settings : parser.get<std::vector<json::JsonObject>>(json_settings::taskExecutorsKey))
+			{
+				taskExecutorsSettings.emplace_back(utility::TaskExecutorsSettings::createTaskExecutorsSettings(settings));
 			}
 		}
 	}
@@ -307,7 +342,7 @@ namespace framework
 	void WebFramework::initDatabase(const json::JsonObject& webFrameworkSettings)
 	{
 		std::vector<std::string> databases;
-		
+
 		if (std::vector<json::JsonObject> temp; webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::databasesKey, temp))
 		{
 			databases = json::utility::JsonArrayWrapper(temp).as<std::string>();
@@ -463,25 +498,25 @@ namespace framework
 
 		const json::JsonObject& webFrameworkSettings = (*config).get<json::JsonObject>(json_settings::webFrameworkObject);
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
-		runtime::RuntimesManager& instance = runtime::RuntimesManager::get();
+		runtime::RuntimesManager& runtimesManager = runtime::RuntimesManager::get();
+		task_broker::TaskExecutorsManager& taskExecutorsManager = task_broker::TaskExecutorsManager::get();
 		std::vector<std::string> pathToSources;
+		std::vector<utility::TaskExecutorsSettings> taskExecutorsSettings;
 
 		this->initAPIs(webFrameworkSettings);
 
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
+		this->initTaskExecutors(webFrameworkSettings, taskExecutorsSettings);
 		this->initHTTPS(webFrameworkSettings);
-		this->initServer
-		(
-			webFrameworkSettings,
-			std::move(executorsSettings),
-			pathToSources
-		);
+		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
 
-		for (auto it = instance.begin(); it != instance.end(); ++it)
+		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
 		{
 			it->finishInitialization();
 		}
+
+		taskExecutorsManager.initTaskExecutor(taskExecutorsSettings);
 	}
 
 	WebFramework::WebFramework(const std::filesystem::path& webFrameworkConfigPath) :

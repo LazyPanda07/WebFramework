@@ -50,7 +50,7 @@ namespace framework::utility
 
 		for (const auto& [name, description] : iterator)
 		{
-			if (name == "$schema")
+			if (!description.is<json::JsonObject>())
 			{
 				continue;
 			}

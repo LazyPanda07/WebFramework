@@ -14,6 +14,21 @@ namespace framework::task_broker
 		}
 	}
 
+	TaskExecutorsManager& TaskExecutorsManager::get()
+	{
+		static TaskExecutorsManager instance;
+
+		return instance;
+	}
+
+	void TaskExecutorsManager::initTaskExecutor(const std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings)
+	{
+		for (const utility::TaskExecutorsSettings& taskExecutorSettings : taskExecutorsSettings)
+		{
+			
+		}
+	}
+
 	TaskExecutor& TaskExecutorsManager::getTaskExecutor(const std::string& apiName, const std::string& taskExeutorName) const
 	{
 		const ValueType& executors = taskExecutors.at(apiName);

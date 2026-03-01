@@ -15,7 +15,6 @@ namespace framework::task_broker
 	private:
 		void processTasks(TaskBroker& broker);
 
-	private:
 		void consume();
 
 	private:

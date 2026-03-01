@@ -6,6 +6,7 @@
 
 #include "Web/Servers/BaseWebServer.h"
 #include "Config.h"
+#include "Utility/TaskExecutorsSettings.h"
 
 #ifdef __WITH_STACKTRACE__
 #include "Utility/SegfaultHandler.h"
@@ -48,6 +49,8 @@ namespace framework
 		void initLogging() const;
 
 		void initExecutors(const json::JsonObject& webFrameworkSettings, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, std::vector<std::string>& pathToSources);
+
+		void initTaskExecutors(const json::JsonObject& webFrameworkSettings, std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings);
 
 		void initHTTPS(const json::JsonObject& webFrameworkSettings) const;
 

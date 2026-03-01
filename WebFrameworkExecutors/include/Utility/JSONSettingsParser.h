@@ -55,7 +55,7 @@ namespace framework::utility
 		};
 
 	private:
-		std::unordered_map<std::string, ExecutorSettings> settings;	//route - settings
+		std::unordered_map<std::string, ExecutorSettings> settings;	// route - settings
 
 	public:
 		/// <summary>

@@ -2,7 +2,8 @@
 
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
-set PATH=C:\Program Files\dotnet\host\fxr\10.0.3;\%PATH%
+set BASE_FXR_PATH=C:\Program Files\dotnet\host\fxr
+set PATH=%BASE_FXR_PATH%\10.0.3\;%BASE_FXR_PATH%\10.0.2\%PATH%
 
 REM RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 

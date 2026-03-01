@@ -39,6 +39,7 @@ namespace json_settings
 	inline constexpr std::string_view databasesKey = "databases";
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
 	inline constexpr std::string_view runtimesKey = "runtimes";
+	inline constexpr std::string_view taskExecutorsKey = "taskExecutors";
 
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
 	inline constexpr std::string_view heuristicKey = "heuristic";
@@ -53,6 +54,10 @@ namespace json_settings
 	inline constexpr std::string_view duplicateErrorOutputKey = "duplicateErrorOutput";
 
 	inline constexpr std::string_view threadCountKey = "threadCount";
+
+	inline constexpr std::string_view taskExecutorsSourcePathKey = "sourcePath";
+	inline constexpr std::string_view taskExecutorsClassNamesKey = "classNames";
+	inline constexpr std::string_view taskExecutorsApiKey = "api";
 }
 
 namespace exceptions

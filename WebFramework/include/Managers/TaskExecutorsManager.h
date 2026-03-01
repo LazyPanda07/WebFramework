@@ -6,6 +6,7 @@
 #include <Strings.h>
 
 #include "TaskBroker/TaskExecutor.h"
+#include "Utility/TaskExecutorsSettings.h"
 
 namespace framework::task_broker
 {
@@ -21,11 +22,24 @@ namespace framework::task_broker
 	private:
 		MapType taskExecutors;
 
-	public:
+	private:
 		TaskExecutorsManager();
 
-		TaskExecutor& getTaskExecutor(const std::string& apiName, const std::string& taskExeutorName) const;
+		TaskExecutorsManager(const TaskExecutorsManager&) = delete;
+
+		TaskExecutorsManager(TaskExecutorsManager&&) noexcept = delete;
+
+		TaskExecutorsManager& operator =(const TaskExecutorsManager&) = delete;
+
+		TaskExecutorsManager& operator =(TaskExecutorsManager&&) noexcept = delete;
 
 		~TaskExecutorsManager() = default;
+
+	public:
+		static TaskExecutorsManager& get();
+
+		void initTaskExecutor(const std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings);
+
+		TaskExecutor& getTaskExecutor(const std::string& apiName, const std::string& taskExeutorName) const;		
 	};
 }
