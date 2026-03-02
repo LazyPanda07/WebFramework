@@ -26,3 +26,11 @@ namespace framework::task_broker
 		~InternalTaskBroker() = default;
 	};
 }
+
+namespace framework::task_broker
+{
+	inline constexpr std::string_view InternalTaskBroker::getName() const
+	{
+		return InternalTaskBroker::taskBrokerName;
+	}
+}

@@ -20,10 +20,12 @@
 #include "Managers/DatabasesManager.h"
 #include "Managers/RuntimesManager.h"
 #include "Managers/TaskExecutorsManager.h"
+#include "Managers/TaskBrokersManager.h"
 #include "Runtimes/CXXRuntime.h"
 #include "Runtimes/CCRuntime.h"
 #include "Runtimes/PythonRuntime.h"
 #include "Runtimes/DotNetRuntime.h"
+#include "TaskBroker/InternalTaskBroker.h"
 
 namespace framework
 {
@@ -293,12 +295,17 @@ namespace framework
 				throw std::runtime_error(std::format("Can't use {} consumer with empty {}", json_settings_values::consumerInternalValue, json_settings::taskExecutorsSettingsKey));
 			}
 
+			task_broker::TaskBrokersManager& taskBrokerManager = task_broker::TaskBrokersManager::get();
 			std::vector<std::string> taskBrokerNames = json::utility::JsonArrayWrapper(taskExecutorsObject.at(json_settings::taskBrokersKey)).as<std::string>();
 			size_t consumerThreads = json_settings_values::consumerThreadsDefaultValue;
 			size_t checkPeriod = json_settings_values::checkPeriodDefaultValue;
 
 			taskExecutorsObject.tryGet<size_t>(json_settings::consumerThreadsKey, consumerThreads);
 			taskExecutorsObject.tryGet<size_t>(json_settings::checkPeriodKey, checkPeriod);
+
+			// TODO: add all from taskBrokerNames
+
+			taskBrokerManager.addTaskBroker<task_broker::InternalTaskBroker>();
 
 			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod));
 		}
@@ -523,7 +530,6 @@ namespace framework
 		std::vector<std::string> pathToSources;
 
 		this->initAPIs(webFrameworkSettings);
-
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
 		this->initHTTPS(webFrameworkSettings);

@@ -15,6 +15,7 @@
 #include "Databases/Implementations/RedisDatabase.hpp"
 #include "DynamicFunction.hpp"
 #include "TaskBroker/TaskSerializer.hpp"
+#include "TaskBroker/TaskBrokers.hpp"
 
 namespace framework
 {

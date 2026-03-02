@@ -16,10 +16,11 @@ namespace framework::task_broker
 			json::JsonObject& data = *task;
 			const std::string& api = data["api"].get<std::string>();
 			const std::string& taskExecutorName = data["name"].get<std::string>();
-			TaskExecutor& taskExecutor = taskExecutorsManager.getTaskExecutor(api, taskExecutorName);
 
 			try
 			{
+				TaskExecutor& taskExecutor = taskExecutorsManager.getTaskExecutor(api, taskExecutorName);
+
 				taskRunner.addTask
 				(
 					[this, &taskExecutor, data = std::move(data)]() mutable
@@ -40,6 +41,11 @@ namespace framework::task_broker
 
 	void TaskConsumer::consume()
 	{
+		if (Log::isValid())
+		{
+			Log::info("Start consuming...", "LogTaskBroker");
+		}
+
 		while (stillConsuming)
 		{
 			for (TaskBroker* broker : brokers)
@@ -47,7 +53,17 @@ namespace framework::task_broker
 				this->processTasks(*broker);
 			}
 
+			if (Log::isValid())
+			{
+				Log::info("Start wait {}", "LogTaskBroker", stillConsuming);
+			}
+
 			std::this_thread::sleep_for(checkPeriod);
+
+			if (Log::isValid())
+			{
+				Log::info("End wait {}", "LogTaskBroker", stillConsuming);
+			}
 		}
 	}
 
@@ -59,6 +75,11 @@ namespace framework::task_broker
 		for (const std::string& brokerName : taskBrokerNames)
 		{
 			brokers.emplace_back(&TaskBrokersManager::get().getTaskBroker(brokerName));
+
+			if (Log::isValid())
+			{
+				Log::info("Add task broker: {}", "LogTaskBroker", brokerName);
+			}
 		}
 	}
 

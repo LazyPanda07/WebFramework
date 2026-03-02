@@ -20,7 +20,7 @@ namespace framework::task_broker
 	protected:
 		virtual JsonObject serializeArguments() const = 0;
 
-		virtual constexpr std::string_view getName() const = 0;
+		virtual constexpr std::string_view getTaskName() const = 0;
 
 	public:
 		TaskSerializer() = default;
@@ -45,7 +45,7 @@ namespace framework::task_broker
 		JsonObject arguments = this->serializeArguments();
 
 		arguments["api"] = T::taskBrokerApi;
-		arguments["name"] = this->getName();
+		arguments["name"] = this->getTaskName();
 
 		return arguments;
 	}
