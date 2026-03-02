@@ -79,7 +79,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	ccApi.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CCApi::taskBrokerApi); });
 	pythonApi.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::PythonApi::taskBrokerApi); });
 	csharpApi.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CSharpApi::taskBrokerApi); });
-	
+
 	py::class_<framework::task_broker::Internal> internalTaskBroker(m, "Internal");
 	py::class_<framework::task_broker::RabbitMq> rabbitMqTaskBroker(m, "RabbitMQ");
 	py::class_<framework::task_broker::ApacheKafka> apacheKafkaTaskBroker(m, "ApacheKafka");
@@ -115,6 +115,35 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		"path_to_dll"_a = ""
 	);
 	m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
+
+	py::class_<framework::task_broker::IPyTaskExecutor, framework::task_broker::PyTaskExecutor>(m, "TaskExecutor")
+		.def(py::init())
+		.def("__call__", &framework::task_broker::IPyTaskExecutor::operator (), "data"_a);
+
+	py::class_<framework::task_broker::IPyTaskSerializer>(m, "IPyTaskSerializer")
+		.def("serialize_arguments", &framework::task_broker::IPyTaskSerializer::serializeArguments)
+		.def("get_task_name", &framework::task_broker::IPyTaskSerializer::getTaskName);
+
+	py::class_<framework::task_broker::PyTaskSerializerCxx, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCxx")
+		.def(py::init());
+
+	py::class_<framework::task_broker::PyTaskSerializerCc, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCc")
+		.def(py::init());
+
+	py::class_<framework::task_broker::PyTaskSerializer, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializer")
+		.def
+		(
+			py::init
+			(
+				[](py::args args, py::kwargs kwargs)
+				{
+					return new framework::task_broker::PyTaskSerializer();
+				}
+			)
+		);
+
+	py::class_<framework::task_broker::PyTaskSerializerCSharp, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCSharp")
+		.def(py::init());
 
 	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
 
@@ -730,6 +759,18 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 				}
 			},
 			"database_name"_a, "table_name"_a, "database_implementation_class"_a = py::none()
+		)
+		.def
+		(
+			"enqueue_task",
+			[](framework::HttpRequest& self, py::type messageBrokerType, py::type serializerType, py::kwargs kwargs)
+			{
+				py::object serializer = serializerType(**kwargs);
+				framework::task_broker::PyTaskSerializerWrapper<framework::task_broker::PythonApi> wrapper(serializer);
+
+				self.enqueueTask<framework::task_broker::Internal>(wrapper);
+			},
+			"message_broker_type"_a, "serializer_type"_a
 		);
 
 	py::class_<framework::StatelessExecutor, framework::PyStatelessExecutor>(m, "StatelessExecutor")
@@ -789,26 +830,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("do_connect", &framework::HeavyOperationStatefulExecutor::doConnect, "request"_a, "response"_a)
 		.def("get_type", &framework::HeavyOperationStatefulExecutor::getType)
 		.def("destroy", &framework::HeavyOperationStatefulExecutor::destroy);
-
-	py::class_<framework::task_broker::IPyTaskExecutor, framework::task_broker::PyTaskExecutor>(m, "TaskExecutor")
-		.def(py::init())
-		.def("__call__", &framework::task_broker::IPyTaskExecutor::operator ());
-
-	py::class_<framework::task_broker::IPyTaskSerializer>(m, "IPyTaskSerializer")
-		.def("serialize_arguments", &framework::task_broker::IPyTaskSerializer::serializeArguments)
-		.def("get_task_name", &framework::task_broker::IPyTaskSerializer::getTaskName);
-
-	py::class_<framework::task_broker::PyTaskSerializerCxx, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCxx")
-		.def(py::init());
-
-	py::class_<framework::task_broker::PyTaskSerializerCc, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCc")
-		.def(py::init());
-
-	py::class_<framework::task_broker::PyTaskSerializer, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializer")
-		.def(py::init());
-
-	py::class_<framework::task_broker::PyTaskSerializerCSharp, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCSharp")
-		.def(py::init());
 
 	py::register_exception<framework::exceptions::WebFrameworkException>(m, "WebFrameworkException");
 }

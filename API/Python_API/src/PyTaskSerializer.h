@@ -83,10 +83,11 @@ namespace framework::task_broker
 		std::string_view getTaskName() const override;
 
 	private:
-		IPyTaskSerializer& serializer;
+		py::object serializer;
+		std::string taskName;
 
 	public:
-		PyTaskSerializerWrapper(IPyTaskSerializer& serializer);
+		PyTaskSerializerWrapper(py::object serializer);
 
 		~PyTaskSerializerWrapper() = default;
 	};
@@ -95,8 +96,9 @@ namespace framework::task_broker
 namespace framework::task_broker
 {
 	template<typename T>
-	PyTaskSerializerWrapper<T>::PyTaskSerializerWrapper(IPyTaskSerializer& serializer) :
-		serializer(serializer)
+	PyTaskSerializerWrapper<T>::PyTaskSerializerWrapper(py::object serializer) :
+		serializer(serializer),
+		taskName(serializer.attr("get_task_name")().cast<std::string>())
 	{
 
 	}
@@ -105,13 +107,13 @@ namespace framework::task_broker
 	JsonObject PyTaskSerializerWrapper<T>::serializeArguments() const
 	{
 		py::module_ json = py::module_::import("json");
-		
-		return JsonParser(json.attr("dumps")(serializer.serializeArguments()).cast<std::string>()).getParsedData(false);
+
+		return JsonParser(json.attr("dumps")(serializer.attr("serialize_arguments")()).cast<std::string>()).getParsedData(false);
 	}
 
 	template<typename T>
 	std::string_view PyTaskSerializerWrapper<T>::getTaskName() const
 	{
-		return serializer.getTaskName();
+		return taskName;
 	}
 }

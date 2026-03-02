@@ -373,6 +373,9 @@ namespace framework
 		template<MessageBrokerImplementation MessageBrokerT, task_broker::DerivedFromTaskSerializer TaskSerializerT, typename... Args>
 		void enqueueTask(Args&&... args);
 
+		template<MessageBrokerImplementation MessageBrokerT, task_broker::DerivedFromTaskSerializer TaskSerializerT>
+		void enqueueTask(const TaskSerializerT& serializer);
+
 		template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
 		void throwException(Args&&... args);
 
@@ -434,6 +437,13 @@ namespace framework
 	inline void HttpRequest::enqueueTask(Args&&... args)
 	{
 		TaskSerializerT serializer(std::forward<Args>(args)...);
+		
+		this->enqueueTask<MessageBrokerT>(serializer);
+	}
+
+	template<MessageBrokerImplementation MessageBrokerT, task_broker::DerivedFromTaskSerializer TaskSerializerT>
+	inline void HttpRequest::enqueueTask(const TaskSerializerT& serializer)
+	{
 		JsonObject data = serializer.serialize();
 
 		data.weak = true;

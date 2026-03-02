@@ -5,6 +5,7 @@
 #ifdef __WITH_PYTHON_EXECUTORS__
 
 #include "Executors/PythonExecutor.h"
+#include "TaskBroker/TaskExecutors/PythonTaskExecutor.h"
 
 namespace py = pybind11;
 
@@ -131,7 +132,32 @@ namespace framework::runtime
 
 	std::unique_ptr<task_broker::TaskExecutor> PythonRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
 	{
-		return nullptr;
+		if (!std::holds_alternative<py::module_>(source))
+		{
+			return nullptr;
+		}
+
+		py::gil_scoped_acquire gil;
+		const py::module_& module = std::get<py::module_>(source);
+		std::optional<py::object> cls = this->getClass(name, module);
+
+		if (!cls)
+		{
+			throw std::runtime_error(std::format("Can't find {}", name));
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, py::repr(module).cast<std::string>());
+		}
+
+		return std::make_unique<task_broker::PythonTaskExecutor>
+			(
+				new py::object
+				(
+					(*cls)()
+				)
+			);
 	}
 
 	void* PythonRuntime::createExecutorSettings(const void* implementation) const

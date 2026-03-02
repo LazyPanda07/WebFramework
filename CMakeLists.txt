@@ -23,6 +23,8 @@ option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
+option(WITH_PYTHON_TASK_EXECUTORS "Build with Python Task Executors" ON)
+option(WITH_DOTNET_TASK_EXECUTORS "Build with .NET Task Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 
 project(WebFramework VERSION 3.2.0)
@@ -135,6 +137,7 @@ add_library(
 	WebFramework/src/TaskBroker/TaskConsumer.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/TaskExecutor.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/CXXTaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/PythonTaskExecutor.cpp
 )
 
 # Used in Python API install
@@ -149,14 +152,12 @@ if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 endif()
 
-if (${WITH_PYTHON_EXECUTORS})
-	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+	if (${WITH_PYTHON_EXECUTORS})
 		add_definitions(-D__WITH_PYTHON_EXECUTORS__)
 	endif()
-endif()
 
-if (${WITH_DOTNET_EXECUTORS})
-	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+	if (${WITH_DOTNET_EXECUTORS})
 		add_definitions(-D__WITH_DOTNET_EXECUTORS__)
 	endif()
 endif()
