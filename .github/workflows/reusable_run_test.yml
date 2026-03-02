@@ -190,6 +190,9 @@ jobs:
       shell: bash
       run: echo "runtimes=${{ env.runtimes }} --runtimes .net" >> ${GITHUB_ENV}
 
+    - name: Install wait-for-service[redis]
+      run: pip install wait-for-service[redis]
+
     - name: Merge artifacts
       shell: bash
       run: |
@@ -210,9 +213,9 @@ jobs:
       shell: cmd
       run: |
         start ${{ github.workspace }}\Redis-${{ env.windows-redis-version }}-Windows-x64-msys2\redis-server --port 10010 --requirepass password
-        timeout /t 10 /nobreak
         set RUNTIMES=${{ env.runtimes }}
         cd Tests
+        wait-for-service redis://localhost:10010
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
@@ -221,5 +224,6 @@ jobs:
       shell: bash
       run: |
         export RUNTIMES="${{ env.runtimes }}"
-        redis-server --port 10010 --requirepass password & sleep 10
+        redis-server --port 10010 --requirepass password & sleep 1
+        wait-for-service redis://localhost:10010
         source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}
