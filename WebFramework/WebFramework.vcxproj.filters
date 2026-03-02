@@ -213,10 +213,13 @@
     <ClCompile Include="src\Managers\TaskExecutorsManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\TaskBroker\TaskExecutor.cpp">
+    <ClCompile Include="src\TaskBroker\TaskExecutors\TaskExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\TaskExecutorsSettings.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TaskBroker\TaskExecutors\CXXTaskExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -431,10 +434,13 @@
     <ClInclude Include="include\Managers\TaskExecutorsManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\TaskBroker\TaskExecutor.h">
+    <ClInclude Include="include\TaskBroker\TaskExecutors\TaskExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Utility\TaskExecutorsSettings.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskBroker\TaskExecutors\CXXTaskExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

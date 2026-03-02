@@ -21,7 +21,7 @@ namespace framework::task_broker
 				(
 					[this, &taskExecutor, data = std::move(data)]() mutable
 					{
-						taskExecutor.execute(std::move(data));
+						taskExecutor(data);
 					}
 				);
 			}

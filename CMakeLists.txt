@@ -133,7 +133,8 @@ add_library(
 	WebFramework/src/TaskBroker/TaskBroker.cpp
 	WebFramework/src/TaskBroker/InternalTaskBroker.cpp
 	WebFramework/src/TaskBroker/TaskConsumer.cpp
-	WebFramework/src/TaskBroker/TaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/TaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/CXXTaskExecutor.cpp
 )
 
 # Used in Python API install

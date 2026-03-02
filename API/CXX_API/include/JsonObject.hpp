@@ -27,11 +27,15 @@ namespace framework
 	private:
 		static void addArrayValue(void* object, void* array);
 
-	private:
-		JsonObject(void* implementation, bool weak = true);
-
 	public:
 		JsonObject();
+
+		/**
+		 * @brief Internal use
+		 * @param implementation 
+		 * @param weak 
+		 */
+		JsonObject(void* implementation, bool weak = true);
 
 		JsonObject(const JsonObject& other);
 

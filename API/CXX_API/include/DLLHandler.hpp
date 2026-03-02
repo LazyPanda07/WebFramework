@@ -247,3 +247,16 @@ namespace framework::utility
 		return result;
 	}
 }
+
+#ifdef __LINUX__
+#define WEB_FRAMEWORK_FUNCTIONS_API extern "C" __attribute__((visibility("default"))) __attribute__((used))
+#else
+#define WEB_FRAMEWORK_FUNCTIONS_API extern "C" __declspec(dllexport)
+#endif
+
+#pragma region ExportFunctions
+WEB_FRAMEWORK_FUNCTIONS_API inline void initializeWebFrameworkCXX(const char* webFrameworkSharedLibraryPath)
+{
+	framework::utility::initializeWebFramework(webFrameworkSharedLibraryPath);
+}
+#pragma endregion

@@ -166,7 +166,8 @@
     <ClCompile Include="src\Runtimes\PythonRuntime.cpp" />
     <ClCompile Include="src\Runtimes\Runtime.cpp" />
     <ClCompile Include="src\TaskBroker\TaskConsumer.cpp" />
-    <ClCompile Include="src\TaskBroker\TaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\CXXTaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\TaskExecutor.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\ExecutorsUtility.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
@@ -231,7 +232,8 @@
     <ClInclude Include="include\Runtimes\CXXRuntime.h" />
     <ClInclude Include="include\Runtimes\DotNetRuntime.h" />
     <ClInclude Include="include\TaskBroker\TaskConsumer.h" />
-    <ClInclude Include="include\TaskBroker\TaskExecutor.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\CXXTaskExecutor.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\TaskExecutor.h" />
     <ClInclude Include="include\Utility\TaskExecutorsSettings.h" />
     <ClInclude Include="include\WFDP\CSharpDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CXXDynamicFunction.h" />

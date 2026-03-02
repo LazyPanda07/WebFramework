@@ -129,6 +129,11 @@ namespace framework::runtime
 		return std::make_unique<PythonExecutor>(new py::object(cls()));
 	}
 
+	std::unique_ptr<task_broker::TaskExecutor> PythonRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
+	{
+		return nullptr;
+	}
+
 	void* PythonRuntime::createExecutorSettings(const void* implementation) const
 	{
 		py::object cls = api.attr("ExecutorSettings");

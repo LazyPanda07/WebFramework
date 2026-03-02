@@ -9,8 +9,10 @@ namespace framework::task_broker
 	public:
 		TaskExecutor() = default;
 
-		virtual void execute(json::JsonObject&& data) = 0;
+		virtual void operator ()(json::JsonObject& data) = 0;
 
 		~TaskExecutor() = default;
 	};
+
+	using CreateTaskExecutorSignature = void* (*)();
 }

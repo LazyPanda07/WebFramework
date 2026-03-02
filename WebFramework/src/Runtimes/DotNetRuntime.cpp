@@ -347,6 +347,11 @@ namespace framework::runtime
 		return std::make_unique<CSharpExecutor>(createExecutorFunction(fullQualifiedName.data()));
 	}
 
+	std::unique_ptr<task_broker::TaskExecutor> DotNetRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
+	{
+		return nullptr;
+	}
+
 	void DotNetRuntime::finishInitialization()
 	{
 

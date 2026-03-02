@@ -8,6 +8,7 @@
 
 #include "WebInterfaces/IHttpRequest.h"
 #include "Utility/Sources.h"
+#include "TaskBroker/TaskExecutors/TaskExecutor.h"
 
 namespace framework::runtime
 {
@@ -21,6 +22,8 @@ namespace framework::runtime
 		virtual bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) = 0;
 
 		virtual std::unique_ptr<Executor> createExecutor(std::string_view name) const = 0;
+
+		virtual std::unique_ptr<task_broker::TaskExecutor> createTaskExecutor(std::string_view name, const utility::LoadSource& source) const = 0;
 
 		virtual void* createExecutorSettings(const void* implementation) const = 0;
 

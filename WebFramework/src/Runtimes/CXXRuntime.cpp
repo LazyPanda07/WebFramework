@@ -5,6 +5,7 @@
 #include "Executors/CXXExecutor.h"
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "TaskBroker/TaskExecutors/CXXTaskExecutor.h"
 
 namespace framework::runtime
 {
@@ -53,6 +54,31 @@ namespace framework::runtime
 		const auto& [module, creator] = creatorData;
 
 		return std::make_unique<CXXExecutor>(module, creator());
+	}
+
+	std::unique_ptr<task_broker::TaskExecutor> CXXRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
+	{
+		if (!std::holds_alternative<HMODULE>(source))
+		{
+			return nullptr;
+		}
+
+		HMODULE module = std::get<HMODULE>(source);
+		std::string creatorFunctionName = std::format("create{}TaskCXXInstance", name);
+
+		if (task_broker::CreateTaskExecutorSignature creator = utility::load<task_broker::CreateTaskExecutorSignature>(module, creatorFunctionName))
+		{
+			std::filesystem::path sourcePath = utility::getPathToLibrary(module);
+
+			if (Log::isValid())
+			{
+				Log::info("Found {} in {}", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+			}
+
+			return std::make_unique<task_broker::CXXTaskExecutor>(module, creator());
+		}
+
+		throw std::runtime_error(std::format("Can't find {}", name));
 	}
 
 	void* CXXRuntime::createExecutorSettings(const void* implementation) const

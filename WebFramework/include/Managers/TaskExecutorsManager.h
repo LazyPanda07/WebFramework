@@ -5,7 +5,7 @@
 
 #include <Strings.h>
 
-#include "TaskBroker/TaskExecutor.h"
+#include "TaskBroker/TaskExecutors/TaskExecutor.h"
 #include "Utility/TaskExecutorsSettings.h"
 
 namespace framework::task_broker
@@ -40,6 +40,6 @@ namespace framework::task_broker
 
 		void initTaskExecutor(const std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings);
 
-		TaskExecutor& getTaskExecutor(const std::string& apiName, const std::string& taskExeutorName) const;		
+		TaskExecutor& getTaskExecutor(const std::string& apiName, const std::string& taskExecutorName) const;		
 	};
 }

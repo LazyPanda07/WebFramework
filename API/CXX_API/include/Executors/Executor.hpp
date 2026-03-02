@@ -542,28 +542,22 @@ namespace framework
 	}
 }
 
-#ifdef __LINUX__
-#define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API extern "C" __attribute__((visibility("default"))) __attribute__((used))
-#else
-#define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API extern "C" __declspec(dllexport)
-#endif
-
 /**
 * Macro for each Executor subclass
 * Used for loading function that creates Executor subclass
 */
-#define DEFINE_EXECUTOR(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##subclassName##CXXInstance()	\
+#define DEFINE_EXECUTOR(subclassName) WEB_FRAMEWORK_FUNCTIONS_API void* create##subclassName##CXXInstance()	\
 {	\
 	return new subclassName();	\
 }
 
 #pragma region ExportFunctions
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(void* implementation, void* executorSettings)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(void* implementation, void* executorSettings)
 {
 	static_cast<framework::Executor*>(implementation)->init(framework::utility::ExecutorSettings(executorSettings));
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -571,7 +565,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* imp
 	static_cast<framework::Executor*>(implementation)->doPost(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -579,7 +573,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* impl
 	static_cast<framework::Executor*>(implementation)->doGet(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -587,7 +581,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* imp
 	static_cast<framework::Executor*>(implementation)->doHead(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -595,7 +589,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* impl
 	static_cast<framework::Executor*>(implementation)->doPut(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -603,7 +597,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* i
 	static_cast<framework::Executor*>(implementation)->doDelete(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -611,7 +605,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* im
 	static_cast<framework::Executor*>(implementation)->doPatch(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -619,7 +613,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* 
 	static_cast<framework::Executor*>(implementation)->doOptions(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -627,7 +621,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* im
 	static_cast<framework::Executor*>(implementation)->doTrace(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -635,23 +629,18 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* 
 	static_cast<framework::Executor*>(implementation)->doConnect(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline framework::utility::ExecutorType webFrameworkCXXGetType(void* implementation)
+WEB_FRAMEWORK_FUNCTIONS_API inline framework::utility::ExecutorType webFrameworkCXXGetType(void* implementation)
 {
 	return static_cast<framework::Executor*>(implementation)->getType();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDestroyExecutor(void* implementation)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDestroyExecutor(void* implementation)
 {
 	static_cast<framework::Executor*>(implementation)->destroy();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDeleteExecutor(void* implementation)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDeleteExecutor(void* implementation)
 {
 	delete static_cast<framework::Executor*>(implementation);
-}
-
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCXX(const char* webFrameworkSharedLibraryPath)
-{
-	framework::utility::initializeWebFramework(webFrameworkSharedLibraryPath);
 }
 #pragma endregion

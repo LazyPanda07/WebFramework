@@ -55,6 +55,11 @@ namespace framework::runtime
 		return std::make_unique<CCExecutor>(module, creator(), name);
 	}
 
+	std::unique_ptr<task_broker::TaskExecutor> CCRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
+	{
+		return nullptr;
+	}
+
 	void* CCRuntime::createExecutorSettings(const void* implementation) const
 	{
 		return const_cast<void*>(implementation);

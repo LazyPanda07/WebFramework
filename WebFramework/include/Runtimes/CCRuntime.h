@@ -23,6 +23,8 @@ namespace framework::runtime
 
 		std::unique_ptr<Executor> createExecutor(std::string_view name) const override;
 
+		std::unique_ptr<task_broker::TaskExecutor> createTaskExecutor(std::string_view name, const utility::LoadSource& source) const override;
+
 		void* createExecutorSettings(const void* implementation) const override;
 
 		void* createHTTPRequest(framework::interfaces::IHttpRequest* request) const override;
