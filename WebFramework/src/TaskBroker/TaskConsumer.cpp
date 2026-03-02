@@ -43,7 +43,7 @@ namespace framework::task_broker
 	{
 		if (Log::isValid())
 		{
-			Log::info("Start consuming...", "LogTaskBroker");
+			Log::info("Start task consuming", "LogTaskBroker");
 		}
 
 		while (stillConsuming)
@@ -53,17 +53,7 @@ namespace framework::task_broker
 				this->processTasks(*broker);
 			}
 
-			if (Log::isValid())
-			{
-				Log::info("Start wait {}", "LogTaskBroker", stillConsuming);
-			}
-
 			std::this_thread::sleep_for(checkPeriod);
-
-			if (Log::isValid())
-			{
-				Log::info("End wait {}", "LogTaskBroker", stillConsuming);
-			}
 		}
 	}
 
