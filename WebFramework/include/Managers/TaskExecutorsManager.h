@@ -7,6 +7,7 @@
 
 #include "TaskBroker/TaskExecutors/TaskExecutor.h"
 #include "Utility/TaskExecutorsSettings.h"
+#include "TaskBroker/TaskConsumer.h"
 
 namespace framework::task_broker
 {
@@ -21,6 +22,7 @@ namespace framework::task_broker
 
 	private:
 		MapType taskExecutors;
+		std::unique_ptr<TaskConsumer> consumer;
 
 	private:
 		TaskExecutorsManager();
@@ -39,6 +41,10 @@ namespace framework::task_broker
 		static TaskExecutorsManager& get();
 
 		void initTaskExecutor(const std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings);
+
+		void createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod);
+
+		void runTaskConsumer();
 
 		TaskExecutor& getTaskExecutor(const std::string& apiName, const std::string& taskExecutorName) const;		
 	};

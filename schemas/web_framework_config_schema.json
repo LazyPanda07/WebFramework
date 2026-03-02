@@ -225,13 +225,6 @@
             ]
           }
         },
-        "taskExecutors": {
-          "type": "array",
-          "description": "Settings file paths for task executors",
-          "items": {
-            "type": "string"
-          }
-        },
         "HTTPS": {
           "type": "object",
           "description": "HTTPS settings",
@@ -261,6 +254,55 @@
       "anyOf": [
         { "required": [ "settingsPaths", "loadSources" ] },
         { "required": [ "additionalConfigs" ] }
+      ]
+    },
+    "TaskExecutors": {
+      "type": "object",
+      "description": "Task broker settings",
+      "properties": {
+        "taskExecutorsSettings": {
+          "type": "array",
+          "description": "Settings file paths for task executors",
+          "items": {
+            "type": "string"
+          }
+        },
+        "consumer": {
+          "type": "string",
+          "description": "Which consumer is used for executing tasks",
+          "enum": [ "internal", "external" ]
+        },
+        "taskBrokers": {
+          "type": "array",
+          "description": "Task sources",
+          "items": {
+            "type": "string",
+            "enum": [ "Internal", "RabbitMQ", "Apache Kafka" ]
+          },
+          "minItems": 1
+        },
+        "consumerThreads": {
+          "type": "number",
+          "description": "Number of threads used by consumer to execute task executors",
+          "default": 1
+        },
+        "checkPeriod": {
+          "type": "integer",
+          "description": "Check period time in milliseconds",
+          "default": 2500
+        }
+      },
+      "required": [ "taskBrokers", "consumer" ],
+      "allOf": [
+        {
+          "if": {
+            "properties": { "consumer": { "const": "internal" } },
+            "required": [ "consumer" ]
+          },
+          "then": {
+            "required": [ "taskExecutorsSettings" ]
+          }
+        }
       ]
     },
     "Logging": {

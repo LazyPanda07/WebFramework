@@ -50,7 +50,7 @@ namespace framework
 
 		void initExecutors(const json::JsonObject& webFrameworkSettings, std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>& executorSettings, std::vector<std::string>& pathToSources);
 
-		void initTaskExecutors(const json::JsonObject& webFrameworkSettings, std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings);
+		void initTaskExecutors(const json::JsonObject& taskExecutorsObject);
 
 		void initHTTPS(const json::JsonObject& webFrameworkSettings) const;
 

@@ -51,6 +51,19 @@ namespace framework::task_broker
 		}
 	}
 
+	void TaskExecutorsManager::createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod)
+	{
+		consumer = std::make_unique<TaskConsumer>(taskBrokerNames, threadsNumber, checkPeriod);
+	}
+
+	void TaskExecutorsManager::runTaskConsumer()
+	{
+		if (consumer)
+		{
+			consumer->run();
+		}
+	}
+
 	TaskExecutor& TaskExecutorsManager::getTaskExecutor(const std::string& apiName, const std::string& taskExecutorName) const
 	{
 		const ValueType& executors = taskExecutors.at(apiName);

@@ -16,6 +16,7 @@ namespace json_settings
 	inline constexpr std::string_view threadPoolServerObject = "ThreadPoolServer";
 	inline constexpr std::string_view loadBalancerObject = "LoadBalancer";
 	inline constexpr std::string_view proxyObject = "Proxy";
+	inline constexpr std::string_view taskExecutorsObject = "TaskExecutors";
 
 	inline constexpr std::string_view settingsPathsKey = "settingsPaths";
 	inline constexpr std::string_view loadSourcesKey = "loadSources";
@@ -39,7 +40,7 @@ namespace json_settings
 	inline constexpr std::string_view databasesKey = "databases";
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
 	inline constexpr std::string_view runtimesKey = "runtimes";
-	inline constexpr std::string_view taskExecutorsKey = "taskExecutors";
+	
 
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
 	inline constexpr std::string_view heuristicKey = "heuristic";
@@ -55,6 +56,11 @@ namespace json_settings
 
 	inline constexpr std::string_view threadCountKey = "threadCount";
 
+	inline constexpr std::string_view taskExecutorsSettingsKey = "taskExecutorsSettings";
+	inline constexpr std::string_view consumerKey = "consumer";
+	inline constexpr std::string_view taskBrokersKey = "taskBrokers";
+	inline constexpr std::string_view consumerThreadsKey = "consumerThreads";
+	inline constexpr std::string_view checkPeriodKey = "checkPeriod";
 	inline constexpr std::string_view taskExecutorsSourcePathKey = "sourcePath";
 	inline constexpr std::string_view taskExecutorsClassNamesKey = "classNames";
 	inline constexpr std::string_view taskExecutorsApiKey = "api";
@@ -98,6 +104,11 @@ namespace json_settings_values
 
 	inline constexpr std::string_view runtimesPythonValue = "python";
 	inline constexpr std::string_view runtimesDotNetValue = ".net";
+
+	inline constexpr std::string_view consumerInternalValue = "internal";
+	inline constexpr std::string_view consumerExternalValue = "external";
+	inline constexpr size_t consumerThreadsDefaultValue = 1;
+	inline constexpr size_t checkPeriodDefaultValue = 2500; // in milliseconds
 }
 
 namespace web_framework_assets

@@ -1,32 +1,26 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "title": "WebFramework task executors",
-  "type": "object",
-  "description": "Task executors setup",
-  "properties": {
-    "TaskExecutors": {
-      "type": "array",
-      "description": "List of task executors",
-      "items": {
-        "type": "object",
-        "properties": {
-          "sourcePath": {
-            "type": "string",
-            "description": "Path to load source with task executors"
-          },
-          "classNames": {
-            "type": "array",
-            "description": "List of task executor class names",
-            "items": {
-              "type": "string"
-            }
-          },
-          "api": {
-            "type": "string",
-            "description": "API language",
-            "enum": [ "cxx", "cc", "python", "csharp" ]
-          }
+  "type": "array",
+  "description": "List of task executors",
+  "items": {
+    "type": "object",
+    "properties": {
+      "sourcePath": {
+        "type": "string",
+        "description": "Path to load source with task executors"
+      },
+      "classNames": {
+        "type": "array",
+        "description": "List of task executor class names",
+        "items": {
+          "type": "string"
         }
+      },
+      "api": {
+        "type": "string",
+        "description": "API language",
+        "enum": [ "cxx", "cc", "python", "csharp" ]
       }
     }
   }

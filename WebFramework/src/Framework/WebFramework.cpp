@@ -275,16 +275,33 @@ namespace framework
 		}
 	}
 
-	void WebFramework::initTaskExecutors(const json::JsonObject& webFrameworkSettings, std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings)
+	void WebFramework::initTaskExecutors(const json::JsonObject& taskExecutorsObject)
 	{
 		std::vector<json::JsonObject> taskExecutorPaths;
+		std::vector<utility::TaskExecutorsSettings> taskExecutorsSettings;
 
-		if (!webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsKey, taskExecutorPaths))
-		{
-			return;
-		}
+		taskExecutorsObject.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsSettingsKey, taskExecutorPaths);
 
 		const std::filesystem::path& basePath = config.getBasePath();
+		task_broker::TaskExecutorsManager& taskExecutorsManager = task_broker::TaskExecutorsManager::get();
+		std::string consumer;
+
+		if (taskExecutorsObject.tryGet<std::string>(json_settings::consumerKey, consumer) && consumer == json_settings_values::consumerInternalValue)
+		{
+			if (taskExecutorPaths.empty())
+			{
+				throw std::runtime_error(std::format("Can't use {} consumer with empty {}", json_settings_values::consumerInternalValue, json_settings::taskExecutorsSettingsKey));
+			}
+
+			std::vector<std::string> taskBrokerNames = json::utility::JsonArrayWrapper(taskExecutorsObject.at(json_settings::taskBrokersKey)).as<std::string>();
+			size_t consumerThreads = json_settings_values::consumerThreadsDefaultValue;
+			size_t checkPeriod = json_settings_values::checkPeriodDefaultValue;
+
+			taskExecutorsObject.tryGet<size_t>(json_settings::consumerThreadsKey, consumerThreads);
+			taskExecutorsObject.tryGet<size_t>(json_settings::checkPeriodKey, checkPeriod);
+
+			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod));
+		}
 
 		for (const json::JsonObject& taskExecutorPath : taskExecutorPaths)
 		{
@@ -302,11 +319,15 @@ namespace framework
 
 			json::JsonParser parser(stream);
 
-			for (const json::JsonObject& settings : parser.get<std::vector<json::JsonObject>>(json_settings::taskExecutorsKey))
+			for (const json::JsonObject& settings : parser.getParsedData().get<std::vector<json::JsonObject>>())
 			{
 				taskExecutorsSettings.emplace_back(utility::TaskExecutorsSettings::createTaskExecutorsSettings(settings));
 			}
+
+			taskExecutorsManager.initTaskExecutor(taskExecutorsSettings);
 		}
+
+		taskExecutorsManager.runTaskConsumer(); // run only if consumer created
 	}
 
 	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings) const
@@ -499,15 +520,13 @@ namespace framework
 		const json::JsonObject& webFrameworkSettings = (*config).get<json::JsonObject>(json_settings::webFrameworkObject);
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
 		runtime::RuntimesManager& runtimesManager = runtime::RuntimesManager::get();
-		task_broker::TaskExecutorsManager& taskExecutorsManager = task_broker::TaskExecutorsManager::get();
 		std::vector<std::string> pathToSources;
-		std::vector<utility::TaskExecutorsSettings> taskExecutorsSettings;
 
 		this->initAPIs(webFrameworkSettings);
 
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
-		this->initTaskExecutors(webFrameworkSettings, taskExecutorsSettings);
+		this->initTaskExecutors((*config).get<json::JsonObject>(json_settings::taskExecutorsObject));
 		this->initHTTPS(webFrameworkSettings);
 		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
 
@@ -515,8 +534,6 @@ namespace framework
 		{
 			it->finishInitialization();
 		}
-
-		taskExecutorsManager.initTaskExecutor(taskExecutorsSettings);
 	}
 
 	WebFramework::WebFramework(const std::filesystem::path& webFrameworkConfigPath) :

@@ -6,7 +6,6 @@
 #include <ThreadPool.h>
 
 #include "TaskBroker.h"
-#include "Managers/TaskExecutorsManager.h"
 
 namespace framework::task_broker
 {
@@ -20,13 +19,12 @@ namespace framework::task_broker
 	private:
 		std::vector<TaskBroker*> brokers;
 		std::future<void> consumeThread;
-		std::chrono::seconds checkPeriod;
-		threading::ThreadPool& taskRunner;
-		TaskExecutorsManager& taskExecutorsManager;
+		std::chrono::milliseconds checkPeriod;
+		threading::ThreadPool taskRunner;
 		bool stillConsuming;
 
 	public:
-		TaskConsumer(const std::vector<std::string>& taskBrokerNames, threading::ThreadPool& taskRunner, TaskExecutorsManager& taskExecutorsManager, std::chrono::seconds checkPeriod = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::milliseconds(2500)));
+		TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod);
 
 		void run();
 

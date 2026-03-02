@@ -3,11 +3,14 @@
 #include <Log.h>
 
 #include "Managers/TaskBrokersManager.h"
+#include "Managers/TaskExecutorsManager.h"
 
 namespace framework::task_broker
 {
 	void TaskConsumer::processTasks(TaskBroker& broker)
 	{
+		TaskExecutorsManager& taskExecutorsManager = TaskExecutorsManager::get();
+
 		while (std::optional<json::JsonObject> task = broker.requestTask())
 		{
 			json::JsonObject& data = *task;
@@ -48,10 +51,9 @@ namespace framework::task_broker
 		}
 	}
 
-	TaskConsumer::TaskConsumer(const std::vector<std::string>& taskBrokerNames, threading::ThreadPool& taskRunner, TaskExecutorsManager& taskExecutorsManager, std::chrono::seconds checkPeriod) :
+	TaskConsumer::TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod) :
 		checkPeriod(checkPeriod),
-		taskRunner(taskRunner),
-		taskExecutorsManager(taskExecutorsManager),
+		taskRunner(threadsNumber),
 		stillConsuming(false)
 	{
 		for (const std::string& brokerName : taskBrokerNames)
