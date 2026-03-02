@@ -63,6 +63,8 @@ pybind11_add_module(
     src/PyChunkGenerator.cpp
     src/PyLoadBalancerHeuristic.cpp
     src/PyDynamicFunction.cpp
+    src/PyTaskExecutor.cpp
+    src/PyTaskSerializer.cpp
 )
 
 target_include_directories(

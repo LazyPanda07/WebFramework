@@ -2228,6 +2228,26 @@ const char* getJsonParserRawData(JsonParser parser, Exception* exception)
 	return nullptr;
 }
 
+EXPORT void* getJsonParserParsedData(JsonParser parser, bool weak, Exception* exception)
+{
+	try
+	{
+		json::JsonObject& object = const_cast<json::JsonObject&>(static_cast<json::JsonParser*>(parser)->getParsedData());
+
+		return weak ? &object : createJsonObject(&object, exception);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 TableObject getOrCreateTable(DatabaseObject database, const char* tableName, const char* createTableQuery, Exception* exception)
 {
 	try

@@ -20,7 +20,7 @@ namespace framework::task_broker
 	protected:
 		virtual JsonObject serializeArguments() const = 0;
 
-		virtual constexpr std::string_view getTaskName() const = 0;
+		virtual std::string_view getTaskName() const = 0;
 
 	public:
 		TaskSerializer() = default;

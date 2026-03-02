@@ -251,6 +251,8 @@ EXPORT bool tryGetJsonParserArray(JsonParser parser, const char* key, void(*addA
 
 EXPORT const char* getJsonParserRawData(JsonParser parser, Exception* exception);
 
+EXPORT void* getJsonParserParsedData(JsonParser parser, bool weak, Exception* exception);
+
 EXPORT TableObject getOrCreateTable(DatabaseObject database, const char* tableName, const char* createTableQuery, Exception* exception);
 
 EXPORT TableObject getTable(DatabaseObject database, const char* tableName, Exception* exception);

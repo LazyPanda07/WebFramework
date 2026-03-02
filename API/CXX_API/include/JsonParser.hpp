@@ -36,6 +36,8 @@ namespace framework
 		template<JsonValues<JsonObject> T>
 		bool tryGet(std::string_view key, T& value, bool recursive = false) const requires(!std::convertible_to<T, std::string_view> || std::same_as<T, std::string>);
 
+		JsonObject getParsedData(bool weak = true) const;
+
 		std::string_view operator *() const;
 
 		friend std::ostream& operator <<(std::ostream& stream, const JsonParser& parser);
@@ -415,6 +417,21 @@ namespace framework
 		}
 
 		return result;
+	}
+
+	inline JsonObject JsonParser::getParsedData(bool weak) const
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(getJsonParserParsedData, void*, bool weak, void** exception);
+		void* exception = nullptr;
+
+		void* result = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserParsedData, weak, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return JsonObject(result, weak);
 	}
 
 	inline std::string_view JsonParser::operator *() const
