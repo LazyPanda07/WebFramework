@@ -75,6 +75,7 @@ add_library(
 	WebFramework/src/WFDP/CSharpDynamicFunction.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp
 	WebFramework/src/Rendering/MDRenderer.cpp
+	WebFramework/src/Runtimes/Runtime.cpp
 	WebFramework/src/Runtimes/CXXRuntime.cpp
 	WebFramework/src/Runtimes/CCRuntime.cpp
 	WebFramework/src/Runtimes/PythonRuntime.cpp
