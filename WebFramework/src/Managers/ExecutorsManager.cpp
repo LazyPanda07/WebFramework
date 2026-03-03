@@ -259,7 +259,7 @@ namespace framework
 				throw std::runtime_error(std::format("Can't find creator for executor: {} with API: {}", executorSettings.name, executorSettings.apiType));
 			}
 
-			runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource, webFrameworkSharedLibraryPath.data());
+			runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource, webFrameworkSharedLibraryPath);
 
 			switch (executorSettings.executorLoadType)
 			{
