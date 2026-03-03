@@ -9,6 +9,11 @@
 
 namespace framework::runtime
 {
+	void CXXRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
+	{
+		utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(source), "initializeWebFrameworkCXX")(libraryPath.data());
+	}
+
 	void CXXRuntime::finishInitialization()
 	{
 
@@ -94,11 +99,6 @@ namespace framework::runtime
 	void* CXXRuntime::createHTTPResponse(framework::interfaces::IHttpResponse* response) const
 	{
 		return response;
-	}
-
-	void CXXRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
-	{
-		utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(source), "initializeWebFrameworkCXX")(libraryPath.data());
 	}
 
 	std::optional<std::string> CXXRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)

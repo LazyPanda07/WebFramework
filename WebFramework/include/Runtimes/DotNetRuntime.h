@@ -96,8 +96,8 @@ namespace framework::runtime
 		template<FunctionPointer T>
 		void loadMethod(const NativeString& typeName, const NativeString& methodName, T& method);
 
-	public:
-		DotNetRuntime();
+	protected:
+		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
 
 	public:
 		InitSignature getInit() const;
@@ -142,6 +142,8 @@ namespace framework::runtime
 		void dealloc(void* allocatedMemory) const;
 
 	public:
+		DotNetRuntime();
+
 		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;
 
 		std::unique_ptr<Executor> createExecutor(std::string_view name) const override;
@@ -155,8 +157,6 @@ namespace framework::runtime
 		void* createHTTPRequest(framework::interfaces::IHttpRequest* request) const override;
 
 		void* createHTTPResponse(framework::interfaces::IHttpResponse* response) const override;
-
-		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 

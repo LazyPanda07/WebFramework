@@ -8,6 +8,11 @@
 
 namespace framework::runtime
 {
+	void CCRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
+	{
+		utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(source), "initializeWebFrameworkCC")(libraryPath.data());
+	}
+
 	void CCRuntime::finishInitialization()
 	{
 
@@ -73,11 +78,6 @@ namespace framework::runtime
 	void* CCRuntime::createHTTPResponse(framework::interfaces::IHttpResponse* response) const
 	{
 		return response;
-	}
-
-	void CCRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
-	{
-		utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(source), "initializeWebFrameworkCC")(libraryPath.data());
 	}
 
 	std::optional<std::string> CCRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)

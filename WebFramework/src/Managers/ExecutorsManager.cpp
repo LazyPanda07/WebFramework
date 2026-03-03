@@ -226,12 +226,6 @@ namespace framework
 
 		std::vector<std::pair<std::string, std::string>> nodes;
 
-#ifdef __ANDROID__
-		std::string webFrameworkSharedLibraryPath = "libWebFramework.so";
-#else
-		std::string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
-#endif
-
 		for (auto& [route, executorSettings] : settings)
 		{
 			std::optional<utility::LoadSource> creatorSource;
@@ -259,7 +253,7 @@ namespace framework
 				throw std::runtime_error(std::format("Can't find creator for executor: {} with API: {}", executorSettings.name, executorSettings.apiType));
 			}
 
-			runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource, webFrameworkSharedLibraryPath);
+			runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource);
 
 			switch (executorSettings.executorLoadType)
 			{

@@ -11,6 +11,9 @@ namespace framework::runtime
 	public:
 		static constexpr std::string_view runtimeName = "cxx";
 
+	protected:
+		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
+
 	private:
 		::utility::strings::string_based_unordered_map<std::tuple<HMODULE, CreateExecutorSignature>> creators;
 
@@ -30,8 +33,6 @@ namespace framework::runtime
 		void* createHTTPRequest(framework::interfaces::IHttpRequest* request) const override;
 
 		void* createHTTPResponse(framework::interfaces::IHttpResponse* response) const override;
-
-		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 

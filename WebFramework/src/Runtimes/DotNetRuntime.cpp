@@ -140,71 +140,9 @@ namespace framework::runtime
 		getFunctionPointer(typeName.native().data(), methodName.native().data(), UNMANAGEDCALLERSONLY_METHOD, nullptr, nullptr, reinterpret_cast<void**>(&method));
 	}
 
-	DotNetRuntime::DotNetRuntime() :
-		hasExecutor(nullptr),
-		dotNetFree(nullptr),
-		dotNetDealloc(nullptr),
-		createExecutorFunction(nullptr),
-		createHttpRequest(nullptr),
-		createHttpResponse(nullptr),
-		createExecutorSettingsFunction(nullptr),
-		getExecutorTypeFunction(nullptr),
-		init(nullptr),
-		doPost(nullptr),
-		doGet(nullptr),
-		doHead(nullptr),
-		doPut(nullptr),
-		doDelete(nullptr),
-		doPatch(nullptr),
-		doOptions(nullptr),
-		doTrace(nullptr),
-		doConnect(nullptr),
-		destroy(nullptr),
-		createDynamicFunction(nullptr),
-		createHeuristic(nullptr),
-		callDynamicFunction(nullptr),
-		onStartHeuristic(nullptr),
-		onEndHeuristic(nullptr),
-		callHeuristic(nullptr)
+	void DotNetRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
 	{
-		constexpr size_t envSize = 512;
 
-		const std::filesystem::path apiPath = DotNetRuntime::getPathToApi();
-
-#ifdef __LINUX__
-		std::string runtimeLibraryName = "libhostfxr.so";
-#else
-		std::string runtimeLibraryName = "hostfxr.dll";
-#endif
-
-		runtimeLibrary = utility::getLoadedLibrary(runtimeLibraryName);
-		size_t size = 0;
-		std::string runtimePathFromEnv(envSize, '\0');
-
-		if (!runtimeLibrary)
-		{
-			if (runtimeLibrary = utility::loadLibrary(runtimeLibraryName); !runtimeLibrary)
-			{
-				throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
-			}
-		}
-
-		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer", true);
-
-		errorHandlerSetter(errorHandler);
-
-		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config", true);
-		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate", true);
-		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close", true);
-
-		DotNetRuntime::createRuntimeConfig();
-
-		initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
-		getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
-		getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer));
-		loadAssembly(apiPath.native().data(), nullptr, nullptr);
-
-		this->loadFunctions(apiPath);
 	}
 
 	DotNetRuntime::InitSignature DotNetRuntime::getInit() const
@@ -307,6 +245,73 @@ namespace framework::runtime
 		dotNetDealloc(allocatedMemory);
 	}
 
+	DotNetRuntime::DotNetRuntime() :
+		hasExecutor(nullptr),
+		dotNetFree(nullptr),
+		dotNetDealloc(nullptr),
+		createExecutorFunction(nullptr),
+		createHttpRequest(nullptr),
+		createHttpResponse(nullptr),
+		createExecutorSettingsFunction(nullptr),
+		getExecutorTypeFunction(nullptr),
+		init(nullptr),
+		doPost(nullptr),
+		doGet(nullptr),
+		doHead(nullptr),
+		doPut(nullptr),
+		doDelete(nullptr),
+		doPatch(nullptr),
+		doOptions(nullptr),
+		doTrace(nullptr),
+		doConnect(nullptr),
+		destroy(nullptr),
+		createDynamicFunction(nullptr),
+		createHeuristic(nullptr),
+		callDynamicFunction(nullptr),
+		onStartHeuristic(nullptr),
+		onEndHeuristic(nullptr),
+		callHeuristic(nullptr)
+	{
+		constexpr size_t envSize = 512;
+
+		const std::filesystem::path apiPath = DotNetRuntime::getPathToApi();
+
+#ifdef __LINUX__
+		std::string runtimeLibraryName = "libhostfxr.so";
+#else
+		std::string runtimeLibraryName = "hostfxr.dll";
+#endif
+
+		runtimeLibrary = utility::getLoadedLibrary(runtimeLibraryName);
+		size_t size = 0;
+		std::string runtimePathFromEnv(envSize, '\0');
+
+		if (!runtimeLibrary)
+		{
+			if (runtimeLibrary = utility::loadLibrary(runtimeLibraryName); !runtimeLibrary)
+			{
+				throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
+			}
+		}
+
+		hostfxr_set_error_writer_fn errorHandlerSetter = utility::load<hostfxr_set_error_writer_fn>(runtimeLibrary, "hostfxr_set_error_writer", true);
+
+		errorHandlerSetter(errorHandler);
+
+		initialization = utility::load<hostfxr_initialize_for_runtime_config_fn>(runtimeLibrary, "hostfxr_initialize_for_runtime_config", true);
+		getRuntimeDelegate = utility::load<hostfxr_get_runtime_delegate_fn>(runtimeLibrary, "hostfxr_get_runtime_delegate", true);
+		close = utility::load<hostfxr_close_fn>(runtimeLibrary, "hostfxr_close", true);
+
+		DotNetRuntime::createRuntimeConfig();
+
+		initialization(getPathToRuntimeConfig().native().data(), nullptr, &handle);
+		getRuntimeDelegate(handle, hdt_load_assembly, reinterpret_cast<void**>(&loadAssembly));
+		getRuntimeDelegate(handle, hdt_get_function_pointer, reinterpret_cast<void**>(&getFunctionPointer));
+		loadAssembly(apiPath.native().data(), nullptr, nullptr);
+
+		this->loadFunctions(apiPath);
+	}
+
 	bool DotNetRuntime::loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<std::filesystem::path>(source))
@@ -370,11 +375,6 @@ namespace framework::runtime
 	void* DotNetRuntime::createHTTPResponse(framework::interfaces::IHttpResponse* response) const
 	{
 		return createHttpResponse(response);
-	}
-
-	void DotNetRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
-	{
-
 	}
 
 	std::optional<std::string> DotNetRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)

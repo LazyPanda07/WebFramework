@@ -18,6 +18,9 @@ namespace framework::runtime
 	private:
 		static void loadSymbols();
 
+	protected:
+		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
+
 	private:
 		std::unique_ptr<pybind11::scoped_interpreter> guard;
 		::utility::strings::string_based_unordered_map<py::object> classes;
@@ -50,8 +53,6 @@ namespace framework::runtime
 		void* createHTTPRequest(framework::interfaces::IHttpRequest* request) const override;
 
 		void* createHTTPResponse(framework::interfaces::IHttpResponse* response) const override;
-
-		void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) override;
 
 		std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) override;
 

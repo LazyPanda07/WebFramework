@@ -26,12 +26,6 @@ namespace framework::task_broker
 	{
 		runtime::RuntimesManager& manager = runtime::RuntimesManager::get();
 
-#ifdef __ANDROID__
-		std::string webFrameworkSharedLibraryPath = "libWebFramework.so";
-#else
-		std::string webFrameworkSharedLibraryPath = utility::getPathToWebFrameworkSharedLibrary();
-#endif
-
 		for (const auto& [sourcePath, classNames, api] : taskExecutorsSettings)
 		{
 			ValueType& value = taskExecutors[api];
@@ -50,7 +44,7 @@ namespace framework::task_broker
 			const auto& [loadSource, actualSourcePath] = loadSources.front();
 			runtime::Runtime& runtime = manager.getRuntime(utility::getExecutorApiType(api));
 
-			runtime.initializeWebFramework(loadSource, webFrameworkSharedLibraryPath);
+			runtime.initializeWebFramework(loadSource);
 
 			for (const std::string& name : classNames)
 			{

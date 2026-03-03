@@ -14,6 +14,9 @@ namespace framework::runtime
 {
 	class Runtime
 	{
+	protected:
+		virtual void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) = 0;
+
 	public:
 		Runtime() = default;
 
@@ -31,7 +34,7 @@ namespace framework::runtime
 
 		virtual void* createHTTPResponse(framework::interfaces::IHttpResponse* response) const = 0;
 
-		virtual void initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath) = 0;
+		void initializeWebFramework(const utility::LoadSource& source);
 
 		virtual std::optional<std::string> loadSource(std::string_view pathToSource, utility::LoadSource& source) = 0;
 

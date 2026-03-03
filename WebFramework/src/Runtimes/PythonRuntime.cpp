@@ -21,6 +21,25 @@ namespace framework::runtime
 #endif
 	}
 
+	void PythonRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
+	{
+		if (called)
+		{
+			return;
+		}
+
+		if (py::hasattr(api, "initialize_web_framework"))
+		{
+			api.attr("initialize_web_framework")(libraryPath.data());
+
+			called = true;
+		}
+		else
+		{
+			throw std::runtime_error("Can't find initialize_web_framework function");
+		}
+	}
+
 	PythonRuntime::PythonRuntime() :
 		called(false)
 	{
@@ -179,25 +198,6 @@ namespace framework::runtime
 		py::object cls = api.attr("HttpResponse");
 
 		return new py::object(cls(reinterpret_cast<uint64_t>(response)));
-	}
-
-	void PythonRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
-	{
-		if (called)
-		{
-			return;
-		}
-
-		if (py::hasattr(api, "initialize_web_framework"))
-		{
-			api.attr("initialize_web_framework")(libraryPath.data());
-
-			called = true;
-		}
-		else
-		{
-			throw std::runtime_error("Can't find initialize_web_framework function");
-		}
 	}
 
 	std::optional<std::string> PythonRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)
