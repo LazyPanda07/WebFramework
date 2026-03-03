@@ -62,31 +62,35 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("__getitem__", &framework::Database::getTable, "table_name"_a)
 		.def("__contains__", [](const framework::Database& self, std::string_view tableName) { return self.contains(tableName); }, "table_name"_a);
 
-	py::class_<framework::DefaultDatabase> defaultDatabase(m, "DefaultDatabase");
-	py::class_<framework::SqliteDatabase> sqliteDatabase(m, "SqliteDatabase");
-	py::class_<framework::RedisDatabase> redisDatabase(m, "RedisDatabase");
+	py::class_<framework::DefaultDatabase>(m, "DefaultDatabase")
+		.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::DefaultDatabase::databaseImplementationName); });
 
-	defaultDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::DefaultDatabase::databaseImplementationName); });
-	sqliteDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::SqliteDatabase::databaseImplementationName); });
-	redisDatabase.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::RedisDatabase::databaseImplementationName); });
+	py::class_<framework::SqliteDatabase>(m, "SqliteDatabase")
+		.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::SqliteDatabase::databaseImplementationName); });
 
-	py::class_<framework::task_broker::CXXApi> cxxApi(m, "CXXApi");
-	py::class_<framework::task_broker::CCApi> ccApi(m, "CCApi");
-	py::class_<framework::task_broker::PythonApi> pythonApi(m, "PythonApi");
-	py::class_<framework::task_broker::CSharpApi> csharpApi(m, "CSharpApi");
+	py::class_<framework::RedisDatabase>(m, "RedisDatabase")
+		.def_property_readonly_static("database_implementation_name", [](py::object self) { return std::string(framework::RedisDatabase::databaseImplementationName); });
 
-	cxxApi.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CXXApi::taskBrokerApi); });
-	ccApi.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CCApi::taskBrokerApi); });
-	pythonApi.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::PythonApi::taskBrokerApi); });
-	csharpApi.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CSharpApi::taskBrokerApi); });
+	py::class_<framework::task_broker::CXXApi>(m, "CXXApi")
+		.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CXXApi::taskBrokerApi); });
 
-	py::class_<framework::task_broker::Internal> internalTaskBroker(m, "Internal");
-	py::class_<framework::task_broker::RabbitMq> rabbitMqTaskBroker(m, "RabbitMQ");
-	py::class_<framework::task_broker::ApacheKafka> apacheKafkaTaskBroker(m, "ApacheKafka");
+	py::class_<framework::task_broker::CCApi>(m, "CCApi")
+		.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CCApi::taskBrokerApi); });
 
-	internalTaskBroker.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::Internal::taskBrokerName); });
-	rabbitMqTaskBroker.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::RabbitMq::taskBrokerName); });
-	apacheKafkaTaskBroker.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::ApacheKafka::taskBrokerName); });
+	py::class_<framework::task_broker::PythonApi>(m, "PythonApi")
+		.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::PythonApi::taskBrokerApi); });
+
+	py::class_<framework::task_broker::CSharpApi>(m, "CSharpApi")
+		.def_property_readonly_static("task_broker_api", [](py::object self) { return std::string(framework::task_broker::CSharpApi::taskBrokerApi); });
+
+	py::class_<framework::task_broker::Internal>(m, "Internal")
+		.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::Internal::taskBrokerName); });
+
+	py::class_<framework::task_broker::RabbitMq>(m, "RabbitMQ")
+		.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::RabbitMq::taskBrokerName); });
+
+	py::class_<framework::task_broker::ApacheKafka>(m, "ApacheKafka")
+		.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::ApacheKafka::taskBrokerName); });
 
 	m.def
 	(
@@ -125,10 +129,28 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_task_name", &framework::task_broker::IPyTaskSerializer::getTaskName);
 
 	py::class_<framework::task_broker::PyTaskSerializerCxx, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCxx")
-		.def(py::init());
+		.def
+		(
+			py::init
+			(
+				[](py::args args, py::kwargs kwargs)
+				{
+					return new framework::task_broker::PyTaskSerializerCxx();
+				}
+			)
+		);
 
 	py::class_<framework::task_broker::PyTaskSerializerCc, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCc")
-		.def(py::init());
+		.def
+		(
+			py::init
+			(
+				[](py::args args, py::kwargs kwargs)
+				{
+					return new framework::task_broker::PyTaskSerializerCc();
+				}
+			)
+		);
 
 	py::class_<framework::task_broker::PyTaskSerializer, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializer")
 		.def
@@ -143,7 +165,16 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		);
 
 	py::class_<framework::task_broker::PyTaskSerializerCSharp, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCSharp")
-		.def(py::init());
+		.def
+		(
+			py::init
+			(
+				[](py::args args, py::kwargs kwargs)
+				{
+					return new framework::task_broker::PyTaskSerializerCSharp();
+				}
+			)
+		);
 
 	py::class_<framework::utility::ExecutorSettings> executorSettings(m, "ExecutorSettings");
 
@@ -286,7 +317,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_or_create_database",
-			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, py::handle databaseImplementationClass)
+			[](const framework::utility::ExecutorSettings& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -310,7 +341,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_database",
-			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, py::handle databaseImplementationClass)
+			[](const framework::utility::ExecutorSettings& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -334,7 +365,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_or_create_table",
-			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::handle databaseImplementationClass)
+			[](const framework::utility::ExecutorSettings& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -358,7 +389,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_table",
-			[defaultDatabase, sqliteDatabase, redisDatabase](const framework::utility::ExecutorSettings& self, std::string_view databaseName, std::string_view tableName, py::handle databaseImplementationClass)
+			[](const framework::utility::ExecutorSettings& self, std::string_view databaseName, std::string_view tableName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -667,7 +698,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_or_create_database",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
+			[](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -691,7 +722,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_database",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
+			[](framework::HttpRequest& self, std::string_view databaseName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -715,7 +746,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_or_create_table",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::handle databaseImplementationClass)
+			[](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -739,7 +770,7 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"get_table",
-			[defaultDatabase, sqliteDatabase, redisDatabase](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, py::handle databaseImplementationClass)
+			[](framework::HttpRequest& self, std::string_view databaseName, std::string_view tableName, py::handle databaseImplementationClass)
 			{
 				if (databaseImplementationClass.is_none() || databaseImplementationClass.is(py::type::of<framework::DefaultDatabase>()))
 				{
@@ -763,14 +794,87 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def
 		(
 			"enqueue_task",
-			[](framework::HttpRequest& self, py::type messageBrokerType, py::type serializerType, py::kwargs kwargs)
+			[](framework::HttpRequest& self, py::type messageBrokerClass, py::type serializerClass, py::kwargs kwargs)
 			{
-				py::object serializer = serializerType(**kwargs);
-				framework::task_broker::PyTaskSerializerWrapper<framework::task_broker::PythonApi> wrapper(serializer);
+				using namespace framework::task_broker;
 
-				self.enqueueTask<framework::task_broker::Internal>(wrapper);
+				py::object serializer = serializerClass(**kwargs);
+
+				if (messageBrokerClass.is(py::type::of<Internal>()))
+				{
+					if (py::isinstance<PyTaskSerializerCxx>(serializer))
+					{
+						self.enqueueTask<Internal, PyTaskSerializerWrapper<CXXApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializerCc>(serializer))
+					{
+						self.enqueueTask<Internal, PyTaskSerializerWrapper<CCApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializer>(serializer))
+					{
+						self.enqueueTask<Internal, PyTaskSerializerWrapper<PythonApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializerCSharp>(serializer))
+					{
+						self.enqueueTask<Internal, PyTaskSerializerWrapper<CSharpApi>>(serializer);
+					}
+					else
+					{
+						throw std::runtime_error(std::format("Wrong serializer_class: {}", py::repr(serializerClass).cast<std::string>()));
+					}
+				}
+				else if (messageBrokerClass.is(py::type::of<RabbitMq>()))
+				{
+					if (py::isinstance<PyTaskSerializerCxx>(serializer))
+					{
+						self.enqueueTask<RabbitMq, PyTaskSerializerWrapper<CXXApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializerCc>(serializer))
+					{
+						self.enqueueTask<RabbitMq, PyTaskSerializerWrapper<CCApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializer>(serializer))
+					{
+						self.enqueueTask<RabbitMq, PyTaskSerializerWrapper<PythonApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializerCSharp>(serializer))
+					{
+						self.enqueueTask<RabbitMq, PyTaskSerializerWrapper<CSharpApi>>(serializer);
+					}
+					else
+					{
+						throw std::runtime_error(std::format("Wrong serializer_class: {}", py::repr(serializerClass).cast<std::string>()));
+					}
+				}
+				else if (messageBrokerClass.is(py::type::of<ApacheKafka>()))
+				{
+					if (py::isinstance<PyTaskSerializerCxx>(serializer))
+					{
+						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<CXXApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializerCc>(serializer))
+					{
+						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<CCApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializer>(serializer))
+					{
+						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<PythonApi>>(serializer);
+					}
+					else if (py::isinstance<PyTaskSerializerCSharp>(serializer))
+					{
+						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<CSharpApi>>(serializer);
+					}
+					else
+					{
+						throw std::runtime_error(std::format("Wrong serializer_class: {}", py::repr(serializerClass).cast<std::string>()));
+					}
+				}
+				else
+				{
+					throw std::runtime_error(std::format("Wrong message_broker_class: {}", py::repr(messageBrokerClass).cast<std::string>()));
+				}
 			},
-			"message_broker_type"_a, "serializer_type"_a
+			"message_broker_class"_a, "serializer_class"_a
 		);
 
 	py::class_<framework::StatelessExecutor, framework::PyStatelessExecutor>(m, "StatelessExecutor")

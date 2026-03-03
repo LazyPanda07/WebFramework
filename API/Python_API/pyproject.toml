@@ -29,7 +29,6 @@ classifiers = [
 build.verbose = true
 build.tool-args = ["-j0"]
 cmake.args = ["-DCMAKE_BUILD_TYPE=Release", "-G", "Ninja"]
-wheel.py-api = "py3"
 sdist.include = [
   "cxx/include/*.hpp",
   "lib/*.so",
