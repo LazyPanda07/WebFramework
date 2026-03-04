@@ -1,5 +1,7 @@
 #include "http_request.h"
 
+#include "json_object.h"
+
 typedef struct file_buffer
 {
 	char** data;
@@ -707,6 +709,33 @@ web_framework_exception_t wf_send_file_chunks(http_request_t implementation, htt
 	typedef void (*sendFileChunks)(void* implementation, void* response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendFileChunks, response, fileName, chunkGenerator, data, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_enqueue_task(http_request_t implementation, const char* messageBrokerName, const char* taskExecutorApi, const char* taskExecutorName, void* taskStruct, void(*serializeTask)(void* taskStruct, json_object_t* serializedArguments))
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*enqueueTask)(void* implementation, const char* messageBrokerName, void* jsonObjectData, void** exception);
+
+	json_object_t jsonObjectData;
+	json_object_t arguments;
+	json_object_t api;
+	json_object_t name;
+	
+	wf_create_json_object(&jsonObjectData);
+
+	wf_assign_json_object(&jsonObjectData, "arguments", &arguments);
+	wf_assign_json_object(&jsonObjectData, "api", &api);
+	wf_assign_json_object(&jsonObjectData, "name", &name);
+	
+	wf_set_json_object_string(&api, taskExecutorApi);
+	wf_set_json_object_string(&name, taskExecutorName);
+
+	serializeTask(taskStruct, &arguments);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(enqueueTask, messageBrokerName, jsonObjectData.implementation, &exception);
 
 	return exception;
 }

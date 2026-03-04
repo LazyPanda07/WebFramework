@@ -89,9 +89,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	py::class_<framework::task_broker::RabbitMq>(m, "RabbitMQ")
 		.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::RabbitMq::taskBrokerName); });
 
-	py::class_<framework::task_broker::ApacheKafka>(m, "ApacheKafka")
-		.def_property_readonly_static("task_broker_name", [](py::object self) { return std::string(framework::task_broker::ApacheKafka::taskBrokerName); });
-
 	m.def
 	(
 		"initialize_web_framework",
@@ -840,29 +837,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 					else if (py::isinstance<PyTaskSerializerCSharp>(serializer))
 					{
 						self.enqueueTask<RabbitMq, PyTaskSerializerWrapper<CSharpApi>>(serializer);
-					}
-					else
-					{
-						throw std::runtime_error(std::format("Wrong serializer_class: {}", py::repr(serializerClass).cast<std::string>()));
-					}
-				}
-				else if (messageBrokerClass.is(py::type::of<ApacheKafka>()))
-				{
-					if (py::isinstance<PyTaskSerializerCxx>(serializer))
-					{
-						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<CXXApi>>(serializer);
-					}
-					else if (py::isinstance<PyTaskSerializerCc>(serializer))
-					{
-						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<CCApi>>(serializer);
-					}
-					else if (py::isinstance<PyTaskSerializer>(serializer))
-					{
-						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<PythonApi>>(serializer);
-					}
-					else if (py::isinstance<PyTaskSerializerCSharp>(serializer))
-					{
-						self.enqueueTask<ApacheKafka, PyTaskSerializerWrapper<CSharpApi>>(serializer);
 					}
 					else
 					{

@@ -1,4 +1,4 @@
-#include "C_API/WebFrameworkExecutorsCAPI.h"
+#include "C_API/WebFrameworkExecutorsCApi.h"
 
 #include <Log.h>
 #include <JsonBuilder.h>
@@ -886,6 +886,22 @@ void sendFileChunks(HttpRequestObject request, HttpResponseObject response, cons
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->sendFileChunks(static_cast<framework::interfaces::IHttpResponse*>(response), fileName, data, chunkGenerator);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void enqueueTask(HttpRequestObject request, const char* messageBrokerName, void* jsonObjectData, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->enqueueTask(messageBrokerName, jsonObjectData);
 	}
 	catch (const std::exception& e)
 	{

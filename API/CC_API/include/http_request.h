@@ -458,12 +458,24 @@ web_framework_exception_t wf_send_chunks(http_request_t implementation, http_res
 web_framework_exception_t wf_send_file_chunks(http_request_t implementation, http_response_t response, const char* file_name, const char* (*chunk_generator)(void* data, size_t* size), void* data);
 
 /**
+ * @brief Add task to task broker
+ * @param implementation http_request_t instance
+ * @param messageBrokerName Macro from task_broker/task_brokers.h
+ * @param taskStruct You custom struct for serializing to JSON parameters and then executes with task executor
+ * @param taskExecutorApi Macro from task_broker/task_apis.h
+ * @param taskExecutorName Name of task executor
+ * @param serializeTask Function that serialize taskStruct into JSON
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_enqueue_task(http_request_t implementation, const char* messageBrokerName, const char* taskExecutorApi, const char* taskExecutorName, void* taskStruct, void(*serializeTask)(void* taskStruct, json_object_t* serializedArguments));
+
+/**
  * @brief Return from function with message and HTTP response code. Used for throwing errors
  * @param implementation http_request_t instance
  * @param exceptionMessage Error message
  * @param responseCode HTTP response code
  * @param logCategory Log category for logging
  * @param exceptionHash Same errors must have same hash
- * @return 
+ * @return Error if occurred
  */
 web_framework_exception_t wf_throw_web_framework_exception(http_request_t implementation, const char* exception_message, response_codes_t response_code, const char* log_category, size_t exception_hash);

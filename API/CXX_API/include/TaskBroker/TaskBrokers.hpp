@@ -13,9 +13,4 @@ namespace framework::task_broker
 	{
 		static inline constexpr std::string_view taskBrokerName = "RabbitMQ";
 	};
-
-	struct ApacheKafka
-	{
-		static inline constexpr std::string_view taskBrokerName = "Apache Kafka";
-	};
 }

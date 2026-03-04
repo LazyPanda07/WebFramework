@@ -113,10 +113,10 @@ add_library(
 	WebFramework/src/Web/Servers/ExecutorServer.cpp
 	WebFramework/src/Framework/Config.cpp
 	WebFramework/src/Framework/WebFramework.cpp
-	WebFramework/src/C_API/WebFrameworkCAPI.cpp
-	WebFramework/src/C_API/WebFrameworkExecutorsCAPI.cpp
-	WebFramework/src/C_API/WebFrameworkUtilityCAPI.cpp
-	WebFramework/src/C_API/WebFrameworkLocalizationCAPI.cpp
+	WebFramework/src/C_API/WebFrameworkCApi.cpp
+	WebFramework/src/C_API/WebFrameworkExecutorsCApi.cpp
+	WebFramework/src/C_API/WebFrameworkUtilityCApi.cpp
+	WebFramework/src/C_API/WebFrameworkLocalizationCApi.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp

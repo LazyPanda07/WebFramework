@@ -81,7 +81,7 @@
     <ClCompile Include="src\Proxy\ProxyServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\C_API\WebFrameworkCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkCApi.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\DynamicLibraries.cpp">
@@ -126,16 +126,16 @@
     <ClCompile Include="src\Executors\CXXExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\C_API\WebFrameworkExecutorsCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkExecutorsCApi.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\C_API\WebFrameworkUtilityCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkUtilityCApi.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\APIException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\C_API\WebFrameworkLocalizationCAPI.cpp">
+    <ClCompile Include="src\C_API\WebFrameworkLocalizationCApi.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp">
@@ -299,7 +299,7 @@
     <ClInclude Include="include\Proxy\ProxyServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\C_API\WebFrameworkCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkCApi.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Utility\DynamicLibraries.h">
@@ -347,16 +347,16 @@
     <ClInclude Include="include\Executors\CXXExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\C_API\WebFrameworkExecutorsCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkExecutorsCApi.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\C_API\WebFrameworkUtilityCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkUtilityCApi.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Exceptions\APIException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\C_API\WebFrameworkLocalizationCAPI.h">
+    <ClInclude Include="include\C_API\WebFrameworkLocalizationCApi.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\LoadBalancer\Heuristics\CXXHeuristic.h">

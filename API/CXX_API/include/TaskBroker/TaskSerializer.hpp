@@ -42,11 +42,12 @@ namespace framework::task_broker
 	template<TaskBrokerApiImplementation T>
 	inline JsonObject TaskSerializer<T>::serialize() const
 	{
-		JsonObject arguments = this->serializeArguments();
+		JsonObject result;
+		
+		result["arguments"] = this->serializeArguments();
+		result["api"] = T::taskBrokerApi;
+		result["name"] = this->getTaskName();
 
-		arguments["api"] = T::taskBrokerApi;
-		arguments["name"] = this->getTaskName();
-
-		return arguments;
+		return result;
 	}
 }

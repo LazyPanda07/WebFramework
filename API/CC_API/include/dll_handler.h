@@ -15,6 +15,12 @@ typedef void* HMODULE;
 #include <Windows.h>
 #endif
 
+#ifdef __LINUX__
+#define WEB_FRAMEWORK_FUNCTIONS_API __attribute__((visibility("default"))) __attribute__((used))
+#else
+#define WEB_FRAMEWORK_FUNCTIONS_API __declspec(dllexport)
+#endif
+
 #define CALL_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)wf_find_function(#functionName))(__VA_ARGS__)
 #define CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(functionName, ...) ((functionName)wf_find_function(#functionName))(implementation, __VA_ARGS__)
 
@@ -79,7 +85,7 @@ void wf_delete_json_parser(json_parser_t parser);
  */
 const char* wf_get_data_from_string(web_framework_string_t string);
 
-#define DEFINE_INITIALIZE_WEB_FRAMEWORK() WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath) \
+#define DEFINE_INITIALIZE_WEB_FRAMEWORK() WEB_FRAMEWORK_FUNCTIONS_API void initializeWebFrameworkCC(const char* webFrameworkSharedLibraryPath) \
 { \
 	wf_initialize_web_framework(webFrameworkSharedLibraryPath); \
 }

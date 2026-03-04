@@ -108,6 +108,8 @@ EXPORT void sendChunks(HttpRequestObject request, HttpResponseObject response, c
 
 EXPORT void sendFileChunks(HttpRequestObject request, HttpResponseObject response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, Exception* exception);
 
+EXPORT void enqueueTask(HttpRequestObject request, const char* messageBrokerName, void* jsonObjectData, Exception* exception); // invalidate jsonObjectData
+
 EXPORT void throwWebFrameworkException(HttpRequestObject request, const char* errorMessage, int64_t responseCode, const char* logCategory, size_t exceptionHash, Exception* exception);
 
 EXPORT void setExceptionData(HttpRequestObject request, const char* errorMessage, int32_t responseCode, const char* logCategory);

@@ -132,9 +132,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\C_API\WebFrameworkExecutorsCAPI.cpp" />
-    <ClCompile Include="src\C_API\WebFrameworkLocalizationCAPI.cpp" />
-    <ClCompile Include="src\C_API\WebFrameworkUtilityCAPI.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkExecutorsCApi.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkLocalizationCApi.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkUtilityCApi.cpp" />
     <ClCompile Include="src\Databases\DatabaseImplementation.cpp" />
     <ClCompile Include="src\Databases\SQLResultImplementation.cpp" />
     <ClCompile Include="src\Databases\SQLValueImplementation.cpp" />
@@ -147,7 +147,7 @@
     <ClCompile Include="src\Executors\CSharpExecutor.cpp" />
     <ClCompile Include="src\Executors\PythonExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
-    <ClCompile Include="src\C_API\WebFrameworkCAPI.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkCApi.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CSharpHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
@@ -204,9 +204,9 @@
     <ClCompile Include="src\Web\Servers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\C_API\WebFrameworkExecutorsCAPI.h" />
-    <ClInclude Include="include\C_API\WebFrameworkLocalizationCAPI.h" />
-    <ClInclude Include="include\C_API\WebFrameworkUtilityCAPI.h" />
+    <ClInclude Include="include\C_API\WebFrameworkExecutorsCApi.h" />
+    <ClInclude Include="include\C_API\WebFrameworkLocalizationCApi.h" />
+    <ClInclude Include="include\C_API\WebFrameworkUtilityCApi.h" />
     <ClInclude Include="include\Databases\DatabaseImplementation.h" />
     <ClInclude Include="include\Databases\SQLResultImplementation.h" />
     <ClInclude Include="include\Databases\SQLValueImplementation.h" />
@@ -219,7 +219,7 @@
     <ClInclude Include="include\Executors\CSharpExecutor.h" />
     <ClInclude Include="include\Executors\PythonExecutor.h" />
     <ClInclude Include="include\Framework\Config.h" />
-    <ClInclude Include="include\C_API\WebFrameworkCAPI.h" />
+    <ClInclude Include="include\C_API\WebFrameworkCApi.h" />
     <ClInclude Include="include\LoadBalancer\Heuristics\CSharpHeuristic.h" />
     <ClInclude Include="include\LoadBalancer\Heuristics\PythonHeuristic.h" />
     <ClInclude Include="include\Managers\TaskBrokersManager.h" />

@@ -102,6 +102,7 @@
     <ClCompile Include="src\json_object.c" />
     <ClCompile Include="src\json_parser.c" />
     <ClCompile Include="src\load_balancer_heuristic.c" />
+    <ClCompile Include="src\task_broker\task_executor.c" />
     <ClCompile Include="src\utility\web_framework_localization.c" />
     <ClCompile Include="src\utility\web_framework_utility.c" />
     <ClCompile Include="src\web_framework.c" />
@@ -124,6 +125,9 @@
     <ClInclude Include="include\json_object.h" />
     <ClInclude Include="include\json_parser.h" />
     <ClInclude Include="include\load_balancer_heuristic.h" />
+    <ClInclude Include="include\task_broker\task_apis.h" />
+    <ClInclude Include="include\task_broker\task_brokers.h" />
+    <ClInclude Include="include\task_broker\task_executor.h" />
     <ClInclude Include="include\utility\web_framework_localization.h" />
     <ClInclude Include="include\utility\web_framework_utility.h" />
     <ClInclude Include="include\web_framework.h" />
