@@ -33,9 +33,26 @@ int main(int argc, char** argv) try
 
 	unit_test_utils::updateConfigRuntimes(serverConfig, consoleParser);
 
-	unit_test_utils::ProcessWrapper server(unit_test_utils::ProcessWrapper(unit_test_utils::splitArguments(consoleParser.getRequired<std::string>("run_arguments"), serverConfig)));
 	unit_test_utils::ProcessWrapper defaultHttpsServer = unit_test_utils::ProcessWrapper::runDefaultHttpsServer();
 
+	if (consoleParser.get<bool>("manual"))
+	{
+		testing::InitGoogleTest(&argc, argv);
+
+		createLargeFile();
+
+		int result = RUN_ALL_TESTS();
+
+		if (result)
+		{
+			printLog();
+		}
+
+		return 0;
+	}
+
+	unit_test_utils::ProcessWrapper server(unit_test_utils::ProcessWrapper(unit_test_utils::splitArguments(consoleParser.getRequired<std::string>("run_arguments"), serverConfig)));
+	
 	testing::InitGoogleTest(&argc, argv);
 
 	createLargeFile();
