@@ -125,14 +125,12 @@ namespace framework
 
 	CSharpExecutor::~CSharpExecutor()
 	{
-		if (!implementation)
+		if (implementation)
 		{
-			return;
+			runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().free(implementation);
+
+			implementation = nullptr;
 		}
-
-		runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>().free(implementation);
-
-		implementation = nullptr;
 	}
 }
 

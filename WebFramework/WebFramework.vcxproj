@@ -167,6 +167,7 @@
     <ClCompile Include="src\Runtimes\Runtime.cpp" />
     <ClCompile Include="src\TaskBroker\TaskConsumer.cpp" />
     <ClCompile Include="src\TaskBroker\TaskExecutors\CCTaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\CSharpTaskExecutor.cpp" />
     <ClCompile Include="src\TaskBroker\TaskExecutors\CXXTaskExecutor.cpp" />
     <ClCompile Include="src\TaskBroker\TaskExecutors\PythonTaskExecutor.cpp" />
     <ClCompile Include="src\TaskBroker\TaskExecutors\TaskExecutor.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="include\Runtimes\DotNetRuntime.h" />
     <ClInclude Include="include\TaskBroker\TaskConsumer.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutors\CCTaskExecutor.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\CSharpTaskExecutor.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutors\CXXTaskExecutor.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutors\PythonTaskExecutor.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutors\TaskExecutor.h" />

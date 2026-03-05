@@ -33,6 +33,7 @@ namespace framework::runtime
 		using FreeSignature = void(*)(void* implementation);
 		using InitSignature = void(*)(void* executor, void* implementation);
 		using CreateExecutorSignature = void* (*)(const char* executorName);
+		using CreateTaskExecutorSignature = void* (*)(const char* executorName);
 		using CreateDynamicFunctionSignature = void* (*)(const char* dynamicFunctionName);
 		using CreateHeuristicFunctionSignature = void* (*)(const char* heuristicName, const char* ip, const char* port, bool useHTTPS);
 		using CreateHttpRequestSignature = void* (*)(void* implementation);
@@ -42,6 +43,7 @@ namespace framework::runtime
 		using DestroySignature = void(*)(void* implementation);
 		using EventSignature = void(*)(void* implementation);
 		using CallHeuristicSignature = uint64_t(*)(void* implementation);
+		using CallTaskExecutorSignature = void(*)(void* implementation, void* jsonObjectData);
 
 	private:
 		static std::filesystem::path getPathToRuntimeConfig();
@@ -68,6 +70,7 @@ namespace framework::runtime
 		FreeSignature dotNetFree;
 		FreeSignature dotNetDealloc;
 		CreateExecutorSignature createExecutorFunction;
+		CreateTaskExecutorSignature createTaskExecutorFunction;
 		CreateHttpRequestSignature createHttpRequest;
 		CreateHttpResponceSignature createHttpResponse;
 		CreateExecutorSettingsSignature createExecutorSettingsFunction;
@@ -89,6 +92,7 @@ namespace framework::runtime
 		EventSignature onStartHeuristic;
 		EventSignature onEndHeuristic;
 		CallHeuristicSignature callHeuristic;
+		CallTaskExecutorSignature callTaskExecutor;
 
 	private:
 		void loadFunctions(const std::filesystem::path& pathToSource);
@@ -135,6 +139,8 @@ namespace framework::runtime
 		EventSignature getOnEndHeuristic() const;
 
 		CallHeuristicSignature getCallHeuristic() const;
+
+		CallTaskExecutorSignature getCallTaskExecutor() const;
 
 	public:
 		void free(void* implementation) const;

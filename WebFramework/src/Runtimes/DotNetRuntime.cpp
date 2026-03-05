@@ -15,6 +15,7 @@
 #ifdef __WITH_DOTNET_EXECUTORS__
 
 #include "Executors/CSharpExecutor.h"
+#include "TaskBroker/TaskExecutors/CSharpTaskExecutor.h"
 
 static void errorHandler(const char_t* message)
 {
@@ -105,6 +106,7 @@ namespace framework::runtime
 		this->loadMethod(typeName, "Dealloc", dotNetDealloc);
 		this->loadMethod(typeName, "Init", init);
 		this->loadMethod(typeName, "CreateExecutor", createExecutorFunction);
+		this->loadMethod(typeName, "CreateTaskExecutor", createTaskExecutorFunction);
 		this->loadMethod(typeName, "CreateDynamicFunction", createDynamicFunction);
 		this->loadMethod(typeName, "CreateHeuristic", createHeuristic);
 		this->loadMethod(typeName, "CreateHttpRequest", createHttpRequest);
@@ -127,6 +129,7 @@ namespace framework::runtime
 		this->loadMethod(typeName, "CallHeuristicOnStart", onStartHeuristic);
 		this->loadMethod(typeName, "CallHeuristicOnEnd", onEndHeuristic);
 		this->loadMethod(typeName, "CallHeuristicInvoke", callHeuristic);
+		this->loadMethod(typeName, "CallTaskExecutorInvoke", callTaskExecutor);
 	}
 
 	template<FunctionPointer T>
@@ -235,6 +238,11 @@ namespace framework::runtime
 		return callHeuristic;
 	}
 
+	DotNetRuntime::CallTaskExecutorSignature DotNetRuntime::getCallTaskExecutor() const
+	{
+		return callTaskExecutor;
+	}
+
 	void DotNetRuntime::free(void* implementation) const
 	{
 		dotNetFree(implementation);
@@ -250,6 +258,7 @@ namespace framework::runtime
 		dotNetFree(nullptr),
 		dotNetDealloc(nullptr),
 		createExecutorFunction(nullptr),
+		createTaskExecutorFunction(nullptr),
 		createHttpRequest(nullptr),
 		createHttpResponse(nullptr),
 		createExecutorSettingsFunction(nullptr),
@@ -270,7 +279,8 @@ namespace framework::runtime
 		callDynamicFunction(nullptr),
 		onStartHeuristic(nullptr),
 		onEndHeuristic(nullptr),
-		callHeuristic(nullptr)
+		callHeuristic(nullptr),
+		callTaskExecutor(nullptr)
 	{
 		constexpr size_t envSize = 512;
 
@@ -354,7 +364,23 @@ namespace framework::runtime
 
 	std::unique_ptr<task_broker::TaskExecutor> DotNetRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
 	{
-		return nullptr;
+		if (!std::holds_alternative<std::filesystem::path>(source))
+		{
+			return nullptr;
+		}
+
+		const std::filesystem::path& modulePath = std::get<std::filesystem::path>(source);
+		NativeString moduleName = DotNetRuntime::getModuleName(modulePath);
+		std::string fullQualifiedName = std::format("{}, {}", name, moduleName.string());
+
+		// TODO: check
+
+		if (Log::isValid())
+		{
+			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, modulePath.string());
+		}
+
+		return std::make_unique<task_broker::CSharpTaskExecutor>(createTaskExecutorFunction(fullQualifiedName.data()));
 	}
 
 	void DotNetRuntime::finishInitialization()

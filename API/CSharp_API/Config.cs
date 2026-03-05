@@ -13,56 +13,56 @@ public sealed unsafe partial class Config : IDisposable
 	public unsafe readonly void* implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void* createConfigFromPath(string configPath, ref void* exception);
+	private static partial void* createConfigFromPath(string configPath, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void* createConfigFromString(string serverConfiguration, string applicationDirectory, ref void* exception);
+	private static partial void* createConfigFromString(string serverConfiguration, string applicationDirectory, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void overrideConfigurationString(void* implementation, string key, string value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+	private static partial void overrideConfigurationString(void* implementation, string key, string value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void overrideConfigurationInteger(void* implementation, string key, long value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+	private static partial void overrideConfigurationInteger(void* implementation, string key, long value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void overrideConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+	private static partial void overrideConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void overrideConfigurationStringArray(void* implementation, string key, [In] string[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
+	private static partial void overrideConfigurationStringArray(void* implementation, string key, [In] string[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void overrideConfigurationIntegerArray(void* implementation, string key, [In] long[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
+	private static partial void overrideConfigurationIntegerArray(void* implementation, string key, [In] long[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void overrideBasePath(void* implementation, string basePath, ref void* exception);
+	private static partial void overrideBasePath(void* implementation, string basePath, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void* getConfigurationString(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+	private static partial void* getConfigurationString(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial long getConfigurationInteger(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+	private static partial long getConfigurationInteger(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static unsafe partial bool getConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
+	private static partial bool getConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void* getConfiguration(void* implementation, ref void* exception);
+	private static partial void* getConfiguration(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial char* getRawConfiguration(void* implementation, ref void* exception);
+	private static partial char* getRawConfiguration(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial char* getDataFromString(void* implementation);
+	private static partial char* getDataFromString(void* implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void* getBasePath(void* implementation, ref void* exception);
+	private static partial void* getBasePath(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void deleteWebFrameworkConfig(void* implementation);
+	private static partial void deleteWebFrameworkConfig(void* implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void deleteWebFrameworkString(void* implementation);
+	private static partial void deleteWebFrameworkString(void* implementation);
 
 	/// <summary>
 	/// 

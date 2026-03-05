@@ -1,11 +1,14 @@
 ﻿namespace Framework.Utility;
 
 using Framework.Exceptions;
+using Framework.TaskBroker;
 using System;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json.Nodes;
+using System.Xml.Linq;
 
 public struct LargeData
 {
@@ -110,12 +113,21 @@ public enum ResponseCodes
 	InvalidSSLCertificate
 }
 
-public static class Utils
+public static partial class Utils
 {
 	private static readonly ConcurrentDictionary<string, Type?> executorTypeCache = [];
 	private static readonly ConcurrentDictionary<Type, Func<object>> executorConstructorCache = [];
 	private static readonly ConcurrentDictionary<string, Type?> dynamicFunctionTypeCache = [];
 	private static readonly ConcurrentDictionary<Type, Func<object>> dynamicFunctionConstructorCache = [];
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr jsonObjectToString(IntPtr implementation, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getDataFromString(IntPtr implementation);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
 	private static bool CallDoMethod(IntPtr executor, IntPtr httpRequest, IntPtr httpResponse, Action<Executor, HttpRequest, HttpResponse> method)
 	{
@@ -225,6 +237,30 @@ public static class Utils
 
 		object instance = constructor();
 
+		GCHandle handle = GCHandle.Alloc(instance);
+
+		return GCHandle.ToIntPtr(handle);
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CreateTaskExecutor")]
+	public static IntPtr CreateTaskExecutor(IntPtr fullName)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(fullName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return IntPtr.Zero;
+		}
+
+		Type? type = Type.GetType(typeName, throwOnError: false);
+
+		if (type == null)
+		{
+			return IntPtr.Zero;
+		}
+
+		NewExpression expression = Expression.New(type);
+		object instance = Expression.Lambda<Func<object>>(expression).Compile()();
 		GCHandle handle = GCHandle.Alloc(instance);
 
 		return GCHandle.ToIntPtr(handle);
@@ -464,5 +500,32 @@ public static class Utils
 		}
 
 		return (nint)loadBalancerHeuristic.Invoke();
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CallTaskExecutorInvoke")]
+	public static void CallTaskExecutorInvoke(IntPtr executor, IntPtr jsonObjectData)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(executor);
+		
+		if (handle.Target is not ITaskExecutor taskExecutor)
+		{
+			return;
+		}
+
+		IntPtr exception = IntPtr.Zero;
+		IntPtr stringData = jsonObjectToString(jsonObjectData, ref exception);
+		
+		if (exception != IntPtr.Zero)
+		{
+			// TODO: Throw exception
+			// throw new WebFrameworkException(exception);
+		}
+
+		string jsonData = Marshal.PtrToStringUTF8(getDataFromString(stringData))!;
+		JsonObject data = JsonNode.Parse(jsonData)!.AsObject();
+
+		deleteWebFrameworkString(stringData);
+
+		taskExecutor.Invoke(data);
 	}
 }

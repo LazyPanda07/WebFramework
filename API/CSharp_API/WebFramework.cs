@@ -13,35 +13,35 @@ public sealed unsafe partial class WebFramework : IDisposable
 	private readonly unsafe void* implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial char* getWebFrameworkVersion();
+	private static partial char* getWebFrameworkVersion();
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void* createWebFrameworkFromPath(string configPath, ref void* exception);
+	private static partial void* createWebFrameworkFromPath(string configPath, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void* createWebFrameworkFromString(string serverConfiguration, string applicationDirectory, ref void* exception);
+	private static partial void* createWebFrameworkFromString(string serverConfiguration, string applicationDirectory, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void* createWebFrameworkFromConfig(void* config, ref void* exception);
+	private static partial void* createWebFrameworkFromConfig(void* config, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void startWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, IntPtr onStartServer, ref void* exception);
+	private static partial void startWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, IntPtr onStartServer, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void kickWebFrameworkServer(void* implementation, string ip, ref void* exception);
+	private static partial void kickWebFrameworkServer(void* implementation, string ip, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void updateSslCertificatesWebFrameworkServer(void* implementation, ref void* exception);
+	private static partial void updateSslCertificatesWebFrameworkServer(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void stopWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, ref void* exception);
+	private static partial void stopWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static unsafe partial bool isServerRunning(void* implementation, ref void* exception);
+	private static partial bool isServerRunning(void* implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void deleteWebFramework(void* implementation);
+	private static partial void deleteWebFramework(void* implementation);
 
 	/// <summary>
 	/// Get WebFramework version

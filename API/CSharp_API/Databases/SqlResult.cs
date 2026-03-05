@@ -16,7 +16,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	private delegate void IterateCallback(IntPtr columnNames, IntPtr columnValues, nuint size, nuint index, IntPtr buffer);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void iterateSQLResult(IntPtr implementation, InitBufferCallback initBuffer, IterateCallback iterate, IntPtr buffer, ref void* exception);
+	private static partial void iterateSQLResult(IntPtr implementation, InitBufferCallback initBuffer, IterateCallback iterate, IntPtr buffer, ref void* exception);
 
 	public SqlResult(IntPtr implementation)
 	{

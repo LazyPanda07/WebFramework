@@ -10,13 +10,13 @@ using Framework.Utility;
 /// <param name="implementation"></param>
 public sealed unsafe partial class WebFrameworkException(void* implementation) : Exception, IDisposable
 {
-	private readonly unsafe void* implementation = implementation;
+	private readonly void* implementation = implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial char* getErrorMessage(void* implementation);
+	private static partial char* getErrorMessage(void* implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void deleteWebFrameworkException(void* implementation);
+	private static partial void deleteWebFrameworkException(void* implementation);
 
 	public void Dispose() => deleteWebFrameworkException(implementation);
 
