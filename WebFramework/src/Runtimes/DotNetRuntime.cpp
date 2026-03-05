@@ -69,8 +69,17 @@ namespace framework::runtime
 		std::filesystem::path libraryDirectoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		std::filesystem::path executableDirectoryPath = utility::getExecutablePath().parent_path();
 		std::filesystem::path result;
+		std::filesystem::path environmentPath = std::getenv("WEB_FRAMEWORK_CSHARP_API_PATH");
 
-		if (std::filesystem::exists(executableDirectoryPath / apiName))
+		if (std::filesystem::exists(environmentPath))
+		{
+			result = environmentPath;
+		}
+		else if (std::filesystem::exists(environmentPath / apiName))
+		{
+			result = environmentPath / apiName;
+		}
+		else if (std::filesystem::exists(executableDirectoryPath / apiName))
 		{
 			result = executableDirectoryPath / apiName;
 		}
