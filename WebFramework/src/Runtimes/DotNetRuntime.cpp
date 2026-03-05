@@ -66,20 +66,35 @@ namespace framework::runtime
 	{
 		constexpr std::string_view apiName = "WebFrameworkCSharpAPI.dll";
 
+		if (char* envApiPath = std::getenv("WEB_FRAMEWORK_CSHARP_API_PATH"))
+		{
+			std::filesystem::path environmentPath = envApiPath;
+
+			if (std::filesystem::exists(environmentPath))
+			{
+				if (Log::isValid())
+				{
+					Log::info("Found {}", "LogWebFrameworkInitialization", environmentPath.string());
+				}
+
+				return environmentPath;
+			}
+			else if (std::filesystem::exists(environmentPath / apiName))
+			{
+				if (Log::isValid())
+				{
+					Log::info("Found {}", "LogWebFrameworkInitialization", (environmentPath / apiName).string());
+				}
+
+				return environmentPath / apiName;
+			}
+		}
+
 		std::filesystem::path libraryDirectoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		std::filesystem::path executableDirectoryPath = utility::getExecutablePath().parent_path();
 		std::filesystem::path result;
-		std::filesystem::path environmentPath = std::getenv("WEB_FRAMEWORK_CSHARP_API_PATH");
-
-		if (std::filesystem::exists(environmentPath))
-		{
-			result = environmentPath;
-		}
-		else if (std::filesystem::exists(environmentPath / apiName))
-		{
-			result = environmentPath / apiName;
-		}
-		else if (std::filesystem::exists(executableDirectoryPath / apiName))
+		
+		if (std::filesystem::exists(executableDirectoryPath / apiName))
 		{
 			result = executableDirectoryPath / apiName;
 		}
@@ -90,6 +105,11 @@ namespace framework::runtime
 		else
 		{
 			throw std::runtime_error(std::format("Can't find {} or {}", (executableDirectoryPath / apiName).string(), (libraryDirectoryPath / apiName).string()));
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Found {}", "LogWebFrameworkInitialization", result.string());
 		}
 		
 		return result;
