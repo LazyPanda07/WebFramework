@@ -2,6 +2,7 @@
 
 using Framework.Databases;
 using Framework.Exceptions;
+using Framework.TaskBroker;
 using Framework.Utility;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -193,7 +194,16 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void enqueueTask(IntPtr implementation, string messageBrokerName, IntPtr jsonObjectData, ref void* exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	internal static partial void setExceptionData(IntPtr implementation, string errorMessage, int responseCode, string logCategory);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr createJsonParserFromString(string jsonData, ref void* exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getJsonParserParsedData(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool weak, ref void* exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -1320,5 +1330,58 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		{
 			throw new WebFrameworkException(exception);
 		}
+	}
+
+	public void EnqueueTask<TaskBroker, TaskExecutorApi, TaskSerializer>(params object[] args)
+		where TaskBroker : ITaskBroker
+		where TaskSerializer : ITaskSerializer
+		where TaskExecutorApi : ITaskExecutorApi
+	{
+		Type type = typeof(TaskSerializer);
+		object? created = Activator.CreateInstance(type, args) ?? throw new Exception($"Can't create class: {type.Name}");
+		TaskSerializer taskSerializer = (TaskSerializer)created;
+
+		EnqueueTask<TaskBroker, TaskExecutorApi, TaskSerializer>(ref taskSerializer);
+	}
+
+	public void EnqueueTask<TaskBroker, TaskExecutorApi, TaskSerializer>(ref TaskSerializer taskSerializer)
+		where TaskBroker : ITaskBroker
+		where TaskSerializer : ITaskSerializer
+		where TaskExecutorApi : ITaskExecutorApi
+	{
+		void* exception = null;
+		var result = new
+		{
+			api = TaskExecutorApi.ImplementationName,
+			name = taskSerializer.TaskExecutorName,
+			arguments = taskSerializer
+		};
+
+		IntPtr jsonParser = createJsonParserFromString(JsonSerializer.Serialize(result), ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		IntPtr jsonObjectData = getJsonParserParsedData(jsonParser, true, ref exception);
+
+		if (exception != null)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
+		}
+
+		enqueueTask(implementation, TaskBroker.ImplementationName, jsonObjectData, ref exception);
+
+		if (exception != null)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
+		}
+
+		deleteWebFrameworkJsonParser(jsonParser);
 	}
 }

@@ -1,7 +1,6 @@
-﻿namespace Framework.Databases
+﻿namespace Framework.Databases;
+
+public interface IDatabaseImplementation
 {
-	public interface IDatabaseImplementation
-	{
-		static abstract string ImplementationName { get; }
-	}
+	static abstract string ImplementationName { get; }
 }

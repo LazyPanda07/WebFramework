@@ -1,7 +1,6 @@
-﻿namespace Framework.Databases
+﻿namespace Framework.Databases;
+
+public class SqliteDatabase : IDatabaseImplementation
 {
-	public class SqliteDatabase : IDatabaseImplementation
-	{
-		public static string ImplementationName => "sqlite";
-	}
+	public static string ImplementationName => "sqlite";
 }

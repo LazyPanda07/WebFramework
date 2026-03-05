@@ -1,7 +1,6 @@
-﻿namespace Framework.Databases
+﻿namespace Framework.Databases;
+
+public class DefaultDatabase : IDatabaseImplementation
 {
-	public class DefaultDatabase : IDatabaseImplementation
-	{
-		public static string ImplementationName => "";
-	}
+	public static string ImplementationName => "";
 }

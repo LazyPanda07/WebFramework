@@ -13,34 +13,34 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	internal readonly IntPtr implementation = implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void setResponseBody(IntPtr implementation, byte[] body, ref void* exception);
+	private static partial void setResponseBody(IntPtr implementation, byte[] body, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void setResponseJsonBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
+	private static partial void setResponseJsonBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void setResponseCode(IntPtr implementation, ResponseCodes code, ref void* exception);
+	private static partial void setResponseCode(IntPtr implementation, ResponseCodes code, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void addResponseHeader(IntPtr implementation, string name, string value, ref void* exception);
+	private static partial void addResponseHeader(IntPtr implementation, string name, string value, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void appendResponseBody(IntPtr implementation, string body, ref void* exception);
+	private static partial void appendResponseBody(IntPtr implementation, string body, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void addResponseCookie(IntPtr implementation, string name, string value, ref void* exception);
+	private static partial void addResponseCookie(IntPtr implementation, string name, string value, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void setResponseDefault(IntPtr implementation, ref void* exception);
+	private static partial void setResponseDefault(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void setResponseIsValid(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool isValid, ref void* exception);
+	private static partial void setResponseIsValid(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool isValid, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr createJsonBuilderFromString(string jsonData, ref void* exception);
+	private static partial IntPtr createJsonBuilderFromString(string jsonData, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static unsafe partial void deleteWebFrameworkJsonBuilder(IntPtr implementation);
+	private static partial void deleteWebFrameworkJsonBuilder(IntPtr implementation);
 
 	public void SetBody(string body)
 	{
