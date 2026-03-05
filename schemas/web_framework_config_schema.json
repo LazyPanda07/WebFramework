@@ -277,7 +277,7 @@
           "description": "Task sources",
           "items": {
             "type": "string",
-            "enum": [ "Internal", "RabbitMQ", "Apache Kafka" ]
+            "enum": [ "Internal", "RabbitMQ" ]
           },
           "minItems": 1
         },

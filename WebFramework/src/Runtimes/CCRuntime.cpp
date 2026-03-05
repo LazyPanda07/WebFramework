@@ -5,6 +5,7 @@
 #include "Executors/CCExecutor.h"
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "TaskBroker/TaskExecutors/CCTaskExecutor.h"
 
 namespace framework::runtime
 {
@@ -62,7 +63,27 @@ namespace framework::runtime
 
 	std::unique_ptr<task_broker::TaskExecutor> CCRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
 	{
-		return nullptr;
+		if (!std::holds_alternative<HMODULE>(source))
+		{
+			return nullptr;
+		}
+
+		HMODULE module = std::get<HMODULE>(source);
+		std::string creatorFunctionName = std::format("create{}TaskCCInstance", name);
+
+		if (CreateExecutorSignature creator = utility::load<CreateExecutorSignature>(module, creatorFunctionName))
+		{
+			std::filesystem::path sourcePath = utility::getPathToLibrary(module);
+
+			if (Log::isValid())
+			{
+				Log::info("Found {} in {} for", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+			}
+
+			return std::make_unique<task_broker::CCTaskExecutor>(module, creator(), name);
+		}
+
+		throw std::runtime_error(std::format("Can't find {}", name));
 	}
 
 	void* CCRuntime::createExecutorSettings(const void* implementation) const

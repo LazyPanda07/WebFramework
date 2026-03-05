@@ -138,6 +138,7 @@ add_library(
 	WebFramework/src/TaskBroker/TaskConsumer.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/TaskExecutor.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/CXXTaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/CCTaskExecutor.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/PythonTaskExecutor.cpp
 )
 
