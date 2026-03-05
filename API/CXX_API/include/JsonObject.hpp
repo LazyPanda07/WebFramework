@@ -150,10 +150,12 @@ namespace framework
 
 	inline JsonObject& JsonObject::operator =(JsonObject&& other) noexcept
 	{
-		implementation = other.implementation;
-		weak = other.weak;
+		this->operator=<JsonObject&>(other);
 
-		other.implementation = nullptr;
+		if (other.weak)
+		{
+			other.implementation = nullptr;
+		}
 
 		return *this;
 	}

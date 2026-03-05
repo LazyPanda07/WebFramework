@@ -4,14 +4,22 @@
 
 /**
  * @brief Create json_parser_t
- * @param builder Parser. Delete with deleteWebFrameworkJsonParser function
+ * @param parser Parser. Delete with wf_delete_json_parser function
  * @return Error if occurred
  */
 web_framework_exception_t wf_create_json_parser(json_parser_t* parser);
 
 /**
+ * @brief Create json_parser_t
+ * @param parser Parser. Delete with wf_delete_json_parser function
+ * @param parsed_data Existed json_object_t
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_create_json_parser_from_object(json_parser_t* parser, const json_object_t* parsed_data);
+
+/**
  * @brief Copy Parser
- * @param builder Result. Delete with deleteWebFrameworkJsonBuilder function
+ * @param parser Result. Delete with wf_delete_json_parser function
  * @param other Other Parser
  * @return Error if occurred
  */
@@ -19,7 +27,7 @@ web_framework_exception_t wf_copy_json_parser(json_parser_t* parser, const json_
 
 /**
  * @brief Create json_parser_t from Json formatted string
- * @param builder Parser. Delete with deleteWebFrameworkJsonParser function
+ * @param parser Parser. Delete with wf_delete_json_parser function
  * @return Error if occurred
  */
 web_framework_exception_t wf_create_json_parser_from_string(const char* jsonString, json_parser_t* parser);

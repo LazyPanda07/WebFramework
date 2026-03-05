@@ -153,16 +153,16 @@ void wf_delete_web_framework_exception(web_framework_exception_t exception)
 
 void wf_delete_json_builder(json_builder_t builder)
 {
-	typedef void (*deleteWebFrameworkJsonBuilder)(void* builder);
+	typedef void (*wf_delete_json_builder)(void* builder);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonBuilder, builder);
+	CALL_WEB_FRAMEWORK_FUNCTION(wf_delete_json_builder, builder);
 }
 
 void wf_delete_json_parser(json_parser_t parser)
 {
-	typedef void (*deleteWebFrameworkJsonParser)(void* parser);
+	typedef void (*wf_delete_json_parser)(void* parser);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkJsonParser, parser);
+	CALL_WEB_FRAMEWORK_FUNCTION(wf_delete_json_parser, parser);
 }
 
 const char* wf_get_data_from_string(web_framework_string_t string)

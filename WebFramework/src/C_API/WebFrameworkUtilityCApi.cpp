@@ -92,6 +92,24 @@ JsonParser createJsonParser(JsonParser parser, Exception* exception)
 	return nullptr;
 }
 
+JsonParser createJsonParserFromObject(JsonObject object, Exception* exception)
+{
+	try
+	{
+		return new json::JsonParser(*static_cast<json::JsonObject*>(object));
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 JsonParser createJsonParserFromString(const char* jsonString, Exception* exception)
 {
 	try
