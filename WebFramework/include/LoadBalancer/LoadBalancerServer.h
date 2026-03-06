@@ -58,7 +58,7 @@ namespace framework::load_balancer
 			State currentState;
 
 		public:
-			LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<LoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup);
+			LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, LoadBalancerHeuristic* heuristic, std::function<void()>&& cleanup);
 
 			LoadBalancerRequest(LoadBalancerRequest&& other) noexcept = default;
 

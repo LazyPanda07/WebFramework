@@ -28,11 +28,11 @@ namespace framework::load_balancer
 
 	}
 
-	LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<LoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup) :
+	LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, LoadBalancerHeuristic* heuristic, std::function<void()>&& cleanup) :
 		clientStream(std::move(clientStream)),
 		serverStream(std::move(serverStream)),
 		cleanup(std::move(cleanup)),
-		heuristic(heuristic.get()),
+		heuristic(heuristic),
 		currentState(State::receiveServerResponse)
 	{
 
@@ -338,16 +338,32 @@ namespace framework::load_balancer
 
 	void LoadBalancerServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup)
 	{
-		auto& [connectionData, heuristic] = *min_element
-		(
-			allServers.begin(), allServers.end(),
-			[](const ServerData& left, const ServerData& right)
-			{
-				return (*left.heuristic)() < (*right.heuristic)();
-			}
-		);
+		static std::mutex minElementMutex;
 
-		heuristic->onStart();
+		utility::BaseConnectionData* connectionData = nullptr;
+		LoadBalancerHeuristic* heuristic = nullptr;
+
+		{
+			std::lock_guard<std::mutex> lock(minElementMutex);
+			auto it = min_element
+			(
+				allServers.begin(), allServers.end(),
+				[](const ServerData& left, const ServerData& right)
+				{
+					return (*left.heuristic)() < (*right.heuristic)();
+				}
+			);
+
+			connectionData = &it->connectionData;
+			heuristic = it->heuristic.get();
+
+			if (Log::isValid())
+			{
+				Log::info("Select {}:{} server for connection with heuristic value: {}", "LogLoadBalancer", connectionData->ip, connectionData->port, (*heuristic)());
+			}
+
+			heuristic->onStart();
+		}
 
 		SSL* ssl = nullptr;
 
@@ -379,7 +395,7 @@ namespace framework::load_balancer
 		LoadBalancerRequest request
 		(
 			this->createServerSideStream(clientSocket, ssl, timeoutInMilliseconds),
-			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
+			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds),
 			heuristic,
 			std::move(cleanup)
 		);
