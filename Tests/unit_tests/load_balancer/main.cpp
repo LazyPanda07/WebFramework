@@ -89,8 +89,6 @@ TEST(LoadBalancer, CustomHeuristic)
 			std::string request = web::HttpBuilder().getRequest().build();
 			std::string response;
 
-			std::this_thread::sleep_for(std::chrono::seconds(random() % 5));
-
 			stream << request;
 
 			stream >> response;

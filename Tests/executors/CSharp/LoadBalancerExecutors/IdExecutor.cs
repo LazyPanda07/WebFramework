@@ -9,8 +9,6 @@ public class IdExecutor : HeavyOperationStatelessExecutor
 
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
-		Thread.Sleep(TimeSpan.FromSeconds(10));
-
 		response.SetBody
 		(
 			new
