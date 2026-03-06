@@ -86,4 +86,4 @@ void deleter(char* ptr)
 	free(ptr);
 }
 
-DEFINE_INITIALIZE_WEB_FRAMEWORK();
+DEFINE_INITIALIZE_WEB_FRAMEWORK()

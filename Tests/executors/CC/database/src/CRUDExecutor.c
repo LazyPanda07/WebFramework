@@ -149,4 +149,4 @@ DEFINE_EXECUTOR_METHOD(CRUDExecutor, PATCH_METHOD, request, response)
 	wf_delete_json_builder(builder);
 }
 
-DEFINE_INITIALIZE_WEB_FRAMEWORK();
+DEFINE_INITIALIZE_WEB_FRAMEWORK()

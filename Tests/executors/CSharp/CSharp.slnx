@@ -2,7 +2,6 @@
   <Configurations>
     <Platform Name="Any CPU" />
     <Platform Name="x64" />
-    <Platform Name="x86" />
   </Configurations>
   <Project Path="CoreExecutors/CoreExecutors.csproj" />
   <Project Path="DatabaseExecutors/DatabaseExecutors.csproj" />

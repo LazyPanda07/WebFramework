@@ -33,6 +33,7 @@ option(FLUTTER_API "" OFF)
 option(BUILD_TESTS "" ON)
 option(WITH_ADDRESS_SANITIZER "" OFF)
 option(WITHOUT_REDIS_TESTS "" OFF)
+option(BUILD_TASK_EXECUTORS "" OFF)
 set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "CSharp" "NONE")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 
@@ -110,6 +111,10 @@ if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
     install(DIRECTORY assets DESTINATION .)
     
     install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION .)
+endif()
+
+if (${BUILD_TASK_EXECUTORS})
+    add_subdirectory(task_executors)
 endif()
 
 if (${BUILD_TESTS})
