@@ -35,8 +35,8 @@ int main(int argc, char** argv) try
 		{ 
 			std::vector<std::string> endpoints =
 			{
-				"cc",
 				"cxx",
+				"cc",
 				"python",
 				"csharp"
 			};

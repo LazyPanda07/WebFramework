@@ -423,6 +423,61 @@ jobs:
       download-executors-name: ${{ matrix.additional-settings.download-executors-name }}
       download-tests-name: LinuxARMTests
 
+
+  task-broker-tests:
+    strategy:
+      matrix:
+        config:
+          - { os: windows-latest, image: "", run-script: ".\\run.bat" }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, run-script: "run.sh" }
+        
+    runs-on: ${{ matrix.config.os }}
+    container:
+      image: ${{ matrix.config.image }}
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Enable NMake
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Build
+      shell: bash
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+        
+    - name: Install Python API
+      working-directory: WebFrameworkLibrary/api/python_api/dist
+      shell: bash
+      run: python -m pip install *.whl
+
+    - name: Build tests
+      working-directory: Tests
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TASK_EXECUTORS=ON -DBUILD_EXECUTORS=NONE -DBUILD_TESTS=OFF -G "Ninja" ..
+        cmake --build . -j
+        cmake --install
+        
+    - name: Run Windows tests
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      working-directory: Tests/build/bin
+      run: .\run.bat
+
+    - name: Run Linux tests
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      working-directory: Tests/build/bin
+      shell: bash
+      run: source run.sh
+
       
   publish:
     needs: [

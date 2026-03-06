@@ -173,10 +173,6 @@ jobs:
       with:
         python-version: "${{ env.actual-python-version }}"
         
-    # - name: Enable NMake
-    #   if: ${{ inputs.os == 'windows-latest' }}
-    #   uses: ilammy/msvc-dev-cmd@v1.13.0
-
     - name: Install Python API
       if: ${{ env.actual-python-version != '' }}
       shell: bash

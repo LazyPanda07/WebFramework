@@ -9,3 +9,4 @@ add_subdirectory(CSharp)
 add_subdirectory(server)
 
 install(DIRECTORY configs/ DESTINATION .)
+install(DIRECTORY scripts/ DESTINATION .)
