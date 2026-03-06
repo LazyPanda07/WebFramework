@@ -535,14 +535,14 @@ namespace framework
 		this->initHTTPS(webFrameworkSettings);
 		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
 
-		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
-		{
-			it->finishInitialization();
-		}
-
 		if (json::JsonObject taskExecutorsObject; (*config).tryGet<json::JsonObject>(json_settings::taskExecutorsObject, taskExecutorsObject))
 		{
 			this->initTaskExecutors(taskExecutorsObject);
+		}
+
+		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
+		{
+			it->finishInitialization();
 		}
 	}
 

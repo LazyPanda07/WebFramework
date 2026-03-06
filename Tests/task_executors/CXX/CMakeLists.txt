@@ -5,6 +5,7 @@ project(cxx_task_executors)
 add_library(
 	${PROJECT_NAME} SHARED
 	src/CXXTestTaskExecutor.cpp
+	src/CXXExecutor.cpp
 )
 
 target_include_directories(

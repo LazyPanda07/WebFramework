@@ -99,10 +99,10 @@ typedef enum methods
  * Create method function
  * @param structName executor_t name
  * @param method One of Methods value
- * @param executor_settingsVariableName Input executor_settings_t variable name
- * @param responseVariableName Input http_response_t variable name
+ * @param request_variable_name Input http_request_t variable name
+ * @param response_variable_name Input http_response_t variable name
  */
-#define DEFINE_EXECUTOR_METHOD(structName, method, executor_settingsVariableName, responseVariableName) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDo##method##structName(executor_t executor, executor_settings_t executor_settingsVariableName, http_response_t responseVariableName)
+#define DEFINE_EXECUTOR_METHOD(structName, method, request_variable_name, response_variable_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDo##method##structName(executor_t executor, http_request_t request_variable_name, http_response_t response_variable_name)
 
 /**
  * Create initialization function

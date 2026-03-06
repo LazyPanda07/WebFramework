@@ -209,6 +209,11 @@ namespace framework::runtime
 
 			sys.attr("path").attr("append")(pythonSourcePath.parent_path().string().data());
 
+			if (Log::isValid())
+			{
+				Log::info("Import {} from {}", "LogWebFrameworkInitialization", pythonSourcePath.filename().string(), pythonSourcePath.string());
+			}
+
 			source = py::module_::import(pythonSourcePath.filename().string().data());
 		}
 		catch (const py::error_already_set& e)

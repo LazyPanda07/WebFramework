@@ -6,3 +6,6 @@ add_subdirectory(CXX)
 add_subdirectory(CC)
 add_subdirectory(Python)
 add_subdirectory(CSharp)
+add_subdirectory(server)
+
+install(DIRECTORY configs/ DESTINATION .)

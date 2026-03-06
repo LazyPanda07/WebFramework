@@ -41,6 +41,11 @@ namespace framework::task_broker
 				continue;
 			}
 
+			if (Log::isValid())
+			{
+				Log::info("Found load source with path: {}", "LogTaskExecutor", loadSources.front().second);
+			}
+
 			const auto& [loadSource, actualSourcePath] = loadSources.front();
 			runtime::Runtime& runtime = manager.getRuntime(utility::getExecutorApiType(api));
 

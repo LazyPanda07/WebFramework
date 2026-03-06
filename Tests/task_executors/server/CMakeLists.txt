@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-project(cc_task_executors)
+set(CMAKE_CXX_STANDARD 20)
 
-add_library(
-	${PROJECT_NAME} SHARED
-	src/c_test_task_executor.c
-	src/c_executor.c
+project(server)
+
+add_executable(
+	${PROJECT_NAME}
+	main.cpp
 )
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	WebFramework::CC_API
+	WebFramework::CXX_API
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

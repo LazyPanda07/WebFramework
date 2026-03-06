@@ -10,15 +10,18 @@ DEFINE_DEFAULT_TASK_EXECUTOR(c_test_task_executor)
 {
 	json_object_t arguments = WF_GET_TASK_EXECUTOR_ARGUMENTS();
 	FILE* file = NULL;
+	char* file_name = NULL;
+	json_parser_t parser;
 
-	fopen_s(&file, "c_task_executor.txt", "w");
+	wf_create_json_parser_from_object(&parser, &arguments);
+
+	wf_get_json_parser_string(parser, "fileName", false, &file_name);
+
+	fopen_s(&file, file_name, "w");
 
 	if (file)
-	{
-		json_parser_t parser;
+	{		
 		char* message = NULL;
-
-		wf_create_json_parser_from_object(&parser, &arguments);
 
 		wf_get_json_parser_string(parser, "message", false, &message);
 

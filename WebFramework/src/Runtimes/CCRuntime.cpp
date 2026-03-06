@@ -77,7 +77,7 @@ namespace framework::runtime
 
 			if (Log::isValid())
 			{
-				Log::info("Found {} in {} for", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+				Log::info("Found {} in {}", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
 			}
 
 			return std::make_unique<task_broker::CCTaskExecutor>(module, creator(), name);

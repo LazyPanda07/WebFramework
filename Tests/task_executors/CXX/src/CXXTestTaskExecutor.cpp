@@ -4,12 +4,13 @@
 
 void CXXTestTaskExecutor::operator ()(const framework::JsonObject& data)
 {
-	std::ofstream out("cxx_task_executor.txt");
+	std::string fileName;
 	std::string message;
 
+	data.tryGet<std::string>("fileName", fileName);
 	data.tryGet<std::string>("message", message);
 
-	out << message;
+	std::ofstream(fileName) << message;
 }
 
 DEFINE_TASK_EXECUTOR(CXXTestTaskExecutor)

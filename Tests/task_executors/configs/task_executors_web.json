@@ -1,0 +1,22 @@
+{
+  "CXXExecutor": {
+    "api": "cxx",
+    "loadType": "initialization",
+    "route": "cxx"
+  },
+  "c_executor": {
+    "api": "cc",
+    "loadType": "initialization",
+    "route": "cc"
+  },
+  "PythonExecutor": {
+    "api": "python",
+    "loadType": "initialization",
+    "route": "python"
+  },
+  "CSharpExecutor": {
+    "api": "csharp",
+    "loadType": "initialization",
+    "route": "csharp"
+  }
+}
