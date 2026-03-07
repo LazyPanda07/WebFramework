@@ -3,7 +3,7 @@
 set -e
 
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
-export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=$(pwd):/usr/share/dotnet/host/fxr/10.0.2:${LD_LIBRARY_PATH}
 
 chmod +x ./Core
 chmod +x ./LoadBalancerCore

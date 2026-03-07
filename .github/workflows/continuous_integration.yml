@@ -371,7 +371,7 @@ jobs:
     uses: ./.github/workflows/reusable_run_test.yml
     with:
       os: ubuntu-latest
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+      # image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
