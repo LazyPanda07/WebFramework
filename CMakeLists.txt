@@ -23,8 +23,6 @@ option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
-option(WITH_PYTHON_TASK_EXECUTORS "Build with Python Task Executors" ON)
-option(WITH_DOTNET_TASK_EXECUTORS "Build with .NET Task Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 
 project(WebFramework VERSION 3.2.0)
@@ -188,7 +186,9 @@ add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(Localization) # has JSON as dependency
 add_subdirectory(FileManager) # has ThreadPool as dependency
 
-add_subdirectory(API)
+if (${WITH_LANGUAGES_APIS})
+	add_subdirectory(API)
+endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC

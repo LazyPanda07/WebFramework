@@ -444,6 +444,12 @@ jobs:
       if: ${{ matrix.config.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
+    - name: Install Python
+      if: ${{ inputs.python-version != '' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.14"
+
     - name: Install build with pip
       run: python -m pip install build
 

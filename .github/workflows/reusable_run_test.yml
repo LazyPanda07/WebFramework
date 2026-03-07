@@ -149,6 +149,12 @@ jobs:
         tag: ${{ env.windows-redis-version }}
         fileName: Redis-${{ env.windows-redis-version }}-Windows-x64-msys2.zip
 
+    - name: Get Redis on Linux
+      if: ${{ inputs.os == 'ubuntu-latest' }}
+      run: |
+        sudo apt update
+        sudo apt install -y redis-server
+
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
       uses: actions/download-artifact@v7
       with:
