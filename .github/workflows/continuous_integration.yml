@@ -445,7 +445,6 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Install Python
-      if: ${{ inputs.python-version != '' }}
       uses: actions/setup-python@v6
       with:
         python-version: "3.14"
