@@ -1,12 +1,12 @@
 #include "http_response.h"
 
-web_framework_exception_t wf_set_body(http_response_t implementation, const char* body)
+web_framework_exception_t wf_set_body(http_response_t implementation, const char* body, size_t body_size)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*setResponseBody)(void* implementation, const char* body, void** exception);
+	typedef void (*setResponseBody)(void* implementation, const char* body, size_t bodySize, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setResponseBody, body, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setResponseBody, body, body_size, &exception);
 
 	return exception;
 }

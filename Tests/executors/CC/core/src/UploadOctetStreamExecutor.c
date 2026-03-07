@@ -5,7 +5,7 @@ typedef struct
 	FILE* stream;
 } UploadOctetStreamExecutor;
 
-DEFINE_EXECUTOR(UploadOctetStreamExecutor, STATEFUL_EXECUTOR);
+DEFINE_EXECUTOR(UploadOctetStreamExecutor, STATEFUL_EXECUTOR)
 
 DEFINE_EXECUTOR_INIT(UploadOctetStreamExecutor)
 {
@@ -35,11 +35,13 @@ DEFINE_EXECUTOR_METHOD(UploadOctetStreamExecutor, POST_METHOD, request, response
 
 	if (data->is_last_packet)
 	{
+		const char* response_message = "Finish uploading file";
+
 		fclose(self->stream);
 
 		self->stream = NULL;
 
 		wf_set_http_response_code(response, CREATED);
-		wf_set_body(response, "Finish uploading file");
+		wf_set_body(response, response_message, strlen(response_message));
 	}
 }

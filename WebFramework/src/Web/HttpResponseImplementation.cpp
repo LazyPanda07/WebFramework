@@ -68,9 +68,9 @@ namespace framework
 		builder.headers(name, value);
 	}
 
-	void HttpResponseImplementation::setBody(const char* body)
+	void HttpResponseImplementation::setBody(const char* body, size_t bodySize)
 	{
-		this->body = body;
+		this->body = std::string(body, bodySize);
 	}
 
 	interfaces::IHttpResponse* HttpResponseImplementation::appendBody(const char* body)

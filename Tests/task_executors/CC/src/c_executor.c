@@ -15,6 +15,7 @@ DEFINE_DEFAULT_EXECUTOR(c_executor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_METHOD(c_executor, GET_METHOD, request, response)
 {
+	const char* response_message = "Accepted";
 	message_struct_t taskStruct = { .file_name = "cc_cxx.txt", .message = "CC message" };
 
 	wf_enqueue_task(request, INTERNAL_TASK_BROKER_NAME, CXX_TASK_BROKER_API, "CXXTestTaskExecutor", &taskStruct, serialize);
@@ -31,7 +32,7 @@ DEFINE_EXECUTOR_METHOD(c_executor, GET_METHOD, request, response)
 
 	wf_enqueue_task(request, INTERNAL_TASK_BROKER_NAME, CSHARP_TASK_BROKER_API, "CSharpTestTaskExecutor", &taskStruct, serialize);
 
-	wf_set_body(response, "Accepted");
+	wf_set_body(response, response_message, strlen(response_message));
 	wf_set_http_response_code(response, ACCEPTED);
 }
 

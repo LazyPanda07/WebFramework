@@ -2,7 +2,7 @@
 
 #include <signal.h>
 
-DEFINE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR)
 
 static const char* customFunction(const char** args, size_t agumentsNumber);
 

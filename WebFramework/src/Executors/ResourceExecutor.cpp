@@ -92,15 +92,17 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
 #ifdef NDEBUG
-		response.setBody(message.data());
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
@@ -112,15 +114,17 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
 #ifdef NDEBUG
-		response.setBody(message.data());
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
@@ -132,15 +136,17 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
 #ifdef NDEBUG
-		response.setBody(message.data());
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
@@ -152,15 +158,17 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
 #ifdef NDEBUG
-		response.setBody(message.data());
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
@@ -172,15 +180,17 @@ namespace framework
 		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
 
 #ifdef NDEBUG
-		response.setBody(message.data());
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
@@ -247,7 +257,7 @@ namespace framework
 			result = renderer->second->render(result);
 		}
 
-		response.setBody(result.data());
+		response.setBody(result.data(), result.size());
 	}
 
 	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
@@ -290,7 +300,7 @@ namespace framework
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		response.setBody(result.data());
+		response.setBody(result.data(), result.size());
 	}
 
 	void ResourceExecutor::processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables)

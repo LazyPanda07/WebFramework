@@ -119,9 +119,10 @@ endif()
 
 if (${BUILD_TESTS})
     add_subdirectory(servers)
-    add_subdirectory(unit_tests)
     add_subdirectory(api)
 endif()
+
+add_subdirectory(unit_tests)
 
 add_custom_target(
 	build_tests_localization ALL

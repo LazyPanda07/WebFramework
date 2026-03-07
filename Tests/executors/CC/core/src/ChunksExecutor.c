@@ -13,7 +13,7 @@ typedef struct text_generator
 
 static const char* generate(void* data, size_t* size);
 
-DEFINE_DEFAULT_EXECUTOR(ChunksExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(ChunksExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_METHOD(ChunksExecutor, GET_METHOD, request, response)
 {

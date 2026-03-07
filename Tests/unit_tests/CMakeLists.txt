@@ -42,9 +42,11 @@ FetchContent_MakeAvailable(ExternalLocalization)
 
 add_subdirectory(unit_test_utils)
 
-add_subdirectory(core)
-add_subdirectory(load_balancer)
-add_subdirectory(proxy)
+if (${BUILD_TESTS})
+	add_subdirectory(core)
+	add_subdirectory(load_balancer)
+	add_subdirectory(proxy)
+endif()
 
 if (${BUILD_TASK_EXECUTORS})
 	add_subdirectory(task_broker)

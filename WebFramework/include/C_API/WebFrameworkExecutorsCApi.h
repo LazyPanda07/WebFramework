@@ -8,7 +8,7 @@ typedef void* DynamicPagesVariable;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-EXPORT void setResponseBody(HttpResponseObject response, const char* body, Exception* exception);
+EXPORT void setResponseBody(HttpResponseObject response, const char* body, size_t bodySize, Exception* exception);
 
 EXPORT void setResponseJsonBody(HttpResponseObject response, JsonBuilder builder, Exception* exception);
 

@@ -1,5 +1,7 @@
 #include "Web/Servers/ExecutorServer.h"
 
+#include <cstring>
+
 #include <Log.h>
 #include <Exceptions/FileDoesNotExistException.h>
 
@@ -34,8 +36,10 @@ namespace framework
 				Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), static_cast<int64_t>(e.getResponseCode()));
 			}
 
+			const char* exceptionMessage = e.what();
+
 			response.setResponseCode(static_cast<int64_t>(e.getResponseCode()));
-			response.setBody(e.what());
+			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
 		}
 #endif
 		catch (const exceptions::BadRequestException& e) // 400
@@ -69,8 +73,10 @@ namespace framework
 				Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), e.getResponseCode());
 			}
 
+			const char* exceptionMessage = e.what();
+
 			response.setResponseCode(e.getResponseCode());
-			response.setBody(e.what());
+			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
 
 			stream << response;
 
@@ -101,7 +107,7 @@ namespace framework
 				}
 
 				response.setResponseCode(exceptionData.responseCode);
-				response.setBody(exceptionData.errorMessage);
+				response.setBody(exceptionData.errorMessage, std::strlen(exceptionData.errorMessage));
 			}
 			else
 			{

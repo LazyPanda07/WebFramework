@@ -17,11 +17,11 @@
 #define LOG_AND_CREATE_EXCEPTION() LOG_EXCEPTION(); CREATE_EXCEPTION()
 #define UNEXPECTED_EXCEPTION() if (Log::isValid()) { Log::error("Somethind went wrong", "C_API"); } *exception = new std::runtime_error(std::format("Something went wrong in file: {} on line: {}", __FILE__, __LINE__));
 
-void setResponseBody(HttpResponseObject response, const char* body, Exception* exception)
+void setResponseBody(HttpResponseObject response, const char* body, size_t bodySize, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpResponse*>(response)->setBody(body);
+		static_cast<framework::interfaces::IHttpResponse*>(response)->setBody(body, bodySize);
 	}
 	catch (const std::exception& e)
 	{
@@ -38,10 +38,11 @@ void setResponseJsonBody(HttpResponseObject response, JsonBuilder builder, Excep
 	try
 	{
 		framework::interfaces::IHttpResponse* implementation = static_cast<framework::interfaces::IHttpResponse*>(response);
+		std::string jsonData = static_cast<json::JsonBuilder*>(builder)->build();
 
 		implementation->addHeader("Content-Type", "application/json");
 
-		implementation->setBody(static_cast<json::JsonBuilder*>(builder)->build().data());
+		implementation->setBody(jsonData.data(), jsonData.size());
 	}
 	catch (const std::exception& e)
 	{

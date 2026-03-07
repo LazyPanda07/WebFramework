@@ -1,5 +1,7 @@
 #include "Executors/Executor.h"
 
+#include <cstring>
+
 #include <Strings.h>
 
 static void isImplemented
@@ -104,7 +106,9 @@ namespace framework
 		throw exceptions::NotImplementedException(typeid(*this).name(), __func__);
 #endif
 
-		response.setBody(request.getRawRequest());
+		const char* rawRequest = request.getRawRequest();
+
+		response.setBody(rawRequest, std::strlen(rawRequest));
 	}
 
 	void Executor::doConnect(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)

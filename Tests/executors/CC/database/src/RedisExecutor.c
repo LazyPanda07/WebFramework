@@ -6,7 +6,7 @@ static void redisInitBuffer(size_t size, void* buffer);
 
 static void redisCallback(const char** columnNames, const sql_value_t* columnValues, size_t size, size_t index, void* buffer);
 
-DEFINE_DEFAULT_EXECUTOR(RedisExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(RedisExecutor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_INIT(RedisExecutor)
 {

@@ -11,7 +11,7 @@ typedef struct
 	web_framework_string_t uuid;
 } MultiUserExecutor;
 
-DEFINE_EXECUTOR(MultiUserExecutor, HEAVY_OPERATION_STATEFUL_EXECUTOR);
+DEFINE_EXECUTOR(MultiUserExecutor, HEAVY_OPERATION_STATEFUL_EXECUTOR)
 
 DEFINE_EXECUTOR_INIT(MultiUserExecutor)
 {

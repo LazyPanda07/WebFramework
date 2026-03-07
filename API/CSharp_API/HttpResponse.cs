@@ -13,7 +13,7 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	internal readonly IntPtr implementation = implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void setResponseBody(IntPtr implementation, byte[] body, ref void* exception);
+	private static partial void setResponseBody(IntPtr implementation, byte[] body, nuint bodySize, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void setResponseJsonBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
@@ -45,8 +45,9 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	public void SetBody(string body)
 	{
 		void* exception = null;
+		byte[] data = Encoding.UTF8.GetBytes(body);
 
-		setResponseBody(implementation, Encoding.UTF8.GetBytes(body), ref exception);
+		setResponseBody(implementation, data, (nuint)data.Length, ref exception);
 
 		if (exception != null)
 		{
@@ -58,7 +59,7 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	{
 		void* exception = null;
 
-		setResponseBody(implementation, body, ref exception);
+		setResponseBody(implementation, body, (nuint)body.Length, ref exception);
 
 		if (exception != null)
 		{

@@ -63,7 +63,7 @@ namespace framework
 		/// <para>Content-Length header setting automatically</para>
 		/// </summary>
 		/// <param name="body">data</param>
-		void setBody(const char* body) override;
+		void setBody(const char* body, size_t bodySize) override;
 
 		/// <summary>
 		/// <para>Some data with HTTP response</para>

@@ -86,9 +86,10 @@ typedef enum response_codes
  * @brief Set HTTP body
  * @param implementation http_response_t instance
  * @param body HTTP body
+ * @param body_size Size of body
  * @return Error if occurred
  */
-web_framework_exception_t wf_set_body(http_response_t implementation, const char* body);
+web_framework_exception_t wf_set_body(http_response_t implementation, const char* body, size_t body_size);
 
 /**
  * @brief Set HTTP body

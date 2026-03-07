@@ -208,14 +208,16 @@ namespace framework
 
 	inline void HttpResponse::setBody(std::string_view body)
 	{
-		implementation->setBody(body.data());
+		implementation->setBody(body.data(), body.size());
 	}
 
 	inline void HttpResponse::setBody(const JsonBuilder& json)
 	{
+		std::string jsonData = json.build().data();
+
 		implementation->addHeader("Content-Type", "application/json");
 
-		implementation->setBody(json.build().data());
+		implementation->setBody(jsonData.data(), jsonData.size());
 	}
 
 	inline HttpResponse& HttpResponse::appendBody(std::string_view body)
