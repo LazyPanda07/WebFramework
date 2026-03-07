@@ -10,6 +10,7 @@ on:
 env:
   WINDOWS_CMAKE_GENERATOR: "Ninja"
   LINUX_CMAKE_GENERATOR: "Ninja"
+  DEFAULT_CMAKE_GENERATOR: "Ninja"
   PYTHON_VERSION: 3.14
 
 
@@ -371,7 +372,6 @@ jobs:
     uses: ./.github/workflows/reusable_run_test.yml
     with:
       os: ubuntu-latest
-      # image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
@@ -425,11 +425,12 @@ jobs:
 
 
   task-broker-tests:
+    needs: [windows-build, linux-build]
     strategy:
       matrix:
         config:
-          - { os: windows-latest, image: "" }
-          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04 }
+          - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
         
     runs-on: ${{ matrix.config.os }}
     container:
@@ -447,19 +448,16 @@ jobs:
     - name: Install Python
       uses: actions/setup-python@v6
       with:
-        python-version: "3.14"
+        python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Install build with pip
       run: python -m pip install build
 
-    - name: Build
-      shell: bash
-      run: |
-        mkdir build
-        cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
+    - name: Download WebFramework
+      uses: actions/download-artifact@v7
+      with:
+        name: ${{ matrix.config.web-framework-name }}
+        path: WebFrameworkLibrary
         
     - name: Install Python API
       working-directory: WebFrameworkLibrary/api/python_api/dist
@@ -471,20 +469,20 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TASK_EXECUTORS=ON -DBUILD_EXECUTORS=NONE -DBUILD_TESTS=OFF -G "Ninja" ..
-        cmake --build . -j
-        cmake --install .
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TASK_EXECUTORS=ON -DBUILD_EXECUTORS=NONE -G ${{ env.DEFAULT_CMAKE_GENERATOR }} ..
+        cmake --build . -j --config Release
+        cmake --install . --config Release
         
     - name: Run Windows tests
       if: ${{ matrix.config.os == 'windows-latest' }}
       working-directory: Tests/build/bin
-      run: .\run.bat
+      run: .\run_task_broker_tests.bat
 
     - name: Run Linux tests
       if: ${{ matrix.config.os == 'ubuntu-latest' }}
       working-directory: Tests/build/bin
       shell: bash
-      run: source run.sh
+      run: source run_task_broker_tests.sh
 
       
   publish:
@@ -492,7 +490,8 @@ jobs:
       android-build,
       linux-tests,
       windows-tests,
-      linux-aarch64-tests
+      linux-aarch64-tests,
+      task-broker-tests
     ]
     runs-on: ubuntu-latest
 

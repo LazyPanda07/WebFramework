@@ -10,7 +10,8 @@
 #include <HttpNetwork.h>
 #include <HttpBuilder.h>
 #include <HttpParser.h>
-#include <reproc++/run.hpp>
+
+#include <ProcessWrapper.h>
 
 int64_t port = 64000;
 
@@ -66,20 +67,9 @@ TEST(TaskBroker, Internal)
 	ASSERT_EQ(getTxtFiles(), 16);
 }
 
-class Wrapper
-{
-private:
-	reproc::process process;
-
-public:
-	Wrapper(const std::vector<std::string>& arguments);
-
-	~Wrapper();
-};
-
 int main(int argc, char** argv) try
 {
-	Wrapper server({ argv[1] });
+	unit_test_utils::ProcessWrapper server(argv[1]);
 
 	testing::InitGoogleTest(&argc, argv);
 
@@ -90,32 +80,4 @@ catch (const std::exception& e)
 	std::cerr << e.what() << std::endl;
 
 	exit(1);
-}
-
-Wrapper::Wrapper(const std::vector<std::string>& arguments)
-{
-	constexpr size_t outputBufferSize = 256;
-
-	{
-		std::error_code error = process.start(reproc::arguments(arguments));
-
-		if (error)
-		{
-			throw std::runtime_error(std::format("Error while creating new process: {}", error.message()));
-		}
-	}
-
-	std::vector<uint8_t> buffer(outputBufferSize, 0);
-
-	auto [_, error] = process.read(reproc::stream::out, buffer.data(), buffer.size());
-
-	if (error)
-	{
-		throw std::runtime_error(std::format("Error while running new process: {}", error.message()));
-	}
-}
-
-Wrapper::~Wrapper()
-{
-	process.kill();
 }
