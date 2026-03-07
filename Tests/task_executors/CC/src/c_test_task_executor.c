@@ -17,7 +17,11 @@ DEFINE_DEFAULT_TASK_EXECUTOR(c_test_task_executor)
 
 	wf_get_json_parser_string(parser, "fileName", false, &file_name);
 
+#ifdef __LINUX__
+	file = fopen(file_name, "w");
+#else
 	fopen_s(&file, file_name, "w");
+#endif
 
 	if (file)
 	{		

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <filesystem>
 #include <format>
+#include <array>
 
 #include <import.hpp>
 
@@ -33,7 +34,7 @@ int main(int argc, char** argv) try
 		true, 
 		[&config]()
 		{ 
-			std::vector<std::string> endpoints =
+			constexpr std::array<std::string_view, 4> endpoints =
 			{
 				"cxx",
 				"cc",

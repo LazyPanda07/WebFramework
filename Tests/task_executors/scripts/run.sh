@@ -4,6 +4,10 @@ set -e
 
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+./task_broker_test ./server
+
+exit 0
+
 ./server & sleep 1
 
 curl http://127.0.0.1:64000/cxx
