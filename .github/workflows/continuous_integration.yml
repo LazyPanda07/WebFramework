@@ -468,7 +468,7 @@ jobs:
         cd build
         cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TASK_EXECUTORS=ON -DBUILD_EXECUTORS=NONE -DBUILD_TESTS=OFF -G "Ninja" ..
         cmake --build . -j
-        cmake --install
+        cmake --install .
         
     - name: Run Windows tests
       if: ${{ matrix.config.os == 'windows-latest' }}
