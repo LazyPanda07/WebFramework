@@ -192,9 +192,11 @@
         },
         "databases": {
           "type": [ "string", "array" ],
-          "items": { "type": "string" },
-          "description": "Database implementation names",
-          "enum": [ "sqlite", "redis" ]
+          "items": {
+            "type": "string",
+            "enum": [ "sqlite", "redis" ]
+          },
+          "description": "Database implementation names"
         },
         "resourcesThreads": {
           "type": "integer",

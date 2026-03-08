@@ -8,6 +8,7 @@
 #include <Strings.h>
 #include <Exceptions/FileDoesNotExistException.h>
 #include <Exceptions/CantFindValueException.h>
+#include <Log.h>
 
 #include "WebFrameworkCoreConstants.h"
 
@@ -77,6 +78,11 @@ namespace framework::utility
 
 			if (description.contains<std::string>(json_settings::userAgentFilterKey))
 			{
+				if (Log::isValid())
+				{
+					Log::info("User agent filter: {}", "LogUserAgentFilter", description[json_settings::userAgentFilterKey].get<std::string>());
+				}
+
 				executorSettings.userAgentFilter.emplace_back(description[json_settings::userAgentFilterKey].get<std::string>());
 			}
 			else if (description.contains<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey))

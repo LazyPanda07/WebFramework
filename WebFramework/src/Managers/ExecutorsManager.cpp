@@ -352,11 +352,11 @@ namespace framework
 
 	ExecutorsManager& ExecutorsManager::operator = (ExecutorsManager&& other) noexcept
 	{
-		this->routes = move(other.routes);
-		this->settings = move(other.settings);
-		this->resources = move(other.resources);
-		this->routeParameters = move(other.routeParameters);
-		this->userAgentFilter = move(other.userAgentFilter);
+		this->routes = std::move(other.routes);
+		this->settings = std::move(other.settings);
+		this->resources = std::move(other.resources);
+		this->routeParameters = std::move(other.routeParameters);
+		this->userAgentFilter = std::move(other.userAgentFilter);
 		this->serverType = other.serverType;
 
 		return *this;
