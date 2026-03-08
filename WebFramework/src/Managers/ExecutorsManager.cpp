@@ -185,7 +185,7 @@ namespace framework
 		{
 			if (auto it = headers.find("User-Agent"); it != headers.end())
 			{
-				if (std::ranges::find(executorUserAgentFilter, it->second) != executorUserAgentFilter.end())
+				if (std::ranges::find(executorUserAgentFilter, it->second) == executorUserAgentFilter.end())
 				{
 					if (Log::isValid())
 					{
@@ -394,7 +394,7 @@ namespace framework
 			{
 				if (auto it = headers.find("User-Agent"); it != headers.end())
 				{
-					if (std::ranges::find(userAgentFilter, it->second) != userAgentFilter.end())
+					if (std::ranges::find(userAgentFilter, it->second) == userAgentFilter.end())
 					{
 						if (Log::isValid())
 						{

@@ -2,6 +2,7 @@
   "CXXHelloExecutor": {
     "route": [ "cxx", "" ],
     "loadType": "initialization",
-    "api": "cxx"
+    "api": "cxx",
+    "userAgentFilter": "CustomUserAgent"
   }
 }
