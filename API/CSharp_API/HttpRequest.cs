@@ -958,7 +958,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="response"></param>
 	/// <param name="variables"></param>
 	/// <param name="isBinary"></param>
-	/// <param name="fileName"></param>
+	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendAssetFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
@@ -1009,7 +1009,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="filePath"></param>
 	/// <param name="response"></param>
 	/// <param name="isBinary"></param>
-	/// <param name="fileName"></param>
+	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendStaticFile(string filePath, HttpResponse response, bool? isBinary = null, string? fileName = null)
 	{
@@ -1038,7 +1038,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="response"></param>
 	/// <param name="variables"></param>
 	/// <param name="isBinary"></param>
-	/// <param name="fileName"></param>
+	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendDynamicFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{

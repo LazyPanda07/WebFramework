@@ -208,7 +208,7 @@ web_framework_exception_t wf_get_large_data(http_request_t implementation, const
  * @param variables Variables for processing if file is .wfdp
  * @param variablesSize Size of variables
  * @param isBinary Is binary file
- * @param fileName Optional parameter. Custom name
+ * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
 web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
@@ -219,7 +219,7 @@ web_framework_exception_t wf_send_asset_file(http_request_t implementation, cons
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
  * @param isBinary Is binary file
- * @param fileName Optional parameter. Custom name
+ * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
 web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* file_path, http_response_t response, bool is_binary, const char* file_name);
@@ -232,7 +232,7 @@ web_framework_exception_t wf_send_static_file(http_request_t implementation, con
  * @param variables Variables for processing .wfdp file
  * @param variablesSize Size of variables
  * @param isBinary Is binary file
- * @param fileName Optional parameter. Custom name
+ * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
 web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);

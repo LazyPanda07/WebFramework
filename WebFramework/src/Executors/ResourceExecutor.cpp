@@ -240,11 +240,11 @@ namespace framework
 
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
+			fileManager.readFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
 		}
 
 		if (fileName.size())
