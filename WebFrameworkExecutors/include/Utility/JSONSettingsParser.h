@@ -32,7 +32,7 @@ namespace framework::utility
 
 			json::JsonObject initParameters;
 			std::string name;
-			std::string userAgentFilter;
+			std::vector<std::string> userAgentFilter;
 			std::string apiType;
 			LoadType executorLoadType;
 			std::shared_ptr<Executor> resourceExecutor;

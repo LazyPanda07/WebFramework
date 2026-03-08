@@ -196,10 +196,10 @@ web_framework_exception_t wf_get_executor_name(executor_settings_t implementatio
 /**
  * @brief Get filter by User-Agent header
  * @param implementation executor_settings_t instance
- * @param result String with executor name. Delete with deleteWebFrameworkString function
+ * @param result Array of strings with user agent filters
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t implementation, web_framework_string_t* result);
+web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t implementation, char*** result, size_t* result_size);
 
 /**
  * @brief Get API language of executor_t

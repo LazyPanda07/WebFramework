@@ -54,7 +54,7 @@ namespace framework
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
-		std::string userAgentFilter;
+		std::vector<std::string> userAgentFilter;
 		WebServerType serverType;
 
 	private:

@@ -617,9 +617,33 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 		.def("get_cookies", &framework::HttpRequest::getCookies)
 		.def("get_multiparts", &framework::HttpRequest::getMultiparts)
 		.def("get_large_data", &framework::HttpRequest::getLargeData)
-		.def("send_asset_file", &framework::HttpRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a = "")
-		.def("send_static_file", &framework::HttpRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a = true, "file_name"_a = "")
-		.def("send_dynamic_file", &framework::HttpRequest::sendDynamicFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "")
+		.def
+		(
+			"send_asset_file", &framework::HttpRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a = "",
+			R"pbdoc(
+Parameters
+----------
+file_name : str
+    Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required.)pbdoc"
+		)
+		.def
+		(
+			"send_static_file", &framework::HttpRequest::sendStaticFile, "file_path"_a, "response"_a, "is_binary"_a = true, "file_name"_a = "",
+			R"pbdoc(
+Parameters
+----------
+file_name : str
+    Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required.)pbdoc"
+		)
+		.def
+		(
+			"send_dynamic_file", &framework::HttpRequest::sendDynamicFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "",
+			R"pbdoc(
+Parameters
+----------
+file_name : str
+    Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required.)pbdoc"
+		)
 		.def("stream_file", &framework::HttpRequest::streamFile, "file_path"_a, "response"_a, "file_name"_a, "chunk_size"_a = framework::interfaces::IHttpRequest::defaultChunkSize)
 		.def
 		(

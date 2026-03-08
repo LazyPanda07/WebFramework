@@ -994,11 +994,18 @@ String getExecutorName(ExecutorSettings executorsSettings, Exception* exception)
 	return nullptr;
 }
 
-String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception* exception)
+void getExecutorUserAgentFilter(ExecutorSettings executorsSettings, void(*initUserAgentFilterBuffer)(size_t size, void* buffer), void(*addUserAgentFilter)(const char* value, size_t index, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
-		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->userAgentFilter);
+		const std::vector<std::string>& userAgentFilter = static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->userAgentFilter;
+
+		initUserAgentFilterBuffer(userAgentFilter.size(), buffer);
+
+		for (size_t i = 0; i < userAgentFilter.size(); i++)
+		{
+			addUserAgentFilter(userAgentFilter[i].data(), i, buffer);
+		}
 	}
 	catch (const std::exception& e)
 	{
@@ -1008,8 +1015,6 @@ String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception*
 	{
 		UNEXPECTED_EXCEPTION();
 	}
-
-	return nullptr;
 }
 
 String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* exception)

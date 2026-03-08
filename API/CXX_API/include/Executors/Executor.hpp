@@ -95,7 +95,7 @@ namespace framework
 			 * @brief Get filter by User-Agent header
 			 * @return
 			 */
-			std::string getUserAgentFilter() const;
+			std::vector<std::string> getUserAgentFilter() const;
 
 			/**
 			 * @brief Get API language of Executor
@@ -338,20 +338,29 @@ namespace framework
 			return handler.getString(result);
 		}
 
-		inline std::string ExecutorSettings::getUserAgentFilter() const
+		inline std::vector<std::string> ExecutorSettings::getUserAgentFilter() const
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorUserAgentFilter, void*, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorUserAgentFilter, void, void(*initUserAgentFilterBuffer)(size_t size, void* buffer), void(*addUserAgentFilter)(const char* value, size_t index, void* buffer), void* buffer, void** exception);
 			void* exception = nullptr;
-			DllHandler& handler = DllHandler::getInstance();
+			auto initUserAgentFilterBuffer = [](size_t size, void* buffer)
+				{
+					static_cast<std::vector<std::string>*>(buffer)->resize(size);
+				};
+			auto addUserAgentFilter = [](const char* value, size_t index, void* buffer)
+				{
+					(*static_cast<std::vector<std::string>*>(buffer))[index] = value;
+				};
+			
+			std::vector<std::string> result;
 
-			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, &exception);
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, initUserAgentFilterBuffer, addUserAgentFilter, &result, &exception);
 
 			if (exception)
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
 
-			return handler.getString(result);
+			return result;
 		}
 
 		inline std::string ExecutorSettings::getAPIType() const

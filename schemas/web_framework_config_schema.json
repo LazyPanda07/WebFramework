@@ -176,7 +176,10 @@
           "enum": [ "multiThreaded", "threadPool", "loadBalancer", "proxy" ]
         },
         "userAgentFilter": {
-          "type": "string",
+          "type": [ "string", "array" ],
+          "items": {
+            "type": "string"
+          },
           "description": "Filter input requests by User-Agent"
         },
         "largeBodySizeThreshold": {

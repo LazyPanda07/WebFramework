@@ -32,6 +32,12 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	private delegate void FillBufferCallback(IntPtr data, nuint size, IntPtr buffer);
 
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	private delegate void InitBufferCallback(nuint size, IntPtr buffer);
+
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	private delegate void AddUserAgentFilterCallback(IntPtr value, nuint index, IntPtr buffer);
+
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
@@ -64,7 +70,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	private static partial IntPtr getExecutorName(IntPtr implementation, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getExecutorUserAgentFilter(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getExecutorUserAgentFilter(IntPtr implementation, InitBufferCallback initUserAgentFilterBuffer, AddUserAgentFilterCallback addUserAgentFilter, IntPtr buffer, ref void* exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getExecutorAPIType(IntPtr implementation, ref void* exception);
@@ -329,10 +335,30 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 		return JsonSerializer.Deserialize<T>(GetStringData(parameters))!;
 	}
 
-	public string GetUserAgentFilter()
+	public IList<string> GetUserAgentFilter()
 	{
 		void* exception = null;
-		string result = Marshal.PtrToStringUTF8(getExecutorUserAgentFilter(implementation, ref exception))!;
+		List<string> result = [];
+		GCHandle handle = GCHandle.Alloc(result);
+		
+		getExecutorUserAgentFilter
+		(
+			implementation,
+			(nuint size, IntPtr buffer) =>
+			{
+				List<string> result = (List<string>)GCHandle.FromIntPtr(buffer).Target!;
+
+				result.EnsureCapacity((int)size);
+			},
+			(IntPtr value, nuint index, IntPtr buffer) =>
+			{
+				List<string> result = (List<string>)GCHandle.FromIntPtr(buffer).Target!;
+
+				result[(int)index] = Marshal.PtrToStringUTF8(value)!;
+			},
+			GCHandle.ToIntPtr(handle),
+			ref exception
+		);
 
 		if (exception != null)
 		{

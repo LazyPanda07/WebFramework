@@ -12,7 +12,7 @@ namespace framework::utility
 		AdditionalServerSettings();
 
 	public:
-		std::string userAgentFilter;
+		std::vector<std::string> userAgentFilter;
 		size_t largeBodySizeThreshold;
 		size_t largeBodyPacketSize;
 		std::filesystem::path assetsPath;

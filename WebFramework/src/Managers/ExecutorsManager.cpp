@@ -179,13 +179,13 @@ namespace framework
 
 	bool ExecutorsManager::filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHttpResponse& response) const
 	{
-		const std::string& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
+		const std::vector<std::string>& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
 
 		if (executorUserAgentFilter.size())
 		{
 			if (auto it = headers.find("User-Agent"); it != headers.end())
 			{
-				if (executorUserAgentFilter != it->second)
+				if (std::ranges::find(executorUserAgentFilter, it->second) != executorUserAgentFilter.end())
 				{
 					if (Log::isValid())
 					{
@@ -394,7 +394,7 @@ namespace framework
 			{
 				if (auto it = headers.find("User-Agent"); it != headers.end())
 				{
-					if (userAgentFilter != it->second)
+					if (std::ranges::find(userAgentFilter, it->second) != userAgentFilter.end())
 					{
 						if (Log::isValid())
 						{

@@ -120,7 +120,7 @@ EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exce
 
 EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);
 
-EXPORT String getExecutorUserAgentFilter(ExecutorSettings executorsSettings, Exception* exception);
+EXPORT void getExecutorUserAgentFilter(ExecutorSettings executorsSettings, void(*initUserAgentFilterBuffer)(size_t size, void* buffer), void(*addUserAgentFilter)(const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 
 EXPORT String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* exception);
 

@@ -6,6 +6,12 @@ typedef struct file_buffer
 	size_t* size;
 } file_buffer_t;
 
+typedef struct user_filter_buffer
+{
+	char*** result;
+	size_t* result_size;
+} user_filter_buffer_t;
+
 static void __fill_file_buffer(const char* data, size_t size, void* buffer)
 {
 	file_buffer_t* fileBuffer = (file_buffer_t*)buffer;
@@ -25,6 +31,30 @@ static void __fill_file_buffer(const char* data, size_t size, void* buffer)
 	*resultSize = size;
 
 	memcpy(*result, data, size);
+}
+
+static void __init_user_agent_filter(size_t size, void* buffer)
+{
+	user_filter_buffer_t* temp = (user_filter_buffer_t*)buffer;
+
+	*(temp->result) = malloc(sizeof(char**) * size);
+}
+
+static void __fill_user_agent_filter(const char* value, size_t index, void* buffer)
+{
+	user_filter_buffer_t* temp = (user_filter_buffer_t*)buffer;
+	char** ptr = &((*temp->result)[index]);
+
+	*ptr = calloc(strlen(value) + 1, sizeof(char));
+
+	if (!*ptr)
+	{
+		fprintf(stderr, "Can't allocate memory for copying value in user agent filter\n");
+
+		exit(7);
+	}
+
+	memcpy(*ptr, value, strlen(value));
 }
 
 web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
@@ -130,13 +160,15 @@ web_framework_exception_t wf_get_executor_name(executor_settings_t implementatio
 	return exception;
 }
 
-web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t implementation, web_framework_string_t* result)
+web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t implementation, char*** result, size_t* result_size)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getExecutorUserAgentFilter)(void* implementation, void** exception);
+	typedef void (*getExecutorUserAgentFilter)(void* implementation, void(*initUserAgentFilterBuffer)(size_t size, void* buffer), void(*addUserAgentFilter)(const char* value, size_t index, void* buffer), void* buffer, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, &exception);
+	user_filter_buffer_t temp = { .result = result, .result_size = result_size };
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, __init_user_agent_filter, __fill_user_agent_filter, &temp, &exception);
 
 	return exception;
 }
