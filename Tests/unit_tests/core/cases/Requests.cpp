@@ -95,7 +95,7 @@ TEST(HelloExecutor, OPTIONS)
 
 		ASSERT_TRUE
 		(
-			parser.getResponseCode() == web::ResponseCodes::badRequest ||
+			parser.getResponseCode() == web::ResponseCodes::notFound ||
 			parser.getHeaders().at("Allow") == "OPTIONS, GET, POST, HEAD, PUT, DELETE, PATCH, TRACE, CONNECT"
 		) << response;
 	}
@@ -116,7 +116,7 @@ TEST(HelloExecutor, TRACE)
 
 		web::HttpParser parser(response);
 
-		bool result = parser.getResponseCode() == web::ResponseCodes::badRequest ||
+		bool result = parser.getResponseCode() == web::ResponseCodes::notFound ||
 			[&]() -> bool
 			{
 				std::istringstream is(request);

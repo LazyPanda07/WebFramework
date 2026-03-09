@@ -23,10 +23,10 @@
     "dateFormat": "DMY",
     "usingLogging": true
   },
-  "TaskExecutors": {
+  "TaskBroker": {
     "consumer": "internal",
     "taskBrokers": [
-      "Internal"
+      "internal"
     ],
     "taskExecutorsSettings": [
       "task_executors.json"

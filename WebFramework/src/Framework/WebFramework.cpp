@@ -277,18 +277,18 @@ namespace framework
 		}
 	}
 
-	void WebFramework::initTaskExecutors(const json::JsonObject& taskExecutorsObject)
+	void WebFramework::initTaskExecutors(const json::JsonObject& taskBrokerObject)
 	{
 		std::vector<json::JsonObject> taskExecutorPaths;
 		std::vector<utility::TaskExecutorsSettings> taskExecutorsSettings;
 
-		taskExecutorsObject.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsSettingsKey, taskExecutorPaths);
+		taskBrokerObject.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsSettingsKey, taskExecutorPaths);
 
 		const std::filesystem::path& basePath = config.getBasePath();
 		task_broker::TaskExecutorsManager& taskExecutorsManager = task_broker::TaskExecutorsManager::get();
 		std::string consumer;
 
-		if (taskExecutorsObject.tryGet<std::string>(json_settings::consumerKey, consumer) && consumer == json_settings_values::consumerInternalValue)
+		if (taskBrokerObject.tryGet<std::string>(json_settings::consumerKey, consumer) && consumer == json_settings_values::consumerInternalValue)
 		{
 			if (taskExecutorPaths.empty())
 			{
@@ -296,12 +296,12 @@ namespace framework
 			}
 
 			task_broker::TaskBrokersManager& taskBrokerManager = task_broker::TaskBrokersManager::get();
-			std::vector<std::string> taskBrokerNames = json::utility::JsonArrayWrapper(taskExecutorsObject.at(json_settings::taskBrokersKey)).as<std::string>();
+			std::vector<std::string> taskBrokerNames = json::utility::JsonArrayWrapper(taskBrokerObject.at(json_settings::taskBrokersKey)).as<std::string>();
 			size_t consumerThreads = json_settings_values::consumerThreadsDefaultValue;
 			size_t checkPeriod = json_settings_values::checkPeriodDefaultValue;
 
-			taskExecutorsObject.tryGet<size_t>(json_settings::consumerThreadsKey, consumerThreads);
-			taskExecutorsObject.tryGet<size_t>(json_settings::checkPeriodKey, checkPeriod);
+			taskBrokerObject.tryGet<size_t>(json_settings::consumerThreadsKey, consumerThreads);
+			taskBrokerObject.tryGet<size_t>(json_settings::checkPeriodKey, checkPeriod);
 
 			for (const std::string& taskBrokerName : taskBrokerNames)
 			{
@@ -536,9 +536,9 @@ namespace framework
 		this->initHTTPS(webFrameworkSettings);
 		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
 
-		if (json::JsonObject taskExecutorsObject; (*config).tryGet<json::JsonObject>(json_settings::taskExecutorsObject, taskExecutorsObject))
+		if (json::JsonObject taskBrokerObject; (*config).tryGet<json::JsonObject>(json_settings::taskBrokerObject, taskBrokerObject))
 		{
-			this->initTaskExecutors(taskExecutorsObject);
+			this->initTaskExecutors(taskBrokerObject);
 		}
 
 		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)

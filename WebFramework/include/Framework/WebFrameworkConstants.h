@@ -16,7 +16,7 @@ namespace json_settings
 	inline constexpr std::string_view threadPoolServerObject = "ThreadPoolServer";
 	inline constexpr std::string_view loadBalancerObject = "LoadBalancer";
 	inline constexpr std::string_view proxyObject = "Proxy";
-	inline constexpr std::string_view taskExecutorsObject = "TaskExecutors";
+	inline constexpr std::string_view taskBrokerObject = "TaskBroker";
 
 	inline constexpr std::string_view settingsPathsKey = "settingsPaths";
 	inline constexpr std::string_view loadSourcesKey = "loadSources";

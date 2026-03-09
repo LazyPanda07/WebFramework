@@ -7,7 +7,7 @@ on:
   
   
 env:
-  FLUTTER_VERSION: 3.38.9
+  FLUTTER_VERSION: 3.41.4
   PYTHON_VERSION: 3.14
 
 
@@ -435,7 +435,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [
-      # windows-visual-studio-build,
+      windows-visual-studio-build,
       android-hello-executor,
       windows-build,
       linux-build,

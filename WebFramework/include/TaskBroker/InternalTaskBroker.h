@@ -9,7 +9,7 @@ namespace framework::task_broker
 	class InternalTaskBroker : public TaskBroker
 	{
 	public:
-		static constexpr std::string_view taskBrokerName = "Internal";
+		static constexpr std::string_view taskBrokerName = "internal";
 
 	private:
 		threading::utility::ConcurrentQueue<json::JsonObject> tasks;
