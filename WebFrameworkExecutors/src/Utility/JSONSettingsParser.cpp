@@ -78,17 +78,14 @@ namespace framework::utility
 
 			if (description.contains<std::string>(json_settings::userAgentFilterKey))
 			{
-				if (Log::isValid())
-				{
-					Log::info("User agent filter: {}", "LogUserAgentFilter", description[json_settings::userAgentFilterKey].get<std::string>());
-				}
-
 				executorSettings.userAgentFilter.emplace_back(description[json_settings::userAgentFilterKey].get<std::string>());
 			}
 			else if (description.contains<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey))
 			{
 				executorSettings.userAgentFilter = json::utility::JsonArrayWrapper(description[json_settings::userAgentFilterKey].get<std::vector<json::JsonObject>>()).as<std::string>();
 			}
+
+			std::erase(executorSettings.userAgentFilter, "");
 
 			if (description[json_settings::routeKey].is<std::string>())
 			{

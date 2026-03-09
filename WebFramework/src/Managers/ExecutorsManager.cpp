@@ -190,11 +190,6 @@ namespace framework
 					if (Log::isValid())
 					{
 						Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
-
-						for (const std::string& userAgent : executorUserAgentFilter)
-						{
-							Log::info("Existing user agent filter: {}", "LogFilter", userAgent);
-						}
 					}
 
 					resources->forbiddenError(response, nullptr);
@@ -404,11 +399,6 @@ namespace framework
 						if (Log::isValid())
 						{
 							Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
-
-							for (const std::string& userAgent : userAgentFilter)
-							{
-								Log::info("Existing user agent filter: {}", "LogFilter", userAgent);
-							}
 						}
 
 						resources->forbiddenError(response, nullptr);

@@ -47,6 +47,8 @@ namespace framework::utility
 			result.userAgentFilter = json::utility::JsonArrayWrapper(parser.get<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey)).as<std::string>();
 		}
 
+		std::erase(result.userAgentFilter, "");
+
 		return result;
 	}
 }

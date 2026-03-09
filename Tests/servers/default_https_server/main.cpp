@@ -19,10 +19,10 @@ int main(int argc, char** argv) try
 	customUserAgentServer.start();
 	server.start
 	(
-		true, 
+		true,
 		[]()
 		{
-			std::cout << "Server is running..." << std::endl; 
+			std::cout << "Server is running..." << std::endl;
 		}
 	);
 
