@@ -6,11 +6,11 @@ namespace framework::task_broker
 {
 	struct Internal
 	{
-		static inline constexpr std::string_view taskBrokerName = "Internal";
+		static inline constexpr std::string_view taskBrokerName = "internal";
 	};
 
 	struct RabbitMq
 	{
-		static inline constexpr std::string_view taskBrokerName = "RabbitMQ";
+		static inline constexpr std::string_view taskBrokerName = "rabbitmq";
 	};
 }

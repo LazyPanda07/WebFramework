@@ -2,5 +2,5 @@
 
 public class InternalTaskBroker : ITaskBroker
 {
-	public static string ImplementationName => "Internal";
+	public static string ImplementationName => "internal";
 }
