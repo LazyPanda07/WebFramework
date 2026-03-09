@@ -84,8 +84,6 @@ namespace exceptions
 	inline constexpr std::string_view missingSemicolonSyntaxError = "Missing semicolon";
 
 	inline constexpr std::string_view stringConversionErrorCode = "String conversion error code ";
-
-	inline constexpr std::string_view notFound = "Not found";
 }
 
 namespace json_settings_values

@@ -8,7 +8,6 @@ using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Nodes;
-using System.Xml.Linq;
 
 public struct LargeData
 {
@@ -193,6 +192,21 @@ public static partial class Utils
 		Type? targetType = Type.GetType(typeName);
 
 		return targetType == null ? 0 : targetType.IsSubclassOf(typeof(Executor)) ? 1 : 0;
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "HasTaskExecutor")]
+	public static int HasTaskExecutor(IntPtr assemblyName)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(assemblyName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return 0;
+		}
+
+		Type? targetType = Type.GetType(typeName);
+
+		return targetType == null ? 0 : typeof(ITaskExecutor).IsAssignableFrom(targetType) ? 1 : 0;
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "Free")]

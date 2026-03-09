@@ -42,6 +42,9 @@
     <ClCompile Include="src\Exceptions\BadRequestException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Exceptions\NotFoundException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Executors\Executor.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ExecutorsConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Exceptions\NotFoundException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

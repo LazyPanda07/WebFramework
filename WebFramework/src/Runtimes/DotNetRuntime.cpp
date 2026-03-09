@@ -131,6 +131,7 @@ namespace framework::runtime
 		NativeString typeName = std::format("Framework.Utility.Utils, {}", moduleName.string());
 
 		this->loadMethod(typeName, "HasExecutor", hasExecutor);
+		this->loadMethod(typeName, "HasTaskExecutor", hasTaskExecutor);
 		this->loadMethod(typeName, "Free", dotNetFree);
 		this->loadMethod(typeName, "Dealloc", dotNetDealloc);
 		this->loadMethod(typeName, "Init", init);
@@ -284,6 +285,7 @@ namespace framework::runtime
 
 	DotNetRuntime::DotNetRuntime() :
 		hasExecutor(nullptr),
+		hasTaskExecutor(nullptr),
 		dotNetFree(nullptr),
 		dotNetDealloc(nullptr),
 		createExecutorFunction(nullptr),
@@ -402,7 +404,10 @@ namespace framework::runtime
 		NativeString moduleName = DotNetRuntime::getModuleName(modulePath);
 		std::string fullQualifiedName = std::format("{}, {}", name, moduleName.string());
 
-		// TODO: check
+		if (!hasTaskExecutor(fullQualifiedName.data()))
+		{
+			throw std::runtime_error(std::format("Can't find {} task executor", name));
+		}
 
 		if (Log::isValid())
 		{

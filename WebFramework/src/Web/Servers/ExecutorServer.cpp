@@ -7,6 +7,7 @@
 
 #include "Exceptions/NotFoundException.h"
 #include "Exceptions/APIException.h"
+#include "Exceptions/BadRequestException.h"
 #include "Exceptions/CSharpException.h"
 
 namespace framework
@@ -70,7 +71,10 @@ namespace framework
 		}
 		catch (const exceptions::NotFoundException& e) // 404
 		{
-			// TODO: add throwing exception for some reason, logging
+			if (Log::isValid())
+			{
+				Log::warning("Not found exception: {}", "LogExecutorServer", e.what());
+			}
 
 			resources.notFoundError(response, &e);
 

@@ -208,7 +208,7 @@ namespace framework
 	{
 		SSL* ssl = nullptr;
 
-		try // TODO: remake
+		try
 		{
 			if (useHTTPS)
 			{

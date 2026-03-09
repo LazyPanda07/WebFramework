@@ -13,6 +13,7 @@ add_library(
 	src/Exceptions/ExecutorException.cpp
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
+	src/Exceptions/NotFoundException.cpp
 )
 
 if (${WITH_UNITY_BUILD})

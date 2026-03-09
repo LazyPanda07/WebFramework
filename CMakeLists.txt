@@ -78,7 +78,6 @@ add_library(
 	WebFramework/src/Runtimes/CCRuntime.cpp
 	WebFramework/src/Runtimes/PythonRuntime.cpp
 	WebFramework/src/Runtimes/DotNetRuntime.cpp
-	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
 	WebFramework/src/Exceptions/DynamicPagesSyntaxException.cpp

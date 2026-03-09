@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
     <ClCompile Include="src\Executors\Executor.cpp" />
     <ClCompile Include="src\Executors\HeavyOperationStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\HeavyOperationStatelessExecutor.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Exceptions\NotFoundException.h" />
     <ClInclude Include="include\Executors\Executor.h" />
     <ClInclude Include="include\Executors\HeavyOperationStatefulExecutor.h" />
     <ClInclude Include="include\Executors\HeavyOperationStatelessExecutor.h" />

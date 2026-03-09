@@ -28,6 +28,7 @@ namespace framework::runtime
 
 	public:
 		using HasExecutorSignature = bool(*)(const char* executorName);
+		using HasTaskExecutorSignature = bool(*)(const char* executorName);
 		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
 		using CallDynamicFunctionSignature = char* (*)(void* dynamicFunction, const char** arguments, size_t size);
 		using FreeSignature = void(*)(void* implementation);
@@ -67,6 +68,7 @@ namespace framework::runtime
 		get_function_pointer_fn getFunctionPointer;
 		HMODULE runtimeLibrary;
 		HasExecutorSignature hasExecutor;
+		HasTaskExecutorSignature hasTaskExecutor;
 		FreeSignature dotNetFree;
 		FreeSignature dotNetDealloc;
 		CreateExecutorSignature createExecutorFunction;

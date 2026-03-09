@@ -141,7 +141,6 @@
     <ClCompile Include="src\Databases\TableImplementation.cpp" />
     <ClCompile Include="src\Exceptions\APIException.cpp" />
     <ClCompile Include="src\Exceptions\CSharpException.cpp" />
-    <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
     <ClCompile Include="src\Executors\CCExecutor.cpp" />
     <ClCompile Include="src\Executors\CXXExecutor.cpp" />
     <ClCompile Include="src\Executors\CSharpExecutor.cpp" />
@@ -215,7 +214,6 @@
     <ClInclude Include="include\Databases\TableImplementation.h" />
     <ClInclude Include="include\Exceptions\APIException.h" />
     <ClInclude Include="include\Exceptions\CSharpException.h" />
-    <ClInclude Include="include\Exceptions\NotFoundException.h" />
     <ClInclude Include="include\Executors\CCExecutor.h" />
     <ClInclude Include="include\Executors\CXXExecutor.h" />
     <ClInclude Include="include\Executors\CSharpExecutor.h" />
