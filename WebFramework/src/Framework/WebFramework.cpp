@@ -303,9 +303,10 @@ namespace framework
 			taskExecutorsObject.tryGet<size_t>(json_settings::consumerThreadsKey, consumerThreads);
 			taskExecutorsObject.tryGet<size_t>(json_settings::checkPeriodKey, checkPeriod);
 
-			// TODO: add all from taskBrokerNames
-
-			taskBrokerManager.addTaskBroker<task_broker::InternalTaskBroker>();
+			for (const std::string& taskBrokerName : taskBrokerNames)
+			{
+				taskBrokerManager.addTaskBroker(taskBrokerName);
+			}
 
 			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod));
 		}

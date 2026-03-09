@@ -3,7 +3,6 @@
 #include <Log.h>
 
 #include "Exceptions/FileDoesNotExistException.h"
-#include "Exceptions/NotFoundException.h"
 #include "Exceptions/SslException.h"
 #include "Exceptions/APIException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
@@ -71,7 +70,7 @@ namespace framework
 
 		HttpRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, address, stream);
 		HttpResponseImplementation response;
-		std::vector<std::function<void(ServiceState&)>> chain =
+		const std::vector<std::function<void(ServiceState&)>> chain =
 		{
 			[this, &request](ServiceState& state)
 			{
@@ -139,26 +138,23 @@ namespace framework
 				}
 			}
 		};
+		const void* lastChainTask = &*chain.rbegin();
+		const std::function<void(ServiceState&)>* task = &chain.front();
 
-		for (const std::function<void(ServiceState&)>& task : chain)
+		while (task)
 		{
-			ServiceState state = service(stream, request, response, resourceExecutor, task);
+			switch (service(stream, request, response, resourceExecutor, *task))
+			{
+			case framework::ExecutorServer::ServiceState::success:
+				task = task == lastChainTask ? nullptr : task + 1;
 
-			if (state == ServiceState::success)
-			{
-				continue;
-			}
-			else if (state == ServiceState::skipResponse)
-			{
+				break;
+
+			case framework::ExecutorServer::ServiceState::skipResponse:
 				return false;
-			}
-			else if (state == ServiceState::error)
-			{
+
+			case framework::ExecutorServer::ServiceState::error:
 				return true;
-			}
-			else
-			{
-				throw std::runtime_error("Wrong ServiceState: " + std::to_string(static_cast<int>(state)));
 			}
 		}
 

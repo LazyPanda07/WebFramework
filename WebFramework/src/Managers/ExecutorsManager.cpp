@@ -162,7 +162,6 @@ namespace framework
 					this->createApiExecutor(executorSettings->second.name, executorSettings->second.apiType)
 				).first;
 
-				// TODO: stateful init
 				executor->second->init(executorSettings->second);
 
 				utility::ExecutorType executorType = executor->second->getType();
@@ -274,8 +273,6 @@ namespace framework
 						}
 						else
 						{
-							// TODO: stateless init
-
 							it->second->init(executorSettings);
 						}
 					}
@@ -294,8 +291,6 @@ namespace framework
 
 					if (success)
 					{
-						// TODO: stateless init
-
 						it->second->init(executorSettings);
 					}
 				}
@@ -385,32 +380,18 @@ namespace framework
 
 	Executor* ExecutorsManager::getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors)
 	{
-		try // TODO: remake
+		HttpRequestImplementation& requestImplementation = *static_cast<HttpRequestImplementation*>(&request);
+		const web::HeadersMap& headers = requestImplementation.parser.getHeaders();
+
+		if (userAgentFilter.size())
 		{
-			HttpRequestImplementation& requestImplementation = *static_cast<HttpRequestImplementation*>(&request);
-			const web::HeadersMap& headers = requestImplementation.parser.getHeaders();
-
-			if (userAgentFilter.size())
+			if (auto it = headers.find("User-Agent"); it != headers.end())
 			{
-				if (auto it = headers.find("User-Agent"); it != headers.end())
-				{
-					if (std::ranges::find(userAgentFilter, it->second) == userAgentFilter.end())
-					{
-						if (Log::isValid())
-						{
-							Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
-						}
-
-						resources->forbiddenError(response, nullptr);
-
-						return nullptr;
-					}
-				}
-				else
+				if (std::ranges::find(userAgentFilter, it->second) == userAgentFilter.end())
 				{
 					if (Log::isValid())
 					{
-						Log::info("No User-Agent provided", "LogFilter");
+						Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
 					}
 
 					resources->forbiddenError(response, nullptr);
@@ -418,100 +399,66 @@ namespace framework
 					return nullptr;
 				}
 			}
-
-			std::string parameters(request.getRawParameters());
-			Executor* executor = nullptr;
-			bool fileRequest = ExecutorsManager::isFileRequest(parameters);
-
-			if (parameters.find('?') != std::string::npos)
+			else
 			{
-				parameters.resize(parameters.find('?'));
-			}
-
-			executor = this->getOrCreateExecutor(parameters, request, executors);
-
-			if (!fileRequest && !executor)
-			{
-				if (resources->fileExist(parameters))
+				if (Log::isValid())
 				{
-					return resources.get();
+					Log::info("No User-Agent provided", "LogFilter");
 				}
 
-				throw exceptions::BadRequestException(); // 400
-			}
+				resources->forbiddenError(response, nullptr);
 
-			if (fileRequest && executor)
-			{
-				fileRequest = false;
+				return nullptr;
 			}
+		}
 
-			if (fileRequest)
+		std::string parameters(request.getRawParameters());
+		Executor* executor = nullptr;
+		bool fileRequest = ExecutorsManager::isFileRequest(parameters);
+
+		if (parameters.find('?') != std::string::npos)
+		{
+			parameters.resize(parameters.find('?'));
+		}
+
+		executor = this->getOrCreateExecutor(parameters, request, executors);
+
+		if (!fileRequest && !executor)
+		{
+			if (resources->fileExist(parameters))
 			{
 				return resources.get();
 			}
-			else if (executor)
+
+			throw exceptions::BadRequestException(); // 400
+		}
+
+		if (fileRequest && executor)
+		{
+			fileRequest = false;
+		}
+
+		if (fileRequest)
+		{
+			return resources.get();
+		}
+		else if (executor)
+		{
+			if (this->filterUserAgent(parameters, headers, response))
 			{
-				if (this->filterUserAgent(parameters, headers, response))
-				{
-					return executor;
-				}
-				else
-				{
-					resources->forbiddenError(response, nullptr);
-				}
+				return executor;
 			}
 			else
 			{
-				throw exceptions::BadRequestException(); // 400
+				resources->forbiddenError(response, nullptr);
 			}
-
-			return nullptr;
 		}
-		catch (const exceptions::ExecutorException& e)
+		else
 		{
-			if (Log::isValid())
-			{
-				Log::error("Executor exception: {}", "LogExecutor", e.what());
-			}
-
-			throw;
+			throw exceptions::BadRequestException(); // 400
 		}
-		catch (const file_manager::exceptions::FileDoesNotExistException& e)
-		{
-			if (Log::isValid())
-			{
-				Log::error("File request exception. {}", "LogExecutor", e.what());
-			}
 
-			throw;
-		}
-		catch (const database::exception::DatabaseException& e)
-		{
-			if (Log::isValid())
-			{
-				Log::error("Database exception: {}", "LogWebFrameworkDatabase", e.what());
-			}
-
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			if (Log::isValid())
-			{
-				Log::error("Out of range", "LogExecutor");
-			}
-
-			throw;
-		}
-		catch (const std::exception& e)
-		{
-			if (Log::isValid())
-			{
-				Log::error("Executor manager exception: {}", "LogExecutorsManager", e.what());
-			}
-
-			throw;
-		}
+		return nullptr;
 	}
 
 	std::shared_ptr<ResourceExecutor> ExecutorsManager::getResourceExecutor() const

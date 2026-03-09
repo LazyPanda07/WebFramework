@@ -134,7 +134,7 @@ namespace framework
 
 		for (const auto& [functionName, arguments] : codes)
 		{
-			try // TODO: remake
+			try
 			{
 				if (Log::isValid())
 				{
@@ -145,12 +145,7 @@ namespace framework
 			}
 			catch (const std::exception& e)
 			{
-				if (Log::isValid())
-				{
-					Log::error("WFDPRenderer execute exception: {}", "LogWebFrameworkDynamicPages", e.what());
-				}
-
-				throw;
+				throw std::runtime_error(std::format("WFDPRenderer execute exception: {}", e.what()));
 			}
 		}
 

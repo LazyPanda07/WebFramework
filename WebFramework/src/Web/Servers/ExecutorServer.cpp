@@ -44,6 +44,11 @@ namespace framework
 #endif
 		catch (const exceptions::BadRequestException& e) // 400
 		{
+			if (Log::isValid())
+			{
+				Log::warning("Bad request from client: {}", "LogExecutorServer", e.what());
+			}
+
 			resources.badRequestError(response, &e);
 
 			stream << response;
@@ -52,6 +57,11 @@ namespace framework
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
+			if (Log::isValid())
+			{
+				Log::warning("Can't find file exception: {}", "LogExecutorServer", e.what());
+			}
+
 			resources.notFoundError(response, &e);
 
 			stream << response;
@@ -60,6 +70,8 @@ namespace framework
 		}
 		catch (const exceptions::NotFoundException& e) // 404
 		{
+			// TODO: add throwing exception for some reason, logging
+
 			resources.notFoundError(response, &e);
 
 			stream << response;
@@ -86,7 +98,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Internal server error: {}", "LogExecutorServer", e.what());
+				Log::error("Executor internal server error: {}", "LogExecutorServer", e.what());
 			}
 
 			resources.internalServerError(response, &e);

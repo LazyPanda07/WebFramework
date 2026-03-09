@@ -1,5 +1,9 @@
 #include "Managers/TaskBrokersManager.h"
 
+#include <functional>
+
+#include "TaskBroker/InternalTaskBroker.h"
+
 namespace framework::task_broker
 {
 	TaskBrokersManager& TaskBrokersManager::get()
@@ -7,6 +11,23 @@ namespace framework::task_broker
 		static TaskBrokersManager instance;
 
 		return instance;
+	}
+
+	void TaskBrokersManager::addTaskBroker(std::string_view taskBrokerName)
+	{
+		static const std::unordered_map<std::string_view, std::function<void()>> creators =
+		{
+			{ InternalTaskBroker::taskBrokerName, [this]() { return this->addTaskBroker<InternalTaskBroker>(); }}
+		};
+
+		if (auto it = creators.find(taskBrokerName); it != creators.end())
+		{
+			it->second();
+		}
+		else
+		{
+			throw std::runtime_error(std::format("Can't find task broker implementation with {} name", taskBrokerName));
+		}
 	}
 
 	TaskBroker& TaskBrokersManager::getTaskBroker(std::string_view name)

@@ -8,7 +8,6 @@
 #include <Strings.h>
 #include <Exceptions/FileDoesNotExistException.h>
 #include <Exceptions/CantFindValueException.h>
-#include <Log.h>
 
 #include "WebFrameworkCoreConstants.h"
 

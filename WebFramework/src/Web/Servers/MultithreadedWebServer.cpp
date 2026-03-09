@@ -5,7 +5,6 @@
 
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
-#include "Exceptions/NotFoundException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
@@ -26,7 +25,7 @@ namespace framework
 	{
 		SSL* ssl = nullptr;
 
-		try // TODO: remake
+		try
 		{
 			if (useHTTPS)
 			{
@@ -74,7 +73,7 @@ namespace framework
 
 		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
 
-		std::vector<std::function<void(ServiceState&)>> chain =
+		const std::vector<std::function<void(ServiceState&)>> chain =
 		{
 			[&stream, &request, &largeBodyHandler](ServiceState& state)
 			{
@@ -101,32 +100,32 @@ namespace framework
 				}
 			}
 		};
+		const void* lastChainTask = &*chain.rbegin();
 
 		while (isRunning)
 		{
 			response.setDefault();
+			const std::function<void(ServiceState&)>* task = &chain.front();
 
-			for (const std::function<void(ServiceState&)>& task : chain)
+			while (task)
 			{
-				ServiceState state = this->serviceRequests(stream, request, response, *resources, task);
+				switch (this->serviceRequests(stream, request, response, *resources, *task))
+				{
+				case framework::ExecutorServer::ServiceState::success:
+					task = task == lastChainTask ? nullptr : task + 1;
 
-				if (state == ServiceState::success)
-				{
-					continue;
-				}
-				else if (state == ServiceState::skipResponse)
-				{
 					break;
-				}
-				else if (state == ServiceState::error)
-				{
+
+				case framework::ExecutorServer::ServiceState::skipResponse:
+					task = nullptr;
+
+					break;
+
+				case framework::ExecutorServer::ServiceState::error:
 					finish = true;
+					task = nullptr;
 
 					break;
-				}
-				else
-				{
-					throw std::runtime_error("Wrong ServiceState: " + std::to_string(static_cast<int>(state)));
 				}
 			}
 

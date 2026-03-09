@@ -28,6 +28,8 @@ namespace framework::task_broker
 	public:
 		static TaskBrokersManager& get();
 
+		void addTaskBroker(std::string_view taskBrokerName);
+
 		template<std::derived_from<TaskBroker> T, typename... Args>
 		void addTaskBroker(Args&&... args);
 
