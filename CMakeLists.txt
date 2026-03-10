@@ -21,6 +21,7 @@ set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 set(PYTHON_EXECUTABLE "" CACHE STRING "Path to Python executable")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
+option(WITH_AMQP "Build with AMQP support" ON)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
@@ -255,6 +256,7 @@ install(
 		endif()
 
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
+		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 	]]
 )
 install(

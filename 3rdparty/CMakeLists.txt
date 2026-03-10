@@ -8,6 +8,10 @@ if (${WITH_STACKTRACE})
 	add_subdirectory(boost)
 endif()
 
+if (${WITH_AMQP})
+	add_subdirectory(AMQP-CPP)
+endif()
+
 if (${WITH_PYTHON_EXECUTORS})
 	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
 		add_subdirectory(pybind11)

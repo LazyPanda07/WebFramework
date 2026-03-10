@@ -74,8 +74,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\3rdparty\AMQP-CPP\build\_deps\amqp-cpp-build\bin\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;cmark-gfm_static.lib;amqpcpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -111,8 +111,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\3rdparty\AMQP-CPP\build\_deps\amqp-cpp-build\bin\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;cmark-gfm_static.lib;amqpcpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -282,6 +282,9 @@
     <ClInclude Include="include\Web\Servers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3rdparty\AMQP-CPP\AMQP-CPP.vcxproj">
+      <Project>{ccb38dfa-8af2-46a4-9b0f-abea153cf417}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\3rdparty\cmark-gfm\cmark-gfm.vcxproj">
       <Project>{66216d2f-5851-404b-af2a-da5f216f54af}</Project>
     </ProjectReference>
