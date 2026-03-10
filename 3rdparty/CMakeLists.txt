@@ -9,7 +9,7 @@ if (${WITH_STACKTRACE})
 endif()
 
 if (${WITH_AMQP})
-	add_subdirectory(AMQP-CPP)
+	add_subdirectory(rabbitmq-c)
 endif()
 
 if (${WITH_PYTHON_EXECUTORS})
