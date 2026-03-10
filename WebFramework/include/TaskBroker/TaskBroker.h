@@ -13,7 +13,7 @@ namespace framework::task_broker
 
 		virtual std::optional<json::JsonObject> requestTask() = 0;
 
-		virtual constexpr std::string_view getName() const = 0;
+		virtual std::string_view getName() const = 0;
 
 		virtual ~TaskBroker() = default;
 	};

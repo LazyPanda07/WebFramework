@@ -156,6 +156,7 @@
     <ClCompile Include="src\Managers\RuntimesManager.cpp" />
     <ClCompile Include="src\Managers\TaskExecutorsManager.cpp" />
     <ClCompile Include="src\TaskBroker\InternalTaskBroker.cpp" />
+    <ClCompile Include="src\TaskBroker\RabbitMqTaskBroker.cpp" />
     <ClCompile Include="src\TaskBroker\TaskBroker.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="include\Managers\RuntimesManager.h" />
     <ClInclude Include="include\Managers\TaskExecutorsManager.h" />
     <ClInclude Include="include\TaskBroker\InternalTaskBroker.h" />
+    <ClInclude Include="include\TaskBroker\RabbitMqTaskBroker.h" />
     <ClInclude Include="include\TaskBroker\TaskBroker.h" />
     <ClInclude Include="include\Rendering\MDRenderer.h" />
     <ClInclude Include="include\Rendering\WFDPRenderer.h" />

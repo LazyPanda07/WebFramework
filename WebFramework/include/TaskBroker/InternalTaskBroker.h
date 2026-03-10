@@ -21,16 +21,8 @@ namespace framework::task_broker
 
 		std::optional<json::JsonObject> requestTask() override;
 
-		constexpr std::string_view getName() const override;
+		std::string_view getName() const override;
 
 		~InternalTaskBroker() = default;
 	};
-}
-
-namespace framework::task_broker
-{
-	inline constexpr std::string_view InternalTaskBroker::getName() const
-	{
-		return InternalTaskBroker::taskBrokerName;
-	}
 }

@@ -11,4 +11,9 @@ namespace framework::task_broker
 	{
 		return tasks.pop();
 	}
+
+	std::string_view InternalTaskBroker::getName() const
+	{
+		return InternalTaskBroker::taskBrokerName;
+	}
 }
