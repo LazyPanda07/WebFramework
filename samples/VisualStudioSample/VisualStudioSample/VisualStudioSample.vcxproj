@@ -97,11 +97,10 @@ xcopy /y "$(ProjectDir)*.json" "$(OutDir)"</Command>
       <Command>if not exist "$(OutDir)executors" mkdir "$(OutDir)executors"
 for /R "$(OutDir)..\" %%f in (*.dll) do xcopy /Y "%%f" "$(OutDir)"
 xcopy /y "$(OutDir)..\CXXExecutors\*.json" "$(OutDir)executors"
-xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\*.json" "$(OutDir)executors"
-xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\CSharpExecutors.dll" "$(OutDir)executors"
-xcopy /y "$(OutDir)..\..\$(Configuration)\net8.0\WebFrameworkCSharpAPI.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
-move "$(OutDir)CXXExecutors.dll" "$(OutDir)executors"</Command>
+xcopy /y "$(OutDir)..\..\$(Configuration)\net10.0\*.json" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net10.0\CSharpExecutors.dll" "$(OutDir)executors"
+xcopy /y "$(OutDir)..\..\$(Configuration)\net10.0\WebFrameworkCSharpAPI.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)*.json" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

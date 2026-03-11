@@ -2,8 +2,6 @@
 
 #include "TaskBroker.h"
 
-#include <unordered_set>
-
 #include <rabbitmq-c/amqp.h>
 #include <rabbitmq-c/tcp_socket.h>
 
@@ -15,12 +13,24 @@ namespace framework::task_broker
 		static constexpr std::string_view taskBrokerName = "rabbitmq";
 
 	private:
-		std::unordered_set<std::string> queues;
-		amqp_connection_state_t connection;
-		amqp_socket_t* socket;
+		struct Client
+		{
+			amqp_connection_state_t connection;
+			amqp_socket_t* socket;
+			amqp_bytes_t queueName;
+
+		public:
+			Client(std::string_view host, int port);
+
+			~Client();
+		};
+
+	private:
+		Client producer;
+		Client consumer;
 
 	public:
-		RabbitMqTaskBroker(std::string_view host, int port);
+		RabbitMqTaskBroker();
 
 		void enqueueTask(json::JsonObject&& data) override;
 
@@ -28,6 +38,6 @@ namespace framework::task_broker
 
 		std::string_view getName() const override;
 
-		~RabbitMqTaskBroker();
+		~RabbitMqTaskBroker() = default;
 	};
 }

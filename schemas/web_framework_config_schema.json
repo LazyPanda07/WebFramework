@@ -269,7 +269,7 @@
         { "required": [ "additionalConfigs" ] }
       ]
     },
-    "TaskExecutors": {
+    "TaskBroker": {
       "type": "object",
       "description": "Task broker settings",
       "properties": {

@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "TaskBroker/InternalTaskBroker.h"
+#include "TaskBroker/RabbitMqTaskBroker.h"
 
 namespace framework::task_broker
 {
@@ -17,7 +18,8 @@ namespace framework::task_broker
 	{
 		static const std::unordered_map<std::string_view, std::function<void()>> creators =
 		{
-			{ InternalTaskBroker::taskBrokerName, [this]() { return this->addTaskBroker<InternalTaskBroker>(); }}
+			{ InternalTaskBroker::taskBrokerName, [this]() { return this->addTaskBroker<InternalTaskBroker>(); }},
+			{ RabbitMqTaskBroker::taskBrokerName, [this]() { return this->addTaskBroker<RabbitMqTaskBroker>(); }}
 		};
 
 		if (auto it = creators.find(taskBrokerName); it != creators.end())
