@@ -85,9 +85,9 @@ jobs:
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master
 
-    - name: Enable NMake
-      if: ${{ inputs.os == 'windows-latest' }}
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+    # - name: Enable NMake
+    #   if: ${{ inputs.os == 'windows-latest' }}
+    #   uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Install Python
       if: ${{ inputs.python-version != '' }}
