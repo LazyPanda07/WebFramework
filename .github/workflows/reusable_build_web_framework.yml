@@ -85,13 +85,10 @@ jobs:
     - name: Get current branch
       uses : LazyPanda07/extract-current-branch@master
 
-    # - name: Enable NMake
-    #   if: ${{ inputs.os == 'windows-latest' }}
-    #   uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Enable CL
+      if: ${{ inputs.os == 'windows-latest' }}
+      uses: LazyPanda07/msvc-dev-cmd@main
       
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
-
     - name: Install Python
       if: ${{ inputs.python-version != '' }}
       uses: actions/setup-python@v6

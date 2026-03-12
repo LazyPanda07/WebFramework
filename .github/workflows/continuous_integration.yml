@@ -162,8 +162,8 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Enable CL
+      uses: LazyPanda07/msvc-dev-cmd@main
 
     - name: Download ${{ matrix.executors.artifact-name }}
       uses: actions/download-artifact@v6
@@ -268,8 +268,8 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+    - name: Enable CL
+      uses: LazyPanda07/msvc-dev-cmd@main
       
     - name: Download WebFramework
       uses: actions/download-artifact@v6
@@ -441,9 +441,9 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Enable NMake
+    - name: Enable CL
       if: ${{ matrix.config.os == 'windows-latest' }}
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+      uses: LazyPanda07/msvc-dev-cmd@main
 
     - name: Install Python
       uses: actions/setup-python@v6
