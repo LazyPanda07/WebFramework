@@ -53,7 +53,7 @@ jobs:
         python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+      LazyPanda07/msvc-dev-cmd@main
 
     - name: Build WebFramework
       run: |
@@ -160,7 +160,7 @@ jobs:
         submodules: recursive
 
     - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+      LazyPanda07/msvc-dev-cmd@main
 
     - name: Build WebFramework
       run: |
@@ -239,7 +239,7 @@ jobs:
         flutter-version: ${{ env.FLUTTER_VERSION }}
 
     - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+      LazyPanda07/msvc-dev-cmd@main
       
     - name: Download assets
       uses: actions/download-artifact@v6
@@ -344,7 +344,7 @@ jobs:
         python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
+      LazyPanda07/msvc-dev-cmd@main
 
     - name: Build WebFramework
       run: |

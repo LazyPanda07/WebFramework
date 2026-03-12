@@ -163,7 +163,7 @@ jobs:
     - uses: actions/checkout@v6
     
     - name: Enable CL
-      uses: LazyPanda07/msvc-dev-cmd@main
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Download ${{ matrix.executors.artifact-name }}
       uses: actions/download-artifact@v6
@@ -269,7 +269,7 @@ jobs:
     - uses: actions/checkout@v6
     
     - name: Enable CL
-      uses: LazyPanda07/msvc-dev-cmd@main
+      uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download WebFramework
       uses: actions/download-artifact@v6
@@ -443,7 +443,7 @@ jobs:
 
     - name: Enable CL
       if: ${{ matrix.config.os == 'windows-latest' }}
-      uses: LazyPanda07/msvc-dev-cmd@main
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Install Python
       uses: actions/setup-python@v6

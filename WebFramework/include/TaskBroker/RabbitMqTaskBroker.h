@@ -17,10 +17,10 @@ namespace framework::task_broker
 		{
 			amqp_connection_state_t connection;
 			amqp_socket_t* socket;
-			amqp_bytes_t queueName;
+			amqp_channel_t channel;
 
 		public:
-			Client(std::string_view host, int port);
+			Client(std::string_view host, int port, amqp_channel_t channel);
 
 			~Client();
 		};

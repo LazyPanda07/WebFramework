@@ -87,7 +87,7 @@ jobs:
 
     - name: Enable CL
       if: ${{ inputs.os == 'windows-latest' }}
-      uses: LazyPanda07/msvc-dev-cmd@main
+      uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Install Python
       if: ${{ inputs.python-version != '' }}
