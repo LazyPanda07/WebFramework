@@ -89,6 +89,9 @@ jobs:
     #   if: ${{ inputs.os == 'windows-latest' }}
     #   uses: ilammy/msvc-dev-cmd@v1.13.0
       
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
     - name: Install Python
       if: ${{ inputs.python-version != '' }}
       uses: actions/setup-python@v6
