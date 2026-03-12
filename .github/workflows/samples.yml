@@ -52,8 +52,8 @@ jobs:
       with:
         python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Enable NMake
-      LazyPanda07/msvc-dev-cmd@main
+    - name: Enable CL
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build WebFramework
       run: |
@@ -157,10 +157,10 @@ jobs:
     steps:
     - uses: actions/checkout@v6
       with:
-        submodules: recursive
+        submodules: recursiveS
 
-    - name: Enable NMake
-      LazyPanda07/msvc-dev-cmd@main
+    - name: Enable CL
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build WebFramework
       run: |
@@ -238,8 +238,8 @@ jobs:
         channel: stable
         flutter-version: ${{ env.FLUTTER_VERSION }}
 
-    - name: Enable NMake
-      LazyPanda07/msvc-dev-cmd@main
+    - name: Enable CL
+      uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download assets
       uses: actions/download-artifact@v6
@@ -343,8 +343,8 @@ jobs:
       with:
         python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Enable NMake
-      LazyPanda07/msvc-dev-cmd@main
+    - name: Enable CL
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build WebFramework
       run: |

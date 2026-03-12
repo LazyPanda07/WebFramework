@@ -30,8 +30,7 @@ namespace framework::task_broker
 		// TODO: update login
 		amqp_login(connection, "/", AMQP_DEFAULT_MAX_CHANNELS, AMQP_DEFAULT_FRAME_SIZE, 0, AMQP_SASL_METHOD_PLAIN, "guest", "guest");
 
-		amqp_channel_open(connection, channel);
-		amqp_get_rpc_reply(connection);
+		RabbitMqTaskBroker::callAmqpFunction(amqp_channel_open, *this, connection, channel);
 	}
 
 	RabbitMqTaskBroker::Client::~Client()
@@ -41,15 +40,26 @@ namespace framework::task_broker
 		amqp_destroy_connection(connection);
 	}
 
+	template<typename FunctionT, typename... Args>
+	void RabbitMqTaskBroker::callAmqpFunction(const FunctionT& function, Client& client, Args&&... args)
+	{
+		using ReturnType = decltype(function(std::forward<Args>(args)...));
+
+		function(std::forward<Args>(args)...);
+
+		if constexpr (!std::same_as<ReturnType, amqp_rpc_reply_t>)
+		{
+			amqp_get_rpc_reply(client.connection);
+		}
+	}
+
 	RabbitMqTaskBroker::RabbitMqTaskBroker() :
 		producer("localhost", 5672, 1),
 		consumer("localhost", 5672, 2)
 	{
-		amqp_queue_declare(producer.connection, producer.channel, amqp_cstring_bytes("test"), 0, 0, 0, 1, amqp_empty_table);
-		amqp_get_rpc_reply(producer.connection);
+		RabbitMqTaskBroker::callAmqpFunction(amqp_queue_declare, producer, producer.connection, producer.channel, amqp_cstring_bytes("test"), 0, 0, 0, 1, amqp_empty_table);
 
-		amqp_basic_consume(consumer.connection, consumer.channel, amqp_cstring_bytes("test"), amqp_empty_bytes, 0, 1, 0, amqp_empty_table);
-		amqp_get_rpc_reply(consumer.connection);
+		RabbitMqTaskBroker::callAmqpFunction(amqp_basic_consume, consumer, consumer.connection, consumer.channel, amqp_cstring_bytes("test"), amqp_empty_bytes, 0, 1, 0, amqp_empty_table);
 	}
 
 	void RabbitMqTaskBroker::enqueueTask(json::JsonObject&& data)
@@ -74,12 +84,11 @@ namespace framework::task_broker
 	std::optional<json::JsonObject> RabbitMqTaskBroker::requestTask()
 	{
 		timeval timeout = { .tv_sec = 0, .tv_usec = 0 };
-		amqp_rpc_reply_t reply;
 		amqp_envelope_t envelope;
 
 		amqp_maybe_release_buffers(consumer.connection);
 
-		reply = amqp_consume_message(consumer.connection, &envelope, &timeout, 0);
+		amqp_rpc_reply_t reply = amqp_consume_message(consumer.connection, &envelope, &timeout, 0);
 
 		if (reply.reply_type == AMQP_RESPONSE_LIBRARY_EXCEPTION)
 		{

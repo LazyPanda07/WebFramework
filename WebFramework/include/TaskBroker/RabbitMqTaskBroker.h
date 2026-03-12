@@ -26,6 +26,10 @@ namespace framework::task_broker
 		};
 
 	private:
+		template<typename FunctionT, typename... Args>
+		static void callAmqpFunction(const FunctionT& function, Client& client, Args&&... args);
+
+	private:
 		Client producer;
 		Client consumer;
 
