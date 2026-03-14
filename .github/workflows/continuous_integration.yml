@@ -469,8 +469,10 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y erlang rabbitmq-server
-        sudo systemctl start rabbitmq-server
-        sudo systemctl status rabbitmq-server
+
+    - name: Install and run RabbitMQ on Windows
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      run: choco install -y rabbitmq
 
     - name: Install wait-for-service[redis]
       if: ${{ matrix.config.os == 'ubuntu-latest' }}
@@ -488,13 +490,16 @@ jobs:
     - name: Run Windows tests
       if: ${{ matrix.config.os == 'windows-latest' }}
       working-directory: Tests/build/bin
-      run: .\run_task_broker_tests.bat
+      run: |
+        wait-for-service amqp://localhost:5672
+        .\run_task_broker_tests.bat
 
     - name: Run Linux tests
       if: ${{ matrix.config.os == 'ubuntu-latest' }}
       working-directory: Tests/build/bin
       shell: bash
       run: |
+        rabbitmq-server & sleep 1
         wait-for-service amqp://localhost:5672
         source run_task_broker_tests.sh
 

@@ -71,7 +71,6 @@ TEST(TaskBroker, Internal)
 	ASSERT_EQ(getTxtFiles(), 16);
 }
 
-#ifndef _WIN32
 TEST(TaskBroker, RabbitMq)
 {
 	constexpr std::array<std::string_view, 4> endpoints =
@@ -126,7 +125,6 @@ TEST(TaskBroker, RabbitMq)
 
 	ASSERT_EQ(getTxtFiles(), 32);
 }
-#endif
 
 void printLog();
 
