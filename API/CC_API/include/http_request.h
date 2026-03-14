@@ -161,7 +161,7 @@ web_framework_exception_t wf_get_attribute(http_request_t implementation, const 
 
 /**
  * @brief Delete session
- * @param implementation http_request_t instance 
+ * @param implementation http_request_t instance
  * @return Error if occurred
  */
 web_framework_exception_t wf_delete_session(http_request_t implementation);
@@ -185,7 +185,7 @@ web_framework_exception_t wf_get_cookies(http_request_t implementation, cookie_t
 
 /**
  * @brief Get multiparts
- * @param implementation http_request_t instance 
+ * @param implementation http_request_t instance
  * @param result Multiparts. Delete with free function
  * @param size Size of multiparts
  * @return Error if occurred
@@ -254,7 +254,7 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
  * @param functionName Function name
  * @param function Callback called in processing .wfdp files
  * @param deleter Deleter for values from function
- * @return 
+ * @return
  */
 web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
 
@@ -310,7 +310,7 @@ web_framework_exception_t wf_get_file(http_request_t implementation, const char*
  * @param fileExtension Supported processing extension
  * @param result Processed data
  * @param resultSize Processed data size
- * @return 
+ * @return
  */
 web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* file_data, size_t size, const char* file_extension, char** result, size_t* result_size);
 
@@ -322,7 +322,7 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
  * @param variablesSize Size of variables
  * @param result Processed data
  * @param resultSize Processed data size
- * @return 
+ * @return
  */
 web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, char** result, size_t* result_size);
 
@@ -460,14 +460,22 @@ web_framework_exception_t wf_send_file_chunks(http_request_t implementation, htt
 /**
  * @brief Add task to task broker
  * @param implementation http_request_t instance
- * @param messageBrokerName Macro from task_broker/task_brokers.h
- * @param taskStruct You custom struct for serializing to JSON parameters and then executes with task executor
- * @param taskExecutorApi Macro from task_broker/task_apis.h
- * @param taskExecutorName Name of task executor
- * @param serializeTask Function that serialize taskStruct into JSON
+ * @param message_broker_name Macro from task_broker/task_brokers.h
+ * @param task_struct You custom struct for serializing to JSON parameters and then executes with task executor
+ * @param task_executor_api Macro from task_broker/task_apis.h
+ * @param task_executor_name Name of task executor
+ * @param serializeTask Function that serialize task_struct into JSON
  * @return Error if occurred
  */
-web_framework_exception_t wf_enqueue_task(http_request_t implementation, const char* messageBrokerName, const char* taskExecutorApi, const char* taskExecutorName, void* taskStruct, void(*serializeTask)(void* taskStruct, json_object_t* serializedArguments));
+web_framework_exception_t wf_enqueue_task
+(
+	http_request_t implementation,
+	const char* message_broker_name,
+	const char* task_executor_api,
+	const char* task_executor_name,
+	void* task_struct,
+	void(*serialize_task)(void* task_struct, json_object_t* serialized_arguments)
+);
 
 /**
  * @brief Return from function with message and HTTP response code. Used for throwing errors

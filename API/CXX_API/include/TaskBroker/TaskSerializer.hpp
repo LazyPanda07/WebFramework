@@ -20,7 +20,9 @@ namespace framework::task_broker
 	protected:
 		virtual JsonObject serializeArguments() const = 0;
 
-		virtual std::string_view getTaskName() const = 0;
+		virtual std::string_view getTaskExecutorName() const = 0;
+
+		virtual void serializeMetaData(JsonObject& taskData) const;
 
 	public:
 		TaskSerializer() = default;
@@ -40,13 +42,21 @@ namespace framework::task_broker
 namespace framework::task_broker
 {
 	template<TaskBrokerApiImplementation T>
+	inline void TaskSerializer<T>::serializeMetaData(JsonObject& taskData) const
+	{
+
+	}
+
+	template<TaskBrokerApiImplementation T>
 	inline JsonObject TaskSerializer<T>::serialize() const
 	{
 		JsonObject result;
 		
 		result["arguments"] = this->serializeArguments();
 		result["api"] = T::taskBrokerApi;
-		result["name"] = this->getTaskName();
+		result["name"] = this->getTaskExecutorName();
+		
+		this->serializeMetaData(result);
 
 		return result;
 	}

@@ -26,7 +26,8 @@
   "TaskBroker": {
     "consumer": "internal",
     "taskBrokers": [
-      "internal"
+      "internal",
+      "rabbitmq"
     ],
     "taskExecutorsSettings": [
       "task_executors.json"

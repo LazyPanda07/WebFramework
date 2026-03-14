@@ -3,42 +3,56 @@
 #include <task_broker/task_brokers.h>
 #include <task_broker/task_apis.h>
 
+#define FILE_NAME_SIZE 32
+
 typedef struct message_struct
 {
-	const char* file_name;
+	char* file_name;
 	const char* message;
 } message_struct_t;
 
-static void serialize(void* taskStruct, json_object_t* arguments);
+static void serialize(void* task_struct, json_object_t* arguments);
 
 DEFINE_DEFAULT_EXECUTOR(c_executor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_METHOD(c_executor, GET_METHOD, request, response)
 {
+	json_parser_t parser;
+	char* task_broker = NULL;
 	const char* response_message = "Accepted";
-	message_struct_t taskStruct = { .file_name = "cc_cxx.txt", .message = "CC message" };
+	message_struct_t task_struct = { .file_name = NULL, .message = "CC message" };
+	
+	task_struct.file_name = calloc(FILE_NAME_SIZE, sizeof(char));
 
-	wf_enqueue_task(request, INTERNAL_TASK_BROKER_NAME, CXX_TASK_BROKER_API, "CXXTestTaskExecutor", &taskStruct, serialize);
+	wf_get_request_json(request, &parser);
 
-	taskStruct.file_name = "cc_cc.txt";
+	wf_get_json_parser_string(parser, "taskBroker", false, &task_broker);
 
-	wf_enqueue_task(request, INTERNAL_TASK_BROKER_NAME, CC_TASK_BROKER_API, "c_test_task_executor", &taskStruct, serialize);
+	snprintf(task_struct.file_name, FILE_NAME_SIZE, "cc_cxx_%s.txt", task_broker);
 
-	taskStruct.file_name = "cc_python.txt";
+	wf_enqueue_task(request, task_broker, CXX_TASK_BROKER_API, "CXXTestTaskExecutor", &task_struct, serialize);
 
-	wf_enqueue_task(request, INTERNAL_TASK_BROKER_NAME, PYTHON_TASK_BROKER_API, "PythonTestTaskExecutor", &taskStruct, serialize);
+	snprintf(task_struct.file_name, FILE_NAME_SIZE, "cc_cc_%s.txt", task_broker);
 
-	taskStruct.file_name = "cc_csharp.txt";
+	wf_enqueue_task(request, task_broker, CC_TASK_BROKER_API, "c_test_task_executor", &task_struct, serialize);
 
-	wf_enqueue_task(request, INTERNAL_TASK_BROKER_NAME, CSHARP_TASK_BROKER_API, "CSharpTestTaskExecutor", &taskStruct, serialize);
+	snprintf(task_struct.file_name, FILE_NAME_SIZE, "cc_python_%s.txt", task_broker);
+
+	wf_enqueue_task(request, task_broker, PYTHON_TASK_BROKER_API, "PythonTestTaskExecutor", &task_struct, serialize);
+
+	snprintf(task_struct.file_name, FILE_NAME_SIZE, "cc_csharp_%s.txt", task_broker);
+
+	wf_enqueue_task(request, task_broker, CSHARP_TASK_BROKER_API, "CSharpTestTaskExecutor", &task_struct, serialize);
 
 	wf_set_body(response, response_message, strlen(response_message));
 	wf_set_http_response_code(response, ACCEPTED);
+
+	free(task_struct.file_name);
 }
 
-void serialize(void* taskStruct, json_object_t* arguments)
+void serialize(void* task_struct, json_object_t* arguments)
 {
-	message_struct_t* data = (message_struct_t*)taskStruct;
+	message_struct_t* data = (message_struct_t*)task_struct;
 	json_object_t message;
 	json_object_t file_name;
 

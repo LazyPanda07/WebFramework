@@ -1,6 +1,7 @@
 #include "http_request.h"
 
 #include "json_object.h"
+#include "task_broker/task_brokers.h"
 
 typedef struct file_buffer
 {
@@ -713,7 +714,15 @@ web_framework_exception_t wf_send_file_chunks(http_request_t implementation, htt
 	return exception;
 }
 
-web_framework_exception_t wf_enqueue_task(http_request_t implementation, const char* messageBrokerName, const char* taskExecutorApi, const char* taskExecutorName, void* taskStruct, void(*serializeTask)(void* taskStruct, json_object_t* serializedArguments))
+web_framework_exception_t wf_enqueue_task
+(
+	http_request_t implementation,
+	const char* message_broker_name,
+	const char* task_executor_api,
+	const char* task_executor_name,
+	void* task_struct,
+	void(*serialize_task)(void* task_struct, json_object_t* serialized_arguments)
+)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -723,19 +732,28 @@ web_framework_exception_t wf_enqueue_task(http_request_t implementation, const c
 	json_object_t arguments;
 	json_object_t api;
 	json_object_t name;
-	
+
 	wf_create_json_object(&jsonObjectData);
 
 	wf_assign_json_object(&jsonObjectData, "arguments", &arguments);
 	wf_assign_json_object(&jsonObjectData, "api", &api);
 	wf_assign_json_object(&jsonObjectData, "name", &name);
-	
-	wf_set_json_object_string(&api, taskExecutorApi);
-	wf_set_json_object_string(&name, taskExecutorName);
 
-	serializeTask(taskStruct, &arguments);
+	wf_set_json_object_string(&api, task_executor_api);
+	wf_set_json_object_string(&name, task_executor_name);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(enqueueTask, messageBrokerName, jsonObjectData.implementation, &exception);
+	if (!strcmp(message_broker_name, RABBIT_MQ_TASK_BROKER_NAME))
+	{
+		json_object_t queue;
+
+		wf_assign_json_object(&jsonObjectData, "queue", &queue);
+
+		wf_set_json_object_string(&queue, "cc_queue");
+	}
+
+	serialize_task(task_struct, &arguments);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(enqueueTask, message_broker_name, jsonObjectData.implementation, &exception);
 
 	return exception;
 }

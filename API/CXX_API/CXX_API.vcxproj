@@ -100,6 +100,7 @@
     <ClInclude Include="include\Databases\SqlValue.hpp" />
     <ClInclude Include="include\Databases\Table.hpp" />
     <ClInclude Include="include\DynamicFunction.hpp" />
+    <ClInclude Include="include\TaskBroker\RabbitMqTaskSerializer.hpp" />
     <ClInclude Include="include\TaskBroker\TaskBrokers.hpp" />
     <ClInclude Include="include\TaskBroker\TaskExecutor.hpp" />
     <ClInclude Include="include\TaskBroker\TaskSerializer.hpp" />

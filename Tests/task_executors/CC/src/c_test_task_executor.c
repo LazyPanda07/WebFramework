@@ -24,11 +24,13 @@ DEFINE_DEFAULT_TASK_EXECUTOR(c_test_task_executor)
 #endif
 
 	if (file)
-	{		
+	{
+		const char* header = "From c_test_task_executor\n";
 		char* message = NULL;
 
 		wf_get_json_parser_string(parser, "message", false, &message);
 
+		fwrite(header, sizeof(char), strlen(header), file);
 		fwrite(message, sizeof(char), strlen(message), file);
 
 		fclose(file);

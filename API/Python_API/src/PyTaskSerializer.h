@@ -1,6 +1,6 @@
 #pragma once
 
-#include <TaskBroker/TaskSerializer.hpp>
+#include <TaskBroker/RabbitMqTaskSerializer.hpp>
 
 #include <JsonParser.hpp>
 
@@ -17,7 +17,9 @@ namespace framework::task_broker
 
 		virtual py::dict serializeArguments() const = 0;
 
-		virtual std::string_view getTaskName() const = 0;
+		virtual std::string getTaskExecutorName() const = 0;
+
+		virtual std::string getQueueName() const;
 
 		virtual ~IPyTaskSerializer() = default;
 	};
@@ -27,7 +29,9 @@ namespace framework::task_broker
 	protected:
 		py::dict serializeArguments() const override;
 
-		std::string_view getTaskName() const override;
+		std::string getTaskExecutorName() const override;
+
+		std::string getQueueName() const override;
 
 	public:
 		PyTaskSerializerCxx() = default;
@@ -40,7 +44,9 @@ namespace framework::task_broker
 	protected:
 		py::dict serializeArguments() const override;
 
-		std::string_view getTaskName() const override;
+		std::string getTaskExecutorName() const override;
+
+		std::string getQueueName() const override;
 
 	public:
 		PyTaskSerializerCc() = default;
@@ -53,7 +59,9 @@ namespace framework::task_broker
 	protected:
 		py::dict serializeArguments() const override;
 
-		std::string_view getTaskName() const override;
+		std::string getTaskExecutorName() const override;
+
+		std::string getQueueName() const override;
 
 	public:
 		PyTaskSerializer() = default;
@@ -66,7 +74,9 @@ namespace framework::task_broker
 	protected:
 		py::dict serializeArguments() const override;
 
-		std::string_view getTaskName() const override;
+		std::string getTaskExecutorName() const override;
+
+		std::string getQueueName() const override;
 
 	public:
 		PyTaskSerializerCSharp() = default;
@@ -75,16 +85,19 @@ namespace framework::task_broker
 	};
 
 	template<typename T>
-	class PyTaskSerializerWrapper : public TaskSerializer<T>
+	class PyTaskSerializerWrapper : public RabbitMqTaskSerializer<T>
 	{
 	protected:
 		JsonObject serializeArguments() const override;
 
-		std::string_view getTaskName() const override;
+		std::string_view getTaskExecutorName() const override;
+
+		std::string_view getQueueName() const override;
 
 	private:
 		py::object serializer;
 		std::string taskName;
+		std::string queueName;
 
 	public:
 		PyTaskSerializerWrapper(py::object serializer);
@@ -98,7 +111,8 @@ namespace framework::task_broker
 	template<typename T>
 	PyTaskSerializerWrapper<T>::PyTaskSerializerWrapper(py::object serializer) :
 		serializer(serializer),
-		taskName(serializer.attr("get_task_name")().cast<std::string>())
+		taskName(serializer.attr("get_task_executor_name")().cast<std::string>()),
+		queueName(serializer.attr("get_queue_name")().cast<std::string>())
 	{
 
 	}
@@ -112,8 +126,14 @@ namespace framework::task_broker
 	}
 
 	template<typename T>
-	std::string_view PyTaskSerializerWrapper<T>::getTaskName() const
+	std::string_view PyTaskSerializerWrapper<T>::getTaskExecutorName() const
 	{
 		return taskName;
+	}
+
+	template<typename T>
+	std::string_view PyTaskSerializerWrapper<T>::getQueueName() const
+	{
+		return queueName;
 	}
 }

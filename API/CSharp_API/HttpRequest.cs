@@ -1350,12 +1350,17 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		where TaskExecutorApi : ITaskExecutorApi
 	{
 		void* exception = null;
-		var result = new
+		Dictionary<string, object> result = new()
 		{
-			api = TaskExecutorApi.ImplementationName,
-			name = taskSerializer.TaskExecutorName,
-			arguments = taskSerializer
+			["api"] = TaskExecutorApi.ImplementationName,
+			["name"] = taskSerializer.TaskExecutorName,
+			["arguments"] = taskSerializer
 		};
+
+		if (taskSerializer is IRabbitMqTaskSerializer rabbitMq)
+		{
+			result["queue"] = rabbitMq.QueueName;
+		}
 
 		IntPtr jsonParser = createJsonParserFromString(JsonSerializer.Serialize(result), ref exception);
 

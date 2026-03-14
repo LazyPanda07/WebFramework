@@ -123,7 +123,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	py::class_<framework::task_broker::IPyTaskSerializer>(m, "IPyTaskSerializer")
 		.def("serialize_arguments", &framework::task_broker::IPyTaskSerializer::serializeArguments)
-		.def("get_task_name", &framework::task_broker::IPyTaskSerializer::getTaskName);
+		.def("get_task_executor_name", &framework::task_broker::IPyTaskSerializer::getTaskExecutorName)
+		.def("get_queue_name", &framework::task_broker::IPyTaskSerializer::getQueueName);
 
 	py::class_<framework::task_broker::PyTaskSerializerCxx, framework::task_broker::IPyTaskSerializer>(m, "TaskSerializerCxx")
 		.def

@@ -45,8 +45,11 @@ TEST(TaskBroker, Internal)
 	for (std::string_view endpoint : endpoints)
 	{
 		std::string response;
+		json::JsonBuilder body(CP_UTF8);
 
-		stream << web::HttpBuilder().getRequest().parameters(endpoint).build();
+		body["taskBroker"] = "internal";
+
+		stream << web::HttpBuilder().getRequest().parameters(endpoint).build(body);
 
 		stream >> response;
 
@@ -67,6 +70,63 @@ TEST(TaskBroker, Internal)
 
 	ASSERT_EQ(getTxtFiles(), 16);
 }
+
+#ifndef _WIN32
+TEST(TaskBroker, RabbitMq)
+{
+	constexpr std::array<std::string_view, 4> endpoints =
+	{
+		"cxx",
+		"cc",
+		"python",
+		"csharp"
+	};
+	auto getTxtFiles = []() -> size_t
+		{
+			size_t files = 0;
+
+			for (const auto& it : std::filesystem::directory_iterator(std::filesystem::current_path()))
+			{
+				if (it.path().extension() == ".txt")
+				{
+					files++;
+				}
+			}
+
+			return files;
+		};
+
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HttpNetwork>("127.0.0.1", std::to_string(port));
+
+	for (std::string_view endpoint : endpoints)
+	{
+		std::string response;
+		json::JsonBuilder body(CP_UTF8);
+
+		body["taskBroker"] = "rabbitmq";
+
+		stream << web::HttpBuilder().getRequest().parameters(endpoint).build(body);
+
+		stream >> response;
+
+		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::accepted);
+	}
+
+	auto start = std::chrono::steady_clock::now();
+
+	while (true)
+	{
+		auto end = std::chrono::steady_clock::now();
+
+		if (getTxtFiles() == 32 || (std::chrono::duration_cast<std::chrono::seconds>(end - start)).count() > 30)
+		{
+			break;
+		}
+	}
+
+	ASSERT_EQ(getTxtFiles(), 32);
+}
+#endif
 
 void printLog();
 

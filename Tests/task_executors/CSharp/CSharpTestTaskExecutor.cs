@@ -5,9 +5,15 @@ class CSharpTestTaskExecutor : ITaskExecutor
 {
 	public void Invoke(JsonObject arguments)
 	{
-		using FileStream stream = File.Open(((string?)arguments["fileName"]), FileMode.CreateNew);
+		const string header = "From CSharpTestTaskExecutor";
+
+		string? fileName = (string?)arguments["fileName"];
+		string? message = (string?)arguments["message"];
+
+		using FileStream stream = File.Open(fileName!, FileMode.CreateNew);
 		using StreamWriter writer = new(stream);
 
-		writer.Write(((string?)arguments["message"]));
+		writer.WriteLine(header);
+		writer.WriteLine(message!);
 	}
 }

@@ -58,7 +58,7 @@ namespace framework::task_broker
 
 		if (Log::isValid())
 		{
-			Log::info("Login to RabbitMQ", "LogTaskBroker");
+			Log::info("Login to RabbitMQ from channel {}", "LogTaskBroker", channel);
 		}
 
 		amqp_rpc_reply_t reply = amqp_login(connection, "/", AMQP_DEFAULT_MAX_CHANNELS, AMQP_DEFAULT_FRAME_SIZE, 0, AMQP_SASL_METHOD_PLAIN, login.data(), password.data());
