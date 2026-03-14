@@ -14,12 +14,12 @@ namespace framework::task_broker
 		return instance;
 	}
 
-	void TaskBrokersManager::addTaskBroker(std::string_view taskBrokerName)
+	void TaskBrokersManager::addTaskBroker(std::string_view taskBrokerName, const json::JsonObject& settings)
 	{
 		static const std::unordered_map<std::string_view, std::function<void()>> creators =
 		{
-			{ InternalTaskBroker::taskBrokerName, [this]() { return this->addTaskBroker<InternalTaskBroker>(); }},
-			{ RabbitMqTaskBroker::taskBrokerName, [this]() { return this->addTaskBroker<RabbitMqTaskBroker>(); }}
+			{ InternalTaskBroker::taskBrokerName, [this, &settings]() { return this->addTaskBroker<InternalTaskBroker>(settings); }},
+			{ RabbitMqTaskBroker::taskBrokerName, [this, &settings]() { return this->addTaskBroker<RabbitMqTaskBroker>(settings); }}
 		};
 
 		if (auto it = creators.find(taskBrokerName); it != creators.end())

@@ -2,6 +2,11 @@
 
 namespace framework::task_broker
 {
+	InternalTaskBroker::InternalTaskBroker(const json::JsonObject& settings)
+	{
+
+	}
+
 	void InternalTaskBroker::enqueueTask(json::JsonObject&& data)
 	{
 		tasks.push(std::move(data));

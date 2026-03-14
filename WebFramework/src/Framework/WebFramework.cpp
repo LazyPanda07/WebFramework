@@ -296,16 +296,39 @@ namespace framework
 			}
 
 			task_broker::TaskBrokersManager& taskBrokerManager = task_broker::TaskBrokersManager::get();
-			std::vector<std::string> taskBrokerNames = json::utility::JsonArrayWrapper(taskBrokerObject.at(json_settings::taskBrokersKey)).as<std::string>();
+			const std::vector<json::JsonObject>& taskBrokers = taskBrokerObject.at(json_settings::taskBrokersKey).get<std::vector<json::JsonObject>>();
+			std::vector<std::string> taskBrokerNames;
 			size_t consumerThreads = json_settings_values::consumerThreadsDefaultValue;
 			size_t checkPeriod = json_settings_values::checkPeriodDefaultValue;
 
 			taskBrokerObject.tryGet<size_t>(json_settings::consumerThreadsKey, consumerThreads);
 			taskBrokerObject.tryGet<size_t>(json_settings::checkPeriodKey, checkPeriod);
 
-			for (const std::string& taskBrokerName : taskBrokerNames)
+			json::JsonObject emptySettings;
+
+			for (const json::JsonObject& taskBroker : taskBrokers)
 			{
-				taskBrokerManager.addTaskBroker(taskBrokerName);
+				const std::string* taskBrokerName = nullptr;
+				const json::JsonObject* settings = nullptr;
+
+				if (taskBroker.is<std::string>())
+				{
+					taskBrokerName = &taskBroker.get<std::string>();
+					settings = &emptySettings;
+				}
+				else if (taskBroker.is<json::JsonObject>())
+				{
+					taskBrokerName = &taskBroker["name"].get<std::string>();
+					settings = &taskBroker["settings"];
+				}
+				else
+				{
+					throw std::runtime_error(std::format("Can't parse task broker array value: {}", taskBroker.getType().name()));
+				}
+
+				taskBrokerManager.addTaskBroker(*taskBrokerName, *settings);
+
+				taskBrokerNames.emplace_back(*taskBrokerName);
 			}
 
 			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod));

@@ -157,7 +157,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6
       with:
-        submodules: recursiveS
+        submodules: recursive
 
     - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0

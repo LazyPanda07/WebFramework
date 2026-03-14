@@ -15,7 +15,7 @@ namespace framework::task_broker
 		threading::utility::ConcurrentQueue<json::JsonObject> tasks;
 
 	public:
-		InternalTaskBroker() = default;
+		InternalTaskBroker(const json::JsonObject& settings);
 
 		void enqueueTask(json::JsonObject&& data) override;
 

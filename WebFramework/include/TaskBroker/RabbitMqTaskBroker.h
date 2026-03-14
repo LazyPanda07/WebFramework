@@ -2,6 +2,9 @@
 
 #include "TaskBroker.h"
 
+#include <unordered_set>
+#include <shared_mutex>
+
 #include <rabbitmq-c/amqp.h>
 #include <rabbitmq-c/tcp_socket.h>
 
@@ -20,7 +23,7 @@ namespace framework::task_broker
 			amqp_channel_t channel;
 
 		public:
-			Client(std::string_view host, int port, amqp_channel_t channel);
+			Client(const json::JsonObject& settings, amqp_channel_t channel);
 
 			~Client();
 		};
@@ -30,11 +33,13 @@ namespace framework::task_broker
 		static void callAmqpFunction(const FunctionT& function, Client& client, Args&&... args);
 
 	private:
+		std::unordered_set<std::string> queues;
+		std::shared_mutex readWriteMutex;
 		Client producer;
 		Client consumer;
 
 	public:
-		RabbitMqTaskBroker();
+		RabbitMqTaskBroker(const json::JsonObject& settings);
 
 		void enqueueTask(json::JsonObject&& data) override;
 

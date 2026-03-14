@@ -289,8 +289,26 @@
           "type": "array",
           "description": "Task sources",
           "items": {
-            "type": "string",
-            "enum": [ "internal", "rabbitmq" ]
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [ "internal", "rabbitmq" ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Task broker name",
+                    "enum": [ "sqlite", "redis" ]
+                  },
+                  "settings": {
+                    "type": "object",
+                    "description": "Task broker specific settings"
+                  }
+                }
+              }
+            ]
           },
           "minItems": 1
         },

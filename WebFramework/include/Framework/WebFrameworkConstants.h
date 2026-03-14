@@ -64,6 +64,9 @@ namespace json_settings
 	inline constexpr std::string_view taskExecutorsSourcePathKey = "sourcePath";
 	inline constexpr std::string_view taskExecutorsClassNamesKey = "classNames";
 	inline constexpr std::string_view taskExecutorsApiKey = "api";
+
+	inline constexpr std::string_view rabbitMqHostKey = "host";
+	inline constexpr std::string_view rabbitMqPortKey = "port";
 }
 
 namespace exceptions
@@ -107,6 +110,9 @@ namespace json_settings_values
 	inline constexpr std::string_view consumerExternalValue = "external";
 	inline constexpr size_t consumerThreadsDefaultValue = 1;
 	inline constexpr size_t checkPeriodDefaultValue = 2500; // in milliseconds
+
+	inline constexpr std::string_view rabbitMqHostValue = "localhost";
+	inline constexpr int rabbitMqPortValue = 5672;
 }
 
 namespace web_framework_assets

@@ -1,8 +1,11 @@
+#ifndef __LINUX__
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "TaskBroker/RabbitMqTaskBroker.h"
 
-#include <iostream>
-
 #include <JsonParser.h>
+#include <Log.h>
 
 #ifdef __LINUX__
 #include <sys/time.h>
@@ -10,9 +13,11 @@
 #include <WinSock2.h>
 #endif
 
+#include "Framework/WebFrameworkConstants.h"
+
 namespace framework::task_broker
 {
-	RabbitMqTaskBroker::Client::Client(std::string_view host, int port, amqp_channel_t channel) :
+	RabbitMqTaskBroker::Client::Client(const json::JsonObject& settings, amqp_channel_t channel) :
 		connection(amqp_new_connection()),
 		socket(amqp_tcp_socket_new(connection)),
 		channel(channel)
@@ -22,13 +27,53 @@ namespace framework::task_broker
 			throw std::runtime_error(std::format("Can't create RabbitMQ socket"));
 		}
 
+		std::string host(json_settings_values::rabbitMqHostValue);
+		int port = json_settings_values::rabbitMqPortValue;
+
+		settings.tryGet<std::string>(json_settings::rabbitMqHostKey, host);
+		settings.tryGet<int>(json_settings::rabbitMqPortKey, port);
+
+		if (Log::isValid())
+		{
+			Log::info("Open AMQP socket with {} on {}", "LogTaskBroker", host, port);
+		}
+
 		if (amqp_socket_open(socket, host.data(), port))
 		{
 			throw std::runtime_error(std::format("Can't open RabbitMQ socket"));
 		}
 
-		// TODO: update login
-		amqp_login(connection, "/", AMQP_DEFAULT_MAX_CHANNELS, AMQP_DEFAULT_FRAME_SIZE, 0, AMQP_SASL_METHOD_PLAIN, "guest", "guest");
+		std::string login("guest");
+		std::string password("guest");
+
+		if (const char* loginEnv = std::getenv("RABBIT_MQ_LOGIN"))
+		{
+			login = loginEnv;
+		}
+
+		if (const char* passwordEnv = std::getenv("RABBIT_MQ_PASSWORD"))
+		{
+			password = passwordEnv;
+		}
+
+		if (Log::isValid())
+		{
+			Log::info("Login to RabbitMQ", "LogTaskBroker");
+		}
+
+		amqp_rpc_reply_t reply = amqp_login(connection, "/", AMQP_DEFAULT_MAX_CHANNELS, AMQP_DEFAULT_FRAME_SIZE, 0, AMQP_SASL_METHOD_PLAIN, login.data(), password.data());
+
+		if (reply.library_error)
+		{
+			std::string errorMessage = std::format("RabbitMQ login exception: {}", amqp_error_string2(reply.library_error));
+
+			if (Log::isValid())
+			{
+				Log::error("{}", "LogTaskBroker", errorMessage);
+			}
+
+			throw std::runtime_error(errorMessage);
+		}
 
 		RabbitMqTaskBroker::callAmqpFunction(amqp_channel_open, *this, connection, channel);
 	}
@@ -49,23 +94,48 @@ namespace framework::task_broker
 
 		if constexpr (!std::same_as<ReturnType, amqp_rpc_reply_t>)
 		{
-			amqp_get_rpc_reply(client.connection);
+			amqp_rpc_reply_t reply = amqp_get_rpc_reply(client.connection);
+
+			if (reply.library_error)
+			{
+				if (Log::isValid())
+				{
+					Log::error("AMQP function call exception: {}", "LogTaskBroker", amqp_error_string2(reply.library_error));
+				}
+			}
 		}
 	}
 
-	RabbitMqTaskBroker::RabbitMqTaskBroker() :
-		producer("localhost", 5672, 1),
-		consumer("localhost", 5672, 2)
+	RabbitMqTaskBroker::RabbitMqTaskBroker(const json::JsonObject& settings) :
+		producer(settings, 1),
+		consumer(settings, 2)
 	{
-		RabbitMqTaskBroker::callAmqpFunction(amqp_queue_declare, producer, producer.connection, producer.channel, amqp_cstring_bytes("test"), 0, 0, 0, 1, amqp_empty_table);
-
-		RabbitMqTaskBroker::callAmqpFunction(amqp_basic_consume, consumer, consumer.connection, consumer.channel, amqp_cstring_bytes("test"), amqp_empty_bytes, 0, 1, 0, amqp_empty_table);
+		
 	}
 
 	void RabbitMqTaskBroker::enqueueTask(json::JsonObject&& data)
 	{
+		bool hasQueue = false;
+		const std::string& queue = data.at("queue").get<std::string>();
+
+		{
+			std::shared_lock<std::shared_mutex> lock(readWriteMutex);
+
+			hasQueue = queues.contains(queue);
+		}
+
+		if (!hasQueue)
+		{
+			std::unique_lock<std::shared_mutex> lock(readWriteMutex);
+
+			RabbitMqTaskBroker::callAmqpFunction(amqp_queue_declare, producer, producer.connection, producer.channel, amqp_cstring_bytes(queue.data()), 0, 0, 0, 1, amqp_empty_table);
+			RabbitMqTaskBroker::callAmqpFunction(amqp_basic_consume, consumer, consumer.connection, consumer.channel, amqp_cstring_bytes(queue.data()), amqp_empty_bytes, 0, 1, 0, amqp_empty_table);
+
+			queues.insert(queue);
+		}
+
 		std::ostringstream stream;
-		
+
 		stream << data;
 
 		amqp_basic_publish
@@ -73,7 +143,7 @@ namespace framework::task_broker
 			producer.connection,
 			producer.channel,
 			amqp_cstring_bytes(""),
-			amqp_cstring_bytes("test"),
+			amqp_cstring_bytes(queue.data()),
 			0,
 			0,
 			nullptr,
