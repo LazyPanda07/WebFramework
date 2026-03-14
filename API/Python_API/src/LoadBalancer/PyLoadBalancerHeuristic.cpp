@@ -1,6 +1,4 @@
-#define PYBIND11_DETAILED_ERROR_MESSAGES
-
-#include "PyLoadBalancerHeuristic.h"
+#include "LoadBalancer/PyLoadBalancerHeuristic.h"
 
 #include <pybind11/pybind11.h>
 

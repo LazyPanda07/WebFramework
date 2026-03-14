@@ -56,16 +56,26 @@ find_package(pybind11 REQUIRED)
 pybind11_add_module(
     ${PROJECT_NAME}
     src/module.cpp
+    src/PyChunkGenerator.cpp
+    src/PyDynamicFunction.cpp
     src/Executors/PyStatelessExecutor.cpp
     src/Executors/PyStatefulExecutor.cpp
     src/Executors/PyHeavyOperationStatelessExecutor.cpp
     src/Executors/PyHeavyOperationStatefulExecutor.cpp
-    src/PyChunkGenerator.cpp
-    src/PyLoadBalancerHeuristic.cpp
-    src/PyDynamicFunction.cpp
-    src/PyTaskExecutor.cpp
-    src/PyTaskSerializer.cpp
+    src/LoadBalancer/PyLoadBalancerHeuristic.cpp
+    src/TaskBroker/PyTaskExecutor.cpp
+    src/TaskBroker/PyTaskSerializer.cpp
+    src/Registrars/SqlRegistrar.cpp
+    src/Registrars/TaskBrokerRegistrar.cpp
+    src/Registrars/WebFrameworkUtilityRegistrar.cpp
+    src/Registrars/ExecutorRegistrar.cpp
+    src/Registrars/WebFrameworkApiRegistrar.cpp
+    src/Registrars/LoadBalancerRegistrar.cpp
+    src/Registrars/HttpResponseRegistrar.cpp
+    src/Registrars/HttpRequestRegistrar.cpp
 )
+
+add_definitions(-DPYBIND11_DETAILED_ERROR_MESSAGES)
 
 target_include_directories(
     ${PROJECT_NAME} PRIVATE

@@ -1,6 +1,4 @@
-#define PYBIND11_DETAILED_ERROR_MESSAGES
-
-#include "PyTaskSerializer.h"
+#include "TaskBroker/PyTaskSerializer.h"
 
 namespace framework::task_broker
 {
