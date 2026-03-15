@@ -1,9 +1,8 @@
 #include "TaskBroker/TaskConsumer.h"
 
-#include <Log.h>
-
 #include "Managers/TaskBrokersManager.h"
 #include "Managers/TaskExecutorsManager.h"
+#include "Utility/Utils.h"
 
 namespace framework::task_broker
 {
@@ -33,7 +32,7 @@ namespace framework::task_broker
 			{
 				if (Log::isValid())
 				{
-					Log::error("Can't process task: {}. TaskBroker: {}", "LogTaskExecutor", e.what(), broker.getName());
+					Log::error<logging::message::cantProcessTask, logging::category::taskExecutor>(e.what(), broker.getName());
 				}
 			}
 		}
@@ -43,7 +42,7 @@ namespace framework::task_broker
 	{
 		if (Log::isValid())
 		{
-			Log::info("Start task consuming", "LogTaskBroker");
+			Log::info<logging::message::startTaskConsuming, logging::category::taskBroker>();
 		}
 
 		while (stillConsuming)
@@ -68,7 +67,7 @@ namespace framework::task_broker
 
 			if (Log::isValid())
 			{
-				Log::info("Add task broker: {}", "LogTaskBroker", brokerName);
+				Log::info<logging::message::addTaskBroker, logging::category::taskBroker>(brokerName);
 			}
 		}
 	}

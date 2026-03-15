@@ -133,6 +133,27 @@ namespace framework::logging
 		inline constexpr char loadSource[] = "LogLoadSource";
 		inline constexpr char webFrameworkServer[] = "LogWebFrameworkServer";
 		inline constexpr char loadBalancer[] = "LogLoadBalancer";
+		inline constexpr char resource[] = "LogResource";
+		inline constexpr char dynamicFunction[] = "LogDynamicFunction";
+		inline constexpr char runtime[] = "LogRuntime";
+		inline constexpr char https[] = "LogHTTPS";
+		inline constexpr char database[] = "LogDatabase";
+		inline constexpr char ccHeuristic[] = "LogCCHeuristic";
+		inline constexpr char csharpHeuristic[] = "LogCSharpHeuristic";
+		inline constexpr char cxxHeuristic[] = "LogCXXHeuristic";
+		inline constexpr char pythonHeuristic[] = "LogPythonHeuristic";
+		inline constexpr char filter[] = "LogFilter";
+		inline constexpr char executor[] = "LogExecutor";
+		inline constexpr char taskExecutor[] = "LogTaskExecutor";
+		inline constexpr char taskBroker[] = "LogTaskBroker";
+		inline constexpr char ccRuntime[] = "LogCCRuntime";
+		inline constexpr char cxxRuntime[] = "LogCXXRuntime";
+		inline constexpr char dotnetRuntime[] = "LogDotNetRuntime";
+		inline constexpr char pythonRuntime[] = "LogPythonRuntime";
+		inline constexpr char largeBodyHandler[] = "LogLargeBodyHandler";
+		inline constexpr char segfaultHandler[] = "LogSegfaultHandler";
+		inline constexpr char sources[] = "LogSources";
+		inline constexpr char executorServer[] = "LogExecutorServer";
 	}
 
 	namespace message
@@ -151,6 +172,55 @@ namespace framework::logging
 		inline constexpr char sendServerRequestWebError[] = "Sending client response web error: {}";
 		inline constexpr char sendServerRequestInternalError[] = "Sending client response internal error: {}";
 		inline constexpr char sendServerRequestUnexpectedError[] = "Some unexpected error acquired while sending client response";
+		inline constexpr char wrongRuntime[] = "Wrong runtime: {}";
+		inline constexpr char cantFindCCHeuristic[] = "Can't find create{}CCHeuristic function";
+		inline constexpr char cantCreateCCHeuristic[] = "Can't create create{}CCHeuristic heuristic";
+		inline constexpr char cantFindCSharpHeuristicSource[] = "Can't find {}";
+		inline constexpr char cantFindCXXHeuristic[] = "Can't find create{}CXXHeuristic function";
+		inline constexpr char cantCreateCXXHeuristic[] = "Can't create create{}CXXHeuristic heuristic";
+		inline constexpr char cantFindPythonHeuristicSource[] = "Can't find {} in {}";
+		inline constexpr char cantCreateApiExecutor[] = "Can't find creator for executor: {} with API: {}";
+		inline constexpr char cantLoadTaskExecutor[] = "Can't load task executors from {}";
+		inline constexpr char dotnetError[] = ".NET error: {}";
+		inline constexpr char rabbitmqLoginError[] = "RabbitMQ login exception: {}";
+		inline constexpr char amqpFunctionCallException[] = "AMQP function call exception: {}";
+		inline constexpr char cantProcessTask[] = "Can't process task: {}. TaskBroker: {}";
+		inline constexpr char largeBodyChunkException[] = "Exception on handle chunk: {}";
+		inline constexpr char segfaultMessage[] = "Segmentation fault: {}";
+		inline constexpr char cantFindSource[] = "Can't find source {}";
+		inline constexpr char cantLoadSource[] = "Can't load source {}, {}";
+		inline constexpr char cantGetOrCreateModel[] = "Can't get or create model in HTTPRequest::getModel<T> function where T is {}";
+		inline constexpr char executorsServeException[] = "Executors serve exception: {}";
+		inline constexpr char badRequest[] = "Bad request from client: {}";
+		inline constexpr char cantFindFile[] = "Can't find file exception: {}";
+		inline constexpr char notFound[] = "Not found exception: {}";
+		inline constexpr char executorInternalServer[] = "Executor internal server error: {}";
+		inline constexpr char internalServerError[] = "Internal server error: {}";
+		inline constexpr char sslException[] = "SSL exception: {}, ip: {}";
+
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
+		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";
+		inline constexpr char requestDynamicFile[] = "Request dynamic file: {}, is binary: {}";
+		inline constexpr char registerFunction[] = "Register function: {} from: {}";
+		inline constexpr char addRuntime[] = "Add {} runtime";
+		inline constexpr char httpsInitialization[] = "Using HTTPS with certificate: {}, key: {}";
+		inline constexpr char databaseInitialization[] = "Using {} database";
+		inline constexpr char startingServer[] = "Starting {} server at {}:{}";
+		inline constexpr char stoppingServer[] = "Stopping {} server at {}:{}";
+		inline constexpr char kickClient[] = "Kick client with ip: {} from server";
+		inline constexpr char wrongUserAgent[] = "Wrong User-Agent: {}";
+		inline constexpr char noUserAgent[] = "No User-Agent provided";
+		inline constexpr char foundTaskExecutorSource[] = "Found load source with path: {}";
+		inline constexpr char callDynamicFunction[] = "Call {} function";
+		inline constexpr char foundExecutor[] = "Found {} in {} for {} route";
+		inline constexpr char foundTaskExecutor[] = "Found {} in {}";
+		inline constexpr char foundCSharpApi[] = "Found {}";
+		inline constexpr char initializePythonInterpreter[] = "Initialize Python interpreter";
+		inline constexpr char pythonInterpreterAlreadyInitialized[] = "Python interpreter already initialized";
+		inline constexpr char loadPythonSource[] = "Import {} from {}";
+		inline constexpr char openAmqpSocket[] = "Open AMQP socket with {} on {}";
+		inline constexpr char rabbitmqLogin[] = "Login to RabbitMQ from channel {}";
+		inline constexpr char startTaskConsuming[] = "Start task consuming";
+		inline constexpr char addTaskBroker[] = "Add task broker: {}";
 	}
 }

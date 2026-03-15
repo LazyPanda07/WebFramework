@@ -1,6 +1,6 @@
 #include "LoadBalancer/Heuristics/CSharpHeuristic.h"
 
-#include <Log.h>
+#include "Utility/Utils.h"
 
 #ifdef __WITH_DOTNET_EXECUTORS__
 
@@ -22,12 +22,7 @@ namespace framework::load_balancer
 
 		if (!implementation)
 		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Can't find {}", "LogCSharpHeuristic", 5, std::any_cast<char*>(source));
-			}
-
-			throw std::runtime_error(std::format("Can't find {}", std::any_cast<char*>(source)));
+			utility::logAndThrowException<logging::message::cantFindCSharpHeuristicSource, logging::category::csharpHeuristic>(std::any_cast<char*>(source));
 		}
 	}
 

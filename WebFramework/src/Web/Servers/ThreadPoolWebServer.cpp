@@ -8,6 +8,7 @@
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "HttpsNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
@@ -240,7 +241,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+				Log::error<logging::message::sslException, logging::category::https>(e.what(), ip);
 			}
 		}
 

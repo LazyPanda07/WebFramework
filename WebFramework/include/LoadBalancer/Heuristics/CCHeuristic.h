@@ -24,13 +24,13 @@ namespace framework::load_balancer
 		std::string ip;
 		std::string port;
 		void* implementation;
-		OperatorSignature operatorFunction;
 		InitSignature initFunction;
 		OnStartSignature onStartFunction;
 		OnEndSignature onEndFunction;
 		GetIpSignature getIpFunction;
 		GetPortSignature getPortFunction;
 		GetUseHTTPSSignature getUseHTTPSFunction;
+		OperatorSignature operatorFunction;
 		DeleteHeuristicSignature deleteHeuristicFunction;
 
 	public:

@@ -5,7 +5,6 @@
 #include "TaskBroker/RabbitMqTaskBroker.h"
 
 #include <JsonParser.h>
-#include <Log.h>
 
 #ifdef __LINUX__
 #include <sys/time.h>
@@ -14,6 +13,7 @@
 #endif
 
 #include "Framework/WebFrameworkConstants.h"
+#include "Utility/Utils.h"
 
 namespace framework::task_broker
 {
@@ -35,7 +35,7 @@ namespace framework::task_broker
 
 		if (Log::isValid())
 		{
-			Log::info("Open AMQP socket with {} on {}", "LogTaskBroker", host, port);
+			Log::info<logging::message::openAmqpSocket, logging::category::taskBroker>(host, port);
 		}
 
 		if (amqp_socket_open(socket, host.data(), port))
@@ -58,21 +58,14 @@ namespace framework::task_broker
 
 		if (Log::isValid())
 		{
-			Log::info("Login to RabbitMQ from channel {}", "LogTaskBroker", channel);
+			Log::info<logging::message::rabbitmqLogin, logging::category::taskBroker>(channel);
 		}
 
 		amqp_rpc_reply_t reply = amqp_login(connection, "/", AMQP_DEFAULT_MAX_CHANNELS, AMQP_DEFAULT_FRAME_SIZE, 0, AMQP_SASL_METHOD_PLAIN, login.data(), password.data());
 
 		if (reply.library_error)
 		{
-			std::string errorMessage = std::format("RabbitMQ login exception: {}", amqp_error_string2(reply.library_error));
-
-			if (Log::isValid())
-			{
-				Log::error("{}", "LogTaskBroker", errorMessage);
-			}
-
-			throw std::runtime_error(errorMessage);
+			utility::logAndThrowException<logging::message::rabbitmqLoginError, logging::category::taskBroker>(amqp_error_string2(reply.library_error));
 		}
 
 		RabbitMqTaskBroker::callAmqpFunction(amqp_channel_open, *this, connection, channel);
@@ -100,7 +93,7 @@ namespace framework::task_broker
 			{
 				if (Log::isValid())
 				{
-					Log::error("AMQP function call exception: {}", "LogTaskBroker", amqp_error_string2(reply.library_error));
+					Log::error<logging::message::amqpFunctionCallException, logging::category::taskBroker>(amqp_error_string2(reply.library_error));
 				}
 			}
 		}

@@ -4,7 +4,7 @@
 
 #include <boost/stacktrace.hpp>
 
-#include <Log.h>
+#include "Utility/Utils.h"
 
 namespace framework::utility
 {
@@ -16,7 +16,7 @@ namespace framework::utility
 
 		if (Log::isValid())
 		{
-			Log::error("Segmentation fault: {}", "LogSegfaultHandler", stacktrace.str());
+			Log::error<logging::message::segfaultMessage, logging::category::segfaultHandler>(stacktrace.str());
 		}
 		else
 		{

@@ -70,8 +70,6 @@ namespace framework
 	private:
 		static bool isWebFrameworkDynamicPages(std::string_view filePath);
 
-		static void logWebFrameworkModelsError(std::string_view typeName);
-
 	private:
 		void setParser(const web::HttpParser& parser);
 

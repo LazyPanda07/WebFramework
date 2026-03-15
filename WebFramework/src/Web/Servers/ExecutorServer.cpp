@@ -2,13 +2,13 @@
 
 #include <cstring>
 
-#include <Log.h>
 #include <Exceptions/FileDoesNotExistException.h>
 
 #include "Exceptions/NotFoundException.h"
 #include "Exceptions/APIException.h"
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/CSharpException.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
@@ -24,7 +24,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Executors serve exception: {}", "LogExecutorServer", e.what());
+				Log::error<logging::message::executorsServeException, logging::category::executorServer>(e.what());
 			}
 
 			result = ServiceState::error;
@@ -41,13 +41,17 @@ namespace framework
 
 			response.setResponseCode(static_cast<int64_t>(e.getResponseCode()));
 			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
+
+			stream << response;
+
+			result = ServiceState::skipResponse;
 		}
 #endif
 		catch (const exceptions::BadRequestException& e) // 400
 		{
 			if (Log::isValid())
 			{
-				Log::warning("Bad request from client: {}", "LogExecutorServer", e.what());
+				Log::error<logging::message::badRequest, logging::category::executorServer>(e.what());
 			}
 
 			resources.badRequestError(response, &e);
@@ -60,7 +64,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::warning("Can't find file exception: {}", "LogExecutorServer", e.what());
+				Log::error<logging::message::cantFindFile, logging::category::executorServer>(e.what());
 			}
 
 			resources.notFoundError(response, &e);
@@ -73,7 +77,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::warning("Not found exception: {}", "LogExecutorServer", e.what());
+				Log::error<logging::message::notFound, logging::category::executorServer>(e.what());
 			}
 
 			resources.notFoundError(response, &e);
@@ -102,7 +106,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Executor internal server error: {}", "LogExecutorServer", e.what());
+				Log::error<logging::message::executorInternalServer, logging::category::executorServer>(e.what());
 			}
 
 			resources.internalServerError(response, &e);
@@ -129,7 +133,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::error("Internal server error: {}", "LogExecutorServer", e.what());
+					Log::error<logging::message::internalServerError, logging::category::executorServer>(e.what());
 				}
 
 				resources.internalServerError(response, &e);

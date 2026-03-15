@@ -16,6 +16,7 @@
 #include "Exceptions/CantFindFunctionException.h"
 #include "Utility/ExecutorsUtility.h"
 #include "Managers/RuntimesManager.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
@@ -188,7 +189,7 @@ namespace framework
 				{
 					if (Log::isValid())
 					{
-						Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
+						Log::info<logging::message::wrongUserAgent, logging::category::filter>(it->second);
 					}
 
 					resources->forbiddenError(response, nullptr);
@@ -200,7 +201,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::info("No User-Agent provided", "LogFilter");
+					Log::info<logging::message::noUserAgent, logging::category::filter>();
 				}
 
 				resources->forbiddenError(response, nullptr);
@@ -244,12 +245,7 @@ namespace framework
 
 			if (!creatorSource)
 			{
-				if (Log::isValid())
-				{
-					Log::error("Can't find creator for executor: {} with API: {}", "LogWebFrameworkInitialization", executorSettings.name, executorSettings.apiType);
-				}
-
-				throw std::runtime_error(std::format("Can't find creator for executor: {} with API: {}", executorSettings.name, executorSettings.apiType));
+				utility::logAndThrowException<logging::message::cantCreateApiExecutor, logging::category::executor>(executorSettings.name, executorSettings.apiType);
 			}
 
 			runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource);
@@ -391,7 +387,7 @@ namespace framework
 				{
 					if (Log::isValid())
 					{
-						Log::info("Wrong User-Agent: {}", "LogFilter", it->second);
+						Log::info<logging::message::wrongUserAgent, logging::category::filter>(it->second);
 					}
 
 					resources->forbiddenError(response, nullptr);
@@ -403,7 +399,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::info("No User-Agent provided", "LogFilter");
+					Log::info<logging::message::noUserAgent, logging::category::filter>();
 				}
 
 				resources->forbiddenError(response, nullptr);

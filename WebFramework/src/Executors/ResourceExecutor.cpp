@@ -9,6 +9,7 @@
 #include "Exceptions/BadRequestException.h"
 #include "WFDP/CXXDynamicFunction.h"
 #include "Utility/ExecutorsUtility.h"
+#include "Utility/Utils.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 #include "WFDP/PythonDynamicFunction.h"
@@ -233,7 +234,7 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info("Request static file: {}, is binary: {}", "LogResource", filePath, isBinary);
+			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath, isBinary);
 		}
 
 		auto renderer = staticRenderers.find(extension.string());
@@ -281,7 +282,7 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info("Request dynamic file: {}, is binary: {}", "LogResource", filePath, isBinary);
+			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath, isBinary);
 		}
 
 		if (isBinary)
@@ -339,7 +340,7 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info("Register function: {} from: {}", "LogWFDP", functionName, apiType);
+			Log::info<logging::message::registerFunction, logging::category::dynamicFunction>(functionName, apiType);
 		}
 
 		wfdpRenderer.registerDynamicFunction(functionName, apiDynamicFunctions.at(apiType)(function));

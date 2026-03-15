@@ -14,6 +14,7 @@
 #include "Exceptions/SslException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
+#include "Utility/Utils.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6387)
@@ -55,7 +56,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+				Log::error<logging::message::sslException, logging::category::https>(e.what(), ip);
 			}
 
 			return;

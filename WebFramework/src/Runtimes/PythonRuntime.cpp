@@ -1,6 +1,6 @@
 #include "Runtimes/PythonRuntime.h"
 
-#include <Log.h>
+#include "Utility/Utils.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 
@@ -49,12 +49,12 @@ namespace framework::runtime
 
 			if (Log::isValid())
 			{
-				Log::info("Initialize Python interpreter", "LogRuntime");
+				Log::info<logging::message::initializePythonInterpreter, logging::category::pythonRuntime>();
 			}
 		}
 		else if (Log::isValid())
 		{
-			Log::info("Python interpreter already initialized", "LogRuntime");
+			Log::info<logging::message::pythonInterpreterAlreadyInitialized, logging::category::pythonRuntime>();
 		}
 
 		PythonRuntime::loadSymbols();
@@ -125,7 +125,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {} in {} for {} route", "LogWebFrameworkInitialization", name, py::repr(module).cast<std::string>(), route.empty() ? R"("")" : route);
+			Log::info<logging::message::foundExecutor, logging::category::pythonRuntime>(name, py::repr(module).cast<std::string>(), route.empty() ? R"("")" : route);
 		}
 
 		classes.emplace(name, *cls);
@@ -167,7 +167,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, py::repr(module).cast<std::string>());
+			Log::info<logging::message::foundTaskExecutor, logging::category::pythonRuntime>(name, py::repr(module).cast<std::string>());
 		}
 
 		return std::make_unique<task_broker::PythonTaskExecutor>
@@ -211,7 +211,7 @@ namespace framework::runtime
 
 			if (Log::isValid())
 			{
-				Log::info("Import {} from {}", "LogWebFrameworkInitialization", pythonSourcePath.filename().string(), pythonSourcePath.string());
+				Log::info<logging::message::loadPythonSource, logging::category::pythonRuntime>(pythonSourcePath.filename().string(), pythonSourcePath.string());
 			}
 
 			source = py::module_::import(pythonSourcePath.filename().string().data());

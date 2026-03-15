@@ -7,10 +7,10 @@
 #include <format>
 #include <cstdlib>
 
-#include <Log.h>
 #include <JsonBuilder.h>
 
 #include "Utility/DynamicLibraries.h"
+#include "Utility/Utils.h"
 
 #ifdef __WITH_DOTNET_EXECUTORS__
 
@@ -19,12 +19,7 @@
 
 static void errorHandler(const char_t* message)
 {
-	if (Log::isValid())
-	{
-		Log::error(".NET error: {}", "LogRuntime", framework::runtime::DotNetRuntime::NativeString(message).string());
-	}
-
-	throw std::runtime_error(std::format(".NET error: {}", framework::runtime::DotNetRuntime::NativeString(message).string()));
+	framework::utility::logAndThrowException<framework::logging::message::dotnetError, framework::logging::category::dotnetRuntime>(framework::runtime::DotNetRuntime::NativeString(message).string());
 }
 
 namespace framework::runtime
@@ -74,7 +69,7 @@ namespace framework::runtime
 			{
 				if (Log::isValid())
 				{
-					Log::info("Found {}", "LogWebFrameworkInitialization", environmentPath.string());
+					Log::info<logging::message::foundCSharpApi, logging::category::dotnetRuntime>(environmentPath.string());
 				}
 
 				return environmentPath;
@@ -83,7 +78,7 @@ namespace framework::runtime
 			{
 				if (Log::isValid())
 				{
-					Log::info("Found {}", "LogWebFrameworkInitialization", (environmentPath / apiName).string());
+					Log::info<logging::message::foundCSharpApi, logging::category::dotnetRuntime>((environmentPath / apiName).string());
 				}
 
 				return environmentPath / apiName;
@@ -109,7 +104,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {}", "LogWebFrameworkInitialization", result.string());
+			Log::info<logging::message::foundCSharpApi, logging::category::dotnetRuntime>(result.string());
 		}
 		
 		return result;
@@ -371,7 +366,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {} in {} for {} route", "LogWebFrameworkInitialization", name, modulePath.string(), route.empty() ? R"("")" : route);
+			Log::info<logging::message::foundExecutor, logging::category::dotnetRuntime>(name, modulePath.string(), route.empty() ? R"("")" : route);
 		}
 
 		fullQualifiedNames.emplace(name, std::move(fullQualifiedName));
@@ -411,7 +406,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, modulePath.string());
+			Log::info<logging::message::foundTaskExecutor, logging::category::dotnetRuntime>(name, modulePath.string());
 		}
 
 		return std::make_unique<task_broker::CSharpTaskExecutor>(createTaskExecutorFunction(fullQualifiedName.data()));

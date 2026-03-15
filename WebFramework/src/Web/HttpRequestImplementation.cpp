@@ -1,6 +1,5 @@
 #include "Web/HttpRequestImplementation.h"
 
-#include <Log.h>
 #include <MultiLocalizationManager.h>
 #include <Exceptions/FileDoesNotExistException.h>
 #include <BaseTCPServer.h>
@@ -14,8 +13,6 @@
 #include "ExecutorsConstants.h"
 #include "Utility/ExecutorsUtility.h"
 #include "Managers/TaskBrokersManager.h"
-
-#include "TaskBroker/InternalTaskBroker.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)
@@ -52,14 +49,6 @@ namespace framework
 		}
 
 		return filePath.substr(extension) == webFrameworkDynamicPagesExtension;
-	}
-
-	void HttpRequestImplementation::logWebFrameworkModelsError(std::string_view typeName)
-	{
-		if (Log::isValid())
-		{
-			Log::error("Can't get or create model in HTTPRequest::getModel<T> function where T is {}", "LogWebFrameworkModels", typeName);
-		}
 	}
 
 	void HttpRequestImplementation::setParser(const web::HttpParser& parser)

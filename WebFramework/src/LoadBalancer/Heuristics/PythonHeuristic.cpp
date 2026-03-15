@@ -1,6 +1,6 @@
 #include "LoadBalancer/Heuristics/PythonHeuristic.h"
 
-#include <Log.h>
+#include "Utility/Utils.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 
@@ -21,12 +21,7 @@ namespace framework::load_balancer
 
 		if (!temp)
 		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Can't find {} in {}", "LogPythonHeuristic", 4, heuristicName, py::repr(std::get<py::module_>(source)).cast<std::string>());
-			}
-
-			throw std::runtime_error(std::format("Can't find {} in {}", heuristicName, py::repr(std::get<py::module_>(source)).cast<std::string>()));
+			utility::logAndThrowException<logging::message::cantFindPythonHeuristicSource, logging::category::pythonHeuristic>(heuristicName, py::repr(std::get<py::module_>(source)).cast<std::string>());
 		}
 
 		implementation = new py::object((*temp)(ip.data(), port.data(), useHTTPS));

@@ -7,6 +7,7 @@
 #include "WFDP/CXXDynamicFunction.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "ExecutorsConstants.h"
+#include "Utility/Utils.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 26800)
@@ -138,7 +139,7 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::info("Call {} function", "LogWFDP", functionName);
+					Log::info<logging::message::callDynamicFunction, logging::category::dynamicFunction>(functionName);
 				}
 
 				result += (*dynamicPagesFunctions.at(functionName))(arguments);

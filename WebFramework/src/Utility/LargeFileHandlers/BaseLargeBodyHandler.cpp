@@ -1,6 +1,6 @@
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 
-#include <Log.h>
+#include "Utility/Utils.h"
 
 namespace framework::utility
 {
@@ -16,7 +16,7 @@ namespace framework::utility
 		{
 			if (Log::isValid())
 			{
-				Log::error("Exception on handle chunk: {}", "LogBaseLargeBodyHandler", e.what());
+				Log::error<logging::message::largeBodyChunkException, logging::category::largeBodyHandler>(e.what());
 			}
 
 			return false;

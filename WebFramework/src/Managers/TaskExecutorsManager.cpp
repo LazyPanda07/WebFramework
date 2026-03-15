@@ -2,6 +2,7 @@
 
 #include "Managers/RuntimesManager.h"
 #include "Utility/Sources.h"
+#include "Utility/Utils.h"
 
 namespace framework::task_broker
 {
@@ -33,17 +34,12 @@ namespace framework::task_broker
 
 			if (loadSources.empty())
 			{
-				if (Log::isValid())
-				{
-					Log::error("Can't load task executors from {}", "LogTaskExecutor", sourcePath.string());
-				}
-
-				continue;
+				utility::logAndThrowException<logging::message::cantLoadTaskExecutor, logging::category::taskExecutor>(sourcePath.string());
 			}
 
 			if (Log::isValid())
 			{
-				Log::info("Found load source with path: {}", "LogTaskExecutor", loadSources.front().second);
+				Log::info<logging::message::foundTaskExecutorSource, logging::category::taskExecutor>(loadSources.front().second);
 			}
 
 			const auto& [loadSource, actualSourcePath] = loadSources.front();

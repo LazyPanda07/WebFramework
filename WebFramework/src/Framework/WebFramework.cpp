@@ -26,6 +26,7 @@
 #include "Runtimes/PythonRuntime.h"
 #include "Runtimes/DotNetRuntime.h"
 #include "TaskBroker/InternalTaskBroker.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
@@ -140,20 +141,13 @@ namespace framework
 
 			if (auto it = initFunctions.find(*runtime); it == initFunctions.end())
 			{
-				std::string message = std::format("Wrong runtimes: {}", *runtime);
-
-				if (Log::isValid())
-				{
-					Log::fatalError(message, "LogRuntime", 15);
-				}
-
-				throw std::runtime_error(message);
+				utility::logAndThrowException<logging::message::wrongRuntime, logging::category::runtime>(*runtime);
 			}
 			else
 			{
 				if (Log::isValid())
 				{
-					Log::info("Add {} runtime", "LogRuntime", *runtime);
+					Log::info<logging::message::addRuntime, logging::category::runtime>(*runtime);
 				}
 
 				it->second();
@@ -386,7 +380,7 @@ namespace framework
 
 			if (Log::isValid())
 			{
-				Log::info("Using HTTPS with certificate: {}, key: {}", "LogWebFramework", httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
+				Log::info<logging::message::httpsInitialization, logging::category::https>(httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
 			}
 		}
 	}
@@ -413,7 +407,7 @@ namespace framework
 		{
 			for (const std::string& database : databases)
 			{
-				Log::info("Using {} database", "LogWebFramework", database);
+				Log::info<logging::message::databaseInitialization, logging::category::database>(database);
 			}
 		}
 
@@ -580,7 +574,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Starting {} server at {}:{}", "LogWebFramework", webServerType, server->getIp(), server->getPort());
+			Log::info<logging::message::startingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort());
 		}
 
 		server->start(wait, onStartServer, serverException);
@@ -590,7 +584,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Stopping {} server at {}:{}", "LogWebFramework", webServerType, server->getIp(), server->getPort());
+			Log::info<logging::message::stoppingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort());
 		}
 
 		server->stop(wait);
@@ -600,7 +594,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Kick client with ip: {} from server", "LogWebFramework", ip);
+			Log::info<logging::message::kickClient, logging::category::webFrameworkServer>(ip);
 		}
 
 		server->kick(ip);

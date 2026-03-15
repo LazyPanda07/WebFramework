@@ -1,11 +1,10 @@
 #include "Runtimes/CCRuntime.h"
 
-#include <Log.h>
-
 #include "Executors/CCExecutor.h"
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "TaskBroker/TaskExecutors/CCTaskExecutor.h"
+#include "Utility/Utils.h"
 
 namespace framework::runtime
 {
@@ -35,7 +34,7 @@ namespace framework::runtime
 
 			if (Log::isValid())
 			{
-				Log::info("Found {} in {} for {} route", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string(), route.empty() ? R"("")" : route);
+				Log::info<logging::message::foundExecutor, logging::category::ccRuntime>(creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string(), route.empty() ? R"("")" : route);
 			}
 
 			creators.emplace(name, std::make_tuple(module, creator));
@@ -77,7 +76,7 @@ namespace framework::runtime
 
 			if (Log::isValid())
 			{
-				Log::info("Found {} in {}", "LogWebFrameworkInitialization", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+				Log::info<logging::message::foundTaskExecutor, logging::category::ccRuntime>(creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
 			}
 
 			return std::make_unique<task_broker::CCTaskExecutor>(module, creator(), name);
