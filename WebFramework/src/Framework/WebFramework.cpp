@@ -642,7 +642,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Server exception: {}", "LogWebFrameworkServer", (*serverException)->what());
+				Log::error<logging::message::serverException, logging::category::webFrameworkServer>((*serverException)->what());
 			}
 
 			delete (*serverException);

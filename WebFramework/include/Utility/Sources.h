@@ -3,13 +3,14 @@
 #include "Framework/WebFrameworkPlatform.h"
 
 #include <MultiLocalizationManager.h>
-#include <Log.h>
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 #include <pybind11/embed.h>
 
 namespace py = pybind11;
 #endif
+
+#include "Utility/Utils.h"
 
 namespace framework::utility
 {
@@ -39,14 +40,7 @@ namespace framework::utility
 
 		if (throwException && !result)
 		{
-			std::string errorMessage = std::format("Can't load: {} function", name);
-
-			if (Log::isValid())
-			{
-				Log::error(errorMessage, "LogLoad");
-			}
-
-			throw std::runtime_error(errorMessage);
+			utility::logAndThrowException<logging::message::cantLoadFunction, logging::category::loadSource>(name);
 		}
 
 		return result;

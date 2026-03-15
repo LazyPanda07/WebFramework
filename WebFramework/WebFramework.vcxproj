@@ -179,6 +179,7 @@
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
     <ClCompile Include="src\Utility\SegfaultHandler.cpp" />
     <ClCompile Include="src\Utility\TaskExecutorsSettings.cpp" />
+    <ClCompile Include="src\Utility\Utils.cpp" />
     <ClCompile Include="src\Web\HttpRequestImplementation.cpp" />
     <ClCompile Include="src\Web\HttpResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
@@ -199,7 +200,7 @@
     <ClCompile Include="src\Utility\Sources.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
-    <ClCompile Include="src\Utility\BaseConnectionData.cpp" />
+    <ClCompile Include="src\Utility\ConnectionData.cpp" />
     <ClCompile Include="src\Framework\WebFramework.cpp" />
     <ClCompile Include="src\Web\Servers\BaseWebServer.cpp" />
     <ClCompile Include="src\Web\Servers\MultithreadedWebServer.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="include\TaskBroker\TaskExecutors\PythonTaskExecutor.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutors\TaskExecutor.h" />
     <ClInclude Include="include\Utility\TaskExecutorsSettings.h" />
+    <ClInclude Include="include\Utility\Utils.h" />
     <ClInclude Include="include\WFDP\CSharpDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CXXDynamicFunction.h" />
     <ClInclude Include="include\WFDP\DynamicFunction.h" />
@@ -272,7 +274,7 @@
     <ClInclude Include="include\Utility\RouteParameters.h" />
     <ClInclude Include="include\Utility\Sources.h" />
     <ClInclude Include="include\Managers\ExecutorsManager.h" />
-    <ClInclude Include="include\Utility\BaseConnectionData.h" />
+    <ClInclude Include="include\Utility\ConnectionData.h" />
     <ClInclude Include="include\Utility\WebFrameworkConcepts.h" />
     <ClInclude Include="include\Web\HttpRequestImplementation.h" />
     <ClInclude Include="include\Web\HttpResponseImplementation.h" />

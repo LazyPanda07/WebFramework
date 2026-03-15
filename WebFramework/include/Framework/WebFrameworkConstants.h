@@ -125,3 +125,32 @@ namespace web_framework_assets
 	inline constexpr std::string_view internalServerError = "500.html";
 	inline constexpr std::string_view badGateway = "502.html";
 }
+
+namespace framework::logging
+{
+	namespace category
+	{
+		inline constexpr char loadSource[] = "LogLoadSource";
+		inline constexpr char webFrameworkServer[] = "LogWebFrameworkServer";
+		inline constexpr char loadBalancer[] = "LogLoadBalancer";
+	}
+
+	namespace message
+	{
+		inline constexpr char cantLoadFunction[] = "Can't load: {} function";
+		inline constexpr char serverException[] = "Server exception: {}";
+		inline constexpr char receiveClientRequestWebError[] = "Receiving client request web error: {}";
+		inline constexpr char receiveClientRequestInternalError[] = "Receiving client request internal error: {}";
+		inline constexpr char receiveClientRequestUnexpectedError[] = "Some unexpected error acquired while getting client request";
+		inline constexpr char sendClientRequestWebError[] = "Sending client request web error: {}";
+		inline constexpr char sendClientRequestInternalError[] = "Sending client request internal error: {}";
+		inline constexpr char sendClientRequestUnexpectedError[] = "Some unexpected error acquired while sending client request";
+		inline constexpr char receiveServerRequestWebError[] = "Receiving server response web error: {}";
+		inline constexpr char receiveServerRequestInternalError[] = "Receiving server response internal error: {}";
+		inline constexpr char receiveServerRequestUnexpectedError[] = "Some unexpected error acquired while getting server response";
+		inline constexpr char sendServerRequestWebError[] = "Sending client response web error: {}";
+		inline constexpr char sendServerRequestInternalError[] = "Sending client response internal error: {}";
+		inline constexpr char sendServerRequestUnexpectedError[] = "Some unexpected error acquired while sending client response";
+		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
+	}
+}

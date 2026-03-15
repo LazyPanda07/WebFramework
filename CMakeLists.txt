@@ -97,9 +97,10 @@ add_library(
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
-	WebFramework/src/Utility/BaseConnectionData.cpp
+	WebFramework/src/Utility/ConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Utility/SegfaultHandler.cpp
+	WebFramework/src/Utility/Utils.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
 	WebFramework/src/Managers/RuntimesManager.cpp

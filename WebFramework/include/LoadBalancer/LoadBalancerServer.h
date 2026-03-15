@@ -11,7 +11,7 @@
 #include "Heuristics/LoadBalancerHeuristic.h"
 #include "Executors/ResourceExecutor.h"
 
-#include "Utility/BaseConnectionData.h"
+#include "Utility/ConnectionData.h"
 #include "Utility/AdditionalServerSettings.h"
 #include "Utility/ConcurrentQueue.h"
 #include "Utility/Sources.h"
@@ -24,11 +24,11 @@ namespace framework::load_balancer
 		struct ServerData
 		{
 		public:
-			utility::BaseConnectionData connectionData;
+			utility::ConnectionData connectionData;
 			std::unique_ptr<LoadBalancerHeuristic> heuristic;
 
 		public:
-			ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<LoadBalancerHeuristic>&& heuristic) noexcept;
+			ServerData(utility::ConnectionData&& connectionData, std::unique_ptr<LoadBalancerHeuristic>&& heuristic) noexcept;
 
 			ServerData(const ServerData&) = delete;
 

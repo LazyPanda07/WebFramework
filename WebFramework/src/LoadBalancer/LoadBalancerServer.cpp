@@ -6,6 +6,7 @@
 
 #include "Web/HttpResponseImplementation.h"
 #include "Utility/Stopwatch.h"
+#include "Framework/WebFrameworkConstants.h"
 
 #include "LoadBalancer/Heuristics/Connections.h"
 #include "LoadBalancer/Heuristics/CXXHeuristic.h"
@@ -21,7 +22,7 @@
 
 namespace framework::load_balancer
 {
-	LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<LoadBalancerHeuristic>&& heuristic) noexcept :
+	LoadBalancerServer::ServerData::ServerData(utility::ConnectionData&& connectionData, std::unique_ptr<LoadBalancerHeuristic>&& heuristic) noexcept :
 		connectionData(std::move(connectionData)),
 		heuristic(std::move(heuristic))
 	{
@@ -56,7 +57,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving client request web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveClientRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -65,7 +66,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving client request internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveClientRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -74,7 +75,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while getting client request", "LogLoadBalancer");
+				Log::error<logging::message::receiveClientRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -93,7 +94,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client request web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendClientRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -102,7 +103,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client request internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendClientRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -111,7 +112,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while sending client request", "LogLoadBalancer");
+				Log::error<logging::message::sendClientRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -130,7 +131,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving server response web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveServerRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -139,7 +140,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving server response internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveServerRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -148,7 +149,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while getting server response", "LogLoadBalancer");
+				Log::error<logging::message::receiveServerRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -167,7 +168,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client response web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendServerRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -176,7 +177,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client response internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendServerRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -185,7 +186,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while sending client response", "LogLoadBalancer");
+				Log::error<logging::message::sendServerRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -340,7 +341,7 @@ namespace framework::load_balancer
 	{
 		static std::mutex minElementMutex;
 
-		utility::BaseConnectionData* connectionData = nullptr;
+		utility::ConnectionData* connectionData = nullptr;
 		LoadBalancerHeuristic* heuristic = nullptr;
 
 		{
@@ -359,7 +360,7 @@ namespace framework::load_balancer
 
 			if (Log::isValid())
 			{
-				Log::info("Select {}:{} server for connection with heuristic value: {}", "LogLoadBalancer", connectionData->ip, connectionData->port, (*heuristic)());
+				Log::info<logging::message::heuristicSelect, logging::category::loadBalancer>(connectionData->ip, connectionData->port, (*heuristic)());
 			}
 
 			heuristic->onStart();
@@ -467,7 +468,7 @@ namespace framework::load_balancer
 
 				this->allServers.emplace_back
 				(
-					utility::BaseConnectionData(ip, portString, timeout),
+					utility::ConnectionData(ip, portString, timeout),
 					this->createAPIHeuristic(ip, portString, useHTTPS, heuristicName, apiType, loadSource)
 				);
 			}

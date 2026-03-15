@@ -45,7 +45,7 @@
     <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\BaseConnectionData.cpp">
+    <ClCompile Include="src\Utility\ConnectionData.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Managers\ExecutorsManager.cpp">
@@ -231,6 +231,9 @@
     <ClCompile Include="src\TaskBroker\RabbitMqTaskBroker.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Utility\Utils.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Framework\WebFramework.h">
@@ -266,7 +269,7 @@
     <ClInclude Include="include\LoadBalancer\LoadBalancerServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utility\BaseConnectionData.h">
+    <ClInclude Include="include\Utility\ConnectionData.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Managers\ExecutorsManager.h">
@@ -459,6 +462,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\TaskBroker\RabbitMqTaskBroker.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utility\Utils.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

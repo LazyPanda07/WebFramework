@@ -8,7 +8,7 @@
 namespace framework::proxy
 {
 	ProxyServer::ProxyData::ProxyData(std::string_view ip, std::string_view port, DWORD timeout, bool isHTTPS) :
-		BaseConnectionData(ip, port, timeout),
+		ConnectionData(ip, port, timeout),
 		isHTTPS(isHTTPS)
 	{
 

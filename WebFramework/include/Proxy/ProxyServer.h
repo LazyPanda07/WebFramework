@@ -3,14 +3,14 @@
 #include "Framework/WebFrameworkPlatform.h"
 
 #include "Web/Servers/BaseWebServer.h"
-#include "Utility/BaseConnectionData.h"
+#include "Utility/ConnectionData.h"
 
 namespace framework::proxy
 {
 	class ProxyServer : public BaseWebServer
 	{
 	private:
-		struct ProxyData : public utility::BaseConnectionData
+		struct ProxyData : public utility::ConnectionData
 		{
 		public:
 			bool isHTTPS;
