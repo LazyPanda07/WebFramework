@@ -36,7 +36,7 @@ namespace framework::runtime
 		}
 		else
 		{
-			throw std::runtime_error("Can't find initialize_web_framework function");
+			utility::logAndThrowException<logging::message::cantFindInitializeFunction, logging::category::pythonRuntime>();
 		}
 	}
 
@@ -139,7 +139,7 @@ namespace framework::runtime
 
 		if (it == classes.end())
 		{
-			throw std::runtime_error(std::format("Can't find executor with name {}", name));
+			utility::logAndThrowException<logging::message::cantFindExecutor, logging::category::pythonRuntime>(name);
 		}
 
 		py::gil_scoped_acquire gil;
@@ -162,7 +162,7 @@ namespace framework::runtime
 
 		if (!cls)
 		{
-			throw std::runtime_error(std::format("Can't find {}", name));
+			utility::logAndThrowException<logging::message::cantFindTaskExecutor, logging::category::pythonRuntime>(name);
 		}
 
 		if (Log::isValid())

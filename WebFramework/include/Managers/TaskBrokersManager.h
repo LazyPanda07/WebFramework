@@ -1,9 +1,9 @@
 #pragma once
 
 #include <unordered_map>
-#include <format>
 
 #include "TaskBroker/TaskBroker.h"
+#include "Utility/Utils.h"
 
 namespace framework::task_broker
 {
@@ -68,7 +68,7 @@ namespace framework::task_broker
 			return *static_cast<T*>(it->second);
 		}
 
-		throw std::runtime_error(std::format("Can't find {} task broker", T::taskBrokerName));
+		utility::logAndThrowException<logging::message::cantFindTaskBroker, logging::category::taskBroker>(T::taskBrokerName);
 	}
 
 	template<std::derived_from<TaskBroker> T>
@@ -81,6 +81,6 @@ namespace framework::task_broker
 			return *static_cast<T*>(it->second);
 		}
 
-		throw std::runtime_error(std::format("Can't find {} task broker", T::taskBrokerName));
+		utility::logAndThrowException<logging::message::cantFindTaskBroker, logging::category::taskBroker>(T::taskBrokerName);
 	}
 }

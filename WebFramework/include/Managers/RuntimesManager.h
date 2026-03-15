@@ -6,6 +6,7 @@
 #include "Runtimes/Runtime.h"
 #include "Utility/DynamicLibraries.h"
 #include "Utility/ExecutorsUtility.h"
+#include "Utility/Utils.h"
 
 namespace framework::runtime
 {
@@ -100,7 +101,7 @@ namespace framework::runtime
 			return *static_cast<T*>(it->second);
 		}
 
-		throw std::runtime_error(std::format("Can't find {} runtime", T::runtimeName));
+		utility::logAndThrowException<logging::message::cantFindRuntime, logging::category::runtime>(T::runtimeName);
 	}
 
 	template<std::derived_from<Runtime> T>
@@ -113,6 +114,6 @@ namespace framework::runtime
 			return *static_cast<T*>(it->second);
 		}
 
-		throw std::runtime_error(std::format("Can't find {} runtime", T::runtimeName));
+		utility::logAndThrowException<logging::message::cantFindRuntime, logging::category::runtime>(T::runtimeName);
 	}
 }

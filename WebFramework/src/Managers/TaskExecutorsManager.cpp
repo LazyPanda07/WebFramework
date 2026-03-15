@@ -76,6 +76,6 @@ namespace framework::task_broker
 			return *it->second;
 		}
 
-		throw std::runtime_error(std::format("Can't find TaskExecutor with name: {} from {} API", taskExecutorName, apiName));
+		utility::logAndThrowException<logging::message::cantFindApiTaskExecutor, logging::category::taskExecutor>(taskExecutorName, apiName);
 	}
 }

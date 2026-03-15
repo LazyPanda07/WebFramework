@@ -66,7 +66,7 @@ namespace framework
 
 				if (it == variables.end())
 				{
-					throw std::runtime_error(std::format("No variable: {}", name));
+					utility::logAndThrowException<logging::message::noDynamicFunctionVariable, logging::category::dynamicFunction>(name);
 				}
 
 				return it->value;
@@ -146,7 +146,7 @@ namespace framework
 			}
 			catch (const std::exception& e)
 			{
-				throw std::runtime_error(std::format("WFDPRenderer execute exception: {}", e.what()));
+				utility::logAndThrowException<logging::message::wfdpRendererExecuteException, logging::category::dynamicFunction>(e.what());
 			}
 		}
 

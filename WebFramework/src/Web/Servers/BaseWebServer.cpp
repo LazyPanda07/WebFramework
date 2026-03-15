@@ -5,6 +5,7 @@
 #include <HttpsNetwork.h>
 
 #include "Utility/Singletons/HTTPSSingleton.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
@@ -87,7 +88,7 @@ namespace framework
 
 					if (!certificate)
 					{
-						throw std::runtime_error(std::format("Error while reading certificate from {}", filePath.string()));
+						utility::logAndThrowException<logging::message::sslCertificateError, logging::category::https>(filePath.string());
 					}
 				}
 			);
@@ -106,7 +107,7 @@ namespace framework
 
 					if (!privateKey)
 					{
-						throw std::runtime_error(std::format("Error while reading private key from {}", filePath.string()));
+						utility::logAndThrowException<logging::message::privateKeyError, logging::category::https>(filePath.string());
 					}
 				}
 			);

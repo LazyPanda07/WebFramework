@@ -154,6 +154,7 @@ namespace framework::logging
 		inline constexpr char segfaultHandler[] = "LogSegfaultHandler";
 		inline constexpr char sources[] = "LogSources";
 		inline constexpr char executorServer[] = "LogExecutorServer";
+		inline constexpr char webFramework[] = "LogWebFramework";
 	}
 
 	namespace message
@@ -197,6 +198,34 @@ namespace framework::logging
 		inline constexpr char executorInternalServer[] = "Executor internal server error: {}";
 		inline constexpr char internalServerError[] = "Internal server error: {}";
 		inline constexpr char sslException[] = "SSL exception: {}, ip: {}";
+		inline constexpr char cantFindRuntime[] = "Can't find {} runtime";
+		inline constexpr char cantFindTaskBroker[] = "Can't find {} task broker";
+		inline constexpr char sameExecutorRoute[] = "Executor {} has same route as {}";
+		inline constexpr char wrongRuntimeObjectType[] = "Wrong runtimes value type";
+		inline constexpr char cantFindKey[] = "Can't find {}";
+		inline constexpr char cantFindTaskExecutorPaths[] = "Can't use {} consumer with empty {}";
+		inline constexpr char cantParseTaskBrokerArray[] = "Can't parse task broker array value: {}";
+		inline constexpr char wrongWebServerType[] = "Wrong type of webServerType option";
+		inline constexpr char cantFindHeuristicType[] = "Can't find heuristic type for {}";
+		inline constexpr char cantGetDatabase[] = "Can't get database with name: {}";
+		inline constexpr char noPythonExecutors[] = "Can't get Python runtime. WebFramework built without Python Executor support";
+		inline constexpr char noDotNetExecutors[] = "Can't get .NET runtime. WebFramework built without .NET Executor support";
+		inline constexpr char noRuntimeForDynamicLibrary[] = "No runtime for LoadSourceType::dynamicLibrary";
+		inline constexpr char cantFindTaskBrokerImplementation[] = "Can't find task broker implementation with {} name";
+		inline constexpr char cantFindApiTaskExecutor[] = "Can't find TaskExecutor with name: {} from {} API";
+		inline constexpr char noDynamicFunctionVariable[] = "No variable: {}";
+		inline constexpr char wfdpRendererExecuteException[] = "WFDPRenderer execute exception: {}";
+		inline constexpr char cantFindExecutor[] = "Can't find executor with name {}";
+		inline constexpr char cantFindTaskExecutor[] = "Can't find {}";
+		inline constexpr char cantFindCSharpApi[] = "Can't find {} or {}";
+		inline constexpr char methodAlreadyInitialized[] = "Method already intialized, type name: {}, method name: {}";
+		inline constexpr char cantLoadRuntimeLibrary[] = "Can't find {}";
+		inline constexpr char cantFindInitializeFunction[] = "Can't find initialize_web_framework function";
+		inline constexpr char cantCreateRabbitMqSocket[] = "Can't create RabbitMQ socket";
+		inline constexpr char cantOpenRabbitMqSocket[] = "Can't open RabbitMQ socket";
+		inline constexpr char rabbitMqRequestTaskException[] = "Request task RabbitMQ exception: {}";
+		inline constexpr char sslCertificateError[] = "Error while reading certificate from {}";
+		inline constexpr char privateKeyError[] = "Error while reading private key from {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";

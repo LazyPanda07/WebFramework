@@ -1,7 +1,5 @@
 #include "Web/Servers/ThreadPoolWebServer.h"
 
-#include <Log.h>
-
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/SslException.h"
 #include "Exceptions/APIException.h"

@@ -24,7 +24,7 @@ namespace framework::task_broker
 	{
 		if (!socket)
 		{
-			throw std::runtime_error(std::format("Can't create RabbitMQ socket"));
+			utility::logAndThrowException<logging::message::cantCreateRabbitMqSocket, logging::category::taskBroker>();
 		}
 
 		std::string host(json_settings_values::rabbitMqHostValue);
@@ -40,7 +40,7 @@ namespace framework::task_broker
 
 		if (amqp_socket_open(socket, host.data(), port))
 		{
-			throw std::runtime_error(std::format("Can't open RabbitMQ socket"));
+			utility::logAndThrowException<logging::message::cantOpenRabbitMqSocket, logging::category::taskBroker>();
 		}
 
 		std::string login("guest");
@@ -160,7 +160,7 @@ namespace framework::task_broker
 				return std::nullopt;
 			}
 
-			throw std::runtime_error(amqp_error_string2(reply.library_error));
+			utility::logAndThrowException<logging::message::rabbitMqRequestTaskException, logging::category::taskBroker>(amqp_error_string2(reply.library_error));
 		}
 
 		json::JsonParser parser(std::string_view(static_cast<char*>(envelope.message.body.bytes), envelope.message.body.len));

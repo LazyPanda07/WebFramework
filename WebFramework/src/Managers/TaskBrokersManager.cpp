@@ -4,6 +4,7 @@
 
 #include "TaskBroker/InternalTaskBroker.h"
 #include "TaskBroker/RabbitMqTaskBroker.h"
+#include "Utility/Utils.h"
 
 namespace framework::task_broker
 {
@@ -28,7 +29,7 @@ namespace framework::task_broker
 		}
 		else
 		{
-			throw std::runtime_error(std::format("Can't find task broker implementation with {} name", taskBrokerName));
+			utility::logAndThrowException<logging::message::cantFindTaskBrokerImplementation, logging::category::taskBroker>(taskBrokerName);
 		}
 	}
 
@@ -42,7 +43,7 @@ namespace framework::task_broker
 			}
 		}
 
-		throw std::runtime_error(std::format("Can't find {} task broker", name));
+		utility::logAndThrowException<logging::message::cantFindTaskBroker, logging::category::taskBroker>(name);
 	}
 
 	const TaskBroker& TaskBrokersManager::getTaskBroker(std::string_view name) const
@@ -55,6 +56,6 @@ namespace framework::task_broker
 			}
 		}
 
-		throw std::runtime_error(std::format("Can't find {} task broker", name));
+		utility::logAndThrowException<logging::message::cantFindTaskBroker, logging::category::taskBroker>(name);
 	}
 }

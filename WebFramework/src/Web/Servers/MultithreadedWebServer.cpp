@@ -1,7 +1,6 @@
 #include "Web/Servers/MultithreadedWebServer.h"
 
-#include "Log.h"
-#include "HttpsNetwork.h"
+#include <HttpsNetwork.h>
 
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"

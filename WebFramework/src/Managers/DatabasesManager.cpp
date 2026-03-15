@@ -5,6 +5,8 @@
 #include <DatabaseFactory.h>
 #include <DatabaseUtility.h>
 
+#include "Utility/Utils.h"
+
 namespace framework
 {
 	DatabasesManager::DatabasesHolder::DatabasesHolder(std::string_view databaseImplementationName) :
@@ -66,7 +68,7 @@ namespace framework
 
 		if (it == databases.end())
 		{
-			throw std::runtime_error(std::format("Can't get database with name: {}", databaseName));
+			utility::logAndThrowException<logging::message::cantGetDatabase, logging::category::database>(databaseName);
 		}
 
 		return it->second;

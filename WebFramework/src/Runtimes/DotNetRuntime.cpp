@@ -99,7 +99,7 @@ namespace framework::runtime
 		}
 		else
 		{
-			throw std::runtime_error(std::format("Can't find {} or {}", (executableDirectoryPath / apiName).string(), (libraryDirectoryPath / apiName).string()));
+			utility::logAndThrowException<logging::message::cantFindCSharpApi, logging::category::dotnetRuntime>((executableDirectoryPath / apiName).string(), (libraryDirectoryPath / apiName).string());
 		}
 
 		if (Log::isValid())
@@ -162,7 +162,7 @@ namespace framework::runtime
 	{
 		if (method)
 		{
-			throw std::runtime_error(std::format("Method already intialized, type name: {}, method name: {}", typeName.string(), methodName.string()));
+			utility::logAndThrowException<logging::message::methodAlreadyInitialized, logging::category::dotnetRuntime>(typeName.string(), methodName.string());
 		}
 
 		getFunctionPointer(typeName.native().data(), methodName.native().data(), UNMANAGEDCALLERSONLY_METHOD, nullptr, nullptr, reinterpret_cast<void**>(&method));
@@ -326,7 +326,7 @@ namespace framework::runtime
 		{
 			if (runtimeLibrary = utility::loadLibrary(runtimeLibraryName); !runtimeLibrary)
 			{
-				throw std::runtime_error(std::format("Can't find {}", runtimeLibraryName));
+				utility::logAndThrowException<logging::message::cantLoadRuntimeLibrary, logging::category::dotnetRuntime>(runtimeLibraryName);
 			}
 		}
 
@@ -380,7 +380,7 @@ namespace framework::runtime
 
 		if (it == fullQualifiedNames.end())
 		{
-			throw std::runtime_error(std::format("Can't find executor with name {}", name));
+			utility::logAndThrowException<logging::message::cantFindExecutor, logging::category::dotnetRuntime>(name);
 		}
 
 		const auto& [_, fullQualifiedName] = *it;
@@ -401,7 +401,7 @@ namespace framework::runtime
 
 		if (!hasTaskExecutor(fullQualifiedName.data()))
 		{
-			throw std::runtime_error(std::format("Can't find {} task executor", name));
+			utility::logAndThrowException<logging::message::cantFindTaskExecutor, logging::category::dotnetRuntime>(name);
 		}
 
 		if (Log::isValid())

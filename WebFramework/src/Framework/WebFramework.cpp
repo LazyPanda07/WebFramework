@@ -72,7 +72,7 @@ namespace framework
 			{
 				if (auto it = result.find(key); it != result.end())
 				{
-					throw std::runtime_error(std::format("Executor {} has same route as {}", value.name, it->second.name));
+					utility::logAndThrowException<logging::message::sameExecutorRoute, logging::category::webFramework>(value.name, it->second.name);
 				}
 
 				result.try_emplace(key, value);
@@ -136,7 +136,7 @@ namespace framework
 			}
 			else
 			{
-				throw std::runtime_error("Wrong runtimes value type");
+				utility::logAndThrowException<logging::message::wrongRuntimeObjectType, logging::category::runtime>();
 			}
 
 			if (auto it = initFunctions.find(*runtime); it == initFunctions.end())
@@ -261,12 +261,12 @@ namespace framework
 		{
 			if (settingsPaths.empty())
 			{
-				throw std::runtime_error(std::format("Can't find {}", json_settings::settingsPathsKey));
+				utility::logAndThrowException<logging::message::cantFindKey, logging::category::webFramework>(json_settings::settingsPathsKey);
 			}
 
 			if (pathToSources.empty())
 			{
-				throw std::runtime_error(std::format("Can't find {}", json_settings::loadSourcesKey));
+				utility::logAndThrowException<logging::message::cantFindKey, logging::category::webFramework>(json_settings::loadSourcesKey);
 			}
 		}
 	}
@@ -286,7 +286,7 @@ namespace framework
 		{
 			if (taskExecutorPaths.empty())
 			{
-				throw std::runtime_error(std::format("Can't use {} consumer with empty {}", json_settings_values::consumerInternalValue, json_settings::taskExecutorsSettingsKey));
+				utility::logAndThrowException<logging::message::cantFindTaskExecutorPaths, logging::category::webFramework>(json_settings_values::consumerInternalValue, json_settings::taskExecutorsSettingsKey);
 			}
 
 			task_broker::TaskBrokersManager& taskBrokerManager = task_broker::TaskBrokersManager::get();
@@ -317,7 +317,7 @@ namespace framework
 				}
 				else
 				{
-					throw std::runtime_error(std::format("Can't parse task broker array value: {}", taskBroker.getType().name()));
+					utility::logAndThrowException<logging::message::cantParseTaskBrokerArray, logging::category::webFramework>(taskBroker.getType().name());
 				}
 
 				taskBrokerManager.addTaskBroker(*taskBrokerName, *settings);
@@ -532,7 +532,7 @@ namespace framework
 		}
 		else
 		{
-			throw std::runtime_error(::exceptions::wrongWebServerType);
+			utility::logAndThrowException<logging::message::wrongWebServerType, logging::category::webFramework>();
 		}
 	}
 

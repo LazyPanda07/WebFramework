@@ -51,7 +51,7 @@ namespace framework::runtime
 
 		if (it == creators.end())
 		{
-			throw std::runtime_error(std::format("Can't find executor with name {}", name));
+			utility::logAndThrowException<logging::message::cantFindExecutor, logging::category::ccRuntime>(name);
 		}
 
 		const auto& [_, creatorData] = *it;
@@ -82,7 +82,7 @@ namespace framework::runtime
 			return std::make_unique<task_broker::CCTaskExecutor>(module, creator(), name);
 		}
 
-		throw std::runtime_error(std::format("Can't find {}", name));
+		utility::logAndThrowException<logging::message::cantFindTaskExecutor, logging::category::ccRuntime>(name);
 	}
 
 	void* CCRuntime::createExecutorSettings(const void* implementation) const

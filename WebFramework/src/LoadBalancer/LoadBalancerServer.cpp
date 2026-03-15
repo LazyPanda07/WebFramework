@@ -320,7 +320,7 @@ namespace framework::load_balancer
 			return (it->second)(ip, port, useHTTPS);
 		}
 
-		throw std::runtime_error(format("Can't find heuristic type for {}", apiType));
+		utility::logAndThrowException<logging::message::cantFindHeuristicType, logging::category::loadBalancer>(apiType);
 
 		return nullptr;
 	}
