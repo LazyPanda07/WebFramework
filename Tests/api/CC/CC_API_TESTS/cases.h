@@ -16,4 +16,4 @@ void configOverrideStringArray(bool* assertFalse);
 
 void configOverrideIntegerArray(bool* assertFalse);
 
-void generateSha256(bool* assertTrue);
+void generateSha256(bool* assertTrue, char** outErrorMessage);

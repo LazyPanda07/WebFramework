@@ -217,7 +217,7 @@ void configOverrideIntegerArray(bool* assertFalse)
 	free(values);
 }
 
-void generateSha256(bool* assertTrue)
+void generateSha256(bool* assertTrue, char** outErrorMessage)
 {
 	const char* data = "qwe";
 	const char* hash = "489CD5DBC708C7E541DE4D7CD91CE6D0F1613573B7FC5B40D3942CCB9555CF35";
@@ -226,7 +226,16 @@ void generateSha256(bool* assertTrue)
 
 	wf_generate_sha256(data, size, &result);
 
-	*assertTrue = !strcmp(data, hash);
+	const char* temp = wf_get_data_from_string(result);
+
+	*assertTrue = !strcmp(temp, hash);
+
+	if (!*assertTrue)
+	{
+		*outErrorMessage = calloc(strlen(temp) + 1, sizeof(char));
+
+		memcpy(*outErrorMessage, temp, strlen(temp));
+	}
 
 	wf_delete_string(result);
 }

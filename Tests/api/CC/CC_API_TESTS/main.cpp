@@ -66,10 +66,11 @@ TEST(API, ConfigOverrideIntegerArray)
 TEST(API, SHA256)
 {
 	bool assertTrue;
+	char* outErrorMessage = nullptr;
 
-	generateSha256(&assertTrue);
+	generateSha256(&assertTrue, &outErrorMessage);
 
-	ASSERT_TRUE(assertTrue);
+	ASSERT_TRUE(assertTrue) << outErrorMessage;
 }
 
 int main(int argc, char** argv)
