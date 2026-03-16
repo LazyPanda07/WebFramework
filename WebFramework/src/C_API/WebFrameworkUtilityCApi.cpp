@@ -8,6 +8,7 @@
 #include "Utility/JSONSettingsParser.h"
 #include "DatabaseInterfaces/IDatabase.h"
 #include "Databases/SQLValueImplementation.h"
+#include "SHA256.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -2671,6 +2672,32 @@ String generateWebFrameworkUUID(Exception* exception)
 	try
 	{
 		return new std::string(utility::uuid::generateUUID());
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+String generateSha256(const char* data, size_t size, Exception* exception)
+{
+	try
+	{
+		encoding::SHA256 encoder;
+
+		return new std::string
+		(
+			encoder
+			(
+				std::string_view(data, size)
+			)
+		);
 	}
 	catch (const std::exception& e)
 	{

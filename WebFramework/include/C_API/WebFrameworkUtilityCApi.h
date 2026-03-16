@@ -305,6 +305,8 @@ EXPORT void iterateSQLResult(SqlResultObject result, void(*initBuffer)(size_t si
 
 EXPORT String generateWebFrameworkUUID(Exception* exception);
 
+EXPORT String generateSha256(const char* data, size_t size, Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EXPORT void deleteWebFrameworkJsonObject(JsonObject object);

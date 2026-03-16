@@ -3,7 +3,8 @@
 #include <filesystem>
 #include <fstream>
 
-#include "import.hpp"
+#include <import.hpp>
+#include <Utility/WebFrameworkUtility.hpp>
 
 std::string getConfiguration()
 {
@@ -84,6 +85,11 @@ TEST(API, ConfigOverrideIntegerArray)
 	config.overrideConfiguration("port", std::vector<int64_t>{ 15 });
 
 	ASSERT_NE(config.getRawConfiguration(), config.getConfiguration());
+}
+
+TEST(API, Utility)
+{
+	ASSERT_EQ(framework::utility::encoding::generateSha256("qwe"), "489CD5DBC708C7E541DE4D7CD91CE6D0F1613573B7FC5B40D3942CCB9555CF35");
 }
 
 int main(int argc, char** argv)

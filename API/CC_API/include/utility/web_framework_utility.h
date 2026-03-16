@@ -10,3 +10,12 @@
  * @return Error if occurred
  */
 web_framework_exception_t wf_generate_uuid(web_framework_string_t* result);
+
+/**
+ * @brief Generate SHA256 hash
+ * @param data Data
+ * @param size data size
+ * @param result 
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_generate_sha256(const char* data, size_t size, web_framework_string_t* result);
