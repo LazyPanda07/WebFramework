@@ -166,7 +166,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Download ${{ matrix.executors.artifact-name }}
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.executors.artifact-name }}
         path: WebFrameworkLibrary
@@ -204,7 +204,7 @@ jobs:
     - uses: actions/checkout@v6
       
     - name: Download ${{ matrix.executors.artifact-name }}
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.executors.artifact-name }}
         path: WebFrameworkLibrary
@@ -240,7 +240,7 @@ jobs:
     - uses: actions/checkout@v6
       
     - name: Download ${{ matrix.executors.artifact-name }}
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.executors.artifact-name }}
         path: WebFrameworkLibrary
@@ -272,7 +272,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download WebFramework
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
@@ -303,7 +303,7 @@ jobs:
     - uses: actions/checkout@v6
       
     - name: Download WebFramework
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
@@ -334,7 +334,7 @@ jobs:
     - uses: actions/checkout@v6
 
     - name: Download artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
       with:
         name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON
         path: WebFrameworkLibrary
@@ -523,7 +523,7 @@ jobs:
       run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\C_API\WebFrameworkCApi.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v8
 
     - name: Remove tests and executors
       run: |
@@ -535,19 +535,25 @@ jobs:
           rm -rf LinuxARMExecutors*
       
     - name: Create Windows, Linux and LinuxARM zips
+      shell: bash
       run: |
+        shopt -s nullglob
+
         for directory in Windows-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          dir=${directory%/}
+          zip -r "$dir.zip" "$dir"
         done
         
         for directory in Linux-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          dir=${directory%/}
+          zip -r "$dir.zip" "$dir"
         done
 
         for directory in LinuxARM-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          dir=${directory%/}
+          zip -r "$dir.zip" "$dir"
         done
-        
+      
     - name: Create Android zip
       run: zip -r android.zip Android
       
