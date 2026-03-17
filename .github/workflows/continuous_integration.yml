@@ -538,19 +538,28 @@ jobs:
       run: ls -al
 
     - name: Create Windows, Linux and LinuxARM zips
+      shell: bash
       run: |
+        shopt -s nullglob
+
         for directory in Windows-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          dir=${directory%/}
+          zip -r -- "$dir.zip" "$dir"
         done
         
         for directory in Linux-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          dir=${directory%/}
+          zip -r -- "$dir.zip" "$dir"
         done
 
         for directory in LinuxARM-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          dir=${directory%/}
+          zip -r -- "$dir.zip" "$dir"
         done
         
+    - name: Print directories
+      run: ls -al
+
     - name: Create Android zip
       run: zip -r android.zip Android
       
