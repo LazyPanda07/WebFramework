@@ -26,7 +26,7 @@ jobs:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF.zip
+        fileName: Linux-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
 
     - name: Get Windows latest release
       uses: robinraju/release-downloader@v1.12
@@ -34,7 +34,7 @@ jobs:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF.zip
+        fileName: Windows-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
         
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
@@ -75,7 +75,7 @@ jobs:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF.zip
+        fileName: Windows-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
 
     - name: Get Android latest release
       uses: robinraju/release-downloader@v1.12
@@ -119,7 +119,7 @@ jobs:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON.zip
+        fileName: Linux-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip
 
     - name: Create deb package
       if: ${{ matrix.package-type == 'deploy' }}
@@ -170,8 +170,8 @@ jobs:
     strategy:
       matrix:
         config: 
-          - { os: "windows-latest", asset_name: "Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON.zip", upload_name: "windows-executor" }
-          - { os: "ubuntu-latest", asset_name: "Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON.zip", upload_name: "linux-executor" }
+          - { os: "windows-latest", asset_name: "Windows-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "windows-executor" }
+          - { os: "ubuntu-latest", asset_name: "Linux-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "linux-executor" }
     runs-on: ${{ matrix.config.os }}
 
     steps:
@@ -191,7 +191,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DBUILD_EXECUTOR=ON ..
+        cmake -DBUILD_EXECUTOR.ON ..
         cmake --build . -j --config Release
         cmake --install . --config Release
 
@@ -234,7 +234,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -D${{ matrix.config.api_name }}=ON -DBUILD_EXECUTOR=ON ..
+          cmake -D${{ matrix.config.api_name }}.ON -DBUILD_EXECUTOR.ON ..
           cmake --build . -j
           cmake --install .
 
@@ -326,7 +326,7 @@ jobs:
     - name: Build test
       working-directory: DistributionTests/build
       run: |
-          cmake -DTEST_CSHARP=ON ..
+          cmake -DTEST_CSHARP.ON ..
           cmake --build . -j --config Release 
           cmake --install . --config Release
           cd bin
@@ -365,7 +365,7 @@ jobs:
     - name: Download Python WebFramework
       uses: actions/download-artifact@v8
       with:
-        pattern: "*-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.*-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON"
+        pattern: "*-WITH_PYTHON_EXECUTORS.ON-BUILD_PYTHON_API.ON-3.*-WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON"
         path: WebFrameworkLibrary
         merge-multiple: true
         
