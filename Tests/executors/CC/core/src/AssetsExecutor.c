@@ -2,11 +2,16 @@
 
 #include <signal.h>
 
-DEFINE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR)
 
 static const char* customFunction(const char** args, size_t agumentsNumber);
 
 static void deleter(char* ptr);
+
+DEFINE_EXECUTOR_INIT(AssetsExecutor)
+{
+	wf_register_dynamic_function_executor_settings(settings, "customFunction", customFunction, deleter);
+}
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 {
@@ -54,14 +59,9 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 	free(fullName);
 }
 
-DEFINE_EXECUTOR_METHOD(AssetsExecutor, POST_METHOD, request, response)
-{
-	wf_register_wfdp_function(request, "customFunction", customFunction, deleter);
-}
-
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 {
-	wf_unregister_wfdp_function(request, "customFunction");
+	wf_unregister_dynamic_function(request, "customFunction");
 }
 
 const char* customFunction(const char** args, size_t agumentsNumber)
@@ -86,4 +86,4 @@ void deleter(char* ptr)
 	free(ptr);
 }
 
-DEFINE_INITIALIZE_WEB_FRAMEWORK();
+DEFINE_INITIALIZE_WEB_FRAMEWORK()

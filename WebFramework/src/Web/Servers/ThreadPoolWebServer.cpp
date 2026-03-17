@@ -1,30 +1,26 @@
-#include "ThreadPoolWebServer.h"
-
-#include <Log.h>
+#include "Web/Servers/ThreadPoolWebServer.h"
 
 #include "Exceptions/FileDoesNotExistException.h"
-#include "Exceptions/NotFoundException.h"
 #include "Exceptions/SslException.h"
 #include "Exceptions/APIException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "HttpsNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
 	ThreadPoolWebServer::Client::Client
 	(
-		SSL* ssl, SSL_CTX* context, SOCKET clientSocket, sockaddr address,
+		SSL* ssl, SOCKET clientSocket, sockaddr address,
 		std::function<void()>&& cleanup,
-		const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HTTPRequestImplementation&, HTTPResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& service,
+		const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& service,
 		ThreadPoolWebServer& server,
 		DWORD timeout
 	) :
 		stream
 		(
-			ssl ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, std::chrono::milliseconds(timeout))
+			server.createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout))
 		),
 		cleanup(std::move(cleanup)),
 		service(service),
@@ -71,9 +67,9 @@ namespace framework
 			return false;
 		}
 
-		HTTPRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, address, stream);
-		HTTPResponseImplementation response;
-		std::vector<std::function<void(ServiceState&)>> chain =
+		HttpRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, address, stream);
+		HttpResponseImplementation response;
+		const std::vector<std::function<void(ServiceState&)>> chain =
 		{
 			[this, &request](ServiceState& state)
 			{
@@ -90,10 +86,7 @@ namespace framework
 			},
 			[this, &request, &response, &executorsManager, &resourceExecutor, &threadPool](ServiceState& state)
 			{
-				HTTPRequestExecutors requestWrapper(&request);
-				HTTPResponseExecutors responseWrapper(&response);
-
-				if (std::optional<std::function<void(HTTPRequestExecutors&, HTTPResponseExecutors&)>> threadPoolFunction = executorsManager.service(requestWrapper, responseWrapper, executors))
+				if (std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> threadPoolFunction = executorsManager.service(request, response, executors))
 				{
 					isBusy = true;
 
@@ -106,10 +99,7 @@ namespace framework
 								stream, request, response, resourceExecutor,
 								[&request, &response, &threadPoolFunction](ServiceState& _)
 								{
-									HTTPRequestExecutors requestWrapper(&request);
-									HTTPResponseExecutors responseWrapper(&response);
-
-									(*threadPoolFunction)(requestWrapper, responseWrapper);
+									(*threadPoolFunction)(request, response);
 								}
 							);
 
@@ -147,26 +137,23 @@ namespace framework
 				}
 			}
 		};
+		const void* lastChainTask = &*chain.rbegin();
+		const std::function<void(ServiceState&)>* task = &chain.front();
 
-		for (const std::function<void(ServiceState&)>& task : chain)
+		while (task)
 		{
-			ServiceState state = service(stream, request, response, resourceExecutor, task);
+			switch (service(stream, request, response, resourceExecutor, *task))
+			{
+			case framework::ExecutorServer::ServiceState::success:
+				task = task == lastChainTask ? nullptr : task + 1;
 
-			if (state == ServiceState::success)
-			{
-				continue;
-			}
-			else if (state == ServiceState::skipResponse)
-			{
+				break;
+
+			case framework::ExecutorServer::ServiceState::skipResponse:
 				return false;
-			}
-			else if (state == ServiceState::error)
-			{
+
+			case framework::ExecutorServer::ServiceState::error:
 				return true;
-			}
-			else
-			{
-				throw std::runtime_error("Wrong ServiceState: " + std::to_string(static_cast<int>(state)));
 			}
 		}
 
@@ -224,7 +211,7 @@ namespace framework
 		{
 			if (useHTTPS)
 			{
-				ssl = SSL_new(context);
+				ssl = this->getNewSsl();
 
 				if (!ssl)
 				{
@@ -240,17 +227,19 @@ namespace framework
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
 				{
+					SSL_free(ssl);
+
 					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
 
-			clients.push_back(new Client(ssl, context, clientSocket, address, move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
+			clients.push_back(new Client(ssl, clientSocket, address, move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
 		}
 		catch (const web::exceptions::SslException& e)
 		{
 			if (Log::isValid())
 			{
-				Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+				Log::error<logging::message::sslException, logging::category::https>(e.what(), ip);
 			}
 		}
 

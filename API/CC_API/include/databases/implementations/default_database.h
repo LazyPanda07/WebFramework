@@ -1,0 +1,3 @@
+#pragma once
+
+#define DEFAULT_DATABASE_IMPLEMENTATION_NAME ""

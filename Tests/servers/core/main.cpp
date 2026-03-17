@@ -20,8 +20,9 @@ int main(int argc, char** argv) try
 	framework::utility::initializeWebFramework("WebFramework");
 
 	framework::utility::Config config(argv[1]);
-
+	
 #ifdef __WITH_ADDRESS_SANITIZER__
+	config.overrideConfiguration("$[]WebFramework.runtimes.0.enabled", false);
 	config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", false);
 #endif
 
@@ -32,13 +33,7 @@ int main(int argc, char** argv) try
 		true,
 		[]() 
 		{
-#ifdef __LINUX__
-			pid_t processId = getpid();
-#else
-			DWORD processId = GetCurrentProcessId();
-#endif
-
-			std::ofstream(START_CORE_SERVER_FILE) << processId;
+			std::cout << "Server is running..." << std::endl;
 		}
 	);
 

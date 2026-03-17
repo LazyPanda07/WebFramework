@@ -4,8 +4,13 @@
 #include <random>
 
 #include <JsonParser.h>
+#include <JsonBuilder.h>
+#include <ConsoleArgumentParser.h>
 
 #include <gtest/gtest.h>
+
+#include <ProcessWrapper.h>
+#include <UnitTestUtils.h>
 
 #include "settings.h"
 
@@ -13,6 +18,60 @@ bool useHTTPS;
 constexpr size_t largeFileSize = 200 * 1024 * 1024;
 constexpr size_t fileChunkSize = largeFileSize / 256;
 constexpr size_t randomNumbers = fileChunkSize / sizeof(size_t);
+
+void printLog();
+
+void createLargeFile();
+
+int main(int argc, char** argv) try
+{
+	utility::parsers::ConsoleArgumentParser consoleParser(argc, argv);
+	std::string serverConfig = consoleParser.getRequired<std::string>("server_config");
+	json::JsonParser configParser = std::ifstream(serverConfig);
+
+	useHTTPS = configParser.get<bool>("useHTTPS", true);
+
+	unit_test_utils::updateConfigRuntimes(serverConfig, consoleParser);
+
+	unit_test_utils::ProcessWrapper defaultHttpsServer = unit_test_utils::ProcessWrapper::runDefaultHttpsServer();
+
+	if (consoleParser.get<bool>("manual"))
+	{
+		testing::InitGoogleTest(&argc, argv);
+
+		createLargeFile();
+
+		int result = RUN_ALL_TESTS();
+
+		if (result)
+		{
+			printLog();
+		}
+
+		return 0;
+	}
+
+	unit_test_utils::ProcessWrapper server(unit_test_utils::ProcessWrapper(unit_test_utils::splitArguments(consoleParser.getRequired<std::string>("run_arguments"), serverConfig)));
+	
+	testing::InitGoogleTest(&argc, argv);
+
+	createLargeFile();
+
+	int result = RUN_ALL_TESTS();
+
+	if (result)
+	{
+		printLog();
+	}
+
+	return result;
+}
+catch (const std::exception& e)
+{
+	std::cerr << e.what() << std::endl;
+
+	exit(-1);
+}
 
 void printLog()
 {
@@ -53,49 +112,4 @@ void createLargeFile()
 
 		currentSize += fileChunkSize;
 	}
-}
-
-int main(int argc, char** argv)
-{
-	useHTTPS = json::JsonParser(std::ifstream(argv[1])).get<bool>("useHTTPS", true);
-
-	createLargeFile();
-
-	testing::InitGoogleTest(&argc, argv);
-
-	auto start = std::chrono::high_resolution_clock::now();
-
-#ifndef FLUTTER_API
-	while (!std::filesystem::exists(START_CORE_SERVER_FILE))
-	{
-		if (std::filesystem::exists("error.txt") && std::filesystem::file_size("error.txt"))
-		{
-			std::cerr << std::ifstream("error.txt").rdbuf() << std::endl;
-
-			exit(1);
-		}
-
-		std::cout << "Wait " << START_CORE_SERVER_FILE << " file..." << std::endl;
-
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-
-		if (std::chrono::duration_cast<std::chrono::minutes>(std::chrono::high_resolution_clock::now() - start).count() > 1)
-		{
-			std::cout << "Still no " << START_CORE_SERVER_FILE << " file. Exit" << std::endl;
-
-			break;
-		}
-	}
-#else
-	std::this_thread::sleep_for(std::chrono::seconds(5));
-#endif
-
-	int result = RUN_ALL_TESTS();
-
-	if (result)
-	{
-		printLog();
-	}
-
-	return result;
 }

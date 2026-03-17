@@ -14,6 +14,16 @@ namespace framework::utility
 		 */
 		std::string generateUUID();
 	}
+	
+	namespace encoding
+	{
+		/**
+		 * @brief Generate SHA256 hash
+		 * @param data Data
+		 * @return 
+		 */
+		std::string generateSha256(std::string_view data);
+	}
 
 	namespace database
 	{
@@ -39,6 +49,25 @@ namespace framework::utility
 			DllHandler& instance = DllHandler::getInstance();
 
 			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(generateWebFrameworkUUID, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return instance.getString(result);
+		}
+	}
+
+	namespace encoding
+	{
+		inline std::string generateSha256(std::string_view data)
+		{
+			using generateSha256 = void* (*)(const char* data, size_t size, void** exception);
+			void* exception = nullptr;
+			DllHandler& instance = DllHandler::getInstance();
+
+			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(generateSha256, data.data(), data.size(), &exception);
 
 			if (exception)
 			{

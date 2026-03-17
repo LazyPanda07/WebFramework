@@ -3,7 +3,6 @@
 #include <format>
 
 #include "../HttpRequest.hpp"
-#include "../HttpResponse.hpp"
 #include "../DLLHandler.hpp"
 #include "../Exceptions/NotImplementedDoMethodException.hpp"
 
@@ -57,10 +56,28 @@ namespace framework
 			};
 
 		private:
+			static void fillBuffer(const char* data, size_t size, void* buffer);
+
+		private:
 			void* implementation;
 
 		public:
 			ExecutorSettings(void* implementation);
+
+			void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const;
+
+			template<DynamicFunctionImplementation T = DynamicFunction, typename... Args>
+			void registerDynamicFunctionClass(std::string_view functionName, Args&&... args) const;
+
+			void unregisterDynamicFunction(std::string_view functionName) const;
+
+			bool isDynamicFunctionRegistered(std::string_view functionName) const;
+
+			std::string getFile(const std::filesystem::path& filePath) const;
+
+			std::string processStaticFile(std::string_view fileData, std::string_view fileExtension) const;
+
+			std::string processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables) const;
 
 			/**
 			 * @brief Get Json structed values from initParameters section from settings file
@@ -78,7 +95,7 @@ namespace framework
 			 * @brief Get filter by User-Agent header
 			 * @return
 			 */
-			std::string getUserAgentFilter() const;
+			std::vector<std::string> getUserAgentFilter() const;
 
 			/**
 			 * @brief Get API language of Executor
@@ -91,6 +108,18 @@ namespace framework
 			 * @return
 			 */
 			LoadType getLoadType() const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Database getOrCreateDatabase(std::string_view databaseName) const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Database getDatabase(std::string_view databaseName) const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery) const;
+
+			template<DatabaseImplementation T = DefaultDatabase>
+			Table getTable(std::string_view databaseName, std::string_view tableName) const;
 
 			~ExecutorSettings() = default;
 		};
@@ -144,10 +173,137 @@ namespace framework
 {
 	namespace utility
 	{
+		inline void ExecutorSettings::fillBuffer(const char* data, size_t size, void* buffer)
+		{
+			static_cast<std::string*>(buffer)->append(data, size);
+		}
+
 		inline ExecutorSettings::ExecutorSettings(void* implementation) :
 			implementation(implementation)
 		{
 
+		}
+
+		inline void ExecutorSettings::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionExecutorSettings, void, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+			void* exception = nullptr;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionExecutorSettings, functionName.data(), function, deleter, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+		}
+
+		template<DynamicFunctionImplementation T, typename... Args>
+		inline void ExecutorSettings::registerDynamicFunctionClass(std::string_view functionName, Args&&... args) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionClassExecutorSettings, void, const char* functionName, const char* apiType, void* functionClass, void** exception);
+			void* exception = nullptr;
+
+			if constexpr (std::derived_from<T, DynamicFunction> && T::dynamicFunctionImplementationName == DynamicFunction::dynamicFunctionImplementationName)
+			{
+				T* dynamicFunction = new T(std::forward<Args>(args)...);
+				struct
+				{
+					void* dynamicFunction;
+					void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+					void (*deleter)(void* implementation);
+				} dynamicFunctionController;
+
+				dynamicFunctionController.dynamicFunction = dynamicFunction;
+				dynamicFunctionController.callFunction = &DynamicFunction::call;
+				dynamicFunctionController.deleter = &DynamicFunction::deleter;
+
+				DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettings, functionName.data(), T::dynamicFunctionImplementationName.data(), static_cast<void*>(&dynamicFunctionController), &exception);
+			}
+			else if constexpr (T::dynamicFunctionImplementationName == "python")
+			{
+				static_assert(sizeof...(Args) == 1);
+
+				DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettings, functionName.data(), T::dynamicFunctionImplementationName.data(), args..., &exception);
+			}
+			else
+			{
+				throw std::runtime_error(std::format("Can't register dynamic function class with name: {}", functionName));
+			}
+		}
+
+		inline void ExecutorSettings::unregisterDynamicFunction(std::string_view functionName) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(unregisterDynamicFunction, void, const char* functionName, void** exception);
+			void* exception = nullptr;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterDynamicFunction, functionName.data(), &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+		}
+
+		inline bool ExecutorSettings::isDynamicFunctionRegistered(std::string_view functionName) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(isDynamicFunctionRegisteredExecutorSettings, bool, const char* functionName, void** exception);
+			void* exception = nullptr;
+
+			bool result = DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(isDynamicFunctionRegisteredExecutorSettings, functionName.data(), &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		inline std::string ExecutorSettings::getFile(const std::filesystem::path& filePath) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getFileExecutorSettings, void, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+			void* exception = nullptr;
+			std::string result;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFileExecutorSettings, filePath.string().data(), &ExecutorSettings::fillBuffer, &result, &exception);
+
+			return result;
+		}
+
+		inline std::string ExecutorSettings::processStaticFile(std::string_view fileData, std::string_view fileExtension) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(processStaticFileExecutorSettings, void, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+			void* exception = nullptr;
+			std::string result;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processStaticFileExecutorSettings, fileData.data(), fileData.size(), fileExtension.data(), &ExecutorSettings::fillBuffer, &result, &exception);
+
+			return result;
+		}
+
+		inline std::string ExecutorSettings::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(processDynamicFileExecutorSettings, void, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+			auto convertVariables = [variables]()
+				{
+					std::vector<interfaces::CVariable> result;
+
+					result.reserve(variables.size());
+
+					for (const auto& [key, value] : variables)
+					{
+						result.emplace_back(key.data(), value.data());
+					}
+
+					return result;
+				};
+			void* exception = nullptr;
+			std::vector<interfaces::CVariable> temp = convertVariables();
+			std::string result;
+
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, fileData.data(), fileData.size(), temp.data(), temp.size(), &ExecutorSettings::fillBuffer, &result, &exception);
+
+			return result;
 		}
 
 		inline JsonParser ExecutorSettings::getInitParameters() const
@@ -182,20 +338,29 @@ namespace framework
 			return handler.getString(result);
 		}
 
-		inline std::string ExecutorSettings::getUserAgentFilter() const
+		inline std::vector<std::string> ExecutorSettings::getUserAgentFilter() const
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorUserAgentFilter, void*, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(getExecutorUserAgentFilter, void, void(*initUserAgentFilterBuffer)(size_t size, void* buffer), void(*addUserAgentFilter)(const char* value, size_t index, void* buffer), void* buffer, void** exception);
 			void* exception = nullptr;
-			DllHandler& handler = DllHandler::getInstance();
+			auto initUserAgentFilterBuffer = [](size_t size, void* buffer)
+				{
+					static_cast<std::vector<std::string>*>(buffer)->resize(size);
+				};
+			auto addUserAgentFilter = [](const char* value, size_t index, void* buffer)
+				{
+					(*static_cast<std::vector<std::string>*>(buffer))[index] = value;
+				};
+			
+			std::vector<std::string> result;
 
-			void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, &exception);
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getExecutorUserAgentFilter, initUserAgentFilterBuffer, addUserAgentFilter, &result, &exception);
 
 			if (exception)
 			{
 				throw exceptions::WebFrameworkException(exception);
 			}
 
-			return handler.getString(result);
+			return result;
 		}
 
 		inline std::string ExecutorSettings::getAPIType() const
@@ -227,6 +392,50 @@ namespace framework
 			}
 
 			return static_cast<LoadType>(result);
+		}
+
+		template<DatabaseImplementation T>
+		inline Database ExecutorSettings::getOrCreateDatabase(std::string_view databaseName) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getOrCreateDatabaseExecutorSettings, void*, const char* databaseName, const char* implementationName, void** exception);
+			void* exception = nullptr;
+
+			Database result(static_cast<interfaces::IDatabase*>(DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseExecutorSettings, databaseName.data(), T::databaseImplementationName.data(), &exception)));
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		template<DatabaseImplementation T>
+		inline Database ExecutorSettings::getDatabase(std::string_view databaseName) const
+		{
+			DEFINE_CLASS_MEMBER_FUNCTION(getDatabaseExecutorSettings, void*, const char* databaseName, const char* implementationName, void** exception);
+			void* exception = nullptr;
+
+			Database result(static_cast<interfaces::IDatabase*>(DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseExecutorSettings, databaseName.data(), T::databaseImplementationName.data(), &exception)));
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return result;
+		}
+
+		template<DatabaseImplementation T>
+		inline Table ExecutorSettings::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery) const
+		{
+			return this->getOrCreateDatabase<T>(databaseName).getOrCreateTable(tableName, createTableQuery);
+		}
+
+		template<DatabaseImplementation T>
+		inline Table ExecutorSettings::getTable(std::string_view databaseName, std::string_view tableName) const
+		{
+			return this->getDatabase<T>(databaseName).getTable(tableName);
 		}
 	}
 
@@ -342,28 +551,22 @@ namespace framework
 	}
 }
 
-#ifdef __LINUX__
-#define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API extern "C" __attribute__((visibility("default"))) __attribute__((used))
-#else
-#define WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API extern "C" __declspec(dllexport)
-#endif
-
 /**
 * Macro for each Executor subclass
 * Used for loading function that creates Executor subclass
 */
-#define DEFINE_EXECUTOR(subclassName) WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API void* create##subclassName##CXXInstance()	\
+#define DEFINE_EXECUTOR(subclassName) WEB_FRAMEWORK_FUNCTIONS_API void* create##subclassName##CXXInstance()	\
 {	\
 	return new subclassName();	\
 }
 
 #pragma region ExportFunctions
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(void* implementation, void* executorSettings)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXExecutorInit(void* implementation, void* executorSettings)
 {
 	static_cast<framework::Executor*>(implementation)->init(framework::utility::ExecutorSettings(executorSettings));
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -371,7 +574,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPost(void* imp
 	static_cast<framework::Executor*>(implementation)->doPost(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -379,7 +582,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoGet(void* impl
 	static_cast<framework::Executor*>(implementation)->doGet(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -387,7 +590,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoHead(void* imp
 	static_cast<framework::Executor*>(implementation)->doHead(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -395,7 +598,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPut(void* impl
 	static_cast<framework::Executor*>(implementation)->doPut(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -403,7 +606,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoDelete(void* i
 	static_cast<framework::Executor*>(implementation)->doDelete(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -411,7 +614,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoPatch(void* im
 	static_cast<framework::Executor*>(implementation)->doPatch(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -419,7 +622,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoOptions(void* 
 	static_cast<framework::Executor*>(implementation)->doOptions(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -427,7 +630,7 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoTrace(void* im
 	static_cast<framework::Executor*>(implementation)->doTrace(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHTTPRequest* request, framework::interfaces::IHTTPResponse* response)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* implementation, framework::interfaces::IHttpRequest* request, framework::interfaces::IHttpResponse* response)
 {
 	framework::HttpRequest requestWrapper(request);
 	framework::HttpResponse responseWrapper(response);
@@ -435,23 +638,18 @@ WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDoConnect(void* 
 	static_cast<framework::Executor*>(implementation)->doConnect(requestWrapper, responseWrapper);
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline framework::utility::ExecutorType webFrameworkCXXGetType(void* implementation)
+WEB_FRAMEWORK_FUNCTIONS_API inline framework::utility::ExecutorType webFrameworkCXXGetType(void* implementation)
 {
 	return static_cast<framework::Executor*>(implementation)->getType();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDestroyExecutor(void* implementation)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDestroyExecutor(void* implementation)
 {
 	static_cast<framework::Executor*>(implementation)->destroy();
 }
 
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void webFrameworkCXXDeleteExecutor(void* implementation)
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDeleteExecutor(void* implementation)
 {
 	delete static_cast<framework::Executor*>(implementation);
-}
-
-WEB_FRAMEWORK_EXECUTOR_FUNCTIONS_API inline void initializeWebFrameworkCXX(const char* webFrameworkSharedLibraryPath)
-{
-	framework::utility::initializeWebFramework(webFrameworkSharedLibraryPath);
 }
 #pragma endregion

@@ -2,20 +2,20 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(PYBIND11_VERSION 3.0.1)
+set(PYBIND11_VERSION 3.0.2)
 set(PYBIND11_FINDPYTHON OFF)
 
-if (UNIX)
-    set(PYTHON_EXECUTABLE /usr/bin/python3 CACHE STRING "Path to Python executable")
-else()
-    set(PYBIND11_FINDPYTHON OFF)
-
-    find_package(Python REQUIRED)
-
-    set(PYTHON_EXECUTABLE ${Python_EXECUTABLE} CACHE STRING "Path to Python executable")
+if ("${PYTHON_EXECUTABLE}" STREQUAL "")
+    if (UNIX)
+        set(PYTHON_EXECUTABLE /usr/bin/python3)
+    else()
+        find_package(Python REQUIRED)
+    
+        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+    endif()
 endif()
 
-if (NOT DEFINED ${PYTHON_MINOR_VERSION})
+if (NOT DEFINED PYTHON_MINOR_VERSION)
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} --version
         OUTPUT_VARIABLE PYTHON_FULL_VERSION
@@ -40,6 +40,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(pybind11)
 
+set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
+
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
 set(PYTHON_TEMPORARY_DIRECTORY ${pybind11_SOURCE_DIR}/../python)
@@ -53,6 +55,7 @@ list(APPEND ADDITIONAL_LIBS ${Python_LIBRARIES} pybind11::embed)
 list(APPEND ADDITIONAL_INCLUDES ${PYTHON_TEMPORARY_DIRECTORY}/include)
 list(APPEND ADDITIONAL_INCLUDES ${pybind11_SOURCE_DIR}/include)
 list(APPEND ADDITIONAL_LIB_DIRS ${PYTHON_TEMPORARY_DIRECTORY}/lib)
+list(APPEND ADDITIONAL_LIB_DIRS ${Python_LIBRARY_DIRS})
 
 set(ADDITIONAL_LIBS ${ADDITIONAL_LIBS} CACHE INTERNAL "")
 set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} CACHE INTERNAL "")

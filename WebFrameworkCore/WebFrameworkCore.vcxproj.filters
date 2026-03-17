@@ -15,46 +15,46 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Exceptions\BaseWebFrameworkException.h">
+    <ClInclude Include="include\Exceptions\BaseWebFrameworkException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebFrameworkCoreConstants.h">
+    <ClInclude Include="include\WebFrameworkCoreConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebInterfaces\IDynamicFile.h">
+    <ClInclude Include="include\WebInterfaces\IDynamicFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebInterfaces\IFile.h">
+    <ClInclude Include="include\WebInterfaces\IFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebInterfaces\IStaticFile.h">
+    <ClInclude Include="include\WebInterfaces\IStaticFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\ChunkGenerator.h">
+    <ClInclude Include="include\Utility\ChunkGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Managers\SessionsManager.h">
+    <ClInclude Include="include\Managers\SessionsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WebInterfaces\IHTTPRequest.h">
+    <ClInclude Include="include\WebInterfaces\IHttpRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DatabaseInterfaces\IDatabase.h">
+    <ClInclude Include="include\DatabaseInterfaces\IDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DatabaseInterfaces\ITable.h">
+    <ClInclude Include="include\DatabaseInterfaces\ITable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DatabaseInterfaces\ISQLResult.h">
+    <ClInclude Include="include\DatabaseInterfaces\ISQLResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DatabaseInterfaces\ISQLValue.h">
+    <ClInclude Include="include\DatabaseInterfaces\ISQLValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Rendering\IStaticFileRenderer.h">
+    <ClInclude Include="include\Rendering\IStaticFileRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\Stopwatch.h">
+    <ClInclude Include="include\Utility\Stopwatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClCompile Include="src\Managers\SessionsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WebInterfaces\IHTTPResponse.h">
+    <ClCompile Include="include\WebInterfaces\IHttpResponse.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\Stopwatch.cpp">

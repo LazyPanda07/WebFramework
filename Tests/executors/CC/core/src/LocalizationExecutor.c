@@ -3,7 +3,7 @@
 #include <json_parser.h>
 #include <utility/web_framework_localization.h>
 
-DEFINE_DEFAULT_EXECUTOR(LocalizationExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(LocalizationExecutor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_METHOD(LocalizationExecutor, GET_METHOD, request, response)
 {

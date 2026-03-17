@@ -6,19 +6,6 @@
 
 #include "utilities.h"
 
-TEST(Database, Create)
-{
-	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HttpBuilder().postRequest().parameters("database").build();
-	std::string response;
-
-	stream << request;
-
-	stream >> response;
-
-	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
-}
-
 TEST(Database, Insert)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
@@ -29,7 +16,7 @@ TEST(Database, Insert)
 
 	stream >> response;
 
-	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok) << response;
+	ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent) << response;
 }
 
 TEST(Database, Select)

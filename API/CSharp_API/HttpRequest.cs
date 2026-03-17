@@ -1,6 +1,8 @@
 ﻿namespace Framework;
 
+using Framework.Databases;
 using Framework.Exceptions;
+using Framework.TaskBroker;
 using Framework.Utility;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -61,138 +63,147 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	private delegate void AddChunkCallback(IntPtr chunk, nuint size, nuint index, IntPtr buffer);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteWebFrameworkString(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getDataFromString(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getDataFromString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getJsonParserRawData(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial char* getJsonParserRawData(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteWebFrameworkJsonParser(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void deleteWebFrameworkJsonParser(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getRawParameters(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial char* getRawParameters(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getMethod(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial char* getMethod(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getVersion(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getVersion(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getBody(IntPtr implementation, ref nuint bodySize, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial char* getBody(IntPtr implementation, ref nuint bodySize, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void setAttribute(IntPtr implementation, string name, string value, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void setAttribute(IntPtr implementation, string name, string value, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getAttribute(IntPtr implementation, string name, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getAttribute(IntPtr implementation, string name, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteSession(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void deleteSession(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void removeAttribute(IntPtr implementation, string name, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void removeAttribute(IntPtr implementation, string name, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getRequestJson(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getRequestJson(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial char* getRawRequest(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial char* getRawRequest(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getClientIpV4(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getClientIpV4(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getServerIpV4(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getServerIpV4(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial ushort getClientPort(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial ushort getClientPort(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial ushort getServerPort(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial ushort getServerPort(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void registerWFDPFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void registerDynamicFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void unregisterWFDPFunction(IntPtr implementation, string functionName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void unregisterDynamicFunction(IntPtr implementation, string functionName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static unsafe partial bool isWFDPFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
+	private static partial bool isDynamicFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void getChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getFile(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void getFile(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getCookies(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addCookiee, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void getCookies(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addCookiee, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getLargeData(IntPtr implementaion, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getLargeData(IntPtr implementaion, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial int getRouteIntegerParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial int getRouteIntegerParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial double getRouteDoubleParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial double getRouteDoubleParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getOrCreateDatabaseRequest(IntPtr implementation, string databaseName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getOrCreateDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getDatabaseRequest(IntPtr implementation, string databaseName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getOrCreateTableRequest(IntPtr implementation, string databaseName, string tableName, string createTableQuery, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getOrCreateTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, string createTableQuery, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getTableRequest(IntPtr implementation, string databaseName, string tableName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void sendChunks(IntPtr implementation, IntPtr response, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void sendChunks(IntPtr implementation, IntPtr response, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	internal static unsafe partial void setExceptionData(IntPtr implementation, string errorMessage, int responseCode, string logCategory);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void enqueueTask(IntPtr implementation, string messageBrokerName, IntPtr jsonObjectData, ref void* exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	internal static partial void setExceptionData(IntPtr implementation, string errorMessage, int responseCode, string logCategory);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr createJsonParserFromString(string jsonData, ref void* exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getJsonParserParsedData(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool weak, ref void* exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -518,7 +529,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <typeparam name="T"></typeparam>
 	/// <param name="functionName"></param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void RegisterWfdpFunction<T>(string functionName) where T : IDynamicFunction
+	public void RegisterDynamicFunction<T>(string functionName) where T : IDynamicFunction
 	{
 		void* exception = null;
 		string assemblyName = typeof(T).AssemblyQualifiedName!;
@@ -527,7 +538,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		Marshal.Copy(assemblyBytes, 0, result, assemblyBytes.Length);
 
-		registerWFDPFunctionClass(implementation, functionName, "csharp", result, ref exception);
+		registerDynamicFunctionClass(implementation, functionName, "csharp", result, ref exception);
 
 		if (exception != null)
 		{
@@ -540,11 +551,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// </summary>
 	/// <param name="functionName"></param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void UnregisterWfdpFunction(string functionName)
+	public void UnregisterDynamicFunction(string functionName)
 	{
 		void* exception = null;
 
-		unregisterWFDPFunction(implementation, functionName, ref exception);
+		unregisterDynamicFunction(implementation, functionName, ref exception);
 
 		if (exception != null)
 		{
@@ -558,10 +569,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="functionName"></param>
 	/// <returns></returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public bool IsWfdpFunctionRegistered(string functionName)
+	public bool IsDynamicFunctionRegistered(string functionName)
 	{
 		void* exception = null;
-		bool result = isWFDPFunctionRegistered(implementation, functionName, ref exception);
+		bool result = isDynamicFunctionRegistered(implementation, functionName, ref exception);
 
 		if (exception != null)
 		{
@@ -947,7 +958,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="response"></param>
 	/// <param name="variables"></param>
 	/// <param name="isBinary"></param>
-	/// <param name="fileName"></param>
+	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendAssetFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
@@ -998,7 +1009,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="filePath"></param>
 	/// <param name="response"></param>
 	/// <param name="isBinary"></param>
-	/// <param name="fileName"></param>
+	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendStaticFile(string filePath, HttpResponse response, bool? isBinary = null, string? fileName = null)
 	{
@@ -1027,7 +1038,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="response"></param>
 	/// <param name="variables"></param>
 	/// <param name="isBinary"></param>
-	/// <param name="fileName"></param>
+	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendDynamicFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
@@ -1121,10 +1132,29 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return (T)result;
 	}
 
+	/// <summary>
+	/// Gets an existing database with the specified name or creates a new one if it does not exist.
+	/// </summary>
+	/// <param name="databaseName">The name of the database to retrieve or create. This parameter cannot be null or empty.</param>
+	/// <returns>A Database object representing the specified database. If the database does not exist, a new one is created.</returns>
 	public Database GetOrCreateDatabase(string databaseName)
 	{
+		return GetOrCreateDatabase<DefaultDatabase>(databaseName);
+	}
+
+	/// <summary>
+	/// Gets an existing database with the specified name or creates a new one using the provided database implementation type.
+	/// </summary>
+	/// <remarks>This method ensures that a database with the specified name exists, creating it if necessary. The
+	/// implementation type parameter determines the behavior and features of the resulting database.</remarks>
+	/// <typeparam name="T">The type of the database implementation to use. Must implement the IDatabaseImplementation interface.</typeparam>
+	/// <param name="databaseName">The name of the database to retrieve or create. This value cannot be null or empty.</param>
+	/// <returns>A Database instance representing the created or retrieved database.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to get or create the database.</exception>
+	public Database GetOrCreateDatabase<T>(string databaseName) where T : IDatabaseImplementation
+	{
 		void* exception = null;
-		IntPtr result = getOrCreateDatabaseRequest(implementation, databaseName, ref exception);
+		IntPtr result = getOrCreateDatabaseRequest(implementation, databaseName, T.ImplementationName, ref exception);
 
 		if (exception != null)
 		{
@@ -1134,10 +1164,32 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return new(result);
 	}
 
+	/// <summary>
+	/// Retrieves the database instance associated with the specified database name.
+	/// </summary>
+	/// <remarks>Ensure that the database name provided is valid and corresponds to an existing database.</remarks>
+	/// <param name="databaseName">The name of the database to retrieve. This parameter cannot be null or empty.</param>
+	/// <returns>An instance of the Database class corresponding to the specified database name. Returns null if the database is not
+	/// found.</returns>
 	public Database GetDatabase(string databaseName)
 	{
+		return GetDatabase<DefaultDatabase>(databaseName);
+	}
+
+	/// <summary>
+	/// Retrieves a database instance by name using the specified database implementation
+	/// type.
+	/// </summary>
+	/// <remarks>Ensure that the type parameter T specifies a valid database implementation. This method may throw
+	/// an exception if the database cannot be found or accessed.</remarks>
+	/// <typeparam name="T">The type of database implementation to use. Must implement the IDatabaseImplementation interface.</typeparam>
+	/// <param name="databaseName">The name of the database to retrieve. This parameter cannot be null or empty.</param>
+	/// <returns>A Database instance representing the requested database, created using the specified implementation type.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to retrieve the database.</exception>
+	public Database GetDatabase<T>(string databaseName) where T : IDatabaseImplementation
+	{
 		void* exception = null;
-		IntPtr result = getDatabaseRequest(implementation, databaseName, ref exception);
+		IntPtr result = getDatabaseRequest(implementation, databaseName, T.ImplementationName, ref exception);
 
 		if (exception != null)
 		{
@@ -1147,23 +1199,36 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return new(result);
 	}
 
+	/// <summary>
+	/// Gets a table with the specified name from the given database, creating it if it does not exist using the provided
+	/// SQL query.
+	/// </summary>
+	/// <remarks>This method ensures that the specified table exists in the database, creating it if necessary. The
+	/// caller is responsible for providing a valid SQL query that defines the desired table schema.</remarks>
+	/// <param name="databaseName">The name of the database in which to locate or create the table. Cannot be null or empty.</param>
+	/// <param name="tableName">The name of the table to retrieve or create. Cannot be null or empty.</param>
+	/// <param name="createTableQuery">The SQL query used to create the table if it does not already exist. Must define the table structure and be a valid
+	/// SQL statement.</param>
+	/// <returns>A Table object representing the existing or newly created table in the specified database.</returns>
 	public Table GetOrCreateTable(string databaseName, string tableName, string createTableQuery)
 	{
-		void* exception = null;
-		IntPtr result = getOrCreateTableRequest(implementation, databaseName, tableName, createTableQuery, ref exception);
-
-		if (exception != null)
-		{
-			throw new WebFrameworkException(exception);
-		}
-
-		return new(result);
+		return GetOrCreateTable<DefaultDatabase>(databaseName, tableName, createTableQuery);
 	}
 
-	public Table GetTable(string databaseName, string tableName)
+	/// <summary>
+	/// Gets an existing table or creates a new table in the specified database using the provided SQL query if the table
+	/// does not already exist.
+	/// </summary>
+	/// <typeparam name="T">The type of database implementation to use. Must implement the IDatabaseImplementation interface.</typeparam>
+	/// <param name="databaseName">The name of the database in which to create or retrieve the table.</param>
+	/// <param name="tableName">The name of the table to create or retrieve.</param>
+	/// <param name="createTableQuery">The SQL query used to create the table if it does not already exist.</param>
+	/// <returns>A Table object representing the existing or newly created table in the specified database.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to create or retrieve the table.</exception>
+	public Table GetOrCreateTable<T>(string databaseName, string tableName, string createTableQuery) where T : IDatabaseImplementation
 	{
 		void* exception = null;
-		IntPtr result = getTableRequest(implementation, databaseName, tableName, ref exception);
+		IntPtr result = getOrCreateTableRequest(implementation, databaseName, T.ImplementationName, tableName, createTableQuery, ref exception);
 
 		if (exception != null)
 		{
@@ -1173,6 +1238,53 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		return new(result);
 	}
 
+	/// <summary>
+	/// Retrieves a table with the specified name from the given database.
+	/// </summary>
+	/// <remarks>Ensure that both the database name and table name are valid and exist in the system to avoid
+	/// exceptions.</remarks>
+	/// <param name="databaseName">The name of the database from which to retrieve the table. This parameter cannot be null or empty.</param>
+	/// <param name="tableName">The name of the table to retrieve. This parameter cannot be null or empty.</param>
+	/// <returns>A Table object representing the specified table if it exists in the database; otherwise, null.</returns>
+	public Table GetTable(string databaseName, string tableName)
+	{
+		return GetTable<DefaultDatabase>(databaseName, tableName);
+	}
+
+	/// <summary>
+	/// Retrieves a table from the specified database using the provided table name.
+	/// </summary>
+	/// <remarks>Ensure that the database and table names are valid and exist in the specified database.</remarks>
+	/// <typeparam name="T">Specifies the type of database implementation to use for the operation. Must implement the IDatabaseImplementation
+	/// interface.</typeparam>
+	/// <param name="databaseName">The name of the database from which to retrieve the table. This parameter cannot be null or empty.</param>
+	/// <param name="tableName">The name of the table to retrieve. This parameter cannot be null or empty.</param>
+	/// <returns>A Table object representing the requested table from the database.</returns>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to retrieve the table.</exception>
+	public Table GetTable<T>(string databaseName, string tableName) where T : IDatabaseImplementation
+	{
+		void* exception = null;
+		IntPtr result = getTableRequest(implementation, databaseName, T.ImplementationName, tableName, ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return new(result);
+	}
+
+	/// <summary>
+	/// Sends a sequence of data chunks to the specified HTTP response using the provided chunk generator.
+	/// </summary>
+	/// <remarks>This method allocates a handle for the chunk generator and ensures it is released after the
+	/// operation completes. Any exceptions encountered during the sending process will result in a WebFrameworkException
+	/// being thrown.</remarks>
+	/// <param name="response">The HTTP response to which the data chunks will be sent. This parameter must be a valid and initialized response
+	/// object.</param>
+	/// <param name="generator">The chunk generator responsible for producing the data chunks to be sent. This parameter must not be null and
+	/// should be configured to generate the desired output.</param>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs during the chunk sending process.</exception>
 	public void SendChunks(HttpResponse response, ChunkGenerator generator)
 	{
 		void* exception = null;
@@ -1188,6 +1300,15 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 	}
 
+	/// <summary>
+	/// Sends file data in chunks to the specified HTTP response using the provided chunk generator and file name.
+	/// </summary>
+	/// <remarks>This method manages the allocation and release of resources associated with the chunk generator.
+	/// Ensure that the generator is properly configured before calling this method.</remarks>
+	/// <param name="response">The HTTP response to which the file chunks are written.</param>
+	/// <param name="generator">The chunk generator responsible for producing the file data to be sent.</param>
+	/// <param name="fileName">The name of the file being sent, used for content disposition in the response.</param>
+	/// <exception cref="WebFrameworkException">Thrown if an error occurs during the file chunk sending process.</exception>
 	public void SendFileChunks(HttpResponse response, ChunkGenerator generator, string fileName)
 	{
 		void* exception = null;
@@ -1209,5 +1330,63 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		{
 			throw new WebFrameworkException(exception);
 		}
+	}
+
+	public void EnqueueTask<TaskBroker, TaskExecutorApi, TaskSerializer>(params object[] args)
+		where TaskBroker : ITaskBroker
+		where TaskSerializer : ITaskSerializer
+		where TaskExecutorApi : ITaskExecutorApi
+	{
+		Type type = typeof(TaskSerializer);
+		object? created = Activator.CreateInstance(type, args) ?? throw new Exception($"Can't create class: {type.Name}");
+		TaskSerializer taskSerializer = (TaskSerializer)created;
+
+		EnqueueTask<TaskBroker, TaskExecutorApi, TaskSerializer>(ref taskSerializer);
+	}
+
+	public void EnqueueTask<TaskBroker, TaskExecutorApi, TaskSerializer>(ref TaskSerializer taskSerializer)
+		where TaskBroker : ITaskBroker
+		where TaskSerializer : ITaskSerializer
+		where TaskExecutorApi : ITaskExecutorApi
+	{
+		void* exception = null;
+		Dictionary<string, object> result = new()
+		{
+			["api"] = TaskExecutorApi.ImplementationName,
+			["name"] = taskSerializer.TaskExecutorName,
+			["arguments"] = taskSerializer
+		};
+
+		if (taskSerializer is IRabbitMqTaskSerializer rabbitMq)
+		{
+			result["queue"] = rabbitMq.QueueName;
+		}
+
+		IntPtr jsonParser = createJsonParserFromString(JsonSerializer.Serialize(result), ref exception);
+
+		if (exception != null)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		IntPtr jsonObjectData = getJsonParserParsedData(jsonParser, true, ref exception);
+
+		if (exception != null)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
+		}
+
+		enqueueTask(implementation, TaskBroker.ImplementationName, jsonObjectData, ref exception);
+
+		if (exception != null)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
+		}
+
+		deleteWebFrameworkJsonParser(jsonParser);
 	}
 }

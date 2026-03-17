@@ -7,7 +7,7 @@ on:
   
   
 env:
-  FLUTTER_VERSION: 3.38.5
+  FLUTTER_VERSION: 3.41.4
   PYTHON_VERSION: 3.14
 
 
@@ -17,11 +17,10 @@ permissions:
 
 jobs:
   windows-visual-studio-build:
-    if: false # Disabled until Visual Studio 2026 in Github Actions
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
        submodules: recursive
    
@@ -36,6 +35,7 @@ jobs:
     - name: Build VisualStudioSample
       run: |
          cd samples\VisualStudioSample
+         dotnet restore
          msbuild VisualStudioSample.sln -property:Configuration=Release
 
 
@@ -43,7 +43,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -52,7 +52,7 @@ jobs:
       with:
         python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Enable NMake
+    - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build WebFramework
@@ -73,7 +73,7 @@ jobs:
           cmake --install .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Windows
         path: samples/build/bin
@@ -85,7 +85,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -107,7 +107,7 @@ jobs:
           cmake --install .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Linux
         path: samples/build/bin
@@ -119,7 +119,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -141,7 +141,7 @@ jobs:
           make install/strip
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: Android
         path: |
@@ -155,11 +155,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
-    - name: Enable NMake
+    - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build WebFramework
@@ -180,7 +180,7 @@ jobs:
           cmake --install .
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: HelloExecutorWindows
         path: samples/build/bin/executors/*.dll
@@ -192,7 +192,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -214,7 +214,7 @@ jobs:
           make install/strip
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: HelloExecutorAndroid
         path: |
@@ -228,7 +228,7 @@ jobs:
     needs: windows-build
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -238,11 +238,11 @@ jobs:
         channel: stable
         flutter-version: ${{ env.FLUTTER_VERSION }}
 
-    - name: Enable NMake
+    - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download assets
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Windows
         path: Windows
@@ -265,7 +265,7 @@ jobs:
       run: mv Windows/*.dll API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: WindowsFlutterSample
         path: API/web_framework_flutter_api/example/build/windows/x64/runner/Release/
@@ -278,12 +278,12 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Download executors
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
         name: Android
         path: Android
@@ -305,7 +305,7 @@ jobs:
       run: flutter build apk --release --split-per-abi
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: AndroidFlutterSample
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
@@ -334,7 +334,7 @@ jobs:
           # - [ ON, ON, ON, ON, cxx ]       # cxx cc python csharp /cxx
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
         
@@ -343,7 +343,7 @@ jobs:
       with:
         python-version: "${{ env.PYTHON_VERSION }}"
 
-    - name: Enable NMake
+    - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build WebFramework
@@ -399,7 +399,7 @@ jobs:
           - [ ON, ON, ON, ON, cxx ]       # cxx cc python csharp /cxx
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
         
@@ -435,7 +435,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [
-      # windows-visual-studio-build,
+      windows-visual-studio-build,
       android-hello-executor,
       windows-build,
       linux-build,
@@ -447,7 +447,7 @@ jobs:
     ]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -456,10 +456,10 @@ jobs:
     
     - name: Setup release version variable
       shell: pwsh
-      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\C_API\WebFrameworkCApi.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       
     - name: Move samples
       run: |

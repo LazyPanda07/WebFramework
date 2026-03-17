@@ -3,6 +3,18 @@ using Framework.Utility;
 
 public class CRUDExecutor : StatelessExecutor
 {
+	public override void Init(ExecutorSettings settings)
+	{
+		settings.GetOrCreateDatabase("test_database").GetOrCreateTable
+		(
+			"test_table",
+			"CREATE TABLE IF NOT EXISTS test_table (" +
+			"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+			"name VARCHAR(255) NOT NULL, " +
+			"amount INTEGER NOT NULL)"
+		);
+	}
+
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
 		Database database = request.GetDatabase("test_database");
@@ -29,18 +41,6 @@ public class CRUDExecutor : StatelessExecutor
 			{
 				data = jsonData
 			}
-		);
-	}
-
-	public override void DoPost(HttpRequest request, HttpResponse response)
-	{
-		request.GetOrCreateDatabase("test_database").GetOrCreateTable
-		(
-			"test_table",
-			"CREATE TABLE IF NOT EXISTS test_table (" +
-			"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-			"name VARCHAR(255) NOT NULL, " +
-			"amount INTEGER NOT NULL)"
 		);
 	}
 

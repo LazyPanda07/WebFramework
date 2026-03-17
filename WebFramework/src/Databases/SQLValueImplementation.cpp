@@ -1,14 +1,14 @@
-#include "SQLValueImplementation.h"
+#include "Databases/SQLValueImplementation.h"
 
 namespace framework
 {
-	SQLValueImplementation::SQLValueImplementation(const database::SQLValue& value) :
+	SQLValueImplementation::SQLValueImplementation(const database::SqlValue& value) :
 		value(value)
 	{
 
 	}
 
-	SQLValueImplementation::SQLValueImplementation(database::SQLValue&& value) :
+	SQLValueImplementation::SQLValueImplementation(database::SqlValue&& value) :
 		value(std::move(value))
 	{
 

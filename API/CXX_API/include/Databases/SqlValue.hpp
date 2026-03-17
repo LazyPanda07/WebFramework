@@ -30,7 +30,10 @@ namespace framework
 		SqlValue(size_t value);
 
 		template<OneOf T>
-		const T& get() const;
+		T get() const;
+
+		template<OneOf T>
+		const T& get() const requires(std::same_as<T, std::string> || std::same_as<T, std::vector<uint8_t>>);
 
 		const ValueType& operator *() const;
 
@@ -40,7 +43,21 @@ namespace framework
 	};
 
 	template<OneOf T>
-	const T& SqlValue::get() const
+	T SqlValue::get() const
+	{
+		if constexpr (std::same_as<bool, T>)
+		{
+			if (std::holds_alternative<int64_t>(value))
+			{
+				return std::get<int64_t>(value) == 1;
+			}
+		}
+
+		return std::get<T>(value);
+	}
+
+	template<OneOf T>
+	const T& SqlValue::get() const requires(std::same_as<T, std::string> || std::same_as<T, std::vector<uint8_t>>)
 	{
 		return std::get<T>(value);
 	}

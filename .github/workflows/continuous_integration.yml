@@ -10,8 +10,7 @@ on:
 env:
   WINDOWS_CMAKE_GENERATOR: "Ninja"
   LINUX_CMAKE_GENERATOR: "Ninja"
-  WINDOWS_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
-  LINUX_CMAKE_BUILD_PARAMETERS: "-DWITH_STACKTRACE=ON"
+  DEFAULT_CMAKE_GENERATOR: "Ninja"
   PYTHON_VERSION: 3.14
 
 
@@ -21,92 +20,99 @@ permissions:
 
 jobs:
   windows-build:
-    runs-on: windows-latest
     strategy:
       matrix:
-        configuration: [Debug, Release]
-  
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
+        build-cc-api: [ON, OFF]
+        python-config:
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
+        with-dotnet-executors: [ON, OFF]
+        build-csharp-api: [ON, OFF]
 
-    - name: Enable NMake
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.PYTHON_VERSION }}"
-
-    - name: Build
-      shell: bash
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.WINDOWS_CMAKE_BUILD_PARAMETERS }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_Windows
-        path: WebFrameworkLibrary
+    uses: ./.github/workflows/reusable_build_web_framework.yml
+    with:
+      os: windows-latest
+      configuration: Release
+      build-cxx-api: ON
+      build-cc-api: ${{ matrix.build-cc-api }}
+      with-python-executors: ${{ matrix.python-config.with-python-executors }}
+      build-python-api: ${{ matrix.python-config.build-python-api }}
+      python-version: ${{ matrix.python-config.python-version }}
+      with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
+      build-csharp-api: ${{ matrix.build-csharp-api }}
+      upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
+  windows-dev-branch-build:
+    uses: ./.github/workflows/reusable_build_web_framework.yml
+    with:
+      os: windows-latest
+      configuration: Release
+      build-parameters: "-DWITH_STACKTRACE=ON"
+      build-branch-strict: dev
+    
+      
   linux-build:
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        build-cc-api: [ON, OFF]
+        python-config:
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
+        with-dotnet-executors: [ON, OFF]
+        build-csharp-api: [ON, OFF]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Build
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} ${{ env.LINUX_CMAKE_BUILD_PARAMETERS }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_Linux
-        path: WebFrameworkLibrary
+    uses: ./.github/workflows/reusable_build_web_framework.yml
+    with:
+      os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+      configuration: Release
+      build-cxx-api: ON
+      build-cc-api: ${{ matrix.build-cc-api }}
+      with-python-executors: ${{ matrix.python-config.with-python-executors }}
+      build-python-api: ${{ matrix.python-config.build-python-api }}
+      python-version: ${{ matrix.python-config.python-version }}
+      with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
+      build-csharp-api: ${{ matrix.build-csharp-api }}
+      build-parameters: "-DWITH_STACKTRACE=ON"
+      upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
   linux-aarch64-build:
-    runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        build-cc-api: [ON, OFF]
 
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Build
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_LinuxARM
-        path: WebFrameworkLibrary
-
+    uses: ./.github/workflows/reusable_build_web_framework.yml
+    with:
+      os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+      configuration: Release
+      build-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF"
+      build-cxx-api: ON
+      build-cc-api: ${{ matrix.build-cc-api }}
+      with-python-executors: OFF
+      build-python-api: OFF
+      with-dotnet-executors: OFF
+      build-csharp-api: OFF
+      upload-artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=${{ matrix.build-cc-api }}
+      
 
   android-build:
     runs-on: ubuntu-latest
@@ -114,7 +120,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -136,9 +142,9 @@ jobs:
           rm -rf vendor
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: Release_Android
+        name: Android
         path: WebFrameworkLibrary
         
 
@@ -147,33 +153,37 @@ jobs:
     needs: windows-build
     strategy:
       matrix:
-        configuration: [Debug, Release]
-        executors: [CXX, CC, Python, CSharp]
+        executors: 
+          - { api: CXX, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CC, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON }
+          - { api: Python, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CSharp, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     
-    - name: Enable NMake
+    - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
-    - name: Download WebFramework
-      uses: actions/download-artifact@v4
+    - name: Download ${{ matrix.executors.artifact-name }}
+      uses: actions/download-artifact@v6
       with:
-        name: Release_Windows
+        name: ${{ matrix.executors.artifact-name }}
         path: WebFrameworkLibrary
 
-    - name: Build ${{ matrix.executors }} ${{ matrix.configuration }} Executors
+    - name: Build ${{ matrix.executors.api }} Executors
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        name: WindowsExecutors-${{ matrix.executors.api }}
         path: Tests/build/bin
 
 
@@ -184,30 +194,70 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
       matrix:
-        configuration: [Debug, Release]
-        executors: [CXX, CC, Python, CSharp]
+        executors: 
+          - { api: CXX, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CC, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON }
+          - { api: Python, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CSharp, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       
-    - name: Download WebFramework
-      uses: actions/download-artifact@v4
+    - name: Download ${{ matrix.executors.artifact-name }}
+      uses: actions/download-artifact@v6
       with:
-        name: Release_Linux
+        name: ${{ matrix.executors.artifact-name }}
         path: WebFrameworkLibrary
 
-    - name: Build ${{ matrix.executors }} ${{ matrix.configuration }} Executors
+    - name: Build ${{ matrix.executors.api }} Executors
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: LinuxExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
+        name: LinuxExecutors-${{ matrix.executors.api }}
+        path: Tests/build/bin
+
+
+  linux-aarch64-executors-build:
+    runs-on: ubuntu-latest
+    needs: linux-aarch64-build
+    container:
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+    strategy:
+      matrix:
+        executors:
+          - { api: CXX, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CC, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON }
+
+    steps:
+    - uses: actions/checkout@v6
+      
+    - name: Download ${{ matrix.executors.artifact-name }}
+      uses: actions/download-artifact@v6
+      with:
+        name: ${{ matrix.executors.artifact-name }}
+        path: WebFrameworkLibrary
+
+    - name: Build ${{ matrix.executors.api }} Executors
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
+
+    - name: Upload executors
+      uses: actions/upload-artifact@v6
+      with:
+        name: LinuxARMExecutors-${{ matrix.executors.api }}
         path: Tests/build/bin
 
 
@@ -216,15 +266,15 @@ jobs:
     needs: windows-build
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     
-    - name: Enable NMake
+    - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download WebFramework
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
-        name: Release_Windows
+        name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
 
     - name: Build tests
@@ -232,11 +282,12 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
-          cmake --build . --config Release -j && cmake --install . --config Release
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DPYTHON_API=ON -DCSHARP_API=ON -G ${{ env.WINDOWS_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
     - name: Upload tests
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: WindowsTests
         path: Tests/build/bin
@@ -249,12 +300,12 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       
     - name: Download WebFramework
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
       with:
-        name: Release_Linux
+        name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
 
     - name: Build tests
@@ -262,195 +313,205 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config Release -j && cmake --install . --config Release
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DPYTHON_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
 
-    - name: Upload executors
-      uses: actions/upload-artifact@v4
+    - name: Upload tests
+      uses: actions/upload-artifact@v6
       with:
         name: LinuxTests
         path: Tests/build/bin
 
 
-  linux-tests:
+  linux-aarch64-tests-build:
     runs-on: ubuntu-latest
-    needs: [linux-tests-build, linux-executors-build]
+    needs: linux-aarch64-build
     container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        api_test: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
-        executors: [CXX, CC, Python, CSharp]
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
 
     steps:
-    - name: Download WebFramework
-      uses: actions/download-artifact@v4
+    - uses: actions/checkout@v6
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v6
       with:
-        name: Release_Linux
+        name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON
         path: WebFrameworkLibrary
-
-    - name: Download Tests
-      uses: actions/download-artifact@v4
-      with:
-        name: LinuxTests
-        path: Tests
-
-    - name: Download ${{ matrix.configuration }} ${{ matrix.executors }} Executors
-      uses: actions/download-artifact@v4
-      with:
-        name: LinuxExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
-        path: Executors
-
-    - name: Install Python API
-      run: pip3 install WebFrameworkLibrary/api/python_api/
-
-    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
-      shell: bash
+        
+    - name: Build tests
+      working-directory: Tests
       run: |
-          cp -r Executors/* Tests
-          cp -r WebFrameworkLibrary/lib/* Tests
-          cd Tests
-          source ${{ matrix.api_test }} ${{ matrix.config }}
-          
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake --build . -j --config Release
+          cmake --install . --config Release
+
+    - name: Upload tests
+      uses: actions/upload-artifact@v6
+      with:
+        name: LinuxARMTests
+        path: Tests/build/bin
+
+
+  linux-tests:
+    needs: [linux-tests-build, linux-executors-build]
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
+        executors:
+            - { api: CXX, python-version: "", dotnet: false }
+            - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.14", dotnet: false }
+            - { api: Python, python-version: "3.13", dotnet: false }
+            - { api: Python, python-version: "3.12", dotnet: false }
+            - { api: CSharp, python-version: "", dotnet: true }
+
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: ubuntu-latest
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
+      
 
   windows-tests:
-    runs-on: windows-latest
     needs: [windows-tests-build, windows-executors-build]
     strategy:
       matrix:
-        configuration: [Debug, Release]
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        api_test: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
-        executors: [CXX, CC, Python, CSharp]
+        test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
+        executors:
+          - { api: CXX, python-version: "", dotnet: false }
+          - { api: CC, python-version: "", dotnet: false }
+          - { api: Python, python-version: "3.14", dotnet: false }
+          - { api: Python, python-version: "3.13", dotnet: false }
+          - { api: Python, python-version: "3.12", dotnet: false }
+          - { api: CSharp, python-version: "", dotnet: true }
+
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: windows-latest
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
+      
+
+  linux-aarch64-tests:
+    needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
+    strategy:
+      matrix:
+        config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
+        additional-settings:
+          - { test-script: run_aarch64_cxx_tests.sh, api: CXX, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF, download-executors-name: LinuxARMExecutors-CXX }
+          - { test-script: run_aarch64_cc_tests.sh, api: CC, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON, download-executors-name: LinuxARMExecutors-CC }
+
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+      executors-api: ${{ matrix.additional-settings.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.additional-settings.test-script }}
+      download-web-framework-name: ${{ matrix.additional-settings.download-web-framework-name }}
+      download-executors-name: ${{ matrix.additional-settings.download-executors-name }}
+      download-tests-name: LinuxARMTests
+
+
+  task-broker-tests:
+    needs: [windows-build, linux-build]
+    strategy:
+      matrix:
+        config:
+          - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+        
+    runs-on: ${{ matrix.config.os }}
+    container:
+      image: ${{ matrix.config.image }}
 
     steps:
-    - name: Download WebFramework
-      uses: actions/download-artifact@v4
+    - uses: actions/checkout@v6
       with:
-        name: Release_Windows
-        path: WebFrameworkLibrary
+        submodules: recursive
 
-    - name: Download Tests
-      uses: actions/download-artifact@v4
-      with:
-        name: WindowsTests
-        path: Tests
-
-    - name: Download ${{ matrix.configuration }} ${{ matrix.executors }} Executors
-      uses: actions/download-artifact@v4
-      with:
-        name: WindowsExecutors-${{ matrix.executors }}-${{ matrix.configuration }}
-        path: Executors
+    - name: Enable CL
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Install Python
       uses: actions/setup-python@v6
       with:
         python-version: "${{ env.PYTHON_VERSION }}"
 
+    - name: Install build with pip
+      run: python -m pip install build
+
+    - name: Download WebFramework
+      uses: actions/download-artifact@v7
+      with:
+        name: ${{ matrix.config.web-framework-name }}
+        path: WebFrameworkLibrary
+        
     - name: Install Python API
-      run: pip install WebFrameworkLibrary/api/python_api/
-
-    - name: Merge artifacts
+      working-directory: WebFrameworkLibrary/api/python_api/dist
       shell: bash
+      run: python -m pip install *.whl
+
+    - name: Install RabbitMQ on Linux
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
       run: |
-          cp -r Executors/* Tests
-          cp -r WebFrameworkLibrary/lib/* Tests
-
-    - name: Run ${{ matrix.api_test }} ${{ matrix.configuration }} ${{ matrix.executors }} Tests
-      working-directory: Tests
-      run: .\${{ matrix.api_test }} ${{ matrix.config }}
-          
-
-  linux-aarch64-cxx-tests:
-    runs-on: ubuntu-latest
-    needs: linux-aarch64-build
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_LinuxARM
-        path: WebFrameworkLibrary
+        sudo apt update
+        sudo apt install -y erlang rabbitmq-server
         
+    - name: Install wait-for-service[amqp]
+      run: python -m pip install wait-for-service[amqp]
+
     - name: Build tests
       working-directory: Tests
       run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CXX -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TASK_EXECUTORS=ON -DBUILD_EXECUTORS=NONE -G ${{ env.DEFAULT_CMAKE_GENERATOR }} ..
+        cmake --build . -j --config Release
+        cmake --install . --config Release
 
-    - name: Install curl
-      run: apt update && apt install -y curl
+    - name: Run Windows tests
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      working-directory: Tests/build/bin
+      run: |
+        choco install -y rabbitmq
+        wait-for-service amqp://localhost:5672
+        .\run_task_broker_tests.bat
 
-    - name: Tests
-      working-directory: Tests
+    - name: Run Linux tests
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      working-directory: Tests/build/bin
       shell: bash
       run: |
-          cd build/bin
-          source run_aarch64_cxx_tests.sh ${{ matrix.config }}
-          
-          
-  linux-aarch64-cc-tests:
-    runs-on: ubuntu-latest
-    needs: linux-aarch64-build
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
+        rabbitmq-server & sleep 1
+        wait-for-service amqp://localhost:5672
+        source run_task_broker_tests.sh
 
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}_LinuxARM
-        path: WebFrameworkLibrary
-        
-    - name: Build tests
-      working-directory: Tests
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCXX_API=ON -DCC_API=ON -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_EXECUTORS=CC -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
-          cmake --build . --config ${{ matrix.configuration }} -j && cmake --install . --config ${{ matrix.configuration }}
-
-    - name: Install curl
-      run: apt update && apt install -y curl
-
-    - name: Tests
-      working-directory: Tests
-      shell: bash
-      run: |
-          cd build/bin
-          source run_aarch64_cc_tests.sh ${{ matrix.config }}
-          
-
+      
   publish:
     needs: [
       android-build,
       linux-tests,
       windows-tests,
-      linux-aarch64-cxx-tests,
-      linux-aarch64-cc-tests
+      linux-aarch64-tests,
+      task-broker-tests
     ]
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
@@ -459,31 +520,37 @@ jobs:
     
     - name: Setup release version variable
       shell: pwsh
-      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\CAPI\WebFrameworkCAPI.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\WebFramework\src\C_API\WebFrameworkCApi.cpp -Pattern version) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v6
 
-    - name: Remove Windows tests
+    - name: Remove tests and executors
       run: |
           rm -rf WindowsTests
           rm -rf WindowsExecutors*
+          rm -rf LinuxTests
+          rm -rf LinuxExecutors*
+          rm -rf LinuxARMTests
+          rm -rf LinuxARMExecutors*
       
-    - name: Setup Windows build list
-      run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
-      
-    - name: Create Windows zip
-      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
+    - name: Create Windows, Linux and LinuxARM zips
+      run: |
+        for directory in Windows-*/; do
+          zip -r "${directory%/}.zip" ${directory}
+        done
+        
+        for directory in Linux-*/; do
+          zip -r "${directory%/}.zip" ${directory}
+        done
 
-    - name: Create Linux zip
-      run: zip -r linux.zip Release_Linux
-
+        for directory in LinuxARM-*/; do
+          zip -r "${directory%/}.zip" ${directory}
+        done
+        
     - name: Create Android zip
-      run: zip -r android.zip Release_Android
-
-    - name: Create Linux ARM64 zip
-      run: zip -r linux_aarch64.zip Release_LinuxARM
-
+      run: zip -r android.zip Android
+      
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: gh release upload v${{ env.VERSION }} *.zip --clobber

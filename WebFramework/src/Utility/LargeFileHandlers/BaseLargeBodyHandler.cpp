@@ -1,22 +1,22 @@
-#include "BaseLargeBodyHandler.h"
+#include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 
-#include <Log.h>
+#include "Utility/Utils.h"
 
 namespace framework::utility
 {
 	bool BaseLargeBodyHandler::handleChunk(std::string_view data)
 	{
-		requestWrapper->updateLargeData(data, this->isLast());
+		request->updateLargeData(data.data(), data.size(), this->isLast());
 
 		try
 		{
-			std::invoke(method, executor, *requestWrapper, responseWrapper);
+			std::invoke(method, executor, *request, response);
 		}
 		catch (const std::exception& e)
 		{
 			if (Log::isValid())
 			{
-				Log::error("Exception on handle chunk: {}", "LogBaseLargeBodyHandler", e.what());
+				Log::error<logging::message::largeBodyChunkException, logging::category::largeBodyHandler>(e.what());
 			}
 
 			return false;
@@ -27,16 +27,15 @@ namespace framework::utility
 
 	void BaseLargeBodyHandler::onParseHeaders()
 	{
-		request = make_unique<HTTPRequestImplementation>(sessionsManager, serverReference, staticResources, dynamicResources, clientAddr, stream);
+		request = make_unique<HttpRequestImplementation>(sessionsManager, serverReference, staticResources, dynamicResources, clientAddr, stream);
 		response.setDefault();
 
 		response.setIsValid(false);
 
 		request->setParser(parser);
 
-		requestWrapper = std::make_unique<HTTPRequestExecutors>(request.get());
-		executor = executorsManager.getOrCreateExecutor(*requestWrapper, responseWrapper, executors);
-		method = BaseExecutor::getMethod(parser.getMethod());
+		executor = executorsManager.getOrCreateExecutor(*request, response, executors);
+		method = Executor::getMethod(parser.getMethod());
 	}
 
 	void BaseLargeBodyHandler::onFinishHandleChunks()
@@ -62,8 +61,7 @@ namespace framework::utility
 		executorsManager(executorsManager),
 		executors(executors),
 		executor(nullptr),
-		method(nullptr),
-		responseWrapper(&response)
+		method(nullptr)
 	{
 
 	}

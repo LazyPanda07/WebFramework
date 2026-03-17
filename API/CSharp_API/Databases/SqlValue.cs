@@ -18,45 +18,45 @@ public sealed unsafe partial class SqlValue
 		BlobType
 	};
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr createSQLValue();
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr createSQLValue();
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setSQLValueInt(IntPtr implementation, long value);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void setSQLValueInt(IntPtr implementation, long value);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setSQLValueDouble(IntPtr implementation, double value);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void setSQLValueDouble(IntPtr implementation, double value);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial void setSQLValueString(IntPtr implementation, string value);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void setSQLValueString(IntPtr implementation, string value);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setSQLValueBool(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool value);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void setSQLValueBool(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool value);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setSQLValueNull(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void setSQLValueNull(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void setSQLValueBlob(IntPtr implementation, byte[] value, nuint size);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void setSQLValueBlob(IntPtr implementation, byte[] value, nuint size);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial int getSQLValueInt(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial int getSQLValueInt(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial double getSQLValueDouble(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial double getSQLValueDouble(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getSQLValueString(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getSQLValueString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static unsafe partial bool getSQLValueBool(IntPtr implementation);
+	private static partial bool getSQLValueBool(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void getSQLValueBlob(IntPtr implementation, ref IntPtr result, ref nuint size);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void getSQLValueBlob(IntPtr implementation, ref IntPtr result, ref nuint size);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial int getSQLValueType(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial int getSQLValueType(IntPtr implementation);
 
 	internal SqlValue(IntPtr implementation)
 	{

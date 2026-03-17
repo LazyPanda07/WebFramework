@@ -1,0 +1,143 @@
+name: "Build WebFramework"
+
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: "runs-on OS"
+        required: true
+        type: string
+      image:
+        description: "Custom Docker image"
+        required: false
+        type: string
+      configuration:
+        description: "Build configuration"
+        required: true
+        type: string
+      build-parameters:
+        description: "CMake build parameters"
+        required: false
+        type: string
+      cmake-generator:
+        description: "CMake generator"
+        required: false
+        type: string
+        default: "Ninja"
+      build-cxx-api:
+        description: "-DBUILD_CXX_API option"
+        required: false
+        type: string
+        default: "ON"
+      build-cc-api:
+        description: "-DBUILD_CC_API option"
+        required: false
+        type: string
+        default: "ON"
+      with-python-executors:
+        description: "-DWITH_PYTHON_EXECUTORS option"
+        required: false
+        type: string
+        default: "ON"
+      build-python-api:
+        description: "-DBUILD_PYTHON_API option"
+        required: false
+        type: string
+        default: "ON"
+      python-version:
+        description: "Python version"
+        required: false
+        type: string
+        default: ''
+      with-dotnet-executors:
+        description: "-DWITH_DOTNET_EXECUTORS option"
+        required: false
+        type: string
+        default: "ON"
+      build-csharp-api:
+        description: "-DBUILD_CSHARP_API option"
+        required: false
+        type: string
+        default: "ON"
+      build-branch-strict:
+        description: "Build only in selected branch"
+        required: false
+        type: string
+        default: ''
+      upload-artifact-name:
+        description: "Name of uploaded artifact zip"
+        required: false
+        type: string
+
+
+jobs:
+  build:
+    runs-on: ${{ inputs.os }}
+    container: 
+      image: ${{ inputs.image }}
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
+
+    - name: Enable CL
+      if: ${{ inputs.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+      
+    - name: Install Python
+      if: ${{ inputs.python-version != '' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ inputs.python-version }}"
+
+    - name: Install Python build
+      if: ${{ inputs.python-version != '' }}
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install build
+        
+    - name: Append WITH_STACKTRACE=ON to ADDITIONAL_BUILD_PARAMETERS on Windows at main branch
+      if: ${{ inputs.os == 'windows-latest' && env.CURRENT_BRANCH == 'main' }}
+      shell: bash
+      run: echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_STACKTRACE=ON" >> ${GITHUB_ENV}
+
+    - name: Append ADDITIONAL_BUILD_PARAMETERS with options
+      shell: bash
+      run: |
+        ADDITIONAL_BUILD_PARAMETERS=""
+
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_PYTHON_EXECUTORS=${{ inputs.with-python-executors }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_PYTHON_API=${{ inputs.build-python-api }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DWITH_DOTNET_EXECUTORS=${{ inputs.with-dotnet-executors }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CSHARP_API=${{ inputs.build-csharp-api }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CXX_API=${{ inputs.build-cxx-api }}"
+        ADDITIONAL_BUILD_PARAMETERS="${ADDITIONAL_BUILD_PARAMETERS} -DBUILD_CC_API=${{ inputs.build-cc-api }}"
+
+        echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS}" >> ${GITHUB_ENV}
+      
+    - name: Append ADDITIONAL_BUILD_PARAMETERS with options
+      if: ${{ inputs.python-version != '' }}
+      shell: bash
+      run: echo "ADDITIONAL_BUILD_PARAMETERS=${{ env.ADDITIONAL_BUILD_PARAMETERS }} -DPYTHON_EXECUTABLE=$(which python)" >> ${GITHUB_ENV}
+
+    - name: Build
+      if: ${{ (inputs.build-branch-strict != '' && inputs.build-branch-strict == env.CURRENT_BRANCH) || inputs.build-branch-strict == '' }}
+      shell: bash
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ inputs.configuration }} ${{ inputs.build-parameters }} ${ADDITIONAL_BUILD_PARAMETERS} -G ${{ inputs.cmake-generator }} ..
+          cmake --build . -j --config ${{ inputs.configuration }}
+          cmake --install . --config ${{ inputs.configuration }}
+  
+    - name: Upload artifacts
+      if: ${{ inputs.upload-artifact-name != '' && ((inputs.build-branch-strict != '' && inputs.build-branch-strict == env.CURRENT_BRANCH) || inputs.build-branch-strict == '') }}
+      uses: actions/upload-artifact@v6
+      with:
+        name: ${{ inputs.upload-artifact-name }}
+        path: WebFrameworkLibrary

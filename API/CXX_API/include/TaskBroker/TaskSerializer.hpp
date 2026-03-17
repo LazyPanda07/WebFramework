@@ -1,0 +1,63 @@
+#pragma once
+
+#include <string>
+#include <concepts>
+
+#include "TaskApis.hpp"
+#include "JsonObject.hpp"
+
+namespace framework::task_broker
+{
+	template<typename T>
+	concept TaskBrokerApiImplementation = requires
+	{
+		{ std::string(T::taskBrokerApi) } -> std::same_as<std::string>;
+	};
+
+	template<TaskBrokerApiImplementation T = CXXApi>
+	class TaskSerializer
+	{
+	protected:
+		virtual JsonObject serializeArguments() const = 0;
+
+		virtual std::string_view getTaskExecutorName() const = 0;
+
+		virtual void serializeMetaData(JsonObject& taskData) const;
+
+	public:
+		TaskSerializer() = default;
+
+		JsonObject serialize() const;
+
+		virtual ~TaskSerializer() = default;
+	};
+
+	template<typename T>
+	concept DerivedFromTaskSerializer = std::derived_from<T, TaskSerializer<CXXApi>>	||
+										std::derived_from<T, TaskSerializer<CCApi>>		||
+										std::derived_from<T, TaskSerializer<PythonApi>> ||
+										std::derived_from<T, TaskSerializer<CSharpApi>>;
+}
+
+namespace framework::task_broker
+{
+	template<TaskBrokerApiImplementation T>
+	inline void TaskSerializer<T>::serializeMetaData(JsonObject& taskData) const
+	{
+
+	}
+
+	template<TaskBrokerApiImplementation T>
+	inline JsonObject TaskSerializer<T>::serialize() const
+	{
+		JsonObject result;
+		
+		result["arguments"] = this->serializeArguments();
+		result["api"] = T::taskBrokerApi;
+		result["name"] = this->getTaskExecutorName();
+		
+		this->serializeMetaData(result);
+
+		return result;
+	}
+}

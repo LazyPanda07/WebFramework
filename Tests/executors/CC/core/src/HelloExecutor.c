@@ -7,7 +7,7 @@ typedef struct
 	int64_t number;
 } HelloExecutor;
 
-DEFINE_EXECUTOR(HelloExecutor, STATELESS_EXECUTOR);
+DEFINE_EXECUTOR(HelloExecutor, STATELESS_EXECUTOR)
 
 static void service(executor_t executor, http_response_t response);
 

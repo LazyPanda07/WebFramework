@@ -4,14 +4,14 @@
 
 /**
  * @brief Create json_builder_t
- * @param builder json_builder_t. Delete with deleteWebFrameworkJsonBuilder function
+ * @param builder json_builder_t. Delete with wf_delete_json_builder function
  * @return Error if occurred
  */
 web_framework_exception_t wf_create_json_builder(json_builder_t* builder);
 
 /**
  * @brief Copy json_builder_t
- * @param builder Result. Delete with deleteWebFrameworkJsonBuilder function
+ * @param builder Result. Delete with wf_delete_json_builder function
  * @param other Other json_builder_t
  * @return Error if occurred
  */

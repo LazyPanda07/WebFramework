@@ -1,10 +1,10 @@
-#include "SQLResultImplementation.h"
+#include "Databases/SQLResultImplementation.h"
 
-#include "SQLValueImplementation.h"
+#include "Databases/SQLValueImplementation.h"
 
 namespace framework
 {
-	SQLResultImplementation::SQLResultImplementation(database::SQLResult&& result) :
+	SQLResultImplementation::SQLResultImplementation(database::SqlResult&& result) :
 		result(std::move(result))
 	{
 

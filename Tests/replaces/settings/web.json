@@ -17,6 +17,11 @@
     "loadType": "dynamic",
     "api": "{API_TYPE}"
   },
+  "RedisExecutor": {
+    "route": "redis",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
+  },
   "AssetsExecutor": {
     "route": "wfdp",
     "loadType": "dynamic",

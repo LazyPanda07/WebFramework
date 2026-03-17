@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(UTILITY_LIBRARY_VERSION 0.8.0)
+set(UTILITY_LIBRARY_VERSION 0.11.0)
 set(NETWORKS_VERSION 1.22.6)
 set(LOCALIZATION_VERSION 1.4.6)
 
@@ -40,6 +40,14 @@ FetchContent_MakeAvailable(ExternalUtilityLibrary)
 FetchContent_MakeAvailable(ExternalNetworks)
 FetchContent_MakeAvailable(ExternalLocalization)
 
-add_subdirectory(core)
-add_subdirectory(load_balancer)
-add_subdirectory(proxy)
+add_subdirectory(unit_test_utils)
+
+if (${BUILD_TESTS})
+	add_subdirectory(core)
+	add_subdirectory(load_balancer)
+	add_subdirectory(proxy)
+endif()
+
+if (${BUILD_TASK_EXECUTORS})
+	add_subdirectory(task_broker)
+endif()

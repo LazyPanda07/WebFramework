@@ -1,5 +1,3 @@
-#define PYBIND11_DETAILED_ERROR_MESSAGES
-
 #include "PyChunkGenerator.h"
 
 #include <format>

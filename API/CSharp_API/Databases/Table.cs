@@ -8,14 +8,14 @@ public sealed unsafe partial class Table(IntPtr implementation)
 {
 	private readonly IntPtr implementation = implementation;
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr executeQuery(IntPtr implementation, string query, [In] IntPtr[]? values, nuint size, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr executeQuery(IntPtr implementation, string query, [In] IntPtr[]? values, nuint size, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getTableName(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getTableName(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref void* exception);
 
 	public SqlResult ExecuteQuery(string query, IList<SqlValue>? values = null)
 	{

@@ -22,7 +22,11 @@
       "pathToCertificate": "certificates/cert.pem",
       "pathToKey": "certificates/key.pem"
     },
-    "defaultAssetsPath": "WebFrameworkAssets"
+    "defaultAssetsPath": "WebFrameworkAssets",
+    "databases": [
+      "sqlite",
+      "redis"
+    ]
   },
   "Logging": {
     "usingLogging": true,

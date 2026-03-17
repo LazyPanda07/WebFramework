@@ -63,6 +63,16 @@ TEST(API, ConfigOverrideIntegerArray)
 	ASSERT_FALSE(assertFalse);
 }
 
+TEST(API, SHA256)
+{
+	bool assertTrue;
+	char* outErrorMessage = nullptr;
+
+	generateSha256(&assertTrue, &outErrorMessage);
+
+	ASSERT_TRUE(assertTrue) << outErrorMessage;
+}
+
 int main(int argc, char** argv)
 {
 	testing::InitGoogleTest(&argc, argv);

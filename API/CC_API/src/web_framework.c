@@ -55,6 +55,28 @@ web_framework_exception_t wf_stop_web_framework_server(web_framework_t implement
     return exception;
 }
 
+web_framework_exception_t wf_kick_web_framework_server(web_framework_t implementation, const char* ip)
+{
+    web_framework_exception_t exception = NULL;
+
+    typedef void (*kickWebFrameworkServer)(void* implementation, const char* ip, void** exception);
+
+    CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(kickWebFrameworkServer, ip, &exception);
+
+    return exception;
+}
+
+web_framework_exception_t wf_update_ssl_certificates_web_framework_server(web_framework_t implementation)
+{
+    web_framework_exception_t exception = NULL;
+
+    typedef void (*updateSslCertificatesWebFrameworkServer)(void* implementation, void** exception);
+
+    CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(updateSslCertificatesWebFrameworkServer, &exception);
+
+    return exception;
+}
+
 web_framework_exception_t wf_is_server_running(web_framework_t implementation, bool* result)
 {
     web_framework_exception_t exception = NULL;

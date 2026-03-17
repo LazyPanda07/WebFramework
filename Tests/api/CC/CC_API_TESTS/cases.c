@@ -7,6 +7,7 @@
 
 #include <import.h>
 #include <json_object.h>
+#include <utility/web_framework_utility.h>
 
 #ifdef __LINUX__
 #include <unistd.h>
@@ -214,4 +215,27 @@ void configOverrideIntegerArray(bool* assertFalse)
 	wf_delete_config(config);
 
 	free(values);
+}
+
+void generateSha256(bool* assertTrue, char** outErrorMessage)
+{
+	const char* data = "qwe";
+	const char* hash = "489CD5DBC708C7E541DE4D7CD91CE6D0F1613573B7FC5B40D3942CCB9555CF35";
+	size_t size = strlen(data);
+	web_framework_string_t result;
+
+	wf_generate_sha256(data, size, &result);
+
+	const char* temp = wf_get_data_from_string(result);
+
+	*assertTrue = !strcmp(temp, hash);
+
+	if (!*assertTrue)
+	{
+		*outErrorMessage = calloc(strlen(temp) + 1, sizeof(char));
+
+		memcpy(*outErrorMessage, temp, strlen(temp));
+	}
+
+	wf_delete_string(result);
 }

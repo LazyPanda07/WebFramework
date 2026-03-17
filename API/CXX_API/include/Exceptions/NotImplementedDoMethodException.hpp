@@ -15,7 +15,7 @@ namespace framework::exceptions
 	};
 
 	inline NotImplementedDoMethodException::NotImplementedDoMethodException(std::string_view methodName, std::string_view className) :
-		WebFrameworkAPIException(std::format("Not implemented method {} in {}", methodName, className), ResponseCodes::badRequest)
+		WebFrameworkAPIException(std::format("Not implemented method {} in {}", methodName, className), ResponseCodes::notFound)
 	{
 
 	}

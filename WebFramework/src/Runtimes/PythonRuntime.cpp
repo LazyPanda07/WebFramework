@@ -1,10 +1,11 @@
-#include "PythonRuntime.h"
+#include "Runtimes/PythonRuntime.h"
 
-#include <Log.h>
+#include "Utility/Utils.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 
 #include "Executors/PythonExecutor.h"
+#include "TaskBroker/TaskExecutors/PythonTaskExecutor.h"
 
 namespace py = pybind11;
 
@@ -20,21 +21,40 @@ namespace framework::runtime
 #endif
 	}
 
+	void PythonRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
+	{
+		if (called)
+		{
+			return;
+		}
+
+		if (py::hasattr(api, "initialize_web_framework"))
+		{
+			api.attr("initialize_web_framework")(libraryPath.data());
+
+			called = true;
+		}
+		else
+		{
+			utility::logAndThrowException<logging::message::cantFindInitializeFunction, logging::category::pythonRuntime>();
+		}
+	}
+
 	PythonRuntime::PythonRuntime() :
 		called(false)
 	{
 		if (!Py_IsInitialized())
 		{
-			guard = std::make_unique<py::scoped_interpreter>();
+			guard = std::make_unique<py::scoped_interpreter>(); // Trying to load python shared library and uses it's web_framework_api
 
 			if (Log::isValid())
 			{
-				Log::info("Initialize Python interpreter", "LogRuntime");
+				Log::info<logging::message::initializePythonInterpreter, logging::category::pythonRuntime>();
 			}
 		}
 		else if (Log::isValid())
 		{
-			Log::info("Python interpreter already initialized", "LogRuntime");
+			Log::info<logging::message::pythonInterpreterAlreadyInitialized, logging::category::pythonRuntime>();
 		}
 
 		PythonRuntime::loadSymbols();
@@ -87,7 +107,7 @@ namespace framework::runtime
 		}
 	}
 
-	bool PythonRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
+	bool PythonRuntime::loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<py::module_>(source))
 		{
@@ -105,7 +125,7 @@ namespace framework::runtime
 
 		if (Log::isValid())
 		{
-			Log::info("Found {} in {}", "LogWebFrameworkInitialization", name, py::repr(module).cast<std::string>());
+			Log::info<logging::message::foundExecutor, logging::category::pythonRuntime>(name, py::repr(module).cast<std::string>(), route.empty() ? R"("")" : route);
 		}
 
 		classes.emplace(name, *cls);
@@ -113,13 +133,13 @@ namespace framework::runtime
 		return true;
 	}
 
-	std::unique_ptr<BaseExecutor> PythonRuntime::createExecutor(std::string_view name) const
+	std::unique_ptr<Executor> PythonRuntime::createExecutor(std::string_view name) const
 	{
 		auto it = classes.find(name);
 
 		if (it == classes.end())
 		{
-			throw std::runtime_error(std::format("Can't find executor with name {}", name));
+			utility::logAndThrowException<logging::message::cantFindExecutor, logging::category::pythonRuntime>(name);
 		}
 
 		py::gil_scoped_acquire gil;
@@ -129,6 +149,36 @@ namespace framework::runtime
 		return std::make_unique<PythonExecutor>(new py::object(cls()));
 	}
 
+	std::unique_ptr<task_broker::TaskExecutor> PythonRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
+	{
+		if (!std::holds_alternative<py::module_>(source))
+		{
+			return nullptr;
+		}
+
+		py::gil_scoped_acquire gil;
+		const py::module_& module = std::get<py::module_>(source);
+		std::optional<py::object> cls = this->getClass(name, module);
+
+		if (!cls)
+		{
+			utility::logAndThrowException<logging::message::cantFindTaskExecutor, logging::category::pythonRuntime>(name);
+		}
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::foundTaskExecutor, logging::category::pythonRuntime>(name, py::repr(module).cast<std::string>());
+		}
+
+		return std::make_unique<task_broker::PythonTaskExecutor>
+			(
+				new py::object
+				(
+					(*cls)()
+				)
+			);
+	}
+
 	void* PythonRuntime::createExecutorSettings(const void* implementation) const
 	{
 		py::object cls = api.attr("ExecutorSettings");
@@ -136,37 +186,18 @@ namespace framework::runtime
 		return new py::object(cls(reinterpret_cast<uint64_t>(implementation)));
 	}
 
-	void* PythonRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const
+	void* PythonRuntime::createHTTPRequest(framework::interfaces::IHttpRequest* request) const
 	{
 		py::object cls = api.attr("HttpRequest");
 
 		return new py::object(cls(reinterpret_cast<uint64_t>(request)));
 	}
 
-	void* PythonRuntime::createHTTPResponse(framework::interfaces::IHTTPResponse* response) const
+	void* PythonRuntime::createHTTPResponse(framework::interfaces::IHttpResponse* response) const
 	{
 		py::object cls = api.attr("HttpResponse");
 
 		return new py::object(cls(reinterpret_cast<uint64_t>(response)));
-	}
-
-	void PythonRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
-	{
-		if (called)
-		{
-			return;
-		}
-
-		if (py::hasattr(api, "initialize_web_framework"))
-		{
-			api.attr("initialize_web_framework")(libraryPath.data());
-
-			called = true;
-		}
-		else
-		{
-			throw std::runtime_error("Can't find initialize_web_framework function");
-		}
 	}
 
 	std::optional<std::string> PythonRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)
@@ -178,6 +209,11 @@ namespace framework::runtime
 
 			sys.attr("path").attr("append")(pythonSourcePath.parent_path().string().data());
 
+			if (Log::isValid())
+			{
+				Log::info<logging::message::loadPythonSource, logging::category::pythonRuntime>(pythonSourcePath.filename().string(), pythonSourcePath.string());
+			}
+
 			source = py::module_::import(pythonSourcePath.filename().string().data());
 		}
 		catch (const py::error_already_set& e)
@@ -186,6 +222,11 @@ namespace framework::runtime
 		}
 
 		return std::nullopt;
+	}
+
+	constexpr std::string_view PythonRuntime::getName() const
+	{
+		return PythonRuntime::runtimeName;
 	}
 }
 

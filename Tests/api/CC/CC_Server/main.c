@@ -9,19 +9,10 @@
 #include <Windows.h>
 #endif
 
-void writeProcessId()
+void printRunningState()
 {
-#ifdef __LINUX__
-	pid_t processId = getpid();
-#else
-	DWORD processId = GetCurrentProcessId();
-#endif
-
-	FILE* file = fopen(START_CORE_SERVER_FILE, "w");
-
-	fwrite(&processId, sizeof(processId), 1, file);
-
-	fclose(file);
+	printf("Server is running...\n");
+	fflush(stdout);
 }
 
 int main(int argc, char** argv)
@@ -49,7 +40,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	exception = wf_start_web_framework_server(server, true, writeProcessId);
+	exception = wf_start_web_framework_server(server, true, printRunningState);
 
 	if (exception)
 	{

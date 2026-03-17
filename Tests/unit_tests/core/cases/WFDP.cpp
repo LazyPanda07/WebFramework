@@ -68,17 +68,6 @@ TEST(WFDP, CustomFunction)
 	streams::IOSocketStream stream = utility::createSocketStream();
 
 	{
-		std::string request = web::HttpBuilder().postRequest().parameters("wfdp").build();
-		std::string response;
-
-		stream << request;
-
-		stream >> response;
-
-		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok);
-	}
-
-	{
 		std::string request = web::HttpBuilder().getRequest().parametersWithRoute
 		(
 			"wfdp",
@@ -95,7 +84,10 @@ TEST(WFDP, CustomFunction)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HttpParser(response).getBody(), "Data: 15 30 45");
+		web::HttpParser parser(response);
+
+		ASSERT_EQ(parser.getResponseCode(), web::ResponseCodes::ok);
+		ASSERT_EQ(parser.getBody(), "Data: 15 30 45");
 	}
 
 	{
@@ -106,6 +98,6 @@ TEST(WFDP, CustomFunction)
 
 		stream >> response;
 
-		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::ok);
+		ASSERT_EQ(web::HttpParser(response).getResponseCode(), web::ResponseCodes::noContent);
 	}
 }

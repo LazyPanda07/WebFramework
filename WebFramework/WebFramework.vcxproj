@@ -65,17 +65,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;__WITH_DOT_NET_EXECUTORS__;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;__WITH_DOTNET_EXECUTORS__;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)src\;$(ProjectDir)..\WebFrameworkExecutors\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;$(ProjectDir)include\;$(ProjectDir)..\WebFrameworkExecutors\include\;$(ProjectDir)..\WebFrameworkCore\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\3rdparty\rabbitmq-c\build\_deps\rabbitmq-c-build\librabbitmq\Release\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;cmark-gfm_static.lib;librabbitmq.4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -100,10 +100,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;WIN32_LEAN_AND_MEAN;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;__WITH_DOTNET_EXECUTORS__;WIN32_LEAN_AND_MEAN;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\src\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\src\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\src\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\src\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\src\;$(ProjectDir)src\;$(ProjectDir)..\WebFrameworkExecutors\src\;$(ProjectDir)..\WebFrameworkCore\src\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;$(ProjectDir)include\;$(ProjectDir)..\WebFrameworkExecutors\include\;$(ProjectDir)..\WebFrameworkCore\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -111,8 +111,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;cmark-gfm_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Databases\vendor\sqlite3\lib\Windows\;$(ProjectDir)..\Databases\vendor\hiredis\lib\Windows\;$(ProjectDir)..\Networks\vendor\OpenSSL\lib\Windows\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\lib\;$(ProjectDir)..\3rdparty\pybind11\build\_deps\python\lib\;$(ProjectDir)..\3rdparty\rabbitmq-c\build\_deps\rabbitmq-c-build\librabbitmq\Release\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ssl.lib;crypto.lib;crypt32.lib;sqlite3.lib;hiredis.lib;cmark-gfm_static.lib;librabbitmq.4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
@@ -132,28 +132,32 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\CAPI\WebFrameworkExecutorsCAPI.cpp" />
-    <ClCompile Include="src\CAPI\WebFrameworkLocalizationCAPI.cpp" />
-    <ClCompile Include="src\CAPI\WebFrameworkUtilityCAPI.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkExecutorsCApi.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkLocalizationCApi.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkUtilityCApi.cpp" />
     <ClCompile Include="src\Databases\DatabaseImplementation.cpp" />
     <ClCompile Include="src\Databases\SQLResultImplementation.cpp" />
     <ClCompile Include="src\Databases\SQLValueImplementation.cpp" />
     <ClCompile Include="src\Databases\TableImplementation.cpp" />
     <ClCompile Include="src\Exceptions\APIException.cpp" />
     <ClCompile Include="src\Exceptions\CSharpException.cpp" />
-    <ClCompile Include="src\Exceptions\NotFoundException.cpp" />
     <ClCompile Include="src\Executors\CCExecutor.cpp" />
     <ClCompile Include="src\Executors\CXXExecutor.cpp" />
     <ClCompile Include="src\Executors\CSharpExecutor.cpp" />
     <ClCompile Include="src\Executors\PythonExecutor.cpp" />
     <ClCompile Include="src\Framework\Config.cpp" />
-    <ClCompile Include="src\CAPI\WebFrameworkCAPI.cpp" />
+    <ClCompile Include="src\C_API\WebFrameworkCApi.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CSharpHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\CXXHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\PythonHeuristic.cpp" />
     <ClCompile Include="src\Managers\DatabasesManager.cpp" />
+    <ClCompile Include="src\Managers\TaskBrokersManager.cpp" />
     <ClCompile Include="src\Managers\RuntimesManager.cpp" />
+    <ClCompile Include="src\Managers\TaskExecutorsManager.cpp" />
+    <ClCompile Include="src\TaskBroker\InternalTaskBroker.cpp" />
+    <ClCompile Include="src\TaskBroker\RabbitMqTaskBroker.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskBroker.cpp" />
     <ClCompile Include="src\Proxy\ProxyServer.cpp" />
     <ClCompile Include="src\Rendering\MDRenderer.cpp" />
     <ClCompile Include="src\Runtimes\CCRuntime.cpp" />
@@ -161,6 +165,12 @@
     <ClCompile Include="src\Runtimes\DotNetRuntime.cpp" />
     <ClCompile Include="src\Runtimes\PythonRuntime.cpp" />
     <ClCompile Include="src\Runtimes\Runtime.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskConsumer.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\CCTaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\CSharpTaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\CXXTaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\PythonTaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\TaskExecutors\TaskExecutor.cpp" />
     <ClCompile Include="src\Utility\AdditionalServerSettings.cpp" />
     <ClCompile Include="src\Utility\ExecutorsUtility.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.cpp" />
@@ -168,8 +178,10 @@
     <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
     <ClCompile Include="src\Utility\SegfaultHandler.cpp" />
-    <ClCompile Include="src\Web\HTTPRequestImplementation.cpp" />
-    <ClCompile Include="src\Web\HTTPResponseImplementation.cpp" />
+    <ClCompile Include="src\Utility\TaskExecutorsSettings.cpp" />
+    <ClCompile Include="src\Utility\Utils.cpp" />
+    <ClCompile Include="src\Web\HttpRequestImplementation.cpp" />
+    <ClCompile Include="src\Web\HttpResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
     <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
     <ClCompile Include="src\WFDP\CSharpDynamicFunction.cpp" />
@@ -181,85 +193,97 @@
     <ClCompile Include="src\Exceptions\DynamicPagesSyntaxException.cpp" />
     <ClCompile Include="src\Exceptions\MissingLoadTypeException.cpp" />
     <ClCompile Include="src\Executors\ResourceExecutor.cpp" />
-    <ClCompile Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.cpp" />
+    <ClCompile Include="src\LoadBalancer\Heuristics\LoadBalancerHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp" />
     <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\Sources.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
-    <ClCompile Include="src\Utility\BaseConnectionData.cpp" />
+    <ClCompile Include="src\Utility\ConnectionData.cpp" />
     <ClCompile Include="src\Framework\WebFramework.cpp" />
     <ClCompile Include="src\Web\Servers\BaseWebServer.cpp" />
     <ClCompile Include="src\Web\Servers\MultithreadedWebServer.cpp" />
     <ClCompile Include="src\Web\Servers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CAPI\WebFrameworkExecutorsCAPI.h" />
-    <ClInclude Include="src\CAPI\WebFrameworkLocalizationCAPI.h" />
-    <ClInclude Include="src\CAPI\WebFrameworkUtilityCAPI.h" />
-    <ClInclude Include="src\Databases\DatabaseImplementation.h" />
-    <ClInclude Include="src\Databases\SQLResultImplementation.h" />
-    <ClInclude Include="src\Databases\SQLValueImplementation.h" />
-    <ClInclude Include="src\Databases\TableImplementation.h" />
-    <ClInclude Include="src\Exceptions\APIException.h" />
-    <ClInclude Include="src\Exceptions\CSharpException.h" />
-    <ClInclude Include="src\Exceptions\NotFoundException.h" />
-    <ClInclude Include="src\Executors\CCExecutor.h" />
-    <ClInclude Include="src\Executors\CXXExecutor.h" />
-    <ClInclude Include="src\Executors\CSharpExecutor.h" />
-    <ClInclude Include="src\Executors\PythonExecutor.h" />
-    <ClInclude Include="src\Framework\Config.h" />
-    <ClInclude Include="src\CAPI\WebFrameworkCAPI.h" />
-    <ClInclude Include="src\LoadBalancer\Heuristics\CSharpHeuristic.h" />
-    <ClInclude Include="src\LoadBalancer\Heuristics\PythonHeuristic.h" />
-    <ClInclude Include="src\Managers\RuntimesManager.h" />
-    <ClInclude Include="src\Rendering\MDRenderer.h" />
-    <ClInclude Include="src\Rendering\WFDPRenderer.h" />
-    <ClInclude Include="src\Runtimes\CCRuntime.h" />
-    <ClInclude Include="src\Runtimes\CXXRuntime.h" />
-    <ClInclude Include="src\Runtimes\DotNetRuntime.h" />
-    <ClInclude Include="src\WFDP\CSharpDynamicFunction.h" />
-    <ClInclude Include="src\WFDP\CXXDynamicFunction.h" />
-    <ClInclude Include="src\WFDP\DynamicFunction.h" />
-    <ClInclude Include="src\WFDP\PythonDynamicFunction.h" />
-    <ClInclude Include="src\WFDP\StandardWebFrameworkDynamicPagesFunctions.h" />
-    <ClInclude Include="src\Exceptions\CantFindFunctionException.h" />
-    <ClInclude Include="src\Exceptions\CantLoadSourceException.h" />
-    <ClInclude Include="src\Exceptions\DynamicPagesSyntaxException.h" />
-    <ClInclude Include="src\Exceptions\MissingLoadTypeException.h" />
-    <ClInclude Include="src\Executors\ResourceExecutor.h" />
-    <ClInclude Include="src\Framework\WebFrameworkPlatform.h" />
-    <ClInclude Include="src\LoadBalancer\Heuristics\BaseLoadBalancerHeuristic.h" />
-    <ClInclude Include="src\LoadBalancer\Heuristics\CCHeuristic.h" />
-    <ClInclude Include="src\LoadBalancer\Heuristics\Connections.h" />
-    <ClInclude Include="src\LoadBalancer\Heuristics\CXXHeuristic.h" />
-    <ClInclude Include="src\LoadBalancer\LoadBalancerServer.h" />
-    <ClInclude Include="src\Managers\DatabasesManager.h" />
-    <ClInclude Include="src\Proxy\ProxyServer.h" />
-    <ClInclude Include="src\Runtimes\PythonRuntime.h" />
-    <ClInclude Include="src\Runtimes\Runtime.h" />
-    <ClInclude Include="src\Utility\AdditionalServerSettings.h" />
-    <ClInclude Include="src\Utility\ExecutorsUtility.h" />
-    <ClInclude Include="src\Utility\LargeFileHandlers\BaseLargeBodyHandler.h" />
-    <ClInclude Include="src\Utility\DynamicLibraries.h" />
-    <ClInclude Include="src\Utility\LargeFileHandlers\MultithreadedHandler.h" />
-    <ClInclude Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.h" />
-    <ClInclude Include="src\Utility\SegfaultHandler.h" />
-    <ClInclude Include="src\Utility\Singletons\HTTPSSingleton.h" />
-    <ClInclude Include="src\Utility\RouteParameters.h" />
-    <ClInclude Include="src\Utility\Sources.h" />
-    <ClInclude Include="src\Managers\ExecutorsManager.h" />
-    <ClInclude Include="src\Utility\BaseConnectionData.h" />
-    <ClInclude Include="src\Utility\WebFrameworkConcepts.h" />
-    <ClInclude Include="src\Web\HTTPRequestImplementation.h" />
-    <ClInclude Include="src\Web\HTTPResponseImplementation.h" />
-    <ClInclude Include="src\Web\Servers\ExecutorServer.h" />
-    <ClInclude Include="src\Framework\WebFrameworkConstants.h" />
-    <ClInclude Include="src\Framework\WebFramework.h" />
-    <ClInclude Include="src\Web\Servers\BaseWebServer.h" />
-    <ClInclude Include="src\Web\Servers\MultithreadedWebServer.h" />
-    <ClInclude Include="src\Web\Servers\ThreadPoolWebServer.h" />
+    <ClInclude Include="include\C_API\WebFrameworkExecutorsCApi.h" />
+    <ClInclude Include="include\C_API\WebFrameworkLocalizationCApi.h" />
+    <ClInclude Include="include\C_API\WebFrameworkUtilityCApi.h" />
+    <ClInclude Include="include\Databases\DatabaseImplementation.h" />
+    <ClInclude Include="include\Databases\SQLResultImplementation.h" />
+    <ClInclude Include="include\Databases\SQLValueImplementation.h" />
+    <ClInclude Include="include\Databases\TableImplementation.h" />
+    <ClInclude Include="include\Exceptions\APIException.h" />
+    <ClInclude Include="include\Exceptions\CSharpException.h" />
+    <ClInclude Include="include\Executors\CCExecutor.h" />
+    <ClInclude Include="include\Executors\CXXExecutor.h" />
+    <ClInclude Include="include\Executors\CSharpExecutor.h" />
+    <ClInclude Include="include\Executors\PythonExecutor.h" />
+    <ClInclude Include="include\Framework\Config.h" />
+    <ClInclude Include="include\C_API\WebFrameworkCApi.h" />
+    <ClInclude Include="include\LoadBalancer\Heuristics\CSharpHeuristic.h" />
+    <ClInclude Include="include\LoadBalancer\Heuristics\PythonHeuristic.h" />
+    <ClInclude Include="include\Managers\TaskBrokersManager.h" />
+    <ClInclude Include="include\Managers\RuntimesManager.h" />
+    <ClInclude Include="include\Managers\TaskExecutorsManager.h" />
+    <ClInclude Include="include\TaskBroker\InternalTaskBroker.h" />
+    <ClInclude Include="include\TaskBroker\RabbitMqTaskBroker.h" />
+    <ClInclude Include="include\TaskBroker\TaskBroker.h" />
+    <ClInclude Include="include\Rendering\MDRenderer.h" />
+    <ClInclude Include="include\Rendering\WFDPRenderer.h" />
+    <ClInclude Include="include\Runtimes\CCRuntime.h" />
+    <ClInclude Include="include\Runtimes\CXXRuntime.h" />
+    <ClInclude Include="include\Runtimes\DotNetRuntime.h" />
+    <ClInclude Include="include\TaskBroker\TaskConsumer.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\CCTaskExecutor.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\CSharpTaskExecutor.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\CXXTaskExecutor.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\PythonTaskExecutor.h" />
+    <ClInclude Include="include\TaskBroker\TaskExecutors\TaskExecutor.h" />
+    <ClInclude Include="include\Utility\TaskExecutorsSettings.h" />
+    <ClInclude Include="include\Utility\Utils.h" />
+    <ClInclude Include="include\WFDP\CSharpDynamicFunction.h" />
+    <ClInclude Include="include\WFDP\CXXDynamicFunction.h" />
+    <ClInclude Include="include\WFDP\DynamicFunction.h" />
+    <ClInclude Include="include\WFDP\PythonDynamicFunction.h" />
+    <ClInclude Include="include\WFDP\StandardWebFrameworkDynamicPagesFunctions.h" />
+    <ClInclude Include="include\Exceptions\CantFindFunctionException.h" />
+    <ClInclude Include="include\Exceptions\CantLoadSourceException.h" />
+    <ClInclude Include="include\Exceptions\DynamicPagesSyntaxException.h" />
+    <ClInclude Include="include\Exceptions\MissingLoadTypeException.h" />
+    <ClInclude Include="include\Executors\ResourceExecutor.h" />
+    <ClInclude Include="include\Framework\WebFrameworkPlatform.h" />
+    <ClInclude Include="include\LoadBalancer\Heuristics\LoadBalancerHeuristic.h" />
+    <ClInclude Include="include\LoadBalancer\Heuristics\CCHeuristic.h" />
+    <ClInclude Include="include\LoadBalancer\Heuristics\Connections.h" />
+    <ClInclude Include="include\LoadBalancer\Heuristics\CXXHeuristic.h" />
+    <ClInclude Include="include\LoadBalancer\LoadBalancerServer.h" />
+    <ClInclude Include="include\Managers\DatabasesManager.h" />
+    <ClInclude Include="include\Proxy\ProxyServer.h" />
+    <ClInclude Include="include\Runtimes\PythonRuntime.h" />
+    <ClInclude Include="include\Runtimes\Runtime.h" />
+    <ClInclude Include="include\Utility\AdditionalServerSettings.h" />
+    <ClInclude Include="include\Utility\ExecutorsUtility.h" />
+    <ClInclude Include="include\Utility\LargeFileHandlers\BaseLargeBodyHandler.h" />
+    <ClInclude Include="include\Utility\DynamicLibraries.h" />
+    <ClInclude Include="include\Utility\LargeFileHandlers\MultithreadedHandler.h" />
+    <ClInclude Include="include\Utility\LargeFileHandlers\ThreadPoolHandler.h" />
+    <ClInclude Include="include\Utility\SegfaultHandler.h" />
+    <ClInclude Include="include\Utility\Singletons\HTTPSSingleton.h" />
+    <ClInclude Include="include\Utility\RouteParameters.h" />
+    <ClInclude Include="include\Utility\Sources.h" />
+    <ClInclude Include="include\Managers\ExecutorsManager.h" />
+    <ClInclude Include="include\Utility\ConnectionData.h" />
+    <ClInclude Include="include\Utility\WebFrameworkConcepts.h" />
+    <ClInclude Include="include\Web\HttpRequestImplementation.h" />
+    <ClInclude Include="include\Web\HttpResponseImplementation.h" />
+    <ClInclude Include="include\Web\Servers\ExecutorServer.h" />
+    <ClInclude Include="include\Framework\WebFrameworkConstants.h" />
+    <ClInclude Include="include\Framework\WebFramework.h" />
+    <ClInclude Include="include\Web\Servers\BaseWebServer.h" />
+    <ClInclude Include="include\Web\Servers\MultithreadedWebServer.h" />
+    <ClInclude Include="include\Web\Servers\ThreadPoolWebServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3rdparty\cmark-gfm\cmark-gfm.vcxproj">
@@ -270,6 +294,9 @@
     </ProjectReference>
     <ProjectReference Include="..\3rdparty\pybind11\pybind11.vcxproj">
       <Project>{fa38c2dc-a207-4048-8c9c-d75bfcacd77b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\3rdparty\rabbitmq-c\rabbitmq-c.vcxproj">
+      <Project>{ac5c367b-f200-4731-8605-4d6fbfba6d7a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\API\Python_API\Python_API.vcxproj">
       <Project>{c74350e0-4f4e-482f-ba34-87c35cde54ae}</Project>

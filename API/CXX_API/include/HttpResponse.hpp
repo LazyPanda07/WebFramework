@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "WebInterfaces/IHTTPResponse.hpp"
+#include "WebInterfaces/IHttpResponse.hpp"
 
 #include "JsonBuilder.hpp"
 
@@ -86,13 +86,13 @@ namespace framework
 	class HttpResponse
 	{
 	private:
-		interfaces::IHTTPResponse* implementation;
+		interfaces::IHttpResponse* implementation;
 
 	public:
-		interfaces::IHTTPResponse* getImplementation() const;
+		interfaces::IHttpResponse* getImplementation() const;
 
 	public:
-		HttpResponse(interfaces::IHTTPResponse* implementation);
+		HttpResponse(interfaces::IHttpResponse* implementation);
 
 		HttpResponse(const HttpResponse&) = delete;
 
@@ -166,12 +166,12 @@ namespace framework
 
 namespace framework
 {
-	inline interfaces::IHTTPResponse* HttpResponse::getImplementation() const
+	inline interfaces::IHttpResponse* HttpResponse::getImplementation() const
 	{
 		return implementation;
 	}
 
-	inline HttpResponse::HttpResponse(interfaces::IHTTPResponse* implementation) :
+	inline HttpResponse::HttpResponse(interfaces::IHttpResponse* implementation) :
 		implementation(implementation)
 	{
 
@@ -208,14 +208,16 @@ namespace framework
 
 	inline void HttpResponse::setBody(std::string_view body)
 	{
-		implementation->setBody(body.data());
+		implementation->setBody(body.data(), body.size());
 	}
 
 	inline void HttpResponse::setBody(const JsonBuilder& json)
 	{
+		std::string jsonData = json.build().data();
+
 		implementation->addHeader("Content-Type", "application/json");
 
-		implementation->setBody(json.build().data());
+		implementation->setBody(jsonData.data(), jsonData.size());
 	}
 
 	inline HttpResponse& HttpResponse::appendBody(std::string_view body)

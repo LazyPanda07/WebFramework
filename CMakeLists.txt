@@ -9,6 +9,8 @@ set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(
 	3RDPARTY_LIBS
 	sqlite3
+	hiredis
+	rabbitmq::rabbitmq-static
 	ssl
 	crypto
 	CACHE INTERNAL ""
@@ -16,14 +18,15 @@ set(
 set(ADDITIONAL_LIBS "" CACHE INTERNAL "")
 set(ADDITIONAL_INCLUDES "" CACHE INTERNAL "")
 set(ADDITIONAL_LIB_DIRS "" CACHE INTERNAL "")
+set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
+set(PYTHON_EXECUTABLE "" CACHE STRING "Path to Python executable")
 option(WITH_LANGUAGES_APIS "Build all languages APIS" ON)
 option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
-option(WITH_DOT_NET_EXECUTORS "Build with .NET Executors" ON)
+option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
-set(CXX_API_INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/api/cxx/include)
 
-project(WebFramework VERSION 3.2.0)
+project(WebFramework VERSION 3.3.0)
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
@@ -71,11 +74,11 @@ add_library(
 	WebFramework/src/WFDP/CSharpDynamicFunction.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp
 	WebFramework/src/Rendering/MDRenderer.cpp
+	WebFramework/src/Runtimes/Runtime.cpp
 	WebFramework/src/Runtimes/CXXRuntime.cpp
 	WebFramework/src/Runtimes/CCRuntime.cpp
 	WebFramework/src/Runtimes/PythonRuntime.cpp
 	WebFramework/src/Runtimes/DotNetRuntime.cpp
-	WebFramework/src/Exceptions/NotFoundException.cpp
 	WebFramework/src/Exceptions/CantFindFunctionException.cpp
 	WebFramework/src/Exceptions/CantLoadSourceException.cpp
 	WebFramework/src/Exceptions/DynamicPagesSyntaxException.cpp
@@ -84,7 +87,7 @@ add_library(
 	WebFramework/src/Exceptions/CSharpException.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
-	WebFramework/src/LoadBalancer/Heuristics/BaseLoadBalancerHeuristic.cpp
+	WebFramework/src/LoadBalancer/Heuristics/LoadBalancerHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/Connections.cpp
 	WebFramework/src/LoadBalancer/Heuristics/CXXHeuristic.cpp
 	WebFramework/src/LoadBalancer/Heuristics/CCHeuristic.cpp
@@ -94,29 +97,33 @@ add_library(
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
-	WebFramework/src/Utility/BaseConnectionData.cpp
+	WebFramework/src/Utility/ConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Utility/SegfaultHandler.cpp
+	WebFramework/src/Utility/Utils.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
 	WebFramework/src/Managers/RuntimesManager.cpp
+	WebFramework/src/Managers/TaskBrokersManager.cpp
+	WebFramework/src/Managers/TaskExecutorsManager.cpp
 	WebFramework/src/Web/Servers/BaseWebServer.cpp
 	WebFramework/src/Web/Servers/MultithreadedWebServer.cpp
 	WebFramework/src/Web/Servers/ThreadPoolWebServer.cpp
 	WebFramework/src/Web/Servers/ExecutorServer.cpp
 	WebFramework/src/Framework/Config.cpp
 	WebFramework/src/Framework/WebFramework.cpp
-	WebFramework/src/CAPI/WebFrameworkCAPI.cpp
-	WebFramework/src/CAPI/WebFrameworkExecutorsCAPI.cpp
-	WebFramework/src/CAPI/WebFrameworkUtilityCAPI.cpp
-	WebFramework/src/CAPI/WebFrameworkLocalizationCAPI.cpp
+	WebFramework/src/C_API/WebFrameworkCApi.cpp
+	WebFramework/src/C_API/WebFrameworkExecutorsCApi.cpp
+	WebFramework/src/C_API/WebFrameworkUtilityCApi.cpp
+	WebFramework/src/C_API/WebFrameworkLocalizationCApi.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
 	WebFramework/src/Utility/AdditionalServerSettings.cpp
 	WebFramework/src/Utility/ExecutorsUtility.cpp
-	WebFramework/src/Web/HTTPRequestImplementation.cpp
-	WebFramework/src/Web/HTTPResponseImplementation.cpp
+	WebFramework/src/Utility/TaskExecutorsSettings.cpp
+	WebFramework/src/Web/HttpRequestImplementation.cpp
+	WebFramework/src/Web/HttpResponseImplementation.cpp
 	WebFramework/src/Databases/DatabaseImplementation.cpp
 	WebFramework/src/Databases/TableImplementation.cpp
 	WebFramework/src/Databases/SQLResultImplementation.cpp
@@ -125,6 +132,15 @@ add_library(
 	WebFramework/src/Executors/CCExecutor.cpp
 	WebFramework/src/Executors/PythonExecutor.cpp
 	WebFramework/src/Executors/CSharpExecutor.cpp
+	WebFramework/src/TaskBroker/TaskBroker.cpp
+	WebFramework/src/TaskBroker/InternalTaskBroker.cpp
+	WebFramework/src/TaskBroker/RabbitMqTaskBroker.cpp
+	WebFramework/src/TaskBroker/TaskConsumer.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/TaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/CXXTaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/CCTaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/PythonTaskExecutor.cpp
+	WebFramework/src/TaskBroker/TaskExecutors/CSharpTaskExecutor.cpp
 )
 
 # Used in Python API install
@@ -139,15 +155,13 @@ if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 endif()
 
-if (${WITH_PYTHON_EXECUTORS})
-	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+	if (${WITH_PYTHON_EXECUTORS})
 		add_definitions(-D__WITH_PYTHON_EXECUTORS__)
 	endif()
-endif()
 
-if (${WITH_DOT_NET_EXECUTORS})
-	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
-		add_definitions(-D__WITH_DOT_NET_EXECUTORS__)
+	if (${WITH_DOTNET_EXECUTORS})
+		add_definitions(-D__WITH_DOTNET_EXECUTORS__)
 	endif()
 endif()
 
@@ -166,21 +180,22 @@ add_subdirectory(BaseTCPServer)
 add_subdirectory(ThreadPool)
 add_subdirectory(INIParser)
 add_subdirectory(Log)
-add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(SHA256)
 add_subdirectory(UtilityLibrary)
 add_subdirectory(Databases)
 
+add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(Localization) # has JSON as dependency
 add_subdirectory(FileManager) # has ThreadPool as dependency
 
-add_subdirectory(API)
+if (${WITH_LANGUAGES_APIS})
+	add_subdirectory(API)
+endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	WebFramework/src/
+	WebFramework/include/
 	WebFrameworkCore/src/
-	WebFrameworkCore/vendor/sqlite3/include/
 	WebFrameworkExecutors/src/
 	BaseTCPServer/src/
 	INIParser/src/
@@ -192,6 +207,7 @@ target_include_directories(
 target_link_directories(
 	${PROJECT_NAME} PUBLIC
 	${SQLITE_LIBRARY_PATH}
+	${HIREDIS_LIBRARY_PATH}
 	${ADDITIONAL_LIB_DIRS}
 )
 
@@ -242,6 +258,7 @@ install(
 		endif()
 
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
+		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 	]]
 )
 install(

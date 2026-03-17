@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "title": "WebFramework config",
   "type": "object",
   "description": "Settings for WebFramework server",
@@ -176,8 +176,11 @@
           "enum": [ "multiThreaded", "threadPool", "loadBalancer", "proxy" ]
         },
         "userAgentFilter": {
-          "type": "string",
-          "description": "Filter input requests by User-Agent"
+          "type": [ "string", "array" ],
+          "description": "Filter input requests by User-Agent",
+          "items": {
+            "type": "string"
+          }
         },
         "largeBodySizeThreshold": {
           "type": "integer",
@@ -187,10 +190,21 @@
           "type": "integer",
           "description": "Size of single packet from large message"
         },
-        "databaseImplementation": {
-          "type": "string",
-          "description": "Database implementation name",
-          "enum": [ "sqlite" ]
+        "databases": {
+          "description": "Database implementation names",
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [ "sqlite", "redis" ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [ "sqlite", "redis" ]
+              }
+            }
+          ]
         },
         "resourcesThreads": {
           "type": "integer",
@@ -253,6 +267,73 @@
       "anyOf": [
         { "required": [ "settingsPaths", "loadSources" ] },
         { "required": [ "additionalConfigs" ] }
+      ]
+    },
+    "TaskBroker": {
+      "type": "object",
+      "description": "Task broker settings",
+      "properties": {
+        "taskExecutorsSettings": {
+          "type": "array",
+          "description": "Settings file paths for task executors",
+          "items": {
+            "type": "string"
+          }
+        },
+        "consumer": {
+          "type": "string",
+          "description": "Which consumer is used for executing tasks",
+          "enum": [ "internal", "external" ]
+        },
+        "taskBrokers": {
+          "type": "array",
+          "description": "Task sources",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [ "internal", "rabbitmq" ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Task broker name",
+                    "enum": [ "sqlite", "redis" ]
+                  },
+                  "settings": {
+                    "type": "object",
+                    "description": "Task broker specific settings"
+                  }
+                }
+              }
+            ]
+          },
+          "minItems": 1
+        },
+        "consumerThreads": {
+          "type": "number",
+          "description": "Number of threads used by consumer to execute task executors",
+          "default": 1
+        },
+        "checkPeriod": {
+          "type": "integer",
+          "description": "Check period time in milliseconds",
+          "default": 2500
+        }
+      },
+      "required": [ "taskBrokers", "consumer" ],
+      "allOf": [
+        {
+          "if": {
+            "properties": { "consumer": { "const": "internal" } },
+            "required": [ "consumer" ]
+          },
+          "then": {
+            "required": [ "taskExecutorsSettings" ]
+          }
+        }
       ]
     },
     "Logging": {

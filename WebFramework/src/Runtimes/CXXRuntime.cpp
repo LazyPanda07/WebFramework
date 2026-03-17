@@ -1,19 +1,24 @@
-#include "CXXRuntime.h"
-
-#include <Log.h>
+#include "Runtimes/CXXRuntime.h"
 
 #include "Executors/CXXExecutor.h"
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "TaskBroker/TaskExecutors/CXXTaskExecutor.h"
+#include "Utility/Utils.h"
 
 namespace framework::runtime
 {
+	void CXXRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
+	{
+		utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(source), "initializeWebFrameworkCXX")(libraryPath.data());
+	}
+
 	void CXXRuntime::finishInitialization()
 	{
 
 	}
 
-	bool CXXRuntime::loadExecutor(std::string_view name, const utility::LoadSource& source)
+	bool CXXRuntime::loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<HMODULE>(source))
 		{
@@ -29,7 +34,7 @@ namespace framework::runtime
 
 			if (Log::isValid())
 			{
-				Log::info("Found {} in {}", "LogRuntime", creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+				Log::info<logging::message::foundExecutor, logging::category::cxxRuntime>(creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string(), route.empty() ? R"("")" : route);
 			}
 
 			creators.emplace(name, std::make_tuple(module, creator));
@@ -40,13 +45,13 @@ namespace framework::runtime
 		return false;
 	}
 
-	std::unique_ptr<BaseExecutor> CXXRuntime::createExecutor(std::string_view name) const
+	std::unique_ptr<Executor> CXXRuntime::createExecutor(std::string_view name) const
 	{
 		auto it = creators.find(name);
 
 		if (it == creators.end())
 		{
-			throw std::runtime_error(std::format("Can't find executor with name {}", name));
+			utility::logAndThrowException<logging::message::cantFindExecutor, logging::category::cxxRuntime>(name);
 		}
 
 		const auto& [_, creatorData] = *it;
@@ -55,24 +60,44 @@ namespace framework::runtime
 		return std::make_unique<CXXExecutor>(module, creator());
 	}
 
+	std::unique_ptr<task_broker::TaskExecutor> CXXRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
+	{
+		if (!std::holds_alternative<HMODULE>(source))
+		{
+			return nullptr;
+		}
+
+		HMODULE module = std::get<HMODULE>(source);
+		std::string creatorFunctionName = std::format("create{}TaskCXXInstance", name);
+
+		if (task_broker::CreateTaskExecutorSignature creator = utility::load<task_broker::CreateTaskExecutorSignature>(module, creatorFunctionName))
+		{
+			std::filesystem::path sourcePath = utility::getPathToLibrary(module);
+
+			if (Log::isValid())
+			{
+				Log::info<logging::message::foundTaskExecutor, logging::category::cxxRuntime>(creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+			}
+
+			return std::make_unique<task_broker::CXXTaskExecutor>(module, creator());
+		}
+
+		utility::logAndThrowException<logging::message::cantFindTaskExecutor, logging::category::cxxRuntime>(name);
+	}
+
 	void* CXXRuntime::createExecutorSettings(const void* implementation) const
 	{
 		return const_cast<void*>(implementation);
 	}
 
-	void* CXXRuntime::createHTTPRequest(framework::interfaces::IHTTPRequest* request) const
+	void* CXXRuntime::createHTTPRequest(framework::interfaces::IHttpRequest* request) const
 	{
 		return request;
 	}
 
-	void* CXXRuntime::createHTTPResponse(framework::interfaces::IHTTPResponse* response) const
+	void* CXXRuntime::createHTTPResponse(framework::interfaces::IHttpResponse* response) const
 	{
 		return response;
-	}
-
-	void CXXRuntime::initializeWebFramework(const utility::LoadSource& source, std::string_view libraryPath)
-	{
-		utility::load<InitializeWebFrameworkInExecutor>(std::get<HMODULE>(source), "initializeWebFrameworkCXX")(libraryPath.data());
 	}
 
 	std::optional<std::string> CXXRuntime::loadSource(std::string_view pathToSource, utility::LoadSource& source)

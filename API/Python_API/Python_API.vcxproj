@@ -112,6 +112,8 @@ cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFra
     <ClCompile Include="src\PyChunkGenerator.cpp" />
     <ClCompile Include="src\PyDynamicFunction.cpp" />
     <ClCompile Include="src\PyLoadBalancerHeuristic.cpp" />
+    <ClCompile Include="src\PyTaskExecutor.cpp" />
+    <ClCompile Include="src\PyTaskSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Executors\PyHeavyOperationStatefulExecutor.h" />
@@ -121,6 +123,8 @@ cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFra
     <ClInclude Include="src\PyChunkGenerator.h" />
     <ClInclude Include="src\PyDynamicFunction.h" />
     <ClInclude Include="src\PyLoadBalancerHeuristic.h" />
+    <ClInclude Include="src\PyTaskExecutor.h" />
+    <ClInclude Include="src\PyTaskSerializer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

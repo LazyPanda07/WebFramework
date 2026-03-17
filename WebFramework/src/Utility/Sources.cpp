@@ -1,14 +1,15 @@
-#include "Sources.h"
+#include "Utility/Sources.h"
 
 #include <Log.h>
 #include <Exceptions/FileDoesNotExistException.h>
 
-#include "DynamicLibraries.h"
+#include "Utility/DynamicLibraries.h"
 #include "Exceptions/CantLoadSourceException.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/RuntimesManager.h"
 #include "Runtimes/CXXRuntime.h"
 #include "Runtimes/CCRuntime.h"
+#include "Utility/Utils.h"
 
 namespace framework::utility
 {
@@ -45,12 +46,7 @@ namespace framework::utility
 
 			if (type >= utility::LoadSourceType::dynamicLibrary && !std::filesystem::exists(pathToSource))
 			{
-				if (Log::isValid())
-				{
-					Log::error("Can't find source {}", "LogWebFrameworkSources", pathToSource);
-				}
-
-				throw file_manager::exceptions::FileDoesNotExistException(pathToSource);
+				utility::logAndThrowException<logging::message::cantFindSource, logging::category::sources>(pathToSource);
 			}
 
 			if (type == LoadSourceType::dynamicLibrary)
@@ -77,12 +73,7 @@ namespace framework::utility
 
 			if (exceptionMessage.size())
 			{
-				if (Log::isValid())
-				{
-					Log::error("Can't load source {}, {}", "LogWebFrameworkSources", pathToSource, exceptionMessage);
-				}
-
-				throw exceptions::CantLoadSourceException(pathToSource, exceptionMessage);
+				utility::logAndThrowException<logging::message::cantLoadSource, logging::category::sources>(pathToSource, exceptionMessage);
 			}
 
 			result.emplace_back(std::move(source), pathToSource);

@@ -14,6 +14,7 @@
 #include <HttpParser.h>
 #include <HttpBuilder.h>
 #include <ConsoleArgumentParser.h>
+#include <ProcessWrapper.h>
 
 #include "utilities/utilities.h"
 
@@ -88,8 +89,6 @@ TEST(LoadBalancer, CustomHeuristic)
 			std::string request = web::HttpBuilder().getRequest().build();
 			std::string response;
 
-			std::this_thread::sleep_for(std::chrono::seconds(random() % 5));
-
 			stream << request;
 
 			stream >> response;
@@ -129,41 +128,42 @@ void printLog()
 	}
 }
 
-int main(int argc, char** argv)
+int main(int argc, char** argv) try
 {
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
+	std::vector<unit_test_utils::ProcessWrapper> loadBalancerServers;
 
-	port = parser.get<int64_t>("--port");
-	useHTTPS = parser.get<bool>("--useHTTPS");
-	customHeuristic = parser.get<bool>("--custom_heuristic");
+	unit_test_utils::updateConfigRuntimes(parser.getRequired<std::string>("config"), parser);
+
+	loadBalancerServers.reserve(2);
+
+	port = parser.getRequired<int64_t>("port");
+	useHTTPS = parser.get<bool>("useHTTPS");
+	customHeuristic = parser.get<bool>("custom_heuristic");
+
+	std::vector<std::string> loadBalancerRunArguments = unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", parser.getRequired<std::string>("config"), "--port", port);
+
+	if (parser.get<bool>("serversHTTPS"))
+	{
+		loadBalancerRunArguments.emplace_back("--serversHTTPS");
+
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config_https.json", "--port", 10002, "--type", "server"));
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config_https.json", "--port", 10003, "--type", "server"));
+	}
+	else
+	{
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config.json", "--port", 10000, "--type", "server"));
+		loadBalancerServers.emplace_back(unit_test_utils::splitArguments(parser.getRequired<std::string>("load_balancer_run_arguments"), "--config", "load_balancer_config.json", "--port", 10001, "--type", "server"));
+	}
+
+	if (customHeuristic)
+	{
+		loadBalancerRunArguments.emplace_back("--custom_heuristic");
+	}
+
+	unit_test_utils::ProcessWrapper loadBalancer(loadBalancerRunArguments);
 
 	testing::InitGoogleTest(&argc, argv);
-
-	constexpr std::array<std::string_view, 4> loadBalancers =
-	{
-		START_LOAD_BALANCER_9090_SERVER_FILE,
-		START_LOAD_BALANCER_9091_SERVER_FILE,
-		START_LOAD_BALANCER_9092_SERVER_FILE,
-		START_LOAD_BALANCER_9093_SERVER_FILE
-	};
-
-	auto start = std::chrono::high_resolution_clock::now();
-
-	while (!std::ranges::all_of(loadBalancers, [](std::string_view file) { return std::filesystem::exists(file); }))
-	{
-		std::cout << "Wait for all load balancers..." << std::endl;
-
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-
-		auto end = std::chrono::high_resolution_clock::now();
-
-		if (std::chrono::duration_cast<std::chrono::minutes>(end - start).count() > 5)
-		{
-			printLog();
-
-			return -1;
-		}
-	}
 
 	int result = RUN_ALL_TESTS();
 
@@ -173,4 +173,10 @@ int main(int argc, char** argv)
 	}
 
 	return result;
+}
+catch (const std::exception& e)
+{
+	std::cerr << e.what() << std::endl;
+
+	exit(-1);
 }

@@ -23,15 +23,20 @@ namespace framework
 	private:
 		void* implementation;
 		bool weak;
+		bool initialized;
 
 	private:
 		static void addArrayValue(void* object, void* array);
 
-	private:
-		JsonObject(void* implementation, bool weak = true);
-
 	public:
 		JsonObject();
+
+		/**
+		 * @brief Internal use
+		 * @param implementation 
+		 * @param weak 
+		 */
+		JsonObject(void* implementation, bool weak = true);
 
 		JsonObject(const JsonObject& other);
 
@@ -85,6 +90,7 @@ namespace framework
 
 		friend class JsonBuilder;
 		friend class JsonParser;
+		friend class HttpRequest;
 	};
 }
 
@@ -97,13 +103,15 @@ namespace framework
 
 	inline JsonObject::JsonObject(void* implementation, bool weak) :
 		implementation(implementation),
-		weak(weak)
+		weak(weak),
+		initialized(true)
 	{
 
 	}
 
 	inline JsonObject::JsonObject() :
-		weak(false)
+		weak(false),
+		initialized(true)
 	{
 		using createJsonObject = void* (*)(void* object, void** exception);
 		void* exception = nullptr;
@@ -116,12 +124,14 @@ namespace framework
 		}
 	}
 
-	inline JsonObject::JsonObject(const JsonObject& other)
+	inline JsonObject::JsonObject(const JsonObject& other) :
+		initialized(true)
 	{
 		(*this) = other;
 	}
 
-	inline JsonObject::JsonObject(JsonObject&& other) noexcept
+	inline JsonObject::JsonObject(JsonObject&& other) noexcept :
+		initialized(false)
 	{
 		(*this) = std::move(other);
 	}
@@ -145,11 +155,23 @@ namespace framework
 
 	inline JsonObject& JsonObject::operator =(JsonObject&& other) noexcept
 	{
-		implementation = other.implementation;
-		weak = other.weak;
+		if (initialized)
+		{
+			this->operator=<JsonObject&>(other);
 
-		other.implementation = nullptr;
+			if (other.weak)
+			{
+				other.implementation = nullptr;
+			}
+		}
+		else
+		{
+			implementation = other.implementation;
+			weak = other.weak;
 
+			other.implementation = nullptr;
+		}
+		
 		return *this;
 	}
 

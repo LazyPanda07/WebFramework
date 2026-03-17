@@ -11,7 +11,7 @@ typedef struct
 	uint64_t id;
 } CustomHeuristic;
 
-DEFINE_HEURISTIC(CustomHeuristic);
+DEFINE_HEURISTIC(CustomHeuristic)
 
 DEFINE_HEURISTIC_INIT(CustomHeuristic)
 {

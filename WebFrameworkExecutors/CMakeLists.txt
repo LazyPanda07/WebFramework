@@ -4,22 +4,16 @@ project(WebFrameworkExecutors)
 
 add_library(
 	${PROJECT_NAME} STATIC
-	src/Executors/BaseExecutor.cpp
-	src/Executors/BaseHeavyOperationStatefulExecutor.cpp
-	src/Executors/BaseHeavyOperationStatelessExecutor.cpp
-	src/Executors/BaseStatefulExecutor.cpp
-	src/Executors/BaseStatelessExecutor.cpp
+	src/Executors/Executor.cpp
+	src/Executors/HeavyOperationStatefulExecutor.cpp
+	src/Executors/HeavyOperationStatelessExecutor.cpp
+	src/Executors/StatefulExecutor.cpp
+	src/Executors/StatelessExecutor.cpp
 	src/Utility/JSONSettingsParser.cpp
-	src/Exceptions/BaseExecutorException.cpp
+	src/Exceptions/ExecutorException.cpp
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
-	src/c_api/executors_c_api.cpp
-	src/Web/HTTPRequestExecutors.cpp
-	src/Web/HTTPResponseExecutors.cpp
-	src/Databases/DatabaseExecutors.cpp
-	src/Databases/TableExecutors.cpp
-	src/Databases/SQLValueExecutors.cpp
-	src/Databases/SQLResultExecutors.cpp
+	src/Exceptions/NotFoundException.cpp
 )
 
 if (${WITH_UNITY_BUILD})
@@ -28,7 +22,7 @@ endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	src/
+	include/
 )
 
 target_link_libraries(
@@ -44,7 +38,7 @@ target_link_libraries(
 
 install(
 	TARGETS ${PROJECT_NAME} 
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
+	ARCHIVE DESTINATION lib
+	LIBRARY DESTINATION lib
+	RUNTIME DESTINATION dll
 )

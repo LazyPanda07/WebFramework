@@ -1,5 +1,8 @@
 #include "http_request.h"
 
+#include "json_object.h"
+#include "task_broker/task_brokers.h"
+
 typedef struct file_buffer
 {
 	char** data;
@@ -440,29 +443,29 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
 	return exception;
 }
 
-web_framework_exception_t wf_register_wfdp_function(http_request_t implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*registerWFDPFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+	typedef void (*registerDynamicFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerWFDPFunction, functionName, function, deleter, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunction, function_name, function, deleter, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_unregister_wfdp_function(http_request_t implementation, const char* functionName)
+web_framework_exception_t wf_unregister_dynamic_function(http_request_t implementation, const char* functionName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*unregisterWFDPFunction)(void* implementation, const char* functionName, void** exception);
+	typedef void (*unregisterDynamicFunction)(void* implementation, const char* functionName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterWFDPFunction, functionName, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(unregisterDynamicFunction, functionName, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_is_wfdp_function_registered(http_request_t implementation, const char* functionName, bool* result)
+web_framework_exception_t wf_is_dynamic_function_registered(http_request_t implementation, const char* functionName, bool* result)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -518,7 +521,7 @@ web_framework_exception_t wf_get_chunks(http_request_t implementation, http_chun
 	return exception;
 }
 
-web_framework_exception_t wf_get_file(http_request_t implementation, const char* filePath, const char** result, size_t* size)
+web_framework_exception_t wf_get_file(http_request_t implementation, const char* filePath, char** result, size_t* size)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -531,7 +534,7 @@ web_framework_exception_t wf_get_file(http_request_t implementation, const char*
 	return exception;
 }
 
-web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* fileData, size_t size, const char* fileExtension, const char** result, size_t* resultSize)
+web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* fileData, size_t size, const char* fileExtension, char** result, size_t* resultSize)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -544,7 +547,7 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
 	return exception;
 }
 
-web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, const char** result, size_t* resultSize)
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, char** result, size_t* resultSize)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -612,46 +615,46 @@ web_framework_exception_t wf_get_server_port(http_request_t implementation, uint
 	return exception;
 }
 
-web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* databaseName, database_t* result)
+web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* databaseName, const char* implementationName, database_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getOrCreateDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
+	typedef void* (*getOrCreateDatabaseRequest)(void* implementation, const char* databaseName, const char* implementationName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseRequest, databaseName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateDatabaseRequest, databaseName, implementationName, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* databaseName, database_t* result)
+web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* databaseName, const char* implementationName, database_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getDatabaseRequest)(void* implementation, const char* databaseName, void** exception);
+	typedef void* (*getDatabaseRequest)(void* implementation, const char* databaseName, const char* implementationName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseRequest, databaseName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getDatabaseRequest, databaseName, implementationName, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* databaseName, const char* tableName, const char* createTableQuery, table_t* result)
+web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, table_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getOrCreateTableRequest)(void* implementation, const char* databaseName, const char* tableName, const char* createTableQuery, void** exception);
+	typedef void* (*getOrCreateTableRequest)(void* implementation, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTableRequest, databaseName, tableName, createTableQuery, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getOrCreateTableRequest, databaseName, implementationName, tableName, createTableQuery, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* databaseName, const char* tableName, table_t* result)
+web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* databaseName, const char* implementationName, const char* tableName, table_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*getTableRequest)(void* implementation, const char* databaseName, const char* tableName, void** exception);
+	typedef void* (*getTableRequest)(void* implementation, const char* databaseName, const char* implementationName, const char* tableName, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTableRequest, databaseName, tableName, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTableRequest, databaseName, implementationName, tableName, &exception);
 
 	return exception;
 }
@@ -707,6 +710,50 @@ web_framework_exception_t wf_send_file_chunks(http_request_t implementation, htt
 	typedef void (*sendFileChunks)(void* implementation, void* response, const char* fileName, const char* (*chunkGenerator)(void* data, size_t* size), void* data, void** exception);
 
 	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendFileChunks, response, fileName, chunkGenerator, data, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_enqueue_task
+(
+	http_request_t implementation,
+	const char* message_broker_name,
+	const char* task_executor_api,
+	const char* task_executor_name,
+	void* task_struct,
+	void(*serialize_task)(void* task_struct, json_object_t* serialized_arguments)
+)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*enqueueTask)(void* implementation, const char* messageBrokerName, void* jsonObjectData, void** exception);
+
+	json_object_t jsonObjectData;
+	json_object_t arguments;
+	json_object_t api;
+	json_object_t name;
+
+	wf_create_json_object(&jsonObjectData);
+
+	wf_assign_json_object(&jsonObjectData, "arguments", &arguments);
+	wf_assign_json_object(&jsonObjectData, "api", &api);
+	wf_assign_json_object(&jsonObjectData, "name", &name);
+
+	wf_set_json_object_string(&api, task_executor_api);
+	wf_set_json_object_string(&name, task_executor_name);
+
+	if (!strcmp(message_broker_name, RABBIT_MQ_TASK_BROKER_NAME))
+	{
+		json_object_t queue;
+
+		wf_assign_json_object(&jsonObjectData, "queue", &queue);
+
+		wf_set_json_object_string(&queue, "cc_queue");
+	}
+
+	serialize_task(task_struct, &arguments);
+
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(enqueueTask, message_broker_name, jsonObjectData.implementation, &exception);
 
 	return exception;
 }

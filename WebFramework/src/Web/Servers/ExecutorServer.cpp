@@ -1,18 +1,20 @@
-#include "ExecutorServer.h"
+#include "Web/Servers/ExecutorServer.h"
 
-#include <Log.h>
+#include <cstring>
+
 #include <Exceptions/FileDoesNotExistException.h>
 
 #include "Exceptions/NotFoundException.h"
 #include "Exceptions/APIException.h"
+#include "Exceptions/BadRequestException.h"
 #include "Exceptions/CSharpException.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
-	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HTTPRequestImplementation& request, HTTPResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
+	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
 	{
 		ServiceState result = ServiceState::success;
-		HTTPResponseExecutors responseWrapper(&response);
 
 		try
 		{
@@ -22,12 +24,12 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Executors serve exception: {}", "LogExecutorServer", e.what());
+				Log::error<logging::message::executorsServeException, logging::category::executorServer>(e.what());
 			}
 
 			result = ServiceState::error;
 		}
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 		catch (const exceptions::CSharpException& e)
 		{
 			if (Log::isValid())
@@ -35,13 +37,24 @@ namespace framework
 				Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), static_cast<int64_t>(e.getResponseCode()));
 			}
 
+			const char* exceptionMessage = e.what();
+
 			response.setResponseCode(static_cast<int64_t>(e.getResponseCode()));
-			response.setBody(e.what());
+			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
+
+			stream << response;
+
+			result = ServiceState::skipResponse;
 		}
 #endif
 		catch (const exceptions::BadRequestException& e) // 400
 		{
-			resources.badRequestError(responseWrapper, &e);
+			if (Log::isValid())
+			{
+				Log::error<logging::message::badRequest, logging::category::executorServer>(e.what());
+			}
+
+			resources.badRequestError(response, &e);
 
 			stream << response;
 
@@ -49,7 +62,12 @@ namespace framework
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
 		{
-			resources.notFoundError(responseWrapper, &e);
+			if (Log::isValid())
+			{
+				Log::error<logging::message::cantFindFile, logging::category::executorServer>(e.what());
+			}
+
+			resources.notFoundError(response, &e);
 
 			stream << response;
 
@@ -57,7 +75,12 @@ namespace framework
 		}
 		catch (const exceptions::NotFoundException& e) // 404
 		{
-			resources.notFoundError(responseWrapper, &e);
+			if (Log::isValid())
+			{
+				Log::error<logging::message::notFound, logging::category::executorServer>(e.what());
+			}
+
+			resources.notFoundError(response, &e);
 
 			stream << response;
 
@@ -70,21 +93,23 @@ namespace framework
 				Log::error("Exception from API: {} with response code: {}", e.getLogCategory(), e.what(), e.getResponseCode());
 			}
 
+			const char* exceptionMessage = e.what();
+
 			response.setResponseCode(e.getResponseCode());
-			response.setBody(e.what());
+			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
 
 			stream << response;
 
 			result = ServiceState::skipResponse;
 		}
-		catch (const exceptions::BaseExecutorException& e) // 500
+		catch (const exceptions::ExecutorException& e) // 500
 		{
 			if (Log::isValid())
 			{
-				Log::error("Internal server error: {}", "LogExecutorServer", e.what());
+				Log::error<logging::message::executorInternalServer, logging::category::executorServer>(e.what());
 			}
 
-			resources.internalServerError(responseWrapper, &e);
+			resources.internalServerError(response, &e);
 
 			stream << response;
 
@@ -102,16 +127,16 @@ namespace framework
 				}
 
 				response.setResponseCode(exceptionData.responseCode);
-				response.setBody(exceptionData.errorMessage);
+				response.setBody(exceptionData.errorMessage, std::strlen(exceptionData.errorMessage));
 			}
 			else
 			{
 				if (Log::isValid())
 				{
-					Log::error("Internal server error: {}", "LogExecutorServer", e.what());
+					Log::error<logging::message::internalServerError, logging::category::executorServer>(e.what());
 				}
 
-				resources.internalServerError(responseWrapper, &e);
+				resources.internalServerError(response, &e);
 			}
 
 			stream << response;
@@ -120,7 +145,7 @@ namespace framework
 		}
 		catch (...)	// 500
 		{
-			resources.internalServerError(responseWrapper, nullptr);
+			resources.internalServerError(response, nullptr);
 
 			stream << response;
 
@@ -140,29 +165,8 @@ namespace framework
 	) :
 		additionalSettings(additionalSettings)
 	{
-		try
-		{
-			executorsManager = std::make_unique<ExecutorsManager>(configuration, pathToSources, std::move(executorsSettings), additionalSettings, threadPool);
+		executorsManager = std::make_unique<ExecutorsManager>(configuration, pathToSources, std::move(executorsSettings), additionalSettings, threadPool);
 
-			resources = executorsManager->getResourceExecutor();
-		}
-		catch (const std::exception& e)
-		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Can't create server: {}", "LogExecutorServer", 2, e.what());
-			}
-
-			throw;
-		}
-		catch (...)
-		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Something went wrong", "LogExecutorServer", 2);
-			}
-
-			throw;
-		}
+		resources = executorsManager->getResourceExecutor();
 	}
 }

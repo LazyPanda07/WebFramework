@@ -1,4 +1,4 @@
-#include "HTTPSSingleton.h"
+#include "Utility/Singletons/HTTPSSingleton.h"
 
 namespace framework::utility
 {

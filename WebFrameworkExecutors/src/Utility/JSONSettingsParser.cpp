@@ -1,4 +1,4 @@
-#include "JSONSettingsParser.h"
+#include "Utility/JSONSettingsParser.h"
 
 #include <fstream>
 
@@ -13,6 +13,11 @@
 
 namespace framework::utility
 {
+	JSONSettingsParser::ExecutorSettings::~ExecutorSettings()
+	{
+		std::ranges::for_each(databases, [](interfaces::IDatabase* database) { delete database; });
+	}
+
 	JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
 		executorLoadType(LoadType::none)
 	{
@@ -45,7 +50,7 @@ namespace framework::utility
 
 		for (const auto& [name, description] : iterator)
 		{
-			if (name == "$schema")
+			if (!description.is<json::JsonObject>())
 			{
 				continue;
 			}
@@ -54,7 +59,6 @@ namespace framework::utility
 			ExecutorSettings executorSettings(name);
 
 			description.tryGet<json::JsonObject>(json_settings::initParametersKey, executorSettings.initParameters);
-			description.tryGet<std::string>(json_settings::userAgentFilterKey, executorSettings.userAgentFilter);
 			
 			executorSettings.apiType = description[json_settings::apiTypeKey].get<std::string>();
 
@@ -70,6 +74,17 @@ namespace framework::utility
 			{
 				throw std::runtime_error("Wrong loadType");
 			}
+
+			if (description.contains<std::string>(json_settings::userAgentFilterKey))
+			{
+				executorSettings.userAgentFilter.emplace_back(description[json_settings::userAgentFilterKey].get<std::string>());
+			}
+			else if (description.contains<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey))
+			{
+				executorSettings.userAgentFilter = json::utility::JsonArrayWrapper(description[json_settings::userAgentFilterKey].get<std::vector<json::JsonObject>>()).as<std::string>();
+			}
+
+			std::erase(executorSettings.userAgentFilter, "");
 
 			if (description[json_settings::routeKey].is<std::string>())
 			{

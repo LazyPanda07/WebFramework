@@ -2,6 +2,9 @@
 
 #include "http_response.h"
 #include "databases/database.h"
+#include "databases/implementations/default_database.h"
+#include "databases/implementations/redis_database.h"
+#include "databases/implementations/sqlite_database.h"
 
 typedef void* http_request_t;
 
@@ -158,7 +161,7 @@ web_framework_exception_t wf_get_attribute(http_request_t implementation, const 
 
 /**
  * @brief Delete session
- * @param implementation http_request_t instance 
+ * @param implementation http_request_t instance
  * @return Error if occurred
  */
 web_framework_exception_t wf_delete_session(http_request_t implementation);
@@ -182,7 +185,7 @@ web_framework_exception_t wf_get_cookies(http_request_t implementation, cookie_t
 
 /**
  * @brief Get multiparts
- * @param implementation http_request_t instance 
+ * @param implementation http_request_t instance
  * @param result Multiparts. Delete with free function
  * @param size Size of multiparts
  * @return Error if occurred
@@ -205,7 +208,7 @@ web_framework_exception_t wf_get_large_data(http_request_t implementation, const
  * @param variables Variables for processing if file is .wfdp
  * @param variablesSize Size of variables
  * @param isBinary Is binary file
- * @param fileName Optional parameter. Custom name
+ * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
 web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
@@ -216,7 +219,7 @@ web_framework_exception_t wf_send_asset_file(http_request_t implementation, cons
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
  * @param isBinary Is binary file
- * @param fileName Optional parameter. Custom name
+ * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
 web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* file_path, http_response_t response, bool is_binary, const char* file_name);
@@ -229,7 +232,7 @@ web_framework_exception_t wf_send_static_file(http_request_t implementation, con
  * @param variables Variables for processing .wfdp file
  * @param variablesSize Size of variables
  * @param isBinary Is binary file
- * @param fileName Optional parameter. Custom name
+ * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
 web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
@@ -251,9 +254,9 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
  * @param functionName Function name
  * @param function Callback called in processing .wfdp files
  * @param deleter Deleter for values from function
- * @return 
+ * @return
  */
-web_framework_exception_t wf_register_wfdp_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
 
 /**
  * @brief Unregister function for processing .wfdp files
@@ -261,7 +264,7 @@ web_framework_exception_t wf_register_wfdp_function(http_request_t implementatio
  * @param functionName Function name
  * @return Error if occurred
  */
-web_framework_exception_t wf_unregister_wfdp_function(http_request_t implementation, const char* function_name);
+web_framework_exception_t wf_unregister_dynamic_function(http_request_t implementation, const char* function_name);
 
 /**
  * @brief Check is WFDP function registered
@@ -270,7 +273,7 @@ web_framework_exception_t wf_unregister_wfdp_function(http_request_t implementat
  * @param result Is function registered
  * @return Error if occurred
  */
-web_framework_exception_t wf_is_wfdp_function_registered(http_request_t implementation, const char* function_name, bool* result);
+web_framework_exception_t wf_is_dynamic_function_registered(http_request_t implementation, const char* function_name, bool* result);
 
 /**
  * @brief Get HTTP body as Json
@@ -297,7 +300,7 @@ web_framework_exception_t wf_get_chunks(http_request_t implementation, http_chun
  * @param size File content size
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_file(http_request_t implementation, const char* file_path, const char** result, size_t* size);
+web_framework_exception_t wf_get_file(http_request_t implementation, const char* file_path, char** result, size_t* size);
 
 /**
  * @brief Process static files like .md
@@ -307,9 +310,9 @@ web_framework_exception_t wf_get_file(http_request_t implementation, const char*
  * @param fileExtension Supported processing extension
  * @param result Processed data
  * @param resultSize Processed data size
- * @return 
+ * @return
  */
-web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* file_data, size_t size, const char* file_extension, const char** result, size_t* result_size);
+web_framework_exception_t wf_process_static_file(http_request_t implementation, const char* file_data, size_t size, const char* file_extension, char** result, size_t* result_size);
 
 /**
  * @brief Process .wfdp files
@@ -319,9 +322,9 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
  * @param variablesSize Size of variables
  * @param result Processed data
  * @param resultSize Processed data size
- * @return 
+ * @return
  */
-web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size);
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, char** result, size_t* result_size);
 
 /**
  * @brief Get raw HTTP request
@@ -367,40 +370,44 @@ web_framework_exception_t wf_get_server_port(http_request_t implementation, uint
  * @brief Tries to get database or create if can't get
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* database_name, database_t* result);
+web_framework_exception_t wf_get_or_create_database_request(http_request_t implementation, const char* database_name, const char* implementationName, database_t* result);
 
 /**
  * @brief Get database
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param result database_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* database_name, database_t* result);
+web_framework_exception_t wf_get_database_request(http_request_t implementation, const char* database_name, const char* implementationName, database_t* result);
 
 /**
  * @brief Tries to get table from database or create if can't get
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param tableName Name of table
  * @param createTableQuery Create table query if can't get table
  * @param result table_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* database_name, const char* table_name, const char* create_table_query, table_t* result);
+web_framework_exception_t wf_get_or_create_table_request(http_request_t implementation, const char* database_name, const char* implementationName, const char* table_name, const char* create_table_query, table_t* result);
 
 /**
  * @brief Get table from database
  * @param implementation http_request_t instance
  * @param databaseName database_t name
+ * @param databaseName Macro from databases/implementations
  * @param tableName Name of table
  * @param result table_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* database_name, const char* table_name, table_t* result);
+web_framework_exception_t wf_get_table_request(http_request_t implementation, const char* database_name, const char* implementationName, const char* table_name, table_t* result);
 
 /**
  * @brief Get route parameter as /page/{}
@@ -451,12 +458,32 @@ web_framework_exception_t wf_send_chunks(http_request_t implementation, http_res
 web_framework_exception_t wf_send_file_chunks(http_request_t implementation, http_response_t response, const char* file_name, const char* (*chunk_generator)(void* data, size_t* size), void* data);
 
 /**
+ * @brief Add task to task broker
+ * @param implementation http_request_t instance
+ * @param message_broker_name Macro from task_broker/task_brokers.h
+ * @param task_struct You custom struct for serializing to JSON parameters and then executes with task executor
+ * @param task_executor_api Macro from task_broker/task_apis.h
+ * @param task_executor_name Name of task executor
+ * @param serializeTask Function that serialize task_struct into JSON
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_enqueue_task
+(
+	http_request_t implementation,
+	const char* message_broker_name,
+	const char* task_executor_api,
+	const char* task_executor_name,
+	void* task_struct,
+	void(*serialize_task)(void* task_struct, json_object_t* serialized_arguments)
+);
+
+/**
  * @brief Return from function with message and HTTP response code. Used for throwing errors
  * @param implementation http_request_t instance
  * @param exceptionMessage Error message
  * @param responseCode HTTP response code
  * @param logCategory Log category for logging
  * @param exceptionHash Same errors must have same hash
- * @return 
+ * @return Error if occurred
  */
 web_framework_exception_t wf_throw_web_framework_exception(http_request_t implementation, const char* exception_message, response_codes_t response_code, const char* log_category, size_t exception_hash);

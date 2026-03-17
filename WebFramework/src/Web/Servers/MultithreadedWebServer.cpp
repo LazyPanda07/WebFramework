@@ -1,11 +1,9 @@
-#include "MultithreadedWebServer.h"
+#include "Web/Servers/MultithreadedWebServer.h"
 
-#include "Log.h"
-#include "HttpsNetwork.h"
+#include <HttpsNetwork.h>
 
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
-#include "Exceptions/NotFoundException.h"
 #include "Exceptions/CantFindFunctionException.h"
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
@@ -15,6 +13,7 @@
 #include "Exceptions/SslException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
+#include "Utility/Utils.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6387)
@@ -30,7 +29,7 @@ namespace framework
 		{
 			if (useHTTPS)
 			{
-				ssl = SSL_new(context);
+				ssl = this->getNewSsl();
 
 				if (!ssl)
 				{
@@ -46,6 +45,8 @@ namespace framework
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
 				{
+					SSL_free(ssl);
+
 					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
@@ -54,19 +55,16 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("SSL exception: {}, ip: {}", "LogHTTPS", e.what(), ip);
+				Log::error<logging::message::sslException, logging::category::https>(e.what(), ip);
 			}
 
 			return;
 		}
 
-		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, std::chrono::milliseconds(timeout));
+		streams::IOSocketStream stream = this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout));
 		ExecutorsManager::StatefulExecutors executors;
-		HTTPResponseImplementation response;
-		HTTPRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
-		HTTPResponseExecutors responseWrapper(&response);
+		HttpResponseImplementation response;
+		HttpRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
 		bool finish = false;
 
@@ -75,7 +73,7 @@ namespace framework
 
 		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
 
-		std::vector<std::function<void(ServiceState&)>> chain =
+		const std::vector<std::function<void(ServiceState&)>> chain =
 		{
 			[&stream, &request, &largeBodyHandler](ServiceState& state)
 			{
@@ -90,11 +88,9 @@ namespace framework
 					state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
 				}
 			},
-			[this, &request, &responseWrapper, &executors](ServiceState& _)
+			[this, &request, &response, &executors](ServiceState& _)
 			{
-				HTTPRequestExecutors requestWrapper(&request);
-
-				executorsManager->service(requestWrapper, responseWrapper, executors);
+				executorsManager->service(request, response, executors);
 			},
 			[&stream, &response](ServiceState& _)
 			{
@@ -104,32 +100,32 @@ namespace framework
 				}
 			}
 		};
+		const void* lastChainTask = &*chain.rbegin();
 
 		while (isRunning)
 		{
 			response.setDefault();
+			const std::function<void(ServiceState&)>* task = &chain.front();
 
-			for (const std::function<void(ServiceState&)>& task : chain)
+			while (task)
 			{
-				ServiceState state = this->serviceRequests(stream, request, response, *resources, task);
+				switch (this->serviceRequests(stream, request, response, *resources, *task))
+				{
+				case framework::ExecutorServer::ServiceState::success:
+					task = task == lastChainTask ? nullptr : task + 1;
 
-				if (state == ServiceState::success)
-				{
-					continue;
-				}
-				else if (state == ServiceState::skipResponse)
-				{
 					break;
-				}
-				else if (state == ServiceState::error)
-				{
+
+				case framework::ExecutorServer::ServiceState::skipResponse:
+					task = nullptr;
+
+					break;
+
+				case framework::ExecutorServer::ServiceState::error:
 					finish = true;
+					task = nullptr;
 
 					break;
-				}
-				else
-				{
-					throw std::runtime_error("Wrong ServiceState: " + std::to_string(static_cast<int>(state)));
 				}
 			}
 

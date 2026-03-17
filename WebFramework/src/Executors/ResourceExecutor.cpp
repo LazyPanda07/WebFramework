@@ -1,18 +1,21 @@
-#include "ResourceExecutor.h"
+#include "Executors/ResourceExecutor.h"
 
 #include <Log.h>
+#include <HttpBuilder.h>
 
 #include "Rendering/MDRenderer.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
 #include "WFDP/CXXDynamicFunction.h"
+#include "Utility/ExecutorsUtility.h"
+#include "Utility/Utils.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 #include "WFDP/PythonDynamicFunction.h"
 #endif
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 #include "WFDP/CSharpDynamicFunction.h"
 #endif
 
@@ -85,108 +88,123 @@ namespace framework
 		this->loadStaticRenderers();
 	}
 
-	void ResourceExecutor::notFoundError(HTTPResponseExecutors& response, const std::exception* exception)
+	void ResourceExecutor::notFoundError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
-		response.setResponseCode(web::ResponseCodes::notFound);
+		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::notFound));
 	}
 
-	void ResourceExecutor::badRequestError(HTTPResponseExecutors& response, const std::exception* exception)
+	void ResourceExecutor::badRequestError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
-		response.setResponseCode(web::ResponseCodes::badRequest);
+		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::badRequest));
 	}
 
-	void ResourceExecutor::forbiddenError(HTTPResponseExecutors& response, const std::exception* exception)
+	void ResourceExecutor::forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
-		response.setResponseCode(web::ResponseCodes::forbidden);
+		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::forbidden));
 	}
 
-	void ResourceExecutor::internalServerError(HTTPResponseExecutors& response, const std::exception* exception)
+	void ResourceExecutor::internalServerError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
-		response.setResponseCode(web::ResponseCodes::internalServerError);
+		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::internalServerError));
 	}
 
-	void ResourceExecutor::badGatewayError(HTTPResponseExecutors& response, const std::exception* exception)
+	void ResourceExecutor::badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
 		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
 
 #ifdef NDEBUG
-		response.setBody(message);
+		response.setBody(message.data(), message.size());
 #else
 		if (exception)
 		{
-			response.setBody(std::format("{} Exception: {}", message, exception->what()).data());
+			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
+
+			response.setBody(exceptionMessage.data(), exceptionMessage.size());
 		}
 		else
 		{
-			response.setBody(message.data());
+			response.setBody(message.data(), message.size());
 		}
 #endif
 
-		response.setResponseCode(web::ResponseCodes::badGateway);
+		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::badGateway));
 	}
 
 	bool ResourceExecutor::fileExist(const std::filesystem::path& filePath) const
 	{
+		if (utility::escapeFromAssets(filePath.string()))
+		{
+			return false;
+		}
+
 		return fileManager.exists(assets / filePath);
 	}
 
@@ -195,8 +213,15 @@ namespace framework
 		return fileManager.getCache().getCacheSize();
 	}
 
-	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHTTPResponse& response, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary, std::string_view fileName)
 	{
+		if (utility::escapeFromAssets(filePath))
+		{
+			this->forbiddenError(response);
+
+			return;
+		}
+
 		std::string result;
 		std::filesystem::path assetFilePath(assets / filePath);
 
@@ -209,18 +234,18 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info("Request static file: {}, is binary: {}", "LogResource", filePath, isBinary);
+			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath, isBinary);
 		}
 
 		auto renderer = staticRenderers.find(extension.string());
 
 		if (isBinary)
 		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
+			fileManager.readBinaryFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
 		}
 		else
 		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), ref(result), std::placeholders::_1));
+			fileManager.readFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
 		}
 
 		if (fileName.size())
@@ -233,11 +258,18 @@ namespace framework
 			result = renderer->second->render(result);
 		}
 
-		response.setBody(result.data());
+		response.setBody(result.data(), result.size());
 	}
 
-	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHTTPResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
 	{
+		if (utility::escapeFromAssets(filePath))
+		{
+			this->forbiddenError(response);
+
+			return;
+		}
+
 		std::string result;
 		std::filesystem::path assetFilePath(assets / filePath);
 
@@ -250,7 +282,7 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info("Request dynamic file: {}, is binary: {}", "LogResource", filePath, isBinary);
+			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath, isBinary);
 		}
 
 		if (isBinary)
@@ -269,7 +301,7 @@ namespace framework
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		response.setBody(result.data());
+		response.setBody(result.data(), result.size());
 	}
 
 	void ResourceExecutor::processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables)
@@ -281,19 +313,34 @@ namespace framework
 	{
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<DynamicFunction>(const std::any&)>> apiDynamicFunctions =
 		{
-			{ json_settings::cxxExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
+			{
+				json_settings::cxxExecutorKey,
+				[](const std::any& function)
+				{
+					if (auto value = std::any_cast<void*>(&function))
+					{
+						std::unique_ptr<CXXDynamicFunction> result = std::make_unique<CXXDynamicFunction>();
+
+						result->initClass(*value);
+
+						return result;
+					}
+
+					return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function));
+				}
+			},
 			{ json_settings::ccExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [](const std::any& function) { return std::make_unique<PythonDynamicFunction>(std::any_cast<void*>(function)); }},
 #endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			{ json_settings::csharpExecutorKey, [](const std::any& function) { return std::make_unique<CSharpDynamicFunction>(std::any_cast<char*>(function)); }},
 #endif
 		};
 
 		if (Log::isValid())
 		{
-			Log::info("Register function: {} from: ", "LogWFDP", functionName, apiType);
+			Log::info<logging::message::registerFunction, logging::category::dynamicFunction>(functionName, apiType);
 		}
 
 		wfdpRenderer.registerDynamicFunction(functionName, apiDynamicFunctions.at(apiType)(function));
@@ -319,13 +366,13 @@ namespace framework
 		return staticRenderers;
 	}
 
-	void ResourceExecutor::doGet(HTTPRequestExecutors& request, HTTPResponseExecutors& response)
+	void ResourceExecutor::doGet(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)
 	{
-		request.sendAssetFile(request.getRawParameters(), response);
+		request.sendAssetFile(request.getRawParameters(), &response);
 	}
 
-	void ResourceExecutor::doPost(HTTPRequestExecutors& request, HTTPResponseExecutors& response) //-V524
+	void ResourceExecutor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) //-V524
 	{
-		request.sendAssetFile(request.getRawParameters(), response);
+		request.sendAssetFile(request.getRawParameters(), &response);
 	}
 }

@@ -1,39 +1,39 @@
-#include "LoadBalancerServer.h"
+#include "LoadBalancer/LoadBalancerServer.h"
 
 #include <Exceptions/SslException.h>
 #include <HttpsNetwork.h>
 #include <Log.h>
 
-#include "Web/HTTPResponseImplementation.h"
-#include "Web/HTTPResponseExecutors.h"
+#include "Web/HttpResponseImplementation.h"
 #include "Utility/Stopwatch.h"
+#include "Framework/WebFrameworkConstants.h"
 
-#include "Heuristics/Connections.h"
-#include "Heuristics/CXXHeuristic.h"
-#include "Heuristics/CCHeuristic.h"
+#include "LoadBalancer/Heuristics/Connections.h"
+#include "LoadBalancer/Heuristics/CXXHeuristic.h"
+#include "LoadBalancer/Heuristics/CCHeuristic.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
-#include "Heuristics/PythonHeuristic.h"
+#include "LoadBalancer/Heuristics/PythonHeuristic.h"
 #endif
 
-#ifdef __WITH_DOT_NET_EXECUTORS__
-#include "Heuristics/CSharpHeuristic.h"
+#ifdef __WITH_DOTNET_EXECUTORS__
+#include "LoadBalancer/Heuristics/CSharpHeuristic.h"
 #endif
 
 namespace framework::load_balancer
 {
-	LoadBalancerServer::ServerData::ServerData(utility::BaseConnectionData&& connectionData, std::unique_ptr<BaseLoadBalancerHeuristic>&& heuristic) noexcept :
+	LoadBalancerServer::ServerData::ServerData(utility::ConnectionData&& connectionData, std::unique_ptr<LoadBalancerHeuristic>&& heuristic) noexcept :
 		connectionData(std::move(connectionData)),
 		heuristic(std::move(heuristic))
 	{
 
 	}
 
-	LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, std::unique_ptr<BaseLoadBalancerHeuristic>& heuristic, std::function<void()>&& cleanup) :
+	LoadBalancerServer::LoadBalancerRequest::LoadBalancerRequest(streams::IOSocketStream&& clientStream, streams::IOSocketStream&& serverStream, LoadBalancerHeuristic* heuristic, std::function<void()>&& cleanup) :
 		clientStream(std::move(clientStream)),
 		serverStream(std::move(serverStream)),
 		cleanup(std::move(cleanup)),
-		heuristic(heuristic.get()),
+		heuristic(heuristic),
 		currentState(State::receiveServerResponse)
 	{
 
@@ -57,7 +57,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving client request web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveClientRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -66,7 +66,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving client request internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveClientRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -75,7 +75,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while getting client request", "LogLoadBalancer");
+				Log::error<logging::message::receiveClientRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -94,7 +94,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client request web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendClientRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -103,7 +103,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client request internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendClientRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -112,7 +112,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while sending client request", "LogLoadBalancer");
+				Log::error<logging::message::sendClientRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -131,7 +131,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving server response web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveServerRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -140,7 +140,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Receiving server response internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::receiveServerRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -149,7 +149,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while getting server response", "LogLoadBalancer");
+				Log::error<logging::message::receiveServerRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -168,7 +168,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client response web error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendServerRequestWebError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -177,7 +177,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Sending client response internal error: {}", "LogLoadBalancer", e.what());
+				Log::error<logging::message::sendServerRequestInternalError, logging::category::loadBalancer>(e.what());
 			}
 
 			return false;
@@ -186,7 +186,7 @@ namespace framework::load_balancer
 		{
 			if (Log::isValid())
 			{
-				Log::error("Some unexpected error acquired while sending client response", "LogLoadBalancer");
+				Log::error<logging::message::sendServerRequestUnexpectedError, logging::category::loadBalancer>();
 			}
 
 			return false;
@@ -227,10 +227,9 @@ namespace framework::load_balancer
 							}
 							else
 							{
-								HTTPResponseImplementation response;
-								HTTPResponseExecutors responseWrapper(&response);
+								HttpResponseImplementation response;
 
-								resources->badGatewayError(responseWrapper);
+								resources->badGatewayError(response);
 
 								request.clientStream << response;
 							}
@@ -261,10 +260,9 @@ namespace framework::load_balancer
 						}
 						else
 						{
-							HTTPResponseImplementation response;
-							HTTPResponseExecutors responseWrapper(&response);
+							HttpResponseImplementation response;
 
-							resources->badGatewayError(responseWrapper);
+							resources->badGatewayError(response);
 
 							request.clientStream << response;
 						}
@@ -302,9 +300,9 @@ namespace framework::load_balancer
 		}
 	}
 
-	std::unique_ptr<BaseLoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
+	std::unique_ptr<LoadBalancerHeuristic> LoadBalancerServer::createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const
 	{
-		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<BaseLoadBalancerHeuristic>(std::string_view, std::string_view, bool)>> apiHeuristics =
+		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<LoadBalancerHeuristic>(std::string_view, std::string_view, bool)>> apiHeuristics =
 		{
 			{ "", [](std::string_view ip, std::string_view port, bool useHTTPS) { return make_unique<Connections>(ip, port, useHTTPS); } },
 			{ json_settings::cxxExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CXXHeuristic>(ip, port, useHTTPS, heuristicName, std::get<HMODULE>(loadSource)); } },
@@ -312,7 +310,7 @@ namespace framework::load_balancer
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<PythonHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); } },
 #endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			{ json_settings::csharpExecutorKey, [heuristicName, &loadSource](std::string_view ip, std::string_view port, bool useHTTPS) { return std::make_unique<CSharpHeuristic>(ip, port, useHTTPS, heuristicName, loadSource); }}
 #endif
 		};
@@ -322,7 +320,7 @@ namespace framework::load_balancer
 			return (it->second)(ip, port, useHTTPS);
 		}
 
-		throw std::runtime_error(format("Can't find heuristic type for {}", apiType));
+		utility::logAndThrowException<logging::message::cantFindHeuristicType, logging::category::loadBalancer>(apiType);
 
 		return nullptr;
 	}
@@ -341,22 +339,38 @@ namespace framework::load_balancer
 
 	void LoadBalancerServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup)
 	{
-		auto& [connectionData, heuristic] = *min_element
-		(
-			allServers.begin(), allServers.end(),
-			[](const ServerData& left, const ServerData& right)
-			{
-				return (*left.heuristic)() < (*right.heuristic)();
-			}
-		);
+		static std::mutex minElementMutex;
 
-		heuristic->onStart();
+		utility::ConnectionData* connectionData = nullptr;
+		LoadBalancerHeuristic* heuristic = nullptr;
+
+		{
+			std::lock_guard<std::mutex> lock(minElementMutex);
+			auto it = min_element
+			(
+				allServers.begin(), allServers.end(),
+				[](const ServerData& left, const ServerData& right)
+				{
+					return (*left.heuristic)() < (*right.heuristic)();
+				}
+			);
+
+			connectionData = &it->connectionData;
+			heuristic = it->heuristic.get();
+
+			if (Log::isValid())
+			{
+				Log::info<logging::message::heuristicSelect, logging::category::loadBalancer>(connectionData->ip, connectionData->port, (*heuristic)());
+			}
+
+			heuristic->onStart();
+		}
 
 		SSL* ssl = nullptr;
 
 		if (useHTTPS)
 		{
-			ssl = SSL_new(context);
+			ssl = this->getNewSsl();
 
 			if (!ssl)
 			{
@@ -372,6 +386,8 @@ namespace framework::load_balancer
 
 			if (int errorCode = SSL_accept(ssl); errorCode != 1)
 			{
+				SSL_free(ssl);
+
 				throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 			}
 		}
@@ -379,8 +395,8 @@ namespace framework::load_balancer
 		std::chrono::milliseconds timeoutInMilliseconds(timeout);
 		LoadBalancerRequest request
 		(
-			ssl ? streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, timeoutInMilliseconds),
-			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData.ip, connectionData.port, timeoutInMilliseconds),
+			this->createServerSideStream(clientSocket, ssl, timeoutInMilliseconds),
+			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds),
 			heuristic,
 			std::move(cleanup)
 		);
@@ -452,7 +468,7 @@ namespace framework::load_balancer
 
 				this->allServers.emplace_back
 				(
-					utility::BaseConnectionData(ip, portString, timeout),
+					utility::ConnectionData(ip, portString, timeout),
 					this->createAPIHeuristic(ip, portString, useHTTPS, heuristicName, apiType, loadSource)
 				);
 			}

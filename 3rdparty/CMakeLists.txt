@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.27.0)
 project(3rdparty)
 
 add_subdirectory(cmark-gfm)
+add_subdirectory(rabbitmq-c)
 
 if (${WITH_STACKTRACE})
 	add_subdirectory(boost)
@@ -14,7 +15,7 @@ if (${WITH_PYTHON_EXECUTORS})
 	endif()
 endif()
 
-if (${WITH_DOT_NET_EXECUTORS})
+if (${WITH_DOTNET_EXECUTORS})
 	if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
 		add_subdirectory(DotNetRuntime)
 	endif()

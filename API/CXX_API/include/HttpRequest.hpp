@@ -3,18 +3,42 @@
 #include <functional>
 #include <algorithm>
 
-#include "WebInterfaces/IHTTPRequest.hpp"
+#include "WebInterfaces/IHttpRequest.hpp"
 #include "HttpResponse.hpp"
 #include "Utility/ChunkGenerator.hpp"
 #include "JsonParser.hpp"
 #include "Exceptions/WebFrameworkAPIException.hpp"
 #include "DLLHandler.hpp"
 #include "Databases/Database.hpp"
+#include "Databases/Implementations/DefaultDatabase.hpp"
+#include "Databases/Implementations/SqliteDatabase.hpp"
+#include "Databases/Implementations/RedisDatabase.hpp"
+#include "DynamicFunction.hpp"
+#include "TaskBroker/TaskSerializer.hpp"
+#include "TaskBroker/TaskBrokers.hpp"
 
 namespace framework
 {
 	template<typename T>
 	concept RouteParameterType = std::same_as<T, std::string> || std::integral<T> || std::floating_point<T>;
+
+	template<typename T>
+	concept DatabaseImplementation = requires
+	{
+		{ std::string(T::databaseImplementationName) } -> std::same_as<std::string>;
+	};
+
+	template<typename T>
+	concept DynamicFunctionImplementation = requires
+	{
+		{ std::string(T::dynamicFunctionImplementationName) } -> std::same_as<std::string>;
+	};
+
+	template<typename T>
+	concept MessageBrokerImplementation = requires
+	{
+		{ std::string(T::taskBrokerName) } -> std::same_as<std::string>;
+	};
 
 	class Multipart
 	{
@@ -66,7 +90,7 @@ namespace framework
 		static std::vector<interfaces::CVariable> convertVariables(const std::unordered_map<std::string, std::string>& variables);
 
 	private:
-		interfaces::IHTTPRequest* implementation;
+		interfaces::IHttpRequest* implementation;
 		JsonParser json;
 		HeadersMap headers;
 		std::unordered_map<std::string, std::string> queryParameters;
@@ -87,10 +111,10 @@ namespace framework
 		static bool isException(const std::exception& exception);
 
 	public:
-		interfaces::IHTTPRequest* getImplementation() const;
+		interfaces::IHttpRequest* getImplementation() const;
 
 	public:
-		HttpRequest(interfaces::IHTTPRequest* implementation);
+		HttpRequest(interfaces::IHttpRequest* implementation);
 
 		HttpRequest(const HttpRequest&) = delete;
 
@@ -208,26 +232,28 @@ namespace framework
 		* @param fileName Name of file in Content-Disposition HTTP header, ASCII name required
 		* @param chunkSize Desired size of read data before sending
 		*/
-		void streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHTTPRequest::defaultChunkSize);
+		void streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHttpRequest::defaultChunkSize);
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
 		/// @param function Function implementation
-		void registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
+		void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
 
 		/**
-		 * @brief Internal use only
+		 * @brief Add new function in .wfdp interpreter
+		 * @param functionName Name of new function
 		 */
-		void registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass);
+		template<DynamicFunctionImplementation T = DynamicFunction, typename... Args>
+		void registerDynamicFunctionClass(std::string_view functionName, Args&&... args);
 
 		/// @brief Remove function from .wfdp interpreter
 		/// @param functionName Name of function
-		void unregisterWFDPFunction(std::string_view functionName);
+		void unregisterDynamicFunction(std::string_view functionName);
 
 		/// @brief Check if function is registered
 		/// @param functionName Name of function
 		/// @return true if function is registered, false otherwise
-		bool isWFDPFunctionRegistered(std::string_view functionName);
+		bool isDynamicFunctionRegistered(std::string_view functionName);
 
 		/**
 		 * @brief Get file content
@@ -295,12 +321,16 @@ namespace framework
 		/// <returns>server's port</returns>
 		uint16_t getServerPort() const;
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Database getOrCreateDatabase(std::string_view databaseName);
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Database getDatabase(std::string_view databaseName) const;
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Table getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery);
 
+		template<DatabaseImplementation T = DefaultDatabase>
 		Table getTable(std::string_view databaseName, std::string_view tableName) const;
 
 		template<RouteParameterType T>
@@ -339,6 +369,12 @@ namespace framework
 		 * @param fileName
 		 */
 		void sendFileChunks(HttpResponse& response, std::string_view fileName, utility::ChunkGenerator& generator);
+
+		template<MessageBrokerImplementation MessageBrokerT, task_broker::DerivedFromTaskSerializer TaskSerializerT, typename... Args>
+		void enqueueTask(Args&&... args);
+
+		template<MessageBrokerImplementation MessageBrokerT, task_broker::DerivedFromTaskSerializer TaskSerializerT>
+		void enqueueTask(const TaskSerializerT& serializer);
 
 		template<std::derived_from<exceptions::WebFrameworkAPIException> T = exceptions::WebFrameworkAPIException, typename... Args>
 		void throwException(Args&&... args);
@@ -395,6 +431,24 @@ namespace framework
 	inline void HttpRequest::sendFileChunks(HttpResponse& response, std::string_view fileName, utility::ChunkGenerator& generator)
 	{
 		implementation->sendFileChunks(response.implementation, fileName.data(), &generator, [](void* chunkGenerator, size_t* size) -> const char* { return static_cast<utility::ChunkGenerator*>(chunkGenerator)->generate(*size).data(); });
+	}
+
+	template<MessageBrokerImplementation MessageBrokerT, task_broker::DerivedFromTaskSerializer TaskSerializerT, typename... Args>
+	inline void HttpRequest::enqueueTask(Args&&... args)
+	{
+		TaskSerializerT serializer(std::forward<Args>(args)...);
+		
+		this->enqueueTask<MessageBrokerT>(serializer);
+	}
+
+	template<MessageBrokerImplementation MessageBrokerT, task_broker::DerivedFromTaskSerializer TaskSerializerT>
+	inline void HttpRequest::enqueueTask(const TaskSerializerT& serializer)
+	{
+		JsonObject data = serializer.serialize();
+
+		data.weak = true;
+
+		implementation->enqueueTask(MessageBrokerT::taskBrokerName.data(), data.implementation);
 	}
 
 	template<std::derived_from<exceptions::WebFrameworkAPIException> T, typename... Args>
@@ -546,7 +600,7 @@ namespace framework
 		return utility::DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(checkExceptionHash, &exception, typeid(T).hash_code());
 	}
 
-	inline interfaces::IHTTPRequest* HttpRequest::getImplementation() const
+	inline interfaces::IHttpRequest* HttpRequest::getImplementation() const
 	{
 		return implementation;
 	}
@@ -565,7 +619,7 @@ namespace framework
 		return result;
 	}
 
-	inline HttpRequest::HttpRequest(interfaces::IHTTPRequest* implementation) :
+	inline HttpRequest::HttpRequest(interfaces::IHttpRequest* implementation) :
 		implementation(implementation),
 		json(implementation->getJson())
 	{
@@ -705,24 +759,50 @@ namespace framework
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
 	}
 
-	inline void HttpRequest::registerWFDPFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+	inline void HttpRequest::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
 	{
-		implementation->registerWFDPFunction(functionName.data(), function, deleter);
+		implementation->registerDynamicFunction(functionName.data(), function, deleter);
 	}
 
-	inline void HttpRequest::registerWFDPFunctionClass(std::string_view functionName, std::string_view apiType, void* functionClass)
+	template<DynamicFunctionImplementation T, typename... Args>
+	inline void HttpRequest::registerDynamicFunctionClass(std::string_view functionName, Args&&... args)
 	{
-		implementation->registerWFDPFunctionClass(functionName.data(), apiType.data(), functionClass);
+		if constexpr (std::derived_from<T, DynamicFunction> && T::dynamicFunctionImplementationName == DynamicFunction::dynamicFunctionImplementationName)
+		{
+			T* dynamicFunction = new T(std::forward<Args>(args)...);
+			struct
+			{
+				void* dynamicFunction;
+				void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+				void (*deleter)(void* implementation);
+			} dynamicFunctionController;
+
+			dynamicFunctionController.dynamicFunction = dynamicFunction;
+			dynamicFunctionController.callFunction = &DynamicFunction::call;
+			dynamicFunctionController.deleter = &DynamicFunction::deleter;
+			
+			implementation->registerDynamicFunctionClass(functionName.data(), T::dynamicFunctionImplementationName.data(), static_cast<void*>(&dynamicFunctionController));
+		}
+		else if constexpr (T::dynamicFunctionImplementationName == "python")
+		{
+			static_assert(sizeof...(Args) == 1);
+
+			implementation->registerDynamicFunctionClass(functionName.data(), T::dynamicFunctionImplementationName.data(), args...);
+		}
+		else
+		{
+			this->throwException(std::format("Can't register dynamic function class with name: {}", functionName), ResponseCodes::internalServerError);
+		}
 	}
 
-	inline void HttpRequest::unregisterWFDPFunction(std::string_view functionName)
+	inline void HttpRequest::unregisterDynamicFunction(std::string_view functionName)
 	{
-		implementation->unregisterWFDPFunction(functionName.data());
+		implementation->unregisterDynamicFunction(functionName.data());
 	}
 
-	inline bool HttpRequest::isWFDPFunctionRegistered(std::string_view functionName)
+	inline bool HttpRequest::isDynamicFunctionRegistered(std::string_view functionName)
 	{
-		return implementation->isWFDPFunctionRegistered(functionName.data());
+		return implementation->isDynamicFunctionRegistered(functionName.data());
 	}
 
 	inline std::string HttpRequest::getFile(const std::filesystem::path& filePath) const
@@ -815,24 +895,28 @@ namespace framework
 		return implementation->getServerPort();
 	}
 
+	template<DatabaseImplementation T>
 	inline Database HttpRequest::getOrCreateDatabase(std::string_view databaseName)
 	{
-		return Database(implementation->getOrCreateDatabase(databaseName.data()));
+		return Database(implementation->getOrCreateDatabase(databaseName.data(), T::databaseImplementationName.data()));
 	}
 
+	template<DatabaseImplementation T>
 	inline Database HttpRequest::getDatabase(std::string_view databaseName) const
 	{
-		return Database(implementation->getDatabase(databaseName.data()));
+		return Database(implementation->getDatabase(databaseName.data(), T::databaseImplementationName.data()));
 	}
 
+	template<DatabaseImplementation T>
 	inline Table HttpRequest::getOrCreateTable(std::string_view databaseName, std::string_view tableName, std::string_view createTableQuery)
 	{
-		return this->getOrCreateDatabase(databaseName).getOrCreateTable(tableName, createTableQuery);
+		return this->getOrCreateDatabase<T>(databaseName).getOrCreateTable(tableName, createTableQuery);
 	}
 
+	template<DatabaseImplementation T>
 	inline Table HttpRequest::getTable(std::string_view databaseName, std::string_view tableName) const
 	{
-		return this->getDatabase(databaseName).getTable(tableName);
+		return this->getDatabase<T>(databaseName).getTable(tableName);
 	}
 
 	inline HttpRequest::~HttpRequest()

@@ -108,7 +108,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)*.json" "$(OutDir)"</Command>
+      <Command>xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
+xcopy /y "$(OutDir)$(ProjectName).dll" "$(OutDir)..\VisualStudioSample\executors\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,7 +131,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)*.json" "$(OutDir)"</Command>
+      <Command>xcopy /y "$(ProjectDir)*.json" "$(OutDir)"
+xcopy /y "$(OutDir)$(ProjectName).dll" "$(OutDir)..\VisualStudioSample\executors\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

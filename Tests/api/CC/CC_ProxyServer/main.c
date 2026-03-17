@@ -11,38 +11,10 @@
 
 int port;
 
-void writeProcessId()
+void printRunningState()
 {
-#ifdef __LINUX__
-	pid_t processId = getpid();
-#else
-	DWORD processId = GetCurrentProcessId();
-#endif
-
-	FILE* file = NULL;
-
-	switch (port)
-	{
-	case 15000:
-		file = fopen(START_PROXY_SERVER_FILE, "w");
-
-		break;
-
-	case 15001:
-		file = fopen(START_PROXY_HTTPS_SERVER_FILE, "w");
-
-		break;
-
-	default:
-		break;
-	}
-
-	if (file)
-	{
-		fwrite(&processId, sizeof(processId), 1, file);
-
-		fclose(file);
-	}
+	printf("Server is running...\n");
+	fflush(stdout);
 }
 
 int main(int argc, char** argv)
@@ -51,7 +23,19 @@ int main(int argc, char** argv)
 
 	web_framework_t server;
 	config_t config;
-	web_framework_exception_t exception = wf_create_config_from_path(argv[1], &config);
+	const char* configName = NULL;
+
+	for (int i = 1; i < argc; i++)
+	{
+		if (!strcmp(argv[i], "--config"))
+		{
+			configName = argv[i + 1];
+
+			break;
+		}
+	}
+
+	web_framework_exception_t exception = wf_create_config_from_path(configName, &config);
 
 	if (exception)
 	{
@@ -60,18 +44,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	port = atoi(argv[2]);
-
-	exception = wf_override_configuration_integer(config, "port", port, true);
-
-	if (exception)
-	{
-		printf("%s\n", wf_get_error_message(exception));
-
-		return -2;
-	}
-
-	for (int i = 0; i < argc; i++)
+	for (int i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "--useHTTPS"))
 		{
@@ -81,8 +54,23 @@ int main(int argc, char** argv)
 			{
 				printf("%s\n", wf_get_error_message(exception));
 
-				return -3;
+				return -2;
 			}	
+		}
+		else if (!strcmp(argv[i], "--port"))
+		{
+			port = atoi(argv[i + 1]);
+
+			exception = wf_override_configuration_integer(config, "port", port, true);
+
+			if (exception)
+			{
+				printf("%s\n", wf_get_error_message(exception));
+
+				return -3;
+			}
+
+			i++;
 		}
 	}
 
@@ -95,7 +83,7 @@ int main(int argc, char** argv)
 		return -4;
 	}
 
-	exception = wf_start_web_framework_server(server, true, writeProcessId);
+	exception = wf_start_web_framework_server(server, true, printRunningState);
 
 	if (exception)
 	{

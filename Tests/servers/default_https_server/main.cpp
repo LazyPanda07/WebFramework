@@ -17,7 +17,14 @@ int main(int argc, char** argv) try
 	framework::WebFramework customUserAgentServer(config);
 
 	customUserAgentServer.start();
-	server.start(true, []() { std::ofstream(START_DEFAULT_HTTPS_SERVER_FILE); });
+	server.start
+	(
+		true,
+		[]()
+		{
+			std::cout << "Server is running..." << std::endl;
+		}
+	);
 
 	return 0;
 }

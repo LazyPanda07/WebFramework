@@ -16,7 +16,7 @@ jobs:
         config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
         
@@ -24,25 +24,22 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOT_NET_EXECUTORS=OFF -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
           cmake --build . -j
           cmake --install .
-        
-    - name: Install Python API
-      run: pip3 install WebFrameworkLibrary/api/python_api/
-
+      
     - name: Build tests
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 
     - name: Tests
-      working-directory: Tests
+      working-directory: Tests/build/bin
       shell: bash
       run: |
-          cd build/bin
-          source run_memory_leak_tests.sh ${{ matrix.config }}
+        redis-server --port 10010 --requirepass password & sleep 1
+        source run_memory_leak_tests.sh ${{ matrix.config }}

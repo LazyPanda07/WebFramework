@@ -1,10 +1,11 @@
-#include "WebFramework.h"
+#include "Framework/WebFramework.h"
 
 #include <filesystem>
 
 #include <Log.h>
 #include <JsonArrayWrapper.h>
 #include <MapJsonIterator.h>
+#include <DatabaseUtility.h>
 
 #include "Exceptions/BaseJSONException.h"
 #include "Exceptions/FileDoesNotExistException.h"
@@ -18,10 +19,14 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/DatabasesManager.h"
 #include "Managers/RuntimesManager.h"
+#include "Managers/TaskExecutorsManager.h"
+#include "Managers/TaskBrokersManager.h"
 #include "Runtimes/CXXRuntime.h"
 #include "Runtimes/CCRuntime.h"
 #include "Runtimes/PythonRuntime.h"
 #include "Runtimes/DotNetRuntime.h"
+#include "TaskBroker/InternalTaskBroker.h"
+#include "Utility/Utils.h"
 
 namespace framework
 {
@@ -67,7 +72,7 @@ namespace framework
 			{
 				if (auto it = result.find(key); it != result.end())
 				{
-					throw std::runtime_error(std::format("Executor {} has same route as {}", value.name, it->second.name));
+					utility::logAndThrowException<logging::message::sameExecutorRoute, logging::category::webFramework>(value.name, it->second.name);
 				}
 
 				result.try_emplace(key, value);
@@ -96,7 +101,7 @@ namespace framework
 				[]() { runtime::RuntimesManager::get().addRuntime<runtime::PythonRuntime>(); }
 			},
 #endif
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			{
 				json_settings_values::runtimesDotNetValue,
 				[]() { runtime::RuntimesManager::get().addRuntime<runtime::DotNetRuntime>(); }
@@ -131,25 +136,18 @@ namespace framework
 			}
 			else
 			{
-				throw std::runtime_error("Wrong runtimes value type");
+				utility::logAndThrowException<logging::message::wrongRuntimeObjectType, logging::category::runtime>();
 			}
 
 			if (auto it = initFunctions.find(*runtime); it == initFunctions.end())
 			{
-				std::string message = std::format("Wrong runtimes: {}", *runtime);
-
-				if (Log::isValid())
-				{
-					Log::fatalError(message, "LogRuntime", 15);
-				}
-
-				throw std::runtime_error(message);
+				utility::logAndThrowException<logging::message::wrongRuntime, logging::category::runtime>(*runtime);
 			}
 			else
 			{
 				if (Log::isValid())
 				{
-					Log::info("Add {} runtime", "LogRuntime", *runtime);
+					Log::info<logging::message::addRuntime, logging::category::runtime>(*runtime);
 				}
 
 				it->second();
@@ -263,14 +261,98 @@ namespace framework
 		{
 			if (settingsPaths.empty())
 			{
-				throw std::runtime_error(format("Can't find {}", json_settings::settingsPathsKey));
+				utility::logAndThrowException<logging::message::cantFindKey, logging::category::webFramework>(json_settings::settingsPathsKey);
 			}
 
 			if (pathToSources.empty())
 			{
-				throw std::runtime_error(format("Can't find {}", json_settings::loadSourcesKey));
+				utility::logAndThrowException<logging::message::cantFindKey, logging::category::webFramework>(json_settings::loadSourcesKey);
 			}
 		}
+	}
+
+	void WebFramework::initTaskExecutors(const json::JsonObject& taskBrokerObject)
+	{
+		std::vector<json::JsonObject> taskExecutorPaths;
+		std::vector<utility::TaskExecutorsSettings> taskExecutorsSettings;
+
+		taskBrokerObject.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsSettingsKey, taskExecutorPaths);
+
+		const std::filesystem::path& basePath = config.getBasePath();
+		task_broker::TaskExecutorsManager& taskExecutorsManager = task_broker::TaskExecutorsManager::get();
+		std::string consumer;
+
+		if (taskBrokerObject.tryGet<std::string>(json_settings::consumerKey, consumer) && consumer == json_settings_values::consumerInternalValue)
+		{
+			if (taskExecutorPaths.empty())
+			{
+				utility::logAndThrowException<logging::message::cantFindTaskExecutorPaths, logging::category::webFramework>(json_settings_values::consumerInternalValue, json_settings::taskExecutorsSettingsKey);
+			}
+
+			task_broker::TaskBrokersManager& taskBrokerManager = task_broker::TaskBrokersManager::get();
+			const std::vector<json::JsonObject>& taskBrokers = taskBrokerObject.at(json_settings::taskBrokersKey).get<std::vector<json::JsonObject>>();
+			std::vector<std::string> taskBrokerNames;
+			size_t consumerThreads = json_settings_values::consumerThreadsDefaultValue;
+			size_t checkPeriod = json_settings_values::checkPeriodDefaultValue;
+
+			taskBrokerObject.tryGet<size_t>(json_settings::consumerThreadsKey, consumerThreads);
+			taskBrokerObject.tryGet<size_t>(json_settings::checkPeriodKey, checkPeriod);
+
+			json::JsonObject emptySettings;
+
+			for (const json::JsonObject& taskBroker : taskBrokers)
+			{
+				const std::string* taskBrokerName = nullptr;
+				const json::JsonObject* settings = nullptr;
+
+				if (taskBroker.is<std::string>())
+				{
+					taskBrokerName = &taskBroker.get<std::string>();
+					settings = &emptySettings;
+				}
+				else if (taskBroker.is<json::JsonObject>())
+				{
+					taskBrokerName = &taskBroker["name"].get<std::string>();
+					settings = &taskBroker["settings"];
+				}
+				else
+				{
+					utility::logAndThrowException<logging::message::cantParseTaskBrokerArray, logging::category::webFramework>(taskBroker.getType().name());
+				}
+
+				taskBrokerManager.addTaskBroker(*taskBrokerName, *settings);
+
+				taskBrokerNames.emplace_back(*taskBrokerName);
+			}
+
+			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod));
+		}
+
+		for (const json::JsonObject& taskExecutorPath : taskExecutorPaths)
+		{
+			std::filesystem::path temp = taskExecutorPath.get<std::string>();
+			std::ifstream stream;
+
+			if (temp.is_absolute())
+			{
+				stream.open(temp);
+			}
+			else
+			{
+				stream.open(basePath / temp);
+			}
+
+			json::JsonParser parser(stream);
+
+			for (const json::JsonObject& settings : parser.getParsedData().get<std::vector<json::JsonObject>>())
+			{
+				taskExecutorsSettings.emplace_back(utility::TaskExecutorsSettings::createTaskExecutorsSettings(settings));
+			}
+
+			taskExecutorsManager.initTaskExecutor(taskExecutorsSettings);
+		}
+
+		taskExecutorsManager.runTaskConsumer(); // run only if consumer created
 	}
 
 	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings) const
@@ -298,26 +380,38 @@ namespace framework
 
 			if (Log::isValid())
 			{
-				Log::info("Using HTTPS with certificate: {}, key: {}", "LogWebFramework", httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
+				Log::info<logging::message::httpsInitialization, logging::category::https>(httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
 			}
 		}
 	}
 
 	void WebFramework::initDatabase(const json::JsonObject& webFrameworkSettings)
 	{
-		std::string databaseImplementationName;
+		std::vector<std::string> databases;
 
-		if (!webFrameworkSettings.tryGet<std::string>(json_settings::databaseImplementationKey, databaseImplementationName))
+		if (std::vector<json::JsonObject> temp; webFrameworkSettings.tryGet<std::vector<json::JsonObject>>(json_settings::databasesKey, temp))
 		{
-			databaseImplementationName = "sqlite";
+			databases = json::utility::JsonArrayWrapper(temp).as<std::string>();
+		}
+		else if (std::string database; webFrameworkSettings.tryGet<std::string>(json_settings::databasesKey, database))
+		{
+			databases.emplace_back(std::move(database));
+		}
+
+		if (databases.empty())
+		{
+			databases.emplace_back(database::implementation::sqlite);
 		}
 
 		if (Log::isValid())
 		{
-			Log::info("Using {} database", "LogWebFramework", databaseImplementationName);
+			for (const std::string& database : databases)
+			{
+				Log::info<logging::message::databaseInitialization, logging::category::database>(database);
+			}
 		}
 
-		DatabasesManager::get().initDatabaseImplementation(databaseImplementationName);
+		DatabasesManager::get().initDatabaseImplementation(databases);
 	}
 
 	void WebFramework::initServer
@@ -438,7 +532,7 @@ namespace framework
 		}
 		else
 		{
-			throw std::runtime_error(::exceptions::wrongWebServerType);
+			utility::logAndThrowException<logging::message::wrongWebServerType, logging::category::webFramework>();
 		}
 	}
 
@@ -450,22 +544,21 @@ namespace framework
 
 		const json::JsonObject& webFrameworkSettings = (*config).get<json::JsonObject>(json_settings::webFrameworkObject);
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
-		runtime::RuntimesManager& instance = runtime::RuntimesManager::get();
+		runtime::RuntimesManager& runtimesManager = runtime::RuntimesManager::get();
 		std::vector<std::string> pathToSources;
 
 		this->initAPIs(webFrameworkSettings);
-
 		this->initDatabase(webFrameworkSettings);
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
 		this->initHTTPS(webFrameworkSettings);
-		this->initServer
-		(
-			webFrameworkSettings,
-			std::move(executorsSettings),
-			pathToSources
-		);
+		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
 
-		for (auto it = instance.begin(); it != instance.end(); ++it)
+		if (json::JsonObject taskBrokerObject; (*config).tryGet<json::JsonObject>(json_settings::taskBrokerObject, taskBrokerObject))
+		{
+			this->initTaskExecutors(taskBrokerObject);
+		}
+
+		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
 		{
 			it->finishInitialization();
 		}
@@ -481,7 +574,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Starting {} server at {}:{}", "LogWebFramework", webServerType, server->getIp(), server->getPort());
+			Log::info<logging::message::startingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort());
 		}
 
 		server->start(wait, onStartServer, serverException);
@@ -491,7 +584,7 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Stopping {} server at {}:{}", "LogWebFramework", webServerType, server->getIp(), server->getPort());
+			Log::info<logging::message::stoppingServer, logging::category::webFrameworkServer>(webServerType, server->getIp(), server->getPort());
 		}
 
 		server->stop(wait);
@@ -501,10 +594,15 @@ namespace framework
 	{
 		if (Log::isValid())
 		{
-			Log::info("Kick client with ip: {} from server", "LogWebFramework", ip);
+			Log::info<logging::message::kickClient, logging::category::webFrameworkServer>(ip);
 		}
 
 		server->kick(ip);
+	}
+
+	void WebFramework::updateSslCertificates()
+	{
+		server->updateCertificates();
 	}
 
 	std::vector<std::string> WebFramework::getClientsIp() const
@@ -538,7 +636,7 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
-				Log::error("Server exception: {}", "LogWebFrameworkServer", (*serverException)->what());
+				Log::error<logging::message::serverException, logging::category::webFrameworkServer>((*serverException)->what());
 			}
 
 			delete (*serverException);

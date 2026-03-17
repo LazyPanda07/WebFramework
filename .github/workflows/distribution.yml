@@ -6,85 +6,45 @@ on:
 
 
 env:
-  deb-package-version: 3.2.0
-  deb-package-release-number: 13
+  deb-package-version: 3.3.0
+  deb-package-release-number: 14
   PYTHON_VERSION: 3.14
 
 
 jobs:
-  pip-package:
-    strategy:
-      matrix: 
-        config:
-          - { os: ubuntu-latest, asset_name: linux.zip, source_name: Linux, python: python3, output_prefix: linux }
-          - { os: windows-latest, asset_name: windows.zip, source_name: Windows, python: python, output_prefix: windows } 
-    runs-on: ${{ matrix.config.os }}
-    
-    steps:
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.PYTHON_VERSION }}"
-
-    - name: Get latest release
-      uses: robinraju/release-downloader@v1.11
-      with:
-        repository: ${{ github.repository }}
-        latest: true
-        extract: true
-        fileName: ${{ matrix.config.asset_name }}
-        
-    - name: Create package folder
-      run: |
-          mkdir package
-          mv Release_${{ matrix.config.source_name }}/api/python_api/* package/
-
-    - name: Build wheel
-      working-directory: package
-      run: |
-          ${{ matrix.config.python }} -m pip install build
-          ${{ matrix.config.python }} -m build
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.config.output_prefix }}-pip-package
-        path: package/dist
-
-
   nuget-package:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Get Linux latest release
-      uses: robinraju/release-downloader@v1.11
+      uses: robinraju/release-downloader@v1.12
       with:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: linux.zip
+        fileName: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF.zip
 
     - name: Get Windows latest release
-      uses: robinraju/release-downloader@v1.11
+      uses: robinraju/release-downloader@v1.12
       with:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: windows.zip
+        fileName: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF.zip
         
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
 
-    - name: Copy libraries
+    - name: Move libraries
       shell: bash
       run: |
-          mv Release_Windows/dll/*.dll API/CSharp_API/
-          mv Release_Linux/lib/*.so API/CSharp_API/
-          mv Release_Linux/license/* API/CSharp_API/
+          mv dll/*.dll API/CSharp_API/
+          mv lib/*.so API/CSharp_API/
+          mv license/* API/CSharp_API/
 
     - name: Create nuget package
       working-directory: API/CSharp_API/
@@ -93,7 +53,7 @@ jobs:
           msbuild -t:pack -p:Configuration=Release
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: nuget-package
         path: API/CSharp_API/bin/Release/*.nupkg
@@ -105,20 +65,20 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Get Windows latest release
-      uses: robinraju/release-downloader@v1.11
+      uses: robinraju/release-downloader@v1.12
       with:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: windows.zip
+        fileName: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF.zip
 
     - name: Get Android latest release
-      uses: robinraju/release-downloader@v1.11
+      uses: robinraju/release-downloader@v1.12
       with:
         repository: ${{ github.repository }}
         latest: true
@@ -128,37 +88,41 @@ jobs:
     - name: Copy libraries
       run: |
           mkdir -p API/web_framework_flutter_api/assets/lib/arm64-v8a
-          cp -r Release_Windows/dll/*.dll API/web_framework_flutter_api/assets/lib
-          cp -r Release_Android/lib/arm64-v8a/*.so API/web_framework_flutter_api/assets/lib/arm64-v8a
+          cp -r dll/*.dll API/web_framework_flutter_api/assets/lib
+          cp -r Android/lib/arm64-v8a/*.so API/web_framework_flutter_api/assets/lib/arm64-v8a
 
     - name: Dry run
       working-directory: API/web_framework_flutter_api
       run: dart pub publish --dry-run
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: flutter-package
         path: API/web_framework_flutter_api
 
-
+        
   deb-package:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package-type: [deploy, dev]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Get Linux latest release
-      uses: robinraju/release-downloader@v1.11
+      uses: robinraju/release-downloader@v1.12
       with:
         repository: ${{ github.repository }}
         latest: true
         extract: true
-        fileName: linux.zip
+        fileName: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON.zip
 
     - name: Create deb package
+      if: ${{ matrix.package-type == 'deploy' }}
       run: |
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
@@ -166,13 +130,14 @@ jobs:
           chmod 0755 deb_packages/web-framework/DEBIAN/postinst
           cp deb_packages/web-framework/DEBIAN/copyright web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r Release_Linux/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r Release_Linux/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r Release_Linux/localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          cp -r WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           echo "/usr/lib/web-framework/lib" > web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d/web-framework.conf
           dpkg --build web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
     
     - name: Create deb dev package
+      if: ${{ matrix.package-type == 'dev' }}
       run: |
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mkdir -p web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
@@ -183,21 +148,21 @@ jobs:
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
           cp deb_packages/web-framework-dev/DEBIAN/copyright web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r Release_Linux/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r Release_Linux/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
-          cp -r Release_Linux/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
-          cp -r Release_Linux/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r Release_Linux/FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r Release_Linux/cmake/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
-          cp -r Release_Linux/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r Release_Linux/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          cp -r api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
+          cp -r api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
+          cp -r WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r cmake/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
+          cp -r WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           echo "/usr/lib/web-framework/lib" > web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d/web-framework-dev.conf
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: deb-packages
+        name: ${{ matrix.package-type }}_deb_package
         path: ${{ github.workspace }}/*.deb
 
 
@@ -205,27 +170,22 @@ jobs:
     strategy:
       matrix:
         config: 
-          - { os: "windows-latest", asset_name: "windows.zip", library_path: "Release_Windows", upload_name: "windows-executor" }
-          - { os: "ubuntu-latest", asset_name: "linux.zip", library_path: "Release_Linux", upload_name: "linux-executor" }
+          - { os: "windows-latest", asset_name: "Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON.zip", upload_name: "windows-executor" }
+          - { os: "ubuntu-latest", asset_name: "Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON.zip", upload_name: "linux-executor" }
     runs-on: ${{ matrix.config.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Get latest release
-      uses: robinraju/release-downloader@v1.11
+      uses: robinraju/release-downloader@v1.12
       with:
         repository: ${{ github.repository }}
         latest: true
         extract: true
         fileName: ${{ matrix.config.asset_name }}
+        out-file-path: WebFrameworkLibrary
       
-    - name: Create WebFrameworkLibrary
-      shell: bash
-      run: |
-        mkdir WebFrameworkLibrary
-        mv ${{ matrix.config.library_path }}/* WebFrameworkLibrary
-
     - name: Build executor
       working-directory: DistributionTests
       run: |
@@ -236,7 +196,7 @@ jobs:
         cmake --install . --config Release
 
     - name: Upload executor
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ matrix.config.upload_name }}
         path: |
@@ -244,87 +204,7 @@ jobs:
           DistributionTests/build/bin/web.json
           DistributionTests/build/bin/*hello_executor.*
           
-
-  linux-pip-package-test:
-    runs-on: ubuntu-latest
-    needs: [pip-package, executor-build]
-    container:
-      image: lazypanda07/ubuntu_cxx20:24.04
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Download executor
-      uses: actions/download-artifact@v4
-      with:
-        name: linux-executor
-        path: DistributionTests/build/bin
-
-    - name: Download pip package
-      uses: actions/download-artifact@v4
-      with:
-        name: linux-pip-package
-        path: python_api
-
-    - name: Install Python API
-      shell: bash
-      run: |
-          export PYTHON_API_NAME=$(ls python_api | grep .whl)
-          pip3 install python_api/${PYTHON_API_NAME}
-
-    - name: Build and test
-      working-directory: DistributionTests/build
-      shell: bash
-      run: |
-        cmake -DTEST_PYTHON=ON ..
-        cmake --build . -j --config Release
-        cmake --install . --config Release
-        cd bin
-        source run_python_test.sh
-        diff reference.json out.json
-
-
-  windows-pip-package-test:
-    runs-on: windows-latest
-    needs: [pip-package, executor-build]
-    
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: "${{ env.PYTHON_VERSION }}"
-
-    - name: Download executor
-      uses: actions/download-artifact@v4
-      with:
-        name: windows-executor
-        path: DistributionTests/build/bin
-
-    - name: Download pip package
-      uses: actions/download-artifact@v4
-      with:
-        name: windows-pip-package
-        path: python_api
-
-    - name: Install Python API
-      shell: bash
-      run: |
-          export PYTHON_API_NAME=$(ls python_api | grep .whl)
-          pip install python_api/${PYTHON_API_NAME}
           
-    - name: Build and test
-      working-directory: DistributionTests/build
-      run: |
-        cmake -DTEST_PYTHON=ON .. 
-        cmake --build . -j --config Release
-        cmake --install . --config Release
-        cd bin
-        .\run_python_test.bat
-        Compare-Object (Get-Content reference.json) (Get-Content out.json)
-
-  
   dev-deb-package-test:
     runs-on: ubuntu-latest
     container:
@@ -335,14 +215,14 @@ jobs:
         config: [ { api_name: TEST_DEV_CC, script: run_cc_test.sh, asset_name: cc_test }, { api_name: TEST_DEV_CXX, script: run_cxx_test.sh, asset_name: cxx_test } ]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         submodules: recursive
 
-    - name: Download deb packages
-      uses: actions/download-artifact@v4
+    - name: Download deb package
+      uses: actions/download-artifact@v8
       with:
-        name: deb-packages
+        name: dev_deb_package
         path: packages
 
     - name: Install deb package
@@ -366,7 +246,7 @@ jobs:
           diff reference.json out.json
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: binaries_${{ matrix.config.asset_name }}
         path: |
@@ -388,10 +268,10 @@ jobs:
           - { executable_name: cxx_test, script: run_cxx_test.sh }
 
     steps:
-    - name: Download deb packages
-      uses: actions/download-artifact@v4
+    - name: Download deb package
+      uses: actions/download-artifact@v8
       with:
-        name: deb-packages
+        name: deploy_deb_package
         path: packages
 
     - name: Install Python
@@ -404,7 +284,7 @@ jobs:
       run: sudo apt install -y ./web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64.deb
 
     - name: Download binaries
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: binaries_${{ matrix.config.executable_name }}
 
@@ -425,7 +305,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
   
     - name: Install Python
       uses: actions/setup-python@v6
@@ -433,13 +313,13 @@ jobs:
         python-version: "${{ env.PYTHON_VERSION }}"
 
     - name: Download executor
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.config.executor_name }}
         path: DistributionTests/build/bin
         
     - name: Download nuget package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: nuget-package
 
@@ -456,8 +336,6 @@ jobs:
   publish-nuget-package:
     runs-on: ubuntu-latest
     needs: [
-      linux-pip-package-test,
-      windows-pip-package-test,
       nuget-package-test,
       deb-package-test,
       dev-deb-package-test,
@@ -466,7 +344,7 @@ jobs:
 
     steps:
     - name: Download nuget package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: nuget-package
 
@@ -477,8 +355,6 @@ jobs:
   publish-pip-package:
     runs-on: ubuntu-latest
     needs: [
-      linux-pip-package-test,
-      windows-pip-package-test,
       nuget-package-test,
       deb-package-test,
       dev-deb-package-test,
@@ -486,28 +362,27 @@ jobs:
     ]
 
     steps:
-    - name: Download Windows pip package
-      uses: actions/download-artifact@v4
+    - name: Download Python WebFramework
+      uses: actions/download-artifact@v8
       with:
-        name: windows-pip-package
-        path: dist
+        pattern: "*-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.*-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON"
+        path: WebFrameworkLibrary
+        merge-multiple: true
         
-    - name: Prepare
+    - name: Install twine
       run: python3 -m pip install twine
       
     - name: Publish
       run: |
           export TWINE_USERNAME="__token__"
           export TWINE_PASSWORD="${{ secrets.PYPI_API_KEY }}"
-          twine check dist/*
-          twine upload dist/*
+          twine check WebFrameworkLibrary/api/python_api/dist/*
+          twine upload WebFrameworkLibrary/api/python_api/dist/*
 
 
   publish-deb-packages:
     runs-on: ubuntu-latest
     needs: [
-      linux-pip-package-test,
-      windows-pip-package-test,
       nuget-package-test,
       deb-package-test,
       dev-deb-package-test,
@@ -517,15 +392,15 @@ jobs:
       EMAIL: semengricenko@gmail.com
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         repository: LazyPanda07/web_framework_ppa
 
     - name: Download deb packages
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
-        name: deb-packages
-
+        pattern: "*_deb_package"
+        
     - name: Import GPG key
       uses: crazy-max/ghaction-import-gpg@v6
       with:

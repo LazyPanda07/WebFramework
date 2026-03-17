@@ -27,21 +27,16 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 option(CC_API "" OFF)
 option(CXX_API "" OFF)
+option(PYTHON_API "" OFF)
 option(CSHARP_API "" OFF)
 option(FLUTTER_API "" OFF)
 option(BUILD_TESTS "" ON)
 option(WITH_ADDRESS_SANITIZER "" OFF)
+option(WITHOUT_REDIS_TESTS "" OFF)
+option(BUILD_TASK_EXECUTORS "" OFF)
 set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "CSharp" "NONE")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 
-add_definitions(-DSTART_CORE_SERVER_FILE="start_core_server.txt")
-add_definitions(-DSTART_DEFAULT_HTTPS_SERVER_FILE="start_default_https_server.txt")
-add_definitions(-DSTART_PROXY_SERVER_FILE="start_proxy_server.txt")
-add_definitions(-DSTART_PROXY_HTTPS_SERVER_FILE="start_proxy_https_server.txt")
-add_definitions(-DSTART_LOAD_BALANCER_9090_SERVER_FILE="start_load_balancer_9090_server.txt")
-add_definitions(-DSTART_LOAD_BALANCER_9091_SERVER_FILE="start_load_balancer_9091_server.txt")
-add_definitions(-DSTART_LOAD_BALANCER_9092_SERVER_FILE="start_load_balancer_9092_server.txt")
-add_definitions(-DSTART_LOAD_BALANCER_9093_SERVER_FILE="start_load_balancer_9093_server.txt")
 add_definitions(-DLARGE_FILE_NAME="large_file.bin")
 
 add_definitions(-DWIN32_LEAN_AND_MEAN)
@@ -64,10 +59,15 @@ if (${WITH_ADDRESS_SANITIZER})
     add_definitions(-D__WITH_ADDRESS_SANITIZER__)
 endif()
 
+if (${WITHOUT_REDIS_TESTS})
+	add_definitions(-DWITHOUT_REDIS_TESTS)
+endif()
+
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 
 project(Tests)
 
+include(CTest)
 include(FetchContent)
 
 FetchContent_Declare(
@@ -113,11 +113,16 @@ if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
     install(DIRECTORY ${WEB_FRAMEWORK_LIBRARY_DIR}/certificates DESTINATION .)
 endif()
 
+if (${BUILD_TASK_EXECUTORS})
+    add_subdirectory(task_executors)
+endif()
+
 if (${BUILD_TESTS})
     add_subdirectory(servers)
-    add_subdirectory(unit_tests)
     add_subdirectory(api)
 endif()
+
+add_subdirectory(unit_tests)
 
 add_custom_target(
 	build_tests_localization ALL

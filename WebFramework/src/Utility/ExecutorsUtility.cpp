@@ -1,4 +1,4 @@
-#include "ExecutorsUtility.h"
+#include "Utility/ExecutorsUtility.h"
 
 #include <array>
 #include <stdexcept>
@@ -27,9 +27,9 @@ static constexpr bool equals(std::string_view first, std::string_view second) no
 
 namespace framework::utility
 {
-	ExecutorAPIType getExecutorAPIType(std::string_view name)
+	ExecutorApiType getExecutorApiType(std::string_view name)
 	{
-		constexpr std::array<std::string_view, static_cast<size_t>(ExecutorAPIType::count)> types =
+		constexpr std::array<std::string_view, static_cast<size_t>(ExecutorApiType::count)> types =
 		{
 			json_settings::ccExecutorKey,
 			json_settings::cxxExecutorKey,
@@ -41,12 +41,76 @@ namespace framework::utility
 		{
 			if (equals(types[i], name))
 			{
-				return static_cast<ExecutorAPIType>(i);
+				return static_cast<ExecutorApiType>(i);
 			}
 		}
 
 		throw std::runtime_error(std::format("Wrong executor type name: {}", name));
 
-		return ExecutorAPIType::count;
+		return ExecutorApiType::count;
+	}
+
+	std::function<std::string(const std::vector<std::string>&)> createCxxDynamicFunction(const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
+	{
+		return
+			[function, deleter](const std::vector<std::string>& arguments) -> std::string
+			{
+				std::vector<const char*> temp(arguments.size());
+
+				for (size_t i = 0; i < arguments.size(); i++)
+				{
+					temp[i] = arguments[i].data();
+				}
+
+				const char* tempResult = function(temp.data(), arguments.size());
+				std::string result(tempResult);
+
+				if (deleter)
+				{
+					deleter(const_cast<char*>(tempResult));
+				}
+
+				return result;
+			};
+	}
+
+	bool escapeFromAssets(std::string_view filePath) noexcept
+	{
+		int depth = 0;
+
+		while (filePath.size())
+		{
+			size_t i = 0;
+
+			while (i < filePath.size() && filePath[i] != '/')
+			{
+				i++;
+			};
+
+			std::string_view part = filePath.substr(0, i);
+
+			if (part == "..")
+			{
+				if (!depth)
+				{
+					return true;
+				}
+
+				depth--;
+			}
+			else if (part.size() && part != ".")
+			{
+				depth++;
+			}
+
+			if (i == filePath.size())
+			{
+				break;
+			}
+
+			filePath.remove_prefix(i + 1);
+		}
+
+		return false;
 	}
 }

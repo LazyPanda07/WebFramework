@@ -4,7 +4,7 @@ option(BUILD_CC_API "Build CC API" ON)
 option(BUILD_CXX_API "Build C++ API" ON)
 option(BUILD_CSHARP_API "Build C# API" ON)
 option(BUILD_PYTHON_API "Build Python API" ON)
-option(BUILD_FLUTTER_API "Build Flutter API" ON)
+option(BUILD_FLUTTER_API "Build Flutter API" OFF)
 
 project(API)
 
@@ -28,7 +28,8 @@ if (${BUILD_PYTHON_API})
 		PATTERN "out" EXCLUDE
 		PATTERN ".vs" EXCLUDE
 	)
-	install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/api/cxx/include DESTINATION ${CMAKE_INSTALL_PREFIX}/api/python_api/cxx)
+	install(DIRECTORY CXX_API/include DESTINATION ${CMAKE_INSTALL_PREFIX}/api/python_api/cxx)
+
 	if (UNIX)
 		install(
 			CODE [[
@@ -48,6 +49,20 @@ if (${BUILD_PYTHON_API})
 			execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_INSTALL_PREFIX}/license ${CMAKE_INSTALL_PREFIX}/api/python_api/license)
 		]]
 	)
+
+	if (UNIX)
+		install(
+			CODE [[
+				execute_process(COMMAND python3 -m build ${CMAKE_INSTALL_PREFIX}/api/python_api)
+			]]
+		)
+	elseif (WIN32)
+		install(
+			CODE [[
+				execute_process(COMMAND python -m build ${CMAKE_INSTALL_PREFIX}/api/python_api)
+			]]
+		)
+	endif()	
 endif()
 
 if (${BUILD_FLUTTER_API})

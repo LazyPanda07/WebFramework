@@ -1,8 +1,8 @@
-#include "TableImplementation.h"
+#include "Databases/TableImplementation.h"
 
 #include <stdexcept>
 
-#include "SQLResultImplementation.h"
+#include "Databases/SQLResultImplementation.h"
 
 namespace framework
 {
@@ -14,7 +14,7 @@ namespace framework
 
 	interfaces::ISQLResult* TableImplementation::execute(const char* query, const interfaces::ISQLValue** values, size_t size)
 	{
-		std::vector<database::SQLValue> temp;
+		std::vector<database::SqlValue> temp;
 
 		temp.reserve(size);
 

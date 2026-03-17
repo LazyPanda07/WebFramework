@@ -6,9 +6,8 @@ from functools import partial
 from web_framework_api import *
 
 
-def on_server_start(port: int):
-    with open(f"start_load_balancer_{port}_server.txt", "w") as file:
-        file.write(f"{os.getpid()}")
+def print_running_state():
+    print("Server is running...")
 
 
 if __name__ == '__main__':
@@ -54,7 +53,7 @@ if __name__ == '__main__':
 
         server = WebFramework(config)
 
-        server.start(True, partial(on_server_start, args.port))
+        server.start(True, print_running_state)
     except WebFrameworkException as exception:
         print(exception)
 

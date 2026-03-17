@@ -9,7 +9,9 @@ static void __add_array_callback(void* object, void* array)
 
 	if (exception)
 	{
-		// TODO: error handling
+		fprintf(stderr, "Can't add element to JSON array\n");
+
+		exit(0xff);
 	}
 
 	wf_set_json_object_object(&element, (json_object_t*)object);
@@ -22,6 +24,17 @@ web_framework_exception_t wf_create_json_parser(json_parser_t* parser)
 	typedef void* (*createJsonParser)(void* _, void** exception);
 
 	*parser = CALL_WEB_FRAMEWORK_FUNCTION(createJsonParser, NULL, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_create_json_parser_from_object(json_parser_t* parser, const json_object_t* parsed_data)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*createJsonParserFromObject)(void* parsed_data, void** exception);
+
+	*parser = CALL_WEB_FRAMEWORK_FUNCTION(createJsonParserFromObject, parsed_data->implementation, &exception);
 
 	return exception;
 }

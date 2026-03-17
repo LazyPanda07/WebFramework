@@ -28,8 +28,6 @@ class CustomHeuristic(LoadBalancerHeuristic):
 
 class IdExecutor(HeavyOperationStatelessExecutor):
     def do_get(self, request, response):
-        time.sleep(10)
-
         response.set_body({
             "id": os.getpid()
         })

@@ -5,6 +5,7 @@ DEFINE_DEFAULT_EXECUTOR(UploadMultipartExecutor, HEAVY_OPERATION_STATELESS_EXECU
 DEFINE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 {
 	multipart_t* multiparts = NULL;
+	const char* response_message = "Finish uploading files";
 	size_t size;
 
 	wf_get_multiparts(request, &multiparts, &size);
@@ -19,7 +20,7 @@ DEFINE_EXECUTOR_METHOD(UploadMultipartExecutor, POST_METHOD, request, response)
 	}
 
 	wf_set_http_response_code(response, CREATED);
-	wf_set_body(response, "Finish uploading files");
+	wf_set_body(response, response_message, strlen(response_message));
 
 	free(multiparts);
 }

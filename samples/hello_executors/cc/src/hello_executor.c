@@ -1,6 +1,6 @@
 #include <executors/executor.h>
 
-DEFINE_DEFAULT_EXECUTOR(CCHelloExecutor, STATELESS_EXECUTOR);
+DEFINE_DEFAULT_EXECUTOR(CCHelloExecutor, STATELESS_EXECUTOR)
 
 DEFINE_EXECUTOR_METHOD(CCHelloExecutor, GET_METHOD, request, response)
 {
@@ -10,9 +10,11 @@ DEFINE_EXECUTOR_METHOD(CCHelloExecutor, GET_METHOD, request, response)
 
 	if (exception != NULL)
 	{
+		const char* errorMessage = "Can't create json_builder_t";
+
 		wf_set_http_response_code(response, INTERNAL_SERVER_ERROR);
 
-		wf_set_body(response, "Can't create json_builder_t");
+		wf_set_body(response, errorMessage, strlen(errorMessage));
 		
 		return;
 	}
@@ -21,9 +23,11 @@ DEFINE_EXECUTOR_METHOD(CCHelloExecutor, GET_METHOD, request, response)
 
 	if (exception != NULL)
 	{
+		const char* errorMessage = "Can't append JSON string";
+
 		wf_set_http_response_code(response, INTERNAL_SERVER_ERROR);
 
-		wf_set_body(response, "Can't append JSON string");
+		wf_set_body(response, errorMessage, strlen(errorMessage));
 
 		return;
 	}
@@ -34,4 +38,4 @@ DEFINE_EXECUTOR_METHOD(CCHelloExecutor, GET_METHOD, request, response)
 	wf_delete_web_framework_exception(exception);
 }
 
-DEFINE_INITIALIZE_WEB_FRAMEWORK();
+DEFINE_INITIALIZE_WEB_FRAMEWORK()

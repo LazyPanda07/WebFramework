@@ -1,4 +1,4 @@
-#include "RuntimesManager.h"
+#include "Managers/RuntimesManager.h"
 
 #include <format>
 
@@ -6,6 +6,7 @@
 #include "Runtimes/DotNetRuntime.h"
 #include "Runtimes/CXXRuntime.h"
 #include "Runtimes/CCRuntime.h"
+#include "Utility/Utils.h"
 
 namespace framework::runtime
 {
@@ -71,18 +72,19 @@ namespace framework::runtime
 		case framework::utility::LoadSourceType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();
+			
 #else
-			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
+			utility::logAndThrowException<logging::message::noPythonExecutors, logging::category::runtime>();
 #endif
 
 		case framework::utility::LoadSourceType::dynamicLibrary:
-			throw std::runtime_error("No runtime for LoadSourceType::dynamicLibrary");
+			utility::logAndThrowException<logging::message::noRuntimeForDynamicLibrary, logging::category::runtime>();
 
 		case framework::utility::LoadSourceType::dotNet:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
-			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
+			utility::logAndThrowException<logging::message::noDotNetExecutors, logging::category::runtime>();
 #endif
 
 		default:
@@ -98,17 +100,17 @@ namespace framework::runtime
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();
 #else
-			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
+			utility::logAndThrowException<logging::message::noPythonExecutors, logging::category::runtime>();
 #endif
 
 		case framework::utility::LoadSourceType::dynamicLibrary:
-			throw std::runtime_error("No runtime for LoadSourceType::dynamicLibrary");
+			utility::logAndThrowException<logging::message::noRuntimeForDynamicLibrary, logging::category::runtime>();
 
 		case framework::utility::LoadSourceType::dotNet:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
-			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
+			utility::logAndThrowException<logging::message::noDotNetExecutors, logging::category::runtime>();
 #endif
 
 		default:
@@ -116,28 +118,28 @@ namespace framework::runtime
 		}
 	}
 
-	Runtime& RuntimesManager::getRuntime(utility::ExecutorAPIType type)
+	Runtime& RuntimesManager::getRuntime(utility::ExecutorApiType type)
 	{
 		switch (type)
 		{
-		case framework::utility::ExecutorAPIType::cc:
+		case framework::utility::ExecutorApiType::cc:
 			return this->getRuntime<CCRuntime>();
 
-		case framework::utility::ExecutorAPIType::cxx:
+		case framework::utility::ExecutorApiType::cxx:
 			return this->getRuntime<CXXRuntime>();
 
-		case framework::utility::ExecutorAPIType::python:
+		case framework::utility::ExecutorApiType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();
 #else
-			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
+			utility::logAndThrowException<logging::message::noPythonExecutors, logging::category::runtime>();
 #endif
 
-		case framework::utility::ExecutorAPIType::csharp:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+		case framework::utility::ExecutorApiType::csharp:
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
-			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
+			utility::logAndThrowException<logging::message::noDotNetExecutors, logging::category::runtime>();
 #endif
 
 		default:
@@ -145,28 +147,28 @@ namespace framework::runtime
 		}
 	}
 
-	const Runtime& RuntimesManager::getRuntime(utility::ExecutorAPIType type) const
+	const Runtime& RuntimesManager::getRuntime(utility::ExecutorApiType type) const
 	{
 		switch (type)
 		{
-		case framework::utility::ExecutorAPIType::cc:
+		case framework::utility::ExecutorApiType::cc:
 			return this->getRuntime<CCRuntime>();
 
-		case framework::utility::ExecutorAPIType::cxx:
+		case framework::utility::ExecutorApiType::cxx:
 			return this->getRuntime<CXXRuntime>();
 
-		case framework::utility::ExecutorAPIType::python:
+		case framework::utility::ExecutorApiType::python:
 #ifdef __WITH_PYTHON_EXECUTORS__
 			return this->getRuntime<PythonRuntime>();
 #else
-			throw std::runtime_error("Can't get Python runtime. WebFramework built without Python Executor support");
+			utility::logAndThrowException<logging::message::noPythonExecutors, logging::category::runtime>();
 #endif
 
-		case framework::utility::ExecutorAPIType::csharp:
-#ifdef __WITH_DOT_NET_EXECUTORS__
+		case framework::utility::ExecutorApiType::csharp:
+#ifdef __WITH_DOTNET_EXECUTORS__
 			return this->getRuntime<DotNetRuntime>();
 #else
-			throw std::runtime_error("Can't get .NET runtime. WebFramework built without .NET Executor support");
+			utility::logAndThrowException<logging::message::noDotNetExecutors, logging::category::runtime>();
 #endif
 
 		default:

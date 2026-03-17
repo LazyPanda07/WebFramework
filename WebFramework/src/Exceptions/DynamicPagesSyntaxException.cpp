@@ -1,4 +1,4 @@
-#include "DynamicPagesSyntaxException.h"
+#include "Exceptions/DynamicPagesSyntaxException.h"
 
 #include "Framework/WebFrameworkConstants.h"
 

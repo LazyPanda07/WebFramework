@@ -27,9 +27,6 @@
     <ClCompile Include="src\dll_handler.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\http_request_t.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\http_response.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,9 +43,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\json_parser.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Utility\web_ramework_utility.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\web_framework_localization.c">
@@ -75,6 +69,9 @@
     <ClCompile Include="src\http_request.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\task_broker\task_executor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\import.h">
@@ -90,9 +87,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\web_framework_exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\http_request_t.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\http_response.h">
@@ -129,6 +123,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\http_request.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\databases\implementations\default_database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\databases\implementations\redis_database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\databases\implementations\sqlite_database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\task_broker\task_brokers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\task_broker\task_apis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\task_broker\task_executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

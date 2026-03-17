@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-
-namespace Framework.Utility;
+﻿namespace Framework.Utility;
 
 public static class WebFrameworkUtility
 {

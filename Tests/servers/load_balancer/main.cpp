@@ -17,17 +17,17 @@ int main(int argc, char** argv) try
 
 	framework::utility::initializeWebFramework("WebFramework");
 
-	framework::utility::Config config(parser.get<std::string>("--config"));
-	int64_t port = parser.get<int64_t>("--port");
+	framework::utility::Config config(parser.getRequired<std::string>("config"));
+	int64_t port = parser.get<int64_t>("port");
 
 	config.overrideConfiguration("port", port);
 
-	if (parser.get<bool>("--custom_heuristic"))
+	if (parser.get<bool>("custom_heuristic"))
 	{
 		config.overrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic");
 	}
 
-	if (std::string type = parser.get<std::string>("--type"); type == "server")
+	if (std::string type = parser.get<std::string>("type"); type == "server")
 	{
 		std::vector<std::string> settingsPaths = { "load_balancer_web.json" };
 
@@ -37,7 +37,7 @@ int main(int argc, char** argv) try
 	}
 	else
 	{
-		bool serversHTTPS = parser.get<bool>("--serversHTTPS");
+		bool serversHTTPS = parser.get<bool>("serversHTTPS");
 		std::vector<int64_t> listOfServers;
 
 		config.overrideConfiguration("serversHTTPS", serversHTTPS);
@@ -63,6 +63,7 @@ int main(int argc, char** argv) try
 	}
 
 #ifdef __WITH_ADDRESS_SANITIZER__
+	config.overrideConfiguration("$[]WebFramework.runtimes.0.enabled", false);
 	config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", false);
 #endif
 
@@ -71,14 +72,9 @@ int main(int argc, char** argv) try
 	server.start
 	(
 		true,
-		[port]()
+		[]()
 		{
-#ifdef __LINUX__
-			pid_t processId = getpid();
-#else
-			DWORD processId = GetCurrentProcessId();
-#endif
-			std::ofstream(std::format("start_load_balancer_{}_server.txt", port)) << processId;
+			std::cout << "Server is running..." << std::endl;
 		}
 	);
 

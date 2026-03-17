@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "title": "WebFramework executors",
   "type": "object",
   "description": "Executors setup",
@@ -18,7 +18,10 @@
           "enum": [ "initialization", "dynamic" ]
         },
         "userAgentFilter": {
-          "type": "string",
+          "type": [ "string", "array" ],
+          "items": {
+            "type": "string"
+          },
           "description": "Filter input requests by User-Agent"
         },
         "initParameters": {
@@ -32,8 +35,6 @@
         }
       },
       "required": [ "route", "loadType", "api" ]
-    },
-    "^\\$schema$": true
-  },
-  "additionalProperties": false
+    }
+  }
 }

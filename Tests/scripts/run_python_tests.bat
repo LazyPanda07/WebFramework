@@ -2,30 +2,19 @@
 
 set WEB_FRAMEWORK_SERVER_CONFIG=%1
 
-set PATH=C:\Program Files\dotnet\host\fxr\8.0.22\;%PATH%
+set BASE_FXR_PATH=C:\Program Files\dotnet\host\fxr
+set PATH=%BASE_FXR_PATH%\10.0.3\;%BASE_FXR_PATH%\10.0.2\;%PATH%
 
-start python server.py %WEB_FRAMEWORK_SERVER_CONFIG%
-start python proxy_server.py --config proxy_config.json --port 15000
-start python proxy_server.py --config proxy_config.json --port 15001 --useHTTPS
-start python load_balancer_server.py --config load_balancer_config.json --port 9090
-start python load_balancer_server.py --config load_balancer_config.json --port 9091 --serversHTTPS
-start python load_balancer_server.py --config load_balancer_config_https.json --port 9092
-start python load_balancer_server.py --config load_balancer_config_https.json --port 9093 --serversHTTPS
-start python load_balancer_server.py --config load_balancer_config.json --port 9094 --custom_heuristic
+REM RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 
-start python load_balancer_server.py --config load_balancer_config.json --type server --port 10000
-start python load_balancer_server.py --config load_balancer_config.json --type server --port 10001 --serversHTTPS
-start python load_balancer_server.py --config load_balancer_config_https.json  --type server --port 10002
-start python load_balancer_server.py --config load_balancer_config_https.json --type server --port 10003 --serversHTTPS
-
-start DefaultHTTPSServer.exe
+echo "Current runtimes: %RUNTIMES%"
 
 python api_test.py || exit 1
-call Core.exe %WEB_FRAMEWORK_SERVER_CONFIG% || exit 1
-call LoadBalancerCore.exe --port 9090 || exit 1
-call LoadBalancerCore.exe --port 9091 || exit 1
-call LoadBalancerCore.exe --port 9092 --useHTTPS || exit 1
-call LoadBalancerCore.exe --port 9093 --useHTTPS || exit 1
-call LoadBalancerCore.exe --port 9094 --custom_heuristic || exit 1
-call ProxyCore.exe --port 15000 || exit 1
-call ProxyCore.exe --port 15001 --useHTTPS || exit 1
+call Core.exe --server_config %WEB_FRAMEWORK_SERVER_CONFIG% --run_arguments "python -u server.py" %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9090 --load_balancer_run_arguments "python -u load_balancer_server.py" --config load_balancer_config.json %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9092 --load_balancer_run_arguments "python -u load_balancer_server.py" --config load_balancer_config_https.json --useHTTPS %RUNTIMES% || exit 1 REM needs to initialize runtimes for https config before using it
+call LoadBalancerCore.exe --port 9091 --load_balancer_run_arguments "python -u load_balancer_server.py" --config load_balancer_config.json --serversHTTPS %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9093 --load_balancer_run_arguments "python -u load_balancer_server.py" --config load_balancer_config_https.json --serversHTTPS --useHTTPS %RUNTIMES% || exit 1
+call LoadBalancerCore.exe --port 9094 --load_balancer_run_arguments "python -u load_balancer_server.py" --config load_balancer_config.json --custom_heuristic %RUNTIMES% || exit 1
+call ProxyCore.exe --port 15000 --load_balancer_run_arguments "python -u load_balancer_server.py" --proxy_run_arguments "python -u proxy_server.py" %RUNTIMES% || exit 1
+call ProxyCore.exe --port 15001 --load_balancer_run_arguments "python -u load_balancer_server.py" --proxy_run_arguments "python -u proxy_server.py" --useHTTPS %RUNTIMES% || exit 1

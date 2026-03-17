@@ -9,21 +9,21 @@ public sealed unsafe partial class Database(IntPtr implementation)
 {
 	private readonly IntPtr implementation = implementation;
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getOrCreateTable(IntPtr implementation, string tableName, string createTableQuery, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getOrCreateTable(IntPtr implementation, string tableName, string createTableQuery, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling=StringMarshalling.Utf8)]
-	private static unsafe partial IntPtr getTable(IntPtr implementation, string tableName, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling=StringMarshalling.Utf8)]
+	private static partial IntPtr getTable(IntPtr implementation, string tableName, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName, StringMarshalling = StringMarshalling.Utf8)]
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static unsafe partial bool containsTable(IntPtr implementation, string tableName, ref IntPtr outTable, ref void* exception);
+	private static partial bool containsTable(IntPtr implementation, string tableName, ref IntPtr outTable, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getDatabaseName(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getDatabaseName(IntPtr implementation, ref void* exception);
 
-	[LibraryImport(DLLHandler.libraryName)]
-	private static unsafe partial IntPtr getDatabaseFileName(IntPtr implementation, ref void* exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getDatabaseFileName(IntPtr implementation, ref void* exception);
 
 	public Table GetOrCreateTable(string tableName, string createTableQuery)
 	{

@@ -19,6 +19,7 @@ add_library(
 	src/databases/sql_result.c
 	src/databases/sql_value.c
 	src/databases/table.c
+	src/task_broker/task_executor.c
 	src/utility/web_framework_utility.c
 	src/utility/web_framework_localization.c
 	src/config.c

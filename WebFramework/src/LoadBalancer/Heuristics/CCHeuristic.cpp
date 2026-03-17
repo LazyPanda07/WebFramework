@@ -1,10 +1,7 @@
-#include "CCHeuristic.h"
+#include "LoadBalancer/Heuristics/CCHeuristic.h"
 
 #include "Utility/Sources.h"
-
-#include <Log.h>
-
-#define ASSERT_LOAD_FUNCTION(name) if (!static_cast<bool>(name)) throw std::runtime_error(std::format("Can't load {} function", #name))
+#include "Utility/Utils.h"
 
 namespace framework::load_balancer
 {
@@ -14,37 +11,24 @@ namespace framework::load_balancer
 
 		if (!creator)
 		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Can't find create{}CCHeuristic function", "LogCCHeuristic", 1, heuristicName);
-			}
-
-			throw std::runtime_error(std::format("Can't find create{}CCHeuristic function", heuristicName));
+			utility::logAndThrowException<logging::message::cantFindCCHeuristic, logging::category::ccHeuristic>(heuristicName);
 		}
 
 		implementation = creator(ip.data(), port.data(), useHTTPS);
 
 		if (!implementation)
 		{
-			if (Log::isValid())
-			{
-				Log::fatalError("Can't create create{}CCHeuristic heuristic", "LogCCHeuristic", 2, heuristicName);
-			}
-
-			throw std::runtime_error(std::format("Can't create create{}CCHeuristic heuristic", heuristicName));
+			utility::logAndThrowException<logging::message::cantCreateCCHeuristic, logging::category::ccHeuristic>(heuristicName);
 		}
 
-		operatorFunction = utility::load<OperatorSignature>(handle, format("webFrameworkCCHeuristicOperator{}", heuristicName));
-		initFunction = utility::load<InitSignature>(handle, format("webFrameworkCCHeuristicInit{}", heuristicName));
-		onStartFunction = utility::load<OnStartSignature>(handle, format("webFrameworkCCHeuristicOnStart{}", heuristicName));
-		onEndFunction = utility::load<OnEndSignature>(handle, format("webFrameworkCCHeuristicOnEnd{}", heuristicName));
-		getIpFunction = utility::load<GetIpSignature>(handle, format("webFrameworkCCHeuristicGetIp{}", heuristicName));
-		getPortFunction = utility::load<GetPortSignature>(handle, format("webFrameworkCCHeuristicGetPort{}", heuristicName));
-		getUseHTTPSFunction = utility::load<GetUseHTTPSSignature>(handle, format("webFrameworkCCHeuristicGetUseHTTPS{}", heuristicName));
-		deleteHeuristicFunction = utility::load<DeleteHeuristicSignature>(handle, format("webFrameworkCCDeleteHeuristic{}", heuristicName));
-
-		ASSERT_LOAD_FUNCTION(operatorFunction);
-		ASSERT_LOAD_FUNCTION(deleteHeuristicFunction);
+		initFunction = utility::load<InitSignature>(handle, std::format("webFrameworkCCHeuristicInit{}", heuristicName));
+		onStartFunction = utility::load<OnStartSignature>(handle, std::format("webFrameworkCCHeuristicOnStart{}", heuristicName));
+		onEndFunction = utility::load<OnEndSignature>(handle, std::format("webFrameworkCCHeuristicOnEnd{}", heuristicName));
+		getIpFunction = utility::load<GetIpSignature>(handle, std::format("webFrameworkCCHeuristicGetIp{}", heuristicName));
+		getPortFunction = utility::load<GetPortSignature>(handle, std::format("webFrameworkCCHeuristicGetPort{}", heuristicName));
+		getUseHTTPSFunction = utility::load<GetUseHTTPSSignature>(handle, std::format("webFrameworkCCHeuristicGetUseHTTPS{}", heuristicName));
+		operatorFunction = utility::load<OperatorSignature>(handle, std::format("webFrameworkCCHeuristicOperator{}", heuristicName), true);
+		deleteHeuristicFunction = utility::load<DeleteHeuristicSignature>(handle, std::format("webFrameworkCCDeleteHeuristic{}", heuristicName), true);
 
 		if (initFunction)
 		{

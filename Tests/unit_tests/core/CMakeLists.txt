@@ -17,6 +17,7 @@ add_executable(
 	cases/Localization.cpp
 	cases/UserAgentFilter.cpp
 	cases/ResourceUploading.cpp
+	cases/Redis.cpp
 )
 
 target_include_directories(
@@ -34,10 +35,21 @@ target_link_libraries(
 	-Wl,--no-whole-archive
 	HTTP
 	SocketStreams
-	gtest
-	gtest_main
+	GTest::gtest
+	GTest::gtest_main
 	${3RDPARTY_LIBRARIES}
 	WebFramework::CXX_API
+	unit_test_utils
+)
+
+add_custom_command(
+	TARGET ${PROJECT_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	$<TARGET_FILE:Localization>
+	$<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
+
+add_test(NAME ${PROJECT_NAME}_API COMMAND CC_API_TESTS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME} COMMAND Core.exe --server_config multi_threaded_config.json --run_redis_tests --run_arguments Server.exe WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

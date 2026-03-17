@@ -7,6 +7,7 @@ add_library(
 	src/CRUDExecutor.c
 	src/MultiUserExecutor.c
 	src/SQLUtility.c
+	src/RedisExecutor.c
 )
 
 target_include_directories(

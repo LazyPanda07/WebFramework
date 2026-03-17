@@ -12,7 +12,7 @@ RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo wget unzip zip openjdk-21-jdk software-properties-common
 RUN add-apt-repository -y ppa:deadsnakes/ppa
 RUN apt update
-RUN apt install -y dotnet-sdk-8.0 python3.14 python3.14-venv libpython3.14
+RUN apt install -y dotnet-sdk-10.0 python3.14 python3.14-venv libpython3.14
 
 RUN wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O tools.zip
 RUN unzip tools.zip
@@ -35,4 +35,4 @@ RUN curl -s --compressed "https://LazyPanda07.github.io/web_framework_ppa/KEY.gp
 RUN curl -s --compressed -o /etc/apt/sources.list.d/web_framework.list "https://LazyPanda07.github.io/web_framework_ppa/web_framework.list"
 RUN apt update
 
-RUN apt install -y web-framework-dev=3.2.0
+RUN apt install -y web-framework-dev=3.3.0

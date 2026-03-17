@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Executors\BaseExecutor.cpp">
+    <ClCompile Include="src\Executors\Executor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatefulExecutor.cpp">
+    <ClCompile Include="src\Executors\HeavyOperationStatefulExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Executors\BaseHeavyOperationStatelessExecutor.cpp">
+    <ClCompile Include="src\Executors\HeavyOperationStatelessExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Executors\BaseStatefulExecutor.cpp">
+    <ClCompile Include="src\Executors\StatefulExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Executors\BaseStatelessExecutor.cpp">
+    <ClCompile Include="src\Executors\StatelessExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utility\JSONSettingsParser.cpp">
@@ -36,84 +36,48 @@
     <ClCompile Include="src\Exceptions\NotImplementedException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Exceptions\BaseExecutorException.cpp">
+    <ClCompile Include="src\Exceptions\ExecutorException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\BadRequestException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\c_api\executors_c_api.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Web\HTTPRequestExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Web\HTTPResponseExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\DatabaseExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\TableExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\SQLValueExecutors.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Databases\SQLResultExecutors.cpp">
+    <ClCompile Include="src\Exceptions\NotFoundException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Executors\BaseExecutor.h">
+    <ClInclude Include="include\Executors\Executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatefulExecutor.h">
+    <ClInclude Include="include\Executors\HeavyOperationStatefulExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\BaseHeavyOperationStatelessExecutor.h">
+    <ClInclude Include="include\Executors\HeavyOperationStatelessExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\BaseStatefulExecutor.h">
+    <ClInclude Include="include\Executors\StatefulExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Executors\BaseStatelessExecutor.h">
+    <ClInclude Include="include\Executors\StatelessExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utility\JSONSettingsParser.h">
+    <ClInclude Include="include\Utility\JSONSettingsParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\NotImplementedException.h">
+    <ClInclude Include="include\Exceptions\NotImplementedException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\BaseExecutorException.h">
+    <ClInclude Include="include\Exceptions\ExecutorException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\BadRequestException.h">
+    <ClInclude Include="include\Exceptions\BadRequestException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ExecutorsConstants.h">
+    <ClInclude Include="include\ExecutorsConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\c_api\executors_c_api.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Web\HTTPRequestExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Web\HTTPResponseExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\DatabaseExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\TableExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\SQLValueExecutors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Databases\SQLResultExecutors.h">
+    <ClInclude Include="include\Exceptions\NotFoundException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

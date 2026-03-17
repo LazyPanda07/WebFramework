@@ -68,6 +68,17 @@ namespace framework
 		void stop(bool wait = true);
 
 		/**
+		 * @brief Disconnects or removes a client or connection identified by the specified IP address.
+		 * @param ip The IP address of the client to disconnect, provided as a std::string_view.
+		 */
+		void kick(std::string_view ip);
+
+		/**
+		 * @brief Updates the application's SSL/TLS certificates by reloading or renewing them from configured sources and applying the changes.
+		 */
+		void updateSslCertificates();
+
+		/**
 		 * @brief Is server running
 		 * @return 
 		 */
@@ -166,6 +177,32 @@ namespace framework
 		void* exception = nullptr;
 
 		utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(stopWebFrameworkServer, wait, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+	}
+
+	inline void WebFramework::kick(std::string_view ip)
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(kickWebFrameworkServer, void, const char* ip, void** exception);
+		void* exception = nullptr;
+
+		utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(kickWebFrameworkServer, ip.data(), &exception);
+
+		if (exception) //-V547
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+	}
+
+	inline void WebFramework::updateSslCertificates()
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(updateSslCertificatesWebFrameworkServer, void, void** exception);
+		void* exception = nullptr;
+
+		utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(updateSslCertificatesWebFrameworkServer, &exception);
 
 		if (exception) //-V547
 		{

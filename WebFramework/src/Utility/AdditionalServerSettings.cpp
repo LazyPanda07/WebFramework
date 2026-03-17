@@ -1,4 +1,6 @@
-#include "AdditionalServerSettings.h"
+#include "Utility/AdditionalServerSettings.h"
+
+#include <JsonArrayWrapper.h>
 
 #include "Framework/WebFrameworkConstants.h"
 #include "WebFrameworkCoreConstants.h"
@@ -18,7 +20,6 @@ namespace framework::utility
 		AdditionalServerSettings result;
 		std::string value;
 
-		parser.tryGet<std::string>(json_settings::userAgentFilterKey, result.userAgentFilter);
 		parser.tryGet<size_t>(json_settings::largeBodySizeThresholdKey, result.largeBodySizeThreshold);
 		parser.tryGet<size_t>(json_settings::largeBodyPacketSizeKey, result.largeBodyPacketSize);
 		parser.tryGet<uint64_t>(json_settings::cachingSize, result.cachingSize);
@@ -36,6 +37,17 @@ namespace framework::utility
 
 			result.templatesPath = temp.is_absolute() ? temp : (basePath / temp);
 		}
+
+		if (parser.contains<std::string>(json_settings::userAgentFilterKey))
+		{
+			result.userAgentFilter.emplace_back(parser.get<std::string>(json_settings::userAgentFilterKey));
+		}
+		else if (parser.contains<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey))
+		{
+			result.userAgentFilter = json::utility::JsonArrayWrapper(parser.get<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey)).as<std::string>();
+		}
+
+		std::erase(result.userAgentFilter, "");
 
 		return result;
 	}

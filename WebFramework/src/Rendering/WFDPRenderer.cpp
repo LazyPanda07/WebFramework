@@ -1,4 +1,4 @@
-#include "WFDPRenderer.h"
+#include "Rendering/WFDPRenderer.h"
 
 #include <Log.h>
 
@@ -7,8 +7,11 @@
 #include "WFDP/CXXDynamicFunction.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "ExecutorsConstants.h"
+#include "Utility/Utils.h"
 
+#ifndef __LINUX__
 #pragma warning(disable: 26800)
+#endif
 
 static constexpr std::string_view argumentsDelimiter = "</arg>";
 
@@ -63,7 +66,7 @@ namespace framework
 
 				if (it == variables.end())
 				{
-					throw std::runtime_error(std::format("No variable: {}", name));
+					utility::logAndThrowException<logging::message::noDynamicFunctionVariable, logging::category::dynamicFunction>(name);
 				}
 
 				return it->value;
@@ -136,19 +139,14 @@ namespace framework
 			{
 				if (Log::isValid())
 				{
-					Log::info("Call {} function", "LogWFDP", functionName);
+					Log::info<logging::message::callDynamicFunction, logging::category::dynamicFunction>(functionName);
 				}
 
 				result += (*dynamicPagesFunctions.at(functionName))(arguments);
 			}
 			catch (const std::exception& e)
 			{
-				if (Log::isValid())
-				{
-					Log::error("WFDPRenderer execute exception: {}", "LogWebFrameworkDynamicPages", e.what());
-				}
-
-				throw;
+				utility::logAndThrowException<logging::message::wfdpRendererExecuteException, logging::category::dynamicFunction>(e.what());
 			}
 		}
 

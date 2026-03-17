@@ -2,38 +2,24 @@
 
 set -e
 
-echo "Start C# Tests"
-
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
-export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=$(pwd):/usr/share/dotnet/host/fxr/10.0.2:${LD_LIBRARY_PATH}
 
 chmod +x ./Core
 chmod +x ./LoadBalancerCore
 chmod +x ./ProxyCore
 chmod +x ./DefaultHTTPSServer
 
-dotnet CSharpServer.dll ${WEB_FRAMEWORK_SERVER_CONFIG} &
-./DefaultHTTPSServer &
-dotnet CSharpProxyServer.dll --config proxy_config.json --port 15000 &
-dotnet CSharpProxyServer.dll --config proxy_config.json --port 15001 --use-https &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9090 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9091 --servers-https &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --port 9092 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --port 9093 --servers-https &
+# RUNTIMES variable contains list of all needed runtimes like this: --runtime python
 
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --type server --port 10000 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --type server --port 10001 --servers-https &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json  --type server --port 10002 &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config_https.json --type server --port 10003 --servers-https &
-dotnet CSharpLoadBalancerServer.dll --config load_balancer_config.json --port 9094 --custom-heuristic &
-sleep 1
+echo "Current runtimes: ${RUNTIMES}"
 
 dotnet test CSharpAPI.dll
-./Core ${WEB_FRAMEWORK_SERVER_CONFIG}
-./LoadBalancerCore --port 9090
-./LoadBalancerCore --port 9091
-./LoadBalancerCore --port 9092 --useHTTPS
-./LoadBalancerCore --port 9093 --useHTTPS
-./LoadBalancerCore --port 9094 --custom_heuristic
-./ProxyCore --port 15000
-./ProxyCore --port 15001 --useHTTPS
+./Core --server_config ${WEB_FRAMEWORK_SERVER_CONFIG} --run_arguments "dotnet CSharpServer.dll" ${RUNTIMES}
+./LoadBalancerCore --port 9090 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config.json ${RUNTIMES}
+./LoadBalancerCore --port 9092 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config_https.json --useHTTPS ${RUNTIMES} # needs to initialize runtimes for https config before using it
+./LoadBalancerCore --port 9091 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config.json --serversHTTPS ${RUNTIMES}
+./LoadBalancerCore --port 9093 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config_https.json --serversHTTPS --useHTTPS ${RUNTIMES}
+./LoadBalancerCore --port 9094 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --config load_balancer_config.json --custom_heuristic ${RUNTIMES}
+./ProxyCore --port 15000 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer.dll" ${RUNTIMES}
+./ProxyCore --port 15001 --load_balancer_run_arguments "dotnet CSharpLoadBalancerServer.dll" --proxy_run_arguments "dotnet CSharpProxyServer.dll" --useHTTPS ${RUNTIMES}

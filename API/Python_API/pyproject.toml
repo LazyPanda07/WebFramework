@@ -7,7 +7,7 @@ name = "web_framework_api"
 description = "Python API for WebFramework"
 readme = "README.md"
 license = { file = "license/LICENSE" }
-requires-python = "==3.14.*"
+requires-python = ">=3.12"
 authors = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
 ]
@@ -15,8 +15,10 @@ maintainers = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
 ]
 keywords = ["Web"]
-version = "3.2.0"
+version = "3.3.0"
 classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: MIT License",
     "Operating System :: Microsoft :: Windows",
@@ -24,7 +26,9 @@ classifiers = [
 ]
 
 [tool.scikit-build]
-wheel.py-api = "py3"
+build.verbose = true
+build.tool-args = ["-j0"]
+cmake.args = ["-DCMAKE_BUILD_TYPE=Release", "-G", "Ninja"]
 sdist.include = [
   "cxx/include/*.hpp",
   "lib/*.so",

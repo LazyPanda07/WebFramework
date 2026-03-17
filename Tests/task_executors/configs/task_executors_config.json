@@ -1,0 +1,36 @@
+{
+  "WebServer": {
+    "ip": "127.0.0.1",
+    "port": 64000
+  },
+  "WebFramework": {
+    "assetsPath": "assets",
+    "templatesPath": "templates",
+    "webServerType": "multiThreaded",
+    "loadSources": [
+      "cc_task_executors",
+      "cxx_task_executors",
+      "python_task_executors",
+      "csharp_task_executors"
+    ],
+    "settingsPaths": [ "task_executors_web.json" ],
+    "runtimes": [
+      "python",
+      ".net"
+    ]
+  },
+  "Logging": {
+    "dateFormat": "DMY",
+    "usingLogging": true
+  },
+  "TaskBroker": {
+    "consumer": "internal",
+    "taskBrokers": [
+      "internal",
+      "rabbitmq"
+    ],
+    "taskExecutorsSettings": [
+      "task_executors.json"
+    ]
+  }
+}

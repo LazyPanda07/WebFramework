@@ -1,0 +1,22 @@
+[
+  {
+    "api": "cxx",
+    "sourcePath": "cxx_task_executors",
+    "classNames": [ "CXXTestTaskExecutor" ]
+  },
+  {
+    "api": "cc",
+    "sourcePath": "cc_task_executors",
+    "classNames": [ "c_test_task_executor" ]
+  },
+  {
+    "api": "python",
+    "sourcePath": "python_task_executors",
+    "classNames": [ "PythonTestTaskExecutor" ]
+  },
+  {
+    "api": "csharp",
+    "sourcePath": "csharp_task_executors",
+    "classNames": [ "CSharpTestTaskExecutor" ]
+  }
+]

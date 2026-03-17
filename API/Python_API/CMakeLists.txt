@@ -2,19 +2,20 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(PYBIND11_TAG v3.0.1)
+set(PYBIND11_VERSION 3.0.2)
+set(PYBIND11_FINDPYTHON OFF)
 
-if (UNIX)
-    set(PYTHON_EXECUTABLE /usr/bin/python3 CACHE STRING "Path to Python executable")
-else()
-    set(PYBIND11_FINDPYTHON OFF)
+if ("${PYTHON_EXECUTABLE}" STREQUAL "")
+    if (UNIX)
+        set(PYTHON_EXECUTABLE /usr/bin/python3)
+    else()
+        find_package(Python REQUIRED)
 
-    find_package(Python REQUIRED)
-
-    set(PYTHON_EXECUTABLE ${Python_EXECUTABLE} CACHE STRING "Path to Python executable")
+        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+    endif()
 endif()
 
-if (NOT DEFINED ${PYTHON_MINOR_VERSION})
+if (NOT DEFINED PYTHON_MINOR_VERSION)
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} --version
         OUTPUT_VARIABLE PYTHON_FULL_VERSION
@@ -31,7 +32,7 @@ if (UNIX)
 	add_definitions(-D__LINUX__)
 endif(UNIX)
 
-project(web_framework_api VERSION 3.2.0)
+project(web_framework_api VERSION 3.3.0)
 
 if (UNIX)
     add_definitions(-D__LINUX__)
@@ -44,7 +45,7 @@ include(FetchContent)
 FetchContent_Declare(
     pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11.git
-    GIT_TAG ${PYBIND11_TAG}
+    GIT_TAG v${PYBIND11_VERSION}
     OVERRIDE_FIND_PACKAGE
 )
 
@@ -55,14 +56,26 @@ find_package(pybind11 REQUIRED)
 pybind11_add_module(
     ${PROJECT_NAME}
     src/module.cpp
+    src/PyChunkGenerator.cpp
+    src/PyDynamicFunction.cpp
     src/Executors/PyStatelessExecutor.cpp
     src/Executors/PyStatefulExecutor.cpp
     src/Executors/PyHeavyOperationStatelessExecutor.cpp
     src/Executors/PyHeavyOperationStatefulExecutor.cpp
-    src/PyChunkGenerator.cpp
-    src/PyLoadBalancerHeuristic.cpp
-    src/PyDynamicFunction.cpp
+    src/LoadBalancer/PyLoadBalancerHeuristic.cpp
+    src/TaskBroker/PyTaskExecutor.cpp
+    src/TaskBroker/PyTaskSerializer.cpp
+    src/Registrars/SqlRegistrar.cpp
+    src/Registrars/TaskBrokerRegistrar.cpp
+    src/Registrars/WebFrameworkUtilityRegistrar.cpp
+    src/Registrars/ExecutorRegistrar.cpp
+    src/Registrars/WebFrameworkApiRegistrar.cpp
+    src/Registrars/LoadBalancerRegistrar.cpp
+    src/Registrars/HttpResponseRegistrar.cpp
+    src/Registrars/HttpRequestRegistrar.cpp
 )
+
+add_definitions(-DPYBIND11_DETAILED_ERROR_MESSAGES)
 
 target_include_directories(
     ${PROJECT_NAME} PRIVATE
@@ -81,6 +94,7 @@ else()
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 
             COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
+            COMMAND .venv/bin/python -m pip install --upgrade pip
             COMMAND .venv/bin/python -m pip install pybind11-stubgen
             COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/*.so ${CMAKE_BINARY_DIR}/.venv/lib/python3.${PYTHON_MINOR_VERSION}/site-packages
             COMMAND ${CMAKE_BINARY_DIR}/.venv/bin/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
@@ -93,6 +107,7 @@ else()
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 
             COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
+            COMMAND .venv/Scripts/python -m pip install --upgrade pip
             COMMAND .venv/Scripts/python -m pip install pybind11-stubgen
             COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/.venv/Lib/site-packages
             COMMAND ${CMAKE_BINARY_DIR}/.venv/Scripts/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}

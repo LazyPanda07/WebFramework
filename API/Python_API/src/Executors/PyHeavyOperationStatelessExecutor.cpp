@@ -1,6 +1,4 @@
-#define PYBIND11_DETAILED_ERROR_MESSAGES
-
-#include "PyHeavyOperationStatelessExecutor.h"
+#include "Executors/PyHeavyOperationStatelessExecutor.h"
 
 #include <pybind11/pybind11.h>
 

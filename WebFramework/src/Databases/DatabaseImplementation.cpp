@@ -1,10 +1,10 @@
-#include "DatabaseImplementation.h"
+#include "Databases/DatabaseImplementation.h"
 
 #include <algorithm>
 
 #include <DatabaseFactory.h>
 
-#include "TableImplementation.h"
+#include "Databases/TableImplementation.h"
 #include "Managers/DatabasesManager.h"
 
 namespace framework
@@ -35,19 +35,36 @@ namespace framework
 
 	interfaces::ITable* DatabaseImplementation::getOrCreateTable(const char* tableName, const char* createTableQuery)
 	{
-		return tables.emplace_back
-		(
-			new TableImplementation
+		if (database->getSupportsTables())
+		{
+			return tables.emplace_back
 			(
-				database::createRawTable
+				new TableImplementation
 				(
-					DatabasesManager::get().getDatabaseImplementationName(),
-					tableName,
-					database::CreateTableQuery(createTableQuery),
-					database.get()
+					database::createRawTable
+					(
+						tableName,
+						database::CreateTableQuery(createTableQuery),
+						database.get()
+					)
 				)
-			)
-		);
+			);
+		}
+		else
+		{
+			return tables.emplace_back
+			(
+				new TableImplementation
+				(
+					database::createRawTable
+					(
+						tableName,
+						database::RawQuery(createTableQuery),
+						database.get()
+					)
+				)
+			);
+		}
 	}
 
 	const char* DatabaseImplementation::getDatabaseName() const

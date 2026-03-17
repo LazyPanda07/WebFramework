@@ -1,47 +1,53 @@
 ﻿using Framework;
 using Framework.Utility;
+using System.CommandLine;
 
 class ProxyServer
 {
-	static int Main(string config, long port, bool useHTTPS = false)
+	static int Main(string[] args)
 	{
 		try
 		{
-			Config serverConfig = new(config);
+			var configOption = new Option<string>("--config")
+			{
+				Required = true,
+			};
+			var useHTTPSOption = new Option<bool>("--useHTTPS")
+			{
+				DefaultValueFactory = _ => false
+			};
+			var portOption = new Option<int>("--port")
+			{
+				Required = true
+			};
 
-			serverConfig.OverrideConfiguration("useHTTPS", useHTTPS, true);
-			serverConfig.OverrideConfiguration("port", port, true);
+			RootCommand root =
+			[
+				configOption,
+				useHTTPSOption,
+				portOption
+			];
 
-			WebFramework server = new(serverConfig);
-
-			server.Start
+			root.SetAction
 			(
-				true,
-				() =>
+				parseResult =>
 				{
-					FileStream file;
+					string config = parseResult.GetRequiredValue(configOption);
+					bool useHTTPS = parseResult.GetValue(useHTTPSOption);
+					int port = parseResult.GetRequiredValue(portOption);
 
-					switch (port)
-					{
-						case 15000:
-							file = File.OpenWrite("start_proxy_server.txt");
+					Config serverConfig = new(config);
 
-							break;
+					serverConfig.OverrideConfiguration("useHTTPS", useHTTPS, true);
+					serverConfig.OverrideConfiguration("port", port, true);
 
-						case 15001:
-							file = File.OpenWrite("start_proxy_https_server.txt");
+					WebFramework server = new(serverConfig);
 
-							break;
-
-						default:
-							return;
-					}
-
-					using StreamWriter writer = new(file);
-
-					writer.Write($"{Environment.ProcessId}");
+					server.Start(true, () => Console.WriteLine("Server is running..."));
 				}
 			);
+
+			return root.Parse(args).Invoke();
 		}
 		catch (Exception exception)
 		{
@@ -49,7 +55,5 @@ class ProxyServer
 
 			return -1;
 		}
-
-		return 0;
 	}
 }
