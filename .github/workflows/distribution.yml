@@ -42,8 +42,8 @@ jobs:
     - name: Move libraries
       shell: bash
       run: |
-          mv dll/*.dll API/CSharp_API/
-          mv lib/*.so API/CSharp_API/
+          mv Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/dll/*.dll API/CSharp_API/
+          mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/
           mv license/* API/CSharp_API/
 
     - name: Create nuget package
@@ -53,7 +53,7 @@ jobs:
           msbuild -t:pack -p:Configuration=Release
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: nuget-package
         path: API/CSharp_API/bin/Release/*.nupkg
@@ -88,7 +88,7 @@ jobs:
     - name: Copy libraries
       run: |
           mkdir -p API/web_framework_flutter_api/assets/lib/arm64-v8a
-          cp -r dll/*.dll API/web_framework_flutter_api/assets/lib
+          cp -r Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/dll/*.dll API/web_framework_flutter_api/assets/lib
           cp -r Android/lib/arm64-v8a/*.so API/web_framework_flutter_api/assets/lib/arm64-v8a
 
     - name: Dry run
@@ -96,7 +96,7 @@ jobs:
       run: dart pub publish --dry-run
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: flutter-package
         path: API/web_framework_flutter_api
@@ -130,9 +130,9 @@ jobs:
           chmod 0755 deb_packages/web-framework/DEBIAN/postinst
           cp deb_packages/web-framework/DEBIAN/copyright web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           echo "/usr/lib/web-framework/lib" > web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d/web-framework.conf
           dpkg --build web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
     
@@ -148,19 +148,19 @@ jobs:
           chmod 0755 deb_packages/web-framework-dev/DEBIAN/postinst
           cp deb_packages/web-framework-dev/DEBIAN/copyright web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework-dev/DEBIAN web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
-          cp -r lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
-          cp -r api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
-          cp -r WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r cmake/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
-          cp -r WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
-          cp -r localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/lib/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/api/cc/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cc/include
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/api/cxx/include/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/api/cxx/include
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/cmake/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
+          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           echo "/usr/lib/web-framework/lib" > web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d/web-framework-dev.conf
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.package-type }}_deb_package
         path: ${{ github.workspace }}/*.deb
@@ -196,7 +196,7 @@ jobs:
         cmake --install . --config Release
 
     - name: Upload executor
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.config.upload_name }}
         path: |
@@ -246,7 +246,7 @@ jobs:
           diff reference.json out.json
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: binaries_${{ matrix.config.asset_name }}
         path: |
