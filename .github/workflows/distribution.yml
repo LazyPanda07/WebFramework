@@ -44,7 +44,7 @@ jobs:
       run: |
           mv Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/dll/*.dll API/CSharp_API/
           mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/
-          mv license/* API/CSharp_API/
+          mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/license/* API/CSharp_API/
 
     - name: Create nuget package
       working-directory: API/CSharp_API/
@@ -186,6 +186,11 @@ jobs:
         fileName: ${{ matrix.config.asset_name }}
         out-file-path: WebFrameworkLibrary
       
+    - name: Move assets
+      working-directory: WebFrameworkLibrary
+      shell: bash
+      run: mv $(ls)/* $(pwd)
+
     - name: Build executor
       working-directory: DistributionTests
       run: |
@@ -234,7 +239,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -D${{ matrix.config.api_name }}.ON -DBUILD_EXECUTOR=ON ..
+          cmake -D${{ matrix.config.api_name }}=ON -DBUILD_EXECUTOR=ON ..
           cmake --build . -j
           cmake --install .
 
