@@ -537,21 +537,16 @@ jobs:
     - name: Create Windows, Linux and LinuxARM zips
       shell: bash
       run: |
-        shopt -s nullglob
-
         for directory in Windows-*/; do
-          dir=${directory%/}
-          zip -r "$dir.zip" "$dir"
+          zip -r "${directory%/}.zip" ${directory}
         done
         
         for directory in Linux-*/; do
-          dir=${directory%/}
-          zip -r "$dir.zip" "$dir"
+          zip -r "${directory%/}.zip" ${directory}
         done
 
         for directory in LinuxARM-*/; do
-          dir=${directory%/}
-          zip -r "$dir.zip" "$dir"
+          zip -r "${directory%/}.zip" ${directory}
         done
       
     - name: Create Android zip
