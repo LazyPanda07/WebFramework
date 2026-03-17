@@ -534,9 +534,6 @@ jobs:
           rm -rf LinuxARMTests
           rm -rf LinuxARMExecutors*
       
-    - name: Print directories
-      run: ls -al
-
     - name: Create Windows, Linux and LinuxARM zips
       shell: bash
       run: |
@@ -556,10 +553,7 @@ jobs:
           dir=${directory%/}
           zip -r "$dir.zip" "$dir"
         done
-        
-    - name: Print directories
-      run: ls -al
-
+      
     - name: Create Android zip
       run: zip -r android.zip Android
       
