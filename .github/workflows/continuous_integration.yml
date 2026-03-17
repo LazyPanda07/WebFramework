@@ -544,17 +544,17 @@ jobs:
 
         for directory in Windows-*/; do
           dir=${directory%/}
-          zip -r -- "$dir.zip" "$dir"
+          zip -r "$dir.zip" "$dir"
         done
         
         for directory in Linux-*/; do
           dir=${directory%/}
-          zip -r -- "$dir.zip" "$dir"
+          zip -r "$dir.zip" "$dir"
         done
 
         for directory in LinuxARM-*/; do
           dir=${directory%/}
-          zip -r -- "$dir.zip" "$dir"
+          zip -r "$dir.zip" "$dir"
         done
         
     - name: Print directories
