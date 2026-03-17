@@ -156,19 +156,19 @@ jobs:
         sudo apt install -y redis-server
 
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: ${{ env.DOWNLOAD_ARTIFACT_NAME }}
         path: WebFrameworkLibrary
 
     - name: Download ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: ${{ env.DOWNLOAD_TESTS_ARTIFACT_NAME }}
         path: Tests
 
     - name: Download ${{ env.DOWNLOAD_EXECUTORS_ARTIFACT_NAME }}
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: ${{ env.DOWNLOAD_EXECUTORS_ARTIFACT_NAME }}
         path: Executors
