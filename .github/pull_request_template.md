@@ -1,8 +1,8 @@
 ## Versions update
-- [ ] WebFramework(WebFrameworkCAPI.cpp)
+- [ ] WebFramework(WebFrameworkCApi.cpp)
 - [ ] CMakeLists.txt
 - [ ] distribution.yml(deb-package-version, deb-package-release-number)
-- [ ] docker_distribution.yml(WEB_FRAMEWORK_DEPLOY_VERSION, WEB_FRAMEWORK_DEV_VERSION, WEB_FRAMEWORK_STATIC_DEV_VERSION)
+- [ ] docker_distribution.yml(WEB_FRAMEWORK_DEPLOY_VERSION, WEB_FRAMEWORK_DEV_VERSION)
 - [ ] deb_packages/web-framework
 - [ ] deb_packages/web-framework-dev
 - [ ] Docker/web_framework_deploy(WEB_FRAMEWORK_TAG, web-framework)

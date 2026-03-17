@@ -26,7 +26,7 @@ option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 
-project(WebFramework VERSION 3.2.0)
+project(WebFramework VERSION 3.3.0)
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
