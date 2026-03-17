@@ -189,7 +189,9 @@ jobs:
     - name: Move assets
       working-directory: WebFrameworkLibrary
       shell: bash
-      run: mv $(ls)/* $(pwd)
+      run: |
+        rm -rf *.zip 
+        mv $(ls)/* $(pwd)
 
     - name: Build executor
       working-directory: DistributionTests
