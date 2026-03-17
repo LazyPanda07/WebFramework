@@ -191,7 +191,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DBUILD_EXECUTOR.ON ..
+        cmake -DBUILD_EXECUTOR=ON ..
         cmake --build . -j --config Release
         cmake --install . --config Release
 
@@ -234,7 +234,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -D${{ matrix.config.api_name }}.ON -DBUILD_EXECUTOR.ON ..
+          cmake -D${{ matrix.config.api_name }}.ON -DBUILD_EXECUTOR=ON ..
           cmake --build . -j
           cmake --install .
 
@@ -326,7 +326,7 @@ jobs:
     - name: Build test
       working-directory: DistributionTests/build
       run: |
-          cmake -DTEST_CSHARP.ON ..
+          cmake -DTEST_CSHARP=ON ..
           cmake --build . -j --config Release 
           cmake --install . --config Release
           cd bin
