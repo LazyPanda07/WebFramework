@@ -38,8 +38,9 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_CSHARP_EXECUTORS=OFF -DWITH_PYTHON_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
+          cmake --build . -j
+          cmake --install .
 
     - name: Build samples
       run: |
