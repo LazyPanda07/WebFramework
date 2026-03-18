@@ -385,6 +385,7 @@ jobs:
         rm -rf *.zip
         mkdir -p api/python_api/dist/
         find . -type f -name "*.whl" -exec cp -v -t api/python_api/dist/ {} +
+        mv Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-${{ env.PYTHON_VERSION }}-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/api/python_api/dist/*.tar.gz api/python_api/dist/
 
     - name: Install twine
       run: python3 -m pip install twine
@@ -393,8 +394,8 @@ jobs:
       run: |
           export TWINE_USERNAME="__token__"
           export TWINE_PASSWORD="${{ secrets.PYPI_API_KEY }}"
-          twine check WebFrameworkLibrary/api/python_api/dist/*
-          twine upload WebFrameworkLibrary/api/python_api/dist/*
+          twine check WebFrameworkLibrary/api/python_api/dist/* -v
+          twine upload WebFrameworkLibrary/api/python_api/dist/* -v
 
 
   publish-deb-packages:
@@ -439,8 +440,11 @@ jobs:
           git add .
           git commit -m "Update deb packages"
           
-          git config --unset-all http.https://github.com/.extraheader 2>/dev/null || true
-          echo "PrePush"
-          git push https://${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa
-          echo "PostPush"
+          git config --unset-all http.https://github.com/.extraheader || true
+
+          git config -l | grep '^includeif' | cut -d= -f1 | while read key; do
+            git config --unset-all "$key" || true
+          done
+
+          git push https://x-access-token:${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa HEAD:main
           
