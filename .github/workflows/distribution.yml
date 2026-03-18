@@ -373,7 +373,7 @@ jobs:
     - name: Download Python packages
       uses: robinraju/release-downloader@v1.12
       with:
-        fileName: "*-WITH_PYTHON_EXECUTORS.ON-BUILD_PYTHON_API.ON-3.*-WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF"
+        fileName: "*-WITH_PYTHON_EXECUTORS.ON-BUILD_PYTHON_API.ON-3.*-WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip"
         latest: true
         out-file-path: WebFrameworkLibrary
         extract: true
@@ -437,13 +437,9 @@ jobs:
           gpg --default-key "${{ env.EMAIL }}" --clearsign -o - Release > InRelease
 
           git add .
-          echo "PreCommit"
           git commit -m "Update deb packages"
-          echo "PostCommit"
-
-          echo "PreConfig"
-          git config --unset-all http.https://github.com/.extraheader
-          echo "PostConfig"
+          
+          git config --unset-all http.https://github.com/.extraheader 2>/dev/null || true
           echo "PrePush"
           git push https://${{ secrets.COMMIT_TOKEN }}@github.com/LazyPanda07/web_framework_ppa
           echo "PostPush"
