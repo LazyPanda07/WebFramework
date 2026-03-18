@@ -356,6 +356,7 @@ jobs:
         name: nuget-package
 
     - name: Publish
+      if: false
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
 
@@ -369,13 +370,21 @@ jobs:
     ]
 
     steps:
-    - name: Download Python WebFramework
-      uses: actions/download-artifact@v8
+    - name: Download Python packages
+      uses: robinraju/release-downloader@v1.12
       with:
-        pattern: "*-WITH_PYTHON_EXECUTORS.ON-BUILD_PYTHON_API.ON-3.*-WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON"
-        path: WebFrameworkLibrary
-        merge-multiple: true
+        fileName: "*-WITH_PYTHON_EXECUTORS.ON-BUILD_PYTHON_API.ON-3.*-WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF"
+        out-file-path: WebFrameworkLibrary
+        extract: true
         
+    - name: Prepare assets
+      working-directory: WebFrameworkLibrary
+      shell: bash
+      run: |
+        rm -rf *.zip
+        mkdir -p api/python_api/dist/
+        find . -type f -name "*.whl" -exec cp -v -t api/python_api/dist/ {} +
+
     - name: Install twine
       run: python3 -m pip install twine
       
@@ -416,6 +425,7 @@ jobs:
         
     - name: Publish
       run: |
+          export VERBOSE=1
           git config user.name LazyPanda07
           git config user.email semengricenko@gmail.com
 
