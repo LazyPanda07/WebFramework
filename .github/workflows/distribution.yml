@@ -396,10 +396,8 @@ jobs:
       
     - name: Publish
       run: |
-          export TWINE_USERNAME="__token__"
-          export TWINE_PASSWORD="${{ secrets.PYPI_API_KEY }}"
           twine check WebFrameworkLibrary/api/python_api/dist/*
-          twine upload WebFrameworkLibrary/api/python_api/dist/* --verbose
+          twine upload WebFrameworkLibrary/api/python_api/dist/* -u __token__ -p ${{ secrets.PYPI_API_KEY }} --verbose
 
 
   publish-deb-packages:
