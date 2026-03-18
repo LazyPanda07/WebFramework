@@ -357,7 +357,6 @@ jobs:
         name: nuget-package
 
     - name: Publish
-      if: false
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
 
@@ -438,7 +437,6 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         
     - name: Publish
-      if: false
       run: |
           git config user.name LazyPanda07
           git config user.email semengricenko@gmail.com
