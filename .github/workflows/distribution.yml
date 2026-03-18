@@ -9,6 +9,7 @@ env:
   deb-package-version: 3.3.0
   deb-package-release-number: 14
   PYTHON_VERSION: 3.14
+  TWINE_PYTHON_VERSION: 3.13
 
 
 jobs:
@@ -378,6 +379,11 @@ jobs:
         out-file-path: WebFrameworkLibrary
         extract: true
         
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "${{ env.TWINE_PYTHON_VERSION }}"
+
     - name: Prepare assets
       working-directory: WebFrameworkLibrary
       shell: bash
@@ -394,8 +400,8 @@ jobs:
       run: |
           export TWINE_USERNAME="__token__"
           export TWINE_PASSWORD="${{ secrets.PYPI_API_KEY }}"
-          twine check WebFrameworkLibrary/api/python_api/dist/* -v
-          twine upload WebFrameworkLibrary/api/python_api/dist/* -v
+          twine check WebFrameworkLibrary/api/python_api/dist/*
+          twine upload WebFrameworkLibrary/api/python_api/dist/* --verbose
 
 
   publish-deb-packages:
@@ -418,6 +424,13 @@ jobs:
       uses: actions/download-artifact@v8
       with:
         pattern: "*_deb_package"
+
+    - name: Move deb packages
+      run: |
+        mv deploy_deb_package/*.deb .
+        mv dev_deb_package/*.deb .
+        rm -rf deploy_deb_package
+        rm -rf dev_deb_package
         
     - name: Import GPG key
       uses: crazy-max/ghaction-import-gpg@v6
