@@ -25,7 +25,7 @@ namespace framework
 		char buffer[bufferSize]{};
 		char result[resultSize]{};
 
-		if (std::strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S", &time) == 0)
+		if (std::strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S %Z", &time) == 0)
 		{
 			Log::error("Can't put time into buffer", "LogTime");
 
