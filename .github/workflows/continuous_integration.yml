@@ -482,7 +482,7 @@ jobs:
     - name: Repair wheel
       working-directory: WebFrameworkLibrary/api/python_api/dist
       run: |
-        export LD_LIBRARY_PATH=$(pwd)../../../lib:${LD_LIBRARY_PATH}
+        export LD_LIBRARY_PATH=$(pwd)../../../lib:/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib:${LD_LIBRARY_PATH}
         python3 -m repairwheel *.whl -o result
 
     - name: Upload wheel
