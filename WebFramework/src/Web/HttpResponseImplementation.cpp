@@ -9,8 +9,7 @@ namespace framework
 {
 	std::string HttpResponseImplementation::getFullDate()
 	{
-		constexpr size_t bufferSize = 64;
-		constexpr size_t resultSize = 96;
+		constexpr size_t resultSize = 64;
 
 		std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 		std::time_t seconds = std::chrono::system_clock::to_time_t(now);
@@ -22,21 +21,16 @@ namespace framework
 		gmtime_s(&time, &seconds);
 #endif
 
-		char buffer[bufferSize]{};
 		char result[resultSize]{};
 
-		if (std::strftime(buffer, sizeof(buffer), "%a, %d %b %Y %H:%M:%S %Z", &time) == 0)
+		if (std::strftime(result, sizeof(result), "%a, %d %b %Y %H:%M:%S %Z", &time) == 0)
 		{
 			Log::error("Can't put time into buffer", "LogTime");
 
 			return "";
 		}
 
-		// std::chrono::milliseconds milliseconds = duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
-
-		// std::snprintf(result, sizeof(result), "%s.%03d GMT", buffer, static_cast<int>(milliseconds.count()));
-
-		return buffer;
+		return result;
 	}
 
 	HttpResponseImplementation::HttpResponseImplementation()

@@ -424,6 +424,47 @@ jobs:
       download-tests-name: LinuxARMTests
 
 
+  python-test-build:
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/pypa/manylinux_2_28_x86_64
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Install Ninja
+      run: |
+        sudo yum update -y
+        sudo yum install -y ninja-build libuuid-devel
+        
+    - name: Install Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.14"
+
+    - name: Install build with pip
+      run: python -m pip install build repairwheel
+
+    - name: Build WebFramework
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_CC_API=OFF -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Repair wheel
+      working-directory: WebFrameworkLibrary/api/python_api/dist
+      run: python -m repairwheel *.whl -o result
+
+    - name: Upload wheel
+      uses: actions/upload-artifact@v6
+      with:
+        path: WebFrameworkLibrary/api/python_api/dist/result/*.whl
+
+
   task-broker-tests:
     needs: [windows-build, linux-build]
     strategy:
