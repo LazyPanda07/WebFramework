@@ -434,10 +434,10 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install Ninja
+    - name: Install Dependencies
       run: |
-        sudo yum update -y
-        sudo yum install -y ninja-build libuuid-devel
+        yum update -y
+        yum install -y ninja-build libuuid-devel
         
     - name: Install Python
       uses: actions/setup-python@v6
