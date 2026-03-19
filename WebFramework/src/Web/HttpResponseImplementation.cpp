@@ -32,11 +32,11 @@ namespace framework
 			return "";
 		}
 
-		std::chrono::milliseconds milliseconds = duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+		// std::chrono::milliseconds milliseconds = duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
 
-		std::snprintf(result, sizeof(result), "%s.%03d GMT", buffer, static_cast<int>(milliseconds.count()));
+		// std::snprintf(result, sizeof(result), "%s.%03d GMT", buffer, static_cast<int>(milliseconds.count()));
 
-		return result;
+		return buffer;
 	}
 
 	HttpResponseImplementation::HttpResponseImplementation()
