@@ -11,8 +11,7 @@ namespace framework
 	{
 		constexpr size_t resultSize = 64;
 
-		std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-		std::time_t seconds = std::chrono::system_clock::to_time_t(now);
+		std::time_t seconds = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 		std::tm time;
 
 #ifdef __LINUX__

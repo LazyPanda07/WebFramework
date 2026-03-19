@@ -1,0 +1,90 @@
+name: "Build wheel"
+
+
+on:
+  workflow_call:
+    inputs:
+      python-minor-version:
+        description: "Python minor version"
+        required: true
+        type: string
+      python-patch:
+        description: "Python patch"
+        required: true
+        type: string
+      upload-artifact-name:
+        description: "Name of uploaded artifact zip"
+        required: true
+        type: string
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: 
+      image: quay.io/pypa/manylinux_2_28_x86_64
+
+    env:
+      NINJA_TAG: v1.13.2
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Setup variables
+      run: |
+        echo "PYTHON_VERSION=3.${{ inputs.python-minor-version }}" >> ${GITHUB_ENV}
+        echo "FULL_PYTHON_VERSION=3.${{ inputs.python-minor-version }}.${{ inputs.python-patch }}" >> ${GITHUB_ENV}
+
+    - name: Install Dependencies
+      run: |
+        yum update -y
+        yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-devel
+        
+    - name: Build Python
+      run: |
+        wget https://github.com/python/cpython/archive/refs/tags/v${{ env.FULL_PYTHON_VERSION }}.zip
+        unzip v${{ env.FULL_PYTHON_VERSION }}.zip -d python_source
+        cd python_source/cpython-${{ env.FULL_PYTHON_VERSION }}
+        ./configure --enable-shared --prefix=/opt/custom_python/python${{ env.PYTHON_VERSION }}
+        make -j $(nproc)
+        make altinstall
+
+    - name: Prepare Python
+      run: |
+        export LD_LIBRARY_PATH=/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib
+        rm -rf /usr/bin/python3
+        ln -s /opt/custom_python/python${{ env.PYTHON_VERSION }}/bin/python${{ env.PYTHON_VERSION }} /usr/bin/python3
+        python3 -m pip install build repairwheel
+
+    - name: Build Ninja
+      run: |
+        git clone https://github.com/ninja-build/ninja.git -b ${{ env.NINJA_TAG }}
+        cd ninja
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Build WebFramework
+      run: |
+        export LD_LIBRARY_PATH=/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_CC_API=OFF -DWITH_STACKTRACE=ON -DPYTHON_EXECUTABLE=/usr/bin/python3 -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Repair wheel
+      working-directory: WebFrameworkLibrary/api/python_api/dist
+      run: |
+        export LD_LIBRARY_PATH=$(pwd)/../../../lib:/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib:${LD_LIBRARY_PATH}
+        python3 -m repairwheel *.whl -o result
+
+    - name: Upload wheel
+      uses: actions/upload-artifact@v6
+      with:
+        name: ${{ inputs.upload-artifact-name }}
+        path: WebFrameworkLibrary/api/python_api/dist/result/*.whl
