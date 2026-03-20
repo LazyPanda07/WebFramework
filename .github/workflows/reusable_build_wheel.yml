@@ -12,11 +12,6 @@ on:
         description: "Python patch"
         required: true
         type: string
-      upload-artifact-name:
-        description: "Name of uploaded artifact zip"
-        required: true
-        type: string
-
 
 jobs:
   build:
@@ -40,7 +35,7 @@ jobs:
     - name: Install Dependencies
       run: |
         yum update -y
-        yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-devel
+        yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-devel boost-stacktrace
         
     - name: Build Python
       run: |
@@ -81,10 +76,11 @@ jobs:
       working-directory: WebFrameworkLibrary/api/python_api/dist
       run: |
         export LD_LIBRARY_PATH=$(pwd)/../../../lib:/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib:${LD_LIBRARY_PATH}
+        echo "UPLOAD_ARTIFACT_NAME=$(ls | grep *.whl)" >> ${GITHUB_ENV}
         python3 -m repairwheel *.whl -o result
 
     - name: Upload wheel
       uses: actions/upload-artifact@v6
       with:
-        name: ${{ inputs.upload-artifact-name }}
+        name: ${{ env.UPLOAD_ARTIFACT_NAME }}
         path: WebFrameworkLibrary/api/python_api/dist/result/*.whl

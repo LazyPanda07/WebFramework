@@ -428,15 +428,14 @@ jobs:
     strategy:
       matrix:
         config: 
-        - { python-minor-version: 14, python-patch: 3, upload-artifact-name: web_framework_api-3.3.0-cp314-cp314-manylinux_2_34_x86_64.whl }
-        - { python-minor-version: 13, python-patch: 12, upload-artifact-name: web_framework_api-3.3.0-cp313-cp313-manylinux_2_34_x86_64.whl }
-        - { python-minor-version: 12, python-patch: 13, upload-artifact-name: web_framework_api-3.3.0-cp312-cp312-manylinux_2_34_x86_64.whl }
+        - { python-minor-version: 14, python-patch: 3 }
+        - { python-minor-version: 13, python-patch: 12 }
+        - { python-minor-version: 12, python-patch: 13 }
 
     uses: ./.github/workflows/reusable_build_wheel.yml
     with: 
       python-minor-version: ${{ matrix.config.python-minor-version }}
       python-patch: ${{ matrix.config.python-patch }}
-      upload-artifact-name: ${{ matrix.config.upload-artifact-name }}
 
 
   task-broker-tests:
