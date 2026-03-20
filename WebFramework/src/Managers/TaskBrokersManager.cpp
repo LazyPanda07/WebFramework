@@ -48,7 +48,7 @@ namespace framework::task_broker
 
 	const TaskBroker& TaskBrokersManager::getTaskBroker(std::string_view name) const
 	{
-		for (auto& [key, value] : taskBrokers)
+		for (const auto& [key, value] : taskBrokers)
 		{
 			if (value->getName() == name)
 			{

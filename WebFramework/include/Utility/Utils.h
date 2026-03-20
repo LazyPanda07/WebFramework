@@ -7,13 +7,13 @@
 namespace framework::utility
 {
 	template<const auto& Format, const auto& Category, typename... Args>
-	void logAndThrowException(Args&&... args) requires log_utils::LogFormat<Format, Args...>;
+	[[noreturn]] void logAndThrowException(Args&&... args) requires log_utils::LogFormat<Format, Args...>;
 }
 
 namespace framework::utility
 {
 	template<const auto& Format, const auto& Category, typename... Args>
-	void logAndThrowException(Args&&... args) requires log_utils::LogFormat<Format, Args...>
+	[[noreturn]] void logAndThrowException(Args&&... args) requires log_utils::LogFormat<Format, Args...>
 	{
 		if (Log::isValid())
 		{
