@@ -1,3 +1,6 @@
+## 3.3.1
+* Change Date response header format
+
 ## 3.3.0
 * Update WebFramework to 3.3.0
 

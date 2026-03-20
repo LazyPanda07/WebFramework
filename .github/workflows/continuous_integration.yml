@@ -422,21 +422,7 @@ jobs:
       download-web-framework-name: ${{ matrix.additional-settings.download-web-framework-name }}
       download-executors-name: ${{ matrix.additional-settings.download-executors-name }}
       download-tests-name: LinuxARMTests
-
-
-  python-test-build:
-    strategy:
-      matrix:
-        config: 
-        - { python-minor-version: 12, python-patch: 13 }
-        - { python-minor-version: 13, python-patch: 12 }
-        - { python-minor-version: 14, python-patch: 3 }
-
-    uses: ./.github/workflows/reusable_build_wheel.yml
-    with: 
-      python-minor-version: ${{ matrix.config.python-minor-version }}
-      python-patch: ${{ matrix.config.python-patch }}
-
+      
 
   task-broker-tests:
     needs: [windows-build, linux-build]

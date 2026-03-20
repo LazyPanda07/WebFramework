@@ -6,13 +6,27 @@ on:
 
 
 env:
-  deb-package-version: 3.3.0
-  deb-package-release-number: 14
+  deb-package-version: 3.3.1
+  deb-package-release-number: 15
   PYTHON_VERSION: 3.14
   TWINE_PYTHON_VERSION: 3.13
 
 
 jobs:
+  linux-pip-packages:
+    strategy:
+      matrix:
+        config: 
+        - { python-minor-version: 12, python-patch: 13 }
+        - { python-minor-version: 13, python-patch: 12 }
+        - { python-minor-version: 14, python-patch: 3 }
+
+    uses: ./.github/workflows/reusable_build_wheel.yml
+    with: 
+      python-minor-version: ${{ matrix.config.python-minor-version }}
+      python-patch: ${{ matrix.config.python-patch }}
+
+
   nuget-package:
     runs-on: windows-latest
     
@@ -344,6 +358,7 @@ jobs:
   publish-nuget-package:
     runs-on: ubuntu-latest
     needs: [
+      linux-pip-packages,
       nuget-package-test,
       deb-package-test,
       dev-deb-package-test,
@@ -363,6 +378,7 @@ jobs:
   publish-pip-package:
     runs-on: ubuntu-latest
     needs: [
+      linux-pip-packages,
       nuget-package-test,
       deb-package-test,
       dev-deb-package-test,
@@ -370,13 +386,19 @@ jobs:
     ]
 
     steps:
-    - name: Download Python packages
+    - name: Download Windows Python packages
       uses: robinraju/release-downloader@v1.12
       with:
-        fileName: "*-WITH_PYTHON_EXECUTORS.ON-BUILD_PYTHON_API.ON-3.*-WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip"
+        fileName: Windows-WITH_PYTHON_EXECUTORS.ON-BUILD_PYTHON_API.ON-3.*-WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
         latest: true
         out-file-path: WebFrameworkLibrary
         extract: true
+
+    - name: Download Windows Python packages
+      uses: actions/download-artifact@v8
+      with:
+        pattern: "*manylinux*.whl"
+        path: WebFrameworkLibrary
         
     - name: Install Python
       uses: actions/setup-python@v6
@@ -403,6 +425,7 @@ jobs:
   publish-deb-packages:
     runs-on: ubuntu-latest
     needs: [
+      linux-pip-packages,
       nuget-package-test,
       deb-package-test,
       dev-deb-package-test,

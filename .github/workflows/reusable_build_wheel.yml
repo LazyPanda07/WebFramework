@@ -76,8 +76,9 @@ jobs:
       working-directory: WebFrameworkLibrary/api/python_api/dist
       run: |
         export LD_LIBRARY_PATH=$(pwd)/../../../lib:/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib:${LD_LIBRARY_PATH}
-        echo "UPLOAD_ARTIFACT_NAME=$(ls | grep *.whl)" >> ${GITHUB_ENV}
         python3 -m repairwheel *.whl -o result
+        cd result
+        echo "UPLOAD_ARTIFACT_NAME=$(ls | grep *.whl)" >> ${GITHUB_ENV}
 
     - name: Upload wheel
       uses: actions/upload-artifact@v6
