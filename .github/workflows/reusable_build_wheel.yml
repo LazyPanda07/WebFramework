@@ -35,7 +35,7 @@ jobs:
     - name: Install Dependencies
       run: |
         yum update -y
-        yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-devel boost-stacktrace
+        yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-deve
         
     - name: Build Python
       run: |
@@ -68,7 +68,7 @@ jobs:
         export LD_LIBRARY_PATH=/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_CC_API=OFF -DWITH_STACKTRACE=ON -DPYTHON_EXECUTABLE=/usr/bin/python3 -G "Ninja" ..
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_CC_API=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -G "Ninja" ..
         cmake --build . -j
         cmake --install .
 
