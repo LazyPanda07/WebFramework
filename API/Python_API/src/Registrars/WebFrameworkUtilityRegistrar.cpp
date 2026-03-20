@@ -29,14 +29,21 @@ namespace registrar
 				std::string separator = os.attr("pathsep").cast<std::string>();
 				py::list dirs = sys.attr("path").cast<py::list>();
 				std::string path = std::getenv("PATH");
-
+				
 				for (py::handle temp : dirs)
 				{
 					path = std::format("{}{}{}", temp.cast<std::string>(), separator, path);
 				}
 
 #ifdef __LINUX__
-				putenv(std::format("LD_LIBRARY_PATH={}", path).data());
+				std::string ldLibraryPath;
+
+				if (const char* temp = std::getenv("LD_LIBRARY_PATH"))
+				{
+					ldLibraryPath = temp;
+				}
+
+				putenv(std::format("LD_LIBRARY_PATH={}:{}", path, ldLibraryPath).data());
 #else
 				_putenv_s("PATH", path.data());
 #endif

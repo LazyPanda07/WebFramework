@@ -35,7 +35,7 @@ jobs:
     - name: Install Dependencies
       run: |
         yum update -y
-        yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-deve
+        yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-devel
         
     - name: Build Python
       run: |
