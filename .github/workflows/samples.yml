@@ -310,9 +310,41 @@ jobs:
         name: AndroidFlutterSample
         path: API/web_framework_flutter_api/example/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
         
+
+  windows-build-binaries:
+    uses: ./.github/workflows/reusable_build_web_framework.yml
+    with:
+      os: windows-latest
+      configuration: Release
+      build-cxx-api: ON
+      build-cc-api: ON
+      with-python-executors: ON
+      build-python-api: ON
+      python-version: ${{ env.PYTHON_VERSION }}
+      with-dotnet-executors: ON
+      build-csharp-api: ON
+      upload-artifact-name: WindowsBinaries
+
+
+  linux-build-binaries:
+    uses: ./.github/workflows/reusable_build_web_framework.yml
+    with:
+      os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
+      configuration: Release
+      build-cxx-api: ON
+      build-cc-api: ON
+      with-python-executors: ON
+      build-python-api: ON
+      python-version: ${{ env.PYTHON_VERSION }}
+      with-dotnet-executors: ON
+      build-csharp-api: ON
+      upload-artifact-name: LinuxBinaries
+
         
   windows-tests:
     runs-on: windows-latest
+    needs: windows-build-binaries
     strategy:
       matrix:
         run: [.\hello_cpp, .\hello_c, .\hello_csharp, python main.py]
@@ -338,6 +370,12 @@ jobs:
       with:
         submodules: recursive
         
+    - name: Download Windows binaries
+      uses: actions/download-artifact@v8
+      with:
+        name: WindowsBinaries
+        path: WebFrameworkLibrary
+
     - name: Install Python
       uses: actions/setup-python@v6
       with:
@@ -345,15 +383,7 @@ jobs:
 
     - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: Build WebFramework
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\WebFrameworkLibrary -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
-
+      
     - name: Build samples
       run: |
           cd samples
@@ -376,6 +406,7 @@ jobs:
 
   linux-tests:
     runs-on: ubuntu-latest
+    needs: linux-build-binaries
     container:
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
     strategy:
@@ -403,13 +434,11 @@ jobs:
       with:
         submodules: recursive
         
-    - name: Build WebFramework
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -G "Ninja" ..
-          cmake --build . -j
-          cmake --install .
+    - name: Download Linux binaries
+      uses: actions/download-artifact@v8
+      with:
+        name: LinuxBinaries
+        path: WebFrameworkLibrary
 
     - name: Build samples
       run: |
