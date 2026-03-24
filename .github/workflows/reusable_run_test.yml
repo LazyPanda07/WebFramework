@@ -62,7 +62,6 @@ jobs:
       windows-redis-version: 7.4.6
 
     steps:
-
     - name: Prepare download artifact name from Windows
       if: ${{ inputs.os == 'windows-latest' }}
       shell: bash

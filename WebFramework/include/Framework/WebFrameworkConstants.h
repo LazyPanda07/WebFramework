@@ -225,6 +225,7 @@ namespace framework::logging
 		inline constexpr char cantOpenRabbitMqSocket[] = "Can't open RabbitMQ socket";
 		inline constexpr char rabbitMqRequestTaskException[] = "Request task RabbitMQ exception: {}";
 		inline constexpr char sslCertificateError[] = "Error while reading certificate from {}";
+		inline constexpr char sslCertificateChainError[] = "Error while reading certificate chain from {}";
 		inline constexpr char privateKeyError[] = "Error while reading private key from {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";

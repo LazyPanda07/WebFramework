@@ -20,6 +20,7 @@ namespace framework
 		std::mutex sslMutex;
 		SSL_CTX* context;
 		X509* certificate;
+		STACK_OF(X509)* chain;
 		EVP_PKEY* privateKey;
 
 	protected:
