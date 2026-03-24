@@ -112,13 +112,6 @@ namespace framework
 						}
 						else
 						{
-							if (!ERR_peek_last_error())
-							{
-								break;
-							}
-
-							utility::logAndThrowException<logging::message::sslCertificateChainError, logging::category::https>(filePath.string());
-
 							break;
 						}
 					}
