@@ -312,6 +312,11 @@ jobs:
         
 
   windows-build-binaries:
+    strategy:
+      matrix:
+        python: 
+          - { version: 3.14 }
+
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: windows-latest
@@ -320,13 +325,18 @@ jobs:
       build-cc-api: ON
       with-python-executors: ON
       build-python-api: ON
-      python-version: ${{ env.PYTHON_VERSION }}
+      python-version: ${{ matrix.python.version }}
       with-dotnet-executors: ON
       build-csharp-api: ON
       upload-artifact-name: WindowsBinaries
 
 
   linux-build-binaries:
+    strategy:
+      matrix:
+        python: 
+          - { version: 3.14 }
+
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: ubuntu-latest
@@ -336,7 +346,7 @@ jobs:
       build-cc-api: ON
       with-python-executors: ON
       build-python-api: ON
-      python-version: ${{ env.PYTHON_VERSION }}
+      python-version: ${{ matrix.python.version }}
       with-dotnet-executors: ON
       build-csharp-api: ON
       upload-artifact-name: LinuxBinaries
