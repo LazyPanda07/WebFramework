@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: windows-latest
-      configuration: Release
+      configuration: RelWithDebInfo
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
       with-python-executors: ${{ matrix.python-config.with-python-executors }}
@@ -55,7 +55,7 @@ jobs:
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: windows-latest
-      configuration: Release
+      configuration: RelWithDebInfo
       build-parameters: "-DWITH_STACKTRACE=ON"
       build-branch-strict: dev
     
@@ -82,7 +82,7 @@ jobs:
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04
-      configuration: Release
+      configuration: RelWithDebInfo
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
       with-python-executors: ${{ matrix.python-config.with-python-executors }}
@@ -103,7 +103,7 @@ jobs:
     with:
       os: ubuntu-latest
       image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-      configuration: Release
+      configuration: RelWithDebInfo
       build-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF"
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
