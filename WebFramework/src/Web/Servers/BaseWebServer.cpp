@@ -3,6 +3,7 @@
 #include <Exceptions/SslException.h>
 #include <Exceptions/FileDoesNotExistException.h>
 #include <HttpsNetwork.h>
+#include <openssl/err.h>
 
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Utils.h"
@@ -63,6 +64,7 @@ namespace framework
 	BaseWebServer::BaseWebServer() :
 		context(nullptr),
 		certificate(nullptr),
+		chain(nullptr),
 		privateKey(nullptr)
 	{
 		this->updateCertificates();
@@ -82,6 +84,10 @@ namespace framework
 					if (certificate)
 					{
 						X509_free(certificate);
+						sk_X509_pop_free(chain, X509_free);
+
+						certificate = nullptr;
+						chain = nullptr;
 					}
 
 					certificate = PEM_read_X509(file, nullptr, nullptr, nullptr);
@@ -89,6 +95,25 @@ namespace framework
 					if (!certificate)
 					{
 						utility::logAndThrowException<logging::message::sslCertificateError, logging::category::https>(filePath.string());
+					}
+
+					chain = sk_X509_new_null();
+
+					if (!chain)
+					{
+						throw std::bad_alloc();
+					}
+
+					while (true)
+					{
+						if (X509* additionalCert = PEM_read_X509(file, nullptr, nullptr, nullptr))
+						{
+							sk_X509_push(chain, additionalCert);
+						}
+						else
+						{
+							break;
+						}
 					}
 				}
 			);
@@ -101,6 +126,8 @@ namespace framework
 					if (privateKey)
 					{
 						EVP_PKEY_free(privateKey);
+
+						privateKey = nullptr;
 					}
 
 					privateKey = PEM_read_PrivateKey(file, nullptr, nullptr, nullptr);
@@ -129,6 +156,14 @@ namespace framework
 				throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
 			}
 
+			for (int i = 0; i < sk_X509_num(chain); i++)
+			{
+				if (int errorCode = SSL_CTX_add1_chain_cert(context, sk_X509_value(chain, i)); errorCode != 1)
+				{
+					throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
+				}
+			}
+
 			if (int errorCode = SSL_CTX_use_PrivateKey(context, privateKey); errorCode != 1)
 			{
 				throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
@@ -138,10 +173,23 @@ namespace framework
 
 	BaseWebServer::~BaseWebServer()
 	{
-		if (useHTTPS)
+		if (context)
 		{
 			SSL_CTX_free(context);
+		}
+
+		if (chain)
+		{
+			sk_X509_pop_free(chain, X509_free);
+		}
+
+		if (certificate)
+		{
 			X509_free(certificate);
+		}
+		
+		if (privateKey)
+		{
 			EVP_PKEY_free(privateKey);
 		}
 	}

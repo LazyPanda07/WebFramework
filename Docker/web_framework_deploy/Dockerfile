@@ -7,7 +7,8 @@ RUN mkdir -p web_framework_server/build
 
 WORKDIR /web_framework_server/build
 
-RUN cmake -DCMAKE_INSTALL_PREFIX=bin -DWEB_FRAMEWORK_TAG=v3.3.1 -G "Ninja" ..
+# Update version
+RUN cmake -DCMAKE_INSTALL_PREFIX=bin -DWEB_FRAMEWORK_TAG=v3.3.2 -G "Ninja" ..
 RUN cmake --build .
 RUN cmake --install .
 RUN mkdir /opt/web_framework_server && cp /web_framework_server/build/bin/web_framework_server /opt/web_framework_server
@@ -33,7 +34,8 @@ RUN curl -s --compressed "https://LazyPanda07.github.io/web_framework_ppa/KEY.gp
 RUN curl -s --compressed -o /etc/apt/sources.list.d/web_framework.list "https://LazyPanda07.github.io/web_framework_ppa/web_framework.list"
 RUN apt update
 
-RUN apt install -y web-framework=3.3.1
+# Update version
+RUN apt install -y web-framework=3.3.2
 
 WORKDIR /opt/web_framework_server
 

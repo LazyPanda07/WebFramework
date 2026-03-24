@@ -1,3 +1,6 @@
+## 3.3.2
+* Fix cert reading
+
 ## 3.3.1
 * Change Date response header format
 
