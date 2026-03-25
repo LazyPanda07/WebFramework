@@ -1,9 +1,12 @@
 #include "Proxy/ProxyServer.h"
 
+#include <Log.h>
 #include <Exceptions/SslException.h>
 #include <HttpsNetwork.h>
 #include <JsonArrayWrapper.h>
 #include <IOSocketStream.h>
+
+#include "Framework/WebFrameworkConstants.h"
 
 namespace framework::proxy
 {
@@ -18,28 +21,38 @@ namespace framework::proxy
 	{
 		SSL* ssl = nullptr;
 
-		if (useHTTPS)
+		try
 		{
-			ssl = this->getNewSsl();
-
-			if (!ssl)
+			if (useHTTPS)
 			{
-				throw web::exceptions::SslException(__LINE__, __FILE__);
+				ssl = this->getNewSsl();
+
+				if (!ssl)
+				{
+					throw web::exceptions::SslException(__LINE__, __FILE__);
+				}
+
+				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				{
+					throw web::exceptions::SslException(__LINE__, __FILE__);
+				}
+
+				if (int errorCode = SSL_accept(ssl); errorCode != 1)
+				{
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
+				}
+			}
+		}
+		catch (const web::exceptions::SslException& e)
+		{
+			if (Log::isValid())
+			{
+				Log::error<logging::message::sslException, logging::category::https>(e.what(), ip);
 			}
 
-			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
-			{
-				SSL_free(ssl);
+			closesocket(clientSocket);
 
-				throw web::exceptions::SslException(__LINE__, __FILE__);
-			}
-
-			if (int errorCode = SSL_accept(ssl); errorCode != 1)
-			{
-				SSL_free(ssl);
-
-				throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
-			}
+			return;
 		}
 
 		streams::IOSocketStream clientStream = this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout));

@@ -368,30 +368,40 @@ namespace framework::load_balancer
 
 		SSL* ssl = nullptr;
 
-		if (useHTTPS)
+		try
 		{
-			ssl = this->getNewSsl();
-
-			if (!ssl)
+			if (useHTTPS)
 			{
-				throw web::exceptions::SslException(__LINE__, __FILE__);
-			}
+				ssl = this->getNewSsl();
 
-			if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
-			{
-				SSL_free(ssl);
+				if (!ssl)
+				{
+					throw web::exceptions::SslException(__LINE__, __FILE__);
+				}
 
-				throw web::exceptions::SslException(__LINE__, __FILE__);
-			}
+				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				{
+					throw web::exceptions::SslException(__LINE__, __FILE__);
+				}
 
-			if (int errorCode = SSL_accept(ssl); errorCode != 1)
-			{
-				SSL_free(ssl);
-
-				throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
+				if (int errorCode = SSL_accept(ssl); errorCode != 1)
+				{
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
+				}
 			}
 		}
+		catch (const web::exceptions::SslException& e)
+		{
+			if (Log::isValid())
+			{
+				Log::error<logging::message::sslException, logging::category::https>(e.what(), ip);
+			}
 
+			closesocket(clientSocket);
+
+			return;
+		}
+		
 		std::chrono::milliseconds timeoutInMilliseconds(timeout);
 		LoadBalancerRequest request
 		(

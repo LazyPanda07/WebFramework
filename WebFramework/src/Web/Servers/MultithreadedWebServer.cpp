@@ -8,7 +8,7 @@
 #include "Exceptions/MissingLoadTypeException.h"
 #include "Exceptions/CantLoadSourceException.h"
 #include "Exceptions/BadRequestException.h"
-#include <Exceptions/APIException.h>
+#include "Exceptions/APIException.h"
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SslException.h"
 #include "Utility/Singletons/HTTPSSingleton.h"
@@ -38,15 +38,11 @@ namespace framework
 
 				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
 				{
-					SSL_free(ssl);
-
 					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
 				{
-					SSL_free(ssl);
-
 					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 			}
@@ -57,6 +53,8 @@ namespace framework
 			{
 				Log::error<logging::message::sslException, logging::category::https>(e.what(), ip);
 			}
+
+			closesocket(clientSocket);
 
 			return;
 		}
