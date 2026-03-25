@@ -4,7 +4,7 @@ name: Samples
 on:
   push:
     branches: [main, dev]
-  
+  workflow_dispatch:
   
 env:
   FLUTTER_VERSION: 3.41.4
