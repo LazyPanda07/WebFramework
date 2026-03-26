@@ -7,8 +7,6 @@
 #include <MapJsonIterator.h>
 #include <DatabaseUtility.h>
 
-#include "Exceptions/BaseJSONException.h"
-#include "Exceptions/FileDoesNotExistException.h"
 #include "Web/Servers/MultithreadedWebServer.h"
 #include "Web/Servers/ThreadPoolWebServer.h"
 #include "LoadBalancer/LoadBalancerServer.h"

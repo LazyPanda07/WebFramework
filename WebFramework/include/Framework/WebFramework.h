@@ -9,7 +9,7 @@
 #include "Utility/TaskExecutorsSettings.h"
 
 #ifdef __WITH_STACKTRACE__
-#include "Utility/SegfaultHandler.h"
+#include "Utility/CrashHandler.h"
 #endif
 
 namespace framework
@@ -38,7 +38,7 @@ namespace framework
 		std::exception** serverException;
 		std::string webServerType;
 #ifdef __WITH_STACKTRACE__
-		utility::SegfaultHandler segfaultHandler;
+		utility::CrashHandler crashHandler;
 #endif
 	private:
 		uint64_t parseLoggingFlags(const json::JsonObject& loggingSettings) const;

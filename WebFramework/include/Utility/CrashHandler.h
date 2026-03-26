@@ -12,7 +12,7 @@
 
 namespace framework::utility
 {
-	class SegfaultHandler
+	class CrashHandler
 	{
 	private:
 #ifdef __LINUX__
@@ -29,9 +29,9 @@ namespace framework::utility
 #endif
 
 	public:
-		SegfaultHandler();
+		CrashHandler();
 
-		~SegfaultHandler() = default;
+		~CrashHandler() = default;
 	};
 }
 

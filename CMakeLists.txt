@@ -99,7 +99,7 @@ add_library(
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/ConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
-	WebFramework/src/Utility/SegfaultHandler.cpp
+	WebFramework/src/Utility/CrashHandler.cpp
 	WebFramework/src/Utility/Utils.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
