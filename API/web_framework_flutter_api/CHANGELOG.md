@@ -1,3 +1,6 @@
+## 3.3.3
+* Add SIGPIPE
+
 ## 3.3.2
 * Fix cert reading
 
