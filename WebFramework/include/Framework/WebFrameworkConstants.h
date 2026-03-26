@@ -187,7 +187,7 @@ namespace framework::logging
 		inline constexpr char amqpFunctionCallException[] = "AMQP function call exception: {}";
 		inline constexpr char cantProcessTask[] = "Can't process task: {}. TaskBroker: {}";
 		inline constexpr char largeBodyChunkException[] = "Exception on handle chunk: {}";
-		inline constexpr char crashMessage[] = "Crashed: {}";
+		inline constexpr char crashMessage[] = "Crashed: {} with error code: {}";
 		inline constexpr char cantFindSource[] = "Can't find source {}";
 		inline constexpr char cantLoadSource[] = "Can't load source {}, {}";
 		inline constexpr char cantGetOrCreateModel[] = "Can't get or create model in HTTPRequest::getModel<T> function where T is {}";

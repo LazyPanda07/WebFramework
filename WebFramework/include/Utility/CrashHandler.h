@@ -20,7 +20,7 @@ namespace framework::utility
 #endif
 
 	private:
-		static void printStacktrace();
+		static void printStacktrace(int errorCode);
 
 #ifdef __LINUX__
 		static void callback(int signal);

@@ -8,7 +8,7 @@
 
 namespace framework::utility
 {
-	void CrashHandler::printStacktrace()
+	void CrashHandler::printStacktrace(int errorCode)
 	{
 		std::ostringstream stacktrace;
 
@@ -16,27 +16,29 @@ namespace framework::utility
 
 		if (Log::isValid())
 		{
-			Log::error<logging::message::crashMessage, logging::category::crashHandler>(stacktrace.str());
+			Log::error<logging::message::crashMessage, logging::category::crashHandler>(stacktrace.str(), errorCode);
 		}
 		else
 		{
-			std::cerr << stacktrace.str() << std::endl;
+			std::cerr << stacktrace.str() << std::endl << "Error code: " << errorCode << std::endl;
 		}
 	}
 
 #ifdef __LINUX__
 	void CrashHandler::callback(int signal)
 	{
-		CrashHandler::printStacktrace();
+		constexpr int offset = 128;
 
-		_Exit(128 + signal);
+		CrashHandler::printStacktrace(offset + signal);
+
+		_Exit(offset + signal);
 	}
 #else
 	LONG CrashHandler::callback(EXCEPTION_POINTERS* information)
 	{
 		if (information->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
 		{
-			CrashHandler::printStacktrace();
+			CrashHandler::printStacktrace(information->ExceptionRecord->ExceptionCode);
 
 			return EXCEPTION_EXECUTE_HANDLER;
 		}
