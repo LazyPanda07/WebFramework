@@ -2,8 +2,11 @@
 
 set -e
 
+FXR_PATH=$(printf ":%s" /usr/share/dotnet/host/fxr/10.*)
+FXR_PATH=${FXR_PATH:1}
+
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
-export LD_LIBRARY_PATH=$(pwd):/usr/share/dotnet/host/fxr/10.0.2:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=$(pwd):${FXR_PATH}:${LD_LIBRARY_PATH}
 
 chmod +x ./Server
 chmod +x ./DefaultHTTPSServer
