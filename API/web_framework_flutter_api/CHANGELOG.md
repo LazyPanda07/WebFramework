@@ -1,5 +1,8 @@
+## 3.3.4
+* Add SIGABRT handling
+
 ## 3.3.3
-* Add SIGPIPE
+* Add SIGPIPE handling
 
 ## 3.3.2
 * Fix cert reading
