@@ -8,7 +8,7 @@ RUN mkdir -p web_framework_server/build
 WORKDIR /web_framework_server/build
 
 # Update version
-RUN cmake -DCMAKE_INSTALL_PREFIX=bin -DWEB_FRAMEWORK_TAG=v3.3.3 -G "Ninja" ..
+RUN cmake -DCMAKE_INSTALL_PREFIX=bin -DWEB_FRAMEWORK_TAG=v3.3.4 -G "Ninja" ..
 RUN cmake --build .
 RUN cmake --install .
 RUN mkdir /opt/web_framework_server && cp /web_framework_server/build/bin/web_framework_server /opt/web_framework_server
@@ -35,7 +35,7 @@ RUN curl -s --compressed -o /etc/apt/sources.list.d/web_framework.list "https://
 RUN apt update
 
 # Update version
-RUN apt install -y web-framework=3.3.3
+RUN apt install -y web-framework=3.3.4
 
 WORKDIR /opt/web_framework_server
 
