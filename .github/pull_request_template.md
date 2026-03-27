@@ -8,7 +8,17 @@
 - [ ] Docker/web_framework_deploy(WEB_FRAMEWORK_TAG, web-framework)
 - [ ] Docker/web_framework_dev(web-framework-dev)
 
+
 ## API versions update
 - [ ] C#(package version, assembly version, file version)
 - [ ] Flutter(pubspec.yml, CHANGELOG.md)
 - [ ] Python(pyproject.toml, CMakeLists.txt)
+
+
+## Post automatic CI/CD
+1. Run ```Distribution``` workflow
+2. Download ```flutter-package``` from ```Distribution``` workflow and run 
+```console
+flutter pub publish
+```
+3. Run ```Docker Distribution``` workflow
