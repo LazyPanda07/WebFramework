@@ -60,6 +60,7 @@ namespace framework::utility
 		
 		sigaction(SIGSEGV, &handler, nullptr);
 		sigaction(SIGPIPE, &handler, nullptr);
+		sigaction(SIGABRT, &handler, nullptr);
 #else
 		AddVectoredExceptionHandler(1, handlerFunction);
 #endif
