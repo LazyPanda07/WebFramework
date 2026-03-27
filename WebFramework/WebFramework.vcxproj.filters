@@ -144,7 +144,7 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\CCHeuristic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\SegfaultHandler.cpp">
+    <ClCompile Include="src\Utility\CrashHandler.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Rendering\MDRenderer.cpp">
@@ -374,7 +374,7 @@
     <ClInclude Include="include\LoadBalancer\Heuristics\CCHeuristic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utility\SegfaultHandler.h">
+    <ClInclude Include="include\Utility\CrashHandler.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Rendering\MDRenderer.h">

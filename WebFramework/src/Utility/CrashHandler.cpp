@@ -1,4 +1,4 @@
-#include "Utility/SegfaultHandler.h"
+#include "Utility/CrashHandler.h"
 
 #ifdef __WITH_STACKTRACE__
 
@@ -8,7 +8,7 @@
 
 namespace framework::utility
 {
-	void SegfaultHandler::printStacktrace()
+	void CrashHandler::printStacktrace(int errorCode)
 	{
 		std::ostringstream stacktrace;
 
@@ -16,27 +16,29 @@ namespace framework::utility
 
 		if (Log::isValid())
 		{
-			Log::error<logging::message::segfaultMessage, logging::category::segfaultHandler>(stacktrace.str());
+			Log::error<logging::message::crashMessage, logging::category::crashHandler>(stacktrace.str(), errorCode);
 		}
 		else
 		{
-			std::cerr << stacktrace.str() << std::endl;
+			std::cerr << stacktrace.str() << std::endl << "Error code: " << errorCode << std::endl;
 		}
 	}
 
 #ifdef __LINUX__
-	void SegfaultHandler::callback(int signal)
+	void CrashHandler::callback(int signal)
 	{
-		SegfaultHandler::printStacktrace();
+		constexpr int offset = 128;
 
-		_Exit(128 + signal);
+		CrashHandler::printStacktrace(offset + signal);
+
+		_Exit(offset + signal);
 	}
 #else
-	LONG SegfaultHandler::callback(EXCEPTION_POINTERS* information)
+	LONG CrashHandler::callback(EXCEPTION_POINTERS* information)
 	{
 		if (information->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
 		{
-			SegfaultHandler::printStacktrace();
+			CrashHandler::printStacktrace(information->ExceptionRecord->ExceptionCode);
 
 			return EXCEPTION_EXECUTE_HANDLER;
 		}
@@ -45,9 +47,9 @@ namespace framework::utility
 	}
 #endif
 
-	SegfaultHandler::SegfaultHandler()
+	CrashHandler::CrashHandler()
 	{
-		auto handlerFunction = &SegfaultHandler::callback;
+		auto handlerFunction = &CrashHandler::callback;
 
 #ifdef __LINUX__
 		handler.sa_handler = handlerFunction;
@@ -57,6 +59,7 @@ namespace framework::utility
 		handler.sa_flags = 0;
 		
 		sigaction(SIGSEGV, &handler, nullptr);
+		sigaction(SIGPIPE, &handler, nullptr);
 #else
 		AddVectoredExceptionHandler(1, handlerFunction);
 #endif

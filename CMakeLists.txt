@@ -26,7 +26,7 @@ option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 
-project(WebFramework VERSION 3.3.2)
+project(WebFramework VERSION 3.3.3)
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
@@ -99,7 +99,7 @@ add_library(
 	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/ConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
-	WebFramework/src/Utility/SegfaultHandler.cpp
+	WebFramework/src/Utility/CrashHandler.cpp
 	WebFramework/src/Utility/Utils.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp

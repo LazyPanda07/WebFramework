@@ -12,7 +12,7 @@
 
 namespace framework::utility
 {
-	class SegfaultHandler
+	class CrashHandler
 	{
 	private:
 #ifdef __LINUX__
@@ -20,7 +20,7 @@ namespace framework::utility
 #endif
 
 	private:
-		static void printStacktrace();
+		static void printStacktrace(int errorCode);
 
 #ifdef __LINUX__
 		static void callback(int signal);
@@ -29,9 +29,9 @@ namespace framework::utility
 #endif
 
 	public:
-		SegfaultHandler();
+		CrashHandler();
 
-		~SegfaultHandler() = default;
+		~CrashHandler() = default;
 	};
 }
 
