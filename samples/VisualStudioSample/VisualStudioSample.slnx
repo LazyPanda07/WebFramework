@@ -1,0 +1,36 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/3rdparty/">
+    <Project Path="../../3rdparty/cmark-gfm/cmark-gfm.vcxproj" />
+    <Project Path="../../3rdparty/DotNetRuntime/DotNetRuntime.vcxproj" />
+    <Project Path="../../3rdparty/pybind11/pybind11.vcxproj" />
+    <Project Path="../../3rdparty/rabbitmq-c/rabbitmq-c.vcxproj" />
+  </Folder>
+  <Folder Name="/Dependencies/">
+    <Project Path="../../API/CSharp_API/WebFrameworkCSharpAPI.csproj" />
+    <Project Path="../../API/CXX_API/CXX_API.vcxproj" />
+    <Project Path="../../API/Python_API/Python_API.vcxproj" />
+    <Project Path="../../BaseTCPServer/BaseTCPServer.vcxproj" />
+    <Project Path="../../Databases/Databases.vcxproj" />
+    <Project Path="../../FileManager/FileManager.vcxproj" />
+    <Project Path="../../INIParser/INIParser.vcxproj" />
+    <Project Path="../../Localization/Localization.vcxproj" />
+    <Project Path="../../Log/Log.vcxproj" />
+    <Project Path="../../Networks/HTTP/HTTP.vcxproj" />
+    <Project Path="../../Networks/HTTP/JSON/JSON.vcxproj" />
+    <Project Path="../../Networks/Networks.vcxproj" />
+    <Project Path="../../Networks/SocketStreams/SocketStreams.vcxproj" />
+    <Project Path="../../SHA256/SHA256.vcxproj" />
+    <Project Path="../../ThreadPool/ThreadPool.vcxproj" />
+    <Project Path="../../UtilityLibrary/UtilityLibrary.vcxproj" />
+    <Project Path="../../WebFramework/WebFramework.vcxproj" />
+    <Project Path="../../WebFrameworkCore/WebFrameworkCore.vcxproj" />
+    <Project Path="../../WebFrameworkExecutors/WebFrameworkExecutors.vcxproj" />
+  </Folder>
+  <Project Path="CSharpExecutors/CSharpExecutors.csproj" />
+  <Project Path="CXXExecutors/CXXExecutors.vcxproj" />
+  <Project Path="VisualStudioSample/VisualStudioSample.vcxproj" />
+</Solution>

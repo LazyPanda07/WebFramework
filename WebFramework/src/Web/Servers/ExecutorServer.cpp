@@ -42,7 +42,7 @@ namespace framework
 			response.setResponseCode(static_cast<int64_t>(e.getResponseCode()));
 			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
@@ -56,7 +56,7 @@ namespace framework
 
 			resources.badRequestError(response, &e);
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
@@ -69,7 +69,7 @@ namespace framework
 
 			resources.notFoundError(response, &e);
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
@@ -82,7 +82,7 @@ namespace framework
 
 			resources.notFoundError(response, &e);
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
@@ -98,7 +98,7 @@ namespace framework
 			response.setResponseCode(e.getResponseCode());
 			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
@@ -111,7 +111,7 @@ namespace framework
 
 			resources.internalServerError(response, &e);
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
@@ -139,7 +139,7 @@ namespace framework
 				resources.internalServerError(response, &e);
 			}
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
@@ -147,7 +147,7 @@ namespace framework
 		{
 			resources.internalServerError(response, nullptr);
 
-			stream << response;
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
 			result = ServiceState::skipResponse;
 		}
