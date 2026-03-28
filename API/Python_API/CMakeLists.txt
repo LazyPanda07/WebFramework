@@ -32,7 +32,7 @@ if (UNIX)
 	add_definitions(-D__LINUX__)
 endif(UNIX)
 
-project(web_framework_api VERSION 3.3.4)
+project(web_framework_api VERSION 3.3.5)
 
 if (UNIX)
     add_definitions(-D__LINUX__)

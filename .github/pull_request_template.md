@@ -16,9 +16,9 @@
 
 
 ## Post automatic CI/CD
-1. Run ```Distribution``` workflow
+1. Run [Distribution workflow](https://github.com/LazyPanda07/WebFramework/actions/workflows/distribution.yml)
 2. Download ```flutter-package``` from ```Distribution``` workflow and run 
 ```console
 flutter pub publish
 ```
-3. Run ```Docker Distribution``` workflow
+3. Run [Docker Distribution workflow](https://github.com/LazyPanda07/WebFramework/actions/workflows/docker_distribution.yml)
