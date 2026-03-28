@@ -51,5 +51,5 @@ add_custom_command(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-add_test(NAME ${PROJECT_NAME}_API COMMAND CC_API_TESTS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
-add_test(NAME ${PROJECT_NAME} COMMAND Core.exe --server_config multi_threaded_config.json --run_redis_tests --run_arguments Server.exe WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME}_API COMMAND CXX_API_TESTS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_test(NAME ${PROJECT_NAME} COMMAND Core.exe --server_config multi_threaded_config.json --run_arguments Server.exe WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

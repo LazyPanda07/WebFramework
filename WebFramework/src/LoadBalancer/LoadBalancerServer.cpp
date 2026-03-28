@@ -232,7 +232,8 @@ namespace framework::load_balancer
 
 								resources->badGatewayError(response);
 
-								utility::processStreamOperation<logging::category::loadBalancer, utility::structs::SendOperation>(request.clientStream, response);
+								// utility::processStreamOperation<logging::category::loadBalancer, utility::structs::SendOperation>(request.clientStream, response);
+								request.clientStream << response;
 							}
 						}
 						else
@@ -265,7 +266,8 @@ namespace framework::load_balancer
 
 							resources->badGatewayError(response);
 
-							utility::processStreamOperation<logging::category::loadBalancer, utility::structs::SendOperation>(request.clientStream, response);
+							// utility::processStreamOperation<logging::category::loadBalancer, utility::structs::SendOperation>(request.clientStream, response);
+							request.clientStream << response;
 						}
 					}
 

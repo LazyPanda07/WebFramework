@@ -76,14 +76,17 @@ namespace framework::proxy
 			streams::IOSocketStream::createStream<web::HttpsNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout)) :
 			streams::IOSocketStream::createStream<web::HttpNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout));
 
-		bool success = utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(serverStream, request);
+		// bool success = utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(serverStream, request);
+		serverStream << request;
 
-		if (success)
+		/*if (success)
 		{
 			success = utility::processStreamOperation<logging::category::proxyServer, utility::structs::ReceiveOperation>(serverStream, response);
-		}
+		}*/
 
-		if (success)
+		serverStream >> response;
+
+		/*if (success)
 		{
 			utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(clientStream, response);
 		}
@@ -94,7 +97,9 @@ namespace framework::proxy
 				.build();
 
 			utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(clientStream, response);
-		}
+		}*/
+
+		clientStream << response;
 	}
 
 	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings) :

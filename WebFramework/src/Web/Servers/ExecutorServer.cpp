@@ -153,6 +153,11 @@ namespace framework
 			}
 			catch (...)
 			{
+				if (Log::isValid())
+				{
+					Log::error<logging::message::responseError, logging::category::executorServer>("Unexpected error");
+				}
+
 				result = ServiceState::error;
 			}
 		}
