@@ -42,6 +42,8 @@ namespace framework
 			response.setResponseCode(static_cast<int64_t>(e.getResponseCode()));
 			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
 
+			stream << response;
+
 			result = ServiceState::skipResponse;
 		}
 #endif
@@ -54,6 +56,8 @@ namespace framework
 
 			resources.badRequestError(response, &e);
 
+			stream << response;
+
 			result = ServiceState::skipResponse;
 		}
 		catch (const file_manager::exceptions::FileDoesNotExistException& e) // 404
@@ -65,6 +69,8 @@ namespace framework
 
 			resources.notFoundError(response, &e);
 
+			stream << response;
+
 			result = ServiceState::skipResponse;
 		}
 		catch (const exceptions::NotFoundException& e) // 404
@@ -75,6 +81,8 @@ namespace framework
 			}
 
 			resources.notFoundError(response, &e);
+
+			stream << response;
 
 			result = ServiceState::skipResponse;
 		}
@@ -90,6 +98,8 @@ namespace framework
 			response.setResponseCode(e.getResponseCode());
 			response.setBody(exceptionMessage, std::strlen(exceptionMessage));
 
+			stream << response;
+
 			result = ServiceState::skipResponse;
 		}
 		catch (const exceptions::ExecutorException& e) // 500
@@ -100,6 +110,8 @@ namespace framework
 			}
 
 			resources.internalServerError(response, &e);
+
+			stream << response;
 
 			result = ServiceState::skipResponse;
 		}
@@ -127,39 +139,17 @@ namespace framework
 				resources.internalServerError(response, &e);
 			}
 
+			stream << response;
+
 			result = ServiceState::skipResponse;
 		}
 		catch (...)	// 500
 		{
 			resources.internalServerError(response, nullptr);
 
+			stream << response;
+
 			result = ServiceState::skipResponse;
-		}
-
-		if (result == ServiceState::skipResponse)
-		{
-			try
-			{
-				stream << response;
-			}
-			catch (const std::exception& e)
-			{
-				if (Log::isValid())
-				{
-					Log::error<logging::message::responseError, logging::category::executorServer>(e.what());
-				}
-
-				result = ServiceState::error;
-			}
-			catch (...)
-			{
-				if (Log::isValid())
-				{
-					Log::error<logging::message::responseError, logging::category::executorServer>("Unexpected error");
-				}
-
-				result = ServiceState::error;
-			}
 		}
 
 		return result;
