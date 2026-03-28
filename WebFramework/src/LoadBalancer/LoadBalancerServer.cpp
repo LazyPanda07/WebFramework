@@ -7,6 +7,7 @@
 #include "Web/HttpResponseImplementation.h"
 #include "Utility/Stopwatch.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "Utility/Utils.h"
 
 #include "LoadBalancer/Heuristics/Connections.h"
 #include "LoadBalancer/Heuristics/CXXHeuristic.h"
@@ -231,7 +232,7 @@ namespace framework::load_balancer
 
 								resources->badGatewayError(response);
 
-								request.clientStream << response;
+								utility::processStreamOperation<logging::category::loadBalancer, utility::structs::SendOperation>(request.clientStream, response);
 							}
 						}
 						else
@@ -264,7 +265,7 @@ namespace framework::load_balancer
 
 							resources->badGatewayError(response);
 
-							request.clientStream << response;
+							utility::processStreamOperation<logging::category::loadBalancer, utility::structs::SendOperation>(request.clientStream, response);
 						}
 					}
 

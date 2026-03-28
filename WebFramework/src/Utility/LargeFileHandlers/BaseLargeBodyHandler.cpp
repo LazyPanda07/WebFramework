@@ -42,7 +42,7 @@ namespace framework::utility
 	{
 		response.setIsValid(true);
 
-		stream << response;
+		utility::processStreamOperation<logging::category::largeBodyHandler, utility::structs::SendOperation>(stream, response);
 	}
 
 	BaseLargeBodyHandler::BaseLargeBodyHandler
