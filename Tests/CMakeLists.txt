@@ -39,12 +39,12 @@ enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors 
 
 add_definitions(-DLARGE_FILE_NAME="large_file.bin")
 
-add_definitions(-DWIN32_LEAN_AND_MEAN)
-
 if (UNIX)
     set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/lib/libWebFramework.so)
 else()
     set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/dll/WebFramework.dll)
+
+    add_definitions(-DWIN32_LEAN_AND_MEAN)
 endif()
 
 if(WIN32)
