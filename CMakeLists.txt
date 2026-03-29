@@ -37,6 +37,7 @@ endif()
 if (UNIX)
 	add_definitions(-D__LINUX__)
 	add_compile_options(-fvisibility=hidden)
+	add_compile_options(-fno-omit-frame-pointer)
 	
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
