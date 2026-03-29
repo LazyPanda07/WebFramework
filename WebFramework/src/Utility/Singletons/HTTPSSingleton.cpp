@@ -1,11 +1,17 @@
 #include "Utility/Singletons/HTTPSSingleton.h"
 
+#ifdef __LINUX__
+#include <signal.h>
+#endif
+
 namespace framework::utility
 {
 	HTTPSSingleton::HTTPSSingleton() :
 		useHTTPS(false)
 	{
-
+#ifdef __LINUX__
+		signal(SIGPIPE, SIG_IGN);
+#endif
 	}
 
 	HTTPSSingleton& HTTPSSingleton::get()

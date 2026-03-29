@@ -1,3 +1,6 @@
+## 3.3.6
+* Add ignoring SIGPIPE
+
 ## 3.3.5
 * Add additional error handling
 

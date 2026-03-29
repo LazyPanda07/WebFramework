@@ -26,7 +26,7 @@ option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 
-project(WebFramework VERSION 3.3.5)
+project(WebFramework VERSION 3.3.6)
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
@@ -37,6 +37,7 @@ endif()
 if (UNIX)
 	add_definitions(-D__LINUX__)
 	add_compile_options(-fvisibility=hidden)
+	add_compile_options(-fno-omit-frame-pointer)
 	
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 

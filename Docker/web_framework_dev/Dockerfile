@@ -36,4 +36,4 @@ RUN curl -s --compressed -o /etc/apt/sources.list.d/web_framework.list "https://
 RUN apt update
 
 # Update version
-RUN apt install -y web-framework-dev=3.3.5
+RUN apt install -y web-framework-dev=3.3.6
