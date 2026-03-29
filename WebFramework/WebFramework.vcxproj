@@ -180,6 +180,7 @@
     <ClCompile Include="src\Utility\CrashHandler.cpp" />
     <ClCompile Include="src\Utility\TaskExecutorsSettings.cpp" />
     <ClCompile Include="src\Utility\Utils.cpp" />
+    <ClCompile Include="src\Utility\WebFrameworkConcepts.cpp" />
     <ClCompile Include="src\Web\HttpRequestImplementation.cpp" />
     <ClCompile Include="src\Web\HttpResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />

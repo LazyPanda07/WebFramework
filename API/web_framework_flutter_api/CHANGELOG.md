@@ -1,3 +1,6 @@
+## 3.3.5
+* Add additional error handling
+
 ## 3.3.4
 * Add SIGABRT handling
 

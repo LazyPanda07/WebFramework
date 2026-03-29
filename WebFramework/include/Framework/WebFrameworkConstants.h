@@ -151,6 +151,7 @@ namespace framework::logging
 		inline constexpr char dotnetRuntime[] = "LogDotNetRuntime";
 		inline constexpr char pythonRuntime[] = "LogPythonRuntime";
 		inline constexpr char largeBodyHandler[] = "LogLargeBodyHandler";
+		inline constexpr char proxyServer[] = "LogProxyServer";
 		inline constexpr char crashHandler[] = "LogCrashHandler";
 		inline constexpr char sources[] = "LogSources";
 		inline constexpr char executorServer[] = "LogExecutorServer";
@@ -197,6 +198,8 @@ namespace framework::logging
 		inline constexpr char notFound[] = "Not found exception: {}";
 		inline constexpr char executorInternalServer[] = "Executor internal server error: {}";
 		inline constexpr char internalServerError[] = "Internal server error: {}";
+		inline constexpr char requestError[] = "Request error: {}";
+		inline constexpr char responseError[] = "Response error: {}";
 		inline constexpr char sslException[] = "SSL exception: {}, ip: {}";
 		inline constexpr char cantFindRuntime[] = "Can't find {} runtime";
 		inline constexpr char cantFindTaskBroker[] = "Can't find {} task broker";

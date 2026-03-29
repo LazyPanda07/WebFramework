@@ -6,7 +6,7 @@
 #include <JsonArrayWrapper.h>
 #include <IOSocketStream.h>
 
-#include "Framework/WebFrameworkConstants.h"
+#include "Utility/Utils.h"
 
 namespace framework::proxy
 {
@@ -76,11 +76,25 @@ namespace framework::proxy
 			streams::IOSocketStream::createStream<web::HttpsNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout)) :
 			streams::IOSocketStream::createStream<web::HttpNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout));
 
-		serverStream << request;
+		bool success = utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(serverStream, request);
+		
+		if (success)
+		{
+			success = utility::processStreamOperation<logging::category::proxyServer, utility::structs::ReceiveOperation>(serverStream, response);
+		}
 
-		serverStream >> response;
+		if (success)
+		{
+			utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(clientStream, response);
+		}
+		else
+		{
+			response = web::HttpBuilder()
+				.responseCode(web::ResponseCodes::internalServerError)
+				.build();
 
-		clientStream << response;
+			utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(clientStream, response);
+		}
 	}
 
 	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings) :

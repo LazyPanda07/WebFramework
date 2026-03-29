@@ -36,7 +36,7 @@ jobs:
       run: |
          cd samples\VisualStudioSample
          dotnet restore
-         msbuild VisualStudioSample.sln -property:Configuration=Release
+         msbuild VisualStudioSample.slnx -property:Configuration=Release
 
 
   windows-build:
