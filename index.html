@@ -1,510 +1,926 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Installer selector</title>
-<style>
-  /* ---------- color vars ---------- */
-  :root{
-    --accent:#2563eb;
-    --muted:#666;
-    --bg:#ffffff;
-    --text:#111;
-    --card:#f8fafc;
-    --code-bg:#0f172a;
-    --code-text:#fff;
-    --surface-border: #e6e6e6;
-    --select-bg: #ffffff;
-    --select-text: #111;
-    --select-border: #e6e6e6;
-    --select-arrow: #666;
-  }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Installer selector · GitHub asset (latest patch per version)</title>
+    <style>
+        /* ---------- color vars (same robust theme) ---------- */
+        :root {
+            --accent: #2563eb;
+            --muted: #666;
+            --bg: #ffffff;
+            --text: #111;
+            --card: #f8fafc;
+            --code-bg: #0f172a;
+            --code-text: #fff;
+            --surface-border: #e6e6e6;
+            --select-bg: #ffffff;
+            --select-text: #111;
+            --select-border: #e6e6e6;
+            --select-arrow: #666;
+        }
 
-  /* explicit theme classes */
-  .dark {
-    --accent:#3b82f6;
-    --muted:#a6adbb;
-    --bg:#0b1220;
-    --text:#e6eef8;
-    --card:#071025;
-    --code-bg:#0b122a;
-    --code-text:#e6eef8;
-    --surface-border: rgba(255,255,255,0.06);
-    --select-bg: #1e293b;
-    --select-text: #e6eef8;
-    --select-border: rgba(255,255,255,0.1);
-    --select-arrow: #a6adbb;
-  }
+        .dark {
+            --accent: #3b82f6;
+            --muted: #a6adbb;
+            --bg: #0b1220;
+            --text: #e6eef8;
+            --card: #071025;
+            --code-bg: #0b122a;
+            --code-text: #e6eef8;
+            --surface-border: rgba(255, 255, 255, 0.06);
+            --select-bg: #1e293b;
+            --select-text: #e6eef8;
+            --select-border: rgba(255, 255, 255, 0.1);
+            --select-arrow: #a6adbb;
+        }
 
-  .light {
-    /* explicit light override (keeps base values for clarity) */
-    --accent:#2563eb;
-    --muted:#666;
-    --bg:#ffffff;
-    --text:#111;
-    --card:#f8fafc;
-    --code-bg:#0f172a;
-    --code-text:#fff;
-    --surface-border: #e6e6e6;
-    --select-bg: #ffffff;
-    --select-text: #111;
-    --select-border: #e6e6e6;
-    --select-arrow: #666;
-  }
+        .light {
+            --accent: #2563eb;
+            --muted: #666;
+            --bg: #ffffff;
+            --text: #111;
+            --card: #f8fafc;
+            --code-bg: #0f172a;
+            --code-text: #fff;
+            --surface-border: #e6e6e6;
+            --select-bg: #ffffff;
+            --select-text: #111;
+            --select-border: #e6e6e6;
+            --select-arrow: #666;
+        }
 
-  /* Auto mode: applies only when neither .dark nor .light is present */
-  @media (prefers-color-scheme: dark) {
-    :root:not(.light):not(.dark) {
-      --accent:#3b82f6;
-      --muted:#a6adbb;
-      --bg:#0b1220;
-      --text:#e6eef8;
-      --card:#071025;
-      --code-bg:#0b122a;
-      --code-text:#e6eef8;
-      --surface-border: rgba(255,255,255,0.06);
-      --select-bg: #1e293b;
-      --select-text: #e6eef8;
-      --select-border: rgba(255,255,255,0.1);
-      --select-arrow: #a6adbb;
-    }
-  }
+        @media (prefers-color-scheme: dark) {
+            :root:not(.light):not(.dark) {
+                --accent: #3b82f6;
+                --muted: #a6adbb;
+                --bg: #0b1220;
+                --text: #e6eef8;
+                --card: #071025;
+                --code-bg: #0b122a;
+                --code-text: #e6eef8;
+                --surface-border: rgba(255, 255, 255, 0.06);
+                --select-bg: #1e293b;
+                --select-text: #e6eef8;
+                --select-border: rgba(255, 255, 255, 0.1);
+                --select-arrow: #a6adbb;
+            }
+        }
 
-  /* ---------- layout ---------- */
-  html,body{height:100%;}
-  body{
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    margin:20px; color:var(--text); background:var(--bg);
-  }
+        /* layout */
+        html,
+        body {
+            height: 100%;
+        }
 
-  .card{
-    background:var(--card);
-    padding:18px;
-    border-radius:10px;
-    box-shadow:0 6px 18px rgba(20,20,20,0.06);
-    max-width:1200px; /* Increased from 1000px to 1200px for more space */
-    margin:0 auto;
-    border:1px solid var(--surface-border);
-  }
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+            margin: 20px;
+            color: var(--text);
+            background: var(--bg);
+        }
 
-  h1{margin:0 0 12px 0; font-size:20px; display:inline-block;}
-  .top-row{display:flex; justify-content:space-between; align-items:center; gap:12px;}
-  .row{display:flex; gap:16px; flex-wrap:wrap; align-items:center;}
-  .section{margin:12px 0; width:100%;}
-  .platforms{display:flex; gap:8px;}
-  .plat-btn{
-    padding:8px 14px; border-radius:8px; border:1px solid var(--surface-border);
-    background:transparent; color:var(--text); cursor:pointer; user-select:none;
-    box-shadow:0 1px 0 rgba(0,0,0,0.02);
-  }
-  .plat-btn[aria-pressed="true"]{
-    background:var(--accent); color:#fff; border-color:rgba(0,0,0,0.08);
-  }
+        .card {
+            background: var(--card);
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(20, 20, 20, 0.06);
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid var(--surface-border);
+        }
 
-  .label{font-weight:600; margin-bottom:8px; display:block; color:var(--text);}
-  .grid{display:flex; gap:12px; flex-wrap:wrap;}
-  .checkbox {
-    display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:8px;
-    background:transparent; border:1px solid var(--surface-border); cursor:pointer; color:var(--text);
-  }
-  .checkbox input {margin:0;}
+        h1 {
+            margin: 0 0 12px 0;
+            font-size: 20px;
+            display: inline-block;
+        }
 
-  /* Build command - expanded width */
-  pre.command {
-    background:var(--code-bg); color:var(--code-text); padding:16px;
-    border-radius:8px; overflow:auto; margin:8px 0; border:1px solid rgba(0,0,0,0.12);
-    white-space:pre-wrap;
-    word-break:break-word;
-    min-height: 60px;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
 
-  .controls{display:flex; gap:8px; align-items:center; margin-top:8px;}
-  .btn {padding:8px 12px; border-radius:8px; border:none; cursor:pointer;}
-  .btn.primary{background:var(--accent); color:#fff;}
-  .btn.ghost{background:transparent; border:1px solid var(--surface-border); color:var(--text);}
+        .row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-  .meta{color:var(--muted); font-size:13px; margin-top:8px;}
-  
-  /* Responsive layout adjustments */
-  @media (min-width:700px){
-    .two {
-      display:flex; 
-      gap:24px; /* Increased gap for more space */
-    }
-    .left{
-      flex: 1 1 65%; /* Takes 65% of width */
-      min-width: 0; /* Important for proper flexbox behavior */
-    }
-    .right{
-      flex: 0 0 35%; /* Takes 35% of width */
-      max-width: 35%;
-      min-width: 0; /* Important for proper flexbox behavior */
-    }
-  }
-  
-  @media (min-width:1000px){
-    .two {
-      gap:32px; /* Even more space on larger screens */
-    }
-    .left{
-      flex: 1 1 70%; /* More space for command on very large screens */
-    }
-    .right{
-      flex: 0 0 30%; /* Less space for preview on very large screens */
-      max-width: 30%;
-    }
-  }
+        .section {
+            margin: 12px 0;
+            width: 100%;
+        }
 
-  /* theme toggle */
-  .theme-toggle { background:transparent; border:1px solid var(--surface-border); padding:8px 10px; border-radius:8px; cursor:pointer; color:var(--text); }
-  .small { font-size:13px; padding:6px 8px; border-radius:6px; }
+        .platforms {
+            display: flex;
+            gap: 8px;
+        }
 
-  /* small helpers */
-  [aria-disabled="true"]{opacity:0.6; cursor:not-allowed;}
-  
-  /* Python version selector */
-  .python-version-section {
-    display: none;
-  }
-  
-  .python-version-section.visible {
-    display: block;
-  }
-  
-  .select-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .select-wrapper select {
-    padding: 8px 12px;
-    padding-right: 32px;
-    border-radius: 8px;
-    border: 1px solid var(--select-border);
-    background: var(--select-bg);
-    color: var(--select-text);
-    cursor: pointer;
-    width: 150px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-size: 14px;
-    transition: border-color 0.2s, background-color 0.2s;
-  }
-  
-  .select-wrapper select:hover {
-    border-color: var(--accent);
-  }
-  
-  .select-wrapper select:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
-  }
-  
-  .select-wrapper::after {
-    content: "▼";
-    font-size: 10px;
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: var(--select-arrow);
-  }
-  
-  /* Dark theme specific select styling */
-  .dark .select-wrapper select {
-    background: var(--select-bg);
-    color: var(--select-text);
-    border: 1px solid var(--select-border);
-  }
-  
-  .dark .select-wrapper select option {
-    background: var(--select-bg);
-    color: var(--select-text);
-  }
-  
-  /* Improve dropdown appearance in dark mode */
-  .select-wrapper select::-ms-expand {
-    display: none;
-  }
-  
-  /* Ensure preview content doesn't overflow */
-  #preview {
-    max-width: 100%;
-    overflow-wrap: break-word;
-  }
-</style>
+        .plat-btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--surface-border);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+        }
+
+        .plat-btn[aria-pressed="true"] {
+            background: var(--accent);
+            color: #fff;
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: var(--text);
+        }
+
+        .grid {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid var(--surface-border);
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .checkbox input {
+            margin: 0;
+        }
+
+        pre.command {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 16px;
+            border-radius: 8px;
+            overflow: auto;
+            margin: 8px 0;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 60px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: 0.1s ease;
+        }
+
+        .btn.primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn.ghost {
+            background: transparent;
+            border: 1px solid var(--surface-border);
+            color: var(--text);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        @media (min-width:700px) {
+            .two {
+                display: flex;
+                gap: 24px;
+            }
+
+            .left {
+                flex: 1 1 65%;
+                min-width: 0;
+            }
+
+            .right {
+                flex: 0 0 35%;
+                max-width: 35%;
+                min-width: 0;
+            }
+        }
+
+        @media (min-width:1000px) {
+            .two {
+                gap: 32px;
+            }
+
+            .left {
+                flex: 1 1 70%;
+            }
+
+            .right {
+                flex: 0 0 30%;
+                max-width: 30%;
+            }
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--surface-border);
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .small {
+            font-size: 13px;
+            padding: 6px 8px;
+            border-radius: 6px;
+        }
+
+        .python-version-section {
+            display: none;
+        }
+
+        .python-version-section.visible {
+            display: block;
+        }
+
+        .select-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .select-wrapper select {
+            padding: 8px 12px;
+            padding-right: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--select-border);
+            background: var(--select-bg);
+            color: var(--select-text);
+            cursor: pointer;
+            width: 180px;
+            appearance: none;
+            font-size: 14px;
+        }
+
+        .select-wrapper::after {
+            content: "▼";
+            font-size: 10px;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--select-arrow);
+        }
+
+        /* download area */
+        .download-area {
+            margin-top: 12px;
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--surface-border);
+            padding: 12px 16px;
+        }
+
+        .flex-download {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: space-between;
+        }
+
+        .link-preview {
+            flex: 1;
+            font-family: monospace;
+            font-size: 12px;
+            background: var(--bg);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--surface-border);
+            word-break: break-all;
+            color: var(--accent);
+        }
+
+        .link-preview a {
+            color: var(--accent);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .link-preview a:hover {
+            text-decoration: underline;
+        }
+
+        .badge-version {
+            background: var(--accent);
+            color: white;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .version-selector-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .version-selector-group .label {
+            margin-bottom: 0;
+        }
+
+        .error-message {
+            color: #e5484d;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        #preview {
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--muted);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 0.6s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
+
 <body>
-<main class="card" id="app" role="region" aria-label="Installer selector">
-  <div class="top-row">
-    <h1>Installer selector</h1>
-    <div>
-      <button id="themeToggle" class="theme-toggle small" aria-pressed="false" title="Toggle dark/light theme">Auto</button>
-    </div>
-  </div>
-
-  <div class="two">
-    <div class="left">
-      <div class="section" id="platform-section">
-        <span class="label">Platform (choose one)</span>
-        <div class="platforms" role="radiogroup" aria-label="Platform">
-          <button class="plat-btn" data-val="windows" role="radio" aria-pressed="false">Windows</button>
-          <button class="plat-btn" data-val="linux" role="radio" aria-pressed="false">Linux</button>
+    <main class="card" id="app" role="region" aria-label="Installer selector with GitHub asset download">
+        <div class="top-row">
+            <h1>Installer selector · Release asset builder</h1>
+            <div>
+                <button id="themeToggle" class="theme-toggle small" aria-pressed="false"
+                    title="Toggle dark/light theme">Auto</button>
+            </div>
         </div>
-      </div>
 
-      <div class="section" id="apis-section">
-        <span class="label">APIs (you may select multiple)</span>
-        <div class="grid" aria-label="APIs">
-          <label class="checkbox"><input type="checkbox" id="Python" value="-DBUILD_PYTHON_API">Python</label>
-          <label class="checkbox"><input type="checkbox" id="C++" value="-DBUILD_CXX_API">C++</label>
-          <label class="checkbox"><input type="checkbox" id="C" value="-DBUILD_CC_API">C</label>
-          <label class="checkbox"><input type="checkbox" id="C#" value="-DBUILD_CSHARP_API">C#</label>
-          <label class="checkbox"><input type="checkbox" id="Flutter" value="-DBUILD_FLUTTER_API">Flutter</label>
+        <div class="two">
+            <div class="left">
+                <div class="section" id="platform-section">
+                    <span class="label">Platform (choose one)</span>
+                    <div class="platforms" role="radiogroup" aria-label="Platform">
+                        <button class="plat-btn" data-val="windows" role="radio" aria-pressed="false">Windows</button>
+                        <button class="plat-btn" data-val="linux" role="radio" aria-pressed="false">Linux</button>
+                    </div>
+                </div>
+
+                <div class="section" id="apis-section">
+                    <span class="label">APIs (you may select multiple)</span>
+                    <div class="grid" aria-label="APIs">
+                        <label class="checkbox"><input type="checkbox" id="Python"
+                                value="-DBUILD_PYTHON_API">Python</label>
+                        <label class="checkbox"><input type="checkbox" id="C++" value="-DBUILD_CXX_API">C++</label>
+                        <label class="checkbox"><input type="checkbox" id="C" value="-DBUILD_CC_API">C</label>
+                        <label class="checkbox"><input type="checkbox" id="C#" value="-DBUILD_CSHARP_API">C#</label>
+                        <label class="checkbox"><input type="checkbox" id="Flutter"
+                                value="-DBUILD_FLUTTER_API">Flutter</label>
+                    </div>
+                </div>
+
+                <div class="section" id="features-section">
+                    <span class="label">Features (optional, choose any)</span>
+                    <div class="grid" aria-label="Features">
+                        <label class="checkbox"><input type="checkbox" id="Python Executors"
+                                value="-DWITH_PYTHON_EXECUTORS">Python Executors</label>
+                        <label class="checkbox"><input type="checkbox" id=".NET Executors"
+                                value="-DWITH_DOTNET_EXECUTORS">.NET Executors</label>
+                    </div>
+                </div>
+
+                <!-- Python version section (dynamic) -->
+                <div class="section python-version-section" id="python-version-section">
+                    <span class="label">Python version</span>
+                    <div class="select-wrapper">
+                        <select id="pythonVersion">
+                            <option value="3.12">Python 3.12</option>
+                            <option value="3.13">Python 3.13</option>
+                            <option value="3.14" selected>Python 3.14</option>
+                        </select>
+                    </div>
+                    <div class="meta">Required when Python API or Python Executors are selected</div>
+                </div>
+
+                <div class="section">
+                    <span class="label">Build command (CMake)</span>
+                    <pre class="command" id="generated"
+                        aria-live="polite"># Select options to generate install command</pre>
+
+                    <div class="controls">
+                        <button class="btn primary" id="copyBtn" aria-disabled="true" disabled>Copy</button>
+                        <button class="btn ghost" id="resetBtn">Reset</button>
+                    </div>
+                </div>
+
+                <!-- DYNAMIC DOWNLOAD AREA: version selector (latest patch per minor) -->
+                <div class="download-area">
+                    <div class="flex-download">
+                        <div>
+                            <span class="label" style="margin-bottom: 4px;">⬇️ GitHub Asset</span>
+                            <div class="meta" style="margin-top: 0;">min version 3.3 · latest patch per version</div>
+                        </div>
+                        <span class="badge-version" id="dynamicVersionBadge">loading...</span>
+                    </div>
+
+                    <!-- version selector row -->
+                    <div class="version-selector-group" style="margin-top: 12px; margin-bottom: 12px;">
+                        <span class="label" style="margin-bottom: 0;">Release version (latest patch):</span>
+                        <div class="select-wrapper" style="flex: 2; min-width: 180px;">
+                            <select id="releaseVersionSelect" disabled>
+                                <option value="">Fetching releases...</option>
+                            </select>
+                        </div>
+                        <div id="versionFetchStatus" class="meta" style="margin:0;"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px;">
+                        <button class="btn primary" id="downloadBtn" disabled>Download file</button>
+                        <div class="link-preview" id="downloadLinkPreview">
+                            ⚠️ Select platform to generate link
+                        </div>
+                    </div>
+                    <div class="meta" style="margin-top: 10px;">
+                        🔗 Pattern:
+                        <code>{platform}-WITH_PYTHON_EXECUTORS.[ON/OFF]-BUILD_PYTHON_API.[ON/OFF]-{pyVersion}-WITH_DOTNET_EXECUTORS.[ON/OFF]-BUILD_CSHARP_API.[ON/OFF]-BUILD_CC_API.[ON/OFF].zip</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="section">
+                    <span class="label">Quick preview</span>
+                    <div id="preview"
+                        style="background:transparent; padding:12px; border-radius:8px; border:1px solid var(--surface-border); font-size:14px; color:var(--text); width:100%; max-width:100%; word-break:break-word; box-sizing:border-box;">
+                        Platform: <strong id="pval">—</strong><br>
+                        APIs: <strong id="aval">—</strong><br>
+                        Features: <strong id="fval">—</strong><br>
+                        Python Version: <strong id="pyval">—</strong><br>
+                        Release: <strong id="releasePreview">—</strong>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+    </main>
 
-      <div class="section" id="features-section">
-        <span class="label">Features (optional, choose any)</span>
-        <div class="grid" aria-label="Features">
-          <label class="checkbox"><input type="checkbox" id="Python Executors" value="-DWITH_PYTHON_EXECUTORS">Python Executors</label>
-          <label class="checkbox"><input type="checkbox" id=".NET Executors" value="-DWITH_DOTNET_EXECUTORS">.NET Executors</label>
-        </div>
-      </div>
+    <script>
+        /* ---------- DOM elements ---------- */
+        const app = document.getElementById('app');
+        const platformBtns = [...app.querySelectorAll('.plat-btn')];
+        const apiCheckboxes = [...app.querySelectorAll('#apis-section input[type="checkbox"]')];
+        const featCheckboxes = [...app.querySelectorAll('#features-section input[type="checkbox"]')];
+        const generatedEl = document.getElementById('generated');
+        const pval = document.getElementById('pval');
+        const aval = document.getElementById('aval');
+        const fval = document.getElementById('fval');
+        const pyval = document.getElementById('pyval');
+        const releasePreviewSpan = document.getElementById('releasePreview');
+        const copyBtn = document.getElementById('copyBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const pythonVersionSection = document.getElementById('python-version-section');
+        const pythonVersionSelect = document.getElementById('pythonVersion');
 
-      <!-- New Python version section -->
-      <div class="section python-version-section" id="python-version-section">
-        <span class="label">Python version</span>
-        <div class="select-wrapper">
-          <select id="pythonVersion">
-            <option value="3.12">Python 3.12</option>
-            <option value="3.13">Python 3.13</option>
-            <option value="3.14" selected>Python 3.14</option>
-          </select>
-        </div>
-        <div class="meta">Required when Python API or Python Executors are selected</div>
-      </div>
+        // Download related elements
+        const downloadBtn = document.getElementById('downloadBtn');
+        const downloadLinkPreviewSpan = document.getElementById('downloadLinkPreview');
+        const releaseVersionSelect = document.getElementById('releaseVersionSelect');
+        const dynamicVersionBadge = document.getElementById('dynamicVersionBadge');
+        const versionFetchStatus = document.getElementById('versionFetchStatus');
 
-      <div class="section">
-        <span class="label">Build command</span>
-        <pre class="command" id="generated" aria-live="polite"># Select options to generate install command</pre>
+        // ---------- state: dynamic releases (only latest patch per major.minor) ----------
+        let latestPatchReleases = []; // array of { tag, versionObject, displayLabel }
+        let currentSelectedTag = null;
+        let isLoadingVersions = true;
 
-        <div class="controls">
-          <button class="btn primary" id="copyBtn" aria-disabled="true" disabled>Copy</button>
-          <button class="btn ghost" id="resetBtn">Reset</button>
-        </div>
-      </div>
-    </div>
+        const MIN_MAJOR = 3;
+        const MIN_MINOR = 3;
 
-    <div class="right">
-      <div class="section">
-        <span class="label">Quick preview</span>
-        <div id="preview" style="
-          background:transparent;
-          padding:12px;
-          border-radius:8px;
-          border:1px solid var(--surface-border);
-          font-size:14px;
-          color:var(--text);
-          width:100%;
-          max-width:100%;
-          word-break:break-word;
-          overflow-wrap:break-word;
-          box-sizing:border-box;
-        ">
-          Platform: <strong id="pval">—</strong><br>
-          APIs: <strong id="aval">—</strong><br>
-          Features: <strong id="fval">—</strong><br>
-          Python Version: <strong id="pyval">—</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
+        /* parse version from tag (vX.Y.Z) */
+        function parseVersionFromTag(tag) {
+            if (!tag || !tag.startsWith('v')) return null;
+            const numericPart = tag.slice(1);
+            const parts = numericPart.split('.');
+            if (parts.length < 2) return null;
+            const major = parseInt(parts[0], 10);
+            const minor = parseInt(parts[1], 10);
+            const patch = parts.length > 2 ? parseInt(parts[2], 10) : 0;
+            if (isNaN(major) || isNaN(minor) || isNaN(patch)) return null;
+            return { major, minor, patch, full: `${major}.${minor}.${patch}` };
+        }
 
-<script>
-/* ---------- elements ---------- */
-const app = document.getElementById('app');
-const platformBtns = [...app.querySelectorAll('.plat-btn')];
-const apiCheckboxes = [...app.querySelectorAll('#apis-section input[type="checkbox"]')];
-const featCheckboxes = [...app.querySelectorAll('#features-section input[type="checkbox"]')];
-const generatedEl = document.getElementById('generated');
-const pval = document.getElementById('pval');
-const aval = document.getElementById('aval');
-const fval = document.getElementById('fval');
-const pyval = document.getElementById('pyval');
-const copyBtn = document.getElementById('copyBtn');
-const resetBtn = document.getElementById('resetBtn');
-const pythonVersionSection = document.getElementById('python-version-section');
-const pythonVersionSelect = document.getElementById('pythonVersion');
+        function meetsMinVersion(versionObj) {
+            if (!versionObj) return false;
+            if (versionObj.major > MIN_MAJOR) return true;
+            if (versionObj.major === MIN_MAJOR && versionObj.minor >= MIN_MINOR) return true;
+            return false;
+        }
 
-/* ---------- state helpers ---------- */
-function getState(){
-  const activePlatformEl = platformBtns.find(b => b.getAttribute('aria-pressed') === 'true');
-  const platform = activePlatformEl ? activePlatformEl.dataset.val : null;
-  const apis = apiCheckboxes.map(c => { return { value: c.value, checked: c.checked, content: c.id } });
-  const features = featCheckboxes.map(c => { return { value: c.value, checked: c.checked, content: c.id } });
-  const pythonVersion = pythonVersionSelect.value;
-  const pythonSelected = apis.some(a => a.content === 'Python' && a.checked) || 
-                        features.some(f => f.content === 'Python Executors' && f.checked);
-  
-  return { platform, apis, features, pythonVersion, pythonSelected };
-}
+        /* fetch releases from GitHub API and keep only latest patch per major.minor */
+        async function fetchReleasesAndReduceToLatestPatch() {
+            const repoApiUrl = 'https://api.github.com/repos/LazyPanda07/WebFramework/releases';
+            try {
+                versionFetchStatus.innerHTML = '<span class="loading-spinner"></span> fetching releases...';
+                const response = await fetch(repoApiUrl);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const releases = await response.json();
+                if (!Array.isArray(releases)) throw new Error('Invalid response');
 
-function buildCommand(state){
-  // placeholder if nothing selected
-  const nothingSelected = !state.platform && state.apis.length === 0 && state.features.length === 0;
-  if (nothingSelected) return '# Select options to generate install command';
+                // Filter: stable releases only (no draft, no prerelease), valid tag, meets >=3.3
+                const validReleases = releases.filter(rel => {
+                    if (rel.draft === true) return false;
+                    if (rel.prerelease === true) return false;
+                    const tag = rel.tag_name;
+                    if (!tag || !tag.startsWith('v')) return false;
+                    const versionObj = parseVersionFromTag(tag);
+                    if (!versionObj) return false;
+                    return meetsMinVersion(versionObj);
+                });
 
-  const parts = ['cmake'];
+                // Group by major.minor key, keep release with highest patch
+                const groupMap = new Map(); // key "major.minor" -> { tag, versionObject, publishedAt }
+                for (const rel of validReleases) {
+                    const tag = rel.tag_name;
+                    const versionObj = parseVersionFromTag(tag);
+                    if (!versionObj) continue;
+                    const key = `${versionObj.major}.${versionObj.minor}`;
+                    const existing = groupMap.get(key);
+                    if (!existing || versionObj.patch > existing.versionObject.patch) {
+                        groupMap.set(key, {
+                            tag: tag,
+                            versionObject: versionObj,
+                            publishedAt: new Date(rel.published_at || 0)
+                        });
+                    } else if (existing && versionObj.patch === existing.versionObject.patch && rel.published_at && new Date(rel.published_at) > existing.publishedAt) {
+                        // in case of tie, prefer more recent published date
+                        groupMap.set(key, {
+                            tag: tag,
+                            versionObject: versionObj,
+                            publishedAt: new Date(rel.published_at)
+                        });
+                    }
+                }
 
-  state.apis.forEach(a => parts.push(`${a.value}=${a.checked ? "ON" : "OFF"}`));
-  state.features.forEach(f => parts.push(`${f.value}=${f.checked ? "ON" : "OFF"}`));
-  
-  // Add Python version if Python is selected
-  /*if (state.pythonSelected) {
-    parts.push(`-DPYTHON_VERSION=${state.pythonVersion}`);
-  }*/
-  
-  parts.push("..")
-  return parts.join(' ');
-}
+                // Convert map to array and sort descending (newest major.minor first)
+                const releasesList = Array.from(groupMap.values()).map(item => ({
+                    tag: item.tag,
+                    versionObject: item.versionObject,
+                    displayLabel: `${item.versionObject.major}.${item.versionObject.minor}.${item.versionObject.patch}`
+                }));
+                releasesList.sort((a, b) => {
+                    if (a.versionObject.major !== b.versionObject.major) return b.versionObject.major - a.versionObject.major;
+                    if (a.versionObject.minor !== b.versionObject.minor) return b.versionObject.minor - a.versionObject.minor;
+                    return b.versionObject.patch - a.versionObject.patch;
+                });
+                return releasesList;
+            } catch (err) {
+                console.warn('Failed to fetch releases:', err);
+                versionFetchStatus.textContent = '⚠️ fallback: using static v3.3.5';
+                // Fallback: provide only v3.3.5 (latest patch for 3.3)
+                const fallbackTag = 'v3.3.5';
+                const fallbackVersion = parseVersionFromTag(fallbackTag);
+                if (fallbackVersion && meetsMinVersion(fallbackVersion)) {
+                    return [{ tag: fallbackTag, versionObject: fallbackVersion, displayLabel: '3.3.5' }];
+                }
+                return [];
+            }
+        }
 
-/* ---------- UI updates ---------- */
-function updateUI(){
-  const s = getState();
-  const cmd = buildCommand(s);
-  generatedEl.textContent = cmd;
+        /* populate version dropdown with latest-patch releases */
+        function populateVersionSelect(releases) {
+            releaseVersionSelect.innerHTML = '';
+            if (!releases.length) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No valid releases (>=3.3)';
+                releaseVersionSelect.appendChild(opt);
+                releaseVersionSelect.disabled = true;
+                dynamicVersionBadge.textContent = 'none';
+                currentSelectedTag = null;
+                return;
+            }
 
-  pval.textContent = s.platform ?? '—';
-  aval.textContent = s.apis.length ? s.apis.filter(v => v.checked).map(v => v.content).join(', ') : '—';
-  fval.textContent = s.features.length ? s.features.filter(v => v.checked).map(v => v.content).join(', ') : '—';
-  
-  // Update Python version display
-  if (s.pythonSelected) {
-    pyval.textContent = s.pythonVersion;
-    pythonVersionSection.classList.add('visible');
-  } else {
-    pyval.textContent = '—';
-    pythonVersionSection.classList.remove('visible');
-  }
+            releases.forEach(rel => {
+                const option = document.createElement('option');
+                option.value = rel.tag;
+                option.textContent = `${rel.displayLabel} (${rel.tag})`;
+                releaseVersionSelect.appendChild(option);
+            });
+            releaseVersionSelect.disabled = false;
+            // select latest (first in sorted list)
+            const latestTag = releases[0].tag;
+            releaseVersionSelect.value = latestTag;
+            currentSelectedTag = latestTag;
+            dynamicVersionBadge.textContent = releases[0].displayLabel;
+            releasePreviewSpan.textContent = releases[0].displayLabel;
+            versionFetchStatus.textContent = `✓ ${releases.length} version(s) (latest patch each)`;
+        }
 
-  // enable copy only when command is real (not placeholder)
-  const isPlaceholder = cmd.startsWith('# Select');
-  copyBtn.disabled = isPlaceholder;
-  copyBtn.setAttribute('aria-disabled', isPlaceholder ? 'true' : 'false');
-}
+        /* initialize version selector */
+        async function initVersionSelector() {
+            isLoadingVersions = true;
+            releaseVersionSelect.disabled = true;
+            const releases = await fetchReleasesAndReduceToLatestPatch();
+            latestPatchReleases = releases;
+            if (latestPatchReleases.length > 0) {
+                populateVersionSelect(latestPatchReleases);
+            } else {
+                // final fallback: v3.3.5
+                const fallback = { tag: 'v3.3.5', versionObject: parseVersionFromTag('v3.3.5'), displayLabel: '3.3.5' };
+                if (fallback.versionObject && meetsMinVersion(fallback.versionObject)) {
+                    latestPatchReleases = [fallback];
+                    populateVersionSelect(latestPatchReleases);
+                } else {
+                    releaseVersionSelect.innerHTML = '<option value="">Unavailable</option>';
+                    releaseVersionSelect.disabled = true;
+                    dynamicVersionBadge.textContent = 'error';
+                    versionFetchStatus.textContent = '❌ failed to load';
+                }
+            }
+            isLoadingVersions = false;
+            updateUI(); // refresh download area
+        }
 
-/* ---------- platform behavior (toggleable) ---------- */
-/* Clicking a platform selects it; clicking again clears it (platform optional). */
-platformBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const currentlyPressed = btn.getAttribute('aria-pressed') === 'true';
-    // clear all first
-    platformBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
-    // toggle: if it was not pressed, set to true; otherwise leave all false (cleared)
-    if (!currentlyPressed) btn.setAttribute('aria-pressed', 'true');
-    updateUI();
-  });
+        /* get currently selected release tag */
+        function getSelectedReleaseTag() {
+            if (!releaseVersionSelect || releaseVersionSelect.disabled || !releaseVersionSelect.value) return currentSelectedTag;
+            const selected = releaseVersionSelect.value;
+            if (selected && selected !== '') {
+                currentSelectedTag = selected;
+                // update badge and preview to display version number (extract from tag)
+                const found = latestPatchReleases.find(r => r.tag === selected);
+                if (found) {
+                    dynamicVersionBadge.textContent = found.displayLabel;
+                    releasePreviewSpan.textContent = found.displayLabel;
+                } else {
+                    dynamicVersionBadge.textContent = selected;
+                    releasePreviewSpan.textContent = selected;
+                }
+                return selected;
+            }
+            return currentSelectedTag;
+        }
 
-  // keyboard support
-  btn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      btn.click();
-    }
-    // left/right arrow to move focus between platform buttons
-    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-      e.preventDefault();
-      const idx = platformBtns.indexOf(btn);
-      const nextIdx = e.key === 'ArrowRight' ? (idx + 1) % platformBtns.length : (idx - 1 + platformBtns.length) % platformBtns.length;
-      platformBtns[nextIdx].focus();
-    }
-  });
-});
+        function onVersionChange() {
+            getSelectedReleaseTag(); // updates badge/preview
+            updateDownloadUI();
+        }
 
-/* ---------- checkboxes ---------- */
-[...apiCheckboxes, ...featCheckboxes].forEach(ch => {
-  ch.addEventListener('change', updateUI);
-});
+        /* ---------- existing state & helpers ---------- */
+        function getState() {
+            const activePlatformEl = platformBtns.find(b => b.getAttribute('aria-pressed') === 'true');
+            const platform = activePlatformEl ? activePlatformEl.dataset.val : null;
+            const apis = apiCheckboxes.map(c => ({ value: c.value, checked: c.checked, content: c.id }));
+            const features = featCheckboxes.map(c => ({ value: c.value, checked: c.checked, content: c.id }));
+            const pythonVersion = pythonVersionSelect.value;
+            const pythonSelected = apis.some(a => a.content === 'Python' && a.checked) ||
+                features.some(f => f.content === 'Python Executors' && f.checked);
+            return { platform, apis, features, pythonVersion, pythonSelected };
+        }
 
-/* ---------- Python version selector ---------- */
-pythonVersionSelect.addEventListener('change', updateUI);
+        function buildCommand(state) {
+            const nothingSelected = !state.platform && state.apis.length === 0 && state.features.length === 0;
+            if (nothingSelected) return '# Select options to generate install command';
+            const parts = ['cmake'];
+            state.apis.forEach(a => parts.push(`${a.value}=${a.checked ? "ON" : "OFF"}`));
+            state.features.forEach(f => parts.push(`${f.value}=${f.checked ? "ON" : "OFF"}`));
+            parts.push("..");
+            return parts.join(' ');
+        }
 
-/* ---------- copy & reset ---------- */
-copyBtn.addEventListener('click', async () => {
-  const text = generatedEl.textContent;
-  if (!text || text.startsWith('# Select')) return;
-  try {
-    await navigator.clipboard.writeText(text);
-    // subtle feedback rather than alert
-    const prev = copyBtn.textContent;
-    copyBtn.textContent = 'Copied';
-    setTimeout(() => copyBtn.textContent = prev, 1200);
-  } catch (err) {
-    alert('Copy failed — select the command text and press Ctrl/Cmd+C manually.');
-  }
-});
+        function getDownloadFilename(state) {
+            if (!state.platform) return null;
+            const pythonExecutorsCheckbox = featCheckboxes.find(c => c.id === 'Python Executors');
+            const pythonApiCheckbox = apiCheckboxes.find(c => c.id === 'Python');
+            const dotnetExecutorsCheckbox = featCheckboxes.find(c => c.id === '.NET Executors');
+            const csharpApiCheckbox = apiCheckboxes.find(c => c.id === 'C#');
+            const cApiCheckbox = apiCheckboxes.find(c => c.id === 'C');
 
-resetBtn.addEventListener('click', () => {
-  // clear platform buttons
-  platformBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
-  // clear checkboxes
-  [...apiCheckboxes, ...featCheckboxes].forEach(c => { c.checked = false; });
-  // reset Python version to default
-  pythonVersionSelect.value = '3.12';
-  // hide Python version section
-  pythonVersionSection.classList.remove('visible');
-  updateUI();
-});
+            const pythonExecState = (pythonExecutorsCheckbox && pythonExecutorsCheckbox.checked) ? "ON" : "OFF";
+            const pythonApiState = (pythonApiCheckbox && pythonApiCheckbox.checked) ? "ON" : "OFF";
+            const dotnetExecState = (dotnetExecutorsCheckbox && dotnetExecutorsCheckbox.checked) ? "ON" : "OFF";
+            const csharpState = (csharpApiCheckbox && csharpApiCheckbox.checked) ? "ON" : "OFF";
+            const cState = (cApiCheckbox && cApiCheckbox.checked) ? "ON" : "OFF";
 
-/* ---------- theme toggle (persisted) ---------- */
-const themeToggle = document.getElementById('themeToggle');
-const stored = localStorage.getItem('theme'); // 'dark' | 'light' | null
+            const platformPretty = state.platform === 'windows' ? 'Windows' : 'Linux';
+            const pyVersion = state.pythonVersion;
+            return `${platformPretty}-WITH_PYTHON_EXECUTORS.${pythonExecState}-BUILD_PYTHON_API.${pythonApiState}-${pyVersion}-WITH_DOTNET_EXECUTORS.${dotnetExecState}-BUILD_CSHARP_API.${csharpState}-BUILD_CC_API.${cState}.zip`;
+        }
 
-function applyTheme(name){
-  if (name === 'dark') {
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
-    themeToggle.setAttribute('aria-pressed','true');
-    themeToggle.textContent = 'Dark';
-  } else if (name === 'light'){
-    document.documentElement.classList.add('light');
-    document.documentElement.classList.remove('dark');
-    themeToggle.setAttribute('aria-pressed','false');
-    themeToggle.textContent = 'Light';
-  } else {
-    // Auto: remove explicit classes so prefers-color-scheme takes over
-    document.documentElement.classList.remove('dark');
-    document.documentElement.classList.remove('light');
-    themeToggle.setAttribute('aria-pressed','false');
-    themeToggle.textContent = 'Auto';
-  }
-}
+        function getReleaseDownloadBaseUrl() {
+            const tag = getSelectedReleaseTag();
+            if (!tag) return null;
+            return `https://github.com/LazyPanda07/WebFramework/releases/download/${tag}`;
+        }
 
-if (stored === 'dark' || stored === 'light') applyTheme(stored);
-else applyTheme(null);
+        function getDownloadUrl(state) {
+            const filename = getDownloadFilename(state);
+            const base = getReleaseDownloadBaseUrl();
+            if (!filename || !base) return null;
+            return `${base}/${filename}`;
+        }
 
-// cycle: Auto -> Dark -> Light -> Auto
-themeToggle.addEventListener('click', () => {
-  const cur = localStorage.getItem('theme'); // may be null
-  let next;
-  if (!cur) next = 'dark';
-  else if (cur === 'dark') next = 'light';
-  else next = null;
-  if (next) localStorage.setItem('theme', next);
-  else localStorage.removeItem('theme');
-  applyTheme(next);
-});
+        function updateDownloadUI() {
+            const state = getState();
+            const filename = getDownloadFilename(state);
+            const platformSelected = !!state.platform;
+            const selectedTag = getSelectedReleaseTag();
+            const isVersionReady = selectedTag && !isLoadingVersions;
 
-/* ---------- initialize ---------- */
-updateUI();
-</script>
+            if (!platformSelected || !filename || !isVersionReady) {
+                downloadBtn.disabled = true;
+                if (!platformSelected) downloadLinkPreviewSpan.innerHTML = '⚠️ Select a platform (Windows/Linux) to generate asset link';
+                else if (!isVersionReady) downloadLinkPreviewSpan.innerHTML = '⏳ Loading release versions...';
+                else downloadLinkPreviewSpan.innerHTML = '⚠️ Incomplete configuration';
+                return;
+            }
+
+            const downloadUrl = getDownloadUrl(state);
+            if (downloadUrl) {
+                downloadBtn.disabled = false;
+                const linkHtml = `<a href="${downloadUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-family: monospace;">${downloadUrl}</a>`;
+                downloadLinkPreviewSpan.innerHTML = `📦 ${linkHtml}`;
+            } else {
+                downloadBtn.disabled = true;
+                downloadLinkPreviewSpan.innerHTML = '⚠️ Could not build download URL';
+            }
+        }
+
+        function updateUI() {
+            const s = getState();
+            const cmd = buildCommand(s);
+            generatedEl.textContent = cmd;
+
+            pval.textContent = s.platform ? (s.platform === 'windows' ? 'Windows' : 'Linux') : '—';
+            aval.textContent = s.apis.length ? s.apis.filter(v => v.checked).map(v => v.content).join(', ') : '—';
+            fval.textContent = s.features.length ? s.features.filter(v => v.checked).map(v => v.content).join(', ') : '—';
+
+            if (s.pythonSelected) {
+                pyval.textContent = s.pythonVersion;
+                pythonVersionSection.classList.add('visible');
+            } else {
+                pyval.textContent = '—';
+                pythonVersionSection.classList.remove('visible');
+            }
+
+            const isPlaceholder = cmd.startsWith('# Select');
+            copyBtn.disabled = isPlaceholder;
+            copyBtn.setAttribute('aria-disabled', isPlaceholder ? 'true' : 'false');
+
+            updateDownloadUI();
+        }
+
+        /* ---------- event binding ---------- */
+        platformBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const currentlyPressed = btn.getAttribute('aria-pressed') === 'true';
+                platformBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+                if (!currentlyPressed) btn.setAttribute('aria-pressed', 'true');
+                updateUI();
+            });
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    btn.click();
+                }
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const idx = platformBtns.indexOf(btn);
+                    const nextIdx = e.key === 'ArrowRight' ? (idx + 1) % platformBtns.length : (idx - 1 + platformBtns.length) % platformBtns.length;
+                    platformBtns[nextIdx].focus();
+                }
+            });
+        });
+
+        [...apiCheckboxes, ...featCheckboxes].forEach(ch => {
+            ch.addEventListener('change', updateUI);
+        });
+        pythonVersionSelect.addEventListener('change', updateUI);
+
+        copyBtn.addEventListener('click', async () => {
+            const text = generatedEl.textContent;
+            if (!text || text.startsWith('# Select')) return;
+            try {
+                await navigator.clipboard.writeText(text);
+                const prev = copyBtn.textContent;
+                copyBtn.textContent = 'Copied ✓';
+                setTimeout(() => copyBtn.textContent = prev, 1200);
+            } catch (err) {
+                alert('Copy failed — you can select and copy manually.');
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            platformBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+            [...apiCheckboxes, ...featCheckboxes].forEach(c => { c.checked = false; });
+            pythonVersionSelect.value = '3.14';
+            pythonVersionSection.classList.remove('visible');
+            updateUI();
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const state = getState();
+            const url = getDownloadUrl(state);
+            if (!url) {
+                alert('Please select platform and ensure version is loaded.');
+                return;
+            }
+            window.open(url, '_blank');
+        });
+
+        if (releaseVersionSelect) {
+            releaseVersionSelect.addEventListener('change', () => {
+                onVersionChange();
+            });
+        }
+
+        /* ---------- theme toggle ---------- */
+        const themeToggle = document.getElementById('themeToggle');
+        const stored = localStorage.getItem('theme');
+
+        function applyTheme(name) {
+            if (name === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                themeToggle.setAttribute('aria-pressed', 'true');
+                themeToggle.textContent = 'Dark';
+            } else if (name === 'light') {
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+                themeToggle.setAttribute('aria-pressed', 'false');
+                themeToggle.textContent = 'Light';
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.remove('light');
+                themeToggle.setAttribute('aria-pressed', 'false');
+                themeToggle.textContent = 'Auto';
+            }
+        }
+
+        if (stored === 'dark' || stored === 'light') applyTheme(stored);
+        else applyTheme(null);
+
+        themeToggle.addEventListener('click', () => {
+            const cur = localStorage.getItem('theme');
+            let next;
+            if (!cur) next = 'dark';
+            else if (cur === 'dark') next = 'light';
+            else next = null;
+            if (next) localStorage.setItem('theme', next);
+            else localStorage.removeItem('theme');
+            applyTheme(next);
+        });
+
+        /* ---------- start ---------- */
+        initVersionSelector().then(() => updateUI());
+    </script>
 </body>
+
 </html>
