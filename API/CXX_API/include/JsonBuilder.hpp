@@ -44,6 +44,8 @@ namespace framework
 		explicit operator std::string() const;
 
 		~JsonBuilder();
+
+		friend class HttpResponse;
 	};
 }
 

@@ -19,9 +19,9 @@ namespace framework::interfaces
 
 		virtual void setBody(const char* body, size_t bodySize) = 0;
 
-		virtual void setJsonBodyWithBuilder(const void* implementation) = 0;
+		virtual void setJsonBodyWithBuilder(void* implementation) = 0;
 
-		virtual void setJsonBodyWithObject(const void* implementation) = 0;
+		virtual void setJsonBodyWithObject(void* implementation) = 0;
 
 		virtual IHttpResponse* appendBody(const char* body) = 0;
 

@@ -220,12 +220,12 @@ namespace framework
 
 	inline void HttpResponse::setBody(const JsonBuilder& json)
 	{
-		implementation->setJsonBodyWithBuilder(&json);
+		implementation->setJsonBodyWithBuilder(json.implementation);
 	}
 
 	inline void HttpResponse::setBody(const JsonObject& json)
 	{
-		implementation->setJsonBodyWithObject(&json);
+		implementation->setJsonBodyWithObject(json.implementation);
 	}
 
 	inline HttpResponse& HttpResponse::appendBody(std::string_view body)

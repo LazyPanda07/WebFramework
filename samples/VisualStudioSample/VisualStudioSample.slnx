@@ -4,33 +4,33 @@
     <Platform Name="x64" />
   </Configurations>
   <Folder Name="/3rdparty/">
-    <Project Path="../../3rdparty/cmark-gfm/cmark-gfm.vcxproj" />
-    <Project Path="../../3rdparty/DotNetRuntime/DotNetRuntime.vcxproj" />
-    <Project Path="../../3rdparty/pybind11/pybind11.vcxproj" />
-    <Project Path="../../3rdparty/rabbitmq-c/rabbitmq-c.vcxproj" />
+    <Project Path="../../3rdparty/cmark-gfm/cmark-gfm.vcxproj" Id="66216d2f-5851-404b-af2a-da5f216f54af" />
+    <Project Path="../../3rdparty/DotNetRuntime/DotNetRuntime.vcxproj" Id="c05c4838-8cf9-4965-9c91-b4cf4258576c" />
+    <Project Path="../../3rdparty/pybind11/pybind11.vcxproj" Id="fa38c2dc-a207-4048-8c9c-d75bfcacd77b" />
+    <Project Path="../../3rdparty/rabbitmq-c/rabbitmq-c.vcxproj" Id="ac5c367b-f200-4731-8605-4d6fbfba6d7a" />
   </Folder>
   <Folder Name="/Dependencies/">
     <Project Path="../../API/CSharp_API/WebFrameworkCSharpAPI.csproj" />
-    <Project Path="../../API/CXX_API/CXX_API.vcxproj" />
-    <Project Path="../../API/Python_API/Python_API.vcxproj" />
-    <Project Path="../../BaseTCPServer/BaseTCPServer.vcxproj" />
-    <Project Path="../../Databases/Databases.vcxproj" />
-    <Project Path="../../FileManager/FileManager.vcxproj" />
-    <Project Path="../../INIParser/INIParser.vcxproj" />
-    <Project Path="../../Localization/Localization.vcxproj" />
-    <Project Path="../../Log/Log.vcxproj" />
-    <Project Path="../../Networks/HTTP/HTTP.vcxproj" />
-    <Project Path="../../Networks/HTTP/JSON/JSON.vcxproj" />
-    <Project Path="../../Networks/Networks.vcxproj" />
-    <Project Path="../../Networks/SocketStreams/SocketStreams.vcxproj" />
-    <Project Path="../../SHA256/SHA256.vcxproj" />
-    <Project Path="../../ThreadPool/ThreadPool.vcxproj" />
-    <Project Path="../../UtilityLibrary/UtilityLibrary.vcxproj" />
-    <Project Path="../../WebFramework/WebFramework.vcxproj" />
-    <Project Path="../../WebFrameworkCore/WebFrameworkCore.vcxproj" />
-    <Project Path="../../WebFrameworkExecutors/WebFrameworkExecutors.vcxproj" />
+    <Project Path="../../API/CXX_API/CXX_API.vcxproj" Id="3f4d262a-28bd-49d4-bb24-a83363263739" />
+    <Project Path="../../API/Python_API/Python_API.vcxproj" Id="c74350e0-4f4e-482f-ba34-87c35cde54ae" />
+    <Project Path="../../BaseTCPServer/BaseTCPServer.vcxproj" Id="d29045d5-a3e0-4b1f-bf3f-7a7395a22b13" />
+    <Project Path="../../Databases/Databases.vcxproj" Id="2f9bd34b-de1c-4c0e-8131-8aa7274c0081" />
+    <Project Path="../../FileManager/FileManager.vcxproj" Id="1eca0169-41dd-48b1-a53f-8355bae79b40" />
+    <Project Path="../../INIParser/INIParser.vcxproj" Id="ce5f5455-0e8a-49e8-be46-0a12ed898352" />
+    <Project Path="../../Localization/Localization.vcxproj" Id="d2968ac9-bac3-4f25-9698-5c1cf6c4fa35" />
+    <Project Path="../../Log/Log.vcxproj" Id="89755e92-d5a7-4fa6-b227-7ddc3bba9aa1" />
+    <Project Path="../../Networks/HTTP/HTTP.vcxproj" Id="cd88b391-b7b9-47d5-af8d-153fcb2b5a2b" />
+    <Project Path="../../Networks/HTTP/JSON/JSON.vcxproj" Id="f6b57139-d9f3-4b02-aa92-4e1f417649da" />
+    <Project Path="../../Networks/Networks.vcxproj" Id="e3c5b070-57f3-4e11-9701-fdcc108aecb3" />
+    <Project Path="../../Networks/SocketStreams/SocketStreams.vcxproj" Id="8bb9f3bd-68f4-403a-acc6-f85c75f5d14f" />
+    <Project Path="../../SHA256/SHA256.vcxproj" Id="91f7fb1e-1d8d-4544-99e2-23d409d666ab" />
+    <Project Path="../../ThreadPool/ThreadPool.vcxproj" Id="bde48484-5593-484f-9f84-fc01f8cf83a9" />
+    <Project Path="../../UtilityLibrary/UtilityLibrary.vcxproj" Id="f71a5e4a-5242-4fa9-b614-5c0603adc678" />
+    <Project Path="../../WebFramework/WebFramework.vcxproj" Id="e66352d0-66c8-4bae-85e4-4715d53fd651" />
+    <Project Path="../../WebFrameworkCore/WebFrameworkCore.vcxproj" Id="e852aa58-2286-41f3-8a93-44e08c0efc97" />
+    <Project Path="../../WebFrameworkExecutors/WebFrameworkExecutors.vcxproj" Id="fa69e899-f0d2-4c8e-96dc-2aa61854665c" />
   </Folder>
   <Project Path="CSharpExecutors/CSharpExecutors.csproj" />
-  <Project Path="CXXExecutors/CXXExecutors.vcxproj" />
-  <Project Path="VisualStudioSample/VisualStudioSample.vcxproj" />
+  <Project Path="CXXExecutors/CXXExecutors.vcxproj" Id="69729c71-7ef7-4854-a6b4-3a87acd90602" />
+  <Project Path="VisualStudioSample/VisualStudioSample.vcxproj" Id="7185eb3f-7d2c-43b0-a675-eec6b504bc70" />
 </Solution>

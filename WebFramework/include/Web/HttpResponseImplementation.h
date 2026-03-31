@@ -41,9 +41,9 @@ namespace framework
 
 		void setBody(const char* body, size_t bodySize) override;
 
-		void setJsonBodyWithBuilder(const void* implementation) override;
+		void setJsonBodyWithBuilder(void* implementation) override;
 
-		void setJsonBodyWithObject(const void* implementation) override;
+		void setJsonBodyWithObject(void* implementation) override;
 
 		interfaces::IHttpResponse* appendBody(const char* body) override;
 

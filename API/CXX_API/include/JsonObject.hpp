@@ -106,6 +106,7 @@ namespace framework
 		friend class JsonBuilder;
 		friend class JsonParser;
 		friend class HttpRequest;
+		friend class HttpResponse;
 	};
 }
 
