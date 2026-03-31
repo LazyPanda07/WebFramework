@@ -98,21 +98,41 @@ jobs:
     strategy:
       matrix:
         build-cc-api: [ON, OFF]
+        python-config:
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.12 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.13 }
+          - { with-python-executors: ON, build-python-api: OFF, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.12 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.13 }
+          - { with-python-executors: OFF, build-python-api: ON, python-version: 3.14 }
+          - { with-python-executors: OFF, build-python-api: OFF, python-version: "" }
+        with-dotnet-executors: [ON, OFF]
+        build-csharp-api: [ON, OFF]
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
-      os: ubuntu-latest
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
+      os: ubuntu-24.04-arm
       configuration: RelWithDebInfo
-      build-parameters: "-DCMAKE_TOOLCHAIN_FILE=../toolchain-aarch64.cmake -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -DBUILD_FLUTTER_API=OFF"
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
       with-python-executors: OFF
       build-python-api: OFF
       with-dotnet-executors: OFF
       build-csharp-api: OFF
-      upload-artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=${{ matrix.build-cc-api }}
+      upload-artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
       
+
+  linux-aarch64-dev-branch-build:
+    uses: ./.github/workflows/reusable_build_web_framework.yml
+    with:
+      os: ubuntu-24.04-arm
+      configuration: RelWithDebInfo
+      build-parameters: "-DWITH_STACKTRACE=ON"
+      build-branch-strict: dev
+
 
   android-build:
     runs-on: ubuntu-latest
@@ -226,15 +246,15 @@ jobs:
 
 
   linux-aarch64-executors-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: linux-aarch64-build
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
     strategy:
       matrix:
-        executors:
+        executors: 
           - { api: CXX, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
           - { api: CC, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON }
+          - { api: Python, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF }
+          - { api: CSharp, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
     - uses: actions/checkout@v6
@@ -250,7 +270,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_EXECUTORS=${{ matrix.executors.api }} -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . -j --config Release
           cmake --install . --config Release
 
@@ -325,26 +345,24 @@ jobs:
 
 
   linux-aarch64-tests-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     needs: linux-aarch64-build
-    container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-
+    
     steps:
     - uses: actions/checkout@v6
-
-    - name: Download artifacts
+      
+    - name: Download WebFramework
       uses: actions/download-artifact@v8
       with:
-        name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON
+        name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
-        
+
     - name: Build tests
       working-directory: Tests
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXECUTORS=NONE -DCXX_API=ON -DCC_API=ON -DPYTHON_API=ON -DCSHARP_API=ON -G ${{ env.LINUX_CMAKE_GENERATOR }} ..
           cmake --build . -j --config Release
           cmake --install . --config Release
 
@@ -353,31 +371,7 @@ jobs:
       with:
         name: LinuxARMTests
         path: Tests/build/bin
-
-
-  linux-tests:
-    needs: [linux-tests-build, linux-executors-build]
-    strategy:
-      matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
-        test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
-        executors:
-            - { api: CXX, python-version: "", dotnet: false }
-            - { api: CC, python-version: "", dotnet: false }
-            - { api: Python, python-version: "3.14", dotnet: false }
-            - { api: Python, python-version: "3.13", dotnet: false }
-            - { api: Python, python-version: "3.12", dotnet: false }
-            - { api: CSharp, python-version: "", dotnet: true }
-
-    uses: ./.github/workflows/reusable_run_test.yml
-    with:
-      os: ubuntu-latest
-      executors-api: ${{ matrix.executors.api }}
-      web-framework-config: ${{ matrix.config }}
-      test-script: ${{ matrix.test-script }}
-      python-version: ${{ matrix.executors.python-version }}
-      dotnet: ${{ matrix.executors.dotnet }}
-      
+    
 
   windows-tests:
     needs: [windows-tests-build, windows-executors-build]
@@ -403,25 +397,52 @@ jobs:
       dotnet: ${{ matrix.executors.dotnet }}
       
 
-  linux-aarch64-tests:
-    needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
+  linux-tests:
+    needs: [linux-tests-build, linux-executors-build]
     strategy:
       matrix:
-        config: [aarch64_multi_threaded_config.json, aarch64_thread_pool_config.json, aarch64_multi_threaded_config_https.json, aarch64_thread_pool_config_https.json]
-        additional-settings:
-          - { test-script: run_aarch64_cxx_tests.sh, api: CXX, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF, download-executors-name: LinuxARMExecutors-CXX }
-          - { test-script: run_aarch64_cc_tests.sh, api: CC, download-web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON, download-executors-name: LinuxARMExecutors-CC }
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
+        executors:
+            - { api: CXX, python-version: "", dotnet: false }
+            - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.14", dotnet: false }
+            - { api: Python, python-version: "3.13", dotnet: false }
+            - { api: Python, python-version: "3.12", dotnet: false }
+            - { api: CSharp, python-version: "", dotnet: true }
 
     uses: ./.github/workflows/reusable_run_test.yml
     with:
       os: ubuntu-latest
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:aarch64
-      executors-api: ${{ matrix.additional-settings.api }}
+      executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
-      test-script: ${{ matrix.additional-settings.test-script }}
-      download-web-framework-name: ${{ matrix.additional-settings.download-web-framework-name }}
-      download-executors-name: ${{ matrix.additional-settings.download-executors-name }}
-      download-tests-name: LinuxARMTests
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
+
+
+  linux-aarch64-tests:
+    needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
+    strategy:
+      matrix:
+        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
+        executors:
+            - { api: CXX, python-version: "", dotnet: false }
+            - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.14", dotnet: false }
+            - { api: Python, python-version: "3.13", dotnet: false }
+            - { api: Python, python-version: "3.12", dotnet: false }
+            - { api: CSharp, python-version: "", dotnet: true }
+
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: ubuntu-24.04-arm
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
       
 
   task-broker-tests:
