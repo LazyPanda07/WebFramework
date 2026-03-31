@@ -29,7 +29,11 @@ EXPORT JsonParser createJsonParserFromString(const char* jsonString, Exception* 
 
 EXPORT JsonObject accessIndexOperatorJsonObject(JsonObject jsonObject, size_t index, Exception* exception);
 
+EXPORT JsonObject accessIndexOperatorJsonObjectChecked(JsonObject jsonObject, size_t index, Exception* exception);
+
 EXPORT JsonObject accessKeyOperatorJsonObject(JsonObject jsonObject, const char* key, Exception* exception);
+
+EXPORT JsonObject accessKeyOperatorJsonObjectChecked(JsonObject jsonObject, const char* key, Exception* exception);
 
 EXPORT JsonObject emplaceBackObject(JsonObject jsonObject, JsonObject value, Exception* exception);
 

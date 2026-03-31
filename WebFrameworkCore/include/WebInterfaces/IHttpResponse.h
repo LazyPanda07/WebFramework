@@ -19,6 +19,10 @@ namespace framework::interfaces
 
 		virtual void setBody(const char* body, size_t bodySize) = 0;
 
+		virtual void setJsonBodyWithBuilder(const void* implementation) = 0;
+
+		virtual void setJsonBodyWithObject(const void* implementation) = 0;
+
 		virtual IHttpResponse* appendBody(const char* body) = 0;
 
 		virtual void addCookie(const char* name, const char* value) = 0;

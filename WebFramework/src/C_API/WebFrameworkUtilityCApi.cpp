@@ -149,11 +149,47 @@ JsonObject accessIndexOperatorJsonObject(JsonObject jsonObject, size_t index, Ex
 	return nullptr;
 }
 
+JsonObject accessIndexOperatorJsonObjectChecked(JsonObject jsonObject, size_t index, Exception* exception)
+{
+	try
+	{
+		return &(*static_cast<json::JsonObject*>(jsonObject)).at(index);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 JsonObject accessKeyOperatorJsonObject(JsonObject jsonObject, const char* key, Exception* exception)
 {
 	try
 	{
 		return &(*static_cast<json::JsonObject*>(jsonObject))[key];
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JsonObject accessKeyOperatorJsonObjectChecked(JsonObject jsonObject, const char* key, Exception* exception)
+{
+	try
+	{
+		return const_cast<void*>(static_cast<const void*>(&(*static_cast<const json::JsonObject*>(jsonObject))[key]));
 	}
 	catch (const std::exception& e)
 	{

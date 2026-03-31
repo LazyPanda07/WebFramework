@@ -66,6 +66,20 @@ namespace framework
 		this->body = std::string(body, bodySize);
 	}
 
+	void HttpResponseImplementation::setJsonBodyWithBuilder(const void* implementation)
+	{
+		this->addHeader("Content-Type", "application/json");
+
+		body = static_cast<std::string>(*reinterpret_cast<const json::JsonBuilder*>(implementation));
+	}
+
+	void HttpResponseImplementation::setJsonBodyWithObject(const void* implementation)
+	{
+		this->addHeader("Content-Type", "application/json");
+
+		body = static_cast<std::string>(*reinterpret_cast<const json::JsonObject*>(implementation));
+	}
+
 	interfaces::IHttpResponse* HttpResponseImplementation::appendBody(const char* body)
 	{
 		this->body += body;

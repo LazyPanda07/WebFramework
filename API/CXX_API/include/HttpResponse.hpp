@@ -132,6 +132,13 @@ namespace framework
 		void setBody(const JsonBuilder& json);
 
 		/// <summary>
+		/// <para>Some Json data with HTTP response</para>
+		/// <para>Content-Length and Content-Type headers setting automatically</para>
+		/// </summary>
+		/// <param name="json">Json data</param>
+		void setBody(const JsonObject& json);
+
+		/// <summary>
 		/// <para>Some data with HTTP response</para>
 		/// <para>Content-Length header setting automatically</para>
 		/// </summary>
@@ -213,11 +220,12 @@ namespace framework
 
 	inline void HttpResponse::setBody(const JsonBuilder& json)
 	{
-		std::string jsonData = json.build().data();
+		implementation->setJsonBodyWithBuilder(&json);
+	}
 
-		implementation->addHeader("Content-Type", "application/json");
-
-		implementation->setBody(jsonData.data(), jsonData.size());
+	inline void HttpResponse::setBody(const JsonObject& json)
+	{
+		implementation->setJsonBodyWithObject(&json);
 	}
 
 	inline HttpResponse& HttpResponse::appendBody(std::string_view body)
