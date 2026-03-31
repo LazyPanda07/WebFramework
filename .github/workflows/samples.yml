@@ -409,10 +409,26 @@ jobs:
     - name: Run sample with /${{ matrix.samples[4] }} endpoint
       working-directory: samples/build/bin
       run: |
-          start ${{ matrix.run }}
-          while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
-          curl http://127.0.0.1:8080/${{ matrix.samples[4] }}
+          set OUTPUT_FILE=run_test.bat
 
+          echo @echo off > %OUTPUT_FILE%
+          echo set WEB_FRAMEWORK_SERVER_CONFIG=%%1 >> %OUTPUT_FILE%
+          echo set "FXR_PATH=" >> %OUTPUT_FILE%
+          echo for /d %%%%D in ^("C:\Program Files\dotnet\host\fxr\10.*"^) do ( >> %OUTPUT_FILE%
+          echo     if defined FXR_PATH ( >> %OUTPUT_FILE%
+          echo         set "FXR_PATH=!FXR_PATH!;%%%%D" >> %OUTPUT_FILE%
+          echo     ) else ( >> %OUTPUT_FILE%
+          echo         set "FXR_PATH=%%%%D" >> %OUTPUT_FILE%
+          echo     ) >> %OUTPUT_FILE%
+          echo ) >> %OUTPUT_FILE%
+          echo set PATH=%%FXR_PATH%%;%%PATH%% >> %OUTPUT_FILE%
+          echo start ${{ matrix.run }} >> %OUTPUT_FILE%
+
+          .\%OUTPUT_FILE%
+
+          while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 } >> %OUTPUT_FILE%
+          curl http://127.0.0.1:8080/${{ matrix.samples[4] }} >> %OUTPUT_FILE%
+          
 
   linux-tests:
     runs-on: ubuntu-latest
