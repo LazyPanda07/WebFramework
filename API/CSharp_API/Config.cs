@@ -49,11 +49,11 @@ public sealed partial class Config : IDisposable
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getConfiguration(IntPtr implementation, ref IntPtr exception);
 
-	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial string getRawConfiguration(IntPtr implementation, ref IntPtr exception);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getRawConfiguration(IntPtr implementation, ref IntPtr exception); // char*
 
-	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial string getDataFromString(IntPtr implementation);
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getDataFromString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getBasePath(IntPtr implementation, ref IntPtr exception);
@@ -66,7 +66,7 @@ public sealed partial class Config : IDisposable
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
-		string result = getDataFromString(stringImplementation);
+		string result = Marshal.PtrToStringUTF8(getDataFromString(stringImplementation))!;
 
 		deleteWebFrameworkString(stringImplementation);
 
@@ -335,7 +335,7 @@ public sealed partial class Config : IDisposable
 	{
 		IntPtr exception = IntPtr.Zero;
 
-		string result = getRawConfiguration(implementation, ref exception);
+		string result = Marshal.PtrToStringUTF8(getRawConfiguration(implementation, ref exception))!;
 
 		if (exception != IntPtr.Zero)
 		{

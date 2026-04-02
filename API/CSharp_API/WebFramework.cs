@@ -12,8 +12,8 @@ public sealed partial class WebFramework : IDisposable
 {
 	private readonly IntPtr implementation;
 
-	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial string getWebFrameworkVersion();
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getWebFrameworkVersion(); // char*
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr createWebFrameworkFromPath(string configPath, ref IntPtr exception);
@@ -49,7 +49,7 @@ public sealed partial class WebFramework : IDisposable
 	/// <returns>String representation of version in format {major}.{minor}.{patch}</returns>
 	public static string GetWebFrameworkVersion()
 	{
-		return getWebFrameworkVersion();
+		return Marshal.PtrToStringUTF8(getWebFrameworkVersion())!;
 	}
 
 	/// <summary>

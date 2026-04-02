@@ -145,14 +145,6 @@ add_library(
 	WebFramework/src/TaskBroker/TaskExecutors/CSharpTaskExecutor.cpp
 )
 
-# Used in Python API install
-install(
-	TARGETS ${PROJECT_NAME}
-	ARCHIVE DESTINATION lib
-	LIBRARY DESTINATION lib
-	RUNTIME DESTINATION dll
-)
-
 if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 endif()
@@ -189,10 +181,6 @@ add_subdirectory(Databases)
 add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(Localization) # has JSON as dependency
 add_subdirectory(FileManager) # has ThreadPool as dependency
-
-if (${WITH_LANGUAGES_APIS})
-	add_subdirectory(API)
-endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
@@ -233,6 +221,13 @@ target_link_libraries(
 	${ADDITIONAL_LIBS}
 )
 
+install(
+	TARGETS ${PROJECT_NAME}
+	ARCHIVE DESTINATION lib
+	LIBRARY DESTINATION lib
+	RUNTIME DESTINATION dll
+)
+
 install(FILES WebFrameworkConfig.cmake DESTINATION .)
 install(FILES FindWebFramework.cmake DESTINATION .)
 
@@ -268,3 +263,7 @@ install(
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/include/")
 	]]
 )
+
+if (${WITH_LANGUAGES_APIS})
+	add_subdirectory(API)
+endif()

@@ -34,6 +34,12 @@
     <None Include="libLocalization.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
     <None Include="libLog.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
     <None Include="libsqlite3.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+
+    <None Include="libWebFramework.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="libFileManager.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="libLocalization.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="libLog.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="libsqlite3.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
   </ItemGroup>
 
   <ItemGroup>

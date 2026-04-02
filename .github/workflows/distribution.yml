@@ -17,12 +17,17 @@ jobs:
     strategy:
       matrix:
         config: 
-        - { python-minor-version: 12, python-patch: 13 }
-        - { python-minor-version: 13, python-patch: 12 }
-        - { python-minor-version: 14, python-patch: 3 }
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 12, python-patch: 13 }
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 13, python-patch: 12 }
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 14, python-patch: 3 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 12, python-patch: 13 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 13, python-patch: 12 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 14, python-patch: 3 }
 
     uses: ./.github/workflows/reusable_build_wheel.yml
     with: 
+      os: ${{ matrix.config.os }}
+      image: ${{ matrix.config.image }}
       python-minor-version: ${{ matrix.config.python-minor-version }}
       python-patch: ${{ matrix.config.python-patch }}
 
@@ -43,6 +48,14 @@ jobs:
         extract: true
         fileName: Linux-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
 
+    - name: Get LinuxARM latest release
+      uses: robinraju/release-downloader@v1.12
+      with:
+        repository: ${{ github.repository }}
+        latest: true
+        extract: true
+        fileName: LinuxARM-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.OFF.zip
+
     - name: Get Windows latest release
       uses: robinraju/release-downloader@v1.12
       with:
@@ -59,6 +72,7 @@ jobs:
       run: |
           mv Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/dll/*.dll API/CSharp_API/
           mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/
+          mv LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/
           mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/license/* API/CSharp_API/
 
     - name: Create nuget package

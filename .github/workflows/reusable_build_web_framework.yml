@@ -65,6 +65,11 @@ on:
         required: false
         type: string
         default: ''
+      strip:
+        description: "Strip binaries"
+        required: false
+        type: boolean
+        default: false
       upload-artifact-name:
         description: "Name of uploaded artifact zip"
         required: false
@@ -143,7 +148,11 @@ jobs:
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ inputs.configuration }} ${{ inputs.build-parameters }} ${ADDITIONAL_BUILD_PARAMETERS} -G ${{ inputs.cmake-generator }} ..
           cmake --build . -j --config ${{ inputs.configuration }}
-          cmake --install . --config ${{ inputs.configuration }}
+          if [ "${{ inputs.strip }}" = "true" ]; then
+            cmake --install . --config ${{ inputs.configuration }} --strip
+          else
+            cmake --install . --config ${{ inputs.configuration }}
+          fi
   
     - name: Upload artifacts
       if: ${{ inputs.upload-artifact-name != '' && ((inputs.build-branch-strict != '' && inputs.build-branch-strict == env.CURRENT_BRANCH) || inputs.build-branch-strict == '') }}

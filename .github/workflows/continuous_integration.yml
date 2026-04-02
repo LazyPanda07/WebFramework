@@ -10,6 +10,7 @@ on:
 env:
   WINDOWS_CMAKE_GENERATOR: "Ninja"
   LINUX_CMAKE_GENERATOR: "Ninja"
+  LINUX_ARM_CMAKE_GENERATOR: "Unix Makefiles"
   DEFAULT_CMAKE_GENERATOR: "Ninja"
   PYTHON_VERSION: 3.14
 
@@ -48,6 +49,7 @@ jobs:
       python-version: ${{ matrix.python-config.python-version }}
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
+      cmake-generator: ${{ env.WINDOWS_CMAKE_GENERATOR }}
       upload-artifact-name: Windows-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
@@ -91,6 +93,7 @@ jobs:
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
       build-parameters: "-DWITH_STACKTRACE=ON"
+      cmake-generator: ${{ env.LINUX_CMAKE_GENERATOR }}
       upload-artifact-name: Linux-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
 
 
@@ -123,6 +126,7 @@ jobs:
       python-version: ${{ matrix.python-config.python-version }}
       with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
       build-csharp-api: ${{ matrix.build-csharp-api }}
+      cmake-generator: ${{ env.LINUX_ARM_CMAKE_GENERATOR }}
       upload-artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
       
 

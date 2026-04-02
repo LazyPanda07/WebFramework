@@ -79,7 +79,16 @@ jobs:
         echo "DOWNLOAD_ARTIFACT_NAME=Linux" >> ${GITHUB_ENV}
         echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=LinuxExecutors-${{ inputs.executors-api }}" >> ${GITHUB_ENV}
         echo "DOWNLOAD_TESTS_ARTIFACT_NAME=LinuxTests" >> ${GITHUB_ENV}
-      
+    
+    - name: Prepare download artifact name from LinuxARM
+      if: ${{ inputs.os == 'ubuntu-24.04-arm' }}
+      shell: bash
+      run: |
+        echo "CURRENT_OS=LinuxARM" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_ARTIFACT_NAME=LinuxARM" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_EXECUTORS_ARTIFACT_NAME=LinuxARMExecutors-${{ inputs.executors-api }}" >> ${GITHUB_ENV}
+        echo "DOWNLOAD_TESTS_ARTIFACT_NAME=LinuxARMTests" >> ${GITHUB_ENV}
+
     - name: Prepare download artifact name from Python
       if: ${{ inputs.python-version != '' }}
       shell: bash
