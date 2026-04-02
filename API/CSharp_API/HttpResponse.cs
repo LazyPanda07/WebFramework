@@ -13,43 +13,43 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 	internal readonly IntPtr implementation = implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void setResponseBody(IntPtr implementation, byte[] body, nuint bodySize, ref void* exception);
+	private static partial void setResponseBody(IntPtr implementation, byte[] body, nuint bodySize, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void setResponseJsonBody(IntPtr implementation, IntPtr jsonBuilder, ref void* exception);
+	private static partial void setResponseJsonBody(IntPtr implementation, IntPtr jsonBuilder, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void setResponseCode(IntPtr implementation, ResponseCodes code, ref void* exception);
+	private static partial void setResponseCode(IntPtr implementation, ResponseCodes code, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void addResponseHeader(IntPtr implementation, string name, string value, ref void* exception);
+	private static partial void addResponseHeader(IntPtr implementation, string name, string value, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void appendResponseBody(IntPtr implementation, string body, ref void* exception);
+	private static partial void appendResponseBody(IntPtr implementation, string body, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void addResponseCookie(IntPtr implementation, string name, string value, ref void* exception);
+	private static partial void addResponseCookie(IntPtr implementation, string name, string value, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void setResponseDefault(IntPtr implementation, ref void* exception);
+	private static partial void setResponseDefault(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void setResponseIsValid(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool isValid, ref void* exception);
+	private static partial void setResponseIsValid(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool isValid, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr createJsonBuilderFromString(string jsonData, ref void* exception);
+	private static partial IntPtr createJsonBuilderFromString(string jsonData, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteWebFrameworkJsonBuilder(IntPtr implementation);
 
 	public void SetBody(string body)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		byte[] data = Encoding.UTF8.GetBytes(body);
 
 		setResponseBody(implementation, data, (nuint)data.Length, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -57,11 +57,11 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 	public void SetBody(byte[] body)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		setResponseBody(implementation, body, (nuint)body.Length, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -83,11 +83,11 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 		wrapperOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
 		wrapperOptions.WriteIndented = false;
 
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string jsonData = JsonSerializer.Serialize(data, wrapperOptions);
 		IntPtr jsonBuilder = createJsonBuilderFromString(jsonData, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -96,7 +96,7 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 		deleteWebFrameworkJsonBuilder(jsonBuilder);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -104,11 +104,11 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 	public void SetResponseCode(ResponseCodes code)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		setResponseCode(implementation, code, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -116,35 +116,35 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 	public void AddHeader(string name, string value)
 	{
-		void* exeption = null;
+		IntPtr exception = IntPtr.Zero;
 
-		addResponseHeader(implementation, name, value, ref exeption);
+		addResponseHeader(implementation, name, value, ref exception);
 
-		if (exeption != null)
+		if (exception != IntPtr.Zero)
 		{
-			throw new WebFrameworkException(exeption);
+			throw new WebFrameworkException(exception);
 		}
 	}
 
 	public void AddCookie(string name, string value)
 	{
-		void* exeption = null;
+		IntPtr exception = IntPtr.Zero;
 
-		addResponseCookie(implementation, name, value, ref exeption);
+		addResponseCookie(implementation, name, value, ref exception);
 
-		if (exeption != null)
+		if (exception != IntPtr.Zero)
 		{
-			throw new WebFrameworkException(exeption);
+			throw new WebFrameworkException(exception);
 		}
 	}
 
 	public HttpResponse AppendBody(string body)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		appendResponseBody(implementation, body, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -154,11 +154,11 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 	public void SetDefault()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		setResponseDefault(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -166,11 +166,11 @@ public sealed unsafe partial class HttpResponse(nint implementation)
 
 	public void SetIsValid(bool isValid)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		setResponseIsValid(implementation, isValid, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}

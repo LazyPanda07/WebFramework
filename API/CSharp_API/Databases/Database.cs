@@ -10,27 +10,27 @@ public sealed unsafe partial class Database(IntPtr implementation)
 	private readonly IntPtr implementation = implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getOrCreateTable(IntPtr implementation, string tableName, string createTableQuery, ref void* exception);
+	private static partial IntPtr getOrCreateTable(IntPtr implementation, string tableName, string createTableQuery, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling=StringMarshalling.Utf8)]
-	private static partial IntPtr getTable(IntPtr implementation, string tableName, ref void* exception);
+	private static partial IntPtr getTable(IntPtr implementation, string tableName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool containsTable(IntPtr implementation, string tableName, ref IntPtr outTable, ref void* exception);
+	private static partial bool containsTable(IntPtr implementation, string tableName, ref IntPtr outTable, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getDatabaseName(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getDatabaseName(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getDatabaseFileName(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getDatabaseFileName(IntPtr implementation, ref IntPtr exception);
 
 	public Table GetOrCreateTable(string tableName, string createTableQuery)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getOrCreateTable(implementation, tableName, createTableQuery, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -40,10 +40,10 @@ public sealed unsafe partial class Database(IntPtr implementation)
 
 	public Table GetTable(string tableName)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getTable(implementation, tableName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -53,11 +53,11 @@ public sealed unsafe partial class Database(IntPtr implementation)
 
 	public bool Contains(string tableName)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr outTable = IntPtr.Zero;
 		bool result = containsTable(implementation, tableName, ref outTable, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -67,11 +67,11 @@ public sealed unsafe partial class Database(IntPtr implementation)
 
 	public bool Contains(string tableName, out Table table)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr outTable = IntPtr.Zero;
 		bool result = containsTable(implementation, tableName, ref outTable, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -83,10 +83,10 @@ public sealed unsafe partial class Database(IntPtr implementation)
 
 	public string GetDatabaseName()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string result = Marshal.PtrToStringUTF8(getDatabaseName(implementation, ref exception))!;
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -96,10 +96,10 @@ public sealed unsafe partial class Database(IntPtr implementation)
 
 	public string GetDatabaseFileName()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string result = Marshal.PtrToStringUTF8(getDatabaseFileName(implementation, ref exception))!;
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}

@@ -42,53 +42,53 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void registerDynamicFunctionClassExecutorSettings(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
+	private static partial void registerDynamicFunctionClassExecutorSettings(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void unregisterDynamicFunctionExecutorSettings(IntPtr implementation, string functionName, ref void* exception);
+	private static partial void unregisterDynamicFunctionExecutorSettings(IntPtr implementation, string functionName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool isDynamicFunctionRegisteredExecutorSettings(IntPtr implementation, string functionName, ref void* exception);
+	private static partial bool isDynamicFunctionRegisteredExecutorSettings(IntPtr implementation, string functionName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void getFileExecutorSettings(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static partial void getFileExecutorSettings(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void processStaticFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static partial void processStaticFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void processDynamicFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static partial void processDynamicFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getDataFromString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getExecutorInitParameters(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getExecutorInitParameters(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getExecutorName(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getExecutorName(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getExecutorUserAgentFilter(IntPtr implementation, InitBufferCallback initUserAgentFilterBuffer, AddUserAgentFilterCallback addUserAgentFilter, IntPtr buffer, ref void* exception);
+	private static partial IntPtr getExecutorUserAgentFilter(IntPtr implementation, InitBufferCallback initUserAgentFilterBuffer, AddUserAgentFilterCallback addUserAgentFilter, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getExecutorAPIType(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getExecutorAPIType(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial int getExecutorLoadType(IntPtr implementation, ref void* exception);
+	private static partial int getExecutorLoadType(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getOrCreateDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
+	private static partial IntPtr getOrCreateDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
+	private static partial IntPtr getDatabaseExecutorSettings(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getOrCreateTableExecutorSettings(IntPtr implementation, string databaseName, string implementationName, string tableName, string createTableQuery, ref void* exception);
+	private static partial IntPtr getOrCreateTableExecutorSettings(IntPtr implementation, string databaseName, string implementationName, string tableName, string createTableQuery, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getTableExecutorSettings(IntPtr implementation, string databaseName, string implementationName, string tableName, ref void* exception);
+	private static partial IntPtr getTableExecutorSettings(IntPtr implementation, string databaseName, string implementationName, string tableName, ref IntPtr exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -132,7 +132,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public void RegisterDynamicFunction<T>(string functionName) where T : IDynamicFunction
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string assemblyName = typeof(T).AssemblyQualifiedName!;
 		byte[] assemblyBytes = Encoding.UTF8.GetBytes(assemblyName + '\0');
 		IntPtr result = Marshal.AllocHGlobal(assemblyBytes.Length);
@@ -141,7 +141,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 		registerDynamicFunctionClassExecutorSettings(implementation, functionName, "csharp", result, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -154,11 +154,11 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public void UnregisterDynamicFunction(string functionName)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		unregisterDynamicFunctionExecutorSettings(implementation, functionName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -172,10 +172,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public bool IsDynamicFunctionRegistered(string functionName)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		bool result = isDynamicFunctionRegisteredExecutorSettings(implementation, functionName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -191,7 +191,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] GetFile(string filePath)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
@@ -206,7 +206,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -223,7 +223,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] ProcessStaticFile(byte[] fileData, string fileExtension)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
@@ -240,7 +240,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -257,7 +257,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] ProcessDynamicFile(byte[] fileData, IDictionary<string, string>? variables = null)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
@@ -296,7 +296,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 			Marshal.FreeHGlobal(variable.value);
 		}
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -306,10 +306,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 	public string GetName()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string result = Marshal.PtrToStringUTF8(getExecutorName(implementation, ref exception))!;
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -324,10 +324,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 	public T GetInitParameters<T>()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr parameters = getExecutorInitParameters(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -337,7 +337,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 	public IList<string> GetUserAgentFilter()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<string> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 		
@@ -360,7 +360,7 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 			ref exception
 		);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -370,10 +370,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 	public string GetApiType()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string result = Marshal.PtrToStringUTF8(getExecutorAPIType(implementation, ref exception))!;
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -383,10 +383,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 
 	public LoadType GetLoadType()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		int result = getExecutorLoadType(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -415,10 +415,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to get or create the database.</exception>
 	public Database GetOrCreateDatabase<T>(string databaseName) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getOrCreateDatabaseExecutorSettings(implementation, databaseName, T.ImplementationName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -450,10 +450,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to retrieve the database.</exception>
 	public Database GetDatabase<T>(string databaseName) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getDatabaseExecutorSettings(implementation, databaseName, T.ImplementationName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -489,10 +489,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to create or retrieve the table.</exception>
 	public Table GetOrCreateTable<T>(string databaseName, string tableName, string createTableQuery) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getOrCreateTableExecutorSettings(implementation, databaseName, T.ImplementationName, tableName, createTableQuery, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -525,10 +525,10 @@ public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to retrieve the table.</exception>
 	public Table GetTable<T>(string databaseName, string tableName) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getTableExecutorSettings(implementation, databaseName, T.ImplementationName, tableName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}

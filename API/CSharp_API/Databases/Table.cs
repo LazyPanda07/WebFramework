@@ -9,17 +9,17 @@ public sealed unsafe partial class Table(IntPtr implementation)
 	private readonly IntPtr implementation = implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr executeQuery(IntPtr implementation, string query, [In] IntPtr[]? values, nuint size, ref void* exception);
+	private static partial IntPtr executeQuery(IntPtr implementation, string query, [In] IntPtr[]? values, nuint size, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getTableName(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getTableName(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref void* exception);
+	private static partial void deleteSQLResult(IntPtr tableImplementation, IntPtr implementation, ref IntPtr exception);
 
 	public SqlResult ExecuteQuery(string query, IList<SqlValue>? values = null)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result;
 		
 		if (values != null)
@@ -38,7 +38,7 @@ public sealed unsafe partial class Table(IntPtr implementation)
 			result = executeQuery(implementation, query, null, 0, ref exception);
 		}
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -47,7 +47,7 @@ public sealed unsafe partial class Table(IntPtr implementation)
 
 		deleteSQLResult(implementation, result, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -57,10 +57,10 @@ public sealed unsafe partial class Table(IntPtr implementation)
 
 	public string GetTableName()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string result = Marshal.PtrToStringUTF8(getTableName(implementation, ref exception))!;
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}

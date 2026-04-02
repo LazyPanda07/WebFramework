@@ -16,11 +16,11 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 	private delegate void IterateCallback(IntPtr columnNames, IntPtr columnValues, nuint size, nuint index, IntPtr buffer);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void iterateSQLResult(IntPtr implementation, InitBufferCallback initBuffer, IterateCallback iterate, IntPtr buffer, ref void* exception);
+	private static partial void iterateSQLResult(IntPtr implementation, InitBufferCallback initBuffer, IterateCallback iterate, IntPtr buffer, ref IntPtr exception);
 
 	public SqlResult(IntPtr implementation)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		GCHandle handle = GCHandle.Alloc(rows);
 
 		iterateSQLResult
@@ -54,7 +54,7 @@ public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, Sq
 			ref exception
 		);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}

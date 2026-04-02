@@ -70,140 +70,140 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial IntPtr getDataFromString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getJsonParserRawData(IntPtr implementation, ref void* exception);
+	private static partial char* getJsonParserRawData(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteWebFrameworkJsonParser(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getRawParameters(IntPtr implementation, ref void* exception);
+	private static partial char* getRawParameters(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getMethod(IntPtr implementation, ref void* exception);
+	private static partial char* getMethod(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getVersion(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getVersion(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getBody(IntPtr implementation, ref nuint bodySize, ref void* exception);
+	private static partial char* getBody(IntPtr implementation, ref nuint bodySize, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void setAttribute(IntPtr implementation, string name, string value, ref void* exception);
+	private static partial void setAttribute(IntPtr implementation, string name, string value, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getAttribute(IntPtr implementation, string name, ref void* exception);
+	private static partial IntPtr getAttribute(IntPtr implementation, string name, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void deleteSession(IntPtr implementation, ref void* exception);
+	private static partial void deleteSession(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void removeAttribute(IntPtr implementation, string name, ref void* exception);
+	private static partial void removeAttribute(IntPtr implementation, string name, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getRequestJson(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getRequestJson(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getRawRequest(IntPtr implementation, ref void* exception);
+	private static partial char* getRawRequest(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getClientIpV4(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getClientIpV4(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getServerIpV4(IntPtr implementation, ref void* exception);
+	private static partial IntPtr getServerIpV4(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial ushort getClientPort(IntPtr implementation, ref void* exception);
+	private static partial ushort getClientPort(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial ushort getServerPort(IntPtr implementation, ref void* exception);
+	private static partial ushort getServerPort(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void registerDynamicFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref void* exception);
+	private static partial void registerDynamicFunctionClass(IntPtr implementation, string functionName, string apiType, IntPtr functionClassName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void unregisterDynamicFunction(IntPtr implementation, string functionName, ref void* exception);
+	private static partial void unregisterDynamicFunction(IntPtr implementation, string functionName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool isDynamicFunctionRegistered(IntPtr implementation, string functionName, ref void* exception);
+	private static partial bool isDynamicFunctionRegistered(IntPtr implementation, string functionName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref void* exception);
+	private static partial void getQueryParameters(IntPtr implementation, InitBufferCallback initQueryBuffer, AddKeyValueParameters addQueryParameter, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void getChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref void* exception);
+	private static partial void getChunks(IntPtr implementation, InitBufferCallback initChunksBuffer, AddChunkCallback addChunk, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void getFile(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static partial void getFile(IntPtr implementation, string filePath, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref void* exception);
+	private static partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref void* exception);
+	private static partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void getCookies(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addCookiee, IntPtr buffer, ref void* exception);
+	private static partial void getCookies(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addCookiee, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr getLargeData(IntPtr implementaion, ref void* exception);
+	private static partial IntPtr getLargeData(IntPtr implementaion, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref void* exception);
+	private static partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
+	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
+	private static partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref void* exception);
+	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref void* exception);
+	private static partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial int getRouteIntegerParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+	private static partial int getRouteIntegerParameter(IntPtr implementation, string routeParameterName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial double getRouteDoubleParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+	private static partial double getRouteDoubleParameter(IntPtr implementation, string routeParameterName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getRouteStringParameter(IntPtr implementation, string routeParameterName, ref void* exception);
+	private static partial IntPtr getRouteStringParameter(IntPtr implementation, string routeParameterName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getOrCreateDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
+	private static partial IntPtr getOrCreateDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref void* exception);
+	private static partial IntPtr getDatabaseRequest(IntPtr implementation, string databaseName, string implementationName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getOrCreateTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, string createTableQuery, ref void* exception);
+	private static partial IntPtr getOrCreateTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, string createTableQuery, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, ref void* exception);
+	private static partial IntPtr getTableRequest(IntPtr implementation, string databaseName, string implementationName, string tableName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void sendChunks(IntPtr implementation, IntPtr response, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
+	private static partial void sendChunks(IntPtr implementation, IntPtr response, ChunkGeneratorCallback generateChunk, IntPtr data, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref void* exception);
+	private static partial void sendFileChunks(IntPtr implementation, IntPtr response, string fileName, ChunkGeneratorCallback generateChunk, IntPtr data, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void enqueueTask(IntPtr implementation, string messageBrokerName, IntPtr jsonObjectData, ref void* exception);
+	private static partial void enqueueTask(IntPtr implementation, string messageBrokerName, IntPtr jsonObjectData, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	internal static partial void setExceptionData(IntPtr implementation, string errorMessage, int responseCode, string logCategory);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr createJsonParserFromString(string jsonData, ref void* exception);
+	private static partial IntPtr createJsonParserFromString(string jsonData, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial IntPtr getJsonParserParsedData(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool weak, ref void* exception);
+	private static partial IntPtr getJsonParserParsedData(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool weak, ref IntPtr exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -277,10 +277,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the raw parameters.</exception>
 	public string GetRawParameters()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		char* result = getRawParameters(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -295,10 +295,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP method.</exception>
 	public string GetHttpMethod()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		char* result = getMethod(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -313,10 +313,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP version from the underlying implementation.</exception>
 	public string GetHttpVersion()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getVersion(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -331,11 +331,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP request body.</exception>
 	public string GetHttpBody()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		nuint bodySize = 0;
 		char* result = getBody(implementation, ref bodySize, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -351,11 +351,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while setting the HTTP attribute.</exception>
 	public void SetHttpAttribute(string name, string value)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		setAttribute(implementation, name, value, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -369,10 +369,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while retrieving the HTTP attribute.</exception>
 	public string GetHttpAttribute(string name)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getAttribute(implementation, name, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -386,11 +386,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while deleting the HTTP session.</exception>
 	public void DeleteHttpSession()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		deleteSession(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -403,11 +403,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while removing the HTTP attribute.</exception>
 	public void RemoveHttpAttribute(string name)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		removeAttribute(implementation, name, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -432,17 +432,17 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="Exception">Thrown if the JSON response cannot be deserialized to the specified type <typeparamref name="T"/>.</exception>
 	public T GetJson<T>()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr temp = getRequestJson(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
 		char* jsonDataPtr = getJsonParserRawData(temp, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			deleteWebFrameworkJsonParser(temp);
 
@@ -460,10 +460,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	public string GetHttpRawRequest()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		char* result = getRawRequest(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -473,10 +473,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	public string GetClientIpV4()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getClientIpV4(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -486,10 +486,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	public string GetServerIpV4()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getServerIpV4(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -499,10 +499,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	public ushort GetClientPort()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		ushort result = getClientPort(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -512,10 +512,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	public ushort GetServerPort()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		ushort result = getServerPort(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -531,7 +531,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public void RegisterDynamicFunction<T>(string functionName) where T : IDynamicFunction
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		string assemblyName = typeof(T).AssemblyQualifiedName!;
 		byte[] assemblyBytes = Encoding.UTF8.GetBytes(assemblyName + '\0');
 		IntPtr result = Marshal.AllocHGlobal(assemblyBytes.Length);
@@ -540,7 +540,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		registerDynamicFunctionClass(implementation, functionName, "csharp", result, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -553,11 +553,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public void UnregisterDynamicFunction(string functionName)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		unregisterDynamicFunction(implementation, functionName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -571,10 +571,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public bool IsDynamicFunctionRegistered(string functionName)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		bool result = isDynamicFunctionRegistered(implementation, functionName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -589,7 +589,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public IDictionary<string, string> GetQueryParameters()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		Dictionary<string, string> queryParameters = [];
 		GCHandle handle = GCHandle.Alloc(queryParameters);
 
@@ -614,7 +614,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -629,7 +629,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public IList<byte[]> GetChunks()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<byte[]> chunks = [];
 		GCHandle handle = GCHandle.Alloc(chunks);
 
@@ -657,7 +657,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -673,7 +673,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] GetFile(string filePath)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
@@ -688,7 +688,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -705,7 +705,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] ProcessStaticFile(byte[] fileData, string fileExtension)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
@@ -722,7 +722,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -739,7 +739,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public byte[] ProcessDynamicFile(byte[] fileData, IDictionary<string, string>? variables = null)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
@@ -778,7 +778,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			Marshal.FreeHGlobal(variable.value);
 		}
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -793,7 +793,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public IDictionary<string, string> GetHeaders()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		Dictionary<string, string> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
@@ -818,7 +818,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -833,10 +833,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public LargeData GetLargeData()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr largeData = getLargeData(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -860,7 +860,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public IList<Multipart> GetMultiparts()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		List<Multipart> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
@@ -903,7 +903,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -918,7 +918,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public IDictionary<string, string> GetCookies()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		Dictionary<string, string> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
 
@@ -943,7 +943,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -962,7 +962,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendAssetFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
 
 		if (variables != null)
@@ -997,7 +997,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			Marshal.FreeHGlobal(variable.value);
 		}
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1013,7 +1013,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendStaticFile(string filePath, HttpResponse response, bool? isBinary = null, string? fileName = null)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		sendStaticFile
 		(
@@ -1025,7 +1025,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			ref exception
 		);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1042,7 +1042,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public void SendDynamicFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
 
 		if (variables != null)
@@ -1077,7 +1077,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			Marshal.FreeHGlobal(variable.value);
 		}
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1095,11 +1095,11 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		const nuint defaultChunkSize = 14 * 1024 * 1024;
 
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		streamFile(implementation, filePath, response.implementation, fileName ?? "", chunkSize == null ? defaultChunkSize : (nuint)chunkSize, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1115,7 +1115,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException"></exception>
 	public T GetRouteParameter<T>(string name)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		object result = typeof(T) switch
 		{
 			Type t when t == typeof(string) => Marshal.PtrToStringUTF8(getRouteStringParameter(implementation, name, ref exception))!,
@@ -1124,7 +1124,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			_ => throw new InvalidOperationException($"Wrong route parameter type: {typeof(T).Name}")
 		};
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1153,10 +1153,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to get or create the database.</exception>
 	public Database GetOrCreateDatabase<T>(string databaseName) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getOrCreateDatabaseRequest(implementation, databaseName, T.ImplementationName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1188,10 +1188,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to retrieve the database.</exception>
 	public Database GetDatabase<T>(string databaseName) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getDatabaseRequest(implementation, databaseName, T.ImplementationName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1227,10 +1227,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to create or retrieve the table.</exception>
 	public Table GetOrCreateTable<T>(string databaseName, string tableName, string createTableQuery) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getOrCreateTableRequest(implementation, databaseName, T.ImplementationName, tableName, createTableQuery, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1263,10 +1263,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while attempting to retrieve the table.</exception>
 	public Table GetTable<T>(string databaseName, string tableName) where T : IDatabaseImplementation
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		IntPtr result = getTableRequest(implementation, databaseName, T.ImplementationName, tableName, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1287,14 +1287,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs during the chunk sending process.</exception>
 	public void SendChunks(HttpResponse response, ChunkGenerator generator)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		GCHandle handle = GCHandle.Alloc(generator);
 
 		sendChunks(implementation, response.implementation, GenerateChunkCallback, GCHandle.ToIntPtr(handle), ref exception);
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1311,7 +1311,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs during the file chunk sending process.</exception>
 	public void SendFileChunks(HttpResponse response, ChunkGenerator generator, string fileName)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		GCHandle handle = GCHandle.Alloc(generator);
 
 		sendFileChunks
@@ -1326,7 +1326,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -1349,7 +1349,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		where TaskSerializer : ITaskSerializer
 		where TaskExecutorApi : ITaskExecutorApi
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 		Dictionary<string, object> result = new()
 		{
 			["api"] = TaskExecutorApi.ImplementationName,
@@ -1364,14 +1364,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		IntPtr jsonParser = createJsonParserFromString(JsonSerializer.Serialize(result), ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
 		IntPtr jsonObjectData = getJsonParserParsedData(jsonParser, true, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			deleteWebFrameworkJsonParser(jsonParser);
 
@@ -1380,7 +1380,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		enqueueTask(implementation, TaskBroker.ImplementationName, jsonObjectData, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			deleteWebFrameworkJsonParser(jsonParser);
 
