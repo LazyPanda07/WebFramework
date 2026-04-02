@@ -149,7 +149,7 @@ if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 endif()
 
-if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+if (NOT "${COMPILE_TARGET}" STREQUAL "Android")
 	if (${WITH_PYTHON_EXECUTORS})
 		add_definitions(-D__WITH_PYTHON_EXECUTORS__)
 	endif()

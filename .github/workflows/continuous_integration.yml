@@ -462,7 +462,7 @@ jobs:
       
 
   task-broker-tests:
-    needs: [windows-build, linux-build]
+    needs: [windows-build, linux-build, linux-aarch64-build]
     strategy:
       matrix:
         config:
