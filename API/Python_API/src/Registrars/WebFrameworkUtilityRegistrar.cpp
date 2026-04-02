@@ -19,39 +19,7 @@ namespace registrar
 	{
 		using namespace py::literals;
 
-		m.def
-		(
-			"initialize_web_framework",
-			[](std::string_view pathToDLL)
-			{
-				py::module_ os = py::module_::import("os");
-				py::module_ sys = py::module_::import("sys");
-				std::string separator = os.attr("pathsep").cast<std::string>();
-				py::list dirs = sys.attr("path").cast<py::list>();
-				std::string path = std::getenv("PATH");
-				
-				for (py::handle temp : dirs)
-				{
-					path = std::format("{}{}{}", temp.cast<std::string>(), separator, path);
-				}
-
-#ifdef __LINUX__
-				std::string ldLibraryPath;
-
-				if (const char* temp = std::getenv("LD_LIBRARY_PATH"))
-				{
-					ldLibraryPath = temp;
-				}
-
-				putenv(std::format("LD_LIBRARY_PATH={}:{}", path, ldLibraryPath).data());
-#else
-				_putenv_s("PATH", path.data());
-#endif
-
-				framework::utility::initializeWebFramework(pathToDLL);
-			},
-			"path_to_dll"_a = ""
-		);
+		m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
 
 		m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
 

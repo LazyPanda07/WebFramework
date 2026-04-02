@@ -260,6 +260,15 @@ jobs:
     steps:
     - uses: actions/checkout@v6
       
+    - name: Install uuid-dev
+      run: |
+        sudo apt update
+        sudo apt install -y uuid-dev
+
+    - name: Install .NET 10.0
+      if: ${{ matrix.executors.api == 'CSharp' }}
+      run: sudo apt install -y dotnet-sdk-10.0
+
     - name: Download ${{ matrix.executors.artifact-name }}
       uses: actions/download-artifact@v8
       with:
@@ -357,6 +366,11 @@ jobs:
       with:
         name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=ON
         path: WebFrameworkLibrary
+
+    - name: Install uuid-dev
+      run: |
+        sudo apt update
+        sudo apt install -y uuid-dev dotnet-sdk-10.0
 
     - name: Build tests
       working-directory: Tests
