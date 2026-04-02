@@ -4,7 +4,7 @@ using Framework.Utility;
 using System;
 using System.Runtime.InteropServices;
 
-public sealed unsafe partial class SqlValue
+public sealed partial class SqlValue
 {
 	internal readonly IntPtr implementation;
 

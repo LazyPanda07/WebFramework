@@ -88,35 +88,18 @@ elseif(WIN32)
 endif(UNIX)
 
 if (NOT TARGET generate_localization)
-    if ((NOT ${CMAKE_HOST_SYSTEM_PROCESSOR} EQUAL ${CMAKE_SYSTEM_PROCESSOR}) AND ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-        add_custom_target(
-            generate_localization
-            COMMAND qemu-aarch64 ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} generate
-        )
+    add_custom_target(
+        generate_localization
+        COMMAND ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} generate
+    )
 
-        add_custom_target(
-            build_debug_localization
-            COMMAND qemu-aarch64 ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} debug_build ${DEBUG_LOCALIZATION_DIR}
-        )
-
-        add_custom_target(
-            build_release_localization
-            COMMAND qemu-aarch64 ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} release_build ${RELEASE_LOCALIZATION_DIR}
-        )
-    else()
-        add_custom_target(
-            generate_localization
-            COMMAND ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} generate
-        )
-
-        add_custom_target(
-            build_debug_localization
-            COMMAND ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} debug_build ${DEBUG_LOCALIZATION_DIR}
-        )
-
-        add_custom_target(
-            build_release_localization
-            COMMAND ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} release_build ${RELEASE_LOCALIZATION_DIR}
-        )
-    endif()
+    add_custom_target(
+        build_debug_localization
+        COMMAND ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} debug_build ${DEBUG_LOCALIZATION_DIR}
+    )
+    
+    add_custom_target(
+        build_release_localization
+        COMMAND ${WEB_FRAMEWORK_SDK}/assets/LocalizationUtils ${PROJECT_LOCALIZATION_DIR} release_build ${RELEASE_LOCALIZATION_DIR}
+    )
 endif()

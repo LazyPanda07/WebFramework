@@ -8,40 +8,40 @@ using Framework.Exceptions;
 /// <summary>
 /// Web server
 /// </summary>
-public sealed unsafe partial class WebFramework : IDisposable
+public sealed partial class WebFramework : IDisposable
 {
-	private readonly unsafe void* implementation;
+	private readonly IntPtr implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial char* getWebFrameworkVersion();
+	private static partial string getWebFrameworkVersion();
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void* createWebFrameworkFromPath(string configPath, ref IntPtr exception);
+	private static partial IntPtr createWebFrameworkFromPath(string configPath, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void* createWebFrameworkFromString(string serverConfiguration, string applicationDirectory, ref IntPtr exception);
+	private static partial IntPtr createWebFrameworkFromString(string serverConfiguration, string applicationDirectory, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void* createWebFrameworkFromConfig(void* config, ref IntPtr exception);
+	private static partial IntPtr createWebFrameworkFromConfig(IntPtr config, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void startWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, IntPtr onStartServer, ref IntPtr exception);
+	private static partial void startWebFrameworkServer(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, IntPtr onStartServer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void kickWebFrameworkServer(void* implementation, string ip, ref IntPtr exception);
+	private static partial void kickWebFrameworkServer(IntPtr implementation, string ip, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void updateSslCertificatesWebFrameworkServer(void* implementation, ref IntPtr exception);
+	private static partial void updateSslCertificatesWebFrameworkServer(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void stopWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, ref IntPtr exception);
+	private static partial void stopWebFrameworkServer(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool isServerRunning(void* implementation, ref IntPtr exception);
+	private static partial bool isServerRunning(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void deleteWebFramework(void* implementation);
+	private static partial void deleteWebFramework(IntPtr implementation);
 
 	/// <summary>
 	/// Get WebFramework version
@@ -49,7 +49,7 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <returns>String representation of version in format {major}.{minor}.{patch}</returns>
 	public static string GetWebFrameworkVersion()
 	{
-		return Marshal.PtrToStringUTF8((IntPtr)getWebFrameworkVersion())!;
+		return getWebFrameworkVersion();
 	}
 
 	/// <summary>

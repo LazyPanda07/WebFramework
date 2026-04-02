@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using static Framework.HttpRequest;
 
-public sealed unsafe partial class ExecutorSettings(IntPtr implementation)
+public sealed partial class ExecutorSettings(IntPtr implementation)
 {
 	public enum LoadType
 	{

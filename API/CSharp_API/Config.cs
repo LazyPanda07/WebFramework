@@ -8,61 +8,70 @@ using Framework.Exceptions;
 /// <summary>
 /// Config file representation
 /// </summary>
-public sealed unsafe partial class Config : IDisposable
+public sealed partial class Config : IDisposable
 {
-	public unsafe readonly void* implementation;
+	public readonly IntPtr implementation;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void* createConfigFromPath(string configPath, ref IntPtr exception);
+	private static partial IntPtr createConfigFromPath(string configPath, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void* createConfigFromString(string serverConfiguration, string applicationDirectory, ref IntPtr exception);
+	private static partial IntPtr createConfigFromString(string serverConfiguration, string applicationDirectory, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void overrideConfigurationString(void* implementation, string key, string value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
+	private static partial void overrideConfigurationString(IntPtr implementation, string key, string value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void overrideConfigurationInteger(void* implementation, string key, long value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
+	private static partial void overrideConfigurationInteger(IntPtr implementation, string key, long value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void overrideConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
+	private static partial void overrideConfigurationBoolean(IntPtr implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool value, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void overrideConfigurationStringArray(void* implementation, string key, [In] string[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref IntPtr exception);
+	private static partial void overrideConfigurationStringArray(IntPtr implementation, string key, [In] string[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void overrideConfigurationIntegerArray(void* implementation, string key, [In] long[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref IntPtr exception);
+	private static partial void overrideConfigurationIntegerArray(IntPtr implementation, string key, [In] long[] value, [MarshalAs(UnmanagedType.Bool)] bool recursive, long size, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void overrideBasePath(void* implementation, string basePath, ref IntPtr exception);
+	private static partial void overrideBasePath(IntPtr implementation, string basePath, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void* getConfigurationString(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
+	private static partial IntPtr getConfigurationString(IntPtr implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial long getConfigurationInteger(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
+	private static partial long getConfigurationInteger(IntPtr implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool getConfigurationBoolean(void* implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
+	private static partial bool getConfigurationBoolean(IntPtr implementation, string key, [MarshalAs(UnmanagedType.Bool)] bool recursive, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void* getConfiguration(void* implementation, ref IntPtr exception);
+	private static partial IntPtr getConfiguration(IntPtr implementation, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial string getRawConfiguration(IntPtr implementation, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial string getDataFromString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getRawConfiguration(void* implementation, ref IntPtr exception);
+	private static partial IntPtr getBasePath(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getDataFromString(void* implementation);
+	private static partial void deleteWebFrameworkConfig(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void* getBasePath(void* implementation, ref IntPtr exception);
+	private static partial void deleteWebFrameworkString(IntPtr implementation);
 
-	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void deleteWebFrameworkConfig(void* implementation);
+	private static string GetStringData(IntPtr stringImplementation)
+	{
+		string result = getDataFromString(stringImplementation);
 
-	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void deleteWebFrameworkString(void* implementation);
+		deleteWebFrameworkString(stringImplementation);
+
+		return result;
+	}
 
 	/// <summary>
 	/// 
@@ -205,10 +214,7 @@ public sealed unsafe partial class Config : IDisposable
 	{
 		IntPtr exception = IntPtr.Zero;
 
-		fixed (char* keyPointer = key)
-		{
-			overrideConfigurationIntegerArray(implementation, key, [.. value], recursive, value.Count, ref exception);
-		}
+		overrideConfigurationIntegerArray(implementation, key, [.. value], recursive, value.Count, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
@@ -249,18 +255,14 @@ public sealed unsafe partial class Config : IDisposable
 	{
 		IntPtr exception = IntPtr.Zero;
 
-		void* stringPointer = getConfigurationString(implementation, key, recursive, ref exception);
+		IntPtr stringPointer = getConfigurationString(implementation, key, recursive, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
-
-		deleteWebFrameworkString(stringPointer);
-
-		return result;
+		return GetStringData(stringPointer);
 	}
 
 	/// <summary>
@@ -314,18 +316,14 @@ public sealed unsafe partial class Config : IDisposable
 	{
 		IntPtr exception = IntPtr.Zero;
 
-		void* stringPointer = getConfiguration(implementation, ref exception);
+		IntPtr stringPointer = getConfiguration(implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
-
-		deleteWebFrameworkString(stringPointer);
-
-		return result;
+		return GetStringData(stringPointer);
 	}
 
 	/// <summary>
@@ -337,14 +335,14 @@ public sealed unsafe partial class Config : IDisposable
 	{
 		IntPtr exception = IntPtr.Zero;
 
-		char* result = getRawConfiguration(implementation, ref exception);
+		string result = getRawConfiguration(implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		return Marshal.PtrToStringUTF8((IntPtr)result)!;
+		return result;
 	}
 
 	/// <summary>
@@ -356,18 +354,14 @@ public sealed unsafe partial class Config : IDisposable
 	{
 		IntPtr exception = IntPtr.Zero;
 
-		void* stringPointer = getBasePath(implementation, ref exception);
+		IntPtr stringPointer = getBasePath(implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		string result = Marshal.PtrToStringUTF8((IntPtr)getDataFromString(stringPointer))!;
-
-		deleteWebFrameworkString(stringPointer);
-
-		return result;
+		return GetStringData(stringPointer);
 	}
 
 	public void Dispose() => deleteWebFrameworkConfig(implementation);

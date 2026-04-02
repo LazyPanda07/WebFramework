@@ -4,7 +4,7 @@ using Framework.Exceptions;
 using Framework.Utility;
 using System.Runtime.InteropServices;
 
-public sealed unsafe partial class Table(IntPtr implementation)
+public sealed partial class Table(IntPtr implementation)
 {
 	private readonly IntPtr implementation = implementation;
 

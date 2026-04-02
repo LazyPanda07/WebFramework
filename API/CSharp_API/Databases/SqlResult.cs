@@ -5,7 +5,7 @@ using Framework.Utility;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-public sealed unsafe partial class SqlResult : IEnumerable<Dictionary<string, SqlValue>>
+public sealed partial class SqlResult : IEnumerable<Dictionary<string, SqlValue>>
 {
 	private readonly List<Dictionary<string, SqlValue>> rows = [];
 

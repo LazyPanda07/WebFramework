@@ -5,7 +5,7 @@ using Framework.Utility;
 using System;
 using System.Runtime.InteropServices;
 
-public sealed unsafe partial class Database(IntPtr implementation)
+public sealed partial class Database(IntPtr implementation)
 {
 	private readonly IntPtr implementation = implementation;
 

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Framework.Utility;
 
-public static unsafe partial class WebFrameworkLocalization
+public static partial class WebFrameworkLocalization
 {
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getWebFrameworkLocalizedString(string localizationModuleName, string key, string language, ref IntPtr exception);
