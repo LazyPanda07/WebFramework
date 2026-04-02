@@ -95,6 +95,10 @@ jobs:
         sudo apt update
         sudo apt install -y uuid-dev
 
+    - name: Install .NET 10.0
+      if: ${{ inputs.os == 'ubuntu-24.04-arm' && (inputs.with-dotnet-executors == 'ON' || inputs.build-csharp-api == 'ON') }}
+      run: sudo apt install -y dotnet-sdk-10.0
+
     - name: Install Python
       if: ${{ inputs.python-version != '' }}
       uses: actions/setup-python@v6

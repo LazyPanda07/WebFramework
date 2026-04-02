@@ -118,10 +118,11 @@ jobs:
       configuration: RelWithDebInfo
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
-      with-python-executors: OFF
-      build-python-api: OFF
-      with-dotnet-executors: OFF
-      build-csharp-api: OFF
+      with-python-executors: ${{ matrix.python-config.with-python-executors }}
+      build-python-api: ${{ matrix.python-config.build-python-api }}
+      python-version: ${{ matrix.python-config.python-version }}
+      with-dotnet-executors: ${{ matrix.with-dotnet-executors }}
+      build-csharp-api: ${{ matrix.build-csharp-api }}
       upload-artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=${{ matrix.python-config.with-python-executors }}-BUILD_PYTHON_API=${{ matrix.python-config.build-python-api }}-${{ matrix.python-config.python-version }}-WITH_DOTNET_EXECUTORS=${{ matrix.with-dotnet-executors }}-BUILD_CSHARP_API=${{ matrix.build-csharp-api }}-BUILD_CC_API=${{ matrix.build-cc-api }}
       
 

@@ -138,7 +138,7 @@ jobs:
       if: ${{ inputs.download-tests-name != '' }}
       shell: bash
       run: echo "DOWNLOAD_TESTS_ARTIFACT_NAME=${{ inputs.download-tests-name }}" >> ${GITHUB_ENV}
-
+      
     - name: Get Redis on Windows
       if: ${{ inputs.os == 'windows-latest' }}
       uses: robinraju/release-downloader@v1.11
@@ -148,11 +148,15 @@ jobs:
         tag: ${{ env.windows-redis-version }}
         fileName: Redis-${{ env.windows-redis-version }}-Windows-x64-msys2.zip
 
-    - name: Get Redis on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' }}
+    - name: Install Redis on Linux
+      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-24.04-arm' }}
       run: |
         sudo apt update
         sudo apt install -y redis-server
+
+    - name: Install .NET 10.0
+      if: ${{ inputs.dotnet && inputs.os == 'ubuntu-24.04-arm' }}
+      run: sudo apt install -y dotnet-runtime-10.0
 
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
       uses: actions/download-artifact@v8
@@ -220,7 +224,7 @@ jobs:
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' }}
+      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-24.04-arm' }}
       working-directory: Tests
       shell: bash
       run: |
