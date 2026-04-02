@@ -100,11 +100,23 @@ namespace unit_test_utils
 
 		std::vector<uint8_t> buffer(outputBufferSize, 0);
 		
-		auto [_, error] = process.read(reproc::stream::out, buffer.data(), buffer.size());
+		auto [bytes, error] = process.read(reproc::stream::out, buffer.data(), buffer.size());
 
 		if (error)
 		{
 			throw std::runtime_error(std::format("Error while running new process: {} from {}", error.message(), argumentsSingleLine));
+		}
+
+		if (!bytes)
+		{
+			auto [status, error] = process.wait(std::chrono::milliseconds(0));
+
+			if (error)
+			{
+				throw std::runtime_error(std::format("Error while running new process: {} from {}", error.message(), argumentsSingleLine));
+			}
+
+			std::cerr << "Current status: " << status << std::endl;
 		}
 	}
 }

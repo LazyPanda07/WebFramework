@@ -70,7 +70,9 @@ catch (const std::exception& e)
 {
 	std::cerr << e.what() << std::endl;
 
-	exit(-1);
+	printLog();
+
+	return -1;
 }
 
 void printLog()
@@ -81,7 +83,7 @@ void printLog()
 		{
 			std::ifstream log(it.path());
 
-			std::cout << (std::ostringstream() << log.rdbuf()).str() << std::endl;
+			std::cerr << (std::ostringstream() << log.rdbuf()).str() << std::endl;
 		}
 	}
 }

@@ -468,6 +468,7 @@ jobs:
         config:
           - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
           - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx20:24.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: ubuntu-24.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
         
     runs-on: ${{ matrix.config.os }}
     container:
@@ -502,7 +503,7 @@ jobs:
       run: python -m pip install *.whl
 
     - name: Install RabbitMQ on Linux
-      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-24.04-arm' }}
       run: |
         sudo apt update
         sudo apt install -y erlang rabbitmq-server
@@ -528,7 +529,7 @@ jobs:
         .\run_task_broker_tests.bat
 
     - name: Run Linux tests
-      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-24.04-arm' }}
       working-directory: Tests/build/bin
       shell: bash
       run: |
