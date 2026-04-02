@@ -41,7 +41,7 @@ namespace json_settings
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
 	inline constexpr std::string_view runtimesKey = "runtimes";
 	
-
+	inline constexpr std::string_view heuristicNameKey = "name";
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
 	inline constexpr std::string_view heuristicKey = "heuristic";
 	inline constexpr std::string_view loadSourceKey = "loadSource";

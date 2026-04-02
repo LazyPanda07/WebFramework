@@ -239,7 +239,7 @@ namespace framework
 
 		WebFramework::parseAdditionalConfigs(webFrameworkSettings, basePath, settingsPaths, pathToSources);
 
-		std::ranges::for_each(settingsPaths, [this, &basePath](std::string& path) { path = (basePath / path).string(); });
+		std::ranges::for_each(settingsPaths, [this, &basePath](std::string& path) { path = (basePath / path).make_preferred().string(); });
 		std::ranges::for_each
 		(
 			pathToSources, [this, &basePath](std::string& source)
@@ -249,7 +249,7 @@ namespace framework
 					return;
 				}
 
-				source = (basePath / source).string();
+				source = (basePath / source).make_preferred().string();
 			}
 		);
 
@@ -362,9 +362,7 @@ namespace framework
 			return;
 		}
 
-		bool useHTTPS = false;
-
-		if (https.tryGet<bool>(json_settings::useHTTPSKey, useHTTPS) && useHTTPS)
+		if (bool useHTTPS = false; https.tryGet<bool>(json_settings::useHTTPSKey, useHTTPS) && useHTTPS)
 		{
 			utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
 			const std::filesystem::path& basePath = config.getBasePath();
@@ -447,7 +445,7 @@ namespace framework
 			server = std::make_unique<MultithreadedWebServer>
 				(
 					*config,
-					move(executorsSettings),
+					std::move(executorsSettings),
 					ip,
 					port,
 					timeout,
@@ -469,7 +467,7 @@ namespace framework
 			server = std::make_unique<ThreadPoolWebServer>
 				(
 					*config,
-					move(executorsSettings),
+					std::move(executorsSettings),
 					ip,
 					port,
 					timeout,
@@ -497,7 +495,7 @@ namespace framework
 
 			if (!loadBalancerSettings.tryGet<json::JsonObject>(json_settings::heuristicKey, heuristic))
 			{
-				heuristic["name"] = json_settings_values::defaultHeuristicValue;
+				heuristic[json_settings::heuristicNameKey] = json_settings_values::defaultHeuristicValue;
 				heuristic[json_settings::apiTypeKey] = json_settings::cxxExecutorKey;
 			}
 
@@ -519,7 +517,7 @@ namespace framework
 					heuristic,
 					utility::loadSources({ loadSource }).front().first,
 					allServers,
-					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
+					std::make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
 					static_cast<uint32_t>(processingThreads),
 					static_cast<uint32_t>(targetRPS)
 				);
