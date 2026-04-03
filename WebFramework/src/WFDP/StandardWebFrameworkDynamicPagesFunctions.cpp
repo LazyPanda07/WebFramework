@@ -1,6 +1,7 @@
 #include "WFDP/StandardWebFrameworkDynamicPagesFunctions.h"
 
 #include <fstream>
+#include <format>
 
 #include <Exceptions/FileDoesNotExistException.h>
 
