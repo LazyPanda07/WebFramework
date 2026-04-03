@@ -185,6 +185,7 @@
     <ClCompile Include="src\Web\HttpResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
     <ClCompile Include="src\Rendering\WFDPRenderer.cpp" />
+    <ClCompile Include="src\WFDP\CCDynamicFunction.cpp" />
     <ClCompile Include="src\WFDP\CSharpDynamicFunction.cpp" />
     <ClCompile Include="src\WFDP\CXXDynamicFunction.cpp" />
     <ClCompile Include="src\WFDP\PythonDynamicFunction.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="include\TaskBroker\TaskExecutors\TaskExecutor.h" />
     <ClInclude Include="include\Utility\TaskExecutorsSettings.h" />
     <ClInclude Include="include\Utility\Utils.h" />
+    <ClInclude Include="include\WFDP\CCDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CSharpDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CXXDynamicFunction.h" />
     <ClInclude Include="include\WFDP\DynamicFunction.h" />

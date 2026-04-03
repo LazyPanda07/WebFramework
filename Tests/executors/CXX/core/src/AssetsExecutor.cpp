@@ -25,35 +25,11 @@ static const char* customFunction(const char** args, size_t agumentsNumber)
 
 void AssetsExecutor::init(const framework::utility::ExecutorSettings& settings)
 {
-	settings.registerDynamicFunction("customFunction", customFunction, [](char* result) { delete[] result; });
+	settings.registerDynamicFunctionClass<CustomFunctionClass>("customFunction");
 }
 
 void AssetsExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	std::string fileData = request.getFile(std::format("{}.wfdp", request.getJson().get<std::string>("fileName")));
-	std::string first = request.processDynamicFile
-	(
-		fileData,
-		request.getQueryParameters()
-	);
-
-	request.unregisterDynamicFunction("customFunction");
-	request.registerDynamicFunctionClass<CustomFunctionClass>("customFunction");
-
-	std::string second = request.processDynamicFile
-	(
-		fileData,
-		request.getQueryParameters()
-	);
-
-	if (first != second)
-	{
-		response.setResponseCode(framework::ResponseCodes::notExtended);
-	}
-
-	request.unregisterDynamicFunction("customFunction");
-	request.registerDynamicFunction("customFunction", customFunction, [](char* result) { delete[] result; });
-
 	request.sendDynamicFile
 	(
 		std::format("{}.wfdp", request.getJson().get<std::string>("fileName")),

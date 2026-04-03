@@ -156,9 +156,9 @@ namespace framework
 	WFDPRenderer::WFDPRenderer(const std::filesystem::path& pathToTemplates) :
 		pathToTemplates(pathToTemplates)
 	{
-		dynamicPagesFunctions.try_emplace("print", std::make_unique<CXXDynamicFunction>(print));
-		dynamicPagesFunctions.try_emplace("include", std::make_unique<CXXDynamicFunction>(std::bind(include, std::placeholders::_1, pathToTemplates.string())));
-		dynamicPagesFunctions.try_emplace("for", std::make_unique<CXXDynamicFunction>(std::bind(forWFDP, std::placeholders::_1, ref(dynamicPagesFunctions))));
+		dynamicPagesFunctions.try_emplace("print", createPrintFunction());
+		dynamicPagesFunctions.try_emplace("include", createIncludeFunction(pathToTemplates));
+		dynamicPagesFunctions.try_emplace("for", createForFunction(dynamicPagesFunctions));
 	}
 
 	void WFDPRenderer::run(std::span<const interfaces::CVariable> variables, std::string& source)

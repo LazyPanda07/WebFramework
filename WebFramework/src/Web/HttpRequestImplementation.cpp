@@ -71,7 +71,7 @@ namespace framework
 
 	void HttpRequestImplementation::registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
 	{
-		if (apiType == json_settings::cxxExecutorKey)
+		if (apiType == json_settings::cxxExecutorKey || apiType == json_settings::ccExecutorKey)
 		{
 			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
 		}
@@ -411,11 +411,6 @@ namespace framework
 
 			stream << chunk;
 		}
-	}
-
-	void HttpRequestImplementation::registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
-	{
-		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, utility::createCxxDynamicFunction(function, deleter));
 	}
 
 	void HttpRequestImplementation::registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass)

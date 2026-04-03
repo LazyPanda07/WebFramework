@@ -64,8 +64,6 @@ namespace framework
 		public:
 			ExecutorSettings(void* implementation);
 
-			void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const;
-
 			template<DynamicFunctionImplementation T = DynamicFunction, typename... Args>
 			void registerDynamicFunctionClass(std::string_view functionName, Args&&... args) const;
 
@@ -182,19 +180,6 @@ namespace framework
 			implementation(implementation)
 		{
 
-		}
-
-		inline void ExecutorSettings::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const
-		{
-			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionExecutorSettings, void, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
-			void* exception = nullptr;
-
-			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionExecutorSettings, functionName.data(), function, deleter, &exception);
-
-			if (exception)
-			{
-				throw exceptions::WebFrameworkException(exception);
-			}
 		}
 
 		template<DynamicFunctionImplementation T, typename... Args>

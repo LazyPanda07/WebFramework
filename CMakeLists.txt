@@ -71,6 +71,7 @@ add_library(
 	${PROJECT_NAME} SHARED
 	WebFramework/src/WFDP/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/WFDP/CXXDynamicFunction.cpp
+	WebFramework/src/WFDP/CCDynamicFunction.cpp
 	WebFramework/src/WFDP/PythonDynamicFunction.cpp
 	WebFramework/src/WFDP/CSharpDynamicFunction.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp

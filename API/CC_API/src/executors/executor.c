@@ -60,10 +60,15 @@ static void __fill_user_agent_filter(const char* value, size_t index, void* buff
 web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
+	struct { void* function; void* deleter; } data =
+	{
+		.function = function,
+		.deleter = deleter
+	};
 
-	typedef void (*registerDynamicFunctionExecutorSettings)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+	typedef void (*registerDynamicFunctionClassExecutorSettings)(void* implementation, const char* functionName, const char* apiType, void* functionClass, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionExecutorSettings, function_name, function, deleter, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClassExecutorSettings, function_name, "cc", &data, &exception);
 
 	return exception;
 }

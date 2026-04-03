@@ -54,8 +54,6 @@ EXPORT uint16_t getClientPort(HttpRequestObject request, Exception* exception);
 
 EXPORT uint16_t getServerPort(HttpRequestObject request, Exception* exception);
 
-EXPORT void registerDynamicFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
-
 EXPORT void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 
 EXPORT void unregisterDynamicFunction(HttpRequestObject request, const char* functionName, Exception* exception);
@@ -133,8 +131,6 @@ EXPORT DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSett
 EXPORT TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception);
 
 EXPORT TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception);
-
-EXPORT void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
 
 EXPORT void registerDynamicFunctionClassExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 

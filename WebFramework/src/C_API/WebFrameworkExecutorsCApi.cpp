@@ -430,22 +430,6 @@ uint16_t getServerPort(HttpRequestObject request, Exception* exception)
 	return 0;
 }
 
-void registerDynamicFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
-{
-	try
-	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->registerDynamicFunction(functionName, function, deleter);
-	}
-	catch (const std::exception& e)
-	{
-		LOG_AND_CREATE_EXCEPTION();
-	}
-	catch (...)
-	{
-		UNEXPECTED_EXCEPTION();
-	}
-}
-
 void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try
@@ -1127,23 +1111,6 @@ TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const c
 	}
 
 	return nullptr;
-}
-
-void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
-{
-	try
-	{
-		std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->
-			registerDynamicFunction(functionName, json_settings::cxxExecutorKey, framework::utility::createCxxDynamicFunction(function, deleter));
-	}
-	catch (const std::exception& e)
-	{
-		LOG_AND_CREATE_EXCEPTION();
-	}
-	catch (...)
-	{
-		UNEXPECTED_EXCEPTION();
-	}
 }
 
 void registerDynamicFunctionClassExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception)

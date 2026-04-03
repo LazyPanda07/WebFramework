@@ -446,10 +446,15 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
 web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
+	struct { void* function; void* deleter; } data =
+	{
+		.function = function,
+		.deleter = deleter
+	};
 
-	typedef void (*registerDynamicFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+	typedef void (*registerDynamicFunctionClass)(void* implementation, const char* functionName, const char* apiType, void* functionClass, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunction, function_name, function, deleter, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClass, function_name, "cc", &data, &exception);
 
 	return exception;
 }

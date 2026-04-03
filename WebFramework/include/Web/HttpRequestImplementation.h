@@ -209,11 +209,6 @@ namespace framework
 		*/
 		void streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize = defaultChunkSize) override;
 
-		/// @brief Add new function in .wfdp interpreter
-		/// @param functionName Name of new function
-		/// @param function Function implementation
-		void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) override;
-
 		void registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass) override;
 
 		/// @brief Remove function from .wfdp interpreter

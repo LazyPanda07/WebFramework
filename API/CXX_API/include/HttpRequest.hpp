@@ -234,11 +234,6 @@ namespace framework
 		*/
 		void streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize = interfaces::IHttpRequest::defaultChunkSize);
 
-		/// @brief Add new function in .wfdp interpreter
-		/// @param functionName Name of new function
-		/// @param function Function implementation
-		void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result));
-
 		/**
 		 * @brief Add new function in .wfdp interpreter
 		 * @param functionName Name of new function
@@ -757,11 +752,6 @@ namespace framework
 	inline void HttpRequest::streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize)
 	{
 		implementation->streamFile(filePath.data(), response.implementation, fileName.data(), chunkSize);
-	}
-
-	inline void HttpRequest::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
-	{
-		implementation->registerDynamicFunction(functionName.data(), function, deleter);
 	}
 
 	template<DynamicFunctionImplementation T, typename... Args>
