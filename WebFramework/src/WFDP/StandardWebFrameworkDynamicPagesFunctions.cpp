@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <format>
+#include <sstream>
 
 #include <Exceptions/FileDoesNotExistException.h>
 
