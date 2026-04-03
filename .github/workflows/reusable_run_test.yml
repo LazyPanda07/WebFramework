@@ -165,7 +165,7 @@ jobs:
 
     - name: Install .NET 10.0
       if: ${{ inputs.dotnet && inputs.os == 'ubuntu-24.04-arm' }}
-      run: sudo apt install -y dotnet-runtime-10.0
+      run: sudo apt install -y dotnet-sdk-10.0
 
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
       uses: actions/download-artifact@v8
