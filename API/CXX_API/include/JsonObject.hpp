@@ -7,6 +7,11 @@
 #include "DLLHandler.hpp"
 #include "Exceptions/WebFrameworkException.hpp"
 
+namespace framework::utility
+{
+	class ExecutorSettings;
+}
+
 namespace framework
 {
 	template<typename T, typename TJsonStruct>
@@ -107,6 +112,7 @@ namespace framework
 		friend class JsonParser;
 		friend class HttpRequest;
 		friend class HttpResponse;
+		friend class utility::ExecutorSettings;
 	};
 }
 

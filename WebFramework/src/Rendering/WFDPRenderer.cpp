@@ -1,6 +1,7 @@
 #include "Rendering/WFDPRenderer.h"
 
 #include <Log.h>
+#include <PatternParser.h>
 
 #include "Exceptions/DynamicPagesSyntaxException.h"
 #include "WFDP/StandardWebFrameworkDynamicPagesFunctions.h"
@@ -13,114 +14,177 @@
 #pragma warning(disable: 26800)
 #endif
 
-static constexpr std::string_view argumentsDelimiter = "</arg>";
+template<>
+struct utility::parsers::Converter<std::string>
+{
+	constexpr void convert(std::string_view data, std::string& result)
+	{
+		result = data;
+	}
+};
 
 namespace framework
 {
-	WFDPRenderer::ExecutionUnit::ExecutionUnit(std::string&& functionName, std::vector<std::string>&& arguments) noexcept :
-		functionName(std::move(functionName)),
-		arguments(std::move(arguments))
+	WFDPRenderer::ExecutionUnit::ExecutionUnit(std::string_view functionName, const json::JsonObject& sharedArguments) :
+		functionName(functionName),
+		sharedArguments(sharedArguments)
 	{
 
 	}
 
-	void WFDPRenderer::clear(std::string& code)
+	std::vector<WFDPRenderer::ExecutionUnit> WFDPRenderer::parse(std::string_view code, const json::JsonObject& sharedArguments, bool checks)
 	{
-		code.erase(std::remove_if(code.begin(), code.end(), [](const char& c) { return std::iscntrl(c) || std::isspace(c); }), code.end());
-	}
-
-	void WFDPRenderer::separateArguments(std::string& code)
-	{
-		bool stringArgument = false;
-
-		for (size_t i = 0; i < code.size(); i++)
-		{
-			switch (code[i])
+		auto getOffset = [](std::string_view data) -> size_t
 			{
-			case '"':
-				stringArgument = !stringArgument;
-
-				break;
-
-			case ',':
-				if (stringArgument)
+				for (size_t i = 0; i < data.size(); i++)
 				{
-					continue;
+					if ((data[i] >= 'A' && data[i] <= 'Z') || (data[i] >= 'a' && data[i] <= 'z'))
+					{
+						return i;
+					}
 				}
 
-				code.replace(i, 1, argumentsDelimiter);
-
-				break;
-
-			default:
-				break;
-			}
-		}
-	}
-
-	std::string WFDPRenderer::insertVariables(std::span<const interfaces::CVariable> variables, std::string code)
-	{
-		auto findVariable = [&variables](std::string_view name) -> std::string_view
-			{
-				auto it = std::ranges::find_if(variables, [name](const auto& variable) { return variable.name == name; });
-
-				if (it == variables.end())
-				{
-					utility::logAndThrowException<logging::message::noDynamicFunctionVariable, logging::category::dynamicFunction>(name);
-				}
-
-				return it->value;
+				utility::logAndThrowException<logging::message::notValidFunctionName, logging::category::dynamicFunction>();
 			};
 
-		size_t changeVariableStart = code.find('$');
-
-		while (changeVariableStart != std::string::npos)
-		{
-			changeVariableStart++;
-
-			size_t changeVariableEnd = code.find('$', changeVariableStart);
-
-			if (changeVariableEnd == std::string::npos)
-			{
-				throw exceptions::DynamicPagesSyntaxException(::exceptions::variableDeclarationSyntaxError);
-			}
-
-			std::string_view variableName(code.data() + changeVariableStart, changeVariableEnd - changeVariableStart);
-
-			code.replace(code.begin() + changeVariableStart - 1, code.begin() + changeVariableEnd + 1, findVariable(variableName));
-
-			changeVariableStart = code.find('$');
-		}
-
-		return code;
-	}
-
-	std::vector<WFDPRenderer::ExecutionUnit> WFDPRenderer::preExecute(std::string_view code)
-	{
-		std::vector<ExecutionUnit> result;
+		constexpr ::utility::parsers::PatternParser<std::string, std::string> argumentParser("{}: {}");
+		constexpr ::utility::parsers::PatternParser<std::string, std::string, std::string> argumentParserWithDefaultValue("{}: {} = {}");
 		size_t startLine = 0;
 		size_t endLine = code.find(';');
+		std::vector<ExecutionUnit> result;
 
-		if (endLine == std::string::npos)
+		if (endLine == std::string_view::npos)
 		{
-			throw exceptions::DynamicPagesSyntaxException(::exceptions::missingSemicolonSyntaxError);
+			utility::logAndThrowException<logging::message::missingSemicolonSyntaxError, logging::category::dynamicFunction>(code);
 		}
 
-		result.reserve(std::count(code.begin(), code.end(), ';'));
-
-		while (endLine != std::string::npos)
+		while (endLine != std::string_view::npos)
 		{
 			endLine++;
 
 			std::string_view line(code.data() + startLine, endLine - startLine);
 			size_t openBracket = line.find('(');
-			std::string functionName(line.substr(0, openBracket));
+			size_t closeBracket = line.find(')');
 
-			result.emplace_back
+			if (openBracket == std::string_view::npos)
+			{
+				utility::logAndThrowException<logging::message::missingOpenBracketSyntaxError, logging::category::dynamicFunction>(line);
+			}
+
+			if (closeBracket == std::string_view::npos)
+			{
+				utility::logAndThrowException<logging::message::missingCloseBracketSyntaxError, logging::category::dynamicFunction>(line);
+			}
+
+			ExecutionUnit& executionUnit = result.emplace_back
 			(
-				std::move(functionName),
-				::utility::strings::split(std::string_view(line.data() + openBracket + 1, line.find(')') - openBracket - 1), argumentsDelimiter)
+				std::string(line.begin() + getOffset(line), line.begin() + openBracket),
+				sharedArguments
 			);
+
+			size_t argumentOffset = openBracket + 1;
+
+			if (line[argumentOffset] != ')')
+			{
+				do
+				{
+					size_t comma = line.find(',', argumentOffset);
+
+					std::string_view argument(line.begin() + argumentOffset, line.begin() + (std::min)(comma, closeBracket));
+					std::string name;
+					std::string type;
+					std::string defaultValue;
+
+					if (argument.find('=') != std::string_view::npos)
+					{
+						argumentParserWithDefaultValue.parse(argument, name, type, defaultValue);
+					}
+					else
+					{
+						argumentParser.parse(argument, name, type);
+					}
+
+					if (defaultValue.size())
+					{
+						json::JsonObject value;
+
+						try
+						{
+							if (type == "int")
+							{
+								value = std::stoll(defaultValue);
+							}
+							else if (type == "double")
+							{
+								value = std::stod(defaultValue);
+							}
+							else if (type == "bool")
+							{
+								if (defaultValue == "true" || defaultValue == "false")
+								{
+									value = defaultValue == "true" ? true : false;
+								}
+								else
+								{
+									utility::logAndThrowException<logging::message::wrongDefaultValueForType, logging::category::dynamicFunction>(defaultValue, type);
+								}
+							}
+							else if (type == "string")
+							{
+								constexpr ::utility::parsers::PatternParser<std::string> stringParser(R"("{}")");
+
+								std::string temp;
+
+								stringParser.parse(defaultValue, temp);
+
+								value = std::move(temp);
+							}
+							else
+							{
+								utility::logAndThrowException<logging::message::defaultValueForTypeDoesNotSupported, logging::category::dynamicFunction>(type);
+							}
+						}
+						catch (const std::invalid_argument&)
+						{
+							utility::logAndThrowException<logging::message::cantConvertDefaultValue, logging::category::dynamicFunction>(defaultValue, type);
+						}
+						catch (const std::out_of_range&)
+						{
+							utility::logAndThrowException<logging::message::outOfRangeDefaultValue, logging::category::dynamicFunction>(defaultValue, type);
+						}
+
+						executionUnit.defaultArguments[std::move(name)] = std::move(value);
+					}
+					else if (checks)
+					{
+						if (!sharedArguments.contains(name))
+						{
+							utility::logAndThrowException<logging::message::cantFindArgument, logging::category::dynamicFunction>(name, executionUnit.functionName);
+						}
+					}
+
+					argumentOffset += argument.size();
+
+					if (comma == std::string_view::npos)
+					{
+						break;
+					}
+
+					do
+					{
+						if (std::isspace(line[argumentOffset]) || line[argumentOffset] == ',')
+						{
+							argumentOffset++;
+
+							continue;
+						}
+
+						break;
+					}
+					while (true);
+				}
+				while (true);
+			}
 
 			startLine = endLine;
 			endLine = code.find(';', endLine + 1);
@@ -133,7 +197,7 @@ namespace framework
 	{
 		std::string result;
 
-		for (const auto& [functionName, arguments] : codes)
+		for (const auto& [functionName, arguments, defaultArguments] : codes)
 		{
 			try
 			{
@@ -142,7 +206,7 @@ namespace framework
 					Log::info<logging::message::callDynamicFunction, logging::category::dynamicFunction>(functionName);
 				}
 
-				result += (*dynamicPagesFunctions.at(functionName))(arguments);
+				// result += (*dynamicPagesFunctions.at(functionName))(arguments);
 			}
 			catch (const std::exception& e)
 			{
@@ -164,6 +228,12 @@ namespace framework
 	void WFDPRenderer::run(std::span<const interfaces::CVariable> variables, std::string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
+		json::JsonObject sharedArguments;
+
+		for (const interfaces::CVariable& variable : variables)
+		{
+			sharedArguments[variable.name] = *static_cast<json::JsonObject*>(variable.value);
+		}
 
 		while (nextSectionStart != std::string::npos)
 		{
@@ -171,21 +241,17 @@ namespace framework
 
 			if (nextSectionEnd == std::string::npos)
 			{
-				throw exceptions::DynamicPagesSyntaxException(::exceptions::sectionDeclarationSyntaxError);
+				utility::logAndThrowException<logging::message::sectionDeclarationSyntaxError, logging::category::dynamicFunction>(source);
 			}
 
-			std::string code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);
+			std::string_view code(source.begin() + nextSectionStart + 2, source.begin() + nextSectionEnd);
 
-			WFDPRenderer::clear(code);
-
-			WFDPRenderer::separateArguments(code);
-
-			if (variables.size())
-			{
-				code = WFDPRenderer::insertVariables(variables, code);
-			}
-
-			source.replace(source.begin() + nextSectionStart, source.begin() + nextSectionEnd + 2, this->execute(WFDPRenderer::preExecute(code)));
+			source.replace
+			(
+				source.begin() + nextSectionStart, 
+				source.begin() + nextSectionEnd + 2,
+				this->execute(WFDPRenderer::parse(code, sharedArguments, true))
+			);
 
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
 		}

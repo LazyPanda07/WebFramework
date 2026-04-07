@@ -6,7 +6,7 @@ namespace framework
 		function(nullptr),
 		deleter(nullptr)
 	{
-		const void* const* functions = reinterpret_cast<const void* const*>(data);
+		void** functions = reinterpret_cast<void**>(const_cast<void*>(data));
 
 		function = reinterpret_cast<char* (*)(const char**, size_t)>(functions[0]);
 		deleter = reinterpret_cast<void (*)(char*)>(functions[1]);

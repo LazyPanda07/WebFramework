@@ -87,7 +87,7 @@ namespace framework
 		using HeadersMap = std::unordered_map<std::string, std::string, InsensitiveStringHash, InsensitiveStringEqual>;
 
 	private:
-		static std::vector<interfaces::CVariable> convertVariables(const std::unordered_map<std::string, std::string>& variables);
+		static std::vector<interfaces::CVariable> convertVariables(const std::unordered_map<std::string, JsonObject>& variables);
 
 	private:
 		interfaces::IHttpRequest* implementation;
@@ -207,7 +207,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables = {}, bool isBinary = true, std::string_view fileName = "");
+		void sendAssetFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, JsonObject>& variables = {}, bool isBinary = true, std::string_view fileName = "");
 
 		/**
 		* Send non dynamic file
@@ -224,7 +224,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary = false, std::string_view fileName = "");
+		void sendDynamicFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, JsonObject>& variables, bool isBinary = false, std::string_view fileName = "");
 
 		/**
 		* Send large files
@@ -271,7 +271,7 @@ namespace framework
 		 * @param variables 
 		 * @return 
 		 */
-		std::string processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables);
+		std::string processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, JsonObject>& variables);
 
 		/**
 		 * @brief Internal use
@@ -600,7 +600,7 @@ namespace framework
 		return implementation;
 	}
 
-	inline std::vector<interfaces::CVariable> HttpRequest::convertVariables(const std::unordered_map<std::string, std::string>& variables)
+	inline std::vector<interfaces::CVariable> HttpRequest::convertVariables(const std::unordered_map<std::string, JsonObject>& variables)
 	{
 		std::vector<interfaces::CVariable> result;
 
@@ -608,7 +608,7 @@ namespace framework
 
 		for (const auto& [key, value] : variables)
 		{
-			result.emplace_back(key.data(), value.data());
+			result.emplace_back(key.data(), value.implementation);
 		}
 
 		return result;
@@ -730,7 +730,7 @@ namespace framework
 		return LargeData(std::string_view(data->dataPart, data->dataPartSize), data->isLastPacket);
 	}
 
-	inline void HttpRequest::sendAssetFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendAssetFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, JsonObject>& variables, bool isBinary, std::string_view fileName)
 	{
 		std::vector<interfaces::CVariable> temp = HttpRequest::convertVariables(variables);
 
@@ -742,7 +742,7 @@ namespace framework
 		implementation->sendStaticFile(filePath.data(), response.implementation, isBinary, fileName.data());
 	}
 
-	inline void HttpRequest::sendDynamicFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, std::string>& variables, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendDynamicFile(std::string_view filePath, HttpResponse& response, const std::unordered_map<std::string, JsonObject>& variables, bool isBinary, std::string_view fileName)
 	{
 		std::vector<interfaces::CVariable> temp = HttpRequest::convertVariables(variables);
 
@@ -821,7 +821,7 @@ namespace framework
 		return result;
 	}
 
-	inline std::string HttpRequest::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables)
+	inline std::string HttpRequest::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, JsonObject>& variables)
 	{
 		std::string result;
 		std::vector<interfaces::CVariable> temp = HttpRequest::convertVariables(variables);

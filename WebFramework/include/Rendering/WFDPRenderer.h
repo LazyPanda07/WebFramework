@@ -5,6 +5,7 @@
 #include <span>
 
 #include <Strings.h>
+#include <JsonObject.h>
 
 #include "Framework/WebFrameworkPlatform.h"
 #include "WebInterfaces/IHttpRequest.h"
@@ -18,9 +19,10 @@ namespace framework
 		struct ExecutionUnit
 		{
 			std::string functionName;
-			std::vector<std::string> arguments;
+			const json::JsonObject& sharedArguments;
+			json::JsonObject defaultArguments;
 
-			ExecutionUnit(std::string&& functionName, std::vector<std::string>&& arguments) noexcept;
+			ExecutionUnit(std::string_view functionName, const json::JsonObject& sharedArguments);
 		};
 
 	private:
@@ -28,13 +30,7 @@ namespace framework
 		const std::filesystem::path pathToTemplates;
 
 	private:
-		static void clear(std::string& code);
-
-		static void separateArguments(std::string& code);
-
-		static std::string insertVariables(std::span<const interfaces::CVariable> variables, std::string code);
-
-		static std::vector<ExecutionUnit> preExecute(std::string_view code);
+		static std::vector<ExecutionUnit> parse(std::string_view code, const json::JsonObject& sharedArguments, bool checks);
 
 		std::string execute(const std::vector<ExecutionUnit>& codes);
 

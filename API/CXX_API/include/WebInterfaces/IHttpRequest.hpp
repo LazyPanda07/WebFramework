@@ -47,9 +47,9 @@ namespace framework::interfaces
 	struct CVariable
 	{
 		const char* name;
-		const char* value;
+		void* value;
 
-		CVariable(const char* name = nullptr, const char* value = nullptr) :
+		CVariable(const char* name = nullptr, void* value = nullptr) :
 			name(name),
 			value(value)
 		{

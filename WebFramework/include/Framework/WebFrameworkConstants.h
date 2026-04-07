@@ -82,10 +82,6 @@ namespace exceptions
 
 	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
 
-	inline constexpr std::string_view variableDeclarationSyntaxError = "Wrong variable declaration";
-	inline constexpr std::string_view sectionDeclarationSyntaxError = "Wrong section declaration";
-	inline constexpr std::string_view missingSemicolonSyntaxError = "Missing semicolon";
-
 	inline constexpr std::string_view stringConversionErrorCode = "String conversion error code ";
 }
 
@@ -230,6 +226,17 @@ namespace framework::logging
 		inline constexpr char sslCertificateError[] = "Error while reading certificate from {}";
 		inline constexpr char sslCertificateChainError[] = "Error while reading certificate chain from {}";
 		inline constexpr char privateKeyError[] = "Error while reading private key from {}";
+		inline constexpr char variableDeclarationSyntaxError[] = "Wrong variable declaration";
+		inline constexpr char sectionDeclarationSyntaxError[] = "Wrong section declaration in {}";
+		inline constexpr char missingSemicolonSyntaxError[] = "Missing ';' in {}";
+		inline constexpr char missingOpenBracketSyntaxError[] = "Missing '(' in {}";
+		inline constexpr char missingCloseBracketSyntaxError[] = "Missing ')' in {}";
+		inline constexpr char defaultValueForTypeDoesNotSupported[] = "Default value for type {} doesn't supported";
+		inline constexpr char wrongDefaultValueForType[] = "Wrong default value {} for type {}";
+		inline constexpr char cantConvertDefaultValue[] = "Can't convert {} to {} type";
+		inline constexpr char outOfRangeDefaultValue[] = "Default value: {} is out of range for type: {}";
+		inline constexpr char cantFindArgument[] = "Can't find argument: {} for function: {}";
+		inline constexpr char notValidFunctionName[] = "Function name can start only with a-z, A-Z";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";
