@@ -7,13 +7,20 @@ namespace framework
 	class CCDynamicFunction : public DynamicFunction
 	{
 	private:
-		char* (*function)(const char**, size_t);
+		typedef struct json_object
+		{
+			void* implementation;
+			bool weak;
+		} json_object_t;
+
+	private:
+		char* (*function)(json_object_t);
 		void(*deleter)(char*);
 
 	public:
 		CCDynamicFunction(const void* data);
 
-		std::string operator ()(const std::vector<std::string>& arguments) const override;
+		std::string operator ()(const json::JsonObject& arguments) const override;
 
 		~CCDynamicFunction() = default;
 	};

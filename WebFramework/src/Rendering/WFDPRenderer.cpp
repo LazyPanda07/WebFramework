@@ -1,7 +1,7 @@
 #include "Rendering/WFDPRenderer.h"
 
-#include <Log.h>
 #include <PatternParser.h>
+#include <MapJsonIterator.h>
 
 #include "Exceptions/DynamicPagesSyntaxException.h"
 #include "WFDP/StandardWebFrameworkDynamicPagesFunctions.h"
@@ -206,7 +206,22 @@ namespace framework
 					Log::info<logging::message::callDynamicFunction, logging::category::dynamicFunction>(functionName);
 				}
 
-				// result += (*dynamicPagesFunctions.at(functionName))(arguments);
+				if (defaultArguments.size())
+				{
+					json::JsonObject temp(arguments);
+					json::MapJsonIterator it(defaultArguments);
+
+					for (const auto& [key, value] : it)
+					{
+						temp[key] = value;
+					}
+
+					result += (*dynamicPagesFunctions.at(functionName))(temp);
+				}
+				else
+				{
+					result += (*dynamicPagesFunctions.at(functionName))(arguments);
+				}
 			}
 			catch (const std::exception& e)
 			{

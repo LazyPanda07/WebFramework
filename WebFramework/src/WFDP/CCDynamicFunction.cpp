@@ -8,24 +8,21 @@ namespace framework
 	{
 		void** functions = reinterpret_cast<void**>(const_cast<void*>(data));
 
-		function = reinterpret_cast<char* (*)(const char**, size_t)>(functions[0]);
+		function = reinterpret_cast<char* (*)(json_object_t)>(functions[0]);
 		deleter = reinterpret_cast<void (*)(char*)>(functions[1]);
 	}
 
-	std::string CCDynamicFunction::operator()(const std::vector<std::string>& arguments) const
+	std::string CCDynamicFunction::operator()(const json::JsonObject& arguments) const
 	{
-		std::vector<const char*> pointers;
-		std::string result;
-
-		pointers.reserve(arguments.size());
-
-		for (const std::string& argument : arguments)
+		json_object_t object =
 		{
-			pointers.emplace_back(argument.data());
-		}
+			.implementation = &const_cast<json::JsonObject&>(arguments),
+			.weak = true
+		};
 
-		char* temp = function(pointers.data(), pointers.size());
-		result = temp;
+		char* temp = function(object);
+		
+		std::string result = temp;
 
 		deleter(temp);
 

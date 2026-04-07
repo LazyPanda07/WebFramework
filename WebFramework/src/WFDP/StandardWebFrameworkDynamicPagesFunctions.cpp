@@ -4,19 +4,18 @@
 #include <format>
 #include <sstream>
 
-#include <Exceptions/FileDoesNotExistException.h>
-
 #include "WFDP/CXXDynamicFunction.h"
+#include "Utility/Utils.h"
 
 class StandardFunction
 {
 protected:
-	static void callFunction(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+	static void callFunction(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
 
 public:
 	StandardFunction() = default;
 
-	virtual std::string call(const std::span<std::string_view>& arguments) = 0;
+	virtual std::string call(const json::JsonObject& arguments) = 0;
 
 	virtual ~StandardFunction() = default;
 };
@@ -30,7 +29,7 @@ public:
 	static std::unique_ptr<framework::DynamicFunction> create();
 
 public:
-	std::string call(const std::span<std::string_view>& arguments) override;
+	std::string call(const json::JsonObject& arguments) override;
 };
 
 class IncludeFunction : public StandardFunction
@@ -45,7 +44,7 @@ public:
 	static std::unique_ptr<framework::DynamicFunction> create(const std::filesystem::path& pathToTemplates);
 
 public:
-	std::string call(const std::span<std::string_view>& arguments) override;
+	std::string call(const json::JsonObject& arguments) override;
 };
 
 class ForFunction : public StandardFunction
@@ -60,7 +59,7 @@ public:
 	static std::unique_ptr<framework::DynamicFunction> create(const ::utility::strings::string_based_unordered_map<std::unique_ptr<framework::DynamicFunction>>& dynamicPagesFunctions);
 
 public:
-	std::string call(const std::span<std::string_view>& arguments) override;
+	std::string call(const json::JsonObject& arguments) override;
 };
 
 namespace framework
@@ -81,9 +80,9 @@ namespace framework
 	}
 }
 
-void StandardFunction::callFunction(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data))
+void StandardFunction::callFunction(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data))
 {
-	std::string result = static_cast<StandardFunction*>(dynamicFunction)->call(arguments);
+	std::string result = static_cast<StandardFunction*>(dynamicFunction)->call(*static_cast<const json::JsonObject*>(arguments));
 
 	callback(result.data(), result.size(), data);
 }
@@ -99,18 +98,9 @@ std::unique_ptr<framework::DynamicFunction> PrintFunction::create()
 	return std::make_unique<framework::CXXDynamicFunction>(&controller);
 }
 
-std::string PrintFunction::call(const std::span<std::string_view>& arguments)
+std::string PrintFunction::call(const json::JsonObject& arguments)
 {
-	std::string result;
-
-	for (std::string_view data : arguments)
-	{
-		result += std::format("{} ", data);
-	}
-
-	result.pop_back();
-
-	return result;
+	return static_cast<std::string>(arguments);
 }
 
 IncludeFunction::IncludeFunction(const std::filesystem::path& pathToTemplates) :
@@ -130,13 +120,13 @@ std::unique_ptr<framework::DynamicFunction> IncludeFunction::create(const std::f
 	return std::make_unique<framework::CXXDynamicFunction>(&controller);
 }
 
-std::string IncludeFunction::call(const std::span<std::string_view>& arguments)
+std::string IncludeFunction::call(const json::JsonObject& arguments)
 {
-	const std::filesystem::path filePath(pathToTemplates / arguments[0]);
+	const std::filesystem::path filePath(pathToTemplates / arguments["includePath"].get<std::string>());
 
 	if (!std::filesystem::exists(filePath))
 	{
-		throw file_manager::exceptions::FileDoesNotExistException(filePath);
+		framework::utility::logAndThrowException<framework::logging::message::cantFindAssetFromIncludePath, framework::logging::category::dynamicFunction>(filePath.string());
 	}
 
 	return (std::ostringstream() << std::ifstream(filePath).rdbuf()).str();
@@ -159,22 +149,28 @@ std::unique_ptr<framework::DynamicFunction> ForFunction::create(const ::utility:
 	return std::make_unique<framework::CXXDynamicFunction>(&controller);
 }
 
-std::string ForFunction::call(const std::span<std::string_view>& arguments)
+std::string ForFunction::call(const json::JsonObject& arguments)
 {
-	int64_t start = std::stoll(arguments[0].data());
-	int64_t end = std::stoll(arguments[1].data());
-	framework::DynamicFunction& repeatableFunction = *dynamicPagesFunctions.at(arguments[2].data());
+	const json::JsonObject& forField = arguments["for"].get<json::JsonObject>();
+
+	int64_t start = forField["start"].get<int64_t>();
+	int64_t end = forField["end"].get<int64_t>();
+	framework::DynamicFunction& repeatableFunction = *dynamicPagesFunctions.at(forField["functionName"].get<std::string>());
 	int64_t step = 1;
 	std::string result;
 
-	if (arguments.size() == 4)
+	if (forField.contains<int64_t>("step"))
 	{
-		step = std::stoll(arguments[3].data());
+		step = forField["step"].get<int64_t>();
 	}
 
 	for (int64_t i = start; i < end; i += step)
 	{
-		result += repeatableFunction({ std::to_string(i) });
+		json::JsonObject currentIndex;
+
+		currentIndex["currentIndex"] = i;
+
+		result += repeatableFunction(currentIndex);
 	}
 
 	return result;

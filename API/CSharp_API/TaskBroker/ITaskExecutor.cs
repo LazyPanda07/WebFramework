@@ -1,8 +1,8 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Text.Json;
 
 namespace Framework.TaskBroker;
 
 public interface ITaskExecutor
 {
-	public void Invoke(JsonObject arguments);
+	public void Invoke(JsonElement arguments);
 }

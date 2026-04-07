@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 public struct LargeData
@@ -443,7 +444,7 @@ public static partial class Utils
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CallInvoke")]
-	public static IntPtr CallInvoke(IntPtr dynamicFunction, IntPtr arguments, nuint size)
+	public static IntPtr CallInvoke(IntPtr dynamicFunction, IntPtr arguments)
 	{
 		GCHandle handle = GCHandle.FromIntPtr(dynamicFunction);
 
@@ -452,23 +453,21 @@ public static partial class Utils
 			return IntPtr.Zero;
 		}
 
-		List<string> listArguments = [];
+		IntPtr exception = IntPtr.Zero;
+		IntPtr stringData = jsonObjectToString(arguments, ref exception);
 
-		listArguments.EnsureCapacity((int)size);
-
-		unsafe
+		if (exception != IntPtr.Zero)
 		{
-			IntPtr* stringArguments = (IntPtr*)arguments;
-
-			for (int i = 0; i < (int)size; i++)
-			{
-				string? argument = Marshal.PtrToStringUTF8(stringArguments[i]) ?? throw new ArgumentNullException($"Can't convert argument to string at {i}");
-
-				listArguments.Add(argument);
-			}
+			// TODO: Throw exception
+			// throw new WebFrameworkException(exception);
 		}
 
-		string resultString = dynamicFunctionInstance.Invoke(listArguments);
+		string jsonData = Marshal.PtrToStringUTF8(getDataFromString(stringData))!;
+		JsonElement data = JsonElement.Parse(jsonData);
+
+		deleteWebFrameworkString(stringData);
+
+		string resultString = dynamicFunctionInstance.Invoke(data);
 		byte[] resultBytes = Encoding.UTF8.GetBytes(resultString + '\0');
 		IntPtr result = Marshal.AllocHGlobal(resultBytes.Length);
 
@@ -536,7 +535,7 @@ public static partial class Utils
 		}
 
 		string jsonData = Marshal.PtrToStringUTF8(getDataFromString(stringData))!;
-		JsonObject data = JsonNode.Parse(jsonData)!.AsObject();
+		JsonElement data = JsonElement.Parse(jsonData);
 
 		deleteWebFrameworkString(stringData);
 

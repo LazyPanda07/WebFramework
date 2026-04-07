@@ -237,6 +237,7 @@ namespace framework::logging
 		inline constexpr char outOfRangeDefaultValue[] = "Default value: {} is out of range for type: {}";
 		inline constexpr char cantFindArgument[] = "Can't find argument: {} for function: {}";
 		inline constexpr char notValidFunctionName[] = "Function name can start only with a-z, A-Z";
+		inline constexpr char cantFindAssetFromIncludePath[] = "Can't find asset: {} from 'includePath' string field in include function";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";

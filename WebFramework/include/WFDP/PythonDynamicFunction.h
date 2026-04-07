@@ -16,7 +16,7 @@ namespace framework
 	public:
 		PythonDynamicFunction(void* cls);
 
-		std::string operator ()(const std::vector<std::string>& arguments) const override;
+		std::string operator ()(const json::JsonObject& arguments) const override;
 
 		~PythonDynamicFunction() = default;
 	};

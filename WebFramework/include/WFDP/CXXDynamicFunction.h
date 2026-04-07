@@ -14,7 +14,7 @@ namespace framework
 		struct DynamicFunctionController
 		{
 			void* dynamicFunction;
-			void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+			void (*callFunction)(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
 			void (*deleter)(void* implementation);
 
 			DynamicFunctionController();
@@ -22,13 +22,13 @@ namespace framework
 
 	private:
 		void* implementation;
-		void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+		void (*callFunction)(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
 		void (*deleter)(void* implementation);
 
 	public:
 		CXXDynamicFunction(const void* data);
 
-		std::string operator ()(const std::vector<std::string>& arguments) const override;
+		std::string operator ()(const json::JsonObject& arguments) const override;
 
 		~CXXDynamicFunction();
 	};

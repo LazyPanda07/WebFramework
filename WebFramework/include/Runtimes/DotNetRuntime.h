@@ -30,7 +30,7 @@ namespace framework::runtime
 		using HasExecutorSignature = bool(*)(const char* executorName);
 		using HasTaskExecutorSignature = bool(*)(const char* executorName);
 		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
-		using CallDynamicFunctionSignature = char* (*)(void* dynamicFunction, const char** arguments, size_t size);
+		using CallDynamicFunctionSignature = char* (*)(void* dynamicFunction, const void* arguments);
 		using FreeSignature = void(*)(void* implementation);
 		using InitSignature = void(*)(void* executor, void* implementation);
 		using CreateExecutorSignature = void* (*)(const char* executorName);

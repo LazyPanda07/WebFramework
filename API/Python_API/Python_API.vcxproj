@@ -108,12 +108,23 @@ cd $(ProjectDir)build &amp;&amp; cmake -DCMAKE_INSTALL_PREFIX=$(OutDir)..\WebFra
     <ClCompile Include="src\Executors\PyHeavyOperationStatelessExecutor.cpp" />
     <ClCompile Include="src\Executors\PyStatefulExecutor.cpp" />
     <ClCompile Include="src\Executors\PyStatelessExecutor.cpp" />
+    <ClCompile Include="src\LoadBalancer\PyLoadBalancerHeuristic.cpp" />
     <ClCompile Include="src\module.cpp" />
     <ClCompile Include="src\PyChunkGenerator.cpp" />
     <ClCompile Include="src\PyDynamicFunction.cpp" />
     <ClCompile Include="src\PyLoadBalancerHeuristic.cpp" />
     <ClCompile Include="src\PyTaskExecutor.cpp" />
     <ClCompile Include="src\PyTaskSerializer.cpp" />
+    <ClCompile Include="src\Registrars\ExecutorRegistrar.cpp" />
+    <ClCompile Include="src\Registrars\HttpRequestRegistrar.cpp" />
+    <ClCompile Include="src\Registrars\HttpResponseRegistrar.cpp" />
+    <ClCompile Include="src\Registrars\LoadBalancerRegistrar.cpp" />
+    <ClCompile Include="src\Registrars\SqlRegistrar.cpp" />
+    <ClCompile Include="src\Registrars\TaskBrokerRegistrar.cpp" />
+    <ClCompile Include="src\Registrars\WebFrameworkApiRegistrar.cpp" />
+    <ClCompile Include="src\Registrars\WebFrameworkUtilityRegistrar.cpp" />
+    <ClCompile Include="src\TaskBroker\PyTaskExecutor.cpp" />
+    <ClCompile Include="src\TaskBroker\PyTaskSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Executors\PyHeavyOperationStatefulExecutor.h" />

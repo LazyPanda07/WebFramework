@@ -22,7 +22,7 @@ namespace framework
 		deleter = controller->deleter;
 	}
 
-	std::string CXXDynamicFunction::operator()(const std::vector<std::string>& arguments) const
+	std::string CXXDynamicFunction::operator()(const json::JsonObject& arguments) const
 	{
 		auto getResult = [](const char* result, size_t size, void* data)
 			{
@@ -30,16 +30,8 @@ namespace framework
 			};
 
 		std::string result;
-		std::vector<std::string_view> views;
-
-		views.reserve(arguments.size());
-
-		for (const std::string& argument : arguments)
-		{
-			views.emplace_back(argument);
-		}
-
-		callFunction(implementation, views, &result, getResult);
+		
+		callFunction(implementation, &arguments, &result, getResult);
 
 		return result;
 	}

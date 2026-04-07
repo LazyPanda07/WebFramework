@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-#include <vector>
+
+#include <JsonObject.h>
 
 namespace framework
 {
@@ -10,7 +11,7 @@ namespace framework
 	public:
 		DynamicFunction() = default;
 
-		virtual std::string operator ()(const std::vector<std::string>& arguments) const = 0;
+		virtual std::string operator ()(const json::JsonObject& arguments) const = 0;
 
 		virtual ~DynamicFunction() = default;
 	};

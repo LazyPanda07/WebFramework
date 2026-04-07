@@ -1,6 +1,8 @@
-﻿namespace Framework;
+﻿using System.Text.Json;
+
+namespace Framework;
 
 public interface IDynamicFunction
 {
-	public string Invoke(List<string> arguments);
+	public string Invoke(JsonElement arguments);
 }

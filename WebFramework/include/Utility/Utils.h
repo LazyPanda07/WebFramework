@@ -22,7 +22,7 @@ namespace framework::utility
 	{
 		if (Log::isValid())
 		{
-			Log::error<Format, Category>(std::forward<Args>(args)...);
+			Log::error<Format, Category>(args...);
 		}
 
 		throw std::runtime_error(std::format(Format, std::forward<Args>(args)...));
