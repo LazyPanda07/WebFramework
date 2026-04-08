@@ -7,6 +7,7 @@ using Framework.Utility;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 public sealed unsafe partial class HttpRequest(nint implementation)
 {
@@ -45,12 +46,6 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		IntPtr data,
 		IntPtr size
 	);
-
-	internal struct DynamicPagesVariable
-	{
-		public IntPtr name;
-		public IntPtr value;
-	}
 
 	internal struct InternalLargeData()
 	{
@@ -140,7 +135,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial void processStaticFile(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
+	private static partial void processDynamicFile(IntPtr implementation, byte[] fileData, nuint size, IntPtr arguments, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void getHeaders(IntPtr implementation, InitBufferCallback initHeadersBuffer, AddKeyValueParameters addHeader, IntPtr buffer, ref IntPtr exception);
@@ -155,13 +150,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
+	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, IntPtr arguments, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, [In] DynamicPagesVariable[] variables, nuint variablesSize, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
+	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, IntPtr arguments, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref IntPtr exception);
@@ -201,6 +196,9 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr createJsonParserFromString(string jsonData, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr createJsonParser(IntPtr jsonParserToCopy, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getJsonParserParsedData(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool weak, ref IntPtr exception);
@@ -734,28 +732,38 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// Process dynamic files such as .wfdp
 	/// </summary>
 	/// <param name="fileData"></param>
-	/// <param name="variables"></param>
+	/// <param name="arguments"></param>
 	/// <returns></returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public byte[] ProcessDynamicFile(byte[] fileData, IDictionary<string, string>? variables = null)
+	public byte[] ProcessDynamicFile(byte[] fileData, JsonObject? arguments = null)
 	{
 		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
-		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
+		IntPtr jsonParser = IntPtr.Zero;
+		IntPtr jsonObjectData = IntPtr.Zero;
 
-		if (variables != null)
+		if (arguments != null)
 		{
-			int index = 0;
+			jsonParser = createJsonParserFromString(arguments.ToJsonString(), ref exception);
+		}
+		else
+		{
+			jsonParser = createJsonParser(IntPtr.Zero, ref exception);
+		}
 
-			foreach (var (key, value) in variables)
-			{
-				cvariables[index++] = new DynamicPagesVariable
-				{
-					name = AllocateString(key),
-					value = AllocateString(value)
-				};
-			}
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		jsonObjectData = getJsonParserParsedData(jsonParser, true, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
 		}
 
 		processDynamicFile
@@ -763,8 +771,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			implementation,
 			fileData,
 			(nuint)fileData.Length,
-			cvariables,
-			(nuint)cvariables.Length,
+			jsonObjectData,
 			ReadFileDataCallback,
 			GCHandle.ToIntPtr(handle),
 			ref exception
@@ -772,11 +779,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		handle.Free();
 
-		foreach (DynamicPagesVariable variable in cvariables)
-		{
-			Marshal.FreeHGlobal(variable.name);
-			Marshal.FreeHGlobal(variable.value);
-		}
+		deleteWebFrameworkJsonParser(jsonParser);
 
 		if (exception != IntPtr.Zero)
 		{
@@ -956,27 +959,37 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// </summary>
 	/// <param name="filePath"></param>
 	/// <param name="response"></param>
-	/// <param name="variables"></param>
+	/// <param name="arguments"></param>
 	/// <param name="isBinary"></param>
 	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void SendAssetFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
+	public void SendAssetFile(string filePath, HttpResponse response, JsonObject? arguments = null, bool? isBinary = null, string? fileName = null)
 	{
 		IntPtr exception = IntPtr.Zero;
-		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
+		IntPtr jsonParser = IntPtr.Zero;
+		IntPtr jsonObjectData = IntPtr.Zero;
 
-		if (variables != null)
+		if (arguments != null)
 		{
-			int index = 0;
+			jsonParser = createJsonParserFromString(arguments.ToJsonString(), ref exception);
+		}
+		else
+		{
+			jsonParser = createJsonParser(IntPtr.Zero, ref exception);
+		}
 
-			foreach (var (key, value) in variables)
-			{
-				cvariables[index++] = new DynamicPagesVariable
-				{
-					name = AllocateString(key),
-					value = AllocateString(value)
-				};
-			}
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		jsonObjectData = getJsonParserParsedData(jsonParser, true, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
 		}
 
 		sendAssetFile
@@ -984,18 +997,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			implementation,
 			filePath,
 			response.implementation,
-			cvariables,
-			(nuint)cvariables.Length,
+			jsonObjectData,
 			(bool)(isBinary == null ? true : isBinary),
 			fileName ?? "",
 			ref exception
 		);
 
-		foreach (DynamicPagesVariable variable in cvariables)
-		{
-			Marshal.FreeHGlobal(variable.name);
-			Marshal.FreeHGlobal(variable.value);
-		}
+		deleteWebFrameworkJsonParser(jsonParser);
 
 		if (exception != IntPtr.Zero)
 		{
@@ -1036,27 +1044,37 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// </summary>
 	/// <param name="filePath"></param>
 	/// <param name="response"></param>
-	/// <param name="variables"></param>
+	/// <param name="arguments"></param>
 	/// <param name="isBinary"></param>
 	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void SendDynamicFile(string filePath, HttpResponse response, IDictionary<string, string>? variables = null, bool? isBinary = null, string? fileName = null)
+	public void SendDynamicFile(string filePath, HttpResponse response, JsonObject? arguments = null, bool? isBinary = null, string? fileName = null)
 	{
 		IntPtr exception = IntPtr.Zero;
-		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
+		IntPtr jsonParser = IntPtr.Zero;
+		IntPtr jsonObjectData = IntPtr.Zero;
 
-		if (variables != null)
+		if (arguments != null)
 		{
-			int index = 0;
+			jsonParser = createJsonParserFromString(arguments.ToJsonString(), ref exception);
+		}
+		else
+		{
+			jsonParser = createJsonParser(IntPtr.Zero, ref exception);
+		}
 
-			foreach (var (key, value) in variables)
-			{
-				cvariables[index++] = new DynamicPagesVariable
-				{
-					name = AllocateString(key),
-					value = AllocateString(value)
-				};
-			}
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		jsonObjectData = getJsonParserParsedData(jsonParser, true, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
 		}
 
 		sendDynamicFile
@@ -1064,18 +1082,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			implementation,
 			filePath,
 			response.implementation,
-			cvariables,
-			(nuint)cvariables.Length,
+			jsonObjectData,
 			(bool)(isBinary == null ? true : isBinary),
 			(fileName ?? ""),
 			ref exception
 		);
 
-		foreach (DynamicPagesVariable variable in cvariables)
-		{
-			Marshal.FreeHGlobal(variable.name);
-			Marshal.FreeHGlobal(variable.value);
-		}
+		deleteWebFrameworkJsonParser(jsonParser);
 
 		if (exception != IntPtr.Zero)
 		{

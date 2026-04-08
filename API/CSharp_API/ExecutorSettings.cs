@@ -7,6 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using static Framework.HttpRequest;
 
 public sealed partial class ExecutorSettings(IntPtr implementation)
@@ -58,7 +59,7 @@ public sealed partial class ExecutorSettings(IntPtr implementation)
 	private static partial void processStaticFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, string fileExtension, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void processDynamicFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, [In] DynamicPagesVariable[] variables, nuint variablesSize, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
+	private static partial void processDynamicFileExecutorSettings(IntPtr implementation, byte[] fileData, nuint size, IntPtr arguments, FillBufferCallback fillBuffer, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getDataFromString(IntPtr implementation);
@@ -89,6 +90,18 @@ public sealed partial class ExecutorSettings(IntPtr implementation)
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getTableExecutorSettings(IntPtr implementation, string databaseName, string implementationName, string tableName, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr createJsonParserFromString(string jsonData, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr createJsonParser(IntPtr jsonParserToCopy, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void deleteWebFrameworkJsonParser(IntPtr implementation);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getJsonParserParsedData(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool weak, ref IntPtr exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -252,28 +265,38 @@ public sealed partial class ExecutorSettings(IntPtr implementation)
 	/// Process dynamic files such as .wfdp
 	/// </summary>
 	/// <param name="fileData"></param>
-	/// <param name="variables"></param>
+	/// <param name="arguments"></param>
 	/// <returns></returns>
 	/// <exception cref="WebFrameworkException"></exception>
-	public byte[] ProcessDynamicFile(byte[] fileData, IDictionary<string, string>? variables = null)
+	public byte[] ProcessDynamicFile(byte[] fileData, JsonObject? arguments = null)
 	{
 		IntPtr exception = IntPtr.Zero;
 		List<byte> result = [];
 		GCHandle handle = GCHandle.Alloc(result);
-		DynamicPagesVariable[] cvariables = new DynamicPagesVariable[variables == null ? 0 : variables.Count];
+		IntPtr jsonParser = IntPtr.Zero;
+		IntPtr jsonObjectData = IntPtr.Zero;
 
-		if (variables != null)
+		if (arguments != null)
 		{
-			int index = 0;
+			jsonParser = createJsonParserFromString(arguments.ToJsonString(), ref exception);
+		}
+		else
+		{
+			jsonParser = createJsonParser(IntPtr.Zero, ref exception);
+		}
 
-			foreach (var (key, value) in variables)
-			{
-				cvariables[index++] = new DynamicPagesVariable
-				{
-					name = AllocateString(key),
-					value = AllocateString(value)
-				};
-			}
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		jsonObjectData = getJsonParserParsedData(jsonParser, true, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
 		}
 
 		processDynamicFileExecutorSettings
@@ -281,8 +304,7 @@ public sealed partial class ExecutorSettings(IntPtr implementation)
 			implementation,
 			fileData,
 			(nuint)fileData.Length,
-			cvariables,
-			(nuint)cvariables.Length,
+			jsonObjectData,
 			ReadFileDataCallback,
 			GCHandle.ToIntPtr(handle),
 			ref exception
@@ -290,11 +312,7 @@ public sealed partial class ExecutorSettings(IntPtr implementation)
 
 		handle.Free();
 
-		foreach (DynamicPagesVariable variable in cvariables)
-		{
-			Marshal.FreeHGlobal(variable.name);
-			Marshal.FreeHGlobal(variable.value);
-		}
+		deleteWebFrameworkJsonParser(jsonParser);
 
 		if (exception != IntPtr.Zero)
 		{
