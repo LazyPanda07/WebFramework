@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 #include <pybind11/pybind11.h>
 
@@ -12,7 +11,7 @@ namespace framework
 	public:
 		IDynamicFunction() = default;
 
-		virtual std::string operator ()(pybind11::args args) const = 0;
+		virtual std::string operator ()(pybind11::dict arguments) const = 0;
 
 		virtual ~IDynamicFunction() = default;
 	};
@@ -25,7 +24,7 @@ namespace framework
 	public:
 		PyDynamicFunction() = default;
 
-		std::string operator ()(pybind11::args args) const override;
+		std::string operator ()(pybind11::dict arguments) const override;
 
 		~PyDynamicFunction() = default;
 	};

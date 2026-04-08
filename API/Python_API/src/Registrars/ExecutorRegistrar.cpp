@@ -156,7 +156,18 @@ namespace registrar
 			.def("is_dynamic_function_registered", &framework::utility::ExecutorSettings::isDynamicFunctionRegistered, "function_name"_a)
 			.def("get_file", &framework::utility::ExecutorSettings::getFile, "file_path"_a)
 			.def("process_static_file", &framework::utility::ExecutorSettings::processStaticFile, "file_data"_a, "file_extension"_a)
-			.def("process_dynamic_file", &framework::utility::ExecutorSettings::processDynamicFile, "file_data"_a, "variables"_a)
+			.def
+			(
+				"process_dynamic_file",
+				[](const framework::utility::ExecutorSettings& self, std::string_view fileData, py::dict arguments)
+				{
+					py::module_ json = py::module_::import("json");
+					framework::JsonParser parser(json.attr("dumps")(arguments).cast<std::string>());
+					
+					self.processDynamicFile(fileData, parser.getParsedData());
+				},
+				"file_data"_a, "arguments"_a
+			)
 			.def
 			(
 				"get_or_create_database",

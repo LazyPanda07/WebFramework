@@ -45,7 +45,22 @@ namespace registrar
 			.def("get_large_data", &framework::HttpRequest::getLargeData)
 			.def
 			(
-				"send_asset_file", &framework::HttpRequest::sendAssetFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a, "file_name"_a = "",
+				"send_asset_file",
+				[](framework::HttpRequest& self, std::string_view filePath, framework::HttpResponse& response, py::dict arguments, bool isBinary, std::string_view fileName)
+				{
+					if (arguments.size())
+					{
+						py::module_ json = py::module_::import("json");
+						framework::JsonParser parser(json.attr("dumps")(arguments).cast<std::string>());
+
+						self.sendAssetFile(filePath, response, parser.getParsedData(), isBinary, fileName);
+					}
+					else
+					{
+						self.sendAssetFile(filePath, response, {}, isBinary, fileName);
+					}
+				},
+				"file_path"_a, "response"_a, "arguments"_a = py::dict(), "is_binary"_a = true, "file_name"_a = "",
 				R"pbdoc(
 Parameters
 ----------
@@ -63,7 +78,15 @@ file_name : str
 			)
 			.def
 			(
-				"send_dynamic_file", &framework::HttpRequest::sendDynamicFile, "file_path"_a, "response"_a, "variables"_a, "is_binary"_a = false, "file_name"_a = "",
+				"send_dynamic_file", 
+				[](framework::HttpRequest& self, std::string_view filePath, framework::HttpResponse& response, py::dict arguments, bool isBinary, std::string_view fileName)
+				{
+					py::module_ json = py::module_::import("json");
+					framework::JsonParser parser(json.attr("dumps")(arguments).cast<std::string>());
+
+					self.sendDynamicFile(filePath, response, parser.getParsedData(), isBinary, fileName);
+				},
+				"file_path"_a, "response"_a, "arguments"_a, "is_binary"_a = false, "file_name"_a = "",
 				R"pbdoc(
 Parameters
 ----------
@@ -91,7 +114,18 @@ file_name : str
 			.def("is_dynamic_function_registered", &framework::HttpRequest::isDynamicFunctionRegistered, "function_name"_a)
 			.def("get_file", &framework::HttpRequest::getFile, "file_path"_a)
 			.def("process_static_file", &framework::HttpRequest::processStaticFile, "file_data"_a, "file_extension"_a)
-			.def("process_dynamic_file", &framework::HttpRequest::processDynamicFile, "file_data"_a, "variables"_a)
+			.def
+			(
+				"process_dynamic_file",
+				[](framework::HttpRequest& request, std::string_view fileData, py::dict arguments)
+				{
+					py::module_ json = py::module_::import("json");
+					framework::JsonParser parser(json.attr("dumps")(arguments).cast<std::string>());
+
+					return request.processDynamicFile(fileData, parser.getParsedData());
+				},
+				"file_data"_a, "arguments"_a
+			)
 			.def
 			(
 				"get_json",
