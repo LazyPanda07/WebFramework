@@ -45,15 +45,6 @@ typedef struct cookie
 } cookie_t;
 
 /**
- * @brief Variable for processing .wfdp files
- */
-typedef struct dynamic_pages_variable
-{
-	const char* name;
-	const char* value;
-} dynamic_pages_variable_t;
-
-/**
  * @brief Data part if file passes large files threshold
  */
 typedef struct large_data
@@ -205,13 +196,12 @@ web_framework_exception_t wf_get_large_data(http_request_t implementation, const
  * @param implementation http_request_t instance
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
- * @param variables Variables for processing if file is .wfdp
- * @param variablesSize Size of variables
+ * @param arguments Arguments for processing if file is .wfdp
  * @param isBinary Is binary file
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, bool is_binary, const char* file_name);
 
 /**
  * @brief Send static file
@@ -229,13 +219,12 @@ web_framework_exception_t wf_send_static_file(http_request_t implementation, con
  * @param implementation http_request_t instance
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
- * @param variables Variables for processing .wfdp file
- * @param variablesSize Size of variables
+ * @param arguments Arguments for processing .wfdp file
  * @param isBinary Is binary file
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, bool is_binary, const char* file_name);
 
 /**
  * @brief Send file with specific chunk size
@@ -256,7 +245,7 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
  * @param deleter Deleter for values from function
  * @return
  */
-web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, char* (*function)(const json_object_t arguments), void(*deleter)(char* result));
 
 /**
  * @brief Unregister function for processing .wfdp files
@@ -318,13 +307,12 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
  * @brief Process .wfdp files
  * @param implementation http_request_t instance
  * @param fileData WFDP file content
- * @param variables Variables for processing .wfdp file
- * @param variablesSize Size of variables
+ * @param arguments Arguments for processing .wfdp file
  * @param result Processed data
  * @param resultSize Processed data size
  * @return
  */
-web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, char** result, size_t* result_size);
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const json_object_t* arguments, char** result, size_t* result_size);
 
 /**
  * @brief Get raw HTTP request

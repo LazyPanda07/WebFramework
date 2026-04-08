@@ -57,7 +57,7 @@ static void __fill_user_agent_filter(const char* value, size_t index, void* buff
 	memcpy(*ptr, value, strlen(value));
 }
 
-web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
+web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, char* (*function)(const json_object_t arguments), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
 	struct { void* function; void* deleter; } data =
@@ -121,15 +121,15 @@ web_framework_exception_t wf_process_static_file_executor_settings(executor_sett
 	return exception;
 }
 
-web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size)
+web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const json_object_t* arguments, const char** result, size_t* result_size)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*processDynamicFileExecutorSettings)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+	typedef void (*processDynamicFileExecutorSettings)(void* implementation, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
 	file_buffer_t buffer = { .data = result, .size = result_size };
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, file_data, size, variables, variables_size, __fill_file_buffer, &buffer, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, file_data, size, arguments->implementation, __fill_file_buffer, &buffer, &exception);
 
 	return exception;
 }
