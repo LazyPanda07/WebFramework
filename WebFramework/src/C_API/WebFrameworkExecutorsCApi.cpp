@@ -544,11 +544,11 @@ void processStaticFile(HttpRequestObject request, const char* fileData, size_t s
 	}
 }
 
-void processDynamicFile(HttpRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void processDynamicFile(HttpRequestObject request, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->processDynamicFile(fileData, size, static_cast<framework::interfaces::CVariable*>(variables), variablesSize, fillBuffer, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->processDynamicFile(fileData, size, arguments, fillBuffer, buffer);
 	}
 	catch (const std::exception& e)
 	{
@@ -644,7 +644,7 @@ void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size,
 	}
 }
 
-void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -652,8 +652,7 @@ void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponse
 		(
 			filePath,
 			static_cast<framework::interfaces::IHttpResponse*>(response),
-			variableSize,
-			static_cast<framework::interfaces::CVariable*>(variables),
+			arguments,
 			isBinary,
 			fileName
 		);
@@ -684,7 +683,7 @@ void sendStaticFile(HttpRequestObject request, const char* filePath, HttpRespons
 	}
 }
 
-void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, bool isBinary, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -692,8 +691,7 @@ void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpRespon
 		(
 			filePath,
 			static_cast<framework::interfaces::IHttpResponse*>(response),
-			variableSize,
-			static_cast<framework::interfaces::CVariable*>(variables),
+			arguments,
 			isBinary,
 			fileName
 		);
@@ -1209,7 +1207,7 @@ void processStaticFileExecutorSettings(ExecutorSettings executorsSettings, const
 	}
 }
 
-void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
@@ -1217,7 +1215,7 @@ void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, cons
 		
 		std::string result(fileData, size);
 
-		resources->processDynamicFile(result, std::span<const framework::interfaces::CVariable>(static_cast<framework::interfaces::CVariable*>(variables), variablesSize));
+		resources->processDynamicFile(result, arguments);
 
 		fillBuffer(result.data(), result.size(), buffer);
 	}

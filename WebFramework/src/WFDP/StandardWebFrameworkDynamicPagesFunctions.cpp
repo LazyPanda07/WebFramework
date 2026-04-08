@@ -100,7 +100,7 @@ std::unique_ptr<framework::DynamicFunction> PrintFunction::create()
 
 std::string PrintFunction::call(const json::JsonObject& arguments)
 {
-	return static_cast<std::string>(arguments);
+	return static_cast<std::string>(arguments["@print"]);
 }
 
 IncludeFunction::IncludeFunction(const std::filesystem::path& pathToTemplates) :
@@ -122,7 +122,7 @@ std::unique_ptr<framework::DynamicFunction> IncludeFunction::create(const std::f
 
 std::string IncludeFunction::call(const json::JsonObject& arguments)
 {
-	const std::filesystem::path filePath(pathToTemplates / arguments["includePath"].get<std::string>());
+	const std::filesystem::path filePath(pathToTemplates / arguments["@include"]["includePath"].get<std::string>());
 
 	if (!std::filesystem::exists(filePath))
 	{
@@ -151,7 +151,7 @@ std::unique_ptr<framework::DynamicFunction> ForFunction::create(const ::utility:
 
 std::string ForFunction::call(const json::JsonObject& arguments)
 {
-	const json::JsonObject& forField = arguments["for"].get<json::JsonObject>();
+	const json::JsonObject& forField = arguments["@for"].get<json::JsonObject>();
 
 	int64_t start = forField["start"].get<int64_t>();
 	int64_t end = forField["end"].get<int64_t>();

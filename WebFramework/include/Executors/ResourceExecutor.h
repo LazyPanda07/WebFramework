@@ -91,15 +91,9 @@ namespace framework
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		void sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary = true, std::string_view fileName = "") override;
 
-		/// <summary>
-		/// Override from IDynamicFile interface
-		/// </summary>
-		/// <param name="filePath">path to file from assets folder</param>
-		/// <param name="response">used for sending file</param>
-		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary = true, std::string_view fileName = "") override;
+		void sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, const void* arguments, bool isBinary = true, std::string_view fileName = "") override;
 
-		void processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables) override;
+		void processDynamicFile(std::string& data, const void* arguments) override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function

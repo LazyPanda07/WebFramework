@@ -44,19 +44,6 @@ namespace framework::interfaces
 		}
 	};
 
-	struct CVariable
-	{
-		const char* name;
-		void* value;
-
-		CVariable(const char* name = nullptr, void* value = nullptr) :
-			name(name),
-			value(value)
-		{
-
-		}
-	};
-
 	struct CExceptionData
 	{
 	public:
@@ -119,11 +106,11 @@ namespace framework::interfaces
 
 		virtual const CLargeData* getLargeData() const = 0;
 
-		virtual void sendAssetFile(const char* filePath, IHttpResponse* response, size_t variablesSize = 0, const CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") = 0;
+		virtual void sendAssetFile(const char* filePath, IHttpResponse* response, const void* arguments = nullptr, bool isBinary = true, const char* fileName = "") = 0;
 
 		virtual void sendStaticFile(const char* filePath, IHttpResponse* response, bool isBinary = true, const char* fileName = "") = 0;
 
-		virtual void sendDynamicFile(const char* filePath, IHttpResponse* response, size_t variablesSize, const CVariable* variables, bool isBinary = false, const char* fileName = "") = 0;
+		virtual void sendDynamicFile(const char* filePath, IHttpResponse* response, const void* arguments, bool isBinary = false, const char* fileName = "") = 0;
 
 		virtual void streamFile(const char* filePath, IHttpResponse* response, const char* fileName, size_t chunkSize = IHttpRequest::defaultChunkSize) = 0;
 
@@ -143,7 +130,7 @@ namespace framework::interfaces
 
 		virtual void processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
 
-		virtual void processDynamicFile(const char* fileData, size_t size, const CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
+		virtual void processDynamicFile(const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) = 0;
 
 		virtual void enqueueTask(const char* messageBrokerName, void* jsonObjectData) = 0;
 

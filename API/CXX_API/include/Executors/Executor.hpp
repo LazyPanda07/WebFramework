@@ -75,7 +75,7 @@ namespace framework
 
 			std::string processStaticFile(std::string_view fileData, std::string_view fileExtension) const;
 
-			std::string processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, JsonObject>& variables) const;
+			std::string processDynamicFile(std::string_view fileData, const JsonObject& arguments) const;
 
 			/**
 			 * @brief Get Json structed values from initParameters section from settings file
@@ -266,22 +266,14 @@ namespace framework
 			return result;
 		}
 
-		inline std::string ExecutorSettings::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, JsonObject>& variables) const
+		inline std::string ExecutorSettings::processDynamicFile(std::string_view fileData, const JsonObject& arguments) const
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(processDynamicFileExecutorSettings, void, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+			DEFINE_CLASS_MEMBER_FUNCTION(processDynamicFileExecutorSettings, void, const char* fileData, size_t size, const void* variables, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 			
 			void* exception = nullptr;
-			std::vector<interfaces::CVariable> temp;
 			std::string result;
 
-			temp.reserve(variables.size());
-
-			for (const auto& [key, value] : variables)
-			{
-				temp.emplace_back(key.data(), value.implementation);
-			}
-
-			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, fileData.data(), fileData.size(), temp.data(), temp.size(), &ExecutorSettings::fillBuffer, &result, &exception);
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, fileData.data(), fileData.size(), arguments.implementation, &ExecutorSettings::fillBuffer, &result, &exception);
 
 			return result;
 		}

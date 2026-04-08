@@ -321,10 +321,10 @@ namespace framework
 		return &largeData;
 	}
 
-	void HttpRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, bool isBinary, const char* fileName)
 	{
 		HttpRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
-			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
+			this->sendDynamicFile(filePath, response, arguments, isBinary, fileName) :
 			this->sendStaticFile(filePath, response, isBinary, fileName);
 	}
 
@@ -333,9 +333,9 @@ namespace framework
 		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
 	}
 
-	void HttpRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, bool isBinary, const char* fileName)
 	{
-		dynamicResources.sendDynamicFile(filePath, *response, std::span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
+		dynamicResources.sendDynamicFile(filePath, *response, arguments, isBinary, fileName);
 	}
 
 	void HttpRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)
@@ -511,11 +511,11 @@ namespace framework
 		fillBuffer(result.data(), result.size(), buffer);
 	}
 
-	void HttpRequestImplementation::processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	void HttpRequestImplementation::processDynamicFile(const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
 	{
 		std::string result(fileData, size);
 
-		dynamicResources.processDynamicFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
+		dynamicResources.processDynamicFile(result, arguments);
 
 		fillBuffer(result.data(), result.size(), buffer);
 	}

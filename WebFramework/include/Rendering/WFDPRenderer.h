@@ -37,7 +37,7 @@ namespace framework
 	public:
 		WFDPRenderer(const std::filesystem::path& pathToTemplates);
 
-		void run(std::span<const interfaces::CVariable> variables, std::string& source);
+		void run(const void* arguments, std::string& source);
 
 		void registerDynamicFunction(std::string_view functionName, std::unique_ptr<DynamicFunction>&& dynamicFunction);
 

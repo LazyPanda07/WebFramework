@@ -262,7 +262,7 @@ namespace framework
 		response.setBody(result.data(), result.size());
 	}
 
-	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, const void* arguments, bool isBinary, std::string_view fileName)
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
@@ -295,7 +295,7 @@ namespace framework
 			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
 		}
 
-		wfdpRenderer.run(variables, result);
+		wfdpRenderer.run(arguments, result);
 
 		if (fileName.size())
 		{
@@ -305,9 +305,9 @@ namespace framework
 		response.setBody(result.data(), result.size());
 	}
 
-	void ResourceExecutor::processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables)
+	void ResourceExecutor::processDynamicFile(std::string& data, const void* arguments)
 	{
-		wfdpRenderer.run(variables, data);
+		wfdpRenderer.run(arguments, data);
 	}
 
 	void ResourceExecutor::registerDynamicFunction(std::string_view functionName, std::string_view apiType, const std::any& function)

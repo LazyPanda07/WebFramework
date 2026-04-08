@@ -238,6 +238,8 @@ namespace framework::logging
 		inline constexpr char cantFindArgument[] = "Can't find argument: {} for function: {}";
 		inline constexpr char notValidFunctionName[] = "Function name can start only with a-z, A-Z";
 		inline constexpr char cantFindAssetFromIncludePath[] = "Can't find asset: {} from 'includePath' string field in include function";
+		inline constexpr char wrongType[] = "Wrong type: {} in function: {}";
+		inline constexpr char cantFindFunctionField[] = "Can't find @{} field for function {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";

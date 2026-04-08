@@ -182,7 +182,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize = 0, const interfaces::CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") override;
+		void sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments = nullptr, bool isBinary = true, const char* fileName = "") override;
 
 		/**
 		* Send non dynamic file
@@ -199,7 +199,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary = false, const char* fileName = "") override;
+		void sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, bool isBinary = false, const char* fileName = "") override;
 
 		/**
 		* Send large files
@@ -234,7 +234,7 @@ namespace framework
 
 		void processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
 
-		void processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
+		void processDynamicFile(const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
 
 		void enqueueTask(const char* messageBrokerName, void* jsonObjectData) override;
 

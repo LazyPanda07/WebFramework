@@ -81,7 +81,7 @@ namespace framework
 				std::string(line.begin() + getOffset(line), line.begin() + openBracket),
 				sharedArguments
 			);
-
+			std::string functionFieldName = "@" + executionUnit.functionName;
 			size_t argumentOffset = openBracket + 1;
 
 			if (line[argumentOffset] != ')')
@@ -104,7 +104,7 @@ namespace framework
 						argumentParser.parse(argument, name, type);
 					}
 
-					if (defaultValue.size())
+					if (defaultValue.size() || type == "null")
 					{
 						json::JsonObject value;
 
@@ -139,6 +139,10 @@ namespace framework
 
 								value = std::move(temp);
 							}
+							else if (type == "null")
+							{
+								value = nullptr;
+							}
 							else
 							{
 								utility::logAndThrowException<logging::message::defaultValueForTypeDoesNotSupported, logging::category::dynamicFunction>(type);
@@ -157,9 +161,30 @@ namespace framework
 					}
 					else if (checks)
 					{
-						if (!sharedArguments.contains(name))
+						constexpr std::array<std::string_view, 7> types =
+						{
+							"int",
+							"double",
+							"string",
+							"bool",
+							"array",
+							"object",
+							"null"
+						};
+
+						if (!sharedArguments.contains<json::JsonObject>(functionFieldName))
+						{
+							utility::logAndThrowException<logging::message::cantFindFunctionField, logging::category::dynamicFunction>(executionUnit.functionName, executionUnit.functionName);
+						}
+
+						if (!sharedArguments[functionFieldName].contains(name))
 						{
 							utility::logAndThrowException<logging::message::cantFindArgument, logging::category::dynamicFunction>(name, executionUnit.functionName);
+						}
+
+						if (std::ranges::find(types, type) == types.end())
+						{
+							utility::logAndThrowException<logging::message::wrongType, logging::category::dynamicFunction>(type, executionUnit.functionName);
 						}
 					}
 
@@ -206,14 +231,15 @@ namespace framework
 					Log::info<logging::message::callDynamicFunction, logging::category::dynamicFunction>(functionName);
 				}
 
-				if (defaultArguments.size())
+				if (defaultArguments.size() != (std::numeric_limits<size_t>::max)())
 				{
 					json::JsonObject temp(arguments);
 					json::MapJsonIterator it(defaultArguments);
+					json::JsonObject& functionParameters = temp["@" + functionName];
 
 					for (const auto& [key, value] : it)
 					{
-						temp[key] = value;
+						functionParameters[key] = value;
 					}
 
 					result += (*dynamicPagesFunctions.at(functionName))(temp);
@@ -240,15 +266,10 @@ namespace framework
 		dynamicPagesFunctions.try_emplace("for", createForFunction(dynamicPagesFunctions));
 	}
 
-	void WFDPRenderer::run(std::span<const interfaces::CVariable> variables, std::string& source)
+	void WFDPRenderer::run(const void* arguments, std::string& source)
 	{
 		size_t nextSectionStart = source.find("{%");
-		json::JsonObject sharedArguments;
-
-		for (const interfaces::CVariable& variable : variables)
-		{
-			sharedArguments[variable.name] = *static_cast<json::JsonObject*>(variable.value);
-		}
+		const json::JsonObject& sharedArguments = *static_cast<const json::JsonObject*>(arguments);
 
 		while (nextSectionStart != std::string::npos)
 		{
@@ -263,7 +284,7 @@ namespace framework
 
 			source.replace
 			(
-				source.begin() + nextSectionStart, 
+				source.begin() + nextSectionStart,
 				source.begin() + nextSectionEnd + 2,
 				this->execute(WFDPRenderer::parse(code, sharedArguments, true))
 			);
@@ -273,7 +294,7 @@ namespace framework
 
 		if (source.find("{%") != std::string::npos)
 		{
-			this->run(variables, source);
+			this->run(arguments, source);
 		}
 	}
 
