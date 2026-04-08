@@ -10,11 +10,11 @@ void DynamicResources::doGet(framework::HttpRequest& request, framework::HttpRes
 void DynamicResources::doPost(framework::HttpRequest& request, framework::HttpResponse& response)
 {
 	std::string fileData = request.getFile("print.wfdp");
-	std::unordered_map<std::string, std::string> variables;
+	framework::JsonObject arguments;
 
-	variables.try_emplace("data", request.getJson().get<std::string>("data"));
+	arguments["@print"] = request.getJson().getParsedData();
 
-	response.setBody(request.processDynamicFile(fileData, variables));
+	response.setBody(request.processDynamicFile(fileData, arguments));
 }
 
 DEFINE_EXECUTOR(DynamicResources)

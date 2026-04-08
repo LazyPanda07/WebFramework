@@ -1,1 +1,1 @@
-{% print($data$); %}
+{% print(data: string); %}

@@ -4,6 +4,8 @@
 #include <format>
 #include <sstream>
 
+#include <MapJsonIterator.h>
+
 #include "WFDP/CXXDynamicFunction.h"
 #include "Utility/Utils.h"
 
@@ -100,7 +102,67 @@ std::unique_ptr<framework::DynamicFunction> PrintFunction::create()
 
 std::string PrintFunction::call(const json::JsonObject& arguments)
 {
-	return static_cast<std::string>(arguments["@print"]);
+	const json::JsonObject& object = arguments["@print"];
+	std::string printType = "default";
+	std::string result;
+
+	object.tryGet<std::string>("type", printType);
+
+	if (printType == "json")
+	{
+		return static_cast<std::string>(object);
+	}
+
+	json::MapJsonIterator it(object);
+
+	for (const auto& [_, value] : it)
+	{
+		switch (value.getEnumType())
+		{
+		case json::utility::JsonVariantTypeEnum::jNull:
+			result += "null ";
+
+			break;
+
+		case json::utility::JsonVariantTypeEnum::jString:
+			result += value.get<std::string>() + ' ';
+
+			break;
+
+		case json::utility::JsonVariantTypeEnum::jBool:
+			result += value.get<bool>() ? "true " : "false ";
+
+			break;
+
+		case json::utility::JsonVariantTypeEnum::jInt:
+			result += std::to_string(value.get<int64_t>()) + ' ';
+
+			break;
+
+		case json::utility::JsonVariantTypeEnum::jUint:
+			result += std::to_string(value.get<uint64_t>()) + ' ';
+
+			break;
+
+		case json::utility::JsonVariantTypeEnum::jDouble:
+			result += std::to_string(value.get<double>()) + ' ';
+
+			break;
+
+		case json::utility::JsonVariantTypeEnum::jJSONArray:
+		case json::utility::JsonVariantTypeEnum::jJSONObject:
+			result += static_cast<std::string>(value) + ' ';
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	result.pop_back();
+
+	return result;
 }
 
 IncludeFunction::IncludeFunction(const std::filesystem::path& pathToTemplates) :
@@ -155,7 +217,8 @@ std::string ForFunction::call(const json::JsonObject& arguments)
 
 	int64_t start = forField["start"].get<int64_t>();
 	int64_t end = forField["end"].get<int64_t>();
-	framework::DynamicFunction& repeatableFunction = *dynamicPagesFunctions.at(forField["functionName"].get<std::string>());
+	const std::string& functionName = forField["functionName"].get<std::string>();
+	framework::DynamicFunction& repeatableFunction = *dynamicPagesFunctions.at(functionName);
 	int64_t step = 1;
 	std::string result;
 
@@ -164,13 +227,14 @@ std::string ForFunction::call(const json::JsonObject& arguments)
 		step = forField["step"].get<int64_t>();
 	}
 
+	json::JsonObject wrapper;
+	json::JsonObject& repeatableFunctionData = wrapper["@" + functionName];
+
 	for (int64_t i = start; i < end; i += step)
 	{
-		json::JsonObject currentIndex;
+		repeatableFunctionData["currentIndex"] = i;
 
-		currentIndex["currentIndex"] = i;
-
-		result += repeatableFunction(currentIndex);
+		result += repeatableFunction(wrapper);
 	}
 
 	return result;

@@ -5,23 +5,13 @@
 class CustomFunctionClass : public framework::DynamicFunction
 {
 public:
-	std::string operator ()(const std::span<std::string_view>& arguments) override
+	std::string operator ()(const framework::JsonObject& arguments) override
 	{
-		return std::format("Data: {} {} {}", arguments[0], arguments[1], arguments[2]);
+		const std::vector<framework::JsonObject>& data = arguments["@customFunction"]["data"].get<std::vector<framework::JsonObject>>();
+
+		return std::format("Data: {} {} {}", data[0].get<int64_t>(), data[1].get<int64_t>(), data[2].get<int64_t>());
 	}
 };
-
-static const char* customFunction(const char** args, size_t agumentsNumber)
-{
-	std::string temp = std::format("Data: {} {} {}", args[0], args[1], args[2]);
-	char* result = new char[temp.size() + 1];
-	
-	result[temp.size()] = '\0';
-
-	temp.copy(result, temp.size());
-	
-	return result;
-}
 
 void AssetsExecutor::init(const framework::utility::ExecutorSettings& settings)
 {
@@ -30,11 +20,27 @@ void AssetsExecutor::init(const framework::utility::ExecutorSettings& settings)
 
 void AssetsExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
+	const std::unordered_map<std::string, std::string>& queryParameters = request.getQueryParameters();
+	framework::JsonObject arguments;
+
+	if (auto it = queryParameters.find("data"); it != queryParameters.end())
+	{
+		arguments["@print"]["data"] = it->second;
+	}
+	else if (queryParameters.contains("first"))
+	{
+		framework::JsonObject data = arguments["@customFunction"]["data"];
+
+		data.emplace_back(std::stoll(queryParameters.at("first")));
+		data.emplace_back(std::stoll(queryParameters.at("second")));
+		data.emplace_back(std::stoll(queryParameters.at("third")));
+	}
+
 	request.sendDynamicFile
 	(
 		std::format("{}.wfdp", request.getJson().get<std::string>("fileName")),
 		response,
-		request.getQueryParameters()
+		arguments
 	);
 }
 

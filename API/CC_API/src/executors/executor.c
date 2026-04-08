@@ -95,7 +95,7 @@ web_framework_exception_t wf_is_dynamic_function_registered_executor_settings(ex
 	return exception;
 }
 
-web_framework_exception_t wf_get_file_executor_settings(executor_settings_t implementation, const char* file_path, const char** result, size_t* size)
+web_framework_exception_t wf_get_file_executor_settings(executor_settings_t implementation, const char* file_path, char** result, size_t* size)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -108,7 +108,7 @@ web_framework_exception_t wf_get_file_executor_settings(executor_settings_t impl
 	return exception;
 }
 
-web_framework_exception_t wf_process_static_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const char* file_extension, const char** result, size_t* result_size)
+web_framework_exception_t wf_process_static_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const char* file_extension, char** result, size_t* result_size)
 {
 	web_framework_exception_t exception = NULL;
 
@@ -121,7 +121,7 @@ web_framework_exception_t wf_process_static_file_executor_settings(executor_sett
 	return exception;
 }
 
-web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const json_object_t* arguments, const char** result, size_t* result_size)
+web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const json_object_t* arguments, char** result, size_t* result_size)
 {
 	web_framework_exception_t exception = NULL;
 

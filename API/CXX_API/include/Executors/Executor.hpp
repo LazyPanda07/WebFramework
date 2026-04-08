@@ -194,7 +194,7 @@ namespace framework
 				struct
 				{
 					void* dynamicFunction;
-					void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+					void (*callFunction)(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
 					void (*deleter)(void* implementation);
 				} dynamicFunctionController;
 
