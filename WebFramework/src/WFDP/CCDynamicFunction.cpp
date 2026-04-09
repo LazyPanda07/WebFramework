@@ -1,5 +1,7 @@
 #include "WFDP/CCDynamicFunction.h"
 
+#include <Log.h>
+
 namespace framework
 {
 	CCDynamicFunction::CCDynamicFunction(const void* data) :
@@ -19,6 +21,11 @@ namespace framework
 			.implementation = &const_cast<json::JsonObject&>(arguments),
 			.weak = true
 		};
+
+		if (Log::isValid())
+		{
+			Log::info("Input arguments for cc function: {}", "LogTemp", static_cast<std::string>(arguments));
+		}
 
 		char* temp = function(object);
 		

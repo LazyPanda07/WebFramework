@@ -65,8 +65,6 @@ elseif (${PYTHON_API})
 		add_test(NAME PYTHON_API_TEST COMMAND python api_test.py WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
 		add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments "python -u server.py" WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
 	endif()
-
-	
 elseif (${CSHARP_API})
 	add_test(NAME CSHARP_API_TEST COMMAND dotnet test CSharpAPI.dll WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
 	add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments "dotnet CSharpServer.dll" WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})

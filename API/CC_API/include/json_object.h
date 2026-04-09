@@ -167,17 +167,16 @@ web_framework_exception_t wf_index_access_json_object_array(json_object_t* json_
 /**
  * @brief Add key to Json object and get associated object
  * @param json_object JsonObject instance
-
- * @param result Associated Json object
- * @return
+ * @param result Associated Json object, may be NULL. Valid until next call
+ * @return Error if occurred
  */
 web_framework_exception_t wf_assign_or_get_json_object(json_object_t* json_object, const char* key, json_object_t* result);
 
 /**
  * @brief Add Json object to an array and get associated object
  * @param json_object JsonObject instance
- * @param result Associated Json object
- * @return
+ * @param result Associated Json object, may be NULL. Valid until next call
+ * @return Error if occurred
  */
 web_framework_exception_t wf_emplace_json_object(json_object_t* json_object, json_object_t* result);
 
