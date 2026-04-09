@@ -463,7 +463,7 @@ public static partial class Utils
 		}
 
 		string jsonData = Marshal.PtrToStringUTF8(getDataFromString(stringData))!;
-		JsonElement data = JsonElement.Parse(jsonData);
+		JsonObject data = JsonNode.Parse(jsonData)!.AsObject();
 
 		deleteWebFrameworkString(stringData);
 
@@ -535,7 +535,7 @@ public static partial class Utils
 		}
 
 		string jsonData = Marshal.PtrToStringUTF8(getDataFromString(stringData))!;
-		JsonElement data = JsonElement.Parse(jsonData);
+		JsonObject data = JsonNode.Parse(jsonData)!.AsObject();
 
 		deleteWebFrameworkString(stringData);
 

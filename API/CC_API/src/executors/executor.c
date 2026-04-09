@@ -57,7 +57,7 @@ static void __fill_user_agent_filter(const char* value, size_t index, void* buff
 	memcpy(*ptr, value, strlen(value));
 }
 
-web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, char* (*function)(const json_object_t arguments), void(*deleter)(char* result))
+web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, char* (*function)(json_object_t arguments), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
 	struct { void* function; void* deleter; } data =

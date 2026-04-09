@@ -1,3 +1,6 @@
+from typing import List
+
+from click import argument
 from web_framework_api import *
 
 from TextGenerator import TextGenerator
@@ -50,10 +53,24 @@ class AssetsExecutor(StatelessExecutor):
         settings.register_dynamic_function("customFunction", CustomFunction)
 
     def do_get(self, request, response):
-        request.send_dynamic_file(f"{request.get_json()["fileName"]}.wfdp", response, request.get_query_parameters())
+        query_parameters = request.get_query_parameters()
+        arguments = dict()
+
+        if "data" in query_parameters:
+            arguments["@print"] = {"data": query_parameters["data"]}
+        elif "first" in query_parameters:
+            data: List[int] = list()
+
+            data.append(int(query_parameters["first"]))
+            data.append(int(query_parameters["second"]))
+            data.append(int(query_parameters["third"]))
+
+            arguments["@customFunction"] = {"data": data}
+
+        request.send_dynamic_file(f"{request.get_json()["fileName"]}.wfdp", response, arguments)
 
     def do_delete(self, request, response):
-        request.unregister_dynamic_function("custom_function")
+        request.unregister_dynamic_function("customFunction")
 
 
 class ChunksExecutor(HeavyOperationStatelessExecutor):
@@ -81,11 +98,11 @@ class DynamicResources(HeavyOperationStatelessExecutor):
 
     def do_post(self, request, response):
         file_data = request.get_file("print.wfdp")
-        variables = {
-            "data": request.get_json()["data"]
+        arguments = {
+            "@print": request.get_json()
         }
 
-        response.set_body(request.process_dynamic_file(file_data, variables))
+        response.set_body(request.process_dynamic_file(file_data, arguments))
 
 
 class UploadChunkedExecutor(HeavyOperationStatelessExecutor):

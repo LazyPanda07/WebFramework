@@ -443,7 +443,7 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
 	return exception;
 }
 
-web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, char* (*function)(const json_object_t arguments), void(*deleter)(char* result))
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, char* (*function)(json_object_t arguments), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
 	struct { void* function; void* deleter; } data =
@@ -740,9 +740,9 @@ web_framework_exception_t wf_enqueue_task
 
 	wf_create_json_object(&jsonObjectData);
 
-	wf_assign_json_object(&jsonObjectData, "arguments", &arguments);
-	wf_assign_json_object(&jsonObjectData, "api", &api);
-	wf_assign_json_object(&jsonObjectData, "name", &name);
+	wf_assign_or_get_json_object(&jsonObjectData, "arguments", &arguments);
+	wf_assign_or_get_json_object(&jsonObjectData, "api", &api);
+	wf_assign_or_get_json_object(&jsonObjectData, "name", &name);
 
 	wf_set_json_object_string(&api, task_executor_api);
 	wf_set_json_object_string(&name, task_executor_name);
@@ -751,7 +751,7 @@ web_framework_exception_t wf_enqueue_task
 	{
 		json_object_t queue;
 
-		wf_assign_json_object(&jsonObjectData, "queue", &queue);
+		wf_assign_or_get_json_object(&jsonObjectData, "queue", &queue);
 
 		wf_set_json_object_string(&queue, "cc_queue");
 	}

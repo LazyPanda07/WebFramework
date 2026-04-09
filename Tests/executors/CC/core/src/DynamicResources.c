@@ -28,16 +28,30 @@ DEFINE_EXECUTOR_METHOD(DynamicResources, POST_METHOD, request, response)
 	size_t size;
 	size_t resultSize;
 	json_parser_t parser;
-	dynamic_pages_variable_t variable = { .name = "data" };
+	json_object_t arguments;
 
 	wf_get_request_json(request, &parser);
+	wf_create_json_object(&arguments);
 
 	wf_get_file(request, "print.wfdp", &fileData, &size);
-	wf_get_json_parser_string(parser, "data", true, &variable.value);
+	
+	{
+		char* data = NULL;
+		json_object_t print;
+		json_object_t jsonData;
 
-	wf_process_dynamic_file(request, fileData, size, &variable, 1, &result, &resultSize);
+		wf_get_json_parser_string(parser, "data", true, &data);
 
-	wf_set_body(response, result, strlen(result));
+		wf_assign_or_get_json_object(&arguments, "@print", &print);
+		wf_assign_or_get_json_object(&print, "data", &jsonData);
+		wf_set_json_object_string(&jsonData, data);
+	}
+
+	wf_process_dynamic_file(request, fileData, size, &arguments, &result, &resultSize);
+
+	wf_set_body(response, result, resultSize);
+
+	wf_delete_json_object(&arguments);
 
 	free(fileData);
 	free(result);

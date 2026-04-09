@@ -51,5 +51,23 @@ add_custom_command(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-add_test(NAME ${PROJECT_NAME}_API COMMAND CXX_API_TESTS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
-add_test(NAME ${PROJECT_NAME} COMMAND Core.exe --server_config multi_threaded_config.json --run_arguments Server.exe WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+if (${CC_API})
+	add_test(NAME CC_API_TEST COMMAND CC_API_TESTS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+	add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments CC_Server WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+elseif(${CXX_API})
+	add_test(NAME CXX_API_TEST COMMAND CXX_API_TESTS WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+	add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments Server WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+elseif (${PYTHON_API})
+	if (UNIX)
+		add_test(NAME PYTHON_API_TEST COMMAND python3 api_test.py WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+		add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments "python3 -u server.py" WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+	else()
+		add_test(NAME PYTHON_API_TEST COMMAND python api_test.py WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+		add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments "python -u server.py" WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+	endif()
+
+	
+elseif (${CSHARP_API})
+	add_test(NAME CSHARP_API_TEST COMMAND dotnet test CSharpAPI.dll WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+	add_test(NAME ${PROJECT_NAME} COMMAND Core --server_config multi_threaded_config.json --run_arguments "dotnet CSharpServer.dll" WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+endif()

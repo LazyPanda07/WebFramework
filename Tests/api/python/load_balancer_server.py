@@ -1,7 +1,6 @@
 import argparse
 import os
 from typing import List
-from functools import partial
 
 from web_framework_api import *
 
@@ -12,6 +11,7 @@ def print_running_state():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    runtimes = os.getenv("RUNTIMES")
 
     parser.add_argument("--config", required=True, type=str)
     parser.add_argument("--port", required=True, type=int)
@@ -26,6 +26,13 @@ if __name__ == '__main__':
         initialize_web_framework("WebFramework")
 
         config = Config(args.config)
+
+        if runtimes is not None:
+            if "python" in runtimes:
+                config.override_configuration("$[]WebFramework.runtimes.0.enabled", True)
+
+            if ".net" in runtimes:
+                config.override_configuration("$[]WebFramework.runtimes.1.enabled", True)
 
         if args.custom_heuristic:
             config.override_configuration("$[]LoadBalancer.heuristic.name", "CustomHeuristic", True)

@@ -83,6 +83,8 @@ namespace registrar
 
 	void registerUtilityStructures(pybind11::module_& m)
 	{
+		using namespace py::literals;
+
 		py::class_<framework::Multipart>(m, "Multipart")
 			.def("get_name", &framework::Multipart::getName)
 			.def("get_content_type", &framework::Multipart::getContentType)
@@ -95,7 +97,7 @@ namespace registrar
 
 		py::class_<framework::IDynamicFunction, framework::PyDynamicFunction>(m, "DynamicFunction")
 			.def(py::init())
-			.def("__call__", &framework::IDynamicFunction::operator());
+			.def("__call__", &framework::IDynamicFunction::operator(), "arguments"_a);
 
 		py::class_<framework::utility::IPyChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
 			.def(py::init())

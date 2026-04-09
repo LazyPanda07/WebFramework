@@ -2,6 +2,8 @@
 
 #include "dll_handler.h"
 
+// TODO: emplacing elements invalidating previous pointers
+
 /**
  * @brief JsonObject
  */
@@ -87,96 +89,89 @@ web_framework_exception_t wf_set_json_object_null(json_object_t* json_object);
  * @param value JsonArray value
  * @return Error if occurred
  */
-web_framework_exception_t wf_set_json_object_array(json_object_t* json_object, const json_object_t* array, size_t arraySize);
+web_framework_exception_t wf_set_json_object_array(json_object_t* json_object, const json_object_t* array, size_t array_size);
 
 /**
  * @brief Get JsonObject
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
  * @param result Result JsonObject
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_object(json_object_t* json_object, const char* key, bool recursive, json_object_t* result);
+web_framework_exception_t wf_get_json_object_object(json_object_t* json_object, json_object_t* result);
 
 /**
  * @brief Get string
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
  * @param result Result string
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_string(json_object_t* json_object, const char* key, bool recursive, const char** result);
+web_framework_exception_t wf_get_json_object_string(json_object_t* json_object, const char** result);
 
 /**
  * @brief Get integer
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
  * @param result Result integer
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_integer(json_object_t* json_object, const char* key, bool recursive, int64_t* result);
+web_framework_exception_t wf_get_json_object_integer(json_object_t* json_object, int64_t* result);
 
 /**
  * @brief Get unsigned integer
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
  * @param result Result unsigned integer
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_unsigned_integer(json_object_t* json_object, const char* key, bool recursive, uint64_t* result);
+web_framework_exception_t wf_get_json_object_unsigned_integer(json_object_t* json_object, uint64_t* result);
 
 /**
  * @brief Get double
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
  * @param result Result double
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_double(json_object_t* json_object, const char* key, bool recursive, double* result);
+web_framework_exception_t wf_get_json_object_double(json_object_t* json_object, double* result);
 
 /**
  * @brief Get bool
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
  * @param result Result bool
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_boolean(json_object_t* json_object, const char* key, bool recursive, bool* result);
+web_framework_exception_t wf_get_json_object_boolean(json_object_t* json_object, bool* result);
 
 /**
  * @brief Get NULL
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
  * @param result Is NULL
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_null(json_object_t* json_object, const char* key, bool recursive, bool* result);
+web_framework_exception_t wf_get_json_object_null(json_object_t* json_object, bool* result);
 
 /**
- * @brief Get JsonArray
+ * @brief Copy JsonArray
  * @param json_object json_object_t instance
- * @param key JSON key
- * @param recursive Search recursively
- * @param result Result JsonArray
+ * @param array Valid json_object_t instance
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_json_object_array(json_object_t* json_object, const char* key, json_object_t* array, size_t* arraySize, bool recursive);
+web_framework_exception_t wf_copy_json_object_array(json_object_t* json_object, json_object_t* array, size_t* array_size);
+
+/**
+ * @brief Retrieve the element at the specified index from a JSON array object and store it in the provided result pointer.
+ * @param json_object Pointer to a json_object_t that is expected to represent a JSON array. Must not be NULL.
+ * @param index Zero-based index of the element to retrieve from the array.
+ * @param result Pointer to a json_object_t that will receive the retrieved element on success. Must not be NULL.
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_index_access_json_object_array(json_object_t* json_object, size_t index, json_object_t* result);
 
 /**
  * @brief Add key to Json object and get associated object
  * @param json_object JsonObject instance
- * @param key JSON key
+
  * @param result Associated Json object
- * @return 
+ * @return
  */
-web_framework_exception_t wf_assign_json_object(json_object_t* json_object, const char* key, json_object_t* result);
+web_framework_exception_t wf_assign_or_get_json_object(json_object_t* json_object, const char* key, json_object_t* result);
 
 /**
  * @brief Add Json object to an array and get associated object

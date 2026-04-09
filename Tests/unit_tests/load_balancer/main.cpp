@@ -133,8 +133,6 @@ int main(int argc, char** argv) try
 	utility::parsers::ConsoleArgumentParser parser(argc, argv);
 	std::vector<unit_test_utils::ProcessWrapper> loadBalancerServers;
 
-	unit_test_utils::updateConfigRuntimes(parser.getRequired<std::string>("config"), parser);
-
 	loadBalancerServers.reserve(2);
 
 	port = parser.getRequired<int64_t>("port");

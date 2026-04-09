@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
+﻿using System.Text.Json.Nodes;
 
 namespace Framework;
 
 public interface IDynamicFunction
 {
-	public string Invoke(JsonElement arguments);
+	public string Invoke(in JsonObject arguments);
 }

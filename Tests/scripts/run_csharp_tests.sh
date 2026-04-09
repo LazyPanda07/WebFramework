@@ -13,7 +13,7 @@ chmod +x ./LoadBalancerCore
 chmod +x ./ProxyCore
 chmod +x ./DefaultHTTPSServer
 
-# RUNTIMES variable contains list of all needed runtimes like this: --runtime python
+# RUNTIMES variable contains list of all needed runtimes like this: --runtimes python
 
 echo "Current runtimes: ${RUNTIMES}"
 

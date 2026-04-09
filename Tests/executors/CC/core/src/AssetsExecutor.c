@@ -2,15 +2,24 @@
 
 #include <signal.h>
 
+typedef enum request_type
+{
+	print,
+	custom,
+	none
+} request_type_t;
+
 DEFINE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR)
 
-static const char* customFunction(const char** args, size_t agumentsNumber);
+static char* custom_function(json_object_t arguments);
 
 static void deleter(char* ptr);
 
+static request_type_t get_type(query_parameter_t* parameters);
+
 DEFINE_EXECUTOR_INIT(AssetsExecutor)
 {
-	wf_register_dynamic_function_executor_settings(settings, "customFunction", customFunction, deleter);
+	wf_register_dynamic_function_executor_settings(settings, "customFunction", custom_function, deleter);
 }
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
@@ -20,43 +29,65 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 	const char extension[] = "wfdp";
 	query_parameter_t* queryParameters;
 	size_t queryParametersSize;
+	json_object_t arguments;
 
 	wf_get_request_json(request, &parser);
 	wf_get_query_parameters(request, &queryParameters, &queryParametersSize);
+	wf_create_json_object(&arguments);
 
 	wf_get_json_parser_string(parser, "fileName", true, &fileName);
 
-	dynamic_pages_variable_t* variables = (dynamic_pages_variable_t*)malloc(queryParametersSize * sizeof(dynamic_pages_variable_t));
-
-	if (!variables)
+	if (queryParametersSize)
 	{
-		raise(SIGSEGV);
+		switch (get_type(queryParameters))
+		{
+		case print:
+		{
+			json_object_t print;
+			json_object_t data;
 
-		return;
+			wf_assign_or_get_json_object(&arguments, "@print", &print);
+			wf_assign_or_get_json_object(&print, "data", &data);
+
+			wf_set_json_object_string(&data, queryParameters[0].value);
+		}
+
+		break;
+
+		case custom:
+		{
+			json_object_t custom_function_data;
+			json_object_t data;
+			
+			wf_assign_or_get_json_object(&arguments, "@customFunction", &custom_function_data);
+			wf_assign_or_get_json_object(&custom_function_data, "data", &data);
+
+			for (size_t i = 0; i < queryParametersSize; i++)
+			{
+				json_object_t temp;
+
+				wf_emplace_json_object(&data, &temp);
+
+				wf_set_json_object_integer(&temp, atoll(queryParameters[i].value));
+			}
+		}
+
+		break;
+
+		default:
+			break;
+		}
 	}
 
-	for (size_t i = 0; i < queryParametersSize; i++)
-	{
-		variables[i].name = queryParameters[i].key;
-		variables[i].value = queryParameters[i].value;
-	}
+	char fullName[1024];
 
-	size_t fullNameSize = 1024;
-	char* const fullName = (char* const)calloc(fullNameSize, sizeof(char));
+	memset(fullName, 0, sizeof(fullName));
 
-	if (!fullName)
-	{
-		raise(SIGSEGV);
+	snprintf(fullName, sizeof(fullName), "%s.%s", fileName, extension);
 
-		return;
-	}
+	wf_send_dynamic_file(request, fullName, response, &arguments, false, "");
 
-	snprintf(fullName, fullNameSize, "%s.%s", fileName, extension);
-
-	wf_send_dynamic_file(request, fullName, response, variables, queryParametersSize, false, "");
-
-	free(variables);
-	free(fullName);
+	wf_delete_json_object(&arguments);
 }
 
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
@@ -64,19 +95,45 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 	wf_unregister_dynamic_function(request, "customFunction");
 }
 
-const char* customFunction(const char** args, size_t agumentsNumber)
+char* custom_function(json_object_t arguments)
 {
-	size_t bufferSize = 1024;
-	char* const buffer = (char* const)calloc(bufferSize, sizeof(char));
+	json_object_t custom_function_data;
+	json_object_t data;
+	int64_t first;
+	int64_t second;
+	int64_t third;
 
-	if (!buffer)
+	wf_assign_or_get_json_object(&arguments, "@customFunction", &custom_function_data);
+	wf_assign_or_get_json_object(&custom_function_data, "data", &data);
+
 	{
-		raise(SIGSEGV);
+		json_object_t temp;
 
-		return "";
+		wf_index_access_json_object_array(&data, 0, &temp);
+
+		wf_get_json_object_integer(&temp, &first);
 	}
 
-	snprintf(buffer, bufferSize, "Data: %s %s %s", args[0], args[1], args[2]);
+	{
+		json_object_t temp;
+
+		wf_index_access_json_object_array(&data, 1, &temp);
+
+		wf_get_json_object_integer(&temp, &second);
+	}
+
+	{
+		json_object_t temp;
+
+		wf_index_access_json_object_array(&data, 2, &temp);
+
+		wf_get_json_object_integer(&temp, &third);
+	}
+
+	size_t buffer_size = 1024;
+	char* buffer = calloc(buffer_size, sizeof(char));
+
+	snprintf(buffer, buffer_size, "Data: %lld %lld %lld", first, second, third);
 
 	return buffer;
 }
@@ -84,6 +141,20 @@ const char* customFunction(const char** args, size_t agumentsNumber)
 void deleter(char* ptr)
 {
 	free(ptr);
+}
+
+request_type_t get_type(query_parameter_t* parameters)
+{
+	if (!strcmp(parameters[0].key, "data"))
+	{
+		return print;
+	}
+	else if (!strcmp(parameters[0].key, "first"))
+	{
+		return custom;
+	}
+
+	return none;
 }
 
 DEFINE_INITIALIZE_WEB_FRAMEWORK()

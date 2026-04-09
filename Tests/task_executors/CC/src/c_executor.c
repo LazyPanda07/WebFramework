@@ -56,8 +56,8 @@ void serialize(void* task_struct, json_object_t* arguments)
 	json_object_t message;
 	json_object_t file_name;
 
-	wf_assign_json_object(arguments, "message", &message);
-	wf_assign_json_object(arguments, "fileName", &file_name);
+	wf_assign_or_get_json_object(arguments, "message", &message);
+	wf_assign_or_get_json_object(arguments, "fileName", &file_name);
 
 	wf_set_json_object_string(&message, data->message);
 	wf_set_json_object_string(&file_name, data->file_name);

@@ -35,6 +35,7 @@ option(WITH_ADDRESS_SANITIZER "" OFF)
 option(WITHOUT_REDIS_TESTS "" OFF)
 option(BUILD_TASK_EXECUTORS "" OFF)
 set(ALLOWED_BUILD_EXECUTORS_VALUES "CXX" "CC" "Python" "CSharp" "NONE")
+set(RUNTIMES "")
 enum_option(BUILD_EXECUTORS CXX ALLOWED_BUILD_EXECUTORS_VALUES "Build executors with specific language API")
 
 add_definitions(-DLARGE_FILE_NAME="large_file.bin")
@@ -45,6 +46,14 @@ else()
     set(SHARED_LIBRARY_WEB_FRAMEWORK_PATH ${WEB_FRAMEWORK_LIBRARY_DIR}/dll/WebFramework.dll)
 
     add_definitions(-DWIN32_LEAN_AND_MEAN)
+endif()
+
+if (${PYTHON_API} OR "${BUILD_EXECUTORS}" STREQUAL "Python")
+    set(RUNTIMES "${RUNTIMES}--runtimes python")
+endif()
+
+if (${CSHARP_API} OR "${BUILD_EXECUTORS}" STREQUAL "CSharp")
+    set(RUNTIMES "${RUNTIMES}--runtimes dotnet ")
 endif()
 
 if(WIN32)
@@ -99,8 +108,6 @@ if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
 
     generate_json(replaces/configs/load_balancer_config.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config.json REPLACES)
     generate_json(replaces/configs/load_balancer_config_https.json ${CMAKE_INSTALL_PREFIX}/load_balancer_config_https.json REPLACES)
-    generate_json(replaces/configs/aarch64_load_balancer_config.json ${CMAKE_INSTALL_PREFIX}/aarch64_load_balancer_config.json REPLACES)
-    generate_json(replaces/configs/aarch64_load_balancer_config_https.json ${CMAKE_INSTALL_PREFIX}/aarch64_load_balancer_config_https.json REPLACES)
     generate_json(replaces/settings/web.json ${CMAKE_INSTALL_PREFIX}/web.json REPLACES)
     generate_json(replaces/settings/load_balancer_web.json ${CMAKE_INSTALL_PREFIX}/load_balancer_web.json REPLACES)
 

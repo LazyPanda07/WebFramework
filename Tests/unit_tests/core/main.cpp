@@ -31,8 +31,6 @@ int main(int argc, char** argv) try
 
 	useHTTPS = configParser.get<bool>("useHTTPS", true);
 
-	unit_test_utils::updateConfigRuntimes(serverConfig, consoleParser);
-
 	unit_test_utils::ProcessWrapper defaultHttpsServer = unit_test_utils::ProcessWrapper::runDefaultHttpsServer();
 
 	if (consoleParser.get<bool>("manual"))

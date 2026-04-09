@@ -5,7 +5,7 @@ public class UploadChunkedExecutor : HeavyOperationStatelessExecutor
 {
 	public override void DoPost(HttpRequest request, HttpResponse response)
 	{
-		using FileStream stream = new(request.GetHeaders()["File-Name"], FileMode.CreateNew);
+		using FileStream stream = new(request.GetHeaders()["File-Name"], FileMode.Create);
 		using BinaryWriter writer = new(stream);
 		List<byte[]> chunks = [.. request.GetChunks()];
 

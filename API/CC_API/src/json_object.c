@@ -125,132 +125,145 @@ web_framework_exception_t wf_set_json_object_null(json_object_t* json_object)
 	return exception;
 }
 
-web_framework_exception_t wf_set_json_object_array(json_object_t* json_object, const json_object_t* array, size_t arraySize)
+web_framework_exception_t wf_set_json_object_array(json_object_t* json_object, const json_object_t* array, size_t array_size)
 {
 	typedef void (*setJsonObjectArray)(void* implementation, void** value, size_t size, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
-	void* buffer = malloc(arraySize * sizeof(void*));
+	void* buffer = malloc(array_size * sizeof(void*));
 	void** value = &buffer;
 
-	for (size_t i = 0; i < arraySize; i++)
+	for (size_t i = 0; i < array_size; i++)
 	{
 		value[i] = array[i].implementation;
 	}
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectArray, value, arraySize, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(setJsonObjectArray, value, array_size, &exception);
 
 	free(buffer);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_object(json_object_t* json_object, const char* key, bool recursive, json_object_t* result)
+web_framework_exception_t wf_get_json_object_object(json_object_t* json_object, json_object_t* result)
 {
-	typedef void* (*getJsonObjectObject)(void* implementation, const char* key, bool recursive, void** exception);
+	typedef void* (*getJsonObjectObject)(void* implementation, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectObject, key, recursive, &exception);
+	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectObject, &exception);
 	result->weak = false;
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_string(json_object_t* json_object, const char* key, bool recursive, const char** result)
+web_framework_exception_t wf_get_json_object_string(json_object_t* json_object, const char** result)
 {
-	typedef const char* (*getJsonObjectString)(void* implementation, const char* key, bool recursive, void** exception);
+	typedef const char* (*getJsonObjectString)(void* implementation, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectString, key, recursive, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectString, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_integer(json_object_t* json_object, const char* key, bool recursive, int64_t* result)
+web_framework_exception_t wf_get_json_object_integer(json_object_t* json_object, int64_t* result)
 {
-	typedef int64_t(*getJsonObjectInteger)(void* implementation, const char* key, bool recursive, void** exception);
+	typedef int64_t(*getJsonObjectInteger)(void* implementation, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectInteger, key, recursive, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectInteger, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_unsigned_integer(json_object_t* json_object, const char* key, bool recursive, uint64_t* result)
+web_framework_exception_t wf_get_json_object_unsigned_integer(json_object_t* json_object, uint64_t* result)
 {
-	typedef uint64_t(*getJsonObjectUnsignedInteger)(void* implementation, const char* key, bool recursive, void** exception);
+	typedef uint64_t(*getJsonObjectUnsignedInteger)(void* implementation, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectUnsignedInteger, key, recursive, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectUnsignedInteger, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_double(json_object_t* json_object, const char* key, bool recursive, double* result)
+web_framework_exception_t wf_get_json_object_double(json_object_t* json_object, double* result)
 {
-	typedef double (*getJsonObjectDouble)(void* implementation, const char* key, bool recursive, void** exception);
+	typedef double (*getJsonObjectDouble)(void* implementation, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectDouble, key, recursive, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectDouble, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_boolean(json_object_t* json_object, const char* key, bool recursive, bool* result)
+web_framework_exception_t wf_get_json_object_boolean(json_object_t* json_object, bool* result)
 {
-	typedef bool (*getJsonObjectBoolean)(void* implementation, const char* key, bool recursive, void** exception);
+	typedef bool (*getJsonObjectBoolean)(void* implementation, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectBoolean, key, recursive, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectBoolean, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_null(json_object_t* json_object, const char* key, bool recursive, bool* result)
+web_framework_exception_t wf_get_json_object_null(json_object_t* json_object, bool* result)
 {
-	typedef bool (*getJsonObjectNull)(void* implementation, const char* key, bool recursive, void** exception);
+	typedef bool (*getJsonObjectNull)(void* implementation, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectNull, key, recursive, &exception);
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectNull, &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_object_array(json_object_t* json_object, const char* key, json_object_t* array, size_t* arraySize, bool recursive)
+web_framework_exception_t wf_copy_json_object_array(json_object_t* json_object, json_object_t* array, size_t* array_size)
 {
-	typedef void (*getJsonObjectArray)(void* implementation, const char* key, void(*addArrayValue)(void* object, void* array), void* array, bool recursive, void** exception);
+	typedef void (*getJsonObjectArray)(void* implementation, void(*addArrayValue)(void* object, void* array), void* array, void** exception);
 
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectArray, key, __add_array_callback, array, recursive, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonObjectArray, __add_array_callback, array, &exception);
 
 	if (exception)
 	{
 		return exception;
 	}
 
-	exception = wf_size_json_object(array, arraySize);
+	exception = wf_size_json_object(array, array_size);
 
 	return exception;
 }
 
-web_framework_exception_t wf_assign_json_object(json_object_t* json_object, const char* key, json_object_t* result)
+web_framework_exception_t wf_index_access_json_object_array(json_object_t* json_object, size_t index, json_object_t* result)
+{
+	typedef void* (*accessIndexOperatorJsonObject)(void* implementation, size_t index, void** exception);
+
+	web_framework_exception_t exception = NULL;
+	void* implementation = json_object->implementation;
+
+	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessIndexOperatorJsonObject, index, &exception);
+	result->weak = true;
+
+	return exception;
+}
+
+web_framework_exception_t wf_assign_or_get_json_object(json_object_t* json_object, const char* key, json_object_t* result)
 {
 	web_framework_exception_t exception = NULL;
 	void* implementation = json_object->implementation;

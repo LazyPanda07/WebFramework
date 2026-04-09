@@ -245,7 +245,7 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
  * @param deleter Deleter for values from function
  * @return
  */
-web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, char* (*function)(const json_object_t arguments), void(*deleter)(char* result));
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, char* (*function)(json_object_t arguments), void(*deleter)(char* result));
 
 /**
  * @brief Unregister function for processing .wfdp files
