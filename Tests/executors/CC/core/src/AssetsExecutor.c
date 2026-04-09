@@ -1,6 +1,6 @@
 #include <executors/executor.h>
 
-#include <signal.h>
+#include <inttypes.h>
 
 typedef enum request_type
 {
@@ -11,11 +11,13 @@ typedef enum request_type
 
 DEFINE_DEFAULT_EXECUTOR(AssetsExecutor, STATELESS_EXECUTOR)
 
+static int cmp(const void* a, const void* b);
+
 static char* custom_function(json_object_t arguments);
 
 static void deleter(char* ptr);
 
-static request_type_t get_type(query_parameter_t* parameters);
+static request_type_t get_type(query_parameter_t* parameters, size_t size);
 
 DEFINE_EXECUTOR_INIT(AssetsExecutor)
 {
@@ -39,7 +41,7 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 	if (queryParametersSize)
 	{
-		switch (get_type(queryParameters))
+		switch (get_type(queryParameters, queryParametersSize))
 		{
 		case print:
 		{
@@ -109,13 +111,22 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, DELETE_METHOD, request, response)
 	wf_unregister_dynamic_function(request, "customFunction");
 }
 
+int cmp(const void* a, const void* b)
+{
+	int64_t x = *(const int64_t*)a;
+	int64_t y = *(const int64_t*)b;
+
+	if (x < y) return -1;
+	if (x > y) return 1;
+
+	return 0;
+}
+
 char* custom_function(json_object_t arguments)
 {
 	json_object_t custom_function_data;
 	json_object_t data;
-	int64_t first;
-	int64_t second;
-	int64_t third;
+	int64_t array[3];
 
 	wf_assign_or_get_json_object(&arguments, "@customFunction", &custom_function_data);
 	wf_assign_or_get_json_object(&custom_function_data, "data", &data);
@@ -125,7 +136,7 @@ char* custom_function(json_object_t arguments)
 
 		wf_index_access_json_object_array(&data, 0, &temp);
 
-		wf_get_json_object_integer(&temp, &first);
+		wf_get_json_object_integer(&temp, &array[0]);
 	}
 
 	{
@@ -133,7 +144,7 @@ char* custom_function(json_object_t arguments)
 
 		wf_index_access_json_object_array(&data, 1, &temp);
 
-		wf_get_json_object_integer(&temp, &second);
+		wf_get_json_object_integer(&temp, &array[1]);
 	}
 
 	{
@@ -141,13 +152,15 @@ char* custom_function(json_object_t arguments)
 
 		wf_index_access_json_object_array(&data, 2, &temp);
 
-		wf_get_json_object_integer(&temp, &third);
+		wf_get_json_object_integer(&temp, &array[2]);
 	}
 
 	size_t buffer_size = 1024;
 	char* buffer = calloc(buffer_size, sizeof(char));
 
-	snprintf(buffer, buffer_size, "Data: %lld %lld %lld", first, second, third);
+	qsort(array, sizeof(array) / sizeof(int64_t), sizeof(int64_t), cmp);
+
+	snprintf(buffer, buffer_size, "Data: %" PRId64 " %" PRId64 " %" PRId64, array[0], array[1], array[2]);
 
 	return buffer;
 }
@@ -157,15 +170,18 @@ void deleter(char* ptr)
 	free(ptr);
 }
 
-request_type_t get_type(query_parameter_t* parameters)
+request_type_t get_type(query_parameter_t* parameters, size_t size)
 {
-	if (!strcmp(parameters[0].key, "data"))
+	for (size_t i = 0; i < size; i++)
 	{
-		return print;
-	}
-	else if (!strcmp(parameters[0].key, "first"))
-	{
-		return custom;
+		if (!strcmp(parameters[i].key, "data"))
+		{
+			return print;
+		}
+		else if (!strcmp(parameters[i].key, "first"))
+		{
+			return custom;
+		}
 	}
 
 	return none;

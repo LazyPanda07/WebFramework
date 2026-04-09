@@ -22,11 +22,6 @@ namespace framework
 			.weak = true
 		};
 
-		if (Log::isValid())
-		{
-			Log::info("Input arguments for cc function: {}", "LogTemp", static_cast<std::string>(arguments));
-		}
-
 		char* temp = function(object);
 		
 		std::string result = temp;
