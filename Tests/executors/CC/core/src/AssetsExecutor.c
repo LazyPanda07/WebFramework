@@ -43,6 +43,13 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 		{
 		case print:
 		{
+			{
+				json_object_t print;
+
+				wf_assign_or_get_json_object(&arguments, "@print", &print);
+				wf_assign_or_get_json_object(&print, "data", NULL);
+			}
+
 			json_object_t print;
 			json_object_t data;
 
@@ -56,6 +63,13 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 		case custom:
 		{
+			{
+				json_object_t custom_function_data;
+
+				wf_assign_or_get_json_object(&arguments, "@customFunction", &custom_function_data);
+				wf_assign_or_get_json_object(&custom_function_data, "data", NULL);
+			}
+
 			json_object_t custom_function_data;
 			json_object_t data;
 			

@@ -1,6 +1,5 @@
 from typing import List
 
-from click import argument
 from web_framework_api import *
 
 from TextGenerator import TextGenerator

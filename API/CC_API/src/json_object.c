@@ -270,8 +270,11 @@ web_framework_exception_t wf_assign_or_get_json_object(json_object_t* json_objec
 
 	typedef void* (*accessKeyOperatorJsonObject)(void* implementation, const char* key, void** exception);
 
-	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonObject, key, &exception);
-	result->weak = true;
+	if (result)
+	{
+		result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonObject, key, &exception);
+		result->weak = true;
+	}
 
 	return exception;
 }
@@ -283,8 +286,11 @@ web_framework_exception_t wf_emplace_json_object(json_object_t* json_object, jso
 
 	typedef void* (*emplaceBackNull)(void* implementation, void** exception);
 
-	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(emplaceBackNull, &exception);
-	result->weak = true;
+	if (result)
+	{
+		result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(emplaceBackNull, &exception);
+		result->weak = true;
+	}
 
 	return exception;
 }

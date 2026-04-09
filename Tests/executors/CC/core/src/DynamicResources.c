@@ -36,6 +36,13 @@ DEFINE_EXECUTOR_METHOD(DynamicResources, POST_METHOD, request, response)
 	wf_get_file(request, "print.wfdp", &fileData, &size);
 	
 	{
+		{
+			json_object_t print;
+
+			wf_assign_or_get_json_object(&arguments, "@print", &print);
+			wf_assign_or_get_json_object(&print, "data", NULL);
+		}
+
 		char* data = NULL;
 		json_object_t print;
 		json_object_t jsonData;
@@ -44,6 +51,7 @@ DEFINE_EXECUTOR_METHOD(DynamicResources, POST_METHOD, request, response)
 
 		wf_assign_or_get_json_object(&arguments, "@print", &print);
 		wf_assign_or_get_json_object(&print, "data", &jsonData);
+
 		wf_set_json_object_string(&jsonData, data);
 	}
 
