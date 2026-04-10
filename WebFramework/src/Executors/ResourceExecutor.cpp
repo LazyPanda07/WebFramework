@@ -60,7 +60,7 @@ namespace framework
 			webFrameworkDefaultAssests
 		),
 		defaultAssetProvider(additionalSettings.assetsPath, threadPool),
-		wfdpRenderer(additionalSettings.templatesPath)
+		wfdpRenderer(additionalSettings.templatesPath, additionalSettings.dynamicFunctionValidation)
 	{
 		file_manager::FileManager::getInstance().getCache().setCacheSize(additionalSettings.cachingSize);
 

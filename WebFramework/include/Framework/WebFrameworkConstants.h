@@ -12,6 +12,7 @@ namespace json_settings
 	inline constexpr std::string_view webServerObject = "WebServer";
 	inline constexpr std::string_view webFrameworkObject = "WebFramework";
 	inline constexpr std::string_view httpsObject = "HTTPS";
+	inline constexpr std::string_view dynamicFunctionsObject = "DynamicFunctions";
 	inline constexpr std::string_view loggingObject = "Logging";
 	inline constexpr std::string_view threadPoolServerObject = "ThreadPoolServer";
 	inline constexpr std::string_view loadBalancerObject = "LoadBalancer";
@@ -40,6 +41,7 @@ namespace json_settings
 	inline constexpr std::string_view databasesKey = "databases";
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
 	inline constexpr std::string_view runtimesKey = "runtimes";
+	inline constexpr std::string_view validationKey = "validation";
 	
 	inline constexpr std::string_view heuristicNameKey = "name";
 	inline constexpr std::string_view listOfServersKey = "listOfServers";

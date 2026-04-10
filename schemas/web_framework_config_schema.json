@@ -261,6 +261,17 @@
           "type": "string",
           "description": "Path to default WebFramework *.html files",
           "default": "WebFrameworkAssets"
+        },
+        "DynamicFunctions": {
+          "type": "object",
+          "description": "Settings for DynamicFunction",
+          "properties": {
+            "validation": {
+              "type": "boolean",
+              "description": "Add pre call validation(function specific object, arguments check: type, missing argument)",
+              "default": true
+            }
+          }
         }
       },
       "required": [ "assetsPath", "templatesPath", "webServerType" ],

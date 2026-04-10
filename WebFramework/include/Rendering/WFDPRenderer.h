@@ -28,14 +28,15 @@ namespace framework
 	private:
 		::utility::strings::string_based_unordered_map<std::unique_ptr<DynamicFunction>> dynamicPagesFunctions;
 		const std::filesystem::path pathToTemplates;
+		bool validation;
 
 	private:
-		static std::vector<ExecutionUnit> parse(std::string_view code, const json::JsonObject& sharedArguments, bool checks);
+		std::vector<ExecutionUnit> parse(std::string_view code, const json::JsonObject& sharedArguments);
 
 		std::string execute(const std::vector<ExecutionUnit>& codes);
 
 	public:
-		WFDPRenderer(const std::filesystem::path& pathToTemplates);
+		WFDPRenderer(const std::filesystem::path& pathToTemplates, bool validation);
 
 		void run(const void* arguments, std::string& source);
 

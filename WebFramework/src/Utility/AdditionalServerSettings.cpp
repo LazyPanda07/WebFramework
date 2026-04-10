@@ -10,7 +10,8 @@ namespace framework::utility
 	AdditionalServerSettings::AdditionalServerSettings() :
 		largeBodySizeThreshold(json_settings_values::largeBodySizeThresholdValue),
 		largeBodyPacketSize(json_settings_values::largeBodyPacketSizeValue),
-		cachingSize(0)
+		cachingSize(0),
+		dynamicFunctionValidation(true)
 	{
 
 	}
@@ -45,6 +46,13 @@ namespace framework::utility
 		else if (parser.contains<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey))
 		{
 			result.userAgentFilter = json::utility::JsonArrayWrapper(parser.get<std::vector<json::JsonObject>>(json_settings::userAgentFilterKey)).as<std::string>();
+		}
+
+		if (parser.contains<json::JsonObject>(json_settings::dynamicFunctionsObject))
+		{
+			const json::JsonObject& dynamicFunctions = parser.get<json::JsonObject>(json_settings::dynamicFunctionsObject);
+
+			dynamicFunctions.tryGet<bool>(json_settings::validationKey, result.dynamicFunctionValidation);
 		}
 
 		std::erase(result.userAgentFilter, "");

@@ -18,6 +18,7 @@ namespace framework::utility
 		std::filesystem::path assetsPath;
 		std::filesystem::path templatesPath;
 		uint64_t cachingSize;
+		bool dynamicFunctionValidation;
 
 	public:
 		static AdditionalServerSettings createSettings(const json::JsonParser& parser, const std::filesystem::path& basePath);

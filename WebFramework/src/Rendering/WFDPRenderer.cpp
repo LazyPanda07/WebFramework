@@ -32,7 +32,7 @@ namespace framework
 
 	}
 
-	std::vector<WFDPRenderer::ExecutionUnit> WFDPRenderer::parse(std::string_view code, const json::JsonObject& sharedArguments, bool checks)
+	std::vector<WFDPRenderer::ExecutionUnit> WFDPRenderer::parse(std::string_view code, const json::JsonObject& sharedArguments)
 	{
 		auto getOffset = [](std::string_view data) -> size_t
 			{
@@ -159,7 +159,7 @@ namespace framework
 
 						executionUnit.defaultArguments[std::move(name)] = std::move(value);
 					}
-					else if (checks)
+					else if (validation)
 					{
 						constexpr std::array<std::string_view, 7> types =
 						{
@@ -258,8 +258,9 @@ namespace framework
 		return result;
 	}
 
-	WFDPRenderer::WFDPRenderer(const std::filesystem::path& pathToTemplates) :
-		pathToTemplates(pathToTemplates)
+	WFDPRenderer::WFDPRenderer(const std::filesystem::path& pathToTemplates, bool validation) :
+		pathToTemplates(pathToTemplates),
+		validation(validation)
 	{
 		dynamicPagesFunctions.try_emplace("print", createPrintFunction());
 		dynamicPagesFunctions.try_emplace("include", createIncludeFunction(pathToTemplates));
@@ -286,7 +287,7 @@ namespace framework
 			(
 				source.begin() + nextSectionStart,
 				source.begin() + nextSectionEnd + 2,
-				this->execute(WFDPRenderer::parse(code, sharedArguments, true))
+				this->execute(this->parse(code, sharedArguments))
 			);
 
 			nextSectionStart = source.find("{%", nextSectionStart + 1);
