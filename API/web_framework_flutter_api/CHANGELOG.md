@@ -1,3 +1,6 @@
+## 3.3.7
+* Add HTTP parsing validation
+
 ## 3.3.6
 * Add ignoring SIGPIPE
 
