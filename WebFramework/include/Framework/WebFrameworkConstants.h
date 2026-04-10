@@ -152,6 +152,7 @@ namespace framework::logging
 		inline constexpr char sources[] = "LogSources";
 		inline constexpr char executorServer[] = "LogExecutorServer";
 		inline constexpr char webFramework[] = "LogWebFramework";
+		inline constexpr char singleBinaryAsset[] = "LogSingleBinaryAsset";
 	}
 
 	namespace message
@@ -240,6 +241,9 @@ namespace framework::logging
 		inline constexpr char cantFindAssetFromIncludePath[] = "Can't find asset: {} from 'includePath' string field in include function";
 		inline constexpr char wrongType[] = "Wrong type: {} in function: {}";
 		inline constexpr char cantFindFunctionField[] = "Can't find @{} field for function {}";
+		inline constexpr char cantOpenFile[] = "Can't open file: {}";
+		inline constexpr char notASingleBinaryAsset[] = "File: {} not a binary single asset";
+		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";

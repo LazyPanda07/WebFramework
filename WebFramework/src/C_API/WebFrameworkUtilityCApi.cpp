@@ -2747,6 +2747,22 @@ String generateSha256(const char* data, size_t size, Exception* exception)
 	return nullptr;
 }
 
+void generateBinaryAssetFile(const char* filePath, const char* outputPath, Exception* exception)
+{
+	try
+	{
+		// TODO: generate binary asset file
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void deleteWebFrameworkJsonObject(JsonObject object)

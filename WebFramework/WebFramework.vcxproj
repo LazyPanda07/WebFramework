@@ -132,6 +132,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\AssetProvider.cpp" />
+    <ClCompile Include="src\Assets\DefaultAssetProvider.cpp" />
+    <ClCompile Include="src\Assets\SingleBinaryAsset.cpp" />
+    <ClCompile Include="src\Assets\SingleBinaryAssetProvider.cpp" />
     <ClCompile Include="src\C_API\WebFrameworkExecutorsCApi.cpp" />
     <ClCompile Include="src\C_API\WebFrameworkLocalizationCApi.cpp" />
     <ClCompile Include="src\C_API\WebFrameworkUtilityCApi.cpp" />
@@ -209,6 +213,10 @@
     <ClCompile Include="src\Web\Servers\ThreadPoolWebServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Assets\AssetProvider.h" />
+    <ClInclude Include="include\Assets\DefaultAssetProvider.h" />
+    <ClInclude Include="include\Assets\SingleBinaryAsset.h" />
+    <ClInclude Include="include\Assets\SingleBinaryAssetProvider.h" />
     <ClInclude Include="include\C_API\WebFrameworkExecutorsCApi.h" />
     <ClInclude Include="include\C_API\WebFrameworkLocalizationCApi.h" />
     <ClInclude Include="include\C_API\WebFrameworkUtilityCApi.h" />

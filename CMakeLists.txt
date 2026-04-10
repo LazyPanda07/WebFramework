@@ -144,6 +144,10 @@ add_library(
 	WebFramework/src/TaskBroker/TaskExecutors/CCTaskExecutor.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/PythonTaskExecutor.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/CSharpTaskExecutor.cpp
+	WebFramework/src/Assets/AssetProvider.cpp
+	WebFramework/src/Assets/DefaultAssetProvider.cpp
+	WebFramework/src/Assets/SingleBinaryAssetProvider.cpp
+	WebFramework/src/Assets/SingleBinaryAsset.cpp
 )
 
 if (${WITH_UNITY_BUILD})

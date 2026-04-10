@@ -36,6 +36,8 @@ namespace framework::utility
 		template<typename... Args>
 		std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args);
 	}
+
+	void generateBinaryAssetFile(const std::filesystem::path& filePath, const std::filesystem::path& outputPath);
 }
 
 namespace framework::utility
@@ -86,6 +88,29 @@ namespace framework::utility
 			std::array<SqlValue, sizeof...(Args)> result({ std::forward<Args>(args)... });
 
 			return result;
+		}
+	}
+
+	inline void generateBinaryAssetFile(const std::filesystem::path& filePath, const std::filesystem::path& outputPath)
+	{
+		using generateBinaryAssetFile = void (*)(const char* filePath, const char* outputPath, void** exception);
+		void* exception = nullptr;
+
+		if (!std::filesystem::exists(filePath))
+		{
+			throw std::runtime_error(std::format("Can't find {} path", filePath.string()));
+		}
+
+		if (!std::filesystem::is_directory(filePath))
+		{
+			throw std::runtime_error(std::format("{} must be directory", filePath.string()));
+		}
+
+		DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(generateBinaryAssetFile, filePath.string().data(), outputPath.string().data(), &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
 		}
 	}
 }

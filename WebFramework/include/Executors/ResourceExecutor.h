@@ -11,6 +11,8 @@
 #include "Framework/WebFrameworkPlatform.h"
 #include "Rendering/WFDPRenderer.h"
 #include "Utility/AdditionalServerSettings.h"
+#include "Assets/DefaultAssetProvider.h"
+#include "Assets/SingleBinaryAssetProvider.h"
 
 namespace framework
 {
@@ -32,18 +34,16 @@ namespace framework
 
 	private:
 		const std::filesystem::path defaultAssets;
-		const std::filesystem::path assets;
+		asset::DefaultAssetProvider defaultAssetProvider;
+		std::vector<asset::SingleBinaryAssetProvider> singleBinaryAssetProviders;
 		WFDPRenderer wfdpRenderer;
 		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
-		file_manager::FileManager& fileManager;
 		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual> staticRenderers;
 
 	private:
 		void loadHTMLErrorsData();
 
 		void loadStaticRenderers();
-
-		void readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
 
 	public:
 		ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);

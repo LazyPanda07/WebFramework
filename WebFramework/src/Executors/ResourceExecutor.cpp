@@ -52,16 +52,6 @@ namespace framework
 		staticRenderers.try_emplace(mdRenderer->getExtension(), move(mdRenderer));
 	}
 
-	void ResourceExecutor::readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle)
-	{
-		result = handle->readAllData();
-
-		if (result.empty())
-		{
-			throw exceptions::BadRequestException("File is empty");
-		}
-	}
-
 	ResourceExecutor::ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
 		defaultAssets
 		(
@@ -69,15 +59,14 @@ namespace framework
 			configuration.get<json::JsonObject>(json_settings::webFrameworkObject)[json_settings::webFrameworkDefaultAssetsPath].get<std::string>() :
 			webFrameworkDefaultAssests
 		),
-		assets(additionalSettings.assetsPath),
-		wfdpRenderer(additionalSettings.templatesPath),
-		fileManager(file_manager::FileManager::getInstance(threadPool))
+		defaultAssetProvider(additionalSettings.assetsPath, threadPool),
+		wfdpRenderer(additionalSettings.templatesPath)
 	{
-		fileManager.getCache().setCacheSize(additionalSettings.cachingSize);
+		file_manager::FileManager::getInstance().getCache().setCacheSize(additionalSettings.cachingSize);
 
-		if (!std::filesystem::exists(assets))
+		if (!std::filesystem::exists(additionalSettings.assetsPath))
 		{
-			std::filesystem::create_directories(assets);
+			std::filesystem::create_directories(additionalSettings.assetsPath);
 		}
 
 		if (!std::filesystem::exists(wfdpRenderer.getPathToTemplates()))
@@ -206,12 +195,17 @@ namespace framework
 			return false;
 		}
 
-		return fileManager.exists(assets / filePath);
+		if (std::ranges::any_of(singleBinaryAssetProviders, [&filePath](const asset::SingleBinaryAssetProvider& provider) { return provider.exists(filePath); }))
+		{
+			return true;
+		}
+
+		return defaultAssetProvider.exists(filePath);
 	}
 
 	bool ResourceExecutor::getIsCaching() const
 	{
-		return fileManager.getCache().getCacheSize();
+		return file_manager::FileManager::getInstance().getCache().getCacheSize();
 	}
 
 	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary, std::string_view fileName)
@@ -224,29 +218,20 @@ namespace framework
 		}
 
 		std::string result;
-		std::filesystem::path assetFilePath(assets / filePath);
 
-		if (!std::filesystem::exists(assetFilePath))
+		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
 		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+			if (provider.exists(filePath))
+			{
+				provider.getAsset(filePath, result);
+
+				break;
+			}
 		}
 
-		std::filesystem::path extension = assetFilePath.extension();
-
-		if (Log::isValid())
+		if (result.empty())
 		{
-			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath, isBinary);
-		}
-
-		auto renderer = staticRenderers.find(extension.string());
-
-		if (isBinary)
-		{
-			fileManager.readBinaryFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
-		}
-		else
-		{
-			fileManager.readFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
+			defaultAssetProvider.getAsset(filePath, result);
 		}
 
 		if (fileName.size())
@@ -254,12 +239,17 @@ namespace framework
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		if (renderer != staticRenderers.end())
+		if (auto renderer = staticRenderers.find(std::filesystem::path(filePath).extension().string()); renderer != staticRenderers.end())
 		{
 			result = renderer->second->render(result);
 		}
 
 		response.setBody(result.data(), result.size());
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath, isBinary);
+		}
 	}
 
 	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, const void* arguments, bool isBinary, std::string_view fileName)
@@ -272,27 +262,20 @@ namespace framework
 		}
 
 		std::string result;
-		std::filesystem::path assetFilePath(assets / filePath);
 
-		if (!std::filesystem::exists(assetFilePath))
+		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
 		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+			if (provider.exists(filePath))
+			{
+				provider.getAsset(filePath, result);
+
+				break;
+			}
 		}
 
-		std::filesystem::path extension = assetFilePath.extension();
-
-		if (Log::isValid())
+		if (result.empty())
 		{
-			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath, isBinary);
-		}
-
-		if (isBinary)
-		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
-		}
-		else
-		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
+			defaultAssetProvider.getAsset(filePath, result);
 		}
 
 		wfdpRenderer.run(arguments, result);
@@ -303,6 +286,11 @@ namespace framework
 		}
 
 		response.setBody(result.data(), result.size());
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath, isBinary);
+		}
 	}
 
 	void ResourceExecutor::processDynamicFile(std::string& data, const void* arguments)
@@ -344,7 +332,7 @@ namespace framework
 
 	const std::filesystem::path& ResourceExecutor::getPathToAssets() const
 	{
-		return assets;
+		return defaultAssetProvider.getPathToAsset();
 	}
 
 	const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& ResourceExecutor::getStaticRenderers() const

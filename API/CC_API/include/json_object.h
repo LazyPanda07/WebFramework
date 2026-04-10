@@ -2,8 +2,6 @@
 
 #include "dll_handler.h"
 
-// TODO: emplacing elements invalidating previous pointers
-
 /**
  * @brief JsonObject
  */
