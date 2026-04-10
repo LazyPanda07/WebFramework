@@ -37,7 +37,14 @@ namespace framework::utility
 		std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args);
 	}
 
-	void generateBinaryAssetFile(const std::filesystem::path& filePath, const std::filesystem::path& outputPath);
+	/**
+	 * @brief Generates a binary asset file from the specified input file and writes it to the given output path. Progress may be reported via an optional callback.
+	 * @param directoryPath Path to the input directory with assets to convert into a binary asset.
+	 * @param outputPath Path where the generated binary asset file will be written.
+	 * @param progressCallback Optional callback invoked to report progress. The callback has the signature void(float progress, const char* assetPath, void* data); progress is typically in the range [0.0, 1.0], assetPath is a null-terminated string identifying the currently processed asset, and data is the user pointer provided to this function.
+	 * @param data Optional user-defined pointer that is passed through to progressCallback; defaults to nullptr.
+	 */
+	void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data) = nullptr, void* data = nullptr);
 }
 
 namespace framework::utility
@@ -91,22 +98,22 @@ namespace framework::utility
 		}
 	}
 
-	inline void generateBinaryAssetFile(const std::filesystem::path& filePath, const std::filesystem::path& outputPath)
+	inline void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data)
 	{
-		using generateBinaryAssetFile = void (*)(const char* filePath, const char* outputPath, void** exception);
+		using generateBinaryAssetFile = void (*)(const char* filePath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, void** exception);
 		void* exception = nullptr;
 
-		if (!std::filesystem::exists(filePath))
+		if (!std::filesystem::exists(directoryPath))
 		{
-			throw std::runtime_error(std::format("Can't find {} path", filePath.string()));
+			throw std::runtime_error(std::format("Can't find {} path", directoryPath.string()));
 		}
 
-		if (!std::filesystem::is_directory(filePath))
+		if (!std::filesystem::is_directory(directoryPath))
 		{
-			throw std::runtime_error(std::format("{} must be directory", filePath.string()));
+			throw std::runtime_error(std::format("{} must be directory", directoryPath.string()));
 		}
 
-		DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(generateBinaryAssetFile, filePath.string().data(), outputPath.string().data(), &exception);
+		DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(generateBinaryAssetFile, directoryPath.string().data(), outputPath.string().data(), progressCallback, data, &exception);
 
 		if (exception)
 		{

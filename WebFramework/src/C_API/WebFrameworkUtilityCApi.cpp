@@ -9,6 +9,8 @@
 #include "DatabaseInterfaces/IDatabase.h"
 #include "Databases/SQLValueImplementation.h"
 #include "SHA256.h"
+#include "Assets/SingleBinaryAsset.h"
+#include "Framework/WebFrameworkConstants.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -2747,11 +2749,99 @@ String generateSha256(const char* data, size_t size, Exception* exception)
 	return nullptr;
 }
 
-void generateBinaryAssetFile(const char* filePath, const char* outputPath, Exception* exception)
+void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, Exception* exception)
 {
 	try
 	{
-		// TODO: generate binary asset file
+		std::ofstream stream(outputPath, std::ios::binary);
+
+		if (!stream.is_open())
+		{
+			throw std::runtime_error(std::format(framework::logging::message::cantCreateFile, outputPath));
+		}
+
+		stream.close();
+
+		framework::asset::SingleBinaryAsset::SingleBinaryAssetHeader header;
+		std::vector<std::filesystem::path> assets;
+		size_t assetNamesSize = 0;
+
+		for (const auto& it : std::filesystem::recursive_directory_iterator(directoryPath))
+		{
+			if (!std::filesystem::is_regular_file(it))
+			{
+				continue;
+			}
+
+			const std::filesystem::path& asset = assets.emplace_back(it.path());
+			std::string assetName = asset.string();
+
+			assetNamesSize += assetName.size();
+			header.fileDataSize += std::filesystem::file_size(asset);
+			header.startFileDataOffset += sizeof(decltype(assetName.size())) + assetName.size() + sizeof(framework::asset::SingleBinaryAsset::Asset::offset) + sizeof(framework::asset::SingleBinaryAsset::Asset::size); // size of asset name + name + offset + size
+		}
+
+		stream.open(outputPath, std::ios::binary);
+
+		if (!stream.is_open())
+		{
+			throw std::runtime_error(std::format(framework::logging::message::cantOpenFile, outputPath));
+		}
+
+		stream.write(reinterpret_cast<const char*>(&header), sizeof(header));
+
+		size_t accumulatedSize = 0;
+
+		for (const std::filesystem::path& asset : assets)
+		{
+			constexpr size_t serializedFieldsNumber = 3;
+
+			std::string assetName = asset.string();
+			size_t assetNameSize = assetName.size();
+			uint64_t offset = sizeof(header) + assets.size() * serializedFieldsNumber + assetNamesSize + accumulatedSize;
+			uint64_t size = std::filesystem::file_size(asset);
+
+			stream.write(reinterpret_cast<const char*>(&assetNameSize), sizeof(assetNameSize));
+			stream.write(assetName.data(), assetNameSize);
+			stream.write(reinterpret_cast<const char*>(&offset), sizeof(offset));
+			stream.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+			accumulatedSize += size;
+		}
+
+		constexpr std::size_t chunkSize = 10 * 1024 * 1024; // 10 MiB
+		std::vector<char> buffer(chunkSize);
+
+		for (size_t i = 0; i < assets.size(); i++)
+		{
+			const std::filesystem::path& asset = assets[i];
+			std::ifstream in(asset, std::ios::binary);
+
+			if (progressCallback)
+			{
+				progressCallback(static_cast<float>(i) / assets.size(), asset.string().data(), data);
+			}
+
+			while (in)
+			{
+				in.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+
+				if (std::streamsize bytesRead = in.gcount())
+				{
+					stream.write(buffer.data(), bytesRead);
+
+					if (!stream)
+					{
+						throw std::runtime_error("Failed to write to output stream");
+					}
+				}
+			}
+
+			if (!in.eof() && in.fail())
+			{
+				throw std::runtime_error(std::format("Failed to read from {} stream", asset.string()));
+			}
+		}
 	}
 	catch (const std::exception& e)
 	{

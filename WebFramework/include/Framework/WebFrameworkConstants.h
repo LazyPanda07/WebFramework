@@ -244,6 +244,7 @@ namespace framework::logging
 		inline constexpr char wrongType[] = "Wrong type: {} in function: {}";
 		inline constexpr char cantFindFunctionField[] = "Can't find @{} field for function {}";
 		inline constexpr char cantOpenFile[] = "Can't open file: {}";
+		inline constexpr char cantCreateFile[] = "Can't create file: {}";
 		inline constexpr char notASingleBinaryAsset[] = "File: {} not a binary single asset";
 		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
 
