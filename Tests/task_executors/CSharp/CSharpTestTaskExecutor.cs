@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 class CSharpTestTaskExecutor : ITaskExecutor
 {
-	public void Invoke(JsonObject arguments)
+	public void Invoke(in JsonObject arguments)
 	{
 		const string header = "From CSharpTestTaskExecutor";
 
