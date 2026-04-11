@@ -644,7 +644,7 @@ void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size,
 	}
 }
 
-void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, bool isBinary, const char* fileName, Exception* exception)
+void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -653,7 +653,6 @@ void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponse
 			filePath,
 			static_cast<framework::interfaces::IHttpResponse*>(response),
 			arguments,
-			isBinary,
 			fileName
 		);
 	}
@@ -667,11 +666,16 @@ void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponse
 	}
 }
 
-void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, bool isBinary, const char* fileName, Exception* exception)
+void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const char* fileName, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->sendStaticFile(filePath, static_cast<framework::interfaces::IHttpResponse*>(response), isBinary, fileName);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->sendStaticFile
+		(
+			filePath, 
+			static_cast<framework::interfaces::IHttpResponse*>(response), 
+			fileName
+		);
 	}
 	catch (const std::exception& e)
 	{
@@ -683,7 +687,7 @@ void sendStaticFile(HttpRequestObject request, const char* filePath, HttpRespons
 	}
 }
 
-void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, bool isBinary, const char* fileName, Exception* exception)
+void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -692,7 +696,6 @@ void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpRespon
 			filePath,
 			static_cast<framework::interfaces::IHttpResponse*>(response),
 			arguments,
-			isBinary,
 			fileName
 		);
 	}

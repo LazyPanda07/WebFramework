@@ -249,8 +249,8 @@ namespace framework::logging
 		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
-		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";
-		inline constexpr char requestDynamicFile[] = "Request dynamic file: {}, is binary: {}";
+		inline constexpr char requestStaticFile[] = "Request static file: {}";
+		inline constexpr char requestDynamicFile[] = "Request dynamic file: {}";
 		inline constexpr char registerFunction[] = "Register function: {} from: {}";
 		inline constexpr char addRuntime[] = "Add {} runtime";
 		inline constexpr char httpsInitialization[] = "Using HTTPS with certificate: {}, key: {}";

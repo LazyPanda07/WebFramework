@@ -79,11 +79,11 @@ EXPORT void getMultiparts(HttpRequestObject request, void(*initMultipartsBuffer)
 
 EXPORT void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size, void* buffer), void(addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 
-EXPORT void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, bool isBinary, const char* fileName, Exception* exception);
+EXPORT void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception);
 
-EXPORT void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, bool isBinary, const char* fileName, Exception* exception);
+EXPORT void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const char* fileName, Exception* exception);
 
-EXPORT void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, bool isBinary, const char* fileName, Exception* exception);
+EXPORT void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception);
 
 EXPORT void streamFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const char* fileName, size_t chunkSize, Exception* exception);
 

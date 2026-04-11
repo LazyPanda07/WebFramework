@@ -197,22 +197,20 @@ web_framework_exception_t wf_get_large_data(http_request_t implementation, const
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
  * @param arguments Arguments for processing if file is .wfdp
- * @param isBinary Is binary file
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, const char* file_name);
 
 /**
  * @brief Send static file
  * @param implementation http_request_t instance
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
- * @param isBinary Is binary file
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* file_path, http_response_t response, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* file_path, http_response_t response, const char* file_name);
 
 /**
  * @brief Send .wfdp file
@@ -220,11 +218,10 @@ web_framework_exception_t wf_send_static_file(http_request_t implementation, con
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
  * @param arguments Arguments for processing .wfdp file
- * @param isBinary Is binary file
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, const char* file_name);
 
 /**
  * @brief Send file with specific chunk size

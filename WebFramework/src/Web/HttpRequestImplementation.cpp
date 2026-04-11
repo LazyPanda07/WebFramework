@@ -321,21 +321,21 @@ namespace framework
 		return &largeData;
 	}
 
-	void HttpRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, const char* fileName)
 	{
 		HttpRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
-			this->sendDynamicFile(filePath, response, arguments, isBinary, fileName) :
-			this->sendStaticFile(filePath, response, isBinary, fileName);
+			this->sendDynamicFile(filePath, response, arguments, fileName) :
+			this->sendStaticFile(filePath, response, fileName);
 	}
 
-	void HttpRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName)
 	{
-		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
+		staticResources.sendStaticFile(filePath, *response, fileName);
 	}
 
-	void HttpRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, const char* fileName)
 	{
-		dynamicResources.sendDynamicFile(filePath, *response, arguments, isBinary, fileName);
+		dynamicResources.sendDynamicFile(filePath, *response, arguments, fileName);
 	}
 
 	void HttpRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)

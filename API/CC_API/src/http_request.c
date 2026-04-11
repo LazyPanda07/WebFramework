@@ -399,35 +399,35 @@ web_framework_exception_t wf_get_large_data(http_request_t implementation, const
 	return exception;
 }
 
-web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* filePath, http_response_t response, const json_object_t* arguments, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* filePath, http_response_t response, const json_object_t* arguments, const char* fileName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*sendAssetFile)(void* implementation, const char* filePath, void* response, const void* arguments, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendAssetFile)(void* implementation, const char* filePath, void* response, const void* arguments, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendAssetFile, filePath, response, arguments->implementation, isBinary, fileName ? fileName : "", &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendAssetFile, filePath, response, arguments->implementation, fileName ? fileName : "", &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* filePath, http_response_t response, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* filePath, http_response_t response, const char* fileName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, isBinary, fileName ? fileName : "", &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, fileName ? fileName : "", &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* filePath, http_response_t response, const json_object_t* arguments, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* filePath, http_response_t response, const json_object_t* arguments, const char* fileName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*sendDynamicFile)(void* implementation, const char* filePath, void* response, const void* arguments, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendDynamicFile)(void* implementation, const char* filePath, void* response, const void* arguments, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendDynamicFile, filePath, response, arguments->implementation, isBinary, fileName ? fileName : "", &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendDynamicFile, filePath, response, arguments->implementation, fileName ? fileName : "", &exception);
 
 	return exception;
 }

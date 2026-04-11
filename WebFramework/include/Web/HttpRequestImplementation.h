@@ -182,7 +182,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments = nullptr, bool isBinary = true, const char* fileName = "") override;
+		void sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments = nullptr, const char* fileName = "") override;
 
 		/**
 		* Send non dynamic file
@@ -190,7 +190,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary = true, const char* fileName = "") override;
+		void sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName = "") override;
 
 		/**
 		* Send dynamic file(.wfdp)
@@ -199,7 +199,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, bool isBinary = false, const char* fileName = "") override;
+		void sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, const char* fileName = "") override;
 
 		/**
 		* Send large files

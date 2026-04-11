@@ -106,11 +106,11 @@ namespace framework::interfaces
 
 		virtual const CLargeData* getLargeData() const = 0;
 
-		virtual void sendAssetFile(const char* filePath, IHttpResponse* response, const void* arguments = nullptr, bool isBinary = true, const char* fileName = "") = 0;
+		virtual void sendAssetFile(const char* filePath, IHttpResponse* response, const void* arguments = nullptr, const char* fileName = "") = 0;
 
-		virtual void sendStaticFile(const char* filePath, IHttpResponse* response, bool isBinary = true, const char* fileName = "") = 0;
+		virtual void sendStaticFile(const char* filePath, IHttpResponse* response, const char* fileName = "") = 0;
 
-		virtual void sendDynamicFile(const char* filePath, IHttpResponse* response, const void* arguments, bool isBinary = false, const char* fileName = "") = 0;
+		virtual void sendDynamicFile(const char* filePath, IHttpResponse* response, const void* arguments, const char* fileName = "") = 0;
 
 		virtual void streamFile(const char* filePath, IHttpResponse* response, const char* fileName, size_t chunkSize = IHttpRequest::defaultChunkSize) = 0;
 

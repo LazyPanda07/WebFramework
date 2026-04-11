@@ -208,7 +208,7 @@ namespace framework
 		return file_manager::FileManager::getInstance().getCache().getCacheSize();
 	}
 
-	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, std::string_view fileName)
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
@@ -248,11 +248,11 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath, isBinary);
+			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath);
 		}
 	}
 
-	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, const void* arguments, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, const void* arguments, std::string_view fileName)
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
@@ -289,7 +289,7 @@ namespace framework
 
 		if (Log::isValid())
 		{
-			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath, isBinary);
+			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath);
 		}
 	}
 

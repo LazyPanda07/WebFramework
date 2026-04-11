@@ -14,7 +14,7 @@ namespace framework::interfaces
 		/**
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
 		*/
-		virtual void sendDynamicFile(std::string_view filePath, IHttpResponse& response, const void* arguments, bool isBinary, std::string_view fileName) = 0;
+		virtual void sendDynamicFile(std::string_view filePath, IHttpResponse& response, const void* arguments, std::string_view fileName) = 0;
 
 		virtual void processDynamicFile(std::string& data, const void* arguments) = 0;
 

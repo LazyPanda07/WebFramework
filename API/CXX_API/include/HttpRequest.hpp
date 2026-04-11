@@ -204,7 +204,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments = {}, bool isBinary = true, std::string_view fileName = "");
+		void sendAssetFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments = {}, std::string_view fileName = "");
 
 		/**
 		* Send non dynamic file
@@ -212,7 +212,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(std::string_view filePath, HttpResponse& response, bool isBinary = true, std::string_view fileName = "");
+		void sendStaticFile(std::string_view filePath, HttpResponse& response, std::string_view fileName = "");
 
 		/**
 		* Send .wfdp file
@@ -221,7 +221,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments, bool isBinary = false, std::string_view fileName = "");
+		void sendDynamicFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments, std::string_view fileName = "");
 
 		/**
 		* Send large files
@@ -713,19 +713,19 @@ namespace framework
 		return LargeData(std::string_view(data->dataPart, data->dataPartSize), data->isLastPacket);
 	}
 
-	inline void HttpRequest::sendAssetFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendAssetFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments, std::string_view fileName)
 	{
-		implementation->sendAssetFile(filePath.data(), response.implementation, arguments.implementation, isBinary, fileName.data());
+		implementation->sendAssetFile(filePath.data(), response.implementation, arguments.implementation, fileName.data());
 	}
 
-	inline void HttpRequest::sendStaticFile(std::string_view filePath, HttpResponse& response, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendStaticFile(std::string_view filePath, HttpResponse& response, std::string_view fileName)
 	{
-		implementation->sendStaticFile(filePath.data(), response.implementation, isBinary, fileName.data());
+		implementation->sendStaticFile(filePath.data(), response.implementation, fileName.data());
 	}
 
-	inline void HttpRequest::sendDynamicFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments, bool isBinary, std::string_view fileName)
+	inline void HttpRequest::sendDynamicFile(std::string_view filePath, HttpResponse& response, const JsonObject& arguments, std::string_view fileName)
 	{
-		implementation->sendDynamicFile(filePath.data(), response.implementation, arguments.implementation, isBinary, fileName.data());
+		implementation->sendDynamicFile(filePath.data(), response.implementation, arguments.implementation, fileName.data());
 	}
 
 	inline void HttpRequest::streamFile(std::string_view filePath, HttpResponse& response, std::string_view fileName, size_t chunkSize)

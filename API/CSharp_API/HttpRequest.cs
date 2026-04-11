@@ -150,13 +150,13 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial void getMultiparts(IntPtr implementation, InitBufferCallback initMultipartsBuffer, AddMultipartCallback addMultipart, IntPtr buffer, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, IntPtr arguments, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
+	private static partial void sendAssetFile(IntPtr implementation, string filePath, IntPtr response, IntPtr arguments, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
+	private static partial void sendStaticFile(IntPtr implementation, string filePath, IntPtr response, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, IntPtr arguments, [MarshalAs(UnmanagedType.Bool)] bool isBinary, string fileName, ref IntPtr exception);
+	private static partial void sendDynamicFile(IntPtr implementation, string filePath, IntPtr response, IntPtr arguments, string fileName, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void streamFile(IntPtr implementation, string filePath, IntPtr response, string fileName, nuint chunkSize, ref IntPtr exception);
@@ -963,7 +963,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="isBinary"></param>
 	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void SendAssetFile(string filePath, HttpResponse response, JsonObject? arguments = null, bool? isBinary = null, string? fileName = null)
+	public void SendAssetFile(string filePath, HttpResponse response, JsonObject? arguments = null, string? fileName = null)
 	{
 		IntPtr exception = IntPtr.Zero;
 		IntPtr jsonParser = IntPtr.Zero;
@@ -998,7 +998,6 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			filePath,
 			response.implementation,
 			jsonObjectData,
-			(bool)(isBinary == null ? true : isBinary),
 			fileName ?? "",
 			ref exception
 		);
@@ -1019,7 +1018,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="isBinary"></param>
 	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void SendStaticFile(string filePath, HttpResponse response, bool? isBinary = null, string? fileName = null)
+	public void SendStaticFile(string filePath, HttpResponse response, string? fileName = null)
 	{
 		IntPtr exception = IntPtr.Zero;
 
@@ -1028,7 +1027,6 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			implementation,
 			filePath,
 			response.implementation,
-			(bool)(isBinary == null ? true : isBinary),
 			fileName ?? "",
 			ref exception
 		);
@@ -1048,7 +1046,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	/// <param name="isBinary"></param>
 	/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 	/// <exception cref="WebFrameworkException"></exception>
-	public void SendDynamicFile(string filePath, HttpResponse response, JsonObject? arguments = null, bool? isBinary = null, string? fileName = null)
+	public void SendDynamicFile(string filePath, HttpResponse response, JsonObject? arguments = null, string? fileName = null)
 	{
 		IntPtr exception = IntPtr.Zero;
 		IntPtr jsonParser = IntPtr.Zero;
@@ -1083,7 +1081,6 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			filePath,
 			response.implementation,
 			jsonObjectData,
-			(bool)(isBinary == null ? true : isBinary),
 			(fileName ?? ""),
 			ref exception
 		);
