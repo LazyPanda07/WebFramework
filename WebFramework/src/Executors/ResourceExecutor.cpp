@@ -1,6 +1,6 @@
 #include "Executors/ResourceExecutor.h"
 
-#include <Log.h>
+#include <JsonArrayWrapper.h>
 #include <HttpBuilder.h>
 
 #include "Rendering/MDRenderer.h"
@@ -52,6 +52,21 @@ namespace framework
 		staticRenderers.try_emplace(mdRenderer->getExtension(), move(mdRenderer));
 	}
 
+	void ResourceExecutor::loadBinaryAssets(const json::JsonObject& webFrameworkObject, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool)
+	{
+		std::vector<json::JsonObject> temp;
+
+		if (webFrameworkObject.tryGet<std::vector<json::JsonObject>>(json_settings::binaryAssetsKey, temp))
+		{
+			std::vector<std::string> binaryAssets = json::utility::JsonArrayWrapper(temp).as<std::string>();
+
+			for (const std::string& binaryAsset : binaryAssets)
+			{
+				singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, binaryAsset);
+			}
+		}
+	}
+
 	ResourceExecutor::ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
 		defaultAssets
 		(
@@ -76,6 +91,7 @@ namespace framework
 
 		this->loadHTMLErrorsData();
 		this->loadStaticRenderers();
+		this->loadBinaryAssets(configuration.get<json::JsonObject>(json_settings::webFrameworkObject), additionalSettings, threadPool);
 	}
 
 	void ResourceExecutor::notFoundError(interfaces::IHttpResponse& response, const std::exception* exception)

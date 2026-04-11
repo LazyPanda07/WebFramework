@@ -101,7 +101,7 @@ DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 
 	snprintf(fullName, sizeof(fullName), "%s.%s", fileName, extension);
 
-	wf_send_dynamic_file(request, fullName, response, &arguments, false, "");
+	wf_send_dynamic_file(request, fullName, response, &arguments, "");
 
 	wf_delete_json_object(&arguments);
 }

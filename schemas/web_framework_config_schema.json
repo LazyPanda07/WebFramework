@@ -272,6 +272,13 @@
               "default": true
             }
           }
+        },
+        "binaryAssets": {
+          "type": "array",
+          "description": "Path to generated binary assets",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [ "assetsPath", "templatesPath", "webServerType" ],
