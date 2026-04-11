@@ -2763,7 +2763,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 		stream.close();
 
 		framework::asset::SingleBinaryAsset::SingleBinaryAssetHeader header;
-		std::vector<std::filesystem::path> assets;
+		std::vector<std::pair<std::filesystem::path, std::filesystem::path>> assets;
 		size_t assetNamesSize = 0;
 
 		for (const auto& it : std::filesystem::recursive_directory_iterator(directoryPath))
@@ -2773,11 +2773,11 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 				continue;
 			}
 
-			const std::filesystem::path& asset = assets.emplace_back(std::filesystem::relative(it.path(), directoryPath));
-			std::string assetName = asset.string();
+			const auto& [assetRelativePath, assetPath] = assets.emplace_back(std::filesystem::relative(it.path(), directoryPath), it.path());
+			std::string assetName = assetRelativePath.string();
 
 			assetNamesSize += assetName.size();
-			header.fileDataSize += std::filesystem::file_size(asset);
+			header.fileDataSize += std::filesystem::file_size(assetPath);
 			header.startFileDataOffset += sizeof(decltype(assetName.size())) + assetName.size() + sizeof(framework::asset::SingleBinaryAsset::Asset::offset) + sizeof(framework::asset::SingleBinaryAsset::Asset::size); // size of asset name + name + offset + size
 		}
 
@@ -2792,14 +2792,14 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 
 		size_t accumulatedSize = 0;
 
-		for (const std::filesystem::path& asset : assets)
+		for (const auto& [assetRelativePath, assetPath] : assets)
 		{
 			constexpr size_t serializedFieldsNumber = 3;
 
-			std::string assetName = asset.string();
+			std::string assetName = assetRelativePath.string();
 			size_t assetNameSize = assetName.size();
-			uint64_t offset = sizeof(header) + assets.size() * serializedFieldsNumber + assetNamesSize + accumulatedSize;
-			uint64_t size = std::filesystem::file_size(asset);
+			uint64_t offset = accumulatedSize;
+			uint64_t size = std::filesystem::file_size(assetPath);
 
 			stream.write(reinterpret_cast<const char*>(&assetNameSize), sizeof(assetNameSize));
 			stream.write(assetName.data(), assetNameSize);
@@ -2814,12 +2814,12 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 
 		for (size_t i = 0; i < assets.size(); i++)
 		{
-			const std::filesystem::path& asset = assets[i];
-			std::ifstream in(asset, std::ios::binary);
+			const auto& [assetRelativePath, assetPath] = assets[i];
+			std::ifstream in(assetPath, std::ios::binary);
 
 			if (progressCallback)
 			{
-				progressCallback(static_cast<float>(i) / assets.size(), asset.string().data(), data);
+				progressCallback(static_cast<float>(i + 1) / assets.size(), assetRelativePath.string().data(), data);
 			}
 
 			while (in)
@@ -2839,7 +2839,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 
 			if (!in.eof() && in.fail())
 			{
-				throw std::runtime_error(std::format("Failed to read from {} stream", asset.string()));
+				throw std::runtime_error(std::format("Failed to read from {} stream", assetPath.string()));
 			}
 		}
 	}

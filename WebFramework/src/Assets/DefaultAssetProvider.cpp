@@ -9,16 +9,6 @@ namespace framework::asset
 		result = handle->readAllData();
 	}
 
-	void DefaultAssetProvider::getAsset(const std::filesystem::path& filePath, std::string& result)
-	{
-		if (!std::filesystem::exists(filePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(filePath);
-		}
-
-		fileManager.readBinaryFile(filePath, std::bind(&DefaultAssetProvider::readFile, std::ref(result), std::placeholders::_1));
-	}
-
 	DefaultAssetProvider::DefaultAssetProvider(const std::filesystem::path& assetsPath, std::shared_ptr<threading::ThreadPool> threadPool) :
 		AssetProvider(assetsPath, threadPool)
 	{
@@ -28,6 +18,18 @@ namespace framework::asset
 	bool DefaultAssetProvider::exists(const std::filesystem::path& filePath) const
 	{
 		return fileManager.exists(assetsPath / filePath);
+	}
+
+	void DefaultAssetProvider::getAsset(std::string_view filePath, std::string& result)
+	{
+		std::filesystem::path assetFilePath(assetsPath / filePath);
+
+		if (!std::filesystem::exists(filePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(filePath);
+		}
+
+		fileManager.readBinaryFile(filePath, std::bind(&DefaultAssetProvider::readFile, std::ref(result), std::placeholders::_1));
 	}
 
 	const std::filesystem::path& DefaultAssetProvider::getPathToAsset() const

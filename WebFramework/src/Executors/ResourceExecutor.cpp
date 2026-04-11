@@ -62,6 +62,11 @@ namespace framework
 				if (binaryAsset.is<std::string>())
 				{
 					singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, binaryAsset.get<std::string>(), true);
+
+					if (Log::isValid())
+					{
+						Log::info<logging::message::addBinaryAsset, logging::category::resource>(binaryAsset.get<std::string>(), true);
+					}
 				}
 				else
 				{
@@ -71,6 +76,11 @@ namespace framework
 					binaryAsset.tryGet<bool>(json_settings::fullyLoadKey, fullyLoad);
 
 					singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, path, fullyLoad);
+
+					if (Log::isValid())
+					{
+						Log::info<logging::message::addBinaryAsset, logging::category::resource>(path, fullyLoad);
+					}
 				}
 			}
 		}

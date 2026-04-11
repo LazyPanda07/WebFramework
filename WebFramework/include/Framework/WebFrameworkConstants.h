@@ -275,5 +275,6 @@ namespace framework::logging
 		inline constexpr char rabbitmqLogin[] = "Login to RabbitMQ from channel {}";
 		inline constexpr char startTaskConsuming[] = "Start task consuming";
 		inline constexpr char addTaskBroker[] = "Add task broker: {}";
+		inline constexpr char addBinaryAsset[] = "Add binary asset: {}, fully load: {}";
 	}
 }

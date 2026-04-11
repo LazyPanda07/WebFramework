@@ -2,7 +2,19 @@
 
 namespace framework::asset
 {
-	void SingleBinaryAssetProvider::getAsset(const std::filesystem::path& filePath, std::string& result)
+	SingleBinaryAssetProvider::SingleBinaryAssetProvider(const std::filesystem::path assetsPath, std::shared_ptr<threading::ThreadPool> threadPool, const std::filesystem::path& binaryAssetPath, bool fullyLoad) :
+		AssetProvider(assetsPath, threadPool),
+		asset(assetsPath / binaryAssetPath, fullyLoad)
+	{
+
+	}
+
+	bool SingleBinaryAssetProvider::exists(const std::filesystem::path& filePath) const
+	{
+		return asset.exists(filePath);
+	}
+
+	void SingleBinaryAssetProvider::getAsset(std::string_view filePath, std::string& result)
 	{
 		if (asset.isFullyLoad())
 		{
@@ -26,18 +38,6 @@ namespace framework::asset
 				}
 			}
 		}
-	}
-
-	SingleBinaryAssetProvider::SingleBinaryAssetProvider(const std::filesystem::path assetsPath, std::shared_ptr<threading::ThreadPool> threadPool, const std::filesystem::path& binaryAssetPath, bool fullyLoad) :
-		AssetProvider(assetsPath, threadPool),
-		asset(assetsPath / binaryAssetPath, fullyLoad)
-	{
-
-	}
-
-	bool SingleBinaryAssetProvider::exists(const std::filesystem::path& filePath) const
-	{
-		return asset.exists(filePath);
 	}
 
 	const std::filesystem::path& SingleBinaryAssetProvider::getPathToAsset() const

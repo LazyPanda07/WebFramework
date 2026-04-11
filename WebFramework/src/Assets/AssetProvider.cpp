@@ -8,11 +8,4 @@ namespace framework::asset
 	{
 
 	}
-
-	void AssetProvider::getAsset(std::string_view filePath, std::string& result)
-	{
-		std::filesystem::path assetFilePath(assetsPath / filePath);
-
-		this->getAsset(assetFilePath, result);
-	}
 }
