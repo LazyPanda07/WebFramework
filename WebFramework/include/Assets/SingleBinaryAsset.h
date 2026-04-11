@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
-#include <unordered_set>
+#include <unordered_map>
 
 namespace framework::asset
 {
@@ -27,29 +27,37 @@ namespace framework::asset
 
 		struct Asset
 		{
-			std::filesystem::path path;
 			uint64_t offset;
 			uint64_t size;
 
-			bool operator ==(const Asset& other) const noexcept;
-		};
-
-		struct AssetHash
-		{
-			size_t operator ()(const Asset& other) const noexcept;
+		public:
+			Asset(uint64_t offset, uint64_t size);
 		};
 
 	private:
 		static SingleBinaryAssetHeader parseHeader(const std::filesystem::path& asset, std::ifstream& stream);
 
 	private:
-		std::unordered_set<Asset, AssetHash> assets;
+		std::unordered_map<std::filesystem::path, Asset> assets;
+		std::filesystem::path asset;
 		decltype(SingleBinaryAssetHeader::version) version;
+		uint64_t startFileDataOffset;
+		uint64_t fileDataSize;
 
 	public:
-		SingleBinaryAsset();
+		SingleBinaryAsset(const std::filesystem::path& asset);
 
-		void load(const std::filesystem::path& asset);
+		size_t size() const noexcept;
+
+		bool exists(const std::filesystem::path& path) const;
+
+		const std::filesystem::path& getAsset() const noexcept;
+
+		uint64_t getFileDataSize() const noexcept;
+
+		uint64_t getStartFileDataOffset() const noexcept;
+
+		std::string operator [](const std::filesystem::path& path) const;
 
 		~SingleBinaryAsset() = default;
 	};

@@ -1,5 +1,7 @@
 #include "Assets/DefaultAssetProvider.h"
 
+#include <Exceptions/FileDoesNotExistException.h>
+
 namespace framework::asset
 {
 	void DefaultAssetProvider::readFile(std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle)
@@ -9,6 +11,11 @@ namespace framework::asset
 
 	void DefaultAssetProvider::getAsset(const std::filesystem::path& filePath, std::string& result)
 	{
+		if (!std::filesystem::exists(filePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(filePath);
+		}
+
 		fileManager.readBinaryFile(filePath, std::bind(&DefaultAssetProvider::readFile, std::ref(result), std::placeholders::_1));
 	}
 

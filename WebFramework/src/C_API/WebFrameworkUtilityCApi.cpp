@@ -2773,7 +2773,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 				continue;
 			}
 
-			const std::filesystem::path& asset = assets.emplace_back(it.path());
+			const std::filesystem::path& asset = assets.emplace_back(std::filesystem::relative(it.path(), directoryPath));
 			std::string assetName = asset.string();
 
 			assetNamesSize += assetName.size();

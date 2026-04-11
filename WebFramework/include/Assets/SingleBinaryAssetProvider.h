@@ -2,12 +2,14 @@
 
 #include "AssetProvider.h"
 
+#include "SingleBinaryAsset.h"
+
 namespace framework::asset
 {
 	class SingleBinaryAssetProvider : public AssetProvider
 	{
 	private:
-		std::filesystem::path binaryAssetPath;
+		SingleBinaryAsset asset;
 
 	private:
 		void getAsset(const std::filesystem::path& filePath, std::string& result) override;

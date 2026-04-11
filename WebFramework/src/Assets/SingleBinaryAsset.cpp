@@ -12,19 +12,16 @@ namespace framework::asset
 
 	}
 
-	bool SingleBinaryAsset::Asset::operator ==(const Asset& other) const noexcept
+	SingleBinaryAsset::Asset::Asset(uint64_t offset, uint64_t size) :
+		offset(offset),
+		size(size)
 	{
-		return path == other.path;
-	}
 
-	size_t SingleBinaryAsset::AssetHash::operator ()(const Asset& other) const noexcept
-	{
-		return std::hash<std::string>()(other.path.string());
 	}
 
 	SingleBinaryAsset::SingleBinaryAssetHeader SingleBinaryAsset::parseHeader(const std::filesystem::path& asset, std::ifstream& stream)
 	{
-		static framework::asset::SingleBinaryAsset::SingleBinaryAssetHeader defaultHeader;
+		static SingleBinaryAssetHeader defaultHeader;
 
 		if (!std::filesystem::exists(asset))
 		{
@@ -62,15 +59,79 @@ namespace framework::asset
 		return result;
 	}
 
-	SingleBinaryAsset::SingleBinaryAsset() :
-		version(SingleBinaryAssetHeader::currentVersion)
-	{
-		
-	}
-
-	void SingleBinaryAsset::load(const std::filesystem::path& asset)
+	SingleBinaryAsset::SingleBinaryAsset(const std::filesystem::path& asset) :
+		asset(asset),
+		version(SingleBinaryAssetHeader::currentVersion),
+		startFileDataOffset(0)
 	{
 		std::ifstream stream;
 		SingleBinaryAssetHeader header = SingleBinaryAsset::parseHeader(asset, stream);
+
+		version = header.version;
+		startFileDataOffset = header.startFileDataOffset;
+		fileDataSize = header.fileDataSize;
+
+		while (stream.tellg() != -1 && static_cast<uint64_t>(stream.tellg()) < startFileDataOffset)
+		{
+			std::string assetName;
+			uint64_t assetNameSize = 0;
+			uint64_t offset = 0;
+			uint64_t size = 0;
+
+			stream.read(reinterpret_cast<char*>(&assetNameSize), sizeof(assetNameSize));
+
+			assetName.resize(assetNameSize);
+
+			stream.read(assetName.data(), assetNameSize);
+			stream.read(reinterpret_cast<char*>(&offset), sizeof(offset));
+			stream.read(reinterpret_cast<char*>(&size), sizeof(size));
+
+			assets.try_emplace(assetName, offset, size);
+		}
+	}
+
+	size_t SingleBinaryAsset::size() const noexcept
+	{
+		return assets.size();
+	}
+
+	bool SingleBinaryAsset::exists(const std::filesystem::path& path) const
+	{
+		return assets.contains(path);
+	}
+
+	const std::filesystem::path& SingleBinaryAsset::getAsset() const noexcept
+	{
+		return asset;
+	}
+
+	uint64_t SingleBinaryAsset::getFileDataSize() const noexcept
+	{
+		return fileDataSize;
+	}
+
+	uint64_t SingleBinaryAsset::getStartFileDataOffset() const noexcept
+	{
+		return startFileDataOffset;
+	}
+
+	std::string SingleBinaryAsset::operator [](const std::filesystem::path& path) const
+	{
+		if (auto it = assets.find(path); it != assets.end())
+		{
+			std::ifstream stream(asset, std::ios::binary);
+			std::string result;
+			const auto& [offset, size] = it->second;
+
+			stream.seekg(offset, std::ios::beg);
+
+			result.resize(size);
+
+			stream.read(result.data(), size);
+
+			return result;
+		}
+
+		return "";
 	}
 }
