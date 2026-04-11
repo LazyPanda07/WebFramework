@@ -43,6 +43,8 @@ namespace json_settings
 	inline constexpr std::string_view runtimesKey = "runtimes";
 	inline constexpr std::string_view validationKey = "validation";
 	inline constexpr std::string_view binaryAssetsKey = "binaryAssets";
+	inline constexpr std::string_view pathKey = "path";
+	inline constexpr std::string_view fullyLoadKey = "fullyLoad";
 	
 	inline constexpr std::string_view heuristicNameKey = "name";
 	inline constexpr std::string_view listOfServersKey = "listOfServers";

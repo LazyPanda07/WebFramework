@@ -4,26 +4,33 @@ namespace framework::asset
 {
 	void SingleBinaryAssetProvider::getAsset(const std::filesystem::path& filePath, std::string& result)
 	{
-		file_manager::Cache& cache = fileManager.getCache();
-
-		if (cache.contains(filePath))
+		if (asset.isFullyLoad())
 		{
-			result = cache[filePath];
+			result = asset[filePath];
 		}
 		else
 		{
-			result = asset[filePath];
+			file_manager::Cache& cache = fileManager.getCache();
 
-			if (result.size())
+			if (cache.contains(filePath))
 			{
-				cache.appendCache(filePath, result);
+				result = cache[filePath];
+			}
+			else
+			{
+				result = asset[filePath];
+
+				if (result.size())
+				{
+					cache.appendCache(filePath, result);
+				}
 			}
 		}
 	}
 
-	SingleBinaryAssetProvider::SingleBinaryAssetProvider(const std::filesystem::path assetsPath, std::shared_ptr<threading::ThreadPool> threadPool, const std::filesystem::path& binaryAssetPath) :
+	SingleBinaryAssetProvider::SingleBinaryAssetProvider(const std::filesystem::path assetsPath, std::shared_ptr<threading::ThreadPool> threadPool, const std::filesystem::path& binaryAssetPath, bool fullyLoad) :
 		AssetProvider(assetsPath, threadPool),
-		asset(assetsPath / binaryAssetPath)
+		asset(assetsPath / binaryAssetPath, fullyLoad)
 	{
 
 	}

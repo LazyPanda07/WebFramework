@@ -43,13 +43,16 @@ namespace framework::asset
 		decltype(SingleBinaryAssetHeader::version) version;
 		uint64_t startFileDataOffset;
 		uint64_t fileDataSize;
+		std::string assetData;
 
 	public:
-		SingleBinaryAsset(const std::filesystem::path& asset);
+		SingleBinaryAsset(const std::filesystem::path& asset, bool fullyLoad);
 
 		size_t size() const noexcept;
 
 		bool exists(const std::filesystem::path& path) const;
+
+		bool isFullyLoad() const noexcept;
 
 		const std::filesystem::path& getAsset() const noexcept;
 
@@ -61,4 +64,12 @@ namespace framework::asset
 
 		~SingleBinaryAsset() = default;
 	};
+}
+
+namespace framework::asset
+{
+	inline bool SingleBinaryAsset::isFullyLoad() const noexcept
+	{
+		return !assetData.empty();
+	}
 }

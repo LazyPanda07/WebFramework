@@ -277,7 +277,25 @@
           "type": "array",
           "description": "Path to generated binary assets",
           "items": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Path to generated binary asset"
+                  },
+                  "fullyLoad": {
+                    "type": "boolean",
+                    "description": "Fully load into memory",
+                    "default": true
+                  }
+                }
+              }
+            ]
           }
         }
       },

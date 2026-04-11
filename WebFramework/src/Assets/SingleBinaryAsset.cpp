@@ -59,7 +59,7 @@ namespace framework::asset
 		return result;
 	}
 
-	SingleBinaryAsset::SingleBinaryAsset(const std::filesystem::path& asset) :
+	SingleBinaryAsset::SingleBinaryAsset(const std::filesystem::path& asset, bool fullyLoad) :
 		asset(asset),
 		version(SingleBinaryAssetHeader::currentVersion),
 		startFileDataOffset(0)
@@ -87,6 +87,13 @@ namespace framework::asset
 			stream.read(reinterpret_cast<char*>(&size), sizeof(size));
 
 			assets.try_emplace(assetName, offset, size);
+		}
+
+		if (fullyLoad)
+		{
+			assetData.resize(fileDataSize);
+
+			stream.read(assetData.data(), fileDataSize);
 		}
 	}
 
@@ -119,17 +126,25 @@ namespace framework::asset
 	{
 		if (auto it = assets.find(path); it != assets.end())
 		{
-			std::ifstream stream(asset, std::ios::binary);
-			std::string result;
 			const auto& [offset, size] = it->second;
 
-			stream.seekg(offset, std::ios::beg);
+			if (assetData.empty())
+			{
+				std::ifstream stream(asset, std::ios::binary);
+				std::string result;
 
-			result.resize(size);
+				result.resize(size);
 
-			stream.read(result.data(), size);
+				stream.seekg(offset, std::ios::beg);
 
-			return result;
+				stream.read(result.data(), size);
+
+				return result;
+			}
+			else
+			{
+				return std::string(assetData.begin() + offset, assetData.begin() + offset + size);
+			}
 		}
 
 		return "";

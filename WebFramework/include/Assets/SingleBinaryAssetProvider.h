@@ -15,7 +15,7 @@ namespace framework::asset
 		void getAsset(const std::filesystem::path& filePath, std::string& result) override;
 
 	public:
-		SingleBinaryAssetProvider(const std::filesystem::path assetsPath, std::shared_ptr<threading::ThreadPool> threadPool, const std::filesystem::path& binaryAssetPath);
+		SingleBinaryAssetProvider(const std::filesystem::path assetsPath, std::shared_ptr<threading::ThreadPool> threadPool, const std::filesystem::path& binaryAssetPath, bool fullyLoad);
 
 		bool exists(const std::filesystem::path& filePath) const override;
 

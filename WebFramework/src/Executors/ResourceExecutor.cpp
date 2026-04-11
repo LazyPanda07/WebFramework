@@ -1,6 +1,5 @@
 #include "Executors/ResourceExecutor.h"
 
-#include <JsonArrayWrapper.h>
 #include <HttpBuilder.h>
 
 #include "Rendering/MDRenderer.h"
@@ -54,15 +53,25 @@ namespace framework
 
 	void ResourceExecutor::loadBinaryAssets(const json::JsonObject& webFrameworkObject, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool)
 	{
-		std::vector<json::JsonObject> temp;
+		std::vector<json::JsonObject> binaryAssets;
 
-		if (webFrameworkObject.tryGet<std::vector<json::JsonObject>>(json_settings::binaryAssetsKey, temp))
+		if (webFrameworkObject.tryGet<std::vector<json::JsonObject>>(json_settings::binaryAssetsKey, binaryAssets))
 		{
-			std::vector<std::string> binaryAssets = json::utility::JsonArrayWrapper(temp).as<std::string>();
-
-			for (const std::string& binaryAsset : binaryAssets)
+			for (const json::JsonObject& binaryAsset : binaryAssets)
 			{
-				singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, binaryAsset);
+				if (binaryAsset.is<std::string>())
+				{
+					singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, binaryAsset.get<std::string>(), true);
+				}
+				else
+				{
+					const std::string& path = binaryAsset[json_settings::pathKey].get<std::string>();
+					bool fullyLoad = true;
+					
+					binaryAsset.tryGet<bool>(json_settings::fullyLoadKey, fullyLoad);
+
+					singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, path, fullyLoad);
+				}
 			}
 		}
 	}
