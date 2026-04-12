@@ -21,7 +21,59 @@ namespace registrar
 	{
 		using namespace py::literals;
 
-		m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
+		m.def
+		(
+			"initialize_web_framework",
+			[](const std::filesystem::path& pathToDll)
+			{
+				if (pathToDll.empty())
+				{
+					static std::vector<HMODULE> libraries;
+					constexpr std::array<std::string_view, 4> baseLibraryNames =
+					{
+						"FileManager",
+						"Localization",
+						"Log",
+						"sqlite3"
+					};
+
+					auto finishLibraryName = [](std::string_view libraryName) -> std::string
+						{
+#ifdef __LINUX__
+							return std::format("lib{}.so", libraryName);
+#else
+							return std::format("{}.dll", libraryName);
+#endif
+						};
+
+					py::module_ os = py::module_::import("os");
+					py::module_ webFrameworkApi = py::module_::import("web_framework_api");
+					std::filesystem::path basePath = os.attr("path").attr("dirname")(webFrameworkApi.attr("__file__")).cast<std::string>();
+
+					for (std::string_view libraryName : baseLibraryNames)
+					{
+						std::filesystem::path actualPath = basePath / finishLibraryName(libraryName);
+
+#ifdef __LINUX__
+						libraries.emplace_back(dlopen(actualPath.string().data(), RTLD_NOW | RTLD_GLOBAL));
+#else
+						libraries.emplace_back(LoadLibraryA(actualPath.string().data()));
+#endif
+					}
+
+#ifdef __LINUX__
+					framework::utility::initializeWebFramework(basePath / "libWebFramework.so");
+#else
+					framework::utility::initializeWebFramework(basePath / "WebFramework.dll");
+#endif
+				}
+				else
+				{
+					framework::utility::initializeWebFramework(pathToDll);
+				}
+			},
+			"path_to_dll"_a = ""
+		);
 
 		m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
 
