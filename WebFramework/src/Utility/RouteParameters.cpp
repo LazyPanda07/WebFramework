@@ -32,7 +32,7 @@ namespace framework::utility
 				}
 				else
 				{
-					indices.push_back(parameters.try_emplace(move(parameter), std::string()).first->first);
+					indices.push_back(parameters.try_emplace(std::move(parameter), std::string()).first->first);
 				}
 
 				parameter.clear();

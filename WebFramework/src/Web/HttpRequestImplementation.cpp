@@ -305,7 +305,7 @@ namespace framework
 
 		fileStream->seekg(0, std::ios::end);
 
-		fileSize = fileStream->tellg() - fileSize;
+		fileSize = static_cast<std::streamsize>(fileStream->tellg()) - fileSize;
 
 		fileStream->seekg(0, std::ios::beg);
 
