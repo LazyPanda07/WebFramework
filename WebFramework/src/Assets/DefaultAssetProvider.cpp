@@ -24,12 +24,12 @@ namespace framework::asset
 	{
 		std::filesystem::path assetFilePath(assetsPath / filePath);
 
-		if (!std::filesystem::exists(filePath))
+		if (!std::filesystem::exists(assetFilePath))
 		{
-			throw file_manager::exceptions::FileDoesNotExistException(filePath);
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		fileManager.readBinaryFile(filePath, std::bind(&DefaultAssetProvider::readFile, std::ref(result), std::placeholders::_1));
+		fileManager.readBinaryFile(assetFilePath, std::bind(&DefaultAssetProvider::readFile, std::ref(result), std::placeholders::_1));
 	}
 
 	const std::filesystem::path& DefaultAssetProvider::getPathToAsset() const
