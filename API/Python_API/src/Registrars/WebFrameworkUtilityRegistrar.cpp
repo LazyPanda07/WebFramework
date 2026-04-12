@@ -3,10 +3,12 @@
 #include <cstdlib>
 
 #include <pybind11/stl/filesystem.h>
+#include <pybind11/functional.h>
 #include <pybind11/stl.h>
 
 #include <Executors/Executor.hpp>
 #include <Utility/WebFrameworkLocalization.hpp>
+#include <Utility/WebFrameworkUtility.hpp>
 
 #include "PyDynamicFunction.h"
 #include "PyChunkGenerator.h"
@@ -22,6 +24,55 @@ namespace registrar
 		m.def("initialize_web_framework", &framework::utility::initializeWebFramework, "path_to_dll"_a = "");
 
 		m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
+
+		m.def
+		(
+			"generate_binary_asset_file",
+			[](const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, const std::optional<std::function<void(float progress, std::string_view assetPath, py::object data)>>& progressCallback, const std::optional<py::object>& data)
+			{
+				auto callback = [](float progress, const char* assetPath, void* data)
+					{
+						void** pack = reinterpret_cast<void**>(data);
+
+						if (pack[0])
+						{
+							std::function<void(float progress, std::string_view assetPath, py::object data)>& actualCallback = *reinterpret_cast<std::function<void(float progress, std::string_view assetPath, py::object data)>*>(pack[0]);
+							py::object* actualData = nullptr;
+
+							if (pack[1])
+							{
+								actualData = reinterpret_cast<py::object*>(pack[1]);
+							}
+
+							actualCallback(progress, assetPath, actualData ? *actualData : py::none());
+						}
+					};
+				const void* pack[2]{};
+
+				pack[0] = nullptr;
+				pack[1] = nullptr;
+
+				if (progressCallback)
+				{
+					pack[0] = &*progressCallback;
+				}
+
+				if (data)
+				{
+					pack[1] = &*data;
+				}
+
+				framework::utility::generateBinaryAssetFile
+				(
+					directoryPath,
+					outputPath,
+					callback,
+					pack
+				);
+
+			},
+			"directory_path"_a, "output_path"_a, "progress_callback"_a.noconvert() = std::nullopt, "data"_a = std::nullopt
+		);
 
 		m.def
 		(
