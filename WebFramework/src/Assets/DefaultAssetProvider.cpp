@@ -32,6 +32,20 @@ namespace framework::asset
 		fileManager.readBinaryFile(assetFilePath, std::bind(&DefaultAssetProvider::readFile, std::ref(result), std::placeholders::_1));
 	}
 
+	std::unique_ptr<std::istream> DefaultAssetProvider::getAssetStream(std::string_view filePath)
+	{
+		// TODO: cache
+
+		std::filesystem::path assetFilePath(assetsPath / filePath);
+
+		if (!std::filesystem::exists(assetFilePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		return std::make_unique<std::ifstream>(assetFilePath);
+	}
+
 	const std::filesystem::path& DefaultAssetProvider::getPathToAsset() const
 	{
 		return assetsPath;

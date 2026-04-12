@@ -45,6 +45,9 @@ namespace framework::asset
 		uint64_t fileDataSize;
 		std::string assetData;
 
+	private:
+		uint64_t calculateOffset(uint64_t offset) const noexcept;
+
 	public:
 		SingleBinaryAsset(const std::filesystem::path& asset, bool fullyLoad);
 
@@ -59,6 +62,8 @@ namespace framework::asset
 		uint64_t getFileDataSize() const noexcept;
 
 		uint64_t getStartFileDataOffset() const noexcept;
+
+		std::unique_ptr<std::istream> getFileStream(const std::filesystem::path& path) const;
 
 		std::string operator [](const std::filesystem::path& path) const;
 

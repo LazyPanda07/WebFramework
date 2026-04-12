@@ -6,7 +6,7 @@ build-backend = "scikit_build_core.build"
 name = "web_framework_api"
 description = "Python API for WebFramework"
 readme = "README.md"
-license = { file = "license/LICENSE" }
+license-files = ["license/LICENSE", "license/rabbitmq-c_LICENSE", "license/CMARK_GFM_LICENSE.txt", "license/COPYING", "license/OPEN_SSL_LICENSE.txt", "license/SQLITE3_LICENSE.txt"]
 requires-python = ">=3.12"
 authors = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
@@ -20,10 +20,12 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
 ]
+
+[project.scripts]
+generate_binary_asset = "web_framework_api.cli:generate_binary_asset"
 
 [tool.scikit-build]
 build.verbose = true

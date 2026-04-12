@@ -104,7 +104,6 @@
     <ClInclude Include="include\Utility\Stopwatch.h" />
     <ClInclude Include="include\WebFrameworkCoreConstants.h" />
     <ClInclude Include="include\WebInterfaces\IDynamicFile.h" />
-    <ClInclude Include="include\WebInterfaces\IFile.h" />
     <ClInclude Include="include\WebInterfaces\IHttpRequest.h" />
     <ClInclude Include="include\WebInterfaces\IStaticFile.h" />
     <ClInclude Include="include\Rendering\IStaticFileRenderer.h" />

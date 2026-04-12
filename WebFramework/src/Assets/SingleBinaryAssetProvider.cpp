@@ -1,5 +1,7 @@
 #include "Assets/SingleBinaryAssetProvider.h"
 
+#include <Exceptions/FileDoesNotExistException.h>
+
 namespace framework::asset
 {
 	SingleBinaryAssetProvider::SingleBinaryAssetProvider(const std::filesystem::path assetsPath, std::shared_ptr<threading::ThreadPool> threadPool, const std::filesystem::path& binaryAssetPath, bool fullyLoad) :
@@ -38,6 +40,16 @@ namespace framework::asset
 				}
 			}
 		}
+	}
+
+	std::unique_ptr<std::istream> SingleBinaryAssetProvider::getAssetStream(std::string_view filePath)
+	{
+		if (!this->exists(filePath))
+		{
+			throw file_manager::exceptions::FileDoesNotExistException(filePath);
+		}
+
+		return asset.getFileStream(filePath);
 	}
 
 	const std::filesystem::path& SingleBinaryAssetProvider::getPathToAsset() const

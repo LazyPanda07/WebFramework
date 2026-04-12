@@ -4,6 +4,8 @@ public class DownloadExecutor : HeavyOperationStatelessExecutor
 {
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
-		request.StreamFile("index.html", response, "index.html");
+		string fileName = request.GetJson()["fileName"].GetString()!;
+
+		request.StreamFile(fileName, response, fileName);
 	}
 }

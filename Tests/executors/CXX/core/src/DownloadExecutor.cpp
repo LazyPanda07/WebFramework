@@ -2,7 +2,9 @@
 
 void DownloadExecutor::doGet(framework::HttpRequest& request, framework::HttpResponse& response)
 {
-	request.streamFile("index.html", response, "index.html");
+	const std::string& fileName = request.getJson().get<std::string>("fileName");
+
+	request.streamFile(fileName, response, fileName);
 }
 
 DEFINE_EXECUTOR(DownloadExecutor)

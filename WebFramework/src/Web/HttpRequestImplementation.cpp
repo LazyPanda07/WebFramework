@@ -90,46 +90,6 @@ namespace framework
 #endif
 	}
 
-	void HttpRequestImplementation::getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources)
-	{
-		if (utility::escapeFromAssets(filePath))
-		{
-			return;
-		}
-
-		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
-		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
-
-		if (!std::filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
-		}
-
-		if (cache.contains(assetFilePath))
-		{
-			std::string_view data = cache.getCacheData(assetFilePath);
-
-			fillBuffer(data.data(), data.size(), buffer);
-		}
-		else
-		{
-			std::string data;
-
-			{
-				std::ifstream file(assetFilePath);
-				std::ostringstream os;
-
-				os << file.rdbuf();
-
-				data = os.str();
-			}
-
-			cache.appendCache(assetFilePath, data);
-
-			fillBuffer(data.data(), data.size(), buffer);
-		}
-	}
-
 	HttpRequestImplementation::HttpRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
@@ -340,13 +300,14 @@ namespace framework
 
 	void HttpRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)
 	{
-		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
-		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
+		std::unique_ptr<std::istream> fileStream = staticResources.getFileStream(filePath);
+		std::streamsize fileSize = fileStream->tellg();
 
-		if (!std::filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
-		}
+		fileStream->seekg(0, std::ios::end);
+
+		fileSize = fileStream->tellg() - fileSize;
+
+		fileStream->seekg(0, std::ios::beg);
 
 		web::HttpBuilder builder = web::HttpBuilder().
 			headers
@@ -356,61 +317,33 @@ namespace framework
 				"Content-Type", "application/octet-stream",
 				"Content-Disposition", std::format(R"(attachment; filename="{}")", fileName),
 				"Connection", "keep-alive",
-				"Content-Length", std::filesystem::file_size(assetFilePath)
+				"Content-Length", fileSize
 			).
 			responseCode(web::ResponseCodes::ok);
 
 		response->setIsValid(false);
 
-#pragma warning(push)
-#pragma warning(disable: 26800)
-		if (cache.contains(assetFilePath))
-		{
-			const std::string& data = cache[assetFilePath];
-
-			builder.headers
-			(
-				"DownloadType", "from-cache"
-			);
-
-			stream << builder.build(data);
-
-			return;
-		}
-
-		std::ifstream fileStream(assetFilePath, std::ios_base::binary);
 		std::string chunk(chunkSize, '\0');
-
-		std::streamsize dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
+		std::streamsize dataSize = fileStream->read(chunk.data(), chunkSize).gcount();
 
 		if (dataSize != chunkSize)
 		{
 			chunk.resize(dataSize);
 		}
 
-		cache.appendCache(assetFilePath, chunk);
-
-		builder.headers
-		(
-			"DownloadType", "from-file"
-		);
-
 		stream << builder.build() + chunk;
-#pragma warning(pop)
 
-		while (!fileStream.eof())
+		while (!fileStream->eof())
 		{
-			dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
+			dataSize = fileStream->read(chunk.data(), chunkSize).gcount();
 
 			if (dataSize != chunkSize)
 			{
 				chunk.resize(dataSize);
 			}
 
-			cache.appendCache(assetFilePath, chunk);
-
 			stream << chunk;
-		}
+		}	
 	}
 
 	void HttpRequestImplementation::registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass)
@@ -500,7 +433,9 @@ namespace framework
 
 	void HttpRequestImplementation::getFile(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) const
 	{
-		HttpRequestImplementation::getFileStatic(filePath, fillBuffer, buffer, staticResources);
+		std::string data = staticResources.getFile(filePath);
+
+		fillBuffer(data.data(), data.size(), buffer);
 	}
 
 	void HttpRequestImplementation::processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)

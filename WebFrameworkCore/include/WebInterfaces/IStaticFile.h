@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IFile.h"
-
 #include <algorithm>
 
 #include "IHttpResponse.h"
@@ -36,13 +34,17 @@ namespace framework::interfaces
 		}
 	};
 
-	class IStaticFile : virtual public IFile
+	class IStaticFile
 	{
 	public:
 		/**
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header
 		*/
 		virtual void sendStaticFile(std::string_view filePath, IHttpResponse& response, std::string_view fileName) = 0;
+
+		virtual std::string getFile(std::string_view filePath) = 0;
+
+		virtual std::unique_ptr<std::istream> getFileStream(std::string_view filePath) = 0;
 
 		virtual const std::unordered_map<std::string_view, std::unique_ptr<IStaticFileRenderer>, InsensitiveStringViewHash, InsensitiveStringViewEqual>& getStaticRenderers() const = 0;
 

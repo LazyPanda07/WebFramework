@@ -78,8 +78,6 @@ namespace framework
 
 		static void registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources);
 
-		static void getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources);
-
 	public:
 		HttpRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
 

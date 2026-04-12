@@ -18,6 +18,8 @@ namespace framework::asset
 
 		void getAsset(std::string_view filePath, std::string& result) override;
 
+		std::unique_ptr<std::istream> getAssetStream(std::string_view filePath) override;
+
 		const std::filesystem::path& getPathToAsset() const override;
 
 		~SingleBinaryAssetProvider() = default;

@@ -17,6 +17,8 @@ namespace framework::asset
 
 		virtual void getAsset(std::string_view filePath, std::string& result) = 0;
 
+		virtual std::unique_ptr<std::istream> getAssetStream(std::string_view filePath) = 0;
+
 		virtual const std::filesystem::path& getPathToAsset() const = 0;
 
 		virtual ~AssetProvider() = default;

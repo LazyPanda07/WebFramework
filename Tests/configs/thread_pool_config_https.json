@@ -36,6 +36,9 @@
     "databases": [
       "sqlite",
       "redis"
+    ],
+    "binaryAssets": [
+      "assets.sba"
     ]
   },
   "Logging": {

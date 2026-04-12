@@ -86,7 +86,9 @@ class ChunksExecutor(HeavyOperationStatelessExecutor):
 
 class DownloadExecutor(HeavyOperationStatelessExecutor):
     def do_get(self, request, response):
-        request.stream_file("index.html", response, "index.html")
+        file_name = request.get_json()["fileName"]
+
+        request.stream_file(file_name, response, file_name)
 
 
 class DynamicResources(HeavyOperationStatelessExecutor):

@@ -2768,7 +2768,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 
 		for (const auto& it : std::filesystem::recursive_directory_iterator(directoryPath))
 		{
-			if (!std::filesystem::is_regular_file(it))
+			if (!std::filesystem::is_regular_file(it) || std::filesystem::absolute(it.path()) == std::filesystem::absolute(outputPath))
 			{
 				continue;
 			}

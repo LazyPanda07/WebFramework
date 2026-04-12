@@ -105,7 +105,9 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(std::string_view functionName) override;
 
-		const std::filesystem::path& getPathToAssets() const override;
+		std::string getFile(std::string_view filePath) override;
+
+		std::unique_ptr<std::istream> getFileStream(std::string_view filePath) override;
 
 		const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& getStaticRenderers() const override;
 

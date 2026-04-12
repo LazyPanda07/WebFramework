@@ -252,22 +252,7 @@ namespace framework
 			return;
 		}
 
-		std::string result;
-
-		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
-		{
-			if (provider.exists(filePath))
-			{
-				provider.getAsset(filePath, result);
-
-				break;
-			}
-		}
-
-		if (result.empty())
-		{
-			defaultAssetProvider.getAsset(filePath, result);
-		}
+		std::string result = this->getFile(filePath);
 
 		if (fileName.size())
 		{
@@ -296,22 +281,7 @@ namespace framework
 			return;
 		}
 
-		std::string result;
-
-		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
-		{
-			if (provider.exists(filePath))
-			{
-				provider.getAsset(filePath, result);
-
-				break;
-			}
-		}
-
-		if (result.empty())
-		{
-			defaultAssetProvider.getAsset(filePath, result);
-		}
+		std::string result = this->getFile(filePath);
 
 		wfdpRenderer.run(arguments, result);
 
@@ -365,9 +335,62 @@ namespace framework
 		return wfdpRenderer.isDynamicFunctionRegistered(functionName);
 	}
 
-	const std::filesystem::path& ResourceExecutor::getPathToAssets() const
+	std::string ResourceExecutor::getFile(std::string_view filePath)
 	{
-		return defaultAssetProvider.getPathToAsset();
+		if (utility::escapeFromAssets(filePath))
+		{
+			// TODO: forbidden error
+
+			return "";
+		}
+
+		std::string result;
+
+		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
+		{
+			if (provider.exists(filePath))
+			{
+				provider.getAsset(filePath, result);
+
+				break;
+			}
+		}
+
+		if (result.empty())
+		{
+			defaultAssetProvider.getAsset(filePath, result);
+		}
+
+		return result;
+	}
+
+	std::unique_ptr<std::istream> ResourceExecutor::getFileStream(std::string_view filePath)
+	{
+		if (utility::escapeFromAssets(filePath))
+		{
+			// TODO: forbidden error
+
+			return nullptr;
+		}
+
+		std::unique_ptr<std::istream> result;
+
+		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
+		{
+			if (provider.exists(filePath))
+			{
+				result = provider.getAssetStream(filePath);
+
+				break;
+			}
+		}
+
+		if (!result)
+		{
+			result = defaultAssetProvider.getAssetStream(filePath);
+		}
+
+		return result;
 	}
 
 	const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& ResourceExecutor::getStaticRenderers() const

@@ -1,14 +1,12 @@
 #pragma once
 
-#include "IFile.h"
-
 #include <any>
 
 #include "IHttpRequest.h"
 
 namespace framework::interfaces
 {
-	class IDynamicFile : virtual public IFile
+	class IDynamicFile
 	{
 	public:
 		/**

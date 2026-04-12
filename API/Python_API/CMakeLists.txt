@@ -84,45 +84,41 @@ target_include_directories(
     ${WEB_FRAMEWORK_INCLUDE_PATH}
 )
 
-if (DEFINED CUSTOM_INSTALL_PATH)
-    install(TARGETS ${PROJECT_NAME} DESTINATION ${CUSTOM_INSTALL_PATH})
+if (UNIX)
+    add_custom_target(
+        generate_pyi ALL
+        DEPENDS ${PROJECT_NAME}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+
+        COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
+        COMMAND .venv/bin/python -m pip install --upgrade pip
+        COMMAND .venv/bin/python -m pip install pybind11-stubgen
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/*.so ${CMAKE_BINARY_DIR}/.venv/lib/python3.${PYTHON_MINOR_VERSION}/site-packages
+        COMMAND ${CMAKE_BINARY_DIR}/.venv/bin/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
+        COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
+    )
 else()
-    if (UNIX)
-        add_custom_target(
-            generate_pyi ALL
-            DEPENDS ${PROJECT_NAME}
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    add_custom_target(
+        generate_pyi ALL
+        DEPENDS ${PROJECT_NAME}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 
-            COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
-            COMMAND .venv/bin/python -m pip install --upgrade pip
-            COMMAND .venv/bin/python -m pip install pybind11-stubgen
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/*.so ${CMAKE_BINARY_DIR}/.venv/lib/python3.${PYTHON_MINOR_VERSION}/site-packages
-            COMMAND ${CMAKE_BINARY_DIR}/.venv/bin/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
-            COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
-        )
-    else()
-        add_custom_target(
-            generate_pyi ALL
-            DEPENDS ${PROJECT_NAME}
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-
-            COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
-            COMMAND .venv/Scripts/python -m pip install --upgrade pip
-            COMMAND .venv/Scripts/python -m pip install pybind11-stubgen
-            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/.venv/Lib/site-packages
-            COMMAND ${CMAKE_BINARY_DIR}/.venv/Scripts/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
-            COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
-        )
-    endif()
-
-    install(TARGETS ${PROJECT_NAME} DESTINATION .)
-    install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pyi DESTINATION .)
+        COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
+        COMMAND .venv/Scripts/python -m pip install --upgrade pip
+        COMMAND .venv/Scripts/python -m pip install pybind11-stubgen
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/.venv/Lib/site-packages
+        COMMAND ${CMAKE_BINARY_DIR}/.venv/Scripts/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
+        COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
+    )
 endif()
 
+install(TARGETS ${PROJECT_NAME} DESTINATION web_framework_api)
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pyi DESTINATION web_framework_api)
+
 if (EXISTS lib)
-    install(DIRECTORY lib/ DESTINATION .)
+    install(DIRECTORY lib/ DESTINATION web_framework_api)
 endif()
 
 if (EXISTS dll)
-    install(DIRECTORY dll/ DESTINATION .)
+    install(DIRECTORY dll/ DESTINATION web_framework_api)
 endif()

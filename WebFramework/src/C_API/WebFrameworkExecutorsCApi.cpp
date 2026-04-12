@@ -1174,11 +1174,9 @@ void getFileExecutorSettings(ExecutorSettings executorsSettings, const char* fil
 {
 	try
 	{
-		framework::HttpRequestImplementation::getFileStatic
-		(
-			filePath, fillBuffer, buffer,
-			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)
-		);
+		std::string data = std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->getFile(filePath);
+
+		fillBuffer(data.data(), data.size(), buffer);
 	}
 	catch (const std::exception& e)
 	{
