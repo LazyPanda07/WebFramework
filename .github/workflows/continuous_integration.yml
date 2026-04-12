@@ -121,7 +121,7 @@ jobs:
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: ubuntu-24.04-arm
-      configuration: RelWithDebInfo
+      configuration: MinSizeRel
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
       with-python-executors: ${{ matrix.python-config.with-python-executors }}

@@ -164,6 +164,11 @@ if (NOT "${COMPILE_TARGET}" STREQUAL "Android")
 	endif()
 endif()
 
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
+	set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} -g")
+	set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -g")
+endif()
+
 if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
 	target_compile_options(${PROJECT_NAME} PRIVATE -march=$ENV{MARCH})
 endif()
