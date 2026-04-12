@@ -1,5 +1,7 @@
 #include "Assets/SingleBinaryAsset.h"
 
+#include <cstring>
+
 #include "Utility/Utils.h"
 
 class PartialFileBuffer : public std::streambuf
@@ -250,8 +252,6 @@ std::streambuf::pos_type PartialFileBuffer::seekoff(std::streambuf::off_type off
 	case std::ios_base::end:
 		return stream.seekg(offset + size - off, std::ios_base::beg).tellg();
 	}
-
-	throw std::runtime_error(std::format("Wrong seekdir type: {}", way));
 
 	return 0;
 }
