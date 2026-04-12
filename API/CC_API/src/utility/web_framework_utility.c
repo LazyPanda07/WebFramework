@@ -21,3 +21,14 @@ web_framework_exception_t wf_generate_sha256(const char* data, size_t size, web_
 
 	return exception;
 }
+
+web_framework_exception_t wf_generate_binary_asset_file(const char* directory_path, const char* output_path, void(*progress_callback)(float progress, const char* asset_path, void* data), void* data)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void (*generateBinaryAssetFile)(const char* directoryPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, void** exception);
+
+	CALL_WEB_FRAMEWORK_FUNCTION(generateBinaryAssetFile, directory_path, output_path, progress_callback, data, &exception);
+
+	return exception;
+}
