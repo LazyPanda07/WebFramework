@@ -43,6 +43,8 @@ namespace framework
 	private:
 		uint64_t parseLoggingFlags(const json::JsonObject& loggingSettings) const;
 
+		Log::VerbosityLevel parseVerbosity(const json::JsonObject& loggingSettings) const;
+
 	private:
 		void initAPIs(const json::JsonObject& webFrameworkSettings);
 

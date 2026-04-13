@@ -408,6 +408,15 @@
             "type": "string",
             "enum": [ "utcDate", "localDate", "processName", "processId", "threadId" ]
           }
+        },
+        "verbosityLeveL": {
+          "type": "string",
+          "description": "Verbosity level of internal logging",
+          "enum": [
+            "verbose",
+            "warning",
+            "error"
+          ]
         }
       },
       "required": [ "dateFormat" ]

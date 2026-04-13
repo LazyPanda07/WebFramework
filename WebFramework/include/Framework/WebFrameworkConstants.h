@@ -31,6 +31,7 @@ namespace json_settings
 	inline constexpr std::string_view dateFormatKey = "dateFormat";
 	inline constexpr std::string_view logFileSizeKey = "logFileSize";
 	inline constexpr std::string_view logFlagsKey = "flags";
+	inline constexpr std::string_view logVerbosityLevelKey = "verbosityLevel";
 	inline constexpr std::string_view webServerTypeKey = "webServerType";
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";

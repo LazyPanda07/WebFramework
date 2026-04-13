@@ -89,6 +89,29 @@ namespace framework
 			(std::numeric_limits<uint64_t>::max)();
 	}
 
+	Log::VerbosityLevel WebFramework::parseVerbosity(const json::JsonObject& loggingSettings) const
+	{
+		std::string verbosity;
+
+		if (loggingSettings.tryGet<std::string>(json_settings::logVerbosityLevelKey, verbosity))
+		{
+			if (verbosity == "verbose")
+			{
+				return Log::VerbosityLevel::verbose;
+			}
+			else if (verbosity == "warning")
+			{
+				return Log::VerbosityLevel::warning;
+			}
+			else if (verbosity == "error")
+			{
+				return Log::VerbosityLevel::error;
+			}
+		}
+
+		return Log::VerbosityLevel::verbose;
+	}
+
 	void WebFramework::initAPIs(const json::JsonObject& webFrameworkSettings)
 	{
 		const std::unordered_map<std::string_view, std::function<void()>> initFunctions =
@@ -178,6 +201,7 @@ namespace framework
 
 			uint64_t logFileSize = 0;
 			uint64_t flags = this->parseLoggingFlags(loggingSettings);
+			Log::VerbosityLevel verbosity = this->parseVerbosity(loggingSettings);
 
 			if (loggingSettings.tryGet<uint64_t>(json_settings::logFileSizeKey, logFileSize))
 			{
@@ -211,6 +235,8 @@ namespace framework
 			{
 				Log::duplicateErrorLog(std::cerr);
 			}
+
+			Log::setVerbosityLevel(verbosity);
 		}
 	}
 
