@@ -34,6 +34,8 @@ TEST(ResourceLoading, StreamFile)
 		std::string result = (std::ostringstream() << std::ifstream("assets/package/page.html", std::ios::binary).rdbuf()).str();
 		std::string response;
 
+		utility::strings::replaceAllByRef(result, "\r\n", "\n");
+
 		stream << request;
 
 		stream >> response;
