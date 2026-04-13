@@ -10,6 +10,7 @@
 #include "WFDP/CCDynamicFunction.h"
 #include "Utility/ExecutorsUtility.h"
 #include "Utility/Utils.h"
+#include "Assets/HtmlErrors.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 #include "WFDP/PythonDynamicFunction.h"
@@ -19,31 +20,27 @@
 #include "WFDP/CSharpDynamicFunction.h"
 #endif
 
+enum HtmlErrors
+{
+	badRequest400,
+	forbidden403,
+	notFound404,
+	internalServerError500,
+	badGateway502,
+	HtmlErrorsSize
+};
+
+static constexpr std::array<std::string_view, HtmlErrors::HtmlErrorsSize> htmlErrorsData =
+{
+	framework::asset::getBadRequestError(),
+	framework::asset::getForbiddenError(),
+	framework::asset::getNotFoundError(),
+	framework::asset::getInternalServerError(),
+	framework::asset::getBadGatewayError()
+};
+
 namespace framework
 {
-	void ResourceExecutor::loadHTMLErrorsData()
-	{
-		auto readFile = [](const std::filesystem::path& errorPath) -> std::string
-			{
-				std::ifstream stream(errorPath);
-				std::ostringstream os;
-				std::string result;
-
-				os << stream.rdbuf();
-
-				result = os.str();
-
-				return result;
-			};
-		std::filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
-
-		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(allErrorsFolder / web_framework_assets::badRequest);
-		HTMLErrorsData[HTMLErrors::forbidden403] = readFile(allErrorsFolder / web_framework_assets::forbidden);
-		HTMLErrorsData[HTMLErrors::notFound404] = readFile(allErrorsFolder / web_framework_assets::notFound);
-		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(allErrorsFolder / web_framework_assets::internalServerError);
-		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(allErrorsFolder / web_framework_assets::badGateway);
-	}
-
 	void ResourceExecutor::loadStaticRenderers()
 	{
 		std::unique_ptr<interfaces::IStaticFileRenderer> mdRenderer = std::make_unique<MDRenderer>();
@@ -87,12 +84,6 @@ namespace framework
 	}
 
 	ResourceExecutor::ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
-		defaultAssets
-		(
-			configuration.get<json::JsonObject>(json_settings::webFrameworkObject).contains<std::string>(json_settings::webFrameworkDefaultAssetsPath) ?
-			configuration.get<json::JsonObject>(json_settings::webFrameworkObject)[json_settings::webFrameworkDefaultAssetsPath].get<std::string>() :
-			webFrameworkDefaultAssests
-		),
 		defaultAssetProvider(additionalSettings.assetsPath, threadPool),
 		wfdpRenderer(additionalSettings.templatesPath, additionalSettings.dynamicFunctionValidation)
 	{
@@ -108,14 +99,13 @@ namespace framework
 			std::filesystem::create_directories(wfdpRenderer.getPathToTemplates());
 		}
 
-		this->loadHTMLErrorsData();
 		this->loadStaticRenderers();
 		this->loadBinaryAssets(configuration.get<json::JsonObject>(json_settings::webFrameworkObject), additionalSettings, threadPool);
 	}
 
 	void ResourceExecutor::notFoundError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
+		std::string_view message = htmlErrorsData[HtmlErrors::notFound404];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -137,7 +127,7 @@ namespace framework
 
 	void ResourceExecutor::badRequestError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
+		std::string_view message = htmlErrorsData[HtmlErrors::badRequest400];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -159,7 +149,7 @@ namespace framework
 
 	void ResourceExecutor::forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
+		std::string_view message = htmlErrorsData[HtmlErrors::forbidden403];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -181,7 +171,7 @@ namespace framework
 
 	void ResourceExecutor::internalServerError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
+		std::string_view message = htmlErrorsData[HtmlErrors::internalServerError500];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -203,7 +193,7 @@ namespace framework
 
 	void ResourceExecutor::badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
+		std::string_view message = htmlErrorsData[HtmlErrors::badGateway502];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());

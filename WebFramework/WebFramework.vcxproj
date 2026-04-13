@@ -216,6 +216,7 @@
   <ItemGroup>
     <ClInclude Include="include\Assets\AssetProvider.h" />
     <ClInclude Include="include\Assets\DefaultAssetProvider.h" />
+    <ClInclude Include="include\Assets\HtmlErrors.h" />
     <ClInclude Include="include\Assets\SingleBinaryAsset.h" />
     <ClInclude Include="include\Assets\SingleBinaryAssetProvider.h" />
     <ClInclude Include="include\C_API\WebFrameworkExecutorsCApi.h" />

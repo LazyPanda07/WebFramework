@@ -36,7 +36,6 @@ namespace json_settings
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
 	inline constexpr std::string_view pathToKey = "pathToKey";
-	inline constexpr std::string_view webFrameworkDefaultAssetsPath = "defaultAssetsPath";
 	inline constexpr std::string_view largeBodySizeThresholdKey = "largeBodySizeThreshold";
 	inline constexpr std::string_view largeBodyPacketSizeKey = "largeBodyPacketSize";
 	inline constexpr std::string_view databasesKey = "databases";
@@ -115,17 +114,6 @@ namespace json_settings_values
 
 	inline constexpr std::string_view rabbitMqHostValue = "localhost";
 	inline constexpr int rabbitMqPortValue = 5672;
-}
-
-namespace web_framework_assets
-{
-	inline constexpr std::string_view errorsFolder = "Errors";
-
-	inline constexpr std::string_view badRequest = "400.html";
-	inline constexpr std::string_view forbidden = "403.html";
-	inline constexpr std::string_view notFound = "404.html";
-	inline constexpr std::string_view internalServerError = "500.html";
-	inline constexpr std::string_view badGateway = "502.html";
 }
 
 namespace framework::logging

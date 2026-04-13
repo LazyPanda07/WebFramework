@@ -22,27 +22,12 @@ namespace framework
 	class ResourceExecutor : public interfaces::IStaticFile, public interfaces::IDynamicFile, public StatelessExecutor
 	{
 	private:
-		enum HTMLErrors
-		{
-			badRequest400,
-			forbidden403,
-			notFound404,
-			internalServerError500,
-			badGateway502,
-			HTMLErrorsSize
-		};
-
-	private:
-		const std::filesystem::path defaultAssets;
 		asset::DefaultAssetProvider defaultAssetProvider;
 		std::vector<asset::SingleBinaryAssetProvider> singleBinaryAssetProviders;
 		WFDPRenderer wfdpRenderer;
-		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
 		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual> staticRenderers;
 
 	private:
-		void loadHTMLErrorsData();
-
 		void loadStaticRenderers();
 
 		void loadBinaryAssets(const json::JsonObject& webFrameworkObject, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);

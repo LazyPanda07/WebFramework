@@ -244,10 +244,6 @@ install(
 install(FILES WebFrameworkConfig.cmake DESTINATION .)
 install(FILES FindWebFramework.cmake DESTINATION .)
 
-if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
-	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION WebFrameworkAssets)
-endif ()
-
 install(DIRECTORY WebFramework/certificates DESTINATION .)
 install(DIRECTORY schemas DESTINATION .)
 

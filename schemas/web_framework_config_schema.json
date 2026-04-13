@@ -257,11 +257,6 @@
           },
           "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
         },
-        "defaultAssetsPath": {
-          "type": "string",
-          "description": "Path to default WebFramework *.html files",
-          "default": "WebFrameworkAssets"
-        },
         "DynamicFunctions": {
           "type": "object",
           "description": "Settings for DynamicFunction",
