@@ -170,7 +170,7 @@ jobs:
           rm -rf vendor
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: Android
         path: WebFrameworkLibrary
@@ -209,7 +209,7 @@ jobs:
           cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: WindowsExecutors-${{ matrix.executors.api }}
         path: Tests/build/bin
@@ -247,7 +247,7 @@ jobs:
           cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: LinuxExecutors-${{ matrix.executors.api }}
         path: Tests/build/bin
@@ -292,7 +292,7 @@ jobs:
           cmake --install . --config Release
 
     - name: Upload executors
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: LinuxARMExecutors-${{ matrix.executors.api }}
         path: Tests/build/bin
@@ -324,7 +324,7 @@ jobs:
           cmake --install . --config Release
 
     - name: Upload tests
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: WindowsTests
         path: Tests/build/bin
@@ -355,7 +355,7 @@ jobs:
           cmake --install . --config Release
 
     - name: Upload tests
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: LinuxTests
         path: Tests/build/bin
@@ -389,7 +389,7 @@ jobs:
           cmake --install . --config Release
 
     - name: Upload tests
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: LinuxARMTests
         path: Tests/build/bin

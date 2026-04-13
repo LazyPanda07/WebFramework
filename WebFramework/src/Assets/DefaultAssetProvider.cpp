@@ -43,7 +43,7 @@ namespace framework::asset
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
 		}
 
-		return std::make_unique<std::ifstream>(assetFilePath);
+		return std::make_unique<std::ifstream>(assetFilePath, std::ios::binary);
 	}
 
 	const std::filesystem::path& DefaultAssetProvider::getPathToAsset() const

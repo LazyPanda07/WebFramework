@@ -339,6 +339,8 @@ namespace framework
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
+			throw std::runtime_error(std::format("Escape from assets: {}", filePath));
+
 			// TODO: forbidden error
 
 			return "";
@@ -368,6 +370,8 @@ namespace framework
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
+			throw std::runtime_error(std::format("Escape from assets: {}", filePath));
+
 			// TODO: forbidden error
 
 			return nullptr;
