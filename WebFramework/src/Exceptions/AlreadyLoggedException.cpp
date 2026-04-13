@@ -8,7 +8,7 @@ namespace framework::exceptions
 
 	}
 
-	const char* AlreadyLoggedException::what() const
+	const char* AlreadyLoggedException::what() const noexcept
 	{
 		return message.data();
 	}

@@ -11,6 +11,7 @@
 #include "SHA256.h"
 #include "Assets/SingleBinaryAsset.h"
 #include "Framework/WebFrameworkConstants.h"
+#include "Exceptions/AlreadyLoggedException.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -24,6 +25,10 @@ JsonObject createJsonObject(JsonObject object, Exception* exception)
 		return object ?
 			new json::JsonObject(*static_cast<json::JsonObject*>(object)) :
 			new json::JsonObject();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -45,6 +50,10 @@ JsonBuilder createJsonBuilder(JsonBuilder builder, Exception* exception)
 			new json::JsonBuilder(*static_cast<json::JsonBuilder*>(builder)) :
 			new json::JsonBuilder(CP_UTF8);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -62,6 +71,10 @@ JsonBuilder createJsonBuilderFromString(const char* jsonString, Exception* excep
 	try
 	{
 		return new json::JsonBuilder(json::JsonParser(jsonString).getParsedData(), CP_UTF8);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -83,6 +96,10 @@ JsonParser createJsonParser(JsonParser parser, Exception* exception)
 			new json::JsonParser(*static_cast<json::JsonParser*>(parser)) :
 			new json::JsonParser();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -101,6 +118,10 @@ JsonParser createJsonParserFromObject(JsonObject object, Exception* exception)
 	{
 		return new json::JsonParser(*static_cast<json::JsonObject*>(object));
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -118,6 +139,10 @@ JsonParser createJsonParserFromString(const char* jsonString, Exception* excepti
 	try
 	{
 		return new json::JsonParser(jsonString);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -139,6 +164,10 @@ JsonObject accessIndexOperatorJsonObject(JsonObject jsonObject, size_t index, Ex
 	{
 		return &(*static_cast<json::JsonObject*>(jsonObject))[index];
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -156,6 +185,10 @@ JsonObject accessIndexOperatorJsonObjectChecked(JsonObject jsonObject, size_t in
 	try
 	{
 		return &(*static_cast<json::JsonObject*>(jsonObject)).at(index);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -175,6 +208,10 @@ JsonObject accessKeyOperatorJsonObject(JsonObject jsonObject, const char* key, E
 	{
 		return &(*static_cast<json::JsonObject*>(jsonObject))[key];
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -192,6 +229,10 @@ JsonObject accessKeyOperatorJsonObjectChecked(JsonObject jsonObject, const char*
 	try
 	{
 		return const_cast<void*>(static_cast<const void*>(&(*static_cast<const json::JsonObject*>(jsonObject))[key]));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -211,6 +252,10 @@ JsonObject emplaceBackObject(JsonObject jsonObject, JsonObject value, Exception*
 	{
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(*static_cast<json::JsonObject*>(value));
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -228,6 +273,10 @@ JsonObject emplaceBackString(JsonObject jsonObject, const char* value, Exception
 	try
 	{
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(std::string_view(value));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -247,6 +296,10 @@ JsonObject emplaceBackInteger(JsonObject jsonObject, int64_t value, Exception* e
 	{
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -264,6 +317,10 @@ JsonObject emplaceBackUnsignedInteger(JsonObject jsonObject, uint64_t value, Exc
 	try
 	{
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -283,6 +340,10 @@ JsonObject emplaceBackDouble(JsonObject jsonObject, double value, Exception* exc
 	{
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -301,6 +362,10 @@ JsonObject emplaceBackBoolean(JsonObject jsonObject, bool value, Exception* exce
 	{
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -318,6 +383,10 @@ JsonObject emplaceBackNull(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(nullptr);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -346,6 +415,10 @@ JsonObject emplaceBackArray(JsonObject jsonObject, JsonObject* objects, size_t s
 
 		return &static_cast<json::JsonObject*>(jsonObject)->emplace_back(std::move(array));
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -363,6 +436,10 @@ bool isObject(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<json::JsonObject>();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -382,6 +459,10 @@ bool isString(JsonObject jsonObject, Exception* exception)
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<std::string>();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -399,6 +480,10 @@ bool isInteger(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<int64_t>();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -418,6 +503,10 @@ bool isUnsignedInteger(JsonObject jsonObject, Exception* exception)
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<uint64_t>();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -435,6 +524,10 @@ bool isDouble(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<double>();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -454,6 +547,10 @@ bool isBoolean(JsonObject jsonObject, Exception* exception)
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<bool>();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -471,6 +568,10 @@ bool isNull(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<std::nullptr_t>();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -490,6 +591,10 @@ bool isArray(JsonObject jsonObject, Exception* exception)
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->is<std::vector<json::JsonObject>>();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -507,6 +612,10 @@ bool containsJsonObjectObject(JsonObject jsonObject, const char* key, bool recur
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<json::JsonObject>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -526,6 +635,10 @@ bool containsJsonObjectString(JsonObject jsonObject, const char* key, bool recur
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<std::string>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -543,6 +656,10 @@ bool containsJsonObjectInteger(JsonObject jsonObject, const char* key, bool recu
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<int64_t>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -562,6 +679,10 @@ bool containsJsonObjectUnsignedInteger(JsonObject jsonObject, const char* key, b
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<uint64_t>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -579,6 +700,10 @@ bool containsJsonObjectDouble(JsonObject jsonObject, const char* key, bool recur
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<double>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -598,6 +723,10 @@ bool containsJsonObjectBoolean(JsonObject jsonObject, const char* key, bool recu
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<bool>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -615,6 +744,10 @@ bool containsJsonObjectNull(JsonObject jsonObject, const char* key, bool recursi
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<std::nullptr_t>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -634,6 +767,10 @@ bool containsJsonObjectArray(JsonObject jsonObject, const char* key, bool recurs
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->contains<std::vector<json::JsonObject>>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -651,6 +788,10 @@ size_t sizeJsonObject(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->size();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -672,6 +813,10 @@ JsonObject getJsonObjectObject(JsonObject jsonObject, Exception* exception)
 
 		return createJsonObject(&object, exception);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -689,6 +834,10 @@ const char* getJsonObjectString(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->get<std::string>().data();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -708,6 +857,10 @@ int64_t getJsonObjectInteger(JsonObject jsonObject, Exception* exception)
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->get<int64_t>();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -725,6 +878,10 @@ uint64_t getJsonObjectUnsignedInteger(JsonObject jsonObject, Exception* exceptio
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->get<uint64_t>();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -744,6 +901,10 @@ double getJsonObjectDouble(JsonObject jsonObject, Exception* exception)
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->get<double>();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -762,6 +923,10 @@ bool getJsonObjectBoolean(JsonObject jsonObject, Exception* exception)
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->get<bool>();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -779,6 +944,10 @@ void getJsonObjectNull(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		static_cast<json::JsonObject*>(jsonObject)->get<std::nullptr_t>();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -803,6 +972,10 @@ void getJsonObjectArray(JsonObject jsonObject, void(*addArrayValue)(JsonObject o
 			addArrayValue(&temp, array);
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -825,6 +998,10 @@ bool tryGetJsonObjectObjectByKey(JsonObject jsonObject, const char* key, JsonObj
 
 			return true;
 		}
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -851,6 +1028,10 @@ bool tryGetJsonObjectStringByKey(JsonObject jsonObject, const char* key, String*
 			return true;
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -868,6 +1049,10 @@ bool tryGetJsonObjectIntegerByKey(JsonObject jsonObject, const char* key, int64_
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -887,6 +1072,10 @@ bool tryGetJsonObjectUnsignedIntegerByKey(JsonObject jsonObject, const char* key
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -905,6 +1094,10 @@ bool tryGetJsonObjectDoubleByKey(JsonObject jsonObject, const char* key, double*
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -922,6 +1115,10 @@ bool tryGetJsonObjectBooleanByKey(JsonObject jsonObject, const char* key, bool* 
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, *value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -942,6 +1139,10 @@ bool tryGetJsonObjectNullByKey(JsonObject jsonObject, const char* key, bool recu
 		std::nullptr_t value;
 
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(key, value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -973,6 +1174,10 @@ bool tryGetJsonObjectArrayByKey(JsonObject jsonObject, const char* key, void(*ad
 			return true;
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -997,6 +1202,10 @@ bool tryGetJsonObjectObject(JsonObject jsonObject, JsonObject* value, Exception*
 
 			return true;
 		}
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1023,6 +1232,10 @@ bool tryGetJsonObjectString(JsonObject jsonObject, String* value, Exception* exc
 			return true;
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1040,6 +1253,10 @@ bool tryGetJsonObjectInteger(JsonObject jsonObject, int64_t* value, Exception* e
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1059,6 +1276,10 @@ bool tryGetJsonObjectUnsignedInteger(JsonObject jsonObject, uint64_t* value, Exc
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1077,6 +1298,10 @@ bool tryGetJsonObjectDouble(JsonObject jsonObject, double* value, Exception* exc
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1094,6 +1319,10 @@ bool tryGetJsonObjectBoolean(JsonObject jsonObject, bool* value, Exception* exce
 	try
 	{
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(*value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1114,6 +1343,10 @@ bool tryGetJsonObjectNull(JsonObject jsonObject, Exception* exception)
 		std::nullptr_t value;
 
 		return static_cast<json::JsonObject*>(jsonObject)->tryGet(value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1145,6 +1378,10 @@ bool tryGetJsonObjectArray(JsonObject jsonObject, void(*addArrayValue)(JsonObjec
 			return true;
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1163,6 +1400,10 @@ void setJsonObjectObject(JsonObject jsonObject, JsonObject value, Exception* exc
 	{
 		*static_cast<json::JsonObject*>(jsonObject) = *static_cast<json::JsonObject*>(value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1178,6 +1419,10 @@ void setJsonObjectString(JsonObject jsonObject, const char* value, Exception* ex
 	try
 	{
 		*static_cast<json::JsonObject*>(jsonObject) = value;
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1195,6 +1440,10 @@ void setJsonObjectInteger(JsonObject jsonObject, int64_t value, Exception* excep
 	{
 		*static_cast<json::JsonObject*>(jsonObject) = value;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1210,6 +1459,10 @@ void setJsonObjectUnsignedInteger(JsonObject jsonObject, uint64_t value, Excepti
 	try
 	{
 		*static_cast<json::JsonObject*>(jsonObject) = value;
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1227,6 +1480,10 @@ void setJsonObjectDouble(JsonObject jsonObject, double value, Exception* excepti
 	{
 		*static_cast<json::JsonObject*>(jsonObject) = value;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1243,6 +1500,10 @@ void setJsonObjectBoolean(JsonObject jsonObject, bool value, Exception* exceptio
 	{
 		*static_cast<json::JsonObject*>(jsonObject) = value;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1258,6 +1519,10 @@ void setJsonObjectNull(JsonObject jsonObject, Exception* exception)
 	try
 	{
 		*static_cast<json::JsonObject*>(jsonObject) = nullptr;
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1284,6 +1549,10 @@ void setJsonObjectArray(JsonObject jsonObject, JsonObject* objects, size_t size,
 
 		*static_cast<json::JsonObject*>(jsonObject) = std::move(values);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1304,6 +1573,10 @@ String jsonObjectToString(JsonObject jsonObject, Exception* exception)
 
 		return new std::string(stream.str());
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1321,6 +1594,10 @@ String buildJsonBuilder(JsonBuilder builder, Exception* exception)
 	try
 	{
 		return new std::string(static_cast<json::JsonBuilder*>(builder)->build());
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1340,6 +1617,10 @@ void standardJsonBuilder(JsonBuilder builder, Exception* exception)
 	{
 		static_cast<json::JsonBuilder*>(builder)->standard();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1356,6 +1637,10 @@ void minimizeJsonBuilder(JsonBuilder builder, Exception* exception)
 	{
 		static_cast<json::JsonBuilder*>(builder)->minimize();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1371,6 +1656,10 @@ bool containsJsonBuilderObject(JsonBuilder builder, const char* key, bool recurs
 	try
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<json::JsonObject>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1390,6 +1679,10 @@ bool containsJsonBuilderString(JsonBuilder builder, const char* key, bool recurs
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<std::string>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1407,6 +1700,10 @@ bool containsJsonBuilderInteger(JsonBuilder builder, const char* key, bool recur
 	try
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<int64_t>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1426,6 +1723,10 @@ bool containsJsonBuilderUnsignedInteger(JsonBuilder builder, const char* key, bo
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<uint64_t>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1443,6 +1744,10 @@ bool containsJsonBuilderDouble(JsonBuilder builder, const char* key, bool recurs
 	try
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<double>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1462,6 +1767,10 @@ bool containsJsonBuilderBoolean(JsonBuilder builder, const char* key, bool recur
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<bool>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1479,6 +1788,10 @@ bool containsJsonBuilderNull(JsonBuilder builder, const char* key, bool recursiv
 	try
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<std::nullptr_t>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1498,6 +1811,10 @@ bool containsJsonBuilderArray(JsonBuilder builder, const char* key, bool recursi
 	{
 		return static_cast<json::JsonBuilder*>(builder)->contains<std::vector<json::JsonObject>>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1516,6 +1833,10 @@ void appendJsonBuilderObject(JsonBuilder builder, const char* key, JsonObject ob
 	{
 		(*static_cast<json::JsonBuilder*>(builder))[key] = *static_cast<json::JsonObject*>(object);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1531,6 +1852,10 @@ void appendJsonBuilderString(JsonBuilder builder, const char* key, const char* v
 	try
 	{
 		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1548,6 +1873,10 @@ void appendJsonBuilderInteger(JsonBuilder builder, const char* key, int64_t valu
 	{
 		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1563,6 +1892,10 @@ void appendJsonBuilderUnsignedInteger(JsonBuilder builder, const char* key, uint
 	try
 	{
 		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1580,6 +1913,10 @@ void appendJsonBuilderDouble(JsonBuilder builder, const char* key, double value,
 	{
 		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1596,6 +1933,10 @@ void appendJsonBuilderBoolean(JsonBuilder builder, const char* key, bool value, 
 	{
 		(*static_cast<json::JsonBuilder*>(builder))[key] = value;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1611,6 +1952,10 @@ void appendJsonBuilderNull(JsonBuilder builder, const char* key, Exception* exce
 	try
 	{
 		(*static_cast<json::JsonBuilder*>(builder))[key] = nullptr;
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1637,6 +1982,10 @@ void appendJsonBuilderArray(JsonBuilder builder, const char* key, JsonObject* ob
 
 		(*static_cast<json::JsonBuilder*>(builder))[key] = std::move(values);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1652,6 +2001,10 @@ JsonObject accessKeyOperatorJsonBuilder(JsonBuilder builder, const char* key, Ex
 	try
 	{
 		return &(*static_cast<json::JsonBuilder*>(builder))[key];
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1671,6 +2024,10 @@ bool containsJsonParserObject(JsonParser parser, const char* key, bool recursive
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<json::JsonObject>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1688,6 +2045,10 @@ bool containsJsonParserString(JsonParser parser, const char* key, bool recursive
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<std::string>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1707,6 +2068,10 @@ bool containsJsonParserInteger(JsonParser parser, const char* key, bool recursiv
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<int64_t>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1724,6 +2089,10 @@ bool containsJsonParserUnsignedInteger(JsonParser parser, const char* key, bool 
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<uint64_t>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1743,6 +2112,10 @@ bool containsJsonParserDouble(JsonParser parser, const char* key, bool recursive
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<double>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1760,6 +2133,10 @@ bool containsJsonParserBoolean(JsonParser parser, const char* key, bool recursiv
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<bool>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1779,6 +2156,10 @@ bool containsJsonParserNull(JsonParser parser, const char* key, bool recursive, 
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<std::nullptr_t>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1796,6 +2177,10 @@ bool containsJsonParserArray(JsonParser parser, const char* key, bool recursive,
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->contains<std::vector<json::JsonObject>>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1815,6 +2200,10 @@ void overrideJsonParserObject(JsonParser parser, const char* key, JsonObject val
 	{
 		return static_cast<json::JsonParser*>(parser)->overrideValue(key, *static_cast<json::JsonObject*>(value), recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1830,6 +2219,10 @@ void overrideJsonParserString(JsonParser parser, const char* key, const char* va
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->overrideValue(key, std::string_view(value), recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1847,6 +2240,10 @@ void overrideJsonParserInteger(JsonParser parser, const char* key, int64_t value
 	{
 		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1862,6 +2259,10 @@ void overrideJsonParserUnsignedInteger(JsonParser parser, const char* key, uint6
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1879,6 +2280,10 @@ void overrideJsonParserDouble(JsonParser parser, const char* key, double value, 
 	{
 		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1895,6 +2300,10 @@ void overrideJsonParserBoolean(JsonParser parser, const char* key, bool value, b
 	{
 		return static_cast<json::JsonParser*>(parser)->overrideValue(key, value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1910,6 +2319,10 @@ void overrideJsonParserNull(JsonParser parser, const char* key, bool recursive, 
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->overrideValue(key, nullptr, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1936,6 +2349,10 @@ void overrideJsonParserArray(JsonParser parser, const char* key, JsonObject* val
 
 		static_cast<json::JsonParser*>(parser)->overrideValue(key, std::move(values), recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1953,6 +2370,10 @@ JsonObject getJsonParserObject(JsonParser parser, const char* key, bool recursiv
 		json::JsonObject& object = const_cast<json::JsonObject&>(static_cast<json::JsonParser*>(parser)->get<json::JsonObject>(key, recursive));
 
 		return createJsonObject(&object, exception);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1972,6 +2393,10 @@ const char* getJsonParserString(JsonParser parser, const char* key, bool recursi
 	{
 		return static_cast<json::JsonParser*>(parser)->get<std::string>(key, recursive).data();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1989,6 +2414,10 @@ int64_t getJsonParserInteger(JsonParser parser, const char* key, bool recursive,
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->get<int64_t>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2008,6 +2437,10 @@ uint64_t getJsonParserUnsignedInteger(JsonParser parser, const char* key, bool r
 	{
 		return static_cast<json::JsonParser*>(parser)->get<uint64_t>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2025,6 +2458,10 @@ double getJsonParserDouble(JsonParser parser, const char* key, bool recursive, E
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->get<double>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2044,6 +2481,10 @@ bool getJsonParserBoolean(JsonParser parser, const char* key, bool recursive, Ex
 	{
 		return static_cast<json::JsonParser*>(parser)->get<bool>(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2061,6 +2502,10 @@ void getJsonParserNull(JsonParser parser, const char* key, bool recursive, Excep
 	try
 	{
 		static_cast<json::JsonParser*>(parser)->get<std::nullptr_t>(key, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2085,6 +2530,10 @@ void getJsonParserArray(JsonParser parser, const char* key, void(*addArrayValue)
 			addArrayValue(&temp, array);
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2107,6 +2556,10 @@ bool tryGetJsonParserObject(JsonParser parser, const char* key, JsonObject* valu
 
 			return true;
 		}
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2133,6 +2586,10 @@ bool tryGetJsonParserString(JsonParser parser, const char* key, String* value, b
 			return true;
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2150,6 +2607,10 @@ bool tryGetJsonParserInteger(JsonParser parser, const char* key, int64_t* value,
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->tryGet<int64_t>(key, *value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2169,6 +2630,10 @@ bool tryGetJsonParserUnsignedInteger(JsonParser parser, const char* key, uint64_
 	{
 		return static_cast<json::JsonParser*>(parser)->tryGet<uint64_t>(key, *value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2187,6 +2652,10 @@ bool tryGetJsonParserDouble(JsonParser parser, const char* key, double* value, b
 	{
 		return static_cast<json::JsonParser*>(parser)->tryGet<double>(key, *value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2204,6 +2673,10 @@ bool tryGetJsonParserBoolean(JsonParser parser, const char* key, bool* value, bo
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->tryGet<bool>(key, *value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2224,6 +2697,10 @@ bool tryGetJsonParserNull(JsonParser parser, const char* key, bool recursive, Ex
 		std::nullptr_t value;
 
 		return static_cast<json::JsonParser*>(parser)->tryGet<std::nullptr_t>(key, value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2255,6 +2732,10 @@ bool tryGetJsonParserArray(JsonParser parser, const char* key, void(*addArrayVal
 			return true;
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2272,6 +2753,10 @@ const char* getJsonParserRawData(JsonParser parser, Exception* exception)
 	try
 	{
 		return static_cast<json::JsonParser*>(parser)->getRawData().data();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2293,6 +2778,10 @@ EXPORT void* getJsonParserParsedData(JsonParser parser, bool weak, Exception* ex
 
 		return weak ? &object : createJsonObject(&object, exception);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2310,6 +2799,10 @@ TableObject getOrCreateTable(DatabaseObject database, const char* tableName, con
 	try
 	{
 		return static_cast<framework::interfaces::IDatabase*>(database)->getOrCreateTable(tableName, createTableQuery);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2329,6 +2822,10 @@ TableObject getTable(DatabaseObject database, const char* tableName, Exception* 
 	{
 		return static_cast<framework::interfaces::IDatabase*>(database)->get(tableName);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2346,6 +2843,10 @@ bool containsTable(DatabaseObject database, const char* tableName, TableObject* 
 	try
 	{
 		return static_cast<framework::interfaces::IDatabase*>(database)->contains(tableName, reinterpret_cast<framework::interfaces::ITable**>(table));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2365,6 +2866,10 @@ const char* getDatabaseName(DatabaseObject database, Exception* exception)
 	{
 		return static_cast<framework::interfaces::IDatabase*>(database)->getDatabaseName();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2382,6 +2887,10 @@ const char* getDatabaseFileName(DatabaseObject database, Exception* exception)
 	try
 	{
 		return static_cast<framework::interfaces::IDatabase*>(database)->getDatabaseFileName();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2401,6 +2910,10 @@ SqlResultObject executeQuery(TableObject table, const char* query, SqlValueObjec
 	{
 		return static_cast<framework::interfaces::ITable*>(table)->execute(query, static_cast<const framework::interfaces::ISQLValue**>(static_cast<void*>(values)), size);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2419,6 +2932,10 @@ void deleteSQLResult(TableObject table, SqlResultObject result, Exception* excep
 	{
 		static_cast<framework::interfaces::ITable*>(table)->deleteResult(static_cast<framework::interfaces::ISQLResult*>(result));
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2434,6 +2951,10 @@ const char* getTableName(TableObject table, Exception* exception)
 	try
 	{
 		return static_cast<framework::interfaces::ITable*>(table)->getTableName();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2453,6 +2974,10 @@ SqlValueObject createSQLValue(Exception* exception)
 	{
 		return new framework::SQLValueImplementation();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2471,6 +2996,10 @@ void setSQLValueInt(SqlValueObject sqlValue, int64_t value, Exception* exception
 	{
 		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setInt(value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2486,6 +3015,10 @@ void setSQLValueDouble(SqlValueObject sqlValue, double value, Exception* excepti
 	try
 	{
 		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setDouble(value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2503,6 +3036,10 @@ void setSQLValueString(SqlValueObject sqlValue, const char* value, Exception* ex
 	{
 		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setString(value);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2518,6 +3055,10 @@ void setSQLValueBool(SqlValueObject sqlValue, bool value, Exception* exception)
 	try
 	{
 		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBool(value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2535,6 +3076,10 @@ void setSQLValueNull(SqlValueObject sqlValue, Exception* exception)
 	{
 		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setNull();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2551,6 +3096,10 @@ void setSQLValueBlob(SqlValueObject sqlValue, const uint8_t* value, size_t size,
 	{
 		static_cast<framework::interfaces::ISQLValue*>(sqlValue)->setBlob(value, size);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2566,6 +3115,10 @@ int64_t getSQLValueInt(SqlValueObject sqlValue, Exception* exception)
 	try
 	{
 		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getInt();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2585,6 +3138,10 @@ double getSQLValueDouble(SqlValueObject sqlValue, Exception* exception)
 	{
 		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getDouble();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2602,6 +3159,10 @@ const char* getSQLValueString(SqlValueObject sqlValue, Exception* exception)
 	try
 	{
 		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getString();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2621,6 +3182,10 @@ bool getSQLValueBool(SqlValueObject sqlValue, Exception* exception)
 	{
 		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getBool();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2638,6 +3203,10 @@ const uint8_t* getSQLValueBlob(SqlValueObject sqlValue, size_t* size, Exception*
 	try
 	{
 		return static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getBlob(size);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2657,6 +3226,10 @@ int getSQLValueType(SqlValueObject sqlValue, Exception* exception)
 	{
 		return static_cast<int>(static_cast<framework::interfaces::ISQLValue*>(sqlValue)->getType());
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2674,6 +3247,10 @@ size_t getSQLResultSize(SqlResultObject result, Exception* exception)
 	try
 	{
 		return static_cast<int>(static_cast<framework::interfaces::ISQLResult*>(result)->size());
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2693,6 +3270,10 @@ void iterateSQLResult(SqlResultObject result, void(*initBuffer)(size_t size, voi
 	{
 		static_cast<framework::interfaces::ISQLResult*>(result)->iterate(initBuffer, callback, buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -2710,6 +3291,10 @@ String generateWebFrameworkUUID(Exception* exception)
 	try
 	{
 		return new std::string(utility::uuid::generateUUID());
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2736,6 +3321,10 @@ String generateSha256(const char* data, size_t size, Exception* exception)
 				std::string_view(data, size)
 			)
 		);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -2842,6 +3431,10 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 				throw std::runtime_error(std::format("Failed to read from {} stream", assetPath.string()));
 			}
 		}
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{

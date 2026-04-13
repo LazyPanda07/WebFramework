@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ThreadPool.h>
+#include <Log.h>
 
 #include "Framework/WebFrameworkPlatform.h"
 

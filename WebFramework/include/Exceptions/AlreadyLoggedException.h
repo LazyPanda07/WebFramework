@@ -13,7 +13,7 @@ namespace framework::exceptions
 	public:
 		AlreadyLoggedException(std::string&& message);
 
-		const char* what() const override;
+		const char* what() const noexcept override;
 
 		~AlreadyLoggedException() = default;
 	};

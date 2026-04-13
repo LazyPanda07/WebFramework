@@ -2,7 +2,6 @@
 
 #include <filesystem>
 
-#include <Log.h>
 #include <JsonArrayWrapper.h>
 #include <MapJsonIterator.h>
 #include <DatabaseUtility.h>
