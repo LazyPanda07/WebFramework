@@ -5,6 +5,7 @@
 
 #include "Framework/WebFrameworkConstants.h"
 #include "WebFrameworkConcepts.h"
+#include "Exceptions/AlreadyLoggedException.h"
 
 namespace framework::utility
 {
@@ -25,7 +26,7 @@ namespace framework::utility
 			Log::error<Format, Category>(args...);
 		}
 
-		throw std::runtime_error(std::format(Format, std::forward<Args>(args)...));
+		throw exceptions::AlreadyLoggedException(std::format(Format, std::forward<Args>(args)...));
 	}
 
 	template<const auto& Category, utility::concepts::StreamOperation OperationT, typename T>

@@ -9,6 +9,7 @@
 #include "Framework/Config.h"
 #include "WebInterfaces/IHttpRequest.h"
 #include "Exceptions/APIException.h"
+#include "Exceptions/AlreadyLoggedException.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -33,6 +34,10 @@ WebFramework createWebFrameworkFromPath(const char* configPath, Exception* excep
 	{
 		return new framework::WebFramework(std::filesystem::path(configPath));
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -50,6 +55,10 @@ WebFramework createWebFrameworkFromString(const char* serverConfiguration, const
 	try
 	{
 		return new framework::WebFramework(framework::utility::Config(serverConfiguration, applicationDirectory));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -69,6 +78,10 @@ WebFramework createWebFrameworkFromConfig(Config config, Exception* exception)
 	{
 		return new framework::WebFramework(*static_cast<framework::utility::Config*>(config));
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -87,6 +100,10 @@ Config createConfigFromPath(const char* configPath, Exception* exception)
 	{
 		return new framework::utility::Config(configPath);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -104,6 +121,10 @@ Config createConfigFromString(const char* serverConfiguration, const char* appli
 	try
 	{
 		return new framework::utility::Config(serverConfiguration, applicationDirectory);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -127,6 +148,10 @@ void startWebFrameworkServerCXX(WebFramework server, bool wait, void* onStartSer
 
 		static_cast<framework::WebFramework*>(server)->start(wait, *lambda);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -142,6 +167,10 @@ void startWebFrameworkServer(WebFramework server, bool wait, void (*onStartServe
 	try
 	{
 		static_cast<framework::WebFramework*>(server)->start(wait, onStartServer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -159,6 +188,10 @@ void stopWebFrameworkServer(WebFramework server, bool wait, Exception* exception
 	{
 		static_cast<framework::WebFramework*>(server)->stop(wait);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -174,6 +207,10 @@ void kickWebFrameworkServer(WebFramework server, const char* ip, Exception* exce
 	try
 	{
 		static_cast<framework::WebFramework*>(server)->kick(ip);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -191,6 +228,10 @@ void updateSslCertificatesWebFrameworkServer(WebFramework server, Exception* exc
 	{
 		static_cast<framework::WebFramework*>(server)->updateSslCertificates();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -206,6 +247,10 @@ bool isServerRunning(WebFramework server, Exception* exception)
 	try
 	{
 		return static_cast<framework::WebFramework*>(server)->isServerRunning();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -232,6 +277,10 @@ void overrideConfigurationString(Config config, const char* key, const char* val
 	{
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, std::string(value), recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -248,6 +297,10 @@ void overrideConfigurationInteger(Config config, const char* key, int64_t value,
 	{
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, value, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -263,6 +316,10 @@ void overrideConfigurationBoolean(Config config, const char* key, bool value, bo
 	try
 	{
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, value, recursive);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -289,6 +346,10 @@ void overrideConfigurationStringArray(Config config, const char* key, const char
 
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -314,6 +375,10 @@ void overrideConfigurationIntegerArray(Config config, const char* key, const int
 
 		static_cast<framework::utility::Config*>(config)->overrideConfiguration(key, data, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -329,6 +394,10 @@ String getConfigurationString(Config config, const char* key, bool recursive, Ex
 	try
 	{
 		return new std::string(static_cast<framework::utility::Config*>(config)->getConfigurationString(key, recursive));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -348,6 +417,10 @@ int64_t getConfigurationInteger(Config config, const char* key, bool recursive, 
 	{
 		return static_cast<framework::utility::Config*>(config)->getConfigurationInteger(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -366,6 +439,10 @@ bool getConfigurationBoolean(Config config, const char* key, bool recursive, Exc
 	{
 		return static_cast<framework::utility::Config*>(config)->getConfigurationBoolean(key, recursive);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -383,6 +460,10 @@ void overrideBasePath(Config config, const char* basePath, Exception* exception)
 	try
 	{
 		reinterpret_cast<framework::utility::Config*>(config)->overrideBasePath(basePath);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -404,6 +485,10 @@ void* getConfiguration(Config config, Exception* exception)
 
 		return new std::string(result.str());
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -422,6 +507,10 @@ const char* getRawConfiguration(Config config, Exception* exception)
 	{
 		return (*(*static_cast<framework::utility::Config*>(config))).getRawData().data();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -439,6 +528,10 @@ String getBasePath(Config config, Exception* exception)
 	try
 	{
 		return new std::string(static_cast<framework::utility::Config*>(config)->getBasePath().string());
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
