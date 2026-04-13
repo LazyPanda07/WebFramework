@@ -7,8 +7,13 @@ namespace framework::exceptions
 {
 	class AlreadyLoggedException : public std::exception
 	{
+	private:
+		std::string message;
+
 	public:
 		AlreadyLoggedException(std::string&& message);
+
+		const char* what() const override;
 
 		~AlreadyLoggedException() = default;
 	};

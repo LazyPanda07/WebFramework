@@ -3,8 +3,13 @@
 namespace framework::exceptions
 {
 	AlreadyLoggedException::AlreadyLoggedException(std::string&& message) :
-		exception(message.data())
+		message(std::move(message))
 	{
 
+	}
+
+	const char* AlreadyLoggedException::what() const
+	{
+		return message.data();
 	}
 }
