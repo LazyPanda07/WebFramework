@@ -2,6 +2,7 @@
 
 using Framework.Exceptions;
 using Framework.Utility;
+using Framework.Databases;
 using System.Runtime.InteropServices;
 
 public sealed partial class Table(IntPtr implementation)
@@ -53,6 +54,50 @@ public sealed partial class Table(IntPtr implementation)
 		}
 
 		return sqlResult;
+	}
+
+	public IList<T> ExecuteQuery<T>(string query, IList<SqlValue>? values = null) where T : IDTO<T>
+	{
+		IntPtr exception = IntPtr.Zero;
+		IntPtr result;
+
+		if (values != null)
+		{
+			IntPtr[] pointers = new IntPtr[values.Count];
+
+			for (int i = 0; i < values.Count; i++)
+			{
+				pointers[i] = values[i].implementation;
+			}
+
+			result = executeQuery(implementation, query, pointers, (nuint)pointers.Length, ref exception);
+		}
+		else
+		{
+			result = executeQuery(implementation, query, null, 0, ref exception);
+		}
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		SqlResult sqlResult = new(result);
+		List<T> listResult = new(sqlResult.Size());
+
+		deleteSQLResult(implementation, result, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		for (int i = 0; i < sqlResult.Size(); i++)
+		{
+			listResult.Add(T.Create(sqlResult[i]));
+		}
+
+		return listResult;
 	}
 
 	public string GetTableName()
