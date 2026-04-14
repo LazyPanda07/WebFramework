@@ -12,7 +12,7 @@ namespace framework::utility
 		 * @brief Generate UUID in format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 		 * @return 
 		 */
-		std::string generateUUID();
+		std::string generateUuid();
 	}
 	
 	namespace encoding
@@ -34,7 +34,7 @@ namespace framework::utility
 		 * @return 
 		 */
 		template<typename... Args>
-		std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args);
+		std::array<SqlValue, sizeof...(Args)> makeSqlValues(Args&&... args);
 	}
 
 	/**
@@ -51,7 +51,7 @@ namespace framework::utility
 {
 	namespace uuid
 	{
-		inline std::string generateUUID()
+		inline std::string generateUuid()
 		{
 			using generateWebFrameworkUUID = void* (*)(void** exception);
 			void* exception = nullptr;
@@ -90,7 +90,7 @@ namespace framework::utility
 	namespace database
 	{
 		template<typename... Args>
-		inline std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args)
+		inline std::array<SqlValue, sizeof...(Args)> makeSqlValues(Args&&... args)
 		{
 			std::array<SqlValue, sizeof...(Args)> result({ std::forward<Args>(args)... });
 

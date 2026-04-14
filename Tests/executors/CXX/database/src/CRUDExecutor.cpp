@@ -5,6 +5,17 @@
 
 #include <Utility/WebFrameworkUtility.hpp>
 
+struct TableData
+{
+public:
+	static TableData create(const framework::SqlResult::Row& row);
+
+public:
+	int64_t id;
+	std::string name;
+	int64_t amount;
+};
+
 void CRUDExecutor::init(const framework::utility::ExecutorSettings& settings)
 {
 	settings.getOrCreateDatabase("test_database").getOrCreateTable
@@ -21,16 +32,16 @@ void CRUDExecutor::doGet(framework::HttpRequest& request, framework::HttpRespons
 {
 	framework::Database database = request.getDatabase("test_database");
 	framework::Table table = database.getTable("test_table");
-	framework::SqlResult result = table.execute("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSQLValues("glue"));
+	std::vector<TableData> result = table.execute<TableData>("SELECT * FROM test_table WHERE name = ?", framework::utility::database::makeSqlValues("glue"));
 	std::vector<framework::JsonObject> data;
 
-	for (const auto& value : result)
+	for (const TableData& value : result)
 	{
 		framework::JsonObject object;
 
-		object["id"] = value.at("id").get<int64_t>();
-		object["name"] = value.at("name").get<std::string>();
-		object["amount"] = value.at("amount").get<int64_t>();
+		object["id"] = value.id;
+		object["name"] = value.name;
+		object["amount"] = value.amount;
 
 		data.push_back(std::move(object));
 	}
@@ -47,7 +58,7 @@ void CRUDExecutor::doPut(framework::HttpRequest& request, framework::HttpRespons
 	table.execute
 	(
 		"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-		framework::utility::database::makeSQLValues("glue", -1)
+		framework::utility::database::makeSqlValues("glue", -1)
 	);
 
 	for (size_t i = 0; i < 10; i++)
@@ -55,7 +66,7 @@ void CRUDExecutor::doPut(framework::HttpRequest& request, framework::HttpRespons
 		table.execute
 		(
 			"INSERT INTO test_table (name, amount) VALUES(?, ?)",
-			framework::utility::database::makeSQLValues("glue", random() % 200)
+			framework::utility::database::makeSqlValues("glue", random() % 200)
 		);
 	}
 }
@@ -70,23 +81,23 @@ void CRUDExecutor::doPatch(framework::HttpRequest& request, framework::HttpRespo
 		"UPDATE test_table "
 		"SET name = ? "
 		"WHERE amount = ?",
-		framework::utility::database::makeSQLValues("empty", -1)
+		framework::utility::database::makeSqlValues("empty", -1)
 	);
-	framework::SqlResult result = table.execute
+	std::vector<TableData> result = table.execute<TableData>
 	(
 		"SELECT * FROM test_table WHERE name = ?",
-		framework::utility::database::makeSQLValues("empty")
+		framework::utility::database::makeSqlValues("empty")
 	);
 
 	std::vector<framework::JsonObject> data;
 
-	for (const auto& value : result)
+	for (const TableData& value : result)
 	{
 		framework::JsonObject object;
 
-		object["id"] = value.at("id").get<int64_t>();
-		object["name"] = value.at("name").get<std::string>();
-		object["amount"] = value.at("amount").get<int64_t>();
+		object["id"] = value.id;
+		object["name"] = value.name;
+		object["amount"] = value.amount;
 
 		data.push_back(std::move(object));
 	}
@@ -100,3 +111,15 @@ void CRUDExecutor::doDelete(framework::HttpRequest& request, framework::HttpResp
 }
 
 DEFINE_EXECUTOR(CRUDExecutor)
+
+TableData TableData::create(const framework::SqlResult::Row& row)
+{
+	TableData result =
+	{
+		.id = row.at("id").get<int64_t>(),
+		.name = row.at("name").get<std::string>(),
+		.amount = row.at("amount").get<int64_t>()
+	};
+
+	return result;
+}

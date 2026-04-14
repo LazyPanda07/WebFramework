@@ -8,6 +8,12 @@
 
 namespace framework
 {
+	template<typename T>
+	concept DTO = requires(const SqlResult::Row& row)
+	{
+		{ T::create(row) } -> std::same_as<T>;
+	};
+
 	class Table
 	{
 	private:
@@ -34,6 +40,25 @@ namespace framework
 		 */
 		template<size_t SizeT>
 		SqlResult execute(std::string_view query, const std::array<SqlValue, SizeT>& values);
+
+		/**
+		 * @brief Executes the specified SQL query with optional parameter values and returns the execution result.
+		 * @param query The SQL query or statement to execute.
+		 * @param values Optional vector of values to bind to parameter placeholders in the query (defaults to empty).
+		 * @return SqlResult representing the outcome of the execution (e.g., returned rows, affected row count, and status).
+		 */
+		template<DTO T>
+		std::vector<T> execute(std::string_view query, const std::vector<SqlValue>& values = {});
+
+		/**
+		 * @brief Executes an SQL query using a fixed-size array of parameter values.
+		 * @tparam SizeT The compile-time number of elements in the values array (the number of parameters).
+		 * @param query The SQL statement to execute, provided as a std::string_view.
+		 * @param values A const reference to a std::array of SqlValue items to bind to the query parameters.
+		 * @return An SqlResult representing the outcome of the execution (e.g., status, affected rows, or returned result set).
+		 */
+		template<DTO T, size_t SizeT>
+		std::vector<T> execute(std::string_view query, const std::array<SqlValue, SizeT>& values);
 
 		~Table() = default;
 
@@ -196,6 +221,62 @@ namespace framework
 		SqlResult result(tempResult);
 
 		implementation->deleteResult(tempResult);
+
+		return result;
+	}
+
+	template<DTO T>
+	inline std::vector<T> Table::execute(std::string_view query, const std::vector<SqlValue>& values)
+	{
+		std::vector<__framework::CSQLValue> tempValues;
+		std::vector<const interfaces::ISQLValue*> pointers;
+
+		tempValues.reserve(values.size());
+		pointers.reserve(values.size());
+
+		for (const SqlValue& value : values)
+		{
+			pointers.push_back(&tempValues.emplace_back(value));
+		}
+
+		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), pointers.data(), pointers.size());
+		SqlResult rows(tempResult);
+		std::vector<T> result;
+
+		implementation->deleteResult(tempResult);
+
+		for (const SqlResult::Row& row : rows)
+		{
+			result.emplace_back(T::create(row));
+		}
+
+		return result;
+	}
+
+	template<DTO T, size_t SizeT>
+	inline std::vector<T> Table::execute(std::string_view query, const std::array<SqlValue, SizeT>& values)
+	{
+		std::vector<__framework::CSQLValue> tempValues;
+		std::vector<const interfaces::ISQLValue*> pointers;
+
+		tempValues.reserve(SizeT);
+		pointers.reserve(SizeT);
+
+		for (const SqlValue& value : values)
+		{
+			pointers.push_back(&tempValues.emplace_back(value));
+		}
+
+		interfaces::ISQLResult* tempResult = implementation->execute(query.data(), pointers.data(), pointers.size());
+		SqlResult rows(tempResult);
+		std::vector<T> result;
+
+		implementation->deleteResult(tempResult);
+
+		for (const SqlResult::Row& row : rows)
+		{
+			result.emplace_back(T::create(row));
+		}
 
 		return result;
 	}
