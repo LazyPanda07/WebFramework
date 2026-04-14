@@ -14,6 +14,7 @@ add_library(
 	src/Exceptions/BadRequestException.cpp
 	src/Exceptions/NotImplementedException.cpp
 	src/Exceptions/NotFoundException.cpp
+	src/Exceptions/ForbiddenException.cpp
 )
 
 if (${WITH_UNITY_BUILD})

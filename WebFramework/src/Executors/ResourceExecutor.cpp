@@ -11,6 +11,7 @@
 #include "Utility/ExecutorsUtility.h"
 #include "Utility/Utils.h"
 #include "Assets/HtmlErrors.h"
+#include "Exceptions/ForbiddenException.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 #include "WFDP/PythonDynamicFunction.h"
@@ -329,11 +330,7 @@ namespace framework
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
-			throw std::runtime_error(std::format("Escape from assets: {}", filePath));
-
-			// TODO: forbidden error
-
-			return "";
+			throw exceptions::ForbiddenException(filePath);
 		}
 
 		std::string result;
@@ -360,11 +357,7 @@ namespace framework
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
-			throw std::runtime_error(std::format("Escape from assets: {}", filePath));
-
-			// TODO: forbidden error
-
-			return nullptr;
+			throw exceptions::ForbiddenException(filePath);
 		}
 
 		std::unique_ptr<std::istream> result;

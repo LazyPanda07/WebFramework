@@ -8,6 +8,7 @@
 #include "Exceptions/APIException.h"
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/CSharpException.h"
+#include "Exceptions/ForbiddenException.h"
 #include "Utility/Utils.h"
 
 namespace framework
@@ -55,6 +56,19 @@ namespace framework
 			}
 
 			resources.badRequestError(response, &e);
+
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
+
+			result = ServiceState::skipResponse;
+		}
+		catch (const framework::exceptions::ForbiddenException& e) // 403
+		{
+			if (Log::isValid())
+			{
+				Log::error<logging::message::forbiddenMessage, logging::category::executorServer>(e.what());
+			}
+
+			resources.forbiddenError(response, &e);
 
 			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 

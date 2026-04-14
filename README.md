@@ -1,7 +1,7 @@
 ﻿# WebFramework
 * C++ HTTP/HTTPS server
 * Multi language API
-* Server can be launched from ```C++```, ```C```, ```Python```, ```C#```, ```Flutter```
+* Server can be launched from ```C++```, ```C```, ```Python```, ```C#```, ```Flutter(Dart)```
 * Endpoints can be served from ```C++```, ```C```, ```Python```, ```C#```
 
 
@@ -12,13 +12,13 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 ```
 
 
-| Language | [WebFramework API](https://github.com/LazyPanda07/WebFramework/wiki/WebFramework-API) | [Executors API](https://github.com/LazyPanda07/WebFramework/wiki/Executors-API) | Windows                     | Linux                       | Linux AArch64               | Android AArch64             |
-| -------- | :-----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: | :-------------------------: | :-------------------------: | :-------------------------: | :-------------------------: |
-| C++      | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> |
-| C        | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> |
-| C#       | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     |
-| Python   | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     |
-| Flutter  | <img src="icons/check.svg">                                                           | <img src="icons/x.svg">                                                         | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     | <img src="icons/check.svg"> |
+| Language       | [WebFramework API](https://github.com/LazyPanda07/WebFramework/wiki/WebFramework-API) | [Executors API](https://github.com/LazyPanda07/WebFramework/wiki/Executors-API) | Windows                     | Linux                       | Linux AArch64               | Android AArch64             |
+| -------------- | :-----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------: | :-------------------------: | :-------------------------: | :-------------------------: | :-------------------------: |
+| C++            | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> |
+| C              | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> |
+| C#             | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     |
+| Python         | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     |
+| Flutter(Dart)  | <img src="icons/check.svg">                                                           | <img src="icons/x.svg">                                                         | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     | <img src="icons/check.svg"> |
 
 
 ## Build Requirements

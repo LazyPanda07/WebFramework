@@ -239,6 +239,7 @@ namespace framework::logging
 		inline constexpr char cantCreateFile[] = "Can't create file: {}";
 		inline constexpr char notASingleBinaryAsset[] = "File: {} not a binary single asset";
 		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
+		inline constexpr char forbiddenMessage[] = "Forbidden response to client request. {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}";

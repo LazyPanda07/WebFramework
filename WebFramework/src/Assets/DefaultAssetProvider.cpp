@@ -2,6 +2,8 @@
 
 #include <Exceptions/FileDoesNotExistException.h>
 
+#include "Utility/ReadOnlyBuffer.h"
+
 namespace framework::asset
 {
 	void DefaultAssetProvider::readFile(std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle)
@@ -34,13 +36,20 @@ namespace framework::asset
 
 	std::unique_ptr<std::istream> DefaultAssetProvider::getAssetStream(std::string_view filePath)
 	{
-		// TODO: cache
-
 		std::filesystem::path assetFilePath(assetsPath / filePath);
 
 		if (!std::filesystem::exists(assetFilePath))
 		{
 			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
+		}
+
+		file_manager::Cache& cache = fileManager.getCache();
+
+		if (cache.contains(assetFilePath))
+		{
+			std::string_view cacheData = cache.getCacheData(assetFilePath);
+
+			return std::make_unique<std::istream>(new utility::ReadOnlyBuffer(cacheData, 0, cacheData.size()));
 		}
 
 		return std::make_unique<std::ifstream>(assetFilePath, std::ios::binary);

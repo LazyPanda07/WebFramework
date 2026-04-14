@@ -104,6 +104,7 @@ add_library(
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Utility/CrashHandler.cpp
 	WebFramework/src/Utility/Utils.cpp
+	WebFramework/src/Utility/ReadOnlyBuffer.cpp
 	WebFramework/src/Utility/WebFrameworkConcepts.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp

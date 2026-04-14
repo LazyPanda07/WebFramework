@@ -91,7 +91,8 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -128,7 +129,8 @@
       </Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>if not exist $(OutDir)WebFrameworkAssets\ XCOPY /Y /E $(ProjectDir)WebFrameworkAssets\ $(OutDir)WebFrameworkAssets\</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -183,6 +185,7 @@
     <ClCompile Include="src\Utility\LargeFileHandlers\MultithreadedHandler.cpp" />
     <ClCompile Include="src\Utility\LargeFileHandlers\ThreadPoolHandler.cpp" />
     <ClCompile Include="src\Utility\CrashHandler.cpp" />
+    <ClCompile Include="src\Utility\ReadOnlyBuffer.cpp" />
     <ClCompile Include="src\Utility\TaskExecutorsSettings.cpp" />
     <ClCompile Include="src\Utility\Utils.cpp" />
     <ClCompile Include="src\Utility\WebFrameworkConcepts.cpp" />
@@ -254,6 +257,7 @@
     <ClInclude Include="include\TaskBroker\TaskExecutors\CXXTaskExecutor.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutors\PythonTaskExecutor.h" />
     <ClInclude Include="include\TaskBroker\TaskExecutors\TaskExecutor.h" />
+    <ClInclude Include="include\Utility\ReadOnlyBuffer.h" />
     <ClInclude Include="include\Utility\TaskExecutorsSettings.h" />
     <ClInclude Include="include\Utility\Utils.h" />
     <ClInclude Include="include\WFDP\CCDynamicFunction.h" />

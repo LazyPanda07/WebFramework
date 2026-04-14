@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "Utility/Utils.h"
+#include "Utility/ReadOnlyBuffer.h"
 
 class PartialFileBuffer : public std::streambuf
 {
@@ -26,27 +27,6 @@ public:
 	~PartialFileBuffer() = default;
 };
 
-class ReadOnlyBuffer : public std::streambuf
-{
-private:
-	using off_type = std::streambuf::off_type;
-
-private:
-	std::string_view data;
-	off_type offset;
-	std::streamsize size;
-	size_t currentSize;
-
-private:
-	std::streamsize xsgetn(char* data, std::streamsize dataSize) override;
-
-	std::streambuf::pos_type seekoff(std::streambuf::off_type off, std::ios_base::seekdir way, std::ios_base::openmode which) override;
-
-public:
-	ReadOnlyBuffer(std::string_view data, off_type offset, std::streamsize size);
-
-	~ReadOnlyBuffer() = default;
-};
 
 namespace framework::asset
 {
@@ -187,7 +167,7 @@ namespace framework::asset
 		}
 		else
 		{
-			return std::make_unique<std::istream>(new ReadOnlyBuffer(assetData, offset, size));
+			return std::make_unique<std::istream>(new utility::ReadOnlyBuffer(assetData, offset, size));
 		}
 	}
 
@@ -263,53 +243,4 @@ PartialFileBuffer::PartialFileBuffer(std::ifstream&& stream, off_type offset, st
 	currentSize(0)
 {
 	this->stream.seekg(offset, std::ios::beg);
-}
-
-std::streamsize ReadOnlyBuffer::xsgetn(char* data, std::streamsize dataSize)
-{
-	std::streamsize availableBytes = size - currentSize;
-	std::streamsize readBytes = std::clamp<std::streamsize>(dataSize, 0, availableBytes);
-
-	if (!readBytes)
-	{
-		return readBytes;
-	}
-
-	std::memcpy(data, this->data.data() + currentSize + offset, readBytes);
-
-	currentSize += readBytes;
-
-	return readBytes;
-}
-
-std::streambuf::pos_type ReadOnlyBuffer::seekoff(std::streambuf::off_type off, std::ios_base::seekdir way, std::ios_base::openmode which)
-{
-	switch (way)
-	{
-	case std::ios_base::beg:
-		currentSize = off;
-
-		break;
-
-	case std::ios_base::cur:
-		currentSize += off;
-
-		break;
-
-	case std::ios_base::end:
-		currentSize = size - off;
-
-		break;
-	}
-	
-	return offset + currentSize;
-}
-
-ReadOnlyBuffer::ReadOnlyBuffer(std::string_view data, off_type offset, std::streamsize size) :
-	data(data),
-	offset(offset),
-	size(size),
-	currentSize(0)
-{
-
 }
