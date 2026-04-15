@@ -20,7 +20,7 @@ endif()
 
 build_cmake_library(
 	${PROJECT_NAME}
-	${CMAKE_PROJECT_NAME}
+	${SHARED_LIBRARY_PROJECT_NAME}
 	https://github.com/github/cmark-gfm.git
 	${CMARK_GFM_TAG}
 	${CMARK_BUILD_CMARK_INSTALL_PREFIX}

@@ -6,6 +6,7 @@ set(WEB_FRAMEWORK_EXPORT_TARGETS WebFrameworkTargets)
 set(WEB_FRAMEWORK_EXPORT_TARGETS_FILE WebFrameworkTargets.cmake)
 set(WEB_FRAMEWORK_EXPORT_TARGETS_NAMESPACE WebFramework::)
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
+set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 set(
 	3RDPARTY_LIBS
 	sqlite3
@@ -25,8 +26,11 @@ option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
+option(AS_DEPENDENCY "Change install paths for FetchContent or add_subdirectory usage" OFF)
 
-project(WebFramework VERSION 3.3.7)
+set(SHARED_LIBRARY_PROJECT_NAME WebFramework)
+
+project(${SHARED_LIBRARY_PROJECT_NAME} VERSION 3.3.7)
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
@@ -235,18 +239,22 @@ target_link_libraries(
 	${ADDITIONAL_LIBS}
 )
 
-install(
-	TARGETS ${PROJECT_NAME}
-	ARCHIVE DESTINATION lib
-	LIBRARY DESTINATION lib
-	RUNTIME DESTINATION dll
-)
+if (${AS_DEPENDENCY})
+	install(TARGETS ${PROJECT_NAME} DESTINATION .)
+else()
+	install(
+		TARGETS ${PROJECT_NAME}
+		ARCHIVE DESTINATION lib
+		LIBRARY DESTINATION lib
+		RUNTIME DESTINATION dll
+	)
 
-install(FILES WebFrameworkConfig.cmake DESTINATION .)
-install(FILES FindWebFramework.cmake DESTINATION .)
-
-install(DIRECTORY WebFramework/certificates DESTINATION .)
-install(DIRECTORY schemas DESTINATION .)
+	install(FILES WebFrameworkConfig.cmake DESTINATION .)
+	install(FILES FindWebFramework.cmake DESTINATION .)
+	
+	install(DIRECTORY WebFramework/certificates DESTINATION .)
+	install(DIRECTORY schemas DESTINATION .)
+endif()
 
 install(
 	CODE [[
