@@ -120,7 +120,7 @@ namespace framework::task_broker
 	template<typename T>
 	JsonObject PyTaskSerializerWrapper<T>::serializeArguments() const
 	{
-		py::module_ json = py::module_::import("json");
+		py::module json = py::module::import("json");
 
 		return JsonParser(json.attr("dumps")(serializer.attr("serialize_arguments")()).cast<std::string>()).getParsedData(false);
 	}

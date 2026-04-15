@@ -30,7 +30,13 @@ namespace registrar
 				{
 					py::module_ jsonModule = py::module_::import("json");
 
-					self.setBody(framework::JsonBuilder(jsonModule.attr("dumps")(json, "ensure_ascii"_a = false).cast<std::string>()));
+					self.setBody
+					(
+						framework::JsonBuilder
+						(
+							jsonModule.attr("dumps")(json, "ensure_ascii"_a = false, "default"_a = py::cpp_function([](py::object obj) { return obj.attr("__dict__"); })).cast<std::string>()
+						)
+					);
 				},
 				"json"_a
 			)

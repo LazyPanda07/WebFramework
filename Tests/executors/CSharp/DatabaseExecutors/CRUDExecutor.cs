@@ -37,29 +37,11 @@ public class CRUDExecutor : StatelessExecutor
 
 	public override void DoGet(HttpRequest request, HttpResponse response)
 	{
-		Database database = request.GetDatabase("test_database");
-		Table table = database.GetTable("test_table");
-		IList<TableData> result = table.ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("glue"));
-		List<object> jsonData = [];
-
-		foreach (TableData row in result)
-		{
-			jsonData.Add
-			(
-				new
-				{
-					row.id,
-					row.name,
-					row.amount
-				}
-			);
-		}
-
 		response.SetBody
 		(
 			new
 			{
-				data = jsonData
+				data = request.GetTable("test_database", "test_table").ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("glue"))
 			}
 		);
 	}
@@ -99,32 +81,11 @@ public class CRUDExecutor : StatelessExecutor
 			WebFrameworkUtility.MakeSqlValues("empty", -1)
 		);
 
-		IList<TableData> result = table.ExecuteQuery<TableData>
-		(
-			"SELECT * FROM test_table WHERE name = ?",
-			WebFrameworkUtility.MakeSqlValues("empty")
-		);
-
-		List<object> jsonData = [];
-
-		foreach (TableData row in result)
-		{
-			jsonData.Add
-			(
-				new
-				{
-					row.id,
-					row.name,
-					row.amount
-				}
-			);
-		}
-
 		response.SetBody
 		(
 			new
 			{
-				data = jsonData
+				data = table.ExecuteQuery<TableData>("SELECT * FROM test_table WHERE name = ?", WebFrameworkUtility.MakeSqlValues("empty"))
 			}
 		);
 	}

@@ -97,7 +97,7 @@ endif()
 
 include(${WEB_FRAMEWORK_LIBRARY_DIR}/WebFrameworkConfig.cmake)
 
-if (NOT ${BUILD_EXECUTORS} STREQUAL "NONE")
+if (NOT "${BUILD_EXECUTORS}" STREQUAL "NONE")
     include(${CMAKE_SOURCE_DIR}/cmake/generate_json.cmake)
 
     add_subdirectory(executors)

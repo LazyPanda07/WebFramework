@@ -58,6 +58,7 @@ pybind11_add_module(
     src/module.cpp
     src/PyChunkGenerator.cpp
     src/PyDynamicFunction.cpp
+    src/PyDTO.cpp
     src/Executors/PyStatelessExecutor.cpp
     src/Executors/PyStatefulExecutor.cpp
     src/Executors/PyHeavyOperationStatelessExecutor.cpp
