@@ -45,75 +45,84 @@ namespace registrar
 				"execute",
 				[](framework::Table& table, std::string_view query, py::type dtoClass, const std::vector<framework::SqlValue>& values) -> py::list
 				{
+					static py::set processedClasses;
+
 					if (dtoClass.is_none())
 					{
 						throw std::runtime_error("dto_class can't be None");
 					}
 
-					if (!py::hasattr(dtoClass, "create"))
+					if (!processedClasses.contains(dtoClass))
 					{
-						throw std::runtime_error("Can't find create function");
-					}
+						if (!py::hasattr(dtoClass, "create"))
+						{
+							throw std::runtime_error(R"(Can't find create function:
+@staticmethod
+def create(row: Dict[str, SqlValue]) -> "<dto_class>")");
+						}
 
-					py::object create = dtoClass.attr("__dict__")["create"];
+						py::object create = dtoClass.attr("__dict__")["create"];
 
-					if (!py::isinstance<py::staticmethod>(create))
-					{
-						throw std::runtime_error("Can't find @staticmethod create");
-					}
+						if (!py::isinstance<py::staticmethod>(create))
+						{
+							throw std::runtime_error("Can't find @staticmethod create");
+						}
 
-					py::module_ typing = py::module_::import("typing");
-					py::object hints = typing.attr("get_type_hints")(create);
+						py::module_ typing = py::module_::import("typing");
+						py::object hints = typing.attr("get_type_hints")(create);
 
-					if (!hints.contains("row"))
-					{
-						throw std::runtime_error("Can't find row parameter");
-					}
+						if (!hints.contains("row"))
+						{
+							throw std::runtime_error("Can't find row parameter");
+						}
 
-					py::module_ builtins = py::module_::import("builtins");
-					py::module_ webFrameworkApi = py::module_::import("web_framework_api");
-					py::object dictType = builtins.attr("dict");
-					py::object strType = builtins.attr("str");
-					py::object sqlValueType = webFrameworkApi.attr("SqlValue");
+						py::module_ builtins = py::module_::import("builtins");
+						py::module_ webFrameworkApi = py::module_::import("web_framework_api");
+						py::object dictType = builtins.attr("dict");
+						py::object strType = builtins.attr("str");
+						py::object sqlValueType = webFrameworkApi.attr("SqlValue");
 
-					py::object row = hints["row"];
+						py::object row = hints["row"];
 
-					py::object origin = typing.attr("get_origin")(row);
-					py::tuple args = typing.attr("get_args")(row);
+						py::object origin = typing.attr("get_origin")(row);
+						py::tuple args = typing.attr("get_args")(row);
 
-					if (!origin.is(dictType))
-					{
-						throw std::runtime_error("row is not dict");
-					}
+						if (!origin.is(dictType))
+						{
+							throw std::runtime_error("row is not dict");
+						}
 
-					if (args.size() != 2)
-					{
-						throw std::runtime_error("row is not Dict[,]");
-					}
+						if (args.size() != 2)
+						{
+							throw std::runtime_error("row is not Dict[,]");
+						}
 
-					py::object keyType = args[0];
-					py::object valueType = args[1];
+						py::object keyType = args[0];
+						py::object valueType = args[1];
 
-					if (!keyType.is(strType))
-					{
-						throw std::runtime_error("row is not Dict[str,]");
-					}
+						if (!keyType.is(strType))
+						{
+							throw std::runtime_error("row is not Dict[str,]");
+						}
 
-					if (!valueType.is(sqlValueType))
-					{
-						throw std::runtime_error("row is not Dict[str, SqlValue]");
-					}
+						if (!valueType.is(sqlValueType))
+						{
+							throw std::runtime_error("row is not Dict[str, SqlValue]");
+						}
 
-					if (!hints.contains("return"))
-					{
-						throw std::runtime_error("Can't find return type");
-					}
+						if (!hints.contains("return"))
+						{
+							throw std::runtime_error("Can't find return type");
+						}
 
-					py::object returnType = hints["return"];
+						py::object returnType = hints["return"];
 
-					if (!returnType.is(dtoClass))
-					{
-						throw std::runtime_error("return type is not " + py::repr(dtoClass).cast<std::string>());
+						if (!returnType.is(dtoClass))
+						{
+							throw std::runtime_error("return type is not " + py::repr(dtoClass).cast<std::string>());
+						}
+
+						processedClasses.add(dtoClass);
 					}
 
 					std::vector<framework::PyDTO> temp = table.execute<framework::PyDTO>(query, values);
