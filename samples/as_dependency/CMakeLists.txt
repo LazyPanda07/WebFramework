@@ -21,6 +21,13 @@ add_executable(
 	src/main.cpp
 )
 
+if (UNIX)
+	target_link_options(
+		${PROJECT_NAME} PRIVATE
+		-rdynamic
+	)
+endif()
+
 FetchContent_Declare(
 	WebFramework
 	GIT_REPOSITORY https://github.com/LazyPanda07/WebFramework.git
