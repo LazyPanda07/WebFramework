@@ -1,12 +1,22 @@
 if (NOT DEFINED WEB_FRAMEWORK_SDK)
     set(WEB_FRAMEWORK_SDK $ENV{WEB_FRAMEWORK_SDK})
+
+    message("Getting WEB_FRAMEWORK_SDK variable from environment")
 endif()
 
 if (NOT DEFINED WEB_FRAMEWORK_SDK)
-    message(FATAL_ERROR "WEB_FRAMEWORK_SDK variable doesn't set. If you directly find WebFrameworkConfig.cmake, please also provide WEB_FRAMEWORK_SDK environment variable")
+    set(WEB_FRAMEWORK_SDK ${CMAKE_CURRENT_LIST_DIR})
+
+    message("Getting WEB_FRAMEWORK_SDK variable from directory: ${CMAKE_CURRENT_LIST_DIR}")
+endif()
+
+if (NOT DEFINED WEB_FRAMEWORK_SDK)
+    message(FATAL_ERROR "WEB_FRAMEWORK_SDK variable doesn't set")
 endif()
 
 string(REPLACE "\\" "/" WEB_FRAMEWORK_SDK "${WEB_FRAMEWORK_SDK}")
+
+message("WEB_FRAMEWORK_SDK: ${WEB_FRAMEWORK_SDK}")
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/WebFrameworkTargets.cmake)
 
