@@ -45,6 +45,52 @@ jobs:
          msbuild VisualStudioSample.slnx -property:Configuration=Release
 
 
+  as-dependency-sample:
+    strategy:
+      matrix:
+        config: 
+          - { os: windows-latest }
+          - { os: ubuntu-latest }
+    runs-on: ${{ matrix.config.os }}
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
+
+    - name: Enable CL on Windows
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Install dependencies on Linux
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      run: |
+        sudo apt update
+        sudo apt install -y uuid-dev
+
+    - name: Build
+      working-directory: samples/as_dependency
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install-dir -DWEB_FRAMEWORK_BRANCH=${{ env.CURRENT_BRANCH }} -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Run on Windows
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      working-directory: samples/as_dependency/build/install-dir
+      run: .\as_dependency
+
+    - name: Run on Linux
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      working-directory: samples/as_dependency/build/install-dir
+      run: ./as_dependency
+
+
   windows-build:
     runs-on: windows-latest
 
@@ -488,7 +534,8 @@ jobs:
       windows-flutter-build,
       android-flutter-build,
       windows-tests,
-      linux-tests
+      linux-tests,
+      as-dependency-sample
     ]
 
     steps:
