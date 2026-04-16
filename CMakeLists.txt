@@ -28,9 +28,9 @@ option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 option(AS_DEPENDENCY "Change install paths for FetchContent or add_subdirectory usage" OFF)
 
-set(SHARED_LIBRARY_PROJECT_NAME WebFramework)
+project(WebFramework VERSION 3.3.7)
 
-project(${SHARED_LIBRARY_PROJECT_NAME} VERSION 3.3.7)
+set(SHARED_LIBRARY_PROJECT_NAME ${PROJECT_NAME})
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
@@ -241,6 +241,30 @@ target_link_libraries(
 
 if (${AS_DEPENDENCY})
 	install(TARGETS ${PROJECT_NAME} DESTINATION .)
+
+	install(
+		CODE [[
+			set(SHARED_LIBRARIES "")
+
+			list(APPEND SHARED_LIBRARIES FileManager Localization Log sqlite3)
+
+			foreach(SHARED_LIBRARY IN LISTS SHARED_LIBRARIES)
+				if (UNIX)
+					file(COPY ${CMAKE_INSTALL_PREFIX}/lib/lib${SHARED_LIBRARY}.so DESTINATION DESTINATION ${CMAKE_INSTALL_PREFIX})
+				else()
+					file(COPY ${CMAKE_INSTALL_PREFIX}/dll/${SHARED_LIBRARY}.dll DESTINATION DESTINATION ${CMAKE_INSTALL_PREFIX})
+				endif()
+			endforeach()
+
+			if (UNIX)
+				file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib")
+			else()
+				file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/dll")
+			endif()
+
+			file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/assets")
+		]]
+	)
 else()
 	install(
 		TARGETS ${PROJECT_NAME}
@@ -273,6 +297,7 @@ install(
 		endif()
 
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
+		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/cmake")
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 	]]
 )
