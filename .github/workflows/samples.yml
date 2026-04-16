@@ -88,7 +88,9 @@ jobs:
     - name: Run on Linux
       if: ${{ matrix.config.os == 'ubuntu-latest' }}
       working-directory: samples/as_dependency/build/install-dir
-      run: ./as_dependency
+      run: |
+        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+        ./as_dependency
 
 
   windows-build:
