@@ -4,14 +4,6 @@ set(CMAKE_C_STANDARD 11)
 
 project(CC_API)
 
-if (UNIX)
-	add_definitions(-D__LINUX__)
-
-	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-		add_definitions(-D__ANDROID__)
-	endif()
-endif(UNIX)
-
 add_library(
 	${PROJECT_NAME} STATIC
 	src/executors/executor.c
@@ -33,6 +25,20 @@ add_library(
 	src/web_framework_exception.c
 	src/load_balancer_heuristic.c
 )
+
+if (UNIX)
+	target_compile_definitions(
+		${PROJECT_NAME} PUBLIC
+		__LINUX__
+	)
+
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+		target_compile_definitions(
+			${PROJECT_NAME} PUBLIC
+			__ANDROID__
+		)
+	endif()
+endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC

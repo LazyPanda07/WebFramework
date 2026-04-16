@@ -5,15 +5,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(CXX_API)
 
+add_library(${PROJECT_NAME} INTERFACE)
+
 if (UNIX)
-	add_definitions(-D__LINUX__)
+	target_compile_definitions(
+		${PROJECT_NAME} INTERFACE
+		__LINUX__
+	)
 
 	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-		add_definitions(-D__ANDROID__)
+		target_compile_definitions(
+			${PROJECT_NAME} INTERFACE
+			__ANDROID__
+		)
 	endif()
-endif(UNIX)
-
-add_library(${PROJECT_NAME} INTERFACE)
+endif()
 
 target_include_directories(
 	${PROJECT_NAME} INTERFACE
