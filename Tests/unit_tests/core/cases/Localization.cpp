@@ -36,10 +36,6 @@ TEST(Localization, English)
 
 TEST(Localization, Russian)
 {
-#ifdef __AARCH64__
-	GTEST_SKIP();
-#endif
-
 	constexpr std::string_view language = "ru";
 
 	try

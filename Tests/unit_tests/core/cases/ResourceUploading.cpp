@@ -36,9 +36,6 @@ TEST(ResourceUploading, Multipart)
 
 TEST(ResourceUploading, OctetStream)
 {
-#ifdef __AARCH64__
-	GTEST_SKIP();
-#endif
 	constexpr std::string_view httpUrl = "http://127.0.0.1:8080/upload_octet_stream";
 	constexpr std::string_view httpsUrl = "https://127.0.0.1:8080/upload_octet_stream";
 	constexpr std::string_view uploadFileName = "octet_stream.bin";

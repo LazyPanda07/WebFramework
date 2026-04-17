@@ -13,7 +13,7 @@ if (UNIX)
 		set(PLATFORM_NAME Linux)
 	endif()
 	
-	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+	if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Android")
 		set(PLATFORM_NAME Android)
 	endif()
 elseif (WIN32)
@@ -32,4 +32,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(${PROJECT_NAME})
 
-# TODO: license
+if (NOT ${CMAKE_SOURCE_DIR} STREQUAL ${PROJECT_SOURCE_DIR})
+	install(DIRECTORY license/ DESTINATION license)
+endif()

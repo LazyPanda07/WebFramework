@@ -6,7 +6,7 @@ build-backend = "scikit_build_core.build"
 name = "web_framework_api"
 description = "Python API for WebFramework"
 readme = "README.md"
-license-files = ["license/LICENSE", "license/rabbitmq-c_LICENSE", "license/CMARK_GFM_LICENSE.txt", "license/COPYING", "license/OPEN_SSL_LICENSE.txt", "license/SQLITE3_LICENSE.txt"]
+license-files = ["license/*"]
 requires-python = ">=3.12"
 authors = [
     { name = "LazyPanda07", email = "semengricenko@gmail.com" }
