@@ -12,6 +12,7 @@ set(
 	sqlite3
 	hiredis
 	rabbitmq::rabbitmq-static
+	jwt-cpp::jwt-cpp
 	ssl
 	crypto
 	CACHE INTERNAL ""
@@ -288,9 +289,12 @@ install(
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/libCC_API.a")
 		else()
 			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.lib")
+			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.pdb")
 
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/CC_API.lib")
 		endif()
+
+		file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/cmake/jwt-cpp*.cmake")
 
 		if (FILES_TO_REMOVE)
 			file(REMOVE ${FILES_TO_REMOVE})

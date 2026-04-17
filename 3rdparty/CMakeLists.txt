@@ -4,6 +4,7 @@ project(3rdparty)
 
 add_subdirectory(cmark-gfm)
 add_subdirectory(rabbitmq-c)
+add_subdirectory(jwt-cpp)
 
 if (${WITH_STACKTRACE})
 	add_subdirectory(boost)

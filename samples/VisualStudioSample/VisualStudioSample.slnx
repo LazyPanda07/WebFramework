@@ -6,6 +6,7 @@
   <Folder Name="/3rdparty/">
     <Project Path="../../3rdparty/cmark-gfm/cmark-gfm.vcxproj" Id="66216d2f-5851-404b-af2a-da5f216f54af" />
     <Project Path="../../3rdparty/DotNetRuntime/DotNetRuntime.vcxproj" Id="c05c4838-8cf9-4965-9c91-b4cf4258576c" />
+    <Project Path="../../3rdparty/jwt-cpp/jwt-cpp.vcxproj" Id="bc0468fd-f472-41f6-a738-0da0b7625c1e" />
     <Project Path="../../3rdparty/pybind11/pybind11.vcxproj" Id="fa38c2dc-a207-4048-8c9c-d75bfcacd77b" />
     <Project Path="../../3rdparty/rabbitmq-c/rabbitmq-c.vcxproj" Id="ac5c367b-f200-4731-8605-4d6fbfba6d7a" />
   </Folder>
