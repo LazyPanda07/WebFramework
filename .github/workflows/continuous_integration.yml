@@ -156,7 +156,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=MinSizeRel ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
+          cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary ${ANDROID_CMAKE_BUILD_ARGUMENTS} ..
           cmake --build . -j 
           make install/strip
 
