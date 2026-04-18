@@ -41,7 +41,7 @@ FetchContent_Declare(
 FetchContent_Declare(
 	curl
 	GIT_REPOSITORY https://github.com/curl/curl.git
-	GIT_TAG curl-8_16_0
+	GIT_TAG curl-8_19_0
 )
 
 FetchContent_MakeAvailable(WebFramework)

@@ -49,9 +49,11 @@ jobs:
     strategy:
       matrix:
         config: 
-          - { os: windows-latest }
-          - { os: ubuntu-latest }
+          - { os: windows-latest, image: "" }
+          - { os: ubuntu-latest, image: "ghcr.io/lazypanda07/ubuntu_cxx20:24.04" }
     runs-on: ${{ matrix.config.os }}
+    container:
+      image: ${{ matrix.config.image }}
 
     steps:
     - uses: actions/checkout@v6
