@@ -432,10 +432,10 @@ web_framework_exception_t wf_get_token(http_request_t implementation, const char
 /**
  * @brief Retrieves the JWT payload from the given HTTP request and writes it to the provided result pointer.
  * @param implementation The HTTP request object to extract the token payload from.
- * @param result Pointer to a web_framework_string_t that will receive the token payload. Delete with wf_delete_string function
+ * @param result Pointer to a json_object_t that will receive the token payload. Delete with wf_delete_json_object function
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_token_payload(http_request_t implementation, web_framework_string_t* result);
+web_framework_exception_t wf_get_token_payload(http_request_t implementation, json_object_t* result);
 
 /**
  * @brief Send generated chunks

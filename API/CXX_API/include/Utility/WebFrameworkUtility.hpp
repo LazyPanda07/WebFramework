@@ -110,7 +110,7 @@ namespace framework::utility
 	{
 		inline std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime)
 		{
-			using createJwt = void* (*) (JsonObject data, int64_t expirationTimeInMinutes, void** exception);
+			using createJwt = void* (*) (void* data, int64_t expirationTimeInMinutes, void** exception);
 			void* exception = nullptr;
 			DllHandler& instance = DllHandler::getInstance();
 

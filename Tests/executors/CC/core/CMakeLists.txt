@@ -13,6 +13,8 @@ add_library(
 	src/UploadChunkedExecutor.c
 	src/UploadOctetStreamExecutor.c
 	src/DynamicResources.c
+	src/TokenExecutor.c
+	src/TokenGiverExecutor.c
 )
 
 target_link_libraries(

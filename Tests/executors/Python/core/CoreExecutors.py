@@ -147,3 +147,17 @@ class UploadOctetStreamExecutor(StatefulExecutor):
 
             response.set_response_code(ResponseCodes.CREATED)
             response.set_body("Finish uploading file")
+
+
+class TokenExecutor(StatelessExecutor):
+    def do_get(self, request, response):
+        response.set_body(request.get_token_payload()["userName"])
+
+
+class TokenGiverExecutor(StatelessExecutor):
+    def do_post(self, request, response):
+        response.set_body({
+            "token": create_jwt({
+                "userName": request.get_json()["userName"]
+            }, 60)
+        })

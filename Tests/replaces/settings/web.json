@@ -61,5 +61,16 @@
     "route": "dynamic_resources",
     "loadType": "initialization",
     "api": "{API_TYPE}"
+  },
+  "TokenExecutor": {
+    "route": "token",
+    "loadType": "initialization",
+    "api": "{API_TYPE}",
+    "requireJWT": true
+  },
+  "TokenGiverExecutor": {
+    "route": "get_token",
+    "loadType": "initialization",
+    "api": "{API_TYPE}"
   }
 }

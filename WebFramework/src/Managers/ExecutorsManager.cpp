@@ -229,6 +229,15 @@ namespace framework
 
 				return true;
 			}
+			else
+			{
+				if (Log::isValid())
+				{
+					Log::info<logging::message::noJwt, logging::category::filter>();
+				}
+
+				return false;
+			}
 		}
 
 		return true;

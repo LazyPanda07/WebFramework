@@ -18,6 +18,7 @@ add_executable(
 	cases/UserAgentFilter.cpp
 	cases/ResourceUploading.cpp
 	cases/Redis.cpp
+	cases/Token.cpp
 )
 
 target_include_directories(

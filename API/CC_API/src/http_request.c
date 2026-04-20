@@ -708,13 +708,14 @@ web_framework_exception_t wf_get_token(http_request_t implementation, const char
 	return exception;
 }
 
-web_framework_exception_t wf_get_token_payload(http_request_t implementation, web_framework_string_t* result)
+web_framework_exception_t wf_get_token_payload(http_request_t implementation, json_object_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
 	typedef void* (*getTokenPayload)(void* implementation, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTokenPayload, &exception);
+	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTokenPayload, &exception);
+	result->weak = false;
 
 	return exception;
 }

@@ -4,5 +4,7 @@ void TokenExecutor::doGet(framework::HttpRequest& request, framework::HttpRespon
 {
 	const framework::JsonObject data = *request.getTokenPayload();
 
-	return response.setBody(data["userName"].get<std::string>());
+	response.setBody(data["userName"].get<std::string>());
 }
+
+DEFINE_EXECUTOR(TokenExecutor)
