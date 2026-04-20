@@ -8,7 +8,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
-public sealed unsafe partial class HttpResponse(nint implementation)
+public sealed partial class HttpResponse(nint implementation)
 {
 	internal readonly IntPtr implementation = implementation;
 

@@ -203,6 +203,18 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getJsonParserParsedData(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool weak, ref IntPtr exception);
 
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling= StringMarshalling.Utf8)]
+	private static partial IntPtr getToken(IntPtr implementation, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr getTokenPayload(IntPtr implementation, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr jsonObjectToString(IntPtr jsonObject, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void deleteWebFrameworkJsonObject(IntPtr implementation);
+
 	private static string GetStringData(IntPtr stringImplementation)
 	{
 		string result = Marshal.PtrToStringUTF8(getDataFromString(stringImplementation))!;
@@ -1140,6 +1152,53 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		}
 
 		return (T)result;
+	}
+
+	public string? GetToken()
+	{
+		IntPtr exception = IntPtr.Zero;
+		IntPtr result = getToken(implementation, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		if (result == IntPtr.Zero)
+		{
+			return null;
+		}
+
+		return Marshal.PtrToStringUTF8(result);
+	}
+
+	public JsonObject? GetTokenPayload()
+	{
+		IntPtr exception = IntPtr.Zero;
+		IntPtr result = getTokenPayload(implementation, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		if (result == IntPtr.Zero)
+		{
+			return null;
+		}
+
+		IntPtr jsonString = jsonObjectToString(result, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		string jsonData = GetStringData(jsonString);
+
+		deleteWebFrameworkJsonObject(result);
+
+		return JsonNode.Parse(jsonData)!.AsObject();
 	}
 
 	/// <summary>
