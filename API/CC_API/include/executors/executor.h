@@ -187,7 +187,7 @@ web_framework_exception_t wf_get_executor_init_parameters(executor_settings_t im
 /**
  * @brief Get executor name
  * @param implementation executor_settings_t instance
- * @param result String with executor name. Delete with deleteWebFrameworkString function
+ * @param result String with executor name. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_executor_name(executor_settings_t implementation, web_framework_string_t* result);
@@ -203,7 +203,7 @@ web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t 
 /**
  * @brief Get API language of executor_t
  * @param implementation executor_settings_t instance
- * @param result String with executor name. Delete with deleteWebFrameworkString function
+ * @param result String with executor name. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_executor_api_type(executor_settings_t implementation, web_framework_string_t* result);
@@ -211,7 +211,7 @@ web_framework_exception_t wf_get_executor_api_type(executor_settings_t implement
 /**
  * @brief Get LoadType of executor_t
  * @param implementation executor_settings_t instance
- * @param result String with executor name. Delete with deleteWebFrameworkString function
+ * @param result String with executor name. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_executor_load_type(executor_settings_t implementation, load_type_t* result);

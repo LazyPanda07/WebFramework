@@ -697,6 +697,28 @@ web_framework_exception_t wf_get_route_string_parameter(http_request_t implement
 	return exception;
 }
 
+web_framework_exception_t wf_get_token(http_request_t implementation, const char** result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef const char* (*getToken)(void* implementation, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getToken, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_get_token_payload(http_request_t implementation, web_framework_string_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getTokenPayload)(void* implementation, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTokenPayload, &exception);
+
+	return exception;
+}
+
 web_framework_exception_t wf_send_chunks(http_request_t implementation, http_response_t response, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
 {
 	web_framework_exception_t exception = NULL;

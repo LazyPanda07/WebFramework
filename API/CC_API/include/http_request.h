@@ -100,7 +100,7 @@ web_framework_exception_t wf_get_query_parameters(http_request_t implementation,
 /**
  * @brief Get HTTP version
  * @param implementation http_request_t instance
- * @param version String representation of HTTP version. Delete with deleteWebFrameworkString function
+ * @param version String representation of HTTP version. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_http_version(http_request_t implementation, web_framework_string_t* version);
@@ -145,7 +145,7 @@ web_framework_exception_t wf_set_attribute(http_request_t implementation, const 
  * @brief Get HTTP session attribute
  * @param implementation http_request_t instance
  * @param name Attribute name
- * @param result Attribute value. Delete with deleteWebFrameworkString function
+ * @param result Attribute value. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_attribute(http_request_t implementation, const char* name, web_framework_string_t* result);
@@ -322,7 +322,7 @@ web_framework_exception_t wf_get_raw_request(http_request_t implementation, cons
 /**
  * @brief Get client IP v4
  * @param implementation http_request_t instance
- * @param ip IP. Delete with deleteWebFrameworkString function
+ * @param ip IP. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_client_ip_v4(http_request_t implementation, web_framework_string_t* ip);
@@ -330,7 +330,7 @@ web_framework_exception_t wf_get_client_ip_v4(http_request_t implementation, web
 /**
  * @brief Get server IP v4
  * @param implementation http_request_t instance
- * @param ip IP. Delete with deleteWebFrameworkString function
+ * @param ip IP. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_server_ip_v4(http_request_t implementation, web_framework_string_t* ip);
@@ -420,6 +420,22 @@ web_framework_exception_t wf_get_route_double_parameter(http_request_t implement
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* route_parameter_name, const char** result);
+
+/**
+ * @brief Retrieves a JWT string from the specified HTTP request implementation.
+ * @param implementation An HTTP request handle or implementation object from which the token will be extracted.
+ * @param result Output parameter. A pointer to a const char* that will be set to point to a null-terminated token string on success. The caller must provide a valid const char**. The ownership and lifetime of the returned string are managed by the implementation; do not modify or free it.
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_token(http_request_t implementation, const char** result);
+
+/**
+ * @brief Retrieves the JWT payload from the given HTTP request and writes it to the provided result pointer.
+ * @param implementation The HTTP request object to extract the token payload from.
+ * @param result Pointer to a web_framework_string_t that will receive the token payload. Delete with wf_delete_string function
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_token_payload(http_request_t implementation, web_framework_string_t* result);
 
 /**
  * @brief Send generated chunks

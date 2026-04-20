@@ -32,3 +32,14 @@ web_framework_exception_t wf_generate_binary_asset_file(const char* directory_pa
 
 	return exception;
 }
+
+web_framework_exception_t wf_create_jwt(json_object_t* data, int64_t expirationTimeInMinutes, web_framework_string_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*createJwt)(void* jsonData, int64_t expirationTimeInMinutes, void** exception);
+
+	*result = CALL_WEB_FRAMEWORK_FUNCTION(createJwt, data->implementation, expirationTimeInMinutes, &exception);
+
+	return exception;
+}
