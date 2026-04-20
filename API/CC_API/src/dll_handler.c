@@ -125,9 +125,9 @@ void* wf_find_function(const char* name)
 
 void wf_delete_string(web_framework_string_t string)
 {
-	typedef void (*wf_delete_string)(void* string);
+	typedef void (*deleteWebFrameworkString)(void* string);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(wf_delete_string, string);
+	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkString, string);
 }
 
 void wf_delete_config(config_t config)
