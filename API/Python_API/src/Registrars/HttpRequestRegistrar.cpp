@@ -147,6 +147,24 @@ file_name : str
 			.def("get_route_parameter", &framework::HttpRequest::getRouteParameter<bool>, "route_parameter_name"_a)
 			.def("get_route_parameter", &framework::HttpRequest::getRouteParameter<int64_t>, "route_parameter_name"_a)
 			.def("get_route_parameter", &framework::HttpRequest::getRouteParameter<double>, "route_parameter_name"_a)
+			.def("get_token", &framework::HttpRequest::getToken)
+			.def
+			(
+				"get_token_payload",
+				[](const framework::HttpRequest& self) -> std::optional<py::dict>
+				{
+					std::optional<framework::JsonObject> temp = self.getTokenPayload();
+
+					if (!temp)
+					{
+						return std::nullopt;
+					}
+
+					py::module_ json = py::module_::import("json");
+
+					return json.attr("loads")((static_cast<std::string>(*temp)).data()).cast<py::dict>();
+				}
+			)
 			.def
 			(
 				"throw_exception",

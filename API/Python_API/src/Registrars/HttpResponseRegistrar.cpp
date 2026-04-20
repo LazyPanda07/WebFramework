@@ -26,7 +26,7 @@ namespace registrar
 			.def
 			(
 				"set_body",
-				[](framework::HttpResponse& self, const py::dict& json)
+				[](framework::HttpResponse& self, py::dict json)
 				{
 					py::module_ jsonModule = py::module_::import("json");
 

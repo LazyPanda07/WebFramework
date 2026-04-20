@@ -77,6 +77,8 @@ namespace framework
 		 */
 		JsonObject operator [](size_t index) const;
 
+		explicit operator std::string() const;
+
 		template<JsonValues<JsonObject> T>
 		JsonObject emplace_back(T&& value);
 
@@ -251,6 +253,22 @@ namespace framework
 		}
 
 		return JsonObject(result);
+	}
+
+	inline JsonObject::operator std::string() const
+	{
+		using jsonObjectToString = void* (*)(void* implementation, void** exception);
+		void* exception = nullptr;
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
+
+		void* result = handler.CALL_WEB_FRAMEWORK_FUNCTION(jsonObjectToString, implementation, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return handler.getString(result);
 	}
 
 	template<JsonValues<JsonObject> T>
