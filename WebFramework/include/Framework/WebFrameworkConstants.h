@@ -253,6 +253,7 @@ namespace framework::logging
 		inline constexpr char kickClient[] = "Kick client with ip: {} from server";
 		inline constexpr char wrongUserAgent[] = "Wrong User-Agent: {}";
 		inline constexpr char noUserAgent[] = "No User-Agent provided";
+		inline constexpr char noJwt[] = "No Authorization: Bearer <token> provided";
 		inline constexpr char foundTaskExecutorSource[] = "Found load source with path: {}";
 		inline constexpr char callDynamicFunction[] = "Call {} function";
 		inline constexpr char foundExecutor[] = "Found {} in {} for {} route";

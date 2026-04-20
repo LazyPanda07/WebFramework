@@ -23,6 +23,7 @@ inline constexpr size_t defaultChunkSize = 14 * 1024 * 1024;
 namespace json_settings
 {
 	inline constexpr std::string_view userAgentFilterKey = "userAgentFilter";
+	inline constexpr std::string_view requireJwtKey = "requireJWT";
 }
 
 #ifdef __LINUX__

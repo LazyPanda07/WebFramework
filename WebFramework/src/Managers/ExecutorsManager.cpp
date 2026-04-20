@@ -177,7 +177,7 @@ namespace framework
 		return executor->second.get();
 	}
 
-	bool ExecutorsManager::filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHttpResponse& response) const
+	bool ExecutorsManager::filterUserAgent(const std::string& parameters, const web::HeadersMap& headers) const
 	{
 		const std::vector<std::string>& executorUserAgentFilter = settings.at(parameters).userAgentFilter;
 
@@ -192,8 +192,6 @@ namespace framework
 						Log::info<logging::message::wrongUserAgent, logging::category::filter>(it->second);
 					}
 
-					resources->forbiddenError(response, nullptr);
-
 					return false;
 				}
 			}
@@ -204,9 +202,32 @@ namespace framework
 					Log::info<logging::message::noUserAgent, logging::category::filter>();
 				}
 
-				resources->forbiddenError(response, nullptr);
-
 				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool ExecutorsManager::filterJwt(const std::string& parameters, const web::HeadersMap& headers) const
+	{
+		if (settings.at(parameters).requireJwt)
+		{
+			if (auto it = headers.find("Authorization"); it != headers.end())
+			{
+				constexpr std::string_view bearer = "Bearer ";
+
+				if (it->second.find(bearer) == std::string::npos)
+				{
+					if (Log::isValid())
+					{
+						Log::info<logging::message::noJwt, logging::category::filter>();
+					}
+
+					return false;
+				}
+
+				return true;
 			}
 		}
 
@@ -440,7 +461,7 @@ namespace framework
 		}
 		else if (executor)
 		{
-			if (this->filterUserAgent(parameters, headers, response))
+			if (this->filterUserAgent(parameters, headers) && this->filterJwt(parameters, headers))
 			{
 				return executor;
 			}

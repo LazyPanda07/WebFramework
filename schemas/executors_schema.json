@@ -24,6 +24,11 @@
           },
           "description": "Filter input requests by User-Agent"
         },
+        "requireJWT": {
+          "type": "boolean",
+          "description": "Filter input requests by Authorization: Bearer <token>",
+          "default": false
+        },
         "initParameters": {
           "type": "object",
           "description": "Initialization parameters for executors that can be accessed in init function"

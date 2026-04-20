@@ -19,14 +19,16 @@ namespace framework::utility
 	}
 
 	JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
-		executorLoadType(LoadType::none)
+		executorLoadType(LoadType::none),
+		requireJwt(false)
 	{
 
 	}
 
 	JSONSettingsParser::ExecutorSettings::ExecutorSettings(std::string_view name) :
 		name(name),
-		executorLoadType(LoadType::none)
+		executorLoadType(LoadType::none),
+		requireJwt(false)
 	{
 
 	}
@@ -83,6 +85,8 @@ namespace framework::utility
 			{
 				executorSettings.userAgentFilter = json::utility::JsonArrayWrapper(description[json_settings::userAgentFilterKey].get<std::vector<json::JsonObject>>()).as<std::string>();
 			}
+
+			description.tryGet<bool>(json_settings::requireJwtKey, executorSettings.requireJwt);
 
 			std::erase(executorSettings.userAgentFilter, "");
 

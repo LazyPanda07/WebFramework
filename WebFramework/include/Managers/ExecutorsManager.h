@@ -67,7 +67,9 @@ namespace framework
 	private:
 		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors);
 
-		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHttpResponse& response) const;
+		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers) const;
+
+		bool filterJwt(const std::string& parameters, const web::HeadersMap& headers) const;
 
 		std::unique_ptr<Executor> createApiExecutor(const std::string& name, std::string_view apiType) const;
 
