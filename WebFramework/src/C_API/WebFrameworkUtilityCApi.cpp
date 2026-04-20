@@ -4,6 +4,8 @@
 #include <JsonBuilder.h>
 #include <JsonParser.h>
 #include <UUID.h>
+#include <jwt-cpp/jwt.h>
+#include <MapJsonIterator.h>
 
 #include "Utility/JSONSettingsParser.h"
 #include "DatabaseInterfaces/IDatabase.h"
@@ -3444,6 +3446,84 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 	{
 		UNEXPECTED_EXCEPTION();
 	}
+}
+
+String createJwt(JsonObject data, int64_t expirationTimeInMinutes, Exception* exception)
+{
+	try
+	{
+		auto builder = jwt::create();
+		const json::JsonObject& temp = *static_cast<json::JsonObject*>(data);
+
+		if (!temp.is<json::JsonObject>())
+		{
+			throw std::runtime_error("JWT data must be JSON map");
+		}
+
+		json::MapJsonIterator it(temp);
+
+		for (const auto& [key, value] : it)
+		{
+			if (value.is<std::string>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<std::string>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+			else if (value.is<int64_t>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<int64_t>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+			else if (value.is<bool>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<bool>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+			else if (value.is<double>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<double>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+		}
+
+		builder.set_expires_in(std::chrono::minutes(expirationTimeInMinutes));
+
+		return new std::string(builder.sign(jwt::algorithm::hs256("secret")));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

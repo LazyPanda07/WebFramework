@@ -313,6 +313,8 @@ EXPORT String generateSha256(const char* data, size_t size, Exception* exception
 
 EXPORT void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, Exception* exception);
 
+EXPORT String createJwt(JsonObject data, int64_t expirationTimeInMinutes, Exception* exception);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 EXPORT void deleteWebFrameworkJsonObject(JsonObject object);

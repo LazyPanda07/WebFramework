@@ -93,6 +93,10 @@ EXPORT double getRouteDoubleParameter(HttpRequestObject request, const char* rou
 
 EXPORT const char* getRouteStringParameter(HttpRequestObject request, const char* routeParameterName, Exception* exception);
 
+EXPORT const char* getToken(HttpRequestObject request, Exception* exception);
+
+EXPORT JsonObject getTokenPayload(HttpRequestObject request, Exception* exception);
+
 EXPORT DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception);
 
 EXPORT DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception);

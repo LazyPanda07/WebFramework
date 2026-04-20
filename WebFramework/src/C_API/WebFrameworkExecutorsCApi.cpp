@@ -3,6 +3,7 @@
 #include <Log.h>
 #include <JsonBuilder.h>
 #include <JsonParser.h>
+#include <jwt-cpp/jwt.h>
 
 #include "WebInterfaces/IHttpRequest.h"
 #include "Utility/JSONSettingsParser.h"
@@ -935,6 +936,50 @@ const char* getRouteStringParameter(HttpRequestObject request, const char* route
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRouteStringParameter(routeParameterName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+const char* getToken(HttpRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getToken();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JsonObject getTokenPayload(HttpRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getTokenPayload();
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{

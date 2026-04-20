@@ -183,6 +183,10 @@ namespace framework
 		/// <param name="name"></param>
 		void removeAttribute(std::string_view name);
 
+		std::optional<JsonObject> getTokenPayload() const;
+
+		std::optional<std::string_view> getToken() const;
+
 		/// <summary>
 		/// Client's cookies
 		/// </summary>
@@ -682,6 +686,26 @@ namespace framework
 	inline void HttpRequest::removeAttribute(std::string_view name)
 	{
 		implementation->removeAttribute(name.data());
+	}
+
+	inline std::optional<JsonObject> HttpRequest::getTokenPayload() const
+	{
+		if (void* result = implementation->getTokenPayload())
+		{
+			return JsonObject(result, false);
+		}
+
+		return std::nullopt;
+	}
+
+	inline std::optional<std::string_view> HttpRequest::getToken() const
+	{
+		if (const char* result = implementation->getToken())
+		{
+			return std::string_view(result);
+		}
+
+		return std::nullopt;
 	}
 
 	inline HttpRequest::HeadersMap HttpRequest::getCookies() const

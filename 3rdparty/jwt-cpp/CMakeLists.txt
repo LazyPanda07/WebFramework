@@ -6,6 +6,8 @@ set(JWT_BUILD_EXAMPLES OFF)
 
 project(jwt-cpp)
 
+add_definitions(-DNOMINMAX)
+
 if (UNIX)
 	if ("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "aarch64")
 		set(PLATFORM_NAME LinuxARM)

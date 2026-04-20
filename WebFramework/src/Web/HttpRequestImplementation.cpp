@@ -5,6 +5,7 @@
 #include <BaseTCPServer.h>
 #include <FileManager.h>
 #include <HttpsNetwork.h>
+#include <jwt-cpp/jwt.h>
 
 #include "Managers/SessionsManager.h"
 #include "Managers/DatabasesManager.h"
@@ -343,7 +344,7 @@ namespace framework
 			}
 
 			stream << chunk;
-		}	
+		}
 	}
 
 	void HttpRequestImplementation::registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass)
@@ -560,6 +561,56 @@ namespace framework
 	double HttpRequestImplementation::getRouteDoubleParameter(const char* routeParameterName) const
 	{
 		return std::get<double>(routeParameters.at(routeParameterName));
+	}
+
+	const char* HttpRequestImplementation::getToken() const
+	{
+		const web::HeadersMap& headers = parser.getHeaders();
+
+		if (auto it = headers.find("Authorization"); it != headers.end())
+		{
+			constexpr std::string_view bearer = "Bearer ";
+			size_t offset = it->second.find(bearer);
+
+			if (offset == std::string::npos)
+			{
+				return nullptr;
+			}
+
+			offset += bearer.size();
+
+			return it->second.data() + offset;
+		}
+
+		return nullptr;
+	}
+
+	void* HttpRequestImplementation::getTokenPayload() const
+	{
+		const char* token = this->getToken();
+
+		if (!token)
+		{
+			return nullptr;
+		}
+
+		auto decodedToken = jwt::decode(token);
+		auto verifier = jwt::verify()
+			.allow_algorithm(jwt::algorithm::hs256("secret"));
+		std::error_code code;
+
+		verifier.verify(decodedToken, code);
+
+		if (code)
+		{
+			return nullptr;
+		}
+
+		json::JsonObject temp;
+
+		json::JsonParser(decodedToken.get_payload()).getParsedData(temp);
+
+		return new json::JsonObject(std::move(temp));
 	}
 
 	interfaces::IDatabase* HttpRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)

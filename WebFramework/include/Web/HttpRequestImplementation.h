@@ -289,6 +289,10 @@ namespace framework
 
 		double getRouteDoubleParameter(const char* routeParameterName) const override;
 
+		const char* getToken() const override;
+
+		void* getTokenPayload() const override;
+
 		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName) override;
 
 		interfaces::IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const override;

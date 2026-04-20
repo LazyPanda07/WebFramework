@@ -1,8 +1,11 @@
 #pragma once
 
+#include <chrono>
+
 #include "../DLLHandler.hpp"
 #include "../Exceptions/WebFrameworkException.hpp"
 #include "../Databases/SqlValue.hpp"
+#include "../JsonObject.hpp"
 
 namespace framework::utility
 {
@@ -35,6 +38,11 @@ namespace framework::utility
 		 */
 		template<typename... Args>
 		std::array<SqlValue, sizeof...(Args)> makeSqlValues(Args&&... args);
+	}
+
+	namespace token
+	{
+		std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime);
 	}
 
 	/**
@@ -95,6 +103,25 @@ namespace framework::utility
 			std::array<SqlValue, sizeof...(Args)> result({ std::forward<Args>(args)... });
 
 			return result;
+		}
+	}
+
+	namespace token
+	{
+		inline std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime)
+		{
+			using createJwt = void* (*) (JsonObject data, int64_t expirationTimeInMinutes, void** exception);
+			void* exception = nullptr;
+			DllHandler& instance = DllHandler::getInstance();
+
+			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(createJwt, data.implementation, expirationTime.count(), &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return instance.getString(result);
 		}
 	}
 

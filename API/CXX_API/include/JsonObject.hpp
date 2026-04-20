@@ -7,9 +7,19 @@
 #include "DLLHandler.hpp"
 #include "Exceptions/WebFrameworkException.hpp"
 
+namespace framework
+{
+	class JsonObject;
+}
+
 namespace framework::utility
 {
 	class ExecutorSettings;
+}
+
+namespace framework::utility::token
+{
+	std::string createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime);
 }
 
 namespace framework
@@ -113,6 +123,7 @@ namespace framework
 		friend class HttpRequest;
 		friend class HttpResponse;
 		friend class utility::ExecutorSettings;
+		friend std::string utility::token::createJwt(const JsonObject& data, std::chrono::minutes expirationTime);
 	};
 }
 
