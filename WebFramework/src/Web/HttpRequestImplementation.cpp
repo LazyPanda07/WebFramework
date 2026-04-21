@@ -596,7 +596,7 @@ namespace framework
 
 		auto decodedToken = jwt::decode(token);
 		auto verifier = jwt::verify()
-			.allow_algorithm(jwt::algorithm::hs256("secret"));
+			.allow_algorithm(jwt::algorithm::hs256(utility::getEnvironmentVariable("JWT_SECRET")));
 		std::error_code code;
 
 		verifier.verify(decodedToken, code);

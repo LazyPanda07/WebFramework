@@ -9,6 +9,14 @@
 
 namespace framework::utility
 {
+	bool isVariableExist(std::string_view key);
+
+	void setEnvironmentVariable(std::string_view key, std::string_view value);
+
+	std::string getEnvironmentVariable(std::string_view key);
+
+	std::string generateRandomString(size_t size);
+
 	template<const auto& Format, const auto& Category, typename... Args>
 	[[noreturn]] void logAndThrowException(Args&&... args) requires log_utils::LogFormat<Format, Args...>;
 

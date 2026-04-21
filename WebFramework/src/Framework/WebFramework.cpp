@@ -1,6 +1,7 @@
 #include "Framework/WebFramework.h"
 
 #include <filesystem>
+#include <random>
 
 #include <JsonArrayWrapper.h>
 #include <MapJsonIterator.h>
@@ -582,6 +583,13 @@ namespace framework
 		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
 		{
 			it->finishInitialization();
+		}
+
+		if (!utility::isVariableExist("JWT_SECRET"))
+		{
+			std::mt19937 random(static_cast<uint32_t>(std::time(nullptr)));
+
+			utility::setEnvironmentVariable("JWT_SECRET", utility::generateRandomString(random() % 64));
 		}
 	}
 

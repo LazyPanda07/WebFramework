@@ -14,6 +14,7 @@
 #include "Assets/SingleBinaryAsset.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/AlreadyLoggedException.h"
+#include "Utility/Utils.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -3508,7 +3509,7 @@ String createJwt(JsonObject data, int64_t expirationTimeInMinutes, Exception* ex
 
 		builder.set_expires_in(std::chrono::minutes(expirationTimeInMinutes));
 
-		return new std::string(builder.sign(jwt::algorithm::hs256("secret")));
+		return new std::string(builder.sign(jwt::algorithm::hs256(framework::utility::getEnvironmentVariable("JWT_SECRET"))));
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
