@@ -97,7 +97,7 @@ namespace framework::proxy
 		}
 	}
 
-	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings) :
+	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings, WebFramework& frameworkInstance) :
 		BaseTCPServer
 		(
 			port,
@@ -106,7 +106,8 @@ namespace framework::proxy
 			true,
 			0,
 			false
-		)
+		),
+		BaseWebServer(frameworkInstance)
 	{
 		const std::vector<json::JsonObject>& servers = proxySettings["proxiedServers"].get<std::vector<json::JsonObject>>();
 

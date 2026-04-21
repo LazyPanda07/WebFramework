@@ -11,11 +11,7 @@
 #include "Utility/ChunkGenerator.h"
 #include "WebFrameworkCoreConstants.h"
 #include "HttpResponseImplementation.h"
-
-namespace web
-{
-	class BaseTCPServer;
-}
+#include "Web/Servers/BaseWebServer.h"
 
 namespace framework::utility
 {
@@ -56,7 +52,7 @@ namespace framework
 
 	private:
 		SessionsManager& session;
-		const web::BaseTCPServer& serverReference;
+		BaseWebServer& serverReference;
 		streams::IOSocketStream& stream;
 		std::unordered_map<std::string, std::variant<std::string, int64_t, double>> routeParameters;
 		sockaddr clientAddr;
@@ -79,7 +75,7 @@ namespace framework
 		static void registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources);
 
 	public:
-		HttpRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
+		HttpRequestImplementation(SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
 
 		HttpRequestImplementation(HttpRequestImplementation&&) noexcept = default;
 

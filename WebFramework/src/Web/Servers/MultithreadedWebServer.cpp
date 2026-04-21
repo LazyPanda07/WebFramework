@@ -14,6 +14,7 @@
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6387)
@@ -143,7 +144,8 @@ namespace framework
 		DWORD timeout,
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
-		std::shared_ptr<threading::ThreadPool> threadPool
+		std::shared_ptr<threading::ThreadPool> threadPool,
+		WebFramework& frameworkInstance
 	) :
 		BaseTCPServer
 		(
@@ -154,6 +156,7 @@ namespace framework
 			0,
 			false
 		),
+		BaseWebServer(frameworkInstance),
 		ExecutorServer
 		(
 			configuration,

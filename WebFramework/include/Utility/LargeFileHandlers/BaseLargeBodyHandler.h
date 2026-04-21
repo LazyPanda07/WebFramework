@@ -15,7 +15,7 @@ namespace framework::utility
 	{
 	private:
 		SessionsManager& sessionsManager;
-		const web::BaseTCPServer& serverReference;
+		BaseWebServer& serverReference;
 		interfaces::IStaticFile& staticResources;
 		interfaces::IDynamicFile& dynamicResources;
 		sockaddr clientAddr;
@@ -37,7 +37,7 @@ namespace framework::utility
 	public:
 		BaseLargeBodyHandler
 		(
-			web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
+			web::Network& network, SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
 			sockaddr clientAddr, streams::IOSocketStream& stream,
 			ExecutorsManager& executorsManager, ExecutorsManager::StatefulExecutors& executors
 		);

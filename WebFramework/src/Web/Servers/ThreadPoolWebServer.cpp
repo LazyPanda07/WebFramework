@@ -44,7 +44,7 @@ namespace framework
 	bool ThreadPoolWebServer::Client::serve
 	(
 		SessionsManager& sessionsManager,
-		web::BaseTCPServer& server,
+		BaseWebServer& server,
 		interfaces::IStaticFile& staticResources,
 		interfaces::IDynamicFile& dynamicResources,
 		ExecutorsManager& executorsManager,
@@ -261,7 +261,8 @@ namespace framework
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
 		uint32_t numberOfThreads,
-		std::shared_ptr<threading::ThreadPool> resourcesThreadPool
+		std::shared_ptr<threading::ThreadPool> resourcesThreadPool,
+		WebFramework& frameworkInstance
 	) :
 		BaseTCPServer
 		(
@@ -272,6 +273,7 @@ namespace framework
 			1,
 			false
 		),
+		BaseWebServer(frameworkInstance),
 		ExecutorServer
 		(
 			configuration,

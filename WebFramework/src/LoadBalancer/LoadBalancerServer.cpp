@@ -442,7 +442,8 @@ namespace framework::load_balancer
 		const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 		std::shared_ptr<ResourceExecutor> resources,
 		uint32_t processingThreads,
-		uint32_t loadBalancingTargetRPS
+		uint32_t loadBalancingTargetRPS,
+		WebFramework& frameworkInstance
 	) :
 		BaseTCPServer
 		(
@@ -453,6 +454,7 @@ namespace framework::load_balancer
 			0,
 			false
 		),
+		BaseWebServer(frameworkInstance),
 		requestQueues(processingThreads),
 		processingClients(processingThreads),
 		resources(resources),

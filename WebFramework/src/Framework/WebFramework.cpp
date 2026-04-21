@@ -477,7 +477,8 @@ namespace framework
 					timeout,
 					pathToSources,
 					additionalSettings,
-					threadPool
+					threadPool,
+					*this
 				);
 		}
 		else if (webServerType == json_settings_values::threadPoolWebServerTypeValue)
@@ -500,7 +501,8 @@ namespace framework
 					pathToSources,
 					additionalSettings,
 					threadPoolThreads,
-					threadPool
+					threadPool,
+					*this
 				);
 		}
 		else if (webServerType == json_settings_values::loadBalancerWebServerTypeValue)
@@ -545,12 +547,13 @@ namespace framework
 					allServers,
 					std::make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
 					static_cast<uint32_t>(processingThreads),
-					static_cast<uint32_t>(targetRPS)
+					static_cast<uint32_t>(targetRPS),
+					*this
 				);
 		}
 		else if (webServerType == json_settings_values::proxyWebServerTypeValue)
 		{
-			server = std::make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).get<json::JsonObject>(json_settings::proxyObject));
+			server = std::make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).get<json::JsonObject>(json_settings::proxyObject), *this);
 		}
 		else
 		{

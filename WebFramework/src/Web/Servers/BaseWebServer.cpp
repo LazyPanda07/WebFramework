@@ -7,6 +7,7 @@
 
 #include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 namespace framework
 {
@@ -61,11 +62,12 @@ namespace framework
 		return SSL_new(context);
 	}
 
-	BaseWebServer::BaseWebServer() :
+	BaseWebServer::BaseWebServer(WebFramework& frameworkInstance) :
 		context(nullptr),
 		certificate(nullptr),
 		chain(nullptr),
-		privateKey(nullptr)
+		privateKey(nullptr),
+		frameworkInstance(frameworkInstance)
 	{
 		this->updateCertificates();
 	}
