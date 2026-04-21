@@ -18,7 +18,6 @@
 #include "Proxy/ProxyServer.h"
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
-#include "Managers/DatabasesManager.h"
 #include "Managers/RuntimesManager.h"
 #include "Managers/TaskExecutorsManager.h"
 #include "Managers/TaskBrokersManager.h"
@@ -88,28 +87,6 @@ namespace framework
 		}
 	}
 
-	std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const std::vector<std::string>& settingsPaths)
-	{
-		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> result;
-
-		for (const std::string& settingsPath : settingsPaths)
-		{
-			utility::JSONSettingsParser parser(settingsPath);
-
-			for (const auto& [key, value] : parser.getSettings())
-			{
-				if (auto it = result.find(key); it != result.end())
-				{
-					utility::logAndThrowException<logging::message::sameExecutorRoute, logging::category::webFramework>(value.name, it->second.name);
-				}
-
-				result.try_emplace(key, value);
-			}
-		}
-
-		return result;
-	}
-
 	uint64_t WebFramework::parseLoggingFlags(const json::JsonObject& loggingSettings) const
 	{
 		std::vector<json::JsonObject> flags;
@@ -140,6 +117,28 @@ namespace framework
 		}
 
 		return Log::VerbosityLevel::verbose;
+	}
+
+	std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const std::vector<std::string>& settingsPaths)
+	{
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> result;
+
+		for (const std::string& settingsPath : settingsPaths)
+		{
+			utility::JSONSettingsParser parser(settingsPath, *this);
+
+			for (const auto& [key, value] : parser.getSettings())
+			{
+				if (auto it = result.find(key); it != result.end())
+				{
+					utility::logAndThrowException<logging::message::sameExecutorRoute, logging::category::webFramework>(value.name, it->second.name);
+				}
+
+				result.try_emplace(key, value);
+			}
+		}
+
+		return result;
 	}
 
 	void WebFramework::initAPIs(const json::JsonObject& webFrameworkSettings)
@@ -309,7 +308,7 @@ namespace framework
 			}
 		);
 
-		executorSettings = WebFramework::createExecutorsSettings(settingsPaths);
+		executorSettings = this->createExecutorsSettings(settingsPaths);
 
 		if (ExecutorsManager::types.at(webFrameworkSettings[json_settings::webServerTypeKey].get<std::string>()) > ExecutorsManager::WebServerType::proxy)
 		{
@@ -459,7 +458,7 @@ namespace framework
 			}
 		}
 
-		DatabasesManager::get().initDatabaseImplementation(databases);
+		databasesManager.initDatabaseImplementation(databases);
 	}
 
 	void WebFramework::initServer
@@ -691,6 +690,11 @@ namespace framework
 	const std::optional<WebFramework::HttpsData>& WebFramework::getHttpsData() const
 	{
 		return httpsData;
+	}
+
+	DatabasesManager& WebFramework::getDatabasesManager()
+	{
+		return databasesManager;
 	}
 
 	WebFramework::~WebFramework()

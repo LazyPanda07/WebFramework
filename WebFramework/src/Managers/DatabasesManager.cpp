@@ -15,13 +15,6 @@ namespace framework
 
 	}
 
-	DatabasesManager& DatabasesManager::get()
-	{
-		static DatabasesManager instance;
-
-		return instance;
-	}
-
 	void DatabasesManager::initDatabaseImplementation(const std::vector<std::string>& databases)
 	{
 		for (const std::string& database : databases)

@@ -13,6 +13,7 @@
 #include "Managers/DatabasesManager.h"
 #include "Web/HttpRequestImplementation.h"
 #include "Exceptions/AlreadyLoggedException.h"
+#include "Framework/WebFramework.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -1316,8 +1317,9 @@ DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSet
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getOrCreateDatabase(databaseName, implementationName)));
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)));
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1339,8 +1341,9 @@ DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSettings, c
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getDatabase(databaseName, implementationName)));
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)));
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1362,8 +1365,9 @@ TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSettings,
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -1385,8 +1389,9 @@ TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const c
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getDatabase(databaseName, implementationName)))->get(tableName);
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)))->get(tableName);
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{

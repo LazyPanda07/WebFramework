@@ -47,6 +47,8 @@ namespace framework
 
 		void updateCertificates();
 
+		WebFramework& getFrameworkInstance();
+
 		virtual ~BaseWebServer();
 	};
 }

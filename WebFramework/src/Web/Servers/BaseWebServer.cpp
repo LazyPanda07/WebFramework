@@ -174,6 +174,11 @@ namespace framework
 		}
 	}
 
+	WebFramework& BaseWebServer::getFrameworkInstance()
+	{
+		return frameworkInstance;
+	}
+
 	BaseWebServer::~BaseWebServer()
 	{
 		if (context)

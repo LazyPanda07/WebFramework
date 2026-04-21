@@ -14,6 +14,7 @@
 #include "ExecutorsConstants.h"
 #include "Utility/ExecutorsUtility.h"
 #include "Managers/TaskBrokersManager.h"
+#include "Framework/WebFramework.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)
@@ -615,12 +616,12 @@ namespace framework
 
 	interfaces::IDatabase* HttpRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)
 	{
-		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getOrCreateDatabase(databaseName, databaseImplementationName)));
+		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName)));
 	}
 
 	interfaces::IDatabase* HttpRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
 	{
-		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getDatabase(databaseName, databaseImplementationName)));
+		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getDatabase(databaseName, databaseImplementationName)));
 	}
 
 	HttpRequestImplementation::~HttpRequestImplementation()

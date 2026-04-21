@@ -18,22 +18,16 @@ namespace framework::utility
 		std::ranges::for_each(databases, [](interfaces::IDatabase* database) { delete database; });
 	}
 
-	JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
-		executorLoadType(LoadType::none),
-		requireJwt(false)
-	{
-
-	}
-
-	JSONSettingsParser::ExecutorSettings::ExecutorSettings(std::string_view name) :
+	JSONSettingsParser::ExecutorSettings::ExecutorSettings(std::string_view name, WebFramework& frameworkInstance) :
 		name(name),
 		executorLoadType(LoadType::none),
-		requireJwt(false)
+		requireJwt(false),
+		frameworkInstance(frameworkInstance)
 	{
 
 	}
 
-	JSONSettingsParser::JSONSettingsParser(const std::string& JSONSettings)
+	JSONSettingsParser::JSONSettingsParser(const std::string& JSONSettings, WebFramework& frameworkInstance)
 	{
 		std::ifstream in(JSONSettings);
 
@@ -58,7 +52,7 @@ namespace framework::utility
 			}
 
 			const std::string& loadType = description[json_settings::loadTypeKey].get<std::string>();
-			ExecutorSettings executorSettings(name);
+			ExecutorSettings executorSettings(name, frameworkInstance);
 
 			description.tryGet<json::JsonObject>(json_settings::initParametersKey, executorSettings.initParameters);
 			

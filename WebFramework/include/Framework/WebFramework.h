@@ -8,6 +8,7 @@
 #include "Web/Servers/BaseWebServer.h"
 #include "Config.h"
 #include "Utility/TaskExecutorsSettings.h"
+#include "Managers/DatabasesManager.h"
 
 #ifdef __WITH_STACKTRACE__
 #include "Utility/CrashHandler.h"
@@ -53,14 +54,13 @@ namespace framework
 	private:
 		static void parseAdditionalConfigs(const json::JsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources);
 
-		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
-
 	private:
 		utility::Config config;
 		std::unique_ptr<BaseWebServer> server;
 		std::exception** serverException;
 		std::string webServerType;
 		std::optional<HttpsData> httpsData;
+		DatabasesManager databasesManager;
 #ifdef __WITH_STACKTRACE__
 		utility::CrashHandler crashHandler;
 #endif
@@ -68,6 +68,9 @@ namespace framework
 		uint64_t parseLoggingFlags(const json::JsonObject& loggingSettings) const;
 
 		Log::VerbosityLevel parseVerbosity(const json::JsonObject& loggingSettings) const;
+
+	private:
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
 
 	private:
 		void initAPIs(const json::JsonObject& webFrameworkSettings);
@@ -109,6 +112,8 @@ namespace framework
 		const json::JsonParser& getCurrentConfiguration() const;
 
 		const std::optional<HttpsData>& getHttpsData() const;
+
+		DatabasesManager& getDatabasesManager();
 
 		~WebFramework();
 	};
