@@ -5,7 +5,6 @@
 #include <HttpsNetwork.h>
 #include <openssl/err.h>
 
-#include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Utils.h"
 #include "Framework/WebFramework.h"
 
@@ -74,102 +73,104 @@ namespace framework
 
 	void BaseWebServer::updateCertificates()
 	{
-		utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 
-		if (useHTTPS = httpsSettings.getUseHTTPS(); useHTTPS)
+		if (!httpsData)
 		{
-			BaseWebServer::readSsl
-			(
-				httpsSettings.getPathToCertificate(),
-				[this](FILE* file, const std::filesystem::path& filePath)
+			return;
+		}
+
+		BaseWebServer::readSsl
+		(
+			httpsData->getPathToCertificate(),
+			[this](FILE* file, const std::filesystem::path& filePath)
+			{
+				if (certificate)
 				{
-					if (certificate)
-					{
-						X509_free(certificate);
-						sk_X509_pop_free(chain, X509_free);
+					X509_free(certificate);
+					sk_X509_pop_free(chain, X509_free);
 
-						certificate = nullptr;
-						chain = nullptr;
+					certificate = nullptr;
+					chain = nullptr;
+				}
+
+				certificate = PEM_read_X509(file, nullptr, nullptr, nullptr);
+
+				if (!certificate)
+				{
+					utility::logAndThrowException<logging::message::sslCertificateError, logging::category::https>(filePath.string());
+				}
+
+				chain = sk_X509_new_null();
+
+				if (!chain)
+				{
+					throw std::bad_alloc();
+				}
+
+				while (true)
+				{
+					if (X509* additionalCert = PEM_read_X509(file, nullptr, nullptr, nullptr))
+					{
+						sk_X509_push(chain, additionalCert);
 					}
-
-					certificate = PEM_read_X509(file, nullptr, nullptr, nullptr);
-
-					if (!certificate)
+					else
 					{
-						utility::logAndThrowException<logging::message::sslCertificateError, logging::category::https>(filePath.string());
-					}
-
-					chain = sk_X509_new_null();
-
-					if (!chain)
-					{
-						throw std::bad_alloc();
-					}
-
-					while (true)
-					{
-						if (X509* additionalCert = PEM_read_X509(file, nullptr, nullptr, nullptr))
-						{
-							sk_X509_push(chain, additionalCert);
-						}
-						else
-						{
-							break;
-						}
+						break;
 					}
 				}
-			);
+			}
+		);
 
-			BaseWebServer::readSsl
-			(
-				httpsSettings.getPathToKey(),
-				[this](FILE* file, const std::filesystem::path& filePath)
+		BaseWebServer::readSsl
+		(
+			httpsData->getPathToKey(),
+			[this](FILE* file, const std::filesystem::path& filePath)
+			{
+				if (privateKey)
 				{
-					if (privateKey)
-					{
-						EVP_PKEY_free(privateKey);
+					EVP_PKEY_free(privateKey);
 
-						privateKey = nullptr;
-					}
-
-					privateKey = PEM_read_PrivateKey(file, nullptr, nullptr, nullptr);
-
-					if (!privateKey)
-					{
-						utility::logAndThrowException<logging::message::privateKeyError, logging::category::https>(filePath.string());
-					}
+					privateKey = nullptr;
 				}
-			);
 
-			if (!context)
-			{
-				context = SSL_CTX_new(TLS_server_method());
+				privateKey = PEM_read_PrivateKey(file, nullptr, nullptr, nullptr);
+
+				if (!privateKey)
+				{
+					utility::logAndThrowException<logging::message::privateKeyError, logging::category::https>(filePath.string());
+				}
 			}
+		);
 
-			if (!context)
-			{
-				throw web::exceptions::SslException(__LINE__, __FILE__);
-			}
+		if (!context)
+		{
+			context = SSL_CTX_new(TLS_server_method());
+		}
 
-			std::lock_guard<std::mutex> lock(sslMutex);
+		if (!context)
+		{
+			throw web::exceptions::SslException(__LINE__, __FILE__);
+		}
 
-			if (int errorCode = SSL_CTX_use_certificate(context, certificate); errorCode != 1)
+		std::lock_guard<std::mutex> lock(sslMutex);
+
+		if (int errorCode = SSL_CTX_use_certificate(context, certificate); errorCode != 1)
+		{
+			throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
+		}
+
+		for (int i = 0; i < sk_X509_num(chain); i++)
+		{
+			if (int errorCode = SSL_CTX_add1_chain_cert(context, sk_X509_value(chain, i)); errorCode != 1)
 			{
 				throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
 			}
+		}
 
-			for (int i = 0; i < sk_X509_num(chain); i++)
-			{
-				if (int errorCode = SSL_CTX_add1_chain_cert(context, sk_X509_value(chain, i)); errorCode != 1)
-				{
-					throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
-				}
-			}
-
-			if (int errorCode = SSL_CTX_use_PrivateKey(context, privateKey); errorCode != 1)
-			{
-				throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
-			}
+		if (int errorCode = SSL_CTX_use_PrivateKey(context, privateKey); errorCode != 1)
+		{
+			throw web::exceptions::SslException(__LINE__, __FILE__, errorCode);
 		}
 	}
 

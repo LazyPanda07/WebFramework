@@ -22,11 +22,33 @@ namespace framework
 	class WEB_FRAMEWORK_API WebFramework
 	{
 	public:
-		/**
-		 * @brief Is server use HTTPS
-		 * @return 
-		 */
-		static bool getUseHTTPS();
+		class HttpsData
+		{
+		private:
+			std::filesystem::path pathToCertificate;
+			std::filesystem::path pathToKey;
+
+		public:
+			HttpsData();
+
+			HttpsData(const HttpsData&) = delete;
+
+			HttpsData(HttpsData&& other) = default;
+
+			HttpsData& operator =(const HttpsData&) = delete;
+
+			HttpsData& operator =(HttpsData&& other) = default;
+
+			void setPathToCertificate(const std::filesystem::path& pathToCertificate);
+
+			void setPathToKey(const std::filesystem::path& pathToKey);
+
+			const std::filesystem::path& getPathToCertificate() const;
+
+			const std::filesystem::path& getPathToKey() const;
+
+			~HttpsData() = default;
+		};
 
 	private:
 		static void parseAdditionalConfigs(const json::JsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources);
@@ -38,6 +60,7 @@ namespace framework
 		std::unique_ptr<BaseWebServer> server;
 		std::exception** serverException;
 		std::string webServerType;
+		std::optional<HttpsData> httpsData;
 #ifdef __WITH_STACKTRACE__
 		utility::CrashHandler crashHandler;
 #endif
@@ -55,7 +78,7 @@ namespace framework
 
 		void initTaskExecutors(const json::JsonObject& taskBrokerObject);
 
-		void initHTTPS(const json::JsonObject& webFrameworkSettings) const;
+		void initHTTPS(const json::JsonObject& webFrameworkSettings);
 
 		void initDatabase(const json::JsonObject& webFrameworkSettings);
 
@@ -79,11 +102,13 @@ namespace framework
 
 		void updateSslCertificates();
 
-		std::vector<std::string> getClientsIp() const;
-
 		bool isServerRunning() const;
 
+		std::vector<std::string> getClientsIp() const;
+
 		const json::JsonParser& getCurrentConfiguration() const;
+
+		const std::optional<HttpsData>& getHttpsData() const;
 
 		~WebFramework();
 	};

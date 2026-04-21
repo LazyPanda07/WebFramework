@@ -104,7 +104,6 @@ add_library(
 	WebFramework/src/Proxy/ProxyServer.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
-	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/ConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Utility/CrashHandler.cpp

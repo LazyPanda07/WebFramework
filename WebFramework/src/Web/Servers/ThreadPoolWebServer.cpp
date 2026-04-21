@@ -3,7 +3,6 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/SslException.h"
 #include "Exceptions/APIException.h"
-#include "Utility/Singletons/HTTPSSingleton.h"
 #include "HttpsNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 #include "Utility/Utils.h"

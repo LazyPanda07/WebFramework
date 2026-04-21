@@ -3,6 +3,10 @@
 #include <filesystem>
 #include <random>
 
+#ifdef __LINUX__
+#include <signal.h>
+#endif
+
 #include <JsonArrayWrapper.h>
 #include <MapJsonIterator.h>
 #include <DatabaseUtility.h>
@@ -10,7 +14,6 @@
 #include "Web/Servers/MultithreadedWebServer.h"
 #include "Web/Servers/ThreadPoolWebServer.h"
 #include "LoadBalancer/LoadBalancerServer.h"
-#include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Sources.h"
 #include "Proxy/ProxyServer.h"
 #include "Utility/DynamicLibraries.h"
@@ -28,9 +31,36 @@
 
 namespace framework
 {
-	bool WebFramework::getUseHTTPS()
+	WebFramework::HttpsData::HttpsData()
 	{
-		return utility::HTTPSSingleton::get().getUseHTTPS();
+#ifdef __LINUX__
+		signal(SIGPIPE, SIG_IGN);
+#endif
+
+		SSL_library_init();
+		SSL_load_error_strings();
+	}
+
+	void WebFramework::HttpsData::setPathToCertificate(const std::filesystem::path& pathToCertificate)
+	{
+		this->pathToCertificate = pathToCertificate;
+		this->pathToCertificate = this->pathToCertificate.make_preferred();
+	}
+
+	void WebFramework::HttpsData::setPathToKey(const std::filesystem::path& pathToKey)
+	{
+		this->pathToKey = pathToKey;
+		this->pathToKey = this->pathToKey.make_preferred();
+	}
+
+	const std::filesystem::path& WebFramework::HttpsData::getPathToCertificate() const
+	{
+		return pathToCertificate;
+	}
+
+	const std::filesystem::path& WebFramework::HttpsData::getPathToKey() const
+	{
+		return pathToKey;
 	}
 
 	void WebFramework::parseAdditionalConfigs(const json::JsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources)
@@ -379,7 +409,7 @@ namespace framework
 		taskExecutorsManager.runTaskConsumer(); // run only if consumer created
 	}
 
-	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings) const
+	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings)
 	{
 		json::JsonObject https;
 
@@ -390,19 +420,15 @@ namespace framework
 
 		if (bool useHTTPS = false; https.tryGet<bool>(json_settings::useHTTPSKey, useHTTPS) && useHTTPS)
 		{
-			utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+			HttpsData& data = httpsData.emplace();
 			const std::filesystem::path& basePath = config.getBasePath();
 
-			httpsSettings.setUseHTTPS(true);
-			httpsSettings.setPathToCertificate(basePath / https[json_settings::pathToCertificateKey].get<std::string>());
-			httpsSettings.setPathToKey(basePath / https[json_settings::pathToKey].get<std::string>());
-
-			SSL_library_init();
-			SSL_load_error_strings();
+			data.setPathToCertificate(basePath / https[json_settings::pathToCertificateKey].get<std::string>());
+			data.setPathToKey(basePath / https[json_settings::pathToKey].get<std::string>());
 
 			if (Log::isValid())
 			{
-				Log::info<logging::message::httpsInitialization, logging::category::https>(httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
+				Log::info<logging::message::httpsInitialization, logging::category::https>(data.getPathToCertificate().string(), data.getPathToKey().string());
 			}
 		}
 	}
@@ -637,6 +663,11 @@ namespace framework
 		server->updateCertificates();
 	}
 
+	bool WebFramework::isServerRunning() const
+	{
+		return server->isServerRunning();
+	}
+
 	std::vector<std::string> WebFramework::getClientsIp() const
 	{
 		std::vector<std::pair<std::string, std::vector<SOCKET>>> clients = server->getClients();
@@ -652,14 +683,14 @@ namespace framework
 		return result;
 	}
 
-	bool WebFramework::isServerRunning() const
-	{
-		return server->isServerRunning();
-	}
-
 	const json::JsonParser& WebFramework::getCurrentConfiguration() const
 	{
 		return (*config);
+	}
+
+	const std::optional<WebFramework::HttpsData>& WebFramework::getHttpsData() const
+	{
+		return httpsData;
 	}
 
 	WebFramework::~WebFramework()

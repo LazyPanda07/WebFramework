@@ -11,7 +11,6 @@
 #include "Exceptions/APIException.h"
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SslException.h"
-#include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
 #include "Utility/Utils.h"
 #include "Framework/WebFramework.h"

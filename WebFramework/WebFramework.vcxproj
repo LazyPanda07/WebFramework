@@ -206,7 +206,6 @@
     <ClCompile Include="src\LoadBalancer\Heuristics\LoadBalancerHeuristic.cpp" />
     <ClCompile Include="src\LoadBalancer\Heuristics\Connections.cpp" />
     <ClCompile Include="src\LoadBalancer\LoadBalancerServer.cpp" />
-    <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp" />
     <ClCompile Include="src\Utility\Sources.cpp" />
     <ClCompile Include="src\Utility\RouteParameters.cpp" />
     <ClCompile Include="src\Managers\ExecutorsManager.cpp" />
@@ -288,7 +287,6 @@
     <ClInclude Include="include\Utility\LargeFileHandlers\MultithreadedHandler.h" />
     <ClInclude Include="include\Utility\LargeFileHandlers\ThreadPoolHandler.h" />
     <ClInclude Include="include\Utility\CrashHandler.h" />
-    <ClInclude Include="include\Utility\Singletons\HTTPSSingleton.h" />
     <ClInclude Include="include\Utility\RouteParameters.h" />
     <ClInclude Include="include\Utility\Sources.h" />
     <ClInclude Include="include\Managers\ExecutorsManager.h" />

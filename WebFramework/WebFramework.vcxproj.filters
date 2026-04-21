@@ -63,9 +63,6 @@
     <ClCompile Include="src\Web\Servers\ThreadPoolWebServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utility\Singletons\HTTPSSingleton.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\LoadBalancer\Heuristics\LoadBalancerHeuristic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -306,9 +303,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Web\Servers\ThreadPoolWebServer.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Utility\Singletons\HTTPSSingleton.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Framework\WebFrameworkPlatform.h">
