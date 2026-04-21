@@ -40,7 +40,7 @@ namespace framework::utility
 		std::string result;
 
 #ifdef __LINUX__
-		if (const char* value = getenv(key.dat()))
+		if (const char* value = getenv(key.data()))
 		{
 			result = value;
 		}
