@@ -23,11 +23,12 @@ namespace framework
 {
 	void MultithreadedWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup)
 	{
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		SSL* ssl = nullptr;
 
 		try
 		{
-			if (useHTTPS)
+			if (httpsData)
 			{
 				ssl = this->getNewSsl();
 

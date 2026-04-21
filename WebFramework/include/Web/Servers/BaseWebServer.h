@@ -29,7 +29,6 @@ namespace framework
 		EVP_PKEY* privateKey;
 
 	protected:
-		bool useHTTPS;
 		WebFramework& frameworkInstance;
 
 	private:

@@ -7,6 +7,7 @@
 #include <IOSocketStream.h>
 
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 namespace framework::proxy
 {
@@ -19,11 +20,12 @@ namespace framework::proxy
 
 	void ProxyServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) //-V688
 	{
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		SSL* ssl = nullptr;
 
 		try
 		{
-			if (useHTTPS)
+			if (httpsData)
 			{
 				ssl = this->getNewSsl();
 

@@ -8,6 +8,7 @@
 #include "Utility/Stopwatch.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 #include "LoadBalancer/Heuristics/Connections.h"
 #include "LoadBalancer/Heuristics/CXXHeuristic.h"
@@ -367,11 +368,12 @@ namespace framework::load_balancer
 			heuristic->onStart();
 		}
 
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		SSL* ssl = nullptr;
 
 		try
 		{
-			if (useHTTPS)
+			if (httpsData)
 			{
 				ssl = this->getNewSsl();
 
@@ -462,6 +464,7 @@ namespace framework::load_balancer
 		serversHTTPS(serversHTTPS)
 	{
 		const std::string& heuristicName = heuristic["name"].get<std::string>();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		std::string apiType = heuristic[json_settings::apiTypeKey].get<std::string>();
 
 		if (heuristicName == "Connections")
@@ -482,7 +485,7 @@ namespace framework::load_balancer
 				this->allServers.emplace_back
 				(
 					utility::ConnectionData(ip, portString, timeout),
-					this->createAPIHeuristic(ip, portString, useHTTPS, heuristicName, apiType, loadSource)
+					this->createAPIHeuristic(ip, portString, static_cast<bool>(httpsData), heuristicName, apiType, loadSource)
 				);
 			}
 		}

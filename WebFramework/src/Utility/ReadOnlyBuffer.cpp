@@ -1,6 +1,7 @@
 #include "Utility/ReadOnlyBuffer.h"
 
 #include <algorithm>
+#include <cstring>
 
 namespace framework::utility
 {

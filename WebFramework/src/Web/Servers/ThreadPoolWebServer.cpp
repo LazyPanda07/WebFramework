@@ -6,6 +6,7 @@
 #include "HttpsNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 namespace framework
 {
@@ -204,11 +205,12 @@ namespace framework
 
 	void ThreadPoolWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr address, std::function<void()>& cleanup) //-V688
 	{
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		SSL* ssl = nullptr;
 
 		try
 		{
-			if (useHTTPS)
+			if (httpsData)
 			{
 				ssl = this->getNewSsl();
 
@@ -228,7 +230,7 @@ namespace framework
 				}
 			}
 
-			clients.push_back(new Client(ssl, clientSocket, address, move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
+			clients.push_back(new Client(ssl, clientSocket, address, std::move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
 		}
 		catch (const web::exceptions::SslException& e)
 		{
