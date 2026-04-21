@@ -1,15 +1,12 @@
 #include "TaskBroker/TaskConsumer.h"
 
-#include "Managers/TaskBrokersManager.h"
-#include "Managers/TaskExecutorsManager.h"
 #include "Utility/Utils.h"
+#include "Managers/TaskExecutorsManager.h"
 
 namespace framework::task_broker
 {
 	void TaskConsumer::processTasks(TaskBroker& broker)
 	{
-		TaskExecutorsManager& taskExecutorsManager = TaskExecutorsManager::get();
-
 		while (std::optional<json::JsonObject> task = broker.requestTask())
 		{
 			json::JsonObject& data = *task;
@@ -56,14 +53,15 @@ namespace framework::task_broker
 		}
 	}
 
-	TaskConsumer::TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod) :
+	TaskConsumer::TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskExecutorsManager& taskExecutorsManager, TaskBrokersManager& taskBrokerManager) :
 		checkPeriod(checkPeriod),
 		taskRunner(threadsNumber),
-		stillConsuming(false)
+		stillConsuming(false),
+		taskExecutorsManager(taskExecutorsManager)
 	{
 		for (const std::string& brokerName : taskBrokerNames)
 		{
-			brokers.emplace_back(&TaskBrokersManager::get().getTaskBroker(brokerName));
+			brokers.emplace_back(&taskBrokerManager.getTaskBroker(brokerName));
 
 			if (Log::isValid())
 			{

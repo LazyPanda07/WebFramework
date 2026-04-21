@@ -19,8 +19,6 @@
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Managers/RuntimesManager.h"
-#include "Managers/TaskExecutorsManager.h"
-#include "Managers/TaskBrokersManager.h"
 #include "Runtimes/CXXRuntime.h"
 #include "Runtimes/CCRuntime.h"
 #include "Runtimes/PythonRuntime.h"
@@ -332,7 +330,6 @@ namespace framework
 		taskBrokerObject.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsSettingsKey, taskExecutorPaths);
 
 		const std::filesystem::path& basePath = config.getBasePath();
-		task_broker::TaskExecutorsManager& taskExecutorsManager = task_broker::TaskExecutorsManager::get();
 		std::string consumer;
 
 		if (taskBrokerObject.tryGet<std::string>(json_settings::consumerKey, consumer) && consumer == json_settings_values::consumerInternalValue)
@@ -342,7 +339,6 @@ namespace framework
 				utility::logAndThrowException<logging::message::cantFindTaskExecutorPaths, logging::category::webFramework>(json_settings_values::consumerInternalValue, json_settings::taskExecutorsSettingsKey);
 			}
 
-			task_broker::TaskBrokersManager& taskBrokerManager = task_broker::TaskBrokersManager::get();
 			const std::vector<json::JsonObject>& taskBrokers = taskBrokerObject.at(json_settings::taskBrokersKey).get<std::vector<json::JsonObject>>();
 			std::vector<std::string> taskBrokerNames;
 			size_t consumerThreads = json_settings_values::consumerThreadsDefaultValue;
@@ -378,7 +374,7 @@ namespace framework
 				taskBrokerNames.emplace_back(*taskBrokerName);
 			}
 
-			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod));
+			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod), taskBrokerManager);
 		}
 
 		for (const json::JsonObject& taskExecutorPath : taskExecutorPaths)
@@ -695,6 +691,16 @@ namespace framework
 	DatabasesManager& WebFramework::getDatabasesManager()
 	{
 		return databasesManager;
+	}
+
+	task_broker::TaskBrokersManager& WebFramework::getTaskBrokerManager()
+	{
+		return taskBrokerManager;
+	}
+
+	task_broker::TaskExecutorsManager& WebFramework::getTaskExecutorsManager()
+	{
+		return taskExecutorsManager;
 	}
 
 	WebFramework::~WebFramework()

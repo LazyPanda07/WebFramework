@@ -460,7 +460,7 @@ namespace framework
 	void HttpRequestImplementation::enqueueTask(const char* messageBrokerName, void* jsonObjectData)
 	{
 		json::JsonObject& data = *static_cast<json::JsonObject*>(jsonObjectData);
-		framework::task_broker::TaskBrokersManager& manager = framework::task_broker::TaskBrokersManager::get();
+		framework::task_broker::TaskBrokersManager& manager = serverReference.getFrameworkInstance().getTaskBrokerManager();
 
 		manager.getTaskBroker(messageBrokerName).enqueueTask(std::move(data));
 	}

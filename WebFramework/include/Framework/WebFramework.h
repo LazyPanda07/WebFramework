@@ -9,6 +9,8 @@
 #include "Config.h"
 #include "Utility/TaskExecutorsSettings.h"
 #include "Managers/DatabasesManager.h"
+#include "Managers/TaskBrokersManager.h"
+#include "Managers/TaskExecutorsManager.h"
 
 #ifdef __WITH_STACKTRACE__
 #include "Utility/CrashHandler.h"
@@ -61,6 +63,8 @@ namespace framework
 		std::string webServerType;
 		std::optional<HttpsData> httpsData;
 		DatabasesManager databasesManager;
+		task_broker::TaskBrokersManager taskBrokerManager;
+		task_broker::TaskExecutorsManager taskExecutorsManager;
 #ifdef __WITH_STACKTRACE__
 		utility::CrashHandler crashHandler;
 #endif
@@ -114,6 +118,10 @@ namespace framework
 		const std::optional<HttpsData>& getHttpsData() const;
 
 		DatabasesManager& getDatabasesManager();
+
+		task_broker::TaskBrokersManager& getTaskBrokerManager();
+
+		task_broker::TaskExecutorsManager& getTaskExecutorsManager();
 
 		~WebFramework();
 	};

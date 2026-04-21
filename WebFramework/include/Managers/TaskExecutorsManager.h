@@ -24,28 +24,17 @@ namespace framework::task_broker
 		MapType taskExecutors;
 		std::unique_ptr<TaskConsumer> consumer;
 
-	private:
-		TaskExecutorsManager();
-
-		TaskExecutorsManager(const TaskExecutorsManager&) = delete;
-
-		TaskExecutorsManager(TaskExecutorsManager&&) noexcept = delete;
-
-		TaskExecutorsManager& operator =(const TaskExecutorsManager&) = delete;
-
-		TaskExecutorsManager& operator =(TaskExecutorsManager&&) noexcept = delete;
-
-		~TaskExecutorsManager() = default;
-
 	public:
-		static TaskExecutorsManager& get();
+		TaskExecutorsManager();
 
 		void initTaskExecutor(const std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings);
 
-		void createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod);
+		void createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskBrokersManager& taskBrokersManager);
 
 		void runTaskConsumer();
 
 		TaskExecutor& getTaskExecutor(const std::string& apiName, const std::string& taskExecutorName) const;		
+
+		~TaskExecutorsManager() = default;
 	};
 }
