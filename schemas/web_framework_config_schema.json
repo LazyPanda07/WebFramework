@@ -292,6 +292,11 @@
               }
             ]
           }
+        },
+        "JWTSecretVariableName": {
+          "type": "string",
+          "description": "Name of environment variable with JWT secret",
+          "default": "JWT_SECRET"
         }
       },
       "required": [ "assetsPath", "templatesPath", "webServerType" ],

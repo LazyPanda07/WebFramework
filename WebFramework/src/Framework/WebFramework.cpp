@@ -584,7 +584,8 @@ namespace framework
 
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig),
-		serverException(nullptr)
+		serverException(nullptr),
+		jwtSecretName(json_settings_values::jwtSecretVariableNameValue)
 	{
 		this->initLogging();
 
@@ -609,11 +610,25 @@ namespace framework
 			it->finishInitialization();
 		}
 
-		if (!utility::isVariableExist("JWT_SECRET"))
+		webFrameworkSettings.tryGet<std::string>(json_settings::jwtSecretVariableNameKey, jwtSecretName);
+
+		if (!utility::isVariableExist(jwtSecretName))
 		{
 			std::mt19937 random(static_cast<uint32_t>(std::time(nullptr)));
 
-			utility::setEnvironmentVariable("JWT_SECRET", utility::generateRandomString(random() % 64));
+			utility::setEnvironmentVariable(json_settings_values::jwtSecretVariableNameValue, utility::generateRandomString(random() % 64));
+
+			if (Log::isValid() && jwtSecretName != json_settings_values::jwtSecretVariableNameValue)
+			{
+				Log::info<logging::message::cantFindJwtSecret, logging::category::webFramework>(jwtSecretName, json_settings_values::jwtSecretVariableNameValue);
+			}
+
+			jwtSecretName = json_settings_values::jwtSecretVariableNameValue;
+		}
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::jwtSecretVariable, logging::category::webFramework>(jwtSecretName);
 		}
 	}
 
@@ -681,6 +696,11 @@ namespace framework
 	const json::JsonParser& WebFramework::getCurrentConfiguration() const
 	{
 		return (*config);
+	}
+
+	std::string_view WebFramework::getJwtSecretName() const
+	{
+		return jwtSecretName;
 	}
 
 	const std::optional<WebFramework::HttpsData>& WebFramework::getHttpsData() const

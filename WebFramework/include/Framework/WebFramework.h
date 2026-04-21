@@ -61,6 +61,7 @@ namespace framework
 		std::unique_ptr<BaseWebServer> server;
 		std::exception** serverException;
 		std::string webServerType;
+		std::string jwtSecretName;
 		std::optional<HttpsData> httpsData;
 		DatabasesManager databasesManager;
 		task_broker::TaskBrokersManager taskBrokerManager;
@@ -114,6 +115,8 @@ namespace framework
 		std::vector<std::string> getClientsIp() const;
 
 		const json::JsonParser& getCurrentConfiguration() const;
+
+		std::string_view getJwtSecretName() const;
 
 		const std::optional<HttpsData>& getHttpsData() const;
 

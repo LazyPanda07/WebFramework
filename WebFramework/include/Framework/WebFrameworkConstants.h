@@ -45,6 +45,7 @@ namespace json_settings
 	inline constexpr std::string_view binaryAssetsKey = "binaryAssets";
 	inline constexpr std::string_view pathKey = "path";
 	inline constexpr std::string_view fullyLoadKey = "fullyLoad";
+	inline constexpr std::string_view jwtSecretVariableNameKey = "JWTSecretVariableName";
 	
 	inline constexpr std::string_view heuristicNameKey = "name";
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
@@ -114,6 +115,8 @@ namespace json_settings_values
 
 	inline constexpr std::string_view rabbitMqHostValue = "localhost";
 	inline constexpr int rabbitMqPortValue = 5672;
+
+	inline constexpr std::string_view jwtSecretVariableNameValue = "JWT_SECRET";
 }
 
 namespace framework::logging
@@ -240,6 +243,7 @@ namespace framework::logging
 		inline constexpr char notASingleBinaryAsset[] = "File: {} not a binary single asset";
 		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
 		inline constexpr char forbiddenMessage[] = "Forbidden response to client request. {}";
+		inline constexpr char cantFindJwtSecret[] = "Can't find JWT secret: {}, fallback to: {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}";
@@ -267,5 +271,6 @@ namespace framework::logging
 		inline constexpr char startTaskConsuming[] = "Start task consuming";
 		inline constexpr char addTaskBroker[] = "Add task broker: {}";
 		inline constexpr char addBinaryAsset[] = "Add binary asset: {}, fully load: {}";
+		inline constexpr char jwtSecretVariable[] = "Use secret from variable: {}";
 	}
 }

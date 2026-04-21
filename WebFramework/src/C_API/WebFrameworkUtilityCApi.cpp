@@ -3509,6 +3509,8 @@ String createJwt(JsonObject data, int64_t expirationTimeInMinutes, Exception* ex
 
 		builder.set_expires_in(std::chrono::minutes(expirationTimeInMinutes));
 
+		// TODO: fix with <accesser>.getFrameworkInstance().getJwtSecretName()
+
 		return new std::string(builder.sign(jwt::algorithm::hs256(framework::utility::getEnvironmentVariable("JWT_SECRET"))));
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
