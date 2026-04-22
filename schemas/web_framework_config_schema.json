@@ -294,8 +294,15 @@
           }
         },
         "JWTSecretVariableName": {
-          "type": "string",
-          "description": "Name of environment variable with JWT secret",
+          "description": "Name of environment variable with JWT secret or null to prevent creating random secret",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "default": "JWT_SECRET"
         }
       },

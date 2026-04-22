@@ -582,32 +582,13 @@ namespace framework
 		}
 	}
 
-	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
-		config(webFrameworkConfig),
-		serverException(nullptr),
-		jwtSecretName(json_settings_values::jwtSecretVariableNameValue)
+	void WebFramework::initJwt(const json::JsonObject& webFrameworkSettings)
 	{
-		this->initLogging();
+		std::nullptr_t temp;
 
-		const json::JsonObject& webFrameworkSettings = (*config).get<json::JsonObject>(json_settings::webFrameworkObject);
-		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
-		runtime::RuntimesManager& runtimesManager = runtime::RuntimesManager::get();
-		std::vector<std::string> pathToSources;
-
-		this->initAPIs(webFrameworkSettings);
-		this->initDatabase(webFrameworkSettings);
-		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
-		this->initHTTPS(webFrameworkSettings);
-		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
-
-		if (json::JsonObject taskBrokerObject; (*config).tryGet<json::JsonObject>(json_settings::taskBrokerObject, taskBrokerObject))
+		if (webFrameworkSettings.tryGet<std::nullptr_t>(json_settings::jwtSecretVariableNameKey, temp))
 		{
-			this->initTaskExecutors(taskBrokerObject);
-		}
-
-		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
-		{
-			it->finishInitialization();
+			return;
 		}
 
 		webFrameworkSettings.tryGet<std::string>(json_settings::jwtSecretVariableNameKey, jwtSecretName);
@@ -629,6 +610,36 @@ namespace framework
 		if (Log::isValid())
 		{
 			Log::info<logging::message::jwtSecretVariable, logging::category::webFramework>(jwtSecretName);
+		}
+	}
+
+	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
+		config(webFrameworkConfig),
+		serverException(nullptr),
+		jwtSecretName(json_settings_values::jwtSecretVariableNameValue)
+	{
+		this->initLogging();
+
+		const json::JsonObject& webFrameworkSettings = (*config).get<json::JsonObject>(json_settings::webFrameworkObject);
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> executorsSettings;
+		runtime::RuntimesManager& runtimesManager = runtime::RuntimesManager::get();
+		std::vector<std::string> pathToSources;
+
+		this->initAPIs(webFrameworkSettings);
+		this->initDatabase(webFrameworkSettings);
+		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
+		this->initHTTPS(webFrameworkSettings);
+		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
+		this->initJwt(webFrameworkSettings);
+
+		if (json::JsonObject taskBrokerObject; (*config).tryGet<json::JsonObject>(json_settings::taskBrokerObject, taskBrokerObject))
+		{
+			this->initTaskExecutors(taskBrokerObject);
+		}
+
+		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
+		{
+			it->finishInitialization();
 		}
 	}
 

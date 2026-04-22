@@ -97,6 +97,8 @@ namespace framework
 			const std::vector<std::string>& pathToSources
 		);
 
+		void initJwt(const json::JsonObject& webFrameworkSettings);
+
 	public:
 		WebFramework(const utility::Config& webFrameworkConfig);
 

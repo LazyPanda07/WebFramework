@@ -20,7 +20,8 @@
       "useHTTPS": true,
       "pathToCertificate": "certificates/cert.pem",
       "pathToKey": "certificates/key.pem"
-    }
+    },
+    "JWTSecretVariableName": null
   },
   "Logging": {
     "usingLogging": true,
