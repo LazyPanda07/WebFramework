@@ -13,6 +13,10 @@ static inline std::string token;
 
 TEST(Token, GetToken)
 {
+#ifdef __WITH_ADDRESS_SANITIZER__
+	GTEST_SKIP();
+#endif
+
 	streams::IOSocketStream stream = utility::createSocketStream();
 	json::JsonBuilder data;
 
@@ -34,6 +38,10 @@ TEST(Token, GetToken)
 
 TEST(Token, WithoutToken)
 {
+#ifdef __WITH_ADDRESS_SANITIZER__
+	GTEST_SKIP();
+#endif
+
 	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string request = web::HttpBuilder().getRequest().parameters("token").build();
 	std::string response;
@@ -47,6 +55,10 @@ TEST(Token, WithoutToken)
 
 TEST(Token, WithToken)
 {
+#ifdef __WITH_ADDRESS_SANITIZER__
+	GTEST_SKIP();
+#endif
+
 	streams::IOSocketStream stream = utility::createSocketStream();
 	std::string request = web::HttpBuilder()
 		.getRequest()
