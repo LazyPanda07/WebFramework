@@ -209,6 +209,9 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr getTokenPayload(IntPtr implementation, ref IntPtr exception);
 
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial IntPtr getWebFrameworkInstance(IntPtr implementation, ref IntPtr exception);
+
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial IntPtr jsonObjectToString(IntPtr jsonObject, ref IntPtr exception);
 
@@ -1199,6 +1202,19 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		deleteWebFrameworkJsonObject(result);
 
 		return JsonNode.Parse(jsonData)!.AsObject();
+	}
+
+	public WebFramework GetWebFrameworkInstance()
+	{
+		IntPtr exception = IntPtr.Zero;
+		IntPtr result = getWebFrameworkInstance(implementation, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		return new WebFramework(result);
 	}
 
 	/// <summary>

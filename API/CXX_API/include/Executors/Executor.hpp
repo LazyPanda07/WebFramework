@@ -2,9 +2,9 @@
 
 #include <format>
 
-#include "../HttpRequest.hpp"
-#include "../DLLHandler.hpp"
-#include "../Exceptions/NotImplementedDoMethodException.hpp"
+#include "HttpRequest.hpp"
+#include "DLLHandler.hpp"
+#include "Exceptions/NotImplementedDoMethodException.hpp"
 
 namespace framework
 {

@@ -27,8 +27,11 @@ public static partial class WebFrameworkUtility
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void generateBinaryAssetFile(string directoryPath, string outputPath, ProgressCallback progressCallback, IntPtr data, ref IntPtr exception);
 
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr createJwtWithString(IntPtr data, long expirationTimeInMinutes, string jwtSecretVariableName, ref IntPtr exception);
+
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial IntPtr createJwt(IntPtr data, long expirationTimeInMinutes, ref IntPtr exception);
+	private static partial IntPtr createJwtWithContext(IntPtr data, long expirationTimeInMinutes, IntPtr frameworkInstance, ref IntPtr exception);
 
 	private static string GetStringData(IntPtr stringImplementation)
 	{
@@ -91,7 +94,7 @@ public static partial class WebFrameworkUtility
 		}
 	}
 
-	public static string CreateJwt(JsonObject data, TimeSpan expirationTime)
+	public static string CreateJwt(JsonObject data, TimeSpan expirationTime, string jwtSecretVariableName = "JWT_SECRET")
 	{
 		IntPtr exception = IntPtr.Zero;
 		IntPtr jsonParser = createJsonParserFromString(data.ToJsonString(), ref exception);
@@ -110,7 +113,40 @@ public static partial class WebFrameworkUtility
 			throw new WebFrameworkException(exception);
 		}
 
-		IntPtr result = createJwt(jsonData, (long)expirationTime.TotalMinutes, ref exception);
+		IntPtr result = createJwtWithString(jsonData, (long)expirationTime.TotalMinutes, jwtSecretVariableName, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
+		}
+
+		deleteWebFrameworkJsonParser(jsonParser);
+
+		return GetStringData(result);
+	}
+
+	public static string CreateJwt(JsonObject data, TimeSpan expirationTime, WebFramework frameworkInstance)
+	{
+		IntPtr exception = IntPtr.Zero;
+		IntPtr jsonParser = createJsonParserFromString(data.ToJsonString(), ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			throw new WebFrameworkException(exception);
+		}
+
+		IntPtr jsonData = getJsonParserParsedData(jsonParser, true, ref exception);
+
+		if (exception != IntPtr.Zero)
+		{
+			deleteWebFrameworkJsonParser(jsonParser);
+
+			throw new WebFrameworkException(exception);
+		}
+
+		IntPtr result = createJwtWithContext(jsonData, (long)expirationTime.TotalMinutes, frameworkInstance.implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{

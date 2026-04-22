@@ -34,8 +34,19 @@ web_framework_exception_t wf_generate_binary_asset_file(const char* directory_pa
 /**
  * @brief Creates a JSON Web Token (JWT) from the given JSON payload and expiration time.
  * @param data Pointer to a JSON object containing the claims/payload to include in the token. Must not be NULL.
- * @param expirationTimeInMinutes Expiration time for the token, in minutes from the current time.
+ * @param expiration_time_in_minutes Expiration time for the token, in minutes from the current time.
+ * @param jwt_secret_variable_name Variable with secret for signing JWT. If NULL default variable name used(JWT_SECRET)
  * @param result Output pointer to a web_framework_string_t that will receive the generated JWT string. Must point to a valid web_framework_string_t. Delete with wf_delete_string function
  * @return Error if occurred
  */
-web_framework_exception_t wf_create_jwt(json_object_t* data, int64_t expirationTimeInMinutes, web_framework_string_t* result);
+web_framework_exception_t wf_create_jwt_with_string(json_object_t* data, int64_t expiration_time_in_minutes, const char* jwt_secret_variable_name, web_framework_string_t* result);
+
+/**
+ * @brief Creates a JSON Web Token (JWT) from the given JSON payload and expiration time.
+ * @param data Pointer to a JSON object containing the claims/payload to include in the token. Must not be NULL.
+ * @param expiration_time_in_minutes Expiration time for the token, in minutes from the current time.
+ * @param framework_instance web_framework_t instance
+ * @param result Output pointer to a web_framework_string_t that will receive the generated JWT string. Must point to a valid web_framework_string_t. Delete with wf_delete_string function
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_create_jwt_with_context(json_object_t* data, int64_t expiration_time_in_minutes, web_framework_t framework_instance, web_framework_string_t* result);

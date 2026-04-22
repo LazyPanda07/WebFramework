@@ -156,8 +156,21 @@ class TokenExecutor(StatelessExecutor):
 
 class TokenGiverExecutor(StatelessExecutor):
     def do_post(self, request, response):
+        token = create_jwt({
+            "userName": request.get_json()["userName"]
+        },
+            60
+        )
+        second_token = create_jwt({
+            "userName": request.get_json()["userName"]
+        },
+            60,
+            request.get_web_framework_instance()
+        )
+
+        if token != second_token:
+            request.throw_exception("Failed to generate equal token", ResponseCodes.INTERNAL_SERVER_ERROR)
+
         response.set_body({
-            "token": create_jwt({
-                "userName": request.get_json()["userName"]
-            }, 60)
+            "token": token
         })

@@ -10,7 +10,8 @@ using Framework.Exceptions;
 /// </summary>
 public sealed partial class WebFramework : IDisposable
 {
-	private readonly IntPtr implementation;
+	internal readonly IntPtr implementation;
+	private readonly bool weak;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getWebFrameworkVersion(); // char*
@@ -52,6 +53,12 @@ public sealed partial class WebFramework : IDisposable
 		return Marshal.PtrToStringUTF8(getWebFrameworkVersion())!;
 	}
 
+	internal WebFramework(IntPtr implementation)
+	{
+		this.implementation = implementation;
+		weak = true;
+	}
+
 	/// <summary>
 	/// 
 	/// </summary>
@@ -60,6 +67,8 @@ public sealed partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public WebFramework(string configPath)
 	{
+		weak = false;
+
 		if (!Path.Exists(configPath))
 		{
 			throw new Exception($"Path {configPath} doesn't exist");
@@ -83,6 +92,8 @@ public sealed partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public WebFramework(string serverConfiguration, string applicationDirectory)
 	{
+		weak = false;
+
 		IntPtr exception = IntPtr.Zero;
 
 		implementation = createWebFrameworkFromString(serverConfiguration, applicationDirectory, ref exception);
@@ -100,6 +111,8 @@ public sealed partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public WebFramework(Config config)
 	{
+		weak = false;
+
 		IntPtr exception = IntPtr.Zero;
 
 		implementation = createWebFrameworkFromConfig(config.implementation, ref exception);
@@ -202,5 +215,11 @@ public sealed partial class WebFramework : IDisposable
 		return result;
 	}
 
-	public void Dispose() => deleteWebFramework(implementation);
+	public void Dispose()
+	{
+		if (!weak)
+		{
+			deleteWebFramework(implementation);
+		}
+	}
 }

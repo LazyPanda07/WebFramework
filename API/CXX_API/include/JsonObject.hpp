@@ -10,6 +10,7 @@
 namespace framework
 {
 	class JsonObject;
+	class WebFramework;
 }
 
 namespace framework::utility
@@ -19,7 +20,9 @@ namespace framework::utility
 
 namespace framework::utility::token
 {
-	std::string createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime);
+	std::string createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName);
+
+	std::string createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);
 }
 
 namespace framework
@@ -125,7 +128,8 @@ namespace framework
 		friend class HttpRequest;
 		friend class HttpResponse;
 		friend class utility::ExecutorSettings;
-		friend std::string utility::token::createJwt(const JsonObject& data, std::chrono::minutes expirationTime);
+		friend std::string utility::token::createJwt(const JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName);
+		friend std::string utility::token::createJwt(const JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);
 	};
 }
 

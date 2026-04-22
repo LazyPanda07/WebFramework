@@ -165,6 +165,7 @@ file_name : str
 					return json.attr("loads")((static_cast<std::string>(*temp)).data()).cast<py::dict>();
 				}
 			)
+			.def("get_web_framework_instance", &framework::HttpRequest::getWebFrameworkInstance)
 			.def
 			(
 				"throw_exception",

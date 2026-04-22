@@ -720,6 +720,18 @@ web_framework_exception_t wf_get_token_payload(http_request_t implementation, js
 	return exception;
 }
 
+web_framework_exception_t wf_get_web_framework_instance(http_request_t implementation, web_framework_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getWebFrameworkInstance)(void* implementation, void** exception);
+
+	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getWebFrameworkInstance, &exception);
+	result->weak = true;
+
+	return exception;
+}
+
 web_framework_exception_t wf_send_chunks(http_request_t implementation, http_response_t response, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
 {
 	web_framework_exception_t exception = NULL;

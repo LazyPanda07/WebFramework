@@ -166,6 +166,8 @@ namespace framework::interfaces
 
 		virtual void* getTokenPayload() const = 0;
 
+		virtual void* getWebFrameworkInstance() const = 0;
+
 		virtual IDatabase* getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName) = 0;
 
 		virtual IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const = 0;

@@ -2,10 +2,11 @@
 
 #include <chrono>
 
-#include "../DLLHandler.hpp"
-#include "../Exceptions/WebFrameworkException.hpp"
-#include "../Databases/SqlValue.hpp"
-#include "../JsonObject.hpp"
+#include "DLLHandler.hpp"
+#include "Exceptions/WebFrameworkException.hpp"
+#include "Databases/SqlValue.hpp"
+#include "JsonObject.hpp"
+#include "WebFramework.hpp"
 
 namespace framework::utility
 {
@@ -42,7 +43,9 @@ namespace framework::utility
 
 	namespace token
 	{
-		std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime);
+		std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName = "JWT_SECRET");
+
+		std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);
 	}
 
 	/**
@@ -108,13 +111,29 @@ namespace framework::utility
 
 	namespace token
 	{
-		inline std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime)
+		inline std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName)
 		{
-			using createJwt = void* (*) (void* data, int64_t expirationTimeInMinutes, void** exception);
+			using createJwtWithString = void* (*) (void* data, int64_t expirationTimeInMinutes, const char* jwtSecretVariableName, void** exception);
 			void* exception = nullptr;
 			DllHandler& instance = DllHandler::getInstance();
 
-			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(createJwt, data.implementation, expirationTime.count(), &exception);
+			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(createJwtWithString, data.implementation, expirationTime.count(), jwtSecretVariableName.data(), & exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return instance.getString(result);
+		}
+
+		inline std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance)
+		{
+			using createJwtWithContext = void* (*) (void* data, int64_t expirationTimeInMinutes, void* frameworkInstance, void** exception);
+			void* exception = nullptr;
+			DllHandler& instance = DllHandler::getInstance();
+
+			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(createJwtWithContext, data.implementation, expirationTime.count(), frameworkInstance.implementation, &exception);
 
 			if (exception)
 			{

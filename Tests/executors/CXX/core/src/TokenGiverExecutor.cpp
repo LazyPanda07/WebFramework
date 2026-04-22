@@ -11,7 +11,14 @@ void TokenGiverExecutor::doPost(framework::HttpRequest& request, framework::Http
 
 	data["userName"] = request.getJson().get<std::string>("userName");
 
-	result["token"] = framework::utility::token::createJwt(data, 60min);
+	std::string token = framework::utility::token::createJwt(data, 60min);
+
+	if (token != framework::utility::token::createJwt(data, 60min, request.getWebFrameworkInstance()))
+	{
+		request.throwException("Failed to generate equal tokens", framework::ResponseCodes::internalServerError);
+	}
+
+	result["token"] = token;
 
 	response.setBody(result);
 }

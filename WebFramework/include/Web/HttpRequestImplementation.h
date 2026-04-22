@@ -289,6 +289,8 @@ namespace framework
 
 		void* getTokenPayload() const override;
 
+		void* getWebFrameworkInstance() const override;
+
 		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName) override;
 
 		interfaces::IDatabase* getDatabase(const char* databaseName, const char* databaseImplementationName) const override;

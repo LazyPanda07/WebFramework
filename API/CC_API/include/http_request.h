@@ -438,6 +438,14 @@ web_framework_exception_t wf_get_token(http_request_t implementation, const char
 web_framework_exception_t wf_get_token_payload(http_request_t implementation, json_object_t* result);
 
 /**
+ * @brief Obtains the web framework instance associated with the specified HTTP request implementation.
+ * @param implementation Handle or object representing the HTTP request implementation used to locate or create the web framework instance.
+ * @param result Output pointer that receives the address of the web_framework_t instance on success. Must not be NULL.
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_web_framework_instance(http_request_t implementation, web_framework_t* result);
+
+/**
  * @brief Send generated chunks
  * @param implementation http_request_t instance
  * @param response http_response_t instance

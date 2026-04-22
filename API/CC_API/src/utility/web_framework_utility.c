@@ -33,13 +33,24 @@ web_framework_exception_t wf_generate_binary_asset_file(const char* directory_pa
 	return exception;
 }
 
-web_framework_exception_t wf_create_jwt(json_object_t* data, int64_t expirationTimeInMinutes, web_framework_string_t* result)
+web_framework_exception_t wf_create_jwt_with_string(json_object_t* data, int64_t expiration_time_in_minutes, const char* jwt_secret_variable_name, web_framework_string_t* result)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void* (*createJwt)(void* jsonData, int64_t expirationTimeInMinutes, void** exception);
+	typedef void* (*createJwtWithString)(void* jsonData, int64_t expirationTimeInMinutes, const char* jwtSecretVariableName, void** exception);
 
-	*result = CALL_WEB_FRAMEWORK_FUNCTION(createJwt, data->implementation, expirationTimeInMinutes, &exception);
+	*result = CALL_WEB_FRAMEWORK_FUNCTION(createJwtWithString, data->implementation, expiration_time_in_minutes, jwt_secret_variable_name ? jwt_secret_variable_name : "JWT_SECRET", &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_create_jwt_with_context(json_object_t* data, int64_t expiration_time_in_minutes, web_framework_t framework_instance, web_framework_string_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*createJwtWithContext)(void* jsonData, int64_t expirationTimeInMinutes, void* frameworkInstance, void** exception);
+
+	*result = CALL_WEB_FRAMEWORK_FUNCTION(createJwtWithContext, data->implementation, expiration_time_in_minutes, framework_instance.implementation, &exception);
 
 	return exception;
 }

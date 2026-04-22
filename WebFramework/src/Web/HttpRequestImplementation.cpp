@@ -614,6 +614,11 @@ namespace framework
 		return new json::JsonObject(std::move(temp));
 	}
 
+	void* HttpRequestImplementation::getWebFrameworkInstance() const
+	{
+		return &serverReference.getFrameworkInstance();
+	}
+
 	interfaces::IDatabase* HttpRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)
 	{
 		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName)));

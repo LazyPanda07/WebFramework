@@ -998,6 +998,28 @@ JsonObject getTokenPayload(HttpRequestObject request, Exception* exception)
 	return nullptr;
 }
 
+WebFramework getWebFrameworkInstance(HttpRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getWebFrameworkInstance();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
 DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception)
 {
 	try

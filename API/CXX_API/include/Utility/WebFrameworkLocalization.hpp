@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../DLLHandler.hpp"
-#include "../Exceptions/WebFrameworkException.hpp"
+#include "DLLHandler.hpp"
+#include "Exceptions/WebFrameworkException.hpp"
 
 namespace framework::utility
 {

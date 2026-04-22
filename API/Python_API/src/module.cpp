@@ -17,6 +17,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	registrar::registerSql(m);
 
+	registrar::registerWebFrameworkApi(m);
+
 	registrar::registerUtility(m); // contains utility function that requires SQL
 	
 	registrar::registerTaskBrokers(m);
@@ -24,8 +26,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	registrar::registerUtilityStructures(m);
 
 	registrar::registerExecutorSettings(m);
-
-	registrar::registerWebFrameworkApi(m);
 
 	registrar::registerLoadBalancerHeuristic(m);
 

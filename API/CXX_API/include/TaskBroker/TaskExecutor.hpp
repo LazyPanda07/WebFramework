@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../DLLHandler.hpp"
-#include "../JsonObject.hpp"
+#include "DLLHandler.hpp"
+#include "JsonObject.hpp"
 
 namespace framework::task_broker
 {

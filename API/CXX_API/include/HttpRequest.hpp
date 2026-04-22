@@ -16,6 +16,7 @@
 #include "DynamicFunction.hpp"
 #include "TaskBroker/TaskSerializer.hpp"
 #include "TaskBroker/TaskBrokers.hpp"
+#include "WebFramework.hpp"
 
 namespace framework
 {
@@ -186,6 +187,8 @@ namespace framework
 		std::optional<JsonObject> getTokenPayload() const;
 
 		std::optional<std::string_view> getToken() const;
+
+		WebFramework getWebFrameworkInstance() const;
 
 		/// <summary>
 		/// Client's cookies
@@ -706,6 +709,11 @@ namespace framework
 		}
 
 		return std::nullopt;
+	}
+
+	inline WebFramework HttpRequest::getWebFrameworkInstance() const
+	{
+		return WebFramework(implementation->getWebFrameworkInstance());
 	}
 
 	inline HttpRequest::HeadersMap HttpRequest::getCookies() const

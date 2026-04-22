@@ -6,7 +6,8 @@ web_framework_exception_t wf_create_web_framework_from_path(const char* configPa
 
     typedef void* (*createWebFrameworkFromPath)(const char* configPath, void** exception);
 
-    *server = CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, configPath, &exception);
+    server->implementation = CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromPath, configPath, &exception);
+    server->weak = false;
 
     return exception;
 }
@@ -17,7 +18,8 @@ web_framework_exception_t wf_create_web_framework_from_string(const char* server
 
     typedef void* (*createWebFrameworkFromString)(const char* serverConfiguration, const char* applicationDirectory, void** exception);
 
-    *server = CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromString, serverConfiguration, applicationDirectory, &exception);
+    server->implementation = CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromString, serverConfiguration, applicationDirectory, &exception);
+    server->weak = false;
 
     return exception;
 }
@@ -28,14 +30,16 @@ web_framework_exception_t wf_create_web_framework_from_config(config_t config, w
 
     typedef void* (*createWebFrameworkFromConfig)(void* config, void** exception);
 
-    *server = CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromConfig, config, &exception);
+    server->implementation = CALL_WEB_FRAMEWORK_FUNCTION(createWebFrameworkFromConfig, config, &exception);
+    server->weak = false;
 
     return exception;
 }
 
-web_framework_exception_t wf_start_web_framework_server(web_framework_t implementation, bool wait, void (*onStartServer)())
+web_framework_exception_t wf_start_web_framework_server(web_framework_t web_framework, bool wait, void (*onStartServer)())
 {
     web_framework_exception_t exception = NULL;
+    void* implementation = web_framework.implementation;
 
     typedef void (*startWebFrameworkServer)(void* implementation, bool wait, void (*onStartServer)(), void** exception);
 
@@ -44,9 +48,10 @@ web_framework_exception_t wf_start_web_framework_server(web_framework_t implemen
     return exception;
 }
 
-web_framework_exception_t wf_stop_web_framework_server(web_framework_t implementation, bool wait)
+web_framework_exception_t wf_stop_web_framework_server(web_framework_t web_framework, bool wait)
 {
     web_framework_exception_t exception = NULL;
+    void* implementation = web_framework.implementation;
 
     typedef void (*stopWebFrameworkServer)(void* implementation, bool wait, void** exception);
 
@@ -55,9 +60,10 @@ web_framework_exception_t wf_stop_web_framework_server(web_framework_t implement
     return exception;
 }
 
-web_framework_exception_t wf_kick_web_framework_server(web_framework_t implementation, const char* ip)
+web_framework_exception_t wf_kick_web_framework_server(web_framework_t web_framework, const char* ip)
 {
     web_framework_exception_t exception = NULL;
+    void* implementation = web_framework.implementation;
 
     typedef void (*kickWebFrameworkServer)(void* implementation, const char* ip, void** exception);
 
@@ -66,9 +72,10 @@ web_framework_exception_t wf_kick_web_framework_server(web_framework_t implement
     return exception;
 }
 
-web_framework_exception_t wf_update_ssl_certificates_web_framework_server(web_framework_t implementation)
+web_framework_exception_t wf_update_ssl_certificates_web_framework_server(web_framework_t web_framework)
 {
     web_framework_exception_t exception = NULL;
+    void* implementation = web_framework.implementation;
 
     typedef void (*updateSslCertificatesWebFrameworkServer)(void* implementation, void** exception);
 
@@ -77,9 +84,10 @@ web_framework_exception_t wf_update_ssl_certificates_web_framework_server(web_fr
     return exception;
 }
 
-web_framework_exception_t wf_is_server_running(web_framework_t implementation, bool* result)
+web_framework_exception_t wf_is_server_running(web_framework_t web_framework, bool* result)
 {
     web_framework_exception_t exception = NULL;
+    void* implementation = web_framework.implementation;
 
     typedef bool (*isServerRunning)(void* implementation, void** exception);
 

@@ -15,6 +15,7 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Exceptions/AlreadyLoggedException.h"
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -3449,7 +3450,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 	}
 }
 
-String createJwt(JsonObject data, int64_t expirationTimeInMinutes, Exception* exception)
+String createJwtWithString(JsonObject data, int64_t expirationTimeInMinutes, const char* jwtSecretVariableName, Exception* exception)
 {
 	try
 	{
@@ -3509,9 +3510,86 @@ String createJwt(JsonObject data, int64_t expirationTimeInMinutes, Exception* ex
 
 		builder.set_expires_in(std::chrono::minutes(expirationTimeInMinutes));
 
-		// TODO: fix with <accesser>.getFrameworkInstance().getJwtSecretName()
+		return new std::string(builder.sign(jwt::algorithm::hs256(framework::utility::getEnvironmentVariable(jwtSecretVariableName))));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
 
-		return new std::string(builder.sign(jwt::algorithm::hs256(framework::utility::getEnvironmentVariable("JWT_SECRET"))));
+	return nullptr;
+}
+
+String createJwtWithContext(JsonObject data, int64_t expirationTimeInMinutes, WebFramework frameworkInstance, Exception* exception)
+{
+	try
+	{
+		auto builder = jwt::create();
+		const json::JsonObject& temp = *static_cast<json::JsonObject*>(data);
+		const framework::WebFramework& instance = *static_cast<framework::WebFramework*>(frameworkInstance);
+
+		if (!temp.is<json::JsonObject>())
+		{
+			throw std::runtime_error("JWT data must be JSON map");
+		}
+
+		json::MapJsonIterator it(temp);
+
+		for (const auto& [key, value] : it)
+		{
+			if (value.is<std::string>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<std::string>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+			else if (value.is<int64_t>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<int64_t>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+			else if (value.is<bool>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<bool>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+			else if (value.is<double>())
+			{
+				jwt::traits::kazuho_picojson::value_type jsonValue(value.get<double>());
+
+				builder.set_payload_claim
+				(
+					key,
+					jsonValue
+				);
+			}
+		}
+
+		builder.set_expires_in(std::chrono::minutes(expirationTimeInMinutes));
+
+		return new std::string(builder.sign(jwt::algorithm::hs256(framework::utility::getEnvironmentVariable(instance.getJwtSecretName()))));
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{

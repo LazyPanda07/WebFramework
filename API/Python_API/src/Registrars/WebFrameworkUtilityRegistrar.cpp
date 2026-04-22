@@ -184,14 +184,27 @@ namespace registrar
 		m.def
 		(
 			"create_jwt",
-			[](py::dict data, int64_t expirationTimeInMinutes)
+			[](py::dict data, int64_t expirationTimeInMinutes, std::string_view jwtSecretVariableName)
 			{
 				py::module json = py::module::import("json");
 				framework::JsonParser parser(json.attr("dumps")(data).cast<std::string>());
 
-				return framework::utility::token::createJwt(parser.getParsedData(), std::chrono::minutes(expirationTimeInMinutes));
+				return framework::utility::token::createJwt(parser.getParsedData(), std::chrono::minutes(expirationTimeInMinutes), jwtSecretVariableName);
 			},
-			"data"_a, "expiration_time_in_minutes"_a
+			"data"_a, "expiration_time_in_minutes"_a, "jwt_secret_variable_name"_a = "JWT_SECRET"
+		);
+
+		m.def
+		(
+			"create_jwt",
+			[](py::dict data, int64_t expirationTimeInMinutes, const framework::WebFramework& frameworkInstance)
+			{
+				py::module json = py::module::import("json");
+				framework::JsonParser parser(json.attr("dumps")(data).cast<std::string>());
+
+				return framework::utility::token::createJwt(parser.getParsedData(), std::chrono::minutes(expirationTimeInMinutes), frameworkInstance);
+			},
+			"data"_a, "expiration_time_in_minutes"_a, "framework_instance"_a
 		);
 
 		py::register_exception<framework::exceptions::WebFrameworkException>(m, "WebFrameworkException");

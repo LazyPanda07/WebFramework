@@ -27,10 +27,15 @@ typedef void* HMODULE;
 typedef HMODULE dll_handler_t;
 typedef void* web_framework_string_t;
 typedef void* config_t;
-typedef void* web_framework_t;
 typedef void* web_framework_exception_t;
 typedef void* json_builder_t;
 typedef void* json_parser_t;
+
+typedef struct web_framework
+{
+	void* implementation;
+	bool weak;
+} web_framework_t;
 
 /**
  * @brief Load web_framework_t shared library
