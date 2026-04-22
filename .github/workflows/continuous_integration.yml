@@ -549,7 +549,26 @@ jobs:
         wait-for-service amqp://localhost:5672
         source run_task_broker_tests.sh
 
+
+  linux-pip-packages:
+    strategy:
+      matrix:
+        config: 
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 12, python-patch: 13 }
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 13, python-patch: 12 }
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 14, python-patch: 3 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 12, python-patch: 13 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 13, python-patch: 12 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 14, python-patch: 3 }
+
+    uses: ./.github/workflows/reusable_build_wheel.yml
+    with: 
+      os: ${{ matrix.config.os }}
+      image: ${{ matrix.config.image }}
+      python-minor-version: ${{ matrix.config.python-minor-version }}
+      python-patch: ${{ matrix.config.python-patch }}
       
+
   publish:
     needs: [
       android-build,

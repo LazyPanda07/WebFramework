@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-public sealed unsafe partial class HttpRequest(nint implementation)
+public sealed partial class HttpRequest(nint implementation)
 {
 	internal readonly IntPtr implementation = implementation;
 
@@ -65,22 +65,22 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial IntPtr getDataFromString(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getJsonParserRawData(IntPtr implementation, ref IntPtr exception);
+	private static partial IntPtr getJsonParserRawData(IntPtr implementation, ref IntPtr exception); // char*
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial void deleteWebFrameworkJsonParser(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getRawParameters(IntPtr implementation, ref IntPtr exception);
+	private static partial IntPtr getRawParameters(IntPtr implementation, ref IntPtr exception); // char*
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getMethod(IntPtr implementation, ref IntPtr exception);
+	private static partial IntPtr getMethod(IntPtr implementation, ref IntPtr exception); // char*
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getVersion(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getBody(IntPtr implementation, ref nuint bodySize, ref IntPtr exception);
+	private static partial IntPtr getBody(IntPtr implementation, ref nuint bodySize, ref IntPtr exception); // char*
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
 	private static partial void setAttribute(IntPtr implementation, string name, string value, ref IntPtr exception);
@@ -98,7 +98,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	private static partial IntPtr getRequestJson(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getRawRequest(IntPtr implementation, ref IntPtr exception);
+	private static partial IntPtr getRawRequest(IntPtr implementation, ref IntPtr exception); // char*
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial IntPtr getClientIpV4(IntPtr implementation, ref IntPtr exception);
@@ -242,7 +242,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 		GCHandle handle = GCHandle.FromIntPtr(data);
 		ChunkGenerator generator = (ChunkGenerator)handle.Target!;
 		bool finished = false;
-		ReadOnlySpan<byte> chunk = generator.Generate(ref finished);
+		byte[] chunk = generator.Generate(ref finished);
 
 		if (finished)
 		{
@@ -256,31 +256,10 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 
 		generator.currentBuffer = Marshal.AllocHGlobal(chunk.Length);
 
-		fixed (byte* source = chunk)
-		{
-			byte* destination = (byte*)generator.currentBuffer;
-
-			Buffer.MemoryCopy(source, destination, chunk.Length, chunk.Length);
-
-			Marshal.WriteInt64(size, chunk.Length);
-		}
+		Marshal.Copy(chunk, 0, generator.currentBuffer, chunk.Length);
+		Marshal.WriteInt64(size, chunk.Length);
 
 		return generator.currentBuffer;
-	}
-
-	private static string ToCString(string source)
-	{
-		return source + "\0";
-	}
-
-	private static IntPtr AllocateString(string source)
-	{
-		byte[] bytes = Encoding.UTF8.GetBytes(ToCString(source));
-		IntPtr ptr = Marshal.AllocHGlobal(bytes.Length);
-
-		Marshal.Copy(bytes, 0, ptr, bytes.Length);
-
-		return ptr;
 	}
 
 	/// <summary>
@@ -291,14 +270,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetRawParameters()
 	{
 		IntPtr exception = IntPtr.Zero;
-		char* result = getRawParameters(implementation, ref exception);
+		IntPtr result = getRawParameters(implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		return Marshal.PtrToStringUTF8((IntPtr)result)!;
+		return Marshal.PtrToStringUTF8(result)!;
 	}
 
 	/// <summary>
@@ -309,14 +288,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetHttpMethod()
 	{
 		IntPtr exception = IntPtr.Zero;
-		char* result = getMethod(implementation, ref exception);
+		IntPtr result = getMethod(implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		return Marshal.PtrToStringUTF8((IntPtr)result)!;
+		return Marshal.PtrToStringUTF8(result)!;
 	}
 
 	/// <summary>
@@ -346,14 +325,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	{
 		IntPtr exception = IntPtr.Zero;
 		nuint bodySize = 0;
-		char* result = getBody(implementation, ref bodySize, ref exception);
+		IntPtr result = getBody(implementation, ref bodySize, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		return Marshal.PtrToStringUTF8((IntPtr)result, (int)bodySize);
+		return Marshal.PtrToStringUTF8(result, (int)bodySize);
 	}
 
 	/// <summary>
@@ -453,7 +432,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			throw new WebFrameworkException(exception);
 		}
 
-		char* jsonDataPtr = getJsonParserRawData(temp, ref exception);
+		IntPtr jsonDataPtr = getJsonParserRawData(temp, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
@@ -462,7 +441,7 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 			throw new WebFrameworkException(exception);
 		}
 
-		string jsonData = Marshal.PtrToStringUTF8((IntPtr)jsonDataPtr)!;
+		string jsonData = Marshal.PtrToStringUTF8(jsonDataPtr)!;
 
 		deleteWebFrameworkJsonParser(temp);
 
@@ -474,14 +453,14 @@ public sealed unsafe partial class HttpRequest(nint implementation)
 	public string GetHttpRawRequest()
 	{
 		IntPtr exception = IntPtr.Zero;
-		char* result = getRawRequest(implementation, ref exception);
+		IntPtr result = getRawRequest(implementation, ref exception);
 
 		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
 
-		return Marshal.PtrToStringUTF8((IntPtr)result)!;
+		return Marshal.PtrToStringUTF8(result)!;
 	}
 
 	public string GetClientIpV4()

@@ -6,7 +6,7 @@ public abstract class ChunkGenerator
 {
 	internal IntPtr currentBuffer = IntPtr.Zero;
 
-	public abstract ReadOnlySpan<byte> Generate(ref bool finished);
+	public abstract byte[] Generate(ref bool finished);
 
 	~ChunkGenerator()
 	{
