@@ -41,8 +41,11 @@ endif()
 
 if (UNIX)
 	add_definitions(-D__LINUX__)
-	add_compile_options(-fvisibility=hidden)
-	add_compile_options(-fno-omit-frame-pointer)
+	target_compile_options(
+		${PROJECT_NAME} PRIVATE
+		-fvisibility=hidden
+		-fno-omit-frame-pointer
+	)
 	
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -125,6 +128,7 @@ add_library(
 	WebFramework/src/C_API/WebFrameworkExecutorsCApi.cpp
 	WebFramework/src/C_API/WebFrameworkUtilityCApi.cpp
 	WebFramework/src/C_API/WebFrameworkLocalizationCApi.cpp
+	WebFramework/src/C_API/WebFrameworkWebSocketExecutorsCApi.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp

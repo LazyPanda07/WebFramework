@@ -105,6 +105,7 @@
     <ClInclude Include="include\TaskBroker\TaskExecutor.hpp" />
     <ClInclude Include="include\TaskBroker\TaskSerializer.hpp" />
     <ClInclude Include="include\TaskBroker\TaskApis.hpp" />
+    <ClInclude Include="include\WebSocket\WebSocketExecutor.hpp" />
     <ClInclude Include="src\Exceptions\NotImplementedException.h" />
     <ClInclude Include="include\Exceptions\NotImplementedDoMethodException.hpp" />
     <ClInclude Include="include\Exceptions\WebFrameworkAPIException.hpp" />

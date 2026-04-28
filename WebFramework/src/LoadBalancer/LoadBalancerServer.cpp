@@ -382,9 +382,9 @@ namespace framework::load_balancer
 					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
-				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				if (int errorCode = SSL_set_fd(ssl, static_cast<int>(clientSocket)); errorCode != 1)
 				{
-					throw web::exceptions::SslException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
