@@ -35,46 +35,6 @@ set(SHARED_LIBRARY_PROJECT_NAME ${PROJECT_NAME})
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
 
-if (${WITH_STACKTRACE})
-	add_definitions(-D__WITH_STACKTRACE__)
-endif()
-
-if (UNIX)
-	add_definitions(-D__LINUX__)
-	target_compile_options(
-		${PROJECT_NAME} PRIVATE
-		-fvisibility=hidden
-		-fno-omit-frame-pointer
-	)
-	
-	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-	if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL aarch64)
-		set(COMPILE_TARGET LinuxARM)
-	else()
-		set(COMPILE_TARGET Linux)
-	endif()
-	
-	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-		add_definitions(-D__ANDROID__)
-
-		set(COMPILE_TARGET Android)
-
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
-	else()
-		add_link_options(-rdynamic)
-	endif()
-elseif (WIN32)
-	add_definitions(-DNOMINMAX)
-	add_definitions(-DWIN32_LEAN_AND_MEAN)
-
-	set(COMPILE_TARGET Windows)
-
-	list(APPEND 3RDPARTY_LIBS crypt32)
-else()
-	message(FATAL "Does not support ${CMAKE_SYSTEM_NAME}")
-endif()
-
 add_library(
 	${PROJECT_NAME} SHARED
 	WebFramework/src/WFDP/StandardWebFrameworkDynamicPagesFunctions.cpp
@@ -159,6 +119,46 @@ add_library(
 	WebFramework/src/Assets/SingleBinaryAssetProvider.cpp
 	WebFramework/src/Assets/SingleBinaryAsset.cpp
 )
+
+if (${WITH_STACKTRACE})
+	add_definitions(-D__WITH_STACKTRACE__)
+endif()
+
+if (UNIX)
+	add_definitions(-D__LINUX__)
+	target_compile_options(
+		${PROJECT_NAME} PRIVATE
+		-fvisibility=hidden
+		-fno-omit-frame-pointer
+	)
+	
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+	if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL aarch64)
+		set(COMPILE_TARGET LinuxARM)
+	else()
+		set(COMPILE_TARGET Linux)
+	endif()
+	
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+		add_definitions(-D__ANDROID__)
+
+		set(COMPILE_TARGET Android)
+
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
+	else()
+		add_link_options(-rdynamic)
+	endif()
+elseif (WIN32)
+	add_definitions(-DNOMINMAX)
+	add_definitions(-DWIN32_LEAN_AND_MEAN)
+
+	set(COMPILE_TARGET Windows)
+
+	list(APPEND 3RDPARTY_LIBS crypt32)
+else()
+	message(FATAL "Does not support ${CMAKE_SYSTEM_NAME}")
+endif()
 
 if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
