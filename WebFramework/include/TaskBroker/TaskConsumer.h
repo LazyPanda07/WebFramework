@@ -7,10 +7,16 @@
 
 #include "TaskBroker.h"
 #include "Managers/TaskBrokersManager.h"
+#include "Executors/ResourceExecutor.h"
 
 namespace framework::task_broker
 {
 	class TaskExecutorsManager;
+}
+
+namespace framework
+{
+	class WebFramework;
 }
 
 namespace framework::task_broker
@@ -29,11 +35,13 @@ namespace framework::task_broker
 		threading::ThreadPool taskRunner;
 		bool stillConsuming;
 		TaskExecutorsManager& taskExecutorsManager;
+		std::shared_ptr<ResourceExecutor> resources;
+		WebFramework& frameworkInstance;
 
 	public:
-		TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskExecutorsManager& taskExecutorsManager, TaskBrokersManager& taskBrokerManager);
+		TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskExecutorsManager& taskExecutorsManager, TaskBrokersManager& taskBrokerManager, WebFramework& frameworkInstance);
 
-		void run();
+		void run(std::shared_ptr<ResourceExecutor> resources);
 
 		~TaskConsumer();
 	};

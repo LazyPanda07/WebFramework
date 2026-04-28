@@ -38,6 +38,8 @@ namespace framework::runtime
 
 		PythonRuntime& operator =(PythonRuntime&& other) noexcept;
 
+		py::object* createTaskExecutorContext(const void* implementation) const;
+
 		std::optional<py::object> getClass(std::string_view className, const utility::LoadSource& source) const;
 
 		void finishInitialization() override;

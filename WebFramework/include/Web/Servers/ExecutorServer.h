@@ -42,6 +42,8 @@ namespace framework
 			std::shared_ptr<threading::ThreadPool> threadPool
 		);
 
+		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
+
 		virtual ~ExecutorServer() = default;
 	};
 }

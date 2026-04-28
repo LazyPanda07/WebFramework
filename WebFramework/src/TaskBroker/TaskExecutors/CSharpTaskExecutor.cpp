@@ -13,11 +13,11 @@ namespace framework::task_broker
 
 	}
 
-	void CSharpTaskExecutor::operator ()(json::JsonObject& data)
+	void CSharpTaskExecutor::execute(json::JsonObject& data, TaskExecutorContext& context)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 
-		runtime.getCallTaskExecutor()(implementation, &data);
+		runtime.getCallTaskExecutor()(implementation, &data, &context);
 	}
 
 	CSharpTaskExecutor::~CSharpTaskExecutor()

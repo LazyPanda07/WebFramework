@@ -2,6 +2,7 @@
 
 #include "Utility/Utils.h"
 #include "Managers/TaskExecutorsManager.h"
+#include "Framework/WebFramework.h"
 
 namespace framework::task_broker
 {
@@ -21,7 +22,9 @@ namespace framework::task_broker
 				(
 					[this, &taskExecutor, data = std::move(data)]() mutable
 					{
-						taskExecutor(data["arguments"]);
+						TaskExecutor::TaskExecutorContext context(resources, frameworkInstance);
+
+						taskExecutor.execute(data["arguments"], context);
 					}
 				);
 			}
@@ -43,7 +46,7 @@ namespace framework::task_broker
 		}
 
 		while (stillConsuming)
-		{
+		{			
 			for (TaskBroker* broker : brokers)
 			{
 				this->processTasks(*broker);
@@ -53,11 +56,12 @@ namespace framework::task_broker
 		}
 	}
 
-	TaskConsumer::TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskExecutorsManager& taskExecutorsManager, TaskBrokersManager& taskBrokerManager) :
+	TaskConsumer::TaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskExecutorsManager& taskExecutorsManager, TaskBrokersManager& taskBrokerManager, WebFramework& frameworkInstance) :
 		checkPeriod(checkPeriod),
 		taskRunner(threadsNumber),
 		stillConsuming(false),
-		taskExecutorsManager(taskExecutorsManager)
+		taskExecutorsManager(taskExecutorsManager),
+		frameworkInstance(frameworkInstance)
 	{
 		for (const std::string& brokerName : taskBrokerNames)
 		{
@@ -70,8 +74,10 @@ namespace framework::task_broker
 		}
 	}
 
-	void TaskConsumer::run()
+	void TaskConsumer::run(std::shared_ptr<ResourceExecutor> resources)
 	{
+		this->resources = resources;
+
 		stillConsuming = true;
 
 		consumeThread = std::async(std::launch::async, &TaskConsumer::consume, this);

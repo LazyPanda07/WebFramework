@@ -14,6 +14,7 @@
 #include "Web/HttpRequestImplementation.h"
 #include "Exceptions/AlreadyLoggedException.h"
 #include "Framework/WebFramework.h"
+#include "TaskBroker/TaskExecutors/TaskExecutor.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -823,8 +824,8 @@ void sendStaticFile(HttpRequestObject request, const char* filePath, HttpRespons
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->sendStaticFile
 		(
-			filePath, 
-			static_cast<framework::interfaces::IHttpResponse*>(response), 
+			filePath,
+			static_cast<framework::interfaces::IHttpResponse*>(response),
 			fileName
 		);
 	}
@@ -1215,6 +1216,8 @@ bool isExceptionDataValid(HttpRequestObject request, Exception* exception)
 	return false;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception)
 {
 	try
@@ -1550,10 +1553,180 @@ void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, cons
 	try
 	{
 		std::shared_ptr<framework::ResourceExecutor> resources = std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor);
-		
+
 		std::string result(fileData, size);
 
 		resources->processDynamicFile(result, arguments);
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+DatabaseObject getOrCreateDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+DatabaseObject getDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getOrCreateTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)))->get(tableName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void getFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		std::string data = static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext)->resources->getFile(filePath);
+
+		fillBuffer(data.data(), data.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void processStaticFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+		const std::unique_ptr<framework::interfaces::IStaticFileRenderer>& renderer = context.resources->getStaticRenderers().at(fileExtension);
+		std::string result = renderer->render(std::string_view(fileData, size));
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void processDynamicFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		std::string result(fileData, size);
+
+		context.resources->processDynamicFile(result, arguments);
 
 		fillBuffer(result.data(), result.size(), buffer);
 	}

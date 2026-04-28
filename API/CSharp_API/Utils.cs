@@ -516,7 +516,7 @@ public static partial class Utils
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CallTaskExecutorInvoke")]
-	public static void CallTaskExecutorInvoke(IntPtr executor, IntPtr jsonObjectData)
+	public static void CallTaskExecutorInvoke(IntPtr executor, IntPtr jsonObjectData, IntPtr context)
 	{
 		GCHandle handle = GCHandle.FromIntPtr(executor);
 		
@@ -539,6 +539,6 @@ public static partial class Utils
 
 		deleteWebFrameworkString(stringData);
 
-		taskExecutor.Invoke(data);
+		taskExecutor.Invoke(data, new(context));
 	}
 }

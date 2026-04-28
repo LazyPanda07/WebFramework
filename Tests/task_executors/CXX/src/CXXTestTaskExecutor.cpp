@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-void CXXTestTaskExecutor::operator ()(const framework::JsonObject& data)
+void CXXTestTaskExecutor::execute(const framework::JsonObject& data, const TaskExecutorContext& context)
 {
 	constexpr std::string_view header = "From CXXTestTaskExecutor";
 

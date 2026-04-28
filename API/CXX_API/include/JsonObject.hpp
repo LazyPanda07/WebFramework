@@ -39,12 +39,15 @@ namespace framework
 	class JsonObject
 	{
 	private:
+		static void addArrayValue(void* object, void* array);
+
+	private:
 		void* implementation;
 		bool weak;
 		bool initialized;
 
-	private:
-		static void addArrayValue(void* object, void* array);
+	public:
+		void* __getImplementation() const;
 
 	public:
 		JsonObject();
@@ -138,6 +141,11 @@ namespace framework
 	inline void JsonObject::addArrayValue(void* object, void* array)
 	{
 		static_cast<std::vector<JsonObject>*>(array)->push_back(JsonObject(object));
+	}
+
+	inline void* JsonObject::__getImplementation() const
+	{
+		return const_cast<void*>(implementation);
 	}
 
 	inline JsonObject::JsonObject(void* implementation, bool weak) :

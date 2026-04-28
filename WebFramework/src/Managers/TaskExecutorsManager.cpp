@@ -47,16 +47,16 @@ namespace framework::task_broker
 		}
 	}
 
-	void TaskExecutorsManager::createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskBrokersManager& taskBrokersManager)
+	void TaskExecutorsManager::createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskBrokersManager& taskBrokersManager, WebFramework& frameworkInstance)
 	{
-		consumer = std::make_unique<TaskConsumer>(taskBrokerNames, threadsNumber, checkPeriod, *this, taskBrokersManager);
+		consumer = std::make_unique<TaskConsumer>(taskBrokerNames, threadsNumber, checkPeriod, *this, taskBrokersManager, frameworkInstance);
 	}
 
-	void TaskExecutorsManager::runTaskConsumer()
+	void TaskExecutorsManager::runTaskConsumer(std::shared_ptr<ResourceExecutor> resources)
 	{
 		if (consumer)
 		{
-			consumer->run();
+			consumer->run(resources);
 		}
 	}
 

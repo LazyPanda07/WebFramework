@@ -8,14 +8,15 @@ namespace py = pybind11;
 
 namespace framework::task_broker
 {
-	void PyTaskExecutor::operator ()(py::dict data)
+	void PyTaskExecutor::execute(py::dict data, const TaskExecutor::TaskExecutorContext& context)
 	{
 		PYBIND11_OVERRIDE_PURE
 		(
 			void,
 			IPyTaskExecutor,
-			operator (),
-			data
+			execute,
+			data,
+			context
 		);
 	}
 
@@ -25,7 +26,7 @@ namespace framework::task_broker
 
 	}
 
-	void PyTaskExecutorWrapper::operator ()(const JsonObject& data)
+	void PyTaskExecutorWrapper::execute(const JsonObject& data, const TaskExecutorContext& context)
 	{
 		py::module_ json = py::module_::import("json");
 		std::ostringstream stream;
@@ -34,6 +35,6 @@ namespace framework::task_broker
 
 		py::dict temp = json.attr("loads")(stream.str().data()).cast<py::dict>();
 
-		taskExecutor(temp);
+		taskExecutor.execute(temp, context);
 	}
 }

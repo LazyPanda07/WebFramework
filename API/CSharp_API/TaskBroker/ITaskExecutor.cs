@@ -4,5 +4,5 @@ namespace Framework.TaskBroker;
 
 public interface ITaskExecutor
 {
-	public void Invoke(in JsonObject arguments);
+	public void Invoke(in JsonObject arguments, TaskExecutorContext context);
 }

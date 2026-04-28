@@ -4,6 +4,9 @@
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 
+#include "Managers/RuntimesManager.h"
+#include "Runtimes/PythonRuntime.h"
+
 namespace py = pybind11;
 
 namespace framework::task_broker
@@ -14,7 +17,7 @@ namespace framework::task_broker
 
 	}
 
-	void PythonTaskExecutor::operator ()(json::JsonObject& data)
+	void PythonTaskExecutor::execute(json::JsonObject& data, TaskExecutorContext& context)
 	{
 		std::ostringstream stream;
 
@@ -22,8 +25,12 @@ namespace framework::task_broker
 
 		py::gil_scoped_acquire gil;
 		py::module_ json = py::module_::import("json");
+		std::unique_ptr<py::object> contextWrapper
+		(
+			runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>().createTaskExecutorContext(&context)
+		);
 
-		implementation->attr("__call__")(json.attr("loads")(stream.str().data()).cast<py::dict>());
+		implementation->attr("execute")(json.attr("loads")(stream.str().data()).cast<py::dict>(), *contextWrapper);
 	}
 
 	PythonTaskExecutor::~PythonTaskExecutor()

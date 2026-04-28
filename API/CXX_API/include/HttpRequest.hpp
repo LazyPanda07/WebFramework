@@ -24,12 +24,6 @@ namespace framework
 	concept RouteParameterType = std::same_as<T, std::string> || std::integral<T> || std::floating_point<T>;
 
 	template<typename T>
-	concept DatabaseImplementation = requires
-	{
-		{ std::string(T::databaseImplementationName) } -> std::same_as<std::string>;
-	};
-
-	template<typename T>
 	concept DynamicFunctionImplementation = requires
 	{
 		{ std::string(T::dynamicFunctionImplementationName) } -> std::same_as<std::string>;

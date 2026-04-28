@@ -374,7 +374,7 @@ namespace framework
 				taskBrokerNames.emplace_back(*taskBrokerName);
 			}
 
-			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod), taskBrokerManager);
+			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod), taskBrokerManager, *this);
 		}
 
 		for (const json::JsonObject& taskExecutorPath : taskExecutorPaths)
@@ -400,8 +400,6 @@ namespace framework
 
 			taskExecutorsManager.initTaskExecutor(taskExecutorsSettings);
 		}
-
-		taskExecutorsManager.runTaskConsumer(); // run only if consumer created
 	}
 
 	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings)
@@ -635,6 +633,11 @@ namespace framework
 		if (json::JsonObject taskBrokerObject; (*config).tryGet<json::JsonObject>(json_settings::taskBrokerObject, taskBrokerObject))
 		{
 			this->initTaskExecutors(taskBrokerObject);
+		}
+
+		if (ExecutorServer* executorServer = dynamic_cast<ExecutorServer*>(server.get()))
+		{
+			taskExecutorsManager.runTaskConsumer(executorServer->getResourceExecutor()); // run only if consumer created
 		}
 
 		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)

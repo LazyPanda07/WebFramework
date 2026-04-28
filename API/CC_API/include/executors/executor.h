@@ -2,10 +2,10 @@
 
 #include <stdlib.h>
 
-#include "../http_request.h"
-#include "../http_response.h"
-#include "../dll_handler.h"
-#include "../json_parser.h"
+#include "http_request.h"
+#include "http_response.h"
+#include "dll_handler.h"
+#include "json_parser.h"
 
 typedef void* executor_t;
 typedef void* executor_settings_t;
@@ -161,7 +161,7 @@ web_framework_exception_t wf_get_file_executor_settings(executor_settings_t impl
  * @param fileExtension Supported processing extension
  * @param result Processed data
  * @param resultSize Processed data size
- * @return
+ * @return Error if occurred
  */
 web_framework_exception_t wf_process_static_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const char* file_extension, char** result, size_t* result_size);
 
@@ -172,7 +172,7 @@ web_framework_exception_t wf_process_static_file_executor_settings(executor_sett
  * @param arguments Arguments for processing .wfdp file
  * @param result Processed data
  * @param resultSize Processed data size
- * @return
+ * @return Error if occurred
  */
 web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const json_object_t* arguments, char** result, size_t* result_size);
 

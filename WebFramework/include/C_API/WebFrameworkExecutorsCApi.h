@@ -4,6 +4,7 @@
 
 typedef void* HttpResponseObject;
 typedef void* HttpRequestObject;
+typedef void* TaskExecutorContextObject;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -119,6 +120,8 @@ EXPORT void setExceptionData(HttpRequestObject request, const char* errorMessage
 
 EXPORT bool isExceptionDataValid(HttpRequestObject request, Exception* exception);
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
 
 EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);
@@ -148,5 +151,21 @@ EXPORT void getFileExecutorSettings(ExecutorSettings executorsSettings, const ch
 EXPORT void processStaticFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
 
 EXPORT void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+EXPORT DatabaseObject getOrCreateDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception);
+
+EXPORT DatabaseObject getDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception);
+
+EXPORT TableObject getOrCreateTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception);
+
+EXPORT TableObject getTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception);
+
+EXPORT void getFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processStaticFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processDynamicFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

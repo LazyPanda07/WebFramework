@@ -44,7 +44,7 @@ namespace framework::runtime
 		using DestroySignature = void(*)(void* implementation);
 		using EventSignature = void(*)(void* implementation);
 		using CallHeuristicSignature = uint64_t(*)(void* implementation);
-		using CallTaskExecutorSignature = void(*)(void* implementation, void* jsonObjectData);
+		using CallTaskExecutorSignature = void(*)(void* implementation, void* jsonObjectData, void* context);
 
 	private:
 		static std::filesystem::path getPathToRuntimeConfig();

@@ -16,7 +16,7 @@ namespace framework::task_broker
 	public:
 		PythonTaskExecutor(pybind11::object* implementation);
 
-		void operator ()(json::JsonObject& data) override;
+		void execute(json::JsonObject& data, TaskExecutorContext& context) override;
 
 		~PythonTaskExecutor();
 	};

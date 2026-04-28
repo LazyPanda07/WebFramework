@@ -29,9 +29,9 @@ namespace framework::task_broker
 
 		void initTaskExecutor(const std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings);
 
-		void createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskBrokersManager& taskBrokersManager);
+		void createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskBrokersManager& taskBrokersManager, WebFramework& frameworkInstance);
 
-		void runTaskConsumer();
+		void runTaskConsumer(std::shared_ptr<ResourceExecutor> resources);
 
 		TaskExecutor& getTaskExecutor(const std::string& apiName, const std::string& taskExecutorName) const;		
 

@@ -183,4 +183,9 @@ namespace framework
 
 		resources = executorsManager->getResourceExecutor();
 	}
+
+	std::shared_ptr<ResourceExecutor> ExecutorServer::getResourceExecutor() const
+	{
+		return resources;
+	}
 }

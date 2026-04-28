@@ -11,7 +11,7 @@ namespace framework::task_broker
 	public:
 		IPyTaskExecutor() = default;
 
-		virtual void operator ()(pybind11::dict data) = 0;
+		virtual void execute(pybind11::dict data, const TaskExecutor::TaskExecutorContext& context) = 0;
 
 		virtual ~IPyTaskExecutor() = default;
 	};
@@ -21,7 +21,7 @@ namespace framework::task_broker
 	public:
 		PyTaskExecutor() = default;
 
-		void operator ()(pybind11::dict data) override;
+		void execute(pybind11::dict data, const TaskExecutor::TaskExecutorContext& context) override;
 
 		~PyTaskExecutor() = default;
 	};
@@ -34,7 +34,7 @@ namespace framework::task_broker
 	public:
 		PyTaskExecutorWrapper(IPyTaskExecutor& taskExecutor);
 
-		void operator ()(const JsonObject& data) override;
+		void execute(const JsonObject& data, const TaskExecutorContext& context) override;
 
 		~PyTaskExecutorWrapper() = default;
 	};
