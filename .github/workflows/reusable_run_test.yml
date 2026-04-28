@@ -188,6 +188,7 @@ jobs:
     - name: Install Python
       if: ${{ env.actual-python-version != '' }}
       uses: actions/setup-python@v6
+      continue-on-error: true
       with:
         python-version: "${{ env.actual-python-version }}"
         
