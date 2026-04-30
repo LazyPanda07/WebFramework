@@ -26,6 +26,6 @@ namespace framework
 
 		std::string operator ()(pybind11::dict arguments) const override;
 
-		~PyDynamicFunction() = default;
+		virtual ~PyDynamicFunction() = default;
 	};
 }

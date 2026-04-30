@@ -63,6 +63,7 @@ pybind11_add_module(
     src/Executors/PyStatefulExecutor.cpp
     src/Executors/PyHeavyOperationStatelessExecutor.cpp
     src/Executors/PyHeavyOperationStatefulExecutor.cpp
+    src/WebSocket/PyWebSocketExecutor.cpp
     src/LoadBalancer/PyLoadBalancerHeuristic.cpp
     src/TaskBroker/PyTaskExecutor.cpp
     src/TaskBroker/PyTaskSerializer.cpp
@@ -74,6 +75,7 @@ pybind11_add_module(
     src/Registrars/LoadBalancerRegistrar.cpp
     src/Registrars/HttpResponseRegistrar.cpp
     src/Registrars/HttpRequestRegistrar.cpp
+    src/Registrars/WebSocketExecutorRegistrar.cpp
 )
 
 add_definitions(-DPYBIND11_DETAILED_ERROR_MESSAGES)

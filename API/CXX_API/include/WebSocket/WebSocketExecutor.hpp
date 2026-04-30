@@ -46,14 +46,14 @@ namespace framework
 
 namespace framework
 {
-	WebSocketExecutor::Frame::Frame(void* implementation) :
+	inline WebSocketExecutor::Frame::Frame(void* implementation) :
 		implementation(implementation)
 	{
 
 	}
 
 	template<typename T>
-	std::span<T> WebSocketExecutor::Frame::getPayload() const requires(std::same_as<T, char> || std::same_as<T, uint8_t>)
+	inline std::span<T> WebSocketExecutor::Frame::getPayload() const requires(std::same_as<T, char> || std::same_as<T, uint8_t>)
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(getFramePayload, char*, uint64_t*, void** exception);
 		void* exception = nullptr;
@@ -62,10 +62,10 @@ namespace framework
 		
 		char* ptr = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFramePayload, &size, &exception);
 
-		return std::span<T>(reinterpret_cast<T>(ptr), size);
+		return std::span<T>(reinterpret_cast<T*>(ptr), size);
 	}
 
-	WebSocketExecutor::Frame::Type WebSocketExecutor::Frame::getType() const
+	inline WebSocketExecutor::Frame::Type WebSocketExecutor::Frame::getType() const
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(getFrameType, int, void** exception);
 		void* exception = nullptr;
@@ -73,7 +73,7 @@ namespace framework
 		return static_cast<Frame::Type>(utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFrameType, &exception));
 	}
 
-	WebSocketExecutor::Frame::operator bool() const
+	inline WebSocketExecutor::Frame::operator bool() const
 	{
 		return static_cast<bool>(implementation);
 	}
@@ -113,10 +113,6 @@ WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceiv
 		ptr = reinterpret_cast<const uint8_t*>(temp.data());
 		size = temp.size();
 		type = framework::WebSocketExecutor::Frame::Type::binary;
-	}
-	else
-	{
-		throw std::runtime_error("Wrong frame send variant type");
 	}
 
 	sendData(ptr, size, static_cast<int32_t>(type));

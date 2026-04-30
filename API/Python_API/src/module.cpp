@@ -8,6 +8,7 @@
 #include "Registrars/HttpResponseRegistrar.h"
 #include "Registrars/HttpRequestRegistrar.h"
 #include "Registrars/LoadBalancerRegistrar.h"
+#include "Registrars/WebSocketExecutorRegistrar.h"
 
 namespace py = pybind11;
 
@@ -34,4 +35,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	registrar::registerHttpRequest(m);
 
 	registrar::registerExecutors(m);
+
+	registrar::registerWebSocketExecutor(m);
 }

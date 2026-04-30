@@ -23,7 +23,7 @@ namespace framework::task_broker
 
 		void execute(pybind11::dict data, const TaskExecutor::TaskExecutorContext& context) override;
 
-		~PyTaskExecutor() = default;
+		virtual ~PyTaskExecutor() = default;
 	};
 
 	class PyTaskExecutorWrapper : public TaskExecutor

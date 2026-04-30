@@ -31,7 +31,7 @@ namespace framework
 
 		void destroy() override;
 
-		~PyHeavyOperationStatefulExecutor() = default;
+		virtual ~PyHeavyOperationStatefulExecutor() = default;
 	};
 }
 

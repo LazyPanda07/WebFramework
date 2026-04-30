@@ -36,7 +36,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializerCxx() = default;
 
-		~PyTaskSerializerCxx() = default;
+		virtual ~PyTaskSerializerCxx() = default;
 	};
 
 	class PyTaskSerializerCc : public IPyTaskSerializer
@@ -51,7 +51,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializerCc() = default;
 
-		~PyTaskSerializerCc() = default;
+		virtual ~PyTaskSerializerCc() = default;
 	};
 
 	class PyTaskSerializer : public IPyTaskSerializer
@@ -66,7 +66,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializer() = default;
 
-		~PyTaskSerializer() = default;
+		virtual ~PyTaskSerializer() = default;
 	};
 
 	class PyTaskSerializerCSharp : public IPyTaskSerializer
@@ -81,7 +81,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializerCSharp() = default;
 
-		~PyTaskSerializerCSharp() = default;
+		virtual ~PyTaskSerializerCSharp() = default;
 	};
 
 	template<typename T>
