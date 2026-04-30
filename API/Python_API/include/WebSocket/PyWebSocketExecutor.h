@@ -2,6 +2,8 @@
 
 #include <WebSocket/WebSocketExecutor.hpp>
 
+#include <pybind11/stl.h>
+
 namespace framework
 {
 	class PyWebSocketExecutor : public WebSocketExecutor

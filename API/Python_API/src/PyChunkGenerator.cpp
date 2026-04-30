@@ -1,6 +1,7 @@
 #include "PyChunkGenerator.h"
 
 #include <format>
+#include <fstream>
 
 #include <pybind11/pybind11.h>
 
@@ -28,31 +29,25 @@ namespace framework::utility
 
 	std::string_view ChunkGeneratorWrapper::generate(size_t& size)
 	{
-		std::variant<std::string, std::vector<uint8_t>> temp = generator.generate();
+		std::variant<std::string, std::vector<uint8_t>> chunk = generator.generate();
 
-		if (std::holds_alternative<std::string>(temp))
+		if (std::holds_alternative<std::string>(chunk))
 		{
-			std::string_view data = std::get<std::string>(temp);
-
-			size = data.size();
-
-			return data;
+			data = std::get<std::string>(chunk);
 		}
-		else if (std::holds_alternative<std::vector<uint8_t>>(temp))
+		else if (std::holds_alternative<std::vector<uint8_t>>(chunk))
 		{
-			std::span<uint8_t> data = std::get<std::vector<uint8_t>>(temp);
+			std::span<uint8_t> temp = std::get<std::vector<uint8_t>>(chunk);
 
-			size = data.size();
-
-			return std::string_view(reinterpret_cast<const char*>(data.data()), data.size());
+			data = std::string(reinterpret_cast<const char*>(temp.data()), temp.size());
 		}
 		else
 		{
-			throw std::runtime_error(std::format("Wrong ChunkGenerator return value: {}", temp.index()));
+			throw std::runtime_error(std::format("Wrong ChunkGenerator return value: {}", chunk.index()));
 		}
 
-		constexpr std::string_view defaultEmptyValue = "DefaultEmptyValue";
+		size = data.size();
 
-		return defaultEmptyValue;
+		return data;
 	}
 }
