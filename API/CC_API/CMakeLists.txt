@@ -14,6 +14,7 @@ add_library(
 	src/task_broker/task_executor.c
 	src/utility/web_framework_utility.c
 	src/utility/web_framework_localization.c
+	src/web_socket/web_socket_executor.c
 	src/config.c
 	src/dll_handler.c
 	src/http_request.c

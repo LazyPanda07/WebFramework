@@ -31,7 +31,7 @@ char* getFramePayload(FrameObject frame, uint64_t* size, Exception* exception)
 	return nullptr;
 }
 
-int getFrameType(FrameObject frame, Exception* exception)
+int32_t getFrameType(FrameObject frame, Exception* exception)
 {
 	try
 	{

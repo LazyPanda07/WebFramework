@@ -107,6 +107,7 @@
     <ClCompile Include="src\utility\web_framework_utility.c" />
     <ClCompile Include="src\web_framework.c" />
     <ClCompile Include="src\web_framework_exception.c" />
+    <ClCompile Include="src\web_socket\web_socket_executor.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\config.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="include\utility\web_framework_utility.h" />
     <ClInclude Include="include\web_framework.h" />
     <ClInclude Include="include\web_framework_exception.h" />
+    <ClInclude Include="include\web_socket\web_socket_executor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
