@@ -281,6 +281,30 @@ public static partial class Utils
 		return GCHandle.ToIntPtr(handle);
 	}
 
+	[UnmanagedCallersOnly(EntryPoint = "CreateWebSocketExecutor")]
+	public static IntPtr CreateWebSocketExecutor(IntPtr fullName)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(fullName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return IntPtr.Zero;
+		}
+
+		Type? type = Type.GetType(typeName, throwOnError: false);
+
+		if (type == null)
+		{
+			return IntPtr.Zero;
+		}
+
+		NewExpression expression = Expression.New(type);
+		object instance = Expression.Lambda<Func<object>>(expression).Compile()();
+		GCHandle handle = GCHandle.Alloc(instance);
+
+		return GCHandle.ToIntPtr(handle);
+	}
+
 	[UnmanagedCallersOnly(EntryPoint = "CreateExecutorSettings")]
 	public static IntPtr CreateExecutorSettings(IntPtr implementation)
 	{
@@ -519,7 +543,7 @@ public static partial class Utils
 	public static void CallTaskExecutorInvoke(IntPtr executor, IntPtr jsonObjectData, IntPtr context)
 	{
 		GCHandle handle = GCHandle.FromIntPtr(executor);
-		
+
 		if (handle.Target is not ITaskExecutor taskExecutor)
 		{
 			return;
@@ -527,7 +551,7 @@ public static partial class Utils
 
 		IntPtr exception = IntPtr.Zero;
 		IntPtr stringData = jsonObjectToString(jsonObjectData, ref exception);
-		
+
 		if (exception != IntPtr.Zero)
 		{
 			// TODO: Throw exception
@@ -540,5 +564,45 @@ public static partial class Utils
 		deleteWebFrameworkString(stringData);
 
 		taskExecutor.Invoke(data, new(context));
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CallWebSocketExecutorOnReceive")]
+	public static unsafe void CallWebSocketExecutorOnReceive(IntPtr executor, IntPtr frame, delegate* unmanaged<byte*, ulong, int, void> sendData)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(executor);
+
+		if (handle.Target is not WebSocketExecutor webSocketExecutor)
+		{
+			return;
+		}
+
+		Frame frameWrapper = new(frame);
+		FramePayload payload = webSocketExecutor.OnReceive(frameWrapper);
+
+		unsafe
+		{
+			byte[] bytes;
+			Frame.Type type;
+
+			if (payload is FramePayload.TextFramePayload text)
+			{
+				bytes = Encoding.UTF8.GetBytes(text.Payload);
+				type = Frame.Type.text;
+			}
+			else if (payload is FramePayload.BinaryFramePayload binary)
+			{
+				bytes = [.. binary.Payload];
+				type = Frame.Type.binary;
+			}
+			else
+			{
+				throw new Exception("Wrong Frame.Type");
+			}
+
+			fixed (byte* ptr = bytes)
+			{
+				sendData(ptr, (ulong)bytes.Length, (int)type);
+			}
+		}
 	}
 }
