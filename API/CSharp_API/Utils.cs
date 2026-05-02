@@ -566,7 +566,7 @@ public static partial class Utils
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CallWebSocketExecutorOnReceive")]
-	public static unsafe void CallWebSocketExecutorOnReceive(IntPtr executor, IntPtr frame, delegate* unmanaged<byte*, ulong, int, void> sendData)
+	public static unsafe void CallWebSocketExecutorOnReceive(IntPtr executor, IntPtr frame, delegate* unmanaged<byte*, ulong, int, void*, void> sendData, IntPtr additionalData)
 	{
 		GCHandle handle = GCHandle.FromIntPtr(executor);
 
@@ -600,7 +600,7 @@ public static partial class Utils
 
 			fixed (byte* ptr = bytes)
 			{
-				sendData(ptr, (ulong)bytes.Length, (int)type);
+				sendData(ptr, (ulong)bytes.Length, (int)type, additionalData.ToPointer());
 			}
 		}
 	}

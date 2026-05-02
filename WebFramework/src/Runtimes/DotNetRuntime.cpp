@@ -155,6 +155,7 @@ namespace framework::runtime
 		this->loadMethod(typeName, "CallHeuristicOnEnd", onEndHeuristic);
 		this->loadMethod(typeName, "CallHeuristicInvoke", callHeuristic);
 		this->loadMethod(typeName, "CallTaskExecutorInvoke", callTaskExecutor);
+		this->loadMethod(typeName, "CallWebSocketExecutorOnReceive", callOnReceive);
 	}
 
 	template<FunctionPointer T>
@@ -268,6 +269,11 @@ namespace framework::runtime
 		return callTaskExecutor;
 	}
 
+	DotNetRuntime::CallWebSocketExecutorOnReceiveSignature DotNetRuntime::getCallOnReceive() const
+	{
+		return callOnReceive;
+	}
+
 	void DotNetRuntime::free(void* implementation) const
 	{
 		dotNetFree(implementation);
@@ -306,7 +312,8 @@ namespace framework::runtime
 		onStartHeuristic(nullptr),
 		onEndHeuristic(nullptr),
 		callHeuristic(nullptr),
-		callTaskExecutor(nullptr)
+		callTaskExecutor(nullptr),
+		callOnReceive(nullptr)
 	{
 		constexpr size_t envSize = 512;
 

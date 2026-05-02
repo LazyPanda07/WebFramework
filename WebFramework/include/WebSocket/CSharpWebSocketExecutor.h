@@ -8,10 +8,15 @@ namespace framework::web_socket
 {
 	class CSharpWebSocketExecutor : public WebSocketExecutor
 	{
-	public:
-		CSharpWebSocketExecutor();
+	private:
+		void* implementation;
 
-		~CSharpWebSocketExecutor() = default;
+	public:
+		CSharpWebSocketExecutor(void* implementation);
+
+		web::web_socket::Frame onReceive(const web::web_socket::Frame& frame) override;
+
+		~CSharpWebSocketExecutor();
 	};
 }
 

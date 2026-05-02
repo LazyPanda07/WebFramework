@@ -45,6 +45,7 @@ namespace framework::runtime
 		using EventSignature = void(*)(void* implementation);
 		using CallHeuristicSignature = uint64_t(*)(void* implementation);
 		using CallTaskExecutorSignature = void(*)(void* implementation, void* jsonObjectData, void* context);
+		using CallWebSocketExecutorOnReceiveSignature = void(*)(void* implementation, void* frame, void(*sendData)(const uint8_t* data, uint64_t size, int32_t type, void* additionalData), void* additionalData);
 
 	private:
 		static std::filesystem::path getPathToRuntimeConfig();
@@ -95,6 +96,7 @@ namespace framework::runtime
 		EventSignature onEndHeuristic;
 		CallHeuristicSignature callHeuristic;
 		CallTaskExecutorSignature callTaskExecutor;
+		CallWebSocketExecutorOnReceiveSignature callOnReceive;
 
 	private:
 		void loadFunctions(const std::filesystem::path& pathToSource);
@@ -143,6 +145,8 @@ namespace framework::runtime
 		CallHeuristicSignature getCallHeuristic() const;
 
 		CallTaskExecutorSignature getCallTaskExecutor() const;
+
+		CallWebSocketExecutorOnReceiveSignature getCallOnReceive() const;
 
 	public:
 		void free(void* implementation) const;
