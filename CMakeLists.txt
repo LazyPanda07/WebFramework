@@ -118,6 +118,11 @@ add_library(
 	WebFramework/src/Assets/DefaultAssetProvider.cpp
 	WebFramework/src/Assets/SingleBinaryAssetProvider.cpp
 	WebFramework/src/Assets/SingleBinaryAsset.cpp
+	WebFramework/src/WebSocket/WebSocketExecutor.cpp
+	WebFramework/src/WebSocket/CCWebSocketExecutor.cpp
+	WebFramework/src/WebSocket/CXXWebSocketExecutor.cpp
+	WebFramework/src/WebSocket/PythonWebSocketExecutor.cpp
+	WebFramework/src/WebSocket/CSharpWebSocketExecutor.cpp
 )
 
 if (${WITH_STACKTRACE})

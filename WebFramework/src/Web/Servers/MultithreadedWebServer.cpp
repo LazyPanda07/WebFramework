@@ -1,6 +1,6 @@
 #include "Web/Servers/MultithreadedWebServer.h"
 
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
@@ -64,7 +64,7 @@ namespace framework
 		ExecutorsManager::StatefulExecutors executors;
 		HttpResponseImplementation response;
 		HttpRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
-		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
+		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
 		bool finish = false;
 
 		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, executors);

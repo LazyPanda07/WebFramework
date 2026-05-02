@@ -2,7 +2,7 @@
 
 #include <Log.h>
 #include <Exceptions/SslException.h>
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 #include <JsonArrayWrapper.h>
 #include <IOSocketStream.h>
 
@@ -75,8 +75,8 @@ namespace framework::proxy
 		const ProxyData& proxyData = *routes.at(route);
 
 		streams::IOSocketStream serverStream = proxyData.isHTTPS ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout));
+			streams::IOSocketStream::createStream<web::http::HttpsNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout)) :
+			streams::IOSocketStream::createStream<web::http::HttpNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout));
 
 		bool success = utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(serverStream, request);
 		

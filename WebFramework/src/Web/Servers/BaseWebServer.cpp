@@ -2,7 +2,7 @@
 
 #include <Exceptions/SslException.h>
 #include <Exceptions/FileDoesNotExistException.h>
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 #include <openssl/err.h>
 
 #include "Utility/Utils.h"
@@ -48,10 +48,10 @@ namespace framework
 		{
 			std::lock_guard<std::mutex> lock(sslMutex);
 
-			return streams::IOSocketStream::createStream<web::HttpsNetwork>(clientSocket, ssl, context, timeoutInMilliseconds);
+			return streams::IOSocketStream::createStream<web::http::HttpsNetwork>(clientSocket, ssl, context, timeoutInMilliseconds);
 		}
 
-		return streams::IOSocketStream::createStream<web::HttpNetwork>(clientSocket, timeoutInMilliseconds);
+		return streams::IOSocketStream::createStream<web::http::HttpNetwork>(clientSocket, timeoutInMilliseconds);
 	}
 
 	SSL* BaseWebServer::getNewSsl()

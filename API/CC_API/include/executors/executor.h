@@ -55,29 +55,29 @@ typedef enum load_type
 /**
 * Create custom executor_t function
 * Used for loading function that creates executor_t instance
-* @param structName Already defined struct name
+* @param struct_name Already defined struct name
 */
-#define DEFINE_EXECUTOR(structName, executorType) WEB_FRAMEWORK_FUNCTIONS_API void* create##structName##CCInstance()	\
+#define DEFINE_EXECUTOR(struct_name, executorType) WEB_FRAMEWORK_FUNCTIONS_API void* create##struct_name##CCInstance()	\
 {	\
-	return malloc(sizeof(structName));	\
+	return malloc(sizeof(struct_name));	\
 }	\
 	\
-WEB_FRAMEWORK_FUNCTIONS_API int webFrameworkCCGetType##structName(void* executor)	\
+WEB_FRAMEWORK_FUNCTIONS_API int webFrameworkCCGetType##struct_name(void* executor)	\
 {	\
 	return executorType;	\
 }	\
 	\
-WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteExecutor##structName(void* executor)	\
+WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteExecutor##struct_name(void* executor)	\
 {	\
-	free((structName*)executor);	\
+	free((struct_name*)executor);	\
 }
 
 /**
 * Create custom executor_t function
 * Used for loading function that creates executor_t subclass
-* @param structName Create empty struct for stateless executors
+* @param struct_name Create empty struct for stateless executors
 */
-#define DEFINE_DEFAULT_EXECUTOR(structName, executorType) typedef struct { char _; } structName; DEFINE_EXECUTOR(structName, executorType)
+#define DEFINE_DEFAULT_EXECUTOR(struct_name, executorType) typedef struct { char _; } struct_name; DEFINE_EXECUTOR(struct_name, executorType)
 
 /**
  * @brief Available executor_t methods
@@ -97,24 +97,24 @@ typedef enum methods
 
 /**
  * Create method function
- * @param structName executor_t name
+ * @param struct_name executor_t name
  * @param method One of Methods value
  * @param request_variable_name Input http_request_t variable name
  * @param response_variable_name Input http_response_t variable name
  */
-#define DEFINE_EXECUTOR_METHOD(structName, method, request_variable_name, response_variable_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDo##method##structName(executor_t executor, http_request_t request_variable_name, http_response_t response_variable_name)
+#define DEFINE_EXECUTOR_METHOD(struct_name, method, request_variable_name, response_variable_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDo##method##struct_name(executor_t executor, http_request_t request_variable_name, http_response_t response_variable_name)
 
 /**
  * Create initialization function
- * @param structName executor_t name
+ * @param struct_name executor_t name
  */
-#define DEFINE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(executor_t executor, executor_settings_t settings)
+#define DEFINE_EXECUTOR_INIT(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCExecutorInit##struct_name(executor_t executor, executor_settings_t settings)
 
 /**
  * Create destroy function that would be called if executor_t is destroyed
- * @param structName executor_t name
+ * @param struct_name executor_t name
  */
-#define DEFINE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(executor_t executor)
+#define DEFINE_EXECUTOR_DESTROY(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDestroyExecutor##struct_name(executor_t executor)
 
  /**
   * @brief Register function for processing .wfdp files

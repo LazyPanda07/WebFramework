@@ -12,32 +12,44 @@ typedef enum web_socket_frame_type
 } web_socket_frame_type_t;
 
 /**
-* Create custom executor_t function
-* Used for loading function that creates executor_t instance
-* @param structName Already defined struct name
+ * Create custom executor_t function
+ * Used for loading function that creates executor_t instance
+ * @param struct_name Already defined struct name
 */
-#define DEFINE_WEB_SOCKET_EXECUTOR(structName) WEB_FRAMEWORK_FUNCTIONS_API void* create##structName##WebSocketCCInstance()	\
+#define DEFINE_WEB_SOCKET_EXECUTOR(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void* create##struct_name##WebSocketCCInstance()	\
 {	\
-	return malloc(sizeof(structName));	\
+	return malloc(sizeof(struct_name));	\
 }	\
 	\
-WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteWebSocketExecutor##structName(void* executor)	\
+WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteWebSocketExecutor##struct_name(void* executor)	\
 {	\
-	free((structName*)executor);	\
+	free((struct_name*)executor);	\
 }
 
 /**
-* Create custom web_socket_executor_t function
-* Used for loading function that creates web_socket_executor_t subclass
-* @param structName Create empty struct for stateless executors
+ * Create custom web_socket_executor_t function
+ * Used for loading function that creates web_socket_executor_t subclass
+ * @param struct_name Create empty struct for stateless executors
 */
-#define DEFINE_DEFAULT_WEB_SOCKET_EXECUTOR(structName) typedef struct { char _; } structName; DEFINE_WEB_SOCKET_EXECUTOR(structName)
+#define DEFINE_DEFAULT_WEB_SOCKET_EXECUTOR(struct_name) typedef struct { char _; } struct_name; DEFINE_WEB_SOCKET_EXECUTOR(struct_name)
 
 /**
  * Create on receive function
- * @param structName web_socket_executor_t name
+ * @param struct_name web_socket_executor_t name
  */
-#define DEFINE_WEB_SOCKET_EXECUTOR_ON_RECEIVE(structName) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCWebSocketExecutorOnReceive##structName(web_socket_executor_t executor, web_socket_frame_t frame, void(*send_data)(const uint8_t* data, uint64_t size, int32_t type))
+#define DEFINE_WEB_SOCKET_EXECUTOR_ON_RECEIVE(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCWebSocketExecutorOnReceive##struct_name(web_socket_executor_t executor, web_socket_frame_t frame, void(*send_data)(const uint8_t* data, uint64_t size, int32_t type, void* additionalData), void* additionalData)
+
+#define WF_GET_WEB_SOCKET_EXECUTOR(struct_name) ((*struct_name)executor)
+
+#define WF_GET_WEB_SOCKET_FRAME() ((web_socket_frame_t)frame)
+
+/**
+ * Send WebSocket frame
+ * @param data Payload in const uint8_t*
+ * @param size Size in bytes of data
+ * @param type web_socket_frame_type_t
+*/
+#define WF_SEND_WEB_SOCKET_FRAME(data, size, type) send_data(data, size, (int32_t)type, additionalData)
 
 /**
  * @brief Get payload from WebSocket frame

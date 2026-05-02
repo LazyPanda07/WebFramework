@@ -15,21 +15,21 @@ typedef void* task_executor_context_t;
 * Macro for each TaskExecutor subclass
 * Used for loading function that creates TaskExecutor subclass
 */
-#define DEFINE_TASK_EXECUTOR(structName) WEB_FRAMEWORK_FUNCTIONS_API void* create##structName##TaskCCInstance()	\
+#define DEFINE_TASK_EXECUTOR(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void* create##struct_name##TaskCCInstance()	\
 {	\
-	return malloc(sizeof(structName));	\
+	return malloc(sizeof(struct_name));	\
 }	\
 	\
-WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteTask##structName(void* implementation)	\
+WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteTask##struct_name(void* implementation)	\
 {	\
-	free((structName*)implementation);	\
+	free((struct_name*)implementation);	\
 }	\
 	\
-WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCTaskExecute##structName(void* implementation, void* jsonData, void* context)
+WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCTaskExecute##struct_name(void* implementation, void* jsonData, void* context)
 
-#define DEFINE_DEFAULT_TASK_EXECUTOR(structName) typedef struct { char _; } structName; DEFINE_TASK_EXECUTOR(structName)
+#define DEFINE_DEFAULT_TASK_EXECUTOR(struct_name) typedef struct { char _; } struct_name; DEFINE_TASK_EXECUTOR(struct_name)
 
-#define WF_GET_TASK_EXECUTOR_INSTANCE(structName) ((*structName)implementation)
+#define WF_GET_TASK_EXECUTOR_INSTANCE(struct_name) ((*struct_name)implementation)
 #define WF_GET_TASK_EXECUTOR_ARGUMENTS() { .implementation = jsonData, .weak = true }
 #define WF_GET_TASK_EXECUTOR_CONTEXT() ((task_executor_context_t)context)
 

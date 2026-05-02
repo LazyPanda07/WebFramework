@@ -89,7 +89,7 @@ namespace framework
 }
 
 #pragma region ExportFunctions
-WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceive(void* implementation, void* frame, void(*sendData)(const uint8_t* data, uint64_t size, int32_t type))
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceive(void* implementation, void* frame, void(*sendData)(const uint8_t* data, uint64_t size, int32_t type, void* additionalData), void* additionalData)
 {
 	framework::WebSocketExecutor::Frame frameWrapper(frame);
 
@@ -115,7 +115,7 @@ WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceiv
 		type = framework::WebSocketExecutor::Frame::Type::binary;
 	}
 
-	sendData(ptr, size, static_cast<int32_t>(type));
+	sendData(ptr, size, static_cast<int32_t>(type), additionalData);
 }
 
 WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDeleteWebSocketExecutor(void* implementation)

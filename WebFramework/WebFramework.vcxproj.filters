@@ -258,6 +258,21 @@
     <ClCompile Include="src\C_API\WebFrameworkWebSocketExecutorsCApi.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\WebSocket\WebSocketExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WebSocket\CCWebSocketExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WebSocket\CXXWebSocketExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WebSocket\PythonWebSocketExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WebSocket\CSharpWebSocketExecutor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Framework\WebFramework.h">
@@ -513,6 +528,21 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\C_API\WebFrameworkWebSocketExecutorsCApi.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WebSocket\WebSocketExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WebSocket\CCWebSocketExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WebSocket\CXXWebSocketExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WebSocket\PythonWebSocketExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WebSocket\CSharpWebSocketExecutor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

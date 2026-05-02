@@ -190,6 +190,11 @@
     <ClCompile Include="src\Utility\TaskExecutorsSettings.cpp" />
     <ClCompile Include="src\Utility\Utils.cpp" />
     <ClCompile Include="src\Utility\WebFrameworkConcepts.cpp" />
+    <ClCompile Include="src\WebSocket\CCWebSocketExecutor.cpp" />
+    <ClCompile Include="src\WebSocket\CSharpWebSocketExecutor.cpp" />
+    <ClCompile Include="src\WebSocket\CXXWebSocketExecutor.cpp" />
+    <ClCompile Include="src\WebSocket\PythonWebSocketExecutor.cpp" />
+    <ClCompile Include="src\WebSocket\WebSocketExecutor.cpp" />
     <ClCompile Include="src\Web\HttpRequestImplementation.cpp" />
     <ClCompile Include="src\Web\HttpResponseImplementation.cpp" />
     <ClCompile Include="src\Web\Servers\ExecutorServer.cpp" />
@@ -261,6 +266,11 @@
     <ClInclude Include="include\Utility\ReadOnlyBuffer.h" />
     <ClInclude Include="include\Utility\TaskExecutorsSettings.h" />
     <ClInclude Include="include\Utility\Utils.h" />
+    <ClInclude Include="include\WebSocket\CCWebSocketExecutor.h" />
+    <ClInclude Include="include\WebSocket\CSharpWebSocketExecutor.h" />
+    <ClInclude Include="include\WebSocket\CXXWebSocketExecutor.h" />
+    <ClInclude Include="include\WebSocket\PythonWebSocketExecutor.h" />
+    <ClInclude Include="include\WebSocket\WebSocketExecutor.h" />
     <ClInclude Include="include\WFDP\CCDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CSharpDynamicFunction.h" />
     <ClInclude Include="include\WFDP\CXXDynamicFunction.h" />

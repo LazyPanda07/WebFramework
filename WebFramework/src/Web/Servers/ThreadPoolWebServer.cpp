@@ -3,7 +3,7 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/SslException.h"
 #include "Exceptions/APIException.h"
-#include "HttpsNetwork.h"
+#include "Http/HttpsNetwork.h"
 #include "Utility/LargeFileHandlers/ThreadPoolHandler.h"
 #include "Utility/Utils.h"
 #include "Framework/WebFramework.h"
@@ -28,7 +28,7 @@ namespace framework
 		isBusy(false),
 		webExceptionAcquired(false)
 	{
-		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
+		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
 
 		network.setLargeBodyHandler<utility::ThreadPoolHandler>
 			(
@@ -62,7 +62,7 @@ namespace framework
 			return false;
 		}
 
-		if (!stream.getNetwork<web::HttpNetwork>().isDataAvailable())
+		if (!stream.getNetwork<web::http::HttpNetwork>().isDataAvailable())
 		{
 			return false;
 		}

@@ -1,7 +1,7 @@
 #include "LoadBalancer/LoadBalancerServer.h"
 
 #include <Exceptions/SslException.h>
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 #include <Log.h>
 
 #include "Web/HttpResponseImplementation.h"
@@ -404,12 +404,16 @@ namespace framework::load_balancer
 
 			return;
 		}
-		
+
 		std::chrono::milliseconds timeoutInMilliseconds(timeout);
 		LoadBalancerRequest request
 		(
 			this->createServerSideStream(clientSocket, ssl, timeoutInMilliseconds),
-			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds),
+			(
+				serversHTTPS ?
+				streams::IOSocketStream::createStream<web::http::HttpsNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds) :
+				streams::IOSocketStream::createStream<web::http::HttpNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds)
+			),
 			heuristic,
 			std::move(cleanup)
 		);
@@ -471,7 +475,7 @@ namespace framework::load_balancer
 		{
 			apiType = "";
 		}
-		
+
 		this->allServers.reserve(allServers.size());
 
 		std::ranges::for_each(processingClients, [](std::atomic_int64_t& value) { value = 0; });

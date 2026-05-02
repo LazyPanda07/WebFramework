@@ -4,7 +4,7 @@
 #include <Exceptions/FileDoesNotExistException.h>
 #include <BaseTCPServer.h>
 #include <FileManager.h>
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 #include <jwt-cpp/jwt.h>
 
 #include "Managers/SessionsManager.h"
@@ -61,8 +61,8 @@ namespace framework
 	web::HttpParser HttpRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
 	{
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(ip, port, std::chrono::milliseconds(timeout));
+			streams::IOSocketStream::createStream<web::http::HttpsNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::http::HttpNetwork>(ip, port, std::chrono::milliseconds(timeout));
 		std::string response;
 
 		stream << request;
