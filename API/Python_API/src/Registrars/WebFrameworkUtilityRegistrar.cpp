@@ -1,3 +1,4 @@
+
 #include "Registrars/WebFrameworkUtilityRegistrar.h"
 
 #include <cstdlib>
@@ -121,7 +122,6 @@ namespace registrar
 					callback,
 					pack
 				);
-
 			},
 			"directory_path"_a, "output_path"_a, "progress_callback"_a.noconvert() = std::nullopt, "data"_a = std::nullopt
 		);

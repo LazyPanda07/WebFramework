@@ -9,8 +9,6 @@
 
 namespace framework::utility
 {
-	using ChunkGeneratorReturnType = std::variant<std::string, std::vector<uint8_t>>;
-
 	class IPyChunkGenerator
 	{
 	public:

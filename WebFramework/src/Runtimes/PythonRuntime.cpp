@@ -87,6 +87,13 @@ namespace framework::runtime
 		return new py::object(cls(reinterpret_cast<uint64_t>(implementation)));
 	}
 
+	py::object* PythonRuntime::createWebSocketFrame(const void* implementation) const
+	{
+		py::object cls = api.attr("Frame");
+
+		return new py::object(cls(reinterpret_cast<uint64_t>(implementation)));
+	}
+
 	std::optional<py::object> PythonRuntime::getClass(std::string_view className, const utility::LoadSource& source) const
 	{
 		const py::module_& module = std::get<py::module_>(source);

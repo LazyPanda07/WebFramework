@@ -34,27 +34,75 @@ namespace registrar
 			.def
 			(
 				"get_payload",
-				[](const framework::WebSocketExecutor::Frame& frame) -> std::string
+				[](const framework::WebSocketExecutor::Frame& self) -> std::variant<std::string, py::bytes>
 				{
-					std::span<char> payload = frame.getPayload<char>();
+					std::span<char> temp = self.getPayload<char>();
+					std::string result(temp.data(), temp.size());
+
+					switch (self.getType())
+					{
+					case framework::WebSocketExecutor::Frame::Type::text:
+						return result;
+
+					case framework::WebSocketExecutor::Frame::Type::binary:
+						return py::bytes(result);
+					
+					default:
+						throw std::runtime_error(std::format("Wrong type: {}", static_cast<int>(self.getType())));
+					}
+
+					return result;
+				}
+			)
+			.def
+			(
+				"get_payload_as_str",
+				[](const framework::WebSocketExecutor::Frame& self) -> std::string
+				{
+					std::span<char> payload = self.getPayload<char>();
 
 					return std::string(payload.data(), payload.size());
 				}
 			)
 			.def
 			(
-				"get_payload",
-				[](const framework::WebSocketExecutor::Frame& frame) -> std::vector<uint8_t>
+				"get_payload_as_bytes",
+				[](const framework::WebSocketExecutor::Frame& self) -> py::bytes
 				{
-					std::span<uint8_t> payload = frame.getPayload<uint8_t>();
+					std::span<uint8_t> payload = self.getPayload<uint8_t>();
 
-					return std::vector<uint8_t>(payload.begin(), payload.end());
+					return py::bytes(reinterpret_cast<const char*>(payload.data()), payload.size());
 				}
 			)
 			.def("get_type", &framework::WebSocketExecutor::Frame::getType)
 			.def("__bool__", &framework::WebSocketExecutor::Frame::operator bool);
 
 		py::class_<framework::WebSocketExecutor, framework::PyWebSocketExecutor>(m, "WebSocketExecutor")
-			.def("on_receive", &framework::WebSocketExecutor::onReceive, "frame"_a);
+			.def
+			(
+				"on_receive",
+				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame) -> std::variant<std::string, py::bytes>
+				{
+					std::variant<std::string, std::vector<uint8_t>> result = self.onReceive(frame);
+
+					if (std::holds_alternative<std::string>(result))
+					{
+						return std::get<std::string>(result);
+					}
+					else if (std::holds_alternative<std::vector<uint8_t>>(result))
+					{
+						const std::vector<uint8_t>& temp = std::get<std::vector<uint8_t>>(result);
+
+						return py::bytes(std::string_view(reinterpret_cast<const char*>(temp.data()), temp.size()));
+					}
+
+					throw std::runtime_error(std::format("Wrong result index: {}", result.index()));
+
+					using namespace std::string_literals;
+
+					return ""s;
+				},
+				"frame"_a
+			);
 	}
 }
