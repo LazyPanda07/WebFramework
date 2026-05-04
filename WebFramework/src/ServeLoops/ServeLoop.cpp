@@ -22,4 +22,14 @@ namespace framework::serve_loop
 
 		return this->serve();
 	}
+
+	streams::IOSocketStream& ServeLoop::getStream()
+	{
+		return stream;
+	}
+
+	const streams::IOSocketStream& ServeLoop::getStream() const
+	{
+		return stream;
+	}
 }

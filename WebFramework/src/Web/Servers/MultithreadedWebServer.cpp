@@ -60,12 +60,12 @@ namespace framework
 			return;
 		}
 
-		serve_loop::HttpServeLoop loop
+		std::unique_ptr<serve_loop::ServeLoop> loop = std::make_unique<serve_loop::HttpServeLoop>
 		(
 			this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout)),
 			*resources,
-			&ExecutorServer::serveTasks,
-			[this](interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, ExecutorsManager::StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events)
+			&ExecutorServer::serveTask,
+			[this](HttpRequestImplementation& request, HttpResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events, ServiceState& _)
 			{
 				executorsManager->service(request, response, executors, events);
 			},
@@ -78,7 +78,7 @@ namespace framework
 
 		while (isRunning)
 		{
-			if (loop.run())
+			if (loop->run())
 			{
 				break;
 			}

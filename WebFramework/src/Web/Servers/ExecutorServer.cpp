@@ -13,7 +13,7 @@
 
 namespace framework
 {
-	ExecutorServer::ServiceState ExecutorServer::serveTasks(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
+	ExecutorServer::ServiceState ExecutorServer::serveTask(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
 	{
 		ServiceState result = ServiceState::success;
 

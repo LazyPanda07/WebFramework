@@ -9,6 +9,7 @@
 #include "ThreadPool.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
 #include "Events/ServeEvents/ServeEvent.h"
+#include "ServeLoops/HttpServeLoop.h"
 
 namespace framework
 {
@@ -20,22 +21,17 @@ namespace framework
 		class Client
 		{
 		private:
-			streams::IOSocketStream stream;
-			ExecutorsManager::StatefulExecutors executors;
+			std::unique_ptr<serve_loop::ServeLoop> loop;
 			std::function<void()> cleanup;
-			std::function<ExecutorServer::ServiceState(streams::IOSocketStream& stream, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)> service;
-			sockaddr address;
 			bool isBusy;
 			bool webExceptionAcquired;
-			web::LargeBodyHandler* largeBodyHandler;
-			std::queue<std::unique_ptr<event::ServeEvent>> events;
 
 		public:
 			Client
 			(
 				SSL* ssl, SOCKET clientSocket, sockaddr address,
 				std::function<void()>&& cleanup,
-				const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& task,
+				const serve_loop::HttpServeLoop::HttpServeTaskSignature& serveTask,
 				ThreadPoolWebServer& server,
 				DWORD timeout
 			);

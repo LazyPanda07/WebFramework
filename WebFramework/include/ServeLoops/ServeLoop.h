@@ -32,6 +32,10 @@ namespace framework::serve_loop
 		 */
 		bool run();
 
+		streams::IOSocketStream& getStream();
+
+		const streams::IOSocketStream& getStream() const;
+
 		virtual ~ServeLoop() = default;
 	};
 }

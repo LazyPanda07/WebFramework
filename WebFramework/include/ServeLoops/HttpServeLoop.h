@@ -12,10 +12,10 @@ namespace framework::serve_loop
 	{
 	public:
 		using HttpServeTaskSignature = std::function<ExecutorServer::ServiceState(streams::IOSocketStream& stream, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ExecutorServer::ServiceState&)>&)>;
-		using HttpServeRequest = std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&, ExecutorsManager::StatefulExecutors&, std::queue<std::unique_ptr<event::ServeEvent>>&)>;
+		using HttpServeRequest = std::function<void(HttpRequestImplementation&, HttpResponseImplementation&, ExecutorsManager::StatefulExecutors&, std::queue<std::unique_ptr<event::ServeEvent>>&, ExecutorServer::ServiceState&)>;
 
 	private:
-		HttpServeTaskSignature serveTasks;
+		HttpServeTaskSignature serveTask;
 		std::array<std::function<void(ExecutorServer::ServiceState&)>, 3> chain;
 		HttpRequestImplementation request;
 		HttpResponseImplementation response;
@@ -41,7 +41,7 @@ namespace framework::serve_loop
 		(
 			streams::IOSocketStream&& stream,
 			ResourceExecutor& resources,
-			const HttpServeTaskSignature& serveTasks,
+			const HttpServeTaskSignature& serveTask,
 			const HttpServeRequest& serveRequest,
 			SessionsManager& manager,
 			BaseWebServer& server,

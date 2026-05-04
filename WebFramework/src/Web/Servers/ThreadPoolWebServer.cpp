@@ -14,89 +14,31 @@ namespace framework
 	(
 		SSL* ssl, SOCKET clientSocket, sockaddr address,
 		std::function<void()>&& cleanup,
-		const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& service,
+		const serve_loop::HttpServeLoop::HttpServeTaskSignature& serveTask,
 		ThreadPoolWebServer& server,
 		DWORD timeout
 	) :
-		stream
-		(
-			server.createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout))
-		),
 		cleanup(std::move(cleanup)),
-		service(service),
-		address(address),
 		isBusy(false),
 		webExceptionAcquired(false)
 	{
-		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
-
-		network.setLargeBodyHandler<utility::ThreadPoolHandler>
-			(
-				server.additionalSettings.largeBodyPacketSize, network, server.sessionsManager, server,
-				*server.resources, *server.resources,
-				address, stream, *server.executorsManager, executors
-			);
-		network.setLargeBodySizeThreshold(server.additionalSettings.largeBodySizeThreshold);
-
-		largeBodyHandler = &network.getLargeBodyHandler();
-	}
-
-	bool ThreadPoolWebServer::Client::serve
-	(
-		SessionsManager& sessionsManager,
-		BaseWebServer& server,
-		interfaces::IStaticFile& staticResources,
-		interfaces::IDynamicFile& dynamicResources,
-		ExecutorsManager& executorsManager,
-		ResourceExecutor& resourceExecutor,
-		threading::ThreadPool& threadPool
-	)
-	{
-		if (stream.eof() || webExceptionAcquired)
-		{
-			return true;
-		}
-
-		if (isBusy || largeBodyHandler->isRunning())
-		{
-			return false;
-		}
-
-		if (!stream.getNetwork<web::http::HttpNetwork>().isDataAvailable())
-		{
-			return false;
-		}
-
-		HttpRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, address, stream);
-		HttpResponseImplementation response;
-		const std::array<std::function<void(ServiceState&)>, 3> chain =
-		{
-			[this, &request](ServiceState& state)
+		auto serveRequest = [this, &server](HttpRequestImplementation& request, HttpResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events, ServiceState& state)
 			{
-				stream >> request;
+				std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> threadPoolFunction = server.executorsManager->service(request, response, executors, events);
 
-				if (stream.eof()) // request may be empty
-				{
-					state = ServiceState::error;
-				}
-				else
-				{
-					state = largeBodyHandler->isRunning() ? ServiceState::skipResponse : ServiceState::success;
-				}
-			},
-			[this, &request, &response, &executorsManager, &resourceExecutor, &threadPool](ServiceState& state)
-			{
-				if (std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> threadPoolFunction = executorsManager.service(request, response, executors, events))
+				if (threadPoolFunction)
 				{
 					isBusy = true;
 
-					threadPool.addTask
+					server.threadPool.addTask
 					(
-						[this, &resourceExecutor, request = std::move(request), response = std::move(response), threadPoolFunction = std::move(threadPoolFunction)]() mutable
+						[this, &server, &request, &response, threadPoolFunction = std::move(threadPoolFunction)]() mutable
 						{
-							ServiceState state = service
+							streams::IOSocketStream& stream = loop->getStream();
+
+							ServiceState state = ExecutorServer::serveTask
 							(
-								stream, request, response, resourceExecutor,
+								stream, request, response, *server.resources,
 								[&request, &response, &threadPoolFunction](ServiceState& _)
 								{
 									(*threadPoolFunction)(request, response);
@@ -105,10 +47,10 @@ namespace framework
 
 							if (state == ServiceState::success && response)
 							{
-								state = service
+								state = ExecutorServer::serveTask
 								(
-									stream, request, response, resourceExecutor,
-									[this, &response, &threadPoolFunction](ServiceState& _)
+									stream, request, response, *server.resources,
+									[this, &stream, &response, &threadPoolFunction](ServiceState& _)
 									{
 										stream << response;
 									}
@@ -128,45 +70,52 @@ namespace framework
 
 					state = ServiceState::skipResponse;
 				}
-			},
-			[this, &response](ServiceState& _)
-			{
-				if (response)
-				{
-					stream << response;
-				}
-			}
-		};
-		const void* lastChainTask = &*chain.rbegin();
-		const std::function<void(ServiceState&)>* task = &chain.front();
+			};
 
-		while (events.size())
+		loop = std::make_unique<serve_loop::HttpServeLoop>
+			(
+				server.createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout)),
+				*server.getResourceExecutor(),
+				serveTask,
+				serveRequest,
+				server.sessionsManager,
+				server,
+				*server.executorsManager,
+				address,
+				server.additionalSettings
+			);
+	}
+
+	bool ThreadPoolWebServer::Client::serve
+	(
+		SessionsManager& sessionsManager,
+		BaseWebServer& server,
+		interfaces::IStaticFile& staticResources,
+		interfaces::IDynamicFile& dynamicResources,
+		ExecutorsManager& executorsManager,
+		ResourceExecutor& resourceExecutor,
+		threading::ThreadPool& threadPool
+	)
+	{
+		const streams::IOSocketStream& stream = loop->getStream();
+		const web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
+		
+		if (stream.eof() || webExceptionAcquired)
 		{
-			std::unique_ptr<event::ServeEvent> event = std::move(events.front());
-
-			(*event)(stream);
-
-			events.pop();
+			return true;
 		}
 
-		while (task)
+		if (isBusy || network.getLargeBodyHandler().isRunning())
 		{
-			switch (service(stream, request, response, resourceExecutor, *task))
-			{
-			case framework::ExecutorServer::ServiceState::success:
-				task = task == lastChainTask ? nullptr : task + 1;
-
-				break;
-
-			case framework::ExecutorServer::ServiceState::skipResponse:
-				return false;
-
-			case framework::ExecutorServer::ServiceState::error:
-				return true;
-			}
+			return false;
 		}
 
-		return stream.eof();
+		if (!network.isDataAvailable())
+		{
+			return false;
+		}
+		
+		return loop->run() || stream.eof();
 	}
 
 	ThreadPoolWebServer::Client::~Client()
@@ -239,7 +188,19 @@ namespace framework
 				}
 			}
 
-			clients.push_back(new Client(ssl, clientSocket, address, std::move(cleanup), &ExecutorServer::serveTasks, *this, timeout));
+			clients.push_back
+			(
+				new Client
+				(
+					ssl,
+					clientSocket,
+					address,
+					std::move(cleanup),
+					&ExecutorServer::serveTask,
+					*this, 
+					timeout
+				)
+			);
 		}
 		catch (const web::exceptions::SslException& e)
 		{

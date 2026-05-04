@@ -34,10 +34,7 @@ namespace framework::serve_loop
 					state = largeBodyHandler.isRunning() ? ExecutorServer::ServiceState::skipResponse : ExecutorServer::ServiceState::success;
 				}
 			},
-			[this, serveRequest](ExecutorServer::ServiceState& _)
-			{
-				serveRequest(request, response, executors, events);
-			},
+			std::bind(serveRequest, std::ref(request), std::ref(response), std::ref(executors), std::ref(events), std::placeholders::_1),
 			[this](ExecutorServer::ServiceState& _)
 			{
 				stream << response;
@@ -54,7 +51,7 @@ namespace framework::serve_loop
 
 		while (task)
 		{
-			switch (serveTasks(stream, request, response, resources, *task))
+			switch (serveTask(stream, request, response, resources, *task))
 			{
 			case framework::ExecutorServer::ServiceState::success:
 				task = task == lastChainTask ? nullptr : task + 1;
@@ -78,7 +75,7 @@ namespace framework::serve_loop
 	(
 		streams::IOSocketStream&& stream,
 		ResourceExecutor& resources,
-		const HttpServeTaskSignature& serveTasks,
+		const HttpServeTaskSignature& serveTask,
 		const HttpServeRequest& serveRequest,
 		SessionsManager& manager,
 		BaseWebServer& server,
@@ -87,7 +84,7 @@ namespace framework::serve_loop
 		const utility::AdditionalServerSettings& additionalSettings
 	) :
 		ServeLoop(std::move(stream), resources),
-		serveTasks(serveTasks),
+		serveTask(serveTask),
 		request(manager, server, resources, resources, address, this->stream)
 	{
 		this->init(serveRequest, manager, server, executorsManager, address, additionalSettings);
