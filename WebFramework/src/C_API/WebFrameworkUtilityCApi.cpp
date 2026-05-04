@@ -3350,7 +3350,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 
 		if (!stream.is_open())
 		{
-			throw std::runtime_error(std::format(framework::logging::message::cantCreateFile, outputPath));
+			throw std::runtime_error(std::vformat(framework::logging::message::cantCreateFile, std::make_format_args(outputPath)));
 		}
 
 		stream.close();
@@ -3378,7 +3378,7 @@ void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, 
 
 		if (!stream.is_open())
 		{
-			throw std::runtime_error(std::format(framework::logging::message::cantOpenFile, outputPath));
+			throw std::runtime_error(std::vformat(framework::logging::message::cantOpenFile, std::make_format_args(outputPath)));
 		}
 
 		stream.write(reinterpret_cast<const char*>(&header), sizeof(header));

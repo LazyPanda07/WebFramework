@@ -34,7 +34,8 @@ namespace framework::utility
 			Log::error<Format, Category>(args...);
 		}
 
-		throw exceptions::AlreadyLoggedException(std::format(Format, std::forward<Args>(args)...));
+		// throw exceptions::AlreadyLoggedException(std::format(Format, std::forward<Args>(args)...));
+		throw exceptions::AlreadyLoggedException(std::vformat(Format, std::make_format_args(args...)));
 	}
 
 	template<const auto& Category, utility::concepts::StreamOperation OperationT, typename T>
