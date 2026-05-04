@@ -24,7 +24,10 @@ namespace framework
 		static void (Executor::* getMethod(std::string_view methodName))(interfaces::IHttpRequest&, interfaces::IHttpResponse&);
 
 	public:
-		Executor() = default;
+		bool supportWebSocket;
+
+	public:
+		Executor();
 
 		/// <summary>
 		/// Initializing executor before use

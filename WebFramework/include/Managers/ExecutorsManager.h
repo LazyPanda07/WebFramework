@@ -11,6 +11,7 @@
 #include "Utility/AdditionalServerSettings.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Utility/Sources.h"
+#include "Events/ServeEvents/ServeEvent.h"
 
 namespace framework
 {
@@ -93,7 +94,7 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors);
+		std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events);
 
 		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors);
 

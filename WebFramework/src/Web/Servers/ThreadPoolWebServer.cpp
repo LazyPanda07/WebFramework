@@ -69,7 +69,7 @@ namespace framework
 
 		HttpRequestImplementation request(sessionsManager, server, staticResources, dynamicResources, address, stream);
 		HttpResponseImplementation response;
-		const std::vector<std::function<void(ServiceState&)>> chain =
+		const std::array<std::function<void(ServiceState&)>, 3> chain =
 		{
 			[this, &request](ServiceState& state)
 			{
@@ -86,7 +86,7 @@ namespace framework
 			},
 			[this, &request, &response, &executorsManager, &resourceExecutor, &threadPool](ServiceState& state)
 			{
-				if (std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> threadPoolFunction = executorsManager.service(request, response, executors))
+				if (std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> threadPoolFunction = executorsManager.service(request, response, executors, events))
 				{
 					isBusy = true;
 
@@ -139,6 +139,15 @@ namespace framework
 		};
 		const void* lastChainTask = &*chain.rbegin();
 		const std::function<void(ServiceState&)>* task = &chain.front();
+
+		while (events.size())
+		{
+			std::unique_ptr<event::ServeEvent> event = std::move(events.front());
+
+			(*event)(stream);
+
+			events.pop();
+		}
 
 		while (task)
 		{

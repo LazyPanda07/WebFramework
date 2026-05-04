@@ -44,7 +44,7 @@ cmake --install . --config Release
 * For generating configure command and getting download link use this [site](https://lazypanda07.github.io/WebFramework/)
 
 ## Samples
-[Samples available](https://github.com/LazyPanda07/WebFramework/tree/master/samples) for Windows and Linux in C/C++, C# .NET 10.0, Python
+[Samples available](https://github.com/LazyPanda07/WebFramework/tree/main/samples) for Windows and Linux in C/C++, C# .NET 10.0, Python
 
 
 ## Getting Started Application

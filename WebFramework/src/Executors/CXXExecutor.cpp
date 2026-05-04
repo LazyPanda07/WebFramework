@@ -25,6 +25,8 @@ namespace framework
 
 	void CXXExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
+		Executor::init(settings);
+
 		initFunction(implementation, &settings);
 	}
 

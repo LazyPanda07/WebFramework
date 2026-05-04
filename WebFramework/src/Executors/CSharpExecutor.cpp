@@ -38,6 +38,8 @@ namespace framework
 
 	void CSharpExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
+		Executor::init(settings);
+
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 		std::unique_ptr<void, Deleter> dotNetExecutorSettings(runtime.createExecutorSettings(&settings));
 

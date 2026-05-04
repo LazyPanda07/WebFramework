@@ -4,9 +4,11 @@
 #include "ExecutorServer.h"
 
 #include <chrono>
+#include <queue>
 
 #include "ThreadPool.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
+#include "Events/ServeEvents/ServeEvent.h"
 
 namespace framework
 {
@@ -26,6 +28,7 @@ namespace framework
 			bool isBusy;
 			bool webExceptionAcquired;
 			web::LargeBodyHandler* largeBodyHandler;
+			std::queue<std::unique_ptr<event::ServeEvent>> events;
 
 		public:
 			Client

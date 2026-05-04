@@ -66,13 +66,14 @@ namespace framework
 		HttpRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
 		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
 		bool finish = false;
+		std::queue<std::unique_ptr<event::ServeEvent>> events;
 
 		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, executors);
 		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
 
 		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
 
-		const std::vector<std::function<void(ServiceState&)>> chain =
+		const std::array<std::function<void(ServiceState&)>, 3> chain =
 		{
 			[&stream, &request, &largeBodyHandler](ServiceState& state)
 			{
@@ -87,9 +88,9 @@ namespace framework
 					state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
 				}
 			},
-			[this, &request, &response, &executors](ServiceState& _)
+			[this, &request, &response, &executors, &events](ServiceState& _)
 			{
-				executorsManager->service(request, response, executors);
+				executorsManager->service(request, response, executors, events);
 			},
 			[&stream, &response](ServiceState& _)
 			{
@@ -103,8 +104,18 @@ namespace framework
 
 		while (isRunning)
 		{
-			response.setDefault();
 			const std::function<void(ServiceState&)>* task = &chain.front();
+
+			response.setDefault();
+
+			while (events.size())
+			{
+				std::unique_ptr<event::ServeEvent> event = std::move(events.front());
+
+				(*event)(stream);
+
+				events.pop();
+			}
 
 			while (task)
 			{

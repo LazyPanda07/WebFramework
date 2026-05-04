@@ -273,6 +273,9 @@
     <ClCompile Include="src\WebSocket\CSharpWebSocketExecutor.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Events\ServeEvents\UpgradeHttpConnect.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Framework\WebFramework.h">
@@ -543,6 +546,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\WebSocket\CSharpWebSocketExecutor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Events\ServeEvents\ServeEvent.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Events\ServeEvents\UpgradeHttpConnect.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

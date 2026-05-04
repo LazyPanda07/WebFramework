@@ -41,6 +41,8 @@ namespace framework
 
 	void PythonExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
+		Executor::init(settings);
+
 		py::gil_scoped_acquire gil;
 		const runtime::PythonRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::PythonRuntime>();
 		std::unique_ptr<py::object> pyExecutorSettings(static_cast<py::object*>(runtime.createExecutorSettings(&settings)));

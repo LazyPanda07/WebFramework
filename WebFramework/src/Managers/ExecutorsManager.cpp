@@ -7,6 +7,7 @@
 #include <Log.h>
 #include <Exceptions/FileDoesNotExistException.h>
 #include <Exceptions/DatabaseException.h>
+#include <Base64.h>
 
 #include "Exceptions/BadRequestException.h"
 #include "Web/HttpRequestImplementation.h"
@@ -17,6 +18,7 @@
 #include "Utility/ExecutorsUtility.h"
 #include "Managers/RuntimesManager.h"
 #include "Utility/Utils.h"
+#include "Events/ServeEvents/UpgradeHttpConnect.h"
 
 namespace framework
 {
@@ -159,7 +161,7 @@ namespace framework
 
 				executor = routes.try_emplace
 				(
-					move(parameters),
+					std::move(parameters),
 					this->createApiExecutor(executorSettings->second.name, executorSettings->second.apiType)
 				).first;
 
@@ -383,13 +385,59 @@ namespace framework
 		return *this;
 	}
 
-	std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> ExecutorsManager::service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors)
+	std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> ExecutorsManager::service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events)
 	{
 		Executor* executor = this->getOrCreateExecutor(request, response, executors);
 
 		if (!executor)
 		{
 			return std::nullopt;
+		}
+
+		if (executor->supportWebSocket)
+		{
+			constexpr std::string_view guid = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+
+			const web::HeadersMap& headers = static_cast<HttpRequestImplementation&>(request).parser.getHeaders();
+			std::array<std::function<bool()>, 4> conditions =
+			{
+				[&headers]() -> bool
+				{
+					return headers.contains("Upgrade");
+				},
+				[&headers]() -> bool
+				{
+					return headers.contains("Connection");
+				},
+				[&headers]() -> bool
+				{
+					return headers.contains("Sec-WebSocket-Key");
+				},
+				[&headers]() -> bool
+				{
+					return headers.contains("Sec-WebSocket-Version");
+				},
+			};
+
+			if (std::ranges::all_of(conditions, [](const std::function<bool()>& condition) { return condition(); }))
+			{
+				std::string clientKeyWithGuid = std::format("{}{}", ::utility::conversion::decodeBase64(headers.at("Sec-WebSocket-Key")), guid);
+				std::array<uint8_t, SHA_DIGEST_LENGTH> hash{};
+
+				SHA1(reinterpret_cast<const uint8_t*>(clientKeyWithGuid.data()), clientKeyWithGuid.size(), hash.data());
+
+				std::string accept = ::utility::conversion::encodeBase64(hash);
+
+				response.setResponseCode(101);
+
+				response.addHeader("Upgrade", "websocket");
+				response.addHeader("Connection", "Upgrade");
+				response.addHeader("Sec-WebSocket-Accept", accept.data());
+
+				events.emplace(std::make_unique<event::UpgradeHttpConnect>());
+
+				return std::nullopt;
+			}
 		}
 
 		void (Executor:: * method)(interfaces::IHttpRequest&, interfaces::IHttpResponse&) = Executor::getMethod(request.getMethod());

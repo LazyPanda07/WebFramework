@@ -47,6 +47,8 @@ namespace framework
 
 	void CCExecutor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
+		Executor::init(settings);
+
 		initFunction(implementation, &settings);
 	}
 

@@ -123,6 +123,7 @@ add_library(
 	WebFramework/src/WebSocket/CXXWebSocketExecutor.cpp
 	WebFramework/src/WebSocket/PythonWebSocketExecutor.cpp
 	WebFramework/src/WebSocket/CSharpWebSocketExecutor.cpp
+	WebFramework/src/Events/ServeEvents/UpgradeHttpConnect.cpp
 )
 
 if (${WITH_STACKTRACE})

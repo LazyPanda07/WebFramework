@@ -146,6 +146,7 @@
     <ClCompile Include="src\Databases\SQLResultImplementation.cpp" />
     <ClCompile Include="src\Databases\SQLValueImplementation.cpp" />
     <ClCompile Include="src\Databases\TableImplementation.cpp" />
+    <ClCompile Include="src\Events\ServeEvents\UpgradeHttpConnect.cpp" />
     <ClCompile Include="src\Exceptions\AlreadyLoggedException.cpp" />
     <ClCompile Include="src\Exceptions\APIException.cpp" />
     <ClCompile Include="src\Exceptions\CSharpException.cpp" />
@@ -235,6 +236,8 @@
     <ClInclude Include="include\Databases\SQLResultImplementation.h" />
     <ClInclude Include="include\Databases\SQLValueImplementation.h" />
     <ClInclude Include="include\Databases\TableImplementation.h" />
+    <ClInclude Include="include\Events\ServeEvents\ServeEvent.h" />
+    <ClInclude Include="include\Events\ServeEvents\UpgradeHttpConnect.h" />
     <ClInclude Include="include\Exceptions\AlreadyLoggedException.h" />
     <ClInclude Include="include\Exceptions\APIException.h" />
     <ClInclude Include="include\Exceptions\CSharpException.h" />
