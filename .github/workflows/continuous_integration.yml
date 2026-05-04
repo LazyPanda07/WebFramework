@@ -662,19 +662,19 @@ jobs:
     - name: Create Windows, Linux and LinuxARM zips
       shell: bash
       run: |
-        echo "Zip Windows"
+        echo "Zip Windows..."
 
         for directory in Windows-*/; do
           zip -r -q "${directory%/}.zip" ${directory}
         done
         
-        echo "Zip Linux"
+        echo "Zip Linux..."
 
         for directory in Linux-*/; do
           zip -r -q "${directory%/}.zip" ${directory}
         done
 
-        echo "Zip LinuxARM"
+        echo "Zip LinuxARM..."
 
         for directory in LinuxARM-*/; do
           zip -r -q "${directory%/}.zip" ${directory}

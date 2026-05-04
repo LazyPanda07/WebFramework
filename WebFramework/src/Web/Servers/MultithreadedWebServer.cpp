@@ -60,6 +60,7 @@ namespace framework
 			return;
 		}
 
+		std::queue<std::unique_ptr<event::ServeEvent>> events;
 		std::unique_ptr<serve_loop::ServeLoop> loop = std::make_unique<serve_loop::HttpServeLoop>
 		(
 			this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout)),
@@ -73,12 +74,13 @@ namespace framework
 			*this,
 			*executorsManager,
 			addr,
-			additionalSettings
+			additionalSettings,
+			events
 		);
 
 		while (isRunning)
 		{
-			if (loop->run())
+			if (serve_loop::ServeLoop::runLoop(loop, events))
 			{
 				break;
 			}

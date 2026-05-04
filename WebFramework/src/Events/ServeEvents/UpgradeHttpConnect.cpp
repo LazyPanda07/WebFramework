@@ -4,13 +4,13 @@
 
 namespace framework::event
 {
-	void UpgradeHttpConnect::operator ()(streams::IOSocketStream& stream) const
+	void UpgradeHttpConnect::operator ()(streams::IOSocketStream& stream, std::unique_ptr<serve_loop::ServeLoop>& loop) const
 	{
 		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
 
 		if (web::http::HttpsNetwork* httpsNetwork = dynamic_cast<web::http::HttpsNetwork*>(&network))
 		{
-			stream = streams::IOSocketStream::createStream<web::web_socket::WsNetwork>(std::move(*httpsNetwork), false);
+			stream = streams::IOSocketStream::createStream<web::web_socket::WssNetwork>(std::move(*httpsNetwork), false);
 		}
 		else
 		{

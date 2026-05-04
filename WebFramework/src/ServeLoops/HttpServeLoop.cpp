@@ -11,7 +11,8 @@ namespace framework::serve_loop
 		BaseWebServer& server,
 		ExecutorsManager& executorsManager,
 		sockaddr address,
-		const utility::AdditionalServerSettings& additionalSettings
+		const utility::AdditionalServerSettings& additionalSettings,
+		std::queue<std::unique_ptr<event::ServeEvent>>& events
 	)
 	{
 		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
@@ -42,7 +43,7 @@ namespace framework::serve_loop
 		};
 	}
 
-	bool HttpServeLoop::serve()
+	bool HttpServeLoop::run()
 	{
 		const void* lastChainTask = &*chain.rbegin();
 		const std::function<void(ExecutorServer::ServiceState&)>* task = &chain.front();
@@ -81,12 +82,13 @@ namespace framework::serve_loop
 		BaseWebServer& server,
 		ExecutorsManager& executorsManager,
 		sockaddr address,
-		const utility::AdditionalServerSettings& additionalSettings
+		const utility::AdditionalServerSettings& additionalSettings,
+		std::queue<std::unique_ptr<event::ServeEvent>>& events
 	) :
 		ServeLoop(std::move(stream), resources),
 		serveTask(serveTask),
 		request(manager, server, resources, resources, address, this->stream)
 	{
-		this->init(serveRequest, manager, server, executorsManager, address, additionalSettings);
+		this->init(serveRequest, manager, server, executorsManager, address, additionalSettings, events);
 	}
 }

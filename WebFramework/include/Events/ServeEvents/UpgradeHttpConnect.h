@@ -9,7 +9,7 @@ namespace framework::event
 	public:
 		UpgradeHttpConnect() = default;
 
-		void operator ()(streams::IOSocketStream& stream) const override;
+		void operator ()(streams::IOSocketStream& stream, std::unique_ptr<serve_loop::ServeLoop>& loop) const override;
 
 		~UpgradeHttpConnect() = default;
 	};

@@ -13,24 +13,22 @@ namespace framework::serve_loop
 {
 	class ServeLoop
 	{
-	private:
-		std::queue<std::unique_ptr<event::ServeEvent>> events;
+	public:
+		/**
+		 * @brief Loop some serve actions
+		 * @return true if finished
+		 */
+		static bool runLoop(std::unique_ptr<ServeLoop>& loop, std::queue<std::unique_ptr<event::ServeEvent>>& events);
 
 	protected:
 		streams::IOSocketStream stream;
 		ResourceExecutor& resources;
 
 	protected:
-		virtual bool serve() = 0;
+		virtual bool run() = 0;
 
 	public:
 		ServeLoop(streams::IOSocketStream&& stream, ResourceExecutor& resources);
-
-		/**
-		 * @brief Loop some serve actions
-		 * @return true if finished
-		 */
-		bool run();
 
 		streams::IOSocketStream& getStream();
 

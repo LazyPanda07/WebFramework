@@ -20,7 +20,6 @@ namespace framework::serve_loop
 		HttpRequestImplementation request;
 		HttpResponseImplementation response;
 		ExecutorsManager::StatefulExecutors executors;
-		std::queue<std::unique_ptr<event::ServeEvent>> events;
 
 	private:
 		void init
@@ -30,11 +29,12 @@ namespace framework::serve_loop
 			BaseWebServer& server,
 			ExecutorsManager& executorsManager,
 			sockaddr address,
-			const utility::AdditionalServerSettings& additionalSettings
+			const utility::AdditionalServerSettings& additionalSettings,
+			std::queue<std::unique_ptr<event::ServeEvent>>& events
 		);
 
-	protected:
-		bool serve() override;
+	private:
+		bool run() override;
 
 	public:
 		HttpServeLoop
@@ -47,7 +47,8 @@ namespace framework::serve_loop
 			BaseWebServer& server,
 			ExecutorsManager& executorsManager,
 			sockaddr address,
-			const utility::AdditionalServerSettings& additionalSettings
+			const utility::AdditionalServerSettings& additionalSettings,
+			std::queue<std::unique_ptr<event::ServeEvent>>& events
 		);
 
 		~HttpServeLoop() = default;

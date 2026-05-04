@@ -82,7 +82,8 @@ namespace framework
 				server,
 				*server.executorsManager,
 				address,
-				server.additionalSettings
+				server.additionalSettings,
+				events
 			);
 	}
 
@@ -97,7 +98,7 @@ namespace framework
 		threading::ThreadPool& threadPool
 	)
 	{
-		const streams::IOSocketStream& stream = loop->getStream();
+		streams::IOSocketStream& stream = loop->getStream();
 		const web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
 		
 		if (stream.eof() || webExceptionAcquired)
@@ -114,8 +115,8 @@ namespace framework
 		{
 			return false;
 		}
-		
-		return loop->run() || stream.eof();
+
+		return serve_loop::ServeLoop::runLoop(loop, events) || stream.eof();
 	}
 
 	ThreadPoolWebServer::Client::~Client()

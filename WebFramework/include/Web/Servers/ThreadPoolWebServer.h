@@ -22,6 +22,7 @@ namespace framework
 		{
 		private:
 			std::unique_ptr<serve_loop::ServeLoop> loop;
+			std::queue<std::unique_ptr<event::ServeEvent>> events;
 			std::function<void()> cleanup;
 			bool isBusy;
 			bool webExceptionAcquired;
