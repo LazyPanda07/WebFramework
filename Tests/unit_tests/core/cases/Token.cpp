@@ -14,7 +14,7 @@ static inline std::string token;
 TEST(Token, GetToken)
 {
 #ifdef __WITH_ADDRESS_SANITIZER__
-	GTEST_SKIP();
+	// GTEST_SKIP();
 #endif
 
 	streams::IOSocketStream stream = utility::createSocketStream();
@@ -39,7 +39,7 @@ TEST(Token, GetToken)
 TEST(Token, WithoutToken)
 {
 #ifdef __WITH_ADDRESS_SANITIZER__
-	GTEST_SKIP();
+	// GTEST_SKIP();
 #endif
 
 	streams::IOSocketStream stream = utility::createSocketStream();
@@ -56,7 +56,7 @@ TEST(Token, WithoutToken)
 TEST(Token, WithToken)
 {
 #ifdef __WITH_ADDRESS_SANITIZER__
-	GTEST_SKIP();
+	// GTEST_SKIP();
 #endif
 
 	streams::IOSocketStream stream = utility::createSocketStream();

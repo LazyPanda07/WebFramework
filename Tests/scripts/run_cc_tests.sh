@@ -7,6 +7,7 @@ FXR_PATH=${FXR_PATH:1}
 
 export WEB_FRAMEWORK_SERVER_CONFIG=$1
 export LD_LIBRARY_PATH=$(pwd):${FXR_PATH}:${LD_LIBRARY_PATH}
+export JWT_SECRET=1
 
 chmod +x ./CC_Server
 chmod +x ./DefaultHTTPSServer
