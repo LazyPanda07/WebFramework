@@ -125,6 +125,11 @@ namespace framework
 
 	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HttpResponseImplementation& response)
 	{
+		if (!response)
+		{
+			return stream;
+		}
+
 		std::string result;
 
 		response.builder.headers

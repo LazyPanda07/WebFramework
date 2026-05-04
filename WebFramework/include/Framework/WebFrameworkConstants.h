@@ -272,5 +272,6 @@ namespace framework::logging
 		inline constexpr char addTaskBroker[] = "Add task broker: {}";
 		inline constexpr char addBinaryAsset[] = "Add binary asset: {}, fully load: {}";
 		inline constexpr char jwtSecretVariable[] = "Use secret from variable: {}";
+		inline constexpr char userAgentFilterValue[] = "Add User-Agent filter: {}";
 	}
 }

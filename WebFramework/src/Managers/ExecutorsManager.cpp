@@ -366,6 +366,14 @@ namespace framework
 		serverType(ExecutorsManager::types.at(configuration.get<json::JsonObject>(json_settings::webFrameworkObject)[json_settings::webServerTypeKey].get<std::string>()))
 	{
 		this->initCreators(pathToSources);
+
+		if (Log::isValid())
+		{
+			for (const std::string& userAgentFilterValue : userAgentFilter)
+			{
+				Log::info<logging::message::userAgentFilterValue, logging::category::filter>(userAgentFilterValue);
+			}
+		}
 	}
 
 	ExecutorsManager::ExecutorsManager(ExecutorsManager&& other) noexcept

@@ -1,17 +1,60 @@
 #include "ServeLoops/HttpServeLoop.h"
 
+#include "Utility/LargeFileHandlers/MultithreadedHandler.h"
+
 namespace framework::serve_loop
 {
+	void HttpServeLoop::init
+	(
+		const HttpServeRequest& serveRequest,
+		SessionsManager& manager,
+		BaseWebServer& server,
+		ExecutorsManager& executorsManager,
+		sockaddr address,
+		const utility::AdditionalServerSettings& additionalSettings
+	)
+	{
+		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
+
+		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, manager, server, resources, resources, address, stream, executorsManager, executors);
+		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
+
+		chain =
+		{
+			[this, &largeBodyHandler = stream.getNetwork<web::http::HttpNetwork>().getLargeBodyHandler()](ExecutorServer::ServiceState& state)
+			{
+				stream >> request;
+
+				if (stream.eof()) // request may be empty
+				{
+					state = ExecutorServer::ServiceState::error;
+				}
+				else
+				{
+					state = largeBodyHandler.isRunning() ? ExecutorServer::ServiceState::skipResponse : ExecutorServer::ServiceState::success;
+				}
+			},
+			[this, serveRequest](ExecutorServer::ServiceState& _)
+			{
+				serveRequest(request, response, executors, events);
+			},
+			[this](ExecutorServer::ServiceState& _)
+			{
+				stream << response;
+			}
+		};
+	}
+
 	bool HttpServeLoop::serve()
 	{
-		HttpResponseImplementation response;
-
 		const void* lastChainTask = &*chain.rbegin();
 		const std::function<void(ExecutorServer::ServiceState&)>* task = &chain.front();
 
+		response.setDefault();
+
 		while (task)
 		{
-			switch (serviceFunction(stream, request, response, resources, *task))
+			switch (serveTasks(stream, request, response, resources, *task))
 			{
 			case framework::ExecutorServer::ServiceState::success:
 				task = task == lastChainTask ? nullptr : task + 1;
@@ -33,19 +76,20 @@ namespace framework::serve_loop
 
 	HttpServeLoop::HttpServeLoop
 	(
-		streams::IOSocketStream& stream,
+		streams::IOSocketStream&& stream,
 		ResourceExecutor& resources,
-		const std::array<std::function<void(ExecutorServer::ServiceState&)>, 3>& chain, 
-		const HttpServiceSignature& serviceFunction,
-		SessionsManager& sessionsManager,
+		const HttpServeTaskSignature& serveTasks,
+		const HttpServeRequest& serveRequest,
+		SessionsManager& manager,
 		BaseWebServer& server,
-		sockaddr address
+		ExecutorsManager& executorsManager,
+		sockaddr address,
+		const utility::AdditionalServerSettings& additionalSettings
 	) :
-		ServeLoop(stream, resources),
-		chain(chain),
-		serviceFunction(serviceFunction),
-		request(sessionsManager, server, resources, resources, address, stream)
+		ServeLoop(std::move(stream), resources),
+		serveTasks(serveTasks),
+		request(manager, server, resources, resources, address, this->stream)
 	{
-
+		this->init(serveRequest, manager, server, executorsManager, address, additionalSettings);
 	}
 }

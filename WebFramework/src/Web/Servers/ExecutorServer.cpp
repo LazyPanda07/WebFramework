@@ -13,7 +13,7 @@
 
 namespace framework
 {
-	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
+	ExecutorServer::ServiceState ExecutorServer::serveTasks(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
 	{
 		ServiceState result = ServiceState::success;
 
@@ -187,5 +187,10 @@ namespace framework
 	std::shared_ptr<ResourceExecutor> ExecutorServer::getResourceExecutor() const
 	{
 		return resources;
+	}
+
+	ExecutorsManager& ExecutorServer::getExecutorsManager()
+	{
+		return *executorsManager;
 	}
 }

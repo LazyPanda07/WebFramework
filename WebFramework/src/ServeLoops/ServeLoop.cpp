@@ -2,8 +2,8 @@
 
 namespace framework::serve_loop
 {
-	ServeLoop::ServeLoop(streams::IOSocketStream& stream, ResourceExecutor& resources) :
-		stream(stream),
+	ServeLoop::ServeLoop(streams::IOSocketStream&& stream, ResourceExecutor& resources) :
+		stream(std::move(stream)),
 		resources(resources)
 	{
 

@@ -11,7 +11,6 @@
 #include "Exceptions/APIException.h"
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SslException.h"
-#include "Utility/LargeFileHandlers/MultithreadedHandler.h"
 #include "Utility/Utils.h"
 #include "Framework/WebFramework.h"
 #include "ServeLoops/HttpServeLoop.h"
@@ -61,56 +60,20 @@ namespace framework
 			return;
 		}
 
-		streams::IOSocketStream stream = this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout));
-		ExecutorsManager::StatefulExecutors executors;
-		HttpResponseImplementation response;
-		HttpRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
-		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
-		bool finish = false;
-		std::queue<std::unique_ptr<event::ServeEvent>> events;
-
-		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, executors);
-		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
-
-		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
-
-		const std::array<std::function<void(ServiceState&)>, 3> chain =
-		{
-			[&stream, &request, &largeBodyHandler](ServiceState& state)
-			{
-				stream >> request;
-
-				if (stream.eof()) // request may be empty
-				{
-					state = ServiceState::error;
-				}
-				else
-				{
-					state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
-				}
-			},
-			[this, &request, &response, &executors, &events](ServiceState& _)
+		serve_loop::HttpServeLoop loop
+		(
+			this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout)),
+			*resources,
+			&ExecutorServer::serveTasks,
+			[this](interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, ExecutorsManager::StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events)
 			{
 				executorsManager->service(request, response, executors, events);
 			},
-			[&stream, &response](ServiceState& _)
-			{
-				if (response)
-				{
-					stream << response;
-				}
-			}
-		};
-
-		serve_loop::HttpServeLoop loop
-		(
-			stream,
-			*resources,
-			chain,
-			&ExecutorServer::serviceRequests,
 			sessionsManager,
 			*this,
-			addr
+			*executorsManager,
+			addr,
+			additionalSettings
 		);
 
 		while (isRunning)

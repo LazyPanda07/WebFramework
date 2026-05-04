@@ -17,14 +17,14 @@ namespace framework::serve_loop
 		std::queue<std::unique_ptr<event::ServeEvent>> events;
 
 	protected:
-		streams::IOSocketStream& stream;
+		streams::IOSocketStream stream;
 		ResourceExecutor& resources;
 
 	protected:
 		virtual bool serve() = 0;
 
 	public:
-		ServeLoop(streams::IOSocketStream& stream, ResourceExecutor& resources);
+		ServeLoop(streams::IOSocketStream&& stream, ResourceExecutor& resources);
 
 		/**
 		 * @brief Loop some serve actions

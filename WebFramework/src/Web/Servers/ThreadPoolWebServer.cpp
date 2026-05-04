@@ -239,7 +239,7 @@ namespace framework
 				}
 			}
 
-			clients.push_back(new Client(ssl, clientSocket, address, std::move(cleanup), &ExecutorServer::serviceRequests, *this, timeout));
+			clients.push_back(new Client(ssl, clientSocket, address, std::move(cleanup), &ExecutorServer::serveTasks, *this, timeout));
 		}
 		catch (const web::exceptions::SslException& e)
 		{

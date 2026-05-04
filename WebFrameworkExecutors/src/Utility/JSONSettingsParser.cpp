@@ -56,7 +56,7 @@ namespace framework::utility
 			ExecutorSettings executorSettings(name, frameworkInstance);
 
 			description.tryGet<json::JsonObject>(json_settings::initParametersKey, executorSettings.initParameters);
-			
+
 			executorSettings.apiType = description[json_settings::apiTypeKey].get<std::string>();
 
 			if (loadType == json_settings_values::initializationLoadTypeValue)
