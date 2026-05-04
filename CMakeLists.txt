@@ -124,6 +124,8 @@ add_library(
 	WebFramework/src/WebSocket/PythonWebSocketExecutor.cpp
 	WebFramework/src/WebSocket/CSharpWebSocketExecutor.cpp
 	WebFramework/src/Events/ServeEvents/UpgradeHttpConnect.cpp
+	WebFramework/src/ServeLoops/ServeLoop.cpp
+	WebFramework/src/ServeLoops/HttpServeLoop.cpp
 )
 
 if (${WITH_STACKTRACE})

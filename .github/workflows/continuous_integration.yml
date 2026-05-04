@@ -395,11 +395,11 @@ jobs:
         path: Tests/build/bin
     
 
-  windows-tests:
+  windows-multi-threaded-server-tests:
     needs: [windows-tests-build, windows-executors-build]
     strategy:
       matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        config: [multi_threaded_config.json, multi_threaded_config_https.json]
         test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
         executors:
           - { api: CXX, python-version: "", dotnet: false }
@@ -419,11 +419,35 @@ jobs:
       dotnet: ${{ matrix.executors.dotnet }}
       
 
-  linux-tests:
+  windows-thread-pool-server-tests:
+    needs: [windows-tests-build, windows-executors-build]
+    strategy:
+      matrix:
+        config: [thread_pool_config.json, thread_pool_config_https.json]
+        test-script: [run_tests.bat, run_cc_tests.bat, run_csharp_tests.bat, run_python_tests.bat]
+        executors:
+          - { api: CXX, python-version: "", dotnet: false }
+          - { api: CC, python-version: "", dotnet: false }
+          - { api: Python, python-version: "3.14", dotnet: false }
+          - { api: Python, python-version: "3.13", dotnet: false }
+          - { api: Python, python-version: "3.12", dotnet: false }
+          - { api: CSharp, python-version: "", dotnet: true }
+
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: windows-latest
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
+
+
+  linux-multi-threaded-server-tests:
     needs: [linux-tests-build, linux-executors-build]
     strategy:
       matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        config: [multi_threaded_config.json, multi_threaded_config_https.json]
         test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
         executors:
             - { api: CXX, python-version: "", dotnet: false }
@@ -443,11 +467,35 @@ jobs:
       dotnet: ${{ matrix.executors.dotnet }}
 
 
-  linux-aarch64-tests:
+  linux-thread-pool-server-tests:
+    needs: [linux-tests-build, linux-executors-build]
+    strategy:
+      matrix:
+        config: [thread_pool_config.json, thread_pool_config_https.json]
+        test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
+        executors:
+            - { api: CXX, python-version: "", dotnet: false }
+            - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.14", dotnet: false }
+            - { api: Python, python-version: "3.13", dotnet: false }
+            - { api: Python, python-version: "3.12", dotnet: false }
+            - { api: CSharp, python-version: "", dotnet: true }
+
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: ubuntu-latest
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
+
+
+  linux-aarch64-multi-threaded-server-tests:
     needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
     strategy:
       matrix:
-        config: [multi_threaded_config.json, thread_pool_config.json, multi_threaded_config_https.json, thread_pool_config_https.json]
+        config: [multi_threaded_config.json, multi_threaded_config_https.json]
         test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
         executors:
             - { api: CXX, python-version: "", dotnet: false }
@@ -466,6 +514,30 @@ jobs:
       python-version: ${{ matrix.executors.python-version }}
       dotnet: ${{ matrix.executors.dotnet }}
       
+
+  linux-aarch64-thread-pool-server-tests:
+    needs: [linux-aarch64-tests-build, linux-aarch64-executors-build]
+    strategy:
+      matrix:
+        config: [thread_pool_config.json, thread_pool_config_https.json]
+        test-script: [run_tests.sh, run_cc_tests.sh, run_csharp_tests.sh, run_python_tests.sh]
+        executors:
+            - { api: CXX, python-version: "", dotnet: false }
+            - { api: CC, python-version: "", dotnet: false }
+            - { api: Python, python-version: "3.14", dotnet: false }
+            - { api: Python, python-version: "3.13", dotnet: false }
+            - { api: Python, python-version: "3.12", dotnet: false }
+            - { api: CSharp, python-version: "", dotnet: true }
+
+    uses: ./.github/workflows/reusable_run_test.yml
+    with:
+      os: ubuntu-24.04-arm
+      executors-api: ${{ matrix.executors.api }}
+      web-framework-config: ${{ matrix.config }}
+      test-script: ${{ matrix.test-script }}
+      python-version: ${{ matrix.executors.python-version }}
+      dotnet: ${{ matrix.executors.dotnet }}
+
 
   task-broker-tests:
     needs: [windows-build, linux-build, linux-aarch64-build]
@@ -553,9 +625,12 @@ jobs:
   publish:
     needs: [
       android-build,
-      linux-tests,
-      windows-tests,
-      linux-aarch64-tests,
+      linux-multi-threaded-server-tests,
+      windows-multi-threaded-server-tests,
+      linux-aarch64-multi-threaded-server-tests,
+      linux-thread-pool-server-tests,
+      windows-thread-pool-server-tests,
+      linux-aarch64-thread-pool-server-tests,
       task-broker-tests
     ]
     runs-on: ubuntu-latest
@@ -587,16 +662,22 @@ jobs:
     - name: Create Windows, Linux and LinuxARM zips
       shell: bash
       run: |
+        echo "Zip Windows"
+
         for directory in Windows-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          zip -r -q "${directory%/}.zip" ${directory}
         done
         
+        echo "Zip Linux"
+
         for directory in Linux-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          zip -r -q "${directory%/}.zip" ${directory}
         done
 
+        echo "Zip LinuxARM"
+
         for directory in LinuxARM-*/; do
-          zip -r "${directory%/}.zip" ${directory}
+          zip -r -q "${directory%/}.zip" ${directory}
         done
       
     - name: Create Android zip

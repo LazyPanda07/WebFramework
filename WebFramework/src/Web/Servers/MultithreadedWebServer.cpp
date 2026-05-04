@@ -14,6 +14,7 @@
 #include "Utility/LargeFileHandlers/MultithreadedHandler.h"
 #include "Utility/Utils.h"
 #include "Framework/WebFramework.h"
+#include "ServeLoops/HttpServeLoop.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6387)
@@ -100,46 +101,21 @@ namespace framework
 				}
 			}
 		};
-		const void* lastChainTask = &*chain.rbegin();
+
+		serve_loop::HttpServeLoop loop
+		(
+			stream,
+			*resources,
+			chain,
+			&ExecutorServer::serviceRequests,
+			sessionsManager,
+			*this,
+			addr
+		);
 
 		while (isRunning)
 		{
-			const std::function<void(ServiceState&)>* task = &chain.front();
-
-			response.setDefault();
-
-			while (events.size())
-			{
-				std::unique_ptr<event::ServeEvent> event = std::move(events.front());
-
-				(*event)(stream);
-
-				events.pop();
-			}
-
-			while (task)
-			{
-				switch (this->serviceRequests(stream, request, response, *resources, *task))
-				{
-				case framework::ExecutorServer::ServiceState::success:
-					task = task == lastChainTask ? nullptr : task + 1;
-
-					break;
-
-				case framework::ExecutorServer::ServiceState::skipResponse:
-					task = nullptr;
-
-					break;
-
-				case framework::ExecutorServer::ServiceState::error:
-					finish = true;
-					task = nullptr;
-
-					break;
-				}
-			}
-
-			if (finish)
+			if (loop.run())
 			{
 				break;
 			}
