@@ -68,7 +68,7 @@ namespace framework
 		static void parseRouteParameters(const std::string& parameters, interfaces::IHttpRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings* outExecutorSettings);
+		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings** outExecutorSettings);
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers) const;
 

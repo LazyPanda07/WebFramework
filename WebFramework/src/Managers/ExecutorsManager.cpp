@@ -121,7 +121,7 @@ namespace framework
 		while (endParameter != std::string::npos);
 	}
 
-	Executor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings* outExecutorSettings)
+	Executor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings** outExecutorSettings)
 	{
 		std::unordered_map<std::string, std::unique_ptr<Executor>>& statefulExecutors = *executors;
 
@@ -174,14 +174,22 @@ namespace framework
 					executor = statefulExecutors.insert(routes.extract(executor)).position;
 				}
 
-				outExecutorSettings = &executorSettings->second;
+				if (outExecutorSettings)
+				{
+					*outExecutorSettings = &executorSettings->second;
+				}
+				
 			}
 		}
-		else
-		{
-			outExecutorSettings = &settings.find(parameters)->second;
-		}
 
+		if (outExecutorSettings)
+		{
+			if (!*outExecutorSettings)
+			{
+				*outExecutorSettings = &settings.find(parameters)->second;
+			}
+		}
+		
 		return executor->second.get();
 	}
 
@@ -524,7 +532,7 @@ namespace framework
 			parameters.resize(parameters.find('?'));
 		}
 
-		executor = this->getOrCreateExecutor(parameters, request, executors, settings);
+		executor = this->getOrCreateExecutor(parameters, request, executors, &settings);
 
 		if (!fileRequest && !executor)
 		{
