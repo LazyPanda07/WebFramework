@@ -32,6 +32,8 @@ namespace framework::serve_loop
 
 		streams::IOSocketStream& getStream();
 
+		ResourceExecutor& getResources();
+
 		const streams::IOSocketStream& getStream() const;
 
 		virtual ~ServeLoop() = default;

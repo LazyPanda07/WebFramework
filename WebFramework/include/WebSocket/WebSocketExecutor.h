@@ -18,4 +18,6 @@ namespace framework::web_socket
 
 		virtual ~WebSocketExecutor() = default;
 	};
+
+	using CreateWebSocketExecutorSignature = void* (*)();
 }

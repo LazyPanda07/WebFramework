@@ -282,6 +282,9 @@
     <ClCompile Include="src\ServeLoops\HttpServeLoop.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\ServeLoops\WebSocketServeLoop.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Framework\WebFramework.h">
@@ -564,6 +567,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\ServeLoops\HttpServeLoop.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ServeLoops\WebSocketServeLoop.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

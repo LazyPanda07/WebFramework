@@ -12,6 +12,7 @@
 #include "Framework/WebFrameworkConstants.h"
 #include "Utility/Sources.h"
 #include "Events/ServeEvents/ServeEvent.h"
+#include "WebSocket/WebSocketExecutor.h"
 
 namespace framework
 {
@@ -52,6 +53,7 @@ namespace framework
 	private:
 		std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<Executor>> routes; // route - executor
+		std::unordered_map<std::string, std::string> webSocketExecutors; // executor name - api type
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -66,13 +68,15 @@ namespace framework
 		static void parseRouteParameters(const std::string& parameters, interfaces::IHttpRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings* outExecutorSettings);
 
 		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers) const;
 
 		bool filterJwt(const std::string& parameters, const web::HeadersMap& headers) const;
 
 		std::unique_ptr<Executor> createApiExecutor(const std::string& name, std::string_view apiType) const;
+
+		std::unique_ptr<web_socket::WebSocketExecutor> createApiWebSocketExecutor(const std::string& name, std::string_view apiType) const;
 
 		void initCreators(const std::vector<std::string>& pathToSources);
 
@@ -96,7 +100,7 @@ namespace framework
 
 		std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events);
 
-		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::pair<std::string, std::string>* executorNameAndApiType = nullptr);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

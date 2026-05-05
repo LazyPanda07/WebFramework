@@ -166,6 +166,7 @@
     <ClCompile Include="src\Managers\TaskExecutorsManager.cpp" />
     <ClCompile Include="src\ServeLoops\HttpServeLoop.cpp" />
     <ClCompile Include="src\ServeLoops\ServeLoop.cpp" />
+    <ClCompile Include="src\ServeLoops\WebSocketServeLoop.cpp" />
     <ClCompile Include="src\TaskBroker\InternalTaskBroker.cpp" />
     <ClCompile Include="src\TaskBroker\RabbitMqTaskBroker.cpp" />
     <ClCompile Include="src\TaskBroker\TaskBroker.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="include\Managers\TaskExecutorsManager.h" />
     <ClInclude Include="include\ServeLoops\HttpServeLoop.h" />
     <ClInclude Include="include\ServeLoops\ServeLoop.h" />
+    <ClInclude Include="include\ServeLoops\WebSocketServeLoop.h" />
     <ClInclude Include="include\TaskBroker\InternalTaskBroker.h" />
     <ClInclude Include="include\TaskBroker\RabbitMqTaskBroker.h" />
     <ClInclude Include="include\TaskBroker\TaskBroker.h" />

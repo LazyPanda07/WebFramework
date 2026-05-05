@@ -2,9 +2,17 @@
 
 #include <WebSocket/WssNetwork.h>
 
+#include "ServeLoops/WebSocketServeLoop.h"
+
 namespace framework::event
 {
-	void UpgradeHttpConnect::operator ()(streams::IOSocketStream& stream, std::unique_ptr<serve_loop::ServeLoop>& loop) const
+	UpgradeHttpConnect::UpgradeHttpConnect(std::unique_ptr<web_socket::WebSocketExecutor>&& executor) :
+		executor(std::move(executor))
+	{
+
+	}
+
+	void UpgradeHttpConnect::operator ()(streams::IOSocketStream& stream, std::unique_ptr<serve_loop::ServeLoop>& loop)
 	{
 		web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
 
@@ -16,5 +24,7 @@ namespace framework::event
 		{
 			stream = streams::IOSocketStream::createStream<web::web_socket::WsNetwork>(std::move(network), false);
 		}
+
+		loop = std::make_unique<serve_loop::WebSocketServeLoop>(*loop, std::move(executor));
 	}
 }

@@ -126,6 +126,7 @@ add_library(
 	WebFramework/src/Events/ServeEvents/UpgradeHttpConnect.cpp
 	WebFramework/src/ServeLoops/ServeLoop.cpp
 	WebFramework/src/ServeLoops/HttpServeLoop.cpp
+	WebFramework/src/ServeLoops/WebSocketServeLoop.cpp
 )
 
 if (${WITH_STACKTRACE})

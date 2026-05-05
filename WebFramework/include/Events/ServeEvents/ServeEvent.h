@@ -13,7 +13,7 @@ namespace framework::event
 	class ServeEvent
 	{
 	public:
-		virtual void operator ()(streams::IOSocketStream& stream, std::unique_ptr<serve_loop::ServeLoop>& loop) const = 0;
+		virtual void operator ()(streams::IOSocketStream& stream, std::unique_ptr<serve_loop::ServeLoop>& loop) = 0;
 
 		virtual ~ServeEvent() = default;
 	};

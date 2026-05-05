@@ -30,6 +30,11 @@ namespace framework::serve_loop
 		return stream;
 	}
 
+	ResourceExecutor& ServeLoop::getResources()
+	{
+		return resources;
+	}
+
 	const streams::IOSocketStream& ServeLoop::getStream() const
 	{
 		return stream;

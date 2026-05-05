@@ -213,6 +213,7 @@ namespace framework::logging
 		inline constexpr char noDynamicFunctionVariable[] = "No variable: {}";
 		inline constexpr char wfdpRendererExecuteException[] = "WFDPRenderer execute exception: {}";
 		inline constexpr char cantFindExecutor[] = "Can't find executor with name {}";
+		inline constexpr char cantFindWebSocketExecutor[] = "Can't find WebSocket executor with name {}";
 		inline constexpr char cantFindTaskExecutor[] = "Can't find {}";
 		inline constexpr char cantFindCSharpApi[] = "Can't find {} or {}";
 		inline constexpr char methodAlreadyInitialized[] = "Method already intialized, type name: {}, method name: {}";
@@ -244,6 +245,7 @@ namespace framework::logging
 		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
 		inline constexpr char forbiddenMessage[] = "Forbidden response to client request. {}";
 		inline constexpr char cantFindJwtSecret[] = "Can't find JWT secret: {}, fallback to: {}";
+		inline constexpr char wrongLoadSourceTypeIndex[] = "Wrong load source type index: {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}";
@@ -261,6 +263,7 @@ namespace framework::logging
 		inline constexpr char foundTaskExecutorSource[] = "Found load source with path: {}";
 		inline constexpr char callDynamicFunction[] = "Call {} function";
 		inline constexpr char foundExecutor[] = "Found {} in {} for {} route";
+		inline constexpr char foundWebSocketExecutor[] = "Found WebSocket {} in {}";
 		inline constexpr char foundTaskExecutor[] = "Found {} in {}";
 		inline constexpr char foundCSharpApi[] = "Found {}";
 		inline constexpr char initializePythonInterpreter[] = "Initialize Python interpreter";

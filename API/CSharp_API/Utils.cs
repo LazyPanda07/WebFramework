@@ -194,6 +194,21 @@ public static partial class Utils
 		return targetType == null ? 0 : targetType.IsSubclassOf(typeof(Executor)) ? 1 : 0;
 	}
 
+	[UnmanagedCallersOnly(EntryPoint = "HasWebSocketExecutor")]
+	public static int HasWebSocketExecutor(IntPtr assemblyName)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(assemblyName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return 0;
+		}
+
+		Type? targetType = Type.GetType(typeName);
+
+		return targetType == null ? 0 : targetType.IsSubclassOf(typeof(WebSocketExecutor)) ? 1 : 0;
+	}
+
 	[UnmanagedCallersOnly(EntryPoint = "HasTaskExecutor")]
 	public static int HasTaskExecutor(IntPtr assemblyName)
 	{
@@ -256,8 +271,8 @@ public static partial class Utils
 		return GCHandle.ToIntPtr(handle);
 	}
 
-	[UnmanagedCallersOnly(EntryPoint = "CreateTaskExecutor")]
-	public static IntPtr CreateTaskExecutor(IntPtr fullName)
+	[UnmanagedCallersOnly(EntryPoint = "CreateWebSocketExecutor")]
+	public static IntPtr CreateWebSocketExecutor(IntPtr fullName)
 	{
 		string? typeName = Marshal.PtrToStringUTF8(fullName);
 
@@ -280,8 +295,8 @@ public static partial class Utils
 		return GCHandle.ToIntPtr(handle);
 	}
 
-	[UnmanagedCallersOnly(EntryPoint = "CreateWebSocketExecutor")]
-	public static IntPtr CreateWebSocketExecutor(IntPtr fullName)
+	[UnmanagedCallersOnly(EntryPoint = "CreateTaskExecutor")]
+	public static IntPtr CreateTaskExecutor(IntPtr fullName)
 	{
 		string? typeName = Marshal.PtrToStringUTF8(fullName);
 

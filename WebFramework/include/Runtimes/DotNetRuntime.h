@@ -28,12 +28,14 @@ namespace framework::runtime
 
 	public:
 		using HasExecutorSignature = bool(*)(const char* executorName);
+		using HasWebSocketExecutorSignature = bool(*)(const char* executorName);
 		using HasTaskExecutorSignature = bool(*)(const char* executorName);
 		using DoMethodSignature = int(*)(void* executor, void* request, void* response);
 		using CallDynamicFunctionSignature = char* (*)(void* dynamicFunction, const void* arguments);
 		using FreeSignature = void(*)(void* implementation);
 		using InitSignature = void(*)(void* executor, void* implementation);
 		using CreateExecutorSignature = void* (*)(const char* executorName);
+		using CreateWebSocketExecutorSignature = void* (*)(const char* executorName);
 		using CreateTaskExecutorSignature = void* (*)(const char* executorName);
 		using CreateDynamicFunctionSignature = void* (*)(const char* dynamicFunctionName);
 		using CreateHeuristicFunctionSignature = void* (*)(const char* heuristicName, const char* ip, const char* port, bool useHTTPS);
@@ -60,7 +62,7 @@ namespace framework::runtime
 		static NativeString getModuleName(std::string_view modulePath);
 
 	private:
-		::utility::strings::string_based_unordered_map<std::string> fullQualifiedNames;
+		::utility::strings::string_based_unordered_map<std::string> assemblyQualifiedNames;
 		hostfxr_initialize_for_runtime_config_fn initialization;
 		hostfxr_get_runtime_delegate_fn getRuntimeDelegate;
 		hostfxr_close_fn close;
@@ -69,10 +71,12 @@ namespace framework::runtime
 		get_function_pointer_fn getFunctionPointer;
 		HMODULE runtimeLibrary;
 		HasExecutorSignature hasExecutor;
+		HasWebSocketExecutorSignature hasWebSocketExecutor;
 		HasTaskExecutorSignature hasTaskExecutor;
 		FreeSignature dotNetFree;
 		FreeSignature dotNetDealloc;
 		CreateExecutorSignature createExecutorFunction;
+		CreateExecutorSignature createWebSocketExecutorFunction;
 		CreateTaskExecutorSignature createTaskExecutorFunction;
 		CreateHttpRequestSignature createHttpRequest;
 		CreateHttpResponceSignature createHttpResponse;
@@ -158,7 +162,11 @@ namespace framework::runtime
 
 		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;
 
+		void loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source) override;
+
 		std::unique_ptr<Executor> createExecutor(std::string_view name) const override;
+
+		std::unique_ptr<web_socket::WebSocketExecutor> createWebSocketExecutor(std::string_view name) const override;
 
 		std::unique_ptr<task_broker::TaskExecutor> createTaskExecutor(std::string_view name, const utility::LoadSource& source) const override;
 

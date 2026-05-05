@@ -48,7 +48,11 @@ namespace framework::runtime
 
 		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;
 
+		void loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source) override;
+
 		std::unique_ptr<Executor> createExecutor(std::string_view name) const override;
+
+		std::unique_ptr<web_socket::WebSocketExecutor> createWebSocketExecutor(std::string_view name) const override;
 
 		std::unique_ptr<task_broker::TaskExecutor> createTaskExecutor(std::string_view name, const utility::LoadSource& source) const override;
 

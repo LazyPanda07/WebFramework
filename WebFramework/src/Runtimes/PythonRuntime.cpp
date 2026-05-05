@@ -6,6 +6,7 @@
 
 #include "Executors/PythonExecutor.h"
 #include "TaskBroker/TaskExecutors/PythonTaskExecutor.h"
+#include "WebSocket/PythonWebSocketExecutor.h"
 
 namespace py = pybind11;
 
@@ -147,6 +148,30 @@ namespace framework::runtime
 		return true;
 	}
 
+	void PythonRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
+	{
+		if (!std::holds_alternative<py::module_>(source))
+		{
+			utility::logAndThrowException<logging::message::wrongLoadSourceTypeIndex, logging::category::pythonRuntime>(source.index());
+		}
+
+		py::gil_scoped_acquire gil;
+		const py::module_& module = std::get<py::module_>(source);
+		std::optional<py::object> cls = this->getClass(name, module);
+
+		if (!cls)
+		{
+			utility::logAndThrowException<logging::message::cantFindWebSocketExecutor, logging::category::pythonRuntime>(name);
+		}
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::foundWebSocketExecutor, logging::category::pythonRuntime>(name, py::repr(module).cast<std::string>());
+		}
+
+		classes.emplace(name, *cls);
+	}
+
 	std::unique_ptr<Executor> PythonRuntime::createExecutor(std::string_view name) const
 	{
 		auto it = classes.find(name);
@@ -161,6 +186,22 @@ namespace framework::runtime
 		const auto& [_, cls] = *it;
 
 		return std::make_unique<PythonExecutor>(new py::object(cls()));
+	}
+
+	std::unique_ptr<web_socket::WebSocketExecutor> PythonRuntime::createWebSocketExecutor(std::string_view name) const
+	{
+		auto it = classes.find(name);
+
+		if (it == classes.end())
+		{
+			utility::logAndThrowException<logging::message::cantFindWebSocketExecutor, logging::category::pythonRuntime>(name);
+		}
+
+		py::gil_scoped_acquire gil;
+
+		const auto& [_, cls] = *it;
+
+		return std::make_unique<web_socket::PythonWebSocketExecutor>(new py::object(cls()));
 	}
 
 	std::unique_ptr<task_broker::TaskExecutor> PythonRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const

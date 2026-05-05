@@ -121,7 +121,7 @@ namespace framework
 		while (endParameter != std::string::npos);
 	}
 
-	Executor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors)
+	Executor* ExecutorsManager::getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings* outExecutorSettings)
 	{
 		std::unordered_map<std::string, std::unique_ptr<Executor>>& statefulExecutors = *executors;
 
@@ -161,7 +161,7 @@ namespace framework
 
 				executor = routes.try_emplace
 				(
-					std::move(parameters),
+					parameters,
 					this->createApiExecutor(executorSettings->second.name, executorSettings->second.apiType)
 				).first;
 
@@ -173,7 +173,13 @@ namespace framework
 				{
 					executor = statefulExecutors.insert(routes.extract(executor)).position;
 				}
+
+				outExecutorSettings = &executorSettings->second;
 			}
+		}
+		else
+		{
+			outExecutorSettings = &settings.find(parameters)->second;
 		}
 
 		return executor->second.get();
@@ -250,6 +256,11 @@ namespace framework
 		return runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(apiType)).createExecutor(name);
 	}
 
+	std::unique_ptr<web_socket::WebSocketExecutor> ExecutorsManager::createApiWebSocketExecutor(const std::string& name, std::string_view apiType) const
+	{
+		return runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(apiType)).createWebSocketExecutor(name);
+	}
+
 	void ExecutorsManager::initCreators(const std::vector<std::string>& pathToSources)
 	{
 		std::vector<std::pair<utility::LoadSource, std::string>> sources = utility::loadSources(pathToSources);
@@ -270,6 +281,13 @@ namespace framework
 				if (runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, route, source))
 				{
 					creatorSource = source;
+
+					if (executorSettings.supportWebSocket)
+					{
+						runtime::RuntimesManager::get().getRuntime(type).loadWebSocketExecutor(executorSettings.name, source);
+
+						webSocketExecutors.try_emplace(executorSettings.name, executorSettings.apiType);
+					}
 
 					break;
 				}
@@ -395,7 +413,9 @@ namespace framework
 
 	std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> ExecutorsManager::service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events)
 	{
-		Executor* executor = this->getOrCreateExecutor(request, response, executors);
+		std::pair<std::string, std::string> executorNameAndApiType;
+
+		Executor* executor = this->getOrCreateExecutor(request, response, executors, &executorNameAndApiType);
 
 		if (!executor)
 		{
@@ -442,7 +462,7 @@ namespace framework
 				response.addHeader("Connection", "Upgrade");
 				response.addHeader("Sec-WebSocket-Accept", accept.data());
 
-				events.emplace(std::make_unique<event::UpgradeHttpConnect>());
+				events.emplace(std::make_unique<event::UpgradeHttpConnect>(this->createApiWebSocketExecutor(executorNameAndApiType.first, executorNameAndApiType.second)));
 
 				return std::nullopt;
 			}
@@ -460,7 +480,7 @@ namespace framework
 		return std::nullopt;
 	}
 
-	Executor* ExecutorsManager::getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors)
+	Executor* ExecutorsManager::getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::pair<std::string, std::string>* executorNameAndApiType)
 	{
 		HttpRequestImplementation& requestImplementation = *static_cast<HttpRequestImplementation*>(&request);
 		const web::HeadersMap& headers = requestImplementation.parser.getHeaders();
@@ -497,13 +517,14 @@ namespace framework
 		std::string parameters(request.getRawParameters());
 		Executor* executor = nullptr;
 		bool fileRequest = ExecutorsManager::isFileRequest(parameters);
+		utility::JSONSettingsParser::ExecutorSettings* settings = nullptr;
 
 		if (parameters.find('?') != std::string::npos)
 		{
 			parameters.resize(parameters.find('?'));
 		}
 
-		executor = this->getOrCreateExecutor(parameters, request, executors);
+		executor = this->getOrCreateExecutor(parameters, request, executors, settings);
 
 		if (!fileRequest && !executor)
 		{
@@ -528,6 +549,12 @@ namespace framework
 		{
 			if (this->filterUserAgent(parameters, headers) && this->filterJwt(parameters, headers))
 			{
+				if (executorNameAndApiType)
+				{
+					executorNameAndApiType->first = settings->name;
+					executorNameAndApiType->second = settings->apiType;
+				}
+
 				return executor;
 			}
 			else

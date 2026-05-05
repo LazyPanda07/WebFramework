@@ -16,6 +16,7 @@
 
 #include "Executors/CSharpExecutor.h"
 #include "TaskBroker/TaskExecutors/CSharpTaskExecutor.h"
+#include "WebSocket/CSharpWebSocketExecutor.h"
 
 static void errorHandler(const char_t* message)
 {
@@ -88,7 +89,7 @@ namespace framework::runtime
 		std::filesystem::path libraryDirectoryPath = std::filesystem::path(utility::getPathToWebFrameworkSharedLibrary()).parent_path();
 		std::filesystem::path executableDirectoryPath = utility::getExecutablePath().parent_path();
 		std::filesystem::path result;
-		
+
 		if (std::filesystem::exists(executableDirectoryPath / apiName))
 		{
 			result = executableDirectoryPath / apiName;
@@ -106,7 +107,7 @@ namespace framework::runtime
 		{
 			Log::info<logging::message::foundCSharpApi, logging::category::dotnetRuntime>(result.string());
 		}
-		
+
 		return result;
 	}
 
@@ -126,11 +127,13 @@ namespace framework::runtime
 		NativeString typeName = std::format("Framework.Utility.Utils, {}", moduleName.string());
 
 		this->loadMethod(typeName, "HasExecutor", hasExecutor);
+		this->loadMethod(typeName, "HasWebSocketExecutor", hasWebSocketExecutor);
 		this->loadMethod(typeName, "HasTaskExecutor", hasTaskExecutor);
 		this->loadMethod(typeName, "Free", dotNetFree);
 		this->loadMethod(typeName, "Dealloc", dotNetDealloc);
 		this->loadMethod(typeName, "Init", init);
 		this->loadMethod(typeName, "CreateExecutor", createExecutorFunction);
+		this->loadMethod(typeName, "CreateWebSocketExecutor", createWebSocketExecutorFunction);
 		this->loadMethod(typeName, "CreateTaskExecutor", createTaskExecutorFunction);
 		this->loadMethod(typeName, "CreateDynamicFunction", createDynamicFunction);
 		this->loadMethod(typeName, "CreateHeuristic", createHeuristic);
@@ -286,10 +289,12 @@ namespace framework::runtime
 
 	DotNetRuntime::DotNetRuntime() :
 		hasExecutor(nullptr),
+		hasWebSocketExecutor(nullptr),
 		hasTaskExecutor(nullptr),
 		dotNetFree(nullptr),
 		dotNetDealloc(nullptr),
 		createExecutorFunction(nullptr),
+		createWebSocketExecutorFunction(nullptr),
 		createTaskExecutorFunction(nullptr),
 		createHttpRequest(nullptr),
 		createHttpResponse(nullptr),
@@ -364,9 +369,9 @@ namespace framework::runtime
 
 		const std::filesystem::path& modulePath = std::get<std::filesystem::path>(source);
 		NativeString moduleName = DotNetRuntime::getModuleName(modulePath);
-		std::string fullQualifiedName = std::format("{}, {}", name, moduleName.string());
+		std::string assemblyQualifiedName = std::format("{}, {}", name, moduleName.string());
 
-		if (!hasExecutor(fullQualifiedName.data()))
+		if (!hasExecutor(assemblyQualifiedName.data()))
 		{
 			return false;
 		}
@@ -376,23 +381,61 @@ namespace framework::runtime
 			Log::info<logging::message::foundExecutor, logging::category::dotnetRuntime>(name, modulePath.string(), route.empty() ? R"("")" : route);
 		}
 
-		fullQualifiedNames.emplace(name, std::move(fullQualifiedName));
+		assemblyQualifiedNames.emplace(name, std::move(assemblyQualifiedName));
 
 		return true;
 	}
 
+	void DotNetRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
+	{
+		if (!std::holds_alternative<std::filesystem::path>(source))
+		{
+			utility::logAndThrowException<logging::message::wrongLoadSourceTypeIndex, logging::category::dotnetRuntime>(source.index());
+		}
+
+		const std::filesystem::path& modulePath = std::get<std::filesystem::path>(source);
+		NativeString moduleName = DotNetRuntime::getModuleName(modulePath);
+		std::string assemblyQualifiedName = std::format("{}, {}", name, moduleName.string());
+
+		if (!hasWebSocketExecutor(assemblyQualifiedName.data()))
+		{
+			utility::logAndThrowException<logging::message::cantFindWebSocketExecutor, logging::category::dotnetRuntime>(name);
+		}
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::foundWebSocketExecutor, logging::category::dotnetRuntime>(name, modulePath.string());
+		}
+
+		assemblyQualifiedNames.emplace(name, std::move(assemblyQualifiedName));
+	}
+
 	std::unique_ptr<Executor> DotNetRuntime::createExecutor(std::string_view name) const
 	{
-		auto it = fullQualifiedNames.find(name);
+		auto it = assemblyQualifiedNames.find(name);
 
-		if (it == fullQualifiedNames.end())
+		if (it == assemblyQualifiedNames.end())
 		{
 			utility::logAndThrowException<logging::message::cantFindExecutor, logging::category::dotnetRuntime>(name);
 		}
 
-		const auto& [_, fullQualifiedName] = *it;
+		const auto& [_, assemblyQualifiedName] = *it;
 
-		return std::make_unique<CSharpExecutor>(createExecutorFunction(fullQualifiedName.data()));
+		return std::make_unique<CSharpExecutor>(createExecutorFunction(assemblyQualifiedName.data()));
+	}
+
+	std::unique_ptr<web_socket::WebSocketExecutor> DotNetRuntime::createWebSocketExecutor(std::string_view name) const
+	{
+		auto it = assemblyQualifiedNames.find(name);
+
+		if (it == assemblyQualifiedNames.end())
+		{
+			utility::logAndThrowException<logging::message::cantFindExecutor, logging::category::dotnetRuntime>(name);
+		}
+
+		const auto& [_, assemblyQualifiedName] = *it;
+
+		return std::make_unique<web_socket::CSharpWebSocketExecutor>(createWebSocketExecutorFunction(assemblyQualifiedName.data()));
 	}
 
 	std::unique_ptr<task_broker::TaskExecutor> DotNetRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const
@@ -404,9 +447,9 @@ namespace framework::runtime
 
 		const std::filesystem::path& modulePath = std::get<std::filesystem::path>(source);
 		NativeString moduleName = DotNetRuntime::getModuleName(modulePath);
-		std::string fullQualifiedName = std::format("{}, {}", name, moduleName.string());
+		std::string assemblyQualifiedName = std::format("{}, {}", name, moduleName.string());
 
-		if (!hasTaskExecutor(fullQualifiedName.data()))
+		if (!hasTaskExecutor(assemblyQualifiedName.data()))
 		{
 			utility::logAndThrowException<logging::message::cantFindTaskExecutor, logging::category::dotnetRuntime>(name);
 		}
@@ -416,7 +459,7 @@ namespace framework::runtime
 			Log::info<logging::message::foundTaskExecutor, logging::category::dotnetRuntime>(name, modulePath.string());
 		}
 
-		return std::make_unique<task_broker::CSharpTaskExecutor>(createTaskExecutorFunction(fullQualifiedName.data()));
+		return std::make_unique<task_broker::CSharpTaskExecutor>(createTaskExecutorFunction(assemblyQualifiedName.data()));
 	}
 
 	void DotNetRuntime::finishInitialization()
