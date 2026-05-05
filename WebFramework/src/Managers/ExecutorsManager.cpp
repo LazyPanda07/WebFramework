@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <ranges>
 #include <format>
+#include <unordered_set>
 
 #include <Log.h>
 #include <Exceptions/FileDoesNotExistException.h>
