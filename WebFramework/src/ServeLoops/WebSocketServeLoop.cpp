@@ -11,6 +11,13 @@ namespace framework::serve_loop
 
 		stream >> inputFrames;
 
+		if (stream.eof())
+		{
+			return true;
+		}
+
+		// TODO: ping, pong, close from onReceive
+
 		for (const web::web_socket::Frame& inputFrame : inputFrames)
 		{
 			web::web_socket::Frame outputFrame = executor->onReceive(inputFrame);

@@ -36,13 +36,12 @@ namespace registrar
 				"get_payload",
 				[](const framework::WebSocketExecutor::Frame& self) -> std::variant<std::string, py::bytes>
 				{
-					std::span<char> temp = self.getPayload<char>();
-					std::string result(temp.data(), temp.size());
+					std::string_view result = self.getPayload();
 
 					switch (self.getType())
 					{
 					case framework::WebSocketExecutor::Frame::Type::text:
-						return result;
+						return std::string(result);
 
 					case framework::WebSocketExecutor::Frame::Type::binary:
 						return py::bytes(result);
@@ -59,9 +58,7 @@ namespace registrar
 				"get_payload_as_str",
 				[](const framework::WebSocketExecutor::Frame& self) -> std::string
 				{
-					std::span<char> payload = self.getPayload<char>();
-
-					return std::string(payload.data(), payload.size());
+					return std::string(self.getPayload());
 				}
 			)
 			.def
@@ -69,9 +66,9 @@ namespace registrar
 				"get_payload_as_bytes",
 				[](const framework::WebSocketExecutor::Frame& self) -> py::bytes
 				{
-					std::span<uint8_t> payload = self.getPayload<uint8_t>();
+					std::string_view payload = self.getPayload();
 
-					return py::bytes(reinterpret_cast<const char*>(payload.data()), payload.size());
+					return py::bytes(payload);
 				}
 			)
 			.def("get_type", &framework::WebSocketExecutor::Frame::getType)

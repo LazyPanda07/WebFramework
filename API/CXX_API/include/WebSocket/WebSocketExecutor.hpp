@@ -25,8 +25,8 @@ namespace framework
 		public:
 			Frame(void* implementation);
 
-			template<typename T = char>
-			std::span<T> getPayload() const requires(std::same_as<T, char> || std::same_as<T, uint8_t>);
+			template<typename ReturnT = std::string_view>
+			ReturnT getPayload() const requires(std::same_as<ReturnT, std::string_view> || std::same_as<ReturnT, std::span<uint8_t>> || std::same_as<ReturnT, std::span<char>>);
 
 			Type getType() const;
 
@@ -52,8 +52,8 @@ namespace framework
 
 	}
 
-	template<typename T>
-	inline std::span<T> WebSocketExecutor::Frame::getPayload() const requires(std::same_as<T, char> || std::same_as<T, uint8_t>)
+	template<typename ReturnT>
+	inline ReturnT WebSocketExecutor::Frame::getPayload() const requires(std::same_as<ReturnT, std::string_view> || std::same_as<ReturnT, std::span<uint8_t>> || std::same_as<ReturnT, std::span<char>>)
 	{
 		DEFINE_CLASS_MEMBER_FUNCTION(getFramePayload, char*, uint64_t*, void** exception);
 		void* exception = nullptr;
@@ -62,7 +62,16 @@ namespace framework
 		
 		char* ptr = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFramePayload, &size, &exception);
 
-		return std::span<T>(reinterpret_cast<T*>(ptr), size);
+		if constexpr (std::same_as<ReturnT, std::span<uint8_t>>)
+		{
+			return std::span<uint8_t>(reinterpret_cast<uint8_t*>(ptr), size);
+		}
+		else
+		{
+			return ReturnT(ptr, size);
+		}
+
+		return {};
 	}
 
 	inline WebSocketExecutor::Frame::Type WebSocketExecutor::Frame::getType() const

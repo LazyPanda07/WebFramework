@@ -1,6 +1,7 @@
 #include "C_API/WebFrameworkWebSocketExecutorsCApi.h"
 
 #include <Log.h>
+#include <WebSocket/Frame.h>
 
 #include "Exceptions/AlreadyLoggedException.h"
 
@@ -13,7 +14,11 @@ char* getFramePayload(FrameObject frame, uint64_t* size, Exception* exception)
 {
 	try
 	{
-		return nullptr;
+		std::vector<uint8_t>& payload = const_cast<std::vector<uint8_t>&>(static_cast<web::web_socket::Frame*>(frame)->getPayload());
+
+		*size = payload.size();
+
+		return reinterpret_cast<char*>(payload.data());
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{
@@ -35,7 +40,7 @@ int32_t getFrameType(FrameObject frame, Exception* exception)
 {
 	try
 	{
-		return 0;
+		return static_cast<int32_t>(static_cast<web::web_socket::Frame*>(frame)->getFrameOpcode());
 	}
 	catch (const framework::exceptions::AlreadyLoggedException& e)
 	{

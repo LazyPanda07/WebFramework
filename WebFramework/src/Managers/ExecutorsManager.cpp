@@ -487,7 +487,7 @@ namespace framework
 
 			if (std::ranges::all_of(conditions, [](const std::function<bool()>& condition) { return condition(); }))
 			{
-				std::string clientKeyWithGuid = std::format("{}{}", ::utility::conversion::decodeBase64(headers.at("Sec-WebSocket-Key")), guid);
+				std::string clientKeyWithGuid = std::format("{}{}", headers.at("Sec-WebSocket-Key"), guid);
 				std::array<uint8_t, SHA_DIGEST_LENGTH> hash{};
 
 				SHA1(reinterpret_cast<const uint8_t*>(clientKeyWithGuid.data()), clientKeyWithGuid.size(), hash.data());
