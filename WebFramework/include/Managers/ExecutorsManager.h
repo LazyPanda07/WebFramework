@@ -41,7 +41,7 @@ namespace framework
 			multiThreaded,
 			threadPool
 		};
-		
+
 		static inline const std::unordered_map<std::string_view, WebServerType> types =
 		{
 			{ json_settings_values::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
@@ -53,7 +53,6 @@ namespace framework
 	private:
 		std::mutex checkExecutor;
 		std::unordered_map<std::string, std::unique_ptr<Executor>> routes; // route - executor
-		std::unordered_map<std::string, std::string> webSocketExecutors; // executor name - api type
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> settings; // route - executor settings
 		std::shared_ptr<ResourceExecutor> resources;
 		std::vector<utility::RouteParameters> routeParameters; // base routes for parameterize executors
@@ -100,7 +99,7 @@ namespace framework
 
 		std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events);
 
-		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::pair<std::string, std::string>* executorNameAndApiType = nullptr);
+		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings** executorSettings = nullptr);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

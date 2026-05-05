@@ -25,7 +25,7 @@ namespace framework::runtime
 
 		virtual bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) = 0;
 
-		virtual void loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source) = 0;
+		virtual bool loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source) = 0;
 
 		virtual std::unique_ptr<Executor> createExecutor(std::string_view name) const = 0;
 

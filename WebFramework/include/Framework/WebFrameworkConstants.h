@@ -245,7 +245,7 @@ namespace framework::logging
 		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
 		inline constexpr char forbiddenMessage[] = "Forbidden response to client request. {}";
 		inline constexpr char cantFindJwtSecret[] = "Can't find JWT secret: {}, fallback to: {}";
-		inline constexpr char wrongLoadSourceTypeIndex[] = "Wrong load source type index: {}";
+		inline constexpr char missingWebSocketExecutors[] = "Missing WebSocket executors: {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}";

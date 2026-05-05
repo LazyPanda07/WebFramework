@@ -29,10 +29,10 @@
           "description": "Filter input requests by Authorization: Bearer <token>",
           "default": false
         },
-        "supporWebSocket": {
-          "type": "boolean",
-          "description": "Supports connect upgrade to WebSocket",
-          "default": false
+        "webSocketExecutorName": {
+          "type": [ "string", "null" ],
+          "description": "Name of WebSocketExecutor that can be used after upgrade connection to WebSocket",
+          "default": null
         },
         "initParameters": {
           "type": "object",

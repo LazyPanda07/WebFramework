@@ -24,7 +24,7 @@ namespace json_settings
 {
 	inline constexpr std::string_view userAgentFilterKey = "userAgentFilter";
 	inline constexpr std::string_view requireJwtKey = "requireJWT";
-	inline constexpr std::string_view supporWebSocketKey = "supporWebSocket";
+	inline constexpr std::string_view webSocketExecutorNameKey = "webSocketExecutorName";
 }
 
 #ifdef __LINUX__

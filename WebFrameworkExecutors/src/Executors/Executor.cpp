@@ -42,7 +42,7 @@ namespace framework
 
 	void Executor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
-		supportWebSocket = settings.supportWebSocket;
+		supportWebSocket = settings.webSocketExecutorName.has_value();
 	}
 
 	void Executor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)

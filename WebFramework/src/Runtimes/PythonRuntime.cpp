@@ -148,11 +148,11 @@ namespace framework::runtime
 		return true;
 	}
 
-	void PythonRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
+	bool PythonRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<py::module_>(source))
 		{
-			utility::logAndThrowException<logging::message::wrongLoadSourceTypeIndex, logging::category::pythonRuntime>(source.index());
+			return false;
 		}
 
 		py::gil_scoped_acquire gil;
@@ -161,7 +161,7 @@ namespace framework::runtime
 
 		if (!cls)
 		{
-			utility::logAndThrowException<logging::message::cantFindWebSocketExecutor, logging::category::pythonRuntime>(name);
+			return false;
 		}
 
 		if (Log::isValid())
@@ -170,6 +170,8 @@ namespace framework::runtime
 		}
 
 		classes.emplace(name, *cls);
+
+		return true;
 	}
 
 	std::unique_ptr<Executor> PythonRuntime::createExecutor(std::string_view name) const

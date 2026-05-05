@@ -46,11 +46,11 @@ namespace framework::runtime
 		return false;
 	}
 
-	void CCRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
+	bool CCRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<HMODULE>(source))
 		{
-			utility::logAndThrowException<logging::message::wrongLoadSourceTypeIndex, logging::category::ccRuntime>(source.index());
+			return false;
 		}
 
 		HMODULE module = std::get<HMODULE>(source);
@@ -66,11 +66,11 @@ namespace framework::runtime
 			}
 
 			webSocketCreators.emplace(name, std::make_tuple(module, creator));
+
+			return true;
 		}
-		else
-		{
-			utility::logAndThrowException<logging::message::cantFindWebSocketExecutor, logging::category::ccRuntime>(name);
-		}
+
+		return false;
 	}
 
 	std::unique_ptr<Executor> CCRuntime::createExecutor(std::string_view name) const

@@ -272,6 +272,8 @@ namespace framework
 	void ExecutorsManager::initCreators(const std::vector<std::string>& pathToSources)
 	{
 		std::vector<std::pair<utility::LoadSource, std::string>> sources = utility::loadSources(pathToSources);
+		std::vector<std::pair<std::string, utility::ExecutorApiType>> webSocketExecutorData;
+		runtime::RuntimesManager& runtimesManager = runtime::RuntimesManager::get();
 
 		routes.reserve(settings.size());
 
@@ -284,18 +286,16 @@ namespace framework
 
 			executorSettings.resourceExecutor = resources;
 
+			if (executorSettings.webSocketExecutorName)
+			{
+				webSocketExecutorData.emplace_back(*executorSettings.webSocketExecutorName, type);
+			}
+
 			for (const auto& [source, sourcePath] : sources)
 			{
-				if (runtime::RuntimesManager::get().getRuntime(type).loadExecutor(executorSettings.name, route, source))
+				if (runtimesManager.getRuntime(type).loadExecutor(executorSettings.name, route, source))
 				{
 					creatorSource = source;
-
-					if (executorSettings.supportWebSocket)
-					{
-						runtime::RuntimesManager::get().getRuntime(type).loadWebSocketExecutor(executorSettings.name, source);
-
-						webSocketExecutors.try_emplace(executorSettings.name, executorSettings.apiType);
-					}
 
 					break;
 				}
@@ -306,7 +306,7 @@ namespace framework
 				utility::logAndThrowException<logging::message::cantCreateApiExecutor, logging::category::executor>(executorSettings.name, executorSettings.apiType);
 			}
 
-			runtime::RuntimesManager::get().getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource);
+			runtimesManager.getRuntime(utility::getExecutorApiType(executorSettings.apiType)).initializeWebFramework(*creatorSource);
 
 			switch (executorSettings.executorLoadType)
 			{
@@ -368,6 +368,35 @@ namespace framework
 			}
 		}
 
+		for (const auto& [source, sourcePath] : sources)
+		{
+			std::unordered_set<std::string> remove;
+
+			for (const auto& [name, type] : webSocketExecutorData)
+			{
+				if (runtimesManager.getRuntime(type).loadWebSocketExecutor(name, source))
+				{
+					remove.insert(name);
+
+					runtimesManager.getRuntime(type).initializeWebFramework(source);
+				}
+			}
+
+			std::erase_if(webSocketExecutorData, [&remove](const std::pair<std::string, utility::ExecutorApiType>& data) { return remove.contains(data.first); });
+		}
+
+		if (webSocketExecutorData.size())
+		{
+			std::string missingWebSocketExecutors;
+
+			for (const auto& [name, type] : webSocketExecutorData)
+			{
+				missingWebSocketExecutors += std::format("WebSocketExecutor: {} in {} API\n", name, runtimesManager.getRuntime(type).getName());
+			}
+
+			utility::logAndThrowException<logging::message::missingWebSocketExecutors, logging::category::executor>(missingWebSocketExecutors);
+		}
+
 		for (auto&& [route, executorSettings] : nodes)
 		{
 			auto node = settings.extract(route);
@@ -421,9 +450,9 @@ namespace framework
 
 	std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> ExecutorsManager::service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events)
 	{
-		std::pair<std::string, std::string> executorNameAndApiType;
+		utility::JSONSettingsParser::ExecutorSettings* executorSettings = nullptr;
 
-		Executor* executor = this->getOrCreateExecutor(request, response, executors, &executorNameAndApiType);
+		Executor* executor = this->getOrCreateExecutor(request, response, executors, &executorSettings);
 
 		if (!executor)
 		{
@@ -470,7 +499,7 @@ namespace framework
 				response.addHeader("Connection", "Upgrade");
 				response.addHeader("Sec-WebSocket-Accept", accept.data());
 
-				events.emplace(std::make_unique<event::UpgradeHttpConnect>(this->createApiWebSocketExecutor(executorNameAndApiType.first, executorNameAndApiType.second)));
+				events.emplace(std::make_unique<event::UpgradeHttpConnect>(this->createApiWebSocketExecutor(*executorSettings->webSocketExecutorName, executorSettings->apiType)));
 
 				return std::nullopt;
 			}
@@ -488,7 +517,7 @@ namespace framework
 		return std::nullopt;
 	}
 
-	Executor* ExecutorsManager::getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::pair<std::string, std::string>* executorNameAndApiType)
+	Executor* ExecutorsManager::getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings** executorSettings)
 	{
 		HttpRequestImplementation& requestImplementation = *static_cast<HttpRequestImplementation*>(&request);
 		const web::HeadersMap& headers = requestImplementation.parser.getHeaders();
@@ -525,14 +554,13 @@ namespace framework
 		std::string parameters(request.getRawParameters());
 		Executor* executor = nullptr;
 		bool fileRequest = ExecutorsManager::isFileRequest(parameters);
-		utility::JSONSettingsParser::ExecutorSettings* settings = nullptr;
 
 		if (parameters.find('?') != std::string::npos)
 		{
 			parameters.resize(parameters.find('?'));
 		}
 
-		executor = this->getOrCreateExecutor(parameters, request, executors, &settings);
+		executor = this->getOrCreateExecutor(parameters, request, executors, executorSettings);
 
 		if (!fileRequest && !executor)
 		{
@@ -557,12 +585,6 @@ namespace framework
 		{
 			if (this->filterUserAgent(parameters, headers) && this->filterJwt(parameters, headers))
 			{
-				if (executorNameAndApiType)
-				{
-					executorNameAndApiType->first = settings->name;
-					executorNameAndApiType->second = settings->apiType;
-				}
-
 				return executor;
 			}
 			else

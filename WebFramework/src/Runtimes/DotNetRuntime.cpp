@@ -386,11 +386,11 @@ namespace framework::runtime
 		return true;
 	}
 
-	void DotNetRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
+	bool DotNetRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
 	{
 		if (!std::holds_alternative<std::filesystem::path>(source))
 		{
-			utility::logAndThrowException<logging::message::wrongLoadSourceTypeIndex, logging::category::dotnetRuntime>(source.index());
+			return false;
 		}
 
 		const std::filesystem::path& modulePath = std::get<std::filesystem::path>(source);
@@ -399,7 +399,7 @@ namespace framework::runtime
 
 		if (!hasWebSocketExecutor(assemblyQualifiedName.data()))
 		{
-			utility::logAndThrowException<logging::message::cantFindWebSocketExecutor, logging::category::dotnetRuntime>(name);
+			return false;
 		}
 
 		if (Log::isValid())
@@ -408,6 +408,8 @@ namespace framework::runtime
 		}
 
 		assemblyQualifiedNames.emplace(name, std::move(assemblyQualifiedName));
+
+		return true;
 	}
 
 	std::unique_ptr<Executor> DotNetRuntime::createExecutor(std::string_view name) const

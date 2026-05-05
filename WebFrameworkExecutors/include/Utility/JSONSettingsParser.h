@@ -35,7 +35,7 @@ namespace framework::utility
 			std::string name;
 			std::vector<std::string> userAgentFilter;
 			bool requireJwt;
-			bool supportWebSocket;
+			std::optional<std::string> webSocketExecutorName;
 			std::string apiType;
 			LoadType executorLoadType;
 			std::shared_ptr<Executor> resourceExecutor;

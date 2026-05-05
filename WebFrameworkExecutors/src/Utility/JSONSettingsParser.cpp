@@ -22,7 +22,6 @@ namespace framework::utility
 		name(name),
 		executorLoadType(LoadType::none),
 		requireJwt(false),
-		supportWebSocket(false),
 		frameworkInstance(frameworkInstance)
 	{
 
@@ -84,7 +83,15 @@ namespace framework::utility
 			std::erase(executorSettings.userAgentFilter, "");
 
 			description.tryGet<bool>(json_settings::requireJwtKey, executorSettings.requireJwt);
-			description.tryGet<bool>(json_settings::supporWebSocketKey, executorSettings.supportWebSocket);
+
+			{
+				std::string temp;
+
+				if (description.tryGet<std::string>(json_settings::webSocketExecutorNameKey, temp))
+				{
+					executorSettings.webSocketExecutorName = std::move(temp);
+				}
+			}
 
 			if (description[json_settings::routeKey].is<std::string>())
 			{
