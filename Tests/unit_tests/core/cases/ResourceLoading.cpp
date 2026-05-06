@@ -11,7 +11,7 @@
 TEST(ResourceLoading, StreamFile)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	json::JsonBuilder body(CP_UTF8);
+	json::JsonBuilder body;
 
 	{
 		body["fileName"] = "index.html";
@@ -95,7 +95,7 @@ TEST(ResourceLoading, DynamicResources)
 	{
 		std::string request = web::HttpBuilder().postRequest().parameters("dynamic_resources").build
 		(
-			json::JsonBuilder(CP_UTF8).append("data", "Hello, World!")
+			json::JsonBuilder().append("data", "Hello, World!")
 		);
 		std::string response;
 

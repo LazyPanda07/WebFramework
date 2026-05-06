@@ -16,7 +16,7 @@ TEST(Localization, English)
 		streams::IOSocketStream stream = utility::createSocketStream();
 		std::string request = web::HttpBuilder().getRequest().parameters("localization").build
 		(
-			json::JsonBuilder(CP_UTF8).append("language", language)
+			json::JsonBuilder().append("language", language)
 		);
 		std::string response;
 
@@ -43,7 +43,7 @@ TEST(Localization, Russian)
 		streams::IOSocketStream stream = utility::createSocketStream();
 		std::string request = web::HttpBuilder().getRequest().parameters("localization").build
 		(
-			json::JsonBuilder(CP_UTF8).append("language", language)
+			json::JsonBuilder().append("language", language)
 		);
 		std::string response;
 

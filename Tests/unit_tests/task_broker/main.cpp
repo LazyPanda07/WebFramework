@@ -40,12 +40,12 @@ TEST(TaskBroker, Internal)
 			return files;
 		};
 
-	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HttpNetwork>("127.0.0.1", std::to_string(port));
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::http::HttpNetwork>("127.0.0.1", std::to_string(port));
 
 	for (std::string_view endpoint : endpoints)
 	{
 		std::string response;
-		json::JsonBuilder body(CP_UTF8);
+		json::JsonBuilder body;
 
 		body["taskBroker"] = "internal";
 
@@ -95,12 +95,12 @@ TEST(TaskBroker, RabbitMq)
 			return files;
 		};
 
-	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HttpNetwork>("127.0.0.1", std::to_string(port));
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::http::HttpNetwork>("127.0.0.1", std::to_string(port));
 
 	for (std::string_view endpoint : endpoints)
 	{
 		std::string response;
-		json::JsonBuilder body(CP_UTF8);
+		json::JsonBuilder body;
 
 		body["taskBroker"] = "rabbitmq";
 

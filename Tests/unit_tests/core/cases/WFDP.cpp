@@ -18,7 +18,7 @@ TEST(WFDP, Print)
 		"data", "Hello, World!"
 	).build
 	(
-		json::JsonBuilder(CP_UTF8).append("fileName", "print")
+		json::JsonBuilder().append("fileName", "print")
 	);
 	std::string response;
 
@@ -35,7 +35,7 @@ TEST(WFDP, For)
 	std::string request = web::HttpBuilder().getRequest().parameters("wfdp").
 		build
 		(
-			json::JsonBuilder(CP_UTF8).append("fileName", "for")
+			json::JsonBuilder().append("fileName", "for")
 		);
 	std::string response;
 
@@ -52,7 +52,7 @@ TEST(WFDP, Include)
 	std::string request = web::HttpBuilder().getRequest().parameters("wfdp").
 		build
 		(
-			json::JsonBuilder(CP_UTF8).append("fileName", "include")
+			json::JsonBuilder().append("fileName", "include")
 		);
 	std::string response;
 
@@ -76,7 +76,7 @@ TEST(WFDP, CustomFunction)
 			"third", "45"
 		).build
 		(
-			json::JsonBuilder(CP_UTF8).append("fileName", "custom_function")
+			json::JsonBuilder().append("fileName", "custom_function")
 		);
 		std::string response;
 
