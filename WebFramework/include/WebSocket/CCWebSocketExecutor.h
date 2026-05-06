@@ -20,7 +20,7 @@ namespace framework::web_socket
 	public:
 		CCWebSocketExecutor(HMODULE module, void* implementation, std::string_view executorName);
 
-		web::web_socket::Frame onReceive(const web::web_socket::Frame& frame) override;
+		std::optional<web::web_socket::Frame> onReceive(const web::web_socket::Frame& frame) override;
 
 		~CCWebSocketExecutor();
 	};

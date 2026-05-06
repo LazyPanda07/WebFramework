@@ -4,7 +4,7 @@
 #include <HttpParser.h>
 #include <JsonParser.h>
 
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 
 #include "utilities.h"
 
@@ -164,7 +164,7 @@ TEST(RoutePattern, PassingValues)
 {
 	using namespace std::chrono_literals;
 
-	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::HttpsNetwork>("127.0.0.1", "20000", 1h);
+	streams::IOSocketStream stream = streams::IOSocketStream::createStream<web::http::HttpsNetwork>("127.0.0.1", "20000", 1h);
 	std::string request;
 	std::string response;
 

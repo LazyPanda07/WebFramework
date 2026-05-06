@@ -20,16 +20,19 @@ namespace framework::serve_loop
 
 		for (const web::web_socket::Frame& inputFrame : inputFrames)
 		{
-			web::web_socket::Frame outputFrame = executor->onReceive(inputFrame);
+			std::optional<web::web_socket::Frame> outputFrame = executor->onReceive(inputFrame);
 
 			if (inputFrame.getFrameOpcode() == web::web_socket::Frame::OpcodeType::close)
 			{
 				return true;
 			}
 
-			stream << outputFrame;
+			if (outputFrame)
+			{
+				stream << *outputFrame;
+			}
 
-			if (outputFrame.getFrameOpcode() == web::web_socket::Frame::OpcodeType::close)
+			if (outputFrame && outputFrame->getFrameOpcode() == web::web_socket::Frame::OpcodeType::close)
 			{
 				return true;
 			}

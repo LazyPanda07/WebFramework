@@ -45,7 +45,7 @@ namespace registrar
 
 					case framework::WebSocketExecutor::Frame::Type::binary:
 						return py::bytes(result);
-					
+
 					default:
 						throw std::runtime_error(std::format("Wrong type: {}", static_cast<int>(self.getType())));
 					}
@@ -75,29 +75,33 @@ namespace registrar
 			.def("__bool__", &framework::WebSocketExecutor::Frame::operator bool);
 
 		py::class_<framework::WebSocketExecutor, framework::PyWebSocketExecutor>(m, "WebSocketExecutor")
+			.def(py::init())
 			.def
 			(
 				"on_receive",
-				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame) -> std::variant<std::string, py::bytes>
+				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame) -> std::optional<std::variant<std::string, py::bytes>>
 				{
-					std::variant<std::string, std::vector<uint8_t>> result = self.onReceive(frame);
+					std::optional<std::variant<std::string, py::bytes>> data;
 
-					if (std::holds_alternative<std::string>(result))
+					if (std::optional<std::variant<std::string, std::vector<uint8_t>>> result = self.onReceive(frame))
 					{
-						return std::get<std::string>(result);
+						if (std::holds_alternative<std::string>(*result))
+						{
+							data.emplace(std::get<std::string>(*result));
+						}
+						else if (std::holds_alternative<std::vector<uint8_t>>(*result))
+						{
+							const std::vector<uint8_t>& temp = std::get<std::vector<uint8_t>>(*result);
+
+							data.emplace(py::bytes(std::string_view(reinterpret_cast<const char*>(temp.data()), temp.size())));
+						}
+						else
+						{
+							throw std::runtime_error(std::format("Wrong result index: {}", result->index()));
+						}
 					}
-					else if (std::holds_alternative<std::vector<uint8_t>>(result))
-					{
-						const std::vector<uint8_t>& temp = std::get<std::vector<uint8_t>>(result);
 
-						return py::bytes(std::string_view(reinterpret_cast<const char*>(temp.data()), temp.size()));
-					}
-
-					throw std::runtime_error(std::format("Wrong result index: {}", result.index()));
-
-					using namespace std::string_literals;
-
-					return ""s;
+					return data;
 				},
 				"frame"_a
 			);

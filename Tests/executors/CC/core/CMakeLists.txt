@@ -15,6 +15,7 @@ add_library(
 	src/DynamicResources.c
 	src/TokenExecutor.c
 	src/TokenGiverExecutor.c
+	src/WebSocketEcho.c
 )
 
 target_link_libraries(

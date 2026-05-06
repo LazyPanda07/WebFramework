@@ -2,5 +2,5 @@
 
 public abstract class WebSocketExecutor
 {
-	public abstract FramePayload OnReceive(Frame frame);
+	public abstract FramePayload? OnReceive(Frame frame);
 }

@@ -10,9 +10,9 @@ namespace framework::web_socket
 
 	}
 
-	web::web_socket::Frame CCWebSocketExecutor::onReceive(const web::web_socket::Frame& frame)
+	std::optional<web::web_socket::Frame> CCWebSocketExecutor::onReceive(const web::web_socket::Frame& frame)
 	{
-		web::web_socket::Frame data;
+		std::optional<web::web_socket::Frame> data;
 
 		onReceiveFunction(implementation, &const_cast<web::web_socket::Frame&>(frame), &WebSocketExecutor::defaultSendData, &data);
 

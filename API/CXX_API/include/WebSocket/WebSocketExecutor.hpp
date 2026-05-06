@@ -2,6 +2,7 @@
 
 #include <span>
 #include <variant>
+#include <optional>
 
 #include "DLLHandler.hpp"
 
@@ -38,7 +39,7 @@ namespace framework
 	public:
 		WebSocketExecutor() = default;
 
-		virtual std::variant<std::string, std::vector<uint8_t>> onReceive(const Frame& frame) = 0;
+		virtual std::optional<std::variant<std::string, std::vector<uint8_t>>> onReceive(const Frame& frame) = 0;
 
 		virtual ~WebSocketExecutor() = default;
 	};
@@ -102,26 +103,29 @@ WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceiv
 {
 	framework::WebSocketExecutor::Frame frameWrapper(frame);
 
-	std::variant<std::string, std::vector<uint8_t>> data = static_cast<framework::WebSocketExecutor*>(implementation)->onReceive(frameWrapper);
+	std::optional<std::variant<std::string, std::vector<uint8_t>>> data = static_cast<framework::WebSocketExecutor*>(implementation)->onReceive(frameWrapper);
 	const uint8_t* ptr = nullptr;
 	uint64_t size = 0;
 	framework::WebSocketExecutor::Frame::Type type = framework::WebSocketExecutor::Frame::Type::binary;
 
-	if (std::holds_alternative<std::string>(data))
+	if (data)
 	{
-		const std::string& temp = std::get<std::string>(data);
+		if (std::holds_alternative<std::string>(*data))
+		{
+			const std::string& temp = std::get<std::string>(*data);
 
-		ptr = reinterpret_cast<const uint8_t*>(temp.data());
-		size = temp.size();
-		type = framework::WebSocketExecutor::Frame::Type::text;
-	}
-	else if (std::holds_alternative<std::vector<uint8_t>>(data))
-	{
-		const std::vector<uint8_t>& temp = std::get<std::vector<uint8_t>>(data);
+			ptr = reinterpret_cast<const uint8_t*>(temp.data());
+			size = temp.size();
+			type = framework::WebSocketExecutor::Frame::Type::text;
+		}
+		else if (std::holds_alternative<std::vector<uint8_t>>(*data))
+		{
+			const std::vector<uint8_t>& temp = std::get<std::vector<uint8_t>>(*data);
 
-		ptr = reinterpret_cast<const uint8_t*>(temp.data());
-		size = temp.size();
-		type = framework::WebSocketExecutor::Frame::Type::binary;
+			ptr = reinterpret_cast<const uint8_t*>(temp.data());
+			size = temp.size();
+			type = framework::WebSocketExecutor::Frame::Type::binary;
+		}
 	}
 
 	sendData(ptr, size, static_cast<int32_t>(type), additionalData);

@@ -174,3 +174,8 @@ class TokenGiverExecutor(StatelessExecutor):
         response.set_body({
             "token": token
         })
+
+
+class WebSocketEcho(WebSocketExecutor):
+    def on_receive(self, frame):
+        return frame.get_payload()

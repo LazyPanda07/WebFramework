@@ -19,6 +19,7 @@ add_executable(
 	cases/ResourceUploading.cpp
 	cases/Redis.cpp
 	cases/Token.cpp
+	cases/WebSocketEcho.cpp
 )
 
 target_include_directories(

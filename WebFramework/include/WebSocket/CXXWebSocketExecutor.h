@@ -20,7 +20,7 @@ namespace framework::web_socket
 	public:
 		CXXWebSocketExecutor(HMODULE module, void* implementation);
 
-		web::web_socket::Frame onReceive(const web::web_socket::Frame& frame) override;
+		std::optional<web::web_socket::Frame> onReceive(const web::web_socket::Frame& frame) override;
 
 		~CXXWebSocketExecutor();
 	};

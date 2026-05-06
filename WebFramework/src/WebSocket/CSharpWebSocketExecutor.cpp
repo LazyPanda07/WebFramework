@@ -13,7 +13,7 @@ namespace framework::web_socket
 
 	}
 
-	web::web_socket::Frame CSharpWebSocketExecutor::onReceive(const web::web_socket::Frame& frame)
+	std::optional<web::web_socket::Frame> CSharpWebSocketExecutor::onReceive(const web::web_socket::Frame& frame)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
 		web::web_socket::Frame data;

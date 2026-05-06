@@ -14,7 +14,7 @@ namespace framework::web_socket
 	public:
 		CSharpWebSocketExecutor(void* implementation);
 
-		web::web_socket::Frame onReceive(const web::web_socket::Frame& frame) override;
+		std::optional<web::web_socket::Frame> onReceive(const web::web_socket::Frame& frame) override;
 
 		~CSharpWebSocketExecutor();
 	};

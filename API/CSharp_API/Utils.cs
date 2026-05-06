@@ -591,7 +591,12 @@ public static partial class Utils
 		}
 
 		Frame frameWrapper = new(frame);
-		FramePayload payload = webSocketExecutor.OnReceive(frameWrapper);
+		FramePayload? payload = webSocketExecutor.OnReceive(frameWrapper);
+
+		if (payload == null)
+		{
+			return;
+		}
 
 		unsafe
 		{

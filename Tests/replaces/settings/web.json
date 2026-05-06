@@ -5,7 +5,8 @@
     "api": "{API_TYPE}",
     "initParameters": {
       "number": 890
-    }
+    },
+    "webSocketExecutorName": "WebSocketEcho"
   },
   "CRUDExecutor": {
     "route": "database",

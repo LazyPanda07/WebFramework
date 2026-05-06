@@ -37,19 +37,19 @@ WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteWebSocketExecutor##struct_n
  * Create on receive function
  * @param struct_name web_socket_executor_t name
  */
-#define DEFINE_WEB_SOCKET_EXECUTOR_ON_RECEIVE(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCWebSocketExecutorOnReceive##struct_name(web_socket_executor_t executor, web_socket_frame_t frame, void(*send_data)(const uint8_t* data, uint64_t size, int32_t type, void* additionalData), void* additionalData)
+#define DEFINE_WEB_SOCKET_EXECUTOR_ON_RECEIVE(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCWebSocketExecutorOnReceive##struct_name(web_socket_executor_t executor, web_socket_frame_t frameImplementation, void(*send_data)(const uint8_t* data, uint64_t size, int32_t type, void* additionalData), void* additionalData)
 
 #define WF_GET_WEB_SOCKET_EXECUTOR(struct_name) ((*struct_name)executor)
 
-#define WF_GET_WEB_SOCKET_FRAME() ((web_socket_frame_t)frame)
+#define WF_GET_WEB_SOCKET_FRAME() ((web_socket_frame_t)frameImplementation)
 
 /**
  * Send WebSocket frame
- * @param data Payload in const uint8_t*
+ * @param data Payload in const char* or NULL
  * @param size Size in bytes of data
  * @param type web_socket_frame_type_t
 */
-#define WF_SEND_WEB_SOCKET_FRAME(data, size, type) send_data(data, size, (int32_t)type, additionalData)
+#define WF_SEND_WEB_SOCKET_FRAME(data, size, type) send_data((const uint8_t*)data, size, (int32_t)type, additionalData)
 
 /**
  * @brief Get payload from WebSocket frame
