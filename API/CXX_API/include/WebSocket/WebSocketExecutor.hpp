@@ -16,8 +16,12 @@ namespace framework
 		public:
 			enum class Type
 			{
+				continuation = 0x0,
 				text = 0x1,
-				binary = 0x2
+				binary = 0x2,
+				close = 0x8,
+				ping = 0x9,
+				pong = 0xA
 			};
 
 		private:

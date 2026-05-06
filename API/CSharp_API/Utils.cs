@@ -603,7 +603,12 @@ public static partial class Utils
 			byte[] bytes;
 			Frame.Type type;
 
-			if (payload is FramePayload.TextFramePayload text)
+			if (payload is FramePayload.ContinuationFramePayload continuation)
+			{
+				bytes = Encoding.UTF8.GetBytes(continuation.Payload);
+				type = Frame.Type.continuation;
+			}
+			else if (payload is FramePayload.TextFramePayload text)
 			{
 				bytes = Encoding.UTF8.GetBytes(text.Payload);
 				type = Frame.Type.text;
@@ -612,6 +617,21 @@ public static partial class Utils
 			{
 				bytes = [.. binary.Payload];
 				type = Frame.Type.binary;
+			}
+			else if (payload is FramePayload.CloseFramePayload close)
+			{
+				bytes = Encoding.UTF8.GetBytes(close.Payload);
+				type = Frame.Type.close;
+			}
+			else if (payload is FramePayload.PingFramePayload ping)
+			{
+				bytes = Encoding.UTF8.GetBytes(ping.Payload);
+				type = Frame.Type.ping;
+			}
+			else if (payload is FramePayload.PongFramePayload pong)
+			{
+				bytes = Encoding.UTF8.GetBytes(pong.Payload);
+				type = Frame.Type.pong;
 			}
 			else
 			{

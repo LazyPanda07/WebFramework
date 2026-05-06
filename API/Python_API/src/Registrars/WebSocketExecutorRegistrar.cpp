@@ -15,8 +15,12 @@ namespace registrar
 		py::class_<framework::WebSocketExecutor::Frame> frameClass(m, "Frame");
 
 		py::enum_<framework::WebSocketExecutor::Frame::Type>(frameClass, "FrameType")
+			.value("CONTINUATION", framework::WebSocketExecutor::Frame::Type::continuation)
 			.value("TEXT", framework::WebSocketExecutor::Frame::Type::text)
 			.value("BINARY", framework::WebSocketExecutor::Frame::Type::binary)
+			.value("CLOSE", framework::WebSocketExecutor::Frame::Type::close)
+			.value("PING", framework::WebSocketExecutor::Frame::Type::ping)
+			.value("PONG", framework::WebSocketExecutor::Frame::Type::pong)
 			.export_values();
 
 		frameClass
@@ -40,7 +44,11 @@ namespace registrar
 
 					switch (self.getType())
 					{
+					case framework::WebSocketExecutor::Frame::Type::continuation:
 					case framework::WebSocketExecutor::Frame::Type::text:
+					case framework::WebSocketExecutor::Frame::Type::close:
+					case framework::WebSocketExecutor::Frame::Type::ping:
+					case framework::WebSocketExecutor::Frame::Type::pong:
 						return std::string(result);
 
 					case framework::WebSocketExecutor::Frame::Type::binary:

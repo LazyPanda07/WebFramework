@@ -151,6 +151,7 @@ namespace framework::logging
 		inline constexpr char webFramework[] = "LogWebFramework";
 		inline constexpr char singleBinaryAsset[] = "LogSingleBinaryAsset";
 		inline constexpr char httpRequest[] = "LogHttpRequest";
+		inline constexpr char webSocket[] = "LogWebSocket";
 	}
 
 	namespace message
@@ -278,5 +279,6 @@ namespace framework::logging
 		inline constexpr char addBinaryAsset[] = "Add binary asset: {}, fully load: {}";
 		inline constexpr char jwtSecretVariable[] = "Use secret from variable: {}";
 		inline constexpr char userAgentFilterValue[] = "Add User-Agent filter: {}";
+		inline constexpr char wrongControlFrameSize[] = "Wrong size {} of control frame {}";
 	}
 }

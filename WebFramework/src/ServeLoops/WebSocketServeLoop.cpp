@@ -16,10 +16,21 @@ namespace framework::serve_loop
 			return true;
 		}
 
-		// TODO: ping, pong, close from onReceive
-
 		for (const web::web_socket::Frame& inputFrame : inputFrames)
 		{
+			if (inputFrame.getFrameOpcode() == web::web_socket::Frame::OpcodeType::ping)
+			{
+				web::web_socket::Frame pong(true, web::web_socket::Frame::OpcodeType::pong, "");
+
+				stream << pong;
+
+				continue;
+			}
+			else if (inputFrame.getFrameOpcode() == web::web_socket::Frame::OpcodeType::pong)
+			{
+				continue;
+			}
+
 			std::optional<web::web_socket::Frame> outputFrame = executor->onReceive(inputFrame);
 
 			if (inputFrame.getFrameOpcode() == web::web_socket::Frame::OpcodeType::close)

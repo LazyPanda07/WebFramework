@@ -48,7 +48,11 @@ namespace framework::web_socket
 			throw std::runtime_error(std::format("Wrong type: {}", py::repr(result).cast<std::string>()));
 		}
 
-		return web::web_socket::Frame(true, type, data);
+		uint64_t size = data.size();
+
+		WebSocketExecutor::fixControlFrame(size, static_cast<int32_t>(type));
+
+		return web::web_socket::Frame(true, type, std::string_view(data.data(), size));
 	}
 
 	PythonWebSocketExecutor::~PythonWebSocketExecutor()
