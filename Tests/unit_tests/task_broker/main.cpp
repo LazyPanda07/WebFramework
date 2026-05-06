@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 
 #include <IOSocketStream.h>
-#include <HttpNetwork.h>
+#include <Http/HttpNetwork.h>
 #include <HttpBuilder.h>
 #include <HttpParser.h>
 
