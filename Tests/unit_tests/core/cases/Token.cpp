@@ -27,7 +27,7 @@ TEST(Token, GetToken)
 
 	web::HttpParser parser(response);
 
-	ASSERT_EQ(parser.getResponseCode(), 200);
+	ASSERT_EQ(parser.getResponseCode(), 200) << "Request: " << request << std::endl << "Response: " << parser;
 
 	token = parser.getJson().get<std::string>("token");
 }

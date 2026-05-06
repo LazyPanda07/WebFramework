@@ -595,11 +595,6 @@ namespace framework
 			return nullptr;
 		}
 
-		if (Log::isValid())
-		{
-			Log::getInstance() += std::format("Token: {}, secret name: {}, value: {}", token, serverReference.getFrameworkInstance().getJwtSecretName(), utility::getEnvironmentVariable(serverReference.getFrameworkInstance().getJwtSecretName()));
-		}
-
 		auto decodedToken = jwt::decode(token);
 		auto verifier = jwt::verify()
 			.allow_algorithm(jwt::algorithm::hs256(utility::getEnvironmentVariable(serverReference.getFrameworkInstance().getJwtSecretName())));
@@ -611,6 +606,8 @@ namespace framework
 		{
 			if (Log::isValid())
 			{
+				Log::error<logging::message::cantVerifyJwt, logging::category::httpRequest>(code.message());
+
 				Log::getInstance() += std::format("JWT error: {}", code.message());
 			}
 

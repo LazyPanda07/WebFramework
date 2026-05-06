@@ -26,50 +26,52 @@ namespace framework
 			{
 				std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> threadPoolFunction = server.executorsManager->service(request, response, executors, events);
 
-				if (threadPoolFunction)
+				if (!threadPoolFunction)
 				{
-					isBusy = true;
+					return;
+				}
 
-					server.threadPool.addTask
-					(
-						[this, &server, &request, &response, threadPoolFunction = std::move(threadPoolFunction)]() mutable
+				isBusy = true;
+
+				server.threadPool.addTask
+				(
+					[this, &server, &request, &response, threadPoolFunction = std::move(threadPoolFunction)]() mutable
+					{
+						streams::IOSocketStream& stream = loop->getStream();
+
+						ServiceState state = ExecutorServer::serveTask
+						(
+							stream, request, response, *server.resources,
+							[&request, &response, &threadPoolFunction](ServiceState& _)
+							{
+								(*threadPoolFunction)(request, response);
+							}
+						);
+
+						if (state == ServiceState::success && response)
 						{
-							streams::IOSocketStream& stream = loop->getStream();
-
-							ServiceState state = ExecutorServer::serveTask
+							state = ExecutorServer::serveTask
 							(
 								stream, request, response, *server.resources,
-								[&request, &response, &threadPoolFunction](ServiceState& _)
+								[this, &stream, &response, &threadPoolFunction](ServiceState& _)
 								{
-									(*threadPoolFunction)(request, response);
+									stream << response;
 								}
 							);
-
-							if (state == ServiceState::success && response)
-							{
-								state = ExecutorServer::serveTask
-								(
-									stream, request, response, *server.resources,
-									[this, &stream, &response, &threadPoolFunction](ServiceState& _)
-									{
-										stream << response;
-									}
-								);
-							}
-
-							if (state == ServiceState::error)
-							{
-								webExceptionAcquired = true;
-							}
-						},
-						[this]() mutable
-						{
-							isBusy = false;
 						}
-					);
 
-					state = ServiceState::skipResponse;
-				}
+						if (state == ServiceState::error)
+						{
+							webExceptionAcquired = true;
+						}
+					},
+					[this]() mutable
+					{
+						isBusy = false;
+					}
+				);
+
+				state = ServiceState::skipResponse;
 			};
 
 		loop = std::make_unique<serve_loop::HttpServeLoop>
@@ -99,16 +101,24 @@ namespace framework
 	)
 	{
 		streams::IOSocketStream& stream = loop->getStream();
-		const web::http::HttpNetwork& network = stream.getNetwork<web::http::HttpNetwork>();
-		
+		const web::Network& network = stream.getNetwork<web::Network>();
+
 		if (stream.eof() || webExceptionAcquired)
 		{
 			return true;
 		}
 
-		if (isBusy || network.getLargeBodyHandler().isRunning())
+		if (isBusy)
 		{
 			return false;
+		}
+
+		if (const web::http::HttpNetwork* httpNetwork = dynamic_cast<const web::http::HttpNetwork*>(&network))
+		{
+			if (httpNetwork->getLargeBodyHandler().isRunning())
+			{
+				return false;
+			}
 		}
 
 		if (!network.isDataAvailable())
@@ -198,7 +208,7 @@ namespace framework
 					address,
 					std::move(cleanup),
 					&ExecutorServer::serveTask,
-					*this, 
+					*this,
 					timeout
 				)
 			);

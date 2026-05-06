@@ -150,6 +150,7 @@ namespace framework::logging
 		inline constexpr char executorServer[] = "LogExecutorServer";
 		inline constexpr char webFramework[] = "LogWebFramework";
 		inline constexpr char singleBinaryAsset[] = "LogSingleBinaryAsset";
+		inline constexpr char httpRequest[] = "LogHttpRequest";
 	}
 
 	namespace message
@@ -246,6 +247,7 @@ namespace framework::logging
 		inline constexpr char forbiddenMessage[] = "Forbidden response to client request. {}";
 		inline constexpr char cantFindJwtSecret[] = "Can't find JWT secret: {}, fallback to: {}";
 		inline constexpr char missingWebSocketExecutors[] = "Missing WebSocket executors: {}";
+		inline constexpr char cantVerifyJwt[] = "Can't verify JWT with error: {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
 		inline constexpr char requestStaticFile[] = "Request static file: {}";

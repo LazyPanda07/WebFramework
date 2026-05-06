@@ -161,15 +161,6 @@ class TokenGiverExecutor(StatelessExecutor):
         },
             60
         )
-        second_token = create_jwt({
-            "userName": request.get_json()["userName"]
-        },
-            60,
-            request.get_web_framework_instance()
-        )
-
-        if token != second_token:
-            request.throw_exception("Failed to generate equal token", ResponseCodes.INTERNAL_SERVER_ERROR)
 
         response.set_body({
             "token": token

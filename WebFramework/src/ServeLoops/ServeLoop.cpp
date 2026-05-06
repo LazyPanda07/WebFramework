@@ -4,13 +4,11 @@ namespace framework::serve_loop
 {
 	bool ServeLoop::runLoop(std::unique_ptr<ServeLoop>& loop, std::queue<std::unique_ptr<event::ServeEvent>>& events)
 	{
-		streams::IOSocketStream& stream = loop->getStream();
-
 		while (events.size())
 		{
 			std::unique_ptr<event::ServeEvent> event = std::move(events.front());
-
-			(*event)(stream, loop);
+			
+			(*event)(loop->getStream(), loop);
 
 			events.pop();
 		}

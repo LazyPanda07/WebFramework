@@ -137,7 +137,7 @@ if (UNIX)
 	add_definitions(-D__LINUX__)
 	target_compile_options(
 		${PROJECT_NAME} PRIVATE
-		-fvisibility=hidden
+		# -fvisibility=hidden
 		-fno-omit-frame-pointer
 	)
 	
@@ -156,7 +156,10 @@ if (UNIX)
 
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
 	else()
-		add_link_options(-rdynamic)
+		target_link_options(
+			${PROJECT_NAME} PRIVATE
+			-rdynamic
+		)
 	endif()
 elseif (WIN32)
 	add_definitions(-DNOMINMAX)
