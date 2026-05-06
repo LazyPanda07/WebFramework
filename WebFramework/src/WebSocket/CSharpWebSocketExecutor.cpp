@@ -16,7 +16,7 @@ namespace framework::web_socket
 	std::optional<web::web_socket::Frame> CSharpWebSocketExecutor::onReceive(const web::web_socket::Frame& frame)
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
-		web::web_socket::Frame data;
+		std::optional<web::web_socket::Frame> data;
 
 		runtime.getCallOnReceive()(implementation, &const_cast<web::web_socket::Frame&>(frame), &WebSocketExecutor::defaultSendData, &data);
 

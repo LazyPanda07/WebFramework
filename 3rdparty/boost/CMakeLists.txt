@@ -32,9 +32,9 @@ if (NOT ${Boost_FOUND})
 endif()
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-    list(APPEND ADDITIONAL_LIBS Boost::stacktrace_backtrace dl backtrace)
+    list(APPEND ADDITIONAL_LIBS boost_stacktrace_backtrace dl backtrace)
 elseif(WIN32)
-    list(APPEND ADDITIONAL_LIBS Boost::stacktrace_windbg Dbghelp)
+    list(APPEND ADDITIONAL_LIBS boost_stacktrace_windbg Dbghelp)
 endif()
 
 set(ADDITIONAL_LIBS ${ADDITIONAL_LIBS} CACHE INTERNAL "")
