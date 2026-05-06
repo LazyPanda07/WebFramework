@@ -1,7 +1,7 @@
 ﻿# WebFramework
 * C++ HTTP/HTTPS server
 * Multi language API
-* Server can be launched from ```C++```, ```C```, ```Python```, ```C#```, ```Flutter(Dart)```
+* Server can be launched from ```C++```, ```C```, ```Python```, ```C#```, ```Flutter/Dart```
 * Endpoints can be served from ```C++```, ```C```, ```Python```, ```C#```
 
 
@@ -18,12 +18,12 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 | C              | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> |
 | C#             | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     |
 | Python         | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     |
-| Flutter(Dart)  | <img src="icons/check.svg">                                                           | <img src="icons/x.svg">                                                         | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     | <img src="icons/check.svg"> |
+| Flutter/Dart   | <img src="icons/check.svg">                                                           | <img src="icons/x.svg">                                                         | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     | <img src="icons/check.svg"> |
 
 
 ## Build Requirements
 * CMake >= 3.27.0
-* Compiler with C++20 support(MSVC, GCC, Clang)
+* Compiler with C++23 support(MSVC, GCC, Clang)
 * With Python embed requires ```Python >= 3.12```
 * With .NET embed requires ```.NET 10.0```
 ### Windows
@@ -61,4 +61,11 @@ You can use this repositories as templates with [cookiecutter](https://github.co
 **NOTE**
 
 .NET 10.0 requires ```hostfxr.dll``` in ```PATH``` for Windows and ```libhostfxr.so``` in ```LD_LIBRARY_PATH``` for Linux
+---
+
+
+---
+**NOTE**
+
+Python requires shared library build and web_framework_api installed in system Python packages
 ---

@@ -100,10 +100,7 @@ namespace framework
 		threading::ThreadPool& threadPool
 	)
 	{
-		streams::IOSocketStream& stream = loop->getStream();
-		const web::Network& network = stream.getNetwork<web::Network>();
-
-		if (stream.eof() || webExceptionAcquired)
+		if (loop->getStream().eof() || webExceptionAcquired)
 		{
 			return true;
 		}
@@ -113,7 +110,7 @@ namespace framework
 			return false;
 		}
 
-		if (const web::http::HttpNetwork* httpNetwork = dynamic_cast<const web::http::HttpNetwork*>(&network))
+		if (const web::http::HttpNetwork* httpNetwork = dynamic_cast<const web::http::HttpNetwork*>(&loop->getStream()))
 		{
 			if (httpNetwork->getLargeBodyHandler().isRunning())
 			{
@@ -121,12 +118,12 @@ namespace framework
 			}
 		}
 
-		if (!network.isDataAvailable())
+		if (!loop->getStream().getNetwork().isDataAvailable())
 		{
 			return false;
 		}
 
-		return serve_loop::ServeLoop::runLoop(loop, events) || stream.eof();
+		return serve_loop::ServeLoop::runLoop(loop, events) || loop->getStream().eof();
 	}
 
 	ThreadPoolWebServer::Client::~Client()

@@ -15,7 +15,7 @@ namespace framework::serve_loop
 	{
 	public:
 		/**
-		 * @brief Loop some serve actions
+		 * @brief Run all events that may change loop, loop some serve actions
 		 * @return true if finished
 		 */
 		static bool runLoop(std::unique_ptr<ServeLoop>& loop, std::queue<std::unique_ptr<event::ServeEvent>>& events);
