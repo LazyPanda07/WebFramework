@@ -6,8 +6,8 @@ on:
 
 
 env:
-  deb-package-version: 3.3.7
-  deb-package-release-number: 21
+  deb-package-version: 3.4.0
+  deb-package-release-number: 22
   PYTHON_VERSION: 3.14
   TWINE_PYTHON_VERSION: 3.13
 
@@ -18,11 +18,11 @@ jobs:
       matrix:
         config: 
         - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 12, python-patch: 13 }
-        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 13, python-patch: 12 }
-        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 14, python-patch: 3 }
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 13, python-patch: 13 }
+        - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 14, python-patch: 4 }
         - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 12, python-patch: 13 }
-        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 13, python-patch: 12 }
-        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 14, python-patch: 3 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 13, python-patch: 13 }
+        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 14, python-patch: 4 }
 
     uses: ./.github/workflows/reusable_build_wheel.yml
     with: 
