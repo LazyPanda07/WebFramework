@@ -411,6 +411,7 @@
                     <div class="platforms" role="radiogroup" aria-label="Platform">
                         <button class="plat-btn" data-val="windows" role="radio" aria-pressed="false">Windows</button>
                         <button class="plat-btn" data-val="linux" role="radio" aria-pressed="false">Linux</button>
+                        <button class="plat-btn" data-val="linux-arm" role="radio" aria-pressed="false">LinuxARM</button>
                     </div>
                 </div>
 
@@ -466,7 +467,7 @@
                     <div class="flex-download">
                         <div>
                             <span class="label" style="margin-bottom: 4px;">⬇️ GitHub Asset</span>
-                            <div class="meta" style="margin-top: 0;">min version 3.3 · latest patch per version</div>
+                            <div class="meta" style="margin-top: 0;">min version 3.4 · latest patch per version</div>
                         </div>
                         <span class="badge-version" id="dynamicVersionBadge">loading...</span>
                     </div>
@@ -541,7 +542,7 @@
         let isLoadingVersions = true;
 
         const MIN_MAJOR = 3;
-        const MIN_MINOR = 3;
+        const MIN_MINOR = 4;
 
         /* parse version from tag (vX.Y.Z) */
         function parseVersionFromTag(tag) {
@@ -573,7 +574,7 @@
                 const releases = await response.json();
                 if (!Array.isArray(releases)) throw new Error('Invalid response');
 
-                // Filter: stable releases only (no draft, no prerelease), valid tag, meets >=3.3
+                // Filter: stable releases only (no draft, no prerelease), valid tag, meets >=3.4
                 const validReleases = releases.filter(rel => {
                     if (rel.draft === true) return false;
                     if (rel.prerelease === true) return false;
@@ -622,13 +623,6 @@
                 return releasesList;
             } catch (err) {
                 console.warn('Failed to fetch releases:', err);
-                versionFetchStatus.textContent = '⚠️ fallback: using static v3.3.5';
-                // Fallback: provide only v3.3.5 (latest patch for 3.3)
-                const fallbackTag = 'v3.3.5';
-                const fallbackVersion = parseVersionFromTag(fallbackTag);
-                if (fallbackVersion && meetsMinVersion(fallbackVersion)) {
-                    return [{ tag: fallbackTag, versionObject: fallbackVersion, displayLabel: '3.3.5' }];
-                }
                 return [];
             }
         }
@@ -639,7 +633,7 @@
             if (!releases.length) {
                 const opt = document.createElement('option');
                 opt.value = '';
-                opt.textContent = 'No valid releases (>=3.3)';
+                opt.textContent = 'No valid releases (>=3.4)';
                 releaseVersionSelect.appendChild(opt);
                 releaseVersionSelect.disabled = true;
                 dynamicVersionBadge.textContent = 'none';
@@ -672,17 +666,10 @@
             if (latestPatchReleases.length > 0) {
                 populateVersionSelect(latestPatchReleases);
             } else {
-                // final fallback: v3.3.5
-                const fallback = { tag: 'v3.3.5', versionObject: parseVersionFromTag('v3.3.5'), displayLabel: '3.3.5' };
-                if (fallback.versionObject && meetsMinVersion(fallback.versionObject)) {
-                    latestPatchReleases = [fallback];
-                    populateVersionSelect(latestPatchReleases);
-                } else {
-                    releaseVersionSelect.innerHTML = '<option value="">Unavailable</option>';
-                    releaseVersionSelect.disabled = true;
-                    dynamicVersionBadge.textContent = 'error';
-                    versionFetchStatus.textContent = '❌ failed to load';
-                }
+                releaseVersionSelect.innerHTML = '<option value="">Unavailable</option>';
+                releaseVersionSelect.disabled = true;
+                dynamicVersionBadge.textContent = 'error';
+                versionFetchStatus.textContent = '❌ failed to load';
             }
             isLoadingVersions = false;
             updateUI(); // refresh download area
@@ -749,7 +736,7 @@
             const csharpState = (csharpApiCheckbox && csharpApiCheckbox.checked) ? "ON" : "OFF";
             const cState = (cApiCheckbox && cApiCheckbox.checked) ? "ON" : "OFF";
 
-            const platformPretty = state.platform === 'windows' ? 'Windows' : 'Linux';
+            const platformPretty = state.platform === 'windows' ? 'Windows' : state.platform === 'linux' ? 'Linux' : 'LinuxARM';
             const pyVersion = state.pythonVersion;
             return `${platformPretty}-WITH_PYTHON_EXECUTORS.${pythonExecState}-BUILD_PYTHON_API.${pythonApiState}-${pyVersion}-WITH_DOTNET_EXECUTORS.${dotnetExecState}-BUILD_CSHARP_API.${csharpState}-BUILD_CC_API.${cState}.zip`;
         }
@@ -776,7 +763,7 @@
 
             if (!platformSelected || !filename || !isVersionReady) {
                 downloadBtn.disabled = true;
-                if (!platformSelected) downloadLinkPreviewSpan.innerHTML = '⚠️ Select a platform (Windows/Linux) to generate asset link';
+                if (!platformSelected) downloadLinkPreviewSpan.innerHTML = '⚠️ Select a platform (Windows/Linux/LinuxARM) to generate asset link';
                 else if (!isVersionReady) downloadLinkPreviewSpan.innerHTML = '⏳ Loading release versions...';
                 else downloadLinkPreviewSpan.innerHTML = '⚠️ Incomplete configuration';
                 return;
@@ -798,7 +785,7 @@
             const cmd = buildCommand(s);
             generatedEl.textContent = cmd;
 
-            pval.textContent = s.platform ? (s.platform === 'windows' ? 'Windows' : 'Linux') : '—';
+            pval.textContent = s.platform ? (s.platform === 'windows' ? 'Windows' : s.platform === 'linux' ? 'Linux' : 'LinuxARM') : '—';
             aval.textContent = s.apis.length ? s.apis.filter(v => v.checked).map(v => v.content).join(', ') : '—';
             fval.textContent = s.features.length ? s.features.filter(v => v.checked).map(v => v.content).join(', ') : '—';
 
