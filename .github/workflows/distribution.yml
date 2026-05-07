@@ -160,7 +160,6 @@ jobs:
           cp deb_packages/web-framework/DEBIAN/copyright web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/share/doc/web-framework
           mv deb_packages/web-framework/DEBIAN web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
           cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/lib/*.so web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/lib
-          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/WebFrameworkAssets web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/localization_modules.json web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           echo "/usr/lib/web-framework/lib" > web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d/web-framework.conf
           dpkg --build web-framework_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
@@ -183,7 +182,6 @@ jobs:
           cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/WebFrameworkConfig.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/FindWebFramework.cmake web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/cmake/* web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework/cmake
-          cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/WebFrameworkAssets web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           cp -r Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=ON/localization_modules.json web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/usr/lib/web-framework
           echo "/usr/lib/web-framework/lib" > web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64/etc/ld.so.conf.d/web-framework-dev.conf
           dpkg --build web-framework-dev_${{ env.deb-package-version }}-${{ env.deb-package-release-number }}_amd64
