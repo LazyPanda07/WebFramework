@@ -339,7 +339,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest, script: run_csharp_test.sh, executor_name: "linux-executor", run_command: "source " }
-          - { os: ubuntu-24.04-arm, script: run_csharp_test.sh, executor_name: "linux-arm-executor", run_command: "source " }
+          - { os: ubuntu-24.04-arm, script: run_csharp_test_arm.sh, executor_name: "linux-arm-executor", run_command: "source " }
           - { os: windows-latest, script: run_csharp_test.bat, executor_name: "windows-executor", run_command: ".\\" }
     runs-on: ${{ matrix.config.os }}
 
