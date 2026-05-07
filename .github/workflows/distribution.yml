@@ -70,9 +70,12 @@ jobs:
     - name: Move libraries
       shell: bash
       run: |
-          mv Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/dll/*.dll API/CSharp_API/
-          mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/
-          mv LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/
+          mkdir API/CSharp_API/Windows
+          mkdir API/CSharp_API/Linux
+          mkdir API/CSharp_API/LinuxARM
+          mv Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/dll/*.dll API/CSharp_API/Windows
+          mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/Linux
+          mv LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/lib/*.so API/CSharp_API/LinuxARM
           mv Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=OFF-BUILD_CC_API=OFF/license/* API/CSharp_API/
 
     - name: Create nuget package
@@ -199,6 +202,7 @@ jobs:
         config: 
           - { os: "windows-latest", asset_name: "Windows-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "windows-executor" }
           - { os: "ubuntu-latest", asset_name: "Linux-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "linux-executor" }
+          - { os: "ubuntu-24.04-arm", asset_name: "LinuxARM-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "linux-arm-executor" }
     runs-on: ${{ matrix.config.os }}
 
     steps:
@@ -335,6 +339,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest, script: run_csharp_test.sh, executor_name: "linux-executor", run_command: "source " }
+          - { os: ubuntu-24.04-arm, script: run_csharp_test.sh, executor_name: "linux-arm-executor", run_command: "source " }
           - { os: windows-latest, script: run_csharp_test.bat, executor_name: "windows-executor", run_command: ".\\" }
     runs-on: ${{ matrix.config.os }}
 
