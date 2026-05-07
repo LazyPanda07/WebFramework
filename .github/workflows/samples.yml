@@ -6,14 +6,11 @@ on:
     branches: 
       - main
       - dev
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
   
 
 env:
-  FLUTTER_VERSION: 3.41.4
+  FLUTTER_VERSION: 3.41.9
   PYTHON_VERSION: 3.14
 
 
