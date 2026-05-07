@@ -302,22 +302,30 @@ endif()
 
 install(
 	CODE [[
+		set(TEMP "")
 		if (UNIX)
-			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.a")
+			file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/lib/*.a")
+
+			set(FILES_TO_REMOVE ${TEMP})
 
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/libCC_API.a")
 		else()
-			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.lib")
-			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.pdb")
+			file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/lib/*.lib")
+
+			set(FILES_TO_REMOVE ${TEMP})
+
+			file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/lib/*.pdb")
+
+			list(APPEND FILES_TO_REMOVE ${TEMP})
 
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/CC_API.lib")
 		endif()
 
-		file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/cmake/jwt-cpp*.cmake")
+		file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/cmake/jwt-cpp*.cmake")
 
-		if (FILES_TO_REMOVE)
-			file(REMOVE ${FILES_TO_REMOVE})
-		endif()
+		list(APPEND FILES_TO_REMOVE ${TEMP})
+
+		file(REMOVE ${FILES_TO_REMOVE})
 
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/cmake")
