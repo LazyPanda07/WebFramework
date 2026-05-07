@@ -46,6 +46,21 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
+	char* temp = getenv("RUNTIMES");
+
+	if (temp)
+	{
+		if (strstr(temp, "python"))
+		{
+			wf_override_configuration_boolean(config, "$[]WebFramework.runtimes.0.enabled", true, false);
+		}
+
+		if (strstr(temp, ".net"))
+		{
+			wf_override_configuration_boolean(config, "$[]WebFramework.runtimes.1.enabled", true, false);
+		}
+	}
+
 	for (int i = 2; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "--port"))

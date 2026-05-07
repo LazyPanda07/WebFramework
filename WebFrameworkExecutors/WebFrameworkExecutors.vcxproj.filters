@@ -45,6 +45,9 @@
     <ClCompile Include="src\Exceptions\NotFoundException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Exceptions\ForbiddenException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Executors\Executor.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Exceptions\NotFoundException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Exceptions\ForbiddenException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

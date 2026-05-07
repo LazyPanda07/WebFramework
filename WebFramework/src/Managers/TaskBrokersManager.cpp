@@ -8,13 +8,6 @@
 
 namespace framework::task_broker
 {
-	TaskBrokersManager& TaskBrokersManager::get()
-	{
-		static TaskBrokersManager instance;
-
-		return instance;
-	}
-
 	void TaskBrokersManager::addTaskBroker(std::string_view taskBrokerName, const json::JsonObject& settings)
 	{
 		static const std::unordered_map<std::string_view, std::function<void()>> creators =

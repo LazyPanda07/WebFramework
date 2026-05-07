@@ -1,12 +1,15 @@
-﻿using Framework;
+﻿using System.Text.Json.Nodes;
+using Framework;
 
 namespace CoreExecutors
 {
 	public class CustomFunction : IDynamicFunction
 	{
-		public string Invoke(List<string> arguments)
+		public string Invoke(in JsonObject arguments)
 		{
-			return $"Data: {arguments[0]} {arguments[1]} {arguments[2]}";
+			JsonArray data = arguments["@customFunction"]!.AsObject()["data"]!.AsArray();
+
+			return $"Data: {(int)data[0]!} {(int)data[1]!} {(int)data[2]!}";
 		}
 	}
 }

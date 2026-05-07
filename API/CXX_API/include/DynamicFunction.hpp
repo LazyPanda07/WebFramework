@@ -11,14 +11,14 @@ namespace framework
 		static constexpr std::string_view dynamicFunctionImplementationName = "cxx";
 
 	public:
-		static void call(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+		static void call(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
 
 		static void deleter(void* implementation);
 
 	public:
 		DynamicFunction() = default;
 
-		virtual std::string operator ()(const std::span<std::string_view>& arguments) = 0;
+		virtual std::string operator ()(const JsonObject& arguments) = 0;
 
 		~DynamicFunction() = default;
 	};
@@ -26,9 +26,9 @@ namespace framework
 
 namespace framework
 {
-	inline void DynamicFunction::call(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data))
+	inline void DynamicFunction::call(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data))
 	{
-		std::string result = (*static_cast<DynamicFunction*>(dynamicFunction))(arguments);
+		std::string result = (*static_cast<DynamicFunction*>(dynamicFunction))(JsonObject(const_cast<void*>(arguments)));
 
 		callback(result.data(), result.size(), data);
 	}

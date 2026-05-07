@@ -137,11 +137,14 @@ void wf_delete_config(config_t config)
 	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFrameworkConfig, config);
 }
 
-void wf_delete_web_framework(web_framework_t webFramework)
+void wf_delete_web_framework(web_framework_t web_framework)
 {
 	typedef void (*deleteWebFramework)(void* webFramework);
 
-	CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, webFramework);
+	if (!web_framework.weak)
+	{
+		CALL_WEB_FRAMEWORK_FUNCTION(deleteWebFramework, web_framework.implementation);
+	}
 }
 
 void wf_delete_web_framework_exception(web_framework_exception_t exception)

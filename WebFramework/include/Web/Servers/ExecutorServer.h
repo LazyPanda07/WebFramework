@@ -30,7 +30,7 @@ namespace framework
 		std::shared_ptr<ResourceExecutor> resources;
 
 	protected:
-		static ServiceState serviceRequests(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task);
+		static ServiceState serveTask(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task);
 
 	public:
 		ExecutorServer
@@ -41,6 +41,10 @@ namespace framework
 			const utility::AdditionalServerSettings& additionalSettings,
 			std::shared_ptr<threading::ThreadPool> threadPool
 		);
+
+		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
+
+		ExecutorsManager& getExecutorsManager();
 
 		virtual ~ExecutorServer() = default;
 	};

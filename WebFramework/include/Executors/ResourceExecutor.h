@@ -11,6 +11,8 @@
 #include "Framework/WebFrameworkPlatform.h"
 #include "Rendering/WFDPRenderer.h"
 #include "Utility/AdditionalServerSettings.h"
+#include "Assets/DefaultAssetProvider.h"
+#include "Assets/SingleBinaryAssetProvider.h"
 
 namespace framework
 {
@@ -20,30 +22,15 @@ namespace framework
 	class ResourceExecutor : public interfaces::IStaticFile, public interfaces::IDynamicFile, public StatelessExecutor
 	{
 	private:
-		enum HTMLErrors
-		{
-			badRequest400,
-			forbidden403,
-			notFound404,
-			internalServerError500,
-			badGateway502,
-			HTMLErrorsSize
-		};
-
-	private:
-		const std::filesystem::path defaultAssets;
-		const std::filesystem::path assets;
+		asset::DefaultAssetProvider defaultAssetProvider;
+		std::vector<asset::SingleBinaryAssetProvider> singleBinaryAssetProviders;
 		WFDPRenderer wfdpRenderer;
-		std::array<std::string, HTMLErrors::HTMLErrorsSize> HTMLErrorsData;
-		file_manager::FileManager& fileManager;
 		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual> staticRenderers;
 
 	private:
-		void loadHTMLErrorsData();
-
 		void loadStaticRenderers();
 
-		void readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle);
+		void loadBinaryAssets(const json::JsonObject& webFrameworkObject, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
 
 	public:
 		ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
@@ -83,23 +70,11 @@ namespace framework
 
 		bool getIsCaching() const;
 
-		/// <summary>
-		/// Override from IStaticFile interface
-		/// </summary>
-		/// <param name="filePath">path to file from assets folder</param>
-		/// <param name="response">used for sending file</param>
-		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary = true, std::string_view fileName = "") override;
+		void sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, std::string_view fileName = "") override;
 
-		/// <summary>
-		/// Override from IDynamicFile interface
-		/// </summary>
-		/// <param name="filePath">path to file from assets folder</param>
-		/// <param name="response">used for sending file</param>
-		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
-		void sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary = true, std::string_view fileName = "") override;
+		void sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, const void* arguments, std::string_view fileName = "") override;
 
-		void processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables) override;
+		void processDynamicFile(std::string& data, const void* arguments) override;
 
 		/// @brief Add new function in .wfdp interpreter
 		/// @param functionName Name of new function
@@ -115,7 +90,9 @@ namespace framework
 		/// @return true if function is registered, false otherwise
 		bool isDynamicFunctionRegistered(std::string_view functionName) override;
 
-		const std::filesystem::path& getPathToAssets() const override;
+		std::string getFile(std::string_view filePath) override;
+
+		std::unique_ptr<std::istream> getFileStream(std::string_view filePath) override;
 
 		const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& getStaticRenderers() const override;
 

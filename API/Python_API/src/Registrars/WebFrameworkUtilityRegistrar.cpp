@@ -1,12 +1,15 @@
+
 #include "Registrars/WebFrameworkUtilityRegistrar.h"
 
 #include <cstdlib>
 
 #include <pybind11/stl/filesystem.h>
+#include <pybind11/functional.h>
 #include <pybind11/stl.h>
 
 #include <Executors/Executor.hpp>
 #include <Utility/WebFrameworkLocalization.hpp>
+#include <Utility/WebFrameworkUtility.hpp>
 
 #include "PyDynamicFunction.h"
 #include "PyChunkGenerator.h"
@@ -22,38 +25,106 @@ namespace registrar
 		m.def
 		(
 			"initialize_web_framework",
-			[](std::string_view pathToDLL)
+			[](const std::filesystem::path& pathToDll)
 			{
-				py::module_ os = py::module_::import("os");
-				py::module_ sys = py::module_::import("sys");
-				std::string separator = os.attr("pathsep").cast<std::string>();
-				py::list dirs = sys.attr("path").cast<py::list>();
-				std::string path = std::getenv("PATH");
-				
-				for (py::handle temp : dirs)
+				if (pathToDll.empty())
 				{
-					path = std::format("{}{}{}", temp.cast<std::string>(), separator, path);
-				}
+					static std::vector<HMODULE> libraries;
+					constexpr std::array<std::string_view, 4> baseLibraryNames =
+					{
+						"FileManager",
+						"Localization",
+						"Log",
+						"sqlite3"
+					};
+
+					auto finishLibraryName = [](std::string_view libraryName) -> std::string
+						{
+#ifdef __LINUX__
+							return std::format("lib{}.so", libraryName);
+#else
+							return std::format("{}.dll", libraryName);
+#endif
+						};
+
+					py::module_ os = py::module_::import("os");
+					py::module_ webFrameworkApi = py::module_::import("web_framework_api");
+					std::filesystem::path basePath = os.attr("path").attr("dirname")(webFrameworkApi.attr("__file__")).cast<std::string>();
+
+					for (std::string_view libraryName : baseLibraryNames)
+					{
+						std::filesystem::path actualPath = basePath / finishLibraryName(libraryName);
 
 #ifdef __LINUX__
-				std::string ldLibraryPath;
-
-				if (const char* temp = std::getenv("LD_LIBRARY_PATH"))
-				{
-					ldLibraryPath = temp;
-				}
-
-				putenv(std::format("LD_LIBRARY_PATH={}:{}", path, ldLibraryPath).data());
+						libraries.emplace_back(dlopen(actualPath.string().data(), RTLD_NOW | RTLD_GLOBAL));
 #else
-				_putenv_s("PATH", path.data());
+						libraries.emplace_back(LoadLibraryA(actualPath.string().data()));
 #endif
+					}
 
-				framework::utility::initializeWebFramework(pathToDLL);
+#ifdef __LINUX__
+					framework::utility::initializeWebFramework(basePath / "libWebFramework.so");
+#else
+					framework::utility::initializeWebFramework(basePath / "WebFramework.dll");
+#endif
+				}
+				else
+				{
+					framework::utility::initializeWebFramework(pathToDll);
+				}
 			},
 			"path_to_dll"_a = ""
 		);
 
 		m.def("get_localized_string", &framework::utility::getLocalizedString, "localization_module_name"_a, "key"_a, "language"_a = "");
+
+		m.def
+		(
+			"generate_binary_asset_file",
+			[](const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, const std::optional<std::function<void(float progress, std::string_view assetPath, py::object data)>>& progressCallback, const std::optional<py::object>& data)
+			{
+				auto callback = [](float progress, const char* assetPath, void* data)
+					{
+						void** pack = reinterpret_cast<void**>(data);
+
+						if (pack[0])
+						{
+							std::function<void(float progress, std::string_view assetPath, py::object data)>& actualCallback = *reinterpret_cast<std::function<void(float progress, std::string_view assetPath, py::object data)>*>(pack[0]);
+							py::object* actualData = nullptr;
+
+							if (pack[1])
+							{
+								actualData = reinterpret_cast<py::object*>(pack[1]);
+							}
+
+							actualCallback(progress, assetPath, actualData ? *actualData : py::none());
+						}
+					};
+				const void* pack[2]{};
+
+				pack[0] = nullptr;
+				pack[1] = nullptr;
+
+				if (progressCallback)
+				{
+					pack[0] = &*progressCallback;
+				}
+
+				if (data)
+				{
+					pack[1] = &*data;
+				}
+
+				framework::utility::generateBinaryAssetFile
+				(
+					directoryPath,
+					outputPath,
+					callback,
+					pack
+				);
+			},
+			"directory_path"_a, "output_path"_a, "progress_callback"_a.noconvert() = std::nullopt, "data"_a = std::nullopt
+		);
 
 		m.def
 		(
@@ -110,11 +181,39 @@ namespace registrar
 			}
 		);
 
+		m.def
+		(
+			"create_jwt",
+			[](py::dict data, int64_t expirationTimeInMinutes, std::string_view jwtSecretVariableName)
+			{
+				py::module json = py::module::import("json");
+				framework::JsonParser parser(json.attr("dumps")(data).cast<std::string>());
+
+				return framework::utility::token::createJwt(parser.getParsedData(), std::chrono::minutes(expirationTimeInMinutes), jwtSecretVariableName);
+			},
+			"data"_a, "expiration_time_in_minutes"_a, "jwt_secret_variable_name"_a = "JWT_SECRET"
+		);
+
+		m.def
+		(
+			"create_jwt",
+			[](py::dict data, int64_t expirationTimeInMinutes, const framework::WebFramework& frameworkInstance)
+			{
+				py::module json = py::module::import("json");
+				framework::JsonParser parser(json.attr("dumps")(data).cast<std::string>());
+
+				return framework::utility::token::createJwt(parser.getParsedData(), std::chrono::minutes(expirationTimeInMinutes), frameworkInstance);
+			},
+			"data"_a, "expiration_time_in_minutes"_a, "framework_instance"_a
+		);
+
 		py::register_exception<framework::exceptions::WebFrameworkException>(m, "WebFrameworkException");
 	}
 
 	void registerUtilityStructures(pybind11::module_& m)
 	{
+		using namespace py::literals;
+
 		py::class_<framework::Multipart>(m, "Multipart")
 			.def("get_name", &framework::Multipart::getName)
 			.def("get_content_type", &framework::Multipart::getContentType)
@@ -127,7 +226,7 @@ namespace registrar
 
 		py::class_<framework::IDynamicFunction, framework::PyDynamicFunction>(m, "DynamicFunction")
 			.def(py::init())
-			.def("__call__", &framework::IDynamicFunction::operator());
+			.def("__call__", &framework::IDynamicFunction::operator(), "arguments"_a);
 
 		py::class_<framework::utility::IPyChunkGenerator, framework::utility::PyChunkGenerator>(m, "ChunkGenerator")
 			.def(py::init())

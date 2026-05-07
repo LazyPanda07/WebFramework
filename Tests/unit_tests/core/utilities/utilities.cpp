@@ -3,7 +3,8 @@
 #include <fstream>
 #include <chrono>
 
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
+#include <WebSocket/WssNetwork.h>
 
 #include "settings.h"
 
@@ -14,8 +15,15 @@ namespace utility
 	streams::IOSocketStream createSocketStream()
 	{
 		return useHTTPS ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>("127.0.0.1", "8080", 1h) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>("127.0.0.1", "8080", 1h);
+			streams::IOSocketStream::createStream<web::http::HttpsNetwork>("127.0.0.1", "8080", 1h) :
+			streams::IOSocketStream::createStream<web::http::HttpNetwork>("127.0.0.1", "8080", 1h);
+	}
+
+	void createWebSocketStream(streams::IOSocketStream& stream)
+	{
+		useHTTPS ?
+			stream = streams::IOSocketStream::createStream<web::web_socket::WssNetwork>(std::move(stream.getNetwork<web::http::HttpsNetwork>()), true) :
+			stream = streams::IOSocketStream::createStream<web::web_socket::WsNetwork>(std::move(stream.getNetwork<web::http::HttpNetwork>()), true);
 	}
 
 	bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second)
@@ -53,7 +61,7 @@ namespace utility
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 

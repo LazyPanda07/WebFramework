@@ -29,7 +29,7 @@ namespace framework
 
 		void doConnect(HttpRequest& request, HttpResponse& response) override;
 
-		~PyHeavyOperationStatelessExecutor() = default;
+		virtual ~PyHeavyOperationStatelessExecutor() = default;
 	};
 }
 

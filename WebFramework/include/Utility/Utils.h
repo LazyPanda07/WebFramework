@@ -5,9 +5,18 @@
 
 #include "Framework/WebFrameworkConstants.h"
 #include "WebFrameworkConcepts.h"
+#include "Exceptions/AlreadyLoggedException.h"
 
 namespace framework::utility
 {
+	bool isVariableExist(std::string_view key);
+
+	void setEnvironmentVariable(std::string_view key, std::string_view value);
+
+	std::string getEnvironmentVariable(std::string_view key);
+
+	std::string generateRandomString(size_t size);
+
 	template<const auto& Format, const auto& Category, typename... Args>
 	[[noreturn]] void logAndThrowException(Args&&... args) requires log_utils::LogFormat<Format, Args...>;
 
@@ -22,10 +31,10 @@ namespace framework::utility
 	{
 		if (Log::isValid())
 		{
-			Log::error<Format, Category>(std::forward<Args>(args)...);
+			Log::error<Format, Category>(args...);
 		}
 
-		throw std::runtime_error(std::format(Format, std::forward<Args>(args)...));
+		throw exceptions::AlreadyLoggedException(std::vformat(Format, std::make_format_args(args...)));
 	}
 
 	template<const auto& Category, utility::concepts::StreamOperation OperationT, typename T>

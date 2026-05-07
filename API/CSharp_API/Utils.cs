@@ -194,6 +194,21 @@ public static partial class Utils
 		return targetType == null ? 0 : targetType.IsSubclassOf(typeof(Executor)) ? 1 : 0;
 	}
 
+	[UnmanagedCallersOnly(EntryPoint = "HasWebSocketExecutor")]
+	public static int HasWebSocketExecutor(IntPtr assemblyName)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(assemblyName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return 0;
+		}
+
+		Type? targetType = Type.GetType(typeName);
+
+		return targetType == null ? 0 : targetType.IsSubclassOf(typeof(WebSocketExecutor)) ? 1 : 0;
+	}
+
 	[UnmanagedCallersOnly(EntryPoint = "HasTaskExecutor")]
 	public static int HasTaskExecutor(IntPtr assemblyName)
 	{
@@ -251,6 +266,30 @@ public static partial class Utils
 
 		object instance = constructor();
 
+		GCHandle handle = GCHandle.Alloc(instance);
+
+		return GCHandle.ToIntPtr(handle);
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CreateWebSocketExecutor")]
+	public static IntPtr CreateWebSocketExecutor(IntPtr fullName)
+	{
+		string? typeName = Marshal.PtrToStringUTF8(fullName);
+
+		if (string.IsNullOrEmpty(typeName))
+		{
+			return IntPtr.Zero;
+		}
+
+		Type? type = Type.GetType(typeName, throwOnError: false);
+
+		if (type == null)
+		{
+			return IntPtr.Zero;
+		}
+
+		NewExpression expression = Expression.New(type);
+		object instance = Expression.Lambda<Func<object>>(expression).Compile()();
 		GCHandle handle = GCHandle.Alloc(instance);
 
 		return GCHandle.ToIntPtr(handle);
@@ -443,7 +482,7 @@ public static partial class Utils
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CallInvoke")]
-	public static IntPtr CallInvoke(IntPtr dynamicFunction, IntPtr arguments, nuint size)
+	public static IntPtr CallInvoke(IntPtr dynamicFunction, IntPtr arguments)
 	{
 		GCHandle handle = GCHandle.FromIntPtr(dynamicFunction);
 
@@ -452,23 +491,21 @@ public static partial class Utils
 			return IntPtr.Zero;
 		}
 
-		List<string> listArguments = [];
+		IntPtr exception = IntPtr.Zero;
+		IntPtr stringData = jsonObjectToString(arguments, ref exception);
 
-		listArguments.EnsureCapacity((int)size);
-
-		unsafe
+		if (exception != IntPtr.Zero)
 		{
-			IntPtr* stringArguments = (IntPtr*)arguments;
-
-			for (int i = 0; i < (int)size; i++)
-			{
-				string? argument = Marshal.PtrToStringUTF8(stringArguments[i]) ?? throw new ArgumentNullException($"Can't convert argument to string at {i}");
-
-				listArguments.Add(argument);
-			}
+			// TODO: Throw exception
+			// throw new WebFrameworkException(exception);
 		}
 
-		string resultString = dynamicFunctionInstance.Invoke(listArguments);
+		string jsonData = Marshal.PtrToStringUTF8(getDataFromString(stringData))!;
+		JsonObject data = JsonNode.Parse(jsonData)!.AsObject();
+
+		deleteWebFrameworkString(stringData);
+
+		string resultString = dynamicFunctionInstance.Invoke(data);
 		byte[] resultBytes = Encoding.UTF8.GetBytes(resultString + '\0');
 		IntPtr result = Marshal.AllocHGlobal(resultBytes.Length);
 
@@ -517,10 +554,10 @@ public static partial class Utils
 	}
 
 	[UnmanagedCallersOnly(EntryPoint = "CallTaskExecutorInvoke")]
-	public static void CallTaskExecutorInvoke(IntPtr executor, IntPtr jsonObjectData)
+	public static void CallTaskExecutorInvoke(IntPtr executor, IntPtr jsonObjectData, IntPtr context)
 	{
 		GCHandle handle = GCHandle.FromIntPtr(executor);
-		
+
 		if (handle.Target is not ITaskExecutor taskExecutor)
 		{
 			return;
@@ -528,7 +565,7 @@ public static partial class Utils
 
 		IntPtr exception = IntPtr.Zero;
 		IntPtr stringData = jsonObjectToString(jsonObjectData, ref exception);
-		
+
 		if (exception != IntPtr.Zero)
 		{
 			// TODO: Throw exception
@@ -540,6 +577,71 @@ public static partial class Utils
 
 		deleteWebFrameworkString(stringData);
 
-		taskExecutor.Invoke(data);
+		taskExecutor.Invoke(data, new(context));
+	}
+
+	[UnmanagedCallersOnly(EntryPoint = "CallWebSocketExecutorOnReceive")]
+	public static unsafe void CallWebSocketExecutorOnReceive(IntPtr executor, IntPtr frame, delegate* unmanaged<byte*, ulong, int, void*, void> sendData, IntPtr additionalData)
+	{
+		GCHandle handle = GCHandle.FromIntPtr(executor);
+
+		if (handle.Target is not WebSocketExecutor webSocketExecutor)
+		{
+			return;
+		}
+
+		Frame frameWrapper = new(frame);
+		FramePayload? payload = webSocketExecutor.OnReceive(frameWrapper);
+
+		if (payload == null)
+		{
+			return;
+		}
+
+		unsafe
+		{
+			byte[] bytes;
+			Frame.Type type;
+
+			if (payload is FramePayload.ContinuationFramePayload continuation)
+			{
+				bytes = Encoding.UTF8.GetBytes(continuation.Payload);
+				type = Frame.Type.continuation;
+			}
+			else if (payload is FramePayload.TextFramePayload text)
+			{
+				bytes = Encoding.UTF8.GetBytes(text.Payload);
+				type = Frame.Type.text;
+			}
+			else if (payload is FramePayload.BinaryFramePayload binary)
+			{
+				bytes = [.. binary.Payload];
+				type = Frame.Type.binary;
+			}
+			else if (payload is FramePayload.CloseFramePayload close)
+			{
+				bytes = Encoding.UTF8.GetBytes(close.Payload);
+				type = Frame.Type.close;
+			}
+			else if (payload is FramePayload.PingFramePayload ping)
+			{
+				bytes = Encoding.UTF8.GetBytes(ping.Payload);
+				type = Frame.Type.ping;
+			}
+			else if (payload is FramePayload.PongFramePayload pong)
+			{
+				bytes = Encoding.UTF8.GetBytes(pong.Payload);
+				type = Frame.Type.pong;
+			}
+			else
+			{
+				throw new Exception("Wrong Frame.Type");
+			}
+
+			fixed (byte* ptr = bytes)
+			{
+				sendData(ptr, (ulong)bytes.Length, (int)type, additionalData.ToPointer());
+			}
+		}
 	}
 }

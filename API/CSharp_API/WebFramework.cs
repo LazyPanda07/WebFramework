@@ -8,40 +8,41 @@ using Framework.Exceptions;
 /// <summary>
 /// Web server
 /// </summary>
-public sealed unsafe partial class WebFramework : IDisposable
+public sealed partial class WebFramework : IDisposable
 {
-	private readonly unsafe void* implementation;
-
-	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial char* getWebFrameworkVersion();
-
-	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void* createWebFrameworkFromPath(string configPath, ref void* exception);
-
-	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void* createWebFrameworkFromString(string serverConfiguration, string applicationDirectory, ref void* exception);
+	internal readonly IntPtr implementation;
+	private readonly bool weak;
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void* createWebFrameworkFromConfig(void* config, ref void* exception);
-
-	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void startWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, IntPtr onStartServer, ref void* exception);
+	private static partial IntPtr getWebFrameworkVersion(); // char*
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
-	private static partial void kickWebFrameworkServer(void* implementation, string ip, ref void* exception);
+	private static partial IntPtr createWebFrameworkFromPath(string configPath, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial IntPtr createWebFrameworkFromString(string serverConfiguration, string applicationDirectory, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void updateSslCertificatesWebFrameworkServer(void* implementation, ref void* exception);
+	private static partial IntPtr createWebFrameworkFromConfig(IntPtr config, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void stopWebFrameworkServer(void* implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, ref void* exception);
+	private static partial void startWebFrameworkServer(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, IntPtr onStartServer, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial void kickWebFrameworkServer(IntPtr implementation, string ip, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void updateSslCertificatesWebFrameworkServer(IntPtr implementation, ref IntPtr exception);
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME)]
+	private static partial void stopWebFrameworkServer(IntPtr implementation, [MarshalAs(UnmanagedType.Bool)] bool wait, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	[return: MarshalAs(UnmanagedType.I1)]
-	private static partial bool isServerRunning(void* implementation, ref void* exception);
+	private static partial bool isServerRunning(IntPtr implementation, ref IntPtr exception);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void deleteWebFramework(void* implementation);
+	private static partial void deleteWebFramework(IntPtr implementation);
 
 	/// <summary>
 	/// Get WebFramework version
@@ -49,7 +50,13 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <returns>String representation of version in format {major}.{minor}.{patch}</returns>
 	public static string GetWebFrameworkVersion()
 	{
-		return Marshal.PtrToStringUTF8((IntPtr)getWebFrameworkVersion())!;
+		return Marshal.PtrToStringUTF8(getWebFrameworkVersion())!;
+	}
+
+	internal WebFramework(IntPtr implementation)
+	{
+		this.implementation = implementation;
+		weak = true;
 	}
 
 	/// <summary>
@@ -60,16 +67,18 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public WebFramework(string configPath)
 	{
+		weak = false;
+
 		if (!Path.Exists(configPath))
 		{
 			throw new Exception($"Path {configPath} doesn't exist");
 		}
 
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		implementation = createWebFrameworkFromPath(configPath, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -83,11 +92,13 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public WebFramework(string serverConfiguration, string applicationDirectory)
 	{
-		void* exception = null;
+		weak = false;
+
+		IntPtr exception = IntPtr.Zero;
 
 		implementation = createWebFrameworkFromString(serverConfiguration, applicationDirectory, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -100,11 +111,13 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public WebFramework(Config config)
 	{
-		void* exception = null;
+		weak = false;
+
+		IntPtr exception = IntPtr.Zero;
 
 		implementation = createWebFrameworkFromConfig(config.implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -120,11 +133,11 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public void Start(bool wait = false, OnStartServer? callback = null)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		startWebFrameworkServer(implementation, wait, callback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback), ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -137,11 +150,11 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public void Stop(bool wait = true)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		stopWebFrameworkServer(implementation, wait, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -154,11 +167,11 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException">Thrown when the server fails to disconnect the specified client.</exception>
 	public void Kick(string ip)
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		kickWebFrameworkServer(implementation, ip, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -173,11 +186,11 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException">Thrown if an error occurs while updating the SSL certificates.</exception>
 	public void UpdateSslCertificates()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		updateSslCertificatesWebFrameworkServer(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -190,11 +203,11 @@ public sealed unsafe partial class WebFramework : IDisposable
 	/// <exception cref="WebFrameworkException"></exception>
 	public bool IsServerRunning()
 	{
-		void* exception = null;
+		IntPtr exception = IntPtr.Zero;
 
 		bool result = isServerRunning(implementation, ref exception);
 
-		if (exception != null)
+		if (exception != IntPtr.Zero)
 		{
 			throw new WebFrameworkException(exception);
 		}
@@ -202,5 +215,11 @@ public sealed unsafe partial class WebFramework : IDisposable
 		return result;
 	}
 
-	public void Dispose() => deleteWebFramework(implementation);
+	public void Dispose()
+	{
+		if (!weak)
+		{
+			deleteWebFramework(implementation);
+		}
+	}
 }

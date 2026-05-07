@@ -36,7 +36,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializerCxx() = default;
 
-		~PyTaskSerializerCxx() = default;
+		virtual ~PyTaskSerializerCxx() = default;
 	};
 
 	class PyTaskSerializerCc : public IPyTaskSerializer
@@ -51,7 +51,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializerCc() = default;
 
-		~PyTaskSerializerCc() = default;
+		virtual ~PyTaskSerializerCc() = default;
 	};
 
 	class PyTaskSerializer : public IPyTaskSerializer
@@ -66,7 +66,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializer() = default;
 
-		~PyTaskSerializer() = default;
+		virtual ~PyTaskSerializer() = default;
 	};
 
 	class PyTaskSerializerCSharp : public IPyTaskSerializer
@@ -81,7 +81,7 @@ namespace framework::task_broker
 	public:
 		PyTaskSerializerCSharp() = default;
 
-		~PyTaskSerializerCSharp() = default;
+		virtual ~PyTaskSerializerCSharp() = default;
 	};
 
 	template<typename T>
@@ -120,7 +120,7 @@ namespace framework::task_broker
 	template<typename T>
 	JsonObject PyTaskSerializerWrapper<T>::serializeArguments() const
 	{
-		py::module_ json = py::module_::import("json");
+		py::module json = py::module::import("json");
 
 		return JsonParser(json.attr("dumps")(serializer.attr("serialize_arguments")()).cast<std::string>()).getParsedData(false);
 	}

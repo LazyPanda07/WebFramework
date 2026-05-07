@@ -3,7 +3,8 @@ name: "Memory Leaks"
 
 on:
   push:
-    branches: [dev]
+    branches:
+      - dev
 
 
 jobs:
@@ -24,7 +25,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS=-fsanitize=undefined -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_PYTHON_EXECUTORS=OFF -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_PYTHON_API=OFF -G "Ninja" ..
           cmake --build . -j
           cmake --install .
       
@@ -33,7 +34,7 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS=-fsanitize=undefined -DWITH_ADDRESS_SANITIZER=ON -G "Ninja" ..
           cmake --build . -j
           cmake --install .
 

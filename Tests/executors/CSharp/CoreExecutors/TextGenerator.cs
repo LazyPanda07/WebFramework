@@ -7,9 +7,8 @@ namespace CoreExecutors
 	{
 		private readonly string data = data;
 		private int offset = 0;
-		private byte[] lastResult = [];
 
-		public override ReadOnlySpan<byte> Generate(ref bool finished)
+		public override byte[] Generate(ref bool finished)
 		{
 			const int smallStringSize = 15;
 
@@ -17,16 +16,14 @@ namespace CoreExecutors
 			{
 				finished = true;
 
-				return new();
+				return [];
 			}
 
 			string temp = data.Substring(offset, Math.Min(smallStringSize, data.Length - offset));
 
 			offset += temp.Length;
 
-			lastResult = Encoding.UTF8.GetBytes(temp);
-
-			return lastResult;
+			return Encoding.UTF8.GetBytes(temp);
 		}
 	}
 }

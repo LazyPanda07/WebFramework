@@ -4,7 +4,8 @@
 #include <Exceptions/FileDoesNotExistException.h>
 #include <BaseTCPServer.h>
 #include <FileManager.h>
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
+#include <jwt-cpp/jwt.h>
 
 #include "Managers/SessionsManager.h"
 #include "Managers/DatabasesManager.h"
@@ -13,6 +14,7 @@
 #include "ExecutorsConstants.h"
 #include "Utility/ExecutorsUtility.h"
 #include "Managers/TaskBrokersManager.h"
+#include "Framework/WebFramework.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6386)
@@ -59,8 +61,8 @@ namespace framework
 	web::HttpParser HttpRequestImplementation::sendRequestToAnotherServer(std::string_view ip, std::string_view port, std::string_view request, DWORD timeout, bool useHTTPS)
 	{
 		streams::IOSocketStream stream = useHTTPS ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(ip, port, std::chrono::milliseconds(timeout));
+			streams::IOSocketStream::createStream<web::http::HttpsNetwork>(ip, port, std::chrono::milliseconds(timeout)) :
+			streams::IOSocketStream::createStream<web::http::HttpNetwork>(ip, port, std::chrono::milliseconds(timeout));
 		std::string response;
 
 		stream << request;
@@ -71,7 +73,7 @@ namespace framework
 
 	void HttpRequestImplementation::registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources)
 	{
-		if (apiType == json_settings::cxxExecutorKey)
+		if (apiType == json_settings::cxxExecutorKey || apiType == json_settings::ccExecutorKey)
 		{
 			dynamicResources.registerDynamicFunction(functionName, apiType, functionClass);
 		}
@@ -90,47 +92,7 @@ namespace framework
 #endif
 	}
 
-	void HttpRequestImplementation::getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources)
-	{
-		if (utility::escapeFromAssets(filePath))
-		{
-			return;
-		}
-
-		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
-		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
-
-		if (!std::filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
-		}
-
-		if (cache.contains(assetFilePath))
-		{
-			std::string_view data = cache.getCacheData(assetFilePath);
-
-			fillBuffer(data.data(), data.size(), buffer);
-		}
-		else
-		{
-			std::string data;
-
-			{
-				std::ifstream file(assetFilePath);
-				std::ostringstream os;
-
-				os << file.rdbuf();
-
-				data = os.str();
-			}
-
-			cache.appendCache(assetFilePath, data);
-
-			fillBuffer(data.data(), data.size(), buffer);
-		}
-	}
-
-	HttpRequestImplementation::HttpRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
+	HttpRequestImplementation::HttpRequestImplementation(SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream) :
 		session(session),
 		serverReference(serverReference),
 		stream(stream),
@@ -321,32 +283,33 @@ namespace framework
 		return &largeData;
 	}
 
-	void HttpRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, const char* fileName)
 	{
 		HttpRequestImplementation::isWebFrameworkDynamicPages(filePath) ?
-			this->sendDynamicFile(filePath, response, variablesSize, variables, isBinary, fileName) :
-			this->sendStaticFile(filePath, response, isBinary, fileName);
+			this->sendDynamicFile(filePath, response, arguments, fileName) :
+			this->sendStaticFile(filePath, response, fileName);
 	}
 
-	void HttpRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName)
 	{
-		staticResources.sendStaticFile(filePath, *response, isBinary, fileName);
+		staticResources.sendStaticFile(filePath, *response, fileName);
 	}
 
-	void HttpRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary, const char* fileName)
+	void HttpRequestImplementation::sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, const char* fileName)
 	{
-		dynamicResources.sendDynamicFile(filePath, *response, std::span<const interfaces::CVariable>(variables, variablesSize), isBinary, fileName);
+		dynamicResources.sendDynamicFile(filePath, *response, arguments, fileName);
 	}
 
 	void HttpRequestImplementation::streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize)
 	{
-		std::filesystem::path assetFilePath(staticResources.getPathToAssets() / filePath);
-		file_manager::Cache& cache = file_manager::FileManager::getInstance().getCache();
+		std::unique_ptr<std::istream> fileStream = staticResources.getFileStream(filePath);
+		std::streamsize fileSize = fileStream->tellg();
 
-		if (!std::filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
-		}
+		fileStream->seekg(0, std::ios::end);
+
+		fileSize = static_cast<std::streamsize>(fileStream->tellg()) - fileSize;
+
+		fileStream->seekg(0, std::ios::beg);
 
 		web::HttpBuilder builder = web::HttpBuilder().
 			headers
@@ -356,66 +319,33 @@ namespace framework
 				"Content-Type", "application/octet-stream",
 				"Content-Disposition", std::format(R"(attachment; filename="{}")", fileName),
 				"Connection", "keep-alive",
-				"Content-Length", std::filesystem::file_size(assetFilePath)
+				"Content-Length", fileSize
 			).
 			responseCode(web::ResponseCodes::ok);
 
 		response->setIsValid(false);
 
-#pragma warning(push)
-#pragma warning(disable: 26800)
-		if (cache.contains(assetFilePath))
-		{
-			const std::string& data = cache[assetFilePath];
-
-			builder.headers
-			(
-				"DownloadType", "from-cache"
-			);
-
-			stream << builder.build(data);
-
-			return;
-		}
-
-		std::ifstream fileStream(assetFilePath, std::ios_base::binary);
 		std::string chunk(chunkSize, '\0');
-
-		std::streamsize dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
+		std::streamsize dataSize = fileStream->read(chunk.data(), chunkSize).gcount();
 
 		if (dataSize != chunkSize)
 		{
 			chunk.resize(dataSize);
 		}
 
-		cache.appendCache(assetFilePath, chunk);
-
-		builder.headers
-		(
-			"DownloadType", "from-file"
-		);
-
 		stream << builder.build() + chunk;
-#pragma warning(pop)
 
-		while (!fileStream.eof())
+		while (!fileStream->eof())
 		{
-			dataSize = fileStream.read(chunk.data(), chunkSize).gcount();
+			dataSize = fileStream->read(chunk.data(), chunkSize).gcount();
 
 			if (dataSize != chunkSize)
 			{
 				chunk.resize(dataSize);
 			}
 
-			cache.appendCache(assetFilePath, chunk);
-
 			stream << chunk;
 		}
-	}
-
-	void HttpRequestImplementation::registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result))
-	{
-		dynamicResources.registerDynamicFunction(functionName, json_settings::cxxExecutorKey, utility::createCxxDynamicFunction(function, deleter));
 	}
 
 	void HttpRequestImplementation::registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass)
@@ -505,7 +435,9 @@ namespace framework
 
 	void HttpRequestImplementation::getFile(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) const
 	{
-		HttpRequestImplementation::getFileStatic(filePath, fillBuffer, buffer, staticResources);
+		std::string data = staticResources.getFile(filePath);
+
+		fillBuffer(data.data(), data.size(), buffer);
 	}
 
 	void HttpRequestImplementation::processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
@@ -516,11 +448,11 @@ namespace framework
 		fillBuffer(result.data(), result.size(), buffer);
 	}
 
-	void HttpRequestImplementation::processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
+	void HttpRequestImplementation::processDynamicFile(const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer)
 	{
 		std::string result(fileData, size);
 
-		dynamicResources.processDynamicFile(result, std::span<const interfaces::CVariable>(variables, variablesSize));
+		dynamicResources.processDynamicFile(result, arguments);
 
 		fillBuffer(result.data(), result.size(), buffer);
 	}
@@ -528,7 +460,7 @@ namespace framework
 	void HttpRequestImplementation::enqueueTask(const char* messageBrokerName, void* jsonObjectData)
 	{
 		json::JsonObject& data = *static_cast<json::JsonObject*>(jsonObjectData);
-		framework::task_broker::TaskBrokersManager& manager = framework::task_broker::TaskBrokersManager::get();
+		framework::task_broker::TaskBrokersManager& manager = serverReference.getFrameworkInstance().getTaskBrokerManager();
 
 		manager.getTaskBroker(messageBrokerName).enqueueTask(std::move(data));
 	}
@@ -632,14 +564,76 @@ namespace framework
 		return std::get<double>(routeParameters.at(routeParameterName));
 	}
 
+	const char* HttpRequestImplementation::getToken() const
+	{
+		const web::HeadersMap& headers = parser.getHeaders();
+
+		if (auto it = headers.find("Authorization"); it != headers.end())
+		{
+			constexpr std::string_view bearer = "Bearer ";
+			size_t offset = it->second.find(bearer);
+
+			if (offset == std::string::npos)
+			{
+				return nullptr;
+			}
+
+			offset += bearer.size();
+
+			return it->second.data() + offset;
+		}
+
+		return nullptr;
+	}
+
+	void* HttpRequestImplementation::getTokenPayload() const
+	{
+		const char* token = this->getToken();
+
+		if (!token)
+		{
+			return nullptr;
+		}
+
+		auto decodedToken = jwt::decode(token);
+		auto verifier = jwt::verify()
+			.allow_algorithm(jwt::algorithm::hs256(utility::getEnvironmentVariable(serverReference.getFrameworkInstance().getJwtSecretName())));
+		std::error_code code;
+
+		verifier.verify(decodedToken, code);
+
+		if (code)
+		{
+			if (Log::isValid())
+			{
+				Log::error<logging::message::cantVerifyJwt, logging::category::httpRequest>(code.message());
+
+				Log::getInstance() += std::format("JWT error: {}", code.message());
+			}
+
+			return nullptr;
+		}
+
+		json::JsonObject temp;
+
+		json::JsonParser(decodedToken.get_payload()).getParsedData(temp);
+
+		return new json::JsonObject(std::move(temp));
+	}
+
+	void* HttpRequestImplementation::getWebFrameworkInstance() const
+	{
+		return &serverReference.getFrameworkInstance();
+	}
+
 	interfaces::IDatabase* HttpRequestImplementation::getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName)
 	{
-		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getOrCreateDatabase(databaseName, databaseImplementationName)));
+		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getOrCreateDatabase(databaseName, databaseImplementationName)));
 	}
 
 	interfaces::IDatabase* HttpRequestImplementation::getDatabase(const char* databaseName, const char* databaseImplementationName) const
 	{
-		return databases.emplace_back(new DatabaseImplementation(DatabasesManager::get().getDatabase(databaseName, databaseImplementationName)));
+		return databases.emplace_back(new DatabaseImplementation(serverReference.getFrameworkInstance().getDatabasesManager().getDatabase(databaseName, databaseImplementationName)));
 	}
 
 	HttpRequestImplementation::~HttpRequestImplementation()

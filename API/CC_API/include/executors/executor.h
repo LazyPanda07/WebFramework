@@ -2,10 +2,10 @@
 
 #include <stdlib.h>
 
-#include "../http_request.h"
-#include "../http_response.h"
-#include "../dll_handler.h"
-#include "../json_parser.h"
+#include "http_request.h"
+#include "http_response.h"
+#include "dll_handler.h"
+#include "json_parser.h"
 
 typedef void* executor_t;
 typedef void* executor_settings_t;
@@ -55,29 +55,29 @@ typedef enum load_type
 /**
 * Create custom executor_t function
 * Used for loading function that creates executor_t instance
-* @param structName Already defined struct name
+* @param struct_name Already defined struct name
 */
-#define DEFINE_EXECUTOR(structName, executorType) WEB_FRAMEWORK_FUNCTIONS_API void* create##structName##CCInstance()	\
+#define DEFINE_EXECUTOR(struct_name, executorType) WEB_FRAMEWORK_FUNCTIONS_API void* create##struct_name##CCInstance()	\
 {	\
-	return malloc(sizeof(structName));	\
+	return malloc(sizeof(struct_name));	\
 }	\
 	\
-WEB_FRAMEWORK_FUNCTIONS_API int webFrameworkCCGetType##structName(void* executor)	\
+WEB_FRAMEWORK_FUNCTIONS_API int webFrameworkCCGetType##struct_name(void* executor)	\
 {	\
 	return executorType;	\
 }	\
 	\
-WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteExecutor##structName(void* executor)	\
+WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteExecutor##struct_name(void* executor)	\
 {	\
-	free((structName*)executor);	\
+	free((struct_name*)executor);	\
 }
 
 /**
 * Create custom executor_t function
 * Used for loading function that creates executor_t subclass
-* @param structName Create empty struct for stateless executors
+* @param struct_name Create empty struct for stateless executors
 */
-#define DEFINE_DEFAULT_EXECUTOR(structName, executorType) typedef struct { char _; } structName; DEFINE_EXECUTOR(structName, executorType)
+#define DEFINE_DEFAULT_EXECUTOR(struct_name, executorType) typedef struct { char _; } struct_name; DEFINE_EXECUTOR(struct_name, executorType)
 
 /**
  * @brief Available executor_t methods
@@ -97,24 +97,24 @@ typedef enum methods
 
 /**
  * Create method function
- * @param structName executor_t name
+ * @param struct_name executor_t name
  * @param method One of Methods value
  * @param request_variable_name Input http_request_t variable name
  * @param response_variable_name Input http_response_t variable name
  */
-#define DEFINE_EXECUTOR_METHOD(structName, method, request_variable_name, response_variable_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDo##method##structName(executor_t executor, http_request_t request_variable_name, http_response_t response_variable_name)
+#define DEFINE_EXECUTOR_METHOD(struct_name, method, request_variable_name, response_variable_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDo##method##struct_name(executor_t executor, http_request_t request_variable_name, http_response_t response_variable_name)
 
 /**
  * Create initialization function
- * @param structName executor_t name
+ * @param struct_name executor_t name
  */
-#define DEFINE_EXECUTOR_INIT(structName) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCExecutorInit##structName(executor_t executor, executor_settings_t settings)
+#define DEFINE_EXECUTOR_INIT(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCExecutorInit##struct_name(executor_t executor, executor_settings_t settings)
 
 /**
  * Create destroy function that would be called if executor_t is destroyed
- * @param structName executor_t name
+ * @param struct_name executor_t name
  */
-#define DEFINE_EXECUTOR_DESTROY(structName) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDestroyExecutor##structName(executor_t executor)
+#define DEFINE_EXECUTOR_DESTROY(struct_name) WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDestroyExecutor##struct_name(executor_t executor)
 
  /**
   * @brief Register function for processing .wfdp files
@@ -124,7 +124,7 @@ typedef enum methods
   * @param deleter Deleter for values from function
   * @return
   */
-web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
+web_framework_exception_t wf_register_dynamic_function_executor_settings(executor_settings_t implementation, const char* function_name, char* (*function)(json_object_t arguments), void(*deleter)(char* result));
 
 /**
  * @brief Unregister function for processing .wfdp files
@@ -151,7 +151,7 @@ web_framework_exception_t wf_is_dynamic_function_registered_executor_settings(ex
  * @param size File content size
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_file_executor_settings(executor_settings_t implementation, const char* file_path, const char** result, size_t* size);
+web_framework_exception_t wf_get_file_executor_settings(executor_settings_t implementation, const char* file_path, char** result, size_t* size);
 
 /**
  * @brief Process static files like .md
@@ -161,21 +161,20 @@ web_framework_exception_t wf_get_file_executor_settings(executor_settings_t impl
  * @param fileExtension Supported processing extension
  * @param result Processed data
  * @param resultSize Processed data size
- * @return
+ * @return Error if occurred
  */
-web_framework_exception_t wf_process_static_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const char* file_extension, const char** result, size_t* result_size);
+web_framework_exception_t wf_process_static_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const char* file_extension, char** result, size_t* result_size);
 
 /**
  * @brief Process .wfdp files
  * @param implementation executor_settings_t instance
  * @param fileData WFDP file content
- * @param variables Variables for processing .wfdp file
- * @param variablesSize Size of variables
+ * @param arguments Arguments for processing .wfdp file
  * @param result Processed data
  * @param resultSize Processed data size
- * @return
+ * @return Error if occurred
  */
-web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, const char** result, size_t* result_size);
+web_framework_exception_t wf_process_dynamic_file_executor_settings(executor_settings_t implementation, const char* file_data, size_t size, const json_object_t* arguments, char** result, size_t* result_size);
 
 /**
  * @brief Get Json structed values from initParameters section from settings file
@@ -188,7 +187,7 @@ web_framework_exception_t wf_get_executor_init_parameters(executor_settings_t im
 /**
  * @brief Get executor name
  * @param implementation executor_settings_t instance
- * @param result String with executor name. Delete with deleteWebFrameworkString function
+ * @param result String with executor name. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_executor_name(executor_settings_t implementation, web_framework_string_t* result);
@@ -204,7 +203,7 @@ web_framework_exception_t wf_get_executor_user_agent_filter(executor_settings_t 
 /**
  * @brief Get API language of executor_t
  * @param implementation executor_settings_t instance
- * @param result String with executor name. Delete with deleteWebFrameworkString function
+ * @param result String with executor name. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_executor_api_type(executor_settings_t implementation, web_framework_string_t* result);
@@ -212,7 +211,7 @@ web_framework_exception_t wf_get_executor_api_type(executor_settings_t implement
 /**
  * @brief Get LoadType of executor_t
  * @param implementation executor_settings_t instance
- * @param result String with executor name. Delete with deleteWebFrameworkString function
+ * @param result String with executor name. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_executor_load_type(executor_settings_t implementation, load_type_t* result);

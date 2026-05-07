@@ -45,15 +45,6 @@ typedef struct cookie
 } cookie_t;
 
 /**
- * @brief Variable for processing .wfdp files
- */
-typedef struct dynamic_pages_variable
-{
-	const char* name;
-	const char* value;
-} dynamic_pages_variable_t;
-
-/**
  * @brief Data part if file passes large files threshold
  */
 typedef struct large_data
@@ -109,7 +100,7 @@ web_framework_exception_t wf_get_query_parameters(http_request_t implementation,
 /**
  * @brief Get HTTP version
  * @param implementation http_request_t instance
- * @param version String representation of HTTP version. Delete with deleteWebFrameworkString function
+ * @param version String representation of HTTP version. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_http_version(http_request_t implementation, web_framework_string_t* version);
@@ -154,7 +145,7 @@ web_framework_exception_t wf_set_attribute(http_request_t implementation, const 
  * @brief Get HTTP session attribute
  * @param implementation http_request_t instance
  * @param name Attribute name
- * @param result Attribute value. Delete with deleteWebFrameworkString function
+ * @param result Attribute value. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_attribute(http_request_t implementation, const char* name, web_framework_string_t* result);
@@ -205,37 +196,32 @@ web_framework_exception_t wf_get_large_data(http_request_t implementation, const
  * @param implementation http_request_t instance
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
- * @param variables Variables for processing if file is .wfdp
- * @param variablesSize Size of variables
- * @param isBinary Is binary file
+ * @param arguments Arguments for processing if file is .wfdp
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, const char* file_name);
 
 /**
  * @brief Send static file
  * @param implementation http_request_t instance
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
- * @param isBinary Is binary file
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* file_path, http_response_t response, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* file_path, http_response_t response, const char* file_name);
 
 /**
  * @brief Send .wfdp file
  * @param implementation http_request_t instance
  * @param filePath Relative path to file from assets directory
  * @param response http_response_t instance
- * @param variables Variables for processing .wfdp file
- * @param variablesSize Size of variables
- * @param isBinary Is binary file
+ * @param arguments Arguments for processing .wfdp file
  * @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
  * @return Error if occurred
  */
-web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const dynamic_pages_variable_t* variables, size_t variables_size, bool is_binary, const char* file_name);
+web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* file_path, http_response_t response, const json_object_t* arguments, const char* file_name);
 
 /**
  * @brief Send file with specific chunk size
@@ -256,7 +242,7 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
  * @param deleter Deleter for values from function
  * @return
  */
-web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result));
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, char* (*function)(json_object_t arguments), void(*deleter)(char* result));
 
 /**
  * @brief Unregister function for processing .wfdp files
@@ -318,13 +304,12 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
  * @brief Process .wfdp files
  * @param implementation http_request_t instance
  * @param fileData WFDP file content
- * @param variables Variables for processing .wfdp file
- * @param variablesSize Size of variables
+ * @param arguments Arguments for processing .wfdp file
  * @param result Processed data
  * @param resultSize Processed data size
  * @return
  */
-web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const dynamic_pages_variable_t* variables, size_t variables_size, char** result, size_t* result_size);
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* file_data, size_t size, const json_object_t* arguments, char** result, size_t* result_size);
 
 /**
  * @brief Get raw HTTP request
@@ -337,7 +322,7 @@ web_framework_exception_t wf_get_raw_request(http_request_t implementation, cons
 /**
  * @brief Get client IP v4
  * @param implementation http_request_t instance
- * @param ip IP. Delete with deleteWebFrameworkString function
+ * @param ip IP. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_client_ip_v4(http_request_t implementation, web_framework_string_t* ip);
@@ -345,7 +330,7 @@ web_framework_exception_t wf_get_client_ip_v4(http_request_t implementation, web
 /**
  * @brief Get server IP v4
  * @param implementation http_request_t instance
- * @param ip IP. Delete with deleteWebFrameworkString function
+ * @param ip IP. Delete with wf_delete_string function
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_server_ip_v4(http_request_t implementation, web_framework_string_t* ip);
@@ -435,6 +420,30 @@ web_framework_exception_t wf_get_route_double_parameter(http_request_t implement
  * @return Error if occurred
  */
 web_framework_exception_t wf_get_route_string_parameter(http_request_t implementation, const char* route_parameter_name, const char** result);
+
+/**
+ * @brief Retrieves a JWT string from the specified HTTP request implementation.
+ * @param implementation An HTTP request handle or implementation object from which the token will be extracted.
+ * @param result Output parameter. A pointer to a const char* that will be set to point to a null-terminated token string on success. The caller must provide a valid const char**. The ownership and lifetime of the returned string are managed by the implementation; do not modify or free it.
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_token(http_request_t implementation, const char** result);
+
+/**
+ * @brief Retrieves the JWT payload from the given HTTP request and writes it to the provided result pointer.
+ * @param implementation The HTTP request object to extract the token payload from.
+ * @param result Pointer to a json_object_t that will receive the token payload. Delete with wf_delete_json_object function
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_token_payload(http_request_t implementation, json_object_t* result);
+
+/**
+ * @brief Obtains the web framework instance associated with the specified HTTP request implementation.
+ * @param implementation Handle or object representing the HTTP request implementation used to locate or create the web framework instance.
+ * @param result Output pointer that receives the address of the web_framework_t instance on success. Must not be NULL.
+ * @return Error if occurred
+ */
+web_framework_exception_t wf_get_web_framework_instance(http_request_t implementation, web_framework_t* result);
 
 /**
  * @brief Send generated chunks

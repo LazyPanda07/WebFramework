@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-if(UNIX)
-	list(APPEND CMAKE_CXX_FLAGS -rdynamic)
-endif(UNIX)
-
 project(DefaultHTTPSServer)
 
 add_executable(
@@ -13,6 +9,13 @@ add_executable(
 	RoutePatternExecutor.cpp
 	UserAgentExecutor.cpp
 )
+
+if (UNIX)
+	target_link_options(
+		${PROJECT_NAME} PRIVATE
+		-rdynamic
+	)
+endif()
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE

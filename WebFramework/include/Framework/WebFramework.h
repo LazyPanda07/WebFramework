@@ -1,12 +1,16 @@
 #pragma once
 
 #include <ThreadPool.h>
+#include <Log.h>
 
 #include "Framework/WebFrameworkPlatform.h"
 
 #include "Web/Servers/BaseWebServer.h"
 #include "Config.h"
 #include "Utility/TaskExecutorsSettings.h"
+#include "Managers/DatabasesManager.h"
+#include "Managers/TaskBrokersManager.h"
+#include "Managers/TaskExecutorsManager.h"
 
 #ifdef __WITH_STACKTRACE__
 #include "Utility/CrashHandler.h"
@@ -21,27 +25,57 @@ namespace framework
 	class WEB_FRAMEWORK_API WebFramework
 	{
 	public:
-		/**
-		 * @brief Is server use HTTPS
-		 * @return 
-		 */
-		static bool getUseHTTPS();
+		class HttpsData
+		{
+		private:
+			std::filesystem::path pathToCertificate;
+			std::filesystem::path pathToKey;
+
+		public:
+			HttpsData();
+
+			HttpsData(const HttpsData&) = delete;
+
+			HttpsData(HttpsData&& other) = default;
+
+			HttpsData& operator =(const HttpsData&) = delete;
+
+			HttpsData& operator =(HttpsData&& other) = default;
+
+			void setPathToCertificate(const std::filesystem::path& pathToCertificate);
+
+			void setPathToKey(const std::filesystem::path& pathToKey);
+
+			const std::filesystem::path& getPathToCertificate() const;
+
+			const std::filesystem::path& getPathToKey() const;
+
+			~HttpsData() = default;
+		};
 
 	private:
 		static void parseAdditionalConfigs(const json::JsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources);
-
-		static std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
 
 	private:
 		utility::Config config;
 		std::unique_ptr<BaseWebServer> server;
 		std::exception** serverException;
 		std::string webServerType;
+		std::string jwtSecretName;
+		std::optional<HttpsData> httpsData;
+		DatabasesManager databasesManager;
+		task_broker::TaskBrokersManager taskBrokerManager;
+		task_broker::TaskExecutorsManager taskExecutorsManager;
 #ifdef __WITH_STACKTRACE__
 		utility::CrashHandler crashHandler;
 #endif
 	private:
 		uint64_t parseLoggingFlags(const json::JsonObject& loggingSettings) const;
+
+		Log::VerbosityLevel parseVerbosity(const json::JsonObject& loggingSettings) const;
+
+	private:
+		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> createExecutorsSettings(const std::vector<std::string>& settingsPaths);
 
 	private:
 		void initAPIs(const json::JsonObject& webFrameworkSettings);
@@ -52,7 +86,7 @@ namespace framework
 
 		void initTaskExecutors(const json::JsonObject& taskBrokerObject);
 
-		void initHTTPS(const json::JsonObject& webFrameworkSettings) const;
+		void initHTTPS(const json::JsonObject& webFrameworkSettings);
 
 		void initDatabase(const json::JsonObject& webFrameworkSettings);
 
@@ -62,6 +96,8 @@ namespace framework
 			std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings>&& executorsSettings,
 			const std::vector<std::string>& pathToSources
 		);
+
+		void initJwt(const json::JsonObject& webFrameworkSettings);
 
 	public:
 		WebFramework(const utility::Config& webFrameworkConfig);
@@ -76,11 +112,21 @@ namespace framework
 
 		void updateSslCertificates();
 
-		std::vector<std::string> getClientsIp() const;
-
 		bool isServerRunning() const;
 
+		std::vector<std::string> getClientsIp() const;
+
 		const json::JsonParser& getCurrentConfiguration() const;
+
+		std::string_view getJwtSecretName() const;
+
+		const std::optional<HttpsData>& getHttpsData() const;
+
+		DatabasesManager& getDatabasesManager();
+
+		task_broker::TaskBrokersManager& getTaskBrokerManager();
+
+		task_broker::TaskExecutorsManager& getTaskExecutorsManager();
 
 		~WebFramework();
 	};

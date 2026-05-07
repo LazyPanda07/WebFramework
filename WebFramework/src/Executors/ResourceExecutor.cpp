@@ -1,6 +1,5 @@
 #include "Executors/ResourceExecutor.h"
 
-#include <Log.h>
 #include <HttpBuilder.h>
 
 #include "Rendering/MDRenderer.h"
@@ -8,8 +7,11 @@
 #include "Exceptions/FileDoesNotExistException.h"
 #include "Exceptions/BadRequestException.h"
 #include "WFDP/CXXDynamicFunction.h"
+#include "WFDP/CCDynamicFunction.h"
 #include "Utility/ExecutorsUtility.h"
 #include "Utility/Utils.h"
+#include "Assets/HtmlErrors.h"
+#include "Exceptions/ForbiddenException.h"
 
 #ifdef __WITH_PYTHON_EXECUTORS__
 #include "WFDP/PythonDynamicFunction.h"
@@ -19,31 +21,27 @@
 #include "WFDP/CSharpDynamicFunction.h"
 #endif
 
+enum HtmlErrors
+{
+	badRequest400,
+	forbidden403,
+	notFound404,
+	internalServerError500,
+	badGateway502,
+	HtmlErrorsSize
+};
+
+static constexpr std::array<std::string_view, HtmlErrors::HtmlErrorsSize> htmlErrorsData =
+{
+	framework::asset::getBadRequestError(),
+	framework::asset::getForbiddenError(),
+	framework::asset::getNotFoundError(),
+	framework::asset::getInternalServerError(),
+	framework::asset::getBadGatewayError()
+};
+
 namespace framework
 {
-	void ResourceExecutor::loadHTMLErrorsData()
-	{
-		auto readFile = [](const std::filesystem::path& errorPath) -> std::string
-			{
-				std::ifstream stream(errorPath);
-				std::ostringstream os;
-				std::string result;
-
-				os << stream.rdbuf();
-
-				result = os.str();
-
-				return result;
-			};
-		std::filesystem::path allErrorsFolder(defaultAssets / web_framework_assets::errorsFolder);
-
-		HTMLErrorsData[HTMLErrors::badRequest400] = readFile(allErrorsFolder / web_framework_assets::badRequest);
-		HTMLErrorsData[HTMLErrors::forbidden403] = readFile(allErrorsFolder / web_framework_assets::forbidden);
-		HTMLErrorsData[HTMLErrors::notFound404] = readFile(allErrorsFolder / web_framework_assets::notFound);
-		HTMLErrorsData[HTMLErrors::internalServerError500] = readFile(allErrorsFolder / web_framework_assets::internalServerError);
-		HTMLErrorsData[HTMLErrors::badGateway502] = readFile(allErrorsFolder / web_framework_assets::badGateway);
-	}
-
 	void ResourceExecutor::loadStaticRenderers()
 	{
 		std::unique_ptr<interfaces::IStaticFileRenderer> mdRenderer = std::make_unique<MDRenderer>();
@@ -51,32 +49,50 @@ namespace framework
 		staticRenderers.try_emplace(mdRenderer->getExtension(), move(mdRenderer));
 	}
 
-	void ResourceExecutor::readFile(std::filesystem::path extension, std::string& result, std::unique_ptr<file_manager::ReadFileHandle>&& handle)
+	void ResourceExecutor::loadBinaryAssets(const json::JsonObject& webFrameworkObject, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool)
 	{
-		result = handle->readAllData();
+		std::vector<json::JsonObject> binaryAssets;
 
-		if (result.empty())
+		if (webFrameworkObject.tryGet<std::vector<json::JsonObject>>(json_settings::binaryAssetsKey, binaryAssets))
 		{
-			throw exceptions::BadRequestException("File is empty");
+			for (const json::JsonObject& binaryAsset : binaryAssets)
+			{
+				if (binaryAsset.is<std::string>())
+				{
+					singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, binaryAsset.get<std::string>(), true);
+
+					if (Log::isValid())
+					{
+						Log::info<logging::message::addBinaryAsset, logging::category::resource>(binaryAsset.get<std::string>(), true);
+					}
+				}
+				else
+				{
+					const std::string& path = binaryAsset[json_settings::pathKey].get<std::string>();
+					bool fullyLoad = true;
+					
+					binaryAsset.tryGet<bool>(json_settings::fullyLoadKey, fullyLoad);
+
+					singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, path, fullyLoad);
+
+					if (Log::isValid())
+					{
+						Log::info<logging::message::addBinaryAsset, logging::category::resource>(path, fullyLoad);
+					}
+				}
+			}
 		}
 	}
 
 	ResourceExecutor::ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
-		defaultAssets
-		(
-			configuration.get<json::JsonObject>(json_settings::webFrameworkObject).contains<std::string>(json_settings::webFrameworkDefaultAssetsPath) ?
-			configuration.get<json::JsonObject>(json_settings::webFrameworkObject)[json_settings::webFrameworkDefaultAssetsPath].get<std::string>() :
-			webFrameworkDefaultAssests
-		),
-		assets(additionalSettings.assetsPath),
-		wfdpRenderer(additionalSettings.templatesPath),
-		fileManager(file_manager::FileManager::getInstance(threadPool))
+		defaultAssetProvider(additionalSettings.assetsPath, threadPool),
+		wfdpRenderer(additionalSettings.templatesPath, additionalSettings.dynamicFunctionValidation)
 	{
-		fileManager.getCache().setCacheSize(additionalSettings.cachingSize);
+		file_manager::FileManager::getInstance().getCache().setCacheSize(additionalSettings.cachingSize);
 
-		if (!std::filesystem::exists(assets))
+		if (!std::filesystem::exists(additionalSettings.assetsPath))
 		{
-			std::filesystem::create_directories(assets);
+			std::filesystem::create_directories(additionalSettings.assetsPath);
 		}
 
 		if (!std::filesystem::exists(wfdpRenderer.getPathToTemplates()))
@@ -84,13 +100,13 @@ namespace framework
 			std::filesystem::create_directories(wfdpRenderer.getPathToTemplates());
 		}
 
-		this->loadHTMLErrorsData();
 		this->loadStaticRenderers();
+		this->loadBinaryAssets(configuration.get<json::JsonObject>(json_settings::webFrameworkObject), additionalSettings, threadPool);
 	}
 
 	void ResourceExecutor::notFoundError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::notFound404];
+		std::string_view message = htmlErrorsData[HtmlErrors::notFound404];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -112,7 +128,7 @@ namespace framework
 
 	void ResourceExecutor::badRequestError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::badRequest400];
+		std::string_view message = htmlErrorsData[HtmlErrors::badRequest400];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -134,7 +150,7 @@ namespace framework
 
 	void ResourceExecutor::forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::forbidden403];
+		std::string_view message = htmlErrorsData[HtmlErrors::forbidden403];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -156,7 +172,7 @@ namespace framework
 
 	void ResourceExecutor::internalServerError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::internalServerError500];
+		std::string_view message = htmlErrorsData[HtmlErrors::internalServerError500];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -178,7 +194,7 @@ namespace framework
 
 	void ResourceExecutor::badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception)
 	{
-		std::string_view message = HTMLErrorsData[HTMLErrors::badGateway502];
+		std::string_view message = htmlErrorsData[HtmlErrors::badGateway502];
 
 #ifdef NDEBUG
 		response.setBody(message.data(), message.size());
@@ -205,15 +221,20 @@ namespace framework
 			return false;
 		}
 
-		return fileManager.exists(assets / filePath);
+		if (std::ranges::any_of(singleBinaryAssetProviders, [&filePath](const asset::SingleBinaryAssetProvider& provider) { return provider.exists(filePath); }))
+		{
+			return true;
+		}
+
+		return defaultAssetProvider.exists(filePath);
 	}
 
 	bool ResourceExecutor::getIsCaching() const
 	{
-		return fileManager.getCache().getCacheSize();
+		return file_manager::FileManager::getInstance().getCache().getCacheSize();
 	}
 
-	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendStaticFile(std::string_view filePath, interfaces::IHttpResponse& response, std::string_view fileName)
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
@@ -222,46 +243,27 @@ namespace framework
 			return;
 		}
 
-		std::string result;
-		std::filesystem::path assetFilePath(assets / filePath);
-
-		if (!std::filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
-		}
-
-		std::filesystem::path extension = assetFilePath.extension();
-
-		if (Log::isValid())
-		{
-			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath, isBinary);
-		}
-
-		auto renderer = staticRenderers.find(extension.string());
-
-		if (isBinary)
-		{
-			fileManager.readBinaryFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
-		}
-		else
-		{
-			fileManager.readFile(assetFilePath, std::bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
-		}
+		std::string result = this->getFile(filePath);
 
 		if (fileName.size())
 		{
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		if (renderer != staticRenderers.end())
+		if (auto renderer = staticRenderers.find(std::filesystem::path(filePath).extension().string()); renderer != staticRenderers.end())
 		{
 			result = renderer->second->render(result);
 		}
 
 		response.setBody(result.data(), result.size());
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::requestStaticFile, logging::category::resource>(filePath);
+		}
 	}
 
-	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, std::span<const interfaces::CVariable> variables, bool isBinary, std::string_view fileName)
+	void ResourceExecutor::sendDynamicFile(std::string_view filePath, interfaces::IHttpResponse& response, const void* arguments, std::string_view fileName)
 	{
 		if (utility::escapeFromAssets(filePath))
 		{
@@ -270,31 +272,9 @@ namespace framework
 			return;
 		}
 
-		std::string result;
-		std::filesystem::path assetFilePath(assets / filePath);
+		std::string result = this->getFile(filePath);
 
-		if (!std::filesystem::exists(assetFilePath))
-		{
-			throw file_manager::exceptions::FileDoesNotExistException(assetFilePath);
-		}
-
-		std::filesystem::path extension = assetFilePath.extension();
-
-		if (Log::isValid())
-		{
-			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath, isBinary);
-		}
-
-		if (isBinary)
-		{
-			fileManager.readBinaryFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
-		}
-		else
-		{
-			fileManager.readFile(assetFilePath, bind(&ResourceExecutor::readFile, this, std::move(extension), std::ref(result), std::placeholders::_1));
-		}
-
-		wfdpRenderer.run(variables, result);
+		wfdpRenderer.run(arguments, result);
 
 		if (fileName.size())
 		{
@@ -302,34 +282,24 @@ namespace framework
 		}
 
 		response.setBody(result.data(), result.size());
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::requestDynamicFile, logging::category::resource>(filePath);
+		}
 	}
 
-	void ResourceExecutor::processDynamicFile(std::string& data, std::span<const interfaces::CVariable> variables)
+	void ResourceExecutor::processDynamicFile(std::string& data, const void* arguments)
 	{
-		wfdpRenderer.run(variables, data);
+		wfdpRenderer.run(arguments, data);
 	}
 
 	void ResourceExecutor::registerDynamicFunction(std::string_view functionName, std::string_view apiType, const std::any& function)
 	{
 		static const std::unordered_map<std::string_view, std::function<std::unique_ptr<DynamicFunction>(const std::any&)>> apiDynamicFunctions =
 		{
-			{
-				json_settings::cxxExecutorKey,
-				[](const std::any& function)
-				{
-					if (auto value = std::any_cast<void*>(&function))
-					{
-						std::unique_ptr<CXXDynamicFunction> result = std::make_unique<CXXDynamicFunction>();
-
-						result->initClass(*value);
-
-						return result;
-					}
-
-					return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function));
-				}
-			},
-			{ json_settings::ccExecutorKey, [](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<std::function<std::string(const std::vector<std::string>&)>>(function)); } },
+			{ json_settings::cxxExecutorKey,[](const std::any& function) { return std::make_unique<CXXDynamicFunction>(std::any_cast<void*>(function)); } },
+			{ json_settings::ccExecutorKey,[](const std::any& function) { return std::make_unique<CCDynamicFunction>(std::any_cast<void*>(function)); } },
 #ifdef __WITH_PYTHON_EXECUTORS__
 			{ json_settings::pythonExecutorKey, [](const std::any& function) { return std::make_unique<PythonDynamicFunction>(std::any_cast<void*>(function)); }},
 #endif
@@ -356,9 +326,58 @@ namespace framework
 		return wfdpRenderer.isDynamicFunctionRegistered(functionName);
 	}
 
-	const std::filesystem::path& ResourceExecutor::getPathToAssets() const
+	std::string ResourceExecutor::getFile(std::string_view filePath)
 	{
-		return assets;
+		if (utility::escapeFromAssets(filePath))
+		{
+			throw exceptions::ForbiddenException(filePath);
+		}
+
+		std::string result;
+
+		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
+		{
+			if (provider.exists(filePath))
+			{
+				provider.getAsset(filePath, result);
+
+				break;
+			}
+		}
+
+		if (result.empty())
+		{
+			defaultAssetProvider.getAsset(filePath, result);
+		}
+
+		return result;
+	}
+
+	std::unique_ptr<std::istream> ResourceExecutor::getFileStream(std::string_view filePath)
+	{
+		if (utility::escapeFromAssets(filePath))
+		{
+			throw exceptions::ForbiddenException(filePath);
+		}
+
+		std::unique_ptr<std::istream> result;
+
+		for (asset::SingleBinaryAssetProvider& provider : singleBinaryAssetProviders)
+		{
+			if (provider.exists(filePath))
+			{
+				result = provider.getAssetStream(filePath);
+
+				break;
+			}
+		}
+
+		if (!result)
+		{
+			result = defaultAssetProvider.getAssetStream(filePath);
+		}
+
+		return result;
 	}
 
 	const std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual>& ResourceExecutor::getStaticRenderers() const

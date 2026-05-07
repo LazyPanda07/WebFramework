@@ -1,3 +1,5 @@
+from typing import List
+
 from web_framework_api import *
 
 from TextGenerator import TextGenerator
@@ -50,10 +52,24 @@ class AssetsExecutor(StatelessExecutor):
         settings.register_dynamic_function("customFunction", CustomFunction)
 
     def do_get(self, request, response):
-        request.send_dynamic_file(f"{request.get_json()["fileName"]}.wfdp", response, request.get_query_parameters())
+        query_parameters = request.get_query_parameters()
+        arguments = dict()
+
+        if "data" in query_parameters:
+            arguments["@print"] = {"data": query_parameters["data"]}
+        elif "first" in query_parameters:
+            data: List[int] = list()
+
+            data.append(int(query_parameters["first"]))
+            data.append(int(query_parameters["second"]))
+            data.append(int(query_parameters["third"]))
+
+            arguments["@customFunction"] = {"data": data}
+
+        request.send_dynamic_file(f"{request.get_json()["fileName"]}.wfdp", response, arguments)
 
     def do_delete(self, request, response):
-        request.unregister_dynamic_function("custom_function")
+        request.unregister_dynamic_function("customFunction")
 
 
 class ChunksExecutor(HeavyOperationStatelessExecutor):
@@ -70,7 +86,9 @@ class ChunksExecutor(HeavyOperationStatelessExecutor):
 
 class DownloadExecutor(HeavyOperationStatelessExecutor):
     def do_get(self, request, response):
-        request.stream_file("index.html", response, "index.html")
+        file_name = request.get_json()["fileName"]
+
+        request.stream_file(file_name, response, file_name)
 
 
 class DynamicResources(HeavyOperationStatelessExecutor):
@@ -81,11 +99,11 @@ class DynamicResources(HeavyOperationStatelessExecutor):
 
     def do_post(self, request, response):
         file_data = request.get_file("print.wfdp")
-        variables = {
-            "data": request.get_json()["data"]
+        arguments = {
+            "@print": request.get_json()
         }
 
-        response.set_body(request.process_dynamic_file(file_data, variables))
+        response.set_body(request.process_dynamic_file(file_data, arguments))
 
 
 class UploadChunkedExecutor(HeavyOperationStatelessExecutor):
@@ -129,3 +147,26 @@ class UploadOctetStreamExecutor(StatefulExecutor):
 
             response.set_response_code(ResponseCodes.CREATED)
             response.set_body("Finish uploading file")
+
+
+class TokenExecutor(StatelessExecutor):
+    def do_get(self, request, response):
+        response.set_body(request.get_token_payload()["userName"])
+
+
+class TokenGiverExecutor(StatelessExecutor):
+    def do_post(self, request, response):
+        token = create_jwt({
+            "userName": request.get_json()["userName"]
+        },
+            60
+        )
+
+        response.set_body({
+            "token": token
+        })
+
+
+class WebSocketEcho(WebSocketExecutor):
+    def on_receive(self, frame):
+        return frame.get_payload()

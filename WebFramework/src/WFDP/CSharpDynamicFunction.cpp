@@ -44,20 +44,12 @@ namespace framework
 		return *this;
 	}
 
-	std::string CSharpDynamicFunction::operator ()(const std::vector<std::string>& arguments) const
+	std::string CSharpDynamicFunction::operator ()(const json::JsonObject& arguments) const
 	{
 		runtime::DotNetRuntime& runtime = runtime::RuntimesManager::get().getRuntime<runtime::DotNetRuntime>();
-		const char** args = new const char* [arguments.size()];
-
-		for (size_t i = 0; i < arguments.size(); i++)
-		{
-			args[i] = arguments[i].data();
-		}
-
-		char* resultPtr = runtime.getCallDynamicFunction()(dynamicFunction, args, arguments.size());
+		char* resultPtr = runtime.getCallDynamicFunction()(dynamicFunction, &arguments);
 		std::string result(resultPtr);
 
-		delete[] args;
 		runtime.dealloc(resultPtr);
 
 		return result;

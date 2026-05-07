@@ -38,7 +38,7 @@ TEST(Database, MultiUser)
 
 			for (size_t i = 0; i < requestsNumber; i++)
 			{
-				request = web::HttpBuilder().putRequest().parameters("multi_user_database").build(json::JsonBuilder(CP_UTF8).append("data", generateRandomString()));
+				request = web::HttpBuilder().putRequest().parameters("multi_user_database").build(json::JsonBuilder().append("data", generateRandomString()));
 
 				stream << request;
 

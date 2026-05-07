@@ -14,6 +14,11 @@
 
 namespace framework
 {
+	class WebFramework;
+}
+
+namespace framework
+{
 	class BaseWebServer : public virtual web::BaseTCPServer
 	{
 	private:
@@ -24,7 +29,7 @@ namespace framework
 		EVP_PKEY* privateKey;
 
 	protected:
-		bool useHTTPS;
+		WebFramework& frameworkInstance;
 
 	private:
 		static void readSsl(const std::filesystem::path& filePath, const std::function<void(FILE*, const std::filesystem::path&)>& callback);
@@ -38,9 +43,11 @@ namespace framework
 		SSL* getNewSsl();
 
 	public:
-		BaseWebServer();
+		BaseWebServer(WebFramework& frameworkInstance);
 
 		void updateCertificates();
+
+		WebFramework& getFrameworkInstance();
 
 		virtual ~BaseWebServer();
 	};

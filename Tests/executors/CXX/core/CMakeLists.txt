@@ -14,6 +14,9 @@ add_library(
 	src/UploadOctetStreamExecutor.cpp
 	src/DynamicResources.cpp
 	src/TextGenerator.cpp
+	src/TokenExecutor.cpp
+	src/TokenGiverExecutor.cpp
+	src/WebSocketEcho.cpp
 )
 
 target_include_directories(

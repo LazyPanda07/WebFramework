@@ -1,3 +1,6 @@
+## 3.4.0
+* Update WebFramework to v3.4.0
+
 ## 3.3.7
 * Add HTTP parsing validation
 
@@ -20,23 +23,23 @@
 * Change Date response header format
 
 ## 3.3.0
-* Update WebFramework to 3.3.0
+* Update WebFramework to v3.3.0
 
 ## 3.2.0
-* Update WebFramework to 3.2.0
+* Update WebFramework to v3.2.0
 * Add Executors API for Python and C# for Windows 
 
 ## 3.1.3
-* Update WebFramework to 3.1.3
+* Update WebFramework to v3.1.3
 
 ## 3.1.2
-* Update WebFramework to 3.1.2
+* Update WebFramework to v3.1.2
 
 ## 3.1.1
-* Update WebFramework to 3.1.1
+* Update WebFramework to v3.1.1
 
 ## 3.1.0
-* Update WebFramework to 3.1.0
+* Update WebFramework to v3.1.0
 
 ## 1.0.7
 * Fixes

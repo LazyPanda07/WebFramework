@@ -27,6 +27,21 @@ int main(int argc, char** argv) try
 		config.overrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic");
 	}
 
+	if (char* temp = std::getenv("RUNTIMES"))
+	{
+		std::string_view runtimes(temp);
+
+		if (runtimes.find("python") != std::string_view::npos)
+		{
+			config.overrideConfiguration("$[]WebFramework.runtimes.0.enabled", true);
+		}
+
+		if (runtimes.find(".net") != std::string_view::npos)
+		{
+			config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", true);
+		}
+	}
+
 	if (std::string type = parser.get<std::string>("type"); type == "server")
 	{
 		std::vector<std::string> settingsPaths = { "load_balancer_web.json" };

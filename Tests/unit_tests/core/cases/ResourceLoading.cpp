@@ -11,31 +11,37 @@
 TEST(ResourceLoading, StreamFile)
 {
 	streams::IOSocketStream stream = utility::createSocketStream();
-	std::string request = web::HttpBuilder().getRequest().parameters("download").build();
-	std::string result = (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str();
-	std::string response;
+	json::JsonBuilder body;
 
-	stream << request;
+	{
+		body["fileName"] = "index.html";
 
-	stream >> response;
+		std::string request = web::HttpBuilder().getRequest().parameters("download").build(body);
+		std::string result = (std::ostringstream() << std::ifstream("assets/index.html", std::ios::binary).rdbuf()).str();
+		std::string response;
 
-	std::unique_ptr<web::HttpParser> parser = std::make_unique<web::HttpParser>(response);
+		stream << request;
 
-	ASSERT_EQ(parser->getBody(), result);
+		stream >> response;
 
-	ASSERT_EQ(parser->getHeaders().at("DownloadType"), "from-file");
+		ASSERT_EQ(web::HttpParser(response).getBody(), result) << "Failed with: " << "index.html" << std::endl << result;
+	}
 
-	response.clear();
+	{
+		body["fileName"] = "page.html";
 
-	stream << request;
+		std::string request = web::HttpBuilder().getRequest().parameters("download").build(body);
+		std::string result = (std::ostringstream() << std::ifstream("assets/package/page.html", std::ios::binary).rdbuf()).str();
+		std::string response;
 
-	stream >> response;
+		utility::strings::replaceAllByRef(result, "\r\n", "\n");
 
-	parser = std::make_unique<web::HttpParser>(response);
+		stream << request;
 
-	ASSERT_EQ(parser->getBody(), result);
+		stream >> response;
 
-	ASSERT_EQ(parser->getHeaders().at("DownloadType"), "from-cache");
+		ASSERT_EQ(web::HttpParser(response).getBody(), result) << "Failed with: " << "page.html" << std::endl << response;
+	}
 }
 
 TEST(ResourceLoading, Index)
@@ -89,7 +95,7 @@ TEST(ResourceLoading, DynamicResources)
 	{
 		std::string request = web::HttpBuilder().postRequest().parameters("dynamic_resources").build
 		(
-			json::JsonBuilder(CP_UTF8).append("data", "Hello, World!")
+			json::JsonBuilder().append("data", "Hello, World!")
 		);
 		std::string response;
 

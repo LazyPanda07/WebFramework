@@ -2,11 +2,12 @@
 
 #include <Log.h>
 #include <Exceptions/SslException.h>
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 #include <JsonArrayWrapper.h>
 #include <IOSocketStream.h>
 
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 namespace framework::proxy
 {
@@ -19,11 +20,12 @@ namespace framework::proxy
 
 	void ProxyServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) //-V688
 	{
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		SSL* ssl = nullptr;
 
 		try
 		{
-			if (useHTTPS)
+			if (httpsData)
 			{
 				ssl = this->getNewSsl();
 
@@ -32,9 +34,9 @@ namespace framework::proxy
 					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
-				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				if (int errorCode = SSL_set_fd(ssl, static_cast<int>(clientSocket)); errorCode != 1)
 				{
-					throw web::exceptions::SslException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
@@ -73,8 +75,8 @@ namespace framework::proxy
 		const ProxyData& proxyData = *routes.at(route);
 
 		streams::IOSocketStream serverStream = proxyData.isHTTPS ?
-			streams::IOSocketStream::createStream<web::HttpsNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout)) :
-			streams::IOSocketStream::createStream<web::HttpNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout));
+			streams::IOSocketStream::createStream<web::http::HttpsNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout)) :
+			streams::IOSocketStream::createStream<web::http::HttpNetwork>(proxyData.ip, proxyData.port, std::chrono::milliseconds(proxyData.timeout));
 
 		bool success = utility::processStreamOperation<logging::category::proxyServer, utility::structs::SendOperation>(serverStream, request);
 		
@@ -97,7 +99,7 @@ namespace framework::proxy
 		}
 	}
 
-	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings) :
+	ProxyServer::ProxyServer(std::string_view ip, std::string_view port, DWORD timeout, const json::JsonObject& proxySettings, WebFramework& frameworkInstance) :
 		BaseTCPServer
 		(
 			port,
@@ -106,7 +108,8 @@ namespace framework::proxy
 			true,
 			0,
 			false
-		)
+		),
+		BaseWebServer(frameworkInstance)
 	{
 		const std::vector<json::JsonObject>& servers = proxySettings["proxiedServers"].get<std::vector<json::JsonObject>>();
 

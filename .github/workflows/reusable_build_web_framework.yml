@@ -65,6 +65,11 @@ on:
         required: false
         type: string
         default: ''
+      strip:
+        description: "Strip binaries"
+        required: false
+        type: boolean
+        default: false
       upload-artifact-name:
         description: "Name of uploaded artifact zip"
         required: false
@@ -89,6 +94,16 @@ jobs:
       if: ${{ inputs.os == 'windows-latest' }}
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
+    - name: Install uuid-dev
+      if: ${{ inputs.os == 'ubuntu-24.04-arm' }}
+      run: |
+        sudo apt update
+        sudo apt install -y uuid-dev
+
+    - name: Install .NET 10.0
+      if: ${{ inputs.os == 'ubuntu-24.04-arm' && (inputs.with-dotnet-executors == 'ON' || inputs.build-csharp-api == 'ON') }}
+      run: sudo apt install -y dotnet-sdk-10.0
+
     - name: Install Python
       if: ${{ inputs.python-version != '' }}
       uses: actions/setup-python@v6
@@ -102,7 +117,7 @@ jobs:
         python -m pip install build
         
     - name: Append WITH_STACKTRACE=ON to ADDITIONAL_BUILD_PARAMETERS on Windows at main branch
-      if: ${{ inputs.os == 'windows-latest' && env.CURRENT_BRANCH == 'main' }}
+      if: ${{ (inputs.os == 'windows-latest' || inputs.os == 'ubuntu-24.04-arm') && env.CURRENT_BRANCH == 'main' }}
       shell: bash
       run: echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_STACKTRACE=ON" >> ${GITHUB_ENV}
 
@@ -133,11 +148,15 @@ jobs:
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DCMAKE_BUILD_TYPE=${{ inputs.configuration }} ${{ inputs.build-parameters }} ${ADDITIONAL_BUILD_PARAMETERS} -G ${{ inputs.cmake-generator }} ..
           cmake --build . -j --config ${{ inputs.configuration }}
-          cmake --install . --config ${{ inputs.configuration }}
+          if [ "${{ inputs.strip }}" = "true" ]; then
+            cmake --install . --config ${{ inputs.configuration }} --strip
+          else
+            cmake --install . --config ${{ inputs.configuration }}
+          fi
   
     - name: Upload artifacts
       if: ${{ inputs.upload-artifact-name != '' && ((inputs.build-branch-strict != '' && inputs.build-branch-strict == env.CURRENT_BRANCH) || inputs.build-branch-strict == '') }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ inputs.upload-artifact-name }}
         path: WebFrameworkLibrary

@@ -2,15 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_C_STANDARD 11)
 
-project(CC_API)
-
-if (UNIX)
-	add_definitions(-D__LINUX__)
-
-	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-		add_definitions(-D__ANDROID__)
-	endif()
-endif(UNIX)
+project(CC_API VERSION 3.4.0)
 
 add_library(
 	${PROJECT_NAME} STATIC
@@ -22,6 +14,7 @@ add_library(
 	src/task_broker/task_executor.c
 	src/utility/web_framework_utility.c
 	src/utility/web_framework_localization.c
+	src/web_socket/web_socket_executor.c
 	src/config.c
 	src/dll_handler.c
 	src/http_request.c
@@ -34,23 +27,39 @@ add_library(
 	src/load_balancer_heuristic.c
 )
 
+if (UNIX)
+	target_compile_definitions(
+		${PROJECT_NAME} PUBLIC
+		__LINUX__
+	)
+
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+		target_compile_definitions(
+			${PROJECT_NAME} PUBLIC
+			__ANDROID__
+		)
+	endif()
+endif()
+
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:api/cc/include>
 )
 
-install(
-	TARGETS ${PROJECT_NAME} 
-	EXPORT ${WEB_FRAMEWORK_EXPORT_TARGETS} 
-	ARCHIVE DESTINATION lib
-	LIBRARY DESTINATION lib
-	RUNTIME DESTINATION dll
-)
-install(DIRECTORY include DESTINATION api/cc)
-install(
-	EXPORT ${WEB_FRAMEWORK_EXPORT_TARGETS}
-	FILE ${WEB_FRAMEWORK_EXPORT_TARGETS_FILE}
-	NAMESPACE ${WEB_FRAMEWORK_EXPORT_TARGETS_NAMESPACE}
-	DESTINATION cmake
-)
+if (NOT ${AS_DEPENDENCY})
+	install(
+		TARGETS ${PROJECT_NAME} 
+		EXPORT ${WEB_FRAMEWORK_EXPORT_TARGETS} 
+		ARCHIVE DESTINATION lib
+		LIBRARY DESTINATION lib
+		RUNTIME DESTINATION dll
+	)
+	install(DIRECTORY include DESTINATION api/cc)
+	install(
+		EXPORT ${WEB_FRAMEWORK_EXPORT_TARGETS}
+		FILE ${WEB_FRAMEWORK_EXPORT_TARGETS_FILE}
+		NAMESPACE ${WEB_FRAMEWORK_EXPORT_TARGETS_NAMESPACE}
+		DESTINATION cmake
+	)
+endif()

@@ -4,6 +4,14 @@ name: "Build wheel"
 on:
   workflow_call:
     inputs:
+      os:
+        description: "runs-on OS"
+        required: true
+        type: string
+      image:
+        description: "Custom Docker image"
+        required: false
+        type: string
       python-minor-version:
         description: "Python minor version"
         required: true
@@ -13,11 +21,12 @@ on:
         required: true
         type: string
 
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.os }}
     container: 
-      image: quay.io/pypa/manylinux_2_28_x86_64
+      image: ${{ inputs.image }}
 
     env:
       NINJA_TAG: v1.13.2

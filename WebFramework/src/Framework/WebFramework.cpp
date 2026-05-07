@@ -1,8 +1,12 @@
 #include "Framework/WebFramework.h"
 
 #include <filesystem>
+#include <random>
 
-#include <Log.h>
+#ifdef __LINUX__
+#include <signal.h>
+#endif
+
 #include <JsonArrayWrapper.h>
 #include <MapJsonIterator.h>
 #include <DatabaseUtility.h>
@@ -10,15 +14,11 @@
 #include "Web/Servers/MultithreadedWebServer.h"
 #include "Web/Servers/ThreadPoolWebServer.h"
 #include "LoadBalancer/LoadBalancerServer.h"
-#include "Utility/Singletons/HTTPSSingleton.h"
 #include "Utility/Sources.h"
 #include "Proxy/ProxyServer.h"
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
-#include "Managers/DatabasesManager.h"
 #include "Managers/RuntimesManager.h"
-#include "Managers/TaskExecutorsManager.h"
-#include "Managers/TaskBrokersManager.h"
 #include "Runtimes/CXXRuntime.h"
 #include "Runtimes/CCRuntime.h"
 #include "Runtimes/PythonRuntime.h"
@@ -28,9 +28,36 @@
 
 namespace framework
 {
-	bool WebFramework::getUseHTTPS()
+	WebFramework::HttpsData::HttpsData()
 	{
-		return utility::HTTPSSingleton::get().getUseHTTPS();
+#ifdef __LINUX__
+		signal(SIGPIPE, SIG_IGN);
+#endif
+
+		SSL_library_init();
+		SSL_load_error_strings();
+	}
+
+	void WebFramework::HttpsData::setPathToCertificate(const std::filesystem::path& pathToCertificate)
+	{
+		this->pathToCertificate = pathToCertificate;
+		this->pathToCertificate = this->pathToCertificate.make_preferred();
+	}
+
+	void WebFramework::HttpsData::setPathToKey(const std::filesystem::path& pathToKey)
+	{
+		this->pathToKey = pathToKey;
+		this->pathToKey = this->pathToKey.make_preferred();
+	}
+
+	const std::filesystem::path& WebFramework::HttpsData::getPathToCertificate() const
+	{
+		return pathToCertificate;
+	}
+
+	const std::filesystem::path& WebFramework::HttpsData::getPathToKey() const
+	{
+		return pathToKey;
 	}
 
 	void WebFramework::parseAdditionalConfigs(const json::JsonObject& webFrameworkSettings, const std::filesystem::path& basePath, std::vector<std::string>& settingsPaths, std::vector<std::string>& loadSources)
@@ -58,13 +85,45 @@ namespace framework
 		}
 	}
 
+	uint64_t WebFramework::parseLoggingFlags(const json::JsonObject& loggingSettings) const
+	{
+		std::vector<json::JsonObject> flags;
+
+		return loggingSettings.tryGet<std::vector<json::JsonObject>>(json_settings::logFlagsKey, flags) ?
+			Log::createFlags(json::utility::JsonArrayWrapper(flags).as<std::string>()) :
+			(std::numeric_limits<uint64_t>::max)();
+	}
+
+	Log::VerbosityLevel WebFramework::parseVerbosity(const json::JsonObject& loggingSettings) const
+	{
+		std::string verbosity;
+
+		if (loggingSettings.tryGet<std::string>(json_settings::logVerbosityLevelKey, verbosity))
+		{
+			if (verbosity == "verbose")
+			{
+				return Log::VerbosityLevel::verbose;
+			}
+			else if (verbosity == "warning")
+			{
+				return Log::VerbosityLevel::warning;
+			}
+			else if (verbosity == "error")
+			{
+				return Log::VerbosityLevel::error;
+			}
+		}
+
+		return Log::VerbosityLevel::verbose;
+	}
+
 	std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> WebFramework::createExecutorsSettings(const std::vector<std::string>& settingsPaths)
 	{
 		std::unordered_map<std::string, utility::JSONSettingsParser::ExecutorSettings> result;
 
 		for (const std::string& settingsPath : settingsPaths)
 		{
-			utility::JSONSettingsParser parser(settingsPath);
+			utility::JSONSettingsParser parser(settingsPath, *this);
 
 			for (const auto& [key, value] : parser.getSettings())
 			{
@@ -78,15 +137,6 @@ namespace framework
 		}
 
 		return result;
-	}
-
-	uint64_t WebFramework::parseLoggingFlags(const json::JsonObject& loggingSettings) const
-	{
-		std::vector<json::JsonObject> flags;
-
-		return loggingSettings.tryGet<std::vector<json::JsonObject>>(json_settings::logFlagsKey, flags) ?
-			Log::createFlags(json::utility::JsonArrayWrapper(flags).as<std::string>()) :
-			(std::numeric_limits<uint64_t>::max)();
 	}
 
 	void WebFramework::initAPIs(const json::JsonObject& webFrameworkSettings)
@@ -178,6 +228,7 @@ namespace framework
 
 			uint64_t logFileSize = 0;
 			uint64_t flags = this->parseLoggingFlags(loggingSettings);
+			Log::VerbosityLevel verbosity = this->parseVerbosity(loggingSettings);
 
 			if (loggingSettings.tryGet<uint64_t>(json_settings::logFileSizeKey, logFileSize))
 			{
@@ -211,6 +262,8 @@ namespace framework
 			{
 				Log::duplicateErrorLog(std::cerr);
 			}
+
+			Log::setVerbosityLevel(verbosity);
 		}
 	}
 
@@ -239,7 +292,7 @@ namespace framework
 
 		WebFramework::parseAdditionalConfigs(webFrameworkSettings, basePath, settingsPaths, pathToSources);
 
-		std::ranges::for_each(settingsPaths, [this, &basePath](std::string& path) { path = (basePath / path).string(); });
+		std::ranges::for_each(settingsPaths, [this, &basePath](std::string& path) { path = (basePath / path).make_preferred().string(); });
 		std::ranges::for_each
 		(
 			pathToSources, [this, &basePath](std::string& source)
@@ -249,11 +302,11 @@ namespace framework
 					return;
 				}
 
-				source = (basePath / source).string();
+				source = (basePath / source).make_preferred().string();
 			}
 		);
 
-		executorSettings = WebFramework::createExecutorsSettings(settingsPaths);
+		executorSettings = this->createExecutorsSettings(settingsPaths);
 
 		if (ExecutorsManager::types.at(webFrameworkSettings[json_settings::webServerTypeKey].get<std::string>()) > ExecutorsManager::WebServerType::proxy)
 		{
@@ -277,7 +330,6 @@ namespace framework
 		taskBrokerObject.tryGet<std::vector<json::JsonObject>>(json_settings::taskExecutorsSettingsKey, taskExecutorPaths);
 
 		const std::filesystem::path& basePath = config.getBasePath();
-		task_broker::TaskExecutorsManager& taskExecutorsManager = task_broker::TaskExecutorsManager::get();
 		std::string consumer;
 
 		if (taskBrokerObject.tryGet<std::string>(json_settings::consumerKey, consumer) && consumer == json_settings_values::consumerInternalValue)
@@ -287,7 +339,6 @@ namespace framework
 				utility::logAndThrowException<logging::message::cantFindTaskExecutorPaths, logging::category::webFramework>(json_settings_values::consumerInternalValue, json_settings::taskExecutorsSettingsKey);
 			}
 
-			task_broker::TaskBrokersManager& taskBrokerManager = task_broker::TaskBrokersManager::get();
 			const std::vector<json::JsonObject>& taskBrokers = taskBrokerObject.at(json_settings::taskBrokersKey).get<std::vector<json::JsonObject>>();
 			std::vector<std::string> taskBrokerNames;
 			size_t consumerThreads = json_settings_values::consumerThreadsDefaultValue;
@@ -323,7 +374,7 @@ namespace framework
 				taskBrokerNames.emplace_back(*taskBrokerName);
 			}
 
-			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod));
+			taskExecutorsManager.createTaskConsumer(taskBrokerNames, consumerThreads, std::chrono::milliseconds(checkPeriod), taskBrokerManager, *this);
 		}
 
 		for (const json::JsonObject& taskExecutorPath : taskExecutorPaths)
@@ -349,11 +400,9 @@ namespace framework
 
 			taskExecutorsManager.initTaskExecutor(taskExecutorsSettings);
 		}
-
-		taskExecutorsManager.runTaskConsumer(); // run only if consumer created
 	}
 
-	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings) const
+	void WebFramework::initHTTPS(const json::JsonObject& webFrameworkSettings)
 	{
 		json::JsonObject https;
 
@@ -362,23 +411,17 @@ namespace framework
 			return;
 		}
 
-		bool useHTTPS = false;
-
-		if (https.tryGet<bool>(json_settings::useHTTPSKey, useHTTPS) && useHTTPS)
+		if (bool useHTTPS = false; https.tryGet<bool>(json_settings::useHTTPSKey, useHTTPS) && useHTTPS)
 		{
-			utility::HTTPSSingleton& httpsSettings = utility::HTTPSSingleton::get();
+			HttpsData& data = httpsData.emplace();
 			const std::filesystem::path& basePath = config.getBasePath();
 
-			httpsSettings.setUseHTTPS(true);
-			httpsSettings.setPathToCertificate(basePath / https[json_settings::pathToCertificateKey].get<std::string>());
-			httpsSettings.setPathToKey(basePath / https[json_settings::pathToKey].get<std::string>());
-
-			SSL_library_init();
-			SSL_load_error_strings();
+			data.setPathToCertificate(basePath / https[json_settings::pathToCertificateKey].get<std::string>());
+			data.setPathToKey(basePath / https[json_settings::pathToKey].get<std::string>());
 
 			if (Log::isValid())
 			{
-				Log::info<logging::message::httpsInitialization, logging::category::https>(httpsSettings.getPathToCertificate().string(), httpsSettings.getPathToKey().string());
+				Log::info<logging::message::httpsInitialization, logging::category::https>(data.getPathToCertificate().string(), data.getPathToKey().string());
 			}
 		}
 	}
@@ -409,7 +452,7 @@ namespace framework
 			}
 		}
 
-		DatabasesManager::get().initDatabaseImplementation(databases);
+		databasesManager.initDatabaseImplementation(databases);
 	}
 
 	void WebFramework::initServer
@@ -447,13 +490,14 @@ namespace framework
 			server = std::make_unique<MultithreadedWebServer>
 				(
 					*config,
-					move(executorsSettings),
+					std::move(executorsSettings),
 					ip,
 					port,
 					timeout,
 					pathToSources,
 					additionalSettings,
-					threadPool
+					threadPool,
+					*this
 				);
 		}
 		else if (webServerType == json_settings_values::threadPoolWebServerTypeValue)
@@ -469,14 +513,15 @@ namespace framework
 			server = std::make_unique<ThreadPoolWebServer>
 				(
 					*config,
-					move(executorsSettings),
+					std::move(executorsSettings),
 					ip,
 					port,
 					timeout,
 					pathToSources,
 					additionalSettings,
 					threadPoolThreads,
-					threadPool
+					threadPool,
+					*this
 				);
 		}
 		else if (webServerType == json_settings_values::loadBalancerWebServerTypeValue)
@@ -497,7 +542,7 @@ namespace framework
 
 			if (!loadBalancerSettings.tryGet<json::JsonObject>(json_settings::heuristicKey, heuristic))
 			{
-				heuristic["name"] = json_settings_values::defaultHeuristicValue;
+				heuristic[json_settings::heuristicNameKey] = json_settings_values::defaultHeuristicValue;
 				heuristic[json_settings::apiTypeKey] = json_settings::cxxExecutorKey;
 			}
 
@@ -519,14 +564,15 @@ namespace framework
 					heuristic,
 					utility::loadSources({ loadSource }).front().first,
 					allServers,
-					make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
+					std::make_shared<ResourceExecutor>(*config, additionalSettings, threadPool),
 					static_cast<uint32_t>(processingThreads),
-					static_cast<uint32_t>(targetRPS)
+					static_cast<uint32_t>(targetRPS),
+					*this
 				);
 		}
 		else if (webServerType == json_settings_values::proxyWebServerTypeValue)
 		{
-			server = std::make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).get<json::JsonObject>(json_settings::proxyObject));
+			server = std::make_unique<proxy::ProxyServer>(ip, port, timeout, (*config).get<json::JsonObject>(json_settings::proxyObject), *this);
 		}
 		else
 		{
@@ -534,9 +580,41 @@ namespace framework
 		}
 	}
 
+	void WebFramework::initJwt(const json::JsonObject& webFrameworkSettings)
+	{
+		std::nullptr_t temp;
+
+		if (webFrameworkSettings.tryGet<std::nullptr_t>(json_settings::jwtSecretVariableNameKey, temp))
+		{
+			return;
+		}
+
+		webFrameworkSettings.tryGet<std::string>(json_settings::jwtSecretVariableNameKey, jwtSecretName);
+
+		if (!utility::isVariableExist(jwtSecretName))
+		{
+			std::mt19937 random(static_cast<uint32_t>(std::time(nullptr)));
+
+			utility::setEnvironmentVariable(json_settings_values::jwtSecretVariableNameValue, utility::generateRandomString(random() % 64));
+
+			if (Log::isValid() && jwtSecretName != json_settings_values::jwtSecretVariableNameValue)
+			{
+				Log::info<logging::message::cantFindJwtSecret, logging::category::webFramework>(jwtSecretName, json_settings_values::jwtSecretVariableNameValue);
+			}
+
+			jwtSecretName = json_settings_values::jwtSecretVariableNameValue;
+		}
+
+		if (Log::isValid())
+		{
+			Log::info<logging::message::jwtSecretVariable, logging::category::webFramework>(jwtSecretName);
+		}
+	}
+
 	WebFramework::WebFramework(const utility::Config& webFrameworkConfig) :
 		config(webFrameworkConfig),
-		serverException(nullptr)
+		serverException(nullptr),
+		jwtSecretName(json_settings_values::jwtSecretVariableNameValue)
 	{
 		this->initLogging();
 
@@ -550,10 +628,16 @@ namespace framework
 		this->initExecutors(webFrameworkSettings, executorsSettings, pathToSources);
 		this->initHTTPS(webFrameworkSettings);
 		this->initServer(webFrameworkSettings, std::move(executorsSettings), pathToSources);
+		this->initJwt(webFrameworkSettings);
 
 		if (json::JsonObject taskBrokerObject; (*config).tryGet<json::JsonObject>(json_settings::taskBrokerObject, taskBrokerObject))
 		{
 			this->initTaskExecutors(taskBrokerObject);
+		}
+
+		if (ExecutorServer* executorServer = dynamic_cast<ExecutorServer*>(server.get()))
+		{
+			taskExecutorsManager.runTaskConsumer(executorServer->getResourceExecutor()); // run only if consumer created
 		}
 
 		for (auto it = runtimesManager.begin(); it != runtimesManager.end(); ++it)
@@ -603,6 +687,11 @@ namespace framework
 		server->updateCertificates();
 	}
 
+	bool WebFramework::isServerRunning() const
+	{
+		return server->isServerRunning();
+	}
+
 	std::vector<std::string> WebFramework::getClientsIp() const
 	{
 		std::vector<std::pair<std::string, std::vector<SOCKET>>> clients = server->getClients();
@@ -618,14 +707,34 @@ namespace framework
 		return result;
 	}
 
-	bool WebFramework::isServerRunning() const
-	{
-		return server->isServerRunning();
-	}
-
 	const json::JsonParser& WebFramework::getCurrentConfiguration() const
 	{
 		return (*config);
+	}
+
+	std::string_view WebFramework::getJwtSecretName() const
+	{
+		return jwtSecretName;
+	}
+
+	const std::optional<WebFramework::HttpsData>& WebFramework::getHttpsData() const
+	{
+		return httpsData;
+	}
+
+	DatabasesManager& WebFramework::getDatabasesManager()
+	{
+		return databasesManager;
+	}
+
+	task_broker::TaskBrokersManager& WebFramework::getTaskBrokerManager()
+	{
+		return taskBrokerManager;
+	}
+
+	task_broker::TaskExecutorsManager& WebFramework::getTaskExecutorsManager()
+	{
+		return taskExecutorsManager;
 	}
 
 	WebFramework::~WebFramework()

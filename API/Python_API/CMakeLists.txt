@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(PYBIND11_VERSION 3.0.2)
+set(PYBIND11_VERSION 3.0.3)
 set(PYBIND11_FINDPYTHON OFF)
 
 if ("${PYTHON_EXECUTABLE}" STREQUAL "")
@@ -32,7 +32,7 @@ if (UNIX)
 	add_definitions(-D__LINUX__)
 endif(UNIX)
 
-project(web_framework_api VERSION 3.3.7)
+project(web_framework_api VERSION 3.4.0)
 
 if (UNIX)
     add_definitions(-D__LINUX__)
@@ -58,10 +58,12 @@ pybind11_add_module(
     src/module.cpp
     src/PyChunkGenerator.cpp
     src/PyDynamicFunction.cpp
+    src/PyDTO.cpp
     src/Executors/PyStatelessExecutor.cpp
     src/Executors/PyStatefulExecutor.cpp
     src/Executors/PyHeavyOperationStatelessExecutor.cpp
     src/Executors/PyHeavyOperationStatefulExecutor.cpp
+    src/WebSocket/PyWebSocketExecutor.cpp
     src/LoadBalancer/PyLoadBalancerHeuristic.cpp
     src/TaskBroker/PyTaskExecutor.cpp
     src/TaskBroker/PyTaskSerializer.cpp
@@ -73,6 +75,7 @@ pybind11_add_module(
     src/Registrars/LoadBalancerRegistrar.cpp
     src/Registrars/HttpResponseRegistrar.cpp
     src/Registrars/HttpRequestRegistrar.cpp
+    src/Registrars/WebSocketExecutorRegistrar.cpp
 )
 
 add_definitions(-DPYBIND11_DETAILED_ERROR_MESSAGES)
@@ -84,45 +87,41 @@ target_include_directories(
     ${WEB_FRAMEWORK_INCLUDE_PATH}
 )
 
-if (DEFINED CUSTOM_INSTALL_PATH)
-    install(TARGETS ${PROJECT_NAME} DESTINATION ${CUSTOM_INSTALL_PATH})
+if (UNIX)
+    add_custom_target(
+        generate_pyi ALL
+        DEPENDS ${PROJECT_NAME}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+
+        COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
+        COMMAND .venv/bin/python -m pip install --upgrade pip
+        COMMAND .venv/bin/python -m pip install pybind11-stubgen
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/*.so ${CMAKE_BINARY_DIR}/.venv/lib/python3.${PYTHON_MINOR_VERSION}/site-packages
+        COMMAND ${CMAKE_BINARY_DIR}/.venv/bin/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
+        COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
+    )
 else()
-    if (UNIX)
-        add_custom_target(
-            generate_pyi ALL
-            DEPENDS ${PROJECT_NAME}
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    add_custom_target(
+        generate_pyi ALL
+        DEPENDS ${PROJECT_NAME}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 
-            COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
-            COMMAND .venv/bin/python -m pip install --upgrade pip
-            COMMAND .venv/bin/python -m pip install pybind11-stubgen
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/*.so ${CMAKE_BINARY_DIR}/.venv/lib/python3.${PYTHON_MINOR_VERSION}/site-packages
-            COMMAND ${CMAKE_BINARY_DIR}/.venv/bin/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
-            COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
-        )
-    else()
-        add_custom_target(
-            generate_pyi ALL
-            DEPENDS ${PROJECT_NAME}
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-
-            COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
-            COMMAND .venv/Scripts/python -m pip install --upgrade pip
-            COMMAND .venv/Scripts/python -m pip install pybind11-stubgen
-            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/.venv/Lib/site-packages
-            COMMAND ${CMAKE_BINARY_DIR}/.venv/Scripts/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
-            COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
-        )
-    endif()
-
-    install(TARGETS ${PROJECT_NAME} DESTINATION .)
-    install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pyi DESTINATION .)
+        COMMAND ${PYTHON_EXECUTABLE} -m venv .venv
+        COMMAND .venv/Scripts/python -m pip install --upgrade pip
+        COMMAND .venv/Scripts/python -m pip install pybind11-stubgen
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_BINARY_DIR}/.venv/Lib/site-packages
+        COMMAND ${CMAKE_BINARY_DIR}/.venv/Scripts/pybind11-stubgen -o ${CMAKE_BINARY_DIR} ${PROJECT_NAME}
+        COMMAND ${CMAKE_COMMAND} -E rm -rf .venv
+    )
 endif()
 
+install(TARGETS ${PROJECT_NAME} DESTINATION web_framework_api)
+install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pyi DESTINATION web_framework_api)
+
 if (EXISTS lib)
-    install(DIRECTORY lib/ DESTINATION .)
+    install(DIRECTORY lib/ DESTINATION web_framework_api)
 endif()
 
 if (EXISTS dll)
-    install(DIRECTORY dll/ DESTINATION .)
+    install(DIRECTORY dll/ DESTINATION web_framework_api)
 endif()

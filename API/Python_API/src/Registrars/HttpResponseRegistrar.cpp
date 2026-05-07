@@ -26,11 +26,17 @@ namespace registrar
 			.def
 			(
 				"set_body",
-				[](framework::HttpResponse& self, const py::dict& json)
+				[](framework::HttpResponse& self, py::dict json)
 				{
 					py::module_ jsonModule = py::module_::import("json");
 
-					self.setBody(framework::JsonBuilder(jsonModule.attr("dumps")(json, "ensure_ascii"_a = false).cast<std::string>()));
+					self.setBody
+					(
+						framework::JsonBuilder
+						(
+							jsonModule.attr("dumps")(json, "ensure_ascii"_a = false, "default"_a = py::cpp_function([](py::object obj) { return obj.attr("__dict__"); })).cast<std::string>()
+						)
+					);
 				},
 				"json"_a
 			)

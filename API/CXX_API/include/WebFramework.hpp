@@ -9,6 +9,17 @@
 
 namespace framework
 {
+	class WebFramework;
+	class JsonObject;
+}
+
+namespace framework::utility::token
+{
+	std::string createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);
+}
+
+namespace framework
+{
 	/**
 	 * @brief Web server
 	 */
@@ -18,6 +29,9 @@ namespace framework
 		std::function<void()> onStartServer;
 		void* implementation;
 		bool weak;
+
+	private:
+		WebFramework(void* implementation);
 
 	public:
 		/**
@@ -85,11 +99,21 @@ namespace framework
 		bool isServerRunning() const;
 
 		~WebFramework();
+
+		friend class HttpRequest;
+		friend std::string utility::token::createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);;
 	};
 }
 
 namespace framework
 {
+	inline WebFramework::WebFramework(void* implementation) :
+		implementation(implementation),
+		weak(true)
+	{
+
+	}
+
 	inline std::string_view WebFramework::getWebFrameworkVersion()
 	{
 		return utility::DllHandler::getInstance().callFunction<const char* (*)()>("getWebFrameworkVersion");

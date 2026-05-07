@@ -20,7 +20,7 @@ web_framework_exception_t wf_copy_json_builder(json_builder_t* builder, json_bui
 /**
  * @brief Get Json formatted text
  * @param implementation json_builder_t instance
- * @param result Json formatted text. Delete with deleteWebFrameworkString function
+ * @param result Json formatted text. Delete with wf_delete_string function
  * @return 
  */
 web_framework_exception_t wf_build_json_builder(json_builder_t implementation, web_framework_string_t* result);

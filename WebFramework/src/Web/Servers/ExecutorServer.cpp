@@ -8,11 +8,12 @@
 #include "Exceptions/APIException.h"
 #include "Exceptions/BadRequestException.h"
 #include "Exceptions/CSharpException.h"
+#include "Exceptions/ForbiddenException.h"
 #include "Utility/Utils.h"
 
 namespace framework
 {
-	ExecutorServer::ServiceState ExecutorServer::serviceRequests(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
+	ExecutorServer::ServiceState ExecutorServer::serveTask(streams::IOSocketStream& stream, HttpRequestImplementation& request, HttpResponseImplementation& response, ResourceExecutor& resources, const std::function<void(ServiceState&)>& task)
 	{
 		ServiceState result = ServiceState::success;
 
@@ -55,6 +56,19 @@ namespace framework
 			}
 
 			resources.badRequestError(response, &e);
+
+			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
+
+			result = ServiceState::skipResponse;
+		}
+		catch (const framework::exceptions::ForbiddenException& e) // 403
+		{
+			if (Log::isValid())
+			{
+				Log::error<logging::message::forbiddenMessage, logging::category::executorServer>(e.what());
+			}
+
+			resources.forbiddenError(response, &e);
 
 			utility::processStreamOperation<logging::category::executorServer, utility::structs::SendOperation>(stream, response);
 
@@ -168,5 +182,15 @@ namespace framework
 		executorsManager = std::make_unique<ExecutorsManager>(configuration, pathToSources, std::move(executorsSettings), additionalSettings, threadPool);
 
 		resources = executorsManager->getResourceExecutor();
+	}
+
+	std::shared_ptr<ResourceExecutor> ExecutorServer::getResourceExecutor() const
+	{
+		return resources;
+	}
+
+	ExecutorsManager& ExecutorServer::getExecutorsManager()
+	{
+		return *executorsManager;
 	}
 }

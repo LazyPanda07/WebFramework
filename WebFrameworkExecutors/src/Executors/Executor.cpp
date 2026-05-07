@@ -34,9 +34,15 @@ namespace framework
 		return methods.find(methodName)->second;
 	}
 
-	void Executor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
+	Executor::Executor() :
+		supportWebSocket(false)
 	{
 
+	}
+
+	void Executor::init(const utility::JSONSettingsParser::ExecutorSettings& settings)
+	{
+		supportWebSocket = settings.webSocketExecutorName.has_value();
 	}
 
 	void Executor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response)

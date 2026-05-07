@@ -5,9 +5,15 @@ set(DOTNET_RUNTIME_VERSION 10)
 project(external_dot_net)
 
 if (UNIX)
-	set(BASE_DOTNET_HOST_SDK_PATH "/usr/lib/dotnet/packs/Microsoft.NETCore.App.Host.*-x64" CACHE STRING "")
+	if ("${COMPILE_TARGET}" STREQUAL "LinuxARM")
+		set(BASE_DOTNET_HOST_SDK_PATH "/usr/lib/dotnet/packs/Microsoft.NETCore.App.Host.*-arm64" CACHE STRING "")
 
-	list(APPEND BASE_DOTNET_HOST_SDK_PATH "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.*-x64")
+		list(APPEND BASE_DOTNET_HOST_SDK_PATH "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.*-arm64")	
+	else()
+		set(BASE_DOTNET_HOST_SDK_PATH "/usr/lib/dotnet/packs/Microsoft.NETCore.App.Host.*-x64" CACHE STRING "")
+
+		list(APPEND BASE_DOTNET_HOST_SDK_PATH "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.*-x64")	
+	endif()
 else()
 	set(BASE_DOTNET_HOST_SDK_PATH "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Host.win-x64" CACHE STRING "")
 endif()

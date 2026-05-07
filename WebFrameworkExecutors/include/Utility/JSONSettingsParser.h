@@ -8,6 +8,7 @@
 namespace framework
 {
 	class Executor;
+	class WebFramework;
 }
 
 namespace framework::utility
@@ -33,15 +34,16 @@ namespace framework::utility
 			json::JsonObject initParameters;
 			std::string name;
 			std::vector<std::string> userAgentFilter;
+			bool requireJwt;
+			std::optional<std::string> webSocketExecutorName;
 			std::string apiType;
 			LoadType executorLoadType;
 			std::shared_ptr<Executor> resourceExecutor;
 			std::vector<interfaces::IDatabase*> databases;
+			WebFramework& frameworkInstance;
 
 		public:
-			ExecutorSettings();
-
-			ExecutorSettings(std::string_view name);
+			ExecutorSettings(std::string_view name, WebFramework& frameworkInstance);
 
 			ExecutorSettings(const ExecutorSettings& other) = default;
 
@@ -64,7 +66,7 @@ namespace framework::utility
 		/// <param name="JSONSettings">path to .json settings file</param>
 		/// <exception cref="file_manager::exceptions::FileDoesNotExistException"></exception>
 		/// <exception cref="std::runtime_error"></exception>
-		JSONSettingsParser(const std::string& JSONSettings);
+		JSONSettingsParser(const std::string& JSONSettings, WebFramework& frameworkInstance);
 
 		/// @brief Move constructor
 		/// @param other Another JSONSettingsParser

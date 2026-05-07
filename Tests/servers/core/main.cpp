@@ -20,6 +20,21 @@ int main(int argc, char** argv) try
 	framework::utility::initializeWebFramework("WebFramework");
 
 	framework::utility::Config config(argv[1]);
+
+	if (char* temp = std::getenv("RUNTIMES"))
+	{
+		std::string_view runtimes(temp);
+
+		if (runtimes.find("python") != std::string_view::npos)
+		{
+			config.overrideConfiguration("$[]WebFramework.runtimes.0.enabled", true);
+		}
+
+		if (runtimes.find(".net") != std::string_view::npos)
+		{
+			config.overrideConfiguration("$[]WebFramework.runtimes.1.enabled", true);
+		}
+	}
 	
 #ifdef __WITH_ADDRESS_SANITIZER__
 	config.overrideConfiguration("$[]WebFramework.runtimes.0.enabled", false);

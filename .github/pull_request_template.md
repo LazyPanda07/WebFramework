@@ -10,9 +10,11 @@
 
 
 ## API versions update
+- [ ] C++(CMakeLists.txt)
+- [ ] CC(CMakeLists.txt)
 - [ ] C#(package version, assembly version, file version)
-- [ ] Flutter(pubspec.yml, CHANGELOG.md)
 - [ ] Python(pyproject.toml, CMakeLists.txt)
+- [ ] Flutter(pubspec.yml, CHANGELOG.md)
 
 
 ## Post automatic CI/CD

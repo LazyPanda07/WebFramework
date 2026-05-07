@@ -3,11 +3,14 @@ name: Samples
 
 on:
   push:
-    branches: [main, dev]
+    branches: 
+      - main
+      - dev
   workflow_dispatch:
   
+
 env:
-  FLUTTER_VERSION: 3.41.4
+  FLUTTER_VERSION: 3.41.9
   PYTHON_VERSION: 3.14
 
 
@@ -37,6 +40,53 @@ jobs:
          cd samples\VisualStudioSample
          dotnet restore
          msbuild VisualStudioSample.slnx -property:Configuration=Release
+
+
+  as-dependency-sample:
+    strategy:
+      matrix:
+        config: 
+          - { os: windows-latest, image: "" }
+          - { os: ubuntu-latest, image: "ghcr.io/lazypanda07/ubuntu_cxx20:24.04" }
+    runs-on: ${{ matrix.config.os }}
+    container:
+      image: ${{ matrix.config.image }}
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: recursive
+        
+    - name: Enable CL on Windows
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+
+    - name: Install dependencies on Linux
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      run: |
+        sudo apt update
+        sudo apt install -y uuid-dev
+
+    - name: Build
+      working-directory: samples/as_dependency
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install-dir -DWEB_FRAMEWORK_BRANCH=${{ github.ref_name }} -G "Ninja" ..
+        cmake --build . -j
+        cmake --install .
+
+    - name: Run on Windows
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      working-directory: samples/as_dependency/build/install-dir
+      run: .\as_dependency
+
+    - name: Run on Linux
+      if: ${{ matrix.config.os == 'ubuntu-latest' }}
+      working-directory: samples/as_dependency/build/install-dir
+      run: |
+        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+        ./as_dependency
 
 
   windows-build:
@@ -412,7 +462,7 @@ jobs:
           start ${{ matrix.run }}
           while (-not (Test-NetConnection -ComputerName localhost -Port 8080 -InformationLevel Quiet)) { sleep 1 }
           curl http://127.0.0.1:8080/${{ matrix.samples[4] }}
-
+          
 
   linux-tests:
     runs-on: ubuntu-latest
@@ -482,7 +532,8 @@ jobs:
       windows-flutter-build,
       android-flutter-build,
       windows-tests,
-      linux-tests
+      linux-tests,
+      as-dependency-sample
     ]
 
     steps:

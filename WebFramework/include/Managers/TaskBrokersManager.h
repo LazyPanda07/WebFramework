@@ -12,21 +12,8 @@ namespace framework::task_broker
 	private:
 		std::unordered_map<size_t, std::unique_ptr<TaskBroker>> taskBrokers;
 
-	private:
-		TaskBrokersManager() = default;
-
-		TaskBrokersManager(const TaskBrokersManager&) = delete;
-
-		TaskBrokersManager(TaskBrokersManager&&) noexcept = delete;
-
-		TaskBrokersManager& operator =(const TaskBrokersManager&) = delete;
-
-		TaskBrokersManager& operator =(TaskBrokersManager&&) noexcept = delete;
-
-		~TaskBrokersManager() = default;
-
 	public:
-		static TaskBrokersManager& get();
+		TaskBrokersManager() = default;
 
 		void addTaskBroker(std::string_view taskBrokerName, const json::JsonObject& settings);
 
@@ -42,6 +29,8 @@ namespace framework::task_broker
 
 		template<std::derived_from<TaskBroker> T>
 		const T& getTaskBroker() const;
+
+		~TaskBrokersManager() = default;
 	};
 }
 

@@ -1,13 +1,14 @@
 #include "LoadBalancer/LoadBalancerServer.h"
 
 #include <Exceptions/SslException.h>
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 #include <Log.h>
 
 #include "Web/HttpResponseImplementation.h"
 #include "Utility/Stopwatch.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
 
 #include "LoadBalancer/Heuristics/Connections.h"
 #include "LoadBalancer/Heuristics/CXXHeuristic.h"
@@ -367,11 +368,12 @@ namespace framework::load_balancer
 			heuristic->onStart();
 		}
 
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		SSL* ssl = nullptr;
 
 		try
 		{
-			if (useHTTPS)
+			if (httpsData)
 			{
 				ssl = this->getNewSsl();
 
@@ -380,9 +382,9 @@ namespace framework::load_balancer
 					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
-				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				if (int errorCode = SSL_set_fd(ssl, static_cast<int>(clientSocket)); errorCode != 1)
 				{
-					throw web::exceptions::SslException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
@@ -402,12 +404,16 @@ namespace framework::load_balancer
 
 			return;
 		}
-		
+
 		std::chrono::milliseconds timeoutInMilliseconds(timeout);
 		LoadBalancerRequest request
 		(
 			this->createServerSideStream(clientSocket, ssl, timeoutInMilliseconds),
-			serversHTTPS ? streams::IOSocketStream::createStream<web::HttpsNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds) : streams::IOSocketStream::createStream<web::HttpNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds),
+			(
+				serversHTTPS ?
+				streams::IOSocketStream::createStream<web::http::HttpsNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds) :
+				streams::IOSocketStream::createStream<web::http::HttpNetwork>(connectionData->ip, connectionData->port, timeoutInMilliseconds)
+			),
 			heuristic,
 			std::move(cleanup)
 		);
@@ -442,7 +448,8 @@ namespace framework::load_balancer
 		const std::unordered_map<std::string, std::vector<int64_t>>& allServers,
 		std::shared_ptr<ResourceExecutor> resources,
 		uint32_t processingThreads,
-		uint32_t loadBalancingTargetRPS
+		uint32_t loadBalancingTargetRPS,
+		WebFramework& frameworkInstance
 	) :
 		BaseTCPServer
 		(
@@ -453,6 +460,7 @@ namespace framework::load_balancer
 			0,
 			false
 		),
+		BaseWebServer(frameworkInstance),
 		requestQueues(processingThreads),
 		processingClients(processingThreads),
 		resources(resources),
@@ -460,13 +468,14 @@ namespace framework::load_balancer
 		serversHTTPS(serversHTTPS)
 	{
 		const std::string& heuristicName = heuristic["name"].get<std::string>();
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		std::string apiType = heuristic[json_settings::apiTypeKey].get<std::string>();
 
 		if (heuristicName == "Connections")
 		{
 			apiType = "";
 		}
-		
+
 		this->allServers.reserve(allServers.size());
 
 		std::ranges::for_each(processingClients, [](std::atomic_int64_t& value) { value = 0; });
@@ -480,7 +489,7 @@ namespace framework::load_balancer
 				this->allServers.emplace_back
 				(
 					utility::ConnectionData(ip, portString, timeout),
-					this->createAPIHeuristic(ip, portString, useHTTPS, heuristicName, apiType, loadSource)
+					this->createAPIHeuristic(ip, portString, static_cast<bool>(httpsData), heuristicName, apiType, loadSource)
 				);
 			}
 		}

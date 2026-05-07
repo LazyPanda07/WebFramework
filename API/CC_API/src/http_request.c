@@ -399,35 +399,35 @@ web_framework_exception_t wf_get_large_data(http_request_t implementation, const
 	return exception;
 }
 
-web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* filePath, http_response_t response, const dynamic_pages_variable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_asset_file(http_request_t implementation, const char* filePath, http_response_t response, const json_object_t* arguments, const char* fileName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*sendAssetFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendAssetFile)(void* implementation, const char* filePath, void* response, const void* arguments, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendAssetFile, filePath, response, variables, variablesSize, isBinary, fileName ? fileName : "", &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendAssetFile, filePath, response, arguments->implementation, fileName ? fileName : "", &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* filePath, http_response_t response, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_static_file(http_request_t implementation, const char* filePath, http_response_t response, const char* fileName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendStaticFile)(void* implementation, const char* filePath, void* response, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, isBinary, fileName ? fileName : "", &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendStaticFile, filePath, response, fileName ? fileName : "", &exception);
 
 	return exception;
 }
 
-web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* filePath, http_response_t response, const dynamic_pages_variable_t* variables, size_t variablesSize, bool isBinary, const char* fileName)
+web_framework_exception_t wf_send_dynamic_file(http_request_t implementation, const char* filePath, http_response_t response, const json_object_t* arguments, const char* fileName)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*sendDynamicFile)(void* implementation, const char* filePath, void* response, const void* variables, size_t variablesSize, bool isBinary, const char* fileName, void** exception);
+	typedef void (*sendDynamicFile)(void* implementation, const char* filePath, void* response, const void* arguments, const char* fileName, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendDynamicFile, filePath, response, variables, variablesSize, isBinary, fileName ? fileName : "", &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(sendDynamicFile, filePath, response, arguments->implementation, fileName ? fileName : "", &exception);
 
 	return exception;
 }
@@ -443,13 +443,18 @@ web_framework_exception_t wf_stream_file(http_request_t implementation, const ch
 	return exception;
 }
 
-web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, const char* (*function)(const char** arguments, size_t arguments_number), void(*deleter)(char* result))
+web_framework_exception_t wf_register_dynamic_function(http_request_t implementation, const char* function_name, char* (*function)(json_object_t arguments), void(*deleter)(char* result))
 {
 	web_framework_exception_t exception = NULL;
+	struct { void* function; void* deleter; } data =
+	{
+		.function = function,
+		.deleter = deleter
+	};
 
-	typedef void (*registerDynamicFunction)(void* implementation, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
+	typedef void (*registerDynamicFunctionClass)(void* implementation, const char* functionName, const char* apiType, void* functionClass, void** exception);
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunction, function_name, function, deleter, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionClass, function_name, "cc", &data, &exception);
 
 	return exception;
 }
@@ -547,15 +552,15 @@ web_framework_exception_t wf_process_static_file(http_request_t implementation, 
 	return exception;
 }
 
-web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* fileData, size_t size, const dynamic_pages_variable_t* variables, size_t variablesSize, char** result, size_t* resultSize)
+web_framework_exception_t wf_process_dynamic_file(http_request_t implementation, const char* fileData, size_t size, const json_object_t* arguments, char** result, size_t* resultSize)
 {
 	web_framework_exception_t exception = NULL;
 
-	typedef void (*processDynamicFile)(void* implementation, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+	typedef void (*processDynamicFile)(void* implementation, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
 
 	file_buffer_t buffer = { .data = result, .size = resultSize };
 
-	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFile, fileData, size, variables, variablesSize, __fill_file_buffer, &buffer, &exception);
+	CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFile, fileData, size, arguments->implementation, __fill_file_buffer, &buffer, &exception);
 
 	return exception;
 }
@@ -692,6 +697,41 @@ web_framework_exception_t wf_get_route_string_parameter(http_request_t implement
 	return exception;
 }
 
+web_framework_exception_t wf_get_token(http_request_t implementation, const char** result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef const char* (*getToken)(void* implementation, void** exception);
+
+	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getToken, &exception);
+
+	return exception;
+}
+
+web_framework_exception_t wf_get_token_payload(http_request_t implementation, json_object_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getTokenPayload)(void* implementation, void** exception);
+
+	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getTokenPayload, &exception);
+	result->weak = false;
+
+	return exception;
+}
+
+web_framework_exception_t wf_get_web_framework_instance(http_request_t implementation, web_framework_t* result)
+{
+	web_framework_exception_t exception = NULL;
+
+	typedef void* (*getWebFrameworkInstance)(void* implementation, void** exception);
+
+	result->implementation = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getWebFrameworkInstance, &exception);
+	result->weak = true;
+
+	return exception;
+}
+
 web_framework_exception_t wf_send_chunks(http_request_t implementation, http_response_t response, const char* (*chunkGenerator)(void* data, size_t* size), void* data)
 {
 	web_framework_exception_t exception = NULL;
@@ -735,9 +775,9 @@ web_framework_exception_t wf_enqueue_task
 
 	wf_create_json_object(&jsonObjectData);
 
-	wf_assign_json_object(&jsonObjectData, "arguments", &arguments);
-	wf_assign_json_object(&jsonObjectData, "api", &api);
-	wf_assign_json_object(&jsonObjectData, "name", &name);
+	wf_assign_or_get_json_object(&jsonObjectData, "arguments", &arguments);
+	wf_assign_or_get_json_object(&jsonObjectData, "api", &api);
+	wf_assign_or_get_json_object(&jsonObjectData, "name", &name);
 
 	wf_set_json_object_string(&api, task_executor_api);
 	wf_set_json_object_string(&name, task_executor_name);
@@ -746,7 +786,7 @@ web_framework_exception_t wf_enqueue_task
 	{
 		json_object_t queue;
 
-		wf_assign_json_object(&jsonObjectData, "queue", &queue);
+		wf_assign_or_get_json_object(&jsonObjectData, "queue", &queue);
 
 		wf_set_json_object_string(&queue, "cc_queue");
 	}

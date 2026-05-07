@@ -12,8 +12,9 @@ for /d %%D in ("C:\Program Files\dotnet\host\fxr\10.*") do (
 )
 
 set PATH=%FXR_PATH%;%PATH%
+set JWT_SECRET=1
 
-REM RUNTIMES variable contains list of all needed runtimes like this: --runtime python
+REM RUNTIMES variable contains list of all needed runtimes like this: --runtimes python
 
 echo "Current runtimes: %RUNTIMES%"
 

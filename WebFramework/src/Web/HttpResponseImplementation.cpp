@@ -66,6 +66,20 @@ namespace framework
 		this->body = std::string(body, bodySize);
 	}
 
+	void HttpResponseImplementation::setJsonBodyWithBuilder(void* implementation)
+	{
+		this->addHeader("Content-Type", "application/json");
+
+		body = static_cast<std::string>(*reinterpret_cast<json::JsonBuilder*>(implementation));
+	}
+
+	void HttpResponseImplementation::setJsonBodyWithObject(void* implementation)
+	{
+		this->addHeader("Content-Type", "application/json");
+
+		body = static_cast<std::string>(*reinterpret_cast<json::JsonObject*>(implementation));
+	}
+
 	interfaces::IHttpResponse* HttpResponseImplementation::appendBody(const char* body)
 	{
 		this->body += body;
@@ -111,6 +125,11 @@ namespace framework
 
 	streams::IOSocketStream& operator << (streams::IOSocketStream& stream, HttpResponseImplementation& response)
 	{
+		if (!response)
+		{
+			return stream;
+		}
+
 		std::string result;
 
 		response.builder.headers

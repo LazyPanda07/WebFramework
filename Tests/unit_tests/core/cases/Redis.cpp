@@ -4,8 +4,6 @@
 #include <HttpParser.h>
 #include <JsonParser.h>
 
-#include <HttpsNetwork.h>
-
 #include "utilities.h"
 #include "settings.h"
 

@@ -31,8 +31,6 @@ int main(int argc, char** argv) try
 
 	useHTTPS = configParser.get<bool>("useHTTPS", true);
 
-	unit_test_utils::updateConfigRuntimes(serverConfig, consoleParser);
-
 	unit_test_utils::ProcessWrapper defaultHttpsServer = unit_test_utils::ProcessWrapper::runDefaultHttpsServer();
 
 	if (consoleParser.get<bool>("manual"))
@@ -70,7 +68,9 @@ catch (const std::exception& e)
 {
 	std::cerr << e.what() << std::endl;
 
-	exit(-1);
+	printLog();
+
+	return -1;
 }
 
 void printLog()
@@ -81,7 +81,7 @@ void printLog()
 		{
 			std::ifstream log(it.path());
 
-			std::cout << (std::ostringstream() << log.rdbuf()).str() << std::endl;
+			std::cerr << (std::ostringstream() << log.rdbuf()).str() << std::endl;
 		}
 	}
 }

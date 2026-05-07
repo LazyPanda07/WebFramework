@@ -4,9 +4,12 @@
 #include "ExecutorServer.h"
 
 #include <chrono>
+#include <queue>
 
 #include "ThreadPool.h"
 #include "Utility/LargeFileHandlers/BaseLargeBodyHandler.h"
+#include "Events/ServeEvents/ServeEvent.h"
+#include "ServeLoops/HttpServeLoop.h"
 
 namespace framework
 {
@@ -18,21 +21,18 @@ namespace framework
 		class Client
 		{
 		private:
-			streams::IOSocketStream stream;
-			ExecutorsManager::StatefulExecutors executors;
+			std::unique_ptr<serve_loop::ServeLoop> loop;
+			std::queue<std::unique_ptr<event::ServeEvent>> events;
 			std::function<void()> cleanup;
-			std::function<ExecutorServer::ServiceState(streams::IOSocketStream& stream, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)> service;
-			sockaddr address;
 			bool isBusy;
 			bool webExceptionAcquired;
-			web::LargeBodyHandler* largeBodyHandler;
 
 		public:
 			Client
 			(
 				SSL* ssl, SOCKET clientSocket, sockaddr address,
 				std::function<void()>&& cleanup,
-				const std::function<ExecutorServer::ServiceState(streams::IOSocketStream&, HttpRequestImplementation&, HttpResponseImplementation&, ResourceExecutor&, const std::function<void(ServiceState&)>&)>& task,
+				const serve_loop::HttpServeLoop::HttpServeTaskSignature& serveTask,
 				ThreadPoolWebServer& server,
 				DWORD timeout
 			);
@@ -48,7 +48,7 @@ namespace framework
 			bool serve
 			(
 				SessionsManager& sessionsManager,
-				web::BaseTCPServer& server,
+				BaseWebServer& server,
 				interfaces::IStaticFile& staticResources,
 				interfaces::IDynamicFile& dynamicResources,
 				ExecutorsManager& executorsManager,
@@ -82,7 +82,8 @@ namespace framework
 			const std::vector<std::string>& pathToSources,
 			const utility::AdditionalServerSettings& additionalSettings,
 			uint32_t numberOfThreads,
-			std::shared_ptr<threading::ThreadPool> resourcesThreadPool
+			std::shared_ptr<threading::ThreadPool> resourcesThreadPool,
+			WebFramework& frameworkInstance
 		);
 
 		~ThreadPoolWebServer() = default;

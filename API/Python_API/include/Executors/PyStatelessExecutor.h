@@ -29,6 +29,6 @@ namespace framework
 
 		void doConnect(HttpRequest& request, HttpResponse& response) override;
 
-		~PyStatelessExecutor() = default;
+		virtual ~PyStatelessExecutor() = default;
 	};
 }

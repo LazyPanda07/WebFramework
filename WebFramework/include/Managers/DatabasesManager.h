@@ -26,18 +26,15 @@ namespace framework
 		std::vector<DatabasesHolder> holders;
 		mutable std::mutex databasesMutex;
 
-	private:
-		DatabasesManager() = default;
-
-		~DatabasesManager() = default;
-
 	public:
-		static DatabasesManager& get();
+		DatabasesManager() = default;
 
 		void initDatabaseImplementation(const std::vector<std::string>& databases);
 
 		std::shared_ptr<database::Database> getOrCreateDatabase(std::string_view databaseName, std::string_view databaseImplementationName);
 		
 		std::shared_ptr<database::Database> getDatabase(std::string_view databaseName, std::string_view databaseImplementationName) const;
+
+		~DatabasesManager() = default;
 	};
 }

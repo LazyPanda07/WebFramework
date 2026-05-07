@@ -16,6 +16,7 @@ namespace framework::runtime
 
 	private:
 		::utility::strings::string_based_unordered_map<std::tuple<HMODULE, CreateExecutorSignature>> creators;
+		::utility::strings::string_based_unordered_map<std::tuple<HMODULE, web_socket::CreateWebSocketExecutorSignature>> webSocketCreators;
 
 	public:
 		CCRuntime() = default;
@@ -24,7 +25,11 @@ namespace framework::runtime
 
 		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;
 
+		bool loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source) override;
+
 		std::unique_ptr<Executor> createExecutor(std::string_view name) const override;
+
+		std::unique_ptr<web_socket::WebSocketExecutor> createWebSocketExecutor(std::string_view name) const override;
 
 		std::unique_ptr<task_broker::TaskExecutor> createTaskExecutor(std::string_view name, const utility::LoadSource& source) const override;
 

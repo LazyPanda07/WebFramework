@@ -31,43 +31,43 @@ web_framework_exception_t wf_create_web_framework_from_config(config_t config, w
 
 /**
  * @brief Start server
- * @param implementation web_framework_t
+ * @param web_framework web_framework_t
  * @param wait Wait until server stop
  * @param onStartServer On start server callback
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t wf_start_web_framework_server(web_framework_t implementation, bool wait, void (*onStartServer)());
+web_framework_exception_t wf_start_web_framework_server(web_framework_t web_framework, bool wait, void (*onStartServer)());
 
 /**
  * @brief Stop server
- * @param implementation web_framework_t
+ * @param web_framework web_framework_t
  * @param wait Wait until server stop
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t wf_stop_web_framework_server(web_framework_t implementation, bool wait);
+web_framework_exception_t wf_stop_web_framework_server(web_framework_t web_framework, bool wait);
 
 /**
  * @brief Kick specific client from server
- * @param implementation web_framework_t
+ * @param web_framework web_framework_t
  * @param ip Client's IP address to be kicked.
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t wf_kick_web_framework_server(web_framework_t implementation, const char* ip);
+web_framework_exception_t wf_kick_web_framework_server(web_framework_t web_framework, const char* ip);
 
 /**
- * @brief Reloads or updates the SSL/TLS certificates used by the specified web framework server implementation.
- * @param implementation web_framework_t
+ * @brief Reloads or updates the SSL/TLS certificates used by the specified web framework server web_framework.
+ * @param web_framework web_framework_t
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t wf_update_ssl_certificates_web_framework_server(web_framework_t implementation);
+web_framework_exception_t wf_update_ssl_certificates_web_framework_server(web_framework_t web_framework);
 
 /**
  * @brief Is server running
- * @param implementation web_framework_t
+ * @param web_framework web_framework_t
  * @param isServerRunning Result
  * @return NULL if no errors. Call getErrorMessage for getting error message
  */
-web_framework_exception_t wf_is_server_running(web_framework_t implementation, bool* result);
+web_framework_exception_t wf_is_server_running(web_framework_t web_framework, bool* result);
 
 /**
  * @brief Get web_framework_t version

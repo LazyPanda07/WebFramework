@@ -2,9 +2,9 @@
 
 #include <format>
 
-#include "../HttpRequest.hpp"
-#include "../DLLHandler.hpp"
-#include "../Exceptions/NotImplementedDoMethodException.hpp"
+#include "HttpRequest.hpp"
+#include "DLLHandler.hpp"
+#include "Exceptions/NotImplementedDoMethodException.hpp"
 
 namespace framework
 {
@@ -64,8 +64,6 @@ namespace framework
 		public:
 			ExecutorSettings(void* implementation);
 
-			void registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const;
-
 			template<DynamicFunctionImplementation T = DynamicFunction, typename... Args>
 			void registerDynamicFunctionClass(std::string_view functionName, Args&&... args) const;
 
@@ -77,7 +75,7 @@ namespace framework
 
 			std::string processStaticFile(std::string_view fileData, std::string_view fileExtension) const;
 
-			std::string processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables) const;
+			std::string processDynamicFile(std::string_view fileData, const JsonObject& arguments) const;
 
 			/**
 			 * @brief Get Json structed values from initParameters section from settings file
@@ -184,19 +182,6 @@ namespace framework
 
 		}
 
-		inline void ExecutorSettings::registerDynamicFunction(std::string_view functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) const
-		{
-			DEFINE_CLASS_MEMBER_FUNCTION(registerDynamicFunctionExecutorSettings, void, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), void** exception);
-			void* exception = nullptr;
-
-			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(registerDynamicFunctionExecutorSettings, functionName.data(), function, deleter, &exception);
-
-			if (exception)
-			{
-				throw exceptions::WebFrameworkException(exception);
-			}
-		}
-
 		template<DynamicFunctionImplementation T, typename... Args>
 		inline void ExecutorSettings::registerDynamicFunctionClass(std::string_view functionName, Args&&... args) const
 		{
@@ -209,7 +194,7 @@ namespace framework
 				struct
 				{
 					void* dynamicFunction;
-					void (*callFunction)(void* dynamicFunction, const std::span<std::string_view>& arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
+					void (*callFunction)(void* dynamicFunction, const void* arguments, void* data, void(*callback)(const char* result, size_t size, void* data));
 					void (*deleter)(void* implementation);
 				} dynamicFunctionController;
 
@@ -281,27 +266,14 @@ namespace framework
 			return result;
 		}
 
-		inline std::string ExecutorSettings::processDynamicFile(std::string_view fileData, const std::unordered_map<std::string, std::string>& variables) const
+		inline std::string ExecutorSettings::processDynamicFile(std::string_view fileData, const JsonObject& arguments) const
 		{
-			DEFINE_CLASS_MEMBER_FUNCTION(processDynamicFileExecutorSettings, void, const char* fileData, size_t size, const void* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
-			auto convertVariables = [variables]()
-				{
-					std::vector<interfaces::CVariable> result;
-
-					result.reserve(variables.size());
-
-					for (const auto& [key, value] : variables)
-					{
-						result.emplace_back(key.data(), value.data());
-					}
-
-					return result;
-				};
+			DEFINE_CLASS_MEMBER_FUNCTION(processDynamicFileExecutorSettings, void, const char* fileData, size_t size, const void* variables, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, void** exception);
+			
 			void* exception = nullptr;
-			std::vector<interfaces::CVariable> temp = convertVariables();
 			std::string result;
 
-			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, fileData.data(), fileData.size(), temp.data(), temp.size(), &ExecutorSettings::fillBuffer, &result, &exception);
+			DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(processDynamicFileExecutorSettings, fileData.data(), fileData.size(), arguments.implementation, &ExecutorSettings::fillBuffer, &result, &exception);
 
 			return result;
 		}

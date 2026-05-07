@@ -9,7 +9,7 @@ namespace framework::task_broker
 	class CCTaskExecutor : public TaskExecutor
 	{
 	private:
-		using TaskExecuteSignature = void(*)(void*, void*);
+		using TaskExecuteSignature = void(*)(void*, void*, void*);
 		using DeleteSignature = void(*)(void*);
 
 	private:
@@ -20,7 +20,7 @@ namespace framework::task_broker
 	public:
 		CCTaskExecutor(HMODULE module, void* implementation, std::string_view taskExecutorName);
 
-		void operator ()(json::JsonObject& data) override;
+		void execute(json::JsonObject& data, TaskExecutorContext& context) override;
 
 		~CCTaskExecutor();
 	};

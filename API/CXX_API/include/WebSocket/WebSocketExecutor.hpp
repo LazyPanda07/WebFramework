@@ -1,0 +1,142 @@
+#pragma once
+
+#include <span>
+#include <variant>
+#include <optional>
+
+#include "DLLHandler.hpp"
+
+namespace framework
+{
+	class WebSocketExecutor
+	{
+	public:
+		class Frame
+		{
+		public:
+			enum class Type
+			{
+				continuation = 0x0,
+				text = 0x1,
+				binary = 0x2,
+				close = 0x8,
+				ping = 0x9,
+				pong = 0xA
+			};
+
+		private:
+			void* implementation;
+
+		public:
+			Frame(void* implementation);
+
+			template<typename ReturnT = std::string_view>
+			ReturnT getPayload() const requires(std::same_as<ReturnT, std::string_view> || std::same_as<ReturnT, std::span<uint8_t>> || std::same_as<ReturnT, std::span<char>>);
+
+			Type getType() const;
+
+			explicit operator bool() const;
+
+			~Frame() = default;
+		};
+
+	public:
+		WebSocketExecutor() = default;
+
+		virtual std::optional<std::variant<std::string, std::vector<uint8_t>>> onReceive(const Frame& frame) = 0;
+
+		virtual ~WebSocketExecutor() = default;
+	};
+}
+
+namespace framework
+{
+	inline WebSocketExecutor::Frame::Frame(void* implementation) :
+		implementation(implementation)
+	{
+
+	}
+
+	template<typename ReturnT>
+	inline ReturnT WebSocketExecutor::Frame::getPayload() const requires(std::same_as<ReturnT, std::string_view> || std::same_as<ReturnT, std::span<uint8_t>> || std::same_as<ReturnT, std::span<char>>)
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(getFramePayload, char*, uint64_t*, void** exception);
+		void* exception = nullptr;
+
+		uint64_t size = 0;
+		
+		char* ptr = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFramePayload, &size, &exception);
+
+		if constexpr (std::same_as<ReturnT, std::span<uint8_t>>)
+		{
+			return std::span<uint8_t>(reinterpret_cast<uint8_t*>(ptr), size);
+		}
+		else
+		{
+			return ReturnT(ptr, size);
+		}
+
+		return {};
+	}
+
+	inline WebSocketExecutor::Frame::Type WebSocketExecutor::Frame::getType() const
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(getFrameType, int, void** exception);
+		void* exception = nullptr;
+
+		return static_cast<Frame::Type>(utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFrameType, &exception));
+	}
+
+	inline WebSocketExecutor::Frame::operator bool() const
+	{
+		return static_cast<bool>(implementation);
+	}
+}
+
+/**
+* Macro for each WebSocketExecutor subclass
+* Used for loading function that creates WebSocketExecutor subclass
+*/
+#define DEFINE_WEB_SOCKET_EXECUTOR(subclassName) WEB_FRAMEWORK_FUNCTIONS_API void* create##subclassName##WebSocketCXXInstance()	\
+{	\
+	return new subclassName();	\
+}
+
+#pragma region ExportFunctions
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceive(void* implementation, void* frame, void(*sendData)(const uint8_t* data, uint64_t size, int32_t type, void* additionalData), void* additionalData)
+{
+	framework::WebSocketExecutor::Frame frameWrapper(frame);
+
+	std::optional<std::variant<std::string, std::vector<uint8_t>>> data = static_cast<framework::WebSocketExecutor*>(implementation)->onReceive(frameWrapper);
+	const uint8_t* ptr = nullptr;
+	uint64_t size = 0;
+	framework::WebSocketExecutor::Frame::Type type = framework::WebSocketExecutor::Frame::Type::binary;
+
+	if (data)
+	{
+		if (std::holds_alternative<std::string>(*data))
+		{
+			const std::string& temp = std::get<std::string>(*data);
+
+			ptr = reinterpret_cast<const uint8_t*>(temp.data());
+			size = temp.size();
+			type = framework::WebSocketExecutor::Frame::Type::text;
+		}
+		else if (std::holds_alternative<std::vector<uint8_t>>(*data))
+		{
+			const std::vector<uint8_t>& temp = std::get<std::vector<uint8_t>>(*data);
+
+			ptr = reinterpret_cast<const uint8_t*>(temp.data());
+			size = temp.size();
+			type = framework::WebSocketExecutor::Frame::Type::binary;
+		}
+	}
+
+	sendData(ptr, size, static_cast<int32_t>(type), additionalData);
+}
+
+WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXDeleteWebSocketExecutor(void* implementation)
+{
+	delete static_cast<framework::WebSocketExecutor*>(implementation);
+}
+#pragma endregion

@@ -4,7 +4,7 @@
 
 typedef void* HttpResponseObject;
 typedef void* HttpRequestObject;
-typedef void* DynamicPagesVariable;
+typedef void* TaskExecutorContextObject;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -54,8 +54,6 @@ EXPORT uint16_t getClientPort(HttpRequestObject request, Exception* exception);
 
 EXPORT uint16_t getServerPort(HttpRequestObject request, Exception* exception);
 
-EXPORT void registerDynamicFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
-
 EXPORT void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 
 EXPORT void unregisterDynamicFunction(HttpRequestObject request, const char* functionName, Exception* exception);
@@ -70,7 +68,7 @@ EXPORT void getFile(HttpRequestObject request, const char* filePath, void(*fillB
 
 EXPORT void processStaticFile(HttpRequestObject request, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
 
-EXPORT void processDynamicFile(HttpRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+EXPORT void processDynamicFile(HttpRequestObject request, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
 
 EXPORT void getHeaders(HttpRequestObject request, void(*initHeadersBuffer)(size_t size, void* buffer), void(*addHeader)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 
@@ -82,11 +80,11 @@ EXPORT void getMultiparts(HttpRequestObject request, void(*initMultipartsBuffer)
 
 EXPORT void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size, void* buffer), void(addCookie)(const char* key, const char* value, size_t index, void* buffer), void* buffer, Exception* exception);
 
-EXPORT void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception);
+EXPORT void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception);
 
-EXPORT void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, bool isBinary, const char* fileName, Exception* exception);
+EXPORT void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const char* fileName, Exception* exception);
 
-EXPORT void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception);
+EXPORT void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception);
 
 EXPORT void streamFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const char* fileName, size_t chunkSize, Exception* exception);
 
@@ -95,6 +93,12 @@ EXPORT int64_t getRouteIntegerParameter(HttpRequestObject request, const char* r
 EXPORT double getRouteDoubleParameter(HttpRequestObject request, const char* routeParameterName, Exception* exception);
 
 EXPORT const char* getRouteStringParameter(HttpRequestObject request, const char* routeParameterName, Exception* exception);
+
+EXPORT const char* getToken(HttpRequestObject request, Exception* exception);
+
+EXPORT JsonObject getTokenPayload(HttpRequestObject request, Exception* exception);
+
+EXPORT WebFramework getWebFrameworkInstance(HttpRequestObject request, Exception* exception);
 
 EXPORT DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char* databaseName, const char* implementationName, Exception* exception);
 
@@ -116,6 +120,8 @@ EXPORT void setExceptionData(HttpRequestObject request, const char* errorMessage
 
 EXPORT bool isExceptionDataValid(HttpRequestObject request, Exception* exception);
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 EXPORT String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception);
 
 EXPORT String getExecutorName(ExecutorSettings executorsSettings, Exception* exception);
@@ -134,8 +140,6 @@ EXPORT TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSe
 
 EXPORT TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception);
 
-EXPORT void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception);
-
 EXPORT void registerDynamicFunctionClassExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception);
 
 EXPORT void unregisterDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, Exception* exception);
@@ -146,6 +150,22 @@ EXPORT void getFileExecutorSettings(ExecutorSettings executorsSettings, const ch
 
 EXPORT void processStaticFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
 
-EXPORT void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+EXPORT void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+EXPORT DatabaseObject getOrCreateDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception);
+
+EXPORT DatabaseObject getDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception);
+
+EXPORT TableObject getOrCreateTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception);
+
+EXPORT TableObject getTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception);
+
+EXPORT void getFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processStaticFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
+
+EXPORT void processDynamicFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

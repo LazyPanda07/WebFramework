@@ -5,17 +5,16 @@
 #include <Utility/ChunkGenerator.hpp>
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace framework::utility
 {
-	using ChunkGeneratorReturnType = std::variant<std::string, std::vector<uint8_t>>;
-
 	class IPyChunkGenerator
 	{
 	public:
 		IPyChunkGenerator() = default;
 
-		virtual pybind11::object generate() = 0;
+		virtual std::variant<std::string, std::vector<uint8_t>> generate() = 0;
 
 		virtual ~IPyChunkGenerator() = default;
 	};
@@ -25,9 +24,9 @@ namespace framework::utility
 	public:
 		PyChunkGenerator() = default;
 
-		pybind11::object generate() override;
+		std::variant<std::string, std::vector<uint8_t>> generate() override;
 
-		~PyChunkGenerator() = default;
+		virtual ~PyChunkGenerator() = default;
 	};
 
 	class ChunkGeneratorWrapper : public ChunkGenerator

@@ -2,7 +2,7 @@ from web_framework_api import *
 
 
 class PythonTestTaskExecutor(TaskExecutor):
-    def __call__(self, data):
+    def execute(self, data, context):
         with open(data["fileName"], "w") as file:
             file.writelines(
                 [

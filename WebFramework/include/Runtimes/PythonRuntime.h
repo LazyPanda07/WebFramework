@@ -38,13 +38,21 @@ namespace framework::runtime
 
 		PythonRuntime& operator =(PythonRuntime&& other) noexcept;
 
+		py::object* createTaskExecutorContext(const void* implementation) const;
+
+		py::object* createWebSocketFrame(const void* implementation) const;
+
 		std::optional<py::object> getClass(std::string_view className, const utility::LoadSource& source) const;
 
 		void finishInitialization() override;
 
 		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;
 
+		bool loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source) override;
+
 		std::unique_ptr<Executor> createExecutor(std::string_view name) const override;
+
+		std::unique_ptr<web_socket::WebSocketExecutor> createWebSocketExecutor(std::string_view name) const override;
 
 		std::unique_ptr<task_broker::TaskExecutor> createTaskExecutor(std::string_view name, const utility::LoadSource& source) const override;
 

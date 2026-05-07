@@ -24,6 +24,16 @@
           },
           "description": "Filter input requests by User-Agent"
         },
+        "requireJWT": {
+          "type": "boolean",
+          "description": "Filter input requests by Authorization: Bearer <token>",
+          "default": false
+        },
+        "webSocketExecutorName": {
+          "type": [ "string", "null" ],
+          "description": "Name of WebSocketExecutor that can be used after upgrade connection to WebSocket",
+          "default": null
+        },
         "initParameters": {
           "type": "object",
           "description": "Initialization parameters for executors that can be accessed in init function"

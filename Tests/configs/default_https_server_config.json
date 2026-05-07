@@ -21,7 +21,7 @@
       "pathToCertificate": "certificates/cert.pem",
       "pathToKey": "certificates/key.pem"
     },
-    "defaultAssetsPath": "WebFrameworkAssets"
+    "JWTSecretVariableName": null
   },
   "Logging": {
     "usingLogging": true,

@@ -1,8 +1,12 @@
 #pragma once
 
-#include "../DLLHandler.hpp"
-#include "../Exceptions/WebFrameworkException.hpp"
-#include "../Databases/SqlValue.hpp"
+#include <chrono>
+
+#include "DLLHandler.hpp"
+#include "Exceptions/WebFrameworkException.hpp"
+#include "Databases/SqlValue.hpp"
+#include "JsonObject.hpp"
+#include "WebFramework.hpp"
 
 namespace framework::utility
 {
@@ -12,7 +16,7 @@ namespace framework::utility
 		 * @brief Generate UUID in format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 		 * @return 
 		 */
-		std::string generateUUID();
+		std::string generateUuid();
 	}
 	
 	namespace encoding
@@ -34,15 +38,31 @@ namespace framework::utility
 		 * @return 
 		 */
 		template<typename... Args>
-		std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args);
+		std::array<SqlValue, sizeof...(Args)> makeSqlValues(Args&&... args);
 	}
+
+	namespace token
+	{
+		std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName = "JWT_SECRET");
+
+		std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);
+	}
+
+	/**
+	 * @brief Generates a binary asset file from the specified input file and writes it to the given output path. Progress may be reported via an optional callback.
+	 * @param directoryPath Path to the input directory with assets to convert into a binary asset.
+	 * @param outputPath Path where the generated binary asset file will be written.
+	 * @param progressCallback Optional callback invoked to report progress. The callback has the signature void(float progress, const char* assetPath, void* data); progress is typically in the range [0.0, 1.0], assetPath is a null-terminated string identifying the currently processed asset, and data is the user pointer provided to this function.
+	 * @param data Optional user-defined pointer that is passed through to progressCallback; defaults to nullptr.
+	 */
+	void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data) = nullptr, void* data = nullptr);
 }
 
 namespace framework::utility
 {
 	namespace uuid
 	{
-		inline std::string generateUUID()
+		inline std::string generateUuid()
 		{
 			using generateWebFrameworkUUID = void* (*)(void** exception);
 			void* exception = nullptr;
@@ -81,11 +101,69 @@ namespace framework::utility
 	namespace database
 	{
 		template<typename... Args>
-		inline std::array<SqlValue, sizeof...(Args)> makeSQLValues(Args&&... args)
+		inline std::array<SqlValue, sizeof...(Args)> makeSqlValues(Args&&... args)
 		{
 			std::array<SqlValue, sizeof...(Args)> result({ std::forward<Args>(args)... });
 
 			return result;
+		}
+	}
+
+	namespace token
+	{
+		inline std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName)
+		{
+			using createJwtWithString = void* (*) (void* data, int64_t expirationTimeInMinutes, const char* jwtSecretVariableName, void** exception);
+			void* exception = nullptr;
+			DllHandler& instance = DllHandler::getInstance();
+
+			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(createJwtWithString, data.implementation, expirationTime.count(), jwtSecretVariableName.data(), & exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return instance.getString(result);
+		}
+
+		inline std::string createJwt(const JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance)
+		{
+			using createJwtWithContext = void* (*) (void* data, int64_t expirationTimeInMinutes, void* frameworkInstance, void** exception);
+			void* exception = nullptr;
+			DllHandler& instance = DllHandler::getInstance();
+
+			void* result = instance.CALL_WEB_FRAMEWORK_FUNCTION(createJwtWithContext, data.implementation, expirationTime.count(), frameworkInstance.implementation, &exception);
+
+			if (exception)
+			{
+				throw exceptions::WebFrameworkException(exception);
+			}
+
+			return instance.getString(result);
+		}
+	}
+
+	inline void generateBinaryAssetFile(const std::filesystem::path& directoryPath, const std::filesystem::path& outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data)
+	{
+		using generateBinaryAssetFile = void (*)(const char* filePath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, void** exception);
+		void* exception = nullptr;
+
+		if (!std::filesystem::exists(directoryPath))
+		{
+			throw std::runtime_error(std::format("Can't find {} path", directoryPath.string()));
+		}
+
+		if (!std::filesystem::is_directory(directoryPath))
+		{
+			throw std::runtime_error(std::format("{} must be directory", directoryPath.string()));
+		}
+
+		DllHandler::getInstance().CALL_WEB_FRAMEWORK_FUNCTION(generateBinaryAssetFile, directoryPath.string().data(), outputPath.string().data(), progressCallback, data, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
 		}
 	}
 }

@@ -5,6 +5,7 @@
 #include <span>
 
 #include <Strings.h>
+#include <JsonObject.h>
 
 #include "Framework/WebFrameworkPlatform.h"
 #include "WebInterfaces/IHttpRequest.h"
@@ -18,30 +19,26 @@ namespace framework
 		struct ExecutionUnit
 		{
 			std::string functionName;
-			std::vector<std::string> arguments;
+			const json::JsonObject& sharedArguments;
+			json::JsonObject defaultArguments;
 
-			ExecutionUnit(std::string&& functionName, std::vector<std::string>&& arguments) noexcept;
+			ExecutionUnit(std::string_view functionName, const json::JsonObject& sharedArguments);
 		};
 
 	private:
 		::utility::strings::string_based_unordered_map<std::unique_ptr<DynamicFunction>> dynamicPagesFunctions;
 		const std::filesystem::path pathToTemplates;
+		bool validation;
 
 	private:
-		static void clear(std::string& code);
-
-		static void separateArguments(std::string& code);
-
-		static std::string insertVariables(std::span<const interfaces::CVariable> variables, std::string code);
-
-		static std::vector<ExecutionUnit> preExecute(std::string_view code);
+		std::vector<ExecutionUnit> parse(std::string_view code, const json::JsonObject& sharedArguments);
 
 		std::string execute(const std::vector<ExecutionUnit>& codes);
 
 	public:
-		WFDPRenderer(const std::filesystem::path& pathToTemplates);
+		WFDPRenderer(const std::filesystem::path& pathToTemplates, bool validation);
 
-		void run(std::span<const interfaces::CVariable> variables, std::string& source);
+		void run(const void* arguments, std::string& source);
 
 		void registerDynamicFunction(std::string_view functionName, std::unique_ptr<DynamicFunction>&& dynamicFunction);
 

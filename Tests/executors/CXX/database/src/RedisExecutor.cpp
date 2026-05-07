@@ -17,25 +17,25 @@ void RedisExecutor::doGet(framework::HttpRequest& request, framework::HttpRespon
 	framework::JsonBuilder result;
 	
 	{
-		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSQLValues("string"));
+		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSqlValues("string"));
 
 		result["string"] = temp[0].begin()->second.get<std::string>();
 	}
 
 	{
-		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSQLValues("int"));
+		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSqlValues("int"));
 
 		result["int"] = temp[0].begin()->second.get<int64_t>();
 	}
 
 	{
-		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSQLValues("double"));
+		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSqlValues("double"));
 
 		result["double"] = temp[0].begin()->second.get<double>();
 	}
 
 	{
-		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSQLValues("bool"));
+		framework::SqlResult temp = connect.execute("GET", framework::utility::database::makeSqlValues("bool"));
 
 		result["bool"] = temp[0].begin()->second.get<bool>();
 	}
@@ -47,10 +47,10 @@ void RedisExecutor::doPut(framework::HttpRequest& request, framework::HttpRespon
 {
 	framework::Table connect = request.getTable<framework::RedisDatabase>("127.0.0.1:10010:password", "");
 	
-	connect.execute("SET", framework::utility::database::makeSQLValues("string", "qwe"));
-	connect.execute("SET", framework::utility::database::makeSQLValues("int", 5));
-	connect.execute("SET", framework::utility::database::makeSQLValues("double", 2.3));
-	connect.execute("SET", framework::utility::database::makeSQLValues("bool", true));
+	connect.execute("SET", framework::utility::database::makeSqlValues("string", "qwe"));
+	connect.execute("SET", framework::utility::database::makeSqlValues("int", 5));
+	connect.execute("SET", framework::utility::database::makeSqlValues("double", 2.3));
+	connect.execute("SET", framework::utility::database::makeSqlValues("bool", true));
 
 	response.setResponseCode(framework::ResponseCodes::created);
 }

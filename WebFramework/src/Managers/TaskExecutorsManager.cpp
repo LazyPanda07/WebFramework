@@ -16,13 +16,6 @@ namespace framework::task_broker
 		}
 	}
 
-	TaskExecutorsManager& TaskExecutorsManager::get()
-	{
-		static TaskExecutorsManager instance;
-
-		return instance;
-	}
-
 	void TaskExecutorsManager::initTaskExecutor(const std::vector<utility::TaskExecutorsSettings>& taskExecutorsSettings)
 	{
 		runtime::RuntimesManager& manager = runtime::RuntimesManager::get();
@@ -54,16 +47,16 @@ namespace framework::task_broker
 		}
 	}
 
-	void TaskExecutorsManager::createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod)
+	void TaskExecutorsManager::createTaskConsumer(const std::vector<std::string>& taskBrokerNames, size_t threadsNumber, std::chrono::milliseconds checkPeriod, TaskBrokersManager& taskBrokersManager, WebFramework& frameworkInstance)
 	{
-		consumer = std::make_unique<TaskConsumer>(taskBrokerNames, threadsNumber, checkPeriod);
+		consumer = std::make_unique<TaskConsumer>(taskBrokerNames, threadsNumber, checkPeriod, *this, taskBrokersManager, frameworkInstance);
 	}
 
-	void TaskExecutorsManager::runTaskConsumer()
+	void TaskExecutorsManager::runTaskConsumer(std::shared_ptr<ResourceExecutor> resources)
 	{
 		if (consumer)
 		{
-			consumer->run();
+			consumer->run(resources);
 		}
 	}
 

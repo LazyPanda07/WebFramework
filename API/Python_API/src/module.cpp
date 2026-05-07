@@ -8,6 +8,7 @@
 #include "Registrars/HttpResponseRegistrar.h"
 #include "Registrars/HttpRequestRegistrar.h"
 #include "Registrars/LoadBalancerRegistrar.h"
+#include "Registrars/WebSocketExecutorRegistrar.h"
 
 namespace py = pybind11;
 
@@ -17,6 +18,8 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	registrar::registerSql(m);
 
+	registrar::registerWebFrameworkApi(m);
+
 	registrar::registerUtility(m); // contains utility function that requires SQL
 	
 	registrar::registerTaskBrokers(m);
@@ -25,8 +28,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 
 	registrar::registerExecutorSettings(m);
 
-	registrar::registerWebFrameworkApi(m);
-
 	registrar::registerLoadBalancerHeuristic(m);
 
 	registrar::registerHttpResponse(m);
@@ -34,4 +35,6 @@ PYBIND11_MODULE(web_framework_api, m, py::mod_gil_not_used())
 	registrar::registerHttpRequest(m);
 
 	registrar::registerExecutors(m);
+
+	registrar::registerWebSocketExecutor(m);
 }

@@ -3,7 +3,7 @@
 #include <Utility/WebFrameworkUtility.hpp>
 
 MultiUserExecutor::MultiUserExecutor() :
-    userId(framework::utility::uuid::generateUUID())
+    userId(framework::utility::uuid::generateUuid())
 {
 	
 }
@@ -20,7 +20,7 @@ void MultiUserExecutor::doGet(framework::HttpRequest& request, framework::HttpRe
 	framework::SqlResult result = table.execute
 	(
 		"SELECT * FROM multi_user WHERE user_id = ?",
-		framework::utility::database::makeSQLValues(userId)
+		framework::utility::database::makeSqlValues(userId)
 	);
 	std::vector<framework::JsonObject> data;
 
@@ -45,7 +45,7 @@ void MultiUserExecutor::doPut(framework::HttpRequest& request, framework::HttpRe
 	table.execute
 	(
 		"INSERT INTO multi_user (user_id, data) VALUES(?, ?)",
-		framework::utility::database::makeSQLValues(userId, request.getJson().get<std::string>("data"))
+		framework::utility::database::makeSqlValues(userId, request.getJson().get<std::string>("data"))
 	);
 }
 

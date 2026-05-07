@@ -13,17 +13,12 @@ namespace framework
 		functor = (*static_cast<py::type*>(cls))();
 	}
 
-	std::string PythonDynamicFunction::operator ()(const std::vector<std::string>& arguments) const
+	std::string PythonDynamicFunction::operator ()(const json::JsonObject& arguments) const
 	{
 		py::gil_scoped_acquire gil;
-		py::tuple args(arguments.size());
-
-		for (size_t i = 0; i < arguments.size(); i++)
-		{
-			args[i] = arguments[i];
-		}
+		py::module_ json = py::module_::import("json");
 		
-		return functor(*args).cast<std::string>();
+		return functor(json.attr("loads")(static_cast<std::string>(arguments).data()).cast<py::dict>()).cast<std::string>();
 	}
 }
 

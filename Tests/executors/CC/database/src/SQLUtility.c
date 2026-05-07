@@ -29,7 +29,7 @@ void callback(const char** columnNames, const sql_value_t* columnValues, size_t 
 
 			wf_get_sql_value_int(columnValues[i], &result);
 
-			wf_assign_json_object(&object, columnNames[i], &temp);
+			wf_assign_or_get_json_object(&object, columnNames[i], &temp);
 
 			wf_set_json_object_integer(&temp, result);
 		}
@@ -39,7 +39,7 @@ void callback(const char** columnNames, const sql_value_t* columnValues, size_t 
 
 			wf_get_sql_value_string(columnValues[i], &result);
 
-			wf_assign_json_object(&object, columnNames[i], &temp);
+			wf_assign_or_get_json_object(&object, columnNames[i], &temp);
 
 			wf_set_json_object_string(&temp, result);
 		}

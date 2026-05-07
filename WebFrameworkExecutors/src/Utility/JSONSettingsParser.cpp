@@ -18,20 +18,16 @@ namespace framework::utility
 		std::ranges::for_each(databases, [](interfaces::IDatabase* database) { delete database; });
 	}
 
-	JSONSettingsParser::ExecutorSettings::ExecutorSettings() :
-		executorLoadType(LoadType::none)
-	{
-
-	}
-
-	JSONSettingsParser::ExecutorSettings::ExecutorSettings(std::string_view name) :
+	JSONSettingsParser::ExecutorSettings::ExecutorSettings(std::string_view name, WebFramework& frameworkInstance) :
 		name(name),
-		executorLoadType(LoadType::none)
+		executorLoadType(LoadType::none),
+		requireJwt(false),
+		frameworkInstance(frameworkInstance)
 	{
 
 	}
 
-	JSONSettingsParser::JSONSettingsParser(const std::string& JSONSettings)
+	JSONSettingsParser::JSONSettingsParser(const std::string& JSONSettings, WebFramework& frameworkInstance)
 	{
 		std::ifstream in(JSONSettings);
 
@@ -56,10 +52,10 @@ namespace framework::utility
 			}
 
 			const std::string& loadType = description[json_settings::loadTypeKey].get<std::string>();
-			ExecutorSettings executorSettings(name);
+			ExecutorSettings executorSettings(name, frameworkInstance);
 
 			description.tryGet<json::JsonObject>(json_settings::initParametersKey, executorSettings.initParameters);
-			
+
 			executorSettings.apiType = description[json_settings::apiTypeKey].get<std::string>();
 
 			if (loadType == json_settings_values::initializationLoadTypeValue)
@@ -85,6 +81,17 @@ namespace framework::utility
 			}
 
 			std::erase(executorSettings.userAgentFilter, "");
+
+			description.tryGet<bool>(json_settings::requireJwtKey, executorSettings.requireJwt);
+
+			{
+				std::string temp;
+
+				if (description.tryGet<std::string>(json_settings::webSocketExecutorNameKey, temp))
+				{
+					executorSettings.webSocketExecutorName = std::move(temp);
+				}
+			}
 
 			if (description[json_settings::routeKey].is<std::string>())
 			{

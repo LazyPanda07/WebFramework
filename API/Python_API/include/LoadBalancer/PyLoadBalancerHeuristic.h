@@ -15,6 +15,6 @@ namespace framework
 
 		void onEnd() override;
 
-		~PyLoadBalancerHeuristic() = default;
+		virtual ~PyLoadBalancerHeuristic() = default;
 	};
 }

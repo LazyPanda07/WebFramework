@@ -10,9 +10,9 @@ namespace framework::task_broker
 		
 	}
 
-	void CXXTaskExecutor::operator ()(json::JsonObject& data)
+	void CXXTaskExecutor::execute(json::JsonObject& data, TaskExecutorContext& context)
 	{
-		executeFunction(implementation, &data);
+		executeFunction(implementation, &data, &context);
 	}
 
 	CXXTaskExecutor::~CXXTaskExecutor()

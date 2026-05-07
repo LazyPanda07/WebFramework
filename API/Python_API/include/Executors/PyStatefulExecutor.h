@@ -31,6 +31,6 @@ namespace framework
 
 		void destroy() override;
 
-		~PyStatefulExecutor() = default;
+		virtual ~PyStatefulExecutor() = default;
 	};
 }

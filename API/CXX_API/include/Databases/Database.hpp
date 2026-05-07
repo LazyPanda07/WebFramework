@@ -11,8 +11,17 @@ namespace framework::utility
 
 namespace framework
 {
+	template<typename T>
+	concept DatabaseImplementation = requires
+	{
+		{ std::string(T::databaseImplementationName) } -> std::same_as<std::string>;
+	};
+
 	class Database
 	{
+	public:
+		static Database __createDatabase(interfaces::IDatabase* implementation);
+
 	private:
 		interfaces::IDatabase* implementation;
 
@@ -64,6 +73,11 @@ namespace framework
 
 namespace framework
 {
+	inline Database Database::__createDatabase(interfaces::IDatabase* implementation)
+	{
+		return Database(implementation);
+	}
+
 	inline Database::Database(interfaces::IDatabase* implementation) :
 		implementation(implementation)
 	{

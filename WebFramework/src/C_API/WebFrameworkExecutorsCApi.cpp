@@ -3,6 +3,7 @@
 #include <Log.h>
 #include <JsonBuilder.h>
 #include <JsonParser.h>
+#include <jwt-cpp/jwt.h>
 
 #include "WebInterfaces/IHttpRequest.h"
 #include "Utility/JSONSettingsParser.h"
@@ -11,6 +12,9 @@
 #include "Databases/DatabaseImplementation.h"
 #include "Managers/DatabasesManager.h"
 #include "Web/HttpRequestImplementation.h"
+#include "Exceptions/AlreadyLoggedException.h"
+#include "Framework/WebFramework.h"
+#include "TaskBroker/TaskExecutors/TaskExecutor.h"
 
 #define LOG_EXCEPTION() if (Log::isValid()) { Log::error("Exception: {} in {} function", "C_API", e.what(), __func__); }
 #define CREATE_EXCEPTION() *exception = new std::runtime_error(e.what())
@@ -22,6 +26,10 @@ void setResponseBody(HttpResponseObject response, const char* body, size_t bodyS
 	try
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->setBody(body, bodySize);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -44,6 +52,10 @@ void setResponseJsonBody(HttpResponseObject response, JsonBuilder builder, Excep
 
 		implementation->setBody(jsonData.data(), jsonData.size());
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -59,6 +71,10 @@ void setVersion(HttpResponseObject response, const char* version, Exception* exc
 	try
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->setHTTPVersion(version);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -76,6 +92,10 @@ void setResponseCode(HttpResponseObject response, int64_t responseCode, Exceptio
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->setResponseCode(responseCode);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -91,6 +111,10 @@ void addResponseHeader(HttpResponseObject response, const char* name, const char
 	try
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->addHeader(name, value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -108,6 +132,10 @@ void appendResponseBody(HttpResponseObject response, const char* body, Exception
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->appendBody(body);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -123,6 +151,10 @@ void addResponseCookie(HttpResponseObject response, const char* name, const char
 	try
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->addCookie(name, value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -140,6 +172,10 @@ void setResponseDefault(HttpResponseObject response, Exception* exception)
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->setDefault();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -156,6 +192,10 @@ void setResponseIsValid(HttpResponseObject response, bool isValid, Exception* ex
 	{
 		static_cast<framework::interfaces::IHttpResponse*>(response)->setIsValid(isValid);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -171,6 +211,10 @@ const char* getRawParameters(HttpRequestObject request, Exception* exception)
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRawParameters();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -190,6 +234,10 @@ const char* getMethod(HttpRequestObject request, Exception* exception)
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getMethod();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -207,6 +255,10 @@ void* getVersion(HttpRequestObject request, Exception* exception)
 	try
 	{
 		return new std::string(std::format("HTTP/{}", static_cast<framework::interfaces::IHttpRequest*>(request)->getHTTPVersion()));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -226,6 +278,10 @@ const char* getBody(HttpRequestObject request, size_t* bodySize, Exception* exce
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getBody(bodySize);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -243,6 +299,10 @@ void setAttribute(HttpRequestObject request, const char* name, const char* value
 	try
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->setAttribute(name, value);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -266,6 +326,10 @@ void* getAttribute(HttpRequestObject request, const char* name, Exception* excep
 
 		return result;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -284,6 +348,10 @@ void deleteSession(HttpRequestObject request, Exception* exception)
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->deleteSession();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -300,6 +368,10 @@ void removeAttribute(HttpRequestObject request, const char* name, Exception* exc
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->removeAttribute(name);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -315,6 +387,10 @@ JsonParser getRequestJson(HttpRequestObject request, Exception* exception)
 	try
 	{
 		return createJsonParserFromString(static_cast<framework::interfaces::IHttpRequest*>(request)->getJson(), exception);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -333,6 +409,10 @@ const char* getRawRequest(HttpRequestObject request, Exception* exception)
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRawRequest();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -358,6 +438,10 @@ void* getClientIpV4(HttpRequestObject request, Exception* exception)
 
 		return result;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -382,6 +466,10 @@ void* getServerIpV4(HttpRequestObject request, Exception* exception)
 
 		return result;
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -399,6 +487,10 @@ uint16_t getClientPort(HttpRequestObject request, Exception* exception)
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getClientPort();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -418,6 +510,10 @@ uint16_t getServerPort(HttpRequestObject request, Exception* exception)
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getServerPort();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -430,27 +526,15 @@ uint16_t getServerPort(HttpRequestObject request, Exception* exception)
 	return 0;
 }
 
-void registerDynamicFunction(HttpRequestObject request, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
-{
-	try
-	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->registerDynamicFunction(functionName, function, deleter);
-	}
-	catch (const std::exception& e)
-	{
-		LOG_AND_CREATE_EXCEPTION();
-	}
-	catch (...)
-	{
-		UNEXPECTED_EXCEPTION();
-	}
-}
-
 void registerDynamicFunctionClass(HttpRequestObject request, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->registerDynamicFunctionClass(functionName, apiType, functionClass);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -468,6 +552,10 @@ void unregisterDynamicFunction(HttpRequestObject request, const char* functionNa
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->unregisterDynamicFunction(functionName);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -483,6 +571,10 @@ bool isDynamicFunctionRegistered(HttpRequestObject request, const char* function
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->isDynamicFunctionRegistered(functionName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -502,6 +594,10 @@ void getQueryParameters(HttpRequestObject request, void(*initQueryBuffer)(size_t
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->getQueryParameters(initQueryBuffer, addQueryParameter, buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -517,6 +613,10 @@ void getChunks(HttpRequestObject request, void(*initChunkBuffer)(size_t size, vo
 	try
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->getChunks(initChunkBuffer, addChunk, buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -534,6 +634,10 @@ void getFile(HttpRequestObject request, const char* filePath, void(*fillBuffer)(
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->getFile(filePath, fillBuffer, buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -550,6 +654,10 @@ void processStaticFile(HttpRequestObject request, const char* fileData, size_t s
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->processStaticFile(fileData, size, fileExtension, fillBuffer, buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -560,11 +668,15 @@ void processStaticFile(HttpRequestObject request, const char* fileData, size_t s
 	}
 }
 
-void processDynamicFile(HttpRequestObject request, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void processDynamicFile(HttpRequestObject request, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->processDynamicFile(fileData, size, static_cast<framework::interfaces::CVariable*>(variables), variablesSize, fillBuffer, buffer);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->processDynamicFile(fileData, size, arguments, fillBuffer, buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -582,6 +694,10 @@ void getHeaders(HttpRequestObject request, void(*initHeadersBuffer)(size_t size,
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->getHeaders(initHeadersBuffer, addHeader, buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -597,6 +713,10 @@ const char* getHeader(HttpRequestObject request, const char* headerName, Excepti
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getHeaderValue(headerName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -616,6 +736,10 @@ const void* getLargeData(HttpRequestObject request, Exception* exception)
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getLargeData();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -634,6 +758,10 @@ void getMultiparts(HttpRequestObject request, void(*initMultipartsBuffer)(size_t
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->getMultiparts(initMultipartsBuffer, addMultipart, buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -650,6 +778,10 @@ void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size,
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->getCookies(initCookiesBuffer, addCookie, buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -660,7 +792,7 @@ void getCookies(HttpRequestObject request, void(*initCookiesBuffer)(size_t size,
 	}
 }
 
-void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -668,12 +800,14 @@ void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponse
 		(
 			filePath,
 			static_cast<framework::interfaces::IHttpResponse*>(response),
-			variableSize,
-			static_cast<framework::interfaces::CVariable*>(variables),
-			isBinary,
+			arguments,
 			fileName
 		);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -684,11 +818,20 @@ void sendAssetFile(HttpRequestObject request, const char* filePath, HttpResponse
 	}
 }
 
-void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, bool isBinary, const char* fileName, Exception* exception)
+void sendStaticFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const char* fileName, Exception* exception)
 {
 	try
 	{
-		static_cast<framework::interfaces::IHttpRequest*>(request)->sendStaticFile(filePath, static_cast<framework::interfaces::IHttpResponse*>(response), isBinary, fileName);
+		static_cast<framework::interfaces::IHttpRequest*>(request)->sendStaticFile
+		(
+			filePath,
+			static_cast<framework::interfaces::IHttpResponse*>(response),
+			fileName
+		);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -700,7 +843,7 @@ void sendStaticFile(HttpRequestObject request, const char* filePath, HttpRespons
 	}
 }
 
-void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const DynamicPagesVariable variables, size_t variableSize, bool isBinary, const char* fileName, Exception* exception)
+void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpResponseObject response, const void* arguments, const char* fileName, Exception* exception)
 {
 	try
 	{
@@ -708,11 +851,13 @@ void sendDynamicFile(HttpRequestObject request, const char* filePath, HttpRespon
 		(
 			filePath,
 			static_cast<framework::interfaces::IHttpResponse*>(response),
-			variableSize,
-			static_cast<framework::interfaces::CVariable*>(variables),
-			isBinary,
+			arguments,
 			fileName
 		);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -730,6 +875,10 @@ void streamFile(HttpRequestObject request, const char* filePath, HttpResponseObj
 	{
 		static_cast<framework::interfaces::IHttpRequest*>(request)->streamFile(filePath, static_cast<framework::interfaces::IHttpResponse*>(response), fileName, chunkSize);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -745,6 +894,10 @@ int64_t getRouteIntegerParameter(HttpRequestObject request, const char* routePar
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRouteIntegerParameter(routeParameterName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -764,6 +917,10 @@ double getRouteDoubleParameter(HttpRequestObject request, const char* routeParam
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRouteDoubleParameter(routeParameterName);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -781,6 +938,76 @@ const char* getRouteStringParameter(HttpRequestObject request, const char* route
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getRouteStringParameter(routeParameterName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+const char* getToken(HttpRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getToken();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+JsonObject getTokenPayload(HttpRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getTokenPayload();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+WebFramework getWebFrameworkInstance(HttpRequestObject request, Exception* exception)
+{
+	try
+	{
+		return static_cast<framework::interfaces::IHttpRequest*>(request)->getWebFrameworkInstance();
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -800,6 +1027,10 @@ DatabaseObject getOrCreateDatabaseRequest(HttpRequestObject request, const char*
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getOrCreateDatabase(databaseName, implementationName);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -817,6 +1048,10 @@ DatabaseObject getDatabaseRequest(HttpRequestObject request, const char* databas
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getDatabase(databaseName, implementationName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -836,6 +1071,10 @@ TableObject getOrCreateTableRequest(HttpRequestObject request, const char* datab
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getOrCreateDatabase(databaseName, implementationName)->getOrCreateTable(tableName, createTableQuery);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -853,6 +1092,10 @@ TableObject getTableRequest(HttpRequestObject request, const char* databaseName,
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->getDatabase(databaseName, implementationName)->get(tableName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -872,6 +1115,10 @@ void sendChunks(HttpRequestObject request, HttpResponseObject response, const ch
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->sendFileChunks(static_cast<framework::interfaces::IHttpResponse*>(response), "", data, chunkGenerator);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -887,6 +1134,10 @@ void sendFileChunks(HttpRequestObject request, HttpResponseObject response, cons
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->sendFileChunks(static_cast<framework::interfaces::IHttpResponse*>(response), fileName, data, chunkGenerator);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -904,6 +1155,10 @@ void enqueueTask(HttpRequestObject request, const char* messageBrokerName, void*
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->enqueueTask(messageBrokerName, jsonObjectData);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -919,6 +1174,10 @@ void throwWebFrameworkException(HttpRequestObject request, const char* errorMess
 	try
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->throwException(errorMessage, responseCode, logCategory, exceptionHash);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -941,6 +1200,10 @@ bool isExceptionDataValid(HttpRequestObject request, Exception* exception)
 	{
 		return static_cast<framework::interfaces::IHttpRequest*>(request)->isExceptionDataValid();
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -953,6 +1216,8 @@ bool isExceptionDataValid(HttpRequestObject request, Exception* exception)
 	return false;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* exception)
 {
 	try
@@ -963,6 +1228,10 @@ String getExecutorInitParameters(ExecutorSettings executorsSettings, Exception* 
 		stream << parser;
 
 		return new std::string(stream.str());
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -981,6 +1250,10 @@ String getExecutorName(ExecutorSettings executorsSettings, Exception* exception)
 	try
 	{
 		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->name);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1007,6 +1280,10 @@ void getExecutorUserAgentFilter(ExecutorSettings executorsSettings, void(*initUs
 			addUserAgentFilter(userAgentFilter[i].data(), i, buffer);
 		}
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1022,6 +1299,10 @@ String getExecutorAPIType(ExecutorSettings executorsSettings, Exception* excepti
 	try
 	{
 		return new std::string(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->apiType);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1041,6 +1322,10 @@ int getExecutorLoadType(ExecutorSettings executorsSettings, Exception* exception
 	{
 		return static_cast<int>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->executorLoadType);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1057,8 +1342,13 @@ DatabaseObject getOrCreateDatabaseExecutorSettings(ExecutorSettings executorsSet
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getOrCreateDatabase(databaseName, implementationName)));
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1076,8 +1366,13 @@ DatabaseObject getDatabaseExecutorSettings(ExecutorSettings executorsSettings, c
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getDatabase(databaseName, implementationName)));
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1095,8 +1390,13 @@ TableObject getOrCreateTableExecutorSettings(ExecutorSettings executorsSettings,
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1114,8 +1414,13 @@ TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const c
 {
 	try
 	{
-		return static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->
-			databases.emplace_back(new framework::DatabaseImplementation(framework::DatabasesManager::get().getDatabase(databaseName, implementationName)))->get(tableName);
+		framework::utility::JSONSettingsParser::ExecutorSettings& settings = *static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings);
+
+		return settings.databases.emplace_back(new framework::DatabaseImplementation(settings.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)))->get(tableName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1129,23 +1434,6 @@ TableObject getTableExecutorSettings(ExecutorSettings executorsSettings, const c
 	return nullptr;
 }
 
-void registerDynamicFunctionExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result), Exception* exception)
-{
-	try
-	{
-		std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->
-			registerDynamicFunction(functionName, json_settings::cxxExecutorKey, framework::utility::createCxxDynamicFunction(function, deleter));
-	}
-	catch (const std::exception& e)
-	{
-		LOG_AND_CREATE_EXCEPTION();
-	}
-	catch (...)
-	{
-		UNEXPECTED_EXCEPTION();
-	}
-}
-
 void registerDynamicFunctionClassExecutorSettings(ExecutorSettings executorsSettings, const char* functionName, const char* apiType, void* functionClass, Exception* exception)
 {
 	try
@@ -1155,6 +1443,10 @@ void registerDynamicFunctionClassExecutorSettings(ExecutorSettings executorsSett
 			functionName, apiType, functionClass,
 			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)
 		);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1173,6 +1465,10 @@ void unregisterDynamicFunctionExecutorSettings(ExecutorSettings executorsSetting
 		std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->
 			unregisterDynamicFunction(functionName);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1190,6 +1486,10 @@ bool isDynamicFunctionRegisteredExecutorSettings(ExecutorSettings executorsSetti
 		return std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->
 			isDynamicFunctionRegistered(functionName);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1206,11 +1506,13 @@ void getFileExecutorSettings(ExecutorSettings executorsSettings, const char* fil
 {
 	try
 	{
-		framework::HttpRequestImplementation::getFileStatic
-		(
-			filePath, fillBuffer, buffer,
-			*std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)
-		);
+		std::string data = std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor)->getFile(filePath);
+
+		fillBuffer(data.data(), data.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{
@@ -1232,6 +1534,10 @@ void processStaticFileExecutorSettings(ExecutorSettings executorsSettings, const
 
 		fillBuffer(result.data(), result.size(), buffer);
 	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
 	catch (const std::exception& e)
 	{
 		LOG_AND_CREATE_EXCEPTION();
@@ -1242,17 +1548,191 @@ void processStaticFileExecutorSettings(ExecutorSettings executorsSettings, const
 	}
 }
 
-void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const DynamicPagesVariable variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+void processDynamicFileExecutorSettings(ExecutorSettings executorsSettings, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
 {
 	try
 	{
 		std::shared_ptr<framework::ResourceExecutor> resources = std::static_pointer_cast<framework::ResourceExecutor>(static_cast<framework::utility::JSONSettingsParser::ExecutorSettings*>(executorsSettings)->resourceExecutor);
-		
+
 		std::string result(fileData, size);
 
-		resources->processDynamicFile(result, std::span<const framework::interfaces::CVariable>(static_cast<framework::interfaces::CVariable*>(variables), variablesSize));
+		resources->processDynamicFile(result, arguments);
 
 		fillBuffer(result.data(), result.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+DatabaseObject getOrCreateDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+DatabaseObject getDatabaseTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)));
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getOrCreateTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, const char* createTableQuery, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getOrCreateDatabase(databaseName, implementationName)))->getOrCreateTable(tableName, createTableQuery);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+TableObject getTableTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* databaseName, const char* implementationName, const char* tableName, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		return context.databases.emplace_back(new framework::DatabaseImplementation(context.frameworkInstance.getDatabasesManager().getDatabase(databaseName, implementationName)))->get(tableName);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+
+	return nullptr;
+}
+
+void getFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		std::string data = static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext)->resources->getFile(filePath);
+
+		fillBuffer(data.data(), data.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void processStaticFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+		const std::unique_ptr<framework::interfaces::IStaticFileRenderer>& renderer = context.resources->getStaticRenderers().at(fileExtension);
+		std::string result = renderer->render(std::string_view(fileData, size));
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
+	}
+	catch (const std::exception& e)
+	{
+		LOG_AND_CREATE_EXCEPTION();
+	}
+	catch (...)
+	{
+		UNEXPECTED_EXCEPTION();
+	}
+}
+
+void processDynamicFileTaskExecutorContext(TaskExecutorContextObject taskExecutorContext, const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, Exception* exception)
+{
+	try
+	{
+		framework::task_broker::TaskExecutor::TaskExecutorContext& context = *static_cast<framework::task_broker::TaskExecutor::TaskExecutorContext*>(taskExecutorContext);
+
+		std::string result(fileData, size);
+
+		context.resources->processDynamicFile(result, arguments);
+
+		fillBuffer(result.data(), result.size(), buffer);
+	}
+	catch (const framework::exceptions::AlreadyLoggedException& e)
+	{
+		CREATE_EXCEPTION();
 	}
 	catch (const std::exception& e)
 	{

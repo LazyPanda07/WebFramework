@@ -10,9 +10,9 @@ namespace framework::task_broker
 
 	}
 
-	void CCTaskExecutor::operator ()(json::JsonObject& data)
+	void CCTaskExecutor::execute(json::JsonObject& data, TaskExecutorContext& context)
 	{
-		executeFunction(implementation, &data);
+		executeFunction(implementation, &data, &context);
 	}
 
 	CCTaskExecutor::~CCTaskExecutor()

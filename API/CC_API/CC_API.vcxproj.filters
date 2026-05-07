@@ -72,6 +72,9 @@
     <ClCompile Include="src\task_broker\task_executor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\web_socket\web_socket_executor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\import.h">
@@ -141,6 +144,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\task_broker\task_executor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\web_socket\web_socket_executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

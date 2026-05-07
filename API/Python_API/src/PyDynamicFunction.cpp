@@ -2,14 +2,14 @@
 
 namespace framework
 {
-	std::string PyDynamicFunction::operator ()(pybind11::args args) const
+	std::string PyDynamicFunction::operator ()(pybind11::dict arguments) const
 	{
 		PYBIND11_OVERRIDE_PURE
 		(
 			std::string,
 			IDynamicFunction,
 			operator ()
-			args
+			arguments
 		);
 	}
 }

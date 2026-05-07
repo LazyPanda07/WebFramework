@@ -1,9 +1,25 @@
 import random
 import time
 import uuid
-import os
+
+from typing import Dict
 
 from web_framework_api import *
+
+
+class TableData:
+    @staticmethod
+    def create(row: Dict[str, SqlValue]) -> "TableData":
+        return TableData(
+            row["id"].get_as_int(),
+            row["name"].get_as_string(),
+            row["amount"].get_as_int()
+        )
+
+    def __init__(self, id: int, name: str, amount: int):
+        self.id = id
+        self.name = name
+        self.amount = amount
 
 
 class CRUDExecutor(StatelessExecutor):
@@ -17,20 +33,9 @@ class CRUDExecutor(StatelessExecutor):
         )
 
     def do_get(self, request, response):
-        database = request.get_database("test_database")
-        table = database.get_table("test_table")
-        result = table.execute("SELECT * FROM test_table WHERE name = ?", make_sql_values("glue"))
-        data = []
-
-        for value in result:
-            data.append({
-                "id": value["id"].get(),
-                "name": value["name"].get(),
-                "amount": value["amount"].get()
-            })
-
         response.set_body({
-            "data": data
+            "data": request.get_table("test_database", "test_table").execute("SELECT * FROM test_table WHERE name = ?",
+                                                                             TableData, make_sql_values("glue"))
         })
 
     def do_put(self, request, response):
@@ -53,7 +58,6 @@ class CRUDExecutor(StatelessExecutor):
     def do_patch(self, request, response):
         database = request.get_database("test_database")
         table = database.get_table("test_table")
-        data = []
 
         table.execute(
             "UPDATE test_table "
@@ -62,20 +66,8 @@ class CRUDExecutor(StatelessExecutor):
             make_sql_values("empty", -1)
         )
 
-        result = table.execute(
-            "SELECT * FROM test_table WHERE name = ?",
-            make_sql_values("empty")
-        )
-
-        for value in result:
-            data.append({
-                "id": value["id"].get(),
-                "name": value["name"].get(),
-                "amount": value["amount"].get()
-            })
-
         response.set_body({
-            "data": data
+            "data": table.execute("SELECT * FROM test_table WHERE name = ?", TableData, make_sql_values("empty"))
         })
 
     def do_delete(self, request, response):

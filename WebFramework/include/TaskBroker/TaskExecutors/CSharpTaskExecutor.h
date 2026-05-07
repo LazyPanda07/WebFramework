@@ -14,7 +14,7 @@ namespace framework::task_broker
 	public:
 		CSharpTaskExecutor(void* implementation);
 
-		void operator ()(json::JsonObject& data) override;
+		void execute(json::JsonObject& data, TaskExecutorContext& context) override;
 
 		~CSharpTaskExecutor();
 	};

@@ -4,7 +4,7 @@ namespace framework::utility
 {
 	MultithreadedHandler::MultithreadedHandler
 	(
-		web::Network& network, SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
+		web::Network& network, SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources,
 		sockaddr clientAddr, streams::IOSocketStream& stream,
 		ExecutorsManager& executorsManager, ExecutorsManager::StatefulExecutors& executors
 	) :

@@ -1,6 +1,6 @@
 #include "Web/Servers/MultithreadedWebServer.h"
 
-#include <HttpsNetwork.h>
+#include <Http/HttpsNetwork.h>
 
 #include "Exceptions/NotImplementedException.h"
 #include "Exceptions/FileDoesNotExistException.h"
@@ -11,9 +11,9 @@
 #include "Exceptions/APIException.h"
 #include "Utility/RouteParameters.h"
 #include "Exceptions/SslException.h"
-#include "Utility/Singletons/HTTPSSingleton.h"
-#include "Utility/LargeFileHandlers/MultithreadedHandler.h"
 #include "Utility/Utils.h"
+#include "Framework/WebFramework.h"
+#include "ServeLoops/HttpServeLoop.h"
 
 #ifndef __LINUX__
 #pragma warning(disable: 6387)
@@ -23,11 +23,12 @@ namespace framework
 {
 	void MultithreadedWebServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup)
 	{
+		const std::optional<WebFramework::HttpsData>& httpsData = frameworkInstance.getHttpsData();
 		SSL* ssl = nullptr;
 
 		try
 		{
-			if (useHTTPS)
+			if (httpsData)
 			{
 				ssl = this->getNewSsl();
 
@@ -36,9 +37,9 @@ namespace framework
 					throw web::exceptions::SslException(__LINE__, __FILE__);
 				}
 
-				if (!SSL_set_fd(ssl, static_cast<int>(clientSocket)))
+				if (int errorCode = SSL_set_fd(ssl, static_cast<int>(clientSocket)); errorCode != 1)
 				{
-					throw web::exceptions::SslException(__LINE__, __FILE__);
+					throw web::exceptions::SslException(__LINE__, __FILE__, ssl, errorCode);
 				}
 
 				if (int errorCode = SSL_accept(ssl); errorCode != 1)
@@ -59,75 +60,27 @@ namespace framework
 			return;
 		}
 
-		streams::IOSocketStream stream = this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout));
-		ExecutorsManager::StatefulExecutors executors;
-		HttpResponseImplementation response;
-		HttpRequestImplementation request(sessionsManager, *this, *resources, *resources, addr, stream);
-		web::HttpNetwork& network = stream.getNetwork<web::HttpNetwork>();
-		bool finish = false;
-
-		network.setLargeBodyHandler<utility::MultithreadedHandler>(additionalSettings.largeBodyPacketSize, network, sessionsManager, *this, *resources, *resources, addr, stream, *executorsManager, executors);
-		network.setLargeBodySizeThreshold(additionalSettings.largeBodySizeThreshold);
-
-		web::LargeBodyHandler& largeBodyHandler = network.getLargeBodyHandler();
-
-		const std::vector<std::function<void(ServiceState&)>> chain =
-		{
-			[&stream, &request, &largeBodyHandler](ServiceState& state)
+		std::queue<std::unique_ptr<event::ServeEvent>> events;
+		std::unique_ptr<serve_loop::ServeLoop> loop = std::make_unique<serve_loop::HttpServeLoop>
+		(
+			this->createServerSideStream(clientSocket, ssl, std::chrono::milliseconds(timeout)),
+			*resources,
+			&ExecutorServer::serveTask,
+			[this](HttpRequestImplementation& request, HttpResponseImplementation& response, ExecutorsManager::StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events, ServiceState& _)
 			{
-				stream >> request;
-
-				if (stream.eof()) // request may be empty
-				{
-					state = ServiceState::error;
-				}
-				else
-				{
-					state = largeBodyHandler.isRunning() ? ServiceState::skipResponse : ServiceState::success;
-				}
+				executorsManager->service(request, response, executors, events);
 			},
-			[this, &request, &response, &executors](ServiceState& _)
-			{
-				executorsManager->service(request, response, executors);
-			},
-			[&stream, &response](ServiceState& _)
-			{
-				if (response)
-				{
-					stream << response;
-				}
-			}
-		};
-		const void* lastChainTask = &*chain.rbegin();
+			sessionsManager,
+			*this,
+			*executorsManager,
+			addr,
+			additionalSettings,
+			events
+		);
 
 		while (isRunning)
 		{
-			response.setDefault();
-			const std::function<void(ServiceState&)>* task = &chain.front();
-
-			while (task)
-			{
-				switch (this->serviceRequests(stream, request, response, *resources, *task))
-				{
-				case framework::ExecutorServer::ServiceState::success:
-					task = task == lastChainTask ? nullptr : task + 1;
-
-					break;
-
-				case framework::ExecutorServer::ServiceState::skipResponse:
-					task = nullptr;
-
-					break;
-
-				case framework::ExecutorServer::ServiceState::error:
-					finish = true;
-					task = nullptr;
-
-					break;
-				}
-			}
-
-			if (finish)
+			if (serve_loop::ServeLoop::runLoop(loop, events))
 			{
 				break;
 			}
@@ -143,7 +96,8 @@ namespace framework
 		DWORD timeout,
 		const std::vector<std::string>& pathToSources,
 		const utility::AdditionalServerSettings& additionalSettings,
-		std::shared_ptr<threading::ThreadPool> threadPool
+		std::shared_ptr<threading::ThreadPool> threadPool,
+		WebFramework& frameworkInstance
 	) :
 		BaseTCPServer
 		(
@@ -154,6 +108,7 @@ namespace framework
 			0,
 			false
 		),
+		BaseWebServer(frameworkInstance),
 		ExecutorServer
 		(
 			configuration,

@@ -257,10 +257,53 @@
           },
           "required": [ "useHTTPS", "pathToCertificate", "pathToKey" ]
         },
-        "defaultAssetsPath": {
-          "type": "string",
-          "description": "Path to default WebFramework *.html files",
-          "default": "WebFrameworkAssets"
+        "DynamicFunctions": {
+          "type": "object",
+          "description": "Settings for DynamicFunction",
+          "properties": {
+            "validation": {
+              "type": "boolean",
+              "description": "Add pre call validation(function specific object, arguments check: type, missing argument)",
+              "default": true
+            }
+          }
+        },
+        "binaryAssets": {
+          "type": "array",
+          "description": "Path to generated binary assets",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Path to generated binary asset"
+                  },
+                  "fullyLoad": {
+                    "type": "boolean",
+                    "description": "Fully load into memory",
+                    "default": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "JWTSecretVariableName": {
+          "description": "Name of environment variable with JWT secret or null to prevent creating random secret",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "JWT_SECRET"
         }
       },
       "required": [ "assetsPath", "templatesPath", "webServerType" ],
@@ -372,6 +415,15 @@
             "type": "string",
             "enum": [ "utcDate", "localDate", "processName", "processId", "threadId" ]
           }
+        },
+        "verbosityLeveL": {
+          "type": "string",
+          "description": "Verbosity level of internal logging",
+          "enum": [
+            "verbose",
+            "warning",
+            "error"
+          ]
         }
       },
       "required": [ "dateFormat" ]

@@ -4,6 +4,7 @@
 #include "Utility/DynamicLibraries.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "TaskBroker/TaskExecutors/CCTaskExecutor.h"
+#include "WebSocket/CCWebSocketExecutor.h"
 #include "Utility/Utils.h"
 
 namespace framework::runtime
@@ -30,14 +31,41 @@ namespace framework::runtime
 
 		if (CreateExecutorSignature creator = utility::load<CreateExecutorSignature>(module, creatorFunctionName))
 		{
-			std::filesystem::path sourcePath = utility::getPathToLibrary(module);
-
 			if (Log::isValid())
 			{
+				std::filesystem::path sourcePath = utility::getPathToLibrary(module);
+
 				Log::info<logging::message::foundExecutor, logging::category::ccRuntime>(creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string(), route.empty() ? R"("")" : route);
 			}
 
 			creators.emplace(name, std::make_tuple(module, creator));
+
+			return true;
+		}
+
+		return false;
+	}
+
+	bool CCRuntime::loadWebSocketExecutor(std::string_view name, const utility::LoadSource& source)
+	{
+		if (!std::holds_alternative<HMODULE>(source))
+		{
+			return false;
+		}
+
+		HMODULE module = std::get<HMODULE>(source);
+		std::string creatorFunctionName = std::format("create{}WebSocketCCInstance", name);
+
+		if (web_socket::CreateWebSocketExecutorSignature creator = utility::load<web_socket::CreateWebSocketExecutorSignature>(module, creatorFunctionName))
+		{
+			if (Log::isValid())
+			{
+				std::filesystem::path sourcePath = utility::getPathToLibrary(module);
+
+				Log::info<logging::message::foundWebSocketExecutor, logging::category::ccRuntime>(creatorFunctionName, sourcePath.empty() ? "current" : sourcePath.string());
+			}
+
+			webSocketCreators.emplace(name, std::make_tuple(module, creator));
 
 			return true;
 		}
@@ -58,6 +86,21 @@ namespace framework::runtime
 		const auto& [module, creator] = creatorData;
 
 		return std::make_unique<CCExecutor>(module, creator(), name);
+	}
+
+	std::unique_ptr<web_socket::WebSocketExecutor> CCRuntime::createWebSocketExecutor(std::string_view name) const
+	{
+		auto it = webSocketCreators.find(name);
+
+		if (it == webSocketCreators.end())
+		{
+			utility::logAndThrowException<logging::message::cantFindWebSocketExecutor, logging::category::ccRuntime>(name);
+		}
+
+		const auto& [_, creatorData] = *it;
+		const auto& [module, creator] = creatorData;
+
+		return std::make_unique<web_socket::CCWebSocketExecutor>(module, creator(), name);
 	}
 
 	std::unique_ptr<task_broker::TaskExecutor> CCRuntime::createTaskExecutor(std::string_view name, const utility::LoadSource& source) const

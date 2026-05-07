@@ -8,20 +8,20 @@ using Framework.Utility;
 /// Exception class for WebFramework exceptions
 /// </summary>
 /// <param name="implementation"></param>
-public sealed unsafe partial class WebFrameworkException(void* implementation) : Exception, IDisposable
+public sealed partial class WebFrameworkException(IntPtr implementation) : Exception, IDisposable
 {
-	private readonly void* implementation = implementation;
+	private readonly IntPtr implementation = implementation;
+
+	[LibraryImport(DLLHandler.LIBRARY_NAME, StringMarshalling = StringMarshalling.Utf8)]
+	private static partial string getErrorMessage(IntPtr implementation);
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial char* getErrorMessage(void* implementation);
-
-	[LibraryImport(DLLHandler.LIBRARY_NAME)]
-	private static partial void deleteWebFrameworkException(void* implementation);
+	private static partial void deleteWebFrameworkException(IntPtr implementation);
 
 	public void Dispose() => deleteWebFrameworkException(implementation);
 
 	public override string Message
 	{
-		get => Marshal.PtrToStringUTF8((IntPtr)getErrorMessage(implementation))!;
+		get => getErrorMessage(implementation);
 	}
 }

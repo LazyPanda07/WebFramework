@@ -24,9 +24,6 @@
     <ClInclude Include="include\WebInterfaces\IDynamicFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\WebInterfaces\IFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\WebInterfaces\IStaticFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -11,11 +11,7 @@
 #include "Utility/ChunkGenerator.h"
 #include "WebFrameworkCoreConstants.h"
 #include "HttpResponseImplementation.h"
-
-namespace web
-{
-	class BaseTCPServer;
-}
+#include "Web/Servers/BaseWebServer.h"
 
 namespace framework::utility
 {
@@ -56,7 +52,7 @@ namespace framework
 
 	private:
 		SessionsManager& session;
-		const web::BaseTCPServer& serverReference;
+		BaseWebServer& serverReference;
 		streams::IOSocketStream& stream;
 		std::unordered_map<std::string, std::variant<std::string, int64_t, double>> routeParameters;
 		sockaddr clientAddr;
@@ -78,10 +74,8 @@ namespace framework
 
 		static void registerDynamicFunctionClassStatic(const char* functionName, const char* apiType, void* functionClass, interfaces::IDynamicFile& dynamicResources);
 
-		static void getFileStatic(const char* filePath, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer, interfaces::IStaticFile& staticResources);
-
 	public:
-		HttpRequestImplementation(SessionsManager& session, const web::BaseTCPServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
+		HttpRequestImplementation(SessionsManager& session, BaseWebServer& serverReference, interfaces::IStaticFile& staticResources, interfaces::IDynamicFile& dynamicResources, sockaddr clientAddr, streams::IOSocketStream& stream);
 
 		HttpRequestImplementation(HttpRequestImplementation&&) noexcept = default;
 
@@ -182,7 +176,7 @@ namespace framework
 		/// <param name="fileName">Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required</param>
 		/// <exception cref="framework::exceptions::DynamicPagesSyntaxException"></exception>
 		/// <exception cref="std::exception"></exception>
-		void sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize = 0, const interfaces::CVariable* variables = nullptr, bool isBinary = true, const char* fileName = "") override;
+		void sendAssetFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments = nullptr, const char* fileName = "") override;
 
 		/**
 		* Send non dynamic file
@@ -190,7 +184,7 @@ namespace framework
 		* @param fileName Optional parameter for specifying name of file in Content-Disposition HTTP header, ASCII name required
 		* @exception std::exception
 		*/
-		void sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, bool isBinary = true, const char* fileName = "") override;
+		void sendStaticFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName = "") override;
 
 		/**
 		* Send dynamic file(.wfdp)
@@ -199,7 +193,7 @@ namespace framework
 		* @exception framework::exceptions::DynamicPagesSyntaxException
 		* @exception std::exception
 		*/
-		void sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, size_t variablesSize, const interfaces::CVariable* variables, bool isBinary = false, const char* fileName = "") override;
+		void sendDynamicFile(const char* filePath, interfaces::IHttpResponse* response, const void* arguments, const char* fileName = "") override;
 
 		/**
 		* Send large files
@@ -208,11 +202,6 @@ namespace framework
 		* @param chunkSize Desired size of read data before sending
 		*/
 		void streamFile(const char* filePath, interfaces::IHttpResponse* response, const char* fileName, size_t chunkSize = defaultChunkSize) override;
-
-		/// @brief Add new function in .wfdp interpreter
-		/// @param functionName Name of new function
-		/// @param function Function implementation
-		void registerDynamicFunction(const char* functionName, const char* (*function)(const char** arguments, size_t argumentsNumber), void(*deleter)(char* result)) override;
 
 		void registerDynamicFunctionClass(const char* functionName, const char* apiType, void* functionClass) override;
 
@@ -239,7 +228,7 @@ namespace framework
 
 		void processStaticFile(const char* fileData, size_t size, const char* fileExtension, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
 
-		void processDynamicFile(const char* fileData, size_t size, const interfaces::CVariable* variables, size_t variablesSize, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
+		void processDynamicFile(const char* fileData, size_t size, const void* arguments, void(*fillBuffer)(const char* data, size_t size, void* buffer), void* buffer) override;
 
 		void enqueueTask(const char* messageBrokerName, void* jsonObjectData) override;
 
@@ -295,6 +284,12 @@ namespace framework
 		int64_t getRouteIntegerParameter(const char* routeParameterName) const override;
 
 		double getRouteDoubleParameter(const char* routeParameterName) const override;
+
+		const char* getToken() const override;
+
+		void* getTokenPayload() const override;
+
+		void* getWebFrameworkInstance() const override;
 
 		interfaces::IDatabase* getOrCreateDatabase(const char* databaseName, const char* databaseImplementationName) override;
 

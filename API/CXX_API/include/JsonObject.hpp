@@ -9,6 +9,24 @@
 
 namespace framework
 {
+	class JsonObject;
+	class WebFramework;
+}
+
+namespace framework::utility
+{
+	class ExecutorSettings;
+}
+
+namespace framework::utility::token
+{
+	std::string createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName);
+
+	std::string createJwt(const ::framework::JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);
+}
+
+namespace framework
+{
 	template<typename T, typename TJsonStruct>
 	concept JsonValues =
 		std::integral<std::remove_cvref_t<T>> ||
@@ -21,12 +39,15 @@ namespace framework
 	class JsonObject
 	{
 	private:
+		static void addArrayValue(void* object, void* array);
+
+	private:
 		void* implementation;
 		bool weak;
 		bool initialized;
 
-	private:
-		static void addArrayValue(void* object, void* array);
+	public:
+		void* __getImplementation() const;
 
 	public:
 		JsonObject();
@@ -54,6 +75,15 @@ namespace framework
 		 * @return A JsonObject (returned as weak reference) representing the element at the given index.
 		 */
 		JsonObject operator [](size_t index);
+
+		/**
+		 * @brief Returns the Json element at the specified index. Throws exception if can't find.
+		 * @param index The zero-based index of the element to access.
+		 * @return A JsonObject (returned as weak reference) representing the element at the given index.
+		 */
+		JsonObject operator [](size_t index) const;
+
+		explicit operator std::string() const;
 
 		template<JsonValues<JsonObject> T>
 		JsonObject emplace_back(T&& value);
@@ -84,6 +114,14 @@ namespace framework
 		template<typename T>
 		JsonObject& operator =(T&& value) requires (JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
 
+		/**
+		 * @brief Accesses the Json value associated with the specified key. Throws exception if can't find.
+		 * @param key The key to look up in the Json object.
+		 * @return The JsonObject (returned as weak reference) corresponding to the specified key.
+		 */
+		template<typename T>
+		JsonObject operator [](T&& key) const requires(std::convertible_to<T, std::string_view> || std::same_as<T, std::string>);
+
 		friend std::ostream& operator <<(std::ostream& stream, const JsonObject& object);
 
 		~JsonObject();
@@ -91,6 +129,10 @@ namespace framework
 		friend class JsonBuilder;
 		friend class JsonParser;
 		friend class HttpRequest;
+		friend class HttpResponse;
+		friend class utility::ExecutorSettings;
+		friend std::string utility::token::createJwt(const JsonObject& data, std::chrono::minutes expirationTime, std::string_view jwtSecretVariableName);
+		friend std::string utility::token::createJwt(const JsonObject& data, std::chrono::minutes expirationTime, const WebFramework& frameworkInstance);
 	};
 }
 
@@ -99,6 +141,11 @@ namespace framework
 	inline void JsonObject::addArrayValue(void* object, void* array)
 	{
 		static_cast<std::vector<JsonObject>*>(array)->push_back(JsonObject(object));
+	}
+
+	inline void* JsonObject::__getImplementation() const
+	{
+		return const_cast<void*>(implementation);
 	}
 
 	inline JsonObject::JsonObject(void* implementation, bool weak) :
@@ -205,8 +252,39 @@ namespace framework
 		return JsonObject(result);
 	}
 
+	inline JsonObject JsonObject::operator [](size_t index) const
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(accessIndexOperatorJsonObjectChecked, void*, size_t index, void** exception);
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
+		void* exception = nullptr;
+		void* result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessIndexOperatorJsonObjectChecked, index, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return JsonObject(result);
+	}
+
+	inline JsonObject::operator std::string() const
+	{
+		using jsonObjectToString = void* (*)(void* implementation, void** exception);
+		void* exception = nullptr;
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
+
+		void* result = handler.CALL_WEB_FRAMEWORK_FUNCTION(jsonObjectToString, implementation, &exception);
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return handler.getString(result);
+	}
+
 	template<JsonValues<JsonObject> T>
-	JsonObject JsonObject::emplace_back(T&& value)
+	inline JsonObject JsonObject::emplace_back(T&& value)
 	{
 		using ActualT = std::remove_cvref_t<T>;
 
@@ -797,6 +875,31 @@ namespace framework
 		}
 
 		return *this;
+	}
+
+	template<typename T>
+	inline JsonObject JsonObject::operator [](T&& key) const requires(std::convertible_to<T, std::string_view> || std::same_as<T, std::string>)
+	{
+		DEFINE_CLASS_MEMBER_FUNCTION(accessKeyOperatorJsonObjectChecked, void*, const char* key, void** exception);
+		utility::DllHandler& handler = utility::DllHandler::getInstance();
+		void* exception = nullptr;
+		void* result = nullptr;
+
+		if constexpr (std::same_as<T, std::string>)
+		{
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonObjectChecked, key.data(), &exception);
+		}
+		else if constexpr (std::convertible_to<T, std::string_view>)
+		{
+			result = handler.CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(accessKeyOperatorJsonObjectChecked, static_cast<std::string_view>(key).data(), &exception);
+		}
+
+		if (exception)
+		{
+			throw exceptions::WebFrameworkException(exception);
+		}
+
+		return JsonObject(result);
 	}
 
 	inline std::ostream& operator <<(std::ostream& stream, const JsonObject& object)

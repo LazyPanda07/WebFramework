@@ -6,11 +6,13 @@ set(WEB_FRAMEWORK_EXPORT_TARGETS WebFrameworkTargets)
 set(WEB_FRAMEWORK_EXPORT_TARGETS_FILE WebFrameworkTargets.cmake)
 set(WEB_FRAMEWORK_EXPORT_TARGETS_NAMESPACE WebFramework::)
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
+set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 set(
 	3RDPARTY_LIBS
 	sqlite3
 	hiredis
 	rabbitmq::rabbitmq-static
+	jwt-cpp::jwt-cpp
 	ssl
 	crypto
 	CACHE INTERNAL ""
@@ -25,52 +27,19 @@ option(WITH_STACKTRACE "Build with Boost::stacktrace" OFF)
 option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
+option(AS_DEPENDENCY "Change install paths for FetchContent or add_subdirectory usage" OFF)
 
-project(WebFramework VERSION 3.3.7)
+project(WebFramework VERSION 3.4.0)
+
+set(SHARED_LIBRARY_PROJECT_NAME ${PROJECT_NAME})
 
 install(FILES LICENSE DESTINATION license) # Used in APIs install
-
-if (${WITH_STACKTRACE})
-	add_definitions(-D__WITH_STACKTRACE__)
-endif()
-
-if (UNIX)
-	add_definitions(-D__LINUX__)
-	add_compile_options(-fvisibility=hidden)
-	add_compile_options(-fno-omit-frame-pointer)
-	
-	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-	if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL aarch64)
-		set(COMPILE_TARGET LinuxARM)
-	else()
-		set(COMPILE_TARGET Linux)
-	endif()
-	
-	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-		add_definitions(-D__ANDROID__)
-
-		set(COMPILE_TARGET Android)
-
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
-	else()
-		add_link_options(-rdynamic)
-	endif()
-elseif (WIN32)
-	add_definitions(-DNOMINMAX)
-	add_definitions(-DWIN32_LEAN_AND_MEAN)
-
-	set(COMPILE_TARGET Windows)
-
-	list(APPEND 3RDPARTY_LIBS crypt32)
-else()
-	message(FATAL "Does not support ${CMAKE_SYSTEM_NAME}")
-endif()
 
 add_library(
 	${PROJECT_NAME} SHARED
 	WebFramework/src/WFDP/StandardWebFrameworkDynamicPagesFunctions.cpp
 	WebFramework/src/WFDP/CXXDynamicFunction.cpp
+	WebFramework/src/WFDP/CCDynamicFunction.cpp
 	WebFramework/src/WFDP/PythonDynamicFunction.cpp
 	WebFramework/src/WFDP/CSharpDynamicFunction.cpp
 	WebFramework/src/Rendering/WFDPRenderer.cpp
@@ -86,6 +55,7 @@ add_library(
 	WebFramework/src/Exceptions/MissingLoadTypeException.cpp
 	WebFramework/src/Exceptions/APIException.cpp
 	WebFramework/src/Exceptions/CSharpException.cpp
+	WebFramework/src/Exceptions/AlreadyLoggedException.cpp
 	WebFramework/src/Executors/ResourceExecutor.cpp
 	WebFramework/src/LoadBalancer/LoadBalancerServer.cpp
 	WebFramework/src/LoadBalancer/Heuristics/LoadBalancerHeuristic.cpp
@@ -97,11 +67,11 @@ add_library(
 	WebFramework/src/Proxy/ProxyServer.cpp
 	WebFramework/src/Utility/Sources.cpp
 	WebFramework/src/Utility/RouteParameters.cpp
-	WebFramework/src/Utility/Singletons/HTTPSSingleton.cpp
 	WebFramework/src/Utility/ConnectionData.cpp
 	WebFramework/src/Utility/DynamicLibraries.cpp
 	WebFramework/src/Utility/CrashHandler.cpp
 	WebFramework/src/Utility/Utils.cpp
+	WebFramework/src/Utility/ReadOnlyBuffer.cpp
 	WebFramework/src/Utility/WebFrameworkConcepts.cpp
 	WebFramework/src/Managers/DatabasesManager.cpp
 	WebFramework/src/Managers/ExecutorsManager.cpp
@@ -118,6 +88,7 @@ add_library(
 	WebFramework/src/C_API/WebFrameworkExecutorsCApi.cpp
 	WebFramework/src/C_API/WebFrameworkUtilityCApi.cpp
 	WebFramework/src/C_API/WebFrameworkLocalizationCApi.cpp
+	WebFramework/src/C_API/WebFrameworkWebSocketExecutorsCApi.cpp
 	WebFramework/src/Utility/LargeFileHandlers/BaseLargeBodyHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/ThreadPoolHandler.cpp
 	WebFramework/src/Utility/LargeFileHandlers/MultithreadedHandler.cpp
@@ -143,27 +114,86 @@ add_library(
 	WebFramework/src/TaskBroker/TaskExecutors/CCTaskExecutor.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/PythonTaskExecutor.cpp
 	WebFramework/src/TaskBroker/TaskExecutors/CSharpTaskExecutor.cpp
+	WebFramework/src/Assets/AssetProvider.cpp
+	WebFramework/src/Assets/DefaultAssetProvider.cpp
+	WebFramework/src/Assets/SingleBinaryAssetProvider.cpp
+	WebFramework/src/Assets/SingleBinaryAsset.cpp
+	WebFramework/src/WebSocket/WebSocketExecutor.cpp
+	WebFramework/src/WebSocket/CCWebSocketExecutor.cpp
+	WebFramework/src/WebSocket/CXXWebSocketExecutor.cpp
+	WebFramework/src/WebSocket/PythonWebSocketExecutor.cpp
+	WebFramework/src/WebSocket/CSharpWebSocketExecutor.cpp
+	WebFramework/src/Events/ServeEvents/UpgradeHttpConnect.cpp
+	WebFramework/src/ServeLoops/ServeLoop.cpp
+	WebFramework/src/ServeLoops/HttpServeLoop.cpp
+	WebFramework/src/ServeLoops/WebSocketServeLoop.cpp
 )
 
-# Used in Python API install
-install(
-	TARGETS ${PROJECT_NAME}
-	ARCHIVE DESTINATION lib
-	LIBRARY DESTINATION lib
-	RUNTIME DESTINATION dll
-)
+if (${WITH_STACKTRACE})
+	add_definitions(-D__WITH_STACKTRACE__)
+endif()
+
+if (UNIX)
+	add_definitions(-D__LINUX__)
+	target_compile_options(
+		${PROJECT_NAME} PRIVATE
+		-fno-omit-frame-pointer
+	)
+	
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+	if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL aarch64)
+		set(COMPILE_TARGET LinuxARM)
+	else()
+		set(COMPILE_TARGET Linux)
+	endif()
+	
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+		add_definitions(-D__ANDROID__)
+
+		set(COMPILE_TARGET Android)
+
+		target_compile_options(
+			${PROJECT_NAME} PRIVATE
+			-fvisibility=hidden
+			-fexceptions
+			-frtti
+		)
+	else()
+		target_link_options(
+			${PROJECT_NAME} PRIVATE
+			-rdynamic
+		)
+	endif()
+elseif (WIN32)
+	add_definitions(-DNOMINMAX)
+	add_definitions(-DWIN32_LEAN_AND_MEAN)
+
+	set(COMPILE_TARGET Windows)
+
+	list(APPEND 3RDPARTY_LIBS crypt32)
+else()
+	message(FATAL "Does not support ${CMAKE_SYSTEM_NAME}")
+endif()
 
 if (${WITH_UNITY_BUILD})
 	set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
 endif()
 
-if (${COMPILE_TARGET} STREQUAL Linux OR ${COMPILE_TARGET} STREQUAL Windows)
+if (NOT "${COMPILE_TARGET}" STREQUAL "Android")
 	if (${WITH_PYTHON_EXECUTORS})
 		add_definitions(-D__WITH_PYTHON_EXECUTORS__)
 	endif()
 
 	if (${WITH_DOTNET_EXECUTORS})
 		add_definitions(-D__WITH_DOTNET_EXECUTORS__)
+	endif()
+endif()
+
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
+	if (UNIX)
+		set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} -g")
+		set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -g")
 	endif()
 endif()
 
@@ -189,10 +219,6 @@ add_subdirectory(Databases)
 add_subdirectory(Networks) # has JSON as dependency
 add_subdirectory(Localization) # has JSON as dependency
 add_subdirectory(FileManager) # has ThreadPool as dependency
-
-if (${WITH_LANGUAGES_APIS})
-	add_subdirectory(API)
-endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
@@ -233,15 +259,46 @@ target_link_libraries(
 	${ADDITIONAL_LIBS}
 )
 
-install(FILES WebFrameworkConfig.cmake DESTINATION .)
-install(FILES FindWebFramework.cmake DESTINATION .)
+if (${AS_DEPENDENCY})
+	install(TARGETS ${PROJECT_NAME} DESTINATION .)
 
-if (NOT EXISTS ${CMAKE_INSTALL_PREFIX}/WebFrameworkAssets)
-	install(DIRECTORY WebFramework/WebFrameworkAssets/ DESTINATION WebFrameworkAssets)
-endif ()
+	install(
+		CODE [[
+			set(SHARED_LIBRARIES "")
 
-install(DIRECTORY WebFramework/certificates DESTINATION .)
-install(DIRECTORY schemas DESTINATION .)
+			list(APPEND SHARED_LIBRARIES FileManager Localization Log sqlite3)
+
+			foreach(SHARED_LIBRARY IN LISTS SHARED_LIBRARIES)
+				if (UNIX)
+					file(COPY ${CMAKE_INSTALL_PREFIX}/lib/lib${SHARED_LIBRARY}.so DESTINATION DESTINATION ${CMAKE_INSTALL_PREFIX})
+				else()
+					file(COPY ${CMAKE_INSTALL_PREFIX}/dll/${SHARED_LIBRARY}.dll DESTINATION DESTINATION ${CMAKE_INSTALL_PREFIX})
+				endif()
+			endforeach()
+
+			if (UNIX)
+				file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib")
+			else()
+				file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/dll")
+			endif()
+
+			file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/assets")
+		]]
+	)
+else()
+	install(
+		TARGETS ${PROJECT_NAME}
+		ARCHIVE DESTINATION lib
+		LIBRARY DESTINATION lib
+		RUNTIME DESTINATION dll
+	)
+
+	install(FILES WebFrameworkConfig.cmake DESTINATION .)
+	install(FILES FindWebFramework.cmake DESTINATION .)
+	
+	install(DIRECTORY WebFramework/certificates DESTINATION .)
+	install(DIRECTORY schemas DESTINATION .)
+endif()
 
 install(
 	CODE [[
@@ -251,15 +308,19 @@ install(
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/libCC_API.a")
 		else()
 			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.lib")
+			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.pdb")
 
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/CC_API.lib")
 		endif()
+
+		file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/cmake/jwt-cpp*.cmake")
 
 		if (FILES_TO_REMOVE)
 			file(REMOVE ${FILES_TO_REMOVE})
 		endif()
 
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
+		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/cmake")
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 	]]
 )
@@ -268,3 +329,7 @@ install(
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/include/")
 	]]
 )
+
+if (${WITH_LANGUAGES_APIS})
+	add_subdirectory(API)
+endif()

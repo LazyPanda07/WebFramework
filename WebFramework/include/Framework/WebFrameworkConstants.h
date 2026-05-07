@@ -12,6 +12,7 @@ namespace json_settings
 	inline constexpr std::string_view webServerObject = "WebServer";
 	inline constexpr std::string_view webFrameworkObject = "WebFramework";
 	inline constexpr std::string_view httpsObject = "HTTPS";
+	inline constexpr std::string_view dynamicFunctionsObject = "DynamicFunctions";
 	inline constexpr std::string_view loggingObject = "Logging";
 	inline constexpr std::string_view threadPoolServerObject = "ThreadPoolServer";
 	inline constexpr std::string_view loadBalancerObject = "LoadBalancer";
@@ -30,18 +31,23 @@ namespace json_settings
 	inline constexpr std::string_view dateFormatKey = "dateFormat";
 	inline constexpr std::string_view logFileSizeKey = "logFileSize";
 	inline constexpr std::string_view logFlagsKey = "flags";
+	inline constexpr std::string_view logVerbosityLevelKey = "verbosityLevel";
 	inline constexpr std::string_view webServerTypeKey = "webServerType";
 	inline constexpr std::string_view useHTTPSKey = "useHTTPS";
 	inline constexpr std::string_view pathToCertificateKey = "pathToCertificate";
 	inline constexpr std::string_view pathToKey = "pathToKey";
-	inline constexpr std::string_view webFrameworkDefaultAssetsPath = "defaultAssetsPath";
 	inline constexpr std::string_view largeBodySizeThresholdKey = "largeBodySizeThreshold";
 	inline constexpr std::string_view largeBodyPacketSizeKey = "largeBodyPacketSize";
 	inline constexpr std::string_view databasesKey = "databases";
 	inline constexpr std::string_view resourcesThreadsKey = "resourcesThreads";
 	inline constexpr std::string_view runtimesKey = "runtimes";
+	inline constexpr std::string_view validationKey = "validation";
+	inline constexpr std::string_view binaryAssetsKey = "binaryAssets";
+	inline constexpr std::string_view pathKey = "path";
+	inline constexpr std::string_view fullyLoadKey = "fullyLoad";
+	inline constexpr std::string_view jwtSecretVariableNameKey = "JWTSecretVariableName";
 	
-
+	inline constexpr std::string_view heuristicNameKey = "name";
 	inline constexpr std::string_view listOfServersKey = "listOfServers";
 	inline constexpr std::string_view heuristicKey = "heuristic";
 	inline constexpr std::string_view loadSourceKey = "loadSource";
@@ -82,10 +88,6 @@ namespace exceptions
 
 	inline const std::string wrongWebServerType = "Wrong type of webServerType option";
 
-	inline constexpr std::string_view variableDeclarationSyntaxError = "Wrong variable declaration";
-	inline constexpr std::string_view sectionDeclarationSyntaxError = "Wrong section declaration";
-	inline constexpr std::string_view missingSemicolonSyntaxError = "Missing semicolon";
-
 	inline constexpr std::string_view stringConversionErrorCode = "String conversion error code ";
 }
 
@@ -113,17 +115,8 @@ namespace json_settings_values
 
 	inline constexpr std::string_view rabbitMqHostValue = "localhost";
 	inline constexpr int rabbitMqPortValue = 5672;
-}
 
-namespace web_framework_assets
-{
-	inline constexpr std::string_view errorsFolder = "Errors";
-
-	inline constexpr std::string_view badRequest = "400.html";
-	inline constexpr std::string_view forbidden = "403.html";
-	inline constexpr std::string_view notFound = "404.html";
-	inline constexpr std::string_view internalServerError = "500.html";
-	inline constexpr std::string_view badGateway = "502.html";
+	inline constexpr std::string_view jwtSecretVariableNameValue = "JWT_SECRET";
 }
 
 namespace framework::logging
@@ -156,6 +149,9 @@ namespace framework::logging
 		inline constexpr char sources[] = "LogSources";
 		inline constexpr char executorServer[] = "LogExecutorServer";
 		inline constexpr char webFramework[] = "LogWebFramework";
+		inline constexpr char singleBinaryAsset[] = "LogSingleBinaryAsset";
+		inline constexpr char httpRequest[] = "LogHttpRequest";
+		inline constexpr char webSocket[] = "LogWebSocket";
 	}
 
 	namespace message
@@ -219,6 +215,7 @@ namespace framework::logging
 		inline constexpr char noDynamicFunctionVariable[] = "No variable: {}";
 		inline constexpr char wfdpRendererExecuteException[] = "WFDPRenderer execute exception: {}";
 		inline constexpr char cantFindExecutor[] = "Can't find executor with name {}";
+		inline constexpr char cantFindWebSocketExecutor[] = "Can't find WebSocket executor with name {}";
 		inline constexpr char cantFindTaskExecutor[] = "Can't find {}";
 		inline constexpr char cantFindCSharpApi[] = "Can't find {} or {}";
 		inline constexpr char methodAlreadyInitialized[] = "Method already intialized, type name: {}, method name: {}";
@@ -230,10 +227,32 @@ namespace framework::logging
 		inline constexpr char sslCertificateError[] = "Error while reading certificate from {}";
 		inline constexpr char sslCertificateChainError[] = "Error while reading certificate chain from {}";
 		inline constexpr char privateKeyError[] = "Error while reading private key from {}";
+		inline constexpr char variableDeclarationSyntaxError[] = "Wrong variable declaration";
+		inline constexpr char sectionDeclarationSyntaxError[] = "Wrong section declaration in {}";
+		inline constexpr char missingSemicolonSyntaxError[] = "Missing ';' in {}";
+		inline constexpr char missingOpenBracketSyntaxError[] = "Missing '(' in {}";
+		inline constexpr char missingCloseBracketSyntaxError[] = "Missing ')' in {}";
+		inline constexpr char defaultValueForTypeDoesNotSupported[] = "Default value for type {} doesn't supported";
+		inline constexpr char wrongDefaultValueForType[] = "Wrong default value {} for type {}";
+		inline constexpr char cantConvertDefaultValue[] = "Can't convert {} to {} type";
+		inline constexpr char outOfRangeDefaultValue[] = "Default value: {} is out of range for type: {}";
+		inline constexpr char cantFindArgument[] = "Can't find argument: {} for function: {}";
+		inline constexpr char notValidFunctionName[] = "Function name can start only with a-z, A-Z";
+		inline constexpr char cantFindAssetFromIncludePath[] = "Can't find asset: {} from 'includePath' string field in include function";
+		inline constexpr char wrongType[] = "Wrong type: {} in function: {}";
+		inline constexpr char cantFindFunctionField[] = "Can't find @{} field for function {}";
+		inline constexpr char cantOpenFile[] = "Can't open file: {}";
+		inline constexpr char cantCreateFile[] = "Can't create file: {}";
+		inline constexpr char notASingleBinaryAsset[] = "File: {} not a binary single asset";
+		inline constexpr char notSupportedVersion[] = "Version: {} doesn't supported. Current version: {}";
+		inline constexpr char forbiddenMessage[] = "Forbidden response to client request. {}";
+		inline constexpr char cantFindJwtSecret[] = "Can't find JWT secret: {}, fallback to: {}";
+		inline constexpr char missingWebSocketExecutors[] = "Missing WebSocket executors: {}";
+		inline constexpr char cantVerifyJwt[] = "Can't verify JWT with error: {}";
 
 		inline constexpr char heuristicSelect[] = "Select {}:{} server for connection with heuristic value: {}";
-		inline constexpr char requestStaticFile[] = "Request static file: {}, is binary: {}";
-		inline constexpr char requestDynamicFile[] = "Request dynamic file: {}, is binary: {}";
+		inline constexpr char requestStaticFile[] = "Request static file: {}";
+		inline constexpr char requestDynamicFile[] = "Request dynamic file: {}";
 		inline constexpr char registerFunction[] = "Register function: {} from: {}";
 		inline constexpr char addRuntime[] = "Add {} runtime";
 		inline constexpr char httpsInitialization[] = "Using HTTPS with certificate: {}, key: {}";
@@ -243,9 +262,11 @@ namespace framework::logging
 		inline constexpr char kickClient[] = "Kick client with ip: {} from server";
 		inline constexpr char wrongUserAgent[] = "Wrong User-Agent: {}";
 		inline constexpr char noUserAgent[] = "No User-Agent provided";
+		inline constexpr char noJwt[] = "No Authorization: Bearer <token> provided";
 		inline constexpr char foundTaskExecutorSource[] = "Found load source with path: {}";
 		inline constexpr char callDynamicFunction[] = "Call {} function";
 		inline constexpr char foundExecutor[] = "Found {} in {} for {} route";
+		inline constexpr char foundWebSocketExecutor[] = "Found WebSocket {} in {}";
 		inline constexpr char foundTaskExecutor[] = "Found {} in {}";
 		inline constexpr char foundCSharpApi[] = "Found {}";
 		inline constexpr char initializePythonInterpreter[] = "Initialize Python interpreter";
@@ -255,5 +276,9 @@ namespace framework::logging
 		inline constexpr char rabbitmqLogin[] = "Login to RabbitMQ from channel {}";
 		inline constexpr char startTaskConsuming[] = "Start task consuming";
 		inline constexpr char addTaskBroker[] = "Add task broker: {}";
+		inline constexpr char addBinaryAsset[] = "Add binary asset: {}, fully load: {}";
+		inline constexpr char jwtSecretVariable[] = "Use secret from variable: {}";
+		inline constexpr char userAgentFilterValue[] = "Add User-Agent filter: {}";
+		inline constexpr char wrongControlFrameSize[] = "Wrong size {} of control frame {}";
 	}
 }

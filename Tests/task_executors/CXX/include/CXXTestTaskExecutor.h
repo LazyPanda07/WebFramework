@@ -5,7 +5,7 @@ class CXXTestTaskExecutor : public framework::task_broker::TaskExecutor
 public:
 	CXXTestTaskExecutor() = default;
 
-	void operator ()(const framework::JsonObject& data) override;
+	void execute(const framework::JsonObject& data, const TaskExecutorContext& context) override;
 
 	~CXXTestTaskExecutor() = default;
 };

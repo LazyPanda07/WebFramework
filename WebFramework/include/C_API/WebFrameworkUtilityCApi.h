@@ -29,7 +29,11 @@ EXPORT JsonParser createJsonParserFromString(const char* jsonString, Exception* 
 
 EXPORT JsonObject accessIndexOperatorJsonObject(JsonObject jsonObject, size_t index, Exception* exception);
 
+EXPORT JsonObject accessIndexOperatorJsonObjectChecked(JsonObject jsonObject, size_t index, Exception* exception);
+
 EXPORT JsonObject accessKeyOperatorJsonObject(JsonObject jsonObject, const char* key, Exception* exception);
+
+EXPORT JsonObject accessKeyOperatorJsonObjectChecked(JsonObject jsonObject, const char* key, Exception* exception);
 
 EXPORT JsonObject emplaceBackObject(JsonObject jsonObject, JsonObject value, Exception* exception);
 
@@ -306,6 +310,12 @@ EXPORT void iterateSQLResult(SqlResultObject result, void(*initBuffer)(size_t si
 EXPORT String generateWebFrameworkUUID(Exception* exception);
 
 EXPORT String generateSha256(const char* data, size_t size, Exception* exception);
+
+EXPORT void generateBinaryAssetFile(const char* directoryPath, const char* outputPath, void(*progressCallback)(float progress, const char* assetPath, void* data), void* data, Exception* exception);
+
+EXPORT String createJwtWithString(JsonObject data, int64_t expirationTimeInMinutes, const char* jwtSecretVariableName, Exception* exception);
+
+EXPORT String createJwtWithContext(JsonObject data, int64_t expirationTimeInMinutes, WebFramework frameworkInstance, Exception* exception);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

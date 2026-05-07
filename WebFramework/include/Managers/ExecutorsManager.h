@@ -11,6 +11,8 @@
 #include "Utility/AdditionalServerSettings.h"
 #include "Framework/WebFrameworkConstants.h"
 #include "Utility/Sources.h"
+#include "Events/ServeEvents/ServeEvent.h"
+#include "WebSocket/WebSocketExecutor.h"
 
 namespace framework
 {
@@ -39,7 +41,7 @@ namespace framework
 			multiThreaded,
 			threadPool
 		};
-		
+
 		static inline const std::unordered_map<std::string_view, WebServerType> types =
 		{
 			{ json_settings_values::loadBalancerWebServerTypeValue, WebServerType::loadBalancer },
@@ -65,11 +67,15 @@ namespace framework
 		static void parseRouteParameters(const std::string& parameters, interfaces::IHttpRequest& request, std::vector<utility::RouteParameters>::iterator it);
 
 	private:
-		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(std::string& parameters, interfaces::IHttpRequest& request, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings** outExecutorSettings);
 
-		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers, interfaces::IHttpResponse& response) const;
+		bool filterUserAgent(const std::string& parameters, const web::HeadersMap& headers) const;
+
+		bool filterJwt(const std::string& parameters, const web::HeadersMap& headers) const;
 
 		std::unique_ptr<Executor> createApiExecutor(const std::string& name, std::string_view apiType) const;
+
+		std::unique_ptr<web_socket::WebSocketExecutor> createApiWebSocketExecutor(const std::string& name, std::string_view apiType) const;
 
 		void initCreators(const std::vector<std::string>& pathToSources);
 
@@ -91,9 +97,9 @@ namespace framework
 
 		ExecutorsManager& operator = (ExecutorsManager&& other) noexcept;
 
-		std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors);
+		std::optional<std::function<void(interfaces::IHttpRequest&, interfaces::IHttpResponse&)>> service(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, std::queue<std::unique_ptr<event::ServeEvent>>& events);
 
-		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors);
+		Executor* getOrCreateExecutor(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response, StatefulExecutors& executors, utility::JSONSettingsParser::ExecutorSettings** executorSettings = nullptr);
 
 		std::shared_ptr<ResourceExecutor> getResourceExecutor() const;
 

@@ -24,8 +24,6 @@ namespace unit_test_utils
 
 namespace unit_test_utils
 {
-	void updateConfigRuntimes(const std::filesystem::path& configPath, const utility::parsers::ConsoleArgumentParser& consoleParser);
-
 	template<typename... Args>
 	std::vector<std::string> splitArguments(const std::string& arguments, Args&&... args);
 

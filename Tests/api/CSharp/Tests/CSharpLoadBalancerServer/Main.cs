@@ -6,6 +6,8 @@ class LoadBalancerServer
 {
 	static int Main(string[] args)
 	{
+		string? runtimes = Environment.GetEnvironmentVariable("RUNTIMES");
+
 		try
 		{
 			var configOption = new Option<string>("--config")
@@ -55,6 +57,19 @@ class LoadBalancerServer
 					if (customHeuristic)
 					{
 						serverConfig.OverrideConfiguration("$[]LoadBalancer.heuristic.name", "CustomHeuristic", true);
+					}
+
+					if (!string.IsNullOrEmpty(runtimes))
+					{
+						if (runtimes.Contains("python", StringComparison.OrdinalIgnoreCase))
+						{
+							serverConfig.OverrideConfiguration("$[]WebFramework.runtimes.0.enabled", true);
+						}
+
+						if (runtimes.Contains(".net", StringComparison.OrdinalIgnoreCase))
+						{
+							serverConfig.OverrideConfiguration("$[]WebFramework.runtimes.1.enabled", true);
+						}
 					}
 
 					if (type == "server")
