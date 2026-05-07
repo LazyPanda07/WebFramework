@@ -1,7 +1,7 @@
 ﻿# WebFramework
 * C++ HTTP/HTTPS server
 * Multi language API
-* Server can be launched from ```C++```, ```C```, ```Python```, ```C#```, ```Flutter/Dart```
+* Server can be launched from ```C++```, ```C```, ```Python```, ```C#```, ```Dart/Flutter```
 * Endpoints can be served from ```C++```, ```C```, ```Python```, ```C#```
 
 
@@ -18,7 +18,7 @@ git clone https://github.com/LazyPanda07/WebFramework.git --recursive
 | C              | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> |
 | C#             | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     |
 | Python         | <img src="icons/check.svg">                                                           | <img src="icons/check.svg">                                                     | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/check.svg"> | <img src="icons/x.svg">     |
-| Flutter/Dart   | <img src="icons/check.svg">                                                           | <img src="icons/x.svg">                                                         | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     | <img src="icons/check.svg"> |
+| Dart/Flutter   | <img src="icons/check.svg">                                                           | <img src="icons/x.svg">                                                         | <img src="icons/check.svg"> | <img src="icons/x.svg">     | <img src="icons/x.svg">     | <img src="icons/check.svg"> |
 
 
 ## Build Requirements

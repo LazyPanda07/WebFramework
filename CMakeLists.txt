@@ -137,7 +137,6 @@ if (UNIX)
 	add_definitions(-D__LINUX__)
 	target_compile_options(
 		${PROJECT_NAME} PRIVATE
-		# -fvisibility=hidden
 		-fno-omit-frame-pointer
 	)
 	
@@ -154,7 +153,12 @@ if (UNIX)
 
 		set(COMPILE_TARGET Android)
 
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti")
+		target_compile_options(
+			${PROJECT_NAME} PRIVATE
+			-fvisibility=hidden
+			-fexceptions
+			-frtti
+		)
 	else()
 		target_link_options(
 			${PROJECT_NAME} PRIVATE
