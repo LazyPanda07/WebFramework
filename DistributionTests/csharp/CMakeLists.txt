@@ -10,3 +10,4 @@ add_custom_target(
 
 install(FILES run_csharp_test.bat DESTINATION .)
 install(FILES run_csharp_test.sh DESTINATION .)
+install(FILES run_csharp_test_arm.sh DESTINATION .)

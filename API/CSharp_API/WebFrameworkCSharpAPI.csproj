@@ -23,25 +23,53 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <None Include="WebFramework.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
-    <None Include="FileManager.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
-    <None Include="Localization.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
-    <None Include="Log.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
-    <None Include="sqlite3.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Windows/WebFramework.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Windows/FileManager.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Windows/Localization.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Windows/Log.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
+    <None Include="Windows/sqlite3.dll" Pack="true" PackagePath="runtimes/win-x64/native/" />
 
-    <None Include="libWebFramework.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
-    <None Include="libFileManager.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
-    <None Include="libLocalization.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
-    <None Include="libLog.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
-    <None Include="libsqlite3.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="Linux/libWebFramework.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="Linux/libFileManager.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="Linux/libLocalization.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="Linux/libLog.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
+    <None Include="Linux/libsqlite3.so" Pack="true" PackagePath="runtimes/linux-x64/native/" />
 
-    <None Include="libWebFramework.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
-    <None Include="libFileManager.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
-    <None Include="libLocalization.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
-    <None Include="libLog.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
-    <None Include="libsqlite3.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="LinuxARM/libWebFramework.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="LinuxARM/libFileManager.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="LinuxARM/libLocalization.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="LinuxARM/libLog.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
+    <None Include="LinuxARM/libsqlite3.so" Pack="true" PackagePath="runtimes/linux-arm64/native/" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="BOOST_LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CMARK_GFM_LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="HIREDIS_LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="JWT-CPP_LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  
   <ItemGroup>
     <None Update="LICENSE">
       <Pack>True</Pack>
@@ -50,28 +78,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="CMARK_GFM_LICENSE.txt">
+    <None Update="OPEN_SSL_LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="OPEN_SSL_LICENSE.txt">
+    <None Update="PYBIND11_LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="SQLITE3_LICENSE.txt">
+    <None Update="rabbitmq-c_LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="BOOST_LICENSE.txt">
+    <None Update="SQLITE3_LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
