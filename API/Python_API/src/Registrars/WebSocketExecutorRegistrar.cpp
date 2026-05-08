@@ -90,8 +90,9 @@ namespace registrar
 				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame) -> std::optional<std::variant<std::string, py::bytes>>
 				{
 					std::optional<std::variant<std::string, py::bytes>> data;
+					std::optional<framework::WebSocketExecutor::Frame::Close> close;
 
-					if (std::optional<std::variant<std::string, std::vector<uint8_t>>> result = self.onReceive(frame))
+					if (std::optional<std::variant<std::string, std::vector<uint8_t>>> result = self.onReceive(frame, close))
 					{
 						if (std::holds_alternative<std::string>(*result))
 						{
