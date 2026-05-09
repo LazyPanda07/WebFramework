@@ -6,7 +6,7 @@
 
 namespace framework::task_broker
 {
-	class CSharpTaskExecutor : public TaskExecutor
+	class WEB_FRAMEWORK_API CSharpTaskExecutor : public TaskExecutor
 	{
 	private:
 		void* implementation;

@@ -8,7 +8,7 @@
 
 namespace framework::task_broker
 {
-	class PythonTaskExecutor : public TaskExecutor
+	class WEB_FRAMEWORK_API PythonTaskExecutor : public TaskExecutor
 	{
 	private:
 		pybind11::object* implementation;

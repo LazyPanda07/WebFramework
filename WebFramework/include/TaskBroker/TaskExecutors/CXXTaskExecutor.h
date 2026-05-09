@@ -6,7 +6,7 @@
 
 namespace framework::task_broker
 {
-	class CXXTaskExecutor : public TaskExecutor
+	class WEB_FRAMEWORK_API CXXTaskExecutor : public TaskExecutor
 	{
 	private:
 		using TaskExecuteSignature = void(*)(void*, void*, void*);

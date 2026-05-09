@@ -8,7 +8,7 @@
 
 namespace framework::load_balancer
 {
-	class CSharpHeuristic : public LoadBalancerHeuristic
+	class WEB_FRAMEWORK_API CSharpHeuristic : public LoadBalancerHeuristic
 	{
 	private:
 		std::string ip;

@@ -664,11 +664,6 @@ namespace framework
 			stream << name << ": " << value << std::endl;
 		}
 
-		if (!headers.contains(web::HttpParser::contentTypeHeader) && parser.getBody().size())
-		{
-			stream << "Content-Type: " << "text/plain" << std::endl;
-		}
-
 		stream << std::endl << parser.getBody();
 
 		return stream;

@@ -20,6 +20,7 @@ namespace framework
 		std::string body;
 		bool isValid;
 		bool defaultResponseCode;
+		bool defaultContentType;
 
 	public:
 		/// <summary>

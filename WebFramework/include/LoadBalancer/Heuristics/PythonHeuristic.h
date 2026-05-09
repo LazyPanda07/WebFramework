@@ -10,7 +10,7 @@
 
 namespace framework::load_balancer
 {
-	class PythonHeuristic : public LoadBalancerHeuristic
+	class WEB_FRAMEWORK_API PythonHeuristic : public LoadBalancerHeuristic
 	{
 	private:
 		std::string ip;
