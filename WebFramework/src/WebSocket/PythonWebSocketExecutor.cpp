@@ -45,7 +45,17 @@ namespace framework::web_socket
 		}
 		else
 		{
-			throw std::runtime_error(std::format("Wrong type: {}", py::repr(result).cast<std::string>()));
+			py::object frameCloseClass = runtime.getFrameCloseClass();
+
+			if (py::isinstance(result, frameCloseClass))
+			{
+				data = result.attr("make_data").cast<py::bytes>();
+				type = web::web_socket::Frame::OpcodeType::close;
+			}
+			else
+			{
+				throw std::runtime_error(std::format("Wrong type: {}", py::repr(result).cast<std::string>()));
+			}
 		}
 
 		uint64_t size = data.size();

@@ -168,5 +168,5 @@ class TokenGiverExecutor(StatelessExecutor):
 
 
 class WebSocketEcho(WebSocketExecutor):
-    def on_receive(self, frame, close):
+    def on_receive(self, frame):
         return frame.get_payload()

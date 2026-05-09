@@ -44,6 +44,8 @@ namespace framework::runtime
 
 		std::optional<py::object> getClass(std::string_view className, const utility::LoadSource& source) const;
 
+		py::object getFrameCloseClass() const;
+
 		void finishInitialization() override;
 
 		bool loadExecutor(std::string_view name, std::string_view route, const utility::LoadSource& source) override;

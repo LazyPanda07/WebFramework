@@ -102,16 +102,28 @@ namespace registrar
 			.def(py::init())
 			.def(py::init<framework::WebSocketExecutor::Frame::Close::Code>(), "code"_a)
 			.def(py::init<framework::WebSocketExecutor::Frame::Close::Code, std::string_view>(), "code"_a, "message"_a)
-			.def(py::init<uint16_t, std::string_view>(), "code"_a, "message"_a);
+			.def(py::init<uint16_t, std::string_view>(), "code"_a, "message"_a)
+			.def
+			(
+				"make_data",
+				[](framework::WebSocketExecutor::Frame::Close& self) -> py::bytes
+				{
+					uint64_t size;
+					uint8_t* ptr = self.makeData(size);
+
+					return py::bytes(std::string_view(reinterpret_cast<char*>(ptr), size));
+				}
+			);
 
 		py::class_<framework::WebSocketExecutor, framework::PyWebSocketExecutor>(m, "WebSocketExecutor")
 			.def(py::init())
 			.def
 			(
 				"on_receive",
-				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame, std::optional<framework::WebSocketExecutor::Frame::Close>& close) -> std::optional<std::variant<std::string, py::bytes>>
+				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame) -> std::variant<std::optional<std::variant<std::string, py::bytes>>, framework::WebSocketExecutor::Frame::Close>
 				{
 					std::optional<std::variant<std::string, py::bytes>> data;
+					std::optional<framework::WebSocketExecutor::Frame::Close> close;
 
 					if (std::optional<std::variant<std::string, std::vector<uint8_t>>> result = self.onReceive(frame, close))
 					{
@@ -130,10 +142,14 @@ namespace registrar
 							throw std::runtime_error(std::format("Wrong result index: {}", result->index()));
 						}
 					}
+					else if (close)
+					{
+						return *close;
+					}
 
 					return data;
 				},
-				"frame"_a, "close"_a
+				"frame"_a
 			);
 	}
 }
