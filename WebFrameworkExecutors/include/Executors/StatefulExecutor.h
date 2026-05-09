@@ -9,7 +9,7 @@ namespace framework
 	/// <para>This type of executors creating dynamically for each client</para>
 	/// <para>Client can change states during connection, after disconnect destroy method called</para>
 	/// </summary>
-	class EXECUTORS_API StatefulExecutor : public Executor
+	class StatefulExecutor : public Executor
 	{
 	public:
 		StatefulExecutor() = default;

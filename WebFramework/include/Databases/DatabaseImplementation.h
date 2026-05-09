@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class WEB_FRAMEWORK_API DatabaseImplementation : public interfaces::IDatabase
+	class DatabaseImplementation : public interfaces::IDatabase
 	{
 	private:
 		std::shared_ptr<database::Database> database;

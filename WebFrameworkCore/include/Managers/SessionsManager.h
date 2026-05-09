@@ -10,10 +10,10 @@
 
 namespace framework
 {
-	class WEB_FRAMEWORK_CORE_API SessionsManager
+	class SessionsManager
 	{
 	private:
-		class WEB_FRAMEWORK_CORE_API SessionTime
+		class SessionTime
 		{
 		public:
 			using SessionTimePoint = std::chrono::high_resolution_clock::time_point;

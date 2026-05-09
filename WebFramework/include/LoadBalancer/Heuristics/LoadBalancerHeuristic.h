@@ -10,7 +10,7 @@ namespace framework::load_balancer
 	/**
 	 * @brief Determine which server use
 	 */
-	class WEB_FRAMEWORK_EXPORT_API LoadBalancerHeuristic
+	class LoadBalancerHeuristic
 	{
 	public:
 		LoadBalancerHeuristic() = default;

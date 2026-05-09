@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class WEB_FRAMEWORK_API SQLValueImplementation : public interfaces::ISQLValue
+	class SQLValueImplementation : public interfaces::ISQLValue
 	{
 	private:
 		database::SqlValue value;

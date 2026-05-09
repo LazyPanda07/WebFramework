@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class WEB_FRAMEWORK_API TableImplementation : public interfaces::ITable
+	class TableImplementation : public interfaces::ITable
 	{
 	private:
 		database::Table* table;

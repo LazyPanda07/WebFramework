@@ -10,7 +10,7 @@ namespace framework
 	/// <para>Can't work in multi-threaded mode</para>
 	/// <para>Run in separate thread</para>
 	/// </summary>
-	class EXECUTORS_API HeavyOperationStatelessExecutor : public Executor
+	class HeavyOperationStatelessExecutor : public Executor
 	{
 	public:
 		HeavyOperationStatelessExecutor() = default;

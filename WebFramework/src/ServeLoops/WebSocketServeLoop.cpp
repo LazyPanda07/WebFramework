@@ -1,6 +1,7 @@
 #include "ServeLoops/WebSocketServeLoop.h"
 
 #include <bit>
+#include <cstring>
 
 #include <WebSocket/Frame.h>
 #include <WebSocket/WsNetwork.h>

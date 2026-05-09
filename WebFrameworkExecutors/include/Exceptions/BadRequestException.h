@@ -7,7 +7,7 @@ namespace framework::exceptions
 	/// <summary>
 	/// HTTP bad request 400 error code
 	/// </summary>
-	class EXECUTORS_API BadRequestException : public ExecutorException
+	class BadRequestException : public ExecutorException
 	{
 	public:
 		BadRequestException(std::string_view additionalInformation = "");
