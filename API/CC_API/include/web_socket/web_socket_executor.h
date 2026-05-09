@@ -10,7 +10,7 @@ typedef enum web_socket_frame_type
 	FRAME_TYPE_CONTINUATION = 0x0,
 	FRAME_TYPE_TEXT = 0x1,
 	FRAME_TYPE_BINARY = 0x2,
-	FRAME_TYPE_CLOSE = 0x8,
+	FRAME_TYPE_CLOSE = 0x8, // requires payload NULL or uint16_t status code or uint16_t status code and custom message
 	FRAME_TYPE_PING = 0x9,
 	FRAME_TYPE_PONG = 0xA
 } web_socket_frame_type_t;
@@ -49,7 +49,7 @@ WEB_FRAMEWORK_FUNCTIONS_API void webFrameworkCCDeleteWebSocketExecutor##struct_n
 
  /**
   * Send WebSocket frame
-  * @param data Payload in const char* or NULL
+  * @param data Payload as pointer or NULL
   * @param size Size in bytes of data
   * @param type web_socket_frame_type_t
  */
