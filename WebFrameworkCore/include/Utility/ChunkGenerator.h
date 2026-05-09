@@ -6,7 +6,7 @@
 
 namespace framework::utility
 {
-	class ChunkGenerator
+	class WEB_FRAMEWORK_CORE_API ChunkGenerator
 	{
 	public:
 		ChunkGenerator() = default;

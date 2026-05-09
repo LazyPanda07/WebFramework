@@ -26,3 +26,11 @@ namespace json_settings
 	inline constexpr std::string_view requireJwtKey = "requireJWT";
 	inline constexpr std::string_view webSocketExecutorNameKey = "webSocketExecutorName";
 }
+
+#ifdef __LINUX__
+#define WEB_FRAMEWORK_CORE_API __attribute__((visibility("hidden")))
+#define WEB_FRAMEWORK_CORE_EXPORT_API __attribute__((visibility("hidden")))
+#else
+#define WEB_FRAMEWORK_CORE_API
+#define WEB_FRAMEWORK_CORE_EXPORT_API
+#endif

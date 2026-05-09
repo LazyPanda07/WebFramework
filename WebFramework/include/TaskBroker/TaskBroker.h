@@ -2,9 +2,11 @@
 
 #include <JsonObject.h>
 
+#include "Framework/WebFrameworkPlatform.h"
+
 namespace framework::task_broker
 {
-	class TaskBroker
+	class WEB_FRAMEWORK_API TaskBroker
 	{
 	public:
 		TaskBroker() = default;

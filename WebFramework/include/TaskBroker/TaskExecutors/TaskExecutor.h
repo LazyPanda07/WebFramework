@@ -13,7 +13,7 @@ namespace framework
 
 namespace framework::task_broker
 {
-	class TaskExecutor
+	class WEB_FRAMEWORK_API TaskExecutor
 	{
 	public:
 		struct TaskExecutorContext

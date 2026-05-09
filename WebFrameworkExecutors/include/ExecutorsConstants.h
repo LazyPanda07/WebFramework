@@ -31,3 +31,11 @@ namespace framework::utility
 		heavyOperationStateless
 	};
 }
+
+#ifdef __LINUX__
+#define WEB_FRAMEWORK_EXECUTORS_API __attribute__((visibility("hidden")))
+#define WEB_FRAMEWORK_EXECUTORS_EXPORT_API __attribute__((visibility("hidden")))
+#else
+#define WEB_FRAMEWORK_EXECUTORS_API
+#define WEB_FRAMEWORK_EXECUTORS_EXPORT_API
+#endif

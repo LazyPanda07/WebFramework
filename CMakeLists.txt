@@ -137,7 +137,6 @@ if (UNIX)
 	add_definitions(-D__LINUX__)
 	target_compile_options(
 		${PROJECT_NAME} PRIVATE
-		-fvisibility=hidden
 		-fno-omit-frame-pointer
 	)
 	
