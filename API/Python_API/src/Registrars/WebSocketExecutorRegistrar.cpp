@@ -109,9 +109,13 @@ namespace registrar
 				[](framework::WebSocketExecutor::Frame::Close& self) -> py::bytes
 				{
 					uint64_t size;
-					uint8_t* ptr = self.makeData(size);
+					
+					if (uint8_t* ptr = self.makeData(size))
+					{
+						return py::bytes(std::string_view(reinterpret_cast<char*>(ptr), size));
+					}
 
-					return py::bytes(std::string_view(reinterpret_cast<char*>(ptr), size));
+					return py::bytes();
 				}
 			);
 
@@ -124,8 +128,13 @@ namespace registrar
 				{
 					std::optional<std::variant<std::string, py::bytes>> data;
 					std::optional<framework::WebSocketExecutor::Frame::Close> close;
+					std::optional<std::variant<std::string, std::vector<uint8_t>>> result = self.onReceive(frame, close);
 
-					if (std::optional<std::variant<std::string, std::vector<uint8_t>>> result = self.onReceive(frame, close))
+					if (close)
+					{
+						return *close;
+					}
+					else if (result)
 					{
 						if (std::holds_alternative<std::string>(*result))
 						{
@@ -141,10 +150,6 @@ namespace registrar
 						{
 							throw std::runtime_error(std::format("Wrong result index: {}", result->index()));
 						}
-					}
-					else if (close)
-					{
-						return *close;
 					}
 
 					return data;
