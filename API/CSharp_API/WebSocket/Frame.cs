@@ -1,6 +1,7 @@
 ﻿using Framework.Exceptions;
 using Framework.Utility;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Framework;
 
@@ -14,7 +15,6 @@ public abstract record FramePayload
 	public sealed record ContinuationFramePayload(string Payload) : FramePayload;
 	public sealed record TextFramePayload(string Payload) : FramePayload;
 	public sealed record BinaryFramePayload(IList<byte> Payload) : FramePayload;
-	public sealed record CloseFramePayload(string Payload = "") : FramePayload;
 	public sealed record PingFramePayload(string Payload = "") : FramePayload;
 	public sealed record PongFramePayload(string Payload = "") : FramePayload;
 }
@@ -28,6 +28,68 @@ public sealed partial class Frame(IntPtr implementation)
 
 	[LibraryImport(DLLHandler.LIBRARY_NAME)]
 	private static partial int getFrameType(IntPtr implementation, ref IntPtr exception);
+
+	public class Close
+	{
+		private readonly ushort code;
+		private readonly string? message;
+
+		public enum Code : ushort
+		{
+			normalClosure = 1000,
+			goingAway,
+			protocolError,
+			unsupportedData,
+			invalidFramePayloadData = 1007,
+			policyViolation,
+			messageTooBig,
+			mandatoryExtension,
+			internalError,
+			serviceRestart,
+			tryAgainLater
+		}
+
+		public Close()
+		{
+			code = 0;
+		}
+
+		public Close(Code code)
+		{
+			this.code = ((ushort)code);
+		}
+
+		public Close(Code code, string message)
+		{
+			this.code = ((ushort)code);
+			this.message = message;
+		}
+
+		public Close(ushort code, string message)
+		{
+			this.code = code;
+			this.message = message;
+		}
+
+		public byte[] MakeData()
+		{
+			if (code == 0)
+			{
+				return [];
+			}
+
+			byte[] result = new byte[sizeof(ushort) + message?.Length ?? 0];
+
+			BitConverter.GetBytes(code).CopyTo(result);
+
+			if (message != null)
+			{
+				Encoding.UTF8.GetBytes(message).CopyTo(result, sizeof(ushort));
+			}
+
+			return result;
+		}
+	}
 
 	public enum Type
 	{
@@ -67,9 +129,6 @@ public sealed partial class Frame(IntPtr implementation)
 				Marshal.Copy(result, data, 0, (int)size);
 
 				return new FramePayload.BinaryFramePayload(data);
-
-			case Type.close:
-				return new FramePayload.CloseFramePayload(Marshal.PtrToStringUTF8(result, (int)size));
 
 			case Type.ping:
 				return new FramePayload.PingFramePayload(Marshal.PtrToStringUTF8(result, (int)size));
