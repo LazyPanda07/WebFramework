@@ -44,6 +44,8 @@ target_link_libraries(
 	unit_test_utils
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+
 add_custom_command(
 	TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
