@@ -23,6 +23,22 @@ namespace registrar
 			.value("PONG", framework::WebSocketExecutor::Frame::Type::pong)
 			.export_values();
 
+		py::class_<framework::WebSocketExecutor::Frame::Close> frameClose(frameClass, "Close");
+
+		py::enum_<framework::WebSocketExecutor::Frame::Close::Code>(frameClose, "Code")
+			.value("NORMAL_CLOSURE", framework::WebSocketExecutor::Frame::Close::Code::normalClosure)
+			.value("GOING_AWAY", framework::WebSocketExecutor::Frame::Close::Code::goingAway)
+			.value("PROTOCOL_ERROR", framework::WebSocketExecutor::Frame::Close::Code::protocolError)
+			.value("UNSUPPORTED_DATA", framework::WebSocketExecutor::Frame::Close::Code::unsupportedData)
+			.value("INVALID_FRAME_PAYLOAD_DATA", framework::WebSocketExecutor::Frame::Close::Code::invalidFramePayloadData)
+			.value("POLICY_VIOLATION", framework::WebSocketExecutor::Frame::Close::Code::policyViolation)
+			.value("MESSAGE_TOO_BIG", framework::WebSocketExecutor::Frame::Close::Code::messageTooBig)
+			.value("MANDATORY_EXTENSION", framework::WebSocketExecutor::Frame::Close::Code::mandatoryExtension)
+			.value("INTERNAL_ERROR", framework::WebSocketExecutor::Frame::Close::Code::internalError)
+			.value("SERVICE_RESTART", framework::WebSocketExecutor::Frame::Close::Code::serviceRestart)
+			.value("TRY_AGAIN_LATER", framework::WebSocketExecutor::Frame::Close::Code::tryAgainLater)
+			.export_values();
+
 		frameClass
 			.def
 			(
@@ -82,15 +98,20 @@ namespace registrar
 			.def("get_type", &framework::WebSocketExecutor::Frame::getType)
 			.def("__bool__", &framework::WebSocketExecutor::Frame::operator bool);
 
+		frameClose
+			.def(py::init())
+			.def(py::init<framework::WebSocketExecutor::Frame::Close::Code>(), "code"_a)
+			.def(py::init<framework::WebSocketExecutor::Frame::Close::Code, std::string_view>(), "code"_a, "message"_a)
+			.def(py::init<uint16_t, std::string_view>(), "code"_a, "message"_a);
+
 		py::class_<framework::WebSocketExecutor, framework::PyWebSocketExecutor>(m, "WebSocketExecutor")
 			.def(py::init())
 			.def
 			(
 				"on_receive",
-				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame) -> std::optional<std::variant<std::string, py::bytes>>
+				[](framework::WebSocketExecutor& self, const framework::WebSocketExecutor::Frame& frame, std::optional<framework::WebSocketExecutor::Frame::Close>& close) -> std::optional<std::variant<std::string, py::bytes>>
 				{
 					std::optional<std::variant<std::string, py::bytes>> data;
-					std::optional<framework::WebSocketExecutor::Frame::Close> close;
 
 					if (std::optional<std::variant<std::string, std::vector<uint8_t>>> result = self.onReceive(frame, close))
 					{
@@ -112,7 +133,7 @@ namespace registrar
 
 					return data;
 				},
-				"frame"_a
+				"frame"_a, "close"_a
 			);
 	}
 }
