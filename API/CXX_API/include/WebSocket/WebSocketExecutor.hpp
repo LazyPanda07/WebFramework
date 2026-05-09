@@ -3,6 +3,7 @@
 #include <span>
 #include <variant>
 #include <optional>
+#include <cstring>
 
 #include "DLLHandler.hpp"
 
