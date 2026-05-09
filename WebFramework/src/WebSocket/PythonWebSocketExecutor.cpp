@@ -47,7 +47,7 @@ namespace framework::web_socket
 		{
 			if (py::isinstance(result, runtime.getFrameCloseClass()))
 			{
-				data = result.attr("make_data").cast<py::bytes>();
+				data = result.attr("make_data")().cast<py::bytes>();
 				type = web::web_socket::Frame::OpcodeType::close;
 			}
 			else

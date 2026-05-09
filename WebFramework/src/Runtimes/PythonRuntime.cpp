@@ -116,7 +116,7 @@ namespace framework::runtime
 
 	py::object PythonRuntime::getFrameCloseClass() const
 	{
-		return api.attr("Frame.Close");
+		return api.attr("Frame").attr("Close");
 	}
 
 	void PythonRuntime::finishInitialization()
