@@ -46,6 +46,7 @@ namespace json_settings
 	inline constexpr std::string_view pathKey = "path";
 	inline constexpr std::string_view fullyLoadKey = "fullyLoad";
 	inline constexpr std::string_view jwtSecretVariableNameKey = "JWTSecretVariableName";
+	inline constexpr std::string_view enableExceptionMessagesKey = "enableExceptionMessages";
 	
 	inline constexpr std::string_view heuristicNameKey = "name";
 	inline constexpr std::string_view listOfServersKey = "listOfServers";

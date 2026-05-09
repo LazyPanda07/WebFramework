@@ -304,6 +304,11 @@
             }
           ],
           "default": "JWT_SECRET"
+        },
+        "enableExceptionMessages": {
+          "type": "boolean",
+          "description": "Send exception messages with response(only in Release mode)",
+          "default": false
         }
       },
       "required": [ "assetsPath", "templatesPath", "webServerType" ],

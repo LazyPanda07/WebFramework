@@ -84,7 +84,7 @@ namespace framework
 				{
 					const std::string& path = binaryAsset[json_settings::pathKey].get<std::string>();
 					bool fullyLoad = true;
-					
+
 					binaryAsset.tryGet<bool>(json_settings::fullyLoadKey, fullyLoad);
 
 					singleBinaryAssetProviders.emplace_back(additionalSettings.assetsPath, threadPool, path, fullyLoad);
@@ -98,9 +98,19 @@ namespace framework
 		}
 	}
 
+	void ResourceExecutor::applyExceptionSettings(const json::JsonObject& webFrameworkObject)
+	{
+		webFrameworkObject.tryGet<bool>(json_settings::enableExceptionMessagesKey, enableExceptionMessages);
+	}
+
 	ResourceExecutor::ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool) :
 		defaultAssetProvider(additionalSettings.assetsPath, threadPool),
-		wfdpRenderer(additionalSettings.templatesPath, additionalSettings.dynamicFunctionValidation)
+		wfdpRenderer(additionalSettings.templatesPath, additionalSettings.dynamicFunctionValidation),
+#ifdef NDEBUG
+		enableExceptionMessages(false)
+#else
+		enableExceptionMessages(true)
+#endif
 	{
 		file_manager::FileManager::getInstance().getCache().setCacheSize(additionalSettings.cachingSize);
 
@@ -114,18 +124,18 @@ namespace framework
 			std::filesystem::create_directories(wfdpRenderer.getPathToTemplates());
 		}
 
+		const json::JsonObject& webFrameworkObject = configuration.get<json::JsonObject>(json_settings::webFrameworkObject);
+
 		this->loadStaticRenderers();
-		this->loadBinaryAssets(configuration.get<json::JsonObject>(json_settings::webFrameworkObject), additionalSettings, threadPool);
+		this->loadBinaryAssets(webFrameworkObject, additionalSettings, threadPool);
+		this->applyExceptionSettings(webFrameworkObject);
 	}
 
-	void ResourceExecutor::notFoundError(interfaces::IHttpResponse& response, const std::exception* exception)
+	void ResourceExecutor::notFoundError(interfaces::IHttpResponse& response, const std::exception* exception) const
 	{
 		std::string_view message = htmlErrorsData[HtmlErrors::notFound404];
 
-#ifdef NDEBUG
-		response.setBody(message.data(), message.size());
-#else
-		if (exception)
+		if (enableExceptionMessages && exception)
 		{
 			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
 
@@ -135,19 +145,15 @@ namespace framework
 		{
 			response.setBody(message.data(), message.size());
 		}
-#endif
 
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::notFound));
 	}
 
-	void ResourceExecutor::badRequestError(interfaces::IHttpResponse& response, const std::exception* exception)
+	void ResourceExecutor::badRequestError(interfaces::IHttpResponse& response, const std::exception* exception) const
 	{
 		std::string_view message = htmlErrorsData[HtmlErrors::badRequest400];
 
-#ifdef NDEBUG
-		response.setBody(message.data(), message.size());
-#else
-		if (exception)
+		if (enableExceptionMessages && exception)
 		{
 			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
 
@@ -157,19 +163,15 @@ namespace framework
 		{
 			response.setBody(message.data(), message.size());
 		}
-#endif
 
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::badRequest));
 	}
 
-	void ResourceExecutor::forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception)
+	void ResourceExecutor::forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception) const
 	{
 		std::string_view message = htmlErrorsData[HtmlErrors::forbidden403];
 
-#ifdef NDEBUG
-		response.setBody(message.data(), message.size());
-#else
-		if (exception)
+		if (enableExceptionMessages && exception)
 		{
 			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
 
@@ -179,19 +181,15 @@ namespace framework
 		{
 			response.setBody(message.data(), message.size());
 		}
-#endif
 
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::forbidden));
 	}
 
-	void ResourceExecutor::internalServerError(interfaces::IHttpResponse& response, const std::exception* exception)
+	void ResourceExecutor::internalServerError(interfaces::IHttpResponse& response, const std::exception* exception) const
 	{
 		std::string_view message = htmlErrorsData[HtmlErrors::internalServerError500];
 
-#ifdef NDEBUG
-		response.setBody(message.data(), message.size());
-#else
-		if (exception)
+		if (enableExceptionMessages && exception)
 		{
 			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
 
@@ -201,19 +199,15 @@ namespace framework
 		{
 			response.setBody(message.data(), message.size());
 		}
-#endif
 
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::internalServerError));
 	}
 
-	void ResourceExecutor::badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception)
+	void ResourceExecutor::badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception) const
 	{
 		std::string_view message = htmlErrorsData[HtmlErrors::badGateway502];
 
-#ifdef NDEBUG
-		response.setBody(message.data(), message.size());
-#else
-		if (exception)
+		if (enableExceptionMessages && exception)
 		{
 			std::string exceptionMessage = std::format("{} Exception: {}", message, exception->what());
 
@@ -223,7 +217,6 @@ namespace framework
 		{
 			response.setBody(message.data(), message.size());
 		}
-#endif
 
 		response.setResponseCode(static_cast<int64_t>(web::ResponseCodes::badGateway));
 	}

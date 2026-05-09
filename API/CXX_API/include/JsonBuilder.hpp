@@ -12,7 +12,7 @@ namespace framework
 	public:
 		JsonBuilder();
 
-		JsonBuilder(std::string_view jsonString);
+		explicit JsonBuilder(std::string_view jsonString);
 
 		JsonBuilder(const JsonBuilder& other);
 
