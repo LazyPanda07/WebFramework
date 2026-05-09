@@ -655,13 +655,18 @@ namespace framework
 	std::ostream& operator << (std::ostream& stream, const HttpRequestImplementation& request)
 	{
 		const web::HttpParser& parser = request.parser;
-		const auto& headers = parser.getHeaders();
+		const web::HeadersMap& headers = parser.getHeaders();
 
 		stream << parser.getMethod() << " " << parser.getParameters() << " " << parser.getHTTPVersion() << std::endl;
 
 		for (const auto& [name, value] : headers)
 		{
 			stream << name << ": " << value << std::endl;
+		}
+
+		if (!headers.contains(web::HttpParser::contentTypeHeader) && parser.getBody().size())
+		{
+			stream << "Content-Type: " << "text/plain" << std::endl;
 		}
 
 		stream << std::endl << parser.getBody();

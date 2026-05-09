@@ -40,6 +40,20 @@ static constexpr std::array<std::string_view, HtmlErrors::HtmlErrorsSize> htmlEr
 	framework::asset::getBadGatewayError()
 };
 
+static constexpr std::array<std::pair<std::string_view, std::string_view>, 8> contentTypes =
+{
+	std::make_pair(".css", "text/css"),
+	std::make_pair(".js", "application/javascript"),
+	std::make_pair(".html", "text/html"),
+	std::make_pair(".woff2", "font/woff2"),
+	std::make_pair(".svg", "image/svg+xml"),
+	std::make_pair(".webp", "image/webp"),
+	std::make_pair(".json", "application/json"),
+	std::make_pair(".txt", "text/plain")
+};
+
+static void addContentType(std::string_view extension, framework::interfaces::IHttpResponse& response);
+
 namespace framework
 {
 	void ResourceExecutor::loadStaticRenderers()
@@ -250,10 +264,14 @@ namespace framework
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
 
-		if (auto renderer = staticRenderers.find(std::filesystem::path(filePath).extension().string()); renderer != staticRenderers.end())
+		std::string extension = std::filesystem::path(filePath).extension().string();
+
+		if (auto renderer = staticRenderers.find(extension); renderer != staticRenderers.end())
 		{
 			result = renderer->second->render(result);
 		}
+
+		addContentType(extension, response);
 
 		response.setBody(result.data(), result.size());
 
@@ -280,6 +298,8 @@ namespace framework
 		{
 			response.addHeader("Content-Disposition", std::format(R"(attachment; filename="{}")", fileName).data());
 		}
+
+		addContentType(std::filesystem::path(filePath).extension().string(), response);
 
 		response.setBody(result.data(), result.size());
 
@@ -393,5 +413,13 @@ namespace framework
 	void ResourceExecutor::doPost(interfaces::IHttpRequest& request, interfaces::IHttpResponse& response) //-V524
 	{
 		request.sendAssetFile(request.getRawParameters(), &response);
+	}
+}
+
+void addContentType(std::string_view extension, framework::interfaces::IHttpResponse& response)
+{
+	if (auto it = std::ranges::find_if(contentTypes, [extension](const auto& contentType) { return contentType.first == extension; }); it != contentTypes.end())
+	{
+		response.addHeader(web::HttpParser::contentTypeHeader.data(), it->second.data());
 	}
 }

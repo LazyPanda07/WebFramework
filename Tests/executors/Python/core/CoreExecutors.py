@@ -151,7 +151,12 @@ class UploadOctetStreamExecutor(StatefulExecutor):
 
 class TokenExecutor(StatelessExecutor):
     def do_get(self, request, response):
-        response.set_body(request.get_token_payload()["userName"])
+        payload = request.get_token_payload()
+
+        if payload is None:
+            return
+
+        response.set_body(payload["userName"])
 
 
 class TokenGiverExecutor(StatelessExecutor):
