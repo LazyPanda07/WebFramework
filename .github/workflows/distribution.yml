@@ -6,8 +6,8 @@ on:
 
 
 env:
-  deb-package-version: 3.4.0
-  deb-package-release-number: 22
+  deb-package-version: 3.4.1
+  deb-package-release-number: 23
   PYTHON_VERSION: 3.14
   TWINE_PYTHON_VERSION: 3.13
 

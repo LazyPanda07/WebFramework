@@ -77,7 +77,7 @@ jobs:
         export LD_LIBRARY_PATH=/opt/custom_python/python${{ env.PYTHON_VERSION }}/lib
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_CC_API=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -G "Ninja" ..
+        cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=../WebFrameworkLibrary -DWITH_STACKTRACE=ON -DWITH_DOTNET_EXECUTORS=OFF -DBUILD_CSHARP_API=OFF -DBUILD_CC_API=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -G "Ninja" ..
         cmake --build . -j
         cmake --install .
 
