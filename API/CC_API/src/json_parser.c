@@ -242,3 +242,19 @@ bool wf_try_get_json_parser_array(json_parser_t implementation, const char* key,
 
 	return result;
 }
+
+web_framework_exception_t* wf_get_parsed_data(json_parser_t implementation, json_object_t* result, bool weak)
+{
+	typedef void* (*getJsonParserParsedData)(void* implementation, bool weak, void** exception);
+	void* exception = NULL;
+
+	void* result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserParsedData, weak, &exception);
+
+	*result = (json_object_t)
+	{
+		.implementation = result,
+		.weak = weak
+	};
+
+	return exception;
+}

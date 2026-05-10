@@ -198,3 +198,12 @@ bool wf_try_get_json_parser_null(json_parser_t implementation, const char* key, 
  * @return Has Json field
  */
 bool wf_try_get_json_parser_array(json_parser_t implementation, const char* key, json_object_t* array, size_t* arraySize, bool recursive, web_framework_exception_t* exception);
+
+/**
+ * @brief Retrieve parsed JSON data using the specified parser implementation and store it in the provided result object.
+ * @param implementation The JSON parser implementation to use (json_parser_t).
+ * @param result Pointer to a json_object_t that will receive the parsed data; the function may modify or allocate the object.
+ * @param weak If true, request a non-owning (weak) reference to the parsed data
+ * @return Error if occurred
+ */
+web_framework_exception_t* wf_get_parsed_data(json_parser_t implementation, json_object_t* result, bool weak);
