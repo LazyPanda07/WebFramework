@@ -3,7 +3,14 @@
 #include <chrono>
 #include <ctime>
 
+#ifdef __LINUX__
+#include <strings.h>
+#else
+#include <string.h>
+#endif
+
 #include <Log.h>
+#include <HttpParser.h>
 
 namespace framework
 {
@@ -59,6 +66,15 @@ namespace framework
 	void HttpResponseImplementation::addHeader(const char* name, const char* value)
 	{
 		builder.headers(name, value);
+
+#ifdef __LINUX__
+		if (!strcasecmp(name, web::HttpParser::contentTypeHeader.data()))
+#else
+		if (!_stricmp(name, web::HttpParser::contentTypeHeader.data()))
+#endif
+		{
+			defaultContentType = false;
+		}
 	}
 
 	void HttpResponseImplementation::setBody(const char* body, size_t bodySize)
@@ -70,12 +86,16 @@ namespace framework
 	{
 		this->addHeader("Content-Type", "application/json");
 
+		defaultContentType = false;
+
 		body = static_cast<std::string>(*reinterpret_cast<json::JsonBuilder*>(implementation));
 	}
 
 	void HttpResponseImplementation::setJsonBodyWithObject(void* implementation)
 	{
 		this->addHeader("Content-Type", "application/json");
+
+		defaultContentType = false;
 
 		body = static_cast<std::string>(*reinterpret_cast<json::JsonObject*>(implementation));
 	}
@@ -106,6 +126,7 @@ namespace framework
 		this->setIsValid(true);
 
 		defaultResponseCode = true;
+		defaultContentType = true;
 	}
 
 	void HttpResponseImplementation::setIsValid(bool isValid)
@@ -135,11 +156,16 @@ namespace framework
 		response.builder.headers
 		(
 			"Date", HttpResponseImplementation::getFullDate(),
-			"Server", "WebFramework-Server"
+			"Server", "WebFramework"
 		);
 
 		if (response.body.size())
 		{
+			if (response.defaultContentType)
+			{
+				response.addHeader(web::HttpParser::contentTypeHeader.data(), "text/plain");
+			}
+
 			result = response.builder.build(response.body);
 		}
 		else

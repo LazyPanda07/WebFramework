@@ -18,7 +18,7 @@ namespace framework
 	/// <summary>
 	/// Base class for all executors
 	/// </summary>
-	class EXECUTORS_API Executor
+	class WEB_FRAMEWORK_EXECUTORS_API Executor
 	{
 	public:
 		static void (Executor::* getMethod(std::string_view methodName))(interfaces::IHttpRequest&, interfaces::IHttpResponse&);

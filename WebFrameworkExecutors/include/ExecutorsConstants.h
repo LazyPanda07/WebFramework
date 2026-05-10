@@ -33,10 +33,9 @@ namespace framework::utility
 }
 
 #ifdef __LINUX__
-#define EXECUTORS_API __attribute__((visibility("default")))
+#define WEB_FRAMEWORK_EXECUTORS_API __attribute__((visibility("hidden")))
+#define WEB_FRAMEWORK_EXECUTORS_EXPORT_API __attribute__((visibility("hidden")))
 #else
-#define EXECUTORS_API __declspec(dllexport)
-
-#pragma warning(disable: 4275)
-#pragma warning(disable: 4251)
+#define WEB_FRAMEWORK_EXECUTORS_API
+#define WEB_FRAMEWORK_EXECUTORS_EXPORT_API
 #endif

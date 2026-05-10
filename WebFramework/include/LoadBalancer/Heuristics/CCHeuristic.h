@@ -8,7 +8,7 @@ using HMODULE = void*;
 
 namespace framework::load_balancer
 {
-	class CCHeuristic : public LoadBalancerHeuristic
+	class WEB_FRAMEWORK_API CCHeuristic : public LoadBalancerHeuristic
 	{
 	private:
 		using OperatorSignature = uint64_t(*)(void*);

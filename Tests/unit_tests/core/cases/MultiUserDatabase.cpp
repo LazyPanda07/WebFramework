@@ -11,8 +11,7 @@
 
 #include "utilities.h"
 
-static constexpr size_t clientsNumber = 8;
-static constexpr size_t requestsNumber = 25;
+static inline constexpr size_t clientsNumber = 8;
 
 static std::string generateRandomString()
 {
@@ -29,6 +28,8 @@ static std::string generateRandomString()
 
 TEST(Database, MultiUser)
 {
+	static constexpr size_t requestsNumber = 25;
+
 	std::vector<streams::IOSocketStream> clients;
 	std::vector<std::future<void>> awaiters;
 	auto requests = [](streams::IOSocketStream& stream)

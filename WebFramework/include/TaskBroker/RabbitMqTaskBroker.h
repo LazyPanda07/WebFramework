@@ -10,7 +10,7 @@
 
 namespace framework::task_broker
 {
-	class RabbitMqTaskBroker : public TaskBroker
+	class WEB_FRAMEWORK_API RabbitMqTaskBroker : public TaskBroker
 	{
 	public:
 		static constexpr std::string_view taskBrokerName = "rabbitmq";

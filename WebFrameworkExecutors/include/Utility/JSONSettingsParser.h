@@ -16,13 +16,13 @@ namespace framework::utility
 	/// <summary>
 	/// Parser for .json settings file
 	/// </summary>
-	class EXECUTORS_API JSONSettingsParser
+	class JSONSettingsParser
 	{
 	public:
 		/// <summary>
 		/// Settings for executor
 		/// </summary>
-		struct EXECUTORS_API ExecutorSettings
+		struct ExecutorSettings
 		{
 			enum class LoadType
 			{

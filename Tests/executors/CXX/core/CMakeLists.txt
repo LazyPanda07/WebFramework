@@ -29,4 +29,6 @@ target_link_libraries(
     WebFramework::CXX_API
 )
 
+set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ON)
+
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

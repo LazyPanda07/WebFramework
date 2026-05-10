@@ -9,7 +9,7 @@ namespace framework::exceptions
 	/// <summary>
 	/// Can't find CreateExecutorFunction for executor
 	/// </summary>
-	class WEB_FRAMEWORK_API CantFindFunctionException : public ExecutorException
+	class CantFindFunctionException : public ExecutorException
 	{
 	public:
 		CantFindFunctionException(std::string_view createFunctionName);

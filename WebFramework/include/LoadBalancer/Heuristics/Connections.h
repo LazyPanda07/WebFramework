@@ -6,7 +6,7 @@
 
 namespace framework::load_balancer
 {
-	class Connections : public LoadBalancerHeuristic
+	class WEB_FRAMEWORK_API Connections : public LoadBalancerHeuristic
 	{
 	private:
 		std::string ip;

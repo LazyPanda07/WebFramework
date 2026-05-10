@@ -7,7 +7,7 @@ namespace framework::exceptions
 	/// <summary>
 	/// HTTP forbidden 403 error code
 	/// </summary>
-	class EXECUTORS_API ForbiddenException : public ExecutorException
+	class ForbiddenException : public ExecutorException
 	{
 	public:
 		ForbiddenException(std::string_view additionalInformation = "");

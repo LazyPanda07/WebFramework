@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(WEB_FRAMEWORK_EXPORT_TARGETS WebFrameworkTargets)
 set(WEB_FRAMEWORK_EXPORT_TARGETS_FILE WebFrameworkTargets.cmake)
@@ -29,7 +29,7 @@ option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 option(AS_DEPENDENCY "Change install paths for FetchContent or add_subdirectory usage" OFF)
 
-project(WebFramework VERSION 3.4.0)
+project(WebFramework VERSION 3.4.1)
 
 set(SHARED_LIBRARY_PROJECT_NAME ${PROJECT_NAME})
 
@@ -302,22 +302,30 @@ endif()
 
 install(
 	CODE [[
+		set(TEMP "")
 		if (UNIX)
-			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.a")
+			file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/lib/*.a")
+
+			set(FILES_TO_REMOVE ${TEMP})
 
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/libCC_API.a")
 		else()
-			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.lib")
-			file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/*.pdb")
+			file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/lib/*.lib")
+
+			set(FILES_TO_REMOVE ${TEMP})
+
+			file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/lib/*.pdb")
+
+			list(APPEND FILES_TO_REMOVE ${TEMP})
 
 			list(REMOVE_ITEM FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/lib/CC_API.lib")
 		endif()
 
-		file(GLOB_RECURSE FILES_TO_REMOVE "${CMAKE_INSTALL_PREFIX}/cmake/jwt-cpp*.cmake")
+		file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/cmake/jwt-cpp*.cmake")
 
-		if (FILES_TO_REMOVE)
-			file(REMOVE ${FILES_TO_REMOVE})
-		endif()
+		list(APPEND FILES_TO_REMOVE ${TEMP})
+
+		file(REMOVE ${FILES_TO_REMOVE})
 
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/vendor")
 		file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/lib/cmake")

@@ -26,11 +26,15 @@ namespace framework
 		std::vector<asset::SingleBinaryAssetProvider> singleBinaryAssetProviders;
 		WFDPRenderer wfdpRenderer;
 		std::unordered_map<std::string_view, std::unique_ptr<interfaces::IStaticFileRenderer>, interfaces::InsensitiveStringViewHash, interfaces::InsensitiveStringViewEqual> staticRenderers;
+		bool enableExceptionMessages;
 
 	private:
 		void loadStaticRenderers();
 
 		void loadBinaryAssets(const json::JsonObject& webFrameworkObject, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
+
+	private:
+		void applyExceptionSettings(const json::JsonObject& webFrameworkObject);
 
 	public:
 		ResourceExecutor(const json::JsonParser& configuration, const utility::AdditionalServerSettings& additionalSettings, std::shared_ptr<threading::ThreadPool> threadPool);
@@ -39,32 +43,32 @@ namespace framework
 		/// Send 404.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void notFoundError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
+		void notFoundError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr) const;
 
 		/// <summary>
 		/// Send 400.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badRequestError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
+		void badRequestError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr) const;
 
 		/**
 		 * @brief Send 403.html from WebFrameworkAssets
 		 * @param response Response with error file
 		 * @param exception
 		 */
-		void forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
+		void forbiddenError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr) const;
 
 		/// <summary>
 		/// Send 500.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void internalServerError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
+		void internalServerError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr) const;
 
 		/// <summary>
 		/// Send 502.html from WebFrameworkAssets
 		/// </summary>
 		/// <param name="response">response with error file</param>
-		void badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr);
+		void badGatewayError(interfaces::IHttpResponse& response, const std::exception* exception = nullptr) const;
 
 		bool fileExist(const std::filesystem::path& filePath) const;
 

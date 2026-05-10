@@ -27,7 +27,7 @@ namespace framework
 	/// <para>Accessing to sessions</para>
 	/// <para>Overriding input stream operator for simplify HTTP request initializing</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API HttpRequestImplementation : public interfaces::IHttpRequest
+	class HttpRequestImplementation : public interfaces::IHttpRequest
 	{
 	private:
 		class ExceptionData

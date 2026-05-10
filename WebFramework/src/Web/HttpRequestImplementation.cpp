@@ -655,7 +655,7 @@ namespace framework
 	std::ostream& operator << (std::ostream& stream, const HttpRequestImplementation& request)
 	{
 		const web::HttpParser& parser = request.parser;
-		const auto& headers = parser.getHeaders();
+		const web::HeadersMap& headers = parser.getHeaders();
 
 		stream << parser.getMethod() << " " << parser.getParameters() << " " << parser.getHTTPVersion() << std::endl;
 

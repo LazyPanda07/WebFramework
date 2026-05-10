@@ -591,9 +591,24 @@ public static partial class Utils
 		}
 
 		Frame frameWrapper = new(frame);
-		FramePayload? payload = webSocketExecutor.OnReceive(frameWrapper);
+		Frame.Close? close = null;
+		FramePayload? payload = webSocketExecutor.OnReceive(frameWrapper, ref close);
 
-		if (payload == null)
+		if (close != null)
+		{
+			byte[] bytes = close.MakeData();
+
+			if (bytes.Length != 0)
+			{
+				fixed (byte* ptr = bytes)
+				{
+					sendData(ptr, (ulong)bytes.Length, (int)Frame.Type.close, additionalData.ToPointer());
+				}
+			}
+
+			return;
+		}
+		else if (payload == null)
 		{
 			return;
 		}
@@ -617,11 +632,6 @@ public static partial class Utils
 			{
 				bytes = [.. binary.Payload];
 				type = Frame.Type.binary;
-			}
-			else if (payload is FramePayload.CloseFramePayload close)
-			{
-				bytes = Encoding.UTF8.GetBytes(close.Payload);
-				type = Frame.Type.close;
 			}
 			else if (payload is FramePayload.PingFramePayload ping)
 			{

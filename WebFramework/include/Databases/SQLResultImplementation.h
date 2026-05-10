@@ -8,7 +8,7 @@
 
 namespace framework
 {
-	class WEB_FRAMEWORK_API SQLResultImplementation : public interfaces::ISQLResult
+	class SQLResultImplementation : public interfaces::ISQLResult
 	{
 	private:
 		database::SqlResult result;

@@ -13,13 +13,14 @@ namespace framework
 	/// HTTPBuilder wrapper
 	/// <para>Overriding output stream operator for simplify HTTP response sending</para>
 	/// </summary>
-	class WEB_FRAMEWORK_API HttpResponseImplementation : public interfaces::IHttpResponse
+	class HttpResponseImplementation : public interfaces::IHttpResponse
 	{
 	private:
 		web::HttpBuilder builder;
 		std::string body;
 		bool isValid;
 		bool defaultResponseCode;
+		bool defaultContentType;
 
 	public:
 		/// <summary>

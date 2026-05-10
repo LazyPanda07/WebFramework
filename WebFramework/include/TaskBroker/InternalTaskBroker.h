@@ -6,7 +6,7 @@
 
 namespace framework::task_broker
 {
-	class InternalTaskBroker : public TaskBroker
+	class WEB_FRAMEWORK_API InternalTaskBroker : public TaskBroker
 	{
 	public:
 		static constexpr std::string_view taskBrokerName = "internal";

@@ -3,6 +3,7 @@
 #include <span>
 #include <variant>
 #include <optional>
+#include <cstring>
 
 #include "DLLHandler.hpp"
 
@@ -24,6 +25,43 @@ namespace framework
 				pong = 0xA
 			};
 
+			class Close
+			{
+			public:
+				enum class Code : uint16_t
+				{
+					normalClosure = 1000,
+					goingAway,
+					protocolError,
+					unsupportedData,
+					invalidFramePayloadData = 1007,
+					policyViolation,
+					messageTooBig,
+					mandatoryExtension,
+					internalError,
+					serviceRestart,
+					tryAgainLater
+				};
+
+			private:
+				uint16_t code;
+				std::string message;
+				std::vector<uint8_t> data;
+
+			public:
+				Close();
+
+				Close(Code code);
+
+				Close(Code code, std::string_view message);
+
+				Close(uint16_t code, std::string_view message);
+
+				uint8_t* makeData(uint64_t& size);
+
+				~Close() = default;
+			};
+
 		private:
 			void* implementation;
 
@@ -43,7 +81,7 @@ namespace framework
 	public:
 		WebSocketExecutor() = default;
 
-		virtual std::optional<std::variant<std::string, std::vector<uint8_t>>> onReceive(const Frame& frame) = 0;
+		virtual std::optional<std::variant<std::string, std::vector<uint8_t>>> onReceive(const Frame& frame, std::optional<Frame::Close>& close) = 0;
 
 		virtual ~WebSocketExecutor() = default;
 	};
@@ -57,6 +95,51 @@ namespace framework
 
 	}
 
+	inline WebSocketExecutor::Frame::Close::Close() :
+		code(0)
+	{
+
+	}
+
+	inline WebSocketExecutor::Frame::Close::Close(Code code) :
+		code(static_cast<uint16_t>(code))
+	{
+
+	}
+
+	inline WebSocketExecutor::Frame::Close::Close(Code code, std::string_view message) :
+		code(static_cast<uint16_t>(code)),
+		message(message)
+	{
+
+	}
+
+	inline WebSocketExecutor::Frame::Close::Close(uint16_t code, std::string_view message) :
+		code(code),
+		message(message)
+	{
+
+	}
+
+	inline uint8_t* WebSocketExecutor::Frame::Close::makeData(uint64_t& size)
+	{
+		if (!code)
+		{
+			size = 0;
+
+			return nullptr;
+		}
+
+		data.resize(sizeof(code) + message.size());
+
+		std::memcpy(data.data(), &code, sizeof(code));
+		std::memcpy(data.data() + sizeof(code), message.data(), message.size());
+
+		size = data.size();
+
+		return data.data();
+	}
+
 	template<typename ReturnT>
 	inline ReturnT WebSocketExecutor::Frame::getPayload() const requires(std::same_as<ReturnT, std::string_view> || std::same_as<ReturnT, std::span<uint8_t>> || std::same_as<ReturnT, std::span<char>>)
 	{
@@ -64,7 +147,7 @@ namespace framework
 		void* exception = nullptr;
 
 		uint64_t size = 0;
-		
+
 		char* ptr = utility::DllHandler::getInstance().CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getFramePayload, &size, &exception);
 
 		if constexpr (std::same_as<ReturnT, std::span<uint8_t>>)
@@ -107,7 +190,8 @@ WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceiv
 {
 	framework::WebSocketExecutor::Frame frameWrapper(frame);
 
-	std::optional<std::variant<std::string, std::vector<uint8_t>>> data = static_cast<framework::WebSocketExecutor*>(implementation)->onReceive(frameWrapper);
+	std::optional<framework::WebSocketExecutor::Frame::Close> close;
+	std::optional<std::variant<std::string, std::vector<uint8_t>>> data = static_cast<framework::WebSocketExecutor*>(implementation)->onReceive(frameWrapper, close);
 	const uint8_t* ptr = nullptr;
 	uint64_t size = 0;
 	framework::WebSocketExecutor::Frame::Type type = framework::WebSocketExecutor::Frame::Type::binary;
@@ -131,7 +215,13 @@ WEB_FRAMEWORK_FUNCTIONS_API inline void webFrameworkCXXWebSocketExecutorOnReceiv
 			type = framework::WebSocketExecutor::Frame::Type::binary;
 		}
 	}
+	else if (close)
+	{
+		ptr = close->makeData(size);
 
+		type = framework::WebSocketExecutor::Frame::Type::close;
+	}
+	
 	sendData(ptr, size, static_cast<int32_t>(type), additionalData);
 }
 
