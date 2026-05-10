@@ -46,6 +46,16 @@ jobs:
         yum update -y
         yum install -y libuuid-devel wget openssl-devel bzip2-devel libffi-devel zlib-devel readline-devel sqlite-devel xz xz-devel tk-devel gdbm-devel libuuid-devel libnsl2-devel
         
+    - name: Install libbacktrace
+      run: |
+        git clone https://github.com/ianlancetaylor/libbacktrace.git
+        cd libbacktrace
+        mkdir build
+        cd build
+        ../configure --prefix=/usr
+        make -j $(nproc)
+        make install
+
     - name: Build Python
       run: |
         wget https://github.com/python/cpython/archive/refs/tags/v${{ env.FULL_PYTHON_VERSION }}.zip
