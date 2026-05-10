@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_C_STANDARD 11)
 
-project(CC_API VERSION 3.4.1)
+project(CC_API VERSION 3.4.2)
 
 add_library(
 	${PROJECT_NAME} STATIC

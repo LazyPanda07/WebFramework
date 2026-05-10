@@ -29,7 +29,7 @@ option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 option(AS_DEPENDENCY "Change install paths for FetchContent or add_subdirectory usage" OFF)
 
-project(WebFramework VERSION 3.4.1)
+project(WebFramework VERSION 3.4.2)
 
 set(SHARED_LIBRARY_PROJECT_NAME ${PROJECT_NAME})
 

@@ -266,7 +266,7 @@ bool isServerRunning(WebFramework server, Exception* exception)
 
 const char* getWebFrameworkVersion()
 {
-	constexpr std::string_view version = "3.4.1";
+	constexpr std::string_view version = "3.4.2";
 
 	return version.data();
 }
