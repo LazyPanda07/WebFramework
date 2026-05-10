@@ -52,7 +52,7 @@ jobs:
         cd libbacktrace
         mkdir build
         cd build
-        ../configure --prefix=/usr
+        CFLAGS="-fPIC" CXXFLAGS="-fPIC" ../configure --prefix=/usr
         make -j $(nproc)
         make install
 
