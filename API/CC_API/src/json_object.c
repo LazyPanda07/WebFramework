@@ -14,7 +14,13 @@ static void __add_array_callback(void* object, void* array)
 		exit(0xff);
 	}
 
-	wf_set_json_object_object(&element, (json_object_t*)object);
+	json_object_t temp =
+	{
+		.implementation = object,
+		.weak = true
+	};
+
+	wf_set_json_object_object(&element, &temp);
 }
 
 web_framework_exception_t wf_create_json_object(json_object_t* json_object)
