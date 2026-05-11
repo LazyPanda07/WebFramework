@@ -4,7 +4,9 @@ const char* wf_get_error_message(web_framework_exception_t exception)
 {
     if (exception)
     {
-        return wf_get_data_from_string(exception);
+        typedef const char* (*getErrorMessage)(void* exception);
+
+        return CALL_WEB_FRAMEWORK_FUNCTION(getErrorMessage, exception);
     }
 
     return NULL;

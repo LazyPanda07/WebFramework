@@ -1,3 +1,6 @@
+## 3.4.2
+* Update WebFramework to v3.4.2
+
 ## 3.4.1
 * Update WebFramework to v3.4.1
 

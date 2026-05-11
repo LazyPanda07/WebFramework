@@ -206,4 +206,4 @@ bool wf_try_get_json_parser_array(json_parser_t implementation, const char* key,
  * @param weak If true, request a non-owning (weak) reference to the parsed data
  * @return Error if occurred
  */
-web_framework_exception_t* wf_get_parsed_data(json_parser_t implementation, json_object_t* result, bool weak);
+web_framework_exception_t* wf_get_json_parser_parsed_data(json_parser_t implementation, json_object_t* result, bool weak);
