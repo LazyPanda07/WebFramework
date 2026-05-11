@@ -1,7 +1,7 @@
 ﻿using Framework;
 using Framework.Utility;
 
-public class UploadOctetStreamExecutor : StatefulExecutor
+public class UploadOctetStreamExecutor : HeavyOperationStatefulExecutor
 {
 	private FileStream? stream;
 
