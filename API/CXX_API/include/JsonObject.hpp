@@ -57,7 +57,7 @@ namespace framework
 		 * @param implementation 
 		 * @param weak 
 		 */
-		JsonObject(void* implementation, bool weak = true);
+		explicit JsonObject(void* implementation, bool weak = true);
 
 		JsonObject(const JsonObject& other);
 

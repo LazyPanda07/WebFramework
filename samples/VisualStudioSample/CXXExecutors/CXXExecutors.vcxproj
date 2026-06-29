@@ -20,9 +20,6 @@
     <ProjectReference Include="..\..\..\FileManager\FileManager.vcxproj">
       <Project>{1eca0169-41dd-48b1-a53f-8355bae79b40}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\INIParser\INIParser.vcxproj">
-      <Project>{ce5f5455-0e8a-49e8-be46-0a12ed898352}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Localization\Localization.vcxproj">
       <Project>{d2968ac9-bac3-4f25-9698-5c1cf6c4fa35}</Project>
     </ProjectReference>

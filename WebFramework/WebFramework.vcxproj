@@ -68,7 +68,7 @@
       <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;__WITH_DOTNET_EXECUTORS__;WIN32_LEAN_AND_MEAN;NOMINMAX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\Windows\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;$(ProjectDir)include\;$(ProjectDir)..\WebFrameworkExecutors\include\;$(ProjectDir)..\WebFrameworkCore\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\Windows\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;$(ProjectDir)include\;$(ProjectDir)..\WebFrameworkExecutors\include\;$(ProjectDir)..\WebFrameworkCore\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -104,7 +104,7 @@
       <PreprocessorDefinitions>__WITH_PYTHON_EXECUTORS__;__WITH_DOTNET_EXECUTORS__;WIN32_LEAN_AND_MEAN;NOMINMAX;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\INIParser\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\Windows\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;$(ProjectDir)include\;$(ProjectDir)..\WebFrameworkExecutors\include\;$(ProjectDir)..\WebFrameworkCore\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\BaseTCPServer\include\;$(ProjectDir)..\Networks\HTTP\include\;$(ProjectDir)..\Log\include\;$(ProjectDir)..\Networks\SocketStreams\include\;$(ProjectDir)..\Networks\HTTP\JSON\include\;$(ProjectDir)..\SHA256\include\;$(ProjectDir)..\Networks\include\;$(ProjectDir)..\ThreadPool\include\;$(ProjectDir)..\Networks\vendor\OpenSSL\Windows\include\;$(ProjectDir)..\Localization\include\;$(ProjectDir)..\FileManager\include\;$(ProjectDir)..\UtilityLibrary\include\;$(ProjectDir)..\Databases\include\;$(ProjectDir)..\3rdparty\cmark-gfm\build\_deps\build_cmark\include\;$(ProjectDir)include\;$(ProjectDir)..\WebFrameworkExecutors\include\;$(ProjectDir)..\WebFrameworkCore\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -358,9 +358,6 @@
     </ProjectReference>
     <ProjectReference Include="..\BaseTCPServer\BaseTCPServer.vcxproj">
       <Project>{d29045d5-a3e0-4b1f-bf3f-7a7395a22b13}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\INIParser\INIParser.vcxproj">
-      <Project>{ce5f5455-0e8a-49e8-be46-0a12ed898352}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Log\Log.vcxproj">
       <Project>{89755e92-d5a7-4fa6-b227-7ddc3bba9aa1}</Project>

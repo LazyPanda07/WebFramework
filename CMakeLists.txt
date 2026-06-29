@@ -201,7 +201,7 @@ if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
 	target_compile_options(${PROJECT_NAME} PRIVATE -march=$ENV{MARCH})
 endif()
 
-if (CMAKE_GENERATOR MATCHES "Visual Studio")
+if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
 	target_compile_options(${PROJECT_NAME} PUBLIC "/MP")
 endif()
 
@@ -210,7 +210,6 @@ add_subdirectory(WebFrameworkCore)
 add_subdirectory(WebFrameworkExecutors)
 add_subdirectory(BaseTCPServer)
 add_subdirectory(ThreadPool)
-add_subdirectory(INIParser)
 add_subdirectory(Log)
 add_subdirectory(SHA256)
 add_subdirectory(UtilityLibrary)
@@ -223,12 +222,6 @@ add_subdirectory(FileManager) # has ThreadPool as dependency
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
 	WebFramework/include/
-	WebFrameworkCore/src/
-	WebFrameworkExecutors/src/
-	BaseTCPServer/src/
-	INIParser/src/
-	Log/src/
-	SHA256/src/
 	${ADDITIONAL_INCLUDES}
 )
 
@@ -245,7 +238,6 @@ target_link_libraries(
 	WebFrameworkExecutors
 	BaseTCPServer
 	FileManager
-	INIParser
 	Localization
 	Log
 	Networks
@@ -270,9 +262,9 @@ if (${AS_DEPENDENCY})
 
 			foreach(SHARED_LIBRARY IN LISTS SHARED_LIBRARIES)
 				if (UNIX)
-					file(COPY ${CMAKE_INSTALL_PREFIX}/lib/lib${SHARED_LIBRARY}.so DESTINATION DESTINATION ${CMAKE_INSTALL_PREFIX})
+					file(COPY ${CMAKE_INSTALL_PREFIX}/lib/lib${SHARED_LIBRARY}.so DESTINATION ${CMAKE_INSTALL_PREFIX})
 				else()
-					file(COPY ${CMAKE_INSTALL_PREFIX}/dll/${SHARED_LIBRARY}.dll DESTINATION DESTINATION ${CMAKE_INSTALL_PREFIX})
+					file(COPY ${CMAKE_INSTALL_PREFIX}/dll/${SHARED_LIBRARY}.dll DESTINATION ${CMAKE_INSTALL_PREFIX})
 				endif()
 			endforeach()
 
