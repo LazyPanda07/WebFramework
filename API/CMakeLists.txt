@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
-option(BUILD_CC_API "Build CC API" ON)
+option(BUILD_CC_API "Build C API" ON)
 option(BUILD_CXX_API "Build C++ API" ON)
 option(BUILD_CSHARP_API "Build C# API" ON)
 option(BUILD_PYTHON_API "Build Python API" ON)

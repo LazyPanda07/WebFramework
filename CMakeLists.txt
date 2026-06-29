@@ -201,7 +201,7 @@ if (DEFINED ENV{MARCH} AND NOT "$ENV{MARCH}" STREQUAL "")
 	target_compile_options(${PROJECT_NAME} PRIVATE -march=$ENV{MARCH})
 endif()
 
-if (${CMAKE_GENERATOR} MATCHES "Visual Studio")
+if ("${CMAKE_GENERATOR}" MATCHES "Visual Studio")
 	target_compile_options(${PROJECT_NAME} PUBLIC "/MP")
 endif()
 
@@ -295,6 +295,7 @@ endif()
 install(
 	CODE [[
 		set(TEMP "")
+
 		if (UNIX)
 			file(GLOB_RECURSE TEMP "${CMAKE_INSTALL_PREFIX}/lib/*.a")
 
