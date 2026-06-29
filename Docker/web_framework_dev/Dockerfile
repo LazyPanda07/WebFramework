@@ -1,18 +1,16 @@
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV ANDROID_VERSION=android-35
-ENV SDK_INSTALL_NAME=platforms;android-35
-ENV BUILD_TOOLS_NAME=build-tools;35.0.0
-ENV FLUTTER_VERSION=3.41.9
+ENV ANDROID_VERSION=android-36
+ENV SDK_INSTALL_NAME=platforms;android-36
+ENV BUILD_TOOLS_NAME=build-tools;36.0.0
+ENV FLUTTER_VERSION=3.44.4
 ENV FLUTTER_PATH=/opt/flutter
 ENV FLUTTER_BIN_PATH=${FLUTTER_PATH}/bin
 
 RUN apt update
 RUN apt install -y cmake build-essential git uuid-dev curl bash gpg sudo wget unzip zip openjdk-21-jdk software-properties-common
-RUN add-apt-repository -y ppa:deadsnakes/ppa
-RUN apt update
-RUN apt install -y dotnet-sdk-10.0 python3.14 python3.14-venv libpython3.14
+RUN apt install -y dotnet-sdk-10.0 python3 python3-venv libpython3
 
 RUN wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O tools.zip
 RUN unzip tools.zip

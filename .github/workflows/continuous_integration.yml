@@ -84,7 +84,7 @@ jobs:
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
       os: ubuntu-latest
-      image: ghcr.io/lazypanda07/ubuntu_cxx23:26.04
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
       configuration: RelWithDebInfo
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
@@ -142,7 +142,7 @@ jobs:
   android-build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx20:android
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:android
 
     steps:
     - uses: actions/checkout@v6
@@ -216,7 +216,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: linux-build
     container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx23:26.04
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
     strategy:
       matrix:
         executors: 
@@ -331,7 +331,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: linux-build
     container:
-      image: ghcr.io/lazypanda07/ubuntu_cxx23:26.04
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
     
     steps:
     - uses: actions/checkout@v6
@@ -542,7 +542,7 @@ jobs:
       matrix:
         config:
           - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
-          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu_cxx23:26.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
           - { os: ubuntu-24.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
         
     runs-on: ${{ matrix.config.os }}

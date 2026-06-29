@@ -1,4 +1,4 @@
-FROM lazypanda07/ubuntu_cxx20:24.04 AS build
+FROM ghcr.io/lazypanda07/ubuntu-cxx23:26.04 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -17,16 +17,14 @@ WORKDIR /
 
 RUN rm -rf web_framework_server
 
-FROM ubuntu:24.04 AS deploy
+FROM ubuntu:26.04 AS deploy
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LD_LIBRARY_PATH="/usr/lib/dotnet/host/fxr/10.0.4":${LD_LIBRARY_PATH}
 
 RUN apt update
 RUN apt install -y curl bash gpg sudo dotnet-sdk-10.0 software-properties-common
-RUN add-apt-repository -y ppa:deadsnakes/ppa
-RUN apt update
-RUN apt install -y python3.14 python3.14-venv libpython3.14
+RUN apt install -y python3 python3-venv libpython3
 
 COPY --from=build /opt/web_framework_server /opt/web_framework_server
 
