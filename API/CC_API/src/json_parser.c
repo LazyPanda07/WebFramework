@@ -79,7 +79,7 @@ web_framework_exception_t wf_get_json_parser_object(json_parser_t implementation
 	return exception;
 }
 
-web_framework_exception_t wf_get_json_parser_string(json_parser_t implementation, const char* key, bool recursive, const char** result)
+web_framework_exception_t wf_get_json_parser_string(json_parser_t implementation, const char* key, bool recursive, char** result)
 {
 	web_framework_exception_t exception = NULL;
 
