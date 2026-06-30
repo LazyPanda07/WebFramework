@@ -9,7 +9,7 @@ DEFINE_EXECUTOR_METHOD(TokenGiverExecutor, POST_METHOD, request, response)
 	json_parser_t parser;
 	json_object_t data;
 	json_builder_t result;
-	const char* user_name;
+	char* user_name;
 	web_framework_string_t token;
 	web_framework_t instance;
 
