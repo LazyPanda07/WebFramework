@@ -28,7 +28,7 @@ endif()
 
 message(STATUS "Python minor version: ${PYTHON_MINOR_VERSION}")
 
-project(external_pybind11)
+project(pybind11)
 
 include(FetchContent)
 

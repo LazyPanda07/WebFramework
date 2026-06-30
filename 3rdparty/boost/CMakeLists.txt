@@ -4,7 +4,7 @@ set(BOOST_VERSION 1.90.0)
 set(BOOST_TAG boost-${BOOST_VERSION})
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
-project(external_boost)
+project(boost)
 
 find_package(Boost CONFIG QUIET COMPONENTS stacktrace)
 

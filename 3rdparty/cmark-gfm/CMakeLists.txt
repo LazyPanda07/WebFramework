@@ -4,7 +4,7 @@ set(CMARK_GFM_TAG 0.29.0.gfm.13)
 set(CMARK_BUILD_ARGUMENTS "")
 set(CMARK_BUILD_CMARK_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/_deps/build_cmark)
 
-project(external_cmark_gfm)
+project(cmark_gfm)
 
 include(${PROJECT_SOURCE_DIR}/../../cmake/BuildLibrary.cmake)
 

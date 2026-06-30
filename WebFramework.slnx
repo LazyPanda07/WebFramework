@@ -3,6 +3,7 @@
     <Platform Name="x64" />
   </Configurations>
   <Folder Name="/3rdparty/">
+    <File Path="3rdparty/CMakeLists.txt" />
     <Project Path="3rdparty/cmark-gfm/cmark-gfm.vcxproj" Id="66216d2f-5851-404b-af2a-da5f216f54af" />
     <Project Path="3rdparty/DotNetRuntime/DotNetRuntime.vcxproj" Id="c05c4838-8cf9-4965-9c91-b4cf4258576c" />
     <Project Path="3rdparty/jwt-cpp/jwt-cpp.vcxproj" Id="bc0468fd-f472-41f6-a738-0da0b7625c1e" />
