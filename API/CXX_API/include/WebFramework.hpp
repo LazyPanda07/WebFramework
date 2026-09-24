@@ -31,7 +31,7 @@ namespace framework
 		bool weak;
 
 	private:
-		WebFramework(void* implementation);
+		explicit WebFramework(void* implementation);
 
 	public:
 		/**
@@ -42,31 +42,31 @@ namespace framework
 
 	public:
 		/**
-		 * @brief 
+		 * @brief
 		 * @param configPath Path to *.json config
 		 */
 		WebFramework(std::string_view configPath);
 
 		/**
-		 * @brief 
-		 * @param serverConfiguration *.json config file content 
+		 * @brief
+		 * @param serverConfiguration *.json config file content
 		 * @param applicationDirectory Working directory
 		 */
 		WebFramework(std::string_view serverConfiguration, std::string_view applicationDirectory);
 
 		/**
-		 * @brief 
+		 * @brief
 		 * @param config Config instance
 		 */
 		WebFramework(const utility::Config& config);
 
 		WebFramework(const WebFramework& other);
 
-		WebFramework(WebFramework&& other) noexcept = delete;
+		WebFramework(WebFramework&& other) noexcept;
 
-		WebFramework& operator = (const WebFramework& other);
+		WebFramework& operator =(const WebFramework& other);
 
-		WebFramework& operator = (WebFramework&& other) noexcept = delete;
+		WebFramework& operator =(WebFramework&& other) noexcept;
 
 		/**
 		 * @brief Start server
@@ -94,7 +94,7 @@ namespace framework
 
 		/**
 		 * @brief Is server running
-		 * @return 
+		 * @return
 		 */
 		bool isServerRunning() const;
 
@@ -172,10 +172,25 @@ namespace framework
 		(*this) = other;
 	}
 
-	inline WebFramework& WebFramework::operator = (const WebFramework& other)
+	inline WebFramework::WebFramework(WebFramework&& other) noexcept
+	{
+		(*this) = std::move(other);
+	}
+
+	inline WebFramework& WebFramework::operator =(const WebFramework& other)
 	{
 		implementation = other.implementation;
 		weak = true;
+
+		return *this;
+	}
+
+	inline WebFramework& WebFramework::operator = (WebFramework&& other) noexcept
+	{
+		implementation = other.implementation;
+		weak = false;
+
+		other.weak = true;
 
 		return *this;
 	}
