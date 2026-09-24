@@ -590,10 +590,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y erlang rabbitmq-server
-        
-    - name: Install wait-for-service[amqp]
-      run: python -m pip install wait-for-service[amqp]
-
+      
     - name: Build tests
       working-directory: Tests
       run: |
@@ -608,7 +605,6 @@ jobs:
       working-directory: Tests/build/bin
       run: |
         choco install -y rabbitmq
-        # wait-for-service amqp://localhost:5672
         .\run_task_broker_tests.bat
 
     - name: Run Linux tests
@@ -617,7 +613,6 @@ jobs:
       shell: bash
       run: |
         # rabbitmq-server & sleep 1
-        # wait-for-service amqp://localhost:5672
         source run_task_broker_tests.sh
         
 

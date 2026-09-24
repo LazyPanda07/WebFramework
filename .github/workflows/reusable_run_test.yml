@@ -205,9 +205,6 @@ jobs:
       shell: bash
       run: echo "runtimes=${{ env.runtimes }} --runtimes .net" >> ${GITHUB_ENV}
 
-    - name: Install wait-for-service[redis]
-      run: python -m pip install wait-for-service[redis]
-
     - name: Merge artifacts
       shell: bash
       run: |
