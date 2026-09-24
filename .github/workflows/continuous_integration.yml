@@ -551,19 +551,6 @@ jobs:
     container:
       image: ${{ matrix.config.image }}
 
-    services:
-      rabbitmq:
-        if: ${{ matrix.config.os != 'windows-latest' }}
-        image: rabbitmq:4-management
-
-        ports: 
-          - 5672:5672
-
-        env: 
-          RABBITMQ_DEFAULT_USER: guest
-          RABBITMQ_DEFAULT_PASS: guest
-          RABBITMQ_DEFAULT_VHOST: /
-
     steps:
     - uses: actions/checkout@v7
       with:
@@ -613,6 +600,12 @@ jobs:
         cmake --build . -j --config Release
         cmake --install . --config Release
 
+    - name: Start RabbitMQ on Linux
+      if: ${{ matrix.config.os != 'windows-latest' }}
+      uses: Namoshek/rabbitmq-github-action@v1.2.0
+      with:
+        ports: '5672:5672'
+
     - name: Run Windows tests
       if: ${{ matrix.config.os == 'windows-latest' }}
       working-directory: Tests/build/bin
@@ -624,9 +617,11 @@ jobs:
       if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
       working-directory: Tests/build/bin
       shell: bash
-      run: source run_task_broker_tests.sh
+      run: |
+        # rabbitmq-server & sleep 1
+        source run_task_broker_tests.sh
         
-      
+
   publish:
     needs: [
       android-build,
