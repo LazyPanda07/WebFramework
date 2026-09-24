@@ -7,7 +7,7 @@ DEFINE_DEFAULT_EXECUTOR(DownloadExecutor, HEAVY_OPERATION_STATELESS_EXECUTOR)
 DEFINE_EXECUTOR_METHOD(DownloadExecutor, GET_METHOD, request, response)
 {
 	json_parser_t parser;
-	const char* fileName;
+	char* fileName;
 
 	wf_get_request_json(request, &parser);
 

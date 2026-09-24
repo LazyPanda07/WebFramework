@@ -85,7 +85,7 @@ web_framework_exception_t wf_get_json_parser_string(json_parser_t implementation
 
 	typedef const char* (*getJsonParserString)(void* implementation, const char* key, bool recursive, void** exception);
 
-	*result = CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserString, key, recursive, &exception);
+	*result = (char*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getJsonParserString, key, recursive, &exception);
 
 	return exception;
 }

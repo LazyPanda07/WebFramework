@@ -10,7 +10,7 @@ DEFINE_EXECUTOR_METHOD(LocalizationExecutor, GET_METHOD, request, response)
 	json_builder_t builder;
 	json_parser_t parser;
 	const char* localizedString;
-	const char* language;
+	char* language;
 
 	wf_create_json_builder(&builder);
 	wf_get_request_json(request, &parser);

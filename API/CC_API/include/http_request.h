@@ -189,7 +189,7 @@ web_framework_exception_t wf_get_multiparts(http_request_t implementation, multi
  * @param result LargeData
  * @return Error if occurred
  */
-web_framework_exception_t wf_get_large_data(http_request_t implementation, const large_data_t** result);
+web_framework_exception_t wf_get_large_data(http_request_t implementation, large_data_t** result);
 
 /**
  * @brief Send file

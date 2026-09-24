@@ -16,7 +16,7 @@ env:
   DEFAULT_CMAKE_GENERATOR: "Ninja"
   PYTHON_VERSION: 3.14
 
-
+  
 permissions:
   contents: write
 

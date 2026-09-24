@@ -388,13 +388,13 @@ web_framework_exception_t wf_get_multiparts(http_request_t implementation, multi
 	return exception;
 }
 
-web_framework_exception_t wf_get_large_data(http_request_t implementation, const large_data_t** result)
+web_framework_exception_t wf_get_large_data(http_request_t implementation, large_data_t** result)
 {
 	web_framework_exception_t exception = NULL;
 
 	typedef const void* (*getLargeData)(void* implementation, void** exception);
 
-	*result = (const large_data_t*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getLargeData, &exception);
+	*result = (large_data_t*)CALL_CLASS_MEMBER_WEB_FRAMEWORK_FUNCTION(getLargeData, &exception);
 
 	return exception;
 }

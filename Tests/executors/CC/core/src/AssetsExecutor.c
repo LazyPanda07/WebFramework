@@ -27,7 +27,7 @@ DEFINE_EXECUTOR_INIT(AssetsExecutor)
 DEFINE_EXECUTOR_METHOD(AssetsExecutor, GET_METHOD, request, response)
 {
 	json_parser_t parser;
-	const char* fileName;
+	char* fileName;
 	const char extension[] = "wfdp";
 	query_parameter_t* queryParameters;
 	size_t queryParametersSize;
