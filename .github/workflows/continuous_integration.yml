@@ -117,7 +117,7 @@ jobs:
 
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
-      os: ubuntu-24.04-arm
+      os: ubuntu-26.04-arm
       configuration: MinSizeRel
       build-cxx-api: ON
       build-cc-api: ${{ matrix.build-cc-api }}
@@ -133,7 +133,7 @@ jobs:
   linux-aarch64-dev-branch-build:
     uses: ./.github/workflows/reusable_build_web_framework.yml
     with:
-      os: ubuntu-24.04-arm
+      os: ubuntu-26.04-arm
       configuration: RelWithDebInfo
       build-parameters: "-DWITH_STACKTRACE=ON"
       build-branch-strict: dev
@@ -145,7 +145,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu-cxx23:android
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -185,7 +185,7 @@ jobs:
           - { api: CSharp, artifact-name: Windows-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     
     - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -226,7 +226,7 @@ jobs:
           - { api: CSharp, artifact-name: Linux-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       
     - name: Download ${{ matrix.executors.artifact-name }}
       uses: actions/download-artifact@v8
@@ -251,7 +251,7 @@ jobs:
 
 
   linux-aarch64-executors-build:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     needs: linux-aarch64-build
     strategy:
       matrix:
@@ -262,7 +262,7 @@ jobs:
           - { api: CSharp, artifact-name: LinuxARM-WITH_PYTHON_EXECUTORS=OFF-BUILD_PYTHON_API=OFF--WITH_DOTNET_EXECUTORS=OFF-BUILD_CSHARP_API=ON-BUILD_CC_API=OFF }
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       
     - name: Install uuid-dev
       run: |
@@ -300,7 +300,7 @@ jobs:
     needs: windows-build
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     
     - name: Enable CL
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -334,7 +334,7 @@ jobs:
       image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
     
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       
     - name: Download WebFramework
       uses: actions/download-artifact@v8
@@ -359,11 +359,11 @@ jobs:
 
 
   linux-aarch64-tests-build:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     needs: linux-aarch64-build
     
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       
     - name: Download WebFramework
       uses: actions/download-artifact@v8
@@ -504,7 +504,7 @@ jobs:
 
     uses: ./.github/workflows/reusable_run_test.yml
     with:
-      os: ubuntu-24.04-arm
+      os: ubuntu-26.04-arm
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
@@ -528,7 +528,7 @@ jobs:
 
     uses: ./.github/workflows/reusable_run_test.yml
     with:
-      os: ubuntu-24.04-arm
+      os: ubuntu-26.04-arm
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
@@ -543,14 +543,14 @@ jobs:
         config:
           - { os: windows-latest, image: "", web-framework-name: Windows-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
           - { os: ubuntu-latest, image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04, web-framework-name: Linux-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
-          - { os: ubuntu-24.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
+          - { os: ubuntu-26.04-arm, image: "", web-framework-name: LinuxARM-WITH_PYTHON_EXECUTORS=ON-BUILD_PYTHON_API=ON-3.14-WITH_DOTNET_EXECUTORS=ON-BUILD_CSHARP_API=ON-BUILD_CC_API=ON }
         
     runs-on: ${{ matrix.config.os }}
     container:
       image: ${{ matrix.config.image }}
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -559,7 +559,7 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Install dependencies
-      if: ${{ matrix.config.os == 'ubuntu-24.04-arm' }}
+      if: ${{ matrix.config.os == 'ubuntu-26.04-arm' }}
       run: |
         sudo apt update
         sudo apt install -y uuid-dev dotnet-sdk-10.0
@@ -584,7 +584,7 @@ jobs:
       run: python -m pip install *.whl
 
     - name: Install RabbitMQ on Linux
-      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-24.04-arm' }}
+      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
       run: |
         sudo apt update
         sudo apt install -y erlang rabbitmq-server
@@ -610,7 +610,7 @@ jobs:
         .\run_task_broker_tests.bat
 
     - name: Run Linux tests
-      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-24.04-arm' }}
+      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
       working-directory: Tests/build/bin
       shell: bash
       run: |
@@ -633,7 +633,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 

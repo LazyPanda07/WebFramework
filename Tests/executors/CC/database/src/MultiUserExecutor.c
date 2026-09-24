@@ -61,7 +61,7 @@ DEFINE_EXECUTOR_METHOD(MultiUserExecutor, PUT_METHOD, request, response)
 	sql_value_t* values = (sql_value_t*)malloc(2 * sizeof(sql_value_t));
 	sql_result_t result;
 	json_parser_t parser;
-	const char* data = NULL;
+	char* data = NULL;
 
 	if (!values)
 	{

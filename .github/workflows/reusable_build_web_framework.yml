@@ -83,7 +83,7 @@ jobs:
       image: ${{ inputs.image }}
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -95,13 +95,13 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Install uuid-dev
-      if: ${{ inputs.os == 'ubuntu-24.04-arm' }}
+      if: ${{ inputs.os == 'ubuntu-26.04-arm' }}
       run: |
         sudo apt update
         sudo apt install -y uuid-dev
 
     - name: Install .NET 10.0
-      if: ${{ inputs.os == 'ubuntu-24.04-arm' && (inputs.with-dotnet-executors == 'ON' || inputs.build-csharp-api == 'ON') }}
+      if: ${{ inputs.os == 'ubuntu-26.04-arm' && (inputs.with-dotnet-executors == 'ON' || inputs.build-csharp-api == 'ON') }}
       run: sudo apt install -y dotnet-sdk-10.0
 
     - name: Install Python
@@ -117,7 +117,7 @@ jobs:
         python -m pip install build
         
     - name: Append WITH_STACKTRACE=ON to ADDITIONAL_BUILD_PARAMETERS on Windows at main branch
-      if: ${{ (inputs.os == 'windows-latest' || inputs.os == 'ubuntu-24.04-arm') && env.CURRENT_BRANCH == 'main' }}
+      if: ${{ (inputs.os == 'windows-latest' || inputs.os == 'ubuntu-26.04-arm') && env.CURRENT_BRANCH == 'main' }}
       shell: bash
       run: echo "ADDITIONAL_BUILD_PARAMETERS=${ADDITIONAL_BUILD_PARAMETERS} -DWITH_STACKTRACE=ON" >> ${GITHUB_ENV}
 

@@ -20,9 +20,9 @@ jobs:
         - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 12, python-patch: 13 }
         - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 13, python-patch: 13 }
         - { os: ubuntu-latest, image: quay.io/pypa/manylinux_2_28_x86_64, python-minor-version: 14, python-patch: 4 }
-        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 12, python-patch: 13 }
-        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 13, python-patch: 13 }
-        - { os: ubuntu-24.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 14, python-patch: 4 }
+        - { os: ubuntu-26.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 12, python-patch: 13 }
+        - { os: ubuntu-26.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 13, python-patch: 13 }
+        - { os: ubuntu-26.04-arm, image: quay.io/pypa/manylinux_2_28_aarch64, python-minor-version: 14, python-patch: 4 }
 
     uses: ./.github/workflows/reusable_build_wheel.yml
     with: 
@@ -36,7 +36,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -97,7 +97,7 @@ jobs:
       image: lazypanda07/ubuntu_cxx20:android
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -141,7 +141,7 @@ jobs:
         package-type: [deploy, dev]
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -202,11 +202,11 @@ jobs:
         config: 
           - { os: "windows-latest", asset_name: "Windows-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "windows-executor" }
           - { os: "ubuntu-latest", asset_name: "Linux-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "linux-executor" }
-          - { os: "ubuntu-24.04-arm", asset_name: "LinuxARM-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "linux-arm-executor" }
+          - { os: "ubuntu-26.04-arm", asset_name: "LinuxARM-WITH_PYTHON_EXECUTORS.OFF-BUILD_PYTHON_API.OFF--WITH_DOTNET_EXECUTORS.ON-BUILD_CSHARP_API.OFF-BUILD_CC_API.ON.zip", upload_name: "linux-arm-executor" }
     runs-on: ${{ matrix.config.os }}
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Get latest release
       uses: robinraju/release-downloader@v1.12
@@ -253,7 +253,7 @@ jobs:
         config: [ { api_name: TEST_DEV_CC, script: run_cc_test.sh, asset_name: cc_test }, { api_name: TEST_DEV_CXX, script: run_cxx_test.sh, asset_name: cxx_test } ]
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: recursive
 
@@ -339,12 +339,12 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest, script: run_csharp_test.sh, executor_name: "linux-executor", run_command: "source " }
-          - { os: ubuntu-24.04-arm, script: run_csharp_test_arm.sh, executor_name: "linux-arm-executor", run_command: "source " }
+          - { os: ubuntu-26.04-arm, script: run_csharp_test_arm.sh, executor_name: "linux-arm-executor", run_command: "source " }
           - { os: windows-latest, script: run_csharp_test.bat, executor_name: "windows-executor", run_command: ".\\" }
     runs-on: ${{ matrix.config.os }}
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
   
     - name: Install Python
       uses: actions/setup-python@v6
@@ -452,7 +452,7 @@ jobs:
       EMAIL: semengricenko@gmail.com
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         repository: LazyPanda07/web_framework_ppa
 

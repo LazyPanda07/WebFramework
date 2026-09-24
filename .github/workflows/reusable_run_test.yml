@@ -81,7 +81,7 @@ jobs:
         echo "DOWNLOAD_TESTS_ARTIFACT_NAME=LinuxTests" >> ${GITHUB_ENV}
     
     - name: Prepare download artifact name from LinuxARM
-      if: ${{ inputs.os == 'ubuntu-24.04-arm' }}
+      if: ${{ inputs.os == 'ubuntu-26.04-arm' }}
       shell: bash
       run: |
         echo "CURRENT_OS=LinuxARM" >> ${GITHUB_ENV}
@@ -158,13 +158,13 @@ jobs:
         fileName: Redis-${{ env.windows-redis-version }}-Windows-x64-msys2.zip
 
     - name: Install Redis on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-24.04-arm' }}
+      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-26.04-arm' }}
       run: |
         sudo apt update
         sudo apt install -y redis-server
 
     - name: Install .NET 10.0
-      if: ${{ inputs.dotnet && inputs.os == 'ubuntu-24.04-arm' }}
+      if: ${{ inputs.dotnet && inputs.os == 'ubuntu-26.04-arm' }}
       run: sudo apt install -y dotnet-sdk-10.0
 
     - name: Download ${{ env.DOWNLOAD_ARTIFACT_NAME }}
@@ -234,7 +234,7 @@ jobs:
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux
-      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-24.04-arm' }}
+      if: ${{ inputs.os == 'ubuntu-latest' || inputs.os == 'ubuntu-26.04-arm' }}
       working-directory: Tests
       shell: bash
       run: |
