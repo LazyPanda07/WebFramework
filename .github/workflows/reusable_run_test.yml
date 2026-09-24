@@ -236,5 +236,4 @@ jobs:
       run: |
         export RUNTIMES="${{ env.runtimes }}"
         redis-server --port 10010 --requirepass password & sleep 1
-        wait-for-service redis://localhost:10010
         source ${{ inputs.test-script }} ${{ inputs.web-framework-config }}
