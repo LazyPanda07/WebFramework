@@ -457,6 +457,7 @@ jobs:
     uses: ./.github/workflows/reusable_run_test.yml
     with:
       os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
@@ -481,6 +482,7 @@ jobs:
     uses: ./.github/workflows/reusable_run_test.yml
     with:
       os: ubuntu-latest
+      image: ghcr.io/lazypanda07/ubuntu-cxx23:26.04
       executors-api: ${{ matrix.executors.api }}
       web-framework-config: ${{ matrix.config }}
       test-script: ${{ matrix.test-script }}
@@ -606,7 +608,7 @@ jobs:
       working-directory: Tests/build/bin
       run: |
         choco install -y rabbitmq
-        wait-for-service amqp://localhost:5672
+        # wait-for-service amqp://localhost:5672
         .\run_task_broker_tests.bat
 
     - name: Run Linux tests
@@ -614,8 +616,8 @@ jobs:
       working-directory: Tests/build/bin
       shell: bash
       run: |
-        rabbitmq-server & sleep 1
-        wait-for-service amqp://localhost:5672
+        # rabbitmq-server & sleep 1
+        # wait-for-service amqp://localhost:5672
         source run_task_broker_tests.sh
         
 
