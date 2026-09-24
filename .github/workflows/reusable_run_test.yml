@@ -227,7 +227,6 @@ jobs:
         start ${{ github.workspace }}\Redis-${{ env.windows-redis-version }}-Windows-x64-msys2\redis-server --port 10010 --requirepass password
         set RUNTIMES=${{ env.runtimes }}
         cd Tests
-        wait-for-service redis://localhost:10010
         .\${{ inputs.test-script }} ${{ inputs.web-framework-config }}
     
     - name: Run ${{ inputs.test-script }} ${{ inputs.web-framework-config }} tests on Linux

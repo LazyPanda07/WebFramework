@@ -551,6 +551,19 @@ jobs:
     container:
       image: ${{ matrix.config.image }}
 
+    services:
+      rabbitmq:
+        if: ${{ matrix.config.os != 'windows-latest' }}
+        image: rabbitmq:4-management
+
+        ports: 
+          - 5672:5672
+
+        env: 
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+          RABBITMQ_DEFAULT_VHOST: /
+
     steps:
     - uses: actions/checkout@v7
       with:
@@ -611,11 +624,9 @@ jobs:
       if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
       working-directory: Tests/build/bin
       shell: bash
-      run: |
-        # rabbitmq-server & sleep 1
-        source run_task_broker_tests.sh
+      run: source run_task_broker_tests.sh
         
-
+      
   publish:
     needs: [
       android-build,
