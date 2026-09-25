@@ -585,11 +585,11 @@ jobs:
       shell: bash
       run: python -m pip install *.whl
 
-    - name: Install RabbitMQ on Linux
-      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
-      run: |
-        sudo apt update
-        sudo apt install -y erlang rabbitmq-server
+    # - name: Install RabbitMQ on Linux
+    #   if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
+    #   run: |
+    #     sudo apt update
+    #     sudo apt install -y erlang rabbitmq-server
       
     - name: Build tests
       working-directory: Tests
@@ -617,9 +617,7 @@ jobs:
       if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
       working-directory: Tests/build/bin
       shell: bash
-      run: |
-        # rabbitmq-server & sleep 1
-        source run_task_broker_tests.sh
+      run: source run_task_broker_tests.sh
         
 
   publish:
