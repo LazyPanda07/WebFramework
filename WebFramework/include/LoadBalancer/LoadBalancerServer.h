@@ -91,7 +91,7 @@ namespace framework::load_balancer
 		std::unique_ptr<LoadBalancerHeuristic> createAPIHeuristic(std::string_view ip, std::string_view port, bool useHTTPS, std::string_view heuristicName, std::string_view apiType, utility::LoadSource loadSource) const;
 
 	private:
-		void receiveConnections(const std::function<void()>& onStartServer, std::exception** outException) override;
+		void receiveConnections(std::function<void()> onStartServer, std::exception** outException) override;
 
 		void clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr addr, std::function<void()>& cleanup) override;
 

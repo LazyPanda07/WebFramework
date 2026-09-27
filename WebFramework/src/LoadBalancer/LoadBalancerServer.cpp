@@ -327,7 +327,7 @@ namespace framework::load_balancer
 		return nullptr;
 	}
 
-	void LoadBalancerServer::receiveConnections(const std::function<void()>& onStartServer, std::exception** outException)
+	void LoadBalancerServer::receiveConnections(std::function<void()> onStartServer, std::exception** outException)
 	{
 		threads.reserve(requestQueues.size());
 
