@@ -585,12 +585,15 @@ jobs:
       shell: bash
       run: python -m pip install *.whl
 
-    # - name: Install RabbitMQ on Linux
-    #   if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
-    #   run: |
-    #     sudo apt update
-    #     sudo apt install -y erlang rabbitmq-server
+    - name: Install RabbitMQ on Linux
+      if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
+      run: |
+        sudo apt update
+        sudo apt install -y erlang rabbitmq-server
       
+    - name: Install wait-for-service[amqp]
+      run: python -m pip install wait-for-service[amqp]
+
     - name: Build tests
       working-directory: Tests
       run: |
@@ -599,25 +602,23 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TASK_EXECUTORS=ON -DBUILD_EXECUTORS=NONE -G ${{ env.DEFAULT_CMAKE_GENERATOR }} ..
         cmake --build . -j --config Release
         cmake --install . --config Release
-
-    - name: Start RabbitMQ on Linux
-      if: ${{ matrix.config.os != 'windows-latest' }}
-      uses: Namoshek/rabbitmq-github-action@v1.2.0
-      with:
-        ports: '5672:5672'
-
+        
     - name: Run Windows tests
       if: ${{ matrix.config.os == 'windows-latest' }}
       working-directory: Tests/build/bin
       run: |
         choco install -y rabbitmq
+        wait-for-service amqp://localhost:5672
         .\run_task_broker_tests.bat
 
     - name: Run Linux tests
       if: ${{ matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-26.04-arm' }}
       working-directory: Tests/build/bin
       shell: bash
-      run: source run_task_broker_tests.sh
+      run: |
+        rabbitmq-server & sleep 1
+        wait-for-service amqp://localhost:5672
+        source run_task_broker_tests.sh
         
 
   publish:
