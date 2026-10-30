@@ -607,7 +607,7 @@ jobs:
       if: ${{ matrix.config.os == 'windows-latest' }}
       working-directory: Tests/build/bin
       run: |
-        choco install -y rabbitmq
+        choco install -y rabbitmq --version=4.0.9
         wait-for-service amqp://localhost:5672
         .\run_task_broker_tests.bat
 
