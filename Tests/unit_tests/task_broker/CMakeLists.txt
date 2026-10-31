@@ -19,4 +19,5 @@ target_link_libraries(
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 install(FILES ${CMAKE_SOURCE_DIR}/scripts/run_task_broker_tests.bat DESTINATION .)
+install(FILES ${CMAKE_SOURCE_DIR}/scripts/find_fxr.bat DESTINATION .)
 install(FILES ${CMAKE_SOURCE_DIR}/scripts/run_task_broker_tests.sh DESTINATION .)

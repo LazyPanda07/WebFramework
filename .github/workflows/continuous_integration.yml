@@ -605,6 +605,7 @@ jobs:
         
     - name: Run Windows tests
       if: ${{ matrix.config.os == 'windows-latest' }}
+      shell: cmd
       working-directory: Tests/build/bin
       run: |
         choco install -y rabbitmq --version=4.0.9
