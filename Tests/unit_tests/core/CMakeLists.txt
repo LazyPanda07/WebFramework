@@ -20,6 +20,7 @@ add_executable(
 	cases/Redis.cpp
 	cases/Token.cpp
 	cases/WebSocketEcho.cpp
+	cases/Encoding.cpp
 )
 
 target_include_directories(
