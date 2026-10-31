@@ -15,6 +15,8 @@ namespace framework::encoders
 
 		virtual std::string encode(std::string_view data) = 0;
 
+		virtual std::string_view getName() const = 0;
+
 		virtual ~Encoder() = default;
 	};
 }

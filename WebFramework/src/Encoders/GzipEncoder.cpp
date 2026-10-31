@@ -54,6 +54,13 @@ namespace framework::encoders
 		return result;
 	}
 
+	std::string_view GzipEncoder::getName() const
+	{
+		constexpr std::string_view name = "gzip";
+
+		return name;
+	}
+
 	GzipEncoder::~GzipEncoder()
 	{
 		deflateEnd(&stream);

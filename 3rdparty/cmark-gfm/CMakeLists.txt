@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27.0)
+cmake_minimum_required(VERSION 4.0.0)
 
 set(CMARK_GFM_TAG 0.29.0.gfm.13)
 set(CMARK_BUILD_ARGUMENTS "")

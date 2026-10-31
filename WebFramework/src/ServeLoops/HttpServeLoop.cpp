@@ -42,6 +42,7 @@ namespace framework::serve_loop
 				if (size_t bodySize = response.getBodySize())
 				{
 					constexpr std::string_view acceptEncodingHeader = "Accept-Encoding";
+					constexpr std::string_view contentEncodingHeader = "Content-Encoding";
 
 					if (const char* header = request.getHeaderValue(acceptEncodingHeader.data(), false))
 					{
@@ -50,6 +51,8 @@ namespace framework::serve_loop
 						if (encoder)
 						{
 							std::string_view body(response.getBody(), bodySize);
+
+							response.addHeader(contentEncodingHeader.data(), encoder->getName().data());
 
 							response.setBody(encoder->encode(body));
 						}

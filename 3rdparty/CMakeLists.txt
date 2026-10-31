@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27.0)
+cmake_minimum_required(VERSION 4.0.0)
 
 project(3rdparty)
 
@@ -22,4 +22,8 @@ endif()
 
 if (${WITH_ZLIB})
 	add_subdirectory(zlib)
+endif()
+
+if (${WITH_BROTLI})
+	add_subdirectory(brotli)
 endif()

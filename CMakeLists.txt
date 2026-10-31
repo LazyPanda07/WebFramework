@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27.0)
+cmake_minimum_required(VERSION 4.0.0)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -13,7 +13,6 @@ set(
 	hiredis
 	rabbitmq::rabbitmq-static
 	jwt-cpp::jwt-cpp
-	zlibstatic
 	ssl
 	crypto
 	CACHE INTERNAL ""
@@ -29,6 +28,7 @@ option(WITH_PYTHON_EXECUTORS "Build with Python Executors" ON)
 option(WITH_DOTNET_EXECUTORS "Build with .NET Executors" ON)
 option(WITH_UNITY_BUILD "Build few .cpp at once" ON)
 option(WITH_ZLIB "Build with zlib" ON)
+option(WITH_BROTLI "Build with brotli" ON)
 option(AS_DEPENDENCY "Change install paths for FetchContent or add_subdirectory usage" OFF)
 
 project(WebFramework VERSION 3.4.2)
@@ -131,6 +131,7 @@ add_library(
 	WebFramework/src/ServeLoops/WebSocketServeLoop.cpp
 	WebFramework/src/Encoders/Encoder.cpp
 	WebFramework/src/Encoders/GzipEncoder.cpp
+	WebFramework/src/Encoders/BrotliEncoder.cpp
 )
 
 if (${WITH_STACKTRACE})
@@ -138,7 +139,15 @@ if (${WITH_STACKTRACE})
 endif()
 
 if (${WITH_ZLIB})
+	list(APPEND 3RDPARTY_LIBS zlibstatic)
+
 	add_definitions(-D__WITH_ZLIB__)
+endif()
+
+if (${WITH_BROTLI})
+	list(APPEND 3RDPARTY_LIBS brotlienc brotlidec brotlicommon)
+
+	add_definitions(-D__WITH_BROTLI__)
 endif()
 
 if (UNIX)

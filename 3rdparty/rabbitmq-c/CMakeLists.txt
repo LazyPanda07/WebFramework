@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27.0)
+cmake_minimum_required(VERSION 4.0.0)
 
 set(RABBITMQ-C_TAG 47f99dce572b7229a11b9b011f5a6fd39b93bac1)
 set(BUILD_SHARED_LIBS OFF)

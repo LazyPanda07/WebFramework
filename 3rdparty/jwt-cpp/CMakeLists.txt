@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27.0)
+cmake_minimum_required(VERSION 4.0.0)
 
 set(PLATFORM_NAME "")
 set(JWT_CPP_VERSION 0.7.2)

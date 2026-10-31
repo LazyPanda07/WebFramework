@@ -1,6 +1,7 @@
 #include "Encoders/Encoder.h"
 
 #include "Encoders/GzipEncoder.h"
+#include "Encoders/BrotliEncoder.h"
 
 namespace framework::encoders
 {
@@ -10,6 +11,13 @@ namespace framework::encoders
 		if (name == "gzip")
 		{
 			return std::make_unique<GzipEncoder>();
+		}
+#endif
+
+#ifdef __WITH_BROTLI__
+		if (name == "br")
+		{
+			return std::make_unique<BrotliEncoder>();
 		}
 #endif
 

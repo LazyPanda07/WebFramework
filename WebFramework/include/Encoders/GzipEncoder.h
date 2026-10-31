@@ -18,6 +18,8 @@ namespace framework::encoders
 
 		std::string encode(std::string_view data) override;
 
+		std::string_view getName() const override;
+
 		~GzipEncoder();
 	};
 }
